@@ -39,7 +39,7 @@ import ru.novosoft.uml.MElementEvent;
  * Collection.  This class also causes NSUML to refresh and so keeps
  * the diagram in synch with the model. <p>
  *
- * Method <code>propertySet</code> listens for MElementEvent events and 
+ * Method <code>propertySet</code> listens for MElementEvent events and
  * updates the other elements, such as type, visibility and changeability. <p>
  * Modified psager@tigris.org
  *
@@ -49,41 +49,45 @@ import ru.novosoft.uml.MElementEvent;
  * this class is part of the 'old'(pre 0.13.*) implementation of
  * proppanels that used reflection a lot.
  */
-public class UMLInitialValueComboBox extends JComboBox 
+public class UMLInitialValueComboBox extends JComboBox
              implements ActionListener, UMLUserInterfaceComponent {
 
     private UMLUserInterfaceContainer theContainer;
 
-    /** Prevent event storms through not generating unnecessary events */
+    /**
+     * Prevent event storms through not generating unnecessary events.
+     */
     private boolean isUpdating = false;
-    
-    /** items in the initial value combobox that are available for selection.*/
+
+    /**
+     * Items in the initial value combobox that are available for selection.
+     */
     private String[] listItems = {"", "0", "1", "2", "null"};
 
-    /** 
+    /**
      * The constructor creates a new UMLInitialValueComboBox.
-     * 
+     *
      * @param container the container of UML user interface components
      */
     public UMLInitialValueComboBox(UMLUserInterfaceContainer container) {
         super();
         theContainer = container;
-        
+
         for (int i = 0; i < listItems.length; i++) {
             addItem(listItems[i]);
         }
 	setEditable(true);
 
 	/* The ActionListener below
-	 * handles ActionEvents from the combobox. The action listener was not 
-	 * handling events from the combo box properly, so I moved it 
-	 * up to the constructor, where it works fine. 
+	 * handles ActionEvents from the combobox. The action listener was not
+	 * handling events from the combo box properly, so I moved it
+	 * up to the constructor, where it works fine.
 	 * I guess the best alternative would be to create an
-	 * inner class for the listener. 
+	 * inner class for the listener.
 	 * The listener sets the value from the combo
-	 * box into the collection, and then calls update() to refresh 
+	 * box into the collection, and then calls update() to refresh
 	 * the drawing so that it stays in synch with the model.
-	 * 
+	 *
 	 * Modified psager@tigris.org Aug.6, 2001 to handle method parameter
 	 * expressions.
 	 */
@@ -95,26 +99,25 @@ public class UMLInitialValueComboBox extends JComboBox
 
                 String item = (String) getSelectedItem();
                 Object target = theContainer.getTarget();
-                if (org.argouml.model.ModelFacade.isAAttribute(target)) {
-                    Object/*MExpression*/ itemExpr =
-			Model.getUmlFactory().getDataTypes()
+                if (ModelFacade.isAAttribute(target)) {
+                    Object itemExpr =
+			Model.getDataTypesFactory()
 			    .createExpression("Java", item);
                     ModelFacade.setInitialValue(target, itemExpr);
                     update();
-                }
-                else if (org.argouml.model.ModelFacade.isAParameter(target)) {
-                    Object/*MExpression*/ itemExpr =
-			Model.getUmlFactory().getDataTypes()
+                } else if (ModelFacade.isAParameter(target)) {
+                    Object itemExpr =
+			Model.getDataTypesFactory()
 			    .createExpression("Java", item);
                     ModelFacade.setDefaultValue(target, itemExpr);
                     update();
                 }
             }
         }); //...end of action listener...
-        
+
     }   //...end of constructor...
-    
-    /** 
+
+    /**
      * On change of target (when we display the Parameter or Attribute
      * property panel) we set the initial value of the attribute into
      * the UMLInitialValueComboBox.
@@ -124,7 +127,7 @@ public class UMLInitialValueComboBox extends JComboBox
      * keep from setting residual values into the return parameter.
      *
      * @author psager@tigris.org Aug. 31, 2001. Modified Sept. 05, 2001
-     */ 
+     */
     public void targetChanged() {
         Object target = theContainer.getTarget();
 	isUpdating = true;
@@ -135,28 +138,25 @@ public class UMLInitialValueComboBox extends JComboBox
                 Object init = ModelFacade.getBody(initExpr);
                 setSelectedItem(init);
                 //update();
-            }
-            else if (initExpr == null) {
+            } else if (initExpr == null) {
                 setSelectedItem(null); // clear residual junk from the
 				       // combo box.
             }
-        } 
-        else if (ModelFacade.isAParameter(target)) {
+        }  else if (ModelFacade.isAParameter(target)) {
             Object/*MExpression*/ initExpr =
 		ModelFacade.getDefaultValue(target);
             if (initExpr != null) {
                 Object init = ModelFacade.getBody(initExpr);
                 setSelectedItem(init);
                 //update();
-            }
-            else if (initExpr == null) {
+            } else if (initExpr == null) {
                 setSelectedItem(null); // clear the previous value
 				       // from the combo box.
             }
         }
 	isUpdating = false;
     }
-    
+
 
     /**
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
@@ -169,25 +169,25 @@ public class UMLInitialValueComboBox extends JComboBox
      */
     public void roleAdded(final MElementEvent p1) {
     }
-    
+
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
     public void recovered(final MElementEvent p1) {
     }
-    
+
     /**
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(final MElementEvent p1) {
     }
-    
+
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(final MElementEvent p1) {
     }
-    
+
     /**
      * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
@@ -210,18 +210,19 @@ public class UMLInitialValueComboBox extends JComboBox
         if (eventProp.equals("owner") || eventProp.equals("name")) {
             return;
         }
-	if ("initialValue".equals(eventProp) 
-	    || "defaultValue".equals(eventProp))
+	if ("initialValue".equals(eventProp)
+	    || "defaultValue".equals(eventProp)) {
 	    targetChanged();
-    } 
-    
-    /** 
+	}
+    }
+
+    /**
      * Updates the diagram. It first has to locate it's target element and then
      * causes the update to take place so that the diagram stays in synch with
-     * the model. 
-     * 
+     * the model.
+     *
      * @author psager@tigris.org   Aug. 30, 2001
-     */    
+     */
     private void update() {
         Object target = theContainer.getTarget();
         if (ModelFacade.isAAttribute(target)) {
@@ -231,8 +232,7 @@ public class UMLInitialValueComboBox extends JComboBox
             }
             ModelFacade.setFeatures(classifier,
 				    ModelFacade.getFeatures(classifier));
-        }
-        else if (ModelFacade.isAParameter(target)) {
+        } else if (ModelFacade.isAParameter(target)) {
             if (ModelFacade.isACallEvent(target)) {
                 return;
             }
@@ -247,6 +247,5 @@ public class UMLInitialValueComboBox extends JComboBox
             }
         }
     }   // ...end of update() method...
-    
 
 } //...end of class...

@@ -74,22 +74,6 @@ public interface UmlFactory {
 
     /**
      * Returns the package factory for the UML
-     * package Foundation::ExtensionMechanisms.
-     *
-     * @return the ExtensionMechanisms factory instance.
-     */
-    ExtensionMechanismsFactory getExtensionMechanisms();
-
-    /**
-     * Returns the package factory for the UML
-     * package Foundation::DataTypes.
-     *
-     * @return the DataTypes factory instance.
-     */
-    DataTypesFactory getDataTypes();
-
-    /**
-     * Returns the package factory for the UML
      * package Foundation::Core.
      *
      * @return the Core factory instance.
@@ -127,14 +111,6 @@ public interface UmlFactory {
      * @return the Collaborations factory instance.
      */
     CollaborationsFactory getCollaborations();
-
-    /**
-     * Returns the package factory for the UML
-     * package BehavioralElements::ActivityGraphs.
-     *
-     * @return the ActivityGraphs factory instance.
-     */
-    ActivityGraphsFactory getActivityGraphs();
 
     /**
      * Returns the package factory for the UML

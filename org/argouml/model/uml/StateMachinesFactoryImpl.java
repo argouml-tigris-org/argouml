@@ -616,7 +616,7 @@ public class StateMachinesFactoryImpl
         event.setNamespace((MModel) model);
         event.setName("");
         Object te =
-            nsmodel.getUmlFactory().getDataTypes()
+            nsmodel.getDataTypesFactory()
             	.createTimeExpression("", s);
         ModelFacade.setWhen(event, te);
         return event;
@@ -647,7 +647,7 @@ public class StateMachinesFactoryImpl
         event.setNamespace((MModel) model);
         event.setName("");
         Object ce =
-            nsmodel.getUmlFactory().getDataTypes()
+            nsmodel.getDataTypesFactory()
             	.createBooleanExpression("", s);
         ModelFacade.setExpression(event, ce);
 

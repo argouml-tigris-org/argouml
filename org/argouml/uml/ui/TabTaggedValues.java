@@ -81,19 +81,18 @@ public class TabTaggedValues extends TabSpawnable
 
     /**
      * The constructor.
-     * 
      */
     public TabTaggedValues() {
         super("tab.tagged-values");
         buttonPanel = new ToolBar();
         buttonPanel.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         buttonPanel.setFloatable(false);
-        
-        JButton b = new JButton(); 
+
+        JButton b = new JButton();
         buttonPanel.add(b);
         b.setToolTipText(Translator.localize("button.delete"));
         b.setAction(new ActionRemoveTaggedValue(this));
-        
+
         tableModel = new TableModelTaggedValues(this);
         table.setModel(tableModel);
 
@@ -101,22 +100,22 @@ public class TabTaggedValues extends TabSpawnable
         JScrollPane sp = new JScrollPane(table);
         Font labelFont = LookAndFeelMgr.getInstance().getSmallFont();
         table.setFont(labelFont);
-        
+
         titleLabel = new JLabel("none");
         resizeColumns();
         setLayout(new BorderLayout());
         titleLabel.setLabelFor(buttonPanel);
-        
+
         JPanel topPane = new JPanel(new BorderLayout());
         topPane.add(titleLabel, BorderLayout.WEST);
         topPane.add(buttonPanel, BorderLayout.CENTER);
-        
+
         add(topPane, BorderLayout.NORTH);
         add(sp, BorderLayout.CENTER);
     }
 
     /**
-     * Resize the columns. 
+     * Resize the columns.
      */
     public void resizeColumns() {
         TableColumn keyCol = table.getColumnModel().getColumn(0);
@@ -140,8 +139,9 @@ public class TabTaggedValues extends TabSpawnable
     public void setTarget(Object theTarget) {
         if (table.isEditing()) {
             TableCellEditor ce = table.getCellEditor();
-            if (ce != null && !ce.stopCellEditing())
+            if (ce != null && !ce.stopCellEditing()) {
                 ce.cancelCellEditing();
+            }
         }
 
         Object t = (theTarget instanceof Fig) 
@@ -171,8 +171,7 @@ public class TabTaggedValues extends TabSpawnable
             titleLabel.setText("Target: "
 				+ ModelFacade.getUMLClassName(target)
 				+ " (" + ModelFacade.getName(target) + ")");
-        }
-        else {
+        } else {
             titleLabel.setText("none");
         }
         validate();
@@ -192,13 +191,12 @@ public class TabTaggedValues extends TabSpawnable
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object theTarget) {
-        Object t = (theTarget instanceof Fig) 
+        Object t = (theTarget instanceof Fig)
             ? ((Fig) theTarget).getOwner() : theTarget;
         if (!(org.argouml.model.ModelFacade.isAModelElement(t))) {
             shouldBeEnabled = false;
             return shouldBeEnabled;
-        }
-        else {
+        } else {
             shouldBeEnabled = true;
             return true;
         }
@@ -253,8 +251,7 @@ public class TabTaggedValues extends TabSpawnable
 class TableModelTaggedValues extends AbstractTableModel
     implements VetoableChangeListener,
 	       DelayedVChangeListener,
-	       PropertyChangeListener
-{
+	       PropertyChangeListener {
 
     ////////////////
     // instance varables
@@ -265,11 +262,11 @@ class TableModelTaggedValues extends AbstractTableModel
     // constructor
     /**
      * The constructor.
-     * 
+     *
      * @param t the tab
      */
-    public TableModelTaggedValues(TabTaggedValues t) { 
-        tab = t; 
+    public TableModelTaggedValues(TabTaggedValues t) {
+        tab = t;
     }
 
     ////////////////
@@ -278,12 +275,14 @@ class TableModelTaggedValues extends AbstractTableModel
      * @param t the target modelelement
      */
     public void setTarget(Object t) {
-        
-        if (!ModelFacade.isAModelElement(t))
+
+        if (!ModelFacade.isAModelElement(t)) {
             throw new IllegalArgumentException();
-        
-	if (target != null)
+        }
+
+	if (target != null) {
 	    Model.getPump().removeModelEventListener(this, target);
+	}
 	target = t;
 	Model.getPump().addModelEventListener(this, t);
 	fireTableDataChanged();
@@ -301,8 +300,12 @@ class TableModelTaggedValues extends AbstractTableModel
      * @see javax.swing.table.TableModel#getColumnName(int)
      */
     public String  getColumnName(int c) {
-	if (c == 0) return Translator.localize("label.taggedvaluespane.tag");
-	if (c == 1) return Translator.localize("label.taggedvaluespane.value");
+	if (c == 0) {
+	    return Translator.localize("label.taggedvaluespane.tag");
+	}
+	if (c == 1) {
+	    return Translator.localize("label.taggedvaluespane.value");
+	}
 	return "XXX";
     }
 
@@ -324,7 +327,9 @@ class TableModelTaggedValues extends AbstractTableModel
      * @see javax.swing.table.TableModel#getRowCount()
      */
     public int getRowCount() {
-	if (target == null) return 0;
+	if (target == null) {
+	    return 0;
+	}
 	Collection tvs = ModelFacade.getTaggedValuesCollection(target);
 	//if (tvs == null) return 1;
 	return tvs.size() + 1;
@@ -336,16 +341,22 @@ class TableModelTaggedValues extends AbstractTableModel
     public Object getValueAt(int row, int col) {
 	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(target));
 	//if (tvs == null) return "";
-	if (row == tvs.size()) return ""; //blank line allows addition
+	if (row == tvs.size()) {
+	    return ""; //blank line allows addition
+	}
 	Object tv = tvs.elementAt(row);
 	if (col == 0) {
 	    String n = ModelFacade.getTagOfTag(tv);
-	    if (n == null) return "";
+	    if (n == null) {
+	        return "";
+	    }
 	    return n;
 	}
 	if (col == 1) {
 	    String be = ModelFacade.getValueOfTag(tv);
-	    if (be == null) return "";
+	    if (be == null) {
+	        return "";
+	    }
 	    return be;
 	}
 	return "TV-" + row * 2 + col; // for debugging
@@ -357,16 +368,23 @@ class TableModelTaggedValues extends AbstractTableModel
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 	TableModelEvent mEvent = null;
 
-	if (columnIndex != 0 && columnIndex != 1) return;
-	if (!(aValue instanceof String)) return;
-        if (aValue == null) aValue = "";
-        
+	if (columnIndex != 0 && columnIndex != 1) {
+	    return;
+	}
+	if (!(aValue instanceof String)) {
+	    return;
+	}
+        if (aValue == null) {
+            aValue = "";
+        }
+
 	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(target));
 	if (tvs.size() <= rowIndex) {
 	    Object tv =
-		Model.getUmlFactory()
-		    .getExtensionMechanisms().createTaggedValue();
-	    if (columnIndex == 0) ModelFacade.setTag(tv, aValue);
+		Model.getExtensionMechanismsFactory().createTaggedValue();
+	    if (columnIndex == 0) {
+	        ModelFacade.setTag(tv, aValue);
+	    }
 	    if (columnIndex == 1) {
 		ModelFacade.setTag(tv, "");
 		ModelFacade.setValue(tv, aValue);
@@ -377,25 +395,26 @@ class TableModelTaggedValues extends AbstractTableModel
 		new TableModelEvent(this, tvs.size(), tvs.size(),
 				    TableModelEvent.ALL_COLUMNS,
 				    TableModelEvent.INSERT);
-	}
-	else if ("".equals(aValue) && columnIndex == 0) {
+	} else if ("".equals(aValue) && columnIndex == 0) {
 	    tvs.removeElementAt(rowIndex);
 	    mEvent =
 		new TableModelEvent(this, rowIndex, rowIndex,
 				    TableModelEvent.ALL_COLUMNS,
 				    TableModelEvent.DELETE);
-	}
-	else {
+	} else {
 	    Object tv = tvs.elementAt(rowIndex);
-	    if (columnIndex == 0) ModelFacade.setTag(tv, aValue);
+	    if (columnIndex == 0) {
+	        ModelFacade.setTag(tv, aValue);
+	    }
 	    if (columnIndex == 1)  {
                 ModelFacade.setValue(tv, aValue);
             }
 	    mEvent = new TableModelEvent(this, rowIndex);
 	}
 	ModelFacade.setTaggedValues(target, tvs);
-	if (mEvent != null)
+	if (mEvent != null) {
 	    fireTableChanged(mEvent);
+	}
 	tab.resizeColumns();
     }
 
@@ -407,10 +426,10 @@ class TableModelTaggedValues extends AbstractTableModel
      */
     public void propertyChange(PropertyChangeEvent evt) {
 //      TODO: How to implement this ("mee" was a MElementEvent)?
-        //if ("taggedValue".equals(mee.getName())) 
+        //if ("taggedValue".equals(mee.getName()))
         fireTableChanged(new TableModelEvent(this));
     }
-    
+
     /**
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
@@ -433,7 +452,7 @@ class TableModelTaggedValues extends AbstractTableModel
 class ActionRemoveTaggedValue extends AbstractAction {
 
     private TabTaggedValues tab;
-    
+
     /**
      * The constructor.
      */
@@ -441,7 +460,7 @@ class ActionRemoveTaggedValue extends AbstractAction {
         super("", ResourceLoaderWrapper.lookupIconResource("Delete"));
         tab = tabtv;
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

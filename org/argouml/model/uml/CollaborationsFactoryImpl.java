@@ -37,7 +37,10 @@ import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 /**
@@ -145,12 +148,15 @@ public class CollaborationsFactoryImpl
      * @return the created classifier role
      */
     public Object buildClassifierRole(Object collaboration) {
-        if (ModelFacade.isACollaboration(collaboration)) {
-            Object classifierRole = createClassifierRole();
-            ModelFacade.addOwnedElement(collaboration, classifierRole);
-            return classifierRole;
+        if (!(collaboration instanceof MCollaboration)) {
+            throw new IllegalArgumentException(
+                    "Argument is not a collaboration");
         }
-        throw new IllegalArgumentException("Argument is not a collaboration");
+
+        MClassifierRole classifierRole =
+            (MClassifierRole) createClassifierRole();
+        ((MCollaboration) collaboration).addOwnedElement(classifierRole);
+        return classifierRole;
     }
 
     /**
@@ -161,17 +167,17 @@ public class CollaborationsFactoryImpl
      * @return the created collaboration
      */
     public Object buildCollaboration(Object handle) {
-        if (ModelFacade.isANamespace(handle)) {
-            MNamespace namespace = (MNamespace) handle;
-            MCollaboration modelelement =
-                (MCollaboration) createCollaboration();
-            modelelement.setNamespace(namespace);
-            modelelement.setName("newCollaboration");
-            modelelement.setAbstract(false);
-            return modelelement;
-
+        if (!(handle instanceof MNamespace)) {
+            throw new IllegalArgumentException("Argument is not a namespace");
         }
-        throw new IllegalArgumentException("Argument is not a namespace");
+
+        MNamespace namespace = (MNamespace) handle;
+        MCollaboration modelelement =
+            (MCollaboration) createCollaboration();
+        modelelement.setNamespace(namespace);
+        modelelement.setName("newCollaboration");
+        modelelement.setAbstract(false);
+        return modelelement;
     }
 
     /**
@@ -185,26 +191,32 @@ public class CollaborationsFactoryImpl
     public Object buildCollaboration(
         Object namespace,
         Object representedElement) {
-        if (ModelFacade.isANamespace(namespace)
-            && (ModelFacade.isAClassifier(representedElement)
-                || ModelFacade.isAOperation(representedElement))) {
-            Object collaboration = buildCollaboration(namespace);
-            if (ModelFacade.isAClassifier(representedElement)) {
-                ModelFacade.setRepresentedClassifier(
-                    collaboration,
-                    representedElement);
-	    }
-            if (ModelFacade.isAOperation(representedElement)) {
-                ModelFacade.setRepresentedOperation(
-                    collaboration,
-                    representedElement);
-	    }
+        if (!(ModelFacade.isANamespace(namespace))) {
+            throw new IllegalArgumentException("Argument is not "
+			   + "a namespace or element "
+			   + "that can be represented "
+			   + "by a collaboration");
+        }
+
+        if (!(representedElement instanceof MClassifier
+                || representedElement instanceof MOperation)) {
+            throw new IllegalArgumentException();
+        }
+
+        MCollaboration collaboration =
+            (MCollaboration) buildCollaboration(namespace);
+        if (representedElement instanceof MClassifier) {
+            collaboration.setRepresentedClassifier(
+                    (MClassifier) representedElement);
             return collaboration;
         }
-        throw new IllegalArgumentException("Argument is not "
-					   + "a namespace or element "
-					   + "that can be represented "
-					   + "by a collaboration");
+        if (representedElement instanceof MOperation) {
+            collaboration.setRepresentedOperation(
+                    (MOperation) representedElement);
+            return collaboration;
+        }
+        // Not reached.
+        return null;
     }
 
     /**
@@ -215,14 +227,16 @@ public class CollaborationsFactoryImpl
      * @return the newly build interaction
      */
     public Object buildInteraction(Object handle) {
-        if (ModelFacade.isACollaboration(handle)) {
-            MCollaboration collab = (MCollaboration) handle;
-            MInteraction inter = (MInteraction) createInteraction();
-            inter.setContext(collab);
-            inter.setName("newInteraction");
-            return inter;
+        if (!(ModelFacade.isACollaboration(handle))) {
+            throw new IllegalArgumentException(
+                    "Argument is not a collaboration");
         }
-        throw new IllegalArgumentException("Argument is not a collaboration");
+
+        MCollaboration collab = (MCollaboration) handle;
+        MInteraction inter = (MInteraction) createInteraction();
+        inter.setContext(collab);
+        inter.setName("newInteraction");
+        return inter;
     }
 
     /**
@@ -232,10 +246,14 @@ public class CollaborationsFactoryImpl
      * @return the associationendrole
      */
     public Object buildAssociationEndRole(Object atype) {
-        MClassifierRole type = (MClassifierRole) atype;
-        Object end = createAssociationEndRole();
-        ((MAssociationEndRole) end).setType(type);
-        return (MAssociationEndRole) end;
+        if (!(atype instanceof MClassifierRole)) {
+            throw new IllegalArgumentException();
+        }
+
+        MAssociationEndRole end =
+            (MAssociationEndRole) createAssociationEndRole();
+        end.setType((MClassifierRole) atype);
+        return end;
     }
 
     /**
@@ -245,13 +263,18 @@ public class CollaborationsFactoryImpl
      * @param to the second classifierrole
      * @return the newly build associationrole
      */
-    public Object buildAssociationRole(Object /*MClassifierRole*/
-    from, Object
-    /*MClassifierRole*/
-    to) {
+    public Object buildAssociationRole(Object from, Object to) {
+        if (!(from instanceof MClassifierRole)) {
+            throw new IllegalArgumentException("from");
+        }
+        if (!(to instanceof MClassifierRole)) {
+            throw new IllegalArgumentException("to");
+        }
+
         MCollaboration colFrom =
-	    (MCollaboration) ModelFacade.getNamespace(from);
-        MCollaboration colTo = (MCollaboration) ModelFacade.getNamespace(to);
+	    (MCollaboration) ((MClassifierRole) from).getNamespace();
+        MCollaboration colTo =
+            (MCollaboration) ((MClassifierRole) to).getNamespace();
         if (colFrom != null && colFrom.equals(colTo)) {
             MAssociationRole role = (MAssociationRole) createAssociationRole();
             // we do not create on basis of associations between the
@@ -289,6 +312,7 @@ public class CollaborationsFactoryImpl
         if (!(to instanceof MClassifierRole)) {
             throw new IllegalArgumentException();
         }
+
         MCollaboration colFrom =
             (MCollaboration) ((MClassifierRole) from).getNamespace();
         MCollaboration colTo =
@@ -343,28 +367,29 @@ public class CollaborationsFactoryImpl
      * @return the newly created association role (an Object)
      */
     public Object buildAssociationRole(Object link) {
-        if (ModelFacade.isALink(link)) {
-            Object from = nsmodel.getUmlHelper().getCore().getSource(link);
-            Object to = nsmodel.getUmlHelper().getCore().getDestination(link);
-            Object classifierRoleFrom =
-                ModelFacade.getClassifiers(from).iterator().next();
-            Object classifierRoleTo =
-                ModelFacade.getClassifiers(to).iterator().next();
-            Object collaboration = ModelFacade.getNamespace(classifierRoleFrom);
-            if (collaboration != ModelFacade.getNamespace(classifierRoleTo)) {
-                throw new IllegalStateException("ClassifierRoles do not belong "
-						+ "to the same collaboration");
-            }
-            if (collaboration == null) {
-                throw new IllegalStateException("Collaboration may not be "
-						+ "null");
-            }
-            Object associationRole = createAssociationRole();
-            ModelFacade.setNamespace(associationRole, collaboration);
-            ModelFacade.addLink(associationRole, link);
-            return associationRole;
+        if (!(link instanceof MLink)) {
+            throw new IllegalArgumentException("Argument is not a link");
         }
-        throw new IllegalArgumentException("Argument is not a link");
+
+        Object from = nsmodel.getUmlHelper().getCore().getSource(link);
+        Object to = nsmodel.getUmlHelper().getCore().getDestination(link);
+        Object classifierRoleFrom =
+            ModelFacade.getClassifiers(from).iterator().next();
+        Object classifierRoleTo =
+            ModelFacade.getClassifiers(to).iterator().next();
+        Object collaboration = ModelFacade.getNamespace(classifierRoleFrom);
+        if (collaboration != ModelFacade.getNamespace(classifierRoleTo)) {
+            throw new IllegalStateException("ClassifierRoles do not belong "
+                    + "to the same collaboration");
+        }
+        if (collaboration == null) {
+            throw new IllegalStateException("Collaboration may not be "
+                    + "null");
+        }
+        Object associationRole = createAssociationRole();
+        ModelFacade.setNamespace(associationRole, collaboration);
+        ModelFacade.addLink(associationRole, link);
+        return associationRole;
     }
 
     /**

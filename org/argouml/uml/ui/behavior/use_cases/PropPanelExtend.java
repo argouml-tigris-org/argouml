@@ -74,7 +74,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"),
 		 getNameTextField());
-        addField(Translator.localize("label.stereotype"), 
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
         addField(Translator.localize("label.namespace"),
 		 getNamespaceScroll());
@@ -104,8 +104,8 @@ public class PropPanelExtend extends PropPanelModelElement {
         UMLExpressionModel2 conditionModel =
             new UMLConditionExpressionModel(this, "condition");
 
-        JTextArea conditionArea = new UMLExpressionBodyField(conditionModel,
-							     true);
+        JTextArea conditionArea =
+            new UMLExpressionBodyField(conditionModel, true);
         conditionArea.setRows(5);
         JScrollPane conditionScroll =
             new JScrollPane(conditionArea);
@@ -114,11 +114,11 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         // Add the toolbar buttons:
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(new ActionNewExtensionPoint(), 
+        addButton(new PropPanelButton2(new ActionNewExtensionPoint(),
                 lookupIcon("ExtensionPoint")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
 
@@ -176,7 +176,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         // Set the condition body.
 
         ModelFacade.setCondition(target,
-				 Model.getUmlFactory().getDataTypes()
+				 Model.getDataTypesFactory()
 				     .createBooleanExpression(null, condBody));
     }
 
@@ -189,18 +189,18 @@ public class PropPanelExtend extends PropPanelModelElement {
      * This code uses getFactory and adds the extension point to
      *   the current extend relationship.<p>
      */
-    private class ActionNewExtensionPoint 
+    private class ActionNewExtensionPoint
         extends AbstractActionNewModelElement {
-        
+
         /**
          * The constructor.
          */
         public ActionNewExtensionPoint() {
             super("button.new-extension-point");
-            putValue(Action.NAME, 
+            putValue(Action.NAME,
                     Translator.localize("button.new-extension-point"));
         }
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
@@ -210,8 +210,10 @@ public class PropPanelExtend extends PropPanelModelElement {
                 Object ns = ModelFacade.getNamespace(target);
                 if (ns != null) {
                     if (ModelFacade.getBase(target) != null) {
-                        Object extensionPoint = Model.getUseCasesFactory()
-                            .buildExtensionPoint(ModelFacade.getBase(target));
+                        Object extensionPoint =
+                            Model.getUseCasesFactory()
+                            	.buildExtensionPoint(
+                            	        ModelFacade.getBase(target));
                         ModelFacade.addExtensionPoint(target, extensionPoint);
                         TargetManager.getInstance().setTarget(extensionPoint);
                         super.actionPerformed(e);

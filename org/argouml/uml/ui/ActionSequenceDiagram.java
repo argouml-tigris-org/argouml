@@ -33,7 +33,7 @@ import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 
-/** 
+/**
  * Action to add a new sequence diagram.<p>
  *
  * Fully rebuild starting 1-8-2003<p>
@@ -52,7 +52,7 @@ public class ActionSequenceDiagram extends UMLAction {
     /**
      * The singleton.
      */
-    public static final ActionSequenceDiagram SINGLETON = 
+    public static final ActionSequenceDiagram SINGLETON =
         new ActionSequenceDiagram();
 
     ////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ public class ActionSequenceDiagram extends UMLAction {
             owner = ModelFacade.getNamespace(target);
         }
         Object collaboration =
-            Model.getUmlFactory().getCollaborations().buildCollaboration(
+            Model.getCollaborationsFactory().buildCollaboration(
                 owner,
                 target);
         UMLSequenceDiagram diagram = new UMLSequenceDiagram(collaboration);

@@ -55,18 +55,17 @@ public class PropPanelDataType extends PropPanelClassifier {
 
     private JScrollPane operationScroll;
 
-    private static UMLClassAttributeListModel attributeListModel = 
+    private static UMLClassAttributeListModel attributeListModel =
         new UMLClassAttributeListModel();
 
-    private static UMLClassOperationListModel operationListModel = 
+    private static UMLClassOperationListModel operationListModel =
         new UMLClassOperationListModel();
 
     /**
      * The constructor.
-     * 
      */
     public PropPanelDataType() {
-        super("DataType", lookupIcon("DataType"), 
+        super("DataType", lookupIcon("DataType"),
                 ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
@@ -98,19 +97,19 @@ public class PropPanelDataType extends PropPanelClassifier {
                 getAttributeScroll());
 
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionAddDataType(), 
+        addButton(new PropPanelButton2(new ActionAddDataType(),
                 lookupIcon("DataType")));
-        addButton(new PropPanelButton2(new ActionAddAttributeToDataType(), 
+        addButton(new PropPanelButton2(new ActionAddAttributeToDataType(),
                 lookupIcon("NewAttribute")));
-        addButton(new PropPanelButton2(new ActionAddQueryOperation(), 
+        addButton(new PropPanelButton2(new ActionAddQueryOperation(),
                 lookupIcon("NewOperation")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
 
-    private class ActionAddQueryOperation 
+    private class ActionAddQueryOperation
         extends AbstractActionNewModelElement {
 
         /**
@@ -127,15 +126,19 @@ public class PropPanelDataType extends PropPanelClassifier {
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-                Collection propertyChangeListeners = ProjectManager.getManager()
-                    .getCurrentProject().findFigsForMember(target);
-                Object model = ProjectManager.getManager()
-                    .getCurrentProject().getModel();
-                Object voidType = ProjectManager.getManager()
-                    .getCurrentProject().findType("void");
-                Object newOper = Model.getUmlFactory().getCore()
-                    .buildOperation(target, model, voidType, 
-                            propertyChangeListeners);
+                Collection propertyChangeListeners =
+                    ProjectManager.getManager()
+                    	.getCurrentProject().findFigsForMember(target);
+                Object model =
+                    ProjectManager.getManager()
+                    	.getCurrentProject().getModel();
+                Object voidType =
+                    ProjectManager.getManager()
+                    	.getCurrentProject().findType("void");
+                Object newOper =
+                    Model.getCoreFactory()
+                    	.buildOperation(target, model, voidType,
+                    	        propertyChangeListeners);
                 // due to Well Defined rule [2.5.3.12/1]
                 ModelFacade.setQuery(newOper, true);
                 TargetManager.getInstance().setTarget(newOper);
@@ -143,10 +146,10 @@ public class PropPanelDataType extends PropPanelClassifier {
             }
         }
     }
-    
-    private class ActionAddAttributeToDataType 
+
+    private class ActionAddAttributeToDataType
         extends AbstractActionNewModelElement {
-        
+
         /**
          * The constructor.
          */
@@ -155,7 +158,7 @@ public class PropPanelDataType extends PropPanelClassifier {
             putValue(Action.NAME, Translator.localize(
                 "button.new-enumeration-literal"));
         }
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
@@ -164,8 +167,8 @@ public class PropPanelDataType extends PropPanelClassifier {
             if (org.argouml.model.ModelFacade.isAClassifier(target)) {
                 Object stereo = null;
                 if (ModelFacade.getStereotypes(target).size() > 0) {
-                    stereo = ModelFacade.getStereotypes(target)
-                        .iterator().next();
+                    stereo =
+                        ModelFacade.getStereotypes(target).iterator().next();
                 }
                 if (stereo == null) {
                     //  if there is not an enumeration stereotype as
@@ -174,18 +177,17 @@ public class PropPanelDataType extends PropPanelClassifier {
                     Object ownedElement;
                     boolean match = false;
                     if (model != null) {
-                        Collection ownedElements = ModelFacade
-                        .getOwnedElements(model);
+                        Collection ownedElements =
+                            ModelFacade.getOwnedElements(model);
                         if (ownedElements != null) {
                             Iterator iter = ownedElements.iterator();
                             while (iter.hasNext()) {
                                 ownedElement = iter.next();
-                                if (org.argouml.model.ModelFacade
-                                        .isAStereotype(ownedElement)) {
+                                if (ModelFacade.isAStereotype(ownedElement)) {
                                     stereo = /* (MStereotype) */ownedElement;
-                                    String stereoName = 
+                                    String stereoName =
                                         ModelFacade.getName(stereo);
-                                    if (stereoName != null 
+                                    if (stereoName != null
                                         && stereoName.equals("enumeration")) {
                                         match = true;
                                         break;
@@ -193,8 +195,8 @@ public class PropPanelDataType extends PropPanelClassifier {
                                 }
                             }
                             if (!match) {
-                                stereo = Model.getUmlFactory()
-                                    .getExtensionMechanisms()
+                                stereo =
+                                    Model.getExtensionMechanismsFactory()
                                         .createStereotype();
                                 ModelFacade.setName(stereo, "enumeration");
                                 ModelFacade.addOwnedElement(model, stereo);
@@ -203,14 +205,18 @@ public class PropPanelDataType extends PropPanelClassifier {
                         }
                     }
                 }
-                
-                Collection propertyChangeListeners = ProjectManager.getManager()
-                    .getCurrentProject().findFigsForMember(target);
-                Object intType = ProjectManager.getManager()
-                    .getCurrentProject().findType("int");
-                Object model = ProjectManager.getManager()
-                    .getCurrentProject().getModel();
-                Object attr = Model.getCoreFactory().buildAttribute(target, 
+
+                Collection propertyChangeListeners =
+                    ProjectManager.getManager()
+                    	.getCurrentProject().findFigsForMember(target);
+                Object intType =
+                    ProjectManager.getManager()
+                    	.getCurrentProject().findType("int");
+                Object model =
+                    ProjectManager.getManager()
+                    	.getCurrentProject().getModel();
+                Object attr =
+                    Model.getCoreFactory().buildAttribute(target,
                             model, intType, propertyChangeListeners);
                 ModelFacade.setChangeable(attr, false);
                 TargetManager.getInstance().setTarget(attr);
@@ -221,7 +227,7 @@ public class PropPanelDataType extends PropPanelClassifier {
 
     /**
      * Returns the operationScroll.
-     * 
+     *
      * @return JScrollPane
      */
     public JScrollPane getOperationScroll() {
@@ -234,7 +240,7 @@ public class PropPanelDataType extends PropPanelClassifier {
 
     /**
      * Returns the attributeScroll.
-     * 
+     *
      * @return JScrollPane
      */
     public JScrollPane getAttributeScroll() {
@@ -244,5 +250,5 @@ public class PropPanelDataType extends PropPanelClassifier {
         }
         return attributeScroll;
     }
-    
+
 } /* end class PropPanelDataType */

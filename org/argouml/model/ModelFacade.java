@@ -5987,7 +5987,7 @@ public class ModelFacade {
          */
         if (handle instanceof MExpression) {
             MExpressionEditor expressionEditor =
-		(MExpressionEditor) Model.getUmlFactory().getDataTypes()
+		(MExpressionEditor) Model.getDataTypesFactory()
 		    .createExpressionEditor(handle);
             expressionEditor.setBody((String) expr);
             expressionEditor.toExpression();
@@ -6015,7 +6015,7 @@ public class ModelFacade {
         if (handle instanceof MExpression) {
             MExpressionEditor expressionEditor =
                 (MExpressionEditor)
-                	Model.getUmlFactory().getDataTypes().
+                	Model.getDataTypesFactory().
                 		createExpressionEditor(handle);
             expressionEditor.setLanguage(language);
             handle = expressionEditor.toExpression();
