@@ -46,18 +46,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import ru.novosoft.uml.behavior.use_cases.MActor;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MDependency;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.core.MRelationship;
-import ru.novosoft.uml.model_management.MElementImport;
-
-
 /**
  * <p>This class defines a bridge between the UML meta-model representation of
  *   the design and the GraphModel interface used by GEF.</p>
@@ -87,7 +76,7 @@ public class UseCaseDiagramGraphModel
      *   from other models will have their FigNodes add a line to say what
      *   their model is.</p>  */
 
-    protected MNamespace _model;
+    protected Object _model;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -102,7 +91,7 @@ public class UseCaseDiagramGraphModel
      * @return  The namespace associated with this graph model.
      */
 
-    public MNamespace getNamespace() {
+    public Object getNamespace() {
         return _model;
     }
 
@@ -187,8 +176,8 @@ public class UseCaseDiagramGraphModel
         // The actor case
 
         if (org.argouml.model.ModelFacade.isAActor(port)) {
-            MActor act  = (MActor) port;
-            Vector ends = new Vector(act.getAssociationEnds());
+            Object act  = /*(MActor)*/ port;
+            Vector ends = new Vector(ModelFacade.getAssociationEnds(act));
 
             // If there are no ends, return the empty vector
 
@@ -201,16 +190,16 @@ public class UseCaseDiagramGraphModel
             java.util.Enumeration endEnum = ends.elements();
 
             while (endEnum.hasMoreElements()) {
-                MAssociationEnd ae = (MAssociationEnd) endEnum.nextElement();
-                res.addElement(ae.getAssociation());
+                Object ae = /*(MAssociationEnd)*/ endEnum.nextElement();
+                res.addElement(ModelFacade.getAssociation(ae));
             }
         }
 
         // The use case
 
         else if (org.argouml.model.ModelFacade.isAUseCase(port)) {
-            MUseCase use  = (MUseCase) port;
-            Vector   ends = new Vector(use.getAssociationEnds());
+            Object use  = /*(MUseCase)*/ port;
+            Vector   ends = new Vector(ModelFacade.getAssociationEnds(use));
 
             // If there are no ends, return the empty vector
 
@@ -223,8 +212,8 @@ public class UseCaseDiagramGraphModel
             java.util.Enumeration endEnum = ends.elements();
 
             while (endEnum.hasMoreElements()) {
-                MAssociationEnd ae = (MAssociationEnd) endEnum.nextElement();
-                res.addElement(ae.getAssociation());
+                Object ae = /*(MAssociationEnd)*/ endEnum.nextElement();
+                res.addElement(ModelFacade.getAssociation(ae));
             }
         }
 
@@ -268,7 +257,7 @@ public class UseCaseDiagramGraphModel
     public Object getSourcePort(Object edge) {
         
         if (org.argouml.model.ModelFacade.isARelationship(edge)) {
-            return CoreHelper.getHelper().getSource((MRelationship) edge);
+            return CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
 	}
 
         // Don't know what to do otherwise
@@ -299,8 +288,8 @@ public class UseCaseDiagramGraphModel
         // Know what to do for an association
 
         if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
-            MAssociation assoc = (MAssociation) edge;
-            Vector       conns = new Vector(assoc.getConnections());
+            Object assoc = /*(MAssociation)*/ edge;
+            Vector       conns = new Vector(ModelFacade.getConnections(assoc));
 
             return conns.elementAt(1);
         }
@@ -494,7 +483,7 @@ public class UseCaseDiagramGraphModel
 	    // end NEW CODE
             cat.debug("setting namespace " + _model +
 		      " to element " + node);
-            _model.addOwnedElement((MModelElement) node);
+            ModelFacade.addOwnedElement(_model, /*(MModelElement)*/ node);
         }
 
         // Tell GEF its changed
@@ -525,7 +514,7 @@ public class UseCaseDiagramGraphModel
         _edges.addElement(edge);
 
         if (ModelFacade.getNamespace(edge) == null) {
-            _model.addOwnedElement((MModelElement) edge);
+            ModelFacade.addOwnedElement(_model, /*(MModelElement)*/ edge);
         }
 
         // Tell GEF
@@ -566,7 +555,7 @@ public class UseCaseDiagramGraphModel
             Iterator iter = ends.iterator();
 
             while (iter.hasNext()) {
-                MRelationship rel = (MRelationship) iter.next();
+                Object rel = /*(MRelationship)*/ iter.next();
 
                 if (canAddEdge(rel)) {
                     addEdge(rel);
@@ -582,10 +571,10 @@ public class UseCaseDiagramGraphModel
             Iterator   iter = ends.iterator();
 
             while (iter.hasNext()) {
-                MAssociationEnd ae = (MAssociationEnd) iter.next();
+                Object ae = /*(MAssociationEnd)*/ iter.next();
 
-                if (canAddEdge(ae.getAssociation())) {
-                    addEdge(ae.getAssociation());
+                if (canAddEdge(ModelFacade.getAssociation(ae))) {
+                    addEdge(ModelFacade.getAssociation(ae));
                 }
             }
         }
@@ -602,7 +591,7 @@ public class UseCaseDiagramGraphModel
             Iterator iter = gn.iterator();
 
             while (iter.hasNext()) {
-                MGeneralization g = (MGeneralization) iter.next();
+                Object g = /*(MGeneralization)*/ iter.next();
 
                 if (canAddEdge(g)) {
                     addEdge(g);
@@ -616,7 +605,7 @@ public class UseCaseDiagramGraphModel
             iter = sp.iterator();
 
             while (iter.hasNext()) {
-                MGeneralization s = (MGeneralization) iter.next();
+                Object s = /*(MGeneralization)*/ iter.next();
 
                 if (canAddEdge(s)) {
                     addEdge(s);
@@ -636,7 +625,7 @@ public class UseCaseDiagramGraphModel
             Iterator iter = specs.iterator();
 
             while (iter.hasNext()) {
-                MDependency dep = (MDependency) iter.next();
+                Object dep = /*(MDependency)*/ iter.next();
 
                 if (canAddEdge(dep)) {
                     addEdge(dep);
@@ -710,8 +699,8 @@ public class UseCaseDiagramGraphModel
         if ("ownedElement".equals(pce.getPropertyName())) {
             Vector oldOwned = (Vector) pce.getOldValue();
 
-            MElementImport eo = (MElementImport) pce.getNewValue();
-            MModelElement  me = eo.getModelElement();
+            Object eo = /*(MElementImport)*/ pce.getNewValue();
+            Object  me = ModelFacade.getModelElement(eo);
 
             // If the element import is in the old owned, it means it must have
             // been removed. Make sure the associated model element is removed.

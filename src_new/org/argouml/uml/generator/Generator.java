@@ -106,27 +106,27 @@ public abstract class Generator
     public String generate(Object o) {
         if (o == null)
             return "";
-        if (org.argouml.model.ModelFacade.isAExtensionPoint(o))
+        if (ModelFacade.isAExtensionPoint(o))
             return generateExtensionPoint((MExtensionPoint) o);
-        if (org.argouml.model.ModelFacade.isAOperation(o))
+        if (ModelFacade.isAOperation(o))
             return generateOperation((MOperation) o, false);
-        if (org.argouml.model.ModelFacade.isAAttribute(o))
+        if (ModelFacade.isAAttribute(o))
             return generateAttribute((MAttribute) o, false);
-        if (org.argouml.model.ModelFacade.isAParameter(o))
+        if (ModelFacade.isAParameter(o))
             return generateParameter((MParameter)o);
-        if (org.argouml.model.ModelFacade.isAPackage(o))
+        if (ModelFacade.isAPackage(o))
             return generatePackage((MPackage) o);
-        if (org.argouml.model.ModelFacade.isAClassifier(o))
+        if (ModelFacade.isAClassifier(o))
             return generateClassifier((MClassifier) o);
-        if (org.argouml.model.ModelFacade.isAExpression(o))
+        if (ModelFacade.isAExpression(o))
             return generateExpression((MExpression) o);
         if (o instanceof String)
             return generateName((String) o);
         if (o instanceof String)
             return generateUninterpreted((String) o);
-        if (org.argouml.model.ModelFacade.isAStereotype(o))
+        if (ModelFacade.isAStereotype(o))
             return generateStereotype((MStereotype) o);
-        if (org.argouml.model.ModelFacade.isATaggedValue(o)) {
+        if (ModelFacade.isATaggedValue(o)) {
             /*
              * 2002-11-07 Jaap Branderhorst Added the if statement to
              * test for the testtag. Did it here and not in (for
@@ -144,26 +144,26 @@ public abstract class Generator
             }
             return generateTaggedValue((MTaggedValue) o);
         }
-        if (org.argouml.model.ModelFacade.isAAssociation(o))
+        if (ModelFacade.isAAssociation(o))
             return generateAssociation((MAssociation) o);
-        if (org.argouml.model.ModelFacade.isAAssociationEnd(o))
+        if (ModelFacade.isAAssociationEnd(o))
             return generateAssociationEnd((MAssociationEnd) o);
-        if (org.argouml.model.ModelFacade.isAMultiplicity(o))
+        if (ModelFacade.isAMultiplicity(o))
             return generateMultiplicity((MMultiplicity) o);
-        if (org.argouml.model.ModelFacade.isAState(o))
+        if (ModelFacade.isAState(o))
             return generateState((MState) o);
-        if (org.argouml.model.ModelFacade.isATransition(o))
+        if (ModelFacade.isATransition(o))
             return generateTransition((MTransition) o);
         if (ModelFacade.isAAction(o))
             return generateAction(o);
-        if (org.argouml.model.ModelFacade.isACallAction(o))
+        if (ModelFacade.isACallAction(o))
             return generateAction(o);
-        if (org.argouml.model.ModelFacade.isAGuard(o))
+        if (ModelFacade.isAGuard(o))
             return generateGuard((MGuard) o);
-        if (org.argouml.model.ModelFacade.isAMessage(o))
+        if (ModelFacade.isAMessage(o))
             return generateMessage((MMessage) o);
 
-        if (org.argouml.model.ModelFacade.isAModelElement(o))
+        if (ModelFacade.isAModelElement(o))
             return generateName(org.argouml.model.ModelFacade.getName(o));
 
         if (o == null)

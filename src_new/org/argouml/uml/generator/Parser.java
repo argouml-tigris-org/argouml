@@ -39,7 +39,6 @@ import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MParameter;
 
 public abstract class Parser {

@@ -232,18 +232,19 @@ public class ActionModifier extends UMLAction {
      * @param     trueValue      The enumerated value representing true
      * @param     falseValue     The enumerated value representing false
      */
-    public ActionModifier(String name, String propertyName,
+    public ActionModifier(String name,
+                          String propertyName,
 			  String getMethod,
 			  String setMethod,
-			  MPackage mpackage,
-			  Class enumClass,
+			  Object/*MPackage*/ mpackage,
+			  Object/*Class*/ enumClass,
 			  Object trueValue,
-			  Object falseValue)
-    {
+			  Object falseValue) {
 	super(name, NO_ICON);
 	this.object = mpackage;
 	_property =
-	    new UMLEnumerationBooleanProperty(propertyName, mpackageClass,
+	    new UMLEnumerationBooleanProperty(propertyName,
+                                              mpackageClass,
 					      getMethod,
 					      setMethod,
 					      enumClass,
@@ -272,7 +273,7 @@ public class ActionModifier extends UMLAction {
      */ 
 
     public ActionModifier(String name, String propertyName, String getMethod,
-                          String setMethod, MUseCase museCase) { 
+                          String setMethod, Object/*MUseCase*/ museCase) { 
         super(name, NO_ICON);
         this.object = museCase;
         _property   = new UMLReflectionBooleanProperty(propertyName,

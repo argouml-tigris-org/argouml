@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -36,6 +34,7 @@
 package org.argouml.uml.diagram.use_case.ui;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigGeneralization;
@@ -45,15 +44,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
-
-import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MInclude;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MDependency;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 
 // could be singleton
 
@@ -141,7 +131,7 @@ public class UseCaseDiagramRenderer
         // If the edge is an association, we'll need a FigAssociation
 
         if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
-            MAssociation   asc         = (MAssociation) edge;
+            Object   asc         = /*(MAssociation)*/ edge;
             FigAssociation ascFig      = new FigAssociation(asc, lay);
 
             return ascFig;
@@ -150,7 +140,7 @@ public class UseCaseDiagramRenderer
         // Generalization needs a FigGeneralization
 
         else if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
-            MGeneralization   gen    = (MGeneralization) edge;
+            Object   gen    = /*(MGeneralization)*/ edge;
             FigGeneralization genFig = new FigGeneralization(gen, lay);
             return genFig;
         }
@@ -158,13 +148,13 @@ public class UseCaseDiagramRenderer
         // Extend relationship
 
         else if (org.argouml.model.ModelFacade.isAExtend(edge)) {
-            MExtend   ext    = (MExtend) edge;
+            Object   ext    = /*(MExtend)*/ edge;
             FigExtend extFig = new FigExtend(ext);
 
             // The nodes at the two ends
 
-            MUseCase base      = ext.getBase();
-            MUseCase extension = ext.getExtension();
+            Object base      = ModelFacade.getBase(ext);
+            Object extension = ModelFacade.getExtension(ext);
 
             // The figs for the two end nodes
 
@@ -187,14 +177,14 @@ public class UseCaseDiagramRenderer
         // bug here.
 
         else if (org.argouml.model.ModelFacade.isAInclude(edge)) {
-            MInclude   inc    = (MInclude) edge;
+            Object   inc    = /*(MInclude)*/ edge;
             FigInclude incFig = new FigInclude(inc);
 
             // The nodes at the two ends. NSUML has a bug which gets base and
             // additon reversed, so we must reverse their accessors here.
 
-            MUseCase base     = inc.getAddition();
-            MUseCase addition = inc.getBase();
+            Object base     = ModelFacade.getAddition(inc);
+            Object addition = ModelFacade.getBase(inc);
 
             // The figs for the two end nodes
 
@@ -215,17 +205,17 @@ public class UseCaseDiagramRenderer
         // Dependency needs a FigDependency
 
         else if (org.argouml.model.ModelFacade.isADependency(edge)) {
-            MDependency   dep    = (MDependency) edge;
+            Object   dep    = /*(MDependency)*/ edge;
             FigDependency depFig = new FigDependency(dep);
 
             // Where there is more than one supplier or client, take the first
             // element in each case. There really ought to be a check that
             // there are some here for safety.
 
-            MModelElement supplier =
-                (MModelElement) ((dep.getSuppliers().toArray())[0]);
-            MModelElement client =
-                (MModelElement) ((dep.getClients().toArray())[0]);
+            Object supplier =
+                /*(MModelElement)*/ ((ModelFacade.getSuppliers(dep).toArray())[0]);
+            Object client =
+                /*(MModelElement)*/ ((ModelFacade.getClients(dep).toArray())[0]);
 
             // The figs for the two end nodes
 

@@ -3538,15 +3538,24 @@ public class ModelFacade {
 
     /**
      * Adds a feature to some classifier.
-     * @param classifier
-     * @param feature
+     * @param cls classifier
+     * @param f feature
      */
     public static void addFeature(Object cls, Object f) {
-        if (cls != null
-            && f != null
-            && cls instanceof MClassifier
-            && f instanceof MFeature) {
+        if (cls instanceof MClassifier && f instanceof MFeature) {
             ((MClassifier) cls).addFeature((MFeature) f);
+        }
+    }
+
+    /**
+     * Adds a feature to some classifier.
+     * @param cls classifier
+     * @param index position
+     * @param f feature
+     */
+    public static void addFeature(Object cls, int index, Object f) {
+        if (cls instanceof MClassifier && f instanceof MFeature) {
+            ((MClassifier) cls).addFeature(index, (MFeature) f);
         }
     }
 
@@ -4262,6 +4271,15 @@ public class ModelFacade {
                 ((MFeature) f).setOwnerScope(MScopeKind.INSTANCE);
             }
         }
+    }
+
+    public static void setOwnerScope(Object f, Object os) {
+        if (f instanceof MFeature && (os == null || os instanceof MScopeKind)) {
+            ((MFeature) f).setOwnerScope((MScopeKind)os);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + f
+					   + " or " + os);
     }
 
     /**

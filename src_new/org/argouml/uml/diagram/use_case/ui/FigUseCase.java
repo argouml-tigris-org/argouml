@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -51,6 +50,7 @@ import javax.swing.JMenu;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -73,9 +73,6 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-
 /**
  * <p>A fig to display use cases on use case diagrams.</p>
  *
@@ -419,7 +416,7 @@ public class FigUseCase extends FigNodeModelElement {
 
         ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
 
-        MUseCase useCase = (MUseCase) getOwner();
+        Object useCase = /*(MUseCase)*/ getOwner();
 
         modifierMenu.addCheckItem(new ActionModifier("Abstract",
 						     "isAbstract",
@@ -1126,7 +1123,7 @@ public class FigUseCase extends FigNodeModelElement {
 
         // Only works if we have an owner
 
-        MUseCase useCase = (MUseCase) getOwner();
+        Object useCase = /*(MUseCase)*/ getOwner();
 
         if (useCase == null) {
             return;
@@ -1145,7 +1142,7 @@ public class FigUseCase extends FigNodeModelElement {
         CompartmentFigText highlightedFigText = (CompartmentFigText) ft;
         highlightedFigText.setHighlighted(true);
 
-        MExtensionPoint ep = (MExtensionPoint) (highlightedFigText.getOwner());
+        Object ep = /*(MExtensionPoint)*/ (highlightedFigText.getOwner());
         String text = highlightedFigText.getText().trim();
 
         ParserDisplay.SINGLETON.parseExtensionPointFig(useCase, ep, text);
@@ -1346,7 +1343,7 @@ public class FigUseCase extends FigNodeModelElement {
     protected void updateExtensionPoint() {
         // Give up if we have no owner
 
-        MUseCase useCase = (MUseCase) getOwner();
+        Object useCase = /*(MUseCase)*/ getOwner();
 
         if (useCase == null) {
             return;
@@ -1374,7 +1371,7 @@ public class FigUseCase extends FigNodeModelElement {
 
             while (iter.hasNext()) {
                 CompartmentFigText epFig;
-                MExtensionPoint ep = (MExtensionPoint) iter.next();
+                Object ep = /*(MExtensionPoint)*/ iter.next();
 
                 // If we don't have a fig for this EP, we'll need to add
                 // one. We set the bounds, but they will be reset later.
@@ -1430,7 +1427,7 @@ public class FigUseCase extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        MUseCase useCase = (MUseCase) getOwner();
+        Object useCase = /*(MUseCase)*/ getOwner();
         if (useCase == null)
             return;
         Rectangle oldBounds = getBounds();
@@ -1439,7 +1436,7 @@ public class FigUseCase extends FigNodeModelElement {
         // Now things to do with the use case itself. Put the use case in
         // italics if it is abstract, otherwise ordinary font.
 
-        if (useCase.isAbstract()) {
+        if (ModelFacade.isAbstract(useCase)) {
             _name.setFont(ITALIC_LABEL_FONT);
         } else {
             _name.setFont(LABEL_FONT);
