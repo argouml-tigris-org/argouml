@@ -28,10 +28,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Hashtable;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -42,7 +42,8 @@ import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.util.FileConstants;
 import org.argouml.xml.argo.ArgoParser;
-import org.tigris.gef.ocl.ExpansionException;
+import org.tigris.gef.ocl.OCLExpander;
+import org.tigris.gef.ocl.TemplateReader;
 import org.xml.sax.SAXException;
 
 /**
@@ -54,6 +55,13 @@ public class ZargoFilePersister extends AbstractFilePersister {
     
     private static final Logger LOG = 
         Logger.getLogger(ZargoFilePersister.class);
+    
+    /**
+     * This is the old version of the ArgoUML tee file which
+     * does not contain the detail of member elements.
+     */
+    private static final String ARGO_MINI_TEE =
+        "/org/argouml/xml/dtd/argo.tee";
     
     /**
      * The constructor.
@@ -87,14 +95,9 @@ public class ZargoFilePersister extends AbstractFilePersister {
      * @see org.argouml.kernel.ProjectFilePersister#save(
      * org.argouml.kernel.Project, java.io.File)
      */
-    public void save(Project project, File file)
+    public void doSave(Project project, File file)
         throws SaveException {
         
-        project.setFile(file);
-        project.setVersion(ArgoVersion.getVersion());
-        project.setPersistenceVersion(PERSISTENCE_VERSION);
-
-
         // frank: first backup the existing file to name+"#"
         File tempFile = new File( file.getAbsolutePath() + "#");
         File backupFile = new File( file.getAbsolutePath() + "~");
@@ -109,6 +112,10 @@ public class ZargoFilePersister extends AbstractFilePersister {
             }
             // frank end
     
+            project.setFile(file);
+            project.setVersion(ArgoVersion.getVersion());
+            project.setPersistenceVersion(PERSISTENCE_VERSION);
+
             ZipOutputStream stream =
                 new ZipOutputStream(new FileOutputStream(file));
             writer =
@@ -118,23 +125,22 @@ public class ZargoFilePersister extends AbstractFilePersister {
                 new ZipEntry(project.getBaseName() 
                         + FileConstants.UNCOMPRESSED_FILE_EXT);
             stream.putNextEntry(zipEntry);
-            expand(writer, project);
+            
+            Hashtable templates = TemplateReader.readFile(ARGO_MINI_TEE);
+            OCLExpander expander = new OCLExpander(templates);
+            expander.expand(writer, project, "", "");
+                
             writer.flush();
             
             stream.closeEntry();
     
-            String path = file.getParent();
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Dir ==" + path);
-            }
-            int size = project.getMembers().size();
-
             // First we save all objects that are not XMI objects i.e. the
             // diagrams (first for loop).
             // The we save all XMI objects (second for loop).
             // This is because order is important on saving.
             Collection names = new ArrayList();
             int counter = 0;  
+            int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember = 
                     (ProjectMember) project.getMembers().elementAt(i);
@@ -205,14 +211,6 @@ public class ZargoFilePersister extends AbstractFilePersister {
         }
     }
 
-    private void expand(Writer writer, Object project) throws SaveException {
-        try {
-            getExpander(getArgoTee2Template()).expand(writer, project, "", "");
-        } catch (ExpansionException e) {
-            throw new SaveException(e);
-        }
-    }
-    
     /**
      * @see org.argouml.kernel.ProjectFilePersister#loadProject(java.net.URL)
      */
