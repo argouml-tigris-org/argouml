@@ -84,7 +84,7 @@ public class CriticBrowserDialog extends ArgoDialog
     private static final Logger LOG =
 	Logger.getLogger(CriticBrowserDialog.class);
     
-    public static int _numCriticBrowser = 0;
+    private static int numCriticBrowser = 0;
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -93,14 +93,15 @@ public class CriticBrowserDialog extends ArgoDialog
   
     private static final int NUM_COLUMNS = 25;
 
-    static final String high = Translator.localize("misc.level.high");
-    static final String medium = Translator.localize("misc.level.medium");
-    static final String low = Translator.localize("misc.level.low");
+    private static final String HIGH = Translator.localize("misc.level.high");
+    private static final String MEDIUM = 
+        Translator.localize("misc.level.medium");
+    private static final String LOW = Translator.localize("misc.level.low");
 
-    public static final String PRIORITIES[] = {
-	high, medium, low 
+    private static final String PRIORITIES[] = {
+	HIGH, MEDIUM, LOW 
     };
-    public static final String USE_CLAR[] = {
+    private static final String USE_CLAR[] = {
 	"Always", "If Only One", "Never" 
     };
 
@@ -108,35 +109,39 @@ public class CriticBrowserDialog extends ArgoDialog
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    protected JLabel _criticsLabel   = new JLabel("Critics");
-    protected JLabel _clsNameLabel   = new JLabel("Critic Class: ");
-    protected JLabel _headlineLabel  = new JLabel("Headline: ");
-    protected JLabel _priorityLabel  = new JLabel("Priority: ");
-    protected JLabel _moreInfoLabel  = new JLabel("More Info: ");
-    protected JLabel _descLabel      = new JLabel("Description: ");
-    protected JLabel _clarifierLabel = new JLabel("Use Clarifier: ");
+    private JLabel criticsLabel   = new JLabel("Critics");
+    private JLabel clsNameLabel   = new JLabel("Critic Class: ");
+    private JLabel headlineLabel  = new JLabel("Headline: ");
+    private JLabel priorityLabel  = new JLabel("Priority: ");
+    private JLabel moreInfoLabel  = new JLabel("More Info: ");
+    private JLabel descLabel      = new JLabel("Description: ");
+    private JLabel clarifierLabel = new JLabel("Use Clarifier: ");
 
-    TableModelCritics _tableModel  = new TableModelCritics();
-    protected JTable _table        = new JTable();
-    protected JTextField _className = new JTextField("", NUM_COLUMNS);
-    protected JTextField _headline = new JTextField("", NUM_COLUMNS);
-    protected JComboBox _priority  = new JComboBox(PRIORITIES);
-    protected JTextField _moreInfo = new JTextField("", NUM_COLUMNS);
-    protected JTextArea _desc      = new JTextArea("", 6, NUM_COLUMNS);
-    protected JComboBox _useClar   = new JComboBox(USE_CLAR);
+    private TableModelCritics tableModel  = new TableModelCritics();
+    private JTable table        = new JTable();
+    private JTextField className = new JTextField("", NUM_COLUMNS);
+    private JTextField headline = new JTextField("", NUM_COLUMNS);
+    private JComboBox priority  = new JComboBox(PRIORITIES);
+    private JTextField moreInfo = new JTextField("", NUM_COLUMNS);
+    private JTextArea desc      = new JTextArea("", 6, NUM_COLUMNS);
+    private JComboBox useClar   = new JComboBox(USE_CLAR);
 
-    protected JButton _wakeButton    = new JButton("Wake");
-    protected JButton _configButton  = new JButton("Configure");
-    protected JButton _networkButton = new JButton("Edit Network");
-    protected JButton _goButton      = new JButton("Go");
+    private JButton wakeButton    = new JButton("Wake");
+    private JButton configButton  = new JButton("Configure");
+    private JButton networkButton = new JButton("Edit Network");
+    private JButton goButton      = new JButton("Go");
 
-    protected Critic _target;
+    private Critic target;
     
-    protected List   _critics;
+    private List   critics;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     * 
+     */
     public CriticBrowserDialog() {
 	super(ProjectBrowser.getInstance(), "Critics", true);
 
@@ -144,31 +149,30 @@ public class CriticBrowserDialog extends ArgoDialog
 	mainContent.setLayout(new BorderLayout(10, 10));
 
 	// Critics Table
-    
 	JPanel tablePanel = new JPanel(new BorderLayout(5, 5));
     
-	_critics = new ArrayList(Agency.getCritics());
-	Collections.sort(_critics, new Comparator() {
+	critics = new ArrayList(Agency.getCritics());
+	Collections.sort(critics, new Comparator() {
 	    public int compare(Object o1, Object o2) {
-		return ((Critic) o1).getHeadline().compareTo(((Critic) o2).getHeadline());
+		return ((Critic) o1).getHeadline().compareTo(((Critic) o2)
+		                                            .getHeadline());
 	    }
 	});
 
-	_tableModel.setTarget(_critics);
-	_table.setModel(_tableModel);
-	_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	_table.setShowVerticalLines(false);
-	_table.getSelectionModel().addListSelectionListener(this);
-	_table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+	tableModel.setTarget(critics);
+	table.setModel(tableModel);
+	table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	table.setShowVerticalLines(false);
+	table.getSelectionModel().addListSelectionListener(this);
+	table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
-	TableColumn checkCol = _table.getColumnModel().getColumn(0);
-	TableColumn descCol = _table.getColumnModel().getColumn(1);
-	TableColumn actCol = _table.getColumnModel().getColumn(2);
+	TableColumn checkCol = table.getColumnModel().getColumn(0);
+	TableColumn descCol = table.getColumnModel().getColumn(1);
+	TableColumn actCol = table.getColumnModel().getColumn(2);
 	checkCol.setMinWidth(35);
 	checkCol.setMaxWidth(35);
 	checkCol.setWidth(30);
-	int descWidth =
-	    _table.getFontMetrics(_table.getFont())
+	int descWidth = table.getFontMetrics(table.getFont())
 	        .stringWidth(DESC_WIDTH_TEXT);
 	descCol.setMinWidth(descWidth);
 	descCol.setWidth(descWidth);
@@ -176,8 +180,8 @@ public class CriticBrowserDialog extends ArgoDialog
 	actCol.setMaxWidth(50);
 	actCol.setWidth(50);
 
-	tablePanel.add(_criticsLabel, BorderLayout.NORTH);
-	JScrollPane tableSP = new JScrollPane(_table);
+	tablePanel.add(criticsLabel, BorderLayout.NORTH);
+	JScrollPane tableSP = new JScrollPane(table);
 	tablePanel.add(tableSP, BorderLayout.CENTER);
 
 	// Set tableSP's preferred height to 0 so that details height
@@ -211,51 +215,51 @@ public class CriticBrowserDialog extends ArgoDialog
 	fieldConstraints.weightx = 1.0;
 	fieldConstraints.insets = new Insets(0, 4, 5, 10);
 	
-	_className.setEditable(false);
-	_className.setBorder(null);
+	className.setEditable(false);
+	className.setBorder(null);
 	labelConstraints.gridy = 0;
 	fieldConstraints.gridy = 0;
-	detailsPanel.add(_clsNameLabel, labelConstraints);
-	detailsPanel.add(_className, fieldConstraints);
+	detailsPanel.add(clsNameLabel, labelConstraints);
+	detailsPanel.add(className, fieldConstraints);
 	
 	labelConstraints.gridy = 1;
 	fieldConstraints.gridy = 1;
-	detailsPanel.add(_headlineLabel, labelConstraints);
-	detailsPanel.add(_headline, fieldConstraints);
+	detailsPanel.add(headlineLabel, labelConstraints);
+	detailsPanel.add(headline, fieldConstraints);
 
 	labelConstraints.gridy = 2;
 	fieldConstraints.gridy = 2;
-	detailsPanel.add(_priorityLabel, labelConstraints);
-	detailsPanel.add(_priority, fieldConstraints);
+	detailsPanel.add(priorityLabel, labelConstraints);
+	detailsPanel.add(priority, fieldConstraints);
 
 	labelConstraints.gridy = 3;
 	fieldConstraints.gridy = 3;
-	detailsPanel.add(_moreInfoLabel, labelConstraints);
+	detailsPanel.add(moreInfoLabel, labelConstraints);
 	JPanel moreInfoPanel =
 	    new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-	moreInfoPanel.add(_moreInfo);
+	moreInfoPanel.add(moreInfo);
 	moreInfoPanel.add(new JLabel(" ")); // spacing
-	moreInfoPanel.add(_goButton);
+	moreInfoPanel.add(goButton);
 	detailsPanel.add(moreInfoPanel, fieldConstraints);
 
 	labelConstraints.gridy = 4;
 	fieldConstraints.gridy = 4;
 	labelConstraints.anchor = GridBagConstraints.NORTHEAST;
-	detailsPanel.add(_descLabel, labelConstraints);
-	detailsPanel.add(new JScrollPane(_desc), fieldConstraints);
+	detailsPanel.add(descLabel, labelConstraints);
+	detailsPanel.add(new JScrollPane(desc), fieldConstraints);
 
 	labelConstraints.anchor = GridBagConstraints.EAST;
 	labelConstraints.gridy = 5;
 	fieldConstraints.gridy = 5;
-	detailsPanel.add(_clarifierLabel, labelConstraints);
-	detailsPanel.add(_useClar, fieldConstraints);
+	detailsPanel.add(clarifierLabel, labelConstraints);
+	detailsPanel.add(useClar, fieldConstraints);
 
 	labelConstraints.gridy = 6;
 	fieldConstraints.gridy = 6;
 	JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-	buttonPanel.add(_wakeButton);
-	buttonPanel.add(_configButton);
-	buttonPanel.add(_networkButton);
+	buttonPanel.add(wakeButton);
+	buttonPanel.add(configButton);
+	buttonPanel.add(networkButton);
 	detailsPanel.add(new JLabel(""), labelConstraints);
 	detailsPanel.add(buttonPanel, fieldConstraints);
 
@@ -266,88 +270,89 @@ public class CriticBrowserDialog extends ArgoDialog
 	detailsContainer.add(detailsPanel);
 	mainContent.add(detailsContainer, BorderLayout.EAST);	
     
-	_goButton.addActionListener(this);
-	_networkButton.addActionListener(this);
-	_wakeButton.addActionListener(this);
-	_configButton.addActionListener(this);
-	_headline.getDocument().addDocumentListener(this);
-	_moreInfo.getDocument().addDocumentListener(this);
-	_desc.getDocument().addDocumentListener(this);
-	_priority.addItemListener(this);
-	_useClar.addItemListener(this);
+	goButton.addActionListener(this);
+	networkButton.addActionListener(this);
+	wakeButton.addActionListener(this);
+	configButton.addActionListener(this);
+	headline.getDocument().addDocumentListener(this);
+	moreInfo.getDocument().addDocumentListener(this);
+	desc.getDocument().addDocumentListener(this);
+	priority.addItemListener(this);
+	useClar.addItemListener(this);
 
-	_goButton.setEnabled(false);
-	_wakeButton.setEnabled(false);
-	_networkButton.setEnabled(false);
-	_configButton.setEnabled(false);
+	goButton.setEnabled(false);
+	wakeButton.setEnabled(false);
+	networkButton.setEnabled(false);
+	configButton.setEnabled(false);
 
-	_desc.setLineWrap(true);
-	_desc.setWrapStyleWord(true);
+	desc.setLineWrap(true);
+	desc.setWrapStyleWord(true);
 
 	setResizable(true);
-    
 	setContent(mainContent);
-    
-	_numCriticBrowser++;
+	numCriticBrowser++;
     }
 
-    public void setTarget(Object t) {
-	_target = (Critic) t;
-	_goButton.setEnabled(false);
-	_networkButton.setEnabled(false);
-	_wakeButton.setEnabled(_target != null
-			       && _target.snoozeOrder().getSnoozed());
-	_configButton.setEnabled(false);
-	_className.setText(_target.getClass().getName());
-	_headline.setText(_target.getHeadline());
+    /**
+     * @param t the new target
+     */
+    private void setTarget(Object t) {
+	target = (Critic) t;
+	goButton.setEnabled(false);
+	networkButton.setEnabled(false);
+	wakeButton.setEnabled(target != null
+			       && target.snoozeOrder().getSnoozed());
+	configButton.setEnabled(false);
+	className.setText(target.getClass().getName());
+	headline.setText(target.getHeadline());
 
-	int p = _target.getPriority();
+	int p = target.getPriority();
 	if (p == ToDoItem.HIGH_PRIORITY)
-	    _priority.setSelectedItem(high);
+	    priority.setSelectedItem(HIGH);
 	else if (p == ToDoItem.MED_PRIORITY)
-	    _priority.setSelectedItem(medium);
+	    priority.setSelectedItem(MEDIUM);
 	else
-	    _priority.setSelectedItem(low);
-	_priority.repaint();
+	    priority.setSelectedItem(LOW);
+	priority.repaint();
 
-	_moreInfo.setText(_target.getMoreInfoURL());
-	_desc.setText(_target.getDescriptionTemplate());
-	_desc.setCaretPosition(0);
-	_useClar.setSelectedItem("Always");
-	_useClar.repaint();
+	moreInfo.setText(target.getMoreInfoURL());
+	desc.setText(target.getDescriptionTemplate());
+	desc.setCaretPosition(0);
+	useClar.setSelectedItem("Always");
+	useClar.repaint();
     }
 
-    public void setTargetHeadline() {
-	if (_target == null) return;
-	String h = _headline.getText();
-	_target.setHeadline(h);
+    private void setTargetHeadline() {
+	if (target == null) return;
+	String h = headline.getText();
+	target.setHeadline(h);
     }
 
-    public void setTargetPriority() {
-	if (_target == null) return;
-	String p = (String) _priority.getSelectedItem();
+    private void setTargetPriority() {
+	if (target == null) return;
+	String p = (String) priority.getSelectedItem();
 	if (p == null) return;
 	if (p.equals(PRIORITIES[0]))
-	    _target.setPriority(ToDoItem.HIGH_PRIORITY);
+	    target.setPriority(ToDoItem.HIGH_PRIORITY);
 	if (p.equals(PRIORITIES[1]))
-	    _target.setPriority(ToDoItem.MED_PRIORITY);
+	    target.setPriority(ToDoItem.MED_PRIORITY);
 	if (p.equals(PRIORITIES[2]))
-	    _target.setPriority(ToDoItem.LOW_PRIORITY);
+	    target.setPriority(ToDoItem.LOW_PRIORITY);
     }
 
-    public void setTargetMoreInfo() {
-	if (_target == null) return;
-	String mi = _moreInfo.getText();
-	_target.setMoreInfoURL(mi);
+    private void setTargetMoreInfo() {
+	if (target == null) return;
+	String mi = moreInfo.getText();
+	target.setMoreInfoURL(mi);
     }
 
-    public void setTargetDesc() {
-	if (_target == null) return;
-	String d = _desc.getText();
-	_target.setDescription(d);
+    private void setTargetDesc() {
+	if (target == null) return;
+	String d = desc.getText();
+	target.setDescription(d);
     }
 
-    public void setTargetUseClarifiers() {
+    private void setTargetUseClarifiers() {
 	LOG.debug("setting clarifier usage rule");
     }
 
@@ -355,62 +360,80 @@ public class CriticBrowserDialog extends ArgoDialog
     // event handlers
 
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
 	super.actionPerformed(e);
-	if (e.getSource() == _goButton) {
+	if (e.getSource() == goButton) {
 	    LOG.debug("TODO: go!");
 	    return;
 	}
-	if (e.getSource() == _networkButton) {
+	if (e.getSource() == networkButton) {
 	    LOG.debug("TODO: network!");
 	    return;
 	}
-	if (e.getSource() == _configButton) {
+	if (e.getSource() == configButton) {
 	    LOG.debug("TODO: config!");
 	    return;
 	}
-	if (e.getSource() == _wakeButton) {
-	    _target.unsnooze();
+	if (e.getSource() == wakeButton) {
+	    target.unsnooze();
 	    return;
 	}
 	LOG.debug("unknown src in CriticBrowserDialog: " + e.getSource());
     }
 
+    /**
+     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+     */
     public void valueChanged(ListSelectionEvent lse) {
 	if (lse.getValueIsAdjusting()) return;
 	Object src = lse.getSource();
-	if (src != _table.getSelectionModel()) {
+	if (src != table.getSelectionModel()) {
 	    LOG.debug("src = " + src);
 	    return;
 	}
 	LOG.debug("got valueChanged from " + src);
-	int row = _table.getSelectedRow();
-	setTarget(_critics.get(row));
+	int row = table.getSelectedRow();
+	setTarget(critics.get(row));
     }
 
+    /**
+     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+     */
     public void insertUpdate(DocumentEvent e) {
 	LOG.debug(getClass().getName() + " insert");
-	Document hDoc = _headline.getDocument();
-	Document miDoc = _moreInfo.getDocument();
-	Document dDoc = _desc.getDocument();
+	Document hDoc = headline.getDocument();
+	Document miDoc = moreInfo.getDocument();
+	Document dDoc = desc.getDocument();
 	if (e.getDocument() == hDoc) setTargetHeadline();
 	if (e.getDocument() == miDoc) setTargetMoreInfo();
 	if (e.getDocument() == dDoc) setTargetDesc();
     }
 
+    /**
+     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+     */
     public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
+    /**
+     * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+     */
     public void changedUpdate(DocumentEvent e) {
 	LOG.debug(getClass().getName() + " changed");
 	// Apparently, this method is never called.
     }
 
+    /**
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
     public void itemStateChanged(ItemEvent e) {
 	Object src = e.getSource();
-	if (src == _priority) {
+	if (src == priority) {
 	    setTargetPriority();
 	}
-	else if (src == _useClar) {
+	else if (src == useClar) {
 	    setTargetUseClarifiers();
 	}
 	else LOG.debug("unknown itemStateChanged src: " + src);
@@ -429,7 +452,7 @@ class TableModelCritics extends AbstractTableModel
 
     ////////////////
     // instance varables
-    List _target;
+    private List target;
 
     ////////////////
     // constructor
@@ -438,7 +461,7 @@ class TableModelCritics extends AbstractTableModel
     ////////////////
     // accessors
     public void setTarget(List critics) {
-	_target = critics;
+	target = critics;
 	//fireTableStructureChanged();
     }
 
@@ -465,12 +488,12 @@ class TableModelCritics extends AbstractTableModel
     }
 
     public int getRowCount() {
-	if (_target == null) return 0;
-	return _target.size();
+	if (target == null) return 0;
+	return target.size();
     }
 
     public Object getValueAt(int row, int col) {
-	Critic cr = (Critic) _target.get(row);
+	Critic cr = (Critic) target.get(row);
 	if (col == 0) return cr.isEnabled() ? Boolean.TRUE : Boolean.FALSE;
 	if (col == 1) return cr.getHeadline();
 	if (col == 2) return cr.isActive() ? "no" : "yes";
@@ -482,7 +505,7 @@ class TableModelCritics extends AbstractTableModel
 	if (columnIndex != 0) return;
 	if (!(aValue instanceof Boolean)) return;
 	Boolean enable = (Boolean) aValue;
-	Critic cr = (Critic) _target.get(rowIndex);
+	Critic cr = (Critic) target.get(rowIndex);
 	cr.setEnabled(enable.booleanValue());
 	fireTableRowsUpdated(rowIndex, rowIndex); //TODO
     }

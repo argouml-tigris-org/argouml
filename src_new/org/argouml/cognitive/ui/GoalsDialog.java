@@ -48,41 +48,50 @@ import org.argouml.i18n.Translator;
 import org.argouml.ui.ArgoDialog;
 
 
+/**
+ * The dialog to set the user's goals.
+ *
+ */
 public class GoalsDialog extends ArgoDialog implements ChangeListener
 {
     ////////////////////////////////////////////////////////////////
     // constants
-    private final int WIDTH = 320;
-    private final int HEIGHT = 400;
+    private final int width = 320;
+    private final int height = 400;
   
     ////////////////////////////////////////////////////////////////
     // instance variables
-    private JPanel  _mainPanel = new JPanel();
-    private Hashtable _slidersToDecisions = new Hashtable();
-    private Hashtable _slidersToDigits = new Hashtable();
+    private JPanel  mainPanel = new JPanel();
+    private Hashtable slidersToDecisions = new Hashtable();
+    private Hashtable slidersToDigits = new Hashtable();
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     * 
+     * @param parent the parent frame
+     */
     public GoalsDialog(Frame parent) {
 	super(parent, Translator.localize("dialog.title.design-goals"), false);
 
 	initMainPanel();
 
-	JScrollPane scroll = new JScrollPane(_mainPanel);
-	scroll.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+	JScrollPane scroll = new JScrollPane(mainPanel);
+	scroll.setPreferredSize(new Dimension(width, height));
         
 	setContent(scroll);
     }
 
 
-    public void initMainPanel() {
+    private void initMainPanel() {
 	GoalModel gm = Designer.TheDesigner.getGoalModel();
 	Vector goals = gm.getGoals();
 
 	GridBagLayout gb = new GridBagLayout();
-	_mainPanel.setLayout(gb);
-	_mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+	mainPanel.setLayout(gb);
+	mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 	GridBagConstraints c = new GridBagConstraints();
 	c.fill = GridBagConstraints.BOTH;
@@ -152,28 +161,28 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener
 	    decSlide.setSize(smallSize);
 	    decSlide.setPreferredSize(smallSize);
 
-	    _slidersToDecisions.put(decSlide, d);
-	    _slidersToDigits.put(decSlide, valueLabel);
+	    slidersToDecisions.put(decSlide, d);
+	    slidersToDigits.put(decSlide, valueLabel);
 
 	    c.gridx = 0;
 	    c.gridwidth = 1;
 	    c.weightx = 0.0;
 	    c.ipadx = 3;
 	    gb.setConstraints(decLabel, c);
-	    _mainPanel.add(decLabel);
+	    mainPanel.add(decLabel);
 
 	    c.gridx = 1;
 	    c.gridwidth = 1;
 	    c.weightx = 0.0;
 	    c.ipadx = 0;
 	    gb.setConstraints(valueLabel, c);
-	    _mainPanel.add(valueLabel);
+	    mainPanel.add(valueLabel);
 
 	    c.gridx = 2;
 	    c.gridwidth = 6;
 	    c.weightx = 1.0;
 	    gb.setConstraints(decSlide, c);
-	    _mainPanel.add(decSlide);
+	    mainPanel.add(decSlide);
 
 	    c.gridy++;
 	}
@@ -182,10 +191,13 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener
     ////////////////////////////////////////////////////////////////
     // event handlers
   
+    /**
+     * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+     */
     public void stateChanged(ChangeEvent ce) {
 	JSlider srcSlider = (JSlider) ce.getSource();
-	Goal d = (Goal) _slidersToDecisions.get(srcSlider);
-	JLabel valLab = (JLabel) _slidersToDigits.get(srcSlider);
+	Goal d = (Goal) slidersToDecisions.get(srcSlider);
+	JLabel valLab = (JLabel) slidersToDigits.get(srcSlider);
 	int pri = srcSlider.getValue();
 	d.setPriority(pri);
 	if (pri == 0) valLab.setText(Translator.localize("label.off"));

@@ -48,24 +48,32 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 
+/**
+ * The dialog to dismiss todo items.
+ *
+ */
 public class DismissToDoItemDialog extends ArgoDialog {
 
-    private static final Logger cat =
+    private static final Logger LOG =
         Logger.getLogger(DismissToDoItemDialog.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    private JRadioButton    _badGoalButton;
-    private JRadioButton    _badDecButton;
-    private JRadioButton    _explainButton;
-    private ButtonGroup     _actionGroup;
-    private JTextArea       _explanation;
-    private ToDoItem        _target;
+    private JRadioButton    badGoalButton;
+    private JRadioButton    badDecButton;
+    private JRadioButton    explainButton;
+    private ButtonGroup     actionGroup;
+    private JTextArea       explanation;
+    private ToDoItem        target;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     * 
+     */
     public DismissToDoItemDialog() {
         super(
             ProjectBrowser.getInstance(),
@@ -76,22 +84,22 @@ public class DismissToDoItemDialog extends ArgoDialog {
         JLabel instrLabel =
             new JLabel(Translator.localize("label.remove-item"));
             
-        _badGoalButton = new JRadioButton(Translator.localize(
+        badGoalButton = new JRadioButton(Translator.localize(
             "button.not-relevant-to-my-goals"));            
-        _badDecButton = new JRadioButton(Translator.localize(
+        badDecButton = new JRadioButton(Translator.localize(
             "button.not-of-concern-at-moment"));
-        _explainButton = new JRadioButton(Translator.localize(
+        explainButton = new JRadioButton(Translator.localize(
             "button.reason-given-below"));
         
-        _badGoalButton.setMnemonic(
+        badGoalButton.setMnemonic(
             Translator.localize(
                 "button.not-relevant-to-my-goals.mnemonic")
 	        .charAt(0));
-        _badDecButton.setMnemonic(
+        badDecButton.setMnemonic(
             Translator.localize(
                 "button.not-of-concern-at-moment.mnemonic")
 	        .charAt(0));
-        _explainButton.setMnemonic(
+        explainButton.setMnemonic(
             Translator.localize("button.reason-given-below.mnemonic").charAt(
                 0));
                 
@@ -106,10 +114,10 @@ public class DismissToDoItemDialog extends ArgoDialog {
 
         content.setLayout(gb);
 
-        _explanation = new JTextArea(6, 40);
-        _explanation.setLineWrap(true);
-        _explanation.setWrapStyleWord(true);
-        JScrollPane explain = new JScrollPane(_explanation);
+        explanation = new JTextArea(6, 40);
+        explanation.setLineWrap(true);
+        explanation.setWrapStyleWord(true);
+        JScrollPane explain = new JScrollPane(explanation);
 
         c.gridx = 0;
         c.gridy = 0;
@@ -120,18 +128,18 @@ public class DismissToDoItemDialog extends ArgoDialog {
         c.gridy = 1;
         c.insets = new Insets(5, 0, 0, 0);        
 
-        gb.setConstraints(_badGoalButton, c);
-        content.add(_badGoalButton);
+        gb.setConstraints(badGoalButton, c);
+        content.add(badGoalButton);
 
         c.gridy = 2;
 
-        gb.setConstraints(_badDecButton, c);
-        content.add(_badDecButton);
+        gb.setConstraints(badDecButton, c);
+        content.add(badDecButton);
 
         c.gridy = 3;
         
-        gb.setConstraints(_explainButton, c);
-        content.add(_explainButton);
+        gb.setConstraints(explainButton, c);
+        content.add(explainButton);
 
         c.gridy = 4;
         c.weighty = 1.0;
@@ -143,59 +151,66 @@ public class DismissToDoItemDialog extends ArgoDialog {
 
         getOkButton().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (_badGoalButton.getModel().isSelected()) {
+                if (badGoalButton.getModel().isSelected()) {
                     badGoal(e);
                 }
-                else if (_badDecButton.getModel().isSelected()) {
+                else if (badDecButton.getModel().isSelected()) {
                     badDec(e);
                 }
-                else if (_explainButton.getModel().isSelected()) {
+                else if (explainButton.getModel().isSelected()) {
                     explain(e);
                 }
                 else {
-                    cat.warn("DissmissToDoItemDialog: Unknown action: " + e);
+                    LOG.warn("DissmissToDoItemDialog: Unknown action: " + e);
                 }
             }
         });
 
-        _actionGroup = new ButtonGroup();
-        _actionGroup.add(_badGoalButton);
-        _actionGroup.add(_badDecButton);
-        _actionGroup.add(_explainButton);
-        _actionGroup.setSelected(_explainButton.getModel(), true);
+        actionGroup = new ButtonGroup();
+        actionGroup.add(badGoalButton);
+        actionGroup.add(badDecButton);
+        actionGroup.add(explainButton);
+        actionGroup.setSelected(explainButton.getModel(), true);
 
-        _explanation.setText(
+        explanation.setText(
             Translator.localize("label.enter-rationale-here"));
             
-        _badGoalButton.addActionListener(new ActionListener() {
+        badGoalButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                _explanation.setEnabled(false);
+                explanation.setEnabled(false);
             }
         });                
-        _badDecButton.addActionListener(new ActionListener() {
+        badDecButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                _explanation.setEnabled(false);
+                explanation.setEnabled(false);
             }
         });                
-        _explainButton.addActionListener(new ActionListener() {
+        explainButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                _explanation.setEnabled(true);
-                _explanation.requestFocus();
-                _explanation.selectAll();
+                explanation.setEnabled(true);
+                explanation.requestFocus();
+                explanation.selectAll();
             }
         });                
     }
 
+    /**
+     * @param t the new target object (ToDoItem)
+     */
     public void setTarget(Object t) {
-        _target = (ToDoItem) t;
+        target = (ToDoItem) t;
     }
 
-    /** Prepare for typing in rationale field when window is opened. */
+    /** 
+     * Prepare for typing in rationale field when window is opened.
+     * 
+     * @see java.awt.Component#setVisible(boolean)
+     */
     public void setVisible(boolean b) {
         super.setVisible(b);
         if (b) {
-            _explanation.requestFocus();
-            _explanation.selectAll();
+            explanation.requestFocus();
+            explanation.selectAll();
         }
     }
 
@@ -220,11 +235,11 @@ public class DismissToDoItemDialog extends ArgoDialog {
         //TODO: make a new history item
         ToDoList list = Designer.TheDesigner.getToDoList();
         try {
-            list.explicitlyResolve(_target, _explanation.getText());
+            list.explicitlyResolve(target, explanation.getText());
             ProjectManager.getManager().getCurrentProject().setNeedsSave(true);
         }
         catch (UnresolvableException ure) {
-            cat.error("Resolve failed (ure): " + ure);
+            LOG.error("Resolve failed (ure): " + ure);
             // TODO: Should be internationalized
             JOptionPane.showMessageDialog(
 		    this,
