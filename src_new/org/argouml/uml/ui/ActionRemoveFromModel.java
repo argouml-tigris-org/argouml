@@ -117,18 +117,20 @@ public class ActionRemoveFromModel extends UMLChangeAction {
             Object target = targets[i];
             if (sureRemove(target)) {
                 // Argo.log.info("deleting "+target+"+ "+(((MModelElement)target).getMElementListeners()).size());
-                // move the pointer to the target in the NavPane to some other target (up)
+                // remove from the model
                 if (target instanceof Fig) {
                     target = ((Fig)target).getOwner();                    
                 }
+                ProjectManager.getManager().getCurrentProject().moveToTrash(target); 
+                
+                // move the pointer to the target in the NavPane to some other target
                 Object newTarget = null;
                 if (target instanceof MBase) {
                     newTarget = ((MBase)target).getModelElementContainer();
                 } else
                 if (target instanceof ArgoDiagram) {
-                    newTarget = ProjectManager.getManager().getCurrentProject().getRoot();
+                    newTarget = ProjectManager.getManager().getCurrentProject().getDiagrams().get(0);
                 }
-                ProjectManager.getManager().getCurrentProject().moveToTrash(target); 
                 ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
                 if (newTarget != null) 
                     ProjectBrowser.TheInstance.setTarget(newTarget);
