@@ -49,7 +49,7 @@ implements TabModelTarget, DocumentListener {
   /** The optional toolbar.
    *  Contains null if no toolbar was requested.
    */
-  protected JToolBar _toolbar = null;
+  protected Toolbar _toolbar = null;
   protected Category cat = Category.getInstance(TabText.class);
 
   ////////////////////////////////////////////////////////////////
@@ -74,8 +74,7 @@ implements TabModelTarget, DocumentListener {
 
     // If a toolbar was requested, create an empty one.
     if (withToolbar) {
-        _toolbar = new JToolBar();
-        _toolbar.setFloatable(false);
+        _toolbar = new Toolbar();
         _toolbar.setOrientation(JToolBar.HORIZONTAL);
         add(_toolbar, BorderLayout.NORTH);
     }
