@@ -40,6 +40,9 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 /**
  * The default cell renderer for uml model elements. Used by UMLList2 and its
  * children.
+ *
+ * This class must be efficient as it is called many 1000's of times.
+ *
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 2, 2003
  */
@@ -57,7 +60,8 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      * Constructor for UMLListCellRenderer2.
      */
     public UMLListCellRenderer2(boolean showIcon) {
-//        super();
+        
+        // only need to this from super()
         updateUI();
         setAlignmentX(LEFT_ALIGNMENT);
         
@@ -67,56 +71,47 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
     /**
      * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
      */
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {       
-//        JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
+    public Component getListCellRendererComponent(JList list, Object value, 
+                    int index, boolean isSelected, boolean cellHasFocus) {
+        
         if (org.argouml.model.ModelFacade.isABase(value)) {
             
-            String text = makeText(value);            
+            String text = makeText(value);
             setText(text);
             
             if (_showIcon) {
                 
-                        setComponentOrientation(list.getComponentOrientation());
-	if (isSelected) {
-	    setBackground(list.getSelectionBackground());
-//	    setForeground(list.getSelectionForeground());
-	}
-	else {
-	    setBackground(list.getBackground());
-//	    setForeground(list.getForeground());
-	}
-
-//	if (value instanceof Icon) {
-//	    setIcon((Icon)value);
-//	    setText("");
-//	}
-//	else {
-//	    setIcon(null);
-//	    setText((value == null) ? "" : value.toString());
-//	}
-
-	setEnabled(list.isEnabled());
-	setFont(list.getFont());
-	setBorder((cellHasFocus) ? UIManager.getBorder("List.focusCellHighlightBorder") : noFocusBorder);
+                // ----- setup similar to the super() implementation -----
+                setComponentOrientation(list.getComponentOrientation());
+                if (isSelected) {
+                    setBackground(list.getSelectionBackground());
+                }
+                else {
+                    setBackground(list.getBackground());
+                }
                 
-//                Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(value);
-//                // if (icon != null)
-//		label.setIcon(icon);
-        setIcon(ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(value));
+                setEnabled(list.isEnabled());
+                setFont(list.getFont());
+                setBorder((cellHasFocus) ? 
+                    UIManager.getBorder("List.focusCellHighlightBorder") : 
+                            noFocusBorder);
+                // --------------------------------------------------------
+                setIcon(ResourceLoaderWrapper
+                            .getResourceLoaderWrapper().lookupIcon(value));
             } else {
-                // hack to make sure that the right hight is applied when no icon is used.
-                return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
+                // hack to make sure that the right hight is 
+                // applied when no icon is used.
+                return super.getListCellRendererComponent(list, 
+                            text, index, isSelected, cellHasFocus);
             }
-
+            
         } else
-	    if (value == null || value.equals("")) {      
-		JLabel label = new JLabel(" ");      
-		label.setIcon(null);
+            if (value == null || value.equals("")) {
+                JLabel label = new JLabel(" ");
+                label.setIcon(null);
                 return label;
-	    }
+            }
         
-
         return this;
     }
 
