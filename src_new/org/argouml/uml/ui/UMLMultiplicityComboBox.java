@@ -34,12 +34,12 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
     private UMLUserInterfaceContainer _container;
     private Method _getMethod;
     private Method _setMethod;
-    private static String[] _mults = { "0..1","0..2","0..3","0..*",
+    private static String[] _mults = { "","0..1","0..2","0..3","0..*",
                                 "1..1","1..2","1..3","1..*",
                                        "2..2","2..3","2..*",
                                               "3..3","3..*" };
-    private static int[] _lower = { 0,0,0,0,1,1,1,1,2,2,2,3,3 };
-    private static int[] _upper = { 1,2,3,-1,1,2,3,-1,2,3,-1,3,-1 };
+    private static int[] _lower = { -1,0,0,0,0,1,1,1,1,2,2,2,3,3 };
+    private static int[] _upper = { -1,1,2,3,-1,1,2,3,-1,2,3,-1,3,-1 };
     
     private static final Object[] _noArg = {};
     
@@ -82,7 +82,7 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
     }
     
     private void update() {
-        int lower = 0;
+        int lower = -1;
         int upper = -1;
         
         try {
@@ -128,7 +128,10 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
             int index = getSelectedIndex();
             int lower = _lower[index];
             int upper = _upper[index];
-            MMultiplicity mult = new MMultiplicity(lower,upper);
+            MMultiplicity mult = null;
+            if(lower >= 0) {
+                mult = new MMultiplicity(lower,upper);
+            }
             try {
                 _setMethod.invoke(_container.getTarget(),new Object[] { mult });
             }
