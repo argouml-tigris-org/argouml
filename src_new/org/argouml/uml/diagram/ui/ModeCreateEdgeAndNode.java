@@ -58,8 +58,6 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
 
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-
 /** A Mode to interpret user input while creating an edge.  Basically
  *  mouse down starts creating an edge from a source port Fig, mouse
  *  motion paints a rubberband line, mouse up finds the destination port
@@ -387,7 +385,8 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             Collection conns = ModelFacade.getConnections(_newEdge);
             Iterator iter = conns.iterator();
             Object associationEnd0 = iter.next();
-            ModelFacade.setAggregation(associationEnd0, MAggregationKind.COMPOSITE);
+            ModelFacade.setAggregation(associationEnd0,
+                    ModelFacade.COMPOSITE_AGGREGATIONKIND);
         }
     }
 
