@@ -35,6 +35,12 @@ import org.tigris.gef.util.*;
 
 import org.argouml.cognitive.*;
 
+/**
+ * This Class does not belong in the kernel of ArgoUml.
+ *
+ * @deprecated since 0.15.1, remove in 0.15.2,
+ *             replaced by inner class in Designer.
+ */
 public class ChildGenDMElements implements ChildGenerator {
     /** Reply a Enumeration of the children of the given Object */
     public Enumeration gen(Object o) {
