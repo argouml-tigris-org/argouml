@@ -78,13 +78,13 @@ public class PropPanelGeneralization extends PropPanelModelElement {
                 getNameTextField());
 
         addField(Translator.localize("label.stereotype"),
-                getStereotypeBox());
+                getStereotypeSelector());
 
         addField(Translator.localize("label.discriminator"),
                 getDiscriminatorTextField());
 
         addField(Translator.localize("label.namespace"),
-                getNamespaceComboBox());
+                getNamespaceSelector());
 
         addSeperator();
 

@@ -54,7 +54,7 @@ public class PropPanelTransition extends PropPanelModelElement {
         addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.stereotype"),
-                getStereotypeBox());
+                getStereotypeSelector());
         JList statemachineList = new UMLLinkedList(
                 new UMLTransitionStatemachineListModel());
         statemachineList.setVisibleRowCount(1);

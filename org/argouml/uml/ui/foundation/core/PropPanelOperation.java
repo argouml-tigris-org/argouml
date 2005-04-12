@@ -71,7 +71,7 @@ public class PropPanelOperation extends PropPanelFeature {
                 getNameTextField());
 
         addField(Translator.localize("label.stereotype"),
-                getStereotypeBox());
+                getStereotypeSelector());
 
         addField(Translator.localize("label.owner"),
                 getOwnerScroll());

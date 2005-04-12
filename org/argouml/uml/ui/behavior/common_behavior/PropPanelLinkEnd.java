@@ -49,7 +49,7 @@ public class PropPanelLinkEnd extends PropPanelModelElement {
                 getNameTextField());
 
         addField(Translator.localize("label.stereotype"),
-                getStereotypeBox());
+                getStereotypeSelector());
 
         addField(Translator.localize("label.namespace"),
                 getNamespaceScroll());

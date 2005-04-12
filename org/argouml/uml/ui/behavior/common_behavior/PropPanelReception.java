@@ -56,9 +56,9 @@ public class PropPanelReception extends PropPanelModelElement {
         addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.stereotype"),
-                getStereotypeBox());
+                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
-                getNamespaceComboBox());
+                getNamespaceSelector());
 
         JPanel modifiersPanel =
             new JPanel(new GridLayout2(0, 2, GridLayout2.ROWCOLPREFERRED));

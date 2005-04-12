@@ -66,7 +66,7 @@ public class PropPanelMessage extends PropPanelModelElement {
 	addField(Translator.localize("label.name"),
             getNameTextField());
 	addField(Translator.localize("label.stereotype"),
-            getStereotypeBox());
+            getStereotypeSelector());
 	// a message does not have a namespace. removed therefore
 	// addField(Translator.localize("label.namespace"),
 	// getNamespaceScroll());

@@ -59,9 +59,9 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener {
      *  @param box Associated combo box
      */
     public UMLComboBoxNavigator(
-        UMLUserInterfaceContainer container,
-        String tooltip,
-        JComboBox box) {
+            UMLUserInterfaceContainer container,
+            String tooltip,
+            JComboBox box) {
         super(new BorderLayout());
         theButton = new JButton(icon);
         theContainer = container;

@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.awt.BorderLayout;
 import java.util.Vector;
 
 import javax.swing.Box;
@@ -31,6 +32,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -62,11 +64,9 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     private JScrollPane namespaceScroll;
 
-    private JComboBox namespaceComboBox;
+    private JComponent namespaceSelector;
 
-    private JComboBox stereotypeComboBox;
-
-    private Box stereotypeBox;
+    private JComponent stereotypeSelector;
 
     private JScrollPane supplierDependencyScroll;
 
@@ -151,7 +151,7 @@ public abstract class PropPanelModelElement extends PropPanel {
         addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.stereotype"),
-		 getStereotypeBox());
+                getStereotypeSelector());
 
         addField(Translator.localize("label.namespace"),
                 getNamespaceScroll());
@@ -255,43 +255,38 @@ public abstract class PropPanelModelElement extends PropPanel {
     }
 
     /**
-     * @return a combobox for the namespace
+     * Returns the namespace selecter. This is a component which allows the
+     * user to select a single item as the namespace.
+     *
+     * @return a component for selecting the namespace
      */
-    protected JComboBox getNamespaceComboBox() {
-        if (namespaceComboBox == null) {
-            namespaceComboBox = new UMLSearchableComboBox(
+    protected JComponent getNamespaceSelector() {
+        if (namespaceSelector == null) {
+            namespaceSelector = new UMLSearchableComboBox(
                     namespaceComboBoxModel,
                     ActionSetModelElementNamespace.getInstance(), true);
         }
-        return namespaceComboBox;
+        return namespaceSelector;
 
     }
 
     /**
-     * @return a combobox for the stereotype
-     */
-    protected JComboBox getStereotypeComboBox() {
-        if (stereotypeComboBox == null) {
-            stereotypeComboBox = new UMLComboBox2(stereotypeComboBoxModel,
-                    ActionSetModelElementStereotype.getInstance());
-        }
-        return stereotypeComboBox;
-    }
-
-    /**
-     * Returns the stereotype box. This is a box with a combobox to select the
-     * stereotype and a button to create a new one
+     * Returns the stereotype selecter. This is a component which allows the
+     * user to select a single item as the stereotype.
      *
-     * @return the stereotype box
+     * @return the stereotype selecter
      */
-    protected Box getStereotypeBox() {
-        if (stereotypeBox == null) {
-            stereotypeBox = new Box(BoxLayout.X_AXIS);
-            stereotypeBox.add(new UMLComboBoxNavigator(this,
+    protected JComponent getStereotypeSelector() {
+        if (stereotypeSelector == null) {
+            stereotypeSelector = new Box(BoxLayout.X_AXIS);
+            stereotypeSelector.add(new UMLComboBoxNavigator(this,
                     Translator.localize("label.stereotype.navigate.tooltip"),
-                    getStereotypeComboBox()));
+                    new UMLComboBox2(stereotypeComboBoxModel,
+                            ActionSetModelElementStereotype.getInstance())
+                    
+                    ));
         }
-        return stereotypeBox;
+        return stereotypeSelector;
     }
 
     /**

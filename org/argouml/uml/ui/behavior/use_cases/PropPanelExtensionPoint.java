@@ -72,7 +72,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.stereotype"),
-                getStereotypeBox());
+                getStereotypeSelector());
 
         // Our location (a String). We can pass in the get and set methods from
         // NSUML associated with the NSUML type. Allow the location label to
