@@ -58,9 +58,9 @@ public class PropPanelNode extends PropPanelClassifier {
                 getNameTextField());
 
         addField(Translator.localize("label.stereotype"),
-                getStereotypeBox());
+                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
-                getNamespaceComboBox());
+                getNamespaceSelector());
 
         add(getModifiersPanel());
 

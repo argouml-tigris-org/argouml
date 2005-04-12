@@ -47,7 +47,7 @@ public class PropPanelStubState extends PropPanelStateVertex {
         addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.stereotype"),
-                getStereotypeBox());
+                getStereotypeSelector());
         addField(Translator.localize("label.container"),
                 getContainerScroll());
         JComboBox referencestateBox =

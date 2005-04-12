@@ -69,7 +69,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
         addField("Action:", new UMLStimulusActionTextField(this,
                 new UMLStimulusActionTextProperty("name")));
         addField(Translator.localize("label.stereotype"),
-                getStereotypeBox());
+                getStereotypeSelector());
 
         JList senderList = new UMLLinkedList(new UMLStimulusSenderListModel());
 	senderList.setVisibleRowCount(1);
@@ -84,7 +84,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
             receiverScroll);
 
         addField(Translator.localize("label.namespace"),
-                getNamespaceComboBox());
+                getNamespaceSelector());
 
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
         addButton(new PropPanelButton2(new ActionNewStereotype(),

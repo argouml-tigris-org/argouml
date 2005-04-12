@@ -46,9 +46,9 @@ public class PropPanelAbstraction extends PropPanelDependency {
         addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.stereotype"),
-                getStereotypeBox());
+                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
-                getNamespaceComboBox());
+                getNamespaceSelector());
 
         addSeperator();
 

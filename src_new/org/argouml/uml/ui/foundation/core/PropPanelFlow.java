@@ -47,7 +47,7 @@ public class PropPanelFlow extends PropPanelRelationship {
         addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.stereotype"),
-                getStereotypeBox());
+                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceScroll());
         addField(Translator.localize("label.constraints"),
