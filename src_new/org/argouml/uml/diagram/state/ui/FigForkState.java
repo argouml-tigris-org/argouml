@@ -47,7 +47,7 @@ public class FigForkState extends FigStateVertex {
     private static final int X = 10;
     private static final int Y = 10;
     private static final int WIDTH = 80;
-    private static final int HEIGHT = 9;
+    private static final int HEIGHT = 7;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -101,9 +101,9 @@ public class FigForkState extends FigStateVertex {
     public void setBounds(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
         if (w > h)
-            h = 9;
+            h = HEIGHT;
         else
-            w = 9;
+            w = HEIGHT;
         getBigPort().setBounds(x, y, w, h);
         head.setBounds(x, y, w, h);
 
