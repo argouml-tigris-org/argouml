@@ -4546,9 +4546,8 @@ public class NSUMLModelFacade implements Facade {
     protected String getClassNull(Object handle) {
 	if (handle == null) {
 	    return "[null]";
-	} else {
-	    return "[" + handle + "/" + handle.getClass() + "]";
-	}
+	} 
+        return "[" + handle + "/" + handle.getClass() + "]";
     }
 
     /**

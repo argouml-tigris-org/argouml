@@ -829,6 +829,7 @@ public final class Notation implements PropertyChangeListener {
     //                   and should be uncommented by those initially
     //                   incorporating this code into production,
     //                   only using those methods that are necessary.
+    //                   See issue 1183.
     ////////////////////////////////////////////////////////////////
 
     // public static void parseExtensionPointCompartment(NotationContext ctx,

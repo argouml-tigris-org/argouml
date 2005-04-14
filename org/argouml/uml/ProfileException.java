@@ -46,19 +46,19 @@ public class ProfileException extends Exception {
      * The constructor.
      *
      * @param message the message to show
-     * @param cause the cause for the exception
+     * @param theCause the cause for the exception
      */
-    public ProfileException(String message, Throwable cause) {
-        super(message, cause);
+    public ProfileException(String message, Throwable theCause) {
+        super(message, theCause);
     }
 
     /**
      * The constructor.
      *
-     * @param cause the cause for the exception
+     * @param theCause the cause for the exception
      */
-    public ProfileException(Throwable cause) {
-        super(cause);
+    public ProfileException(Throwable theCause) {
+        super(theCause);
     }
     
     /**

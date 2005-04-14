@@ -101,7 +101,7 @@ public class CrInterfaceWithoutComponent extends CrUML {
     public ListSet computeOffenders(UMLDeploymentDiagram dd) {
 	Collection figs = dd.getLayer().getContents(null);
 	ListSet offs = null;
-    Iterator figIter = figs.iterator();
+        Iterator figIter = figs.iterator();
 	while (figIter.hasNext()) {
 	    Object obj = figIter.next();
 	    if (!(obj instanceof FigInterface)) continue;

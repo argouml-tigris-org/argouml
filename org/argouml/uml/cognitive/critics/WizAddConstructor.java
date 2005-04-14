@@ -38,7 +38,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileException;
-import org.argouml.uml.ProfileJava;
 
 /**
  * A wizard to add a constructor to a classifier.

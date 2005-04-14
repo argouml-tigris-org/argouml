@@ -43,7 +43,9 @@ public class GenAncestorClasses implements ChildGenerator {
     public Enumeration gen(Object cls) {
 	Vector res = new Vector();
 
-	if (!(Model.getFacade().isAGeneralizableElement(cls))) return res.elements();
+	if (!(Model.getFacade().isAGeneralizableElement(cls))) {
+                return res.elements();
+        }
 	Collection gens = Model.getFacade().getGeneralizations(cls);
 	if (gens == null) return res.elements();
 	accumulateAncestors(cls, res);

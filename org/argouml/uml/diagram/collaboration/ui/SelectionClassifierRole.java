@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 

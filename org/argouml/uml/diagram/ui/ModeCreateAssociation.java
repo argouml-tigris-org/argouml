@@ -208,10 +208,10 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
                 }
                 if (edgeType != null) {
                     setNewEdge(mutableGraphModel.connect(
-                                    getStartPort(), foundPort, (Class) edgeType));
+                           getStartPort(), foundPort, (Class) edgeType));
                 } else {
                     setNewEdge(mutableGraphModel.connect(
-                                    getStartPort(), foundPort));
+                           getStartPort(), foundPort));
                 }
 
                 // Calling connect() will add the edge to the GraphModel and

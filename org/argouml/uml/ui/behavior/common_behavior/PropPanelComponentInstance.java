@@ -60,7 +60,8 @@ public class PropPanelComponentInstance extends PropPanelInstance {
 
         addField(Translator.localize("label.name"), getNameTextField());
 
-        addField(Translator.localize("label.stereotype"), getStereotypeSelector());
+        addField(Translator.localize("label.stereotype"), 
+                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 

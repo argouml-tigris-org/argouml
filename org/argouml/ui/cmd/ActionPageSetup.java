@@ -45,7 +45,7 @@ class ActionPageSetup extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	    PrintManager.getInstance().showPageSetupDialog();
+        PrintManager.getInstance().showPageSetupDialog();
     }
 } /* end class ActionPageSetup */
 
