@@ -26,12 +26,11 @@ package org.argouml.cognitive.ui;
 
 import java.util.Enumeration;
 import java.util.Vector;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.ToDoListEvent;
 import org.argouml.cognitive.ToDoListListener;
 

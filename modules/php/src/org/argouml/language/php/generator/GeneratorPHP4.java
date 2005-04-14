@@ -380,79 +380,76 @@ public class GeneratorPHP4
             Object objType = Model.getFacade().getType(modelElement);
             if (Model.getFacade().getName(objType).equals("void")) {
                 return "";
-            } else {
-                String sType = convertType(objType);
-                if (sType != null && sType.trim() != "") {
+            } 
+            String sType = convertType(objType);
+            if (sType != null && sType.trim() != "") {
                     return "return (" + sType + ") $returnValue;";
-                } else {
-                    return "return $returnValue;";
-                }
-            }
-        } else {
-            if (iLanguageMajorVersion < 5) {
+            } 
+            return "return $returnValue;";
+        }
+        if (iLanguageMajorVersion < 5) {
                 // TODO: Do we really need this for PHP5?
                 // TODO: Implement this in Model subsystem?
                 /* if OUT or INOUT, then pass by reference */
-                if (Model.getFacade().getKind(modelElement).equals(
-                        Model.getDirectionKind().getInOutParameter())
+            if (Model.getFacade().getKind(modelElement).equals(
+                    Model.getDirectionKind().getInOutParameter())
                         || Model.getFacade().getKind(modelElement).equals(
-                            Model.getDirectionKind().getOutParameter())) {
-                    sParameter += "&";
-                }
+                                Model.getDirectionKind().getOutParameter())) {
+                sParameter += "&";
             }
-
-            if (iLanguageMajorVersion >= 5) {
-            	String sTypeHint = null;
-
-            	try {
-            	    sTypeHint = NameGenerator.generateClassifierName(
-                        Model.getFacade().getType(modelElement));
-                } catch (Exception exp) {
-                    LOG.error("Finding type hint FAILED: " + exp.getMessage());
-                } finally {
-	                if (sTypeHint != null && sTypeHint != "" && convertType(
-                        Model.getFacade().getType(modelElement)) == null) {
-	            	    sParameter += " - " + sTypeHint + " ";
-	                }
-                }
-            }
-
-            sParameter += "$" + Model.getFacade().getName(modelElement);
-
-            String sDefaultValue =
-                generate(Model.getFacade().getDefaultValue(modelElement));
-            if (sDefaultValue != null && sDefaultValue.length() > 0) {
-                sParameter += " = " + sDefaultValue;
-            } else {
-                boolean bAddDefaultValue = false;
-
-                Collection colParameters =
-                        Model.getFacade().getParameters(Model.getFacade()
-                                .getBehavioralFeature(modelElement));
-                if (colParameters != null) {
-                    Iterator itParameters = colParameters.iterator();
-                    while (itParameters.hasNext()) {
-                        Object objParameter = itParameters.next();
-                        if (!Model.getFacade().isReturn(objParameter)) {
-                            if (!modelElement.equals(objParameter)) {
-                                if (Model.getFacade()
-                                    .getDefaultValue(objParameter) != null) {
-                                    bAddDefaultValue = true;
-                                }
-                            } else {
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (bAddDefaultValue) {
-                    sParameter += " = " + generateDefaultValue(
-                        Model.getFacade().getType(modelElement), null, false);
+        }
+        
+        if (iLanguageMajorVersion >= 5) {
+            String sTypeHint = null;
+                
+            try {
+                sTypeHint = NameGenerator.generateClassifierName(
+                            Model.getFacade().getType(modelElement));
+            } catch (Exception exp) {
+                LOG.error("Finding type hint FAILED: " + exp.getMessage());
+            } finally {
+                if (sTypeHint != null && sTypeHint != "" && convertType(
+                    Model.getFacade().getType(modelElement)) == null) {
+                    sParameter += " - " + sTypeHint + " ";
                 }
             }
         }
-
+        
+        sParameter += "$" + Model.getFacade().getName(modelElement);
+        
+        String sDefaultValue =
+                generate(Model.getFacade().getDefaultValue(modelElement));
+        if (sDefaultValue != null && sDefaultValue.length() > 0) {
+            sParameter += " = " + sDefaultValue;
+        } else {
+            boolean bAddDefaultValue = false;
+                
+            Collection colParameters = 
+                Model.getFacade().getParameters(Model.getFacade()
+                                        .getBehavioralFeature(modelElement));
+            if (colParameters != null) {
+                Iterator itParameters = colParameters.iterator();
+                while (itParameters.hasNext()) {
+                    Object objParameter = itParameters.next();
+                    if (!Model.getFacade().isReturn(objParameter)) {
+                        if (!modelElement.equals(objParameter)) {
+                            if (Model.getFacade()
+                                   .getDefaultValue(objParameter) != null) {
+                                bAddDefaultValue = true;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+                
+            if (bAddDefaultValue) {
+                sParameter += " = " + generateDefaultValue(
+                    Model.getFacade().getType(modelElement), null, false);
+            }
+        }
+        
         return sParameter;
     }
 
@@ -884,11 +881,10 @@ public class GeneratorPHP4
             LOG.debug("Creating " + f.getPath() + " successfull");
 
             return sFilename;
-        } else {
-            LOG.error("Creating " + f.getPath() + " failed");
-
-            return null;
-        }
+        } 
+        LOG.error("Creating " + f.getPath() + " failed");
+        
+        return null;
     }
 
     // ----- org.argouml.application.api.ArgoModule ----------------------------
@@ -1169,9 +1165,8 @@ public class GeneratorPHP4
                     iFirstApos = sDefault.indexOf("'", iFirstApos + 2);
                 }
                 return sReturn + "'" + sDefault + "'";
-            } else {
-                return sReturn + "''";
             }
+            return sReturn + "''";
         } else if (sType.equals("bool")) {
             String sReturn = bCast ? "(bool) " : "";
             if (sDefault != null) {
@@ -1184,32 +1179,27 @@ public class GeneratorPHP4
 		    } else {
 			return sReturn + "true";
 		    }
-                } else {
-                	return sReturn + "false";
                 }
-            } else {
                 return sReturn + "false";
-            }
+            } 
+            return sReturn + "false";
         } else if (sType.equals("int")) {
             String sReturn = bCast ? "(int) " : "";
             if (sDefault != null && sDefault.trim().length() > 0) {
                 return sReturn + sDefault.trim();
-            } else {
-                return sReturn + String.valueOf(0);
             }
+            return sReturn + String.valueOf(0);
         } else if (sType.equals("float")) {
             String sReturn = bCast ? "(float) " : "";
             if (sDefault != null && sDefault.trim().length() > 0) {
                 return sReturn + sDefault.trim();
-            } else {
-                return sReturn + "0.0";
             }
+            return sReturn + "0.0";
         } else if (sType.equals("array")) {
             if (sDefault != null && sDefault.trim() != "") {
                 return "array(" + sDefault + ")";
-            } else {
-                return "array()";
             }
+            return "array()";
         }
 
         return "null";
@@ -1245,9 +1235,8 @@ public class GeneratorPHP4
 
         if (sSuffix != null && sSuffix.trim() != "") {
             return Section.generate(uuid + "-" + sSuffix.trim(), sIndent);
-        } else {
-            return Section.generate(uuid, sIndent);
         }
+        return Section.generate(uuid, sIndent);
     }
 
     /**
@@ -1820,17 +1809,14 @@ public class GeneratorPHP4
                         if (sFilename1 != null) {
                             return sFilename1.compareTo(NameGenerator
                                 .generateFilename(obj2, iLanguageMajorVersion));
-                        } else {
-                            return (NameGenerator.generateFilename(obj2,
+                        }
+                        return (NameGenerator.generateFilename(obj2,
                                     iLanguageMajorVersion) != null) ? -1 : 0;
-                        }
-                    } else {
-                        if (obj2 != null) {
-                            return -1;
-                        } else {
-                            return 0;
-                        }
                     }
+                    if (obj2 != null) {
+                        return -1;
+                    }
+                    return 0;
                 }
             }
             );

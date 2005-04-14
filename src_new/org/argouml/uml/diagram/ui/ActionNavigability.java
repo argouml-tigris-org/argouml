@@ -90,8 +90,10 @@ public class ActionNavigability extends UMLAction {
     private static String getDescription(Object assocStart,
 					 Object assocEnd,
 					 int nav) {
-        String startName = Model.getFacade().getName(Model.getFacade().getType(assocStart));
-        String endName = Model.getFacade().getName(Model.getFacade().getType(assocEnd));
+        String startName = 
+            Model.getFacade().getName(Model.getFacade().getType(assocStart));
+        String endName = 
+            Model.getFacade().getName(Model.getFacade().getType(assocEnd));
 
         if (startName == null || startName.length() == 0) startName = "anon";
         if (endName == null || endName.length() == 0) endName = "anon";

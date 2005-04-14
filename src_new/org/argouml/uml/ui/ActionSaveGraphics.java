@@ -158,11 +158,10 @@ public class ActionSaveGraphics
                             || suffix.equals(PNG_SFX)
                             || suffix.equals(SVG_SFX))) {
                 		// add the selected filter suffix
-                		FileFilter filter = chooser.getFileFilter();
-                		suffix = FileFilters.getSuffix(filter);
-                		theFile =
-                		    new File(theFile.getParentFile(),
-                			     theFile.getName() + "." + suffix);
+        		FileFilter filter = chooser.getFileFilter();
+              		suffix = FileFilters.getSuffix(filter);
+               		theFile = new File(theFile.getParentFile(),
+       			     theFile.getName() + "." + suffix);
                     }
                     // end new code
                 
@@ -171,8 +170,8 @@ public class ActionSaveGraphics
             }
         } catch (OutOfMemoryError e) {
             JDialog dialog = new ExceptionDialog(ProjectBrowser.getInstance(),
-                "You have run out of memory. " +
-                "Close down ArgoUML and restart with a larger heap size.", e);
+                "You have run out of memory. " 
+                + "Close down ArgoUML and restart with a larger heap size.", e);
         } catch (Exception e) {
             JDialog dialog
                 = new ExceptionDialog(ProjectBrowser.getInstance(), e);

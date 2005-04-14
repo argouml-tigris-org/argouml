@@ -49,7 +49,8 @@ public class ExtensionMechanismsFactoryImpl
 	extends AbstractUmlModelFactory
 	implements ExtensionMechanismsFactory {
 
-    private static final Logger LOG = Logger.getLogger(ExtensionMechanismsFactoryImpl.class);
+    private static final Logger LOG = 
+            Logger.getLogger(ExtensionMechanismsFactoryImpl.class);
     
     /**
      * The model implementation.

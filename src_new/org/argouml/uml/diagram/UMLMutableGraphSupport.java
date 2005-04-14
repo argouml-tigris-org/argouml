@@ -173,6 +173,9 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * The connect method specifying a connection
      * type by class is unavailable in the ArgoUML implmentation.
      * TODO: This should be unsupported. Use the 3 Object version
+     *
+     * @see org.tigris.gef.graph.MutableGraphModel#connect(java.lang.Object, 
+     * java.lang.Object, java.lang.Class)
      */
     public Object connect(Object fromPort, Object toPort, Class edgeClass) {
         // If this was an association then there will be relevant
@@ -198,15 +201,15 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
 
         if (connection == null) {
             LOG.debug("Cannot make a " + edgeClass.getName()
-              + " between a " + fromPort.getClass().getName()
-              + " and a " + toPort.getClass().getName());
+                + " between a " + fromPort.getClass().getName()
+                + " and a " + toPort.getClass().getName());
             return null;
         }
 
         addEdge(connection);
         LOG.debug("Connection type" + edgeClass.getName()
-          + " made between a " + fromPort.getClass().getName()
-          + " and a " + toPort.getClass().getName());
+                  + " made between a " + fromPort.getClass().getName()
+                  + " and a " + toPort.getClass().getName());
         return connection;
     }
     
@@ -227,7 +230,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      *                   <code>null</code> otherwise)
      */
     public Object connect(Object fromPort, Object toPort, Object edgeType) {
-        Class edgeClass = (Class)edgeType;
+        Class edgeClass = (Class) edgeType;
         // If this was an association then there will be relevant
         // information to fetch out of the mode arguments.  If it
         // not an association then these will be passed forward
@@ -251,15 +254,15 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
 
         if (connection == null) {
             LOG.debug("Cannot make a " + edgeClass.getName()
-              + " between a " + fromPort.getClass().getName()
-              + " and a " + toPort.getClass().getName());
+                + " between a " + fromPort.getClass().getName()
+                + " and a " + toPort.getClass().getName());
             return null;
         }
 
         addEdge(connection);
         LOG.debug("Connection type" + edgeClass.getName()
-          + " made between a " + fromPort.getClass().getName()
-          + " and a " + toPort.getClass().getName());
+               + " made between a " + fromPort.getClass().getName()
+               + " and a " + toPort.getClass().getName());
         return connection;
     }
 

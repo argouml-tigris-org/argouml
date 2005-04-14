@@ -506,7 +506,8 @@ public final class PHPDocumentor {
             while (itParameter.hasNext()) {
                 Object objParameter = itParameter.next();
                 if (Model.getFacade().isReturn(objParameter)) {
-                    Object objReturnType = Model.getFacade().getType(objParameter);
+                    Object objReturnType = 
+                            Model.getFacade().getType(objParameter);
                     if (objReturnType != null) {
                         String sPackageName = NameGenerator
                             .generatePackageName(objReturnType);
@@ -522,7 +523,8 @@ public final class PHPDocumentor {
                         objDocBlock.setTag(DocBlock.TAG_TYPE_RETURN, "mixed");
                     }
                 } else {
-                    Object objParamType = Model.getFacade().getType(objParameter);
+                    Object objParamType = 
+                            Model.getFacade().getType(objParameter);
                     if (objParamType != null) {
                         objDocBlock.addTag(DocBlock.TAG_TYPE_PARAM,
                                 Model.getFacade().getName(objParamType));
@@ -599,18 +601,15 @@ public final class PHPDocumentor {
                     }
 
                     return true;
-                } else {
-                    throw new IllegalArgumentException("can not be empty");
                 }
-            } else {
-                LOG.error("method setFilename is only available for file "
-                        + "level DocBlock, not for type " + iDocBlockType);
-
-                return false;
+                throw new IllegalArgumentException("can not be empty");
             }
-        } else {
+            LOG.error("method setFilename is only available for file "
+                + "level DocBlock, not for type " + iDocBlockType);
+
             return false;
         }
+        return false;
     }
 
     /**
@@ -634,9 +633,8 @@ public final class PHPDocumentor {
     public final String toString(String sIndent) {
         if (objDocBlock != null) {
             return objDocBlock.toString(sIndent);
-        } else {
-            return null;
-        }
+        } 
+        return null;
     }
 
     // -------------------------------------------------------------------------
@@ -802,9 +800,8 @@ public final class PHPDocumentor {
                 sWrapped += sIndent + " *\n";
 
                 return sWrapped;
-            } else {
-                return "";
             }
+            return "";
         }
 
         /**
@@ -820,9 +817,8 @@ public final class PHPDocumentor {
                 sDescription = sBlockDesc.trim();
 
                 return true;
-            } else {
-                return false;
             }
+            return false;
         }
 
         /**
@@ -838,9 +834,8 @@ public final class PHPDocumentor {
                 sDefaultDescription = sBlockDesc.trim();
 
                 return true;
-            } else {
-                return false;
             }
+            return false;
         }
 
         /**
@@ -945,17 +940,15 @@ public final class PHPDocumentor {
 
             if (!itTaggedValues.hasNext()) {
                 return true;
-            } else {
-                boolean bSuccess = true;
-
-                while (itTaggedValues.hasNext()) {
-                    if (!setTag(itTaggedValues.next())) {
-                        bSuccess = false;
-                    }
-                }
-
-                return bSuccess;
             }
+            boolean bSuccess = true;
+            
+            while (itTaggedValues.hasNext()) {
+                if (!setTag(itTaggedValues.next())) {
+                    bSuccess = false;
+                }
+            }
+            return bSuccess;
         }
 
         /**
@@ -1005,9 +998,8 @@ public final class PHPDocumentor {
                     ParamTag tagParam = new ParamTag();
                     if (tagParam.setContent(sTagValue)) {
                         return alParams.add(tagParam);
-                    } else {
-                        return false;
-                    }
+                    } 
+                    return false;
                 }
                 break;
             default:
@@ -1079,9 +1071,8 @@ public final class PHPDocumentor {
 
             if (objTag != null) {
                 return objTag.setContent(sTagValue);
-            } else {
-                return false;
             }
+            return false;
         }
 
         /**
@@ -1130,9 +1121,8 @@ public final class PHPDocumentor {
                     && !sTagName.equals("volatile")) {
                     throw new IllegalArgumentException("Can not set value '"
                             + sTagValue + "' for tag '" + sTagName + "'");
-                } else {
-                    return true;
-                }
+                } 
+                return true;
             }
         }
     }
@@ -1194,12 +1184,10 @@ public final class PHPDocumentor {
             if (getContent() != null) {
                 if (getContent().trim().length() > 0) {
                     return getName() + " " + getContent();
-                } else {
-                    return getName();
                 }
-            } else {
-                return null;
-            }
+                return getName();
+            } 
+            return null;
         }
     }
 
@@ -1246,9 +1234,8 @@ public final class PHPDocumentor {
                 sContent = sTagContent.trim();
 
                 return true;
-            } else {
-                return false;
             }
+            return false;
         }
     }
 
@@ -1291,12 +1278,10 @@ public final class PHPDocumentor {
             if (bContent) {
                 if (sReason != null && sReason.length() > 0) {
                     return sReason;
-                } else {
-                    return "";
                 }
-            } else {
-                return null;
-            }
+                return "";
+            } 
+            return null;
         }
 
         /**
@@ -1317,9 +1302,8 @@ public final class PHPDocumentor {
                     sReason = sTagContent;
                     return setContent(true);
                 }
-            } else {
-                return false;
             }
+            return false;
         }
 
         /**
@@ -1437,9 +1421,8 @@ public final class PHPDocumentor {
                 } else {
                     return false;
                 }
-            } else {
-                return false;
             }
+            return false;
         }
     }
 
@@ -1526,9 +1509,8 @@ public final class PHPDocumentor {
             if (this.sName != null) {
                 if (this.sEmail != null) {
                     return this.sName + ", <" + this.sEmail + ">";
-                } else {
-                    return this.sName;
                 }
+                return this.sName;
             }
 
             return null;
@@ -1664,9 +1646,8 @@ public final class PHPDocumentor {
         public String getContent() {
             if (this.sDescription != null) {
                 return this.sType + " " + this.sDescription;
-            } else {
-                return this.sType;
             }
+            return this.sType;
         }
 
         /**
@@ -1681,9 +1662,8 @@ public final class PHPDocumentor {
                         sTagContent.indexOf(" ")))
                         && setDescription(sTagContent.substring(
                             sTagContent.indexOf(" ")));
-            } else {
-                return setType(sTagContent);
             }
+            return setType(sTagContent);
         }
     }
 

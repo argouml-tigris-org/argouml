@@ -24,10 +24,6 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-/**
- * @author pepargouml@yahoo.es
- */
-
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLAction;
@@ -36,11 +32,19 @@ import org.argouml.uml.ui.UMLComboBox2;
 import java.awt.event.ActionEvent;
 
 
+/**
+ * Action to set the reference state of a stubstate.
+ *
+ * @author pepargouml@yahoo.es
+ */
 public class ActionSetStubStateReferenceState extends UMLAction {
 
     private static final ActionSetStubStateReferenceState SINGLETON =
             new ActionSetStubStateReferenceState();
 
+    /**
+     * The constructor.
+     */
     protected ActionSetStubStateReferenceState() {
         super(Translator.localize("action.set"), true, NO_ICON);
     }

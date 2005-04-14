@@ -60,7 +60,8 @@ public class ActionAddAttribute extends UMLAction {
             || Model.getFacade().isAAssociationEnd(target)) {
 	    cls = target;
 	} else if (Model.getFacade().isAFeature(target)
-		 && Model.getFacade().isAClass(Model.getFacade().getOwner(target))) {
+		 && Model.getFacade().isAClass(
+                                 Model.getFacade().getOwner(target))) {
 	    cls = Model.getFacade().getOwner(target);
 	} else {
 	    return;
@@ -96,7 +97,8 @@ public class ActionAddAttribute extends UMLAction {
 	return super.shouldBeEnabled()
 	       && (Model.getFacade().isAClass(target)
 		   || (Model.getFacade().isAFeature(target)
-		       && Model.getFacade().isAClass(Model.getFacade().getOwner(target)))
+		       && Model.getFacade().isAClass(
+                                       Model.getFacade().getOwner(target)))
            || Model.getFacade().isAAssociationEnd(target));
     }
     /**

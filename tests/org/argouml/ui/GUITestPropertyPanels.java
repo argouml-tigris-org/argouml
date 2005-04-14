@@ -50,7 +50,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.persistence.TestZargoFilePersister;
 import org.argouml.persistence.ZargoFilePersister;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
@@ -147,7 +146,8 @@ public class GUITestPropertyPanels extends TestCase {
 			  + "for all known model elements");
 
         p = ProjectManager.getManager().makeEmptyProject();
-        URL url = GUITestPropertyPanels.class.getResource("/testmodels/GUITestPropertyPanels.zargo");
+        URL url = GUITestPropertyPanels.class.getResource(
+                        "/testmodels/GUITestPropertyPanels.zargo");
 
         File testfile = new File(url.getFile());
 

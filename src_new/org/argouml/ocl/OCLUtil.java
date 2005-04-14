@@ -87,8 +87,8 @@ public final class OCLUtil {
 		Object mp = i.next(); //MParameter
 
 		if (Model.getFacade().isReturn(mp)) {
-		    sReturnType =
-		        Model.getFacade().getName(Model.getFacade().getType(mp));
+		    sReturnType = Model.getFacade().getName(
+                                    Model.getFacade().getType(mp));
                 } else {
 		    if (fFirstParam) {
 			fFirstParam = false;

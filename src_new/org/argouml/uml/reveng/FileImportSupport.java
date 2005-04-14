@@ -189,8 +189,8 @@ public abstract class FileImportSupport implements PluggableImport {
         SuffixFilter[] filters = getSuffixFilters();
         if (filters != null) {
             for (int i = 0; i < filters.length; i++) {
-                    chooser.addChoosableFileFilter(filters[i]);
-                }
+                chooser.addChoosableFileFilter(filters[i]);
+            }
         }
         return chooser;
     }

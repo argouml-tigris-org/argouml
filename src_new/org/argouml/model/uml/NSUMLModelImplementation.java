@@ -364,7 +364,7 @@ public class NSUMLModelImplementation implements ModelImplementation {
      * @see org.argouml.model.ModelImplementation#getXmiWriter()
      */
     public XmiWriter getXmiWriter(Object model, Writer writer)
-            throws UmlException {
+        throws UmlException {
         return new XmiWriterImpl(model, writer);
     }
     

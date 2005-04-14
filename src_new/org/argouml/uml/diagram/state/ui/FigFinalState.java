@@ -121,7 +121,8 @@ public class FigFinalState extends FigStateVertex {
         Selection sel = null;
         if (getOwner() != null) {
             pstate = getOwner();
-            if (Model.getFacade().isAActivityGraph(Model.getFacade().getStateMachine(
+            if (Model.getFacade().isAActivityGraph(
+                            Model.getFacade().getStateMachine(
                             Model.getFacade().getContainer(pstate)))) {
                 sel = new SelectionActionState(this);
                 ((SelectionActionState) sel).setOutgoingButtonEnabled(false);

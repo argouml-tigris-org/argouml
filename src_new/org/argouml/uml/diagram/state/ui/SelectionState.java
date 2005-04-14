@@ -157,7 +157,7 @@ public class SelectionState extends SelectionWButtons {
 	}
 	int cx = _content.getX(), cy = _content.getY();
 	int cw = _content.getWidth(), ch = _content.getHeight();
-	Object edgeType= null;
+	Object edgeType = null;
 	Object nodeType = Model.getMetaTypes().getState();
 
 	Editor ce = Globals.curEditor();

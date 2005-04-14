@@ -167,9 +167,9 @@ class NsumlXmiReader extends ru.novosoft.uml.xmi.XMIReader {
 //                        Object methodName =  fields[1].get(link);
 //                        if (methodName.equals("type")
 //                              && sourceObject instanceof
-//                                ru.novosoft.uml.foundation.core.MAssociationEnd
+//                              ru.novosoft.uml.foundation.core.MAssociationEnd
 //                              && !(objectParameter instanceof
-//                                ru.novosoft.uml.foundation.core.MModelElement))
+//                              ru.novosoft.uml.foundation.core.MModelElement))
 //                        {
 //                            System.out.println("Link data from XMI "
 //                                  + sourceObject + " " + methodName + " "
@@ -183,7 +183,7 @@ class NsumlXmiReader extends ru.novosoft.uml.xmi.XMIReader {
 //                        Object objectParameter =
 //                            getObject(parameterXMIID, parameterXMIUUID);
 //                        if (!(objectParameter instanceof
-//                              ru.novosoft.uml.foundation.core.MModelElement)) {
+//                            ru.novosoft.uml.foundation.core.MModelElement)) {
 //                            Object methodName =  fields[1].get(link);
 //                            System.out.println("Invalid link data from XMI "
 //                                + sourceObject + " " + methodName + " "
@@ -210,7 +210,7 @@ class NsumlXmiReader extends ru.novosoft.uml.xmi.XMIReader {
      * @throws IOException if there is a file I/O problem
      */
     public MModel parseToModel(InputSource pIs)
-            throws SAXException, IOException {
+        throws SAXException, IOException {
         parseSourceStream(pIs);
         MModel model = getParsedModel();
         if (errors) {
