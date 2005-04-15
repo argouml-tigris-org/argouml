@@ -96,6 +96,11 @@ public class CrConsiderSingleton extends CrUML {
         if (!(Model.getFacade().isAClass(dm))) {
             return NO_PROBLEM;
         }
+        
+        // and not association classes
+        if (Model.getFacade().isAAssociationClass(dm)) {
+            return NO_PROBLEM;
+        }
 
         // with a name...
         if (Model.getFacade().getName(dm) == null
