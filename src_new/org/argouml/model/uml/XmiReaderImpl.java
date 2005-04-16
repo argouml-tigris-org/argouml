@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-import org.apache.log4j.Logger;
+
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
 import org.xml.sax.InputSource;
@@ -41,7 +41,6 @@ import org.xml.sax.SAXException;
  * @author Bob Tarling
  */
 public class XmiReaderImpl implements XmiReader {
-    private static final Logger LOG = Logger.getLogger(XmiReader.class);
 
     private NsumlXmiReader nsumlXmiReader;
 
