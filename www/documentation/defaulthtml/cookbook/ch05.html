@@ -1,12 +1,12 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>Chapter&nbsp;5.&nbsp;Inside the subsystems</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="prev" href="ch04s06.html" title="4.6.&nbsp;Loadable subsystems"><link rel="next" href="ch05s02.html" title="5.2.&nbsp;Critics and other cognitive tools"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;5.&nbsp;Inside the subsystems</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s06.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s02.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="inside_subsystems"></a>Chapter&nbsp;5.&nbsp;Inside the subsystems</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="sect1"><a href="ch05.html#model">5.1. Model</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05.html#model_factories">5.1.1. Factories</a></span></dt><dt><span class="sect2"><a href="ch05.html#model_helpers">5.1.2. Helpers</a></span></dt><dt><span class="sect2"><a href="ch05.html#d0e3093">5.1.3. The model event pump</a></span></dt><dt><span class="sect2"><a href="ch05.html#d0e3268">5.1.4. How to work against the model</a></span></dt><dt><span class="sect2"><a href="ch05.html#howdoi_model">5.1.5. How do I...?</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s02.html">5.2. Critics and other cognitive tools</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s02.html#d0e3490">5.2.1. Main classes</a></span></dt><dt><span class="sect2"><a href="ch05s02.html#howdoi_critics">5.2.2. How do I ...?</a></span></dt><dt><span class="sect2"><a href="ch05s02.html#d0e3786">5.2.3. org.argouml.cognitive.critics.* class diagram</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s03.html">5.3. Diagrams</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s03.html#d0e3813">5.3.1. Multi editor pane</a></span></dt><dt><span class="sect2"><a href="ch05s03.html#howdoi_diagrams">5.3.2. How do I add a new element to a diagram?</a></span></dt><dt><span class="sect2"><a href="ch05s03.html#d0e3911">5.3.3. How to add a new Fig</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s04.html">5.4. Property panels</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s04.html#addingapropertypanel">5.4.1. Adding the property panel</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s05.html">5.5. Reverse Engineering Subsystem</a></span></dt><dt><span class="sect1"><a href="ch05s06.html">5.6. Code Generation Subsystem</a></span></dt><dt><span class="sect1"><a href="ch05s07.html">5.7. Java - Code generations and Reverse Engineering</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s07.html#howdoi_reverse">5.7.1. How do I ...?</a></span></dt><dt><span class="sect2"><a href="ch05s07.html#d0e5880">5.7.2. Which sources are involved?</a></span></dt><dt><span class="sect2"><a href="ch05s07.html#d0e5887">5.7.3. How is the grammar of the target language implemented?</a></span></dt><dt><span class="sect2"><a href="ch05s07.html#d0e5895">5.7.4. Which model/diagram elements are generated?</a></span></dt><dt><span class="sect2"><a href="ch05s07.html#d0e5900">5.7.5. Which layout algorithm is used?</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s08.html">5.8. Other languages</a></span></dt><dt><span class="sect1"><a href="ch05s09.html">5.9. The GUI Framework</a></span></dt><dt><span class="sect1"><a href="ch05s10.html">5.10. Application</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s10.html#d0e6030">5.10.1. What is loaded/initialized?</a></span></dt><dt><span class="sect2"><a href="ch05s10.html#d0e6037">5.10.2. Details pane</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s11.html">5.11. Help System</a></span></dt><dt><span class="sect1"><a href="ch05s12.html">5.12. Internationalization</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s12.html#d0e6166">5.12.1. Organizing translators</a></span></dt><dt><span class="sect2"><a href="ch05s12.html#d0e6230">5.12.2. Ambitions for localization</a></span></dt><dt><span class="sect2"><a href="ch05s12.html#howdoi_internationalization">5.12.3. How do I ...?</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s13.html">5.13. Logging</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s13.html#d0e6483">5.13.1. What to Log in ArgoUML</a></span></dt><dt><span class="sect2"><a href="ch05s13.html#d0e6512">5.13.2. How to Create Log Entries...</a></span></dt><dt><span class="sect2"><a href="ch05s13.html#d0e6595">5.13.3. How to Enable Logging...</a></span></dt><dt><span class="sect2"><a href="ch05s13.html#d0e6714">5.13.4. How to Customize Logging...</a></span></dt><dt><span class="sect2"><a href="ch05s13.html#d0e6725">5.13.5. References</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s14.html">5.14. JRE with utils</a></span></dt><dt><span class="sect1"><a href="ch05s15.html">5.15. To do items</a></span></dt><dt><span class="sect1"><a href="ch05s16.html">5.16. Explorer</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s16.html#d0e6786">5.16.1. Requirements</a></span></dt><dt><span class="sect2"><a href="ch05s16.html#d0e6838">5.16.2. Public APIs and SPIs</a></span></dt><dt><span class="sect2"><a href="ch05s16.html#d0e6872">5.16.3. Details of the Explorer Implementation</a></span></dt><dt><span class="sect2"><a href="ch05s16.html#d0e6908">5.16.4. How do I ...?</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s17.html">5.17. Module loader</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s17.html#d0e7009">5.17.1. What the ModuleLoader does</a></span></dt><dt><span class="sect2"><a href="ch05s17.html#design-module-loader">5.17.2. Design of the new Module Loader</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s18.html">5.18. OCL</a></span></dt></dl></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>
+   <title>Chapter&nbsp;5.&nbsp;Inside the subsystems</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="prev" href="ch04s06.html" title="4.6.&nbsp;Loadable subsystems"><link rel="next" href="ch05s02.html" title="5.2.&nbsp;Critics and other cognitive tools"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;5.&nbsp;Inside the subsystems</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s06.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s02.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="inside_subsystems"></a>Chapter&nbsp;5.&nbsp;Inside the subsystems</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="sect1"><a href="ch05.html#model">5.1. Model</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05.html#model_factories">5.1.1. Factories</a></span></dt><dt><span class="sect2"><a href="ch05.html#model_helpers">5.1.2. Helpers</a></span></dt><dt><span class="sect2"><a href="ch05.html#d0e3139">5.1.3. The model event pump</a></span></dt><dt><span class="sect2"><a href="ch05.html#working-with-the-model">5.1.4. How to work against the model</a></span></dt><dt><span class="sect2"><a href="ch05.html#howdoi_model">5.1.5. How do I...?</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s02.html">5.2. Critics and other cognitive tools</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s02.html#d0e3540">5.2.1. Main classes</a></span></dt><dt><span class="sect2"><a href="ch05s02.html#howdoi_critics">5.2.2. How do I ...?</a></span></dt><dt><span class="sect2"><a href="ch05s02.html#d0e3836">5.2.3. org.argouml.cognitive.critics.* class diagram</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s03.html">5.3. Diagrams</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s03.html#d0e3864">5.3.1. Multi editor pane</a></span></dt><dt><span class="sect2"><a href="ch05s03.html#howdoi_diagrams">5.3.2. How do I add a new element to a diagram?</a></span></dt><dt><span class="sect2"><a href="ch05s03.html#d0e3962">5.3.3. How to add a new Fig</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s04.html">5.4. Property panels</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s04.html#addingapropertypanel">5.4.1. Adding the property panel</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s05.html">5.5. Persistence</a></span></dt><dt><span class="sect1"><a href="ch05s06.html">5.6. Reverse Engineering Subsystem</a></span></dt><dt><span class="sect1"><a href="ch05s07.html">5.7. Code Generation Subsystem</a></span></dt><dt><span class="sect1"><a href="ch05s08.html">5.8. Java - Code generations and Reverse Engineering</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s08.html#howdoi_reverse">5.8.1. How do I ...?</a></span></dt><dt><span class="sect2"><a href="ch05s08.html#d0e5966">5.8.2. Which sources are involved?</a></span></dt><dt><span class="sect2"><a href="ch05s08.html#d0e5973">5.8.3. How is the grammar of the target language implemented?</a></span></dt><dt><span class="sect2"><a href="ch05s08.html#d0e5981">5.8.4. Which model/diagram elements are generated?</a></span></dt><dt><span class="sect2"><a href="ch05s08.html#d0e5986">5.8.5. Which layout algorithm is used?</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s09.html">5.9. Other languages</a></span></dt><dt><span class="sect1"><a href="ch05s10.html">5.10. The GUI Framework</a></span></dt><dt><span class="sect1"><a href="ch05s11.html">5.11. Application</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s11.html#d0e6116">5.11.1. What is loaded/initialized?</a></span></dt><dt><span class="sect2"><a href="ch05s11.html#d0e6123">5.11.2. Details pane</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s12.html">5.12. Help System</a></span></dt><dt><span class="sect1"><a href="ch05s13.html">5.13. Internationalization</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s13.html#d0e6253">5.13.1. Organizing translators</a></span></dt><dt><span class="sect2"><a href="ch05s13.html#d0e6317">5.13.2. Ambitions for localization</a></span></dt><dt><span class="sect2"><a href="ch05s13.html#howdoi_internationalization">5.13.3. How do I ...?</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s14.html">5.14. Logging</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s14.html#d0e6571">5.14.1. What to Log in ArgoUML</a></span></dt><dt><span class="sect2"><a href="ch05s14.html#d0e6600">5.14.2. How to Create Log Entries...</a></span></dt><dt><span class="sect2"><a href="ch05s14.html#d0e6683">5.14.3. How to Enable Logging...</a></span></dt><dt><span class="sect2"><a href="ch05s14.html#d0e6802">5.14.4. How to Customize Logging...</a></span></dt><dt><span class="sect2"><a href="ch05s14.html#d0e6813">5.14.5. References</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s15.html">5.15. JRE with utils</a></span></dt><dt><span class="sect1"><a href="ch05s16.html">5.16. To do items</a></span></dt><dt><span class="sect1"><a href="ch05s17.html">5.17. Explorer</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s17.html#d0e6874">5.17.1. Requirements</a></span></dt><dt><span class="sect2"><a href="ch05s17.html#d0e6926">5.17.2. Public APIs and SPIs</a></span></dt><dt><span class="sect2"><a href="ch05s17.html#d0e6960">5.17.3. Details of the Explorer Implementation</a></span></dt><dt><span class="sect2"><a href="ch05s17.html#d0e6996">5.17.4. How do I ...?</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s18.html">5.18. Module loader</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s18.html#d0e7097">5.18.1. What the ModuleLoader does</a></span></dt><dt><span class="sect2"><a href="ch05s18.html#design-module-loader">5.18.2. Design of the new Module Loader</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s19.html">5.19. OCL</a></span></dt></dl></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>
 This chapter is currently under rework with new subsystem organization.
 </p><p>
 Things that are not actually in place are: TargetManager
 </p></td></tr></table></div><p>...</p><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="model"></a>5.1.&nbsp;Model</h2></div></div></div><p><a name="comp-model-purpose"></a>
-Purpose - to provide the data structures that keep track of the model
-and the diagrams. 
+Purpose - to provide the data structures that keep track of the
+element in the UML model.
 This comes with a complete set of methods to modify the model
 and register interest in changes to the model.
 </p><p>
@@ -27,32 +27,29 @@ ArgoUML uses several factories and helper classes to manipulate the NSUML
 model. 
 The NSUML model itself does not define enough 'business' logic
 to be directly used and the factories and helper classes provide a
-centralized place for accessing this 'business' logic.
+set of interfaces that wraps all functions of NSUML.
 Per section of chapter 2 of the UML 1.3 specification there is one factory
-and one helper. They are placed in their own packages. The package name
-convention is:
-<tt class="classname">org.argouml.model.uml.<i class="replaceable"><tt>SECTIONNAME</tt></i></tt>
-where <i class="replaceable"><tt>SECTIONNAME</tt></i> is one of the following:
-</p><div class="itemizedlist"><ul type="disc"><li><p>foundation</p></li><li><p>foundation.core</p></li><li><p>foundation.extensionmechanisms</p></li><li><p>foundation.datatypes</p></li><li><p>behavioralelements</p></li><li><p>behavioralelements.commonbehavior</p></li><li><p>behavioralelements.statemachines</p></li><li><p>behavioralelements.usecases</p></li><li><p>behavioralelements.collaborations</p></li><li><p>behavioralelements.activitygraphs</p></li><li><p>modelmanagement</p></li></ul></div><p>
+and one helper. 
 </p><p>
-Each package has at least a helper and a factory in it.
 The factories contain all methods that deal with
 creating and building model elements.
 The helpers contain all utility methods needed to manipulate
 the model elements.
 </p><p>
-Both helpers and factories are singletons.
-The static method to access them is
-<tt class="methodname">getFactory</tt> for the factory
-and <tt class="methodname">getHelper</tt> for the helper.
+Both helpers and factories (and the Facade and ModelEventPump)
+are interfaces that are fetched through static methods in the Model object.
+Each implementation must provide objects for each of these interfaces.
+</p><p>
+In the NSUML implementation factories also contain delete methods
+but they are only used internally within the Model subsystem.
 </p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="model_factories"></a>5.1.1.&nbsp;Factories</h3></div></div></div><p>
-The factories contain at least for each model element a create method.
+The factories contain in most cases a create method for each model element.
 Example: <tt class="methodname">createClass</tt>
-resides in <tt class="classname">CoreFactory</tt> in the package
-<tt class="classname">org.argouml.model.uml.foundation.core</tt>.
+resides in <tt class="classname">CoreFactory</tt>-interface.
+</p><p>
 Besides that, there are several build methods to build classes.
 The build methods have a signature like
-<code class="methodsynopsis"><span class="modifier">public&nbsp;</span><span class="type">MODELELEMENT&nbsp;</span><span class="methodname">buildMODELELEMENTNAME</span>(<span class="methodparam"><span class="parameter">params</span></span>);</code>.
+<code class="methodsynopsis"><span class="modifier">public&nbsp;</span><span class="type">Object&nbsp;</span><span class="methodname">buildMODELELEMENTNAME</span>(<span class="methodparam"><span class="parameter">params</span></span>);</code>.
 </p><p>
 Each build method verifies the wellformedness rules
 as defined in the UML spec 1.3.
@@ -61,21 +58,23 @@ the wellformedness rules even though non-well-formed UML can lead to
 non-well-formed XMI which leads to saving/loading issues and
 all kinds of illegal states of ArgoUML.
 </p><p>
-If you want to create an element you shall use the create methods
+If you want to create an element you shall use the build or create methods
 in the factories.
 You are strongly advised to use a build method or, if there is
 none that suits your needs, to write a new one reusing the already
 existing build methods and utility methods in the helpers.
-One reason for this is that the event listeners for
+The reason for this is that the event listeners for
 the newly created model element are setup correctly.
 </p><p>
-TODO: Am I allowed to call the factories from any thread?
+Question: Am I allowed to call the factories from any thread?
+Answer: The current checks are not written to allow for multiple threads
+so don't!
 </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="model_helpers"></a>5.1.2.&nbsp;Helpers</h3></div></div></div><p>
 The helpers contain all utility methods for manipulating model elements.
 For example, they contain methods to get all model elements
 of a certain class out of the model
 (see <tt class="methodname">getAllModelelementsOfKind</tt> in 
-<tt class="classname">ModelmanagementHelper</tt>).
+<tt class="classname">ModelManagementHelper</tt>).
 </p><p>
 To find a utility method you need to know where it is.
 As a rule of thumb, a utility method for some model element 
@@ -91,8 +90,10 @@ specification.
 Then you have to look in both corresponding helpers and you
 will probably find what you are searching for.
 </p><p>
-TODO: Am I allowed to call the helpers from any thread?
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3093"></a>5.1.3.&nbsp;The model event pump</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e3096"></a>5.1.3.1.&nbsp;Introduction</h4></div></div></div><p>
+Question: Am I allowed to call the helpers from any thread?
+Answer: The current checks are not written to allow for multiple threads
+so don't!
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3139"></a>5.1.3.&nbsp;The model event pump</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e3142"></a>5.1.3.1.&nbsp;Introduction</h4></div></div></div><p>
 Late 2002, the ArgoUML community decided for the introduction of a clean
 interface between the NSUML model and the rest of ArgoUML.
 This interface consists of three parts:
@@ -146,7 +147,7 @@ events in the future.
 These mechanisms (like UMLChangeDispatch and ThirdPartyEventlisteners
 for those who are interested) are DEPRECATED.
 Do not use them therefore and do not use classes that use them.
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e3150"></a>5.1.3.2.&nbsp;Public API</h4></div></div></div><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e3196"></a>5.1.3.2.&nbsp;Public API</h4></div></div></div><p>
 You might wonder: how does this all work?
 Well, very simple in fact.
 </p><p>
@@ -190,11 +191,11 @@ How do I register a listener for a certain type event
 </h5></div></div></div><p>
 This is really very simple. Use the model
 </p><pre class="programlisting">
-addModelEventListener(MElementListener listener, MBase modelelement, String eventName)
+addModelEventListener(PropertyChangeListener listener, Object modelelement, String eventName)
 </pre><p>
 like this:
 </p><pre class="programlisting">
-UmlModelEventPump.getPump().addModelEventListener(this, modelelementIAmInterestedIn, "IamInterestedInThisEventnameType");
+Model.getPump().addModelEventListener(this, modelelementIAmInterestedIn, "IamInterestedInThisEventnameType");
 </pre><p>
 Now your object this gets only the <tt class="classname">Events</tt>
 fired by modelElementIAmInterestedIn that have the name
@@ -203,11 +204,11 @@ fired by modelElementIAmInterestedIn that have the name
 This is the opposite of registering a listener. It all works with the
 method
 </p><pre class="programlisting">
-removeModelEventListener(MElementListener listener, MBase modelElement, String eventName)
+removeModelEventListener(PropertyChangeListener listener, Object modelElement, String eventName)
 </pre><p>
-on <tt class="classname">UmlModelEventPump</tt> like this:
+on the <tt class="classname">ModelEventPump</tt> like this:
 </p><pre class="programlisting">
-UmlModelEventPump.getPump().removeModelEventListener(this, modelelementIAmInterestedIn, "IamInterestedInThisEventnameType");
+Model.getPump().removeModelEventListener(this, modelelementIAmInterestedIn, "IamInterestedInThisEventnameType");
 </pre><p>
 Now your object is not registered any more for this event type. 
 </p></div><div class="sect4" lang="en"><div class="titlepage"><div><div><h5 class="title"><a name="pump-methods-for-adding-and-removing"></a>5.1.3.2.3.&nbsp;
@@ -220,7 +221,7 @@ certain model elements.
 
 This works with the method:
 </p><pre class="programlisting">
-addModelEventListener(MElementListener listener, MBase modelelement)
+addModelEventListener(PropertyChangeListener listener, Object modelelement)
 </pre><p>
 As you can see no names of events you can register for here.
 </p><p>
@@ -236,7 +237,7 @@ more than once.
 
 It works via:
 </p><pre class="programlisting">
-addModelEventListener(MElementListener listener, MBase modelelement, String[] eventNames)
+addModelEventListener(PropertyChangeListener listener, Object modelelement, String[] eventNames)
 </pre><p>
 </p><p>
 You can pass the method an array of strings with event names in which
@@ -251,7 +252,7 @@ Therefore use it with care.
 
 The method is:
 </p><pre class="programlisting">
-addClassModelEventListener(MElementListener listener, Class modelClass)
+addClassModelEventListener(PropertyChangeListener listener, Object modelClass)
 </pre><p>
 There are also methods that allow you to register only for one type of
 event fired by all model elements of a certain class and to register
@@ -260,7 +261,7 @@ class.
 </p><p>
 Of course you can remove your listeners from the event pump. 
 This works with methods starting with remove instead of add.
-</p></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e3221"></a>5.1.3.3.&nbsp;Tips</h4></div></div></div><div class="orderedlist"><ol type="1"><li><p>
+</p></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e3267"></a>5.1.3.3.&nbsp;Tips</h4></div></div></div><div class="orderedlist"><ol type="1"><li><p>
 Don't forget to remove your listener from the event pump if it's not
 interested in some event any more.
 </p><p>
@@ -283,7 +284,7 @@ fired when event type 2 do arrive.
 This still happens at a lot of places in the code of ArgoUML, most
 notably in the modelChanged method of the children of
 FigEdgeModelElement.
-</p></li></ol></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e3240"></a>5.1.3.4.&nbsp;Possible investigation points and improvements</h4></div></div></div><p>
+</p></li></ol></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e3286"></a>5.1.3.4.&nbsp;Possible investigation points and improvements</h4></div></div></div><p>
 Should we use our own event types?
 </p><p>
 Should we replace
@@ -310,47 +311,46 @@ data structure that Swing uses for event registration
 (i.e. <tt class="classname">javax.swing.EventListenerList</tt>).
 
 Would this be an improvement?
-</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3268"></a>5.1.4.&nbsp;How to work against the model</h3></div></div></div><p>
+</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="working-with-the-model"></a>5.1.4.&nbsp;How to work against the model</h3></div></div></div><p>
 NS-UML is used within the Model subsystem to keep all data structures
 in place.
 Eventually we will change that to JMI/MDR that is newer and better and 
 will take us into UML 1.4, UML 1.5 and UML 2.0.
 Working directly against NS-UML or JMI/MDR will make changes in the
 NS-UML or JMI/MDR affect large portions of the code.
-For this reason we have in the Model subsystem
+For this reason we have in the Model subsystem,
 a set of classes that lay between the NS-UML and JMI/MDR that
 hides the APIs of NS-UML or JMI/MDR between something that will not
 change while moving between them.
-This is the Facade classes of the Model subsystem i.e. the ModelFacade.
-There are also other classes that hides the internals of NS-UML like the
-Factories and the UMLEventPump.
+This is the API classes of the Model subsystem i.e.
+Factories, Helpers, Event Pump (where to register for changes).
 </p><p>
 Here follows a list of how different things are done for the purpose
 of making the transition easy.
-The plan is to move everything in the Model subsystem 
-(under <tt class="classname">org.argouml.model.*</tt>)
-from NS-UML to JMI/MDR and
-everything else within ArgoUML to the ModelFacade/ArgoUML solution.
-</p><div class="table"><a name="d0e3278"></a><p class="title"><b>Table&nbsp;5.1.&nbsp;How to work against the model</b></p><table summary="How to work against the model" border="1"><colgroup><col><col><col><col></colgroup><thead><tr><th>What</th><th>NS-UML</th><th>JMI/MDR</th><th>ModelFacade/ArgoUML</th></tr></thead><tbody><tr><td>Test that an Object o has a certain type</td><td>
+Everything within ArgoUML should access the Model subsystem through the
+interfaces in the <tt class="classname">org.argouml.model</tt> package.
+The NS-UML or JMI/MDR and whatever other implementation we could eventually
+come up with would provide the implementation of those interfaces.
+</p><div class="table"><a name="d0e3324"></a><p class="title"><b>Table&nbsp;5.1.&nbsp;How to work against the model</b></p><table summary="How to work against the model" border="1"><colgroup><col><col><col><col></colgroup><thead><tr><th>What</th><th>NS-UML (use only within Model subsystem)</th><th>JMI/MDR (use only within Model subsystem)</th><th>Model subsystem</th></tr></thead><tbody><tr><td>Test that an Object o has a certain type</td><td>
 o instanceof M<i class="replaceable"><tt>modelelementtype</tt></i> &#8594; boolean
 </td><td>
 ???CLASSNAME???.isInstanceOf(RefObject toTest, String className) &#8594; boolean
 </td><td>
-ModelFacade.isA<i class="replaceable"><tt>modelelementtype</tt></i>(o) &#8594; boolean
+Model.getFacade().isA<i class="replaceable"><tt>modelelementtype</tt></i>(o) &#8594; boolean
 </td></tr><tr><td>Get a single valued model element from an Object o</td><td>
 ((M<i class="replaceable"><tt>modelelementtype</tt></i>) o).get<i class="replaceable"><tt>property</tt></i>()
 &#8594; model element
 </td><td>
 ((RefFeatured) obj).refGetValue(String propName) &#8594; ???Type???
 </td><td>
-ModelFacade.get<i class="replaceable"><tt>property</tt></i>(o) &#8594; Object
+Model.getFacade().get<i class="replaceable"><tt>property</tt></i>(o) &#8594; Object
 </td></tr><tr><td>Get a multi valued property from an Object o</td><td>
 ((M<i class="replaceable"><tt>modelelementtype</tt></i>) o).get<i class="replaceable"><tt>property</tt></i>()
 &#8594; Collection
 </td><td>
 ((RefFeatured) obj).refGetValue(String propName) &#8594; Collection
 </td><td>
-ModelFacade.get<i class="replaceable"><tt>property</tt></i>(o)
+Model.getFacade().get<i class="replaceable"><tt>property</tt></i>(o)
 &#8594; Iterator or Collection (total confusion!)
 </td></tr><tr><td>Create a new model element of type Type:</td><td>
 MFactory.getDefaultFactory().create<i class="replaceable"><tt>Type</tt></i>()
@@ -359,13 +359,16 @@ MFactory.getDefaultFactory().create<i class="replaceable"><tt>Type</tt></i>()
                               List argument)
 &#8594; RefObject 
 </td><td>
-<i class="replaceable"><tt>elementhierachyname</tt></i>Factory.getFactory().build<i class="replaceable"><tt>modelelementtype</tt></i>(args)
+Model.get<i class="replaceable"><tt>ModelElementDomain?</tt></i>Factory.build<i class="replaceable"><tt>modelelementtype</tt></i>(args)
+or
+Model.get<i class="replaceable"><tt>ModelElementDomain?</tt></i>Factory.create<i class="replaceable"><tt>modelelementtype</tt></i>()
+to create them completely empty.
 </td></tr><tr><td>Delete a model element</td><td>
         &nbsp;
   		</td><td>
         &nbsp;
   		</td><td>
-        ProjectManager.getManager().getCurrentProject().moveToTrash(<i class="replaceable"><tt>object</tt></i>) 
+Model.getUmlFactory().delete(<i class="replaceable"><tt>object</tt></i>) 
       </td></tr><tr><td>
 Register for notification that a model element Object o has changed:
 </td><td>
@@ -373,24 +376,24 @@ Register for notification that a model element Object o has changed:
 </td><td>
 ((MDRChangeSource) obj).addChangeListener(???)
 </td><td>
-UmlEventPump.getPump().addModelEventListener((Object)MElementListener el,
-                                             Object o, String[] eventnames)
+Model.getPump().addModelEventListener((PropertyChangeListener) li,
+                                      Object o, String[] eventnames)
 </td></tr><tr><td>
-Register for notification on all model of a certain type Type:
+Register for notification on all model elements of a certain type Type:
 </td><td>
 Not possible!
 </td><td>
 ((MDRChangeSource) obj.refClass()).addChangeListener(???)
 </td><td>
-UmlEventPump.getPump().addModelEventListener(MElementListener el,
-                                             Class M<i class="replaceable"><tt>Type</tt></i>.class,
-                                             String[] eventnames)
+Model.getPump().addModelEventListener((PropertyChangeListener) li,
+                                      (Object) Model.getMetaTypes().getMODELELEMENTTYPE(),
+                                      String[] eventnames)
 </td></tr><tr><td>How do I get the model as XMI on the stream Stream:</td><td>
 (new XMIWriter(MModel m, Writer Stream)).gen()
 </td><td>
 new XMIWriter(???)
 </td><td>
-Not currently in any Facade.
+Handled by the Persistence subsystem.
 </td></tr></tbody></table><p></p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="howdoi_model"></a>5.1.5.&nbsp;How do I...?</h3></div></div></div><div class="itemizedlist"><ul type="disc"><li><p>...add a new model element?</p><p>
 Make a parameterless build method for your NSUML model element in one of
 the UML Factories (for instance <tt class="classname">CoreFactory</tt>).
