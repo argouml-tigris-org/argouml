@@ -179,10 +179,9 @@ public class ActivityGraphsFactoryImpl
 	    nsmodel.getStateMachinesFactory()
 	    	.buildCompositeStateOnStateMachine(graph);
 	    return graph;
-    	} else {
-	    throw new IllegalArgumentException("In buildActivityGraph: "
-					       + "context null or not legal");
     	}
+        throw new IllegalArgumentException("In buildActivityGraph: "
+					       + "context null or not legal");
     }
 
     /**

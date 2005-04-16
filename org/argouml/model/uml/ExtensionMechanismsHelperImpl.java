@@ -243,12 +243,11 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
         if (getMetaModelName(clazz)
                 .equals(nsmodel.getFacade().getBaseClass(stereo))) {
             return true;
-        } else {
-            if (getMetaModelName(clazz).equals("ModelElement")) {
-                return false;
-            }
-            return isValidStereoType(clazz.getSuperclass(), stereo);
         }
+        if (getMetaModelName(clazz).equals("ModelElement")) {
+            return false;
+        }
+        return isValidStereoType(clazz.getSuperclass(), stereo);
     }
 
     /**
