@@ -56,7 +56,6 @@ public class XmlInputStream extends BufferedInputStream {
     private boolean childOnly;
     private int instanceRequired;
     private int instanceCount;
-    private byte[] buffer;
     private EventListenerList listenerList = new EventListenerList();
 
     /**
@@ -183,9 +182,8 @@ public class XmlInputStream extends BufferedInputStream {
 
         if (count > 0) {
             return count;
-        } else {
-            return -1;
-        }
+        } 
+        return -1;
     }
 
 
@@ -290,9 +288,10 @@ public class XmlInputStream extends BufferedInputStream {
                             /* do nothing */ ;
 		    }
                     tagName = "";
-                    char ch;
-                    while (!isNameTerminator(ch = (char) realRead())) {
+                    char ch = (char) realRead();
+                    while (!isNameTerminator(ch)) {
                         tagName += ch;
+                        ch = (char) realRead();
                     }
                     endTagName = "/" + tagName;
                     LOG.info("Start tag = " + tagName);
