@@ -32,6 +32,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.reveng.DiagramInterface;
@@ -227,7 +228,8 @@ public class Modeller {
 	// the class diagrams up to the top level, since I need
 	// diagrams for all the packages.
 	String ownerPackageName, currentName = name;
-	while (!"".equals((ownerPackageName = getPackageName(currentName)))) {
+        ownerPackageName = getPackageName(currentName);
+	while (!"".equals(ownerPackageName)) {
 	    if (getDiagram() != null
 		&& importSession.isCreateDiagramsChecked()
 		&& getDiagram().isDiagramInProject(ownerPackageName)) {
@@ -238,6 +240,7 @@ public class Modeller {
 
             }
 	    currentName = ownerPackageName;
+            ownerPackageName = getPackageName(currentName);
 	}
 	// Save src_path in the upper package
 	Object mPackage = getPackage(currentName);
@@ -1130,13 +1133,11 @@ public class Modeller {
     private Object searchPackageInModel(String name) {
 	if ("".equals(getPackageName(name))) {
 	    return Model.getFacade().lookupIn(model, name);
-	} else {
-	    Object owner = searchPackageInModel(getPackageName(name));
-	    return owner == null
-		? null
-		: Model.getFacade().lookupIn(owner, 
-		            getRelativePackageName(name));
-	}
+	} 
+        Object owner = searchPackageInModel(getPackageName(name));
+        return owner == null
+            ? null
+            : Model.getFacade().lookupIn(owner, getRelativePackageName(name));
     }
 
     /**
@@ -1374,7 +1375,7 @@ public class Modeller {
         	i.hasNext();) {
             Object tv = i.next();
             if (Model.getFacade().getValueOfTag(tv).equals(
-			Model.getFacade().GENERATED_TAG)) {
+			Facade.GENERATED_TAG)) {
                 Model.getUmlFactory().delete(tv);
             }
         }
@@ -1390,9 +1391,8 @@ public class Modeller {
 	int lastDot = name.lastIndexOf('.');
 	if (lastDot == -1) {
 	    return "";
-	} else {
-	    return name.substring(0, lastDot);
-	}
+	} 
+        return name.substring(0, lastDot);
     }
 
     /**
@@ -1421,9 +1421,8 @@ public class Modeller {
 	int lastDot = name.lastIndexOf('.');
 	if (lastDot == -1) {
 	    return name;
-	} else {
-	    return name.substring(lastDot + 1);
 	}
+        return name.substring(lastDot + 1);
     }
 
     /**
