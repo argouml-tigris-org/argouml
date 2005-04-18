@@ -174,7 +174,8 @@ public class ActivityGraphsFactoryImpl
 		graph.setNamespace((MNamespace) context);
 	    } else
     		if (context instanceof MBehavioralFeature) {
-		    graph.setNamespace(context.getNamespace());
+		    graph.setNamespace(
+                                ((MBehavioralFeature) context).getOwner());
     		}
 	    nsmodel.getStateMachinesFactory()
 	    	.buildCompositeStateOnStateMachine(graph);
