@@ -41,6 +41,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.graph.GraphModel;
 
 /**
  * The Activity diagram.<p>
@@ -194,6 +195,16 @@ public class UMLActivityDiagram extends UMLDiagram {
             return sm;
         }
         return gm.getNamespace();
+    }
+    
+    /**
+     * @see org.tigris.gef.base.Diagram#setGraphModel(org.tigris.gef.graph.GraphModel)
+     */
+    public void setGraphModel(GraphModel gm) {
+        if (!(gm instanceof ActivityDiagramGraphModel)) {
+            throw new IllegalArgumentException("A UMLActivityDiagram can only be backed by an ActivityDiagramGraphModel, received a " + gm.getClass().getName());
+        }
+        super.setGraphModel(gm);
     }
 
     /**
