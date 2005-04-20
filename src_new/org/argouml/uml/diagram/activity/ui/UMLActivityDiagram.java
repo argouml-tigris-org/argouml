@@ -197,15 +197,15 @@ public class UMLActivityDiagram extends UMLDiagram {
         return gm.getNamespace();
     }
     
-    /**
-     * @see org.tigris.gef.base.Diagram#setGraphModel(org.tigris.gef.graph.GraphModel)
-     */
-    public void setGraphModel(GraphModel gm) {
-        if (!(gm instanceof ActivityDiagramGraphModel)) {
-            throw new IllegalArgumentException("A UMLActivityDiagram can only be backed by an ActivityDiagramGraphModel, received a " + gm.getClass().getName());
-        }
-        super.setGraphModel(gm);
-    }
+//    /**
+//     * @see org.tigris.gef.base.Diagram#setGraphModel(org.tigris.gef.graph.GraphModel)
+//     */
+//    public void setGraphModel(GraphModel gm) {
+//        if (!(gm instanceof ActivityDiagramGraphModel)) {
+//            throw new IllegalArgumentException("A UMLActivityDiagram can only be backed by an ActivityDiagramGraphModel, received a " + gm.getClass().getName());
+//        }
+//        super.setGraphModel(gm);
+//    }
 
     /**
      * @return the statemachine
