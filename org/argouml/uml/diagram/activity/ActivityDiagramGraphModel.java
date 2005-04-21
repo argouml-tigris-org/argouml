@@ -45,9 +45,8 @@ public class ActivityDiagramGraphModel extends StateDiagramGraphModel {
         }
         if (Model.getFacade().isAPartition(node)) {
             return true;
-        } else {
-            return super.canAddNode(node);
-        }
+        } 
+        return super.canAddNode(node);
     }
 
     /**
