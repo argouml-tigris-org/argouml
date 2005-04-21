@@ -596,17 +596,11 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             setStyleAttributes(f, attributeMap);
             LOG.info("Created a " + f.getClass().getName());
         } catch (IllegalAccessException e) {
-            // TODO: Change to SAXException on next release of GEF
-            LOG.error("IllegalAccessException caught ", e);
-            throw new IllegalStateException();
+            throw new SAXException(e);
         } catch (InstantiationException e) {
-            // TODO: Change to SAXException on next release of GEF
-            LOG.error("InstantiationException caught ", e);
-            throw new IllegalStateException();
+            throw new SAXException(e);
         } catch (ClassNotFoundException e) {
-            // TODO: Change to SAXException on next release of GEF
-            LOG.error("ClassNotFoundException caught ", e);
-            throw new IllegalStateException();
+            throw new SAXException(e);
         }
             // End block
     /*
