@@ -44,6 +44,7 @@ public class UMLReceptionSignalComboBox extends UMLComboBox2 {
     public UMLReceptionSignalComboBox(
         UMLUserInterfaceContainer container,
         UMLComboBoxModel2 arg0) {
+        // TODO: This super constructor has been deprecated
         super(arg0);
     }
 
