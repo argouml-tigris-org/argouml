@@ -41,7 +41,6 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.graph.GraphModel;
 
 /**
  * The Activity diagram.<p>
@@ -77,24 +76,6 @@ public class UMLActivityDiagram extends UMLDiagram {
         try {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) { }
-    }
-
-    /**
-     * @param m the namespace for the diagram
-     */
-    public UMLActivityDiagram(Object m) {
-        this();
-        setNamespace(m);
-        Object context = Model.getFacade().getContext(getStateMachine());
-        String name = null;
-        if (context != null
-            && Model.getFacade().getName(context) != null
-            && Model.getFacade().getName(context).length() > 0) {
-            name = Model.getFacade().getName(context);
-            try {
-                setName(name);
-            } catch (PropertyVetoException pve) { }
-        }
     }
 
     /**
@@ -170,9 +151,11 @@ public class UMLActivityDiagram extends UMLDiagram {
 
         super.setNamespace(m);
         ActivityDiagramGraphModel gm = new ActivityDiagramGraphModel();
+//        setGraphModel(gm); //MVW
         gm.setNamespace(m);
         if (agraph != null) {
             gm.setMachine(agraph);
+//            setStateMachine(agraph); // MVW
         }
         LayerPerspective lay =
             new LayerPerspectiveMutable(Model.getFacade().getName(m), gm);
@@ -190,22 +173,8 @@ public class UMLActivityDiagram extends UMLDiagram {
     public Object getOwner() {
         ActivityDiagramGraphModel gm =
             (ActivityDiagramGraphModel) getGraphModel();
-        Object sm = gm.getMachine();
-        if (sm != null) {
-            return sm;
-        }
-        return gm.getNamespace();
+        return gm.getMachine();
     }
-    
-//    /**
-//     * @see org.tigris.gef.base.Diagram#setGraphModel(org.tigris.gef.graph.GraphModel)
-//     */
-//    public void setGraphModel(GraphModel gm) {
-//        if (!(gm instanceof ActivityDiagramGraphModel)) {
-//            throw new IllegalArgumentException("A UMLActivityDiagram can only be backed by an ActivityDiagramGraphModel, received a " + gm.getClass().getName());
-//        }
-//        super.setGraphModel(gm);
-//    }
 
     /**
      * @return the statemachine
