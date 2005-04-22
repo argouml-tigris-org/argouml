@@ -45,8 +45,7 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
- * TODO: this property panel needs refactoring to remove dependency on old gui
- * components.
+ * The properties panel for a Datatype.
  */
 public class PropPanelDataType extends PropPanelClassifier {
 
@@ -198,7 +197,7 @@ public class PropPanelDataType extends PropPanelClassifier {
                             if (!match) {
                                 stereo =
                                     Model.getExtensionMechanismsFactory()
-                                        .buildStereotype("enumeration");
+                                        .buildStereotype("enumeration", model);
                                 Model.getCoreHelper().addOwnedElement(
                                         model,
                                         stereo);
