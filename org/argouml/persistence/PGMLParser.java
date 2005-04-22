@@ -743,6 +743,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     // internal methods
     // TODO: This code is identical to GEF other than the IllegalStatException,
     // so move to GEF.
+    /**
+     * @see org.tigris.gef.xml.pgml.PGMLParser#initDiagram(java.lang.String)
+     */
     protected void initDiagram(String diagDescr) throws SAXException {
         String clsName = diagDescr;
         String initStr = null;
@@ -755,15 +758,17 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         String newClassName = translateClassName(clsName);
         try {
             Class cls = Class.forName(newClassName);
-            _diagram = (Diagram)cls.newInstance();
-            if(initStr != null && !initStr.equals("")) {
+            _diagram = (Diagram) cls.newInstance();
+            if (initStr != null && !initStr.equals("")) {
                 Object owner = findOwner(initStr);
                 if (owner == null) {
-                    throw new IllegalStateException("The owner of the diagram can not be found UUID = " + initStr);
+                    throw new IllegalStateException(
+                        "The owner of the diagram can not be found UUID = " 
+                                    + initStr);
                 }
                 _diagram.initialize(owner);
             }
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             throw new SAXException(ex);
         }
     }
