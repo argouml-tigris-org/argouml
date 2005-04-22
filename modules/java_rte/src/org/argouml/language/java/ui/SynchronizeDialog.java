@@ -338,7 +338,7 @@ public class SynchronizeDialog extends javax.swing.JDialog {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        new SynchronizeDialog(new javax.swing.JFrame(), true).show();
+        new SynchronizeDialog(new javax.swing.JFrame(), true).setVisible(true);
     }
 
 

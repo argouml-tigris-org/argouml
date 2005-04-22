@@ -32,7 +32,6 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.UUIDManager;
 
@@ -44,10 +43,6 @@ import org.argouml.model.UUIDManager;
  * @since 0.17.3
  */
 public class TestCppFileGeneration extends BaseTestGeneratorCpp {
-
-    /** The Logger for this class */
-    private static final Logger LOG = Logger.getLogger(
-        TestCppFileGeneration.class);
 
     /**
      * System newline separator.

@@ -58,7 +58,7 @@ public class ActionSynchronize extends UMLAction implements PluggableMenu
 	//Argo.log.info("User clicked on '" + event.getActionCommand() + "'");
 	SynchronizeDialog syndia =
 	    new SynchronizeDialog(ProjectBrowser.getInstance(), true);
-	syndia.show();
+	syndia.setVisible(true);
     }
 
     /**

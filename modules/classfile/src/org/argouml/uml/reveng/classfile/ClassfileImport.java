@@ -153,24 +153,22 @@ public class ClassfileImport extends FileImportSupport {
     private int countFiles(File f, boolean subdirectories) throws Exception {
 	if ( f.isDirectory() && subdirectories) {
 	    return countDirectory(f);
-	} else {
-	    if (f.getName().endsWith(".class")) {
-		return 1;
-	    } else {
-		int total = 0;
-		if (f.getName().endsWith(".jar")) {
-		    for ( Enumeration e =
-		            (new JarFile(f)).entries(); e.hasMoreElements(); ) {
-			ZipEntry entry = (ZipEntry) e.nextElement();
-			if ( !entry.isDirectory()
-			        && entry.getName().endsWith(".class")) {
-			    total++;
-			}
-		    }
-		}
-		return total;
-	    }
 	}
+        if (f.getName().endsWith(".class")) {
+        	return 1;
+        }
+        int total = 0;
+        if (f.getName().endsWith(".jar")) {
+            for ( Enumeration e =
+                    (new JarFile(f)).entries(); e.hasMoreElements(); ) {
+                ZipEntry entry = (ZipEntry) e.nextElement();
+                if ( !entry.isDirectory()
+                                && entry.getName().endsWith(".class")) {
+                    total++;
+                }
+            }
+        }
+        return total;
     }
 
     /**
