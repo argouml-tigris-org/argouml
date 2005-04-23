@@ -28,14 +28,14 @@ import javax.swing.ImageIcon;
 
 import org.argouml.i18n.Translator;
 import org.tigris.swidgets.Orientation;
-import org.argouml.uml.ui.behavior.state_machines.PropPanelState;
+import org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState;
 import org.argouml.util.ConfigLoader;
 
 /**
  * User interface panel shown at the bottom of the screen that allows the user
  * to edit the properties of the selected UML model element.
  */
-public class PropPanelActionState extends PropPanelState {
+public class PropPanelActionState extends AbstractPropPanelState {
 
     /**
      * The constructor.

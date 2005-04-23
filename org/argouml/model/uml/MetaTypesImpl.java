@@ -52,7 +52,18 @@ import ru.novosoft.uml.behavior.common_behavior.MSendAction;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.common_behavior.MTerminateAction;
-import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MEvent;
+import ru.novosoft.uml.behavior.state_machines.MFinalState;
+import ru.novosoft.uml.behavior.state_machines.MGuard;
+import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MStubState;
+import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
+import ru.novosoft.uml.behavior.state_machines.MSynchState;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
@@ -641,15 +652,6 @@ public final class MetaTypesImpl implements MetaTypes {
      */
     public Object getVisibilityKind() {
         return MVisibilityKind.class;
-    }
-
-    /**
-     * @return Returns the StateImpl.
-     * @deprecated by Linus Tolke as of 0.17.3. This is implementation
-     *             creaping out! Use {@link #getState()} instead.
-     */
-    public Object getStateImpl() {
-        return MStateImpl.class;
     }
 }
 

@@ -40,6 +40,7 @@ import org.tigris.gef.presentation.FigRect;
  *             {@link org.argouml.uml.diagram.static_structure.ui.FigComment
  *             FigComment}
  * TODO: When can this be removed? What do we need to do to remove this?
+ * See issue 2285. 
  */
 public class FigNote extends FigNodeModelElement {
 

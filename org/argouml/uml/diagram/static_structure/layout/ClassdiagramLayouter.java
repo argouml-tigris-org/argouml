@@ -144,11 +144,14 @@ public class ClassdiagramLayouter implements Layouter {
             int width = 0;
             for (iter = ts.iterator(); iter.hasNext() && width < maxWidth;) {
                 node = (ClassdiagramNode) iter.next();
-                // split = (split == null || split.isStandalone()) ? node :
-                // split;
-                split = (split == null
-                    || (hasPackage && split.isPackage() == hasPackage) || split
-                    .isStandalone()) ? node : split;
+                // split =
+                //     (split == null || split.isStandalone()) ? node : split;
+                split =
+                    (split == null
+                            || (hasPackage && split.isPackage() == hasPackage)
+                            || split.isStandalone())
+                    ? node
+                    : split;
                 width += node.getSize().width + gap;
             }
             nodes = new Vector(ts.headSet(split));
@@ -231,10 +234,10 @@ public class ClassdiagramLayouter implements Layouter {
                     v.add(node);
                 }
             }
-            int offset = -numNodesWithDownlinks * eGap / 2;
+            int offset = -numNodesWithDownlinks * E_GAP / 2;
             for (Iterator iter = v.iterator(); iter.hasNext();) {
                 ((ClassdiagramNode) iter.next()).setEdgeOffset(offset);
-                offset += eGap;
+                offset += E_GAP;
             }
         }
     }
@@ -242,12 +245,12 @@ public class ClassdiagramLayouter implements Layouter {
     /**
      * Constant value for the gap between edges.
      */
-    private static int eGap = 5;
+    private static final int E_GAP = 5;
 
     /**
      * Constant value for the horizontal gap between nodes.
      */
-    private static int hGap = 80;
+    private static final int H_GAP = 80;
 
     /**
      * Logger for logging events.
@@ -259,12 +262,12 @@ public class ClassdiagramLayouter implements Layouter {
      * Constant value for the maximum row width.
      */
     // TODO: this should be a configurable property
-    private static int maxRowWidth = 1200;
+    private static final int MAX_ROW_WIDTH = 1200;
 
     /**
      * Constant value for the vertical gap between nodes.
      */
-    private static int vGap = 80;
+    private static final int V_GAP = 80;
 
     // Attributes
 
@@ -277,11 +280,6 @@ public class ClassdiagramLayouter implements Layouter {
      * HashMap with figures as key and Nodes as elements.
      */
     private HashMap figNodes = new HashMap();
-
-    /**
-     * The number of the last row.
-     */
-    private int lastRow;
 
     /**
      * layoutedClassNodes is a convenience which holds a subset of
@@ -347,28 +345,12 @@ public class ClassdiagramLayouter implements Layouter {
     }
 
     /**
-     * Get a ClassdiagramNode from the layouted objects.<p>
-     *
-     * <em>Attention!</em><p>
-     * <em>Should not be used, because the order of
-     * nodes might be changed due to a call of layout().</em><p>
-     *
-     * @deprecated TODO: By whom? When? What do we use instead?
-     * @param index
-     *            represents the index of this ClassdiagramNode.
-     * @return The ClassdiagramNode for this index.
-     */
-    public ClassdiagramNode getClassdiagramNode(int index) {
-        return (ClassdiagramNode) (layoutedClassNodes.elementAt(index));
-    }
-
-    /**
      * Get the horizontal gap between nodes.
      *
      * @return The horizontal gap between nodes.
      */
     private int getHGap() {
-        return hGap;
+        return H_GAP;
     }
 
     /**
@@ -426,7 +408,7 @@ public class ClassdiagramLayouter implements Layouter {
      * @return The vertical gap between nodes.
      */
     private int getVGap() {
-        return vGap;
+        return V_GAP;
     }
 
     /**
@@ -475,7 +457,7 @@ public class ClassdiagramLayouter implements Layouter {
         Vector downlinks = node.getDownlinks();
         int curW = node.getSize().width;
         double xOffset = node.getSize().width + getHGap();
-        int bumpX = (int) getHGap() / 2; // (xOffset - curW) / 2;
+        int bumpX = getHGap() / 2; // (xOffset - curW) / 2;
         int xPosNew =
 	    Math.max(xPos + bumpX,
 		     uplinks.size() == 1 ? node.getPlacementHint() : -1);
@@ -530,7 +512,7 @@ public class ClassdiagramLayouter implements Layouter {
         nodeRows.clear();
         NodeRow nodeRow = new NodeRow(0);
         TreeSet nodeTree = new TreeSet(layoutedClassNodes);
-        boolean hasPackages = false;
+//        boolean hasPackages = false;
         // TODO: move "package in row" to NodeRow
         for (Iterator iNode = nodeTree.iterator(); iNode.hasNext();) {
             ClassdiagramNode node = (ClassdiagramNode) iNode.next();
@@ -553,7 +535,6 @@ public class ClassdiagramLayouter implements Layouter {
         }
         for (Iterator iter = comments.iterator(); iter.hasNext();) {
             ClassdiagramNode node = (ClassdiagramNode) iter.next();
-            ClassdiagramNode cNode = null;
             int rowInd =
 		node.getUplinks().isEmpty()
 		? 0
@@ -565,7 +546,7 @@ public class ClassdiagramLayouter implements Layouter {
         for (row = 0; row < nodeRows.size();) {
             NodeRow diaRow = (NodeRow) nodeRows.get(row);
             diaRow.setRowNumber(row++);
-            diaRow = diaRow.doSplit(maxRowWidth, hGap);
+            diaRow = diaRow.doSplit(MAX_ROW_WIDTH, H_GAP);
             if (diaRow != null) {
                 nodeRows.add(row, diaRow);
             }

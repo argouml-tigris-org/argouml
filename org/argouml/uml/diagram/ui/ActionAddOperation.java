@@ -32,7 +32,6 @@ import java.util.Iterator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
 
@@ -42,12 +41,6 @@ import org.argouml.uml.ui.UMLAction;
  * @stereotype singleton
  */
 public class ActionAddOperation extends UMLAction {
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    private static ActionAddOperation singleton = new ActionAddOperation();
-
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -65,7 +58,6 @@ public class ActionAddOperation extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
 	Object target =  TargetManager.getInstance().getModelTarget();
 	Object/*MClassifier*/ cls = null;
@@ -107,19 +99,10 @@ public class ActionAddOperation extends UMLAction {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-	Object target =  TargetManager.getInstance().getModelTarget();
+	Object target = TargetManager.getInstance().getModelTarget();
 	return super.shouldBeEnabled()
 	    && (Model.getFacade().isAClassifier(target)
 		|| Model.getFacade().isAFeature(target))
 	    && !Model.getFacade().isASignal(target);
-    }
-    /**
-     * @return Returns the singleton.
-     * @deprecated singleton use will be removed in 0.18.0.
-     * Use the constructor instead.
-     */
-    public static ActionAddOperation getSingleton() {
-        return singleton;
     }
 } /* end class ActionAddOperation */

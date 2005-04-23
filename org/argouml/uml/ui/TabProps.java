@@ -63,7 +63,6 @@ import org.argouml.uml.diagram.ui.PropPanelUMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.PropPanelUMLStateDiagram;
 import org.argouml.uml.diagram.ui.PropPanelUMLUseCaseDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
-import org.argouml.uml.ui.behavior.state_machines.PropPanelSimpleState;
 import org.argouml.uml.ui.foundation.core.PropPanelClass;
 import org.argouml.util.ConfigLoader;
 import org.tigris.gef.base.Diagram;
@@ -84,13 +83,14 @@ import org.tigris.swidgets.Orientation;
  * They are not registered with TargetManager
  * but with this class to prevent race-conditions while firing TargetEvents from
  * TargetManager.
- *
- * @author unknown
  */
 public class TabProps
     extends TabSpawnable
     implements TabModelTarget, ArgoModuleEventListener {
 
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(TabProps.class);
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -147,7 +147,8 @@ public class TabProps
     /**
      * @see java.lang.Object#finalize()
      */
-    public void finalize() {
+    public void finalize() throws Throwable {
+        super.finalize();
         ArgoEventPump.removeListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
     }
 
@@ -204,11 +205,6 @@ public class TabProps
         // panels.put(MModelImpl.class, new PropPanelModel());
         // panels.put((Class)Model.getFacade().USE_CASE/*MUseCaseImpl.class*/,
         //                 new PropPanelUseCase());
-        //important: MStateImpl corresponds to PropPanelSimpleState
-        //               not to PropPanelState!!
-        //otherwise, spawing will not be successful!!
-        panels.put(Model.getMetaTypes().getStateImpl(),
-                new PropPanelSimpleState());
     }
 
     /**
@@ -269,8 +265,9 @@ public class TabProps
             while (newPanel == null) {
                 newPanel = findPanelFor(targetClass);
                 targetClass = targetClass.getSuperclass();
-                if (targetClass == java.lang.Object.class)
+                if (targetClass == java.lang.Object.class) {
                     break;
+                }
             }
             if (newPanel != null) {
                 addTargetListener(newPanel);
@@ -305,24 +302,26 @@ public class TabProps
                 + "found (in cache?) " + p);
         if (p == null) {
             Class panelClass = panelClassFor(targetClass);
-            if (panelClass == null)
+            if (panelClass == null) {
                 return null;
+            }
             LOG.info("panelClass for found: " + panelClass);
             try {
                 // if a class is abstract we do not need to try
                 // to instantiate it.
-                if (Modifier.isAbstract(panelClass.getModifiers()))
+                if (Modifier.isAbstract(panelClass.getModifiers())) {
                     return null;
+                }
                 p = (TabModelTarget) panelClass.newInstance();
                 // moved next line inside try block to avoid filling
                 // the hashmap with bogus values.
                 panels.put(targetClass, p);
-            }
-            // doubtfull if the next ones must be ignored.
-            catch (IllegalAccessException ignore) {
+            } catch (IllegalAccessException ignore) {
+                // doubtfull if this must be ignored.
                 LOG.error(ignore);
                 return null;
             } catch (InstantiationException ignore) {
+                // doubtfull if this must be ignored.
                 LOG.error(ignore);
                 return null;
             }
@@ -359,8 +358,9 @@ public class TabProps
             targetClassName = targetClassName.substring(lastDot + 1);
         }
 
-        if (targetClassName.startsWith("M"))
+        if (targetClassName.startsWith("M")) {
             targetClassName = targetClassName.substring(1); //remove M
+        }
         if (targetClassName.endsWith("Impl")) {
             targetClassName =
                 targetClassName.substring(0, targetClassName.length() - 4);
@@ -441,11 +441,13 @@ public class TabProps
      */
     public void moduleUnloaded(ArgoModuleEvent event) {
     }
+
     /**
      * @see org.argouml.application.events.ArgoModuleEventListener#moduleEnabled(org.argouml.application.events.ArgoModuleEvent)
      */
     public void moduleEnabled(ArgoModuleEvent event) {
     }
+
     /**
      * @see org.argouml.application.events.ArgoModuleEventListener#moduleDisabled(org.argouml.application.events.ArgoModuleEvent)
      */

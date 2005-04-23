@@ -24,20 +24,15 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
-import java.util.ResourceBundle;
-import java.util.Vector;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -84,25 +79,11 @@ public abstract class PropPanel
     private Object target;
     private Object modelElement;
 
-    private Vector panels = new Vector();
-
-    private int lastRow;
-
     private EventListenerList listenerList;
 
-    /**
-     * The metaclass/property pairs for the third party listener (if we have
-     * set one up. We use this when creating a new listener on target
-     * change.<p>
-     */
-    private JPanel center;
-
     private JToolBar buttonPanel;
-    //private JPanel buttonPanelWithFlowLayout = new JPanel();
 
     private JLabel titleLabel;
-
-    private JPanel captionPanel = new JPanel();
 
     private Font smallFont = LookAndFeelMgr.getInstance().getSmallFont();
 
@@ -236,38 +217,11 @@ public abstract class PropPanel
     }
 
     /**
-     * Adds a component to the fields of the specified panel
-     * and sets the background and color to indicate
-     * the field is a link.<p>
-     *
-     * This method is never used.
-     *
-     * @param label the required string label
-     * @param component Component to be added
-     * @deprecated replaced by according widgets as of version 0.17.1
-     */
-    public final void addLinkField(String label, JComponent component) {
-        component.setBackground(getBackground());
-        component.setForeground(Color.blue);
-        addField(label, component);
-    }
-
-    /**
      * Add a seperator.
      */
     protected final void addSeperator() {
         add(LabelledLayout.getSeperator());
     }
-
-    /**
-     * TODO: Do we need this?
-     *
-     * @return null
-     */
-    private ResourceBundle getResourceBundle() {
-        return null;
-    }
-
 
 //    /**
 //     * This method (and addMElementListener) can be overriden if the
@@ -388,7 +342,7 @@ public abstract class PropPanel
         return target;
     }
 
-    
+
     /**
      * @see org.argouml.ui.TabTarget#refresh()
      */
@@ -694,17 +648,6 @@ public abstract class PropPanel
      */
     protected JLabel getTitleLabel() {
         return titleLabel;
-    }
-
-    /**
-     * @return Returns the buttonPanel.
-     *
-     * @deprecated As of V0.17.1. Reason: Nobody has any business
-     * poking around in my Panels.
-     * Use {@link #addButton(Component)} instead.
-     */
-    protected JToolBar getButtonPanel() {
-        return buttonPanel;
     }
 
     /**

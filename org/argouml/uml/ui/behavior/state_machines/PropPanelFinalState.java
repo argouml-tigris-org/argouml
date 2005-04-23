@@ -32,7 +32,7 @@ import org.argouml.util.ConfigLoader;
  *
  * @author 5heyden
  */
-public class PropPanelFinalState extends PropPanelState {
+public class PropPanelFinalState extends AbstractPropPanelState {
 
     /**
      * The constructor.

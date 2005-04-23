@@ -62,7 +62,6 @@ import org.tigris.gef.event.GraphSelectionListener;
 import org.tigris.gef.event.ModeChangeEvent;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.presentation.DefaultGraphModel;
 import org.tigris.gef.graph.presentation.JGraph;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBarFactory;
@@ -126,7 +125,7 @@ public class TabDiagram
     public TabDiagram(String tag) {
         super(tag);
         setLayout(new BorderLayout());
-        graph = new ArgoJGraph();
+        graph = new JGraph();
         graph.setDrawingSize((612 - 30) * 2, (792 - 55 - 20) * 2);
         // TODO: should update to size of diagram contents
 
@@ -266,8 +265,8 @@ public class TabDiagram
              * ActionPaste.getInstance().setEnabled( Globals.clipBoard
              * != null && !Globals.clipBoard.isEmpty());
              */
-            Collection currentSelection = TargetManager.getInstance()
-                    .getTargets();
+            Collection currentSelection =
+                TargetManager.getInstance().getTargets();
             if (currentSelection.size() == 0) {
                 TargetManager.getInstance().setTargets(sels);
             } else {
@@ -400,87 +399,6 @@ public class TabDiagram
 
 }
 
-/**
- * UMLJGraph is a JGraph that updates the Figs representing modelelements if
- * they are in the clipping area.
- * @author jaap.branderhorst@xs4all.nl
- * @since Apr 13, 2003
- * @deprecated Bob Tarling 11 Jan 2005. This has been corrected in GEF.
- * Please do not fix GEF in ArgoUML, contribute to GEF project. Because
- * of this we currently miss out on GEF features.
- * Remove this on the next GEF release after 0.10.10
- */
-class ArgoJGraph extends JGraph {
-
-    /**
-     * @see Object#hashCode()
-     *
-     * TODO: Investigate further:<p>
-     *
-     * According to a mail from GZ (6th November 2004) on the dev list,
-     * {@link javax.swing.RepaintManager} puts these objects in
-     * some kind of data structure that uses this function.
-     * Assuming that there is a reason for this we dare not sabotage
-     * this by short-circuiting this to 0. Instead we rely on that
-     * {@link org.tigris.gef.graph.presentation.JGraph#setDiagram(
-     * org.tigris.gef.base.Diagram)} actually removes this object from
-     * the {@link javax.swing.RepaintManager} and registers it again
-     * when resetting the diagram id.<p>
-     *
-     * This is based on the assumption that the function
-     * {@link #equals(Object)} must work as it does. I (Linus) have not
-     * understood why it must. Could someone please explain that in the
-     * javadoc.
-     */
-    public int hashCode() {
-        if (getCurrentDiagramId() == null) {
-            return 0;
-        }
-        return getCurrentDiagramId().hashCode();
-    }
-
-    /**
-     * Make a new JGraph with a new DefaultGraphModel.
-     * @see org.tigris.gef.graph.presentation.DefaultGraphModel
-     */
-    public ArgoJGraph() {
-        this(new DefaultGraphModel());
-    }
-
-    /**
-     * Make a new {@link JGraph} with a the {@link GraphModel} and
-     * {@link org.tigris.gef.base.Layer} from the given Diagram.
-     *
-     * @param d The Diagram.
-     * @deprecated as of 0.17.2 by Linus Tolke. This function is not used.
-     *             Use one of the other constructors instead.
-     */
-    public ArgoJGraph(Diagram d) {
-        this(new ArgoEditor(d));
-    }
-
-    /**
-     * Make a new {@link JGraph} with the given {@link GraphModel}.
-     *
-     * @param gm The given {@link GraphModel}.
-     */
-    public ArgoJGraph(GraphModel gm) {
-        this(new ArgoEditor(gm, null));
-    }
-
-    /**
-     * Make a new {@link JGraph} with the given {@link Editor}.
-     * All {@link JGraph} contructors eventually call this contructor.
-     *
-     * @param ed The given {@link Editor}.
-     * @deprecated as of 0.17.2 by Linus Tolke. This function will be
-     *             made private.
-     *             Use one of the other constructors instead.
-     */
-    public ArgoJGraph(Editor ed) {
-        super(ed);
-    }
-}
 
 /**
  * The ArgoUML editor.

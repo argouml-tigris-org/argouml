@@ -42,7 +42,7 @@ import org.tigris.swidgets.Orientation;
  *
  * @author 5heyden
  */
-public class PropPanelCompositeState extends PropPanelState {
+public class PropPanelCompositeState extends AbstractPropPanelState {
 
     private JList subverticesList = null;
 
