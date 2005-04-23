@@ -27,26 +27,21 @@ package org.argouml.model;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.server.UID;
-import java.util.Collection;
-import java.util.Iterator;
-
-import org.apache.log4j.Logger;
 
 /**
  * @stereotype singleton
  */
-public class UUIDManager {
-
-    /**
-     * The logger.
-     */
-    private static final Logger LOG = Logger.getLogger(UUIDManager.class);
-
+public final class UUIDManager {
     ////////////////////////////////////////////////////////////////
     // static variables
-
+    /**
+     * The singleton instance.
+     */
     private static final UUIDManager INSTANCE = new UUIDManager();
 
+    /**
+     * The inet address, used in generating UUIDs.
+     */
     private InetAddress address;
 
     ////////////////////////////////////////////////////////////////
@@ -96,67 +91,5 @@ public class UUIDManager {
 	}
 	s.append(uid.toString());
 	return s.toString();
-    }
-
-    /**
-     * @param model is the model that we operate on.
-     * @deprecated by Linus Tolke as of 0.15.4. I assume that the
-     * person that wrote the "temporary method" info message meant
-     * temporary method in the sense that it was implemented to
-     * temporarily solve a problem in the code and that it would
-     * eventually be removed when that problem was solved in some
-     * other way. By deprecating it I am moving this knowledge to
-     * compile time where it belongs, instead of having it in the log
-     * file at run time.<p>
-     *
-     * If this assumption is wrong, then please explain what temporary
-     * method means.
-     */
-    public synchronized void createModelUUIDS(Object model) {
-
-        LOG.info("NOTE: The temporary method 'createModelUUIDs' "
-		 + "has been called.");
-
-        if (!Model.getFacade().isANamespace(model)) {
-            throw new IllegalArgumentException();
-	}
-
-        Collection ownedElements = Model.getFacade().getOwnedElements(model);
-	Iterator oeIterator = ownedElements.iterator();
-
-        String uuid = Model.getFacade().getUUID(model);
-        if (uuid == null) {
-	    Model.getCoreHelper().setUUID(model, getNewUUID());
-	}
-
-	while (oeIterator.hasNext()) {
-            Object me = oeIterator.next();
-            if (Model.getFacade().isAModel(me)
-                || Model.getFacade().isAClassifier(me)
-                || Model.getFacade().isAFeature(me)
-                || Model.getFacade().isAStateVertex(me)
-		|| Model.getFacade().isAStateMachine(me)
-                || Model.getFacade().isATransition(me)
-                || Model.getFacade().isACollaboration(me)
-		|| Model.getFacade().isAMessage(me)
-                || Model.getFacade().isAAssociation(me)
-                || Model.getFacade().isAAssociationEnd(me)
-                || Model.getFacade().isAGeneralization(me)
-                || Model.getFacade().isADependency(me)
-                || Model.getFacade().isAStereotype(me)
-		|| Model.getFacade().isAUseCase(me)) {
-
-                uuid = Model.getFacade().getUUID(me);
-                if (uuid == null) {
-                    Model.getCoreHelper().setUUID(me, getNewUUID());
-                }
-
-            }
-	    //recursive handling of namespaces, needed for Collaborations
-	    if (Model.getFacade().isANamespace(me)) {
-		LOG.debug("Found another namespace: " + me);
-		createModelUUIDS(me);
-	    }
-        }
     }
 } /* end class UUIDManager */

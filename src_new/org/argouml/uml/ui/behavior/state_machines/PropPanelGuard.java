@@ -63,7 +63,8 @@ public class PropPanelGuard extends PropPanelModelElement {
         addField(Translator.localize("label.namespace"),
                 getNamespaceScroll());
 
-        JList transitionList = new UMLLinkedList(
+        JList transitionList =
+            new UMLLinkedList(
                 new UMLGuardTransitionListModel());
         transitionList.setVisibleRowCount(1);
         addField(Translator.localize("label.transition"),
@@ -89,5 +90,5 @@ public class PropPanelGuard extends PropPanelModelElement {
                 lookupIcon("Delete")));
     }
 
-} /* end class PropPanelState */
+} /* end class PropPanelGuard */
 

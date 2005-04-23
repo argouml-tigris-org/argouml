@@ -29,7 +29,6 @@ import java.util.Collection;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
 
@@ -39,9 +38,6 @@ import org.argouml.uml.ui.UMLAction;
  * @stereotype singleton
  */
 public class ActionAddAttribute extends UMLAction {
-
-    private static ActionAddAttribute singleton = new ActionAddAttribute();
-
     /**
      * The constructor for this class.
      */
@@ -87,7 +83,6 @@ public class ActionAddAttribute extends UMLAction {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Object target =  TargetManager.getInstance().getModelTarget();
 	/*
 	if (target instanceof MInterface) {
@@ -100,13 +95,5 @@ public class ActionAddAttribute extends UMLAction {
 		       && Model.getFacade().isAClass(
                                        Model.getFacade().getOwner(target)))
            || Model.getFacade().isAAssociationEnd(target));
-    }
-    /**
-     * @return Returns the singleton.
-     * @deprecated singleton use will be removed in 0.18.0.
-     * Use the constructor instead.
-     */
-    public static ActionAddAttribute getSingleton() {
-        return singleton;
     }
 } /* end class ActionAddAttribute */

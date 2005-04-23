@@ -39,17 +39,23 @@ import org.tigris.gef.util.Localizer;
  *
  * @author Jean-Hugues de Raigniac
  */
-public class Translator {
-    /** logger */
+public final class Translator {
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(Translator.class);
 
-    /** Binding between new key names and old ones needed by gef. */
-    private static Properties images = null;
+    /**
+     * Binding between new key names and old ones needed by gef.
+     */
+    private static Properties images;
 
-    /** Property file containing the bindings. */
+    /**
+     * Property file containing the bindings.
+     */
     private static String propertiesFile = "images.properties";
 
-    /** 
+    /**
      * This class should only be used in a static constant so make
      * the constructor private. See issue 3111.
      */
@@ -64,7 +70,7 @@ public class Translator {
         Locale.setDefault(new Locale(System.getProperty("user.language", "en"),
 				     System.getProperty("user.country", "")));
 
-        /** bundle default Locale, different from user default Locale */
+        /* bundle default Locale, different from user default Locale */
         org.workingfrog.i18n.util.Translator.init();
         org.workingfrog.i18n.util.Translator.setDefaultLocale(
 		new Locale("en", ""));
@@ -146,23 +152,6 @@ public class Translator {
     }
 
     /**
-     * Helper for localization to eliminate the need to import
-     * the gef util library.<p>
-     *
-     * This is only used when retrieving the strings localized in GEF.
-     *
-     * @deprecated by Linus Tolke as of 0.17.2.
-     *             Use {@link #localize(String key)}.
-     * @param bundle a binding to a bundle of i18n resources
-     * @param key the key to loacalize
-     * @return the translation
-     */
-    public static String localize(String bundle, String key) {
-        String gefValue = org.tigris.gef.util.Localizer.localize(bundle, key);
-        return org.workingfrog.i18n.util.Translator.localize(key, gefValue);
-    }
-
-    /**
      * Helper for those that don't want to give the bundle.<p>
      *
      * <em>Note:</em> This one argument <code>key</code>
@@ -176,28 +165,6 @@ public class Translator {
         return org.workingfrog.i18n.util.Translator.localize(key, key);
     }
 
-
-    /**
-     * Generates an localized String with arguments.<p>
-     *
-     * The localized string is a pattern to be processed by
-     * {@link MessageFormat}.
-     *
-     * @deprecated by Linus Tolke as of 0.17.2.
-     *             Use {@link #messageFormat(String key, Object[] args)}.
-     * @param bundle a binding to a bundle of i18n resources
-     * @param key the key to localize
-     * @param args the args as Objects, inserted in the localized String
-     * @return the localized String with inserted arguments
-     */
-    public static String messageFormat(String bundle,
-				       String key, Object[] args)
-    {
-    	MessageFormat msgFmt = new MessageFormat(localize(bundle, key));
-	return msgFmt.format(args);
-    }
-
-
     /**
      * Generates an localized String with arguments.<p>
      *
@@ -208,8 +175,7 @@ public class Translator {
      * @param args the args as Objects, inserted in the localized String
      * @return the localized String with inserted arguments
      */
-    public static String messageFormat(String key, Object[] args)
-    {
+    public static String messageFormat(String key, Object[] args) {
         return new MessageFormat(localize(key)).format(args);
     }
 }

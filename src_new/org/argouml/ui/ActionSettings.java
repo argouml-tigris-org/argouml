@@ -60,25 +60,6 @@ public class ActionSettings extends UMLAction
      */
     private static final Logger LOG = Logger.getLogger(Translator.class);
 
-    /**
-     * One and only instance.
-     *
-     * @deprecated by Linus Tolke as of 0.17.1. Create your own instance of this
-     *             action.
-     */
-    private static final ActionSettings SINGLETON = new ActionSettings();
-
-    /**
-     * Get the instance.
-     *
-     * @return The instance.
-     * @deprecated by Linus Tolke as of 0.17.1. Create your own instance of this
-     *             action.
-     */
-    public static ActionSettings getInstance() {
-        return SINGLETON;
-    }
-
     ////////////////////////////////////////////////////////////////
     // constructors
     private JButton applyButton = null;

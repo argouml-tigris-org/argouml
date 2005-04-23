@@ -416,11 +416,4 @@ public interface MetaTypes {
      * @return Returns the VisibilityKind.
      */
     Object getVisibilityKind();
-
-    /**
-     * @return Returns the StateImpl.
-     * @deprecated by Linus Tolke as of 0.17.3. This is implementation
-     *             creaping out! Use {@link #getState()} instead.
-     */
-    Object getStateImpl();
 }

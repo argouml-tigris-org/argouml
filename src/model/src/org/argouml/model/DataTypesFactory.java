@@ -62,16 +62,6 @@ public interface DataTypesFactory {
     Object createBooleanExpression(String language, String body);
 
     /**
-     * Create an UML ExpressionEditor based on a given expression.
-     *
-     * @param expr Expression the given expression.
-     * @return an initialized ExpressionEditor instance.
-     * @deprecated as of 0.18.beta1 by Linus Tolke. This is an internal NSUML
-     *             solution creaping out.
-     */
-    Object createExpressionEditor(Object expr);
-
-    /**
      * Create an empty but initialized instance of a UML Expression.
      *
      * @param language the language for the expression

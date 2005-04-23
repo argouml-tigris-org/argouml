@@ -35,7 +35,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.util.Iterator;
 
@@ -65,6 +64,9 @@ public class FigComment
 	       MouseListener,
 	       KeyListener,
 	       PropertyChangeListener {
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(FigComment.class);
 
     ////////////////////////////////////////////////////////////////
@@ -77,8 +79,6 @@ public class FigComment
     private int gapY = 10;
 
     private boolean readyToEdit = true;
-
-    private static final int MARGIN = 2;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -96,7 +96,7 @@ public class FigComment
      * The main constructor used for file loading.
      */
     public FigComment() {
-        
+
         body = new FigPoly(Color.black, Color.white);
         body.addPoint(x, y);
         body.addPoint(x + width - 1 - gapY, y);
@@ -155,55 +155,6 @@ public class FigComment
         setOwner(node);
     }
 
-//    /**
-//     * Create a note for a given model element.
-//     * @deprecated as of 0.17.1 nobody should use this constructor since
-//     * it not only constructs the fig but also the model behind it.
-//     * That should not be done by a fig which is only a view to the model
-//     * @param element The annotated model element.
-//     */
-//    public FigComment(Object element) {
-//        this(); // Construct the figure.
-//
-//        if (!Model.getFacade().isAModelElement(element)) {
-//            throw new IllegalArgumentException();
-//        }
-//
-//	// Create a new Comment node.
-//        Object comment =
-//	    Model.getCoreFactory().createComment();
-//        setOwner(comment); // Set it as the owner of the figure.
-//	// Tell the annotated element, that it has a comment now.
-//        Model.getCoreHelper().addComment(element, comment);
-//
-//        // Notes in statechart diagrams need a special treatment, cause
-//        // the nodes in them don't necessary have a namespace, where
-//        // we could add the note. So I added this hack... :-(
-//        // Andreas Rueckert <a_rueckert@gmx.net>
-//        if (Model.getFacade().isAStateVertex(element)) {
-//
-//	    // If the current target is a statechart diagram, we have to
-//	    // check, if we are editing the diagram.
-//            ProjectBrowser pb = ProjectBrowser.getInstance();
-//            if (TargetManager.getInstance().getTarget()
-//                    instanceof UMLStateDiagram) {
-//                StateDiagramGraphModel gm =
-//		    (StateDiagramGraphModel)
-//		    (((UMLStateDiagram) TargetManager.getInstance()
-//		            .getTarget()).getGraphModel());
-//		// We are editing, so we set the Namespace directly.
-//              Model.getCoreHelper().setNamespace(comment, gm.getNamespace());
-//            }
-//        } else {
-//	    // Add the comment to the same namespace as the annotated element.
-//            Model.getCoreHelper().setNamespace(comment,
-//                    Model.getFacade().getNamespace(element));
-//        }
-//
-//        // Set the default text for this figure type.
-//        storeNote(placeString()); 
-//    }
-
     /**
      * Get the default text for this figure.
      *
@@ -249,7 +200,6 @@ public class FigComment
     public void mouseClicked(MouseEvent me) {
         if (!readyToEdit) {
             if (Model.getFacade().isAModelElement(getOwner())) {
-                Object own = /*(MModelElement)*/ getOwner();
                 readyToEdit = true;
             } else {
                 LOG.debug("not ready to edit note");
@@ -306,20 +256,15 @@ public class FigComment
         String pName = pve.getPropertyName();
         if (pName.equals("editing")
 	    && Boolean.FALSE.equals(pve.getNewValue())) {
-            try {
-                //parse the text that was edited
-                textEdited((FigText) src);
-                // resize the FigNode to accomodate the new text
-                Rectangle bbox = getBounds();
-                Dimension minSize = getMinimumSize();
-                bbox.width = Math.max(bbox.width, minSize.width);
-                bbox.height = Math.max(bbox.height, minSize.height);
-                setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-                endTrans();
-            } catch (PropertyVetoException ex) {
-                LOG.error("could not parse and use the text entered "
-			  + "in figcomment", ex);
-            }
+            //parse the text that was edited
+            textEdited((FigText) src);
+            // resize the FigNode to accomodate the new text
+            Rectangle bbox = getBounds();
+            Dimension minSize = getMinimumSize();
+            bbox.width = Math.max(bbox.width, minSize.width);
+            bbox.height = Math.max(bbox.height, minSize.height);
+            setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
+            endTrans();
         } else {
             super.propertyChange(pve);
         }
@@ -347,7 +292,8 @@ public class FigComment
         text.keyPressed(ke);
     }
 
-    /** not used, do nothing.
+    /**
+     * Not used, do nothing.
      *
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
@@ -440,7 +386,7 @@ public class FigComment
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
-    protected void textEdited(FigText ft) throws PropertyVetoException {
+    protected void textEdited(FigText ft) {
         if (ft == text) {
             storeNote(ft.getText());
         }
