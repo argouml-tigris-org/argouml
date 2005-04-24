@@ -30,6 +30,7 @@ import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -90,7 +91,7 @@ public class TabText
         if (withToolbar) {
             toolbar = new ToolBar();
             toolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
-            toolbar.setOrientation(JToolBar.HORIZONTAL);
+            toolbar.setOrientation(SwingConstants.HORIZONTAL);
             add(toolbar, BorderLayout.NORTH);
         }
     }

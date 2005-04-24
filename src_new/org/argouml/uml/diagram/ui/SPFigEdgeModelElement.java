@@ -42,9 +42,6 @@ import org.tigris.gef.ui.ColorRenderer;
 public class SPFigEdgeModelElement extends StylePanelFig implements
         ItemListener {
 
-    private static final Logger LOG =
-        Logger.getLogger(SPFigEdgeModelElement.class);
-
     private SpacerPanel spacer = new SpacerPanel();
 
     private SpacerPanel spacer2 = new SpacerPanel();

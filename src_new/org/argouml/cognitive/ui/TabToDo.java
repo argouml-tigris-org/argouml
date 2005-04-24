@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 
 import org.argouml.application.api.Configuration;
 import org.argouml.cognitive.ToDoItem;
@@ -93,7 +94,7 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
 
         setLayout(new BorderLayout());
 
-        JToolBar toolBar = new ToolBar(JToolBar.VERTICAL);
+        JToolBar toolBar = new ToolBar(SwingConstants.VERTICAL);
         toolBar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         toolBar.add(actionNewToDoItem);
         toolBar.add(actionResolve);
