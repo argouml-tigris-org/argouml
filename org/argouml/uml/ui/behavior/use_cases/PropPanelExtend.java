@@ -121,65 +121,6 @@ public class PropPanelExtend extends PropPanelModelElement {
                 lookupIcon("Delete")));
     }
 
-
-    /**
-     * Get the condition associated with the extend relationship.<p>
-     *
-     * The condition is actually of type {@link
-     * ru.novosoft.uml.foundation.data_types.MBooleanExpression},
-     * which defines both a language and a body. We are only
-     * interested in the body, which is just a string.<p>
-     *
-     * @return The body of the {@link
-     * ru.novosoft.uml.foundation.data_types.MBooleanExpression} which
-     * is the condition associated with this extend relationship, or
-     * <code>null</code> if there is none.
-     */
-    public String getCondition() {
-        String condBody = null;
-        Object target   = getTarget();
-
-        if (Model.getFacade().isAExtend(target)) {
-            Object condition = Model.getFacade().getCondition(target);
-
-            if (condition != null) {
-                condBody = (String) Model.getFacade().getBody(condition);
-            }
-        }
-
-        return condBody;
-    }
-
-
-    /**
-     * Set the condition associated with the extend relationship.<p>
-     *
-     * The condition is actually of type {@link
-     * ru.novosoft.uml.foundation.data_types.MBooleanExpression},
-     * which defines both a language and a body. We are only
-     * interested in setting the body, which is just a string.<p>
-     *
-     * @param condBody  The body of the condition to associate with this
-     *                  extend relationship.
-     */
-    public void setCondition(String condBody) {
-
-        // Give up if we are not an extend relationship
-
-        Object target = getTarget();
-
-        if (!(Model.getFacade().isAExtend(target))) {
-            return;
-        }
-
-        // Set the condition body.
-
-        Model.getUseCasesHelper().setCondition(target,
-				 Model.getDataTypesFactory()
-				     .createBooleanExpression(null, condBody));
-    }
-
-
     /**
      * Invoked by the "New Extension Point" toolbar button to create a new
      *   extension point for this extend relationship in the same namespace as
