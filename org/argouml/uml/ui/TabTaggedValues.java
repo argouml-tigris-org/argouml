@@ -64,10 +64,6 @@ import org.tigris.toolbar.ToolBar;
  */
 public class TabTaggedValues extends AbstractArgoJPanel
     implements TabModelTarget {
-    ////////////////////////////////////////////////////////////////
-    // constants
-    private static final String DEFAULT_NAME = "tag";
-    private static final String DEFAULT_VALUE = "value";
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -195,10 +191,9 @@ public class TabTaggedValues extends AbstractArgoJPanel
         if (!(Model.getFacade().isAModelElement(t))) {
             shouldBeEnabled = false;
             return shouldBeEnabled;
-        } else {
-            shouldBeEnabled = true;
-            return true;
         }
+        shouldBeEnabled = true;
+        return true;
     }
 
     /**
