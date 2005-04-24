@@ -386,9 +386,8 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                         destFigNode.updateEdges();
                     }
                     return;
-                } else {
-                    LOG.warn("connection return null");
                 }
+                LOG.warn("connection return null");
             } else {
                 LOG.warn("in dest node but no port");
             }
