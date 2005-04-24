@@ -478,7 +478,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
     }
 
     /**
-     * Makes sure that the fig is updated when the _bboxField loses focus.
+     * Makes sure that the fig is updated when the bboxField loses focus.
      *
      * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
      */
