@@ -34,7 +34,7 @@ public interface XmiWriter {
 
     /**
      * Write XMI to registered writer
-     * @throws SAXException if it goes wrong
+     * @throws UmlException if it goes wrong
      */
     public void write() throws UmlException;
 }
