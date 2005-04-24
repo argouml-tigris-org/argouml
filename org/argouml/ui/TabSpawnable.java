@@ -40,13 +40,25 @@ import org.tigris.swidgets.Orientation;
 
 /**
  * A subclass of JPanel that can act as a tab in the DetailsPane or
- * MultiEditorPane. When the tab is double-clicked, this JPanel will generate a
+ * MultiEditorPane. Added functionality:<p>
+ * 
+ * Spawning: When the tab is double-clicked, this JPanel will generate a
  * separate window of the same size and with the same contents. This is almost
  * like "tearing off" a tab.<p>
- *
- * TODO: Spawning of windows disabled in spawn()
+ * 
+ * TODO: Spawning of windows disabled in spawn()<p>
+ * 
+ * Title: This JPanel keeps track of its own title.<p>
+ * 
+ * Orientation: This JPanel is Orientable.<p>
+ * 
+ * Cloning: This JPanel may be cloned.<p>
+ * 
+ * TODO: This class would better have been named AbstractArgoJPanel 
+ * or something.
  */
-public class TabSpawnable extends JPanel implements Cloneable, Orientable {
+public abstract class TabSpawnable extends JPanel
+    implements Cloneable, Orientable {
     /**
      * Logger.
      */
@@ -64,7 +76,7 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
     private Orientation orientation;
 
     /**
-     * @return Returns the orientation.
+     * @return the orientation
      */
     public Orientation getOrientation() {
         return orientation;
