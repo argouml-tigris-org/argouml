@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionCopy;
@@ -75,7 +75,7 @@ import org.tigris.toolbar.ToolBarFactory;
  * parent.
  */
 public class TabDiagram
-    extends TabSpawnable
+    extends AbstractArgoJPanel
     implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
 
     /**

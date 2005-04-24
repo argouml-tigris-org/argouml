@@ -43,7 +43,7 @@ import org.tigris.toolbar.ToolBar;
  * A tab that contains textual information.
  */
 public class TabText
-    extends TabSpawnable
+    extends AbstractArgoJPanel
     implements TabModelTarget, DocumentListener {
     ////////////////////////////////////////////////////////////////
     // instance variables

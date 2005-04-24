@@ -43,7 +43,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -72,7 +72,7 @@ import ru.novosoft.uml.MElementListener;
  * inheritance hierarchy that matches the UML 1.3 metamodel.
  */
 public abstract class PropPanel
-    extends TabSpawnable
+    extends AbstractArgoJPanel
     implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     ////////////////////////////////////////////////////////////////
     // instance vars

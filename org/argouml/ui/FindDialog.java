@@ -570,11 +570,12 @@ public class FindDialog extends ArgoDialog
      */
     public void myDoubleClick(int tab) {
         JPanel t = (JPanel) resultTabs.elementAt(tab);
-        if (t instanceof TabSpawnable) {
-            if (((TabSpawnable) t).spawn() != null) {
+        if (t instanceof AbstractArgoJPanel) {
+            if (((AbstractArgoJPanel) t).spawn() != null) {
                 resultTabs.removeElementAt(tab);
                 //TODO: This next line does not work...
-                location.removeItem("In Tab:" + ((TabSpawnable) t).getTitle());
+                location.removeItem("In Tab:" 
+                                + ((AbstractArgoJPanel) t).getTitle());
             }
         }
     }

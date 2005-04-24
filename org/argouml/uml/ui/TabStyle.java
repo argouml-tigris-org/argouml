@@ -43,7 +43,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.StylePanel;
 import org.argouml.ui.TabFigTarget;
-import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.util.namespace.Namespace;
@@ -94,7 +94,7 @@ import org.tigris.gef.presentation.Fig;
  * on different tabs.
  *
  */
-public class TabStyle extends TabSpawnable implements TabFigTarget,
+public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         PropertyChangeListener, DelayedVChangeListener {
 
     private static final Logger LOG = Logger.getLogger(TabStyle.class);

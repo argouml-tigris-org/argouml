@@ -55,7 +55,8 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation of the panel
      */
-    public AbstractPropPanelState(String name, ImageIcon icon, Orientation orientation)
+    public AbstractPropPanelState(
+                    String name, ImageIcon icon, Orientation orientation)
     {
         super(name, icon, orientation);
 

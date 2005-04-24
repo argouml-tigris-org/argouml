@@ -50,7 +50,7 @@ import org.argouml.cognitive.checklist.Checklist;
 import org.argouml.cognitive.checklist.ChecklistStatus;
 import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.TabModelTarget;
 import org.tigris.gef.presentation.Fig;
@@ -58,7 +58,7 @@ import org.tigris.gef.presentation.Fig;
 /**
  * Tab to show the checklist for a certain element.
  */
-public class TabChecklist extends TabSpawnable
+public class TabChecklist extends AbstractArgoJPanel
     implements TabModelTarget, ActionListener, ListSelectionListener {
 
     ////////////////////////////////////////////////////////////////

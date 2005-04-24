@@ -91,8 +91,8 @@ public class MultiEditorPane
         for (int i = 0; i < tabPanels.size(); i++) {
             String title = "tab";
             JPanel t = (JPanel) tabPanels.elementAt(i);
-            if (t instanceof TabSpawnable) {
-                title = ((TabSpawnable) t).getTitle();
+            if (t instanceof AbstractArgoJPanel) {
+                title = ((AbstractArgoJPanel) t).getTitle();
             }
             tabs.addTab("As " + title, t);
             tabs.setEnabledAt(i, false);
@@ -291,8 +291,8 @@ public class MultiEditorPane
         LOG.debug("double: " + tabs.getComponentAt(tab).toString());
 //        JPanel t = (JPanel) tabPanels.elementAt(tab);
         // Currently this feature is disabled for ArgoUML.
-//        if (t instanceof TabSpawnable)
-//             ((TabSpawnable) t).spawn();
+//        if (t instanceof AbstractArgoJPanel)
+//             ((AbstractArgoJPanel) t).spawn();
     }
 
     /**

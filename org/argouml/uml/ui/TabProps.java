@@ -43,7 +43,7 @@ import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -85,7 +85,7 @@ import org.tigris.swidgets.Orientation;
  * TargetManager.
  */
 public class TabProps
-    extends TabSpawnable
+    extends AbstractArgoJPanel
     implements TabModelTarget, ArgoModuleEventListener {
 
     /**
@@ -156,6 +156,8 @@ public class TabProps
      * Set the orientation of the property panel.
      *
      * @param orientation the new orientation for this property panel
+     *
+     * @see org.tigris.swidgets.Orientable#setOrientation(org.tigris.swidgets.Orientation)
      */
     public void setOrientation(Orientation orientation) {
         super.setOrientation(orientation);
@@ -209,7 +211,7 @@ public class TabProps
 
     /**
      * Adds a property panel to the internal list. This allows a plugin to
-     * add a register a new property panel an run-time.
+     * add / register a new property panel at run-time.
      * This property panel will then
      * be displayed in the detatils pane whenever an element
      * of the given metaclass is selected.

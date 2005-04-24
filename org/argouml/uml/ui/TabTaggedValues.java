@@ -54,7 +54,7 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBar;
@@ -62,7 +62,7 @@ import org.tigris.toolbar.ToolBar;
 /**
  * Table view of a Model Element's Tagged Values.
  */
-public class TabTaggedValues extends TabSpawnable
+public class TabTaggedValues extends AbstractArgoJPanel
     implements TabModelTarget {
     ////////////////////////////////////////////////////////////////
     // constants

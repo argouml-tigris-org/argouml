@@ -524,14 +524,14 @@ public class ProjectBrowser
      * @param tabClass the given class
      * @return the tabpage
      */
-    public TabSpawnable getTab(Class tabClass) {
+    public AbstractArgoJPanel getTab(Class tabClass) {
         // In theory there can be multiple details pane (work in
         // progress). It must first be determined which details
         // page contains the properties tab. Bob Tarling 7 Dec 2002
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
             DetailsPane detailsPane = (DetailsPane) it.next();
-            TabSpawnable tab = detailsPane.getTab(tabClass);
+            AbstractArgoJPanel tab = detailsPane.getTab(tabClass);
             if (tab != null) {
                 return tab;
             }
