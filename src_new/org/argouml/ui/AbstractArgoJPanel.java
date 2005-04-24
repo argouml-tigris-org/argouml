@@ -54,15 +54,17 @@ import org.tigris.swidgets.Orientation;
  * 
  * Cloning: This JPanel may be cloned.<p>
  * 
- * TODO: This class would better have been named AbstractArgoJPanel 
- * or something.
+ * This class used to be named TabSpawnable. 
+ * Renamed since it is not a Tab, but a Panel, and being spawnable is  
+ * not any more its main purpose.
  */
-public abstract class TabSpawnable extends JPanel
+public abstract class AbstractArgoJPanel extends JPanel
     implements Cloneable, Orientable {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(TabSpawnable.class);
+    private static final Logger LOG = 
+            Logger.getLogger(AbstractArgoJPanel.class);
 
     private static final int OVERLAPP = 30;
 
@@ -88,7 +90,7 @@ public abstract class TabSpawnable extends JPanel
      * The constructor.
      *
      */
-    public TabSpawnable() {
+    public AbstractArgoJPanel() {
         this("untitled", false);
     }
 
@@ -97,7 +99,7 @@ public abstract class TabSpawnable extends JPanel
      *
      * @param tag the name
      */
-    public TabSpawnable(String tag) {
+    public AbstractArgoJPanel(String tag) {
         this(tag, false);
     }
 
@@ -107,7 +109,7 @@ public abstract class TabSpawnable extends JPanel
      * @param tag the name
      * @param t if true, remove tab from parent JTabbedPane
      */
-    public TabSpawnable(String tag, boolean t) {
+    public AbstractArgoJPanel(String tag, boolean t) {
         setTitle(tag);
         tear = t;
     }
@@ -167,12 +169,12 @@ public abstract class TabSpawnable extends JPanel
      *
      * @return a copy of the frame or null if not clone-able.
      */
-    public TabSpawnable spawn() {
+    public AbstractArgoJPanel spawn() {
 
         JDialog f = new JDialog(ProjectBrowser.getInstance());
         f.getContentPane().setLayout(new BorderLayout());
         f.setTitle(Translator.localize(title));
-        TabSpawnable newPanel = (TabSpawnable) clone();
+        AbstractArgoJPanel newPanel = (AbstractArgoJPanel) clone();
         if (newPanel == null) {
 	    return null; //failed to clone
 	}
@@ -212,4 +214,4 @@ public abstract class TabSpawnable extends JPanel
 
     }
 
-} /* end class TabSpawnable */
+} /* end class AbstractArgoJPanel */

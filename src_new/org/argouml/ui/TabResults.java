@@ -60,7 +60,7 @@ import org.tigris.gef.util.ChildGenerator;
  *
  */
 public class TabResults
-        extends TabSpawnable
+        extends AbstractArgoJPanel
         implements
                 Runnable,
                 MouseListener,
@@ -196,9 +196,9 @@ public class TabResults
     }
 
     /**
-     * @see org.argouml.ui.TabSpawnable#spawn()
+     * @see org.argouml.ui.AbstractArgoJPanel#spawn()
      */
-    public TabSpawnable spawn() {
+    public AbstractArgoJPanel spawn() {
 	TabResults newPanel = (TabResults) super.spawn();
 	if (newPanel != null) {
 	    newPanel.setResults(results, diagrams);

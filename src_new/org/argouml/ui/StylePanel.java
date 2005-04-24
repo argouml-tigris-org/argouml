@@ -48,7 +48,7 @@ import org.tigris.gef.presentation.Fig;
  * The Presentation panel - formerly called style panel.
  *
  */
-public class StylePanel extends TabSpawnable implements TabFigTarget,
+public class StylePanel extends AbstractArgoJPanel implements TabFigTarget,
                 ItemListener, DocumentListener, ListSelectionListener,
                 ActionListener {
     private static final Logger LOG = Logger.getLogger(StylePanel.class);

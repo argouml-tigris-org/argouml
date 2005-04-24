@@ -31,7 +31,7 @@ import javax.swing.JToolBar;
 
 import org.argouml.application.api.Configuration;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.cmd.ActionEmailExpert;
 import org.argouml.ui.cmd.ActionNewToDoItem;
 import org.argouml.ui.cmd.ActionResolve;
@@ -48,7 +48,7 @@ import org.tigris.toolbar.ToolBar;
  * The ToDo Tab.
  *
  */
-public class TabToDo extends TabSpawnable implements TabToDoTarget {
+public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
     ////////////////////////////////////////////////////////////////
     // static variables
     private static int numHushes = 0;

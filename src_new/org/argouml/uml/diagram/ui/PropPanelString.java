@@ -33,7 +33,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.TabModelTarget;
 
@@ -44,7 +44,7 @@ import org.tigris.gef.presentation.FigText;
  *
  */
 public class PropPanelString
-    extends TabSpawnable
+    extends AbstractArgoJPanel
     implements TabModelTarget, PropertyChangeListener, DocumentListener {
     ////////////////////////////////////////////////////////////////
     // instance vars

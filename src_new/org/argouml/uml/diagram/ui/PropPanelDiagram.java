@@ -49,7 +49,7 @@ public class PropPanelDiagram extends PropPanel {
 
     /**
      * Constructs a proppanel with a given name.
-     * @see org.argouml.ui.TabSpawnable#TabSpawnable(String)
+     * @see org.argouml.ui.AbstractArgoJPanel#AbstractArgoJPanel(String)
      */
     protected PropPanelDiagram(String diagramName) {
         super(diagramName, ConfigLoader.getTabPropsOrientation());
