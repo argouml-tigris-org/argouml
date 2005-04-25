@@ -113,10 +113,10 @@ public class DisplayTextTree extends JTree {
         if (value instanceof ToDoList) {
             return "ToDoList";
         }
-        if (value != null)
+        if (value != null) {
             return value.toString();
-        else
-            return "-";
+        }
+        return "-";
     }
 
     /**
