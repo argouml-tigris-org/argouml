@@ -252,8 +252,7 @@ public class ExplorerTree
         }
         if (value != null)
             return value.toString();
-        else
-            return "-";
+        return "-";
     }
 
     /**
@@ -381,9 +380,8 @@ public class ExplorerTree
                     if (!e.isAddedPath(i)) {
                         callSetTarget = false;
                         break;
-                    } else {
-                        addedElements.add(element);
                     }
+                    addedElements.add(element);
                 }
 
                 if (callSetTarget && addedElements.size()

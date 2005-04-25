@@ -463,8 +463,8 @@ public final class TargetManager {
 		    || (first && targ != getTarget())) {
 		    oldTargets = targets.toArray();
 		    break;
-		} else
-		    first = false;
+		}
+                first = false;
 	    }
 	} else
 	    oldTargets = targets.toArray();
