@@ -66,7 +66,8 @@ public class TestExtensionMechanismsFactory extends TestCase {
     public void testCreates() {
 
 	String[] objs = {
-	    "Stereotype", "TaggedValue", null,
+	    "TaggedValue",
+	    null,
 	};
 
 	CheckUMLModelHelper.createAndRelease(
