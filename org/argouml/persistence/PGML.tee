@@ -267,7 +267,7 @@ height="<ocl>self.height.intValue</ocl>"
 
           y="<ocl>self.firstPoint.y.intValue</ocl>" />
 
-  <ocl>self.pointsVector[1,*]</ocl>
+  <ocl>self.points[1,*]</ocl>
 
 </path>
 
@@ -295,7 +295,7 @@ height="<ocl>self.height.intValue</ocl>"
 
           y="<ocl>self.firstPoint.y.intValue</ocl>" />
 
-  <ocl>self.pointsVector</ocl>
+  <ocl>self.points</ocl>
 
 </path>
 
@@ -323,7 +323,7 @@ height="<ocl>self.height.intValue</ocl>"
 
           y="<ocl>self.firstPoint.y.intValue</ocl>" />
 
-  <ocl>self.pointsVector</ocl>
+  <ocl>self.points</ocl>
 
 </path>
 
