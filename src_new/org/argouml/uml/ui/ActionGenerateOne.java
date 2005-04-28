@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
 import org.tigris.gef.presentation.Fig;
@@ -64,7 +63,7 @@ public class ActionGenerateOne extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
+//        ProjectBrowser pb = ProjectBrowser.getInstance();
         Vector classes = new Vector();
         Collection targets = TargetManager.getInstance().getTargets();
         Iterator it = targets.iterator();
@@ -98,7 +97,7 @@ public class ActionGenerateOne extends UMLAction {
         // the shouldBeEnabled mechanism blanks out the possibility to
         // choose this alternative in this case.
         ClassGenerationDialog cgd = new ClassGenerationDialog(classes);
-        cgd.show();
+        cgd.setVisible(true);
     }
 
     /**

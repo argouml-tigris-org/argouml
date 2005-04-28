@@ -123,9 +123,6 @@ public class Import {
 
     private JCheckBox descend;
 
-    /** The files that needs a second RE pass. */
-    private Vector secondPassFiles;
-
     private JCheckBox createDiagrams;
 
     private JCheckBox minimiseFigs;
@@ -396,7 +393,7 @@ public class Import {
         SwingUtilities.invokeLater(
 				   new ImportRun(files, b,
 						 layoutDiagrams.isSelected()));
-        iss.show();
+        iss.setVisible(true);
     }
 
     /**
@@ -440,8 +437,7 @@ public class Import {
     public boolean isCreateDiagramsChecked() {
         if (createDiagrams != null)
             return createDiagrams.isSelected();
-        else
-            return true;
+        return true;
     }
 
     /**
@@ -452,8 +448,7 @@ public class Import {
     public boolean isDiscendDirectoriesRecursively() {
         if (descend != null)
             return descend.isSelected();
-        else
-            return true;
+        return true;
     }
 
     /**
@@ -464,8 +459,7 @@ public class Import {
     public boolean isMinimiseFigsChecked() {
         if (minimiseFigs != null)
             return minimiseFigs.isSelected();
-        else
-            return false;
+        return false;
     }
 
     /**
@@ -785,7 +779,7 @@ public class Import {
             cancelButton.addActionListener(al);
         }
 
-        public void done() { hide(); dispose(); }
+        public void done() { setVisible(false); dispose(); }
     }
 
 
@@ -844,7 +838,7 @@ public class Import {
         }
 
         public void disposeDialog() {
-            hide(); dispose();
+            setVisible(false); dispose();
         }
     }
 }
@@ -1023,7 +1017,7 @@ class ImportClasspathDialog extends JDialog {
 		}
 	    });
 
-	    int retval = chooser.showOpenDialog(ProjectBrowser.getInstance());
+	    chooser.showOpenDialog(ProjectBrowser.getInstance());
         }
     }
 }

@@ -41,7 +41,7 @@ class ActionOpenCritics extends UMLAction {
      */
     public void actionPerformed(ActionEvent ae) {
 	CriticBrowserDialog dialog = new CriticBrowserDialog();
-	dialog.show();
+	dialog.setVisible(true);
     }
 
 } /* end class ActionOpenCritics */

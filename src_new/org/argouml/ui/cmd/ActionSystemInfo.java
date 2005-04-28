@@ -58,7 +58,7 @@ class ActionSystemInfo extends UMLAction {
 	}
 
 	sysInfoDialog.setLocationRelativeTo(jFrame);
-	sysInfoDialog.show();
+	sysInfoDialog.setVisible(true);
     }
 
 } /* end class ActionSystemInfo */

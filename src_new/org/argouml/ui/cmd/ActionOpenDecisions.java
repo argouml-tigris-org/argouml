@@ -44,7 +44,7 @@ class ActionOpenDecisions extends UMLAction {
     public void actionPerformed(ActionEvent ae) {
 	DesignIssuesDialog d =
 	    new DesignIssuesDialog(ProjectBrowser.getInstance());
-	d.show();
+	d.setVisible(true);
     }
 } /* end class ActionOpenDecisions */
 

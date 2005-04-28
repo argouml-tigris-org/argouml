@@ -102,7 +102,7 @@ public class ActionGenerateProjectCode extends UMLAction {
 	    }
 	}
 	ClassGenerationDialog cgd = new ClassGenerationDialog(classes, true);
-	cgd.show();
+	cgd.setVisible(true);
     }
 
     /**

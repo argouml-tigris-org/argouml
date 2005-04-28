@@ -49,6 +49,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
@@ -305,7 +306,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
         contentPane.setLayout(new BorderLayout());
         contentPane.add(this, BorderLayout.CENTER);
 
-	dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+	dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	dialog.addWindowListener(new WindowAdapter() {
     	    public void windowClosing(WindowEvent we) {
 		cancel();
@@ -315,7 +316,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
         dialog.pack();
         dialog.setLocationRelativeTo(parent);
 
-        dialog.show();
+        dialog.setVisible(true);
 	return returnValue;
     }
 

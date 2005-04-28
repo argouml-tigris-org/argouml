@@ -60,7 +60,7 @@ public class ActionGenerationSettings extends UMLAction {
      */
     public void actionPerformed(ActionEvent ae) {
 	SourcePathDialog cgd = new SourcePathDialog();
-	cgd.show();
+	cgd.setVisible(true);
     }
 
     /**

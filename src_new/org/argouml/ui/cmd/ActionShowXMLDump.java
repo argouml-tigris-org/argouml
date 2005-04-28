@@ -79,7 +79,7 @@ class ActionShowXMLDump extends AbstractAction {
 	pw.setSize(400, 500);
 
 	pw.setLocationRelativeTo(pb);
-	pw.show();
+	pw.setVisible(true);
     }
 }
 

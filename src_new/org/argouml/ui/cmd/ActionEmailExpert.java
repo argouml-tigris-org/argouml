@@ -80,7 +80,7 @@ public class ActionEmailExpert extends ToDoItemAction {
         } else {
             EmailExpertDialog dialog = new EmailExpertDialog();
             dialog.setTarget(getRememberedTarget());
-            dialog.show();
+            dialog.setVisible(true);
         }
     }
 
