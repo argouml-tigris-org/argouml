@@ -51,7 +51,7 @@ class ActionAboutArgoUML extends UMLAction {
 	AboutBox box = new AboutBox(jframe, true);
 
 	box.setLocationRelativeTo(jframe);
-	box.show();
+	box.setVisible(true);
     }
 
 

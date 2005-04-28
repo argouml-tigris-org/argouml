@@ -126,7 +126,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
     }
 
     private void disposeDialog() {
-        hide(); 
+        setVisible(false); 
         dispose();
     }
 }

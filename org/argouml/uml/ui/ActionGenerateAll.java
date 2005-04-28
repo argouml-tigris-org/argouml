@@ -116,7 +116,7 @@ public class ActionGenerateAll extends UMLAction {
 	    }
 	}
 	ClassGenerationDialog cgd = new ClassGenerationDialog(classes);
-	cgd.show();
+	cgd.setVisible(true);
     }
 
     /**

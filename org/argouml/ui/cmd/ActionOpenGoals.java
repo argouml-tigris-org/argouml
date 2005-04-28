@@ -43,7 +43,7 @@ class ActionOpenGoals extends UMLAction {
      */
     public void actionPerformed(ActionEvent ae) {
 	GoalsDialog d = new GoalsDialog(ProjectBrowser.getInstance());
-	d.show();
+	d.setVisible(true);
     }
 } /* end class ActionOpenGoals */
 

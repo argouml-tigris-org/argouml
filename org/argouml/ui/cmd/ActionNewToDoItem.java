@@ -51,7 +51,7 @@ public class ActionNewToDoItem extends UMLAction {
     public void actionPerformed(ActionEvent ae) {
         AddToDoItemDialog dialog = new AddToDoItemDialog(
                 new UMLListCellRenderer2(true));
-        dialog.show();
+        dialog.setVisible(true);
     }
 } /* end class ActionNewToDoItem */
 
