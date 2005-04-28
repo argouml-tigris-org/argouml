@@ -82,17 +82,6 @@ public interface ExtensionMechanismsFactory {
             Object model, Collection models);
 
     /**
-     * Builds an initialized stereotype with no namespace.
-     * @deprecated Bob Tarling 28/2/2005 Presumably a stereotype
-     * must have a namespace so this method is unsafe. Use
-     * buildStereotype(String, Onject).
-     *
-     * @param text is the name of the stereotype
-     * @return an initialized stereotype.
-     */
-    Object buildStereotype(String text);
-
-    /**
      * Builds an initialized stereotype.
      *
      * @param text is the name of the stereotype
