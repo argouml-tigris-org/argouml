@@ -71,7 +71,8 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
             // keyed by their UUID. This is used to allocate
             // figs to their owner using the "href" attribute
             // in PGML.
-            PGMLParser parser = new PGMLParser(project.getUUIDRefs());
+            PGMLStackParser parser = new PGMLStackParser(project.getUUIDRefs());
+            //PGMLParser parser = new PGMLParser( project.getUUIDRefs());
             ArgoDiagram d =
                     (ArgoDiagram) parser.readDiagram(
                                   inputStream,
