@@ -2036,6 +2036,14 @@ implemented by sets of PerspectiveRules that get the child nodes for any
 parent node in the tree.
 </para>
 
+<para>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/cookbook/explorer-architecture.gif" format="GIF"/>
+    </imageobject>
+  </mediaobject>
+</para>
+
 	<para>
 The Explorer has 3 main subcomponents: a customized JTree,
 a customized TreeModel and an interface for generating child nodes
