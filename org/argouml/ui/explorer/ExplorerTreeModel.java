@@ -50,6 +50,7 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.explorer.rules.PerspectiveRule;
+import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  * The model for the Explorer tree view of the uml model.
@@ -167,8 +168,14 @@ public class ExplorerTreeModel extends DefaultTreeModel
 		updateChildren(new TreePath(getPathToRoot(node)));
 	    }
 
-	    if (!done)
+	    if (!done) {
 		schedule();
+            } else {
+                /* This solves issue 2287. */
+                Collection c = TargetManager.getInstance().getTargets();
+                TargetManager.getInstance().setTarget(null);
+                TargetManager.getInstance().setTargets(c);
+            }
 	}
     }
 
