@@ -170,11 +170,12 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
 	    if (!done) {
 		schedule();
-            } else {
+//            } else {
                 /* This solves issue 2287. */
-                Collection c = TargetManager.getInstance().getTargets();
-                TargetManager.getInstance().setTarget(null);
-                TargetManager.getInstance().setTargets(c);
+                /* But breaks text entry in the proppanel :-( */
+//                Collection c = TargetManager.getInstance().getTargets();
+//                TargetManager.getInstance().setTarget(null);
+//                TargetManager.getInstance().setTargets(c);
             }
 	}
     }
