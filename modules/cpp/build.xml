@@ -108,6 +108,7 @@ round-trip engineering for C++ projects.
     <property name="module.lib.dir" value="${module.root}/lib"/>
     
     <property name="commons-io.jar.path" value="${module.lib.dir}/commons-io-1.0.jar"/>
+  <property name="easymock.jar.path" value="${module.lib.dir}/easymock-1.1.jar"/>
 
     <property name="manifest" value="manifest.mf"/>
     <property name="manifest.src" value="${module.src.dir}/org/${manifest}"/>
@@ -155,7 +156,8 @@ round-trip engineering for C++ projects.
       <pathelement location="${module.build.dest}"/>
       <path refid="module.compile.classpath"/>
       <pathelement location="${junit.jar.path}"/>
-      <pathelement location="${commons-io.jar.path}"/>   
+      <pathelement location="${commons-io.jar.path}"/>
+      <pathelement location="${easymock.jar.path}"/>
     </path>
     
     <path id="module.antlr-genparser.classpath">
@@ -347,6 +349,8 @@ round-trip engineering for C++ projects.
     <copy file="${tests.reveng.src}/quadratic.i" 
       todir="${tests.reveng.classes}"/>
     <copy file="${tests.reveng.src}/UnionInlineDefInMember.cpp"
+      todir="${tests.reveng.classes}"/>
+    <copy file="${tests.reveng.src}/CastExpressions.cpp"
       todir="${tests.reveng.classes}"/>
   </target> 
 

@@ -1,19 +1,513 @@
+#line 1 "d:\\antlr-20040115\\rest\\java-cpp\\quadratic.cpp"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\iostream"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\iostream"
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\istream"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\istream"
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\ostream"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\ostream"
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\ios"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\ios"
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\streambuf"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\streambuf"
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocnum"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocnum"
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\cerrno"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\cerrno"
+
+
+
+
+
+
+
+
+ #line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\errno.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma once
+#line 20 "c:\\program files\\microsoft visual studio\\vc98\\include\\errno.h"
+
+
+
+
+
+
+#line 27 "c:\\program files\\microsoft visual studio\\vc98\\include\\errno.h"
+
+
 
 extern "C" {
+#line 32 "c:\\program files\\microsoft visual studio\\vc98\\include\\errno.h"
+
+
+
+
+
+
+
+
+
+
+#line 43 "c:\\program files\\microsoft visual studio\\vc98\\include\\errno.h"
+#line 44 "c:\\program files\\microsoft visual studio\\vc98\\include\\errno.h"
+
+
+
+
+
+
+#line 51 "c:\\program files\\microsoft visual studio\\vc98\\include\\errno.h"
+
+
+
+
+
+
+
+
+#line 60 "c:\\program files\\microsoft visual studio\\vc98\\include\\errno.h"
+#line 61 "c:\\program files\\microsoft visual studio\\vc98\\include\\errno.h"
+
+
+
+
+
+
+
+#line 69 "c:\\program files\\microsoft visual studio\\vc98\\include\\errno.h"
  extern int errno;
+#line 71 "c:\\program files\\microsoft visual studio\\vc98\\include\\errno.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+#line 121 "c:\\program files\\microsoft visual studio\\vc98\\include\\errno.h"
+
+#line 123 "c:\\program files\\microsoft visual studio\\vc98\\include\\errno.h"
+#line 15 "c:\\program files\\microsoft visual studio\\vc98\\include\\cerrno"
+#line 16 "c:\\program files\\microsoft visual studio\\vc98\\include\\cerrno"
+#line 17 "c:\\program files\\microsoft visual studio\\vc98\\include\\cerrno"
+
+
+
+
+
+#line 10 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocnum"
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\climits"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\climits"
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\limits.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma once
+#line 18 "c:\\program files\\microsoft visual studio\\vc98\\include\\limits.h"
+
+
+
+
+
+
+#line 25 "c:\\program files\\microsoft visual studio\\vc98\\include\\limits.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 39 "c:\\program files\\microsoft visual studio\\vc98\\include\\limits.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 56 "c:\\program files\\microsoft visual studio\\vc98\\include\\limits.h"
+
+
+
+
+
+#line 62 "c:\\program files\\microsoft visual studio\\vc98\\include\\limits.h"
+
+
+
+
+
+#line 68 "c:\\program files\\microsoft visual studio\\vc98\\include\\limits.h"
+
+
+
+
+
+
+
+
+#line 77 "c:\\program files\\microsoft visual studio\\vc98\\include\\limits.h"
+
+
+
+
+
+
+
+
+#line 86 "c:\\program files\\microsoft visual studio\\vc98\\include\\limits.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 119 "c:\\program files\\microsoft visual studio\\vc98\\include\\limits.h"
+#line 10 "c:\\program files\\microsoft visual studio\\vc98\\include\\climits"
+#line 11 "c:\\program files\\microsoft visual studio\\vc98\\include\\climits"
+
+
+
+
+
+#line 11 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocnum"
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstdio"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstdio"
+
+
+
+
+
+
+
+
+ #line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma once
+#line 18 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
+
+
+
+#line 25 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
+
+
+
+
+#pragma pack(push,8)
+#line 34 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
 
 extern "C" {
+#line 38 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 57 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
+
+
+
+
+
+
+
+
+
 
 typedef unsigned int size_t;
 
+#line 73 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
+
 typedef unsigned short wchar_t;
+
+#line 80 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
 
 
 typedef wchar_t wint_t;
 typedef wchar_t wctype_t;
 
+#line 87 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+#line 88 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
+
+
+
+
+
+
 typedef char *  va_list;
+#line 99 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+#line 101 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
+
+
+
+#line 108 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+#line 110 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 141 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
 
 
 struct _iobuf {
@@ -28,7 +522,70 @@ struct _iobuf {
         };
 typedef struct _iobuf FILE;
 
+#line 159 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
+
+
+
+
+
+
+
+
+
+#line 172 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
+
+
+
+
+
+
+
+
+
+#line 185 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 214 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+#line 215 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
+
+
  extern FILE _iob[];
+#line 222 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
 
 
 
@@ -36,6 +593,9 @@ typedef struct _iobuf FILE;
 
 
 
+
+
+#line 232 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
 
 
 typedef __int64 fpos_t;
@@ -45,10 +605,48 @@ typedef __int64 fpos_t;
 
 
 
+
+#line 243 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+#line 244 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+#line 247 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  int __cdecl _filbuf(FILE *);
  int __cdecl _flsbuf(int, FILE *);
 
+
+
+
  FILE * __cdecl _fsopen(const char *, const char *, int);
+#line 283 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
 
  void __cdecl clearerr(FILE *);
  int __cdecl fclose(FILE *);
@@ -58,6 +656,7 @@ typedef __int64 fpos_t;
 
 
  FILE * __cdecl _fdopen(int, const char *);
+#line 293 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
 
  int __cdecl feof(FILE *);
  int __cdecl ferror(FILE *);
@@ -71,6 +670,7 @@ typedef __int64 fpos_t;
 
 
  int __cdecl _fileno(FILE *);
+#line 307 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
 
  int __cdecl _flushall(void);
  FILE * __cdecl fopen(const char *, const char *);
@@ -126,11 +726,13 @@ typedef __int64 fpos_t;
 
 
 
+#line 363 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
 
 
 
 
  FILE * __cdecl _wfsopen(const wchar_t *, const wchar_t *, int);
+#line 369 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
 
  wint_t __cdecl fgetwc(FILE *);
  wint_t __cdecl _fgetwchar(void);
@@ -175,6 +777,11 @@ typedef __int64 fpos_t;
 
 
 
+#line 414 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+#line 415 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+#line 418 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
 
 
 
@@ -219,9 +826,41 @@ typedef __int64 fpos_t;
  char * __cdecl tempnam(const char *, const char *);
  int __cdecl unlink(const char *);
 
+#line 463 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
 
 
 }
+#line 467 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+
+#pragma pack(pop)
+#line 471 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+
+#line 473 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdio.h"
+#line 15 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstdio"
+#line 16 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstdio"
+#line 17 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstdio"
+
+
+
+
+
+#line 12 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocnum"
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstdlib"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstdlib"
+
+
+
+
+
+
+
+
+ #line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
@@ -238,6 +877,15 @@ typedef __int64 fpos_t;
 
 
 
+#pragma once
+#line 19 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
+
+
+
+
+
+
+#line 26 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
@@ -245,14 +893,12 @@ typedef __int64 fpos_t;
 
 
 
-
-
-
-
-
+#pragma pack(push,8)
+#line 35 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 extern "C" {
+#line 39 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
@@ -271,6 +917,7 @@ extern "C" {
 
 
 
+#line 58 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
@@ -317,6 +964,9 @@ typedef int (__cdecl * _onexit_t)(void);
 
 
 
+#line 105 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
+
+#line 107 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
@@ -334,6 +984,7 @@ typedef struct _ldiv_t {
 } ldiv_t;
 
 
+#line 125 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
@@ -347,6 +998,7 @@ typedef struct _ldiv_t {
 
 
  extern int __mb_cur_max;
+#line 139 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
@@ -368,6 +1020,7 @@ typedef struct _ldiv_t {
 
 
 
+#line 161 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
@@ -385,8 +1038,10 @@ typedef struct _ldiv_t {
 
 
 
+#line 179 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
  extern int errno;               
  extern unsigned long _doserrno; 
+#line 182 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
@@ -425,11 +1080,13 @@ typedef struct _ldiv_t {
 
 
 
+#line 221 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
  extern int __argc;          
  extern char ** __argv;      
 
  extern wchar_t ** __wargv;  
+#line 227 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
@@ -437,11 +1094,15 @@ typedef struct _ldiv_t {
  extern char ** _environ;    
 
  extern wchar_t ** _wenviron;    
+#line 235 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
+#line 236 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
  extern char * _pgmptr;      
 
  extern wchar_t * _wpgmptr;  
+#line 241 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
+#line 243 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
  extern int _fmode;          
@@ -464,10 +1125,13 @@ typedef struct _ldiv_t {
 
 
 
+#line 266 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
+#line 270 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
         int    __cdecl abs(int);
+#line 272 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
         int    __cdecl atexit(void (__cdecl *)(void));
  double __cdecl atof(const char *);
  int    __cdecl atoi(const char *);
@@ -486,9 +1150,12 @@ typedef struct _ldiv_t {
  char * __cdecl _i64toa(__int64, char *, int);
  char * __cdecl _ui64toa(unsigned __int64, char *, int);
  __int64 __cdecl _atoi64(const char *);
+#line 291 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
+#line 294 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
         long __cdecl labs(long);
+#line 296 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
  ldiv_t __cdecl ldiv(long, long);
  char * __cdecl _ltoa(long, char *, int);
  void * __cdecl malloc(size_t);
@@ -510,6 +1177,7 @@ typedef struct _ldiv_t {
  unsigned long __cdecl strtoul(const char *, char **, int);
 
  int    __cdecl system(const char *);
+#line 318 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
  char * __cdecl _ultoa(unsigned long, char *, int);
  int    __cdecl wctomb(char *, wchar_t);
  size_t __cdecl wcstombs(char *, const wchar_t *, size_t);
@@ -534,8 +1202,11 @@ typedef struct _ldiv_t {
  wchar_t * __cdecl _i64tow(__int64, wchar_t *, int);
  wchar_t * __cdecl _ui64tow(unsigned __int64, wchar_t *, int);
  __int64   __cdecl _wtoi64(const wchar_t *);
+#line 343 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
+#line 346 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
+#line 347 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
@@ -545,6 +1216,7 @@ typedef struct _ldiv_t {
  __declspec(noreturn) void   __cdecl _exit(int);
 
 
+#line 357 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
  char * __cdecl _fcvt(double, int, int *, int *);
  char * __cdecl _fullpath(char *, const char *, size_t);
  char * __cdecl _gcvt(double, int, char *);
@@ -553,6 +1225,7 @@ typedef struct _ldiv_t {
 
  void   __cdecl _makepath(char *, const char *, const char *, const char *,
         const char *);
+#line 366 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
         _onexit_t __cdecl _onexit(_onexit_t);
  void   __cdecl perror(const char *);
  int    __cdecl _putenv(const char *);
@@ -561,6 +1234,7 @@ typedef struct _ldiv_t {
  void   __cdecl _searchenv(const char *, const char *, char *);
 
  void   __cdecl _splitpath(const char *, char *, char *, char *, char *);
+#line 375 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
  void   __cdecl _swab(char *, char *, int);
 
 
@@ -577,6 +1251,8 @@ typedef struct _ldiv_t {
  void   __cdecl _wsplitpath(const wchar_t *, wchar_t *, wchar_t *, wchar_t *, wchar_t *);
 
 
+#line 392 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
+#line 393 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
@@ -584,8 +1260,10 @@ typedef struct _ldiv_t {
  void __cdecl _seterrormode(int);
  void __cdecl _beep(unsigned, unsigned);
  void __cdecl _sleep(unsigned long);
+#line 401 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
+#line 404 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
@@ -594,9 +1272,12 @@ typedef struct _ldiv_t {
 
 
  int __cdecl tolower(int);
+#line 413 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
  int __cdecl toupper(int);
+#line 416 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
+#line 418 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
 
 
 
@@ -624,9 +1305,63 @@ typedef struct _ldiv_t {
  void   __cdecl swab(char *, char *, int);
  char * __cdecl ultoa(unsigned long, char *, int);
 
+#line 446 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
+
+#line 448 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
+
 
 }
 
+#line 453 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
+
+
+#pragma pack(pop)
+#line 457 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
+
+#line 459 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdlib.h"
+#line 15 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstdlib"
+#line 16 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstdlib"
+#line 17 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstdlib"
+
+
+
+
+
+#line 13 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocnum"
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\xiosbase"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\xiosbase"
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocale"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocale"
+
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstring"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstring"
+
+
+
+
+
+
+
+
+ #line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
 
 
 
@@ -642,45 +1377,38 @@ typedef struct _ldiv_t {
 
 
 
+#pragma once
+#line 18 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#line 25 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
 
 
 
 extern "C" {
+#line 30 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 48 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
 
 
 
@@ -704,27 +1432,12 @@ extern "C" {
 
 
 
+#line 72 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#line 77 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
 
 
 
@@ -757,6 +1470,7 @@ extern "C" {
         char *  __cdecl strcat(char *, const char *);
         int     __cdecl strcmp(const char *, const char *);
         size_t  __cdecl strlen(const char *);
+#line 110 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
  void *  __cdecl _memccpy(void *, const void *, int, unsigned int);
  void *  __cdecl memchr(const void *, int, size_t);
  int     __cdecl _memicmp(const void *, const void *, unsigned int);
@@ -766,6 +1480,7 @@ extern "C" {
 
 
  void *  __cdecl memmove(void *, const void *, size_t);
+#line 120 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
 
 
  char *  __cdecl strchr(const char *, int);
@@ -819,6 +1534,7 @@ extern "C" {
         char * __cdecl strset(char *, int);
  char * __cdecl strupr(char *);
 
+#line 174 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
 
 
 
@@ -872,24 +1588,37 @@ extern "C" {
  wchar_t * __cdecl wcsupr(wchar_t *);
  int __cdecl wcsicoll(const wchar_t *, const wchar_t *);
 
+#line 228 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
 
 
+#line 231 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
 
+#line 233 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
 
 
 }
+#line 237 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
 
+#line 239 "c:\\program files\\microsoft visual studio\\vc98\\include\\string.h"
+#line 15 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstring"
+#line 16 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstring"
+#line 17 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstring"
 
 
 
 
 
+#line 11 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocale"
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdexcept"
 
 
 
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdexcept"
 
 
 
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\exception"
 
 
 
@@ -906,19 +1635,26 @@ extern "C" {
 
 
 
+#pragma once
+#line 19 "c:\\program files\\microsoft visual studio\\vc98\\include\\exception"
 
 
 
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstddef"
 
 
 
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstddef"
 
 
 
 
+ #line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\yvals.h"
 
 
 
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\use_ansi.h"
 
 
 
@@ -934,6 +1670,8 @@ extern "C" {
 
 
 
+#pragma once
+#line 18 "c:\\program files\\microsoft visual studio\\vc98\\include\\use_ansi.h"
 
 
 
@@ -956,9 +1694,14 @@ extern "C" {
 
 
 
+#pragma comment(lib,"libcpd")
 
 
+#line 44 "c:\\program files\\microsoft visual studio\\vc98\\include\\use_ansi.h"
+#line 45 "c:\\program files\\microsoft visual studio\\vc98\\include\\use_ansi.h"
 
+#line 47 "c:\\program files\\microsoft visual studio\\vc98\\include\\use_ansi.h"
+#line 5 "c:\\program files\\microsoft visual studio\\vc98\\include\\yvals.h"
 
 
 
@@ -968,6 +1711,14 @@ extern "C" {
 
 
 
+
+
+#pragma pack(push,8)
+#line 18 "c:\\program files\\microsoft visual studio\\vc98\\include\\yvals.h"
+
+ #pragma warning(4: 4018 4114 4146 4244 4245)
+ #pragma warning(4: 4663 4664 4665)
+ #pragma warning(disable: 4237 4284 4290 4514)
 		
  
   
@@ -978,10 +1729,12 @@ extern "C" {
 
 
 
+#line 33 "c:\\program files\\microsoft visual studio\\vc98\\include\\yvals.h"
 namespace std {
 		
  
 typedef bool _Bool;
+ #line 38 "c:\\program files\\microsoft visual studio\\vc98\\include\\yvals.h"
 		
 
 
@@ -1000,6 +1753,7 @@ typedef bool _Bool;
  
 
 
+#line 57 "c:\\program files\\microsoft visual studio\\vc98\\include\\yvals.h"
 
 		
  
@@ -1016,7 +1770,9 @@ public:
 		{}
 	~_Lockit()
 		{}
+  #line 74 "c:\\program files\\microsoft visual studio\\vc98\\include\\yvals.h"
 	};
+ #line 76 "c:\\program files\\microsoft visual studio\\vc98\\include\\yvals.h"
 		
 
 
@@ -1024,19 +1780,29 @@ public:
 
 };
 
+#pragma pack(pop)
+#line 85 "c:\\program files\\microsoft visual studio\\vc98\\include\\yvals.h"
+
+#line 87 "c:\\program files\\microsoft visual studio\\vc98\\include\\yvals.h"
 
 
 
 
 
+#line 11 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstddef"
+#line 12 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstddef"
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstddef"
 
 
 
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstddef"
 
 
 
 
  
+ #line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\stddef.h"
 
 
 
@@ -1052,16 +1818,38 @@ public:
 
 
 
+#pragma once
+#line 18 "c:\\program files\\microsoft visual studio\\vc98\\include\\stddef.h"
 
 
 
 
 
 
+#line 25 "c:\\program files\\microsoft visual studio\\vc98\\include\\stddef.h"
 
 
 
 extern "C" {
+#line 30 "c:\\program files\\microsoft visual studio\\vc98\\include\\stddef.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 48 "c:\\program files\\microsoft visual studio\\vc98\\include\\stddef.h"
 
 
 
@@ -1093,24 +1881,9 @@ extern "C" {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#line 80 "c:\\program files\\microsoft visual studio\\vc98\\include\\stddef.h"
  extern int errno;
+#line 82 "c:\\program files\\microsoft visual studio\\vc98\\include\\stddef.h"
 
 
 
@@ -1118,6 +1891,7 @@ extern "C" {
 
 typedef int ptrdiff_t;
 
+#line 90 "c:\\program files\\microsoft visual studio\\vc98\\include\\stddef.h"
 
 
 
@@ -1141,10 +1915,21 @@ typedef int ptrdiff_t;
 
 
 }
+#line 114 "c:\\program files\\microsoft visual studio\\vc98\\include\\stddef.h"
 
+#line 116 "c:\\program files\\microsoft visual studio\\vc98\\include\\stddef.h"
+#line 12 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstddef"
  
 
 
+#line 16 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstddef"
+#line 17 "c:\\program files\\microsoft visual studio\\vc98\\include\\cstddef"
+
+
+
+
+
+#line 13 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstddef"
 
 
 
@@ -1156,11 +1941,8 @@ typedef int ptrdiff_t;
 
 
 
-
-
-
-
-
+#pragma pack(push,8)
+#line 26 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstddef"
 namespace std {
 		
  
@@ -1190,6 +1972,17 @@ enum _Uninitialized {_Noinit};
  void __cdecl _Nomemory();
 };
 
+#pragma pack(pop)
+#line 57 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstddef"
+
+#line 59 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstddef"
+
+
+
+
+
+#line 23 "c:\\program files\\microsoft visual studio\\vc98\\include\\exception"
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\eh.h"
 
 
 
@@ -1203,23 +1996,22 @@ enum _Uninitialized {_Noinit};
 
 
 
+#pragma once
+#line 16 "c:\\program files\\microsoft visual studio\\vc98\\include\\eh.h"
 
 
 
 
 
 
+#line 23 "c:\\program files\\microsoft visual studio\\vc98\\include\\eh.h"
 
 
 
 
 
-
-
-
-
-
-
+#pragma pack(push,8)
+#line 30 "c:\\program files\\microsoft visual studio\\vc98\\include\\eh.h"
 
 
 
@@ -1254,6 +2046,7 @@ typedef void (__cdecl *unexpected_handler)();
 
 struct _EXCEPTION_POINTERS;
 typedef void (__cdecl *_se_translator_function)(unsigned int, struct _EXCEPTION_POINTERS*);
+#line 65 "c:\\program files\\microsoft visual studio\\vc98\\include\\eh.h"
 
 
  __declspec(noreturn) void __cdecl terminate(void);
@@ -1261,19 +2054,28 @@ typedef void (__cdecl *_se_translator_function)(unsigned int, struct _EXCEPTION_
 
 
 
+#line 73 "c:\\program files\\microsoft visual studio\\vc98\\include\\eh.h"
 
  terminate_function __cdecl set_terminate(terminate_function);
  unexpected_function __cdecl set_unexpected(unexpected_function);
 
  _se_translator_function __cdecl _set_se_translator(_se_translator_function);
+#line 79 "c:\\program files\\microsoft visual studio\\vc98\\include\\eh.h"
 
 
+#pragma pack(pop)
+#line 83 "c:\\program files\\microsoft visual studio\\vc98\\include\\eh.h"
+
+#line 85 "c:\\program files\\microsoft visual studio\\vc98\\include\\eh.h"
+#line 24 "c:\\program files\\microsoft visual studio\\vc98\\include\\exception"
 
 
-
+#pragma pack(push,8)
+#line 28 "c:\\program files\\microsoft visual studio\\vc98\\include\\exception"
 
  
 
+#line 32 "c:\\program files\\microsoft visual studio\\vc98\\include\\exception"
 
 
 
@@ -1328,35 +2130,50 @@ protected:
 
 
 
+#pragma pack(pop)
+#line 88 "c:\\program files\\microsoft visual studio\\vc98\\include\\exception"
+
+#line 90 "c:\\program files\\microsoft visual studio\\vc98\\include\\exception"
 
 
 
 
 
 
+#line 10 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdexcept"
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstring"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstring"
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\xmemory"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\xmemory"
+
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\new"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\new"
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#pragma pack(push,8)
+#line 14 "c:\\program files\\microsoft visual studio\\vc98\\include\\new"
 namespace std {
 		
 class  bad_alloc : public exception {
@@ -1389,12 +2206,61 @@ inline void *__cdecl operator new(size_t, void *_P)
 
 inline void __cdecl operator delete(void *, void *)
 	{return; }
+#line 47 "c:\\program files\\microsoft visual studio\\vc98\\include\\new"
+#line 48 "c:\\program files\\microsoft visual studio\\vc98\\include\\new"
 
 
 
+#line 52 "c:\\program files\\microsoft visual studio\\vc98\\include\\new"
 	new_handler __cdecl set_new_handler(new_handler) throw ();
 
 
+#pragma pack(pop)
+#line 57 "c:\\program files\\microsoft visual studio\\vc98\\include\\new"
+
+#line 59 "c:\\program files\\microsoft visual studio\\vc98\\include\\new"
+
+
+
+
+
+#line 11 "c:\\program files\\microsoft visual studio\\vc98\\include\\xmemory"
+
+
+#pragma pack(push,8)
+#line 15 "c:\\program files\\microsoft visual studio\\vc98\\include\\xmemory"
+ #line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\utility"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\utility"
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\iosfwd"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\iosfwd"
+
+
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\cwchar"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\cwchar"
+
+
+
+
+ 
+ #line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
 
 
 
@@ -1403,15 +2269,142 @@ inline void __cdecl operator delete(void *, void *)
 
 
 
+
+
+
+
+
+
+
+
+
+
+#pragma once
+#line 21 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
+
+
+
+
+
+
+#line 31 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
+#pragma pack(push,8)
+#line 36 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
 
 
 extern "C" {
+#line 40 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 66 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 typedef long time_t;
+
+#line 87 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 typedef unsigned long _fsize_t; 
+
+#line 144 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
 
 
 struct _wfinddata_t {
@@ -1424,6 +2417,7 @@ struct _wfinddata_t {
 };
 
 
+
 struct _wfinddatai64_t {
         unsigned attrib;
         time_t   time_create;   
@@ -1432,12 +2426,53 @@ struct _wfinddatai64_t {
         __int64  size;
         wchar_t  name[260];
 };
+#line 167 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+#line 168 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+#line 171 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
+
+
+
+
+
+
+
+
 
 
  extern unsigned short _ctype[];
  extern unsigned short *_pctype;
 
  extern wctype_t *_pwctype;
+#line 189 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+#line 190 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
+
+
+
+
+
+                                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
  int __cdecl iswalpha(wint_t);
@@ -1463,11 +2498,24 @@ struct _wfinddatai64_t {
  int __cdecl is_wctype(wint_t, wctype_t);
 
 
+
+#line 240 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
+
+
  int __cdecl _wchdir(const wchar_t *);
  wchar_t * __cdecl _wgetcwd(wchar_t *, int);
  wchar_t * __cdecl _wgetdcwd(int, wchar_t *, int);
  int __cdecl _wmkdir(const wchar_t *);
  int __cdecl _wrmdir(const wchar_t *);
+
+
+#line 253 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
 
 
  int __cdecl _waccess(const wchar_t *, int);
@@ -1484,9 +2532,22 @@ struct _wfinddatai64_t {
 
  long __cdecl _wfindfirsti64(wchar_t *, struct _wfinddatai64_t *);
  int __cdecl _wfindnexti64(long, struct _wfinddatai64_t *);
+#line 273 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+#line 276 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
 
 
  wchar_t * __cdecl _wsetlocale(int, const wchar_t *);
+
+
+#line 285 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
 
 
  int __cdecl _wexecl(const wchar_t *, const wchar_t *, ...);
@@ -1510,6 +2571,27 @@ struct _wfinddatai64_t {
  int __cdecl _wsystem(const wchar_t *);
 
 
+#line 312 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 inline int __cdecl iswalpha(wint_t _C) {return (iswctype(_C,(0x0100|0x1|0x2))); }
 inline int __cdecl iswupper(wint_t _C) {return (iswctype(_C,0x1)); }
@@ -1529,23 +2611,42 @@ inline int __cdecl iswascii(wint_t _C) {return ((unsigned)(_C) < 0x80); }
 
 inline int __cdecl isleadbyte(int _C)
         {return (_pctype[(unsigned char)(_C)] & 0x8000); }
+#line 352 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+#line 353 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+#line 355 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
+
+
 
 
 typedef unsigned short _ino_t;      
 
+
 typedef unsigned short ino_t;
+#line 367 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+#line 369 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
 
 typedef unsigned int _dev_t;        
 
-typedef unsigned int dev_t;
 
+typedef unsigned int dev_t;
+#line 376 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+#line 378 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
 
 
 typedef long _off_t;                
 
 
 typedef long off_t;
+#line 385 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
 
+#line 387 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
 
 
 
@@ -1578,6 +2679,7 @@ struct stat {
         time_t st_mtime;
         time_t st_ctime;
         };
+#line 420 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
 
 
 struct _stati64 {
@@ -1593,12 +2695,191 @@ struct _stati64 {
         time_t st_mtime;
         time_t st_ctime;
         };
+#line 436 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+#line 439 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
+
 
 
  int __cdecl _wstat(const wchar_t *, struct _stat *);
 
 
  int __cdecl _wstati64(const wchar_t *, struct _stati64 *);
+#line 450 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+#line 453 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+#line 455 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 560 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 struct tm {
@@ -1613,6 +2894,7 @@ struct tm {
         int tm_isdst;   
         };
 
+#line 635 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
 
 
 
@@ -1626,6 +2908,7 @@ struct tm {
  wchar_t * __cdecl _wstrtime(wchar_t *);
 
 
+#line 649 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
 
 
 
@@ -1686,8 +2969,44 @@ inline wchar_t *wcsrchr(wchar_t *_S, wchar_t _C)
         {return ((wchar_t *)wcsrchr((const wchar_t *)_S, _C)); }
 inline wchar_t *wcsstr(wchar_t *_S, const wchar_t *_P)
         {return ((wchar_t *)wcsstr((const wchar_t *)_S, _P)); }
+#line 710 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
 
 
+#pragma pack(pop)
+#line 714 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+#line 716 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 730 "c:\\program files\\microsoft visual studio\\vc98\\include\\wchar.h"
+#line 12 "c:\\program files\\microsoft visual studio\\vc98\\include\\cwchar"
+ 
+
+
+#line 16 "c:\\program files\\microsoft visual studio\\vc98\\include\\cwchar"
+#line 17 "c:\\program files\\microsoft visual studio\\vc98\\include\\cwchar"
+
+
+
+
+
+#line 12 "c:\\program files\\microsoft visual studio\\vc98\\include\\iosfwd"
+
+
+
+#pragma pack(push,8)
+#line 17 "c:\\program files\\microsoft visual studio\\vc98\\include\\iosfwd"
 namespace std {
                 
 typedef long streamoff;
@@ -1702,8 +3021,12 @@ public:
 
 
 
+
+
+
         fpos(streamoff _O = 0)
                 : _Off(_O), _Fpos(_Fpz), _State(_Stz) {}
+#line 37 "c:\\program files\\microsoft visual studio\\vc98\\include\\iosfwd"
         fpos(_St _S, fpos_t _F)
                 : _Off(0), _Fpos(_F), _State(_S) {}
         _St state() const
@@ -1958,9 +3281,41 @@ typedef basic_ifstream<wchar_t, char_traits<wchar_t> > wifstream;
 typedef basic_ofstream<wchar_t, char_traits<wchar_t> > wofstream;
 typedef basic_fstream<wchar_t, char_traits<wchar_t> > wfstream;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 };
 
+#pragma pack(pop)
+#line 314 "c:\\program files\\microsoft visual studio\\vc98\\include\\iosfwd"
 
+#line 316 "c:\\program files\\microsoft visual studio\\vc98\\include\\iosfwd"
+
+
+
+
+
+#line 10 "c:\\program files\\microsoft visual studio\\vc98\\include\\utility"
+
+
+#pragma pack(push,8)
+#line 14 "c:\\program files\\microsoft visual studio\\vc98\\include\\utility"
 namespace std {
 		
 template<class _T1, class _T2> struct pair {
@@ -2283,6 +3638,39 @@ template<class _Ty> inline
 	};
 };
 
+#pragma pack(pop)
+#line 338 "c:\\program files\\microsoft visual studio\\vc98\\include\\utility"
+
+#line 340 "c:\\program files\\microsoft visual studio\\vc98\\include\\utility"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 16 "c:\\program files\\microsoft visual studio\\vc98\\include\\xmemory"
+
+ 
+ 
+ 
+#line 21 "c:\\program files\\microsoft visual studio\\vc98\\include\\xmemory"
+ 
  
 namespace std {
 		
@@ -2350,8 +3738,51 @@ public:
 	};
 };
 
+#pragma pack(pop)
+#line 91 "c:\\program files\\microsoft visual studio\\vc98\\include\\xmemory"
+
+#line 93 "c:\\program files\\microsoft visual studio\\vc98\\include\\xmemory"
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 10 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstring"
+
+
+#pragma pack(push,8)
+#line 14 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstring"
+ #line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\xutility"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\xutility"
+
+
+
+
+
+
+#pragma pack(push,8)
+#line 14 "c:\\program files\\microsoft visual studio\\vc98\\include\\xutility"
 namespace std {
 		
 template<class _II, class _OI> inline
@@ -2442,9 +3873,33 @@ template<class _Ty> inline
 	_X = _Y, _Y = _Tmp; }
 };
 
+#pragma pack(pop)
+#line 106 "c:\\program files\\microsoft visual studio\\vc98\\include\\xutility"
+
+#line 108 "c:\\program files\\microsoft visual studio\\vc98\\include\\xutility"
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 15 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstring"
 namespace std {
  void __cdecl _Xlen();
  void __cdecl _Xran();
@@ -3034,6 +4489,13 @@ template<class _E, class _Tr, class _A>
 
 
 
+
+
+
+
+
+
+
 typedef basic_string<char, char_traits<char>, allocator<char> >
 	string;
 
@@ -3042,14 +4504,20 @@ typedef basic_string<wchar_t, char_traits<wchar_t>,
 
 };
 
+#pragma pack(pop)
+#line 621 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstring"
+
+#line 623 "c:\\program files\\microsoft visual studio\\vc98\\include\\xstring"
 
 
 
 
 
+#line 11 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdexcept"
 
 
-
+#pragma pack(push,8)
+#line 15 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdexcept"
 namespace std {
 		
 class  logic_error : public exception {
@@ -3160,9 +4628,69 @@ protected:
 	};
 };
 
+#pragma pack(pop)
+#line 127 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdexcept"
+
+#line 129 "c:\\program files\\microsoft visual studio\\vc98\\include\\stdexcept"
 
 
 
+
+
+#line 12 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocale"
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\typeinfo"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma once
+#line 19 "c:\\program files\\microsoft visual studio\\vc98\\include\\typeinfo"
+
+
+
+
+
+
+
+
+ 
+
+#line 30 "c:\\program files\\microsoft visual studio\\vc98\\include\\typeinfo"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma pack(push,8)
+#line 53 "c:\\program files\\microsoft visual studio\\vc98\\include\\typeinfo"
 
 class type_info {
 public:
@@ -3219,11 +4747,114 @@ using std::__non_rtti_object;
 
 
 
+
+
+
+
+#pragma pack(pop)
+#line 115 "c:\\program files\\microsoft visual studio\\vc98\\include\\typeinfo"
+
+#line 117 "c:\\program files\\microsoft visual studio\\vc98\\include\\typeinfo"
+
+
+
+
+
+
+#line 13 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocale"
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocinfo"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocinfo"
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocinfo.h"
+
+
+
+#pragma once
+#line 6 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocinfo.h"
+
+
+
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma once
+#line 17 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+
+
+
+
+
+
+#line 24 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+
+
+
 extern "C" {
+#line 29 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 48 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 75 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
 
 
 
@@ -3231,6 +4862,25 @@ extern "C" {
  extern unsigned short *_pctype;
 
  extern wctype_t *_pwctype;
+#line 83 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+#line 84 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+
+
+
+
+
+
+
+
+                                
+
+
+
+
+
+
+
+
 
 
 
@@ -3257,15 +4907,309 @@ extern "C" {
  int __cdecl __iscsymf(int);
  int __cdecl __iscsym(int);
 
+#line 128 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 163 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 252 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+
+#line 254 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 304 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 321 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+
+#line 323 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+
 
 }
+#line 327 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+
+
+#line 330 "c:\\program files\\microsoft visual studio\\vc98\\include\\ctype.h"
+#line 10 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocinfo.h"
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\locale.h"
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+#pragma once
+#line 17 "c:\\program files\\microsoft visual studio\\vc98\\include\\locale.h"
+
+
+
+
+
+
+#line 24 "c:\\program files\\microsoft visual studio\\vc98\\include\\locale.h"
+
+
+
+
+
+
+
+#pragma pack(push,8)
+#line 33 "c:\\program files\\microsoft visual studio\\vc98\\include\\locale.h"
 
 
 extern "C" {
+#line 37 "c:\\program files\\microsoft visual studio\\vc98\\include\\locale.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 56 "c:\\program files\\microsoft visual studio\\vc98\\include\\locale.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 74 "c:\\program files\\microsoft visual studio\\vc98\\include\\locale.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 struct lconv {
@@ -3289,12 +5233,78 @@ struct lconv {
         char n_sign_posn;
         };
 
+#line 123 "c:\\program files\\microsoft visual studio\\vc98\\include\\locale.h"
+
+
+
+
+
+
+
+
+
+
+
 
  char * __cdecl setlocale(int, const char *);
  struct lconv * __cdecl localeconv(void);
 
 
+
+
+
+
+
+
+
+
+#line 148 "c:\\program files\\microsoft visual studio\\vc98\\include\\locale.h"
+
+
 }
+#line 152 "c:\\program files\\microsoft visual studio\\vc98\\include\\locale.h"
+
+
+#pragma pack(pop)
+#line 156 "c:\\program files\\microsoft visual studio\\vc98\\include\\locale.h"
+
+#line 158 "c:\\program files\\microsoft visual studio\\vc98\\include\\locale.h"
+#line 11 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocinfo.h"
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3343,15 +5353,19 @@ size_t __cdecl _Strftime(char *, size_t, const char *,
  size_t __cdecl _Wcsxfrm(wchar_t *, wchar_t *,
 	const wchar_t *, const wchar_t *, const _Collvec *);
 }
+#line 95 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocinfo.h"
 
 
 
 
 
+#line 10 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocinfo"
 
 
 
 
+#pragma pack(push,8)
+#line 16 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocinfo"
 namespace std {
 
 		
@@ -3442,14 +5456,20 @@ template<class _E> inline
 	return (_N); }
 };
 
+#pragma pack(pop)
+#line 108 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocinfo"
+
+#line 110 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocinfo"
 
 
 
 
 
+#line 14 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocale"
 
 
-
+#pragma pack(push,8)
+#line 18 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocale"
 namespace std {
                 
 class  locale {
@@ -3937,7 +5957,7 @@ protected:
                         *_V = _Widen(*_F, (_E *)0);
                 return (_F); }
         virtual char do_narrow(_E _C, char) const
-                { return (char) _Narrow(_C); }
+                {return ((char)_Narrow((_E)(_C))); }
         virtual const _E *do_narrow(const _E *_F, const _E *_L,
                 char, char *_V) const
                 {for (; _F != _L; ++_F, ++_V)
@@ -4057,9 +6077,29 @@ public:
                 {}
         };
 
+
+
+
+
+
+
+
 };
 
+#pragma pack(pop)
+#line 636 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocale"
 
+#line 638 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocale"
+
+
+
+
+
+#line 10 "c:\\program files\\microsoft visual studio\\vc98\\include\\xiosbase"
+
+
+#pragma pack(push,8)
+#line 14 "c:\\program files\\microsoft visual studio\\vc98\\include\\xiosbase"
 namespace std {
                 
 class  ios_base {
@@ -4224,14 +6264,20 @@ private:
 
 };
 
+#pragma pack(pop)
+#line 180 "c:\\program files\\microsoft visual studio\\vc98\\include\\xiosbase"
+
+#line 182 "c:\\program files\\microsoft visual studio\\vc98\\include\\xiosbase"
 
 
 
 
 
+#line 14 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocnum"
 
 
-
+#pragma pack(push,8)
+#line 18 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocnum"
 namespace std {
 		
 template<class _E>
@@ -4858,16 +6904,39 @@ protected:
 template<class _E, class _OI>
 	locale::id num_put<_E, _OI>::id;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 };
 
+#pragma pack(pop)
+#line 664 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocnum"
+
+#line 666 "c:\\program files\\microsoft visual studio\\vc98\\include\\xlocnum"
 
 
 
 
 
+#line 10 "c:\\program files\\microsoft visual studio\\vc98\\include\\streambuf"
 
 
-
+#pragma pack(push,8)
+#line 14 "c:\\program files\\microsoft visual studio\\vc98\\include\\streambuf"
 namespace std {
 		
 template<class _E, class _Tr = char_traits<_E> >
@@ -5048,16 +7117,28 @@ private:
 	};
 
 
+
+
+
+
+
+
 };
 
+#pragma pack(pop)
+#line 204 "c:\\program files\\microsoft visual studio\\vc98\\include\\streambuf"
+
+#line 206 "c:\\program files\\microsoft visual studio\\vc98\\include\\streambuf"
 
 
 
 
 
+#line 10 "c:\\program files\\microsoft visual studio\\vc98\\include\\ios"
 
 
-
+#pragma pack(push,8)
+#line 14 "c:\\program files\\microsoft visual studio\\vc98\\include\\ios"
 namespace std {
 		
 template<class _E, class _Tr = char_traits<_E> >
@@ -5217,14 +7298,20 @@ inline ios_base& __cdecl uppercase(ios_base& _I)
 	return (_I); }
 };
 
+#pragma pack(pop)
+#line 175 "c:\\program files\\microsoft visual studio\\vc98\\include\\ios"
+
+#line 177 "c:\\program files\\microsoft visual studio\\vc98\\include\\ios"
 
 
 
 
 
+#line 10 "c:\\program files\\microsoft visual studio\\vc98\\include\\ostream"
 
 
-
+#pragma pack(push,8)
+#line 14 "c:\\program files\\microsoft visual studio\\vc98\\include\\ostream"
 		
  
  
@@ -5623,16 +7710,46 @@ template<class _E, class _Tr> inline
 	return (_O); }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 };
 
+#pragma pack(pop)
+#line 440 "c:\\program files\\microsoft visual studio\\vc98\\include\\ostream"
+
+#line 442 "c:\\program files\\microsoft visual studio\\vc98\\include\\ostream"
 
 
 
 
 
+#line 10 "c:\\program files\\microsoft visual studio\\vc98\\include\\istream"
 
 
-
+#pragma pack(push,8)
+#line 14 "c:\\program files\\microsoft visual studio\\vc98\\include\\istream"
 namespace std {
 		
 template<class _E, class _Tr = char_traits<_E> >
@@ -6199,16 +8316,49 @@ template<class _E, class _Tr> inline
 	_I.setstate(_St);
 	return (_I); }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 };
 
+#pragma pack(pop)
+#line 611 "c:\\program files\\microsoft visual studio\\vc98\\include\\istream"
+
+#line 613 "c:\\program files\\microsoft visual studio\\vc98\\include\\istream"
 
 
 
 
 
+#line 10 "c:\\program files\\microsoft visual studio\\vc98\\include\\iostream"
 
 
-
+#pragma pack(push,8)
+#line 14 "c:\\program files\\microsoft visual studio\\vc98\\include\\iostream"
 namespace std {
 		
 static ios_base::Init _Ios_init;
@@ -6229,12 +8379,88 @@ extern  wistream wcin;
 extern  wostream wcout, wcerr, wclog;
 };
 
+#pragma pack(pop)
+#line 36 "c:\\program files\\microsoft visual studio\\vc98\\include\\iostream"
+
+#line 38 "c:\\program files\\microsoft visual studio\\vc98\\include\\iostream"
 
 
 
+
+
+#line 17 "d:\\antlr-20040115\\rest\\java-cpp\\quadratic.cpp"
+#line 1 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma once
+#line 18 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+
+
+
+
+
+#line 25 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+
+
+
+
+
+
+#pragma pack(push,8)
+#line 34 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
 
 
 extern "C" {
+#line 38 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 57 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 struct _exception {
@@ -6246,15 +8472,77 @@ struct _exception {
         } ;
 
 
+#line 84 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+
+
+
+
+
 
 struct _complex {
         double x,y; 
         } ;
 
 
+
+
+#line 99 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+
+#line 102 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+#line 103 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  extern double _HUGE;
+#line 126 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 154 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
         int     __cdecl abs(int);
         double  __cdecl acos(double);
         double  __cdecl asin(double);
@@ -6274,13 +8562,16 @@ struct _complex {
         double  __cdecl tan(double);
         double  __cdecl tanh(double);
         double  __cdecl sqrt(double);
+#line 174 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
  double  __cdecl atof(const char *);
  double  __cdecl _cabs(struct _complex);
 
 
 
+#line 180 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
  double  __cdecl ceil(double);
  double  __cdecl floor(double);
+#line 183 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
  double  __cdecl frexp(double, int *);
  double  __cdecl _hypot(double, double);
  double  __cdecl _j0(double);
@@ -6293,6 +8584,118 @@ struct _complex {
  double  __cdecl _y0(double);
  double  __cdecl _y1(double);
  double  __cdecl _yn(int, double);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 236 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 276 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6390,6 +8793,25 @@ inline float tanf(float _X)
         {return ((float)tan((double)_X)); }
 inline float tanhf(float _X)
         {return ((float)tanh((double)_X)); }
+#line 405 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+#line 406 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+#line 407 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+#line 408 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 423 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
 
 
 
@@ -6404,6 +8826,76 @@ inline float tanhf(float _X)
  double  __cdecl y0(double);
  double  __cdecl y1(double);
  double  __cdecl yn(int, double);
+
+#line 439 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+#line 441 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
@@ -6425,6 +8917,122 @@ template<class _Ty> inline
                         return (_Y < 0 ? _Ty(1) / _Z : _Z); }}
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 636 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+#line 637 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+
+#pragma pack(pop)
+#line 641 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+
+#line 643 "c:\\program files\\microsoft visual studio\\vc98\\include\\math.h"
+#line 18 "d:\\antlr-20040115\\rest\\java-cpp\\quadratic.cpp"
 
 double HR1,HR2,HI;
 
@@ -6484,4 +9092,3 @@ void ROOTS(double CSID,double DISC,double H1)
 
 	return;
 	}
-

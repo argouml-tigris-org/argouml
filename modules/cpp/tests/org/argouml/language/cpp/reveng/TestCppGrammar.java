@@ -29,6 +29,7 @@ package org.argouml.language.cpp.reveng;
 import java.io.InputStream;
 
 import org.apache.log4j.Logger;
+import org.easymock.MockControl;
 
 import junit.framework.TestCase;
 
@@ -45,6 +46,8 @@ public class TestCppGrammar extends TestCase {
      * The Logger for this class.
      */
     private static final Logger LOG = Logger.getLogger(TestCppGrammar.class);
+    private Modeler modeler;
+    private MockControl modelerCtrl;
     
     /**
      * @param name The name of the Test Case.
@@ -53,23 +56,50 @@ public class TestCppGrammar extends TestCase {
         super(name);
     }
 
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+        super.setUp();
+        modelerCtrl = MockControl.createNiceControl(Modeler.class);
+        modeler = (Modeler) modelerCtrl.getMock();
+    }
     /**
      * Test parsing of file which doesn't need preprocessing.
      * @throws Exception something went wrong
      */
     public void testParseSimpleClass() throws Exception {
-        parseFile("SimpleClass.cpp");
+        String fn = "SimpleClass.cpp";
+        modeler.beginTranslationUnit();
+        modeler.endTranslationUnit();
+        modelerCtrl.replay();
+        CPPParser parser = parseFile(fn);
+        modelerCtrl.verify();
     }
     
+    /**
+     * Test that shows how the parsed information is useful for reverse 
+     * engineering.
+     * @throws Exception something went wrong
+     */
+    public void testParsedInfoUsefull4RevEng() throws Exception {
+        CPPParser parser = parseFile("SimpleClass.cpp");
+    }
+
+    /**
+     * @param text
+     */
+    private void println(String text) {
+        System.out.println(text);
+    }
+
     /**
      * Test parsing the example from C++ grammar by David Wigg, 
      * <code>quadratic.i</code>
      * @throws Exception something went wrong
      */
     public void testParseQuadratic() throws Exception {
-        // Parsing this file still fails. To enable clean commit I'm 
-	// commenting out...
-        //parseFile("quadratic.i");
+        parseFile("quadratic.i");
     }
 
     /**
@@ -82,17 +112,28 @@ public class TestCppGrammar extends TestCase {
     }
 
     /**
+     * Test parsing a cast expression surrounded by parenteses which casts a 
+     * value returned from a function call.
+     * @throws Exception something went wrong
+     */
+    public void testCastExpressions() throws Exception {
+        parseFile("CastExpressions.cpp");
+    }
+
+    /**
      * Parse a pre-processed C++ or C source file using the lexer and parser 
      * generated from the ANTLR CppParser4Java.g grammar. 
      * @param fn name of file to parse. Must be in the same directory as this 
      * test.
      * @throws Exception something went wrong
      */
-    private void parseFile(String fn) throws Exception {
+    private CPPParser parseFile(String fn) throws Exception {
         InputStream file2Parse = TestCppGrammar.class.getResourceAsStream(
             fn);
         CPPLexer lexer = new CPPLexer(file2Parse);
         CPPParser parser = new CPPParser(lexer);
+        parser.setModeler(modeler);
         parser.translation_unit();
+        return parser;
     }
 }

@@ -108,7 +108,6 @@ options
 	{
 	k = 2;
 	exportVocab = STDC;
-	buildAST =false;
 	codeGenMakeSwitchThreshold = 2;
 	codeGenBitsetTestThreshold = 3;
 	defaultErrorHandler=false;
@@ -116,6 +115,25 @@ options
 	}
 
 {
+	public void setModeler(Modeler m) {
+		this.m = m;
+	}
+	
+	private Modeler m;
+	
+	private Modeler mw = new Modeler() {
+		public void beginCompilationUnit(java.io.File f) {
+			if (m != null) m.beginCompilationUnit(f);
+		}
+		public void endCompilationUnit() { if (m != null) m.endCompilationUnit(); }
+		public void beginTranslationUnit() { 
+			if (m != null) m.beginTranslationUnit();
+		}
+		public void endTranslationUnit() {
+			if (m != null) m.endTranslationUnit();
+		}
+	};
+	
 	String enclosingClass="";//name of current class
 	boolean _td=false; // is type declaration?
 	Hashtable symbols=new Hashtable();
@@ -468,13 +486,13 @@ translation_unit
 		if(!symbols.containsKey("std"))
 			symbols.put("std",CPPvariables.OT_TYPE_DEF);
 	}
-   :  
+   :  {mw.beginTranslationUnit();}
       (external_declaration)+ EOF 
-     
+      {mw.endTranslationUnit();}
    ;
    
    
-   external_declaration
+external_declaration
 	{String s="";}
 	:  
 	(
