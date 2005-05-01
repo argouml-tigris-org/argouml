@@ -1581,55 +1581,112 @@ to the class itself.
       <indexterm>
 	<primary>Making a release</primary>
       </indexterm>
-      <para>
+    <para>
 The purpose of this chapter is
 to simplify for the person that is actually doing the release work and
 to make sure that everything is done in the exact same way 
 every time and nothing is forgotten.
 </para>
-      <para>
-It is provided with the hopes of being helpful.
-<!-- If you, the release responsible, finds it unhelpful, please remove it! -->
+    <para>
+The scripts involved have been developed and are mostly run
+on a Cygwin system.
+They will hopefully work on any UNIX system but most likely they
+will need some adjustments.
 </para>
+    <note>
       <para>
-To understand this you need knowledge of how CVS works and 
-how you normally build and test ArgoUML.
+This is under rework now that the distribution is to be done using
+a svn project.
 </para>
-      <para>
-This instruction is supposed to work on a windows system (running build.bat).
-The author (Linus Tolke) has for some time been running it 
-on a Cygwin system (running build.sh) 
-assuming that this will be the same as on any UNIX system.
-How it is actually run on a Cygwin/UNIX system is also noted.
+    </note>
+
+    <para>
+Prerequisites (what you need to be able to do this):
+<itemizedlist>
+	<listitem>
+	  <para>
+cvs access to the argouml project (to set tags).
+</para>
+	  <para>
+You also need cvs access to the included subprojects to set the tags there:
+(argouml-csharp, argouml-nb, ... and this list will probably grow).
+</para>
+	</listitem>
+	<listitem>
+svn access to the argouml-downloads project (to upload the result).
+	</listitem>
+	<listitem>
+	  <para>
+A machine.
+</para>
+	  <para>
+This is probably the machine you use for your development if you are
+an argouml developer.
+</para>
+	  <para>
+The machine needs
+internet access (it is not a small download and upload so at least
+128KB internet connection to keep the time reasonable < 2 hours),
+the correct version of java installed (should be a JDK 1.4.2),
+cvs and svn installed,
+Unix or Cygwin to be able to run the scripts.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+That you have set the CVSROOT correctly.
+</para>
+	  <para>
+Make sure it is set to 
+<command>:pserver:<replaceable>user</replaceable>@cvs.tigris.org:/cvs</command>.
+</para>
+	</listitem>
+      </itemizedlist>
 </para>
 
-      <para>
+    <para>
 Here are the steps to be done when one actually does a release:
 </para>
 
     <para>
       <orderedlist>
 	<listitem>
-	  <para>Tag the whole CVS repository with the freeze tag!</para>
+	  <para>Tag the CVS repository with the freeze tag!</para>
 	  <para>
 Normally this tag is "VERSION_<replaceable>X_Y_Z</replaceable>_F",
 e.g. VERSION_0_9_7_F.
 The according command line CVS command is 
 <command>cvs rtag VERSION_<replaceable>X_Y_Z</replaceable>_F argouml</command>.
-(Because of a problem on the Tigris site, this doesn't work. 
-Instead make sure you have a complete checked out copy of ArgoUML,
+<note>
+	      <para>
+<!-- This is Issue 90 in the Tigris Issuezilla
+    http://www.tigris.org/issues/show_bug.cgi?id=90
+-->
+Because of a problem on the Tigris site, this doesn't work. 
+The workaround is that you
+make sure you have a complete checked out and copy of ArgoUML,
 go to the root directory 
-<filename class="directory">argouml</filename>
+<filename class="directory">argouml</filename>,
 and run the command
-<command>cvs tag VERSION_<replaceable>X_Y_Z</replaceable>_F</command>.)
+<command>cvs tag VERSION_<replaceable>X_Y_Z</replaceable>_F</command>.
+</para>
+	    </note>
 </para>
 	</listitem>
 
 	<listitem>
 	  <para>
-These commands assume that you have set the CVSROOT correctly.
-Make sure it is set to 
-<command>:pserver:<replaceable>user</replaceable>@cvs.tigris.org:/cvs</command>.
+Open the repository for commits towards the next version.
+</para>
+	  <para>
+This is done by setting the <methodname>argo.core.version</methodname>
+in <filename>default.properties</filename> to 
+<replaceable>Number of next release</replaceable>, committing
+and telling everyone on the developers mailing list.
+Notice that this cannot be done in the tagged copy but you either need
+to go back to your other working tree or need to check out the file
+<filename>argouml/src_new/default.properties</filename>
+specifically to do this.
 </para>
 	</listitem>
 
@@ -1638,8 +1695,16 @@ Make sure it is set to
 Check the key to sign the jar files for java web start.
 </para>
 	  <para>
+Run the command
+<command>keytool -list -v</command>
+and give the keystore password 
+<parameter>secret</parameter>.
+You should have a key named argouml that is valid several months
+in the future.
+</para>
+	  <para>
 This is to make sure that you have a valid key
-for the purpose of signing the java web start version of the files.
+for the purpose of signing the Java Web Start version of the files.
 </para>
 	  <para>
 Since the ArgoUML project and the Tigris organization are loose
@@ -1665,15 +1730,66 @@ Run the script
 <filename>argouml/tools/bin/build-release.sh</filename>
 and give the answers to the questions.
 </para>
+
+	  <note>
+	    <para>
+You need to have this file checked out.
+</para>
+	    <para>
+Actually the script assumes the following set up:
+<itemizedlist>
+		<listitem>
+		  <para>
+<filename class="directory">somedirectory/</filename> -
+the directory where the script is started from.
+</para>
+		</listitem>
+
+		<listitem>
+		  <para>
+<filename class="directory">somedirectory/argouml</filename> -
+the place where a checked out copy of ArgoUML resides and the documentation
+is buildable.
+</para>
+		  <para>
+The script is located here and the 
+<filename>JimiProClasses.zip</filename>
+is taken from this installation so if you can build the pdf documentation
+correctly in this, a lot is gained.
+</para>
+		</listitem>
+
+		<listitem>
+		  <para>
+<filename class="directory">somedirectory/<replaceable>FREEZETAG</replaceable></filename> -
+the created that will be created where the whole build will take place
+</para>
+		</listitem>
+
+		<listitem>
+		  <para>
+<filename>svn/argouml-downloads/trunk/www/</filename> -
+where the files to be uploaded will go
+</para>
+		  <para>
+Notice that this is starts one step up, on the same level as
+<filename class="directory">somedirectory</filename>.
+It will be accessed using a path like
+<filename class="directory">../svn/argouml-downloads/trunk/www</filename>.
+</para>
+		</listitem>
+	      </itemizedlist>
+</para>
+	  </note>
+
 	  <para>
 This will:
 </para>
-
 	  <orderedlist>
 	    <listitem>
 	      <para>
 Check out the source in a new directory.
-The new directory is named after the freeze tag that you give.
+The new directory is named after the freeze tag that you have set.
 </para>
 	    </listitem>
 
@@ -1779,19 +1895,38 @@ If the tests did not pass See <xref linkend="release_process_test_failed"/>.
 
 	    <listitem>
 	      <para>
-Build documentation and copy it.
+Download docboox-xsl.
 </para>
 	      <para>
-While connected to the internet you download the docbook-xsl and
-JimiProClasses.zip.
-The docboox-xsl is downloaded by issueing the command
+This is normally done using the command
 <command>build docbook-xsl-get</command>.
-The JimiProClasses.zip is downloaded from Sun.
+</para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+Require you to copy the file
+<filename>JimiProClasses.zip</filename>
+to a certain directory.
+</para>
+	      <para>
+The
+<filename>JimiProClasses.zip</filename>
+is downloaded from Sun.
 Instructions for this is in the fop README file:
 <filename>argouml/tools/fop-0.20.3/README</filename>.
 </para>
+	    </listitem>
+
+	    <listitem>
 	      <para>
-The PDF versions of the documentation shall be copied from the
+Build the pdf documentation.
+</para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+Copy the PDF versions of the documentation from the
 <filename>build/documentation/pdf/*/*.pdf</filename>
 to
 <filename>argouml-<replaceable>version</replaceable>/<replaceable>basename-version</replaceable></filename>.
@@ -1800,12 +1935,13 @@ to
 
 	    <listitem>
 	      <para>
-Upload the files onto the Tigris website!
+Copy the files in place in the svn directory.
 </para>
 	      <para>
 A tree with all files is located in 
 <filename>argouml-<replaceable>version</replaceable></filename>.
-This complete tree is uploaded to argouml-upload on the site.
+It is copied to
+<filename>svn/argouml-downloads/trunk/www/</filename>.
 </para>
 	    </listitem>
 
@@ -1820,6 +1956,7 @@ when your are standing in the
 <filename class="directory">argouml</filename>-directory.
 </para>
 	    </listitem>
+
 	  </orderedlist>
 	</listitem>
 
@@ -1844,41 +1981,39 @@ If the tests did not pass See <xref linkend="release_process_test_failed"/>.
 </para>
 	</listitem>
 
-	  <listitem>
-	    <para>
-Open the repository for commits towards the next version.
+	<listitem>
+	  <para>
+Commit the release in the svn download project.
 </para>
-	    <para>
-This is done by setting the <methodname>argo.core.version</methodname>
-in <filename>default.properties</filename> to 
-<replaceable>Number of next release</replaceable>, committing
-and telling everyone on the developers mailing list.
-Notice that this cannot be done in the tagged copy but you either need
-to go back to your other working tree or need to check out the file
-<filename>argouml/src_new/default.properties</filename>
-specifically to do this.
+	  <para>
+The command you would do for this are
+<programlisting>
+cd ../svn/argouml-downloads/trunk/www
+svn add argouml-<replaceable>VERSION</replaceable>
+svn commit -m'Upload the release <replaceable>VERSION</replaceable>'
+</programlisting>
 </para>
-	  </listitem>
+	</listitem>
 
-	  <listitem id="issuezilla_release_maintenance">
-	    <para>
+	<listitem id="issuezilla_release_maintenance">
+	  <para>
 Go through Issuezilla and check things.
 </para>
-	    <para>
+	  <para>
 Things to check are:
 </para>
-	    <orderedlist>
-	      <listitem>
-		<para>
+	  <orderedlist>
+	    <listitem>
+	      <para>
 That there is a Version created in Issuezilla for the newly created release.
 </para>
-		<para>
+	      <para>
 The purpose of this is to make it possible for everyone 
 to report bugs on the new release.
 </para>
-	      </listitem>
-	      <listitem>
-		<para>
+	    </listitem>
+	    <listitem>
+	      <para>
 Make sure that the upcoming releases have 
 target milestones created for them.
 This needs to be done for all components that has the same
@@ -1887,48 +2022,48 @@ Also see that the numbering is the same in all components and
 that it is in the correct chronological order
 except for the not yet done releases that come before the already completed.
 </para>
-	      </listitem>
-	      <listitem>
-		<para>
+	    </listitem>
+	    <listitem>
+	      <para>
 Change the target milestones of all the not yet resolved issues 
 for this release to ---.
 </para>
-	      </listitem>
-	      <listitem>
-		<para>
+	    </listitem>
+	    <listitem>
+	      <para>
 Change the target milestones of
 any fixed issue
 in component argouml
 with target milestone ---
 to that of the current release.
 </para>
-                <para>
+	      <para>
 This is probably some developer that has fixed an issue by forgot to
 set the target milestone correctly.
 </para>
-	      </listitem>
-	      <listitem>
-	        <para>
+	    </listitem>
+	    <listitem>
+	      <para>
 Move all issues reported on 'current' to this release
 (for the component argouml).
 </para>
-                <para>
+	      <para>
 These items were reported between the previous version and this version.
 Since 'current' will be reused for the next release, they need to be
 locked to the closest release to where they were found.
 </para>
-              </listitem>
-	      <listitem id="reopen_remind_and_later">
-		<para>Reopen RESOLVED/REMIND</para>
-		<para>
+	    </listitem>
+	    <listitem id="reopen_remind_and_later">
+	      <para>Reopen RESOLVED/REMIND</para>
+	      <para>
 This can also be a good time to change all 
 RESOLVED/REMIND.
 Search for them and Reopen them.
 </para>
-	      </listitem>
-	      <listitem id="check_for_later">
-		<para>Check RESOLVED/LATER</para>
-		<para>
+	    </listitem>
+	    <listitem id="check_for_later">
+	      <para>Check RESOLVED/LATER</para>
+	      <para>
 It could also be good to check that all
 RESOLVED/LATER has a valid target milstone (must be an upcoming milestone).
 Search for them and Reopen the ones that havn't.
@@ -1936,19 +2071,19 @@ Also, if the milestone denotes or is going to be resolved in
 the upcoming release, Reopen them with a comment that they are now
 active.
 </para>
-	      </listitem>
-	    </orderedlist>
-	  </listitem>
+	    </listitem>
+	  </orderedlist>
+	</listitem>
 	  
-	  <listitem>
-	    <para>Make announcements!</para>
-	    <para>
+	<listitem>
+	  <para>Make announcements!</para>
+	  <para>
 Write a News announcements and a short note on 
 the dev, users and announce lists.
 Announcer should make sure that he/she is already subscribed to all lists
 with a reference to the news item.
 </para>
-	    <para>
+	  <para>
 The announcement shall include
 a statement on what kind of release this is,
 information on what has changed (for stable releases this is a list of what
@@ -1959,13 +2094,14 @@ a list of serious known problems with this release
 technical details on how the release was built, and
 the plan for the following release.
 </para>
-	    <para>
+	  <para>
 Freshmeat: currently Thierry Lach does the Freshmeat announcements
 which require a login so just inform him.
 </para>
-	  </listitem>
-	</orderedlist>
+	</listitem>
+      </orderedlist>
 </para>
+
       <sect2 id="release_process_test_failed">
 	<title>The release did not work</title>
 	<indexterm>

@@ -16,6 +16,12 @@ then
     exit 1;
 fi
 
+if test ! -d ../svn/argouml-downloads/trunk/www
+then
+    echo The output directory ../svn/argouml-downloads/trunk/www does not exist.
+    exit 1;
+fi
+
 BUILD=RELEASESCRIPT:
 
 # Set up things
@@ -84,28 +90,24 @@ echo "$BUILD No more input."
 cd ..
 cvs tag $releasetag
 
-# 6. Open repository - not done in the script form.
+wait
 
 # 7. Upload the files to the tigris website.
 #    This number should be gotten from the default.properties file.
 directoryname=argouml-$releasename
-wait
 for pdffile in build/documentation/pdf/*/*.pdf
 do
   mv $pdffile $directoryname/`basename $pdffile .pdf`-${releasename}.pdf
 done
 
-echo $BUILD uploading
-ssh upload@tigris.org mkdir argouml/$directoryname
-ssh upload@tigris.org mkdir argouml/$directoryname/jws
-scp $directoryname/* upload@tigris.org:argouml/$directoryname
-scp $directoryname/jws/* upload@tigris.org:argouml/$directoryname/jws
+echo $BUILD copying to the svn directory
+cp -r $directoryname ../../svn/argouml-downloads/trunk/www
 
-# 8. Copy the index file to the download directory (not in the tagged version)
-echo "Copy the index file to the download directory (argouml/www/download)"
-echo "and add it there. This is not in the tagged version but in the"
-echo original version.
+echo Add and commit the newly created directory
+echo ../svn/argouml-downloads/trunk/www/$directoryname
 
-# 9. Announcements
-echo "Make announcements: News item, mails, ..."
+echo Update the index.html in the argouml-downloads project.
 
+echo Copy the index file to the download directory (argouml/www/download)
+echo and add and commit it there. This is not in the tagged version but
+echo in the echo original version.
