@@ -1626,7 +1626,7 @@ an argouml developer.
 	  <para>
 The machine needs
 internet access (it is not a small download and upload so at least
-128KB internet connection to keep the time reasonable < 2 hours),
+128KB internet connection to keep the time reasonable &lt; 2 hours),
 the correct version of java installed (should be a JDK 1.4.2),
 cvs and svn installed,
 Unix or Cygwin to be able to run the scripts.
