@@ -26,6 +26,8 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 
+import org.apache.log4j.Logger;
+import org.argouml.uml.diagram.static_structure.ui.FigFeature;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 
@@ -35,6 +37,11 @@ import org.tigris.gef.presentation.FigRect;
  * @author Bob Tarling
  */
 public abstract class FigFeaturesCompartment extends FigCompartment {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger.getLogger(FigCompartment.class);
 
     private Fig bigPort;
 
@@ -63,9 +70,8 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
     public String classNameAndBounds() {
         if (isVisible()) {
             return super.classNameAndBounds();
-        } else {
-            return getClass().getName() + "[]";
         }
+        return getClass().getName() + "[]";
     }
 
     /**
@@ -74,4 +80,42 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
     public Fig getBigPort() {
         return bigPort;
     }
+    
+    /**
+     * If a features compartment is set to invisible then remove all its
+     * children.
+     * This is to save on resources and increase efficiency as multiple
+     * figs need not exist and be resized, moved etc if they are not visible.
+     * If a compartment is later made visible the its child figs are rebuilt
+     * from the model.
+     * @see org.tigris.gef.presentation.Fig#setVisible(boolean)
+     */
+    public void setVisible(boolean visible) {
+        if (isVisible() == visible) {
+            return;
+        }
+        super.setVisible(visible);
+        if (visible) {
+            populate();
+        } else {
+            while (getFigs().size() > 1) {
+                Fig f = getFigAt(1);
+                removeFig(f);
+            }
+        }
+    }
+    
+    
+    /**
+     * @see org.tigris.gef.presentation.FigGroup#addFig(org.tigris.gef.presentation.Fig)
+     */
+    public void addFig(Fig fig) {
+        if (fig != bigPort && !(fig instanceof FigFeature)) {
+            LOG.error("Illegal Fig added to a FigFeature");
+            throw new IllegalArgumentException("A FigFeaturesCompartment can only contain FigFeatures, received a " + fig.getClass().getName());
+        }
+        super.addFig(fig);
+    }
+    
+    abstract public void populate();
 }

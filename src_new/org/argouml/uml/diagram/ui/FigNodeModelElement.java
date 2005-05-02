@@ -313,9 +313,8 @@ public abstract class FigNodeModelElement
     public String classNameAndBounds() {
         if (isVisible()) {
             return super.classNameAndBounds();
-        } else {
-            return getClass().getName() + "[0,0,0,0]";
         }
+        return getClass().getName() + "[]";
     }
 
     /**
@@ -837,6 +836,7 @@ public abstract class FigNodeModelElement
      * as the list of element known by the FigNode (_figs). Therefore,
      * it is necessary to check if the graphic item exists before drawing
      * on it. See ClAttributeCompartment for an example.
+     * @param g the graphics device
      * @see org.argouml.uml.cognitive.critics.ClAttributeCompartment
      */
     public void paintClarifiers(Graphics g) {
@@ -1580,23 +1580,6 @@ public abstract class FigNodeModelElement
                 ArgoEventPump.addListener((ArgoEventListener) fig);
             }
         }
-    }
-
-    /**
-     * Adds a fig to this FigNodeModelElement and removes it from the
-     * group it belonged to if any.  Correction to the GEF
-     * implementation that does not handle the double association
-     * correctly.<p>
-     *
-     * @see FigGroup#addFig(Fig)
-     * TODO: remove this once GEF0.10 is in place and tested
-     */
-    public void addFig(Fig f) {
-        Fig group = f.getGroup();
-        if (group != null) {
-            ((FigGroup) group).removeFig(f);
-        }
-        super.addFig(f);
     }
 
     /**

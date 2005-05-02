@@ -33,12 +33,11 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Notation;
 import org.argouml.i18n.Translator;
 import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.Model;
@@ -76,7 +75,6 @@ public class FigInterface extends FigNodeModelElement
 
     //These are the positions of child figs inside this fig
     //They mst be added in the constructor in this order.
-    private static final int BLINDER_POSN = 3;
     private static final int OPERATIONS_POSN = 4;
 
     ////////////////////////////////////////////////////////////////
@@ -448,14 +446,13 @@ public class FigInterface extends FigNodeModelElement
         Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
         Fig f = hitFig(r);
         if (f == operVec && operVec.getHeight() > 0) {
-            // TODO: in future version of GEF call getFigs returning array
-            Vector v = new Vector(operVec.getFigs());
+            List v = operVec.getFigs();
             i = (v.size() - 1)
                     * (me.getY() - f.getY() - 3)
                     / operVec.getHeight();
             if (i >= 0 && i < v.size() - 1) {
                 me.consume();
-                f = (Fig) v.elementAt(i + 1);
+                f = (Fig) v.get(i + 1);
                 ((CompartmentFigText) f).setHighlighted(true);
                 highlightedFigText = (CompartmentFigText) f;
                 TargetManager.getInstance().setTarget(f);
@@ -479,8 +476,7 @@ public class FigInterface extends FigNodeModelElement
         if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
             CompartmentFigText ft = unhighlight();
             if (ft != null) {
-                // TODO: in future version of GEF call getFigs returning array
-                int i = new Vector(operVec.getFigs()).indexOf(ft);
+                int i = operVec.getFigs().indexOf(ft);
                 if (i != -1) {
                     if (key == KeyEvent.VK_UP) {
                         ft =
@@ -577,8 +573,7 @@ public class FigInterface extends FigNodeModelElement
         if (cls == null) {
             return;
         }
-        // TODO: in future version of GEF call getFigs returning array
-        int i = new Vector(operVec.getFigs()).indexOf(ft);
+        int i = operVec.getFigs().indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
@@ -607,19 +602,18 @@ public class FigInterface extends FigNodeModelElement
      */
     protected FigText getPreviousVisibleFeature(FigText ft, int i) {
         FigText ft2 = null;
-        // TODO: in future version of GEF call getFigs returning array
-        Vector v = new Vector(operVec.getFigs());
-        if (i < 1 || i >= v.size()
-                || !((FigText) v.elementAt(i)).isVisible()) {
+        List figs = operVec.getFigs();
+        if (i < 1 || i >= figs.size()
+                || !((FigText) figs.get(i)).isVisible()) {
             return null;
         }
 
         do {
             i--;
             if (i < 1) {
-                i = v.size() - 1;
+                i = figs.size() - 1;
             }
-            ft2 = (FigText) v.elementAt(i);
+            ft2 = (FigText) figs.get(i);
             if (!ft2.isVisible()) {
                 ft2 = null;
             }
@@ -675,9 +669,9 @@ public class FigInterface extends FigNodeModelElement
             return;
         }
         new ActionAddOperation().actionPerformed(null);
-        // TODO: in future version of GEF call getFigs returning array
+        List figList = fg.getFigs();
         CompartmentFigText ft =
-                (CompartmentFigText) new Vector(fg.getFigs()).lastElement();
+                (CompartmentFigText) figList.get(figList.size()-1);
         if (ft != null) {
             ft.startTextEditor(ie);
             ft.setHighlighted(true);
@@ -691,11 +685,10 @@ public class FigInterface extends FigNodeModelElement
      */
     protected CompartmentFigText unhighlight() {
         CompartmentFigText ft;
-        // TODO: in future version of GEF call getFigs returning array
-        Vector v = new Vector(operVec.getFigs());
+        List v = operVec.getFigs();
         int i;
         for (i = 1; i < v.size(); i++) {
-            ft = (CompartmentFigText) v.elementAt(i);
+            ft = (CompartmentFigText) v.get(i);
             if (ft.isHighlighted()) {
                 ft.setHighlighted(false);
                 highlightedFigText = null;
@@ -864,74 +857,18 @@ public class FigInterface extends FigNodeModelElement
      * cases.
      */
     protected void updateOperations() {
-        Object cls = /*(MClassifier)*/ getOwner();
-        if (cls == null) {
+        if (!isOperationsVisible()) {
             return;
         }
-
-        Fig operPort = ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN))
-            .getBigPort();
+        FigOperationsCompartment operationsCompartment = ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN));
+        operationsCompartment.populate();
+        Fig operPort = operationsCompartment.getBigPort();
 
         int xpos = operPort.getX();
         int ypos = operPort.getY();
-        int ocounter = 1;
-        Collection behs = Model.getFacade().getOperations(cls);
-        if (behs != null) {
-            Iterator iter = behs.iterator();
-            // TODO: in future version of GEF call getFigs returning array
-            Vector figs = new Vector(operVec.getFigs());
-            CompartmentFigText oper;
-            while (iter.hasNext()) {
-                Object behavioralFeature =
-                        /*(MBehavioralFeature)*/ iter.next();
-                // update the listeners
-                Model.getPump().removeModelEventListener(this,
-                        behavioralFeature);
-                Model.getPump().addModelEventListener(this,
-                        behavioralFeature);
-                if (figs.size() <= ocounter) {
-                    oper =
-                            new FigFeature(xpos + 1,
-                                    ypos + 1 + (ocounter - 1) * ROWHEIGHT,
-                                    0,
-                                    ROWHEIGHT - 2,
-                                    operPort);
-                    // bounds not relevant here
-                    oper.setFilled(false);
-                    oper.setLineWidth(0);
-                    oper.setFont(getLabelFont());
-                    oper.setTextColor(Color.black);
-                    oper.setJustification(FigText.JUSTIFY_LEFT);
-                    oper.setMultiLine(false);
-                    operVec.addFig(oper);
-                } else {
-                    oper = (CompartmentFigText) figs.elementAt(ocounter);
-                }
-                oper.setText(Notation.generate(this, behavioralFeature));
-                oper.setOwner(behavioralFeature);
-                // underline, if static
-                oper.setUnderline(Model.getScopeKind().getClassifier()
-                        .equals(Model.getFacade()
-                        .getOwnerScope(behavioralFeature)));
-                // italics, if abstract
-                //oper.setItalic(((MOperation)bf).isAbstract());
-                //// does not properly work (GEF bug?)
-                if (Model.getFacade().isAbstract(behavioralFeature)) {
-                    oper.setFont(getItalicLabelFont());
-                } else {
-                    oper.setFont(getLabelFont());
-                }
-                ocounter++;
-            }
-            if (figs.size() > ocounter) {
-                //cleanup of unused operation FigText's
-                for (int i = figs.size() - 1; i >= ocounter; i--) {
-                    operVec.removeFig((Fig) figs.elementAt(i));
-                }
-            }
-        }
+
         Rectangle rect = getBounds();
-        updateFigGroupSize(operVec, xpos, ypos, 0, 0);
+        updateFigGroupSize(getOperationsFig(), xpos, ypos, 0, 0);
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);

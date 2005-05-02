@@ -25,14 +25,17 @@
 // $header$
 package org.argouml.uml.diagram.static_structure.ui;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.Handle;
 
 /**
@@ -115,6 +118,12 @@ public class FigFeature extends CompartmentFigText {
     */
     public FigFeature(int x, int y, int w, int h, Fig aFig) {
         super(x, y, w, h, aFig);
+        setFilled(false);
+        setLineWidth(0);
+        setFont(FigNodeModelElement.getLabelFont());
+        setTextColor(Color.black);
+        setJustification(FigText.JUSTIFY_LEFT);
+        setMultiLine(false);
     }
 
     /**
@@ -126,4 +135,5 @@ public class FigFeature extends CompartmentFigText {
         return new SelectionFeature(this);
     }
 
+    
 }
