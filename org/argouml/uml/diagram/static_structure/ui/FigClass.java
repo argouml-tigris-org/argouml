@@ -205,6 +205,9 @@ public class FigClass extends FigNodeModelElement
         addFig(operationsFigCompartment);
         addFig(attributesFigCompartment);
 
+        setAttributesVisible(false);
+        setOperationsVisible(false);
+        
         setSuppressCalcBounds(false);
         // Set the bounds of the figure to the total of the above (hardcoded)
         setBounds(10, 10, 60, 22 + 2 * ROWHEIGHT);

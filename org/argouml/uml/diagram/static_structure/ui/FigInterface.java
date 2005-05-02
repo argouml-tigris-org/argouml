@@ -179,6 +179,9 @@ public class FigInterface extends FigNodeModelElement
         addFig(getNameFig());
         addFig(stereoLineBlinder);
         addFig(operVec);
+        
+        setOperationsVisible(false);
+        
         setSuppressCalcBounds(false);
 
         // Set the bounds of the figure to the total of the above (hardcoded)
