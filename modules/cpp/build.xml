@@ -108,6 +108,7 @@ round-trip engineering for C++ projects.
     <property name="module.lib.dir" value="${module.root}/lib"/>
     
     <property name="commons-io.jar.path" value="${module.lib.dir}/commons-io-1.0.jar"/>
+  <property name="easymock.jar.path" value="${module.lib.dir}/easymock-1.1.jar"/>
 
     <property name="manifest" value="manifest.mf"/>
     <property name="manifest.src" value="${module.src.dir}/org/${manifest}"/>
@@ -155,8 +156,13 @@ round-trip engineering for C++ projects.
       <pathelement location="${module.build.dest}"/>
       <path refid="module.compile.classpath"/>
       <pathelement location="${junit.jar.path}"/>
-      <pathelement location="${commons-io.jar.path}"/>   
-    </path>  
+      <pathelement location="${commons-io.jar.path}"/>
+      <pathelement location="${easymock.jar.path}"/>
+    </path>
+    
+    <path id="module.antlr-genparser.classpath">
+      <pathelement location="${antlrall.jar.path}"/>
+    </path> 
     
     <path id="ant.optional.classpath">
       <pathelement location="${ant.home}/optional.jar"/>
@@ -165,13 +171,13 @@ round-trip engineering for C++ projects.
 
     <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" name="junit">
       <classpath>
-	 <path refid="ant.optional.classpath"/>
+	      <path refid="ant.optional.classpath"/>
       </classpath>
     </taskdef>
 
     <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator" name="junitreport">
       <classpath>
-	 <path refid="ant.optional.classpath"/>
+	      <path refid="ant.optional.classpath"/>
       </classpath>
     </taskdef>
 
@@ -191,11 +197,49 @@ round-trip engineering for C++ projects.
     <mkdir dir="${module.tests.classes}"/>
     <mkdir dir="${module.tests.reports}"/>
   </target>
+  
+  <!-- =================================================================== -->
+  <!-- Generates the parser and lexer classes                              -->
+  <!-- =================================================================== -->
+  <target name="generateparser" depends="prepare" 
+          description="Generates the parser and lexer classes">
+    <uptodate property="parser.is.current"
+      targetfile="${module.src.dir}/org/argouml/language/cpp/reveng/STDCTokenTypes.txt">
+      <srcfiles dir="${module.src.dir}/org/argouml/language/cpp/reveng">
+        <include name="CppParser4Java.g"/>
+      </srcfiles>
+    </uptodate>
+    <antcall target="generateparser_internal"/>
+  </target>
+   
+  <target name="generateparser_internal" unless="parser.is.current" 
+          depends="prepare">
+    <java classname="antlr.Tool" classpath="${module.antlr-genparser.classpath}" 
+          fork="yes" maxmemory="32M">
+      <!-- For debugging the parser or lexer you may want to use the options 
+      -traceParser or / and -traceLexer. -->
+      <arg line="-o ${module.src.dir}/org/argouml/language/cpp/reveng ${module.src.dir}/org/argouml/language/cpp/reveng/CppParser4Java.g"/>
+      <classpath>
+        <path refid="module.antlr-genparser.classpath"/>
+      </classpath>
+    </java>
+  </target>
+  
+  <target name="cleanparser">
+    <delete>
+    	<fileset dir="${module.src.dir}/org/argouml/language/cpp/reveng">
+        <include name="STDCTokenTypes.txt"/> 
+        <include name="STDCTokenTypes.java"/> 
+        <include name="CPPParser.java"/> 
+        <include name="CPPLexer.java"/> 
+      </fileset>
+    </delete> 
+  </target> 
 
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
-  <target name="compile" depends="init, prepare" 
+  <target name="compile" depends="generateparser" 
           description="compiles the module source code"> 
 
     <echo message="Compiling the sources"/>
@@ -260,6 +304,8 @@ round-trip engineering for C++ projects.
     <delete file="${developer.lib.dir}/ext/${module.jarfile.name}"/>
     <delete file="${argo.build.dir}/ext/${module.jarfile.name}"/>
     <delete dir="${module.build.dir}"/>
+   
+    <antcall target="cleanparser"/>
   </target>
 
   <!-- =================================================================== -->
@@ -278,6 +324,8 @@ round-trip engineering for C++ projects.
   <target name="compile-tests" depends="compile"> 
 
     <echo message="Compiling the unit tests"/>
+    
+    <antcall target="copy-tests-resources"/>
 
     <javac srcdir="${module.tests.src}"
            destdir="${module.tests.classes}"
@@ -289,6 +337,22 @@ round-trip engineering for C++ projects.
       </classpath>
      </javac>
   </target>
+  
+  <target name="copy-tests-resources" depends="init">
+    <property name="tests.reveng.src" 
+      value="${module.tests.src}/org/argouml/language/cpp/reveng"/>
+    <property name="tests.reveng.classes"
+      value="${module.tests.classes}/org/argouml/language/cpp/reveng"/>
+     
+    <copy file="${tests.reveng.src}/SimpleClass.cpp" 
+      todir="${tests.reveng.classes}"/>
+    <copy file="${tests.reveng.src}/quadratic.i" 
+      todir="${tests.reveng.classes}"/>
+    <copy file="${tests.reveng.src}/UnionInlineDefInMember.cpp"
+      todir="${tests.reveng.classes}"/>
+    <copy file="${tests.reveng.src}/CastExpressions.cpp"
+      todir="${tests.reveng.classes}"/>
+  </target> 
 
   <!-- =================================================================== -->
   <!-- Run the module unit tests                                           -->

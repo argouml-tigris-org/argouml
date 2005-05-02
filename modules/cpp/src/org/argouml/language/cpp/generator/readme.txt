@@ -87,7 +87,7 @@ will lead for class types to a predeclaration in the header, and the include of
 the remote class header in the header of the generated class
 
 Name: MultiplicityType
-Value: list|slist|vector|map|stack
+Value: list|slist|vector|map|stack|stringmap
 will define a multiplicity as the corresponding STL container, if the range is 
 variable ( fixed size ranges are transfered to: type name[size]).
 
