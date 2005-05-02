@@ -24,6 +24,16 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import org.argouml.application.api.Notation;
+import org.argouml.application.api.NotationContext;
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.static_structure.ui.FigFeature;
+import org.tigris.gef.presentation.Fig;
+
 /**
  * @author Bob Tarling
  */
@@ -38,5 +48,55 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
      */
     public FigAttributesCompartment(int x, int y, int w, int h) {
         super(x, y, w, h);
+    }
+    
+    public void populate() {
+        if (!isVisible()) {
+            return;
+        }
+        Object cls = /*(MClassifier)*/ getGroup().getOwner();
+        Fig attrPort = this.getBigPort();
+        int xpos = attrPort.getX();
+        int ypos = attrPort.getY();
+        int acounter = 1;
+        Collection strs = Model.getFacade().getStructuralFeatures(cls);
+        if (strs != null) {
+            Iterator iter = strs.iterator();
+            List figs = getFigs();
+            CompartmentFigText attr;
+            while (iter.hasNext()) {
+                Object sf = /*(MStructuralFeature)*/ iter.next();
+                // update the listeners
+                // Model.getPump().removeModelEventListener(this, sf);
+                // Model.getPump().addModelEventListener(this, sf); //??
+                if (figs.size() <= acounter) {
+                    attr = new FigFeature(xpos + 1,
+                       ypos + 1 + (acounter - 1) * FigNodeModelElement.ROWHEIGHT,
+                       0,
+                       FigNodeModelElement.ROWHEIGHT - 2,
+                       attrPort);
+                    // bounds not relevant here
+                    addFig(attr);
+                } else {
+                    attr = (CompartmentFigText) figs.get(acounter);
+                }
+                attr.setText(Notation.generate((NotationContext)getGroup(), sf));
+                attr.setOwner(sf); //TODO: update the model again here?
+                /* This causes another event, and modelChanged() called,
+                 * and updateAttributes() called again...
+                 */
+
+                // underline, if static
+                attr.setUnderline(Model.getScopeKind().getClassifier()
+                  .equals(Model.getFacade().getOwnerScope(sf)));
+                acounter++;
+            }
+            if (figs.size() > acounter) {
+                //cleanup of unused attribute FigText's
+                for (int i = figs.size() - 1; i >= acounter; i--) {
+                    removeFig((Fig) figs.get(i));
+                }
+            }
+        }
     }
 }

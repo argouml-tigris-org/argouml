@@ -323,16 +323,16 @@ public class FigClass extends FigNodeModelElement
      * @return The vector of graphics for operations (if any).
      * First one is the rectangle for the entire operations box.
      */
-    private FigGroup getOperationsFig() {
-        return (FigGroup) getFigAt(OPERATIONS_POSN);
+    private FigOperationsCompartment getOperationsFig() {
+        return (FigOperationsCompartment) getFigAt(OPERATIONS_POSN);
     }
 
     /**
      * @return The vector of graphics for operations (if any).
      * First one is the rectangle for the entire operations box.
      */
-    private FigGroup getAttributesFig() {
-        return (FigGroup) getFigAt(ATTRIBUTES_POSN);
+    private FigAttributesCompartment getAttributesFig() {
+        return (FigAttributesCompartment) getFigAt(ATTRIBUTES_POSN);
     }
 
     /**
@@ -524,20 +524,6 @@ public class FigClass extends FigNodeModelElement
     }
 
     /**
-     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
-     */
-    public void setFillColor(Color lColor) {
-        super.setFillColor(lColor);
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
-     */
-    public void setLineColor(Color lColor) {
-        super.setLineColor(lColor);
-    }
-
-    /**
      * @see org.tigris.gef.presentation.Fig#translate(int, int)
      */
     public void translate(int dx, int dy) {
@@ -671,9 +657,11 @@ public class FigClass extends FigNodeModelElement
         do {
             i--;
             while (i < 1) {
-                fgVec = (fgVec == getAttributesFig())
-                    ? getOperationsFig()
-                    : getAttributesFig();
+                if (fgVec == getAttributesFig()) {
+                    fgVec = getOperationsFig();
+                } else {
+                    fgVec = getAttributesFig();
+                }
                 v = new Vector(fgVec.getFigs());
                 i = v.size() - 1;
             }
@@ -704,9 +692,11 @@ public class FigClass extends FigNodeModelElement
         do {
             i++;
             while (i >= v.size()) {
-                fgVec = (fgVec == getAttributesFig())
-                    ? getOperationsFig()
-                    : getAttributesFig();
+                if (fgVec == getAttributesFig()) {
+                    fgVec = getOperationsFig();
+                } else {
+                    fgVec = getAttributesFig();
+                }
                 v = new Vector(fgVec.getFigs());
                 i = 1;
             }
@@ -1124,6 +1114,72 @@ public class FigClass extends FigNodeModelElement
             }
         }
     }
+//    /**
+//     * Updates the attributes in the fig. Called from modelchanged if there is
+//     * a modelevent effecting the attributes and from renderingChanged in all
+//     * cases.
+//     */
+//    protected void updateAttributes() {
+//        Object cls = /*(MClassifier)*/ getOwner();
+//        Fig attrPort = ((FigAttributesCompartment) getFigAt(ATTRIBUTES_POSN))
+//            .getBigPort();
+//        int xpos = attrPort.getX();
+//        int ypos = attrPort.getY();
+//        int acounter = 1;
+//        Collection strs = Model.getFacade().getStructuralFeatures(cls);
+//        if (strs != null) {
+//            Iterator iter = strs.iterator();
+//            // TODO: in future version of GEF call getFigs returning array
+//            Vector figs = new Vector(getAttributesFig().getFigs());
+//            CompartmentFigText attr;
+//            while (iter.hasNext()) {
+//                Object sf = /*(MStructuralFeature)*/ iter.next();
+//                // update the listeners
+//		// Model.getPump().removeModelEventListener(this, sf);
+//                // Model.getPump().addModelEventListener(this, sf); //??
+//                if (figs.size() <= acounter) {
+//                    attr =
+//			new FigFeature(xpos + 1,
+//				       ypos + 1 + (acounter - 1) * ROWHEIGHT,
+//				       0,
+//				       ROWHEIGHT - 2,
+//				       attrPort);
+//                    // bounds not relevant here
+//                    attr.setFilled(false);
+//                    attr.setLineWidth(0);
+//                    attr.setFont(getLabelFont());
+//                    attr.setTextColor(Color.black);
+//                    attr.setJustification(FigText.JUSTIFY_LEFT);
+//                    attr.setMultiLine(false);
+//                    getAttributesFig().addFig(attr);
+//                } else {
+//                    attr = (CompartmentFigText) figs.elementAt(acounter);
+//                }
+//                attr.setText(Notation.generate(this, sf));
+//                attr.setOwner(sf); //TODO: update the model again here?
+//                /* This causes another event, and modelChanged() called,
+//                 * and updateAttributes() called again...
+//                 */
+//
+//                // underline, if static
+//                attr.setUnderline(Model.getScopeKind().getClassifier()
+//				  .equals(Model.getFacade().getOwnerScope(sf)));
+//                acounter++;
+//            }
+//            if (figs.size() > acounter) {
+//                //cleanup of unused attribute FigText's
+//                for (int i = figs.size() - 1; i >= acounter; i--) {
+//                    getAttributesFig().removeFig((Fig) figs.elementAt(i));
+//                }
+//            }
+//        }
+//        Rectangle rect = getBounds();
+//        updateFigGroupSize(getAttributesFig(), xpos, ypos, 0, 0);
+//        // ouch ugly but that's for a next refactoring
+//        // TODO: make setBounds, calcBounds and updateBounds consistent
+//        setBounds(rect.x, rect.y, rect.width, rect.height);
+//        damage();
+//    }
 
     /**
      * Updates the attributes in the fig. Called from modelchanged if there is
@@ -1131,59 +1187,15 @@ public class FigClass extends FigNodeModelElement
      * cases.
      */
     protected void updateAttributes() {
-        Object cls = /*(MClassifier)*/ getOwner();
-        Fig attrPort = ((FigAttributesCompartment) getFigAt(ATTRIBUTES_POSN))
-            .getBigPort();
+        if (!isAttributesVisible()) {
+            return;
+        }
+        FigAttributesCompartment attributesCompartment = (FigAttributesCompartment) getAttributesFig();
+        attributesCompartment.populate();
+        Fig attrPort = attributesCompartment.getBigPort();
         int xpos = attrPort.getX();
         int ypos = attrPort.getY();
-        int acounter = 1;
-        Collection strs = Model.getFacade().getStructuralFeatures(cls);
-        if (strs != null) {
-            Iterator iter = strs.iterator();
-            // TODO: in future version of GEF call getFigs returning array
-            Vector figs = new Vector(getAttributesFig().getFigs());
-            CompartmentFigText attr;
-            while (iter.hasNext()) {
-                Object sf = /*(MStructuralFeature)*/ iter.next();
-                // update the listeners
-		// Model.getPump().removeModelEventListener(this, sf);
-                // Model.getPump().addModelEventListener(this, sf); //??
-                if (figs.size() <= acounter) {
-                    attr =
-			new FigFeature(xpos + 1,
-				       ypos + 1 + (acounter - 1) * ROWHEIGHT,
-				       0,
-				       ROWHEIGHT - 2,
-				       attrPort);
-                    // bounds not relevant here
-                    attr.setFilled(false);
-                    attr.setLineWidth(0);
-                    attr.setFont(getLabelFont());
-                    attr.setTextColor(Color.black);
-                    attr.setJustification(FigText.JUSTIFY_LEFT);
-                    attr.setMultiLine(false);
-                    getAttributesFig().addFig(attr);
-                } else {
-                    attr = (CompartmentFigText) figs.elementAt(acounter);
-                }
-                attr.setText(Notation.generate(this, sf));
-                attr.setOwner(sf); //TODO: update the model again here?
-                /* This causes another event, and modelChanged() called,
-                 * and updateAttributes() called again...
-                 */
-
-                // underline, if static
-                attr.setUnderline(Model.getScopeKind().getClassifier()
-				  .equals(Model.getFacade().getOwnerScope(sf)));
-                acounter++;
-            }
-            if (figs.size() > acounter) {
-                //cleanup of unused attribute FigText's
-                for (int i = figs.size() - 1; i >= acounter; i--) {
-                    getAttributesFig().removeFig((Fig) figs.elementAt(i));
-                }
-            }
-        }
+        
         Rectangle rect = getBounds();
         updateFigGroupSize(getAttributesFig(), xpos, ypos, 0, 0);
         // ouch ugly but that's for a next refactoring
@@ -1192,75 +1204,99 @@ public class FigClass extends FigNodeModelElement
         damage();
     }
 
+//    /**
+//     * Updates the operations box. Called from modelchanged if there is
+//     * a modelevent effecting the attributes and from renderingChanged in all
+//     * cases.
+//     */
+//    protected void updateOperations() {
+//        Object cls = /*(MClassifier)*/ getOwner();
+//        Fig operPort = ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN))
+//            .getBigPort();
+//
+//        int xpos = operPort.getX();
+//        int ypos = operPort.getY();
+//        int ocounter = 1;
+//        Collection behs = Model.getFacade().getOperations(cls);
+//        if (behs != null) {
+//            Iterator iter = behs.iterator();
+//            // TODO: in future version of GEF call getFigs returning array
+//            Vector figs = new Vector(getOperationsFig().getFigs());
+//            CompartmentFigText oper;
+//            while (iter.hasNext()) {
+//                Object bf = /*(MBehavioralFeature)*/ iter.next();
+//                // update the listeners
+//		// Model.getPump().removeModelEventListener(this, bf);
+//                // Model.getPump().addModelEventListener(this, bf);
+//                if (figs.size() <= ocounter) {
+//                    oper =
+//                        new FigFeature(xpos + 1,
+//                        ypos + 1 + (ocounter - 1) * ROWHEIGHT,
+//                        0,
+//                        ROWHEIGHT - 2,
+//                        operPort);
+//                    // bounds not relevant here
+//                    oper.setFilled(false);
+//                    oper.setLineWidth(0);
+//                    oper.setFont(getLabelFont());
+//                    oper.setTextColor(Color.black);
+//                    oper.setJustification(FigText.JUSTIFY_LEFT);
+//                    oper.setMultiLine(false);
+//                    getOperationsFig().addFig(oper);
+//                } else {
+//                    oper = (CompartmentFigText) figs.elementAt(ocounter);
+//                }
+//                oper.setText(Notation.generate(this, bf));
+//                oper.setOwner(bf); //TODO: update the model again here?
+//                /* This causes another event, and modelChanged() called,
+//                 * and updateOperations() called again...
+//                 */
+//
+//                // underline, if static
+//                oper.setUnderline(Model.getScopeKind().getClassifier()
+//				  .equals(Model.getFacade().getOwnerScope(bf)));
+//                // italics, if abstract
+//                //oper.setItalic(((MOperation)bf).isAbstract()); //
+//                //does not properly work (GEF bug?)
+//                if (Model.getFacade().isAbstract(bf)) {
+//                    oper.setFont(getItalicLabelFont());
+//                } else {
+//                    oper.setFont(getLabelFont());
+//                }
+//                oper.damage();
+//                ocounter++;
+//            }
+//            if (figs.size() > ocounter) {
+//                //cleanup of unused operation FigText's
+//                for (int i = figs.size() - 1; i >= ocounter; i--) {
+//                    getOperationsFig().removeFig((Fig) figs.elementAt(i));
+//                }
+//            }
+//        }
+//        Rectangle rect = getBounds();
+//        updateFigGroupSize(getOperationsFig(), xpos, ypos, 0, 0);
+//        // ouch ugly but that's for a next refactoring
+//        // TODO: make setBounds, calcBounds and updateBounds consistent
+//        setBounds(rect.x, rect.y, rect.width, rect.height);
+//        damage();
+//    }
+
     /**
      * Updates the operations box. Called from modelchanged if there is
      * a modelevent effecting the attributes and from renderingChanged in all
      * cases.
      */
     protected void updateOperations() {
-        Object cls = /*(MClassifier)*/ getOwner();
-        Fig operPort = ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN))
-            .getBigPort();
+        if (!isOperationsVisible()) {
+            return;
+        }
+        FigOperationsCompartment operationsCompartment = ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN));
+        operationsCompartment.populate();
+        Fig operPort = operationsCompartment.getBigPort();
 
         int xpos = operPort.getX();
         int ypos = operPort.getY();
-        int ocounter = 1;
-        Collection behs = Model.getFacade().getOperations(cls);
-        if (behs != null) {
-            Iterator iter = behs.iterator();
-            // TODO: in future version of GEF call getFigs returning array
-            Vector figs = new Vector(getOperationsFig().getFigs());
-            CompartmentFigText oper;
-            while (iter.hasNext()) {
-                Object bf = /*(MBehavioralFeature)*/ iter.next();
-                // update the listeners
-		// Model.getPump().removeModelEventListener(this, bf);
-                // Model.getPump().addModelEventListener(this, bf);
-                if (figs.size() <= ocounter) {
-                    oper =
-                        new FigFeature(xpos + 1,
-                        ypos + 1 + (ocounter - 1) * ROWHEIGHT,
-                        0,
-                        ROWHEIGHT - 2,
-                        operPort);
-                    // bounds not relevant here
-                    oper.setFilled(false);
-                    oper.setLineWidth(0);
-                    oper.setFont(getLabelFont());
-                    oper.setTextColor(Color.black);
-                    oper.setJustification(FigText.JUSTIFY_LEFT);
-                    oper.setMultiLine(false);
-                    getOperationsFig().addFig(oper);
-                } else {
-                    oper = (CompartmentFigText) figs.elementAt(ocounter);
-                }
-                oper.setText(Notation.generate(this, bf));
-                oper.setOwner(bf); //TODO: update the model again here?
-                /* This causes another event, and modelChanged() called,
-                 * and updateOperations() called again...
-                 */
 
-                // underline, if static
-                oper.setUnderline(Model.getScopeKind().getClassifier()
-				  .equals(Model.getFacade().getOwnerScope(bf)));
-                // italics, if abstract
-                //oper.setItalic(((MOperation)bf).isAbstract()); //
-                //does not properly work (GEF bug?)
-                if (Model.getFacade().isAbstract(bf)) {
-                    oper.setFont(getItalicLabelFont());
-                } else {
-                    oper.setFont(getLabelFont());
-                }
-                oper.damage();
-                ocounter++;
-            }
-            if (figs.size() > ocounter) {
-                //cleanup of unused operation FigText's
-                for (int i = figs.size() - 1; i >= ocounter; i--) {
-                    getOperationsFig().removeFig((Fig) figs.elementAt(i));
-                }
-            }
-        }
         Rectangle rect = getBounds();
         updateFigGroupSize(getOperationsFig(), xpos, ypos, 0, 0);
         // ouch ugly but that's for a next refactoring

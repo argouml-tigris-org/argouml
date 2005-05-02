@@ -25,6 +25,16 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import org.argouml.application.api.Notation;
+import org.argouml.application.api.NotationContext;
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.static_structure.ui.FigFeature;
+import org.tigris.gef.presentation.Fig;
+
 /**
  * @author Bob Tarling
  */
@@ -39,5 +49,66 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
      */
     public FigOperationsCompartment(int x, int y, int w, int h) {
         super(x, y, w, h);
+    }
+    
+    public void populate() {
+        if (!isVisible()) {
+            return;
+        }
+        Object cls = /*(MClassifier)*/ getGroup().getOwner();
+        Fig operPort = this.getBigPort();
+
+        int xpos = operPort.getX();
+        int ypos = operPort.getY();
+        int ocounter = 1;
+        Collection behs = Model.getFacade().getOperations(cls);
+        if (behs != null) {
+            Iterator iter = behs.iterator();
+            List figs = getFigs();
+            CompartmentFigText oper;
+            while (iter.hasNext()) {
+                Object bf = /*(MBehavioralFeature)*/ iter.next();
+                // update the listeners
+        // Model.getPump().removeModelEventListener(this, bf);
+                // Model.getPump().addModelEventListener(this, bf);
+                if (figs.size() <= ocounter) {
+                    oper =
+                        new FigFeature(xpos + 1,
+                        ypos + 1 + (ocounter - 1) * FigNodeModelElement.ROWHEIGHT,
+                        0,
+                        FigNodeModelElement.ROWHEIGHT - 2,
+                        operPort);
+                    // bounds not relevant here
+                    addFig(oper);
+                } else {
+                    oper = (CompartmentFigText) figs.get(ocounter);
+                }
+                oper.setText(Notation.generate((NotationContext)getGroup(), bf));
+                oper.setOwner(bf); //TODO: update the model again here?
+                /* This causes another event, and modelChanged() called,
+                 * and updateOperations() called again...
+                 */
+
+                // underline, if static
+                oper.setUnderline(Model.getScopeKind().getClassifier()
+                  .equals(Model.getFacade().getOwnerScope(bf)));
+                // italics, if abstract
+                //oper.setItalic(((MOperation)bf).isAbstract()); //
+                //does not properly work (GEF bug?)
+                if (Model.getFacade().isAbstract(bf)) {
+                    oper.setFont(FigNodeModelElement.getItalicLabelFont());
+                } else {
+                    oper.setFont(FigNodeModelElement.getLabelFont());
+                }
+                oper.damage();
+                ocounter++;
+            }
+            if (figs.size() > ocounter) {
+                //cleanup of unused operation FigText's
+                for (int i = figs.size() - 1; i >= ocounter; i--) {
+                    removeFig((Fig) figs.get(i));
+                }
+            }
+        }
     }
 }
