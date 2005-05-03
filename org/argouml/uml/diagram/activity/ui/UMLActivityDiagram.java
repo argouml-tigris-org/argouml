@@ -120,12 +120,16 @@ public class UMLActivityDiagram extends UMLDiagram {
         Object context = Model.getFacade().getContext(o);
         if (context != null) {
             if (Model.getFacade().isABehavioralFeature(context)) {
-                setup(Model.getFacade().getOwner(context), o);    
+                setup(Model.getFacade().getNamespace(
+                                Model.getFacade().getOwner(context)), o);    
             } else {
                 setup(context, o);
             }
-        } else
-            LOG.debug("ActivityGraph without context not yet possible :-(");
+        } else {
+            throw new IllegalStateException("Cannot find context namespace "
+                        + "while initializing "
+                        + "activity diagram");
+        }
     }
 
     /**
