@@ -443,8 +443,7 @@ class ArgoEditor extends Editor {
     }
 
     /**
-     * Invoked when the mouse button has been moved (with no buttons
-     * no down).
+     * Invoked when the mouse has been moved (with no buttons down).
      *
      * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
      * @param me The {@link MouseEvent}.
