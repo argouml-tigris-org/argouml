@@ -474,4 +474,11 @@ public class UMLStateDiagram extends UMLDiagram {
         return false;
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getDependentElement()
+     */
+    public Object getDependentElement() {
+            return getStateMachine(); /* The StateMachine. */
+    }
+
 } /* end class UMLStateDiagram */

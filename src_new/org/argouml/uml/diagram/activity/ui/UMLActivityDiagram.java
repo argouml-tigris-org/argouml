@@ -409,4 +409,13 @@ public class UMLActivityDiagram extends UMLDiagram {
         }
         return false;
     }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getDependentElement()
+     */
+    public Object getDependentElement() {
+        return getStateMachine(); /* The ActivityGraph. */
+    }
+    
+    
 } /* end class UMLActivityDiagram */
