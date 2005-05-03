@@ -43,20 +43,13 @@ import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
  */
 public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         VetoableChangeListener {
+
     /**
      * Logger.
      */
     private static final Logger LOG =
         Logger.getLogger(StateDiagramGraphModel.class);
 
-    /**
-     * The "home" UML model of this diagram, not all ModelElements in
-     * this graph are in the home model, but if they are added and
-     * don't already have a model, they are placed in the "home
-     * model". Also, elements from other models will have their
-     * FigNodes add a line to say what their model is.
-     */
-    private Object namespace;
 
     /**
      * The statemachine we are diagramming.
@@ -65,24 +58,6 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
 
     ////////////////////////////////////////////////////////////////
     // accessors
-
-    /**
-     * @see org.argouml.uml.diagram.UMLMutableGraphSupport#getNamespace()
-     */
-    public Object getNamespace() {
-        return namespace;
-    }
-
-    /**
-     * @param ns the namespace
-     */
-    public void setNamespace(Object ns) {
-
-        if (!Model.getFacade().isANamespace(ns)) {
-            throw new IllegalArgumentException();
-        }
-        namespace = ns;
-    }
 
     /**
      * @return the statemachine of this diagram

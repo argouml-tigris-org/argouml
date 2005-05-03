@@ -371,11 +371,6 @@ public class SequenceDiagramGraphModel
     // instance variables
 
     /**
-     * The collaboration this sequence diagram belongs too.
-     */
-    private Object collaboration;
-
-    /**
      * The interaction that is shown on the sequence diagram.
      */
     private Object interaction;
@@ -391,7 +386,7 @@ public class SequenceDiagramGraphModel
     public List getNodes() {
         Vector allNodes = new Vector();
         Collection elements =
-	    Model.getFacade().getOwnedElements(collaboration);
+	    Model.getFacade().getOwnedElements(getHomeModel());
         Iterator it = elements.iterator();
         Collection classifierRoles = new ArrayList();
         while (it.hasNext()) {
@@ -420,7 +415,7 @@ public class SequenceDiagramGraphModel
      * @param c the collaboration
      */
     public SequenceDiagramGraphModel(Object c) {
-        collaboration = c;
+        setHomeModel(c);
         interaction =
             Model.getCollaborationsFactory().buildInteraction(c);
     }
@@ -433,7 +428,7 @@ public class SequenceDiagramGraphModel
     public List getEdges() {
         Vector allEdges = new Vector();
         Iterator it =
-            Model.getFacade().getOwnedElements(collaboration).iterator();
+            Model.getFacade().getOwnedElements(getHomeModel()).iterator();
         while (it.hasNext()) {
             Object o = it.next();
             if (Model.getFacade().isAAssociationRole(o)) {
@@ -597,7 +592,7 @@ public class SequenceDiagramGraphModel
         if (canAddNode(node)) {
             Object clasrole =
                 Model.getCollaborationsFactory().buildClassifierRole(
-                    collaboration);
+                                getHomeModel());
             Model.getCollaborationsHelper().addInstance(clasrole, node);
             fireNodeAdded(node);
         }
@@ -832,7 +827,7 @@ public class SequenceDiagramGraphModel
      * @return the collaboration of the diagram.
      */
     public Object getCollaboration() {
-        return collaboration;
+        return getHomeModel();
     }
 
     /**
@@ -844,22 +839,16 @@ public class SequenceDiagramGraphModel
         // TODO: when the collaboration is set, the whole sequence diagram
         // should be reset (all figs removed) and figs that are a view onto
         // the modelelements in the new collaboration must be shown
-        collaboration = c;
+        setHomeModel(c);
     }
 
     private Object getInteraction() {
         if (interaction == null) {
             interaction =
                 Model.getCollaborationsFactory().buildInteraction(
-                    collaboration);
+                                getHomeModel());
         }
         return interaction;
     }
 
-    /**
-     * @see org.argouml.uml.diagram.UMLMutableGraphSupport#getNamespace()
-     */
-    public Object getNamespace() {
-        return collaboration;
-    }
 }

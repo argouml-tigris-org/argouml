@@ -159,7 +159,7 @@ public class UMLActivityDiagram extends UMLDiagram {
         super.setNamespace(m);
         ActivityDiagramGraphModel gm = new ActivityDiagramGraphModel();
 //        setGraphModel(gm); //MVW
-        gm.setNamespace(m);
+        gm.setHomeModel(m);
         if (agraph != null) {
             gm.setMachine(agraph);
 //            setStateMachine(agraph); // MVW
