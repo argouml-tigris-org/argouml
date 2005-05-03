@@ -788,16 +788,12 @@ public class Project implements java.io.Serializable, TargetListener {
     protected void removeDiagram(ArgoDiagram d) {
         d.removeVetoableChangeListener(new Vcl());
         diagrams.removeElement(d);
-        // if the diagram is a statechart,
-        // remove its associated statemachine model elements
-        if (d instanceof UMLStateDiagram) {
-            UMLStateDiagram statediagram = (UMLStateDiagram) d;
-            // if the statemachine has already been deleted,
-            // and is now null,
-            // don't attempt to delete it!
-            if (statediagram.getStateMachine() != null) {
-                this.moveToTrash(statediagram.getStateMachine());
-            }
+        if (d instanceof UMLDiagram) {
+            /* If this is a UML diagram, then remove the dependent 
+             * modelelements, such as the statemachine 
+             * for a statechartdiagram. */
+            Object o = ((UMLDiagram)d).getDependentElement();
+            if (o != null) moveToTrash(o);
         }
     }
 

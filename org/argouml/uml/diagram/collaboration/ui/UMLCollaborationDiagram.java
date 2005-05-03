@@ -369,4 +369,12 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         }
         return actionMessage;
     }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getDependentElement()
+     */
+    public Object getDependentElement() {
+        return getNamespace(); /* The collaboration. */
+    }
+    
 } /* end class UMLCollaborationDiagram */

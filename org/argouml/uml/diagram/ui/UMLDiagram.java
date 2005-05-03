@@ -611,6 +611,18 @@ public abstract class UMLDiagram
         return Model.getUmlFactory().isRemoved(namespace) 
         || Model.getUmlFactory().isRemoved(getOwner());
     }
+    
+    /**
+     * This method shall return any UML modelelements 
+     * that should be deleted when the diagram gets deleted,
+     * or null if there are none. The default implementation returns null; 
+     * e.g. a statechart diagram should return its statemachine.
+     * 
+     * @author mvw@tigris.org
+     */
+    public Object getDependentElement() {
+        return null;
+    }
 
 } /* end class UMLDiagram */
 
