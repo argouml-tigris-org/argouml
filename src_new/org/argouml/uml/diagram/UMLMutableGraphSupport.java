@@ -69,6 +69,14 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      */
     private Vector edges = new Vector();
 
+    /**
+     * The "home" UML model of this diagram, not all ModelElements in this
+     * graph are in the home model, but if they are added and don't
+     * already have a model, they are placed in the "home model".
+     * Also, elements from other models will have their FigNodes add a
+     * line to say what their model is.
+     */
+    private Object homeModel;
 
     /**
      * Constructor.
@@ -78,7 +86,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     public UMLMutableGraphSupport() {
         super();
     }
-
+    
     /**
      * Get all the nodes from the graphmodel/diagram.
      *
@@ -165,13 +173,26 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     }
 
     /**
-     * @return the namespace of the diagram
+     * Get the homemodel.
      */
-    public abstract Object getNamespace();
+    public Object getHomeModel() { 
+        return homeModel; 
+    }
+
+    /**
+     * Set the homemodel.
+     *
+     * @param ns the namespace
+     */
+    public void setHomeModel(Object ns) {
+        if (!Model.getFacade().isANamespace(ns))
+            throw new IllegalArgumentException();
+        homeModel = ns;
+    }
     
     /**
      * The connect method specifying a connection
-     * type by class is unavailable in the ArgoUML implmentation.
+     * type by class is unavailable in the ArgoUML implementation.
      * TODO: This should be unsupported. Use the 3 Object version
      *
      * @see org.tigris.gef.graph.MutableGraphModel#connect(java.lang.Object, 

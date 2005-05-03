@@ -50,39 +50,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     private static final Logger LOG =
 	Logger.getLogger(ClassDiagramGraphModel.class);
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
-    /**
-     * The "home" UML model of this diagram, not all ModelElements in this
-     * graph are in the home model, but if they are added and don't
-     * already have a model, they are placed in the "home model".
-     * Also, elements from other models will have their FigNodes add a
-     * line to say what their model is.
-     */
-    private Object model;
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
-    /**
-     * @see org.argouml.uml.diagram.UMLMutableGraphSupport#getNamespace()
-     */
-    public Object getNamespace() { return model; }
-
-    /**
-     * @param namespace the namespace to be set for this diagram
-     */
-    public void setNamespace(Object namespace) {
-        if (!Model.getFacade().isANamespace(namespace)) {
-            throw new IllegalArgumentException();
-        }
-	model = namespace;
-    }
 
     ////////////////////////////////////////////////////////////////
     // GraphModel implementation
-
 
     /**
      * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
@@ -364,7 +334,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	getNodes().add(node);
 	if (Model.getFacade().isAModelElement(node)
 	        && Model.getFacade().getNamespace(node) == null) {
-            Model.getCoreHelper().addOwnedElement(model, node);
+            Model.getCoreHelper().addOwnedElement(getHomeModel(), node);
 	}
 
 	fireNodeAdded(node);
@@ -405,7 +375,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         if (Model.getFacade().isAModelElement(edge)
                 && Model.getFacade().getNamespace(edge) == null
                 && !Model.getFacade().isAAssociationEnd(edge)) {
-    	    Model.getCoreHelper().addOwnedElement(model, edge);
+    	    Model.getCoreHelper().addOwnedElement(getHomeModel(), edge);
         }
         fireEdgeAdded(edge);
     }

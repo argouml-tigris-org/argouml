@@ -200,7 +200,7 @@ public class UMLStateDiagram extends UMLDiagram {
         theStateMachine = sm;
 
         StateDiagramGraphModel gm = new StateDiagramGraphModel();
-        gm.setNamespace(namespace);
+        gm.setHomeModel(namespace);
         if (sm != null) {
             gm.setMachine(sm);
         }

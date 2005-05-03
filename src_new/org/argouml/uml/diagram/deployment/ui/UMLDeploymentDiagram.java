@@ -126,7 +126,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         Object m = /*(MNamespace)*/ handle;
         super.setNamespace(m);
         DeploymentDiagramGraphModel gm = new DeploymentDiagramGraphModel();
-        gm.setNamespace(m);
+        gm.setHomeModel(m);
         LayerPerspective lay =
             new LayerPerspectiveMutable(Model.getFacade().getName(m), gm);
         DeploymentDiagramRenderer rend = new DeploymentDiagramRenderer();
