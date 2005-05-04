@@ -80,7 +80,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
     private Diagram _diagram;
     private HashMap _figRegistry;
     
-    protected HashMap translationTable = new HashMap();
+    private HashMap translationTable = new HashMap();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -188,6 +188,16 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
         return _ownerRegistry.get( id);
     }
 
+    /**
+     * @param from the type name to be "translated", i.e. replaced
+     *             by something else
+     * @param to   the resulting name
+     */
+    public void addTranslation(String from, String to) {
+        translationTable.put(from, to);
+    }
+
+    
     ////////////////////////////////////////////////////////////////
     // HandlerStack implementation
     public void pushHandlerStack( DefaultHandler handler)
@@ -212,7 +222,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
     }
 
     /**
-     * Translate class names that might appear in the PGML file.
+     * Translate types that might appear in the PGML file.
      * Some elements or attributes in the PGML file may contain class names.
      * Before these names are interpreted to create object instances, they
      * are passed through this method.  The default implementation of the
@@ -221,7 +231,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
      * @param inputName Class name as it appears in PGML file
      * @return Class name appropriate for the current code base
      */
-    public String translateClassName(String oldName) {
+    public String translateType(String oldName) {
         String translated = (String) translationTable.get(oldName);
 
         if (translated == null) {
@@ -239,7 +249,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
      * <p>
      * First, the <b>description</b> attribute is checked for a PGML-style
      * class name specifier; if one is found, it is passed through the
-     * {@link #translateClassName translateClassName} method and the resulting
+     * {@link #translateType translateClassName} method and the resulting
      * class name is instantiated.  If the resulting object is itself
      * an instance of {@link HandlerFactory}, the method returns the
      * result of calling {@link HandlerFactory#getHandler getHandler} on that
@@ -273,39 +283,38 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
         Attributes attributes) throws SAXException
     {
         String clsNameBounds = attributes.getValue("description");
-        Object elementInstance=null;
-        if ( clsNameBounds!=null)
-        {
+        Object elementInstance = null;
+        if (clsNameBounds != null) {
             StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
-            String clsName = translateClassName(st.nextToken());
-            try
-            {
+            String clsName = translateType(st.nextToken());
+            try {
                 // Special case here; FigLine appears in the description, but
                 // there is no zero argoument constructor
-                if ( clsName.equals( FigLine.class.getName()))
+                if (clsName.equals( FigLine.class.getName())) {
+                    // TODO: Remove this when
+                    // http://gef.tigris.org/issues/show_bug.cgi?id=219 is
+                    // fixed and relevant version of GEF jar is in argouml CVS.
                     elementInstance=new FigLine( 0, 0, 10, 10);
-                else
+                } else {
                     elementInstance=Class.forName( clsName).newInstance();
-            }
-            catch ( ClassNotFoundException cnfe) {
-                LOG.info( "description:" + clsNameBounds + " does not specify an available class.");
-            }
-            catch ( IllegalAccessException iae) {
+                }
+            } catch (ClassNotFoundException cnfe) {
+                //TODO: Class not found! Why is this not considered an error?
+                // shouldn't we throw an exception here.
+                LOG.error( "description:" + clsNameBounds + " does not specify an available class.");
+            } catch ( IllegalAccessException iae) {
                 throw new SAXException( iae);
-            }
-            catch ( InstantiationException ie) {
+            } catch ( InstantiationException ie) {
                 throw new SAXException( ie);
             }
-            if ( elementInstance instanceof HandlerFactory)
-            {
+            if ( elementInstance instanceof HandlerFactory) {
                 return ((HandlerFactory)elementInstance).getHandler(
                     stack, container, uri, localname, qname, attributes);
             }
         }
 
         // If we got here, one of the built-in handlers will apply
-        if ( qname.equals( "group"))
-        {
+        if (qname.equals( "group")) {
             if (elementInstance instanceof FigGroup) {
                 return getGroupHandler(container, (FigGroup) elementInstance,
                                        attributes);
@@ -366,54 +375,50 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
             }
         }
 
-        if ( qname.equals( "private"))
-        {
-            if ( elementInstance!=null)
-            {
-                LOG.warn( "private element unexpectedly generated instance: "+elementInstance.toString());
+        if (qname.equals( "private")) {
+            if ( elementInstance!=null) {
+                LOG.warn( "private element unexpectedly generated instance: " +
+                        elementInstance.toString());
             }
-            if ( container instanceof Container)
-            {
+            if ( container instanceof Container) {
                 return new PrivateHandler( this, (Container)container);
+            } else {
+                LOG.warn( "private element with inappropriate container: " +
+                        container.toString());
             }
-            else
-                LOG.warn( "private element with inappropriate container: "+container.toString());
         }
 
-        if ( qname.equals( "rectangle"))
-        {
+        if ( qname.equals( "rectangle")) {
             String cornerRadius = attributes.getValue("rounding");
             int rInt= -1;
             if(cornerRadius != null && cornerRadius.length()>0) {
                 rInt = Integer.parseInt(cornerRadius);
             }
-            if ( elementInstance==null)
-            {
-                if ( rInt>=0)
+            if ( elementInstance==null) {
+                if ( rInt>=0) {
                     elementInstance=new FigRRect( 0, 0, 80, 80);
-                else
+                } else {
                     elementInstance=new FigRect( 0, 0, 80, 80);
+                }
             }
-            if ( elementInstance instanceof FigRRect &&
-                rInt>=0) {
+            if (elementInstance instanceof FigRRect && rInt >= 0) {
                 ((FigRRect)elementInstance).setCornerRadius( rInt);
             }
-            if ( elementInstance instanceof Fig)
-            {
+            if (elementInstance instanceof Fig) {
                 setAttrs( (Fig)elementInstance, attributes);
-                if ( container instanceof Container)
+                if ( container instanceof Container) {
                     ((Container)container).addObject( elementInstance);
+                }
                 return null;
             }
         }
 
-        if ( qname.equals( "ellipse"))
-        {
-            if ( elementInstance==null)
-               elementInstance = new FigCircle(0, 0, 50, 50);
-            if ( elementInstance instanceof FigCircle)
-            {
-                FigCircle f=(FigCircle)elementInstance;
+        if (qname.equals( "ellipse")) {
+            if (elementInstance==null) {
+                elementInstance = new FigCircle(0, 0, 50, 50);
+            }
+            if (elementInstance instanceof FigCircle) {
+                FigCircle f = (FigCircle) elementInstance;
                 setAttrs(f, attributes);
                 String rx = attributes.getValue("rx");
                 String ry = attributes.getValue("ry");
@@ -433,13 +438,12 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
         // Don't know what to do; throw up our hands--usually this
         // will mean that sub-elements are ignored
         LOG.info( "Unrecognized element "+qname);
-        if ( elementInstance!=null)
-        {
+        if (elementInstance != null) {
             // Implement reasonable default behavior
-            if ( elementInstance instanceof Fig)
+            if (elementInstance instanceof Fig) {
                 setAttrs( (Fig)elementInstance, attributes);
-            if ( container instanceof Container)
-            {
+            }
+            if (container instanceof Container) {
                 ((Container)container).addObject( elementInstance);
             }
         }
@@ -570,7 +574,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
      */
     public static void setCommonAttrs(Fig f, Attributes attrList) throws SAXException {
         String x = attrList.getValue("x");
-        if(x != null && !x.equals("")) {
+        if (x != null && !x.equals("")) {
             String y = attrList.getValue("y");
             String w = attrList.getValue("width");
             String h = attrList.getValue("height");
@@ -583,52 +587,54 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
         }
 
         String linewidth = attrList.getValue("stroke");
-        if(linewidth != null && !linewidth.equals("")) {
+        if (linewidth != null && !linewidth.equals("")) {
             f.setLineWidth(Integer.parseInt(linewidth));
         }
 
         String strokecolor = attrList.getValue("strokecolor");
-        if(strokecolor != null && !strokecolor.equals("")) {
+        if (strokecolor != null && !strokecolor.equals("")) {
             f.setLineColor(colorByName(strokecolor, Color.blue));
         }
 
         String fill = attrList.getValue("fill");
-        if(fill != null && !fill.equals("")) {
+        if (fill != null && !fill.equals("")) {
             f.setFilled(fill.equals("1") || fill.startsWith("t"));
         }
 
         String fillcolor = attrList.getValue("fillcolor");
-        if(fillcolor != null && !fillcolor.equals("")) {
+        if (fillcolor != null && !fillcolor.equals("")) {
             f.setFillColor(colorByName(fillcolor, Color.white));
         }
 
         String dasharray = attrList.getValue("dasharray");
-        if(dasharray != null && !dasharray.equals("") && !dasharray.equals("solid")) {
+        if (dasharray != null &&
+                !dasharray.equals("") &&
+                !dasharray.equals("solid")) {
             f.setDashed(true);
         }
 
         // This is deprecated?
         String dynobjs = attrList.getValue("dynobjects");
-        if(dynobjs != null && dynobjs.length() != 0) {
-            if(f instanceof FigGroup) {
+        if (dynobjs != null && dynobjs.length() != 0) {
+            if (f instanceof FigGroup) {
                 FigGroup fg = (FigGroup)f;
                 fg.parseDynObjects(dynobjs);
             }
         }
 
         String context = attrList.getValue("context");
-        if(context != null && !context.equals("")) {
+        if (context != null && !context.equals("")) {
             f.setContext(context);
         }
 
         String visState = attrList.getValue("shown");
-        if(visState != null && !visState.equals("")) {
+        if (visState != null && !visState.equals("")) {
             int visStateInt = Integer.parseInt(visState);
             f.setVisState(visStateInt);
         }
 
         String single = attrList.getValue("single");
-        if(single != null && !single.equals("")) {
+        if (single != null && !single.equals("")) {
             f.setSingle(single);
         }
     }

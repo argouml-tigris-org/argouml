@@ -37,19 +37,10 @@ public class PGMLStackParser extends org.argouml.gef.PGMLStackParser {
         // TODO: Use stylesheet to convert or wait till we use Fig
         // factories in diagram subsystem.
         // What is the last version that used FigNote?
-        translationTable.put("org.argouml.uml.diagram.static_structure.ui.FigNote",
+        addTranslation("org.argouml.uml.diagram.static_structure.ui.FigNote",
             "org.argouml.uml.diagram.static_structure.ui.FigComment");
-        translationTable.put("org.argouml.uml.diagram.state.ui.FigState",
+        addTranslation("org.argouml.uml.diagram.state.ui.FigState",
             "org.argouml.uml.diagram.state.ui.FigSimpleState");
-    }
-
-    /**
-     * @param from the class name to be "translated", i.e. replaced
-     *             by something else
-     * @param to   the resulting name
-     */
-    public void addTranslation(String from, String to) {
-        translationTable.put(from, to);
     }
 
     /**
