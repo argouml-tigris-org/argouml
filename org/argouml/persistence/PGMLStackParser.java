@@ -27,8 +27,6 @@ public class PGMLStackParser extends org.argouml.gef.PGMLStackParser {
 
     private static final Logger LOG = Logger.getLogger(PGMLStackParser.class);
 
-    private HashMap translationTable = new HashMap();
-
     /**
      * Constructor.
      * @param modelElementsByUuid a map of model elements indexed
@@ -36,106 +34,13 @@ public class PGMLStackParser extends org.argouml.gef.PGMLStackParser {
      */
     public PGMLStackParser(Map modelElementsByUuid) {
         super(modelElementsByUuid);
-        // TODO: I think this is so old we don't need it any more
-        // This goes way back to pre-zargo days
-        translationTable.put("uci.uml.visual.UMLClassDiagram",
-            "org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram");
-        translationTable.put("uci.uml.visual.UMLUseCaseDiagram",
-            "org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram");
-        translationTable.put("uci.uml.visual.UMLActivityDiagram",
-            "org.argouml.uml.diagram.activity.ui.UMLActivityDiagram");
-        translationTable.put("uci.uml.visual.UMLCollaborationDiagram",
-            "org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram");
-        translationTable.put("uci.uml.visual.UMLDeploymentDiagram",
-            "org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram");
-        translationTable.put("uci.uml.visual.UMLStateDiagram",
-            "org.argouml.uml.diagram.state.ui.UMLStateDiagram");
-        translationTable.put("uci.uml.visual.UMLSequenceDiagram",
-            "org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram");
-        translationTable.put("uci.uml.visual.FigAssociation",
-            "org.argouml.uml.diagram.ui.FigAssociation");
-        translationTable.put("uci.uml.visual.FigRealization",
-            "org.argouml.uml.diagram.ui.FigRealization");
-        translationTable.put("uci.uml.visual.FigGeneralization",
-            "org.argouml.uml.diagram.ui.FigGeneralization");
-        translationTable.put("uci.uml.visual.FigCompartment",
-            "org.argouml.uml.diagram.ui.FigCompartment");
-        translationTable.put("uci.uml.visual.FigDependency",
-            "org.argouml.uml.diagram.ui.FigDependency");
-        translationTable.put("uci.uml.visual.FigEdgeModelElement",
-            "org.argouml.uml.diagram.ui.FigEdgeModelElement");
-        translationTable.put("uci.uml.visual.FigMessage",
-            "org.argouml.uml.diagram.ui.FigMessage");
-        translationTable.put("uci.uml.visual.FigNodeModelElement",
-            "org.argouml.uml.diagram.ui.FigNodeModelElement");
-        translationTable.put("uci.uml.visual.FigNodeWithCompartments",
-            "org.argouml.uml.diagram.ui.FigNodeWithCompartments");
-        translationTable.put("uci.uml.visual.FigNote",
-            "org.argouml.uml.diagram.ui.FigNote");
-        translationTable.put("uci.uml.visual.FigTrace",
-            "org.argouml.uml.diagram.ui.FigTrace");
-        translationTable.put("uci.uml.visual.FigClass",
-            "org.argouml.uml.diagram.static_structure.ui.FigClass");
-        translationTable.put("uci.uml.visual.FigInterface",
-            "org.argouml.uml.diagram.static_structure.ui.FigInterface");
-        translationTable.put("uci.uml.visual.FigInstance",
-            "org.argouml.uml.diagram.static_structure.ui.FigInstance");
-        translationTable.put("uci.uml.visual.FigLink",
-            "org.argouml.uml.diagram.static_structure.ui.FigLink");
-        translationTable.put("uci.uml.visual.FigPackage",
-            "org.argouml.uml.diagram.static_structure.ui.FigPackage");
-        translationTable.put("uci.uml.visual.FigActionState",
-            "org.argouml.uml.diagram.activity.ui.FigActionState");
-        translationTable.put("uci.uml.visual.FigAssociationRole",
-            "org.argouml.uml.diagram.collaboration.ui.FigAssociationRole");
-        translationTable.put("uci.uml.visual.FigClassifierRole",
-            "org.argouml.uml.diagram.collaboration.ui.FigClassifierRole");
-        translationTable.put("uci.uml.visual.FigComponent",
-            "org.argouml.uml.diagram.deployment.ui.FigComponent");
-        translationTable.put("uci.uml.visual.FigComponentInstance",
-            "org.argouml.uml.diagram.deployment.ui.FigComponentInstance");
-        translationTable.put("uci.uml.visual.FigMNode",
-            "org.argouml.uml.diagram.deployment.ui.FigMNode");
-        translationTable.put("uci.uml.visual.FigMNodeInstance",
-            "org.argouml.uml.diagram.deployment.ui.FigMNodeInstance");
-        translationTable.put("uci.uml.visual.FigObject",
-            "org.argouml.uml.diagram.deployment.ui.FigObject");
-        translationTable.put("uci.uml.visual.FigBranchState",
-            "org.argouml.uml.diagram.state.ui.FigBranchState");
-        translationTable.put("uci.uml.visual.FigCompositeState",
-            "org.argouml.uml.diagram.state.ui.FigCompositeState");
-        translationTable.put("uci.uml.visual.FigDeepHistoryState",
-            "org.argouml.uml.diagram.state.ui.FigDeepHistoryState");
-        translationTable.put("uci.uml.visual.FigFinalState",
-            "org.argouml.uml.diagram.state.ui.FigFinalState");
-        translationTable.put("uci.uml.visual.FigForkState",
-            "org.argouml.uml.diagram.state.ui.FigForkState");
-        translationTable.put("uci.uml.visual.FigHistoryState",
-            "org.argouml.uml.diagram.state.ui.FigHistoryState");
-        translationTable.put("uci.uml.visual.FigInitialState",
-            "org.argouml.uml.diagram.state.ui.FigInitialState");
-        translationTable.put("uci.uml.visual.FigJoinState",
-            "org.argouml.uml.diagram.state.ui.FigJoinState");
-        translationTable.put("uci.uml.visual.FigShallowHistoryState",
-            "org.argouml.uml.diagram.state.ui.FigShallowHistoryState");
-        translationTable.put("uci.uml.visual.FigSimpleState",
+        // TODO: Use stylesheet to convert or wait till we use Fig
+        // factories in diagram subsystem.
+        // What is the last version that used FigNote?
+        translationTable.put("org.argouml.uml.diagram.static_structure.ui.FigNote",
+            "org.argouml.uml.diagram.static_structure.ui.FigComment");
+        translationTable.put("org.argouml.uml.diagram.state.ui.FigState",
             "org.argouml.uml.diagram.state.ui.FigSimpleState");
-        translationTable.put("uci.uml.visual.FigActionState",
-            "org.argouml.uml.diagram.activity.ui.FigActionState");
-        translationTable.put("uci.uml.visual.FigStateVertex",
-            "org.argouml.uml.diagram.state.ui.FigStateVertex");
-        translationTable.put("uci.uml.visual.FigTransition",
-            "org.argouml.uml.diagram.state.ui.FigTransition");
-        translationTable.put("uci.uml.visual.FigActor",
-            "org.argouml.uml.diagram.use_case.ui.FigActor");
-        translationTable.put("uci.uml.visual.FigUseCase",
-            "org.argouml.uml.diagram.use_case.ui.FigUseCase");
-        translationTable.put("uci.uml.visual.FigSeqLink",
-            "org.argouml.uml.diagram.sequence.ui.FigSeqLink");
-        translationTable.put("uci.uml.visual.FigSeqObject",
-            "org.argouml.uml.diagram.sequence.ui.FigSeqObject");
-        translationTable.put("uci.uml.visual.FigSeqStimulus",
-            "org.argouml.uml.diagram.sequence.ui.FigSeqStimulus");
     }
 
     /**
@@ -148,42 +53,6 @@ public class PGMLStackParser extends org.argouml.gef.PGMLStackParser {
     }
 
     /**
-     * @see org.tigris.gef.xml.pgml.PGMLStackParser#translateClassName(java.lang.String)
-     */
-    public String translateClassName(String oldName) {
-        // TODO: Use stylesheet to convert or wait till we use Fig
-        // factories in diagram subsystem.
-        // What is the last version that used FigNote?
-        if ("org.argouml.uml.diagram.static_structure.ui.FigNote"
-            .equals(oldName)) {
-            return "org.argouml.uml.diagram.static_structure.ui.FigComment";
-        }
-
-        // TODO: Use stylesheet to convert or wait till we use Fig
-        // factories in diagram subsystem.
-        // What is the last version that used FigState?
-    if ("org.argouml.uml.diagram.state.ui.FigState".equals(oldName)) {
-        return "org.argouml.uml.diagram.state.ui.FigSimpleState";
-    }
-
-        // TODO: I think this is so old we don't need it any more
-        // This goes way back to pre-zargo days
-        if (oldName.startsWith("uci.gef.")) {
-        String className = oldName.substring(oldName.lastIndexOf(".") + 1);
-        return ("org.tigris.gef.presentation." + className);
-        }
-
-        String translated = (String) translationTable.get(oldName);
-        LOG.debug("old = " + oldName + " / new = " + translated);
-
-        if (translated == null) {
-            return oldName;
-        }
-
-        return translated;
-    }
-
-    /**
      * @see org.argouml.gef.HandlerFactory#getHandler
      */
     public DefaultHandler getHandler( HandlerStack stack,
@@ -192,8 +61,7 @@ public class PGMLStackParser extends org.argouml.gef.PGMLStackParser {
                                              String localname,
                                              String qname,
                                              Attributes attributes)
-    throws SAXException
-    {
+            throws SAXException {
 /*
         // Ignore things within nodes
         if ( qname.equals( "group") && container instanceof
@@ -217,42 +85,42 @@ public class PGMLStackParser extends org.argouml.gef.PGMLStackParser {
                 return null;
         }
  */
-        if ( container instanceof FigGroupHandler)
-        {
+        if (container instanceof FigGroupHandler) {
             FigGroup group=((FigGroupHandler)container).getFigGroup();
-            if ( group instanceof FigNode && ! qname.equals( "private"))
+            if (group instanceof FigNode && !qname.equals( "private")) {
                 return null;
+            }
         }
         DefaultHandler result=super.getHandler(
             stack, container, uri, localname, qname, attributes);
-
-        if ( result instanceof FigGroupHandler)
-        {
-            FigGroup group=((FigGroupHandler)result).getFigGroup();
-            {
-                String clsNameBounds = attributes.getValue("description");
-                if ( clsNameBounds!=null)
-                {
-                    StringTokenizer st = new StringTokenizer(clsNameBounds,
-                        ",;[] ");
-                    // Discard class name, x y w h
-                    if ( st.hasMoreElements()) st.nextToken();
-                    if ( st.hasMoreElements()) st.nextToken();
-                    if ( st.hasMoreElements()) st.nextToken();
-                    if ( st.hasMoreElements()) st.nextToken();
-                    if ( st.hasMoreElements()) st.nextToken();
-
-                    Map attributeMap = interpretStyle(st);
-                    setStyleAttributes( group, attributeMap);
-                }
+        
+        return result;
+    }
+    
+    public void setAttrs(Fig f, Attributes attrList) throws SAXException {
+        if (f instanceof FigGroup) {
+            FigGroup group=(FigGroup)f;
+            String clsNameBounds = attrList.getValue("description");
+            if ( clsNameBounds!=null) {
+                StringTokenizer st = new StringTokenizer(clsNameBounds,
+                    ",;[] ");
+                // Discard class name, x y w h
+                if ( st.hasMoreElements()) st.nextToken();
+                if ( st.hasMoreElements()) st.nextToken();
+                if ( st.hasMoreElements()) st.nextToken();
+                if ( st.hasMoreElements()) st.nextToken();
+                if ( st.hasMoreElements()) st.nextToken();
+                
+                Map attributeMap = interpretStyle(st);
+                setStyleAttributes( group, attributeMap);
             }
         }
 
-        return result;
+        super.setAttrs(f, attrList);
     }
 
     /**
-     * The StringTokenizer is expected to be positioned at the start a a string
+     * The StringTokenizer is expected to be positioned at the start of a string
      * of style identifiers in the format name=value;name=value;name=value....
      * Each name value pair is interpreted and the Fig configured accordingly.
      * The value is optional and will default to a value applicable for its
@@ -273,8 +141,7 @@ public class PGMLStackParser extends org.argouml.gef.PGMLStackParser {
             if (equalsPos < 0) {
                 name = namevaluepair;
                 value = "true";
-            }
-            else {
+            } else {
                 name = namevaluepair.substring(0, equalsPos);
                 value = namevaluepair.substring(equalsPos + 1);
             }
