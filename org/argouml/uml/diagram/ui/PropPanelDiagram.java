@@ -24,19 +24,29 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.LookAndFeelMgr;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNavigate;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.PropPanelButton2;
+import org.argouml.uml.ui.UMLLinkMouseListener;
+import org.argouml.uml.ui.UMLLinkedListCellRenderer;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -45,8 +55,6 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelDiagram extends PropPanel {
 
-    private JTextField field;
-
     /**
      * Constructs a proppanel with a given name.
      * @see org.argouml.ui.AbstractArgoJPanel#AbstractArgoJPanel(String)
@@ -54,11 +62,14 @@ public class PropPanelDiagram extends PropPanel {
     protected PropPanelDiagram(String diagramName) {
         super(diagramName, ConfigLoader.getTabPropsOrientation());
 
-        field = new JTextField();
+        JTextField field = new JTextField();
         field.getDocument().addDocumentListener(new DiagramNameDocument(field));
-
         addField(Translator.localize("label.name"), field);
-
+        
+        JList lst = new OneRowLinkedList(new UMLDiagramHomeModelListModel());
+        lst.setVisibleRowCount(1);
+        addField(Translator.localize("label.home-model"), new JScrollPane(lst));
+        
 
         addButton(new PropPanelButton2(new ActionNavigateUpFromDiagram(),
                 lookupIcon("NavigateUp")));
@@ -135,3 +146,74 @@ class ActionNavigateUpFromDiagram extends AbstractActionNavigate {
         }
     }
 }
+
+/**
+ * The list model for the namespace of a diagram.
+ *
+ * @author mvw@tigris.org
+ */
+class UMLDiagramHomeModelListModel 
+    extends DefaultListModel
+    implements TargetListener {
+        
+    /**
+     * Constructor for UMLCommentAnnotatedElementListModel.
+     */
+    public UMLDiagramHomeModelListModel() {
+        super();
+        setTarget(TargetManager.getInstance().getTarget());
+        TargetManager.getInstance().addTargetListener(this);
+    }
+
+    /**
+     * @see TargetListener#targetAdded(TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        setTarget(e.getNewTarget());
+    }
+
+    /**
+     * @see TargetListener#targetRemoved(TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        setTarget(e.getNewTarget());
+    }
+
+    /**
+     * @see TargetListener#targetSet(TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        setTarget(e.getNewTarget());
+    }
+    
+    private void setTarget(Object t) {
+        UMLDiagram target = (t instanceof UMLDiagram) ? (UMLDiagram) t : null;
+        removeAllElements();
+        
+        Object ns = (target != null) ? target.getNamespace() : null; 
+        if (ns != null) addElement(ns);
+    }
+    
+}
+
+class OneRowLinkedList extends JList {
+
+        /**
+         * The constructor.
+         *
+         * @param dataModel the data model
+         */
+        public OneRowLinkedList(DefaultListModel dataModel) {
+            super();
+            setModel(dataModel);
+            setDoubleBuffered(true);
+            setCellRenderer(new UMLLinkedListCellRenderer(true));
+            setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            setForeground(Color.blue);
+            setSelectionForeground(Color.blue.darker());
+            UMLLinkMouseListener mouseListener = new UMLLinkMouseListener(this);
+            setFont(LookAndFeelMgr.getInstance().getSmallFont());
+            addMouseListener(mouseListener);
+        }
+
+    }
