@@ -37,6 +37,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
@@ -72,20 +73,14 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
             // figs to their owner using the "href" attribute
             // in PGML.
             //PGMLStackParser parser = new PGMLStackParser(project.getUUIDRefs());
-            PGMLParser parser = new PGMLParser( project.getUUIDRefs());
-            ArgoDiagram d =
-                    (ArgoDiagram) parser.readDiagram(
-                                  inputStream,
-                                  false);
+            PGMLParser parser = new PGMLParser(project.getUUIDRefs());
+            Diagram d = parser.readDiagram(inputStream, false);
             inputStream.close();
-            if (d != null) {
-                project.addMember(d);
-            } else {
-                LOG.error("An error occurred while loading PGML");
+            project.addMember(d);
+        } catch (Exception e) {
+            if (e instanceof OpenException) {
+                throw (OpenException)e;
             }
-        } catch (SAXException e) {
-            throw new OpenException(e);
-        } catch (IOException e) {
             throw new OpenException(e);
         }
     }
