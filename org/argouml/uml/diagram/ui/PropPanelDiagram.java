@@ -67,7 +67,6 @@ public class PropPanelDiagram extends PropPanel {
         addField(Translator.localize("label.name"), field);
         
         JList lst = new OneRowLinkedList(new UMLDiagramHomeModelListModel());
-        lst.setVisibleRowCount(1);
         addField(Translator.localize("label.home-model"), new JScrollPane(lst));
         
 
@@ -214,6 +213,7 @@ class OneRowLinkedList extends JList {
             UMLLinkMouseListener mouseListener = new UMLLinkMouseListener(this);
             setFont(LookAndFeelMgr.getInstance().getSmallFont());
             addMouseListener(mouseListener);
+            setVisibleRowCount(1);
         }
 
     }
