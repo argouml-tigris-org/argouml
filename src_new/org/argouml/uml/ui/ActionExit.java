@@ -31,7 +31,6 @@ import javax.swing.JOptionPane;
 
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.api.Configuration;
-import org.argouml.application.security.ExitSecurityManager;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -51,9 +50,10 @@ public class ActionExit extends UMLAction
      */
     public static final ActionExit SINGLETON = new ActionExit();
 
-    /** remember if this form is already active, so that it does
-        not popup twice.
-    */
+    /**
+     * Remember if this form is already active, so that it does
+     * not popup twice.
+     */
     private boolean active = false;
 
     ////////////////////////////////////////////////////////////////
@@ -122,7 +122,6 @@ public class ActionExit extends UMLAction
      * @return true if it is OK.
      */
     public boolean doCommand(String argument) {
-        ExitSecurityManager.getInstance().setAllowExit (true);
         System.exit (0);
 	return true;
     }

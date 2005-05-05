@@ -54,13 +54,6 @@ public final class ArgoAwtExceptionHandler {
      *                   to "eat" it.
      */
     public void handle(Throwable t) throws Throwable {
-	if (t.getClass().equals(ExitSecurityException.class)) {
-	    // do nothing
-            // _cat.error("Uncaught ArgoSecurityException:" + t);
-	    return;
-	} else {
-            // _cat.error("Uncaught - throwable:" + t);
-	    throw t;
-	}
+        throw t;
     }
 }

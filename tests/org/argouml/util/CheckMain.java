@@ -30,7 +30,6 @@ import java.net.URL;
 import junit.framework.Assert;
 
 import org.argouml.application.Main;
-import org.argouml.application.security.ExitSecurityManager;
 
 /**
  * This class is a helper for testing things connected to the Main class.
@@ -40,13 +39,18 @@ import org.argouml.application.security.ExitSecurityManager;
  */
 public final class CheckMain {
     /**
+     * Constructor.
+     */
+    private CheckMain() {
+    }
+
+    /**
      * Call main in the application.
      *
      * @param args The arguments to use.
      */
     public static void callMain(String[] args) {
         Main.main(args);
-        ExitSecurityManager.getInstance().setAllowExit(true);
     }
 
 
@@ -68,13 +72,13 @@ public final class CheckMain {
         if (url != null) {
             return new File(url.getFile());
         }
-        
+
         // We have the path provided from the build script.
         String dir = System.getProperty("argouml.tests.dir");
         if (dir != null) {
             return new File(dir, filename);
         }
-        
+
         Assert.fail("Could not locate the model " + filename);
         return null;
     }
