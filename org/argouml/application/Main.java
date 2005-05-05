@@ -51,7 +51,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
-import org.argouml.application.security.ExitSecurityManager;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
@@ -125,8 +124,8 @@ public class Main {
                 return Translator.localize(key);
             }
 
-            public String i18nmessageFormat(String key, Object[] args) {
-                return Translator.messageFormat(key, args);
+            public String i18nmessageFormat(String key, Object[] iArgs) {
+                return Translator.messageFormat(key, iArgs);
             }
         });
 
@@ -148,7 +147,6 @@ public class Main {
 
         boolean doSplash = Configuration.getBoolean(Argo.KEY_SPLASH, true);
 	// TODO: document use. Ref. 1/2
-        boolean useEDEM = Configuration.getBoolean(Argo.KEY_EDEM, true);
         boolean preload = Configuration.getBoolean(Argo.KEY_PRELOAD, true);
         boolean profileLoad = Configuration.getBoolean(Argo.KEY_PROFILE, false);
         boolean reloadRecent =
@@ -182,7 +180,7 @@ public class Main {
                     doSplash = false;
                 } else if (args[i].equalsIgnoreCase("-noedem")) {
 		    // TODO: document use. Ref. 2/2
-                    useEDEM = false;
+                    // useEDEM = false;
                 } else if (args[i].equalsIgnoreCase("-nopreload")) {
                     preload = false;
                 } else if (args[i].equalsIgnoreCase("-profileload")) {
@@ -261,9 +259,6 @@ public class Main {
 	    ActionExit.SINGLETON.actionPerformed(null);
 	    return;
 	}
-
-	// From here on, we are not allowed to exit unpredictably.
-	ExitSecurityManager.getInstance().setAllowExit(false);
 
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
@@ -361,7 +356,6 @@ public class Main {
 
         PostLoad pl = new PostLoad(postLoadActions);
         Thread postLoadThead = new Thread(pl);
-        pl.setThread(postLoadThead);
         postLoadThead.start();
 
         if (profileLoad) {
@@ -456,7 +450,7 @@ public class Main {
      */
     private static void checkHostsFile() {
         try {
-            InetAddress address = InetAddress.getLocalHost();
+            InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
             System.err.println("ERROR: unable to get localhost information.");
             e.printStackTrace(System.err);
@@ -575,12 +569,6 @@ public class Main {
             "sun.awt.exception.handler",
             ArgoAwtExceptionHandler.class.getName());
 
-        /*  Install our own security manager.
-         *  Once this is done, no one else
-         *  can change "sun.awt.exception.handler".
-         */
-        System.setSecurityManager(ExitSecurityManager.getInstance());
-
         /*  The string <code>log4j.configuration</code> is the
          *  same string found in
          *  {@link org.apache.log4j.Configuration.DEFAULT_CONFIGURATION_FILE}
@@ -662,20 +650,33 @@ public class Main {
 
 } /* end Class Main */
 
+/**
+ * Class to hold a list of actions to be perform and to perform them
+ * after the initializations is done.
+ */
 class PostLoad implements Runnable {
     /**
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(PostLoad.class);
 
-    private Vector postLoadActions = null;
-    private Thread myThread = null;
+    /**
+     * The list of actions to perform.
+     */
+    private Vector postLoadActions;
+
+    /**
+     * Constructor.
+     *
+     * @param v The actions to perform.
+     */
     public PostLoad(Vector v) {
         postLoadActions = v;
     }
-    public void setThread(Thread t) {
-        myThread = t;
-    }
+
+    /**
+     * @see java.lang.Runnable#run()
+     */
     public void run() {
         try {
             Thread.sleep(1000);
@@ -695,12 +696,18 @@ class PostLoad implements Runnable {
     }
 } /* end class PostLoad */
 
+/**
+ * Class to do preloading of a lot of classes.
+ */
 class PreloadClasses implements Runnable {
     /**
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(PreloadClasses.class);
 
+    /**
+     * @see java.lang.Runnable#run()
+     */
     public void run() {
 
         Class c = null;
@@ -719,9 +726,11 @@ class PreloadClasses implements Runnable {
         c = org.argouml.uml.diagram.static_structure.ui.FigInterface.class;
         c = org.argouml.uml.diagram.static_structure.ui.FigPackage.class;
         c = org.argouml.uml.diagram.static_structure.ui.SelectionClass.class;
-        c = org.argouml.uml.diagram.static_structure.ui
+        c =
+            org.argouml.uml.diagram.static_structure.ui
 	    .StylePanelFigClass.class;
-        c = org.argouml.uml.diagram.static_structure.ui
+        c =
+            org.argouml.uml.diagram.static_structure.ui
 	    .StylePanelFigInterface.class;
         c = org.argouml.uml.diagram.ui.FigAssociation.class;
         c = org.argouml.uml.diagram.ui.FigGeneralization.class;
