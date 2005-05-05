@@ -34,8 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import javax.swing.Action;
-
 import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.ModelEventPump;
@@ -70,8 +68,6 @@ class NSUMLModelEventPump
 
     private Map modelEventListeners;
     private Map classEventListeners;
-
-    private Action saveAction = null;
 
     /**
      * Constructor for the NSUMLModelEventPump.<p>
@@ -254,26 +250,6 @@ class NSUMLModelEventPump
         if (relay != null) {
             unregister(classEventListeners, relay);
             relay.delete();
-        }
-    }
-
-    /**
-     * Register an Action with the pump that is used to perform saving.
-     * This action will be enabled by any change to the model.
-     * The param saveAction is the action to enable on change to model.
-     *
-     * @see org.argouml.model.ModelEventPump#setSaveAction(javax.swing.Action)
-     */
-    public void setSaveAction(Action theSaveAction) {
-        this.saveAction = theSaveAction;
-    }
-
-    /**
-     * The saveAction is updated (if needed).
-     */
-    void fireAction() {
-        if (saveAction != null && !saveAction.isEnabled()) {
-            saveAction.setEnabled(true);
         }
     }
 }
