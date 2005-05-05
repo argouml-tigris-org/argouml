@@ -269,13 +269,12 @@ class NSUMLModelEventPump
     }
 
     /**
-     * Get the action that is registered with the pump that is used
-     * to perform saving.
-     *
-     * @return the relevant Action or null.
+     * The saveAction is updated (if needed).
      */
-    public Action getSaveAction() {
-        return saveAction;
+    void fireAction() {
+        if (saveAction != null && !saveAction.isEnabled()) {
+            saveAction.setEnabled(true);
+        }
     }
 }
 
@@ -386,10 +385,7 @@ abstract class NSUMLEventListener implements MElementListener {
      * @param pce The event to send.
      */
     private void fire(PropertyChangeEvent pce) {
-        Action saveAction = pump.getSaveAction();
-        if (saveAction != null && !saveAction.isEnabled()) {
-            saveAction.setEnabled(true);
-        }
+        pump.fireAction();
         PropertyChangeListener pcl = getListener();
         if (pcl != null) {
             pcl.propertyChange(pce);
