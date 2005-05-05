@@ -191,18 +191,12 @@ public interface ModelEventPump {
     void removeClassModelEventListener(PropertyChangeListener listener,
 				       Object modelClass,
 				       String eventName);
-    
+
     /**
      * Register an Action with the pump that is used to perform saving.
      * This action will be enabled by any change to the model.
+     *
      * @param saveAction the action to enable on change to model.
      */
     void setSaveAction(Action saveAction);
-    
-    /**
-     * Get the action that is registered with the pump 
-     * that is used to perform saving.
-     * @return the relevant Action or null.
-     */
-    Action getSaveAction();
 }
