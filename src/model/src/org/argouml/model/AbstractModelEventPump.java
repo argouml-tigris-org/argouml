@@ -30,9 +30,6 @@ import java.beans.PropertyChangeListener;
  * Abstract class that implements the convenience methods of the
  * {@link ModelEventPump} interface.
  *
- * The default visibility is to guarantee that it is not seen outside the
- * model component.
- *
  * @author Linus Tolke
  */
 public abstract class AbstractModelEventPump {
