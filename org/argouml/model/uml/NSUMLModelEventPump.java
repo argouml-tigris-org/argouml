@@ -38,7 +38,6 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelEventPump;
-import org.argouml.model.Model;
 import org.argouml.model.ModelEventPump;
 
 import ru.novosoft.uml.MElementEvent;
@@ -73,7 +72,7 @@ class NSUMLModelEventPump
     private Map classEventListeners;
 
     private Action saveAction = null;
-    
+
     /**
      * Constructor for the NSUMLModelEventPump.<p>
      *
@@ -81,7 +80,7 @@ class NSUMLModelEventPump
      * model component.
      *
      * TODO: Don't make available.
-     * @param implementation
+     * @param implementation The NSUMLModelImplementation that we belong to.
      */
     public NSUMLModelEventPump(NSUMLModelImplementation implementation) {
         super();
@@ -107,12 +106,12 @@ class NSUMLModelEventPump
 
         register(modelEventListeners,
                  new NSUMLModelEventListener(listener,
-					     modelelement, eventNames));
+					     modelelement, eventNames, this));
     }
 
     /**
-     * @param listeners
-     * @param relay
+     * @param listeners The listeners.
+     * @param relay The NSUMLEventListener.
      */
     private void register(Map listeners, NSUMLEventListener relay) {
         PropertyChangeListener listener = relay.getListener();
@@ -123,7 +122,7 @@ class NSUMLModelEventPump
         list.add(relay);
         listeners.put(listener, list);
     }
-    
+
     /**
      * @see org.argouml.model.ModelEventPump#addModelEventListener(
      * 		java.beans.PropertyChangeListener, java.lang.Object)
@@ -134,7 +133,7 @@ class NSUMLModelEventPump
                   + listener + ", "
                   + modelelement + ")");
         register(modelEventListeners,
-                 new NSUMLModelEventListener(listener, modelelement));
+                 new NSUMLModelEventListener(listener, modelelement, this));
     }
 
     /**
@@ -158,10 +157,10 @@ class NSUMLModelEventPump
     }
 
     /**
-     * @param listeners
-     * @param listener
-     * @param modelelement
-     * @param eventNames
+     * @param listeners The listeners.
+     * @param listener The PropertyChangeListener.
+     * @param modelelement The model element.
+     * @param eventNames The event names.
      * @return the found relay.
      */
     private NSUMLEventListener find(Map listeners,
@@ -201,8 +200,8 @@ class NSUMLModelEventPump
     }
 
     /**
-     * @param listeners
-     * @param relay
+     * @param listeners The listeners.
+     * @param relay The NSUMLEventListener to unregister.
      */
     private void unregister(Map listeners, NSUMLEventListener relay) {
         List list = (List) listeners.get(relay.getListener());
@@ -234,7 +233,8 @@ class NSUMLModelEventPump
                   + modelClass + ", "
                   + eventNames + ")");
         register(classEventListeners,
-                 new NSUMLClassEventListener(listener, modelClass, eventNames));
+                 new NSUMLClassEventListener(listener, modelClass, eventNames,
+                         		     this));
     }
 
     /**
@@ -256,7 +256,7 @@ class NSUMLModelEventPump
             relay.delete();
         }
     }
-    
+
     /**
      * Register an Action with the pump that is used to perform saving.
      * This action will be enabled by any change to the model.
@@ -267,11 +267,11 @@ class NSUMLModelEventPump
     public void setSaveAction(Action theSaveAction) {
         this.saveAction = theSaveAction;
     }
-    
+
     /**
-     * Get the action that is registered with the pump that is used 
+     * Get the action that is registered with the pump that is used
      * to perform saving.
-     * 
+     *
      * @return the relevant Action or null.
      */
     public Action getSaveAction() {
@@ -292,6 +292,7 @@ abstract class NSUMLEventListener implements MElementListener {
     private Reference listenerRef;
     private Object element;
     private String[] events;
+    private NSUMLModelEventPump pump;
 
     /**
      * Constructor for the NSUMLEventListener.
@@ -299,11 +300,14 @@ abstract class NSUMLEventListener implements MElementListener {
      * @param l The PropertyChangeListener.
      * @param e The object we are monitoring, can be a class.
      * @param evs The strings that we are interested in.
+     * @param p The pump that we belong to.
      */
-    NSUMLEventListener(PropertyChangeListener l, Object e, String[] evs) {
+    NSUMLEventListener(PropertyChangeListener l, Object e, String[] evs,
+            	       NSUMLModelEventPump p) {
         listenerRef = new WeakReference(l);
         element = e;
         events = evs;
+        pump = p;
     }
 
     /**
@@ -382,7 +386,7 @@ abstract class NSUMLEventListener implements MElementListener {
      * @param pce The event to send.
      */
     private void fire(PropertyChangeEvent pce) {
-        Action saveAction = Model.getPump().getSaveAction();
+        Action saveAction = pump.getSaveAction();
         if (saveAction != null && !saveAction.isEnabled()) {
             saveAction.setEnabled(true);
         }
@@ -433,7 +437,7 @@ abstract class NSUMLEventListener implements MElementListener {
      *         ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent arg0) {
-        fire(new PropertyChangeEvent(arg0.getSource(), 
+        fire(new PropertyChangeEvent(arg0.getSource(),
             /*arg0.getName()*/ "removed",
 	    arg0.getOldValue(), arg0.getNewValue()));
     }
@@ -454,12 +458,13 @@ abstract class NSUMLEventListener implements MElementListener {
 class NSUMLModelEventListener extends NSUMLEventListener {
     /**
      * @see NSUMLEventListener#NSUMLEventListener(
-     *         PropertyChangeListener, Object, String[])
+     *         PropertyChangeListener, Object, String[], NSUMLModelEventPump)
      */
     public NSUMLModelEventListener(PropertyChangeListener l,
 				   Object e,
-				   String[] ev) {
-        super(l, e, ev);
+				   String[] ev,
+				   NSUMLModelEventPump p) {
+        super(l, e, ev, p);
 
         if (getEvents() == null) {
             UmlModelEventPump.getPump()
@@ -472,10 +477,11 @@ class NSUMLModelEventListener extends NSUMLEventListener {
 
     /**
      * @see NSUMLModelEventListener#NSUMLModelEventListener(
-     *         PropertyChangeListener, Object, String[])
+     *         PropertyChangeListener, Object, String[], NSUMLModelEventPump)
      */
-    public NSUMLModelEventListener(PropertyChangeListener l, Object e) {
-        this(l, e, null);
+    public NSUMLModelEventListener(PropertyChangeListener l, Object e,
+            			   NSUMLModelEventPump p) {
+        this(l, e, null, p);
     }
 
     /**
@@ -492,13 +498,18 @@ class NSUMLModelEventListener extends NSUMLEventListener {
  */
 class NSUMLClassEventListener extends NSUMLEventListener {
     /**
-     * @param l
-     * @param modelClass
+     * Create a ClassEventListener.
+     *
+     * @param l The PropertyChangeListener that we are taking care of.
+     * @param modelClass The class.
+     * @param ev The array of events.
+     * @param p The pump.
      */
     public NSUMLClassEventListener(PropertyChangeListener l,
 				   Object modelClass,
-				   String[] ev) {
-        super(l, modelClass, ev);
+				   String[] ev,
+				   NSUMLModelEventPump p) {
+        super(l, modelClass, ev, p);
 
         UmlModelEventPump.getPump()
 	    .addClassModelEventListener(this, getElement(),
