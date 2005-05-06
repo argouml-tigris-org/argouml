@@ -212,7 +212,7 @@ public class Project implements java.io.Serializable, TargetListener {
         addMember(new UMLUseCaseDiagram(model));
         addMember(new ProjectMemberTodoList("", this));
         ProjectManager.getManager().setNeedsSave(false);
-        setActiveDiagram((ArgoDiagram) getDiagrams().get(0));
+        setActiveDiagram((ArgoDiagram) diagrams.get(0));
     }
 
     /**
@@ -616,7 +616,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public Collection findFigsForMember(Object member) {
         Collection figs = new ArrayList();
-        Iterator it = getDiagrams().iterator();
+        Iterator it = diagrams.iterator();
         while (it.hasNext()) {
             ArgoDiagram diagram = (ArgoDiagram) it.next();
             Object fig = diagram.getContainingFig(member);
@@ -1121,7 +1121,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * it's not valid.
      */
     public boolean isValidDiagramName(String name) {
-        Iterator it = getDiagrams().iterator();
+        Iterator it = diagrams.iterator();
         boolean rv = true;
         while (it.hasNext()) {
             ArgoDiagram diagram = (ArgoDiagram) it.next();
