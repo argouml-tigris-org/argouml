@@ -481,6 +481,12 @@ Property files to be searched:
         <include name="JavaTokenTypes.java"/>
         <include name="JavaTokenTypes.txt"/>
       </fileset>
+      <fileset dir="../modules/cpp/src/org/argouml/language/cpp/reveng">
+        <include name="CPPLexer.java"/>
+        <include name="CPPParser.java"/>
+        <include name="STDCTokenTypes.java"/>
+        <include name="STDCTokenTypes.txt"/>
+      </fileset>
     </delete>
   </target>
 
@@ -1444,7 +1450,7 @@ you will have to resurrect them using cvs update.
          <filter token="VERSION" 
                  value="${argo.build.version}"/>
          <filter token="URLROOT"
-                 value="http://argouml.tigris.org/files/documents/4/0/argouml-${argo.build.version}"/>
+                 value="http://argouml-downloads.tigris.org/nonav/argouml-${argo.build.version}"/>
        </filterset>
      </copy>
 
