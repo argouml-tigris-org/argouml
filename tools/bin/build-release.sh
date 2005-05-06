@@ -3,6 +3,8 @@
 
 # The purpose of this shellscript is to make all the release work.
 
+CHILDPROJECTS="argouml-csharp argouml-nb argouml-i18n-zh"
+
 # Check that JAVA_HOME is set.
 if test ! -x $JAVA_HOME/bin/javac
 then
@@ -49,6 +51,7 @@ cvs co -r "$freezetag" argouml/lib
 cvs co -r "$freezetag" argouml/tools
 cvs co -r "$freezetag" argouml/tests
 cvs co -r "$freezetag" argouml/documentation
+cvs co -r "$freezetag" $CHILDPROJECTS
 
 # 3. Build the release.
 echo "$BUILD Will build the release."
@@ -56,6 +59,13 @@ cd argouml
 chmod +x tools/ant-1.4.1/bin/ant
 cd src_new
 ./build.sh dist-release
+
+# Build the childprojects and copy the result to build/ext:
+for proj in $CHILDPROJECTS
+do
+    ( cd ../.. && cd $proj && ../argouml/tools/ant-1.4.1/bin/ant install )
+done
+
 
 echo "$BUILD build the documentation in pdf."
 ( cd ../documentation && ../tools/ant-1.4.1/bin/ant docbook-xsl-get )
@@ -89,6 +99,10 @@ echo "$BUILD No more input."
 # 5. Tag with the release tag
 cd ..
 cvs tag $releasetag
+for proj in $CHILDPROJECTS
+do
+    ( cd .. && cd $proj && cvs tag $releasetag )
+done
 
 wait
 
