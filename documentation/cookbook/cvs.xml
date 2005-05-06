@@ -570,6 +570,9 @@ this document.
 This chapter is organized as the CVS repository itself and
 everything is in alphabetical order.
 </para>
+    <para>
+This is what the main argouml project looks like:
+</para>
     <itemizedlist>
       <listitem>
 	<para><filename class="directory">build</filename></para>
@@ -624,8 +627,7 @@ the documentation from the XML-source to HTML and PDF.
 	<para><filename class="directory">lib</filename></para>
 	<para>A set of jar files.</para>
 	<para>
-This directory contains the jar files of products used
-by the ArgoUML
+This directory contains the jar files of products shipped with ArgoUML
 (such as log4j, NSUML).
 </para>
 	<para>
@@ -643,6 +645,10 @@ exact dependencies. Easiest way is to rename the files to
 include version informations, the same way as shared
 libraries in Unix world: foo-x.y.z.jar, bar-x.y.z.jar,
 etc...
+</para>
+        <para>
+When separating ArgoUML into modules, the jar files connected to a
+specific module is instead stored together with the module.
 </para>
       </listitem>
       <listitem>
@@ -692,6 +698,9 @@ Code generation for C++.
 	    <para>
 Code generation for C#.
 </para>
+            <para>
+This is now moved to a subproject so this will eventually be removed.
+</para>
 	  </listitem>
 	</itemizedlist>
       </listitem>
@@ -701,16 +710,39 @@ Code generation for C#.
 Source code.
 </para>
 	<para>
-This will contain one directory for each subsystem within
+This contains one directory for each subsystem within
 ArgoUML.
-They will all compile and be tested with controlled dependencies
-to other subsystems.
 </para>
         <para>
-The upcoming structure is used for the different language part of the
-internationalization subsystem under
-<filename class="directory">i18n/<replaceable>language</replaceable></filename>.
+Each subsystem will have a subdirectory with the same structure:
 </para>
+
+        <itemizedlist>
+          <listitem>
+            <para><filename class="directory">lib</filename> - optional</para>
+            <para>
+jar files with products shipped with ArgoUML.
+</para>
+          </listitem>
+          <listitem>
+            <para><filename>build.xml</filename></para>
+            <para>
+The file controlling the build of that subsystem.
+</para>
+          </listitem>
+          <listitem>
+            <para><filename class="directory">src</filename></para>
+            <para>
+The source code.
+</para>
+          </listitem>
+          <listitem>
+            <para><filename class="directory">tests</filename> - optional</para>
+            <para>
+The JUnit test cases for that subsystem.
+</para>
+          </listitem>
+        </itemizedlist>
       </listitem>
       <listitem>
 	<para><filename class="directory">src_new</filename></para>
@@ -722,7 +754,7 @@ All source code for ArgoUML including pictures of icons.
       <listitem>
 	<para><filename class="directory">tests</filename></para>
 	<para>
-All source code for JUnit tests of everything that is in the src_new
+Source code for JUnit tests of everything that is in the src_new
 directory.
 See <xref linkend="junittests"/>.
 </para>
@@ -749,6 +781,60 @@ allow distribution.
 	<para>
 This is all the static contents of the web site.
 See <xref linkend="how_the_web_site_works"/>.
+</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>
+The ArgoUML subprojects are projects on Tigris that belong to the
+ArgoUML project.
+To simplify the administration, they are all set up in a similar way
+and also similar to the src and modules directories.
+</para>
+    <para>
+This is what their cvs repository looks like:
+</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><filename>build.xml</filename></para>
+        <para>
+The file controlling the build of that subsystem.
+</para>
+        <para>
+When built, the result end up in a newly created build directory.
+</para>
+      </listitem>
+      <listitem>
+        <para><filename class="directory">lib</filename> - optional</para>
+        <para>
+jar files with products shipped with the module in that subproject.
+</para>
+      </listitem>
+      <listitem>
+        <para><filename class="directory">src</filename></para>
+        <para>
+The source code.
+</para>
+      </listitem>
+      <listitem>
+        <para><filename class="directory">tests</filename> - optional</para>
+        <para>
+The JUnit test cases for that subproject.
+</para>
+      </listitem>
+      <listitem>
+        <para><filename class="directory">tools</filename> - optional</para>
+        <para>
+Any special tools needed to build that subproject.
+The tools from the argouml tools directory can also be used
+so this is just the new ones.
+</para>
+      </listitem>
+      <listitem>
+        <para><filename class="directory">www</filename></para>
+        <para>
+The web pages for that subproject.
 </para>
       </listitem>
     </itemizedlist>
