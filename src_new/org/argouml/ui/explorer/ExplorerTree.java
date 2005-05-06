@@ -366,7 +366,7 @@ public class ExplorerTree
                     Object element = ((DefaultMutableTreeNode) selectedPaths[i]
                                    .getLastPathComponent()).getUserObject();
                     elementsAsList.add(element);
-//                  // scan the visible rows for duplicates of
+                    // scan the visible rows for duplicates of
                     // this elem and select them
                     int rows = getRowCount();
                     for (int row = 0; row < rows; row++) {
@@ -382,8 +382,6 @@ public class ExplorerTree
                 }
 
                 // check which targetmanager method to call
-
-
                 boolean callSetTarget = true;
                 List addedElements = new ArrayList();
                 for (int i = 0; i < addedOrRemovedPaths.length; i++) {
@@ -416,8 +414,8 @@ public class ExplorerTree
                             removedTargets.add(element);
                         }
                     }
-                    // we can't remove the targets one by one, we have to
-                    // do it in one go.
+                    // we can't remove the targets in one go, we have to
+                    // do it one by one.
                     if (!removedTargets.isEmpty()) {
                         Iterator it = removedTargets.iterator();
                         while (it.hasNext()) {
