@@ -55,7 +55,6 @@ import org.argouml.uml.ProfileJava;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -131,7 +130,7 @@ public class Project implements java.io.Serializable, TargetListener {
     private transient VetoableChangeSupport vetoSupport;
 
     private Profile profile;
-    
+
     /**
      * The active diagram, pointer to a diagram in the list with diagrams.
      */
@@ -141,7 +140,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * Cache for the default model.
      */
     private HashMap defaultModelCache;
-    
+
     private Collection trashcan = new ArrayList();
 
     /**
@@ -639,23 +638,24 @@ public class Project implements java.io.Serializable, TargetListener {
         while (it.hasNext()) {
             Diagram diagram = (Diagram) it.next();
             Fig aFig = diagram.presentationFor(obj);
-            if (aFig != null)
+            if (aFig != null) {
                 figs.add(aFig);
+            }
         }
         return figs;
     }
 
     /**
-     * Get all figs from all diagrams (+ enclosed ones recursively) 
+     * Get all figs from all diagrams (+ enclosed ones recursively)
      * for some object obj. <p>
-     * 
-     * See issue 3042 for an explanation of the 2nd parameter. 
+     *
+     * See issue 3042 for an explanation of the 2nd parameter.
      *
      * @param obj the given object
      * @param includeEnclosedOnes true to return also enclosed figs
      * @return the figs
      */
-    private Collection findAllPresentationsFor(Object obj, 
+    private Collection findAllPresentationsFor(Object obj,
             boolean includeEnclosedOnes) {
         Collection figs = new ArrayList();
         Iterator it = diagrams.iterator();
@@ -789,11 +789,14 @@ public class Project implements java.io.Serializable, TargetListener {
         d.removeVetoableChangeListener(new Vcl());
         diagrams.removeElement(d);
         if (d instanceof UMLDiagram) {
-            /* If this is a UML diagram, then remove the dependent 
-             * modelelements, such as the statemachine 
-             * for a statechartdiagram. */
-            Object o = ((UMLDiagram)d).getDependentElement();
-            if (o != null) moveToTrash(o);
+            /* If this is a UML diagram, then remove the dependent
+             * modelelements, such as the statemachine
+             * for a statechartdiagram.
+             */
+            Object o = ((UMLDiagram) d).getDependentElement();
+            if (o != null) {
+                moveToTrash(o);
+            }
         }
     }
 
@@ -908,7 +911,7 @@ public class Project implements java.io.Serializable, TargetListener {
         // issue 1725: the root is not set, which leads to problems
         // with displaying prop panels
         Object model = getModel();
-        
+
         LOG.info("Setting root model to " + model);
 
         setRoot(model);
@@ -924,7 +927,7 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Moves some object to trash, i.e. deletes it completely with all
      * dependent structures. <p>
-     * 
+     *
      * Deleting an object involves: <pre>
      * - Removing Target history
      * - Deleting all Fig representations for the object
@@ -949,7 +952,7 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * Removes some object from the project. 
+     * Removes some object from the project.
      *
      * @param obj the object to be thrown away
      */
@@ -1036,7 +1039,7 @@ public class Project implements java.io.Serializable, TargetListener {
         while (i.hasNext()) {
             Fig obj = (Fig) i.next();
             // This should prevent the removeFromDiagram to update the model:
-            obj.setVisible(false); 
+            obj.setVisible(false);
             obj.removeFromDiagram();
         }
     }
@@ -1325,9 +1328,9 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param pv The persistenceVersion to set.
      */
     public void setPersistenceVersion(int pv) {
-        this.persistenceVersion = pv;
+        persistenceVersion = pv;
     }
-    
+
     /**
      * @return Returns the profile.
      */

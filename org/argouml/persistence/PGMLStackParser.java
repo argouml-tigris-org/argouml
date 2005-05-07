@@ -1,32 +1,49 @@
+// $Id$
+// Copyright (c) 2005 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.persistence;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
-
 import java.util.StringTokenizer;
 
+import org.argouml.gef.FigGroupHandler;
+import org.argouml.gef.HandlerStack;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
-
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
-
-import org.argouml.gef.HandlerStack;
-import org.argouml.gef.FigGroupHandler;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * The PGML Parser.
+ */
 public class PGMLStackParser extends org.argouml.gef.PGMLStackParser {
-
-    private static final Logger LOG = Logger.getLogger(PGMLStackParser.class);
-
     /**
      * Constructor.
      * @param modelElementsByUuid a map of model elements indexed
@@ -44,15 +61,16 @@ public class PGMLStackParser extends org.argouml.gef.PGMLStackParser {
     }
 
     /**
-     * @see org.argouml.gef.HandlerFactory#getHandler
+     * @see org.argouml.gef.HandlerFactory#getHandler(
+     *         HandlerStack, Object, String, String, String, Attributes)
      */
-    public DefaultHandler getHandler( HandlerStack stack,
+    public DefaultHandler getHandler(HandlerStack stack,
                                              Object container,
                                              String uri,
                                              String localname,
                                              String qname,
                                              Attributes attributes)
-            throws SAXException {
+        throws SAXException {
 /*
         // Ignore things within nodes
         if ( qname.equals( "group") && container instanceof
@@ -77,33 +95,48 @@ public class PGMLStackParser extends org.argouml.gef.PGMLStackParser {
         }
  */
         if (container instanceof FigGroupHandler) {
-            FigGroup group=((FigGroupHandler)container).getFigGroup();
-            if (group instanceof FigNode && !qname.equals( "private")) {
+            FigGroup group = ((FigGroupHandler) container).getFigGroup();
+            if (group instanceof FigNode && !qname.equals("private")) {
                 return null;
             }
         }
-        DefaultHandler result=super.getHandler(
-            stack, container, uri, localname, qname, attributes);
-        
+        DefaultHandler result =
+            super.getHandler(stack, container, uri, localname, qname,
+                    attributes);
+
         return result;
     }
-    
+
+    /**
+     * @see org.argouml.gef.PGMLStackParser#setAttrs(
+     *         org.tigris.gef.presentation.Fig, org.xml.sax.Attributes)
+     */
     public void setAttrs(Fig f, Attributes attrList) throws SAXException {
         if (f instanceof FigGroup) {
-            FigGroup group=(FigGroup)f;
+            FigGroup group = (FigGroup) f;
             String clsNameBounds = attrList.getValue("description");
-            if ( clsNameBounds!=null) {
-                StringTokenizer st = new StringTokenizer(clsNameBounds,
-                    ",;[] ");
+            if (clsNameBounds != null) {
+                StringTokenizer st =
+                    new StringTokenizer(clsNameBounds, ",;[] ");
                 // Discard class name, x y w h
-                if ( st.hasMoreElements()) st.nextToken();
-                if ( st.hasMoreElements()) st.nextToken();
-                if ( st.hasMoreElements()) st.nextToken();
-                if ( st.hasMoreElements()) st.nextToken();
-                if ( st.hasMoreElements()) st.nextToken();
-                
+                if (st.hasMoreElements()) {
+                    st.nextToken();
+                }
+                if (st.hasMoreElements()) {
+                    st.nextToken();
+                }
+                if (st.hasMoreElements()) {
+                    st.nextToken();
+                }
+                if (st.hasMoreElements()) {
+                    st.nextToken();
+                }
+                if (st.hasMoreElements()) {
+                    st.nextToken();
+                }
+
                 Map attributeMap = interpretStyle(st);
-                setStyleAttributes( group, attributeMap);
+                setStyleAttributes(group, attributeMap);
             }
         }
 
