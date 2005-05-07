@@ -25,10 +25,8 @@
 package org.argouml.gef;
 
 import java.awt.Color;
-
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -38,48 +36,46 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.apache.log4j.Logger;
 import org.tigris.gef.base.Diagram;
-
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigPoly;
-import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigRRect;
+import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Objects of this class can read an InputStream containing an XML
  * representation of a GEF diagram (PGML file) and produce the
  * equivalent GEF diagram object with all its contents.  This is
- * the functional equivalent of {@link PGMLParser} but is supposed
- * to provide a more robust foundation for clients to provide
+ * the functional equivalent of {@link org.argouml.persistence.PGMLParser}
+ * but is supposed to provide a more robust foundation for clients to provide
  * extensions to support their custom diagram types.
  * @author Michael A. MacDonald
  */
-public class PGMLStackParser implements HandlerStack, HandlerFactory
-{
-    private static final Log LOG = LogFactory.getLog(PGMLStackParser.class);
-    private static HashMap USED_COLORS = new HashMap();
+public class PGMLStackParser implements HandlerStack, HandlerFactory {
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger.getLogger(PGMLStackParser.class);
 
-    private Stack _handlerStack;
-    private XMLReader _reader;
-    private Map _ownerRegistry;
-    private Diagram _diagram;
-    private HashMap _figRegistry;
-    
+    private static HashMap usedColors = new HashMap();
+
+    private Stack handlerStack;
+    private XMLReader xmiReader;
+    private Map ownerRegistry;
+    private Diagram diagram;
+    private HashMap figRegistry;
+
     private HashMap translationTable = new HashMap();
 
     ////////////////////////////////////////////////////////////////
@@ -98,8 +94,8 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
      * identifier for the model objects with the model objects themselves
      */
     public PGMLStackParser(Map modelElementsByUuid) {
-        _ownerRegistry = modelElementsByUuid;
-        _diagram=null;
+        ownerRegistry = modelElementsByUuid;
+        diagram = null;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -111,12 +107,14 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
      * @param is Stream that will deliver the PGML file
      * @param closeStream If true, the stream will be closed after the
      * PGML file is parsed
-     * @see #readDiagram(InputStream,boolean,DefaultHandler)
+     * @see #readDiagram(InputStream, boolean, DefaultHandler)
+     *
+     * @return The read diagram.
+     * @throws SAXException if something goes wrong.
      */
     public Diagram readDiagram(InputStream is, boolean closeStream)
-                 throws SAXException
-    {
-        return readDiagram( is, closeStream, new InitialHandler( this));
+    	throws SAXException {
+        return readDiagram(is, closeStream, new InitialHandler(this));
     }
 
     /**
@@ -124,68 +122,76 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
      * ContentHandler as the initial ContentHandler for the SAX parser.
      * This allows the caller to completely control the processing of the
      * PGML file.
+     *
      * @param is Stream that will deliver the PGML file
      * @param closeStream If true, the stream will be closed after the
      * PGML file is parsed
      * @param initialHandler The top level ContentHandler.  In order for
      * this method to work as expected, this ContentHandler must call the
      * {@link #setDiagram} method on this object with the read diagram.
+     * @return The read diagram.
+     * @throws SAXException if something goes wrong.
      */
     public synchronized Diagram readDiagram(InputStream is, boolean closeStream,
                                             DefaultHandler initialHandler)
         throws SAXException {
-        _handlerStack=new Stack();
+        handlerStack = new Stack();
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setNamespaceAware(false);
             factory.setValidating(false);
-            _figRegistry = new HashMap();
-            _diagram=null;
+            figRegistry = new HashMap();
+            diagram = null;
             SAXParser pc = factory.newSAXParser();
             InputSource source = new InputSource(is);
-            _reader=pc.getXMLReader();
+            xmiReader = pc.getXMLReader();
             pc.parse(source, initialHandler);
             // source = null;
-            if(closeStream) {
-                //System.out.println("closing stream now (in PGMLParser.readDiagram)");
+            if (closeStream) {
+                // System.out.println(
+                //     "closing stream now (in PGMLParser.readDiagram)");
                 is.close();
             }
-            return _diagram;
-        } catch(IOException e) {
+            return diagram;
+        } catch (IOException e) {
             throw new SAXException(e);
-        } catch(ParserConfigurationException e) {
+        } catch (ParserConfigurationException e) {
             throw new SAXException(e);
         }
     }
 
     /**
      * Return the GEF diagram that has been associated with this object via
-     * a previous call to {@link #setDiagram setDiagram}, or null if
+     * a previous call to {@link #setDiagram(Diagram)}, or <code>null</code> if
      * the diagram has not yet been set.
-     * @return Diagram object associated with this parser
+     *
+     * @return Diagram object associated with this parser.
      */
-    public Diagram getDiagram()
-    {
-        return _diagram;
+    public Diagram getDiagram() {
+        return diagram;
     }
 
     /**
      * The ContentHandler that actually creates a GEF diagram object in response
      * to a pgml element must call this method to set the diagram associated
      * with the parsing.
+     *
+     * @param theDiagram The diagram.
      */
-    public void setDiagram( Diagram diagram)
-    {
-        _diagram=diagram;
+    public void setDiagram(Diagram theDiagram) {
+        diagram = theDiagram;
     }
 
     /**
-     * Finds the external model object that corresponds to the unique string id
-     * @see #PGMLStackParser
+     * Finds the external model object that corresponds to the unique string id.
+     *
+     * @see #PGMLStackParser(Map)
+     *
+     * @param id The id to search for.
+     * @return The found object.
      */
-    public Object findOwner( String id)
-    {
-        return _ownerRegistry.get( id);
+    public Object findOwner(String id) {
+        return ownerRegistry.get(id);
     }
 
     /**
@@ -197,27 +203,29 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
         translationTable.put(from, to);
     }
 
-    
+
     ////////////////////////////////////////////////////////////////
     // HandlerStack implementation
-    public void pushHandlerStack( DefaultHandler handler)
-    {
-        _handlerStack.push( handler);
-        if ( _reader!=null)
-        {
-            _reader.setContentHandler( handler);
-            _reader.setErrorHandler( handler);
+    /**
+     * @see org.argouml.gef.HandlerStack#pushHandlerStack(org.xml.sax.helpers.DefaultHandler)
+     */
+    public void pushHandlerStack(DefaultHandler handler) {
+        handlerStack.push(handler);
+        if (xmiReader != null) {
+            xmiReader.setContentHandler(handler);
+            xmiReader.setErrorHandler(handler);
         }
     }
 
-    public void popHandlerStack( )
-    {
-        _handlerStack.pop();
-        if ( _reader!=null && _handlerStack.size()>0)
-        {
-            DefaultHandler handler=(DefaultHandler)_handlerStack.peek();
-            _reader.setContentHandler( handler);
-            _reader.setErrorHandler( handler);
+    /**
+     * @see org.argouml.gef.HandlerStack#popHandlerStack()
+     */
+    public void popHandlerStack() {
+        handlerStack.pop();
+        if (xmiReader != null && handlerStack.size() > 0) {
+            DefaultHandler handler = (DefaultHandler) handlerStack.peek();
+            xmiReader.setContentHandler(handler);
+            xmiReader.setErrorHandler(handler);
         }
     }
 
@@ -228,7 +236,8 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
      * are passed through this method.  The default implementation of the
      * method passes the names through by a map in order to determine if
      * translation is required.
-     * @param inputName Class name as it appears in PGML file
+     *
+     * @param oldName Class name as it appears in PGML file
      * @return Class name appropriate for the current code base
      */
     public String translateType(String oldName) {
@@ -245,9 +254,9 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
     // HandlerFactory implementation
     /**
      * Returns ContentHandler objects appropriate for the standard
-     * set of elements that can appear within a PGML file.
-     * <p>
-     * First, the <b>description</b> attribute is checked for a PGML-style
+     * set of elements that can appear within a PGML file.<p>
+     *
+     * First, the <em>description</em> attribute is checked for a PGML-style
      * class name specifier; if one is found, it is passed through the
      * {@link #translateType translateClassName} method and the resulting
      * class name is instantiated.  If the resulting object is itself
@@ -255,17 +264,16 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
      * result of calling {@link HandlerFactory#getHandler getHandler} on that
      * object with the same arguments.  This allows a Fig object to take
      * complete control of its own parsing without imposing any change on
-     * the global parsing framework.
-     * </p>
-     * <p>
+     * the global parsing framework.<p>
+     *
      * If the element doesn't incorporate a class name, or
      * if the instanced object does not implement {@link HandlerFactory},
      * the element name is compared with one of PGML's special
      * element names.  If a known element name is found, either the element
      * is processed immediately and null returned, or the appropriate
      * handler for that element is returned.  If the element name is unknown,
-     * null is returned.
-     * </p>
+     * null is returned.<p>
+     *
      * @param stack Implementation of the stack of content handlers
      * @param container An object that provides context for the element (most
      * often by providing an implementation of the {@link Container} interface.
@@ -276,12 +284,17 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
      * for the element.
      * @return ContentHandler object appropriate for the element, or null
      * if the element can be skipped
+     *
+     * @see org.argouml.gef.HandlerFactory#getHandler(
+     *         org.argouml.gef.HandlerStack, java.lang.Object,
+     *         java.lang.String, java.lang.String, java.lang.String,
+     *         org.xml.sax.Attributes)
      */
-    public DefaultHandler getHandler( HandlerStack stack,
+    public DefaultHandler getHandler(HandlerStack stack,
                                       Object container,
         String uri, String localname, String qname,
-        Attributes attributes) throws SAXException
-    {
+        Attributes attributes)
+    	throws SAXException {
         String clsNameBounds = attributes.getValue("description");
         Object elementInstance = null;
         if (clsNameBounds != null) {
@@ -290,55 +303,55 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
             try {
                 // Special case here; FigLine appears in the description, but
                 // there is no zero argoument constructor
-                if (clsName.equals( FigLine.class.getName())) {
+                if (clsName.equals(FigLine.class.getName())) {
                     // TODO: Remove this when
                     // http://gef.tigris.org/issues/show_bug.cgi?id=219 is
                     // fixed and relevant version of GEF jar is in argouml CVS.
-                    elementInstance=new FigLine( 0, 0, 10, 10);
+                    elementInstance = new FigLine(0, 0, 10, 10);
                 } else {
-                    elementInstance=Class.forName( clsName).newInstance();
+                    elementInstance = Class.forName(clsName).newInstance();
                 }
             } catch (ClassNotFoundException cnfe) {
                 //TODO: Class not found! Why is this not considered an error?
                 // shouldn't we throw an exception here.
-                LOG.error( "description:" + clsNameBounds + " does not specify an available class.");
-            } catch ( IllegalAccessException iae) {
-                throw new SAXException( iae);
-            } catch ( InstantiationException ie) {
-                throw new SAXException( ie);
+                LOG.error("description:" + clsNameBounds
+                          + " does not specify an available class.");
+            } catch (IllegalAccessException iae) {
+                throw new SAXException(iae);
+            } catch (InstantiationException ie) {
+                throw new SAXException(ie);
             }
-            if ( elementInstance instanceof HandlerFactory) {
-                return ((HandlerFactory)elementInstance).getHandler(
+            if (elementInstance instanceof HandlerFactory) {
+                return ((HandlerFactory) elementInstance).getHandler(
                     stack, container, uri, localname, qname, attributes);
             }
         }
 
         // If we got here, one of the built-in handlers will apply
-        if (qname.equals( "group")) {
+        if (qname.equals("group")) {
             if (elementInstance instanceof FigGroup) {
                 return getGroupHandler(container, (FigGroup) elementInstance,
                                        attributes);
             }
-            if ( elementInstance instanceof FigEdge) {
-                setAttrs( (FigEdge)elementInstance, attributes);
-                if ( container instanceof Container)
-                    ((Container)container).addObject( elementInstance);
-                return new FigEdgeHandler( this, (FigEdge)elementInstance);
+            if (elementInstance instanceof FigEdge) {
+                setAttrs((FigEdge) elementInstance, attributes);
+                if (container instanceof Container) {
+                    ((Container) container).addObject(elementInstance);
+                }
+                return new FigEdgeHandler(this, (FigEdge) elementInstance);
             }
         }
 
-        if ( qname.equals( "text"))
-        {
-            if ( elementInstance==null)
-            {
-                elementInstance=new FigText( 0, 0, 100, 100);
+        if (qname.equals("text")) {
+            if (elementInstance == null) {
+                elementInstance = new FigText(0, 0, 100, 100);
             }
-            if ( elementInstance instanceof FigText)
-            {
-                FigText text=(FigText)elementInstance;
-                setAttrs( text, attributes);
-                if ( container instanceof Container)
-                    ((Container)container).addObject( text);
+            if (elementInstance instanceof FigText) {
+                FigText text = (FigText) elementInstance;
+                setAttrs(text, attributes);
+                if (container instanceof Container) {
+                    ((Container) container).addObject(text);
+                }
                 String font = attributes.getValue("font");
                 if (font != null && !font.equals("")) {
                     text.setFontFamily(font);
@@ -349,72 +362,70 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
                     int textsizeInt = Integer.parseInt(textsize);
                     text.setFontSize(textsizeInt);
                 }
-                return new FigTextHandler( this, text);
+                return new FigTextHandler(this, text);
             }
         }
 
-        if ( qname.equals( "path") || qname.equals( "line"))
-        {
-            if ( elementInstance==null)
-            {
-                elementInstance=new FigPoly();
+        if (qname.equals("path") || qname.equals("line")) {
+            if (elementInstance == null) {
+                elementInstance = new FigPoly();
             }
-            if ( elementInstance instanceof FigLine)
-            {
-                setAttrs( (Fig)elementInstance, attributes);
-                if ( container instanceof Container)
-                    ((Container)container).addObject( elementInstance);
-                return new FigLineHandler( this, (FigLine)elementInstance);
+            if (elementInstance instanceof FigLine) {
+                setAttrs((Fig) elementInstance, attributes);
+                if (container instanceof Container) {
+                    ((Container) container).addObject(elementInstance);
+                }
+                return new FigLineHandler(this, (FigLine) elementInstance);
             }
-            if ( elementInstance instanceof FigPoly)
-            {
-                setAttrs( (Fig)elementInstance, attributes);
-                if ( container instanceof Container)
-                    ((Container)container).addObject( elementInstance);
-                return new FigPolyHandler( this, (FigPoly)elementInstance);
+            if (elementInstance instanceof FigPoly) {
+                setAttrs((Fig) elementInstance, attributes);
+                if (container instanceof Container) {
+                    ((Container) container).addObject(elementInstance);
+                }
+                return new FigPolyHandler(this, (FigPoly) elementInstance);
             }
         }
 
-        if (qname.equals( "private")) {
-            if ( elementInstance!=null) {
-                LOG.warn( "private element unexpectedly generated instance: " +
-                        elementInstance.toString());
+        if (qname.equals("private")) {
+            if (elementInstance != null) {
+                LOG.warn("private element unexpectedly generated instance: "
+                         + elementInstance.toString());
             }
-            if ( container instanceof Container) {
-                return new PrivateHandler( this, (Container)container);
+            if (container instanceof Container) {
+                return new PrivateHandler(this, (Container) container);
             } else {
-                LOG.warn( "private element with inappropriate container: " +
-                        container.toString());
+                LOG.warn("private element with inappropriate container: "
+                         + container.toString());
             }
         }
 
-        if ( qname.equals( "rectangle")) {
+        if (qname.equals("rectangle")) {
             String cornerRadius = attributes.getValue("rounding");
-            int rInt= -1;
-            if(cornerRadius != null && cornerRadius.length()>0) {
+            int rInt = -1;
+            if (cornerRadius != null && cornerRadius.length() > 0) {
                 rInt = Integer.parseInt(cornerRadius);
             }
-            if ( elementInstance==null) {
-                if ( rInt>=0) {
-                    elementInstance=new FigRRect( 0, 0, 80, 80);
+            if (elementInstance == null) {
+                if (rInt >= 0) {
+                    elementInstance = new FigRRect(0, 0, 80, 80);
                 } else {
-                    elementInstance=new FigRect( 0, 0, 80, 80);
+                    elementInstance = new FigRect(0, 0, 80, 80);
                 }
             }
             if (elementInstance instanceof FigRRect && rInt >= 0) {
-                ((FigRRect)elementInstance).setCornerRadius( rInt);
+                ((FigRRect) elementInstance).setCornerRadius(rInt);
             }
             if (elementInstance instanceof Fig) {
-                setAttrs( (Fig)elementInstance, attributes);
-                if ( container instanceof Container) {
-                    ((Container)container).addObject( elementInstance);
+                setAttrs((Fig) elementInstance, attributes);
+                if (container instanceof Container) {
+                    ((Container) container).addObject(elementInstance);
                 }
                 return null;
             }
         }
 
-        if (qname.equals( "ellipse")) {
-            if (elementInstance==null) {
+        if (qname.equals("ellipse")) {
+            if (elementInstance == null) {
                 elementInstance = new FigCircle(0, 0, 50, 50);
             }
             if (elementInstance instanceof FigCircle) {
@@ -422,10 +433,10 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
                 setAttrs(f, attributes);
                 String rx = attributes.getValue("rx");
                 String ry = attributes.getValue("ry");
-                int rxInt = (rx == null || rx.equals("")) ? 10 :
-                    Integer.parseInt(rx);
-                int ryInt = (ry == null || ry.equals("")) ? 10 :
-                    Integer.parseInt(ry);
+                int rxInt =
+                    (rx == null || rx.equals("")) ? 10 : Integer.parseInt(rx);
+                int ryInt =
+                    (ry == null || ry.equals("")) ? 10 : Integer.parseInt(ry);
                 f.setX(f.getX() - rxInt);
                 f.setY(f.getY() - ryInt);
                 f.setWidth(rxInt * 2);
@@ -437,14 +448,14 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
 
         // Don't know what to do; throw up our hands--usually this
         // will mean that sub-elements are ignored
-        LOG.info( "Unrecognized element "+qname);
+        LOG.info("Unrecognized element " + qname);
         if (elementInstance != null) {
             // Implement reasonable default behavior
             if (elementInstance instanceof Fig) {
-                setAttrs( (Fig)elementInstance, attributes);
+                setAttrs((Fig) elementInstance, attributes);
             }
             if (container instanceof Container) {
-                ((Container)container).addObject( elementInstance);
+                ((Container) container).addObject(elementInstance);
             }
         }
         return null;
@@ -454,95 +465,99 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
      * Associate a string with a Fig object, so the Fig object can be referenced
      * by the string later in the PGML file.  Default attribute processing
      * for elements that correspond to Fig objects calls this method,
-     * passing the value of the <b>name</b> attribute as the name parameter.
-     * @see #setAttrs
+     * passing the value of the <em>name</em> attribute as the name parameter.
+     *
+     * @see #setAttrs(Fig, Attributes)
      * @param fig Newly create Fig object
      * @param name String that may be used to reference Fig object later
      * in the PGML file
      */
-    public void registerFig( Fig fig, String name)
-    {
-        _figRegistry.put( name, fig);
+    public void registerFig(Fig fig, String name) {
+        figRegistry.put(name, fig);
     }
 
     /**
      * Find a Fig object with a name that has been previously registered
      * with {@link #registerFig registerFig}.
+     *
+     * @param name The name.
+     * @return The Fig object found.
      */
-    public Fig findFig( String name)
-    {
-        return (Fig)_figRegistry.get( name);
+    public Fig findFig(String name) {
+        return (Fig) figRegistry.get(name);
     }
 
     /**
      * Convert a color name string found in the PGML file to a java.awt.Color
      * object.
+     *
+     * TODO: This looks like it should be a method in the Color class.
      * @param name Color name from PGML file
      * @param defaultColor Color object to return if name is not
      * recognized
      */
     public static Color colorByName(String name, Color defaultColor) {
-        if(name.equalsIgnoreCase("white")) {
+        if (name.equalsIgnoreCase("white")) {
             return Color.white;
         }
 
-        if(name.equalsIgnoreCase("lightGray")) {
+        if (name.equalsIgnoreCase("lightGray")) {
             return Color.lightGray;
         }
 
-        if(name.equalsIgnoreCase("gray")) {
+        if (name.equalsIgnoreCase("gray")) {
             return Color.gray;
         }
 
-        if(name.equalsIgnoreCase("darkGray")) {
+        if (name.equalsIgnoreCase("darkGray")) {
             return Color.darkGray;
         }
 
-        if(name.equalsIgnoreCase("black")) {
+        if (name.equalsIgnoreCase("black")) {
             return Color.black;
         }
 
-        if(name.equalsIgnoreCase("red")) {
+        if (name.equalsIgnoreCase("red")) {
             return Color.red;
         }
 
-        if(name.equalsIgnoreCase("pink")) {
+        if (name.equalsIgnoreCase("pink")) {
             return Color.pink;
         }
 
-        if(name.equalsIgnoreCase("orange")) {
+        if (name.equalsIgnoreCase("orange")) {
             return Color.orange;
         }
 
-        if(name.equalsIgnoreCase("yellow")) {
+        if (name.equalsIgnoreCase("yellow")) {
             return Color.yellow;
         }
 
-        if(name.equalsIgnoreCase("green")) {
+        if (name.equalsIgnoreCase("green")) {
             return Color.green;
         }
 
-        if(name.equalsIgnoreCase("magenta")) {
+        if (name.equalsIgnoreCase("magenta")) {
             return Color.magenta;
         }
 
-        if(name.equalsIgnoreCase("cyan")) {
+        if (name.equalsIgnoreCase("cyan")) {
             return Color.cyan;
         }
 
-        if(name.equalsIgnoreCase("blue")) {
+        if (name.equalsIgnoreCase("blue")) {
             return Color.blue;
         }
 
         if (name.indexOf(' ') > 0) {
-            // The color assumed to be in the PGML standard format "red green blue"
+            // The color assumed to be in the PGML standard format
+            // "red green blue"
             return getColor(name);
         }
 
         try {
             return Color.decode(name);
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             System.out.println("invalid color code string: " + name);
         }
 
@@ -552,18 +567,19 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
     /**
      * A flyweight factory method for reusing the same Color
      * value multiple times.
+     *
      * @param rgb A string of RGB values seperated by space
      * @return the equivalent Color
      */
     public static Color getColor(String rgb) {
-        Color color = (Color)USED_COLORS.get(rgb);
+        Color color = (Color) usedColors.get(rgb);
         if (color == null) {
             StringTokenizer st = new StringTokenizer(rgb, " ");
             int red = Integer.parseInt(st.nextToken());
             int green = Integer.parseInt(st.nextToken());
             int blue = Integer.parseInt(st.nextToken());
             color = new Color(red, green, blue);
-            USED_COLORS.put(rgb, color);
+            usedColors.put(rgb, color);
         }
         return color;
     }
@@ -571,8 +587,11 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
     /**
      * Sets the properties of a Fig object according to the values of the
      * attributes in the PGML-file element that specifies the Fig object.
+     *
+     * @param f
+     * @param attrList
      */
-    public static void setCommonAttrs(Fig f, Attributes attrList) throws SAXException {
+    public static void setCommonAttrs(Fig f, Attributes attrList) {
         String x = attrList.getValue("x");
         if (x != null && !x.equals("")) {
             String y = attrList.getValue("y");
@@ -607,9 +626,9 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
         }
 
         String dasharray = attrList.getValue("dasharray");
-        if (dasharray != null &&
-                !dasharray.equals("") &&
-                !dasharray.equals("solid")) {
+        if (dasharray != null
+                && !dasharray.equals("")
+                && !dasharray.equals("solid")) {
             f.setDashed(true);
         }
 
@@ -617,7 +636,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
         String dynobjs = attrList.getValue("dynobjects");
         if (dynobjs != null && dynobjs.length() != 0) {
             if (f instanceof FigGroup) {
-                FigGroup fg = (FigGroup)f;
+                FigGroup fg = (FigGroup) f;
                 fg.parseDynObjects(dynobjs);
             }
         }
@@ -642,40 +661,52 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
     /**
      * Sets the properties of Fig objects according to a common set of
      * attributes found with Fig object elements in PGML files.
-     * In addition to the attributes used by {@link #setCommonAttrs setCommonAttrs},
-     * this methods registers the object with the value of the <b>name</b>
+     * In addition to the attributes used by {@link #setCommonAttrs},
+     * this methods registers the object with the value of the <em>name</em>
      * attribute with {@link #registerFig} and sets the object's owner
      * (the associate object in the external model) according to the map
-     * supplied at construction and the value of the <b>href</b> attribute.
+     * supplied at construction and the value of the <em>href</em> attribute.
+     *
+     * @param f
+     * @param attrList
+     * @throws SAXException if something goes wrong.
      */
     public void setAttrs(Fig f, Attributes attrList) throws SAXException {
         String name = attrList.getValue("name");
-        if(name != null && !name.equals("")) {
-            _figRegistry.put(name, f);
+        if (name != null && !name.equals("")) {
+            figRegistry.put(name, f);
         }
 
-        setCommonAttrs( f, attrList);
+        setCommonAttrs(f, attrList);
 
         String owner = attrList.getValue("href");
-        if(owner != null && !owner.equals("")) {
+        if (owner != null && !owner.equals("")) {
             f.setOwner(findOwner(owner));
         }
     }
 
     ////////////////////////////////////////////////////////////////
     // internal parsing methods
-    private DefaultHandler getGroupHandler( Object container,
+    /**
+     * @param container
+     * @param group
+     * @param attributes
+     * @return
+     * @throws SAXException
+     */
+    private DefaultHandler getGroupHandler(Object container,
                                             FigGroup group,
                                             Attributes attributes)
-    throws SAXException
-    {
-        if ( container instanceof Container)
-        {
-            ((Container)container).addObject( group);
+    	throws SAXException {
+        if (container instanceof Container) {
+            ((Container) container).addObject(group);
         }
-        StringTokenizer st = new StringTokenizer(attributes.getValue( "description"), ",;[] ");
-        setAttrs( group, attributes);
-        if ( st.hasMoreElements()) st.nextToken();
+        StringTokenizer st =
+            new StringTokenizer(attributes.getValue("description"), ",;[] ");
+        setAttrs(group, attributes);
+        if (st.hasMoreElements()) {
+            st.nextToken();
+        }
         String xStr = null;
         String yStr = null;
         String wStr = null;
@@ -686,15 +717,14 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory
             wStr = st.nextToken();
             hStr = st.nextToken();
         }
-        if(xStr != null && !xStr.equals("")) {
+        if (xStr != null && !xStr.equals("")) {
             int x = Integer.parseInt(xStr);
             int y = Integer.parseInt(yStr);
             int w = Integer.parseInt(wStr);
             int h = Integer.parseInt(hStr);
             group.setBounds(x, y, w, h);
         }
-        return new FigGroupHandler( this, group);
+        return new FigGroupHandler(this, group);
     }
 }
-
 

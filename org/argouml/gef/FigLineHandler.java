@@ -31,32 +31,34 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * Handler for elements in PGML file that represent FigLine objects
+ * Handler for elements in PGML file that represent FigLine objects.
  */
 public class FigLineHandler extends BaseHandler {
-    private FigLine _line;
+    /**
+     * The Fig for the line.
+     */
+    private FigLine line;
     int _x1, _y1, _x2, _y2;
 
     /**
      * @param parser The PGMLStackParser for the diagram that contains this
      * FigLine
-     * @param line The object corresponding to the element being parsed
+     * @param theLine The object corresponding to the element being parsed
      */
-    public FigLineHandler(PGMLStackParser parser, FigLine line)
-    {
-        super( parser);
-        _line=line;
-        _x1=_y1=0;
+    public FigLineHandler(PGMLStackParser parser, FigLine theLine) {
+        super(parser);
+        line = theLine;
+        _x1 = 0;
+        _y1 = 0;
     }
 
     /**
      * We set the line coordinates according
-     * to the values received from <b>moveto</b> and <b>lineto</b>
+     * to the values received from <em>moveto</em> and <em>lineto</em>
      * sub-elements.
      */
-    public void gotElement( String contents)
-    {
-        _line.setShape( _x1, _y1, _x2, _y2);
+    public void gotElement(String contents) {
+        line.setShape(_x1, _y1, _x2, _y2);
     }
 
     /**
@@ -64,21 +66,24 @@ public class FigLineHandler extends BaseHandler {
      * We interpret the attributes of sub-elements moveto and lineto
      * immediately as line coordinates, and then skip over these
      * elements by returning null from this function.
+     *
+     * @see org.argouml.gef.BaseHandler#getElementHandler(
+     *         org.argouml.gef.HandlerStack, java.lang.Object,
+     *         java.lang.String, java.lang.String, java.lang.String,
+     *         org.xml.sax.Attributes)
      */
-    protected DefaultHandler getElementHandler( HandlerStack stack,
+    protected DefaultHandler getElementHandler(HandlerStack stack,
                                                 Object container,
                                                 String uri,
                                                 String localname,
                                                 String qname,
-                                                Attributes attributes)
-    {
-        if( qname.equals("moveto")) {
+                                                Attributes attributes) {
+        if (qname.equals("moveto")) {
             String x1 = attributes.getValue("x");
             String y1 = attributes.getValue("y");
             _x1 = (x1 == null || x1.equals("")) ? 0 : Integer.parseInt(x1);
             _y1 = (y1 == null || y1.equals("")) ? 0 : Integer.parseInt(y1);
-        }
-        else if( qname.equals("lineto")) {
+        } else if (qname.equals("lineto")) {
             String x2 = attributes.getValue("x");
             String y2 = attributes.getValue("y");
             _x2 = (x2 == null || x2.equals("")) ? _x1 : Integer.parseInt(x2);

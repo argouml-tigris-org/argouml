@@ -30,7 +30,12 @@ import org.xml.sax.SAXException;
  * Implementing this interface allows the handler for an element to accept
  * content from sub-elements that it will contain.
  */
-public interface Container
-{
-    public void addObject( Object toAdd) throws SAXException;
+public interface Container {
+    /**
+     * Add an object to the container.
+     *
+     * @param toAdd The object to add.
+     * @throws SAXException if there was a problem.
+     */
+    void addObject(Object toAdd) throws SAXException;
 }

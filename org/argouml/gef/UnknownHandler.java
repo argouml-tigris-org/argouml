@@ -24,14 +24,9 @@
 
 package org.argouml.gef;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.xml.sax.helpers.DefaultHandler;
-
+import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Handler for unknown elements in PGML files or elements that are
@@ -40,37 +35,47 @@ import org.xml.sax.SAXException;
  * and sub-elements.
  */
 public class UnknownHandler extends DefaultHandler {
-    private int _depthCount;
-    private HandlerStack _stack;
-    private static Log LOG=LogFactory.getLog( UnknownHandler.class);
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger.getLogger(UnknownHandler.class);
+
+    private int depthCount;
+    private HandlerStack stack;
 
     /**
-     * @param stack The stack of ContentHandler's for this parsing operation
+     * @param theStack The stack of ContentHandler's for this parsing operation
      */
-    public UnknownHandler( HandlerStack stack)
-    {
-        _depthCount=1;
-        _stack=stack;
+    public UnknownHandler(HandlerStack theStack) {
+        depthCount = 1;
+        stack = theStack;
     }
 
     /**
-     * Increments depth count
+     * Increments depth count.
+     *
+     * @param uri
+     * @param localname
+     * @param qname
+     * @param attributes
      */
-    public void startElement( String uri, String localname, String qname,
-        Attributes attributes) throws SAXException
-    {
-        LOG.info( "Ignoring unexpected element: "+qname);
-        _depthCount++;
+    public void startElement(String uri, String localname, String qname,
+        Attributes attributes) {
+        LOG.info("Ignoring unexpected element: " + qname);
+        depthCount++;
     }
 
     /**
      * Decrements depth count; pops itself off the stack when the depth count
-     * is 0
+     * is 0.
+     *
+     * @param uri
+     * @param localname
+     * @param qname
      */
-    public void endElement( String uri, String localname, String qname)
-        throws SAXException
-    {
-        if ( --_depthCount==0)
-            _stack.popHandlerStack();
+    public void endElement(String uri, String localname, String qname) {
+        if (--depthCount == 0) {
+            stack.popHandlerStack();
+        }
     }
 }

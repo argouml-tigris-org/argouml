@@ -38,102 +38,111 @@ import org.tigris.gef.presentation.FigPoly;
 /**
  * The handler for elements that represent FigEdge objects.
  */
-public class FigEdgeHandler extends BaseHandler
-implements Container
-{
-    private FigEdge _edge;
+public class FigEdgeHandler
+	extends BaseHandler
+	implements Container {
+    /**
+     * The Fig for the edge.
+     */
+    private FigEdge edge;
 
     /**
      * @param parser The overall parser object.
-     * @param edge The FigEdge object created to correspond to the current
+     * @param theEdge The FigEdge object created to correspond to the current
      * XML element.
      */
-    public FigEdgeHandler( PGMLStackParser parser,
-                           FigEdge edge)
-    {
-        super( parser);
-        _edge=edge;
+    public FigEdgeHandler(
+            PGMLStackParser parser,
+            FigEdge theEdge) {
+        super(parser);
+        edge = theEdge;
     }
 
     /**
      * @return The FigEdge object that corresponds to the current XML element.
      */
-    public FigEdge getFigEdge()
-    {
-        return _edge;
+    public FigEdge getFigEdge() {
+        return edge;
     }
 
     /**
      * Adds the owner of the FigEdge object to the collection of edge owners
      * in the diagram associated with the {@link PGMLStackParser}.
+     *
+     * @see org.xml.sax.ContentHandler#endElement(
+     *         java.lang.String, java.lang.String, java.lang.String)
      */
-    public void endElement( String uri, String localname, String qname)
-    throws SAXException
-    {
-        Object owner = _edge.getOwner();
+    public void endElement(String uri, String localname, String qname)
+        throws SAXException {
+        Object owner = edge.getOwner();
         Collection edges = getPGMLStackParser().getDiagram().getEdges(null);
-        if (!edges.contains(owner))
+        if (!edges.contains(owner)) {
             edges.add(owner);
-        super.endElement( uri, localname, qname);
+        }
+        super.endElement(uri, localname, qname);
     }
 
     /**
-     * Incorporates a contained element into this FigEdge object.
+     * Incorporates a contained element into this FigEdge object.<p>
+     *
      * Three types of contained elements are supported:
      * FigLine or FigPoly become the Fig associated with this FigEdge;
-     * String valued elements (i.e., <b>private</b> elements) are themselves
+     * String valued elements (i.e., <em>private</em> elements) are themselves
      * parsed to determin the source and destination PortFig's for this
      * FigEdge.
+     *
+     * @see org.argouml.gef.Container#addObject(java.lang.Object)
      */
-    public void addObject( Object o)
-    throws SAXException
-    {
-        if ( o instanceof FigLine || o instanceof FigPoly)
-            _edge.setFig( (Fig)o);
-        if ( o instanceof String)
-        {
-            PGMLStackParser parser=getPGMLStackParser();
+    public void addObject(Object o)
+        throws SAXException {
+        if (o instanceof FigLine || o instanceof FigPoly) {
+            edge.setFig((Fig) o);
+        }
+        if (o instanceof String) {
+            PGMLStackParser parser = getPGMLStackParser();
             Fig spf = null;
             Fig dpf = null;
             FigNode sfn = null;
             FigNode dfn = null;
-            String body = (String)o;
+            String body = (String) o;
             StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
-            while(st2.hasMoreElements()) {
+            while (st2.hasMoreElements()) {
                 String attribute = st2.nextToken();
                 String value = st2.nextToken();
-                if(attribute.equals("sourcePortFig")) {
+                if (attribute.equals("sourcePortFig")) {
                     spf = parser.findFig(value);
                 }
 
-                if(attribute.equals("destPortFig")) {
+                if (attribute.equals("destPortFig")) {
                     dpf = parser.findFig(value);
                 }
 
-                if(attribute.equals("sourceFigNode")) {
-                    sfn = (FigNode)parser.findFig(value);
+                if (attribute.equals("sourceFigNode")) {
+                    sfn = (FigNode) parser.findFig(value);
                 }
 
-                if(attribute.equals("destFigNode")) {
-                    dfn = (FigNode)parser.findFig(value);
+                if (attribute.equals("destFigNode")) {
+                    dfn = (FigNode) parser.findFig(value);
                 }
             }
 
-            if ( spf==null && sfn!=null)
-                spf=(Fig)sfn.getPortFigs().get(0);
-
-            if ( dpf==null && dfn!=null)
-                dpf=(Fig)dfn.getPortFigs().get(0);
-
-            if(spf == null || dpf == null || sfn == null || dfn == null) {
-                throw new SAXException( "Can't find nodes for FigEdge: "+
-                                        (String)o + ":" + _edge.toString());
+            if (spf == null && sfn != null) {
+                spf = (Fig) sfn.getPortFigs().get(0);
             }
-            else {
-                _edge.setSourcePortFig(spf);
-                _edge.setDestPortFig(dpf);
-                _edge.setSourceFigNode(sfn);
-                _edge.setDestFigNode(dfn);
+
+            if (dpf == null && dfn != null) {
+                dpf = (Fig) dfn.getPortFigs().get(0);
+            }
+
+            if (spf == null || dpf == null || sfn == null || dfn == null) {
+                throw new SAXException(
+                        "Can't find nodes for FigEdge: "
+                        + (String) o + ":" + edge.toString());
+            } else {
+                edge.setSourcePortFig(spf);
+                edge.setDestPortFig(dpf);
+                edge.setSourceFigNode(sfn);
+                edge.setDestFigNode(dfn);
             }
 
         }
