@@ -65,10 +65,9 @@ public class PropPanelDiagram extends PropPanel {
         JTextField field = new JTextField();
         field.getDocument().addDocumentListener(new DiagramNameDocument(field));
         addField(Translator.localize("label.name"), field);
-        
+
         JList lst = new OneRowLinkedList(new UMLDiagramHomeModelListModel());
         addField(Translator.localize("label.home-model"), new JScrollPane(lst));
-        
 
         addButton(new PropPanelButton2(new ActionNavigateUpFromDiagram(),
                 lookupIcon("NavigateUp")));
@@ -151,10 +150,10 @@ class ActionNavigateUpFromDiagram extends AbstractActionNavigate {
  *
  * @author mvw@tigris.org
  */
-class UMLDiagramHomeModelListModel 
+class UMLDiagramHomeModelListModel
     extends DefaultListModel
     implements TargetListener {
-        
+
     /**
      * Constructor for UMLCommentAnnotatedElementListModel.
      */
@@ -184,36 +183,44 @@ class UMLDiagramHomeModelListModel
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
-    
+
     private void setTarget(Object t) {
-        UMLDiagram target = (t instanceof UMLDiagram) ? (UMLDiagram) t : null;
+        UMLDiagram target = null;
+        if (t instanceof UMLDiagram) {
+            target = (UMLDiagram) t;
+        }
         removeAllElements();
-        
-        Object ns = (target != null) ? target.getNamespace() : null; 
-        if (ns != null) addElement(ns);
+
+        Object ns = null;
+        if (target != null) {
+            ns = target.getNamespace();
+        }
+        if (ns != null) {
+            addElement(ns);
+        }
     }
-    
 }
 
+/**
+ * A JList that just has one row.
+ */
 class OneRowLinkedList extends JList {
-
-        /**
-         * The constructor.
-         *
-         * @param dataModel the data model
-         */
-        public OneRowLinkedList(DefaultListModel dataModel) {
-            super();
-            setModel(dataModel);
-            setDoubleBuffered(true);
-            setCellRenderer(new UMLLinkedListCellRenderer(true));
-            setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            setForeground(Color.blue);
-            setSelectionForeground(Color.blue.darker());
-            UMLLinkMouseListener mouseListener = new UMLLinkMouseListener(this);
-            setFont(LookAndFeelMgr.getInstance().getSmallFont());
-            addMouseListener(mouseListener);
-            setVisibleRowCount(1);
-        }
-
+    /**
+     * The constructor.
+     *
+     * @param dataModel the data model
+     */
+    public OneRowLinkedList(DefaultListModel dataModel) {
+        super();
+        setModel(dataModel);
+        setDoubleBuffered(true);
+        setCellRenderer(new UMLLinkedListCellRenderer(true));
+        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setForeground(Color.blue);
+        setSelectionForeground(Color.blue.darker());
+        UMLLinkMouseListener mouseListener = new UMLLinkMouseListener(this);
+        setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        addMouseListener(mouseListener);
+        setVisibleRowCount(1);
     }
+}

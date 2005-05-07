@@ -49,7 +49,10 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
     public FigAttributesCompartment(int x, int y, int w, int h) {
         super(x, y, w, h);
     }
-    
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#populate()
+     */
     public void populate() {
         if (!isVisible()) {
             return;
@@ -70,17 +73,22 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
                 // Model.getPump().removeModelEventListener(this, sf);
                 // Model.getPump().addModelEventListener(this, sf); //??
                 if (figs.size() <= acounter) {
-                    attr = new FigFeature(xpos + 1,
-                       ypos + 1 + (acounter - 1) * FigNodeModelElement.ROWHEIGHT,
-                       0,
-                       FigNodeModelElement.ROWHEIGHT - 2,
-                       attrPort);
+                    attr =
+                        new FigFeature(
+                                xpos + 1,
+                                ypos + 1
+                                + (acounter - 1)
+                                	* FigNodeModelElement.ROWHEIGHT,
+                                0,
+                                FigNodeModelElement.ROWHEIGHT - 2,
+                                attrPort);
                     // bounds not relevant here
                     addFig(attr);
                 } else {
                     attr = (CompartmentFigText) figs.get(acounter);
                 }
-                attr.setText(Notation.generate((NotationContext)getGroup(), sf));
+                attr.setText(Notation.generate((NotationContext) getGroup(),
+                                               sf));
                 attr.setOwner(sf); //TODO: update the model again here?
                 /* This causes another event, and modelChanged() called,
                  * and updateAttributes() called again...
@@ -88,7 +96,7 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
 
                 // underline, if static
                 attr.setUnderline(Model.getScopeKind().getClassifier()
-                  .equals(Model.getFacade().getOwnerScope(sf)));
+                        .equals(Model.getFacade().getOwnerScope(sf)));
                 acounter++;
             }
             if (figs.size() > acounter) {

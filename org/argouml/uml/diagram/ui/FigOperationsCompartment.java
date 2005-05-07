@@ -50,7 +50,10 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
     public FigOperationsCompartment(int x, int y, int w, int h) {
         super(x, y, w, h);
     }
-    
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#populate()
+     */
     public void populate() {
         if (!isVisible()) {
             return;
@@ -73,17 +76,21 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
                 // Model.getPump().addModelEventListener(this, bf);
                 if (figs.size() <= ocounter) {
                     oper =
-                        new FigFeature(xpos + 1,
-                        ypos + 1 + (ocounter - 1) * FigNodeModelElement.ROWHEIGHT,
-                        0,
-                        FigNodeModelElement.ROWHEIGHT - 2,
-                        operPort);
+                        new FigFeature(
+                                xpos + 1,
+                                ypos + 1
+                                + (ocounter - 1)
+                                 	* FigNodeModelElement.ROWHEIGHT,
+                                0,
+                                FigNodeModelElement.ROWHEIGHT - 2,
+                                operPort);
                     // bounds not relevant here
                     addFig(oper);
                 } else {
                     oper = (CompartmentFigText) figs.get(ocounter);
                 }
-                oper.setText(Notation.generate((NotationContext)getGroup(), bf));
+                oper.setText(Notation.generate((NotationContext) getGroup(),
+                                               bf));
                 oper.setOwner(bf); //TODO: update the model again here?
                 /* This causes another event, and modelChanged() called,
                  * and updateOperations() called again...
@@ -91,7 +98,7 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
 
                 // underline, if static
                 oper.setUnderline(Model.getScopeKind().getClassifier()
-                  .equals(Model.getFacade().getOwnerScope(bf)));
+                        .equals(Model.getFacade().getOwnerScope(bf)));
                 // italics, if abstract
                 //oper.setItalic(((MOperation)bf).isAbstract()); //
                 //does not properly work (GEF bug?)
