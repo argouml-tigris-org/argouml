@@ -27,34 +27,37 @@ package org.argouml.gef;
 import org.xml.sax.SAXException;
 
 /**
- * Content handler for <b>private</b> sub-elements
+ * Content handler for <em>private</em> sub-elements
  * of Fig PGML-file elements.
  * The character contents of these elements specify additional
  * information about the properties of the Fig object.
  */
 public class PrivateHandler extends BaseHandler {
-    private Container _container;
+    /**
+     * The container.
+     */
+    private Container container;
 
     /**
      * @param parser The parser object containing the diagram that contains
      * the fig specified by the element containing this element
-     * @param container The object that will receive the text contents of
+     * @param theContainer The object that will receive the text contents of
      * this element
      */
-    public PrivateHandler( PGMLStackParser parser, Container container)
-    {
-        super( parser);
-        _container=container;
+    public PrivateHandler(PGMLStackParser parser, Container theContainer) {
+        super(parser);
+        container = theContainer;
     }
 
     /**
-     * Send the text content of the <b>private</b> element to the containing
-     * element
-     * @param content Text content of the element
+     * Send the text content of the <em>private</em> element to the containing
+     * element.
+     *
+     * @param contents Text content of the element
+     * @throws SAXException if something goes wrong.
      */
-    public void gotElement( String contents)
-    throws SAXException
-    {
-        _container.addObject( contents);
+    public void gotElement(String contents)
+    	throws SAXException {
+        container.addObject(contents);
     }
 }

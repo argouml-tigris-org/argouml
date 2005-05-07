@@ -34,19 +34,22 @@ import org.xml.sax.helpers.DefaultHandler;
  * The handler for elements in PGML files representing FigPoly objects.
  */
 public class FigPolyHandler extends BaseHandler {
-    private FigPoly _poly;
+    /**
+     * The Fig for the poly.
+     */
+    private FigPoly poly;
     int _x1, _y1;
 
     /**
      * @param parser The PGMLStackParser for the diagram that contains this
      * FigGroup
-     * @param poly The object corresponding to the element being parsed
+     * @param thePoly The object corresponding to the element being parsed
      */
-    public FigPolyHandler( PGMLStackParser parser, FigPoly poly)
-    {
-        super( parser);
-        _poly=poly;
-        _x1=_y1=0;
+    public FigPolyHandler(PGMLStackParser parser, FigPoly thePoly) {
+        super(parser);
+        poly = thePoly;
+        _x1 = 0;
+        _y1 = 0;
     }
 
     /**
@@ -55,27 +58,32 @@ public class FigPolyHandler extends BaseHandler {
      * immediately as line coordinates and add these as line segments
      * to the FigPoly object.
      * The function then returns null; the elements are skipped.
+     *
+     * @see org.argouml.gef.BaseHandler#getElementHandler(
+     *         org.argouml.gef.HandlerStack, java.lang.Object,
+     *         java.lang.String, java.lang.String, java.lang.String,
+     *         org.xml.sax.Attributes)
      */
-    protected DefaultHandler getElementHandler( HandlerStack stack,
+    protected DefaultHandler getElementHandler(HandlerStack stack,
                                                 Object container,
                                                 String uri,
                                                 String localname,
                                                 String qname,
-                                                Attributes attributes)
-    {
-        if( qname.equals("moveto")) {
+                                                Attributes attributes) {
+        if (qname.equals("moveto")) {
             String x1 = attributes.getValue("x");
             String y1 = attributes.getValue("y");
             _x1 = (x1 == null || x1.equals("")) ? 0 : Integer.parseInt(x1);
             _y1 = (y1 == null || y1.equals("")) ? 0 : Integer.parseInt(y1);
-            _poly.addPoint( _x1, _y1);
-        }
-        else if( qname.equals("lineto")) {
+            poly.addPoint(_x1, _y1);
+        } else if (qname.equals("lineto")) {
             String x2 = attributes.getValue("x");
             String y2 = attributes.getValue("y");
-            int x2Int = (x2 == null || x2.equals("")) ? _x1 : Integer.parseInt(x2);
-            int y2Int = (y2 == null || y2.equals("")) ? _y1 : Integer.parseInt(y2);
-            _poly.addPoint( x2Int, y2Int);
+            int x2Int =
+                (x2 == null || x2.equals("")) ? _x1 : Integer.parseInt(x2);
+            int y2Int =
+                (y2 == null || y2.equals("")) ? _y1 : Integer.parseInt(y2);
+            poly.addPoint(x2Int, y2Int);
         }
         return null;
     }

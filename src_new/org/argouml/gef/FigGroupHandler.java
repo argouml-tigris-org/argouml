@@ -38,75 +38,78 @@ import org.xml.sax.SAXException;
  * including FigNodes.
  * @author Michael A. MacDonald
  */
-public class FigGroupHandler extends BaseHandler implements
-    Container
-{
-    private FigGroup _group;
+public class FigGroupHandler
+	extends BaseHandler
+	implements Container {
+    /**
+     * The Fig with the group.
+     */
+    private FigGroup group;
 
     /**
      * @param parser The PGMLStackParser for the diagram that contains this
      * FigGroup
-     * @param group The object corresponding to the element being parsed
+     * @param theGroup The object corresponding to the element being parsed
      */
-    public FigGroupHandler( PGMLStackParser parser,
-                            FigGroup group)
-    {
-        super( parser);
-        _group=group;
+    public FigGroupHandler(PGMLStackParser parser,
+                            FigGroup theGroup) {
+        super(parser);
+        group = theGroup;
     }
 
     /**
      * @return The object corresponding to the element being parsed.
      */
-    public FigGroup getFigGroup()
-    {
-        return _group;
+    public FigGroup getFigGroup() {
+        return group;
     }
 
     /**
      * If the object being parsed is a FigNode, add the owner of the object
      * to the collection of node owners in the diagram associated with
      * the PGMLStackParser object.
+     *
+     * @see org.xml.sax.ContentHandler#endElement(
+     *         java.lang.String, java.lang.String, java.lang.String)
      */
-    public void endElement( String uri, String localname, String qname)
-    throws SAXException
-    {
-        if ( _group instanceof FigNode)
-        {
-            Object owner=_group.getOwner();
-            Collection nodes=getPGMLStackParser().getDiagram().getNodes(null);
-            if ( ! nodes.contains( owner))
-                nodes.add( owner);
+    public void endElement(String uri, String localname, String qname)
+        throws SAXException {
+        if (group instanceof FigNode) {
+            Object owner = group.getOwner();
+            Collection nodes = getPGMLStackParser().getDiagram().getNodes(null);
+            if (!nodes.contains(owner)) {
+                nodes.add(owner);
+            }
         }
-        super.endElement( uri, localname, qname);
+        super.endElement(uri, localname, qname);
     }
 
     /**
      * Add the object represented by a sub-element to this group.
      * If a sub-element represents a Fig, the Fig is added to this group's
      * Fig collection.  If a sub-element represents a String, it is
-     * a <b>private</b> element that identifies the enclosing Fig of
+     * a <em>private</em> element that identifies the enclosing Fig of
      * this group, so set the enclosing Fig.
+     *
+     * @see org.argouml.gef.Container#addObject(java.lang.Object)
      */
-    public void addObject( Object toAdd)
-    {
-        if ( toAdd instanceof Fig)
-        {
-            _group.addFig( (Fig) toAdd);
+    public void addObject(Object toAdd) {
+        if (toAdd instanceof Fig) {
+            group.addFig((Fig) toAdd);
         }
         // Handle private string
-        if ( toAdd instanceof String)
-        {
-            StringTokenizer st2 = new StringTokenizer((String)toAdd, "=\"' \t\n");
-            while(st2.hasMoreElements()) {
+        if (toAdd instanceof String) {
+            StringTokenizer st2 =
+                new StringTokenizer((String) toAdd, "=\"' \t\n");
+            while (st2.hasMoreElements()) {
                 String t = st2.nextToken();
                 String v = "no such fig";
-                if(st2.hasMoreElements()) {
+                if (st2.hasMoreElements()) {
                     v = st2.nextToken();
                 }
 
-                if(t.equals("enclosingFig")) {
-                    _group.setEnclosingFig( getPGMLStackParser().findFig(v));
+                if (t.equals("enclosingFig")) {
+                    group.setEnclosingFig(getPGMLStackParser().findFig(v));
                 }
             }
         }

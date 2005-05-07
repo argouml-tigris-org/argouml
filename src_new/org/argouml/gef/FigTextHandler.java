@@ -27,28 +27,29 @@ package org.argouml.gef;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * Handler for elements that represent FigText objects
+ * Handler for elements that represent FigText objects.
  */
 public class FigTextHandler extends BaseHandler {
-    private FigText _text;
+    /**
+     * The Fig for the text.
+     */
+    private FigText text;
 
     /**
      * @param parser The PGMLStackParser for the diagram that contains this
      * FigText object
-     * @param text The object corresponding to the element being parsed
+     * @param theText The object corresponding to the element being parsed
      */
-    public FigTextHandler( PGMLStackParser parser, FigText text)
-    {
-        super( parser);
-        _text=text;
+    public FigTextHandler(PGMLStackParser parser, FigText theText) {
+        super(parser);
+        text = theText;
     }
 
     /**
      * The FigText text is set to the character contents of the element.
      * @param contents The characters within the element.
      */
-    public void gotElement( String contents)
-    {
-        _text.setText( contents);
+    public void gotElement(String contents) {
+        text.setText(contents);
     }
 }
