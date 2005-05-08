@@ -115,13 +115,13 @@ do
 done
 
 echo $BUILD copying to the svn directory
-cp -r $directoryname ../../svn/argouml-downloads/trunk/www
+cp -r $directoryname ../../../svn/argouml-downloads/trunk/www
 
 echo Add and commit the newly created directory
 echo ../svn/argouml-downloads/trunk/www/$directoryname
 
 echo Update the index.html in the argouml-downloads project.
 
-echo Copy the index file to the download directory (argouml/www/download)
+echo "Copy the index file to the download directory (argouml/www/download)"
 echo and add and commit it there. This is not in the tagged version but
 echo in the echo original version.
