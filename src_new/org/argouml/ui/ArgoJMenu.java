@@ -26,10 +26,10 @@ package org.argouml.ui;
 
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.SwingConstants;
 
 import org.argouml.i18n.Translator;
 
@@ -86,8 +86,8 @@ public class ArgoJMenu extends JMenu {
 				  (selected == null
 				   || selected.booleanValue()));
 	// End of block
-	mi.setHorizontalTextPosition(JButton.RIGHT);
-	mi.setVerticalTextPosition(JButton.CENTER);
+	mi.setHorizontalTextPosition(SwingConstants.RIGHT);
+	mi.setVerticalTextPosition(SwingConstants.CENTER);
 	mi.setEnabled(a.isEnabled());
 	mi.addActionListener(a);
 	add(mi);
