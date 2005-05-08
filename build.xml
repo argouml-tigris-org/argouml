@@ -1311,10 +1311,13 @@ you will have to resurrect them using cvs update.
 
     <!-- List of modules to be imported. -->
     <ant dir="../modules/cpp" inheritAll="false" target="install"/>
-    <ant dir="../modules/csharp" inheritAll="false" target="install"/>
     <ant dir="../modules/classfile" inheritAll="false" target="install"/>
     <ant dir="../modules/php" inheritAll="false" target="install"/>
 
+    <!--
+    	The creation of these files will for the 0.19.1 release be made
+	manually.
+	Eventually another solution will have to be found.
     <zip basedir="${argo.build.dir}" 
          includes="ext/**.jar" 
          zipfile="${argo.dist.dir}/${Name}-${argo.build.version}-modules.zip"/>
@@ -1324,6 +1327,7 @@ you will have to resurrect them using cvs update.
     <gzip src="${argo.dist.dir}/${Name}-${argo.build.version}-modules.tar"
           zipfile="${argo.dist.dir}/${Name}-${argo.build.version}-modules.tar.gz"/>
     <delete file="${argo.dist.dir}/${Name}-${argo.build.version}-modules.tar"/>
+    -->
   </target>
 
   <!-- =================================================================== -->
