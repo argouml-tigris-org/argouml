@@ -911,7 +911,6 @@ public class FigUseCase extends FigNodeModelElement {
         Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
         Fig f = hitFig(r);
 
-        boolean targetIsSet = false;
 
         if (f == epVec) {
 
@@ -931,18 +930,11 @@ public class FigUseCase extends FigNodeModelElement {
             // bigPort itself.
 
             if ((i >= 0) && (i < (v.size() - 1))) {
-                targetIsSet = true;
                 f = (Fig) v.elementAt(i + 1);
 
                 highlightedFigText = (CompartmentFigText) f;
                 highlightedFigText.setHighlighted(true);
             }
-        }
-
-        // If we didn't get the EP compartment, we just select ourself.
-
-        if (!targetIsSet) {
-            TargetManager.getInstance().setTarget(getOwner());
         }
     }
 

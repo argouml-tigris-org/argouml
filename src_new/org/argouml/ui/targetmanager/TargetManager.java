@@ -23,14 +23,21 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.argouml.ui.targetmanager;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
+import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
@@ -38,6 +45,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.Actions;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
@@ -59,7 +67,12 @@ import org.tigris.gef.presentation.Fig;
  * Via an event mechanism this manager makes sure that all objects interested
  * in knowing wether the selection changed are acknowledged. <p>
  *
- * Note in particular that null is an invalid target.
+ * Note in particular that null is an invalid target.<p>
+ * 
+ * Thanks to the architecture of ArgoUML of Modelelements and Figs, 
+ * one rule has been decided upon (by mvw@tigris.org): <br>
+ * The list of targets shall not contain any Fig that has an owner. 
+ * Instead, the owner is enlisted. 
  *
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -348,6 +361,17 @@ public final class TargetManager {
     }
 
     /**
+     * Only for debugging.
+     */
+    public void debugTM(){
+        if (dtm == null) { 
+//            dtm = new DebugTMDialog(targets);
+//            dtm.setVisible(true);
+        }
+    }
+    private DebugTMDialog dtm = null;
+    
+    /**
      * Sets the targets to the single given object. If there are targets at the
      * moment of calling this method, these will be removed as targets. To
      * all interested targetlisteners, a TargetEvent will be fired. If the
@@ -367,9 +391,14 @@ public final class TargetManager {
 
 	Object[] oldTargets = targets.toArray();
 	targets.clear();
-	// internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);
-	if (o != null)
-	    targets.add(o);
+
+	if (o != null) {
+            if (o instanceof UMLDiagram) { // Needed for Argo startup :-( 
+                targets.add(o); 
+            } else {
+	        targets.add(getOwner(o));
+            }
+        }
 	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
 
         endTargetTransaction();
@@ -425,17 +454,30 @@ public final class TargetManager {
      * an event will be fired also in case that that element would not equal
      * the element returned by getTarget().
      * Note also that any nulls within the Collection will be ignored.
-     * @param targetsList The new targets list.
+     * 
+     * @param targetsCollection The new targets list.
      */
-    public synchronized void setTargets(Collection targetsList) {
+    public synchronized void setTargets(Collection targetsCollection) {
 	Iterator ntarg;
 
 	if (isInTargetTransaction())
 	    return;
 
-	if (targetsList == null)
-	    targetsList = Collections.EMPTY_LIST;
+        Collection targetsList = new ArrayList();
+        if (targetsCollection != null) {
+            targetsList.addAll(targetsCollection);                
+        }
 
+        List modifiedList = new ArrayList();
+        Iterator it = targetsList.iterator();
+        while (it.hasNext()) {
+            Object o = it.next();
+            o = getOwner(o); 
+            if (!modifiedList.contains(o)) 
+                    modifiedList.add(o);
+        }
+        targetsList = modifiedList;
+        
 	// remove any nulls so we really ignore them
 	if (targetsList.contains(null)) {
 	    List withoutNullList = new ArrayList(targetsList);
@@ -489,6 +531,8 @@ public final class TargetManager {
 	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
 
 	endTargetTransaction();
+        
+        debugTM();
     }
 
     /**
@@ -503,13 +547,16 @@ public final class TargetManager {
 	if (isInTargetTransaction())
 	    return;
 
-	if (target == null || targets.contains(target))
+        if (target == null 
+                        || targets.contains(target) 
+                        || targets.contains(getOwner(target)))
 	    return;
 
 	startTargetTransaction();
 
 	Object[] oldTargets = targets.toArray();
-	targets.add(0, target);
+	targets.add(0, getOwner(target));
+        
 	internalOnSetTarget(TargetEvent.TARGET_ADDED, oldTargets);
 
 	endTargetTransaction();
@@ -526,18 +573,54 @@ public final class TargetManager {
         if (isInTargetTransaction())
 	    return;
 
-	if (target == null || !targets.contains(target))
+	if (target == null /*|| !targets.contains(target)*/)
 	    return;
 
 	startTargetTransaction();
 
 	Object[] oldTargets = targets.toArray();
 	targets.remove(target);
-	internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);
+
+        targets.removeAll(getOwnerAndAllFigs(target));
+        
+        if (targets.size() != oldTargets.length)
+            internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);
 
 	endTargetTransaction();
     }
 
+    private Collection getOwnerAndAllFigs(Object o) {
+        Collection c = new ArrayList();
+        c.add(o);
+        if (o instanceof Fig) { 
+            if (((Fig) o).getOwner() != null) { 
+                o = ((Fig) o).getOwner();
+                c.add(o);
+            }
+        }
+        if (!(o instanceof Fig)) {
+            Project p = ProjectManager.getManager().getCurrentProject();
+            Collection col = p.findAllPresentationsFor(o);
+            if (col != null && !col.isEmpty()) {
+                c.addAll(col);
+            }
+        }
+        return c;
+    }
+    
+    /**
+     * @param o the object 
+     * @return the owner of the fig, or if it didn't exist, the object itself
+     */
+    public Object getOwner(Object o) {
+        if (o instanceof Fig) { 
+            if (((Fig) o).getOwner() != null) { 
+                    o = ((Fig) o).getOwner();
+                }
+            }
+        return o;
+    }
+    
     /**
      * Returns a collection with all targets. Returns an empty collection
      * if there are no targets. If there are several targets then the first
@@ -669,7 +752,9 @@ public final class TargetManager {
     }
 
     /**
-     * Calculates the most probable 'fig-form' of some target.
+     * Calculates the most probable 'fig-form' of some target. Beware: 
+     * The result does NOT depend on the current diagram!
+     * 
      * @param target the target to calculate the 'fig-form' for.
      * @return The fig-form.
      */
@@ -770,4 +855,63 @@ public final class TargetManager {
         historyManager.removeHistoryTarget(o);
     }
 
+}
+
+class DebugTMDialog extends JDialog 
+    implements TargetListener {
+        
+        private DefaultListModel lm = new DefaultListModel();
+        private JList lst;
+        
+        /**
+         * The constructor.
+         */
+        public DebugTMDialog(Collection t) {
+            super(ProjectBrowser.getInstance(), "TargetManager Debug",
+                    false);
+            JPanel mainPanel = new JPanel(new BorderLayout());
+            getContentPane().add(mainPanel);
+            
+            lst = new JList(lm);
+            lst.setPreferredSize(new Dimension(400, 200));
+            setTarget(t);
+            mainPanel.add(lst, BorderLayout.CENTER);
+            lst.setBorder(BorderFactory.createEmptyBorder(7,7,7,7));
+            TargetManager.getInstance().addTargetListener(this);
+        }
+
+        /**
+         * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetAdded(TargetEvent e) {
+            setTarget(e.getNewTargets());
+        }
+
+        /**
+         * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetRemoved(TargetEvent e) {
+            setTarget(e.getNewTargets());    
+        }
+
+        /**
+         * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetSet(TargetEvent e) {
+            setTarget(e.getNewTargets());
+        }
+        
+        private void setTarget(Object[] t) {
+            Collection c = new ArrayList(Arrays.asList(t));
+            setTarget(c);
+        }
+
+        private void setTarget(Collection c) {
+            lm.clear();
+            Iterator i = c.iterator();
+            while (i.hasNext()) {
+                lm.addElement(i.next());
+            }
+        }
+        
 }

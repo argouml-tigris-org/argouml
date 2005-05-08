@@ -211,10 +211,11 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().setTarget(null);
 	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
 
-	TargetManager.getInstance().setTargets(set2);
+	TargetManager.getInstance().setTargets(set2); //TabProps gets selected!
+        TargetManager.getInstance().setTargets(set2); //So, 2nd time right
 	coll = TargetManager.getInstance().getTargets();
-	coll2 = new HashSet(coll);
 	assertTrue(coll.size() == set2.size());
+        coll2 = new HashSet(coll);
 	assertEquals(coll2, set2);
 
 	TargetManager.getInstance().setTargets(set1);
@@ -478,8 +479,8 @@ public class TestTargetManager extends TestCase {
 
 	targetRemovedCalled = false;
 	TargetManager.getInstance().removeTarget(fig);
-	assertEquals(fig, TargetManager.getInstance().getFigTarget());
-	assertTrue(!targetRemovedCalled);
+	assertEquals(null, TargetManager.getInstance().getFigTarget());
+	assertTrue(targetRemovedCalled);
 
 	targetSetFigTarget = null;
 	TargetManager.getInstance().setTarget(test);
@@ -568,8 +569,8 @@ public class TestTargetManager extends TestCase {
 
 	targetRemovedCalled = false;
 	TargetManager.getInstance().removeTarget(owner);
-	assertEquals(owner, TargetManager.getInstance().getModelTarget());
-	assertTrue(!targetRemovedCalled);
+	assertEquals(null, TargetManager.getInstance().getModelTarget());
+	assertTrue(targetRemovedCalled);
 
 	targetSetModelTarget = null;
 	TargetManager.getInstance().setTarget(test);

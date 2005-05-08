@@ -257,7 +257,7 @@ public class TabDiagram
     public void selectionChanged(GraphSelectionEvent gse) {
         if (!updatingSelection) {
             updatingSelection = true;
-            Vector sels = gse.getSelections();
+            Vector sels = gse.getSelections(); // the new selection
             ActionCut.getInstance().setEnabled(sels != null && !sels.isEmpty());
             ActionCopy.getInstance()
                     .setEnabled(sels != null && !sels.isEmpty());
@@ -265,32 +265,26 @@ public class TabDiagram
              * ActionPaste.getInstance().setEnabled( Globals.clipBoard
              * != null && !Globals.clipBoard.isEmpty());
              */
-            Collection currentSelection =
+            Collection currentSelection = // the old selection
                 TargetManager.getInstance().getTargets();
-            if (currentSelection.size() == 0) {
-                TargetManager.getInstance().setTargets(sels);
-            } else {
-                if (currentSelection.size() < sels.size()) {
-                    // there are targets added
-                    List addedTargets = new ArrayList(sels);
-                    addedTargets.removeAll(currentSelection);
-                    Iterator it = addedTargets.iterator();
-                    while (it.hasNext()) {
-                        TargetManager.getInstance().addTarget(it.next());
-                    }
+
+            List removedTargets = new ArrayList(currentSelection);
+            Iterator i = sels.iterator();
+            while(i.hasNext()) {
+                Object o = i.next();
+                o = TargetManager.getInstance().getOwner(o);
+                if (currentSelection.contains(o)) {
+                    removedTargets.remove(o); // remains selected
                 } else {
-                    if (currentSelection.size() > sels.size()) {
-                        // there are targets removed
-                        List removedTargets = new ArrayList(currentSelection);
-                        removedTargets.removeAll(sels);
-                        Iterator it = removedTargets.iterator();
-                        while (it.hasNext()) {
-                            TargetManager.getInstance().removeTarget(it.next());
-                        }
-                    } else {
-                        TargetManager.getInstance().setTargets(sels);
-                    }
+                    // add to selection
+                    TargetManager.getInstance().addTarget(o); 
                 }
+            }
+            i = removedTargets.iterator();
+            while (i.hasNext()) {
+                Object o = i.next();
+                // remove from selection
+                TargetManager.getInstance().removeTarget(o);
             }
             updatingSelection = false;
         }
@@ -385,7 +379,7 @@ public class TabDiagram
 		    theTarget = manager.presentationFor(targets[i]);
                 }
 
-                if (theTarget != null) {
+                if (theTarget != null && !figList.contains(theTarget)) {
                     figList.add(theTarget);
                 }
             }

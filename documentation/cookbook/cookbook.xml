@@ -1646,9 +1646,9 @@ The GUI framework provides the following options
 	    <para>The tool-bar with actions</para>
 	  </listitem>
 	  <listitem>
-	    <para>Explorer (was called the Navigator)</para>
-	    <para>
-Contains trees with configurable perspectives.
+	    <para>The Explorer (formerly called Navigator)</para>
+	    <para>Located in <classname>org.argouml.ui.explorer</classname>.
+Contains the tree structure with configurable perspectives.
 </para>
 	  </listitem>
 	  <listitem>
@@ -1657,6 +1657,19 @@ Contains trees with configurable perspectives.
 Could contain several different panes.
 </para>
 	  </listitem>
+	  <listitem>
+	    <para>The TargetManager</para>
+	    <para>
+          Located in <classname>org.argouml.ui.targetmanager</classname>.
+        </para>
+	    <para>
+          Thanks to the architecture of ArgoUML of Modelelements and Figs, 
+          one rule has been decided upon (by mvw@tigris.org): <br>
+          <emphasis>The list of targets shall not contain 
+          any Fig that has an owner<emphasis>. 
+          Instead, the owner is enlisted.
+        </para>
+   	  </listitem>
 	</itemizedlist>
 </para>
     </sect1>

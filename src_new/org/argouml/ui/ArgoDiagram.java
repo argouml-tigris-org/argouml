@@ -136,15 +136,7 @@ public class ArgoDiagram extends Diagram {
 		|| Model.getFacade().isAAttribute(obj)) {
 
                 // get all the classes from the diagram
-                Iterator it = getNodes(null).iterator();
-                while (it.hasNext()) {
-                    Object o = it.next();
-                    if (Model.getFacade().isAClassifier(o)) {
-                        if (Model.getFacade().getFeatures(o).contains(obj)) {
-                            return presentationFor(o);
-                        }
-                    }
-                }
+                return presentationFor(Model.getFacade().getOwner(obj));
             }
         }
         return fig;
