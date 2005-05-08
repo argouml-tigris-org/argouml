@@ -1664,7 +1664,7 @@ Could contain several different panes.
         </para>
 	    <para>
           Thanks to the architecture of ArgoUML of Modelelements and Figs, 
-          one rule has been decided upon (by mvw@tigris.org): <br>
+          one rule has been decided upon (by mvw@tigris.org):
           <emphasis>The list of targets shall not contain 
           any Fig that has an owner</emphasis>. 
           Instead, the owner is enlisted.
