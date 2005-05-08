@@ -957,6 +957,8 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param obj the object to be thrown away
      */
     protected void trashInternal(Object obj) {
+        if (Model.getFacade().isAModel(obj)) return; //Can not delete the model
+        
         boolean needSave = false;
         if (obj != null) {
             TargetManager.getInstance().removeTarget(obj);

@@ -472,7 +472,9 @@ public class ExplorerTree
                             getPathForRow(j).getLastPathComponent())
                             .getUserObject();
                         if (rowItem == target) {
+                            updatingSelectionViaTreeSelection = true;
                             addSelectionRow(j);
+                            updatingSelectionViaTreeSelection = false;
                         }
                     }
                 }
@@ -505,7 +507,9 @@ public class ExplorerTree
                             getPathForRow(j).getLastPathComponent())
                                 .getUserObject();
                         if (rowItem == target) {
+                            updatingSelectionViaTreeSelection = true;
                             removeSelectionRow(j);
+                            updatingSelectionViaTreeSelection = false;
                         }
                     }
                 }
