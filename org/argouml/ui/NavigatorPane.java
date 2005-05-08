@@ -85,11 +85,12 @@ public class NavigatorPane
     /**
      * Allow setting of the navigator pane instance.
      * Currently this is only applicable for unit tests that sets it to
-     * <tt>null</tt>.
+     * <tt>null</tt>.<p>
+     * 
+     * TODO: To be deprecated when there is a replacement - this is 
+     * a temporary hack until the model is cleaned up
      *
      * @param pane A new NavigatorPane or <tt>null</tt>.
-     * @deprecated without replacement - this is a temporary hack
-     * until the model is cleaned up
      */
     public static void setInstance(NavigatorPane pane) {
 	theInstance = pane;
