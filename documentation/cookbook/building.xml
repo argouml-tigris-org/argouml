@@ -1822,6 +1822,26 @@ a svn project.
     </note>
 
     <para>
+The artefacts in play here are
+<filename>argouml/src_new/build.xml</filename>,
+<filename>argouml/tools/bin/build-release.sh</filename>, and
+other <filename>build.xml</filename> files.
+The plan for the future is that the <filename>build.xml</filename>
+files will not contain any rules on how to package things.
+
+That will be taken care of by the
+<filename>build-release.sh</filename> script.
+
+The <filename>build.xml</filename> will have rules that places the
+complete runnable release in
+<filename class="directory">argouml/build</filename>
+and the
+<filename>build-release.sh</filename> script takes it from there.
+</para>
+
+
+
+    <para>
 Prerequisites (what you need to be able to do this):
 <itemizedlist>
 	<listitem>
