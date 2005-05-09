@@ -64,7 +64,7 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
             // in PGML.
             // PGMLStackParser parser =
             //     new PGMLStackParser(project.getUUIDRefs());
-            PGMLParser parser = new PGMLParser(project.getUUIDRefs());
+            PGMLStackParser parser = new PGMLStackParser(project.getUUIDRefs());
             Diagram d = parser.readDiagram(inputStream, false);
             inputStream.close();
             project.addMember(d);
