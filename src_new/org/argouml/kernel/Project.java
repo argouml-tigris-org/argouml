@@ -211,7 +211,7 @@ public class Project implements java.io.Serializable, TargetListener {
         addMember(new UMLUseCaseDiagram(model));
         addMember(new ProjectMemberTodoList("", this));
         ProjectManager.getManager().setNeedsSave(false);
-        setActiveDiagram((ArgoDiagram) diagrams.get(0));
+        activeDiagram = (ArgoDiagram) diagrams.get(0);
     }
 
     /**
@@ -432,6 +432,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
         removeDiagram(d);
         members.remove(d);
+        d.remove();
 
         /*
          * Issue 2909: if there is no diagram left, then let's add a default
@@ -441,8 +442,18 @@ public class Project implements java.io.Serializable, TargetListener {
             Object treeRoot = Model.getModelManagementFactory().getRootModel();
             ArgoDiagram defaultDiagram = new UMLClassDiagram(treeRoot);
             addMember(defaultDiagram);
-            setActiveDiagram(defaultDiagram);
+            activeDiagram = defaultDiagram;
             TargetManager.getInstance().setTarget(defaultDiagram);
+        } else {
+            /* If the current diagram has just been deleted, 
+             * we better select another one to be displayed. 
+             */
+            if (activeDiagram == d) {
+                ArgoDiagram defaultDiagram 
+                    = (ArgoDiagram) diagrams.get(0);
+                activeDiagram = defaultDiagram;
+                TargetManager.getInstance().setTarget(defaultDiagram);
+            }
         }
     }
 
@@ -1267,7 +1278,7 @@ public class Project implements java.io.Serializable, TargetListener {
         setCurrentNamespace(theCurrentNamespace);
 
         if (target instanceof ArgoDiagram) {
-            setActiveDiagram((ArgoDiagram) target);
+            activeDiagram = (ArgoDiagram) target;
         }
     }
 
