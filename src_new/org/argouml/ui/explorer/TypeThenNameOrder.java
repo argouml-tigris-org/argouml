@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.argouml.i18n.Translator;
 
 /**
  * Sorts by user object type,
@@ -106,6 +107,6 @@ public class TypeThenNameOrder extends NameOrder {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return "Order By Type, Name";
+        return Translator.localize("combobox.order-by-type-name");
     }
 }
