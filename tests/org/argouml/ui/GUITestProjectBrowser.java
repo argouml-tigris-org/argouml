@@ -26,8 +26,10 @@ package org.argouml.ui;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 
 /**
@@ -119,25 +121,27 @@ public class GUITestProjectBrowser extends TestCase {
      * The method has been deprecated.
      */
     public void testSetTarget() {
+        Project p = ProjectManager.getManager().getCurrentProject();
 	Object package1 =
 	    Model.getModelManagementFactory().buildPackage("test1", null);
 	Object package2 =
 	    Model.getModelManagementFactory().buildPackage("test2", null);
 	UMLClassDiagram diagram1 = new UMLClassDiagram(package1);
 	UMLClassDiagram diagram2 = new UMLClassDiagram(package2);
+        p.addMember(diagram1);
+        p.addMember(diagram2);
 
-        ProjectBrowser pb = ProjectBrowser.getInstance();
+        TargetManager tm = TargetManager.getInstance();
 
-	pb.setTarget(diagram1);
-	assertEquals("Diagram1 should be the target", diagram1, pb.getTarget());
+        tm.setTarget(diagram1);
+	assertEquals("Diagram1 should be the target", diagram1, tm.getTarget());
 
-	pb.setTarget(diagram2);
-	assertEquals("Diagram2 should be the target", diagram2, pb.getTarget());
+        TargetManager.getInstance().setTarget(diagram2);
+	assertEquals("Diagram2 should be the target", diagram2, tm.getTarget());
 
-	ProjectManager.getManager().getCurrentProject().moveToTrash(package2);
-	ProjectManager pm = ProjectManager.getManager();
+	p.moveToTrash(package2);
 	assertEquals("The target is not reset to the first diagram",
-            pm.getCurrentProject().getDiagrams().get(0), pb.getTarget());
+            p.getDiagrams().get(0), tm.getTarget());
     }
 
     /**
