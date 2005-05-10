@@ -67,7 +67,7 @@ public final class ActionAddExtensionPoint extends UMLAction {
      * singleton. Make use of the access funtion.<p>
      */
     public ActionAddExtensionPoint() {
-        super("New Extension Point", true, HAS_ICON);
+        super("button.new-extension-point", true, HAS_ICON);
     }
 
 
