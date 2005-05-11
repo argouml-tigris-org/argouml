@@ -31,8 +31,9 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.ui.UMLAction;
 
 /**
- * Action to select the editor pane and shows it.
+ * Action to select the editor pane and shows it.<p>
  *
+ * TODO: This class is never used. Do we have an application for it?
  */
 public class ActionGoToEdit extends UMLAction {
 
