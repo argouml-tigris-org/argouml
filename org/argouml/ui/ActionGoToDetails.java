@@ -34,7 +34,9 @@ import org.argouml.uml.ui.TabModelTarget;
 import org.argouml.uml.ui.UMLAction;
 
 /**
- * Action to display a tab in the DetailsPane by name, eg "Properties".
+ * Action to display a tab in the DetailsPane by name, eg "Properties".<p>
+ * 
+ * TODO: This class is never used. Do we have an application for it?
  */
 public class ActionGoToDetails extends UMLAction {
 
