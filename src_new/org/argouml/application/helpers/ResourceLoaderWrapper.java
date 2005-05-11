@@ -24,13 +24,16 @@
 
 package org.argouml.application.helpers;
 
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
 import org.argouml.model.DataTypesHelper;
 import org.argouml.model.Model;
 import org.argouml.uml.util.namespace.StringNamespace;
@@ -52,8 +55,6 @@ public final class ResourceLoaderWrapper {
     private static final Logger LOG =
         Logger.getLogger(ResourceLoaderWrapper.class);
 
-    private static ImageIcon actionStateIcon;
-    private static ImageIcon stateIcon;
     private static ImageIcon initialStateIcon;
     private static ImageIcon deepIcon;
     private static ImageIcon shallowIcon;
@@ -61,14 +62,9 @@ public final class ResourceLoaderWrapper {
     private static ImageIcon joinIcon;
     private static ImageIcon branchIcon;
     private static ImageIcon junctionIcon;
-    private static ImageIcon finalStateIcon;
     private static ImageIcon realizeIcon;
     private static ImageIcon signalIcon;
     private static ImageIcon commentIcon;
-    private static ImageIcon callStateIcon;
-    private static ImageIcon objectFlowStateIcon;
-    private static ImageIcon subactivityStateIcon;
-
 
     private Hashtable iconCache = new Hashtable();
 
@@ -144,8 +140,6 @@ public final class ResourceLoaderWrapper {
 	ResourceLoader.addResourceLocation("/org/argouml/Images");
 	ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
 
-	actionStateIcon = ResourceLoader.lookupIconResource("ActionState");
-        stateIcon = ResourceLoader.lookupIconResource("State");
         initialStateIcon = ResourceLoader.lookupIconResource("Initial");
         deepIcon = ResourceLoader.lookupIconResource("DeepHistory");
         shallowIcon = ResourceLoader.lookupIconResource("ShallowHistory");
@@ -153,50 +147,9 @@ public final class ResourceLoaderWrapper {
         joinIcon = ResourceLoader.lookupIconResource("Join");
         branchIcon = ResourceLoader.lookupIconResource("Choice");
         junctionIcon = ResourceLoader.lookupIconResource("Junction");
-        finalStateIcon = ResourceLoader.lookupIconResource("FinalState");
         realizeIcon = ResourceLoader.lookupIconResource("Realization");
         signalIcon = ResourceLoader.lookupIconResource("SignalSending");
         commentIcon = ResourceLoader.lookupIconResource("Note");
-        callStateIcon = ResourceLoader.lookupIconResource("CallState");
-        objectFlowStateIcon =
-            ResourceLoader.lookupIconResource("ObjectFlowState");
-        subactivityStateIcon =
-            ResourceLoader.lookupIconResource("SubactivityState");
-    }
-
-    /**
-     * @see ResourceLoader#addResourceExtension(String)
-     */
-    public static void addResourceExtension(String extension) {
-	ResourceLoader.addResourceExtension(extension);
-    }
-
-    /**
-     * @see ResourceLoader#addResourceLocation(String)
-     */
-    public static void addResourceLocation(String location) {
-	ResourceLoader.addResourceLocation(location);
-    }
-
-    /**
-     * @see ResourceLoader#containsExtension(String)
-     */
-    public static boolean containsExtension(String extension) {
-	return ResourceLoader.containsExtension(extension);
-    }
-
-    /**
-     * @see ResourceLoader#containsLocation(String)
-     */
-    public static boolean containsLocation(String location) {
-	return ResourceLoader.containsLocation(location);
-    }
-
-    /**
-     * @see ResourceLoader#isInCache(String)
-     */
-    public static boolean isInCache(String resource) {
-	return ResourceLoader.isInCache(resource);
     }
 
     /**
@@ -207,15 +160,6 @@ public final class ResourceLoaderWrapper {
     }
 
     /**
-     * @see ResourceLoader#lookupIconResource(String, ClassLoader)
-     */
-    public static ImageIcon lookupIconResource(
-					       String resource,
-					       ClassLoader loader) {
-	return ResourceLoader.lookupIconResource(resource, loader);
-    }
-
-    /**
      * @see ResourceLoader#lookupIconResource(String, String)
      */
     public static ImageIcon lookupIconResource(String resource, String desc) {
@@ -223,27 +167,14 @@ public final class ResourceLoaderWrapper {
     }
 
     /**
-     * @see ResourceLoader#lookupIconResource(String, String, ClassLoader)
+     * Look up the Icon for a key.
+     *
+     * @param key The key to find.
+     * @return The found Icon.
      */
-    public static ImageIcon lookupIconResource(
-					       String resource,
-					       String desc,
-					       ClassLoader loader) {
-	return ResourceLoader.lookupIconResource(resource, desc, loader);
-    }
-
-    /**
-     * @see ResourceLoader#removeResourceExtension(String)
-     */
-    public static void removeResourceExtension(String extension) {
-	ResourceLoader.removeResourceExtension(extension);
-    }
-
-    /**
-     * @see ResourceLoader#removeResourceLocation(String)
-     */
-    public static void removeResourceLocation(String location) {
-	ResourceLoader.removeResourceExtension(location);
+    public static Icon lookupIcon(String key) {
+        return lookupIconResource(getImageBinding(key),
+                		  Translator.localize(key));
     }
 
     /**
@@ -338,5 +269,72 @@ public final class ResourceLoaderWrapper {
 
         }
 	return icon;
+    }
+
+    /**
+     * Map to convert tokens into file names.
+     */
+    private static Map images = new HashMap();
+    static {
+        images.put("action.about-argouml", "AboutArgoUML");
+        images.put("action.activity-diagram", "Activity Diagram");
+        images.put("action.class-diagram", "Class Diagram");
+        images.put("action.collaboration-diagram", "Collaboration Diagram");
+        images.put("action.deployment-diagram", "Deployment Diagram");
+        images.put("action.sequence-diagram", "Sequence Diagram");
+        images.put("action.state-diagram", "State Diagram");
+        images.put("action.usecase-diagram", "Use Case Diagram");
+    }
+
+    static {
+        images.put("action.add-concurrent-region", "Add Concurrent Region");
+        images.put("action.add-message", "Add Message");
+        images.put("action.configure-perspectives", "ConfigurePerspectives");
+        images.put("action.copy", "Copy");
+        images.put("action.cut", "Cut");
+        images.put("action.delete-concurrent-region", "DeleteConcurrentRegion");
+        images.put("action.delete-from-model", "DeleteFromModel");
+        images.put("action.find", "Find...");
+        images.put("action.import-sources", "Import Sources...");
+        images.put("action.more-info", "More Info...");
+        images.put("action.navigate-back", "Navigate Back");
+        images.put("action.navigate-forward", "Navigate Forward");
+        images.put("action.new", "New");
+        images.put("action.new-todo-item", "New To Do Item...");
+        images.put("action.open-project", "Open Project...");
+        images.put("action.page-setup", "Page Setup...");
+        images.put("action.paste", "Paste");
+        images.put("action.print", "Print...");
+        images.put("action.remove-from-diagram", "Remove From Diagram");
+        images.put("action.resolve-item", "Resolve Item...");
+        images.put("action.save-project", "Save Project");
+        images.put("action.save-project-as", "Save Project As...");
+        images.put("action.send-email-to-expert", "Send Email To Expert...");
+        images.put("action.settings", "Settings...");
+        images.put("action.snooze-critic", "Snooze Critic");
+        images.put("action.system-information", "System Information");
+    }
+
+    static {
+        images.put("button.new-attribute", "New Attribute");
+        images.put("button.new-extension-point", "New Extension Point");
+        images.put("button.new-inner-class", "Inner Class");
+        images.put("button.new-operation", "New Operation");
+        images.put("button.new-parameter", "New Parameter");
+        images.put("button.new-reception", "New Reception");
+    }
+
+    /**
+     * Convert the key to the image file name.
+     *
+     * @param name the new i18n key
+     * @return the file name (base part only).
+     */
+    private static String getImageBinding(String name) {
+        String found = (String) images.get(name);
+        if (found == null) {
+            return name;
+        }
+        return found;
     }
 }

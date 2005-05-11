@@ -58,9 +58,8 @@ public class ActionNew extends ActionFileOperations {
      * The constructor.
      */
     protected ActionNew() {
-        super(Translator.localize("action.new"), ResourceLoaderWrapper
-                .lookupIconResource(Translator.getImageBinding("New"),
-                        Translator.localize("New")));
+        super(Translator.localize("action.new"),
+                ResourceLoaderWrapper.lookupIcon("action.new"));
     }
 
     ////////////////////////////////////////////////////////////////
@@ -72,7 +71,9 @@ public class ActionNew extends ActionFileOperations {
     public void actionPerformed(ActionEvent e) {
         Project p = ProjectManager.getManager().getCurrentProject();
 
-        if (!askConfirmationAndSave()) return;
+        if (!askConfirmationAndSave()) {
+            return;
+        }
 
         // TODO: yuk! Why is this needed? In fact how can anyone select
         // the new action if there is a dialog?

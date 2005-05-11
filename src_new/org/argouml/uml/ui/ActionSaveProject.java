@@ -38,10 +38,11 @@ import org.argouml.kernel.ProjectManager;
  * Action that saves the project.
  *
  * @see ActionOpenProject
- * @stereotype singleton
  */
 public class ActionSaveProject extends AbstractActionSaveProject {
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(ActionSaveProject.class);
 
     ////////////////////////////////////////////////////////////////
@@ -66,9 +67,8 @@ public class ActionSaveProject extends AbstractActionSaveProject {
      * The constructor.
      */
     protected ActionSaveProject() {
-        super(Translator.localize("action.save-project"), ResourceLoaderWrapper
-                .lookupIconResource(Translator.getImageBinding("SaveProject"),
-                        Translator.localize("SaveProject")));
+        super(Translator.localize("action.save-project"),
+                ResourceLoaderWrapper.lookupIcon("action.save-project"));
     }
 
     /**
@@ -79,7 +79,7 @@ public class ActionSaveProject extends AbstractActionSaveProject {
     protected ActionSaveProject(String name, Icon icon) {
         super(name, icon);
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

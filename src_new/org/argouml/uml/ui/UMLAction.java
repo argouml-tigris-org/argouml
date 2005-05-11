@@ -40,7 +40,9 @@ import org.argouml.ui.Actions;
  *
  */
 public class UMLAction extends AbstractAction {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(UMLAction.class);
 
     /**
@@ -53,6 +55,9 @@ public class UMLAction extends AbstractAction {
      */
     public static final boolean NO_ICON = false;
 
+    /**
+     * The key for the icon name.
+     */
     private String iconName;
 
     /**
@@ -87,8 +92,9 @@ public class UMLAction extends AbstractAction {
 	    iconName = name;
         }
         putValue(Action.SHORT_DESCRIPTION, Translator.localize(name));
-        if (global)
+        if (global) {
             Actions.addAction(this);
+        }
         // Jaap B. 17-6-2003 added next line to make sure every action
         // is in the right enable condition on creation.
         setEnabled(shouldBeEnabled());
@@ -119,16 +125,13 @@ public class UMLAction extends AbstractAction {
      */
     public Object getValue(String key) {
         if (iconName != null && Action.SMALL_ICON.equals(key)) {
-            Icon icon = ResourceLoaderWrapper
-                .lookupIconResource(Translator.getImageBinding(iconName),
-                        Translator.localize(iconName));
+            Icon icon = ResourceLoaderWrapper.lookupIcon(iconName);
 
             if (icon != null) {
                 putValue(Action.SMALL_ICON, icon);
             } else {
                 LOG.warn("Requested icon for: " + getClass()
                     + ". \nIcon not found: " + iconName
-                    + "\nImagebinding:" + Translator.getImageBinding(iconName)
                     + "\nLocalization:" + Translator.localize(iconName));
             }
             iconName = null;
@@ -176,21 +179,6 @@ public class UMLAction extends AbstractAction {
      */
     public boolean shouldBeEnabled() {
         return true;
-    }
-
-    /**
-     * @param s the string to be stripped from junk
-     * @return the cleansed string
-     */
-    private static String stripJunk(String s) {
-        String res = "";
-        int len = s.length();
-        for (int i = 0; i < len; i++) {
-            char c = s.charAt(i);
-            if (Character.isJavaIdentifierPart(c))
-                res += c;
-        }
-        return res;
     }
 
     /**

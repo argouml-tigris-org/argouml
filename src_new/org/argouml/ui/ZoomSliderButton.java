@@ -101,9 +101,7 @@ public class ZoomSliderButton extends PopupButton {
     public ZoomSliderButton() {
         super();
 
-        Icon icon = ResourceLoaderWrapper.
-            lookupIconResource(Translator.getImageBinding(RESOURCE_NAME),
-			       Translator.localize(RESOURCE_NAME));
+        Icon icon = ResourceLoaderWrapper.lookupIcon(RESOURCE_NAME);
 
         setIcon(icon);
         setToolTipText(Translator.localize("button.zoom"));
@@ -113,11 +111,12 @@ public class ZoomSliderButton extends PopupButton {
      * Creates the slider popup component.
      */
     private void createPopupComponent() {
-        slider = new JSlider(
-            JSlider.VERTICAL,
-            MINIMUM_ZOOM,
-            MAXIMUM_ZOOM,
-            MINIMUM_ZOOM);
+        slider =
+            new JSlider(
+                    JSlider.VERTICAL,
+                    MINIMUM_ZOOM,
+                    MAXIMUM_ZOOM,
+                    MINIMUM_ZOOM);
         slider.setInverted(true);
         slider.setMajorTickSpacing(MAXIMUM_ZOOM / 10);
         slider.setMinorTickSpacing(MAXIMUM_ZOOM / 20);
@@ -140,8 +139,9 @@ public class ZoomSliderButton extends PopupButton {
             }
         });
 
-        int labelWidth = slider.getFontMetrics(LABEL_FONT).stringWidth(
-            String.valueOf(MAXIMUM_ZOOM)) + 6;
+        int labelWidth =
+            slider.getFontMetrics(LABEL_FONT).stringWidth(
+                    String.valueOf(MAXIMUM_ZOOM)) + 6;
 
         slider.setPreferredSize(new Dimension(
             sliderBaseWidth + labelWidth, SLIDER_HEIGHT));
@@ -163,8 +163,9 @@ public class ZoomSliderButton extends PopupButton {
             }
         });
 
-        JPanel currentValuePanel = new JPanel(new FlowLayout(
-            FlowLayout.CENTER, 0, 0));
+        JPanel currentValuePanel =
+            new JPanel(new FlowLayout(
+                    FlowLayout.CENTER, 0, 0));
         currentValuePanel.add(currentValue);
 
         JPanel zoomPanel = new JPanel(new BorderLayout(0, 0));
@@ -227,8 +228,7 @@ public class ZoomSliderButton extends PopupButton {
                 throw new NumberFormatException();
             }
             slider.setValue(newZoom);
-        }
-        catch (NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
             updateCurrentValueLabel();
         }
     }

@@ -44,7 +44,8 @@ import org.argouml.i18n.Translator;
 import org.tigris.gef.base.CmdCut;
 import org.tigris.gef.base.Globals;
 
-/** @stereotype singleton
+/**
+ * The Cut Action.
  */
 public class ActionCut extends AbstractAction implements CaretListener {
 
@@ -55,13 +56,12 @@ public class ActionCut extends AbstractAction implements CaretListener {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    private ActionCut() {
+    /**
+     * Constructor.
+     */
+    public ActionCut() {
         super(Translator.localize(LOCALIZE_KEY));
-        Icon icon =
-            ResourceLoaderWrapper
-	        .lookupIconResource(
-				    Translator.getImageBinding(LOCALIZE_KEY),
-				    Translator.localize(LOCALIZE_KEY));
+        Icon icon = ResourceLoaderWrapper.lookupIcon(LOCALIZE_KEY);
         if (icon != null) {
             putValue(Action.SMALL_ICON, icon);
 	}
@@ -80,7 +80,7 @@ public class ActionCut extends AbstractAction implements CaretListener {
     private JTextComponent textSource;
 
     /**
-     * Cuts some text or a fig
+     * Cuts some text or a fig.
      *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -113,8 +113,9 @@ public class ActionCut extends AbstractAction implements CaretListener {
                 Globals.curEditor().getSelectionManager().selections();
             if (figSelection == null || figSelection.isEmpty()) {
                 setEnabled(false);
-            } else
+            } else {
                 setEnabled(true);
+            }
             textSource = null;
         }
 

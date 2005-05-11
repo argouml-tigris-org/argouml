@@ -57,9 +57,14 @@ public class ActionPaste
 
     ////////////////////////////////////////////////////////////////
     // static variables
-
+    /**
+     * The singelton.
+     */
     private static ActionPaste instance = new ActionPaste();
 
+    /**
+     * The key.
+     */
     private static final String LOCALIZE_KEY = "action.paste";
 
     /**
@@ -69,15 +74,12 @@ public class ActionPaste
      * this action.
      *
      */
-    private ActionPaste() {
+    public ActionPaste() {
         super(Translator.localize(LOCALIZE_KEY));
-        Icon icon =
-            ResourceLoaderWrapper
-	        .lookupIconResource(
-				    Translator.getImageBinding(LOCALIZE_KEY),
-				    Translator.localize(LOCALIZE_KEY));
-        if (icon != null)
+        Icon icon = ResourceLoaderWrapper.lookupIcon(LOCALIZE_KEY);
+        if (icon != null) {
             putValue(Action.SMALL_ICON, icon);
+        }
         putValue(
 		 Action.SHORT_DESCRIPTION,
 		 Translator.localize(LOCALIZE_KEY) + " ");
@@ -96,14 +98,9 @@ public class ActionPaste
     }
 
     /**
-     * The source textcomponent where the caret is positioned
+     * The source textcomponent where the caret is positioned.
      */
     private JTextComponent textSource;
-
-    /**
-     * Flag to indicate that the mouse is hovering over the JGraph.
-     */
-    private boolean inJGraph;
 
     /**
      * Copies some text or a fig.
@@ -123,10 +120,12 @@ public class ActionPaste
     }
 
 
-
+    /**
+     * Check if there is a selection on the clipboard.
+     *
+     * @return <code>true</code> if there is.
+     */
     private boolean isSystemClipBoardEmpty() {
-        //      if there is a selection on the clipboard
-	boolean hasContents = false;
 	try {
 	    Object text =
 		Toolkit.getDefaultToolkit().getSystemClipboard()
@@ -142,7 +141,9 @@ public class ActionPaste
      * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
      */
     public void focusLost(FocusEvent e) {
-        if (e.getSource() == textSource) textSource = null;
+        if (e.getSource() == textSource) {
+            textSource = null;
+        }
     }
 
     /**
