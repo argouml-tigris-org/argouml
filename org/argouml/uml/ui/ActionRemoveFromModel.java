@@ -37,8 +37,8 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -61,7 +61,7 @@ public class ActionRemoveFromModel extends UMLAction {
      * Constructor.
      */
     public ActionRemoveFromModel() {
-        super(Translator.localize("action.delete-from-model"), true, HAS_ICON);
+        super("action.delete-from-model", true, HAS_ICON);
     }
 
 
@@ -139,8 +139,7 @@ public class ActionRemoveFromModel extends UMLAction {
                 if (Model.getFacade().isAConcurrentRegion(target)) {
                     ActionDeleteConcurrentRegion.getSingleton()
                         .actionPerformed(ae);
-                }
-                else {
+                } else {
                     p.moveToTrash(target);
                 }
             }

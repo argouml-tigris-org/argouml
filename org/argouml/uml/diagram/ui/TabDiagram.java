@@ -259,6 +259,9 @@ public class TabDiagram
             updatingSelection = true;
             Vector sels = gse.getSelections(); // the new selection
             ActionCut.getInstance().setEnabled(sels != null && !sels.isEmpty());
+
+            // TODO: If ActionCopy is no longer a singleton, how shall 
+            //       this work? 
             ActionCopy.getInstance()
                     .setEnabled(sels != null && !sels.isEmpty());
             /*

@@ -31,14 +31,17 @@ import javax.swing.AbstractAction;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 
-/** Page setup for printing.
+/**
+ * Page setup for printing.
  */
 class ActionPageSetup extends AbstractAction {
 
+    /**
+     * Constructor.
+     */
     public ActionPageSetup() {
-        super(Translator.localize("action.page-setup"), ResourceLoaderWrapper
-                .lookupIconResource(Translator.getImageBinding("PageSetup"),
-                        Translator.localize("action.page-setup")));
+        super(Translator.localize("action.page-setup"),
+                ResourceLoaderWrapper.lookupIcon("action.page-setup"));
     }
 
     /**

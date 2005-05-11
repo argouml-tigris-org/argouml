@@ -24,13 +24,9 @@
 
 package org.argouml.i18n;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.Locale;
-import java.util.Properties;
 
-import org.apache.log4j.Logger;
 import org.tigris.gef.util.Localizer;
 
 /**
@@ -40,21 +36,6 @@ import org.tigris.gef.util.Localizer;
  * @author Jean-Hugues de Raigniac
  */
 public final class Translator {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger.getLogger(Translator.class);
-
-    /**
-     * Binding between new key names and old ones needed by gef.
-     */
-    private static Properties images;
-
-    /**
-     * Property file containing the bindings.
-     */
-    private static String propertiesFile = "images.properties";
-
     /**
      * This class should only be used in a static constant so make
      * the constructor private. See issue 3111.
@@ -103,52 +84,6 @@ public final class Translator {
      */
     public static void setLocale(Locale locale) {
         org.workingfrog.i18n.util.Translator.setLocale(locale);
-    }
-
-    /**
-     * Loads image bindings from a File.
-     *
-     * @param file the properties file
-     * @return the properties in file
-     */
-    private static Properties loadImageBindings(String file) {
-
-        InputStream inputStream = null;
-        Properties properties = new Properties();
-
-        try {
-            inputStream = Translator.class.getResourceAsStream(propertiesFile);
-            properties.load(inputStream);
-            inputStream.close();
-        } catch (IOException ex) {
-            LOG.fatal("Unable to load properties from file: " + file, ex);
-            System.exit(1);
-        }
-
-        return properties;
-    }
-
-    /**
-     * Provide a "gef compliant" image file name.
-     *
-     * @param name the new i18n key
-     * @return the old i18n key
-     */
-    public static String getImageBinding(String name) {
-
-        String binding = null;
-
-        if (images == null) {
-            images = loadImageBindings(propertiesFile);
-        }
-
-        binding = images.getProperty(name);
-
-        if (binding == null) {
-            return name;
-        } else {
-            return binding;
-        }
     }
 
     /**

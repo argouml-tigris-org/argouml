@@ -47,7 +47,9 @@ import org.argouml.ui.ProjectBrowser;
  */
 public class ActionSaveProjectAs extends ActionSaveProject {
 
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(ActionSaveProjectAs.class);
 
@@ -65,9 +67,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
      */
     protected ActionSaveProjectAs() {
         super(Translator.localize("action.save-project-as"),
-                ResourceLoaderWrapper.lookupIconResource(
-                        Translator.getImageBinding("SaveProjectAs"),
-                        Translator.localize("SaveProjectAs")));
+                ResourceLoaderWrapper.lookupIcon("action.save-project-as"));
     }
 
     ////////////////////////////////////////////////////////////////
@@ -86,8 +86,9 @@ public class ActionSaveProjectAs extends ActionSaveProject {
      */
     public boolean trySave(boolean overwrite) {
         File f = getNewFile();
-        if (f == null)
+        if (f == null) {
             return false;
+        }
         boolean success = trySave(overwrite, f);
         if (success) {
             ProjectBrowser.getInstance().setTitle(

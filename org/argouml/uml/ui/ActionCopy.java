@@ -42,7 +42,8 @@ import org.argouml.i18n.Translator;
 import org.tigris.gef.base.CmdCopy;
 import org.tigris.gef.base.Globals;
 
-/** @stereotype singleton
+/**
+ * The Copy Action.
  */
 public class ActionCopy extends AbstractAction implements CaretListener {
 
@@ -55,14 +56,12 @@ public class ActionCopy extends AbstractAction implements CaretListener {
 
     ////////////////////////////////////////////////////////////////
     // constructors
-
-    private ActionCopy() {
+    /**
+     * Constructor.
+     */
+    public ActionCopy() {
         super(Translator.localize(LOCALIZE_KEY));
-        Icon icon =
-            ResourceLoaderWrapper
-	        .lookupIconResource(
-				    Translator.getImageBinding(LOCALIZE_KEY),
-				    Translator.localize(LOCALIZE_KEY));
+        Icon icon = ResourceLoaderWrapper.lookupIcon(LOCALIZE_KEY);
         if (icon != null) {
             putValue(Action.SMALL_ICON, icon);
 	}
@@ -81,7 +80,7 @@ public class ActionCopy extends AbstractAction implements CaretListener {
     private JTextComponent textSource;
 
     /**
-     * Copies some text or a fig
+     * Copies some text or a fig.
      *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -117,8 +116,6 @@ public class ActionCopy extends AbstractAction implements CaretListener {
     }
 
     private boolean isSystemClipBoardEmpty() {
-        //      if there is a selection on the clipboard
-        boolean hasContents = false;
         try {
             Object text =
                 Toolkit.getDefaultToolkit().getSystemClipboard()

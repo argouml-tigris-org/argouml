@@ -34,7 +34,8 @@ import org.argouml.i18n.Translator;
 
 ////////////////////////////////////////////////////////////////
 // file menu actions
-/** print the current active diagram.
+/**
+ * Print the current active diagram.
  */
 public class ActionPrint extends AbstractAction {
 
@@ -42,9 +43,8 @@ public class ActionPrint extends AbstractAction {
      * The constructor.
      */
     public ActionPrint() {
-        super(Translator.localize("action.print"), ResourceLoaderWrapper
-                .lookupIconResource(Translator.getImageBinding("Print"),
-                        Translator.localize("action.print")));
+        super(Translator.localize("action.print"),
+                ResourceLoaderWrapper.lookupIcon("action.print"));
     }
 
     /**
