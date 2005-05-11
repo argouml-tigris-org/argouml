@@ -17,3 +17,7 @@
 /*/modules/idl/src/org/argouml/uml/reveng/idl/IDLLexer.java
 /*/modules/idl/src/org/argouml/uml/reveng/idl/IDLParser.java
 /*/modules/idl/src/org/argouml/uml/reveng/idl/IDLTokenTypes.java
+
+/*/modules/cpp/src/org/argouml/language/cpp/reveng/CPPLexer.java
+/*/modules/cpp/src/org/argouml/language/cpp/reveng/CPPParser.java
+/*/modules/cpp/src/org/argouml/language/cpp/reveng/STDCTokenTypes.java
