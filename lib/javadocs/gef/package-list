@@ -1,0 +1,14 @@
+org.tigris.gef.base
+org.tigris.gef.demo
+org.tigris.gef.event
+org.tigris.gef.graph
+org.tigris.gef.graph.presentation
+org.tigris.gef.ocl
+org.tigris.gef.persistence
+org.tigris.gef.presentation
+org.tigris.gef.properties
+org.tigris.gef.properties.ui
+org.tigris.gef.ui
+org.tigris.gef.util
+org.tigris.gef.xml.pgml
+org.tigris.gef.xml.svg
