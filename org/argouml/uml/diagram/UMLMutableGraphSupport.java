@@ -465,6 +465,9 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             } catch (UmlException ex) {
                 // fail silently as we expect users to accidentally drop
                 // on to wrong component
+            } catch (IllegalArgumentException iae) {
+                // idem, e.g. for a generalization with leaf/root object
+                // TODO: but showing the message in the statusbar would help
             }
         }
         return connection;
