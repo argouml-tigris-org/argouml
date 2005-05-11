@@ -132,7 +132,6 @@ public class ActionDeleteFromDiagram extends UMLAction {
                     } else {
                         graph.removeFig(f);
                     }
-                    TargetManager.getInstance().removeHistoryElement(f);
                 }
             }
         } catch (Exception ex) {
