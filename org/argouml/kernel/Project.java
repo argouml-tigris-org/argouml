@@ -948,6 +948,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * - Move to trash for enclosed objects, i.e. graphically drawn on top of
      * - Move to trash subdiagrams for the object
      * - Saveguard that there is always at least 1 diagram left
+     * - If the current diagram has been deleted, select a new one to show
      * - Trigger the explorer when a diagram is deleted
      * - Set the needsSave (dirty) flag of the projectmanager
      * </pre>
