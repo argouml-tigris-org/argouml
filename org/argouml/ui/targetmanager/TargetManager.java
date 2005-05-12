@@ -310,6 +310,25 @@ public final class TargetManager {
             }
         }
 
+        private void checkForRemovedModelElements() {
+            Collection toBeRemoved = new ArrayList();
+            Iterator i = history.iterator();
+            while (i.hasNext()) {
+                WeakReference ref = (WeakReference) i.next();
+                Object historyObject = ref.get();
+                if (Model.getFacade().isABase(historyObject)) {
+                    if (Model.getUmlFactory().isRemoved(historyObject)) {
+                        toBeRemoved.add(historyObject);
+                    }
+                }
+            }
+            i = toBeRemoved.iterator();
+            while (i.hasNext()) {
+                Object o = i.next();
+                removeHistoryTarget(o);
+            }
+        }
+
     }
     /**
      * The log4j logger to log messages to.
@@ -853,6 +872,14 @@ public final class TargetManager {
      */
     public void removeHistoryElement(Object o) {
         historyManager.removeHistoryTarget(o);
+    }
+    
+    /**
+     * This routine checks the list of history items for 
+     * UML modelelements that were removed.
+     */
+    public void checkForRemovedModelElements() {
+         historyManager.checkForRemovedModelElements();
     }
 
 }
