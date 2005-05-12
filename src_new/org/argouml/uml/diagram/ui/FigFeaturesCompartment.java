@@ -65,18 +65,6 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
     }
 
     /**
-     * USED BY PGML.tee.
-     *
-     * @see org.tigris.gef.presentation.Fig#classNameAndBounds()
-     */
-    public String classNameAndBounds() {
-        if (isVisible()) {
-            return super.classNameAndBounds();
-        }
-        return getClass().getName() + "[]";
-    }
-
-    /**
      * @return the bigport
      */
     public Fig getBigPort() {

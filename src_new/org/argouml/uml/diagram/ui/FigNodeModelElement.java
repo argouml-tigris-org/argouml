@@ -307,17 +307,6 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * USED BY PGML.tee.
-     * @see org.tigris.gef.presentation.Fig#classNameAndBounds()
-     */
-    public String classNameAndBounds() {
-        if (isVisible()) {
-            return super.classNameAndBounds();
-        }
-        return getClass().getName() + "[]";
-    }
-
-    /**
      * After the base clone method has been called determine which child
      * figs of the clone represent the name, stereotype and port. <p>
      *
