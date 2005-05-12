@@ -437,10 +437,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
                     (rx == null || rx.equals("")) ? 10 : Integer.parseInt(rx);
                 int ryInt =
                     (ry == null || ry.equals("")) ? 10 : Integer.parseInt(ry);
-                f.setX(f.getX() - rxInt);
-                f.setY(f.getY() - ryInt);
-                f.setWidth(rxInt * 2);
-                f.setHeight(ryInt * 2);
+                f.setBounds(f.getX() - rxInt, f.getY() - ryInt, rxInt * 2, ryInt * 2);
 
                 return null;
             }

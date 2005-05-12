@@ -136,19 +136,18 @@ class FigMessageGroup extends FigGroup {
         Iterator it = figs.iterator();
     	if (!figs.isEmpty()) {
             FigMessage previousFig = null;
-	    for (int i = 0; it.hasNext(); i++) {
-		FigMessage fig = (FigMessage) it.next();
-		fig.setX(getX());
-		if (i != 0) {
-		    fig.setY(previousFig.getY()
-			     + previousFig.getHeight()
-			     + 5);
-		} else {
-		    fig.setY(getY());
-		}
-		fig.endTrans();
+            for (int i = 0; it.hasNext(); i++) {
+                FigMessage fig = (FigMessage) it.next();
+                int y;
+                if (i != 0) {
+                    y = previousFig.getY() + previousFig.getHeight() + 5;
+                } else {
+                    y = getY();
+                }
+                fig.setLocation(getX(), y);
+                fig.endTrans();
                 previousFig = fig;
-	    }
+            }
     	}
     }
 
