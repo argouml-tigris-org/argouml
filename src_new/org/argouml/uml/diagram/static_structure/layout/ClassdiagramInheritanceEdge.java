@@ -55,23 +55,8 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
         super(edge);
 
         // calculate the higher and lower Figs
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("sourceFigNode: "
-                    + getSourceFigNode().classNameAndBounds());
-            LOG.debug("destFigNode: " + getDestFigNode().classNameAndBounds());
-        }
         high = getDestFigNode();
         low = getSourceFigNode();
-        if (LOG.isDebugEnabled()) {
-            if (getSourceFigNode().getLocation().getY() <= getDestFigNode()
-                    .getLocation().getY()) {
-                LOG.debug("high is sourcenode, " + "low is destnode");
-            } else {
-                LOG.debug("high is destnode, " + "low is sourcenode");
-            }
-            LOG.debug("High: " + high.classNameAndBounds());
-            LOG.debug("Low : " + low.classNameAndBounds());
-        }
         offset = 0;
     }
 
@@ -121,12 +106,6 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
         Fig fig = getUnderlyingFig();
         int centerHigh = getCenterHigh();
         int centerLow = getCenterLow();
-
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("underlyingFig: " + fig.classNameAndBounds());
-            LOG.debug("centerHigh: " + centerHigh + " centerLow: " + centerLow
-                    + " downGap: " + getDownGap());
-        }
 
         // the amount of the "sidestep"
         int difference = centerHigh - centerLow;
