@@ -168,8 +168,9 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
                     f.removeFromDiagram();
                     mutableGraphModel.addNode(assoc);
                     FigNode figNode = (FigNode) lay.presentationFor(assoc);
-                    figNode.setX(x - figNode.getWidth() / 2);
-                    figNode.setY(y - figNode.getHeight() / 2);
+                    figNode.setLocation(
+                            x - figNode.getWidth() / 2,
+                            y - figNode.getHeight() / 2);
                     editor.add(figNode);
                     associationEnds = Model.getFacade().getConnections(assoc);
                     Iterator it = associationEnds.iterator();
@@ -316,8 +317,9 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
         GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
         Layer lay = editor.getLayerManager().getActiveLayer();
         figNode = renderer.getFigNodeFor(gm, lay, association, null);
-        figNode.setX(me.getX() - figNode.getWidth() / 2);
-        figNode.setY(me.getY() - figNode.getHeight() / 2);
+        figNode.setLocation(
+                me.getX() - figNode.getWidth() / 2,
+                me.getY() - figNode.getHeight() / 2);
         figNode.setVisible(false);
         editor.add(figNode);
         editor.getSelectionManager().deselectAll();

@@ -66,13 +66,13 @@ public class FigTextGroup extends FigGroup implements MouseListener {
         int height = 0;
         while (it.hasNext()) {
             FigText fig = (FigText) it.next();
+            int figHeight;
             if (fig.getText().equals("")) {
-                fig.setHeight(0);
+                figHeight = 0;
             } else {
-                fig.setHeight(ROWHEIGHT);
+                figHeight = ROWHEIGHT;
             }
-            fig.setX(getX());
-            fig.setY(getY() + height);
+            fig.setBounds(getX(), getY() + height, fig.getWidth(), figHeight);
             fig.endTrans();
             height += fig.getHeight();
         }
