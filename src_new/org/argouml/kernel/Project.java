@@ -983,7 +983,13 @@ public class Project implements java.io.Serializable, TargetListener {
             removeFigs(allFigs);
 
             Model.getUmlFactory().delete(obj);
-
+            
+            /* Since the above step also removes 
+             * some other dependent modelelements,
+             * we have to make sure that they are removed 
+             * from the target history list, too.*/
+            TargetManager.getInstance().checkForRemovedModelElements();
+            
             if (obj instanceof ProjectMember
                     && members.contains(obj)) {
                 members.remove(obj);
