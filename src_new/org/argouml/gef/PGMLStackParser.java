@@ -646,7 +646,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
         String visState = attrList.getValue("shown");
         if (visState != null && !visState.equals("")) {
             int visStateInt = Integer.parseInt(visState);
-            f.setVisState(visStateInt);
+            f.setVisible(visStateInt != 0);
         }
 
         String single = attrList.getValue("single");
