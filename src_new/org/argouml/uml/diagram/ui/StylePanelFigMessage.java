@@ -94,13 +94,6 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
     // event handling
 
     /**
-     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
-     */
-    public void removeUpdate(DocumentEvent e) {
-        insertUpdate(e);
-    }
-
-    /**
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent e) {

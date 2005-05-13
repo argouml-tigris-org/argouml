@@ -88,6 +88,8 @@ public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
     /**
      * Refresh the display. This means setting the check box from the target use
      * case fig.
+     *
+     * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
 
@@ -109,6 +111,8 @@ public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
      *
      * @param e
      *            The event that triggeed us.
+     *
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent e) {
         if (!refreshTransaction) {
