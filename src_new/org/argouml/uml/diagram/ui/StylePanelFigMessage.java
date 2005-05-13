@@ -24,8 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ItemEvent;
 
 import javax.swing.JComboBox;
@@ -55,19 +53,13 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
      */
     public StylePanelFigMessage() {
         super();
-        GridBagLayout gb = (GridBagLayout) getLayout();
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.ipadx = 0;
-        c.ipady = 0;
 
         arrowField.addItemListener(this);
-        c.gridy = 4;
-        gb.setConstraints(arrowLabel, c);
-        add(arrowLabel);
 
-        gb.setConstraints(arrowField, c);
+        arrowLabel.setLabelFor(arrowField);
+        add(arrowLabel);
         add(arrowField);
+
         arrowField.setSelectedIndex(0);
 
         remove(getFillField());

@@ -24,13 +24,10 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ItemListener;
 
 import javax.swing.text.Document;
 
-import org.argouml.swingext.SpacerPanel;
 import org.argouml.ui.StylePanelFig;
 import org.tigris.gef.ui.ColorRenderer;
 
@@ -41,12 +38,6 @@ import org.tigris.gef.ui.ColorRenderer;
 public class SPFigEdgeModelElement extends StylePanelFig implements
         ItemListener {
 
-    private SpacerPanel spacer = new SpacerPanel();
-
-    private SpacerPanel spacer2 = new SpacerPanel();
-
-    private SpacerPanel spacer3 = new SpacerPanel();
-
     /**
      * The constructor.
      *
@@ -54,62 +45,19 @@ public class SPFigEdgeModelElement extends StylePanelFig implements
     public SPFigEdgeModelElement() {
         super("Edge Appearance");
         initChoices();
-        GridBagLayout gb = (GridBagLayout) getLayout();
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.ipadx = 0;
-        c.ipady = 0;
 
         Document bboxDoc = getBBoxField().getDocument();
         bboxDoc.addDocumentListener(this);
         getLineField().addItemListener(this);
-        //_dashedField.addItemListener(this);
-
         getLineField().setRenderer(new ColorRenderer());
-        //_dashedField.setRenderer(DashRenderer.SINGLETON);
 
-        c.gridx = 0;
-        c.gridwidth = 1;
-        c.gridy = 1;
-        c.weightx = 0.0;
-        gb.setConstraints(getBBoxLabel(), c);
+        getBBoxLabel().setLabelFor(getBBoxField());
         add(getBBoxLabel());
-        c.gridy = 2;
-        gb.setConstraints(getLineLabel(), c);
-        add(getLineLabel());
-        //c.gridy = 3;
-        //gb.setConstraints(_dashedLabel, c);
-        //add(_dashedLabel);
-
-        c.weightx = 1.0;
-        c.gridx = 1;
-        //c.gridwidth = GridBagConstraints.REMAINDER;
-        c.gridy = 1;
-        gb.setConstraints(getBBoxField(), c);
         add(getBBoxField());
-        c.gridy = 2;
-        gb.setConstraints(getLineField(), c);
+
+        getLineLabel().setLabelFor(getLineField());
+        add(getLineLabel());
         add(getLineField());
-        //c.gridy = 3;
-        //gb.setConstraints(_dashedField, c);
-        //add(_dashedField);
-
-        c.weightx = 0.0;
-        c.gridx = 2;
-        c.gridy = 1;
-        gb.setConstraints(spacer, c);
-        add(spacer);
-
-        c.gridx = 3;
-        c.gridy = 10;
-        gb.setConstraints(spacer2, c);
-        add(spacer2);
-
-        c.weightx = 1.0;
-        c.gridx = 4;
-        c.gridy = 10;
-        gb.setConstraints(spacer3, c);
-        add(spacer3);
     }
 
 } /* end class SPFigEdgeModelElement */

@@ -25,8 +25,6 @@
 package org.argouml.ui;
 
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ItemEvent;
 
 import javax.swing.JComboBox;
@@ -85,15 +83,9 @@ public class StylePanelFigText extends StylePanelFig {
 
     /**
      * Construct default style panel for text elements.
-     *
      */
     public StylePanelFigText() {
         super();
-        GridBagLayout gb = (GridBagLayout) getLayout();
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.ipadx = 0;
-        c.ipady = 0;
 
         fontField.addItemListener(this);
         sizeField.addItemListener(this);
@@ -103,48 +95,28 @@ public class StylePanelFigText extends StylePanelFig {
       
         textColorField.setRenderer(new ColorRenderer());
       
-        c.weightx = 0.0;
-        c.gridx = 0;
-        c.gridwidth = 1;
-        c.gridy = 5;
-        gb.setConstraints(textColorLabel, c);
+        textColorLabel.setLabelFor(textColorField);
         add(textColorLabel);
-       
-        c.gridx = 3;
-        c.gridwidth = 1;
-        c.gridy = 1;
-        gb.setConstraints(fontLabel, c);
-        add(fontLabel);
-        c.gridy = 2;
-        gb.setConstraints(sizeLabel, c);
-        add(sizeLabel);
-        c.gridy = 3;
-        gb.setConstraints(styleLabel, c);
-        add(styleLabel);
-        // row 4 left blank for some reason...
-        c.gridy = 5;
-        gb.setConstraints(justLabel, c);
-        add(justLabel);
-
-        c.weightx = 1.0;
-        c.gridx = 1;
-        c.gridy = 5;
-        gb.setConstraints(textColorField, c);
         add(textColorField);
-        c.gridy = 6;
-        c.gridx = 4;
-        c.gridy = 1;
-        gb.setConstraints(fontField, c);
+       
+        addSeperator();
+        
+        fontLabel.setLabelFor(fontField);
+        add(fontLabel);
         add(fontField);
-        c.gridy = 2;
-        gb.setConstraints(sizeField, c);
+
+        sizeLabel.setLabelFor(sizeField);
+        add(sizeLabel);
         add(sizeField);
-        c.gridy = 3;
-        gb.setConstraints(styleField, c);
+
+        styleLabel.setLabelFor(styleField);
+        add(styleLabel);
         add(styleField);
-        c.gridy = 5;
-        gb.setConstraints(justField, c);
+
+        justLabel.setLabelFor(justField);
+        add(justLabel);
         add(justField);
+
         initChoices2();
     }
 
@@ -167,7 +139,7 @@ public class StylePanelFigText extends StylePanelFig {
     }
 
     /**
-     * refresh the text element with all selected values.
+     * Refresh the text element with all selected values.
      *
      * @see org.argouml.ui.TabTarget#refresh()
      */
@@ -207,8 +179,7 @@ public class StylePanelFigText extends StylePanelFig {
     }
 
     /**
-     * set the font of the text element to the selected value.
-     *
+     * Set the font of the text element to the selected value.
      */
     protected void setTargetFont() {
         if (getPanelTarget() == null) return;
@@ -219,8 +190,7 @@ public class StylePanelFigText extends StylePanelFig {
     }
 
     /**
-     * change font size of the text element according to the selected value.
-     *
+     * Change font size of the text element according to the selected value.
      */
     protected void setTargetSize() {
         if (getPanelTarget() == null) return;
@@ -230,9 +200,8 @@ public class StylePanelFigText extends StylePanelFig {
     }
 
     /**
-     * change style of the text element (bold/italic) according to the selected
+     * Change style of the text element (bold/italic) according to the selected
      * value.
-     *
      */
     protected void setTargetStyle() {
         if (getPanelTarget() == null) return;
@@ -246,8 +215,7 @@ public class StylePanelFigText extends StylePanelFig {
     }
 
     /**
-     * change the justification of the text according to the selected value.
-     *
+     * Change the justification of the text according to the selected value.
      */
     protected void setTargetJustification() {
         if (getPanelTarget() == null) return;
@@ -260,8 +228,7 @@ public class StylePanelFigText extends StylePanelFig {
 
 
     /**
-     * change the color of the text element according to the selected value.
-     *
+     * Change the color of the text element according to the selected value.
      */
     protected void setTargetTextColor() {
         if (getPanelTarget() == null) return;

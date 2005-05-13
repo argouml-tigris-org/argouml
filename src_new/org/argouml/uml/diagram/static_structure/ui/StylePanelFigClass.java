@@ -25,8 +25,6 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ItemEvent;
 import java.beans.PropertyChangeEvent;
 
@@ -67,29 +65,18 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
      */
     public StylePanelFigClass() {
         super();
-        GridBagLayout gb = (GridBagLayout) getLayout();
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.ipadx = 0;
-        c.ipady = 0;
 
-        c.gridx = 0;
-        c.gridwidth = 1;
-        c.gridy = 0;
-        c.weightx = 0.0;
-        gb.setConstraints(displayLabel, c);
-        add(displayLabel);
-
-        c.gridx = 1;
-        c.gridwidth = 1;
-        c.gridy = 0;
-        c.weightx = 0.0;
         JPanel pane = new JPanel();
         pane.setLayout(new FlowLayout(FlowLayout.LEFT));
         pane.add(attrCheckBox);
         pane.add(operCheckBox);
-        gb.setConstraints(pane, c);
-        add(pane);
+
+        //This instead of the label ???
+        //pane.setBorder(new TitledBorder(Translator.localize("Display: ")));
+        
+        displayLabel.setLabelFor(pane);
+        add(pane, 0);
+        add(displayLabel, 0);
 
         attrCheckBox.setSelected(false);
         operCheckBox.setSelected(false);
@@ -105,7 +92,9 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
     public void refresh(PropertyChangeEvent e) {
         String propertyName = e.getPropertyName();
         if (propertyName.equals("bounds")) {
+            refreshTransaction = true;
             refresh();
+            refreshTransaction = false;
         }
     }
 

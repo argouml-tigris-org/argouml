@@ -25,8 +25,6 @@
 package org.argouml.ui;
 
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -49,7 +47,8 @@ import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.ui.ColorRenderer;
 
 /**
- * The basic stylepanel which provides line and fill color information.
+ * The basic stylepanel which provides the boundaries box,
+ * line and fill color information.
  *
  */
 public class StylePanelFig extends StylePanel implements ItemListener,
@@ -87,7 +86,8 @@ public class StylePanelFig extends StylePanel implements ItemListener,
     private SpacerPanel spacer3 = new SpacerPanel();
 
     /**
-     * The constructor of the style panel of a Fig.
+     * The constructor of the style panel of a Fig. 
+     * This constructor does not create any contents of the panel. 
      *
      * @param title the title string
      */
@@ -102,11 +102,6 @@ public class StylePanelFig extends StylePanel implements ItemListener,
     public StylePanelFig() {
         super("Fig Appearance");
         initChoices();
-        GridBagLayout gb = (GridBagLayout) getLayout();
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.ipadx = 0;
-        c.ipady = 0;
 
         Document bboxDoc = bboxField.getDocument();
         bboxDoc.addDocumentListener(this);
@@ -117,51 +112,18 @@ public class StylePanelFig extends StylePanel implements ItemListener,
 
         fillField.setRenderer(new ColorRenderer());
         lineField.setRenderer(new ColorRenderer());
-        //_dashedField.setRenderer(DashRenderer.SINGLETON);
-
-        c.gridx = 0;
-        c.gridwidth = 1;
-        c.gridy = 1;
-        c.weightx = 0.0;
-        gb.setConstraints(bboxLabel, c);
+        
+        bboxLabel.setLabelFor(bboxField);
         add(bboxLabel);
-        c.gridy = 2;
-        gb.setConstraints(fillLabel, c);
-        add(fillLabel);
-        c.gridy = 3;
-        gb.setConstraints(lineLabel, c);
-        add(lineLabel);
-        c.gridy = 4;
-
-        c.weightx = 1.0;
-        c.gridx = 1;
-        //c.gridwidth = GridBagConstraints.REMAINDER;
-        c.gridy = 1;
-        gb.setConstraints(bboxField, c);
         add(bboxField);
-        c.gridy = 2;
-        gb.setConstraints(fillField, c);
+
+        fillLabel.setLabelFor(fillField);
+        add(fillLabel);
         add(fillField);
-        c.gridy = 3;
-        gb.setConstraints(lineField, c);
+        
+        lineLabel.setLabelFor(lineField);
+        add(lineLabel);
         add(lineField);
-
-        c.weightx = 0.0;
-        c.gridx = 2;
-        c.gridy = 1;
-        gb.setConstraints(spacer, c);
-        add(spacer);
-
-        c.gridx = 3;
-        c.gridy = 10;
-        gb.setConstraints(spacer2, c);
-        add(spacer2);
-
-        c.weightx = 1.0;
-        c.gridx = 4;
-        c.gridy = 10;
-        gb.setConstraints(spacer3, c);
-        add(spacer3);
     }
 
     /**
