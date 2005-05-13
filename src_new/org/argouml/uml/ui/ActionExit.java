@@ -96,7 +96,7 @@ public class ActionExit extends UMLAction
 		boolean safe = false;
 
 		if (ActionSaveProject.getInstance().isEnabled()) {
-		    safe = ActionSaveProject.getInstance().trySave (true);
+		    safe = ProjectBrowser.getInstance().trySave (true);
 		}
 		if (!safe) {
 		    safe = ActionSaveProjectAs.SINGLETON.trySave (false);

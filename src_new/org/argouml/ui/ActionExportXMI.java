@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.filechooser.FileFilter;
@@ -35,14 +36,13 @@ import javax.swing.filechooser.FileFilter;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.PluggableMenu;
 import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.AbstractActionSaveProject;
 
 /**
  * Exports the xmi of a project to a file choosen by the user.
  * @author jaap.branderhorst@xs4all.nl
  * Jun 7, 2003
  */
-public final class ActionExportXMI extends AbstractActionSaveProject
+public final class ActionExportXMI extends AbstractAction
         implements PluggableMenu {
 
     /** logger */
@@ -205,7 +205,7 @@ public final class ActionExportXMI extends AbstractActionSaveProject
                     file = new File(file.getParent(), name + ".xmi");
                 }
             }
-            super.trySave(false, file);
+            ProjectBrowser.getInstance().trySave(false, file);
         }
     }
 }

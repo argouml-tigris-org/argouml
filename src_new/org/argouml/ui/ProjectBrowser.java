@@ -32,6 +32,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.URL;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
@@ -39,10 +46,13 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.events.ArgoModuleEvent;
@@ -54,11 +64,17 @@ import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.persistence.LastLoadInfo;
+import org.argouml.persistence.PersistenceManager;
+import org.argouml.persistence.ProjectFilePersister;
+import org.argouml.persistence.VersionException;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionExit;
+import org.argouml.uml.ui.ActionSaveProject;
+import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.IStatusBar;
@@ -82,6 +98,10 @@ public class ProjectBrowser
     /** Default height: DEFAULT_COMPONENTHEIGHT */
     public static final int DEFAULT_COMPONENTHEIGHT = 200;
 
+    /** logger */
+    private static final Logger LOG = 
+        Logger.getLogger(ProjectBrowser.class);
+    
     ////////////////////////////////////////////////////////////////
     // class variables
 
@@ -885,5 +905,327 @@ public class ProjectBrowser
     public Font getDefaultFont() {
         return defaultFont;
     }
+    
+    /**
+     * Try to save the project.
+     * @param overwrite if true, then we overwrite without asking
+     * @return true if successful
+     */
+    public boolean trySave (boolean overwrite) {
+        URL url = ProjectManager.getManager().getCurrentProject().getURL();
+        return url != null && trySave(overwrite, new File(url.getFile()));
+    }
 
+    /**
+     * Try to save the project.
+     * @param overwrite if true, then we overwrite without asking
+     * @param file the File to save to
+     * @return true if successful
+     */
+    public boolean trySave(boolean overwrite, File file) {
+        LOG.info("Saving the project");
+        Project project = ProjectManager.getManager().getCurrentProject();
+        PersistenceManager pm = PersistenceManager.getInstance();
+    
+        try {
+            if (file.exists() && !overwrite) {
+                String sConfirm =
+                    MessageFormat.format(Translator.localize(
+                        "optionpane.save-project-confirm-overwrite"),
+                        new Object[] {file});
+                int nResult =
+                    JOptionPane.showConfirmDialog(this, sConfirm,
+                            Translator.localize(
+                            "optionpane.save-project-confirm-overwrite-title"),
+                                  JOptionPane.YES_NO_OPTION,
+                                  JOptionPane.QUESTION_MESSAGE);
+    
+                if (nResult != JOptionPane.YES_OPTION) {
+                    return false;
+                }
+            }
+    
+            String sStatus =
+            MessageFormat.format(Translator.localize(
+                "label.save-project-status-writing"),
+                         new Object[] {file});
+            this.showStatus (sStatus);
+    
+                ProjectFilePersister persister =
+                    pm.getPersisterFromFileName(file.getName());
+                if (persister == null)
+                    throw new IllegalStateException("Filename " + project.getName()
+                            + " is not of a known file type");
+    
+            project.preSave();
+            persister.save(project, file);
+            project.postSave();
+    
+            sStatus =
+            MessageFormat.format(Translator.localize(
+                "label.save-project-status-wrote"),
+                         new Object[] {project.getURL()});
+            showStatus(sStatus);
+            LOG.debug ("setting most recent project file to "
+                   + file.getCanonicalPath());
+    
+            /*
+             * notification of menu bar
+             */
+            GenericArgoMenuBar menuBar = (GenericArgoMenuBar) getJMenuBar();
+            menuBar.addFileSaved(file.getCanonicalPath());
+    
+            Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
+                        file.getCanonicalPath());
+    
+            return true;
+        } catch (FileNotFoundException fnfe) {
+            String sMessage =
+            MessageFormat.format(Translator.localize(
+                    "optionpane.save-project-file-not-found"),
+                         new Object[] {fnfe.getMessage()});
+    
+            JOptionPane.showMessageDialog(this, sMessage,
+                    Translator.localize(
+                    "optionpane.save-project-file-not-found-title"),
+                          JOptionPane.ERROR_MESSAGE);
+    
+            LOG.error(sMessage, fnfe);
+        } catch (Exception ex) {
+            String sMessage =
+            MessageFormat.format(Translator.localize(
+                "optionpane.save-project-general-exception"),
+                         new Object[] {ex.getMessage()});
+    
+            JOptionPane.showMessageDialog(this, sMessage,
+                    Translator.localize(
+                    "optionpane.save-project-general-exception-title"),
+                          JOptionPane.ERROR_MESSAGE);
+    
+            reportError("save a project.", 
+                    "Could not save the project "
+                    + file.getName()
+                    + " some error was found.\n"
+                    + "Please report the exception below to the ArgoUML"
+                    + "development team at http://argouml.tigris.org.",
+                    true, ex);
+            
+            LOG.error(sMessage, ex);
+        }
+    
+        return false;
+    }
+    
+    /**
+     * If the current project is dirty (needs saving) then this function will
+     * ask confirmation from the user.
+     * If the user indicates that saving is needed, then saving is attempted.
+     *
+     * @return true if we can continue with opening
+     */
+    public boolean askConfirmationAndSave() {
+        ProjectBrowser pb = ProjectBrowser.getInstance();
+        Project p = ProjectManager.getManager().getCurrentProject();
+
+
+        if (p != null && ProjectManager.getManager().needsSave()) {
+            String t = MessageFormat.format(Translator.localize(
+                        "optionpane.open-project-save-changes-to"),
+                        new Object[] {p.getName()});
+
+            int response = JOptionPane.showConfirmDialog(pb, t, t,
+                    JOptionPane.YES_NO_CANCEL_OPTION);
+
+            if (response == JOptionPane.CANCEL_OPTION
+                    || response == JOptionPane.CLOSED_OPTION) {
+                return false;
+            }
+            if (response == JOptionPane.YES_OPTION) {
+                boolean safe = false;
+
+                if (ActionSaveProject.getInstance().isEnabled()) {
+                    safe = ProjectBrowser.getInstance().trySave(true);
+                }
+                if (!safe) {
+                    safe = ActionSaveProjectAs.SINGLETON.trySave(false);
+                }
+                if (!safe) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Loads the project file and opens all kinds of error message windows
+     * if it doesn't work for some reason. In those cases it preserves
+     * the old project.
+     *
+     * @param file the file to open.
+     * @return true if the file was successfully opened
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
+     */
+    public boolean loadProject(File file, boolean showUI) {
+        LOG.info("Loading project.");
+        PersistenceManager pm = PersistenceManager.getInstance();
+        Project oldProject = ProjectManager.getManager().getCurrentProject();
+        boolean success = true;
+
+        // TODO:
+        // This is actually a hack! Some diagram types
+        // (like the statechart diagrams) access the current
+        // diagram to get some info. This might cause
+        // problems if there's another statechart diagram
+        // active, so I remove the current project, before
+        // loading the new one.
+
+        Designer.disableCritiquing();
+        Designer.clearCritiquing();
+        Project p = null;
+
+        if (!(file.canRead())) {
+            reportError("File not found " + file + ".", showUI);
+            Designer.enableCritiquing();
+            success = false;
+        } else {
+            try {
+                ProjectFilePersister persister =
+                    pm.getPersisterFromFileName(file.getName());
+                if (persister == null) {
+                    success = false;
+                    throw new IllegalStateException("Filename "
+                            + file.getName()
+                            + " is not of a known file type");
+                }
+                System.gc();
+                p = persister.doLoad(file);
+
+                ProjectBrowser.getInstance().showStatus(
+                    MessageFormat.format(Translator.localize(
+                        "label.open-project-status-read"),
+                        new Object[] {
+                            file.getName(),
+                        }));
+            } catch (VersionException ex) {
+                success = false;
+                reportError(ex.getMessage(), showUI);
+                p = oldProject;
+            } catch (OutOfMemoryError ex) {
+                p = oldProject;
+                System.gc();
+                LOG.error("Out of memory while loading project", ex);
+                success = false;
+                reportError(
+                    "Could not load the project "
+                    + file.getName()
+                    + " because the JVM ran out of memory.\n"
+                    + "Rerun ArgoUML with the heap size increased.",
+                    showUI);
+            } catch (Exception ex) {
+                LOG.error("Exception while loading project", ex);
+                success = false;
+                reportError(
+                    "load a project.",
+                    "Could not load the project "
+                    + file.getName()
+                    + " some error was found.\n"
+                    + "Please try loading with the latest version of ArgoUML "
+                    + "which you can download from http://argouml.tigris.org\n"
+                    + "If you have no further success then please report the "
+                    + "exception below.",
+                    showUI, ex);
+                p = oldProject;
+            } finally {
+                if (!LastLoadInfo.getInstance().getLastLoadStatus()) {
+                    p = oldProject;
+                    success = false;
+                    reportError(
+                            "Problem in loading the project "
+                            + file.getName()
+                            + "\n"
+                            + "Project file probably corrupt from "
+                            + "an earlier version or ArgoUML.\n"
+                            + "Error message:\n"
+                            + LastLoadInfo.getInstance().getLastLoadMessage()
+                            + "\n"
+                            + "Since the project was incorrectly "
+                            + "saved some things might be missing "
+                            + "from before you saved it.\n"
+                            + "These things cannot be restored. "
+                            + "You can continue working with what "
+                            + "was actually loaded.\n",
+                            showUI);
+                } else if (oldProject != null) {
+                    // if p equals oldProject there was an exception and we do
+                    // not have to gc (garbage collect) the old project
+                    if (p != null && !p.equals(oldProject)) {
+                        //prepare the old project for gc
+                        LOG.info("There are " + oldProject.getMembers().size()
+                                + " members in the old project");
+                        LOG.info("There are " + p.getMembers().size()
+                                + " members in the new project");
+                        ProjectManager.getManager().removeProject(oldProject);
+                    }
+                }
+                ProjectManager.getManager().setCurrentProject(p);
+                if (p == null) {
+                    LOG.info("The current project is null");
+                } else {
+                    LOG.info("There are " + p.getMembers().size()
+                            + " members in the current project");
+                }
+                Designer.enableCritiquing();
+            }
+        }
+        System.gc();
+        return success;
+    }
+
+    /**
+     * Open a Message Dialog with an error message.
+     *
+     * @param message the message to display.
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
+     */
+    private void reportError(String message, boolean showUI) {
+        if (showUI) {
+            JOptionPane.showMessageDialog(
+                      ProjectBrowser.getInstance(),
+                      message,
+                      "Error",
+                      JOptionPane.ERROR_MESSAGE);
+        } else {
+            System.err.print(message);
+        }
+    }
+
+    /**
+     * Open a Message Dialog with an error message.
+     *
+     * @param message the message to display.
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
+     */
+    private void reportError(String attemptingTo, String message, boolean showUI, Throwable ex) {
+        if (showUI) {
+            JDialog dialog =
+                new ExceptionDialog(
+                        ProjectBrowser.getInstance(),
+                        "An error occured attempting to " + attemptingTo,
+                        ex);
+            dialog.setVisible(true);
+        } else {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            ex.printStackTrace(pw);
+            String exception = sw.toString();
+            
+            message += "\n\n" + exception;
+            
+            reportError(message, showUI);
+        }
+    }
 } /* end class ProjectBrowser */

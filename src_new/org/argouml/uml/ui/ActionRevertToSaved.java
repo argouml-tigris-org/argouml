@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.text.MessageFormat;
 
+import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
 import org.argouml.i18n.Translator;
@@ -40,7 +41,7 @@ import org.argouml.ui.ProjectBrowser;
  *
  * @see ActionOpenProject
  */
-public class ActionRevertToSaved extends ActionFileOperations {
+public class ActionRevertToSaved extends AbstractAction {
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -85,7 +86,7 @@ public class ActionRevertToSaved extends ActionFileOperations {
                   JOptionPane.YES_NO_OPTION);
 
         if (response == JOptionPane.YES_OPTION) {
-            loadProject(new File(p.getURL().getFile()), true);
+            ProjectBrowser.getInstance().loadProject(new File(p.getURL().getFile()), true);
         }
     }
 }

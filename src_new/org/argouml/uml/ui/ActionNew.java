@@ -27,6 +27,8 @@ package org.argouml.uml.ui;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
@@ -41,7 +43,7 @@ import org.argouml.ui.targetmanager.TargetManager;
  *
  * @stereotype singleton
  */
-public class ActionNew extends ActionFileOperations {
+public class ActionNew extends AbstractAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -71,7 +73,7 @@ public class ActionNew extends ActionFileOperations {
     public void actionPerformed(ActionEvent e) {
         Project p = ProjectManager.getManager().getCurrentProject();
 
-        if (!askConfirmationAndSave()) {
+        if (!ProjectBrowser.getInstance().askConfirmationAndSave()) {
             return;
         }
 
