@@ -89,7 +89,8 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         if (f == null) {
             return false;
         }
-        boolean success = trySave(overwrite, f);
+        
+        boolean success = ProjectBrowser.getInstance().trySave(overwrite, f);
         if (success) {
             ProjectBrowser.getInstance().setTitle(
                 ProjectManager.getManager().getCurrentProject().getName());

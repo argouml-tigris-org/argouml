@@ -27,19 +27,21 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 import java.net.URL;
 
+import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ProjectBrowser;
 
 /**
  * Action that saves the project.
  *
  * @see ActionOpenProject
  */
-public class ActionSaveProject extends AbstractActionSaveProject {
+public class ActionSaveProject extends AbstractAction {
     /**
      * Logger.
      */
@@ -91,7 +93,7 @@ public class ActionSaveProject extends AbstractActionSaveProject {
         if (url == null) {
             ActionSaveProjectAs.SINGLETON.actionPerformed(e);
         } else {
-            trySave(true);
+            ProjectBrowser.getInstance().trySave(true);
         }
     }
 

@@ -27,7 +27,10 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+import javax.swing.AbstractAction;
+
 import org.apache.log4j.Logger;
+import org.argouml.ui.ProjectBrowser;
 
 /**
  * Reopens a project with respect of the calling event handler - should be
@@ -36,7 +39,7 @@ import org.apache.log4j.Logger;
  * @author  Frank Jelinek
  * @since 10. November 2003 (0.15.2)
  */
-public class ActionReopenProject extends ActionFileOperations {
+public class ActionReopenProject extends AbstractAction {
     private static final Logger LOG =
 	Logger.getLogger(ActionReopenProject.class);
 
@@ -75,11 +78,11 @@ public class ActionReopenProject extends ActionFileOperations {
      * project
      */
     public void actionPerformed(ActionEvent e) {
-        if (!askConfirmationAndSave()) return;
+        if (!ProjectBrowser.getInstance().askConfirmationAndSave()) return;
 
         File toOpen = new File(filename);;
         // load of the new project
         // just reuse of the ActionOpen object
-        loadProject(toOpen, true);
+        ProjectBrowser.getInstance().loadProject(toOpen, true);
     }
 }
