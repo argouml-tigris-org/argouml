@@ -25,8 +25,6 @@
 package org.argouml.uml.diagram.use_case.ui;
 
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ItemEvent;
 
 import javax.swing.JCheckBox;
@@ -67,44 +65,19 @@ public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
     public StylePanelFigUseCase() {
 
         // Invoke the parent constructor first
-
         super();
 
-        // Get the layout and its current constraints and set the constraints
-        // that will apply to everything we now add.
-
-        GridBagLayout gb = (GridBagLayout) getLayout();
-        GridBagConstraints c = new GridBagConstraints();
-
-        c.fill = GridBagConstraints.BOTH;
-        c.ipadx = 0;
-        c.ipady = 0;
-
-        // Set constraints for the display label, and then add it.
-
-        c.gridx = 0;
-        c.gridwidth = 1;
-        c.gridy = 0;
-        c.weightx = 0.0;
-
-        gb.setConstraints(displayLabel, c);
-        add(displayLabel);
-
-        // Create the check box, set constraints for it, and then add it.
+        // Create the check box, and then add it.
 
         JPanel pane = new JPanel();
 
         pane.setLayout(new FlowLayout(FlowLayout.LEFT));
         pane.add(epCheckBox);
 
-        c.gridx = 1;
-        c.gridwidth = 1;
-        c.gridy = 0;
-        c.weightx = 0.0;
-
-        gb.setConstraints(pane, c);
-        add(pane);
-
+        displayLabel.setLabelFor(pane);
+        add(pane, 0);
+        add(displayLabel, 0);
+        
         // By default we don't show the attribute check box. Mark this object
         // as a listener for the check box.
 

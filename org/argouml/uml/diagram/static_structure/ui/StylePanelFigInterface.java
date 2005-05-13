@@ -25,8 +25,6 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ItemEvent;
 
 import javax.swing.JCheckBox;
@@ -60,29 +58,15 @@ public class StylePanelFigInterface extends StylePanelFigNodeModelElement {
      */
     public StylePanelFigInterface() {
         super();
-        GridBagLayout gb = (GridBagLayout) getLayout();
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.ipadx = 0;
-        c.ipady = 0;
 
-        c.gridx = 0;
-        c.gridwidth = 1;
-        c.gridy = 0;
-        c.weightx = 0.0;
-        gb.setConstraints(displayLabel, c);
-        add(displayLabel);
-
-        c.gridx = 1;
-        c.gridwidth = 1;
-        c.gridy = 0;
-        c.weightx = 0.0;
         JPanel pane = new JPanel();
         pane.setLayout(new FlowLayout(FlowLayout.LEFT));
         pane.add(operCheckBox);
-        gb.setConstraints(pane, c);
-        add(pane);
-
+        displayLabel.setLabelFor(pane);
+        
+        add(pane, 0); // add in front of the others
+        add(displayLabel, 0); // add the label in front of the "pane"
+        
         operCheckBox.setSelected(false);
         operCheckBox.addItemListener(this);
     }

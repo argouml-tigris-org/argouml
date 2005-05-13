@@ -24,8 +24,6 @@
 
 package org.argouml.ui;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -33,7 +31,6 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.text.Document;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
@@ -59,72 +56,15 @@ public class StylePanelFigNodeModelElement extends StylePanelFig implements
      *
      */
     public StylePanelFigNodeModelElement() {
-        super("Fig Appearance");
-        initChoices(); //TODO: MVW: Why do this a second time?
-        GridBagLayout gb = (GridBagLayout) getLayout();
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.ipadx = 0;
-        c.ipady = 0;
-
-        Document bboxDoc = getBBoxField().getDocument();
-        bboxDoc.addDocumentListener(this);
-        getBBoxField().addKeyListener(this);
-        getBBoxField().addFocusListener(this);
-        getFillField().addItemListener(this);
-        getLineField().addItemListener(this);
+        super();
         shadowField.addItemListener(this);
 
         getFillField().setRenderer(new ColorRenderer());
         getLineField().setRenderer(new ColorRenderer());
 
-        c.gridx = 0;
-        c.gridwidth = 1;
-        c.gridy = 1;
-        c.weightx = 0.0;
-        gb.setConstraints(getBBoxLabel(), c);
-        add(getBBoxLabel());
-        c.gridy = 2;
-        gb.setConstraints(getFillLabel(), c);
-        add(getFillLabel());
-        c.gridy = 3;
-        gb.setConstraints(getLineLabel(), c);
-        add(getLineLabel());
-        c.gridy = 4;
-        gb.setConstraints(shadowLabel, c);
+        shadowLabel.setLabelFor(shadowField);
         add(shadowLabel);
-
-        c.weightx = 1.0;
-        c.gridx = 1;
-        c.gridy = 1;
-        gb.setConstraints(getBBoxField(), c);
-        add(getBBoxField());
-        c.gridy = 2;
-        gb.setConstraints(getFillField(), c);
-        add(getFillField());
-        c.gridy = 3;
-        gb.setConstraints(getLineField(), c);
-        add(getLineField());
-        c.gridy = 4;
-        gb.setConstraints(shadowField, c);
         add(shadowField);
-
-        c.weightx = 0.0;
-        c.gridx = 2;
-        c.gridy = 1;
-        gb.setConstraints(getSpacer(), c);
-        add(getSpacer());
-
-        c.gridx = 3;
-        c.gridy = 10;
-        gb.setConstraints(getSpacer2(), c);
-        add(getSpacer2());
-
-        c.weightx = 1.0;
-        c.gridx = 4;
-        c.gridy = 10;
-        gb.setConstraints(getSpacer3(), c);
-        add(getSpacer3());
     }
 
     /**
