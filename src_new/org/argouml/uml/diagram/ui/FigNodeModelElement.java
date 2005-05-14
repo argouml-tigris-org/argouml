@@ -62,6 +62,7 @@ import org.argouml.application.api.NotationContext;
 import org.argouml.application.api.NotationName;
 import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.cognitive.Designer;
@@ -79,6 +80,7 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.UUIDHelper;
+import org.argouml.uml.generator.GeneratorDisplay;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Globals;
@@ -289,7 +291,7 @@ public abstract class FigNodeModelElement
         stereo.setEditable(false);
 
         readyToEdit = false;
-        ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
+        ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
         currentNotationName = Notation.getDefaultNotation();
     }
 
@@ -1030,6 +1032,9 @@ public abstract class FigNodeModelElement
 			  + "PropertyVetoException",
 			  ex);
             }
+        } else if (pName.equals("editing")
+                        && Boolean.TRUE.equals(pve.getNewValue())) {
+            textEditStarted((FigText) src);
         } else if (pName.equals("removed") && (pve.getSource() == getOwner())) {
             ProjectManager.getManager().getCurrentProject()
                 .moveToTrash(getOwner());
@@ -1047,9 +1052,25 @@ public abstract class FigNodeModelElement
     }
 
     /**
+     * This method is called when the user doubleclicked on the text field, 
+     * and starts editing. Subclasses should overrule this field to e.g.
+     * supply help to the user about the used format. <p>
+     * 
+     * It is also possible to alter the text to be edited 
+     * already here, e.g. by adding the stereotype in front of the name,
+     * but that seems not user-friendly.
+     *  
+     * @param ft the FigText that will be edited and contains the start-text
+     */
+    protected void textEditStarted(FigText ft) {
+
+    }
+    
+    /**
      * This method is called after the user finishes editing a text
      * field that is in the FigNodeModelElement.  Determine which
      * field and update the model.  This class handles the name,
+     * and the stereotype,
      * subclasses should override to handle other text elements.
      *
      * @param ft the FigText that has been edited and contains the new text
