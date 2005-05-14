@@ -44,6 +44,7 @@ import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
+import org.argouml.uml.diagram.ui.StereotypeContainer;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -683,6 +684,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             } else if ("attributesVisible".equals(name)) {
                 ((AttributesCompartmentContainer) fig)
                     .setAttributesVisible(value.equalsIgnoreCase("true"));
+            } else if ("stereotypeVisible".equals(name)) {
+                    ((StereotypeContainer) fig)
+                    .setStereotypeVisible(value.equalsIgnoreCase("true"));
             }
         }
     }

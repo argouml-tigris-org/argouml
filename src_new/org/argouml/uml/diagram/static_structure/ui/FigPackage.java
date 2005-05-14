@@ -46,6 +46,7 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.StereotypeContainer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.graph.GraphModel;
@@ -55,7 +56,9 @@ import org.tigris.gef.presentation.FigText;
 /**
  * Class to display graphics for a UML package in a class diagram.
  */
-public class FigPackage extends FigNodeModelElement {
+public class FigPackage extends FigNodeModelElement
+    implements StereotypeContainer 
+    {
     private static final Logger LOG = Logger.getLogger(FigPackage.class);
 
     ////////////////////////////////////////////////////////////////
@@ -78,7 +81,7 @@ public class FigPackage extends FigNodeModelElement {
      * Flags that indicates if the stereotype should be shown even if
      * it is specified or not.
      */
-    private boolean showStereotype = true;
+    private boolean stereotypeVisible = true;
 
     /**
      * <p>A rectangle to blank out the line that would otherwise appear at the
@@ -304,11 +307,11 @@ public class FigPackage extends FigNodeModelElement {
             /* we got stereotype */
             setStereotype(Notation.generateStereotype(this, stereo));
 
-            if (!showStereotype) {
+            if (!stereotypeVisible) {
                 stereoLineBlinder.setVisible(false);
                 getStereotypeFig().setVisible(false);
             } else if (!getStereotypeFig().isVisible()) {
-                if (showStereotype) {
+                if (stereotypeVisible) {
                     stereoLineBlinder.setVisible(true);
                     getStereotypeFig().setVisible(true);
 
@@ -332,6 +335,17 @@ public class FigPackage extends FigNodeModelElement {
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
+    /**
+     * USED BY PGML.tee.
+     * @return the class name and bounds together with compartment
+     * visibility.
+     */
+    public String classNameAndBounds() {
+        return super.classNameAndBounds()
+                + "stereotypeVisible=" + isStereotypeVisible();
+    }    
+    
+    
     ////////////////////////////////////////////////////////////////
     // user interaction methods
 
@@ -482,7 +496,7 @@ public class FigPackage extends FigNodeModelElement {
 
         // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
-        if (!showStereotype) {
+        if (!stereotypeVisible) {
             showMenu.add(new UMLAction(
                     Translator.localize("menu.popup.show.show-stereotype"),
                     UMLAction.NO_ICON)
@@ -492,7 +506,7 @@ public class FigPackage extends FigNodeModelElement {
 		 *         java.awt.event.ActionEvent)
 		 */
 		public void actionPerformed(ActionEvent ae) {
-		    showStereotype = true;
+		    stereotypeVisible = true;
 		    renderingChanged();
 		    damage();
 		}
@@ -507,7 +521,7 @@ public class FigPackage extends FigNodeModelElement {
 		 *         java.awt.event.ActionEvent)
 		 */
 		public void actionPerformed(ActionEvent ae) {
-		    showStereotype = false;
+		    stereotypeVisible = false;
 		    renderingChanged();
 		    damage();
 		}
@@ -579,52 +593,68 @@ public class FigPackage extends FigNodeModelElement {
 
 			TargetManager.getInstance().setTarget(lFirst);
 			return;
-		    } else {
-			/* try to create a new class diagram */
-			me.consume();
-			super.mouseClicked(me);
-			try {
-			    String nameSpace;
-			    if (lNS != null
-				    && Model.getFacade().getName(lNS) != null)
-				nameSpace = Model.getFacade().getName(lNS);
-			    else
-				nameSpace = "(anon)";
+		    }
+                    /* try to create a new class diagram */
+                    me.consume();
+                    super.mouseClicked(me);
+                    try {
+			String nameSpace;
+                        if (lNS != null
+			    && Model.getFacade().getName(lNS) != null)
+                            nameSpace = Model.getFacade().getName(lNS);
+                        else
+                            nameSpace = "(anon)";
 
-			    String dialogText =
+                        String dialogText =
 				"Add new class diagram to "
 				+ nameSpace
 				+ "?";
-			    int option =
+                        int option =
 				JOptionPane.showConfirmDialog(
 					null,
 					dialogText,
 					"Add new class diagram?",
 					JOptionPane.YES_NO_OPTION);
-			    if (option == JOptionPane.YES_OPTION) {
-				ArgoDiagram lNew =
+                        if (option == JOptionPane.YES_OPTION) {
+			    ArgoDiagram lNew =
 				    new UMLClassDiagram(lNS);
-				String diagramName =
+                            String diagramName =
 				    lsDefaultName + "_" + lNew.getName();
 
-				lP.addMember(lNew);
+                            lP.addMember(lNew);
 
-				TargetManager.getInstance().setTarget(lNew);
-				/* change prefix */
-				lNew.setName(diagramName);
-				ExplorerEventAdaptor.getInstance()
+                            TargetManager.getInstance().setTarget(lNew);
+                            /* change prefix */
+                            lNew.setName(diagramName);
+                            ExplorerEventAdaptor.getInstance()
 				                    .structureChanged();
-			    }
-			} catch (Exception ex) {
-			    LOG.error(ex);
-			}
+                        }
+                    } catch (Exception ex) {
+                            LOG.error(ex);
+                    }
 
-			return;
-		    } /*if new*/
+                    return;
 
 		} /*if package */
 	    } /* if doubleclicks */
 	    super.mouseClicked(me);
 	}
+    }
+
+
+    /**
+     * @see org.argouml.uml.diagram.ui.StereotypeContainer#isStereotypeVisible()
+     */
+    public boolean isStereotypeVisible() {
+        return stereotypeVisible;
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.StereotypeContainer#setStereotypeVisible(boolean)
+     */
+    public void setStereotypeVisible(boolean isVisible) {
+        stereotypeVisible = isVisible;
+        renderingChanged();
+        damage();
     }
 } /* end class FigPackage */

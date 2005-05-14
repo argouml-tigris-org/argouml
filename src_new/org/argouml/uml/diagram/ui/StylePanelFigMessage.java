@@ -28,7 +28,6 @@ import java.awt.event.ItemEvent;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.event.DocumentEvent;
 
 import org.argouml.ui.StylePanelFigNodeModelElement;
 import org.tigris.gef.util.Converter;
