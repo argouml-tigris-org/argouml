@@ -4,3 +4,6 @@ test.zargo
 junit*.properties
 Alittlebitofeverything2.zargo
 test.xmi
+build-reports.xml
+jcoverage.ser
+reporting.properties
