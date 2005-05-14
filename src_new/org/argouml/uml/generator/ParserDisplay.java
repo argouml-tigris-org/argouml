@@ -401,11 +401,11 @@ public class ParserDisplay extends Parser {
         String token;
 
         try {
-            st = new MyTokenizer(text, "<<,>>,::");
+            st = new MyTokenizer(text, "<<,«,»,>>,::");
             while (st.hasMoreTokens()) {
                 token = st.nextToken();
 
-                if ("<<".equals(token)) {
+                if ("<<".equals(token) || "«".equals(token)) {
                     if (stereotype != null) {
                         throw new ParseException("Element cannot have "
                                 + "two stereotypes", st.getTokenIndex());
@@ -414,7 +414,7 @@ public class ParserDisplay extends Parser {
                     stereotype = "";
                     while (true) {
                         token = st.nextToken();
-                        if (">>".equals(token)) {
+                        if (">>".equals(token) || "»".equals(token)) {
                             break;
                         }
                         stereotype += token;
