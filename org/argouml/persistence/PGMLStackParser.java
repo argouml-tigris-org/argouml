@@ -33,6 +33,7 @@ import org.argouml.gef.FigGroupHandler;
 import org.argouml.gef.HandlerStack;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
+import org.argouml.uml.diagram.ui.StereotypeContainer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
@@ -195,6 +196,9 @@ public class PGMLStackParser extends org.argouml.gef.PGMLStackParser {
             } else if ("attributesVisible".equals(name)) {
                 ((AttributesCompartmentContainer) fig)
                     .setAttributesVisible(value.equalsIgnoreCase("true"));
+            } else if ("stereotypeVisible".equals(name)) {
+                    ((StereotypeContainer) fig)
+                    .setStereotypeVisible(value.equalsIgnoreCase("true"));
             }
         }
     }

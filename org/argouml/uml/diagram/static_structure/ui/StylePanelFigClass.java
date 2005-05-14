@@ -31,7 +31,6 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.event.DocumentEvent;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.StylePanelFigNodeModelElement;
@@ -92,9 +91,7 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
     public void refresh(PropertyChangeEvent e) {
         String propertyName = e.getPropertyName();
         if (propertyName.equals("bounds")) {
-            refreshTransaction = true;
             refresh();
-            refreshTransaction = false;
         }
     }
 
