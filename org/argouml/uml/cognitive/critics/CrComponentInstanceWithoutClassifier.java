@@ -57,10 +57,14 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
+	if (!(dm instanceof UMLDeploymentDiagram)) {
+	    return NO_PROBLEM;
+	}
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
 	ListSet offs = computeOffenders(dd);
-	if (offs == null) return NO_PROBLEM;
+	if (offs == null) {
+	    return NO_PROBLEM;
+	}
 	return PROBLEM_FOUND;
     }
 
@@ -79,7 +83,9 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-	if (!isActive()) return false;
+	if (!isActive()) {
+	    return false;
+	}
 	ListSet offs = i.getOffenders();
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.firstElement();
 	//if (!predicate(dm, dsgr)) return false;
@@ -104,15 +110,19 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
         Iterator figIter = figs.iterator();
 	while (figIter.hasNext()) {
 	    Object obj = figIter.next();
-	    if (!(obj instanceof FigComponentInstance)) continue;
+	    if (!(obj instanceof FigComponentInstance)) {
+	        continue;
+	    }
 	    FigComponentInstance figComponentInstance =
-	                                    (FigComponentInstance) obj;
+	        (FigComponentInstance) obj;
 	    if (figComponentInstance != null) {
-		Object coi = /*(MComponentInstance)*/
-		                            figComponentInstance.getOwner();
+		Object coi =
+		    figComponentInstance.getOwner();
 		if (coi != null) {
 		    Collection col = Model.getFacade().getClassifiers(coi);
-		    if (col.size() > 0) continue;
+		    if (col.size() > 0) {
+		        continue;
+		    }
 		}
 		if (offs == null) {
 		    offs = new ListSet();
@@ -123,6 +133,7 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
 		     && ((Model.getFacade().getNodeInstance(
 		                         figComponentInstance.getOwner()))
 			 == null)) {
+	        // TODO: Can we remove this? We will never arrive here anyway.
 		if (offs == null) {
 		    offs = new ListSet();
 		    offs.addElement(deploymentDiagram);
