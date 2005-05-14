@@ -300,13 +300,10 @@ public class FigPackage extends FigNodeModelElement
             if (getStereotypeFig().isVisible()) {
                 stereoLineBlinder.setVisible(false);
                 getStereotypeFig().setVisible(false);
-                //                rect.y      += STEREOHEIGHT;
-                //                rect.height -= STEREOHEIGHT;
             }
         } else {
             /* we got stereotype */
             setStereotype(Notation.generateStereotype(this, stereo));
-
             if (!stereotypeVisible) {
                 stereoLineBlinder.setVisible(false);
                 getStereotypeFig().setVisible(false);
@@ -314,24 +311,11 @@ public class FigPackage extends FigNodeModelElement
                 if (stereotypeVisible) {
                     stereoLineBlinder.setVisible(true);
                     getStereotypeFig().setVisible(true);
-
-                    // Only adjust the stereotype height if we are not
-                    // newly created. This gets round the problem of
-                    // loading classes with stereotypes defined, which
-                    // have the height already including the
-                    // stereotype.
-
-                    // if (!newlyCreated) {
-                        // rect.y -= STEREOHEIGHT; rect.height +=
-                        // STEREOHEIGHT;
-                    // }
                 }
             }
         }
 
-        // Whatever happened we are no longer newly created, so clear the
-        // flag. Then set the bounds for the rectangle we have defined.
-
+        forceRepaintShadow();
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
@@ -395,16 +379,16 @@ public class FigPackage extends FigNodeModelElement
     }
 
     /**
-     * <p>Sets the bounds, but the size will be at least the one returned by
-     *   {@link #getMinimumSize()}.</p>
+     * Sets the bounds, but the size will be at least the one returned by
+     * {@link #getMinimumSize()}.<p>
      *
-     * <p>If the required height is bigger, then the additional height is
-     *   equally distributed among all figs (i.e. compartments), such that the
-     *   cumulated height of all visible figs equals the demanded height<p>.
+     * If the required height is bigger, then the additional height is
+     * equally distributed among all figs (i.e. compartments), such that the
+     * cumulated height of all visible figs equals the demanded height<p>.
      *
-     * <p>Some of this has "magic numbers" hardcoded in. In particular there is
-     *   a knowledge that the minimum height of a name compartment is 21
-     *   pixels.</p>
+     * Some of this has "magic numbers" hardcoded in. In particular there is
+     * a knowledge that the minimum height of a name compartment is 21
+     * pixels.
      *
      * @param xa  Desired X coordinate of upper left corner
      *
@@ -446,7 +430,7 @@ public class FigPackage extends FigNodeModelElement
 
         // Now sort out the stereotype display. If the stereotype is displayed,
         // move the upper boundary of the name compartment up and set new
-        // bounds for the name and the stereotype compatments and the
+        // bounds for the name and the stereotype compartments and the
         // stereoLineBlinder that blanks out the line between the two
 
         int currentY = ya;
@@ -507,6 +491,7 @@ public class FigPackage extends FigNodeModelElement
 		 */
 		public void actionPerformed(ActionEvent ae) {
 		    stereotypeVisible = true;
+                    forceRepaintShadow();
 		    renderingChanged();
 		    damage();
 		}
@@ -657,4 +642,5 @@ public class FigPackage extends FigNodeModelElement
         renderingChanged();
         damage();
     }
+    
 } /* end class FigPackage */
