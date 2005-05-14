@@ -470,15 +470,15 @@ public final class ParserDisplay extends Parser {
             throw new ParseException("Qualified names must end with a name", 0);
         }
 
-        if (name.startsWith("+")) {
+        if (name != null && name.startsWith("+")) {
                 name = name.substring(1).trim();
                 Model.getCoreHelper().setVisibility(me, Model.getVisibilityKind().getPublic());
         }
-        if (name.startsWith("-")) {
+        if (name != null && name.startsWith("-")) {
                 name = name.substring(1).trim();
                 Model.getCoreHelper().setVisibility(me, Model.getVisibilityKind().getPrivate());
         }
-        if (name.startsWith("#")) {
+        if (name != null && name.startsWith("#")) {
                 name = name.substring(1).trim();
                 Model.getCoreHelper().setVisibility(me, Model.getVisibilityKind().getProtected());
         }
