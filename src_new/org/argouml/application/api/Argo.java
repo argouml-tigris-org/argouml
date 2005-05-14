@@ -28,8 +28,8 @@ import java.util.ArrayList;
 
 import javax.swing.Icon;
 
+import org.apache.log4j.Category;
 import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.application.modules.ModuleLoader;
 
@@ -365,7 +365,7 @@ public class Argo {
 
     static {
 	if (System.getProperty(ARGO_CONSOLE_SUPPRESS) != null) {
-            Logger.getRoot().getLoggerRepository().setThreshold(Level.OFF);
+            Category.getRoot().getLoggerRepository().setThreshold(Level.OFF);
 	}
     }
 }

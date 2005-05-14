@@ -65,7 +65,6 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionExit;
-import org.argouml.uml.ui.ActionOpenProject;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
 
@@ -710,7 +709,8 @@ class PreloadClasses implements Runnable {
     public void run() {
 
         Class c = null;
-        LOG.info("preloading...");
+        if (c == null) // otherwise anoying warning
+            LOG.info("preloading...");
 
 	// Alphabetic order
         c = org.argouml.kernel.DelayedChangeNotify.class;

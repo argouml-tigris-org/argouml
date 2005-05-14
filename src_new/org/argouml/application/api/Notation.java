@@ -33,8 +33,8 @@ import java.util.Iterator;
 import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.notation.NotationNameImpl;
 import org.argouml.application.notation.NotationProviderFactory;
@@ -814,7 +814,7 @@ public final class Notation implements PropertyChangeListener {
                 + " to "
                 + pce.getNewValue());
         ArgoEventPump.fireEvent(
-            new ArgoNotationEvent(ArgoEvent.NOTATION_CHANGED, pce));
+            new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, pce));
     }
 
     /**
