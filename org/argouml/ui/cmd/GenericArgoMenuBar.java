@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,6 +42,7 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.i18n.Translator;
+import org.argouml.language.ui.ActionNotation;
 import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionSaveConfiguration;
 import org.argouml.ui.ActionSettings;
@@ -112,12 +113,12 @@ public class GenericArgoMenuBar extends JMenuBar
     /**
      * Name and prepareKey-Strings of/for the i18n
      * menu.properties.
-     * MENU     = Prefix for menu-keys
+     * Prefix for menu-keys.
      */
     private static final String MENU = "menu.";
 
     /**
-     * MENUITEM = Prefix for menuitem-keys.
+     * Prefix for menuitem-keys.
      */
     private static final String MENUITEM = "menu.item.";
 
@@ -202,7 +203,7 @@ public class GenericArgoMenuBar extends JMenuBar
      * @param key is the key that we do this for.
      */
     protected static final void setMnemonic(JMenuItem item, String key) {
-	String propertykey = new String();
+	String propertykey = "";
 	if (item instanceof JMenu) {
 	    propertykey = MENU + prepareKey(key) + ".mnemonic";
 	} else {
@@ -225,6 +226,12 @@ public class GenericArgoMenuBar extends JMenuBar
 	return Translator.localize(MENU + prepareKey(key));
     }
 
+    /**
+     * Set the accelerator of  a given item.
+     *
+     * @param item The item.
+     * @param keystroke The key stroke.
+     */
     static final void setAccelerator(JMenuItem item, KeyStroke keystroke) {
         if (keystroke != null) {
             item.setAccelerator(keystroke);
@@ -583,8 +590,8 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(adjustPageBreaks, "Adjust Pagebreaks");
 
         view.addSeparator();
-        JMenu notation = (JMenu) view.add(
-            org.argouml.language.ui.ActionNotation.getInstance().getMenu());
+        JMenu notation =
+            (JMenu) view.add(ActionNotation.getInstance().getMenu());
 	setMnemonic(notation, "Notation");
 
         view.addSeparator();
@@ -667,20 +674,22 @@ public class GenericArgoMenuBar extends JMenuBar
 	    (JMenu) arrange.add(new JMenu(menuLocalize("Nudge")));
         setMnemonic(nudge, "Nudge");
 
-        JMenuItem preferredSize = arrange.
-            add(new CmdSetPreferredSize(CmdSetPreferredSize.MINIMUM_SIZE));
+        JMenuItem preferredSize =
+            arrange.add(
+                    new CmdSetPreferredSize(CmdSetPreferredSize.MINIMUM_SIZE));
         setMnemonic(preferredSize, "Preferred Size");
 
         JMenuItem autoResize =
 	    arrange.addCheckItem(new ActionAutoResize());
 	setMnemonic(autoResize, "Toggle Auto Resize");
 
-	JMenuItem newLayout = arrange.add(new ActionLayout());
+	arrange.add(new ActionLayout());
 
         appendPluggableMenus(arrange, PluggableMenu.KEY_ARRANGE);
 
-        Runnable initLater = new InitMenusLater(align, distribute,
-                                                reorder, nudge);
+        Runnable initLater =
+            new InitMenusLater(align, distribute,
+                    	       reorder, nudge);
 
         org.argouml.application.Main.addPostLoadAction(initLater);
     }
