@@ -150,8 +150,7 @@ class PropertySpecialString {
  *
  * @stereotype singleton
  */
-
-public class ParserDisplay extends Parser {
+public final class ParserDisplay extends Parser {
     /**
      * The one and only ParserDisplay.
      */
@@ -201,7 +200,8 @@ public class ParserDisplay extends Parser {
      */
     private ParserDisplay() {
         attributeSpecialStrings = new PropertySpecialString[2];
-        attributeSpecialStrings[0] = new PropertySpecialString("frozen",
+        attributeSpecialStrings[0] =
+            new PropertySpecialString("frozen",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     if (Model.getFacade().isAStructuralFeature(element)) {
@@ -215,7 +215,8 @@ public class ParserDisplay extends Parser {
                     }
                 }
             });
-        attributeSpecialStrings[1] = new PropertySpecialString("addonly",
+        attributeSpecialStrings[1] =
+            new PropertySpecialString("addonly",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     if (Model.getFacade().isAStructuralFeature(element)) {
@@ -235,7 +236,8 @@ public class ParserDisplay extends Parser {
         attributeCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 
         operationSpecialStrings = new PropertySpecialString[8];
-        operationSpecialStrings[0] = new PropertySpecialString("sequential",
+        operationSpecialStrings[0] =
+            new PropertySpecialString("sequential",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     if (Model.getFacade().isAOperation(element)) {
@@ -244,7 +246,8 @@ public class ParserDisplay extends Parser {
                     }
                 }
             });
-        operationSpecialStrings[1] = new PropertySpecialString("guarded",
+        operationSpecialStrings[1] =
+            new PropertySpecialString("guarded",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     Object kind = Model.getConcurrencyKind().getGuarded();
@@ -256,7 +259,8 @@ public class ParserDisplay extends Parser {
                     }
                 }
             });
-        operationSpecialStrings[2] = new PropertySpecialString("concurrent",
+        operationSpecialStrings[2] =
+            new PropertySpecialString("concurrent",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     Object kind =
@@ -269,7 +273,8 @@ public class ParserDisplay extends Parser {
                     }
                 }
             });
-        operationSpecialStrings[3] = new PropertySpecialString("concurrency",
+        operationSpecialStrings[3] =
+            new PropertySpecialString("concurrency",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     Object kind =
@@ -284,7 +289,8 @@ public class ParserDisplay extends Parser {
                     }
                 }
             });
-        operationSpecialStrings[4] = new PropertySpecialString("abstract",
+        operationSpecialStrings[4] =
+            new PropertySpecialString("abstract",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     boolean isAbstract = true;
@@ -296,7 +302,8 @@ public class ParserDisplay extends Parser {
                     }
                 }
             });
-        operationSpecialStrings[5] = new PropertySpecialString("leaf",
+        operationSpecialStrings[5] =
+            new PropertySpecialString("leaf",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     boolean isLeaf = true;
@@ -308,7 +315,8 @@ public class ParserDisplay extends Parser {
                     }
                 }
             });
-        operationSpecialStrings[6] = new PropertySpecialString("query",
+        operationSpecialStrings[6] =
+            new PropertySpecialString("query",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     boolean isQuery = true;
@@ -320,7 +328,8 @@ public class ParserDisplay extends Parser {
                     }
                 }
             });
-        operationSpecialStrings[7] = new PropertySpecialString("root",
+        operationSpecialStrings[7] =
+            new PropertySpecialString("root",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     boolean isRoot = true;
@@ -539,16 +548,18 @@ public class ParserDisplay extends Parser {
         ParseException pex = null;
         int start = 0;
         int end = indexOfNextCheckedSemicolon(text, start);
+        Project currentProject =
+            ProjectManager.getManager().getCurrentProject();
         if (end == -1) {
             //no text? remove op!
-            ProjectManager.getManager().getCurrentProject().moveToTrash(op);
+            currentProject.moveToTrash(op);
             TargetManager.getInstance().setTarget(cls);
             return;
         }
         String s = text.substring(start, end).trim();
         if (s == null || s.length() == 0) {
             //no non-whitechars in text? remove op!
-            ProjectManager.getManager().getCurrentProject().moveToTrash(op);
+            currentProject.moveToTrash(op);
             TargetManager.getInstance().setTarget(cls);
             return;
         }
@@ -561,12 +572,10 @@ public class ParserDisplay extends Parser {
             s = text.substring(start, end).trim();
             if (s != null && s.length() > 0) {
                 // yes, there are more:
-                Collection propertyChangeListeners = ProjectManager
-                    .getManager().getCurrentProject().findFigsForMember(cls);
-                Object model = ProjectManager.getManager().getCurrentProject()
-                    .getModel();
-                Object voidType = ProjectManager.getManager()
-                    .getCurrentProject().findType("void");
+                Collection propertyChangeListeners =
+                    currentProject.findFigsForMember(cls);
+                Object model = currentProject.getModel();
+                Object voidType = currentProject.findType("void");
                 Object newOp =
                     Model.getCoreFactory()
                     	.buildOperation(cls, model, voidType,
@@ -3023,20 +3032,33 @@ public class ParserDisplay extends Parser {
             // association.
             String pname = "";
             String mname = "";
-            String gname = GeneratorDisplay.getInstance()
-                    .generateMessageNumber(mes);
+            String gname =
+                GeneratorDisplay.getInstance().generateMessageNumber(mes);
             boolean swapRoles = false;
-            int majval = (seqno.get(seqno.size() - 2) != null ? Math.max(
-                    ((Integer) seqno.get(seqno.size() - 2)).intValue() - 1, 0)
-                    : 0);
-            int minval = (seqno.get(seqno.size() - 1) != null ? Math.max(
-                    ((Integer) seqno.get(seqno.size() - 1)).intValue(), 0) : 0);
+            int majval = 0;
+            if (seqno.get(seqno.size() - 2) != null) {
+                majval =
+                    Math.max(((Integer) seqno.get(seqno.size() - 2)).intValue()
+                             - 1,
+                             0);
+            }
+            int minval = 0;
+            if (seqno.get(seqno.size() - 1) != null) {
+                minval =
+                    Math.max(((Integer) seqno.get(seqno.size() - 1)).intValue(),
+                            0);
+            }
 
             for (i = 0; i + 1 < seqno.size(); i += 2) {
-                int bv = (seqno.get(i) != null ? Math.max(((Integer) seqno
-                        .get(i)).intValue(), 1) : 1);
-                int sv = (seqno.get(i + 1) != null ? Math.max(((Integer) seqno
-                        .get(i + 1)).intValue(), 0) : 0);
+                int bv = 1;
+                if (seqno.get(i) != null) {
+                    bv = Math.max(((Integer) seqno.get(i)).intValue(), 1);
+                }
+
+                int sv = 0;
+                if (seqno.get(i + 1) != null) {
+                    sv = Math.max(((Integer) seqno.get(i + 1)).intValue(), 0);
+                }
 
                 if (i > 0) {
                     mname += ".";
@@ -3197,8 +3219,8 @@ public class ParserDisplay extends Parser {
             for (i = 0; i < predecessors.size(); i++) {
                 it = roots.iterator();
                 while (it.hasNext()) {
-                    Object/* MMessage */msg = walkTree(/*(MMessage)*/it.next(),
-                            (Vector) predecessors.get(i));
+                    Object msg =
+                        walkTree(it.next(), (Vector) predecessors.get(i));
                     if (msg != null && msg != mes) {
                         if (isBadPreMsg(mes, msg)) {
                             throw new ParseException(
@@ -3278,10 +3300,16 @@ public class ParserDisplay extends Parser {
     private Object walkTree(Object root, Vector path) {
         int i;
         for (i = 0; i + 1 < path.size(); i += 2) {
-            int bv = (path.get(i) != null ? Math.max(((Integer) path.get(i))
-                    .intValue() - 1, 0) : 0);
-            int sv = (path.get(i + 1) != null ? Math.max(((Integer) path
-                    .get(i + 1)).intValue(), 0) : 0);
+            int bv = 0;
+            if (path.get(i) != null) {
+                bv = Math.max(((Integer) path.get(i)).intValue() - 1, 0);
+            }
+
+            int sv = 0;
+            if (path.get(i + 1) != null) {
+                sv = Math.max(((Integer) path.get(i + 1)).intValue(), 0);
+            }
+
             root = walk(root, bv - 1, true);
             if (root == null) {
                 return null;
@@ -3527,7 +3555,7 @@ public class ParserDisplay extends Parser {
 
             if (i < len && n1.charAt(i) != '.') {
                 return false;
-            } 
+            }
             i++;
 
             if (j < jlen && n2.charAt(j) != '.') {
@@ -3819,7 +3847,7 @@ public class ParserDisplay extends Parser {
         }
 
         Model.getCommonBehaviorHelper().setClassifiers(noi, v);
-        Model.getCoreHelper().setName(noi, new String(name));
+        Model.getCoreHelper().setName(noi, name);
 
     }
 
@@ -3867,7 +3895,7 @@ public class ParserDisplay extends Parser {
         }
 
         Model.getCommonBehaviorHelper().setClassifiers(coi, v);
-        Model.getCoreHelper().setName(coi, new String(name));
+        Model.getCoreHelper().setName(coi, name);
 
     }
 
@@ -3938,7 +3966,8 @@ public class ParserDisplay extends Parser {
                 Model.getCommonBehaviorFactory()
                 	.buildUninterpretedAction(actionState);
         } else {
-            language = Model.getDataTypesHelper().getLanguage(
+            language =
+                Model.getDataTypesHelper().getLanguage(
                         Model.getFacade().getScript(entry));
         }
         Object actionExpression =
