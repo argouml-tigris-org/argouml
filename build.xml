@@ -260,6 +260,7 @@ Property files to be searched:
   <target name="ant.optional.init" depends="init">
     <path id="ant.optional.classpath">
       <pathelement location="${ant.home}/optional.jar"/>
+      <pathelement location="${ant.home}/libopt/ant-junit.jar"/>
       <pathelement location="${junit.jar.path}"/>
       <pathelement location="${jdepend.jar.path}"/>
       <pathelement location="${ant-xerces.jar.path}"/>
@@ -275,12 +276,6 @@ Property files to be searched:
     </taskdef>
 
     <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator" name="junitreport">
-      <classpath>
-	 <path refid="ant.optional.classpath"/>
-      </classpath>
-    </taskdef>
-
-    <taskdef classname="org.apache.tools.ant.taskdefs.optional.jdepend.JDependTask" name="jdepend">
       <classpath>
 	 <path refid="ant.optional.classpath"/>
       </classpath>
