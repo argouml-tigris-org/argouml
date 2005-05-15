@@ -66,11 +66,6 @@ public class FigModel extends FigPackage {
     public FigModel(GraphModel gm, Object node) {
         this();
         setOwner(node);
-
-        if (Model.getFacade().isAModel(node) 
-                        && Model.getFacade().getName(node) != null) {
-            getNameFig().setText(Model.getFacade().getName(node));
-        }
     }
 
     /**
