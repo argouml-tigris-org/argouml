@@ -54,8 +54,16 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * but that's plain misuse.
      */
     public UMLSequenceDiagram() {
-        this(Model.getCollaborationsFactory().buildCollaboration(
-		 ProjectManager.getManager().getCurrentProject().getRoot()));
+        super();
+        // Dirty hack to remove the trash the Diagram constructor leaves
+        SequenceDiagramGraphModel gm =
+            new SequenceDiagramGraphModel();
+        SequenceDiagramLayout lay =
+            new SequenceDiagramLayout(this.getName(), gm);
+        SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
+        lay.setGraphEdgeRenderer(rend);
+        lay.setGraphNodeRenderer(rend);
+        setLayer(lay);
     }
 
     /**
@@ -64,20 +72,12 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * @param collaboration the collaboration
      */
     public UMLSequenceDiagram(Object collaboration) {
-        super();
+        this();
         try {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) {
         }
-        // Dirty hack to remove the trash the Diagram constructor leaves
-        SequenceDiagramGraphModel gm =
-            new SequenceDiagramGraphModel(collaboration);
-        SequenceDiagramLayout lay =
-            new SequenceDiagramLayout(this.getName(), gm);
-        SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
-        lay.setGraphEdgeRenderer(rend);
-        lay.setGraphNodeRenderer(rend);
-        setLayer(lay);
+        ((SequenceDiagramGraphModel)getGraphModel()).setCollaboration( collaboration);
     }
 
     /**
@@ -89,7 +89,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
     public Object getOwner() {
         // TODO: in the future (when there are multiple models) this
         // should be changeable
-        return ProjectManager.getManager().getCurrentProject().getRoot();
+        //return ProjectManager.getManager().getCurrentProject().getRoot();
+        return getNamespace();
     }
 
     /**
@@ -98,7 +99,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * @return a new unique name.
      */
     protected String getNewDiagramName() {
-        String name = "Sequence Diagram " + getNextDiagramSerial();
+        String name = getLabelName()+" " + getNextDiagramSerial();
         if (!(ProjectManager.getManager().getCurrentProject()
 	      .isValidDiagramName(name))) {
             name = getNewDiagramName();
@@ -133,26 +134,47 @@ public class UMLSequenceDiagram extends UMLDiagram {
      */
     protected Object[] getUmlActions() {
         if (actions == null) {
-            actions = new Object[5];
+            actions = new Object[7];
             actions[0] =
-                new CmdCreateNode(Model.getMetaTypes().getObject(), "Object");
+                new ActionAddClassifierRole();
 	    int offset = 1;
 
 	    Object[][] actionList = {
-		{Model.getMetaTypes().getCallAction(), "CallAction"},
-		{Model.getMetaTypes().getReturnAction(), "ReturnAction"},
-		{Model.getMetaTypes().getCreateAction(), "CreateAction"},
-		{Model.getMetaTypes().getDestroyAction(), "DestroyAction"},
+                {
+                Model.getMetaTypes().getCallAction(), "CallAction"}
+                , {
+                Model.getMetaTypes().getReturnAction(), "ReturnAction"}
+                , {
+                Model.getMetaTypes().getCreateAction(), "CreateAction"}
+                , {
+                Model.getMetaTypes().getDestroyAction(), "DestroyAction"}
+                ,
 	    };
 
 	    for (int i = 0; i < actionList.length; i++) {
 		Hashtable args = new Hashtable();
-		args.put("edgeClass", Model.getMetaTypes().getLink());
+                args.put("edgeClass", Model.getMetaTypes().getMessage());
 		args.put("action", actionList[i][0]);
+                args.put("actionName", actionList[i][1]);
 		actions[i + offset] =
-		    new RadioAction(new CmdSetMode(ModeCreateLink.class, args,
+                    new RadioAction(new CmdSetMode(ModeCreateMessage.class,
+                    args,
 						   (String) actionList[i][1]));
 	    }
+            Hashtable args=new Hashtable();
+            args.put( "name", "SequenceExpand");
+            actions[5]=new RadioAction( new CmdSetMode(
+                ModeChangeHeight.class,
+                args,
+                (String)args.get("name")
+                ));
+            args=new Hashtable();
+            args.put( "name", "SequenceContract");
+            actions[6]=new RadioAction( new CmdSetMode(
+                ModeChangeHeight.class,
+                args,
+                (String)args.get("name")
+                ));
         }
         return actions;
     }
@@ -161,49 +183,14 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getNamespace()
      */
     public Object getNamespace() {
-        if (getGraphModel() == null
-            || !(getGraphModel() instanceof SequenceDiagramGraphModel)) {
-            SequenceDiagramGraphModel model =
-                new SequenceDiagramGraphModel(
-                    Model.getCollaborationsFactory().buildCollaboration(
-                        ProjectManager.getManager().getCurrentProject()
-                            .getRoot()));
-            SequenceDiagramLayout lay =
-                new SequenceDiagramLayout(this.getName(), model);
-            SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
-            lay.setGraphEdgeRenderer(rend);
-            lay.setGraphNodeRenderer(rend);
-            setLayer(lay);
-        }
         return ((SequenceDiagramGraphModel) getGraphModel()).getCollaboration();
     }
 
     /**
-     * UMLSequencediagram does not have a namespace.<p>
-     *
-     * This method throws therefore an UnsupportedOperationException.<p>
-     *
-     * @see org.argouml.uml.diagram.ui.UMLDiagram#setNamespace(Object)
      */
     public void setNamespace(Object ns) {
-        if (getGraphModel() == null
-            || !(getGraphModel() instanceof SequenceDiagramGraphModel)) {
-            SequenceDiagramGraphModel model =
-                new SequenceDiagramGraphModel(
-                    Model.getCollaborationsFactory().buildCollaboration(
-                        ProjectManager.getManager().getCurrentProject()
-			    .getRoot()));
-            SequenceDiagramLayout lay =
-                new SequenceDiagramLayout(this.getName(), model);
-            SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
-            lay.setGraphEdgeRenderer(rend);
-            lay.setGraphNodeRenderer(rend);
-            setLayer(lay);
-        }
-        Model.getCoreHelper().setNamespace(
-            ((SequenceDiagramGraphModel) getLayer().getGraphModel())
-                .getCollaboration(),
-            ns);
+        ((SequenceDiagramGraphModel)getGraphModel()).setCollaboration( ns);
+        super.setNamespace(ns);
     }
 
     /**
@@ -211,9 +198,9 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * this diagram when the diagram is removed.
      */
     public void cleanUp() {
-        Object collab =
-            ((SequenceDiagramGraphModel) getGraphModel()).getCollaboration();
+/*
         ProjectManager.getManager().getCurrentProject().moveToTrash(collab);
+*/
     }
 
 } /* end class UMLSequenceDiagram */

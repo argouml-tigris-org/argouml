@@ -22,21 +22,38 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// Created on Nov 29, 2003
+package org.argouml.uml.diagram.sequence.ui;
 
-package org.argouml.uml.diagram.sequence;
+import org.tigris.gef.presentation.ArrowHeadGreater;
 
 /**
- * An abstract Node for the sequence diagram.
- *
+ * @author jaap.branderhorst
  */
-public abstract class Node {
+public class FigCreateActionMessage extends FigMessage {
+
+    /**
+     * @param owner the owner object
+     */
+    public FigCreateActionMessage(Object owner) {
+        super(owner);
+        setDestArrowHead(new ArrowHeadGreater());
+        setDashed(false);
+    }
 
     /**
      * The constructor.
      *
      */
-    public Node() {
+    public FigCreateActionMessage() {
+        this(null);
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.sequence.ui.FigMessage#layoutActivations()
+     */
+    protected void layoutActivations() {
+        // TODO: Auto-generated method stub
+
     }
 
 }

@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -86,9 +87,14 @@ public class FigEdgeAssociationClass
         setDestFigNode((FigNode) toFig);
         setDestPortFig(toFig);
         setSourcePortFig(fromFig);
+        setSourceFigNode((FigNode) fromFig);
         computeRoute();
     }
-
+    
+    public String getTipString(MouseEvent me) {
+        return "From " + getSourceFigNode().getClass().getName() + " " + getSourceFigNode().getId() + " to " + getDestFigNode().getId();
+    }
+    
     ////////////////////////////////////////////////////////////////
     // accessors
 
@@ -156,4 +162,22 @@ public class FigEdgeAssociationClass
         super.removeFromDiagram();
         TargetManager.getInstance().removeHistoryElement(this);
     }
+
+//    /**
+//     * Override the ancestor to do nothing.
+//     * The dashed edge of an association edge currently has no source FigNode
+//     * as it is actually attached to a Fig Edge.
+//     * We must override this method otherwise the ancestor would throw an
+//     * exception on this condition.
+//     */
+//    public void setSourceFigNode(FigNode fromFig) {
+//    }
+//    
+//    /**
+//     * Override the ancestor to return the port.
+//     */
+//    public Fig getSourceFigNode() {
+//        return getSourcePortFig();
+//    }
+    
 } /* end class FigEdgeAssociationClass */

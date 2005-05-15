@@ -181,7 +181,8 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
         // last is the top fig.
         while (figs.hasMoreElements()) {
             Fig candidateFig = (Fig) figs.nextElement();
-            if (candidateFig instanceof FigNodeModelElement) {
+            if (candidateFig instanceof FigNodeModelElement
+                    && candidateFig.isSelectable()) {
                 newFig = (FigNodeModelElement) candidateFig;
             }
         }
@@ -193,7 +194,7 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
         }
 
         UMLMutableGraphSupport mgm =
-	    (UMLMutableGraphSupport) editor.getGraphModel();
+            (UMLMutableGraphSupport) editor.getGraphModel();
         FigNodeModelElement oldFig = null;
         boolean isSource = false;
         if (pointIndex == 0) {

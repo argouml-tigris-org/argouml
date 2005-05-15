@@ -71,6 +71,11 @@ public class XmiWriter {
                 logNotContainedElements();
                 throw new IncompleteXMIException();
             }
+        } catch (IncompleteXMIException ixe) {
+            if ( !xmiWriter.getNotContainedElements().isEmpty()) {
+                logNotContainedElements();
+                throw new SAXException(ixe);
+            }
         } catch (Exception e) {
             LOG.error("Exception thrown by the NSUML XMIWriter", e);
             throw new SAXException(e);

@@ -68,7 +68,7 @@ public class PropPanelObject extends PropPanelInstance {
 	addSeperator();
 
 	AbstractActionAddModelElement action =
-	    new ActionAddInstanceClassifier(Model.getMetaTypes().getUMLClass());
+	    new ActionAddInstanceClassifier(Model.getMetaTypes().getClassifier());
 	JScrollPane classifierScroll =
 	    new JScrollPane(
 	            new UMLMutableLinkedList(

@@ -22,31 +22,50 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.gef;
+package org.argouml.uml.diagram.sequence.ui;
 
-import org.xml.sax.helpers.DefaultHandler;
+import org.argouml.model.Model;
+import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.graph.GraphModel;
 
 /**
- * A class that implements this interface is responsible for maintaining
- * the stack of ContentHandler objects in response to {@link #pushHandlerStack}
- * and {@link #popHandlerStack} calls, and for making sure that the SAX parser
- * is always using the ContentHandler object at the top of the stack.
+ * Action to add an object to a sequence diagram.
  *
- * @author Michael MacDonald
+ * @author jaap.branderhorst@xs4all.nl
+ * @since Aug 11, 2003
  */
-public interface HandlerStack {
-    /**
-     * Pushes a new ContentHandler on the stack and insures that the
-     * SAX parser uses that handler for further events.
-     *
-     * @param handler ContentHandler to be pushed on the handler stack
-     */
-    void pushHandlerStack(DefaultHandler handler);
+public class ActionAddClassifierRole extends CmdCreateNode {
 
     /**
-     * Removes the top handler from the stack and insures that
-     * the SAX parser calls the previously underlying, now top ContentHandler
-     * object for further events.
+     * The constructor.
      */
-    void popHandlerStack();
+    public ActionAddClassifierRole() {
+        super(Model.getMetaTypes().getClassifierRole(), false, "ClassifierRole");
+    }
+
+    /**
+     * @see org.tigris.gef.graph.GraphFactory#makeNode()
+     */
+    public Object makeNode() {
+        Object node=null;
+        Editor ce = Globals.curEditor();
+        GraphModel gm = ce.getGraphModel();
+        if (gm instanceof SequenceDiagramGraphModel) {
+            Object collaboration=((SequenceDiagramGraphModel)gm).getCollaboration();
+            node=Model.getCollaborationsFactory().buildClassifierRole(
+                collaboration);
+            /*
+            Model.getCoreHelper().setNamespace( node,
+                                                Model.getFacade().getNamespace( collaboration));
+            */
+        } else {
+            throw new IllegalStateException("Graphmodel is not a "
+					    + "sequence diagram graph model");
+        }
+        return node;
+    }
+
 }

@@ -224,8 +224,6 @@ public class UmlFilePersister extends AbstractFilePersister
                     TemplateReader.getInstance().read(ARGO_TEE);
                 OCLExpander expander = new OCLExpander(templates);
                 expander.expand(writer, project, "  ");
-            } catch (FileNotFoundException e) {
-                throw new SaveException(e);
             } catch (ExpansionException e) {
                 throw new SaveException(e);
             }

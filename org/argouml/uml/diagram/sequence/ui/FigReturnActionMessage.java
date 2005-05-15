@@ -24,34 +24,42 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
+import java.util.List;
+
+import org.tigris.gef.presentation.ArrowHeadGreater;
+import org.tigris.gef.presentation.Fig;
+
+import org.argouml.uml.diagram.sequence.MessageNode;
+
 /**
- * @author jaap.branderhorst
+ * @author Jaap
  */
-public class FigCreateActionLink extends FigLink {
+public class FigReturnActionMessage extends FigMessage {
 
     /**
-     * @param owner the owner object
+     * @param owner The owner of the link.
      */
-    public FigCreateActionLink(Object owner) {
+    public FigReturnActionMessage(Object owner) {
         super(owner);
-        // TODO: Auto-generated constructor stub
+        setDestArrowHead(new ArrowHeadGreater());
+        setDashed(true);
     }
 
     /**
-     * The constructor.
+     * Override to make sure dashed is preserved across saves
+     *
+     * @see org.tigris.gef.presentation.FigEdge#setFig
+     */
+    public void setFig( Fig f)
+    {
+        super.setFig( f);
+        setDashed( true);
+    }
+
+    /**
      *
      */
-    public FigCreateActionLink() {
-        super();
-        // TODO: Auto-generated constructor stub
+    public FigReturnActionMessage() {
+        this( null);
     }
-
-    /**
-     * @see org.argouml.uml.diagram.sequence.ui.FigLink#layoutActivations()
-     */
-    protected void layoutActivations() {
-        // TODO: Auto-generated method stub
-
-    }
-
 }

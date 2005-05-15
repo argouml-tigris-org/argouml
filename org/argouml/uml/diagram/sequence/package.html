@@ -33,8 +33,12 @@
 
 <h2>Summary</h2>
 
-    <p>ArgoUml's Sequence diagrams have 2 implementations: pre- and post-0.14
-release. This document aims to help understand both implementations. There is
+    <p>A historical note:
+ArgoUml's Sequence diagrams now have had 3+ implementations: pre- 0.14,
+an incomplete 0.14 thru 0.18 implementation, which
+inspired an implementation by the
+current author, which was introduced in the 0.19 timeframe.
+There is
 also some code implemented by Peter Nabbefeld, this is described in the section: 
 'work_sdnested_epdv Branch Implementation'.</P>
 
@@ -89,6 +93,37 @@ repositioned or even deleted due to the sequence of messages.</LI>
 <ul><li>Diagram rendering / editing implmenentation</LI></UL>
 
     <p>To Do</P>
+
+<H2>0.19 Implementation</H2>
+
+<ul><li>Persistent Structure (PGML / UML model)</LI></UL>
+
+    <p>The model is updated at the specification level; the object lifetimes
+in the sequence diagram are associated with ClassifierRoles; the edges are Messages.
+Each message is associated with an action, which may be Call, Create, Destroy, or
+return.  For the model to serialize correctly, the actions have to be associated
+with a state; a state in a state diagram for the model is created for each message.</P>
+
+<ul><li>Save / Load procedure</LI></UL>
+
+    <p>Each FigClassifierRole create a FigMessagePort fig at every point that
+it sends and receives a message.  The FigMessagePort objects are associated with
+the FigEdge objects by their Y position; this is how the diagram is re-connected
+and the messages positioned when the diagram is loaded.  The PGMLStackParser
+pgml implementation lets FigClassifierRole control loading itself; otherwise,
+the FigMessagePort object positions would be ignored.</P>
+
+<ul><li>Diagram rendering / editing implmenentation</LI></UL>
+
+    <p>Each FigClassifierRole contains an array of MessageNode objects
+that designate a port--a point where a message can be sent or received.  The
+array stretches the length of the lifeline.  When a message is actually created,
+each end is associated with a FigMessagePort that is itself associated with
+a MessageNode in each FigClassifierRole.  When drawing the activation boxes,
+the array of MessageNode objects is traversed by a state machine; sending
+or receiving a message triggers a change of state that may start or end an
+activation box.  The state that is associated with each node also determines
+the messages that may be sent or received there.</P>
 
 <h2>Related Documentation:</h2>
 

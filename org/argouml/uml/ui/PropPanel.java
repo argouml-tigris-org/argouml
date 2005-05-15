@@ -603,6 +603,8 @@ public abstract class PropPanel
     }
 
     private void fireTargetSet(TargetEvent targetEvent) {
+      if ( listenerList==null)
+        listenerList=registrateTargetListeners( this);
 	//          Guaranteed to return a non-null array
 	Object[] listeners = listenerList.getListenerList();
 	for (int i = listeners.length - 2; i >= 0; i -= 2) {
@@ -614,6 +616,8 @@ public abstract class PropPanel
     }
 
     private void fireTargetAdded(TargetEvent targetEvent) {
+        if ( listenerList==null)
+          listenerList=registrateTargetListeners( this);
 	// Guaranteed to return a non-null array
 	Object[] listeners = listenerList.getListenerList();
 
@@ -626,6 +630,8 @@ public abstract class PropPanel
     }
 
     private void fireTargetRemoved(TargetEvent targetEvent) {
+      if ( listenerList==null)
+        listenerList=registrateTargetListeners( this);
 	// Guaranteed to return a non-null array
 	Object[] listeners = listenerList.getListenerList();
 	for (int i = listeners.length - 2; i >= 0; i -= 2) {
