@@ -65,11 +65,6 @@ public class FigSubsystem extends FigPackage {
     public FigSubsystem(GraphModel gm, Object node) {
         this();
         setOwner(node);
-
-        if (Model.getFacade().isASubsystem(node)
-                && (Model.getFacade().getName(node) != null)) {
-            getNameFig().setText(Model.getFacade().getName(node));
-        }
     }
 
     /**
