@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.StylePanelFigNodeModelElement;
 import org.argouml.uml.diagram.ui.StereotypeContainer;
+import org.argouml.uml.diagram.ui.VisibilityContainer;
 
 /**
  * Stylepanel which adds a checkbox to show or hide the stereotype.<p>
@@ -44,6 +45,7 @@ import org.argouml.uml.diagram.ui.StereotypeContainer;
 public class StylePanelFigPackage extends StylePanelFigNodeModelElement {
 
     private JCheckBox stereoCheckBox = new JCheckBox("Stereotype");
+    private JCheckBox visibilityCheckBox = new JCheckBox("Visibility");
 
     private JLabel displayLabel = new JLabel("Display: ");
 
@@ -61,6 +63,7 @@ public class StylePanelFigPackage extends StylePanelFigNodeModelElement {
         JPanel pane = new JPanel();
         pane.setLayout(new FlowLayout(FlowLayout.LEFT));
         pane.add(stereoCheckBox);
+        pane.add(visibilityCheckBox);
         displayLabel.setLabelFor(pane);
         
         add(pane, 0); // add in front of the others
@@ -68,6 +71,7 @@ public class StylePanelFigPackage extends StylePanelFigNodeModelElement {
         
         stereoCheckBox.setSelected(false);
         stereoCheckBox.addItemListener(this);
+        visibilityCheckBox.addItemListener(this);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -81,6 +85,8 @@ public class StylePanelFigPackage extends StylePanelFigNodeModelElement {
         super.refresh();
         StereotypeContainer stc = (StereotypeContainer) getPanelTarget();
         stereoCheckBox.setSelected(stc.isStereotypeVisible());
+        VisibilityContainer vc = (VisibilityContainer) getPanelTarget();
+        visibilityCheckBox.setSelected(vc.isVisibilityVisible());
         refreshTransaction = false;
     }
 
@@ -97,6 +103,10 @@ public class StylePanelFigPackage extends StylePanelFigNodeModelElement {
             if (src == stereoCheckBox) {
                 ((StereotypeContainer) getPanelTarget())
                     .setStereotypeVisible(stereoCheckBox.isSelected());
+                ProjectManager.getManager().setNeedsSave(true);
+            } else if (src == visibilityCheckBox) {
+                ((VisibilityContainer) getPanelTarget())
+                    .setVisibilityVisible(visibilityCheckBox.isSelected());
                 ProjectManager.getManager().setNeedsSave(true);
             } else
                 super.itemStateChanged(e);

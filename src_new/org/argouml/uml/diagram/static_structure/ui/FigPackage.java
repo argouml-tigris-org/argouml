@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
@@ -36,6 +37,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -49,6 +51,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.StereotypeContainer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.diagram.ui.VisibilityContainer;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
@@ -58,7 +61,7 @@ import org.tigris.gef.presentation.FigText;
  * Class to display graphics for a UML package in a class diagram.
  */
 public class FigPackage extends FigNodeModelElement
-    implements StereotypeContainer 
+    implements StereotypeContainer, VisibilityContainer 
     {
     private static final Logger LOG = Logger.getLogger(FigPackage.class);
 
@@ -79,10 +82,16 @@ public class FigPackage extends FigNodeModelElement
     private FigText body;
 
     /**
-     * Flags that indicates if the stereotype should be shown even if
+     * Flag that indicates if the stereotype should be shown even if
      * it is specified or not.
      */
     private boolean stereotypeVisible = true;
+    
+    /**
+     * Flag that indicates if the visibility should be shown in front 
+     * of the name.
+     */
+    private boolean visibilityVisible = false;
 
     /**
      * <p>A rectangle to blank out the line that would otherwise appear at the
@@ -150,6 +159,9 @@ public class FigPackage extends FigNodeModelElement
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
         updateEdges();
+        
+        visibilityVisible = 
+                Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY);
     }
 
     /**
@@ -160,17 +172,6 @@ public class FigPackage extends FigNodeModelElement
     public FigPackage(GraphModel gm, Object node) {
         this();
         setOwner(node);
-
-        // If this figure is created for an existing package node in the
-        // metamodel, set the figure's name according to this node. This is
-        // used when the user click's on 'add to diagram' in the navpane.
-        // Don't know if this should rather be done in one of the super
-        // classes, since similar code is used in FigClass.java etc.
-        // Andreas Rueckert <a_rueckert@gmx.net>
-        if (Model.getFacade().isAPackage(node)
-	        && Model.getFacade().getName(node) != null) {
-            getNameFig().setText(Model.getFacade().getName(node));
-	}
     }
 
     /**
@@ -321,19 +322,66 @@ public class FigPackage extends FigNodeModelElement
     }
 
     /**
+     * Updates the text of the name FigText.
+     */
+    protected void updateNameText() {
+        if (isReadyToEdit()) {
+            if (getOwner() == null) {
+                return;
+            }
+            String nameStr =
+                Notation.generate(this, Model.getFacade().getName(getOwner()));
+            Object v = Model.getFacade().getVisibility(getOwner());
+            if (v == null) {
+                /* Initially, the visibility is not set in the model. 
+                 * Still, we want to show the default, i.e. public.*/
+                v = Model.getVisibilityKind().getPublic();
+            }
+            if (visibilityVisible) {
+                nameStr = (Notation.generate(this, v) + " " + nameStr).trim();  
+                /* The trim is for when nothing is generated: omit the space. */
+            }
+            setName(nameStr);
+            updateBounds();
+        }
+    }
+    
+    /**
      * USED BY PGML.tee.
      * @return the class name and bounds together with compartment
      * visibility.
      */
     public String classNameAndBounds() {
         return super.classNameAndBounds()
-                + "stereotypeVisible=" + isStereotypeVisible();
+                + "stereotypeVisible=" + isStereotypeVisible()
+                + ";"
+                + "visibilityVisible=" + isVisibilityVisible();
     }    
     
     
     ////////////////////////////////////////////////////////////////
     // user interaction methods
 
+    /**
+     * Handles changes of the model. 
+     * If the visibility is changed via the properties panel, then
+     * the display of it on the diagram has to follow the change.
+     *
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */ 
+    protected void modelChanged(PropertyChangeEvent mee) {
+        // visibility
+        if (mee == null
+                || Model.getFacade().isAPackage(mee.getSource())
+                || (mee.getSource() == getOwner()
+                && mee.getPropertyName().equals("visibility"))) {
+            renderingChanged();
+            damage();
+        } else {
+            // name, etc. updating
+            super.modelChanged(mee);
+        }
+    }
 
     ////////////////////////////////////////////////////////////////
     // accessor methods
@@ -513,6 +561,37 @@ public class FigPackage extends FigNodeModelElement
 		}
 	    });
         }
+        if (!visibilityVisible) {
+                showMenu.add(new UMLAction(
+                        Translator.localize("menu.popup.show.show-visibility"),
+                        UMLAction.NO_ICON)
+            {
+                /**
+                 * @see java.awt.event.ActionListener#actionPerformed(
+                 *         java.awt.event.ActionEvent)
+                 */
+                public void actionPerformed(ActionEvent ae) {
+                    visibilityVisible = true;
+                    renderingChanged();
+                    damage();
+                }
+            });
+            } else {
+                showMenu.add(new UMLAction(
+                        Translator.localize("menu.popup.show.hide-visibility"),
+                        UMLAction.NO_ICON)
+            {
+                /**
+                 * @see java.awt.event.ActionListener#actionPerformed(
+                 *         java.awt.event.ActionEvent)
+                 */
+                public void actionPerformed(ActionEvent ae) {
+                    visibilityVisible = false;
+                    renderingChanged();
+                    damage();
+                }
+            });
+            }
         popUpActions.insertElementAt(showMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 
@@ -645,13 +724,31 @@ public class FigPackage extends FigNodeModelElement
     }
 
     /**
+     * @see org.argouml.uml.diagram.ui.VisibilityContainer#isVisibilityVisible()
+     */
+    public boolean isVisibilityVisible() {
+        return visibilityVisible;
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.VisibilityContainer#setVisibilityVisible(boolean)
+     */
+    public void setVisibilityVisible(boolean isVisible) {
+        visibilityVisible = isVisible;
+        renderingChanged();
+        damage();
+    }
+    
+    /**
      * TODO: i18n.
      * 
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
         ProjectBrowser.getInstance().getStatusBar().showStatus(
-            "Enter text according: [ <<stereotype>> ] [ + | - | # ] [ name ]");        
+            "Enter text according: [ <<stereotype>> ] [ + | - | # ] [ name ]");
+//        String s = GeneratorDisplay.getInstance().generate(getOwner());
+//        ft.setText(s);
     }
     
 } /* end class FigPackage */
