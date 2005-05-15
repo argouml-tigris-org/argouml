@@ -746,7 +746,7 @@ public class FigPackage extends FigNodeModelElement
      */
     protected void textEditStarted(FigText ft) {
         ProjectBrowser.getInstance().getStatusBar().showStatus(
-            "Enter text according: [ <<stereotype>> ] [ + | - | # ] [ name ]");
+            "Enter text according: [ <<stereotype>> ] [ + | - | # ] [ full_pathname :: ] [ name ]");
 //        String s = GeneratorDisplay.getInstance().generate(getOwner());
 //        ft.setText(s);
     }
