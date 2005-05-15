@@ -76,7 +76,6 @@ public class ActionSetModelElementVisibility extends UMLAction {
             Object target = ((UMLRadioButtonPanel)
                     source.getParent()).getTarget();
             if (Model.getFacade().isAModelElement(target)) {
-                Object m = /*(MModelElement)*/ target;
                 Object kind = null;
                 if (actionCommand.equals(PUBLIC_COMMAND)) {
                     kind = Model.getVisibilityKind().getPublic();
@@ -85,7 +84,7 @@ public class ActionSetModelElementVisibility extends UMLAction {
                 } else {
                     kind = Model.getVisibilityKind().getPrivate();
                 }
-                Model.getCoreHelper().setVisibility(m, kind);
+                Model.getCoreHelper().setVisibility(target, kind);
 
             }
         }
