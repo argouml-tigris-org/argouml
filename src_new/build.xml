@@ -129,11 +129,6 @@ Property files to be searched:
     <tstamp>
         <format pattern="yyyy" property="year"/>
     </tstamp>
-    <condition property="javadoc.dstamp" value="${DSTAMP}">
-      <not>
-	<isset property="javadoc.dstamp"/>
-      </not>
-    </condition>
 
     <property name="argo.dist.dir" value="../DIST"/>
 

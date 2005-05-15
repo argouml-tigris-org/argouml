@@ -30,8 +30,11 @@ import java.awt.event.MouseEvent;
 
 import org.apache.log4j.Logger;
 
+import org.argouml.i18n.Translator;
+
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.LayerManager;
 import org.tigris.gef.base.ModeCreate;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
@@ -46,10 +49,10 @@ import org.tigris.gef.presentation.FigNode;
  *
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ModeCreateLink extends ModeCreate {
+public class ModeCreateMessage extends ModeCreate {
 
     private static final Logger LOG =
-	Logger.getLogger(ModeCreateLink.class);
+	Logger.getLogger(ModeCreateMessage.class);
 
     /** The NetPort where the arc is paintn from */
     private Object startPort;
@@ -67,7 +70,7 @@ public class ModeCreateLink extends ModeCreate {
      * The constructor.
      *
      */
-    public ModeCreateLink() {
+    public ModeCreateMessage() {
         super();
     }
 
@@ -76,7 +79,7 @@ public class ModeCreateLink extends ModeCreate {
      *
      * @param par the editor
      */
-    public ModeCreateLink(Editor par) {
+    public ModeCreateMessage(Editor par) {
         super(par);
     }
 
@@ -97,7 +100,7 @@ public class ModeCreateLink extends ModeCreate {
      * @see org.tigris.gef.base.FigModifyingMode#instructions()
      */
     public String instructions() {
-        return "Drag to define a link to another port";
+        return Translator.localize( "action.sequence.new."+getArg( "actionName"));
     }
 
     /**
@@ -137,7 +140,7 @@ public class ModeCreateLink extends ModeCreate {
         Point snapPt = new Point();
         synchronized (snapPt) {
             snapPt.setLocation(
-                startPortFig.getX() + FigObject.WIDTH / 2,
+                startPortFig.getX() + FigClassifierRole.WIDTH / 2,
                 startPortFig.getY());
             editor.snap(snapPt);
             anchorX = snapPt.x;
@@ -167,6 +170,7 @@ public class ModeCreateLink extends ModeCreate {
         }
 
         int x = me.getX(), y = me.getY();
+        Class arcClass;
         Editor ce = Globals.curEditor();
         Fig f = ce.hit(x, y);
         if (f == null) {
@@ -176,12 +180,6 @@ public class ModeCreateLink extends ModeCreate {
         if (!(gm instanceof MutableGraphModel))
             f = null;
         MutableGraphModel mgm = (MutableGraphModel) gm;
-        // TODO: potential class cast exception
-        if (f == sourceFigNode) {
-            done();
-            me.consume();
-            return;
-        }
         if (f instanceof FigNode) {
             FigNode destFigNode = (FigNode) f;
             // If its a FigNode, then check within the
@@ -199,7 +197,7 @@ public class ModeCreateLink extends ModeCreate {
                 Object edgeType = getArg("edgeClass");
                 if (edgeType != null) {
                     newEdge =
-                        mgm.connect(startPort, foundPort, (Class) edgeType);
+                        mgm.connect(startPort, foundPort, edgeType);
                 } else {
                     newEdge = mgm.connect(startPort, foundPort);
                 }
@@ -210,12 +208,13 @@ public class ModeCreateLink extends ModeCreate {
                 // (determined by the GraphEdgeRenderer).
 
                 if (null != newEdge) {
+                    LayerManager lm = ce.getLayerManager();
                     ce.damaged(_newItem);
                     sourceFigNode.damage();
                     destFigNode.damage();
                     _newItem = null;
-                    FigLink fe =
-                        (FigLink) ce.getLayerManager()
+                    FigMessage fe =
+                        (FigMessage) ce.getLayerManager()
                             .getActiveLayer().presentationFor(newEdge);
                     fe.setSourcePortFig(startPortFig);
                     fe.setSourceFigNode(sourceFigNode);

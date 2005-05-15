@@ -98,7 +98,7 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
         try {
             expander =
                 new OCLExpander(TemplateReader.getInstance().read(PGML_TEE));
-        } catch (FileNotFoundException e) {
+        } catch (ExpansionException e) {
             throw new SaveException(e);
         }
         if (indent == null) {

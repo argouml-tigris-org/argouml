@@ -22,34 +22,34 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.gef;
+package org.argouml.uml.diagram.sequence.ui;
 
-import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.presentation.ArrowHeadGreater;
 
 /**
- * Handler for elements that represent FigText objects.
+ * @author Jaap
+ *
+ * To change the template for this generated type comment go to
+ * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ *
+ * @author jaap.branderhorst
  */
-public class FigTextHandler extends BaseHandler {
-    /**
-     * The Fig for the text.
-     */
-    private FigText text;
+public class FigDestroyActionMessage extends FigMessage {
 
     /**
-     * @param parser The PGMLStackParser for the diagram that contains this
-     * FigText object
-     * @param theText The object corresponding to the element being parsed
+     * @param owner the owner object
      */
-    public FigTextHandler(PGMLStackParser parser, FigText theText) {
-        super(parser);
-        text = theText;
+    public FigDestroyActionMessage(Object owner) {
+        super(owner);
+        setDestArrowHead(new ArrowHeadGreater());
+        setDashed(false);
     }
 
     /**
-     * The FigText text is set to the character contents of the element.
-     * @param contents The characters within the element.
+     * The constructor.
+     *
      */
-    public void gotElement(String contents) {
-        text.setText(contents);
+    public FigDestroyActionMessage() {
+        this(null);
     }
 }

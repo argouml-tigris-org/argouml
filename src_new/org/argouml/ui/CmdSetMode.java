@@ -115,6 +115,7 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
     public CmdSetMode(Class modeClass, Hashtable modeArgs, String name) {
     	super(modeClass, name);
     	_modeArgs = modeArgs;
+        putToolTip(name);
     }
 
     /**

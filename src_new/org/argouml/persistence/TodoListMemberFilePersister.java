@@ -99,7 +99,7 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
         try {
             expander =
                 new OCLExpander(TemplateReader.getInstance().read(TO_DO_TEE));
-        } catch (FileNotFoundException e) {
+        } catch (ExpansionException e) {
             throw new SaveException(e);
         }
 

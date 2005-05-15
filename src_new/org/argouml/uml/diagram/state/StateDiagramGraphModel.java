@@ -298,7 +298,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * java.lang.Object, java.lang.Class)
      */
     public Object connect(Object fromPort, Object toPort,
-			  Class edgeClass) {
+			  Object edgeClass) {
 
         if (Model.getFacade().isAFinalState(fromPort)) {
 	    return null;

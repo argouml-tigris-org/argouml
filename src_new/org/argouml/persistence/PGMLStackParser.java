@@ -29,11 +29,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.argouml.gef.FigGroupHandler;
-import org.argouml.gef.HandlerStack;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.ui.StereotypeContainer;
+import org.tigris.gef.persistence.pgml.FigGroupHandler;
+import org.tigris.gef.persistence.pgml.HandlerStack;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
@@ -44,7 +44,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * The PGML Parser.
  */
-public class PGMLStackParser extends org.argouml.gef.PGMLStackParser {
+public class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
     /**
      * Constructor.
      * @param modelElementsByUuid a map of model elements indexed

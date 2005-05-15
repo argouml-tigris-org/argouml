@@ -22,42 +22,46 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.gef;
+package org.argouml.uml.diagram.ui;
 
-import org.xml.sax.SAXException;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigCircle;
 
 /**
- * Content handler for <em>private</em> sub-elements
- * of Fig PGML-file elements.
- * The character contents of these elements specify additional
- * information about the properties of the Fig object.
+ * The T juntion joining the dashed edge to a solid edge of an association
+ * class.
+ * @author Bob Tarling
  */
-public class PrivateHandler extends BaseHandler {
-    /**
-     * The container.
-     */
-    private Container container;
 
-    /**
-     * @param parser The parser object containing the diagram that contains
-     * the fig specified by the element containing this element
-     * @param theContainer The object that will receive the text contents of
-     * this element
-     */
-    public PrivateHandler(PGMLStackParser parser, Container theContainer) {
-        super(parser);
-        container = theContainer;
+public class FigAssociationClassTee extends FigNodeModelElement {
+    private FigCircle bigPort;
+    public FigAssociationClassTee() {
+        bigPort = new FigCircle(0, 0, 10, 10, Color.black, Color.white);
+        addFig(bigPort);
     }
-
-    /**
-     * Send the text content of the <em>private</em> element to the containing
-     * element.
-     *
-     * @param contents Text content of the element
-     * @throws SAXException if something goes wrong.
-     */
-    public void gotElement(String contents)
-    	throws SAXException {
-        container.addObject(contents);
+    
+    public boolean hit(Rectangle r) {
+        return false;
     }
+    
+    public Object deepHitPort(int x, int y) {
+        return null;
+    }
+    
+    public Object hitPort(int x, int y) {
+        return null;
+    }
+    
+    public Fig hitFig(Rectangle r) {
+        return null;
+    }
+    
+    public boolean isSelectable() {
+        return false;
+    }
+    
 }

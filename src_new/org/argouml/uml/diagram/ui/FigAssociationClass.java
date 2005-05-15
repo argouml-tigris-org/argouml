@@ -27,15 +27,18 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
 
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.tigris.gef.base.Editor;
@@ -47,6 +50,8 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 
 
@@ -84,8 +89,7 @@ public class FigAssociationClass
     // constants
     private static final int DISTANCE = 80;
 
-    private FigCircle bigPort;
-    private FigCircle head;
+    private FigAssociationClassTee tee;
     private FigEdgeAssociationClass edge;
     private FigClassAssociationClass fig;
     private int oldMin = -1;
@@ -104,71 +108,85 @@ public class FigAssociationClass
         setBetweenNearestPoints(true);
         ((FigPoly) _fig).setRectilinear(false);
         setDashed(false);
-        bigPort = new FigCircle(0, 0, 10, 10, Color.cyan, Color.cyan);
-        head = new FigCircle(0, 0, 10, 10, Color.black, Color.white);
-        addPathItem(head, new PathConvPercent(this, 50, 0));
-
-        final FigAssociationClass currentFig = this;
+        
+        final FigAssociationClass thisFig = this;
+        
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                Layer lay = currentFig.getLayer();
+                Layer lay = thisFig.getLayer();
+
                 Editor editor = Globals.curEditor();
 
-                if (currentFig.getOwner() == null) {
-                    currentFig.removeFromDiagram();
-                    lay.remove(currentFig);
-                    editor.remove(currentFig);
-                }
-                else {
-                    currentFig.removePathItem(getMiddleGroup());
+                if (thisFig.getOwner() == null) {
+                    thisFig.removeFromDiagram();
+                    lay.remove(thisFig);
+                    editor.remove(thisFig);
+                } else {
+                    thisFig.removePathItem(getMiddleGroup());
 
                     GraphModel graphModel = editor.getGraphModel();
-                    MutableGraphModel mutableGraphModel = (MutableGraphModel)
-                            graphModel;
-                    if (mutableGraphModel instanceof ClassDiagramGraphModel
-                            || mutableGraphModel 
-                            instanceof DeploymentDiagramGraphModel) {
-                        mutableGraphModel.addNode(currentFig.getOwner());
-                        int x = head.getX();
-                        int y = head.getY();
+                    
+                    if (graphModel instanceof DeploymentDiagramGraphModel
+                            || graphModel instanceof ClassDiagramGraphModel) {
+                        
+                        MutableGraphModel mutableGraphModel =
+                            (MutableGraphModel) graphModel;
+                        mutableGraphModel.addNode(thisFig.getOwner());
 
                         Rectangle drawingArea = ProjectBrowser.getInstance()
                                 .getEditorPane().getBounds();
                         Iterator nodes = lay.getContentsNoEdges().iterator();
                         while (nodes.hasNext()) {
                             Fig auxFig = (Fig) nodes.next();
-                            if (auxFig.getOwner().equals(currentFig.getOwner())
-                                    && auxFig  
-                                    instanceof FigClassAssociationClass) {
-                                fig = (FigClassAssociationClass) auxFig;
-                                fig.setMainFig(currentFig);
-                                break;
+                            if (auxFig.getOwner().equals(thisFig.getOwner())) {
+                                if (auxFig instanceof FigClassAssociationClass) {
+                                    fig = (FigClassAssociationClass) auxFig;
+                                    fig.setMainFig(thisFig);
+                                } else if (auxFig instanceof FigAssociationClassTee) {
+                                    tee = (FigAssociationClassTee) auxFig;
+                                    addPathItem(tee, new PathConvPercent(thisFig, 50, 0));
+                                }
+                                if (tee != null && fig != null) {
+                                    break;
+                                }
                             }
                         }
+                    
+                        if (tee == null) {
+                            tee = new FigAssociationClassTee();
+                            lay.add(tee);
+                            tee.setOwner(thisFig.getOwner());
+                            addPathItem(tee, new PathConvPercent(thisFig, 50, 0));
+                            thisFig.calcBounds();
+                        }
+                        
+                        int x = tee.getX();
+                        int y = tee.getY();
+                        
                         if (fig == null) {
-                            fig = new FigClassAssociationClass(currentFig);
-                            fig.setOwner(currentFig.getOwner());
+                            fig = new FigClassAssociationClass(thisFig);
+                            fig.setOwner(thisFig.getOwner());
                             y = y - DISTANCE;
                             if (y < 0)
-                                y = head.getY() + fig.getHeight() + DISTANCE;
+                                y = tee.getY() + fig.getHeight() + DISTANCE;
                             if (x + fig.getWidth() > drawingArea.getWidth())
-                                x = head.getX() - DISTANCE;
+                                x = tee.getX() - DISTANCE;
                             fig.setLocation(x, y);
                             lay.add(fig);
                         }
-
+                        
                         Iterator edges = lay.getContentsEdgesOnly().iterator();
                         while (edges.hasNext()) {
                             Fig auxFig = (Fig) edges.next();
-                            if (auxFig instanceof FigEdgeAssociationClass
-                                    && auxFig.getOwner() == null) {
+                            if (auxFig instanceof FigEdgeAssociationClass && auxFig.getOwner() == null) {
                                 lay.remove(auxFig);
                                 break;
                             }
                         }
                         edge =
-                            new FigEdgeAssociationClass(head, fig, currentFig);
-                        edge.setOwner(currentFig.getOwner());
+                            new FigEdgeAssociationClass(tee, fig, thisFig);
+                        
+                        edge.setOwner(thisFig.getOwner());
                         lay.add(edge);
                         edge.damage();
                         fig.damage();
@@ -189,7 +207,11 @@ public class FigAssociationClass
         setLayer(lay);
         setOwner(ed);
     }
-
+    
+    public String getTipString(MouseEvent me) {
+        return "Contains " + _fig.getClass().getName() + " " + _fig.getId() + " and " + tee.getClass().getName() + tee.getId();
+    }
+    
     ////////////////////////////////////////////////////////////////
     // accessors
 
@@ -213,8 +235,7 @@ public class FigAssociationClass
      */
     public void calcBounds() {
         super.calcBounds();
-        if (edge != null
-                && edge instanceof FigEdgeAssociationClass) {
+        if (edge != null && edge instanceof FigEdgeAssociationClass) {
             edge.computeRoute();
             edge.damage();
         }
@@ -339,6 +360,10 @@ public class FigAssociationClass
             edge.removeThisFromDiagram();
         if (fig != null)
             fig.removeThisFromDiagram();
+        if (tee != null) {
+            tee.removeFromDiagram();
+            TargetManager.getInstance().removeHistoryElement(tee);
+        }
         Editor ce = Globals.curEditor();
         ce.getSelectionManager().deselect(this);
         super.removeFromDiagram();

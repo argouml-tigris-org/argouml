@@ -97,6 +97,10 @@ public final class Translator {
      * @return The localized String.
      */
     public static String localize(String key) {
+        if ( key.indexOf('.')== -1)
+        {
+            key=org.tigris.gef.util.Localizer.localize( "UMLMenu", key);
+        }
         return org.workingfrog.i18n.util.Translator.localize(key, key);
     }
 

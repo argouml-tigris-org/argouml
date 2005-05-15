@@ -248,6 +248,7 @@ class UmlFactoryImpl
         {MAssociationClass.class, MClass.class, },
         {MAssociationEnd.class,   MClass.class,
          MAssociation.class, },
+         {MMessage.class, MClassifierRole.class},
     };
 
     /**
