@@ -442,7 +442,7 @@ public class ClassGenerationDialog
                         checked[j].add(cls);
 		    } else if (
                         ((NotationName) languages.get(j)).sameNotationAs(
-                            Notation.getDefaultNotation())) {
+                            Notation.getConfigueredNotation())) {
                         checked[j].add(cls);
                     }
                 }
