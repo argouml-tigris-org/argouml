@@ -578,7 +578,14 @@ Property files to be searched:
     <delete file="${argo.build.classes}/org/argouml/model/uml/ModelListener.class"/>
     <delete file="${argo.build.classes}/org/argouml/model/uml/AbstractModelFactory.class"/>
 
-    <javac debug="${debug}" deprecation="${deprecation}" destdir="${argo.build.classes}" includes="org/argouml/**/*.java" optimize="${optimize}" srcdir="${argo.src.dir}">
+    <javac debug="${debug}" 
+    	   deprecation="${deprecation}"
+    	   destdir="${argo.build.classes}"
+    	   includes="org/argouml/**/*.java"
+    	   optimize="${optimize}"
+    	   srcdir="${argo.src.dir}"
+    	   source="1.4"
+    	   target="1.4">
        <classpath>
 	  <path refid="argo.compile.classpath"/>
        </classpath>
@@ -781,7 +788,7 @@ Property files to be searched:
           classpath="${argo.build.classes};${classpath}"
           fork="yes"
           taskname="argouml"
-     	  jvmargs="-Xmx500M">
+    	  maxmemory="500M">
         <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/error_console.lcf"/>
         <classpath>
@@ -798,7 +805,7 @@ Property files to be searched:
           classpath="${argo.build.classes};${classpath}"
           fork="yes"
           taskname="argouml"
-    	  jvmargs="-Xmx500M">
+    	  maxmemory="500M">
         <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/full_console.lcf"/>
         <classpath>
@@ -815,7 +822,7 @@ Property files to be searched:
           classpath="${argo.build.classes};${classpath}"
           fork="yes"
           taskname="argouml"
-    	  jvmargs="-Xmx500M">
+    	  maxmemory="500M">
         <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/info_console.lcf"/>
         <classpath>
@@ -902,7 +909,9 @@ Property files to be searched:
            optimize="false"
            destdir="${argo.tests.classes}" 
            includes="**/GUITestProjectBrowser.java,**/MockUMLUserInterfaceContainer,**/*Deprecated.java"
-           srcdir="${argo.tests.src}">
+           srcdir="${argo.tests.src}"
+    	   source="1.4"
+  	       target="1.4">
       <classpath>
         <pathelement location="${argo.build.classes}"/>
         <pathelement location="${junit.jar.path}"/>
