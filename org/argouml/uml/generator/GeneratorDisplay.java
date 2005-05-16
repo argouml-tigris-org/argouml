@@ -27,7 +27,6 @@ package org.argouml.uml.generator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Stack;
 
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
@@ -38,10 +37,7 @@ import org.argouml.model.Model;
 /**
  * Generator2 subclass to generate code for display in diagrams in
  * text fields in the ArgoUML user interface.  The generated code
- * looks a lot like (invalid) Java.  The idea is that other generators
- * could be written for other languages.  This code is just a
- * placeholder for future development, I expect it to be totally
- * replaced. <p>
+ * looks a lot like (invalid) Java. <p>
  *
  * TODO: always check for null!!!
  *

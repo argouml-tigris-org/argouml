@@ -59,12 +59,8 @@ import tudresden.ocl.parser.node.AConstraintBody;
 import antlr.ANTLRException;
 
 /**
- * Generator2 subclass to generate text for display in diagrams and in
- * text fields in the Argo/UML user interface.  The generated code
- * looks a lot like (invalid) Java.  The idea is that other generators
- * could be written for other languages.  This code is just a
- * placeholder for future development, I expect it to be totally
- * replaced.
+ * Generator2 subclass to generate Java for display in diagrams and in
+ * text fields in the ArgoUML user interface.  
  *
  * @stereotype singleton
  */
@@ -980,9 +976,8 @@ public class GeneratorJava
 			    bsb.append(LINE_SEPARATOR);
                         }
                         return bsb.toString();
-                    } else {
-                        return "";
-                    }
+                    } 
+                    return "";
                 }
             }
 
@@ -1163,9 +1158,8 @@ public class GeneratorJava
             sDocComment.append(LINE_SEPARATOR).append(INDENT).append(" */");
 	    sDocComment.append(LINE_SEPARATOR);
             return sDocComment.toString();
-        } else {
-            return (s != null) ? s : "";
         }
+        return (s != null) ? s : "";
     }
 
     /**
@@ -1466,9 +1460,8 @@ public class GeneratorJava
 			|| tagged.trim().toLowerCase().equals("package")
 			|| tagged.trim().toLowerCase().equals("default")) {
 			return "";
-		    } else {
-			return tagged + " ";
-		    }
+		    } 
+                    return tagged + " ";
 		}
             }
         }
@@ -1492,8 +1485,9 @@ public class GeneratorJava
     }
 
     private String generateScope(Object f) {
-        if (Model.getFacade().isClassifierScope(f))
+        if (Model.getFacade().isClassifierScope(f)) {
             return "static ";
+        }
         return "";
     }
 
@@ -1503,9 +1497,8 @@ public class GeneratorJava
     private String generateAbstractness(Object op) {
         if (Model.getFacade().isAbstract(op)) {
             return "abstract ";
-        } else {
-            return "";
-        }
+        } 
+        return "";
     }
 
     /**
@@ -1514,14 +1507,14 @@ public class GeneratorJava
     private String generateChangeability(Object op) {
         if (Model.getFacade().isLeaf(op)) {
             return "final ";
-        } else {
-            return "";
         }
+        return "";
     }
 
     private String generateChangability(Object sf) {
-        if (!Model.getFacade().isChangeable(sf))
+        if (!Model.getFacade().isChangeable(sf)) {
             return "final ";
+        }
         return "";
     }
 

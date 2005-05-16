@@ -67,8 +67,7 @@ public final class NotationProviderFactory
     public static NotationProviderFactory getInstance() { return SINGLETON; }
 
     private List providers = new ArrayList();
-    private NotationProvider2 defaultProvider;
-
+    
     /**
      * Constructor to disallow other to create this.
      */
@@ -121,7 +120,7 @@ public final class NotationProviderFactory
 	        return np;
 	    }
 	}
-        return getDefaultProvider();
+        return GeneratorDisplay.getInstance();
     }
 
     /**
@@ -140,19 +139,6 @@ public final class NotationProviderFactory
 	    nots.add(np.getNotation());
 	}
         return nots;
-    }
-
-    /**
-     * @return the default notation provider
-     */
-    public NotationProvider2 getDefaultProvider() {
-	if (defaultProvider == null) {
-	    defaultProvider = GeneratorDisplay.getInstance();
-	    // TODO:  This must be the provider pointed to by the configuration,
-	    // or UML 13 if none.
-	    //
-	}
-	return defaultProvider;
     }
 
     /**

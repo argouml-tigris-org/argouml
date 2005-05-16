@@ -817,13 +817,6 @@ public final class Notation implements PropertyChangeListener {
             new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, pce));
     }
 
-    /**
-     * @return the provider
-     */
-    public static NotationProvider2 getDefaultProvider() {
-        return NotationProviderFactory.getInstance().getDefaultProvider();
-    }
-
     ////////////////////////////////////////////////////////////////
     // TODO:  The following accessors are commented out
     //                   and should be uncommented by those initially

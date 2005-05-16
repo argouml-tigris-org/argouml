@@ -135,9 +135,8 @@ public class NotationNameImpl
 
         if (version == null || version.equals("")) {
             return myName;
-        } else {
-            return myName + " " + version;
         }
+        return myName + " " + version;
     }
 
     /**
