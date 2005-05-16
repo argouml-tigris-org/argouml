@@ -307,7 +307,7 @@ class UmlFactoryImpl
      * this to connect two other existing UML model elements.
      * This only works for UML elements. If a diagram contains
      * elements of another type then it is the responsibility
-     * of the diagram manage those items and not call this
+     * of the diagram to manage those items and not call this
      * method. It also only works for UML model elements that
      * are represented in diagrams by an edge, hence the
      * requirement to state the connecting ends.
