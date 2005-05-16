@@ -80,7 +80,6 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.UUIDHelper;
-import org.argouml.uml.generator.GeneratorDisplay;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Globals;
@@ -315,7 +314,7 @@ public abstract class FigNodeModelElement
      * @see java.lang.Object#finalize()
      */
     public void finalize() {
-        ArgoEventPump.removeListener(ArgoEvent.ANY_NOTATION_EVENT, this);
+        ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
     /**
