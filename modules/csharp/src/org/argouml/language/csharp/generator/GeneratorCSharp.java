@@ -49,11 +49,7 @@ import tudresden.ocl.parser.node.AConstraintBody;
 
 /**
  * Generator2 subclass to generate text for display in diagrams in in
- * text fields in the ArgoUML user interface.  The generated code
- * looks a lot like (invalid) Java.  The idea is that other generators
- * could be written for outher languages.  This code is just a
- * placeholder for future development, I expect it to be totally
- * replaced.
+ * text fields in the ArgoUML user interface.  
  */
 public class GeneratorCSharp extends Generator2
     implements PluggableNotation, FileGenerator {
@@ -928,7 +924,7 @@ public class GeneratorCSharp extends Generator2
     private String generateConstraintEnrichedDocComment(Object me) {
 	// Retrieve any existing doccomment
 	String sDocComment =
-	    DocumentationManager.getDocs(me, GeneratorCSharp.INDENT);
+	    DocumentationManager.getDocs(me, Generator2.INDENT);
 
 	if (sDocComment != null) {
 	    // Fix Bug in documentation manager.defaultFor -->

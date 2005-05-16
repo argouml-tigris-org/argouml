@@ -50,7 +50,7 @@ public interface NotationName {
     String getVersion();
 
     /**
-     * Returns a textual title for the notation.
+     * Returns a textual title for the notation (i.e. name & version).
      *
      * @return a title for the language.
      */
