@@ -108,7 +108,7 @@ public final class NotationProviderFactory
     public NotationProvider2 getProvider(NotationName nn) {
         NotationName n = nn;
         if (nn == null) {
-            n = Notation.getDefaultNotation();
+            n = Notation.getConfigueredNotation();
         }
 
 	LOG.debug ("looking for " + n);

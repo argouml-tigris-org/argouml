@@ -106,7 +106,7 @@ public class ActionNotation extends UMLAction
      * @see javax.swing.event.MenuListener#menuSelected(javax.swing.event.MenuEvent)
      */
     public void menuSelected(MenuEvent me) {
-        NotationName dflt = Notation.getDefaultNotation();
+        NotationName dflt = Notation.getConfigueredNotation();
         menu.removeAll();
         List list = Notation.getAvailableNotations();
         ListIterator iterator = list.listIterator();

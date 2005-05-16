@@ -1198,7 +1198,7 @@ public final class ParserDisplay extends Parser {
                 Object initExpr =
                     Model.getDataTypesFactory()
                         .createExpression(
-                                Notation.getDefaultNotation().toString(),
+                                Notation.getConfigueredNotation().toString(),
                                 value.trim());
                 Model.getCoreHelper().setDefaultValue(p, initExpr);
             }
@@ -1519,7 +1519,7 @@ public final class ParserDisplay extends Parser {
         if (value != null) {
             Object initExpr =
                 Model.getDataTypesFactory()
-                    .createExpression(Notation.getDefaultNotation().toString(),
+                    .createExpression(Notation.getConfigueredNotation().toString(),
                             value.trim());
             Model.getCoreHelper().setInitialValue(attr, initExpr);
         }
@@ -2924,7 +2924,7 @@ public final class ParserDisplay extends Parser {
             }
             Object expr =
                 Model.getDataTypesFactory().createIterationExpression(
-                        Notation.getDefaultNotation().toString(), guard);
+                        Notation.getConfigueredNotation().toString(), guard);
             Model.getCommonBehaviorHelper().setRecurrence(
                     Model.getFacade().getAction(mes), expr);
         }
@@ -2994,7 +2994,7 @@ public final class ParserDisplay extends Parser {
                 Object e =
                     Model.getDataTypesFactory()
                         .createActionExpression(
-                                Notation.getDefaultNotation().toString(),
+                                Notation.getConfigueredNotation().toString(),
                                 expr.trim());
                 Model.getCommonBehaviorHelper().setScript(
                         Model.getFacade().getAction(mes), e);
@@ -3025,7 +3025,7 @@ public final class ParserDisplay extends Parser {
                     Object e =
                         Model.getDataTypesFactory()
                             .createExpression(
-                                    Notation.getDefaultNotation().toString(),
+                                    Notation.getConfigueredNotation().toString(),
                                     value.trim());
                     Model.getCommonBehaviorHelper().setValue(arg, e);
                 }

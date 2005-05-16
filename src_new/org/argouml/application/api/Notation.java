@@ -176,7 +176,7 @@ public final class Notation implements PropertyChangeListener {
      * 
      * @return the default NotationName
      */
-    public static NotationName getDefaultNotation() {
+    public static NotationName getConfigueredNotation() {
         NotationName n =
             NotationNameImpl.findNotation(
                 Configuration.getString(

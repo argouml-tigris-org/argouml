@@ -169,7 +169,7 @@ public abstract class FigEdgeModelElement
         setBetweenNearestPoints(true);
         ((FigPoly) _fig).setRectilinear(false);
         ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
-        currentNotationName = Notation.getDefaultNotation();
+        currentNotationName = Notation.getConfigueredNotation();
     }
 
     /**
@@ -677,7 +677,7 @@ public abstract class FigEdgeModelElement
             (PropertyChangeEvent) event.getSource();
         if (changeEvent.getPropertyName().equals("argo.notation.only.uml")) {
             if (changeEvent.getNewValue().equals("true")) { 
-                setContextNotation(Notation.getDefaultNotation());
+                setContextNotation(Notation.getConfigueredNotation());
             }
         } else {
             setContextNotation(

@@ -291,7 +291,7 @@ public abstract class FigNodeModelElement
 
         readyToEdit = false;
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
-        currentNotationName = Notation.getDefaultNotation();
+        currentNotationName = Notation.getConfigueredNotation();
     }
 
     /**
@@ -1403,7 +1403,7 @@ public abstract class FigNodeModelElement
 	    (PropertyChangeEvent) event.getSource();
         if (changeEvent.getPropertyName().equals("argo.notation.only.uml")) {
             if (changeEvent.getNewValue().equals("true")) {
-                setContextNotation(Notation.getDefaultNotation());
+                setContextNotation(Notation.getConfigueredNotation());
             }
         } else {
             setContextNotation(
