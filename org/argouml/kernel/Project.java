@@ -189,29 +189,6 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * Makes a just created project to an untitled project with a
-     * class diagram and a usecase diagram and an untitled model.
-     */
-//    protected void makeUntitledProject() {
-//        if (getRoot() != null) {
-//            throw new IllegalStateException(
-//                    "Tried to make a non-empty project "
-//                    + "to an untitled project");
-//        }
-//        Object model =
-//            Model.getModelManagementFactory().createModel();
-//        Model.getCoreHelper().setName(model, "untitledModel");
-//        setRoot(model);
-//        setCurrentNamespace(model);
-//        addMember(model);
-//        addMember(new UMLClassDiagram(model));
-//        addMember(new UMLUseCaseDiagram(model));
-//        addMember(new ProjectMemberTodoList("", this));
-//        ProjectManager.getManager().setNeedsSave(false);
-//        activeDiagram = (ArgoDiagram) diagrams.get(0);
-//    }
-
-    /**
      * Find the base name of this project.<p>
      *
      * This is the name minus any valid file extension.
