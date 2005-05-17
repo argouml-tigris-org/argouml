@@ -58,7 +58,6 @@ import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
@@ -186,33 +185,31 @@ public class Project implements java.io.Serializable, TargetListener {
             LOG.error("Exception setting the default profile", e);
         }
         addSearchPath("PROJECT_DIR");
-        ProjectManager.getManager().setNeedsSave(false);
         TargetManager.getInstance().addTargetListener(this);
-
     }
 
     /**
      * Makes a just created project to an untitled project with a
      * class diagram and a usecase diagram and an untitled model.
      */
-    protected void makeUntitledProject() {
-        if (getRoot() != null) {
-            throw new IllegalStateException(
-                    "Tried to make a non-empty project "
-                    + "to an untitled project");
-        }
-        Object model =
-            Model.getModelManagementFactory().createModel();
-        Model.getCoreHelper().setName(model, "untitledModel");
-        setRoot(model);
-        setCurrentNamespace(model);
-        addMember(model);
-        addMember(new UMLClassDiagram(model));
-        addMember(new UMLUseCaseDiagram(model));
-        addMember(new ProjectMemberTodoList("", this));
-        ProjectManager.getManager().setNeedsSave(false);
-        activeDiagram = (ArgoDiagram) diagrams.get(0);
-    }
+//    protected void makeUntitledProject() {
+//        if (getRoot() != null) {
+//            throw new IllegalStateException(
+//                    "Tried to make a non-empty project "
+//                    + "to an untitled project");
+//        }
+//        Object model =
+//            Model.getModelManagementFactory().createModel();
+//        Model.getCoreHelper().setName(model, "untitledModel");
+//        setRoot(model);
+//        setCurrentNamespace(model);
+//        addMember(model);
+//        addMember(new UMLClassDiagram(model));
+//        addMember(new UMLUseCaseDiagram(model));
+//        addMember(new ProjectMemberTodoList("", this));
+//        ProjectManager.getManager().setNeedsSave(false);
+//        activeDiagram = (ArgoDiagram) diagrams.get(0);
+//    }
 
     /**
      * Find the base name of this project.<p>
