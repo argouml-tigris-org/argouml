@@ -99,6 +99,8 @@ package org.argouml.language.cpp.reveng;
 /*REMOVE_END*/
 
 import java.util.Hashtable;
+import java.util.List;
+import java.util.ArrayList;
 }
 
 
@@ -115,24 +117,8 @@ options
 	}
 
 {
-	public void setModeler(Modeler m) {
-		this.m = m;
-	}
 	
 	private Modeler m;
-	
-	private Modeler mw = new Modeler() {
-		public void beginCompilationUnit(java.io.File f) {
-			if (m != null) m.beginCompilationUnit(f);
-		}
-		public void endCompilationUnit() { if (m != null) m.endCompilationUnit(); }
-		public void beginTranslationUnit() { 
-			if (m != null) m.beginTranslationUnit();
-		}
-		public void endTranslationUnit() {
-			if (m != null) m.endTranslationUnit();
-		}
-	};
 	
 	String enclosingClass="";//name of current class
 	boolean _td=false; // is type declaration?
@@ -175,7 +161,6 @@ options
 	// ::*, * yields QI_INVALID
 	// ::~T, ~T, A::~T yield QI_DTOR
 	// ~a, ~A::a, A::~T::, ~T:: yield QI_INVALID
-
 	public java.util.BitSet qualifiedItemIs(int lookahead_offset) throws TokenStreamException
 	{
 		int value;
@@ -481,14 +466,15 @@ options
 }
 
 
-translation_unit
+translation_unit [Modeler modeler]
 	{
 		if(!symbols.containsKey("std"))
 			symbols.put("std",CPPvariables.OT_TYPE_DEF);
+		m = modeler;
 	}
-   :  {mw.beginTranslationUnit();}
+   :  {m.beginTranslationUnit();}
       (external_declaration)+ EOF 
-      {mw.endTranslationUnit();}
+      {m.endTranslationUnit();}
    ;
    
    
@@ -536,7 +522,10 @@ external_declaration
 		(declaration_specifiers function_declarator SEMICOLON)=> declaration
 	|
 		// Function definition
-		(declaration_specifiers function_declarator LCURLY)=> function_definition
+		(declaration_specifiers function_declarator LCURLY)=>
+		{m.beginFunctionDefinition();}
+		function_definition
+		{m.endFunctionDefinition();}
 	|
 		// K & R Function definition
 		(declaration_specifiers	function_declarator declaration)=>function_definition
@@ -579,12 +568,17 @@ decl_namespace
 			// The following statement can be invoked to trigger selective antlr trace
 			// Also see below
 			//{if (strcmp((ns->getText()).data(),"xyz")==0) antlrTrace(true);}	// Used for diagnostic trigger
-			LCURLY (external_declaration)* RCURLY
+			LCURLY
+			{m.enterNamespaceScope(ns.getText());}
+			(external_declaration)*
+			{m.exitNamespaceScope();}
+			RCURLY
 			// The following should be implemented to match the optional statement above
 			//{antlrTrace(false);}
 		|
 			ns2:ID {_td=true;declaratorID(ns2.getText(),CPPvariables.QI_TYPE);}
 			ASSIGNEQUAL qid = qualified_id SEMICOLON 
+			{m.makeNamespaceAlias(qid, ns2.getText());}
 		)
 	;
 
@@ -628,10 +622,16 @@ member_declaration
 		(dtor_head LCURLY)=>dtor_head dtor_body	// Definition
 	|
 		// Function declaration
-		(declaration_specifiers	function_declarator SEMICOLON)=>declaration
+		(declaration_specifiers	function_declarator SEMICOLON)=>
+		{m.beginFunctionDeclaration();}
+		declaration
+		{m.endFunctionDeclaration();}
 	|  
 		// Function definition
-		(declaration_specifiers function_declarator LCURLY)=>function_definition
+		(declaration_specifiers function_declarator LCURLY)=>
+		{m.beginFunctionDefinition();}
+		function_definition
+		{m.endFunctionDefinition();}
 	|  
 		// User-defined type cast
 		(("inline")? conversion_function_decl_or_def)=>("inline")? conversion_function_decl_or_def
@@ -722,19 +722,19 @@ linkage_specification
 	;
 
 declaration_specifiers
-	{_td=false; boolean td=false; }
+	{_td=false; boolean td=false; List declSpecs = new ArrayList();}
 	:
 	(	(options {warnWhenFollowAmbig = false;}
-		: storage_class_specifier  
-		| type_qualifier  
-		|	("inline"|"_inline"|"__inline")	
-		|	"virtual" 					
-		|	"explicit"	
-		|	"typedef"	{td=true;}			
-		|	"friend"	
-		|	("_stdcall"|"__stdcall")
-		|   ("_declspec"|"__declspec") LPAREN ID RPAREN 
-		)*
+		: storage_class_specifier
+		| type_qualifier 
+		|	("inline"|"_inline"|"__inline")	{declSpecs.add("inline");}
+		|	"virtual" 						{declSpecs.add("virtual");}
+		|	"explicit"						{declSpecs.add("explicit");}
+		|	"typedef"						{td=true; declSpecs.add("typedef");}
+		|	"friend"						{declSpecs.add("friend");}
+		|	("_stdcall"|"__stdcall")		{declSpecs.add("__stdcall");}
+		|   ("_declspec"|"__declspec") LPAREN ID RPAREN // euluis: ignore
+		)* {if (!declSpecs.isEmpty()) m.declarationSpecifiers(declSpecs);}
 		type_specifier
 	|	
 		"typename"	{td=true;} direct_declarator 
@@ -743,16 +743,16 @@ declaration_specifiers
 	;
 
 storage_class_specifier 
-	:	"auto"	
-	|	"register"	
-	|	"static"	
-	|	"extern"	
-	|	"mutable" 	
+	:	"auto"		{m.storageClassSpecifier("auto");}
+	 |	"register"	{m.storageClassSpecifier("register");}
+	|	"static"	{m.storageClassSpecifier("static");}
+	|	"extern"	{m.storageClassSpecifier("extern");}
+	|	"mutable" 	{m.storageClassSpecifier("mutable");}
 	;
 
-type_qualifier  // aka cv_qualifier
-	:  ("const"|"const_cast") 
-	|  "volatile"				
+type_qualifier // aka cv_qualifier
+	:  ("const"|"const_cast") 	{m.typeQualifier("const");} // euluis TODO: const_cast ?!?
+	|  "volatile"				{m.typeQualifier("volatile");}
 	;
 
 type_specifier
@@ -762,25 +762,29 @@ type_specifier
 	;
 
 simple_type_specifier 
-	{	String s=""; java.util.BitSet auxBitSet=(java.util.BitSet)CPPvariables.QI_TYPE.clone(); auxBitSet.or(CPPvariables.QI_CTOR);} 
+	{	String s=""; 
+		java.util.BitSet auxBitSet=(java.util.BitSet)CPPvariables.QI_TYPE.clone(); 
+		auxBitSet.or(CPPvariables.QI_CTOR);
+		List sts = new ArrayList();
+	} 
 	:	(	{qualifiedItemIsOneOf(auxBitSet,0)}? 
 			 s = qualified_type 
 		|	
-			(	"char"	
-			|	"wchar_t"	
-			|	"bool"	
-			|	"short"		
-			|	"int"	
-			|	("_int64"|"__int64")	
-			|	"__w64"		
-			|	"long"		
-			|	"signed"	
-			|	"unsigned"	
-			|	"float"		
-			|	"double"	
-			|	"void"	    
-			|	("_declspec"|"__declspec") LPAREN ID RPAREN 
-			)+
+			(	"char"					{sts.add("char");}
+			|	"wchar_t"				{sts.add("wchar_t");}
+			|	"bool"					{sts.add("bool");}
+			|	"short"					{sts.add("short");}
+			|	"int"					{sts.add("int");}
+			|	("_int64"|"__int64")	{sts.add("__int64");}
+			|	"__w64"					{sts.add("__w64");}
+			|	"long"					{sts.add("long");}
+			|	"signed"				{sts.add("signed");}
+			|	"unsigned"				{sts.add("unsigned");}
+			|	"float"					{sts.add("float");}
+			|	"double"				{sts.add("double");}
+			|	"void"	    			{sts.add("void");}
+			|	("_declspec"|"__declspec") LPAREN ID RPAREN //euluis: ignore
+			)+ {m.simpleTypeSpecifier(sts);}
 		)
 		
 	;
@@ -816,12 +820,16 @@ class_specifier
 				{	saveClass = enclosingClass;
 				 	enclosingClass = id;
 				}
-				(base_clause)? LCURLY 
+				(base_clause)? 
+				LCURLY
+				{m.beginClassDefinition(type, id);} 
 				{
 					if(!symbols.containsKey(id))
 						symbols.put(id,type);
 				}
-				(member_declaration )* RCURLY
+				(member_declaration )* 
+				{m.endClassDefinition();}
+				RCURLY
 				{	enclosingClass = saveClass;}
 			|
 				{
@@ -960,9 +968,9 @@ base_specifier
 		;
 
 access_specifier 
-	:	"public" 
-	|	"protected" 
-	|	"private" 
+	:	"public" {m.accessSpecifier("public");}
+	|	"protected" {m.accessSpecifier("protected");}
+	|	"private"  {m.accessSpecifier("private");}
 	;
 
 member_declarator_list
@@ -1009,7 +1017,7 @@ direct_declarator
 	{String id="";}
 	:
 		(qualified_id LPAREN (RPAREN|declaration_specifiers) )=>	// Must be function declaration
-		id = qualified_id {declaratorID(id,CPPvariables.QI_FUN);}
+		id = qualified_id {declaratorID(id,CPPvariables.QI_FUN); m.directDeclarator(id);}
 		LPAREN (parameter_list)? RPAREN (type_qualifier)* (exception_specification)?
 	|	(qualified_id LPAREN qualified_id)=>	// Must be class instantiation
 		id = qualified_id {declaratorID(id,CPPvariables.QI_VAR);}LPAREN expression_list RPAREN
@@ -1029,8 +1037,10 @@ direct_declarator
 		{
 			if (_td==true)
 				declaratorID(id,CPPvariables.QI_TYPE);
-		 	else
+		 	else {
 				declaratorID(id,CPPvariables.QI_VAR);
+				m.directDeclarator(id);
+			}
 		}
 	|	
 		// DW 24/05/04 This block probably never entered as dtor selected out earlier
@@ -1096,6 +1106,7 @@ function_direct_declarator
 				declaratorID(q,CPPvariables.QI_FUN);
 			}
 		)
+		{m.functionDirectDeclarator(q);}
 		
 		LPAREN (parameter_list)? RPAREN
 		(options{warnWhenFollowAmbig = false;}:

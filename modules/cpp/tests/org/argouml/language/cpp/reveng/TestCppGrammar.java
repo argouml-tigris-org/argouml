@@ -27,6 +27,8 @@ package org.argouml.language.cpp.reveng;
 /*REMOVE_END*/
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.easymock.MockControl;
@@ -56,12 +58,12 @@ public class TestCppGrammar extends TestCase {
         super(name);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
-        modelerCtrl = MockControl.createNiceControl(Modeler.class);
+        modelerCtrl = MockControl.createStrictControl(Modeler.class);
         modeler = (Modeler) modelerCtrl.getMock();
     }
     /**
@@ -69,11 +71,47 @@ public class TestCppGrammar extends TestCase {
      * @throws Exception something went wrong
      */
     public void testParseSimpleClass() throws Exception {
-        String fn = "SimpleClass.cpp";
+        parseFile("SimpleClass.cpp");
+    }
+    
+    /**
+     * Test the grammar callbacks when parsing the SimpleClass.cpp file.
+     * @throws Exception something went wrong...
+     */
+    public void testGrammarCallbacks2Modeler() throws Exception {
         modeler.beginTranslationUnit();
+        
+        modeler.enterNamespaceScope("pack");
+        modeler.beginClassDefinition(CPPvariables.OT_CLASS, "SimpleClass");
+        modeler.accessSpecifier("public");
+        // virtual int newOperation();
+        modeler.beginFunctionDeclaration();
+        List declSpecs = new ArrayList(); declSpecs.add("virtual");
+        modeler.declarationSpecifiers(declSpecs);
+        List sts = new ArrayList(); sts.add("int");
+        modeler.simpleTypeSpecifier(sts);
+        modeler.directDeclarator("newOperation");
+        modeler.endFunctionDeclaration();
+        // double newAttr;
+        List sts2 = new ArrayList(); sts2.add("double");
+        modeler.simpleTypeSpecifier(sts2);
+        modeler.directDeclarator("newAttr");
+        modeler.endClassDefinition();
+        modeler.exitNamespaceScope();
+        
+        modeler.enterNamespaceScope("pack");
+        modeler.beginFunctionDefinition();
+        modeler.simpleTypeSpecifier(sts); // reuse from above
+        modeler.functionDirectDeclarator("SimpleClass::newOperation");
+        modeler.endFunctionDefinition();
+        modeler.exitNamespaceScope();
+        
+        modeler.makeNamespaceAlias("pack", "p");
         modeler.endTranslationUnit();
+        
         modelerCtrl.replay();
-        parseFile(fn);
+        
+        parseFile("SimpleClass.cpp");
         modelerCtrl.verify();
     }
 
@@ -117,7 +155,6 @@ public class TestCppGrammar extends TestCase {
             fn);
         CPPLexer lexer = new CPPLexer(file2Parse);
         CPPParser parser = new CPPParser(lexer);
-        parser.setModeler(modeler);
-        parser.translation_unit();
+        parser.translation_unit(modeler);
     }
 }

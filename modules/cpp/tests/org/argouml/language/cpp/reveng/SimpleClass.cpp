@@ -23,3 +23,5 @@ int SimpleClass::newOperation()
 
 }
 
+namespace p = pack;
+

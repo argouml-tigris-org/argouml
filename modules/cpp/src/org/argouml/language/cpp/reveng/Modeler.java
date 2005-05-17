@@ -25,9 +25,7 @@
 /*REMOVE_BEGIN*/
 package org.argouml.language.cpp.reveng;
 
-/*REMOVE_END*/
-
-import java.io.File;
+import java.util.List;
 
 /**
  * The Modeler receives calls from some reverse engineering system and is able
@@ -48,25 +46,116 @@ import java.io.File;
 public interface Modeler {
 
     /**
-     * Callback that signals the begin of a compilation unit.
+     * Signals the begin of the translation unit.
+     */
+    void beginTranslationUnit();
+
+    /**
+     * Signals the end of the translation unit.
+     */
+    void endTranslationUnit();
+
+    /**
+     * Signals that we entered the given namespace scope.
      * 
-     * @param file
-     *            Name of the file that contains the compilation unit
+     * @param ns
+     *            The namespace identifier. For unnamed namespaces it is an
+     *            empty <code>String</code>.
      */
-    public void beginCompilationUnit(File file);
+    void enterNamespaceScope(String ns);
 
     /**
-     * Callback that signals the end of the compilation unit.
+     * Signals the exit of the namespace scope.
      */
-    public void endCompilationUnit();
+    void exitNamespaceScope();
 
     /**
-     * Callback that signals the begin of the translation unit.
+     * Signal a new alias for the given namespace.
+     * 
+     * @param ns Identifier of the namespace for which an alias will be created.
+     * @param alias Identifier of the new namespace alias.
      */
-    public void beginTranslationUnit();
+    void makeNamespaceAlias(String ns, String alias);
 
     /**
-     * Callback that signals the end of the translation unit.
+     * Signal the begin of a new class definition
+     * 
+     * @param oType
+     *            The type of the specifier from the CPPvariables class, it is
+     *            one of the "OT_*" values, e.g., OT_CLASS.
+     * @param identifier The class identifier (name).
      */
-    public void endTranslationUnit();
+    void beginClassDefinition(String oType, String identifier);
+
+    /**
+     * Signals the end of a class definition.
+     */
+    void endClassDefinition();
+
+    /**
+     * Signals that the given access specifier was found.
+     * 
+     * @param accessSpec The access specifier, e.g., "public".
+     */
+    void accessSpecifier(String accessSpec);
+
+    /**
+     * Signals the begin of a function declaration.
+     */
+    void beginFunctionDeclaration();
+
+    /**
+     * Signals the end of a function declaration.
+     */
+    void endFunctionDeclaration();
+
+    /**
+     * Reports the declaration specifiers; "inline", "virtual", "friend", etc.
+     * 
+     * @param declSpecs
+     *            The declaration specifiers for the current declaration.
+     */
+    void declarationSpecifiers(List declSpecs);
+
+    /**
+     * Reports the type simple type specifiers (buit-in, like int, char,
+     * unsigned char, etc).
+     * 
+     * @param sts The simple type specifiers,
+     */
+    void simpleTypeSpecifier(List sts);
+
+    /**
+     * Reports the declarator, of the entity being declared.
+     * @param id The identifier of the construct being declared.
+     */
+    void directDeclarator(String id);
+
+    /**
+     * Reports the storage class specifier.
+     * @param storageClassSpec The storage class specifier.
+     */
+    void storageClassSpecifier(String storageClassSpec);
+
+    /**
+     * Reports the type qualifier.
+     * @param typeQualifier "const" or "volatile".
+     */
+    void typeQualifier(String typeQualifier);
+
+    /**
+     * Signals the begin of a function definition.
+     */
+    void beginFunctionDefinition();
+
+    /**
+     * Signals the end of a function definition.
+     */
+    void endFunctionDefinition();
+
+    /**
+     * Reports the identifier of the function being declared or defined.
+     * @param identifier the function identifier.
+     */
+    void functionDirectDeclarator(String identifier);
 }

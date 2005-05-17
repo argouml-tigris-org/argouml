@@ -12,3 +12,11 @@ Implementation-Version: 0.17.1
 Implementation-Title: ArgoUML C++ code generator plugin for JDK 1.2+
 
 
+Name: org/argouml/language/cpp/reveng/CppImport.class
+Extension-name: module.language.cpp.reveng
+Specification-Title: ArgoUML Dynamic Load Module
+Specification-Version: 0.19.2
+Specification-Vendor: University of California
+Implementation-Vendor: Luis Sergio Oliveira
+Implementation-Version: 0.19.2
+Implementation-Title: ArgoUML C++ reverse engineering plugin
