@@ -34,7 +34,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
@@ -110,10 +109,6 @@ public class ProjectBrowser
      */
     private static ProjectBrowser theInstance;
 
-    private static boolean showSplashScreen = false;
-
-    // ----- diagrams
-
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -151,11 +146,6 @@ public class ProjectBrowser
     private BorderSplitPane workAreaPane;
 
     /**
-     * The splash screen shown at startup
-     */
-    private SplashScreen splashScreen;
-
-    /**
      * The explorer (formerly called navigator) pane
      * containing the modelstructure.
      */
@@ -171,27 +161,23 @@ public class ProjectBrowser
      * TheInstance is filled.
      */
     private ProjectBrowser() {
-        this("ArgoUML", false);
+        this("ArgoUML", null);
     }
 
     /**
      * The constructor.
      *
      * @param applicationName  the title of the frame
-     * @param doSplash determines if we have to show
-     *                 the splash screen at startup
+     * @param splash the splash screen to show at startup
      */
-    private ProjectBrowser(String applicationName, boolean doSplash) {
+    private ProjectBrowser(String applicationName, SplashScreen splash) {
         super(applicationName);
         theInstance = this;
-        SplashScreen.setDoSplash(doSplash);
-        if (doSplash) {
-            splashScreen = SplashScreen.getInstance();
-	    splashScreen.getStatusBar().showStatus(
-	            Translator.localize(
-	                    "statusmsg.bar.making-project-browser"));
-            splashScreen.getStatusBar().showProgress(10);
-            splashScreen.setVisible(true);
+        if (splash != null) {
+	    splash.getStatusBar().showStatus(
+	        Translator.localize("statusmsg.bar.making-project-browser"));
+            splash.getStatusBar().showProgress(10);
+            splash.setVisible(true);
         }
 
         menuBar = new GenericArgoMenuBar();
@@ -201,7 +187,7 @@ public class ProjectBrowser
         getContentPane().setLayout(new BorderLayout());
         this.setJMenuBar(menuBar);
         //getContentPane().add(_menuBar, BorderLayout.NORTH);
-        getContentPane().add(createPanels(doSplash), BorderLayout.CENTER);
+        getContentPane().add(createPanels(splash), BorderLayout.CENTER);
         getContentPane().add(statusBar, BorderLayout.SOUTH);
 
         setAppName(applicationName);
@@ -224,6 +210,26 @@ public class ProjectBrowser
     }
 
     /**
+     * Singleton retrieval method for the projectbrowser. Lazely instantiates
+     * the projectbrowser.
+     * @return the singleton instance of the projectbrowser
+     */
+    public static synchronized ProjectBrowser getInstance() {
+        if (theInstance == null) {
+            theInstance = new ProjectBrowser();
+        }
+        return theInstance;
+    }
+    
+    /**
+     * Creator method for the projectbrowser. 
+     * @return the singleton instance of the projectbrowser
+     */
+    public static ProjectBrowser makeInstance(SplashScreen splash) {
+        return new ProjectBrowser("ArgoUML", splash);
+    }
+    
+    /**
      * @see java.awt.Component#getLocale()
      */
     public Locale getLocale() {
@@ -240,15 +246,15 @@ public class ProjectBrowser
      *                   position north, south, east or west.
      *
      */
-    protected Component createPanels(boolean doSplash) {
-        if (doSplash) {
-	    splashScreen.getStatusBar().showStatus(
+    protected Component createPanels(SplashScreen splash) {
+        if (splash != null) {
+	    splash.getStatusBar().showStatus(
 	            Translator.localize(
 	                    "statusmsg.bar.making-project-browser-explorer"));
-            splashScreen.getStatusBar().incProgress(5);
+            splash.getStatusBar().incProgress(5);
         }
-        //_navPane = new NavigatorPane(doSplash);
-        explorerPane = NavigatorPane.getInstance();
+        explorerPane = new NavigatorPane(splash);
+
         /* Work in progress here to allow multiple details panes with
         ** different contents - Bob Tarling
         */
@@ -310,12 +316,12 @@ public class ProjectBrowser
         // the argo application can be positioned.
         workAreaPane = new BorderSplitPane();
         // create the todopane
-        if (doSplash) {
-	    splashScreen.getStatusBar().showStatus(Translator.localize(
+        if (splash != null) {
+	    splash.getStatusBar().showStatus(Translator.localize(
 		    "statusmsg.bar.making-project-browser-to-do-pane"));
-            splashScreen.getStatusBar().incProgress(5);
+            splash.getStatusBar().incProgress(5);
         }
-        todoPane = new ToDoPane(doSplash);
+        todoPane = new ToDoPane(splash);
         restorePanelSizes();
 
         // There are various details panes all of which could hold
@@ -866,37 +872,6 @@ public class ProjectBrowser
      */
     public ToDoPane getTodoPane() {
         return todoPane;
-    }
-
-    /**
-     * Sets the splashscreen. Sets the current splashscreen to invisible
-     *
-     * @param ss the new splashscreen
-     */
-    public void setSplashScreen(SplashScreen ss) {
-        if (splashScreen != null && splashScreen != ss) {
-            splashScreen.setVisible(false);
-        }
-        splashScreen = ss;
-    }
-
-    /**
-     * Singleton retrieval method for the projectbrowser. Lazely instantiates
-     * the projectbrowser.
-     * @return the singleton instance of the projectbrowser
-     */
-    public static synchronized ProjectBrowser getInstance() {
-        if (theInstance == null) {
-            theInstance = new ProjectBrowser("ArgoUML", showSplashScreen);
-        }
-        return theInstance;
-    }
-
-    /**
-     * @param splash true if we have to show the splashscreen
-     */
-    public static synchronized void setSplash(boolean splash) {
-        showSplashScreen = splash;
     }
 
     /**

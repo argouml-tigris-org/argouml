@@ -43,20 +43,8 @@ public class SplashScreen extends JWindow implements IStatusBar {
 
     private StatusBar statusBar = new StatusBar();
 
-    private static SplashScreen instance;
-    // = new SplashScreen("Loading ArgoUML...", "Splash");
-
-    private static boolean doSplash;
-
-    /**
-     * @return the splash screen instance / singleton
-     */
-    public static synchronized SplashScreen getInstance() {
-        if (!doSplash) return null;
-        if (instance == null) {
-            instance = new SplashScreen("Loading ArgoUML...", "Splash");
-        }
-        return instance;
+    public SplashScreen() {
+        this("Loading ArgoUML...", "Splash");
     }
 
     /**
@@ -91,11 +79,6 @@ public class SplashScreen extends JWindow implements IStatusBar {
 	pack();
     }
 
-    //public void preload(Vector classnames) {
-	//preload classes?
-    //}
-
-
     /**
      * @return the status bar of this dialog
      */
@@ -109,24 +92,4 @@ public class SplashScreen extends JWindow implements IStatusBar {
      */
     public void showStatus(String s) { statusBar.showStatus(s); }
 
-    /**
-     * @see java.awt.Component#setVisible(boolean)
-     */
-    public void setVisible(boolean b) {
-	super.setVisible(b);
-    }
-
-    /**
-     * @param doTheSplash true if the splash screen should be shown
-     */
-    public static void setDoSplash(boolean doTheSplash) {
-        doSplash = doTheSplash;
-    }
-
-    /**
-     * @return true if the splash should be shown
-     */
-    public static boolean getDoSplash() {
-        return doSplash;
-    }
 } /* end class SplashScreen */

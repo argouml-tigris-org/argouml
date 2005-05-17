@@ -37,7 +37,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.argouml.model.Model;
-import org.argouml.ui.NavigatorPane;
 import org.argouml.util.CheckUMLModelHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -314,8 +313,8 @@ public class TestAgainstUmlModel extends TestCase {
          * navigator pane.  This is a temporary hack until the object
          * model is cleaned up.
          */
-        NavigatorPane.setInstance(null);
-        assertNull("Still getting NavigatorPane", NavigatorPane.getInstance());
+//        NavigatorPane.setInstance(null);
+//        assertNull("Still getting NavigatorPane", NavigatorPane.getInstance());
     }
 
     /**

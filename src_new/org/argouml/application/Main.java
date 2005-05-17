@@ -210,16 +210,16 @@ public class Main {
             return;
         }
 
-	// Register the default notation.
-	org.argouml.uml.generator.GeneratorDisplay.getInstance();
-
-	// Initialize the UMLActions
-	Actions.getInstance();
-
 	// The reason the gui is initialized before the commands are run
 	// is that some of the commands will use the projectbrowser.
 	st.mark("initialize gui");
-	initializeGUI(doSplash && !batch, themeMemory);
+        SplashScreen splash = initializeGUI(doSplash && !batch, themeMemory);
+        
+        // Register the default notation.
+        org.argouml.uml.generator.GeneratorDisplay.getInstance();
+
+        // Initialize the UMLActions
+        Actions.getInstance();
 
         if (reloadRecent && projectName == null) {
             // If no project was entered on the command line,
@@ -257,8 +257,7 @@ public class Main {
 	    return;
 	}
 
-        if (doSplash) {
-            SplashScreen splash = SplashScreen.getInstance();
+        if (splash != null) {
             if (urlToOpen == null) {
 		splash.getStatusBar().showStatus(
 		    Translator.localize("statusmsg.bar.defaultproject"));
@@ -301,8 +300,7 @@ public class Main {
             pb.setTitle(Translator.localize("label.projectbrowser-title"));
 	}
 
-        if (doSplash) {
-            SplashScreen splash = SplashScreen.getInstance();
+        if (splash != null) {
             splash.getStatusBar().showProgress(75);
         }
 
@@ -314,9 +312,8 @@ public class Main {
 
         st.mark("open window");
 
-        if (doSplash) {
-            SplashScreen splash = SplashScreen.getInstance();
-	    splash.getStatusBar().showStatus(
+        if (splash != null) {
+            splash.getStatusBar().showStatus(
                 Translator.localize("statusmsg.bar.open-project-browser"));
             splash.getStatusBar().showProgress(95);
         }
@@ -324,8 +321,7 @@ public class Main {
         pb.setVisible(true);
 
         st.mark("close splash");
-        if (doSplash) {
-            SplashScreen splash = SplashScreen.getInstance();
+        if (splash != null) {
             splash.setVisible(false);
             splash.dispose();
             splash = null;
@@ -604,16 +600,19 @@ public class Main {
      * @param doSplash true if we are updating the splash
      * @param themeMemory is the theme to set.
      */
-    private static void initializeGUI(boolean doSplash, String themeMemory) {
+    private static SplashScreen initializeGUI(
+                    boolean doSplash, String themeMemory) {
 	// initialize the correct look and feel
 	LookAndFeelMgr.getInstance().initializeLookAndFeel();
 	if (themeMemory != null) {
 	    LookAndFeelMgr.getInstance().setCurrentTheme(themeMemory);
 	}
 
-	// make the projectbrowser
-	ProjectBrowser.setSplash(doSplash);
-	ProjectBrowser pb = ProjectBrowser.getInstance();
+        SplashScreen splash = null;
+        if (doSplash) splash = new SplashScreen();
+
+        // make the projectbrowser
+	ProjectBrowser pb = ProjectBrowser.makeInstance(splash);
 
 	JOptionPane.setRootFrame(pb);
 
@@ -634,6 +633,7 @@ public class Main {
 	int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);
 	pb.setLocation(x, y);
 	pb.setSize(w, h);
+        return splash;
     }
 
 

@@ -29,7 +29,6 @@ import java.util.HashMap;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.ui.NavigatorPane;
 
 /**
  * @author Thierry Lach
@@ -58,7 +57,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      */
     protected void setUp() throws Exception {
 	super.setUp();
-	NavigatorPane.setInstance(null);
+//	NavigatorPane.setInstance(null);
     }
 
     /**

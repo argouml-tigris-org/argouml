@@ -81,18 +81,6 @@ public class GUITestProjectBrowser extends TestCase {
     }
 
     /**
-     * Tests the existance of public methods and public static methods for
-     * accessing the splashscreen.
-     *
-     * Since ProjectBrowser is a singleton without possibilities to remove it
-     * and the existance of the SplashScreen is determined when initially
-     * creating it, it is not possible to test it.
-     */
-    public void compileTestSplashScreen() {
-	ProjectBrowser.setSplash(true);
-    }
-
-    /**
      * Test the existance of public static members.
      */
     public void compileTestPublicStaticMembers() {

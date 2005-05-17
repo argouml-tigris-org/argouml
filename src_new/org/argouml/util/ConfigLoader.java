@@ -36,9 +36,7 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
-import org.argouml.i18n.Translator;
 import org.tigris.swidgets.Orientation;
-import org.argouml.ui.SplashScreen;
 
 /**
  * This class loads panel classes according a certain configuration file.
@@ -199,26 +197,6 @@ public class ConfigLoader {
 		    LOG.error(e);
 		}
 		if (res != null) {
-		    if (SplashScreen.getDoSplash()) {
-		    	SplashScreen splash = SplashScreen.getInstance();
-			Object[] msgArgs = {
-			    tabName,
-			};
-			splash.getStatusBar().showStatus(Translator.
-				messageFormat(
-				    "statusmsg.bar.making-project-browser",
-				    msgArgs));
-			splash.getStatusBar().incProgress(2);
-		    }
-                    // TODO: This is a problem with non-gui calling GUI.
-                    // I need to reimplement this with the splash panel
-                    // as a listener to progress changes - Bob
-                    //if (SplashScreen.getDoSplash()) {
-                    //    SplashScreen splash = SplashScreen.getInstance();
-                    //    splash.getStatusBar().showStatus(
-		    //        "Making Project Browser: " + tabName);
-                    //    splash.getStatusBar().incProgress(2);
-                    //}
 		    return res;
 		}
 	    }
