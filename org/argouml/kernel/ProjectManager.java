@@ -34,6 +34,9 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.ui.ActionSaveProject;
 import org.tigris.gef.graph.MutableGraphSupport;
 
@@ -175,7 +178,8 @@ public final class ProjectManager implements PropertyChangeListener {
 
     /**
      * Sets the current project (the project that is viewable in the
-     * projectbrowser).
+     * projectbrowser). 
+     * Sets the current diagram for the project (if one exists).
      * This method fires a propertychanged event.<p>
      *
      * If the argument is null, then the current project will be forgotten
@@ -202,13 +206,14 @@ public final class ProjectManager implements PropertyChangeListener {
     /**
      * Returns the current project.<p>
      *
-     * If there is no project, a new one is created.
+     * If there is no project, a new one is created 
+     * (unless we are busy creating one).
      *
-     * @return Project The current project.
+     * @return Project the current project
      */
     public Project getCurrentProject() {
         if (currentProject == null && !creatingCurrentProject) {
-            currentProject = makeEmptyProject();
+            makeEmptyProject();
         }
         return currentProject;
     }
@@ -220,15 +225,23 @@ public final class ProjectManager implements PropertyChangeListener {
     public Project makeEmptyProject() {
         creatingCurrentProject = true;
         LOG.info("making empty project");
-        Project p = new Project();
-        // the following line should not normally be here,
-        // but is necessary for argouml start up.
-        setCurrentProject(p);
-        p.makeUntitledProject();
-        // set the current project after making it!
-        setCurrentProject(p);
+        Project oldProject = currentProject;
+        currentProject = new Project();
+        Object model = Model.getModelManagementFactory().createModel();
+        Model.getCoreHelper().setName(model, "untitledModel");
+        currentProject.setRoot(model);
+        currentProject.setCurrentNamespace(model);
+        currentProject.addMember(model);
+        ArgoDiagram d = new UMLClassDiagram(model);
+        currentProject.addMember(d);
+        currentProject.addMember(new UMLUseCaseDiagram(model));
+        currentProject.addMember(new ProjectMemberTodoList("", currentProject));
+        ProjectManager.getManager().setNeedsSave(false);
+        currentProject.setActiveDiagram(d);
+        firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME, 
+                            oldProject, currentProject);
         creatingCurrentProject = false;
-        return p;
+        return currentProject;
     }
 
     /**
