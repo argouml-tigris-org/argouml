@@ -39,7 +39,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JToggleButton;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -55,6 +54,7 @@ import org.argouml.cognitive.ToDoListEvent;
 import org.argouml.cognitive.ToDoListListener;
 import org.argouml.cognitive.Translator;
 import org.argouml.ui.DisplayTextTree;
+import org.argouml.ui.PerspectiveSupport;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
 import org.tigris.gef.ui.ToolBar;
@@ -114,13 +114,10 @@ public class ToDoPane extends JPanel
     private ToDoPerspective curPerspective;
 
     private ToDoList root;
-    private JToggleButton flatButton;
     private JLabel countLabel;
     private Object lastSel;
     private int oldSize;
-    private char dir;
-    /** shouldn't need this */
-    private ProjectBrowser pb;
+    private char dir; //TODO: make use of this!
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -130,7 +127,7 @@ public class ToDoPane extends JPanel
      *
      * @param doSplash if true, then we have to show progress in the splash
      */
-    public ToDoPane(boolean doSplash) {
+    public ToDoPane(SplashScreen splash) {
 
         setLayout(new BorderLayout());
 
@@ -161,9 +158,8 @@ public class ToDoPane extends JPanel
         setRoot(Designer.theDesigner().getToDoList());
         Designer.theDesigner().getToDoList().addToDoListListener(this);
 
-        if (doSplash) {
-            SplashScreen splash = SplashScreen.getInstance();
-	    splash.getStatusBar().showStatus(
+        if (splash != null) {
+            splash.getStatusBar().showStatus(
 	            Translator.localize("statusmsg.bar.making-todopane"));
             splash.getStatusBar().showProgress(25);
         }
@@ -411,6 +407,7 @@ public class ToDoPane extends JPanel
     ////////////////////////////////////////////////////////////////
     // other methods
 
+    /* TODO: Make use of the "dir" to indicate the direction! */
     private static String formatCountLabel(int size) {
         switch (size) {
 	case 0:
@@ -536,12 +533,12 @@ public class ToDoPane extends JPanel
         perspectives.add(poster);
         perspectives.add(type);
 
-        ToDoPerspective.registerRule(new GoListToDecisionsToItems());
-        ToDoPerspective.registerRule(new GoListToGoalsToItems());
-        ToDoPerspective.registerRule(new GoListToPriorityToItem());
-        ToDoPerspective.registerRule(new GoListToTypeToItem());
-        ToDoPerspective.registerRule(new GoListToOffenderToItem());
-        ToDoPerspective.registerRule(new GoListToPosterToItem());
+        PerspectiveSupport.registerRule(new GoListToDecisionsToItems());
+        PerspectiveSupport.registerRule(new GoListToGoalsToItems());
+        PerspectiveSupport.registerRule(new GoListToPriorityToItem());
+        PerspectiveSupport.registerRule(new GoListToTypeToItem());
+        PerspectiveSupport.registerRule(new GoListToOffenderToItem());
+        PerspectiveSupport.registerRule(new GoListToPosterToItem());
 
         return perspectives;
     }
