@@ -709,7 +709,8 @@ public abstract class FigNodeModelElement
 					  owningModelelement)))) {
                 Model.getCoreHelper().setModelElementContainer(getOwner(),
 						     owningModelelement);
-                // TODO: move the associations to the correct owner (namespace)
+                /* TODO: move the associations to the correct owner (namespace)
+                 * i.e. issue 2151*/
             }
         }
 	if (newEncloser != encloser) {
