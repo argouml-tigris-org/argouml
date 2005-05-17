@@ -54,7 +54,6 @@ import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.moduleloader.ModuleLoader2;
@@ -63,7 +62,6 @@ import org.argouml.ui.Actions;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionExit;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
@@ -281,8 +279,6 @@ public class Main {
         Designer.disableCritiquing();
         Designer.clearCritiquing();
 
-        Project p = null;
-
         if (urlToOpen != null) {
             String filename = urlToOpen.getFile();
             File file = new File(filename);
@@ -292,11 +288,11 @@ public class Main {
             System.err.println("File.exists = " + file.exists());
             ProjectBrowser.getInstance().loadProject(file, true);
         }
-        p = ProjectManager.getManager().getCurrentProject();
 
+        ProjectManager.getManager().makeEmptyProject();
+        
         st.mark("set project");
 
-        ProjectManager.getManager().setCurrentProject(p);
         Designer.enableCritiquing();
 
         st.mark("perspectives");
@@ -326,10 +322,6 @@ public class Main {
         }
 
         pb.setVisible(true);
-
-        // set the initial target
-        Object diag = p.getDiagrams().elementAt(0);
-        TargetManager.getInstance().setTarget(diag);
 
         st.mark("close splash");
         if (doSplash) {
