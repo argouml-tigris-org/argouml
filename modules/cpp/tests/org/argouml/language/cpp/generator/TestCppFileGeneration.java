@@ -32,6 +32,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.UUIDManager;
 
@@ -43,6 +44,9 @@ import org.argouml.model.UUIDManager;
  * @since 0.17.3
  */
 public class TestCppFileGeneration extends BaseTestGeneratorCpp {
+
+    /** The Logger for this class */
+    private static final Logger LOG = Logger.getLogger(TestGeneratorCpp.class);
 
     /**
      * System newline separator.
@@ -95,8 +99,8 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
     private Object otherPack;
 
     /**
-     * The OtherClass class, contained in otherPack, also used in some of the 
-     * tests.
+     * The OtherClass class, contained in otherpack, also used in some
+     * of the tests.
      */
     private Object otherClass;
 
@@ -317,6 +321,62 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
             + Model.getFacade().getName(getAClass()) + "_h";
         String re = "(?m)(?s)\\s*#\\s*ifndef\\s+" + guard 
             + "\\s*^\\s*#\\s*define\\s+" + guard + "\\s.*^\\s*#\\s*endif.*";
+        if (!genH.matches(re)) {
+            LOG.info("generated header was:\n" + genH);
+        }
+        assertTrue(genH.matches(re));
+    }
+    
+
+    private void setUpOtherClassInSamePackage() {
+        otherClass = getFactory().buildClass("OtherClass", getPack());
+    }
+
+    /**
+     * Tests that #includes in other packages are generated as
+     * #include <package/Class.h> (issue 3086). Also, test that
+     * #includes are generated for parameter types (issue 3149).
+     * @throws IOException if something goes wrong with file access
+     */
+    public void testExternalIncludes() throws IOException {
+        final String testName = "testExternalIncludes";
+        setUpNamespaces(testName);
+        setUpOtherClassInOtherPackage();
+        createAClassOperationWithOtherClassAsParamAndReturn();
+        // AClass uses otherPack/OtherClass
+        String genH = generateAClassFile(testName, true);
+        String re = "(?m)(?s).*\\s*#\\s*include\\s*"
+                + "\\<otherpack/OtherClass\\.h\\>\\s*.*";
+        if (!genH.matches(re))
+            LOG.info("generated header was:\n" + genH);
+        assertTrue(genH.matches(re));
+    }
+
+    /**
+     * Tests that #includes in the same package or subpackages
+     * are generated as #include "subpack/Class.h" (issue 3086).
+     * @throws IOException if something goes wrong with file access
+     */
+    public void testLocalIncludes() throws IOException {
+        final String testName = "testLocalIncludes";
+        setUpNamespaces(testName);
+        setUpOtherClassInSamePackage();
+        createAClassOperationWithOtherClassAsParamAndReturn();
+        // AClass uses pack/OtherClass
+        String genH = generateAClassFile(testName, true);
+        String re = "(?m)(?s).*\\s*#\\s*include\\s*\"OtherClass\\.h\"\\s*.*";
+        if (!genH.matches(re))
+            LOG.info("generated header was:\n" + genH);
+        assertTrue(genH.matches(re));
+	// move OtherClass to pack/otherpack/OtherClass
+        otherPack = Model.getModelManagementFactory().buildPackage(
+                        "otherpack", UUIDManager.getInstance().getNewUUID());
+        Model.getCoreHelper().setNamespace(otherPack, getPack());
+        Model.getCoreHelper().setNamespace(otherClass, otherPack);
+        genH = generateAClassFile(testName, true);
+        re = "(?m)(?s).*\\s*#\\s*include\\s*\"otherpack/OtherClass\\.h\"\\s*.*";
+        if (!genH.matches(re))
+            LOG.info("generated header was:\n" + genH);
         assertTrue(genH.matches(re));
     }
 }

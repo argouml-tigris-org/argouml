@@ -325,4 +325,31 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
                     "myAttr", Model.getMultiplicities().get01()));
         assertTrue(code.matches(re));
     }
+
+
+    private Object buildConstructor(Object cls) {
+	String name = Model.getFacade().getName(cls);
+        Object voidType =
+            ProjectManager.getManager().getCurrentProject().findType("void");
+        Collection propertyChangeListeners = getPropertyChangeListeners(cls);
+        Object c = Model.getCoreFactory().buildOperation(cls,
+                getModel(), voidType, name, propertyChangeListeners);
+        Object stereo = Model.getExtensionMechanismsFactory()
+	    .buildStereotype(c, "create", getModel());
+        Model.getExtensionMechanismsHelper()
+            .setBaseClass(stereo, "BehavioralFeature");
+        return c;
+    }
+
+    /**
+     * Test of cppGenerate method for constructors.
+     */
+    public void testGenerateConstructor() {
+        // generate AClass::AClass()
+        String strConstr =
+	    getGenerator().generate(buildConstructor(getAClass()));
+        assertNotNull(strConstr);
+        LOG.debug("generated constructor is '" + strConstr + "'");
+        assertEquals("AClass()", strConstr.trim());
+    }
 }

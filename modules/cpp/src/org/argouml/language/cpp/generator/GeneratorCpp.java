@@ -32,13 +32,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.rmi.server.UID;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.LinkedHashSet;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -55,6 +57,11 @@ import org.argouml.uml.generator.Generator2;
  * and text fields when the cpp notation is selected by the user. It also
  * implements FileGenerator and makes it possible for the user to generate
  * the source code files for model elements of his choice.
+ *
+ * WARNING: Don't know if this is a threat (and I think it's not), but this
+ * class is NOT THREAD SAFE. DO NOT CALL METHODS FROM DIFFERENT THREADS.
+ * At the moment, it works, but this is just in case someone in the future
+ * tries to generate 1265 files in parallel and guesses why it doesn't work :-)
  */
 public class GeneratorCpp extends Generator2
     implements PluggableNotation, FileGenerator {
@@ -83,14 +90,35 @@ public class GeneratorCpp extends Generator2
      */
     private Object actualNamespace;
 
-    /**
-     * Store extra include dependencies which are generated during
-     * generation of multiplicity to get needed container type.
-     *
-     * @author Achim Spangler
-     * @since 2002-12-12
+    /** Current classifier, for which the code is being generated.
      */
-    private String extraIncludes = "";
+    private Object currClass = null;
+
+    /**
+     * Set of the local files to include with #include "file.h"
+     * Automatically generated from classifier dependencies.
+     */
+    private Set localInc = new TreeSet();
+
+    /**
+     * Set of the external files to include with #include <file.h>
+     * Automatically generated from classifier dependencies.
+     */
+    private Set extInc = new TreeSet();
+
+    /**
+     * Set of the system files to include, like #include <vector>
+     * Automatically generated.
+     */
+    private Set systemInc = new TreeSet();
+ 
+    /** Set of classifier that needs to be defined (i.e. #included)
+     */
+    private Set includeCls = new LinkedHashSet();
+
+    /** Set of classifier that only needs to be predeclared
+     */
+    private Set predeclCls = new LinkedHashSet();
 
     /**
      * System newline separator.
@@ -182,6 +210,31 @@ public class GeneratorCpp extends Generator2
                                      Argo.lookupIconResource ("CppNotation")));
     }
 
+    /** Reset the generator in the initial state before
+     * starting to generate code.
+     */
+    protected void cleanupGenerator() {
+	// clears collections of dependencies
+	localInc.clear();
+	extInc.clear();
+	systemInc.clear();
+	includeCls.clear();
+	predeclCls.clear();
+	// set currClass to null, so if it's used when it shouldn't
+	// it will raise a NullPointerException
+	currClass = null;
+	actualNamespace = null;
+    }
+
+    /** Set up the generator in order to generate the code
+     * for 'cls'.
+     * @param cls The classifier to generate the code for
+     */
+    protected void setupGenerator(Object cls) {
+	cleanupGenerator();
+	currClass = cls;
+    }
+
     /**
      * @param o the object to be generated
      * @return the generated string
@@ -190,16 +243,121 @@ public class GeneratorCpp extends Generator2
         return SINGLETON.generate(o);
     }
 
+
+    /** Internal helper that generates the file content (.cpp or .h)
+     * and returns it as a String, without actually creating a file.
+     */
+    private String generateFileAsString(Object o, String pathname) {
+	setupGenerator(o);
+        if (generatorPass == SOURCE_PASS 
+                && Model.getFacade().isAInterface(o))
+	    return ""; // don't generate the .cpp, it's useless.
+
+	String headerTop = generateHeaderTop(pathname);
+	String header = generateHeader(o);
+	String src = generate(o);
+	// generate #includes and predeclarations
+	// this must be *after* generate()
+	StringBuffer incl = new StringBuffer();
+	if (generatorPass == SOURCE_PASS) {
+	    localInc.add(Model.getFacade().getName(o) + ".h");
+	}
+	generateIncludes(incl);
+	if (generatorPass == HEADER_PASS) {
+	    if (incl.length() > 0) incl.append(LINE_SEPARATOR);
+	    generatePredeclare(incl);
+	}
+	// paste all the pieces in the final result
+	StringBuffer result = new StringBuffer();
+	if (generatorPass == HEADER_PASS) {
+	    String name = Model.getFacade().getName(o);
+	    String guardPack = generateRelativePackage(o, null, "_");
+	    String guard = name + getFileExtension().replace('.', '_');
+	    if (guardPack.length() > 0) {
+		guard = guardPack.substring(1) + "_" + guard;
+	    }
+	    result.append("#ifndef " + guard + LINE_SEPARATOR 
+		      + "#define " + guard 
+		      + LINE_SEPARATOR + LINE_SEPARATOR);
+	}
+	result.append(headerTop);
+	result.append(incl.toString());
+	result.append(header);
+	result.append(src);
+	if (generatorPass == HEADER_PASS) {
+	    result.append("#endif");
+	    result.append(LINE_SEPARATOR);
+	}
+	cleanupGenerator();
+	return result.toString();
+    }
+
     /**
-     * Generate the header code for the given object
+     * Generate the source code (.cpp) for the given object
+     * @param o the object to be generated
+     * @return the generated code as a string
+     */
+    public String generateCpp(Object o) {
+        generatorPass = SOURCE_PASS;
+	String name =
+	    generateRelativePackage(o, null, "/").substring(1);
+	if (name.length() > 0) name += "/";
+	name += Model.getFacade().getName(o) + ".cpp";
+        String ret = generateFileAsString(o, name);
+        generatorPass = NONE_PASS;
+	return ret;
+    }
+
+    /**
+     * Generate the header code (.h) for the given object
      * @param o the object to be generated
      * @return the generated header as a string
      */
     public String generateH(Object o) {
         generatorPass = HEADER_PASS;
-        String ret = generate(o);
+	String name =
+	    generateRelativePackage(o, null, "/").substring(1);
+	if (name.length() > 0) name += "/";
+	name += Model.getFacade().getName(o) + ".h";
+        String ret = generateFileAsString(o, name);
         generatorPass = NONE_PASS;
         return ret;
+    }
+
+    /**
+     * Generate the package name for the specified object,
+     * relative to the specified package. Use sep as the
+     * package separator. 
+     * @param cls Object to generate the path for
+     * @param pack Generate path relative to this package
+     * @param sep package separator
+     * @return path relative to pack, if pack is a parent of
+     *         cls, else relative to the project root. If the
+     *         path is relative to the project root, it's prefixed
+     *         with sep.
+     */
+    private String generateRelativePackage(Object cls, Object pack,
+            String sep) {
+        StringBuffer packagePath = new StringBuffer();
+        // avoid model being used as a package name
+        Object parent = Model.getFacade().getNamespace(cls);
+
+        while (parent != null && parent != pack) {
+            // ommit root package name; it's the model's root
+            Object grandParent = Model.getFacade().getNamespace(parent); 
+            if (grandParent != null) {
+                String name = Model.getFacade().getName(parent);
+                if (packagePath.length() > 0) {
+                    packagePath.insert(0, sep);
+                }
+                packagePath.insert(0, name);
+            }
+            parent = grandParent;
+        }
+        if (parent == null) { // relative to root, prefix with sep
+            packagePath.insert(0, sep);
+        }
+       return packagePath.toString();
     }
 
     /** 2002-11-28 Achim Spangler
@@ -208,32 +366,6 @@ public class GeneratorCpp extends Generator2
     private String getFileExtension() {
         if (generatorPass == HEADER_PASS) return ".h";
         return ".cpp";
-    }
-
-    /**
-     * Generate the relative path for the specified object.
-     *
-     * @return path relative to the project root (without name)
-     */
-    private String generateRelativeDirPath(Object cls) {
-        String packagePath = "";
-        // avoid model being used as a package name
-        Object parent =
-            Model.getFacade().getNamespace(Model.getFacade().getNamespace(cls));
-        if (parent != null) {
-            packagePath =
-                Model.getFacade().getName(Model.getFacade().getNamespace(cls));
-        }
-        while (parent != null) {
-            // ommit root package name; it's the model's root
-            if (Model.getFacade().getNamespace(parent) != null) {
-                packagePath =
-                    Model.getFacade().getName(parent) + "." + packagePath;
-            }
-            parent = Model.getFacade().getNamespace(parent);
-        }
-
-       return packagePath;
     }
 
     /**
@@ -250,7 +382,8 @@ public class GeneratorCpp extends Generator2
             path += FILE_SEPARATOR;
         }
 
-        String packagePath = generateRelativeDirPath(cls);
+        String packagePath = generateRelativePackage(cls, null, ".");
+        packagePath = packagePath.substring(1);
         String filename = name + getFileExtension();
 
         int lastIndex = -1;
@@ -302,8 +435,6 @@ public class GeneratorCpp extends Generator2
             // TODO: is returning null a correct behaviour here?
             return null;
         }
-        String packagePath =
-            Model.getFacade().getName(Model.getFacade().getNamespace(o));
         String pathname = null;
 
         // use unique section for both passes -> allow move of
@@ -336,38 +467,17 @@ public class GeneratorCpp extends Generator2
         for (generatorPass = HEADER_PASS;
              generatorPass <= SOURCE_PASS;
              generatorPass++) {
-            pathname = generateDirectoriesPathname(o, path);
-            //String pathname = path + filename;
-            // TODO: package, project basepath, tagged values to configure
-            File f = new File(pathname);
-            if (generatorPass == SOURCE_PASS 
-                    && Model.getFacade().isAInterface(o))
-                break; // don't generate the .cpp, it's useless.
-
-            String headerTop = generateHeaderTop(pathname);
-            String header = generateHeader(o, packagePath);
-            String src = generate(o);
+	    pathname = generateDirectoriesPathname(o, path);
+	    String fileContent = generateFileAsString(o, pathname);
+	    if (fileContent.length() == 0) continue;
             BufferedWriter fos = null;
+	    //String pathname = path + filename;
+	    // TODO: package, project basepath, tagged values to configure
+	    File f = new File(pathname);
             try {
                 fos = new BufferedWriter (new FileWriter (f));
-                if (generatorPass == HEADER_PASS) {
-                    String name = Model.getFacade().getName(o);
-                    String guard = generateRelativeDirPath(o) + '_' 
-                        + name + getFileExtension();
-                    guard = guard.replace('/', '_').replace('.', '_');
-                    fos.write("#ifndef " + guard + LINE_SEPARATOR 
-                            + "#define " + guard 
-                            + LINE_SEPARATOR + LINE_SEPARATOR);
-                }
-                writeTemplate(o, path, fos);
-                fos.write(headerTop);
-                fos.write(extraIncludes);
-                fos.write(header);
-                fos.write(src);
-                if (generatorPass == HEADER_PASS) {
-                    fos.write("#endif");
-                    fos.write(LINE_SEPARATOR);
-                }
+		writeTemplate(o, path, fos);
+		fos.write(fileContent);
             }
             catch (IOException exp) { }
             finally {
@@ -378,9 +488,6 @@ public class GeneratorCpp extends Generator2
                     LOG.error("FAILED: " + f.getPath());
                 }
             }
-
-            // clear extra includes after usage for each pass
-            extraIncludes = "";
 
             // output lost sections only in the second path
             // -> sections which are moved from header(inline) to source
@@ -522,74 +629,23 @@ public class GeneratorCpp extends Generator2
         return sb.toString();
     }
 
-    private String generateHeaderImportLine4ItemList(Collection classifiers) {
-        StringBuffer sb = new StringBuffer(80);
-        Iterator clsEnum = classifiers.iterator();
-        while (clsEnum.hasNext()) {
-            sb.append(generateHeaderImportLine4Item(clsEnum.next()));
-        }
-        return sb.toString();
-    }
-
-    /**
-     * As each language has its own syntax to incorporate other elements
-     * the command for this inclusion is created in a seperate function.
-     *
-     * @author Achim Spangler
-     * @since 2002-11-28
+    /** Helper for checkIncludeNeeded4Element. Returns true if
+     * an #include is needed.
      */
-    private String generateHeaderImportLine4Item(Object clsDepend) {
-        StringBuffer sb = new StringBuffer(80);
-        String packagePath = Model.getFacade().getName(clsDepend);
-        Object parent = Model.getFacade().getNamespace(Model.getFacade()
-                .getNamespace(clsDepend));
-        if (parent != null) {
-            packagePath =
-                Model.getFacade().getName(
-                        Model.getFacade().getNamespace(clsDepend))
-                + "/" + packagePath;
-            while (parent != null) {
-                // ommit root package name; it's the model's root
-                if (Model.getFacade().getNamespace(parent) != null) {
-                    packagePath =
-                        Model.getFacade().getName(parent) + "/" + packagePath;
-                }
-                parent = Model.getFacade().getNamespace(parent);
-            }
-        }
-
-        // if class depends on a list of other classes, all inheritance
-        // elements are seperated by Tokens ", " -> use StringTokenizer
-        // to access the single elements
-        StringTokenizer st = new StringTokenizer(packagePath, ", ");
-        while (st.hasMoreTokens()) {
-            sb.append("#include <").append(st.nextToken()).append(".h>")
-                .append(LINE_SEPARATOR);
-        }
-        return sb.toString();
-    }
-
     private boolean checkInclude4UsageIndirection(boolean isIndirect,
             String usageTag) {
-        boolean result = false;
+	if (isIndirect) {
+	    // needs only to be included in the .cpp
+	    if (usageTag.indexOf("header") != -1) {
+		// but user explicitly requested its presence in the header
+		return generatorPass == HEADER_PASS;
+	    } else {
+		return generatorPass == SOURCE_PASS;
+	    }
+	}
 
-        if ((generatorPass != HEADER_PASS)
-            && (usageTag.indexOf("source") != -1)) {
-            // generate include line for source .cpp pass only if
-            // element has usage tag which specifies exclusive use in
-            // source file
-            result = true;
-        } else if ((generatorPass == HEADER_PASS)
-               && (usageTag.indexOf("source") == -1)) {
-            // generate include line for header, if not specified as
-            // only accessed from .cpp
-            result = true;
-        }
-
-        // only predeclare candidates can be ignored in include block of header
-        if ((generatorPass == HEADER_PASS) && (!isIndirect)) result = true;
-
-        return result;
+	// must be included in the header, whatever usageTag is
+	return generatorPass == HEADER_PASS;
     }
 
     private boolean checkIncludeNeeded4Element(Object cls) {
@@ -612,159 +668,114 @@ public class GeneratorCpp extends Generator2
         return checkInclude4UsageIndirection(predeclareCandidate, usageTag);
     }
 
-
-    private boolean checkIncludeNeeded4ElementAttribute(Object cls) {
-        if (!(Model.getFacade().isAClass(Model.getFacade().getType(cls)))) {
-            return false;
-        }
-        return checkIncludeNeeded4Element(cls);
+    private StringBuffer generateIncludes(StringBuffer sb) {
+	for (Iterator it = systemInc.iterator(); it.hasNext(); ) {
+	    String inc = (String) it.next();
+	    sb.append("#include <");
+	    sb.append(inc).append('>').append(LINE_SEPARATOR);
+	}
+	// separate system from external headers
+	if (systemInc.size() > 0) sb.append(LINE_SEPARATOR);
+	for (Iterator it = extInc.iterator(); it.hasNext(); ) {
+	    String inc = (String) it.next();
+	    sb.append("#include <");
+	    sb.append(inc).append('>').append(LINE_SEPARATOR);
+	}
+	// separate external from local headers
+	if (extInc.size() > 0) sb.append(LINE_SEPARATOR);
+	for (Iterator it = localInc.iterator(); it.hasNext(); ) {
+	    String inc = (String) it.next();
+	    sb.append("#include \"").append(inc).append("\"\n");
+	}
+	return sb;
     }
 
-    private String generateHeaderDependencies(Object cls) {
-        StringBuffer sb = new StringBuffer(160);
-        StringBuffer predeclare = new StringBuffer(60);
+    private StringBuffer generatePredeclare(StringBuffer sb) {
+	for (Iterator it = predeclCls.iterator(); it.hasNext(); ) {
+	    Object cls = it.next();
+	    String name = Model.getFacade().getName(cls);
+	    sb.append(generateHeaderPackageStart(cls));
+	    sb.append("class ").append(name);
+	    sb.append(";").append(LINE_SEPARATOR);
+	}
+	sb.append(generateHeaderPackageEnd());
+	return sb;
+    }
 
-        if (generatorPass == SOURCE_PASS) { // include header in .cpp
-            sb.append(generateHeaderImportLine4Item(cls));
+    /**
+     * Parses header_incl or source_incl tags and adds the
+     * user-speficied headers to localInc or systemInc.
+     * @param cls The classifier which code is being generated for.
+     * @param source if true parses source_incl tags, else header_incl.
+     */
+    private void addUserHeaders(Object cls, boolean source) {
+	Iterator iter = Model.getFacade().getTaggedValues(cls);
+	String tagPrefix;
+	if (source)
+	    tagPrefix = "source";
+	else
+	    tagPrefix = "header";
+	    
+	while (iter.hasNext()) {
+	    Object tv = iter.next();
+	    String tag = Model.getFacade().getTagOfTag(tv);
+	    if (tag.equals(tagPrefix + "_incl")
+		    || tag.equals(tagPrefix + "_include")) {
+		String name = Model.getFacade().getValueOfTag(tv);
+		if (name.length() > 2 && name.charAt(0) == '<') {
+		    systemInc.add(name.substring(1, name.length() - 1));
+		} else if (name.length() > 2 && name.charAt(0) == '"') {
+		    localInc.add(name.substring(1, name.length() - 1));
+		} else if (name.length() > 0) { // skip empty values
+		    localInc.add(name);
+		}
+	    }
+	}
+    }
 
-            Iterator iter = Model.getFacade().getTaggedValues(cls);
-            while (iter.hasNext()) {
-                Object tv = iter.next();
-                String tag = Model.getFacade().getTagOfTag(tv);
-                if (tag.equals("source_incl")
-                        || tag.equals("source_include")) {
-                    sb.append("#include ");
-                    sb.append(Model.getFacade().getValueOfTag(tv));
-                    sb.append(LINE_SEPARATOR);
-                }
-            }
-        }
-        else {
-            Collection baseClassList = getGeneralizationClassList(
-                    Model.getFacade().getGeneralizations(cls));
-            sb.append(generateHeaderImportLine4ItemList(baseClassList));
-
-            Iterator iter = Model.getFacade().getTaggedValues(cls);
-            while (iter.hasNext()) {
-                Object tv = iter.next();
-                String tag = Model.getFacade().getTagOfTag(tv);
-                if (tag.equals("header_incl")
-                        || tag.equals("header_include")) {
-                    sb.append("#include ");
-                    sb.append(Model.getFacade().getValueOfTag(tv));
-                    sb.append(LINE_SEPARATOR);
-                }
-            }
-        }
-
-        // check if the class has dependencies
-        {
-            Collection col = Model.getFacade().getAssociationEnds(cls);
-            if (col != null) {
-                Iterator itr = col.iterator();
-                while (itr.hasNext()) {
-                    Object ae = itr.next();
-                    if (Model.getFacade().isNavigable(ae)) {
-                        Object cls2 = Model.getFacade().getType(ae);
-                        String name = Model.getFacade().getName(cls2);
-                        String name2 = Model.getFacade().getName(cls);
-                        if (name != name2) {
-                            if (checkIncludeNeeded4Element(
-                                    Model.getFacade().getAssociation(ae))) {
-                                sb.append(generateHeaderImportLine4Item(cls2));
-                            }
-                            else if (generatorPass == HEADER_PASS) {
-                                // predeclare classes which are not
-                                // directly used in header usefull for
-                                // classes which are only used
-                                // indirectly as pointer where no
-                                // knowledge about internals of class
-                                // are needed
-                                predeclare
-                                    .append(generateHeaderPackageStart(cls2));
-                                predeclare
-                                    .append("class ").append(name);
-                                predeclare.append(";").append(LINE_SEPARATOR);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        {
-            Collection col = Model.getFacade().getAttributes(cls);
-            if (col != null) {
-                Iterator itr = col.iterator();
-                while (itr.hasNext()) {
-                    Object attr = itr.next();
-                    // " mit Typ: " + attr.getType());
-                    if (Model.getFacade().isAClass(Model.getFacade()
-                            .getType(attr))) {
-                        String name = Model.getFacade().getName(attr);
-                        if (checkIncludeNeeded4ElementAttribute(attr)) {
-                            sb.append(generateHeaderImportLine4Item(
-                                Model.getFacade().getType(attr)));
-                        }
-                        else if (generatorPass == HEADER_PASS) {
-                            // predeclare classes which are not
-                            // directly used in header usefull for
-                            // classes which are only used indirectly
-                            // as pointer where no knowledge about
-                            // internals of class are needed
-                            predeclare
-                                .append(generateHeaderPackageStart(
-                                             Model.getFacade().getType(attr)))
-                                .append("class ").append(name).append(";")
-                                    .append(LINE_SEPARATOR);
-                        }
-                    }
-                }
-            }
-        }
-
-        {
-            Collection col = Model.getFacade().getClientDependencies(cls);
-            if (col != null) {
-                Iterator itr = col.iterator();
-                while (itr.hasNext()) {
-                    Object dependency = itr.next();
-                    if (dependency == null) {
-                        break;
-                    }
-                    Collection clientsCol =
-                        Model.getFacade().getSuppliers(dependency);
-                    if (clientsCol == null) {
-                        break;
-                    }
-                    Iterator itr2 = clientsCol.iterator();
-                    while (itr2.hasNext()) {
-                        Object temp = itr2.next();
-                        if (checkIncludeNeeded4Element(dependency)) {
-                            sb.append(generateHeaderImportLine4Item(temp));
-                        }
-                        else if (generatorPass == HEADER_PASS) {
-                            // predeclare classes which are not
-                            // directly used in header usefull for
-                            // classes which are only used indirectly
-                            // as pointer where no knowledge about
-                            // internals of class are needed
-                            predeclare
-                                .append(generateHeaderPackageStart(temp));
-                            predeclare.append("class ");
-                            predeclare.append(Model.getFacade().getName(temp));
-                            predeclare.append(";").append(LINE_SEPARATOR);
-                        }
-                    }
-                }
-            }
-        }
-
-        if (predeclare.toString().length() > 0) {
-            sb.append(LINE_SEPARATOR).append(LINE_SEPARATOR)
-                .append(predeclare.toString());
-        }
-        return sb.toString();
+    /**
+     * Adds dep to the set of dependencies of currClass. If predecl
+     * then only a predeclaration is generated, else an #include.
+     * @param dep The classifier whose currClass depends on.
+     * @param predecl If true then only a predeclaration is needed
+     */
+    private void addDependency(Object dep, boolean predecl) {
+	if (generatorPass == NONE_PASS) {
+	    return; // skip dependencies if generating notation
+	}
+        if (!(Model.getFacade().isAClass(dep))
+	    && !(Model.getFacade().isAInterface(dep))) {
+	    // Do nothing for things such as datatypes, etc.
+	    // TODO: check for namespace when using directives are implemented
+	    return;
+	}
+	if (predecl && !includeCls.contains(dep)) {
+	    if (generatorPass == HEADER_PASS) {
+		predeclCls.add(dep);
+	    }
+	} else {
+	    if (predeclCls.contains(dep)) {
+		predeclCls.remove(dep);
+	    }
+	    if (includeCls.add(dep)) {
+		// dep was not already in includeCls
+		Object ns = Model.getFacade().getNamespace(currClass);
+		String name = Model.getFacade().getName(dep);
+		// use '/', not FILE_SEPARATOR (this is intentional)
+		String path =
+		    generateRelativePackage(dep, ns, "/");
+		Set inc = localInc;
+		if (path.startsWith("/")) { // external include
+		    path = path.substring(1); // remove leading /
+		    inc = extInc;
+		}
+		if (path.length() > 0) {
+		    inc.add(path + "/" + name + ".h");
+		} else {
+		    inc.add(name + ".h");
+		}
+	    }
+	}
     }
 
     private String generateHeaderPackageStartSingle(Object pkg) {
@@ -808,27 +819,17 @@ public class GeneratorCpp extends Generator2
     }
 
     private String generatePackageAbsoluteName(Object pkg) {
-        StringBuffer sb = new StringBuffer(30);
-        String token = "";
-        for (Object actual = pkg;
-             actual != null;
-             actual = getNamespaceWithoutModel(actual)) {
-            StringTokenizer st =
-                new StringTokenizer(Model.getFacade().getName(actual), ".");
-            StringBuffer tempBuf = new StringBuffer(20);
-            while (st.hasMoreTokens()) {
-                token = st.nextToken();
-                if (tempBuf.length() > 0) tempBuf.append("::");
-                tempBuf.append(token);
-            }
-            if ((tempBuf.length() > 0) && (sb.length() > 0)) {
-                tempBuf.append("::");
-            }
-            sb.insert(0, tempBuf.toString());
+        String pack = generateRelativePackage(pkg, null, "::");
+        pack = pack.substring(2); // remove leading ::
+        if (pack.length() > 0) {
+            pack += "::";
         }
-        return sb.toString();
+        return pack + Model.getFacade().getName(pkg);
     }
 
+    /** Generate the name of item with package prefix relative to localPkg.
+     * localPkg may be null, meaning the global namespace.
+     */
     private String generateNameWithPkgSelection(Object item, Object localPkg) {
         if (item == null) {
             return "void ";
@@ -846,43 +847,40 @@ public class GeneratorCpp extends Generator2
         if (pkg == null) {
             return generateName(Model.getFacade().getName(item));
         }
-        if (localPkg == null) {
-            LOG.info("LOCAL NAMESPACE IS NULL");
-        }
-
-        String localPkgName = generatePackageAbsoluteName(localPkg);
-        String targetPkgName = generatePackageAbsoluteName(pkg);
-
-        int localPkgNameLen = localPkgName.length();
-        int targetPkgNameLen = targetPkgName.length();
-        if (localPkgName.equals(targetPkgName)) {
-            return generateName(Model.getFacade().getName(item));
-        }
-        if (targetPkgName.indexOf(localPkgName) != -1) {
-            if (targetPkgName.substring(localPkgNameLen, localPkgNameLen + 2)
-                .equals("::")) {
-                // target is in Sub-Package of local class
-                return (targetPkgName.substring(localPkgNameLen + 2,
-                                targetPkgNameLen)
-                    + "::"
-                    + generateName(Model.getFacade().getName(item)));
-            }
-        }
-        return (targetPkgName + "::" 
-                + generateName(Model.getFacade().getName(item)));
+	String packPrefix = generateRelativePackage(item, localPkg, "::");
+	if (packPrefix.length() > 0) {
+	    packPrefix += "::";
+	}
+	return packPrefix + generateName(Model.getFacade().getName(item));
     }
 
+    /** Generate name with package specs, relative to actualNamespace.
+     */
     private String generateNameWithPkgSelection(Object item) {
-        return generateNameWithPkgSelection(item, actualNamespace);
+	Object pkg = actualNamespace;
+        String name = generateNameWithPkgSelection(item, pkg);
+	if (name.startsWith("::")) {
+	    name = name.substring(2); // remove leading ::
+	    // the leading :: is just ugly to see, but it could
+	    // be left there to emphasize that item is in the
+	    // global namespace
+	}
+	return name;
     }
 
+    /** Generate the code to go from the current namespace to cls's one
+     */
     private String generateHeaderPackageStart(Object cls) {
         StringBuffer sb = new StringBuffer(80);
 
         if (actualNamespace != null) {
+	    Object lastSearch = actualNamespace;
+	    // iterate while fromSearch != null, but iterate one time
+	    // when it is null too, because it's the global namespace
             for (Object fromSearch = actualNamespace;
                     fromSearch != null;
-                    fromSearch = getNamespaceWithoutModel(fromSearch)) {
+                    lastSearch = getNamespaceWithoutModel(fromSearch)) {
+		fromSearch = lastSearch;
                 StringBuffer contPath = new StringBuffer(80);
                 Object toSearch = getNamespaceWithoutModel(cls);
                 for (; (toSearch != null) && (toSearch != fromSearch);
@@ -904,9 +902,6 @@ public class GeneratorCpp extends Generator2
                     toSearch = getNamespaceWithoutModel(toSearch)) {
                 sb.insert(0, generateHeaderPackageStartSingle(toSearch));
             }
-        }
-        if (sb.length() > 0) {
-            sb.insert(0, LINE_SEPARATOR).append(LINE_SEPARATOR);
         }
         actualNamespace = getNamespaceWithoutModel(cls);
         return sb.toString();
@@ -935,22 +930,20 @@ public class GeneratorCpp extends Generator2
             sb.append(generateHeaderPackageEndSingle(closeIt));
         }
         actualNamespace = null;
-        if (sb.length() > 0) {
-            sb.insert(0, LINE_SEPARATOR).append(LINE_SEPARATOR);
-        }
         return sb.toString();
     }
 
-    private String generateHeader(Object cls, String packagePath) {
+    private String generateHeader(Object cls) {
         StringBuffer sb = new StringBuffer(240);
 
-        // check if the class has a base class
-        sb.append(generateHeaderDependencies(cls));
+	addUserHeaders(cls, generatorPass == SOURCE_PASS);
 
-        sb.append(LINE_SEPARATOR);
-
-        if (packagePath.length() > 0) {
-            sb.append(generateHeaderPackageStart(cls));
+        if (getNamespaceWithoutModel(cls) != null) {
+	    String pkgstart = generateHeaderPackageStart(cls);
+	    if (pkgstart.length() > 0) {
+		sb.append(LINE_SEPARATOR);
+		sb.append(pkgstart);
+	    }
         }
 
         return sb.toString();
@@ -1129,6 +1122,8 @@ public class GeneratorCpp extends Generator2
                      * i.e. pointer or reference TV */
                     sb.append(generateAttributeParameterModifier(rp));
                 }
+		boolean predecl = !checkIncludeNeeded4Element(rp);
+		addDependency(returnType, predecl);
             }
         }
 
@@ -1194,21 +1189,25 @@ public class GeneratorCpp extends Generator2
 
 	// if attr has an abstract type it must be pointer or reference
 	if (modType == NORMAL_MOD || modType == -1) {
-	    Object type = Model.getFacade().getType(attr);
-	    if (type == null) {
-		// model corrupt (this really happened -- aslo)
-		LOG.error(attr + " has no type!");
-		return "";
-	    }
-	    if (Model.getFacade().isAbstract(type)
-		|| Model.getFacade().isAInterface(type)) {
-		if (modType == NORMAL_MOD) {
-		    // user explicitly requested no modifier, print a warning
- 		    LOG.warn("Requested no reference or pointer modifier, but");
- 		    LOG.warn("\t" + type 
- 		            + " cannot be instantiated, using reference");
+	    // this is used for association classes to; skip them
+	    if (!Model.getFacade().isAAssociationClass(attr)) {
+		Object type = Model.getFacade().getType(attr);
+		if (type == null) {
+		    // model corrupt (this really happened -- aslo)
+		    LOG.error(attr + " has no type!");
+		    return "";
 		}
-		modType = REFERENCE_MOD;
+		if (Model.getFacade().isAbstract(type)
+		    || Model.getFacade().isAInterface(type)) {
+		    if (modType == NORMAL_MOD) {
+			// user explicitly requested no modifier
+			LOG.warn("Requested no reference or pointer "
+			        + "modifier, but");
+			LOG.warn("\t" + type + " cannot be instantiated, "
+				+ "using reference");
+		    }
+		    modType = REFERENCE_MOD;
+		}
 	    }
 	}
 
@@ -1264,6 +1263,10 @@ public class GeneratorCpp extends Generator2
         if (generatorPass != NONE_PASS)
             sb.append(LINE_SEPARATOR);
 
+	// add the type of the attribute in the dependency list
+	boolean predecl = !checkIncludeNeeded4Element(attr);
+	addDependency(Model.getFacade().getType(attr), predecl);
+
         return sb.toString();
     }
 
@@ -1277,10 +1280,10 @@ public class GeneratorCpp extends Generator2
         // generate const for references or pointers which are
         // defined as IN - other qualifiers are not important for
         // C++ parameters
+	Object type = Model.getFacade().getType(param);
         sb.append(generateParameterChangeability(param));
         //TODO: stereotypes...
-        sb.append(generateNameWithPkgSelection(
-                Model.getFacade().getType(param)));
+        sb.append(generateNameWithPkgSelection(type));
         sb.append(' ');
         sb.append(generateAttributeParameterModifier(param));
         sb.append(generateName(Model.getFacade().getName(param)));
@@ -1296,6 +1299,10 @@ public class GeneratorCpp extends Generator2
                 }
             }
         }
+
+	// add the type of the parameter in the dependency list
+	boolean predecl = !checkIncludeNeeded4Element(param);
+	addDependency(type, predecl);
 
         return sb.toString();
     }
@@ -1421,7 +1428,11 @@ public class GeneratorCpp extends Generator2
             }
             if (generatorPass != SOURCE_PASS)
                 sb.append("};").append(LINE_SEPARATOR);
-            sb.append(generateHeaderPackageEnd());
+	    String pkgend = generateHeaderPackageEnd();
+	    if (pkgend.length() > 0) {
+		sb.append(LINE_SEPARATOR);
+		sb.append(pkgend);
+	    }
         }
         return sb;
     }
@@ -1479,16 +1490,13 @@ public class GeneratorCpp extends Generator2
             String name = Model.getFacade().getName(cls);
             sb.append("// ").append(name).append(".h");
             sb.append(LINE_SEPARATOR);
-            generatorPass = HEADER_PASS;
-            sb.append(generateClassifier(cls));
+	    sb.append(generateH(cls));
             if (Model.getFacade().isAClass(cls)) {
                 sb.append(LINE_SEPARATOR);
                 sb.append("// ").append(name).append(".cpp");
                 sb.append(LINE_SEPARATOR);
-                generatorPass = SOURCE_PASS;
-                sb.append(generateClassifier(cls));
+		sb.append(generateCpp(cls));
             }
-            generatorPass = NONE_PASS;
             return sb.toString();
         }
         
@@ -1522,13 +1530,15 @@ public class GeneratorCpp extends Generator2
                 || Model.getFacade().isAInstance(cls)) {
             // add typedefs
             if (generatorPass == HEADER_PASS) {
-                sb.append("// global type definitions for header defined "
-                      + "by Tag entries in ArgoUML").append(LINE_SEPARATOR);
-                sb.append("// Result: typedef <typedef_global_header> "
-                      + "<tag_value>;").append(LINE_SEPARATOR);
                 Collection globalTypedefStatements =
                     findTagValues(cls, "typedef_global_header");
                 if (!globalTypedefStatements.isEmpty()) {
+		    sb.append("// global type definitions for header defined "
+			      + "by Tag entries in ArgoUML");
+		    sb.append(LINE_SEPARATOR);
+		    sb.append("// Result: typedef <typedef_global_header> "
+			      + "<tag_value>;");
+		    sb.append(LINE_SEPARATOR);
                     Iterator typedefEnum =
                         globalTypedefStatements.iterator();
                     while (typedefEnum.hasNext()) {
@@ -1538,14 +1548,16 @@ public class GeneratorCpp extends Generator2
                 }
             }
             else {
-                sb.append("// global type definitions for class implementation "
-                      + "in source file defined "
-                      + "by Tag entries in ArgoUML").append(LINE_SEPARATOR);
-                sb.append("// Result: typedef <typedef_global_source> "
-                      + "<tag_value>;").append(LINE_SEPARATOR);
                 Collection globalTypedefStatements =
                     findTagValues(cls, "typedef_global_source");
                 if (!globalTypedefStatements.isEmpty()) {
+		    sb.append("// global type definitions for class "
+                            + "implementation in source file defined by Tag "
+                            + "entries in ArgoUML");
+                    sb.append(LINE_SEPARATOR);
+                    sb.append("// Result: typedef <typedef_global_source> "
+                            + "<tag_value>;");
+                    sb.append(LINE_SEPARATOR);
                     Iterator typedefEnum = globalTypedefStatements.iterator();
                     while (typedefEnum.hasNext()) {
                         sb.append("typedef ").append(typedefEnum.next());
@@ -1564,8 +1576,8 @@ public class GeneratorCpp extends Generator2
      */
     private void generateClassifierBodyAttributes(Object cls,
             StringBuffer sb) {
-        Collection strs = Model.getFacade().getAttributes(cls);
-        if (strs.isEmpty() || (generatorPass != HEADER_PASS)) {
+        Collection attrs = Model.getFacade().getAttributes(cls);
+        if (attrs.isEmpty() || (generatorPass != HEADER_PASS)) {
             return;
         }
         String tv = null; // helper for tagged values
@@ -1575,40 +1587,23 @@ public class GeneratorCpp extends Generator2
         }
 
         // generate attributes in order public, protected, private
-        for (int i = 0; i < ALL_PARTS.length; i++) {
-            int publicProtectedPrivate = ALL_PARTS[i];
+	StringBuffer part[] = new StringBuffer[ALL_PARTS.length];
+	for (int i = 0; i < part.length; i++)
+	    part[i] = new StringBuffer(80);
+	
+	Iterator attrIter = attrs.iterator();
+	while (attrIter.hasNext()) {
+	    Object attr = attrIter.next();
+	    int i = getVisibilityPart(attr);
 
-            Iterator strEnum = strs.iterator();
-            boolean isVisibilityLinePrinted = false;
-            while (strEnum.hasNext()) {
-                Object sf = strEnum.next();
-                if (((publicProtectedPrivate == PUBLIC_PART)
-                         && Model.getFacade().isPublic(sf))
-                        || ((publicProtectedPrivate == PROTECTED_PART)
-                        && Model.getFacade().isProtected(sf))
-                        || ((publicProtectedPrivate == PRIVATE_PART)
-                        && Model.getFacade().isPrivate(sf))) {
-                    if (!isVisibilityLinePrinted) {
-                        isVisibilityLinePrinted = true;
-                        sb.append(LINE_SEPARATOR);
-                        if (publicProtectedPrivate == PUBLIC_PART) {
-                            sb.append(" public:");
-                        } else if (publicProtectedPrivate == PROTECTED_PART) {
-                            sb.append(" protected:");
-                        } else if (publicProtectedPrivate == PRIVATE_PART) {
-                            sb.append(" private:");
-                        }
-                        sb.append(LINE_SEPARATOR);
-                    }
-                    sb.append(INDENT).append(generate(sf));
+	    part[i].append(INDENT).append(generate(attr));
 
-                    tv = generateTaggedValues(sf, ALL_BUT_DOC_TAGS);
-                    if (tv != null && tv.length() > 0) {
-                        sb.append(INDENT).append(tv);
-                    }
-                }
-            }
-        }
+	    tv = generateTaggedValues(attr, ALL_BUT_DOC_TAGS);
+	    if (tv != null && tv.length() > 0) {
+		part[i].append(INDENT).append(tv);
+	    }
+	}
+	sb.append(generateAllParts(part));
     }
 
     /**
@@ -1678,6 +1673,9 @@ public class GeneratorCpp extends Generator2
                 sb.append(generateAttributeParameterModifier(ae));
                 sb.append(" ").append(name);
                 sb.append(";").append(LINE_SEPARATOR);
+
+		// add the type of the association end in the dependency list
+		addDependency(type, !checkIncludeNeeded4Element(type));
 
                 String tv = generateTaggedValues(ae, ALL_BUT_DOC_TAGS);
                 if (tv != null && tv.length() > 0) {
@@ -2097,7 +2095,7 @@ public class GeneratorCpp extends Generator2
         else if (clsName.equals("double")) res = "return 0.0;";
 
         if (res == null) {
-            return INDENT + "return 0;" + LINE_SEPARATOR;
+	    return ""; // in doubt, let the choice to the user
         }
         return INDENT + res + LINE_SEPARATOR;
     }
@@ -2443,8 +2441,13 @@ public class GeneratorCpp extends Generator2
             // Usually, this is a pointer or a reference, so default
             // to a pointer.
             modifier = generateAttributeParameterModifier(asc, "*");
+	    // add the association class in the dependency list
+	    addDependency(asc, !checkIncludeNeeded4Element(ae)); 
         } else {
             modifier = generateAttributeParameterModifier(ae);
+	    // add the type of the association end in the dependency list
+	    boolean predecl = !checkIncludeNeeded4Element(ae);
+	    addDependency(Model.getFacade().getType(ae), predecl);
         }
         
         sb.append(generateMultiplicity(ae, name,
@@ -2455,8 +2458,6 @@ public class GeneratorCpp extends Generator2
     }
 
 
-    ////////////////////////////////////////////////////////////////
-    // internal methods?
     private String generateGeneralization(Collection generalizations) {
         if (generalizations == null) {
             return "";
@@ -2467,35 +2468,25 @@ public class GeneratorCpp extends Generator2
             Object generalization = genEnum.next();
             Object ge = Model.getFacade().getParent(generalization);
             if (ge != null) {
+		if (sb.length() > 0) sb.append(", ");
                 String visTag =
                     Model.getFacade().getTaggedValueValue(generalization,
                                             "visibility").trim();
                 if (visTag != null && !visTag.equals("")) {
                     sb.append(visTag).append(" ");
                 } else {
-                    sb.append("public ");
+		    if (Model.getFacade().isAInterface(ge)) {
+			sb.append("virtual public ");
+		    } else {
+			sb.append("public ");
+		    }
                 }
                 sb.append(generateNameWithPkgSelection(ge));
-                if (genEnum.hasNext()) sb.append(", ");
+		// add the type of the base class in the dependency list
+		addDependency(ge, false);
             }
         }
         return sb.toString();
-    }
-
-    private Collection getGeneralizationClassList(Collection generalizations) {
-        if (generalizations == null) {
-            return null;
-        }
-        Collection classes = new ArrayList();
-        Iterator genEnum = generalizations.iterator();
-        while (genEnum.hasNext()) {
-            Object generalization = genEnum.next();
-            Object ge = Model.getFacade().getParent(generalization);
-            if (ge != null) {
-                classes.add(ge);
-            }
-        }
-        return classes;
     }
 
     //  public String generateSpecification(Collection realizations) {
@@ -2508,18 +2499,20 @@ public class GeneratorCpp extends Generator2
             Object dependency = depIterator.next();
             if (Model.getFacade().isAAbstraction(dependency)
                     && Model.getFacade().isRealize(dependency)) {
+		if (sb.length() > 0) sb.append(", ");
                 Object iFace = Model.getFacade().getSuppliers(dependency)
                     .iterator().next();
                 String visTag =
                     Model.getFacade().getTaggedValueValue(dependency,
                                             "visibility").trim();
-                if (sb.length() > 0) sb.append(", ");
                 if (visTag != null && !visTag.equals("")) {
                     sb.append(visTag).append(" ");
                 } else {
                     sb.append("virtual public ");
                 }
                 sb.append(generateNameWithPkgSelection(iFace));
+		// add the type of the interface in the dependency list
+		addDependency(iFace, false);
             }
         }
         return sb.toString();
@@ -2650,7 +2643,7 @@ public class GeneratorCpp extends Generator2
 
     /**
      * Generates "synchronized" keyword for guarded operations.
-     * FIXME: not needed for c++, it doesn't handle changeability
+     * FIXME: not needed for c++, it doesn't handle concurrency
      * directly. Maybe, implement this in the methods body using 
      * some kind of API (posix, win32, ... as user wishes ...)?
      * @param op The operation
@@ -2698,7 +2691,8 @@ public class GeneratorCpp extends Generator2
         } else if (Model.getFacade().isAAttribute(item)) {
             typeCls = Model.getFacade().getType(item);
         } else if (Model.getFacade().isAClassifier(item)) {
-            type = Model.getFacade().getName(item);
+            //type = Model.getFacade().getName(item);
+	    typeCls = item;
         } else {
             type = "";
         }
@@ -2743,12 +2737,8 @@ public class GeneratorCpp extends Generator2
                 } else if (multType.equals("stack")) {
                     containerType = "stack";
                 } else if (multType.equals("stringmap")) {
-                    if (extraIncludes.indexOf("#include <map>") == -1) {
-                        extraIncludes += "#include <map>" + LINE_SEPARATOR;
-                    }
-                    if (extraIncludes.indexOf("#include <string>") == -1) {
-                        extraIncludes += "#include <string>" + LINE_SEPARATOR;
-                    }
+		    systemInc.add("string");
+		    systemInc.add("map");
                     sb.append(stdPrefix + "map<" + stdPrefix + "string, ");
                     if (modifier.indexOf('&') != -1) {
                         LOG.warn("cannot generate STL container "
@@ -2768,10 +2758,7 @@ public class GeneratorCpp extends Generator2
 
             if (containerType != null) {
                 // these container are declared the same except the name
-                String includeLine = "#include <" + containerType + ">";
-                if (extraIncludes.indexOf(includeLine) == -1) {
-                    extraIncludes += includeLine + LINE_SEPARATOR;
-                }
+		systemInc.add(containerType);
                 sb.append(stdPrefix).append(containerType).append("< ");
                 if (modifier.indexOf('&') != -1) {
                     LOG.warn("cannot generate STL container "
@@ -2803,6 +2790,13 @@ public class GeneratorCpp extends Generator2
         return lower.toString() + ".." + upper.toString();
     }
 
+    /* TODO: The following methods (generateState/StateBody/Transition/
+     * Action/Guard/Message) are provided to comply with the interface
+     * NotationProvider2 but they aren't specific for C++ (mostly).
+     * Why don't we provide a default implementation for these methods
+     * in NotationHelper or in Generator2?   -- Daniele Tamino
+     */
+
     /**
      * @see org.argouml.application.api.NotationProvider2#generateState(java.lang.Object)
      */
@@ -2817,12 +2811,18 @@ public class GeneratorCpp extends Generator2
         String s = "";
         Object entry = Model.getFacade().getEntry(state);
         Object exit = Model.getFacade().getExit(state);
+        Object doact = Model.getFacade().getDoActivity(state);
         if (entry != null) {
-            String entryStr = cppGenerate(entry);
+            String entryStr = generate(entry);
             if (entryStr.length() > 0) s += "entry / " + entryStr;
         }
         if (exit != null) {
-            String exitStr = cppGenerate(exit);
+            String doStr = generate(doact);
+            if (s.length() > 0) s += LINE_SEPARATOR;
+            if (doStr.length() > 0) s += "do / " + doStr;
+        }
+        if (exit != null) {
+            String exitStr = generate(exit);
             if (s.length() > 0) s += LINE_SEPARATOR;
             if (exitStr.length() > 0) s += "exit / " + exitStr;
         }
@@ -2860,6 +2860,21 @@ public class GeneratorCpp extends Generator2
         if ((script != null) && (Model.getFacade().getBody(script) != null))
             return Model.getFacade().getBody(script).toString();
         return "";
+    }
+
+    /**
+     * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
+     */
+    public String generateActionState(Object actionState) {
+        String ret = "";
+        Object action = Model.getFacade().getEntry(actionState);
+        if (action != null) {
+            Object expression = Model.getFacade().getScript(action);
+            if (expression != null) {
+                ret = generateExpression(expression);
+            }
+        }
+        return ret;
     }
 
     /**
@@ -2936,18 +2951,4 @@ public class GeneratorCpp extends Generator2
         this.verboseDocs = verbose;
     }
 
-    /**
-     * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
-     */
-    public String generateActionState(Object actionState) {
-        String ret = "";
-        Object action = Model.getFacade().getEntry(actionState);
-        if (action != null) {
-            Object expression = Model.getFacade().getScript(action);
-            if (expression != null) {
-                ret = generateExpression(expression);
-            }
-        }
-        return ret;
-    }
 } /* end class GeneratorCpp */
