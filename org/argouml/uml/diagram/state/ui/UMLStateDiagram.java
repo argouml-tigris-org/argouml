@@ -267,7 +267,7 @@ public class UMLStateDiagram extends UMLDiagram {
      * @return the new diagram name
      */
     protected String getNewDiagramName() {
-        String name = "Statechart Diagram " + getNextDiagramSerial();
+        String name = getLabelName() + " " + getNextDiagramSerial();
         if (!ProjectManager.getManager().getCurrentProject()
                  .isValidDiagramName(name)) {
             name = getNewDiagramName();
@@ -289,7 +289,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionBranchPseudoState == null) {
             actionBranchPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                        Model.getPseudostateKind().getBranch(), "Choice"));
+                        Model.getPseudostateKind().getBranch(), "button.new-choice"));
         }
         return actionBranchPseudoState;
     }
@@ -301,7 +301,7 @@ public class UMLStateDiagram extends UMLDiagram {
             actionCompositeState =
                 new RadioAction(new CmdCreateNode(
                         Model.getMetaTypes().getCompositeState(),
-                        "CompositeState"));
+                        "button.new-compositestate"));
         }
         return actionCompositeState;
     }
@@ -313,7 +313,7 @@ public class UMLStateDiagram extends UMLDiagram {
             actionDeepHistoryPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
                         Model.getPseudostateKind().getDeepHistory(),
-                        "DeepHistory"));
+                        "button.new-deephistory"));
         }
         return actionDeepHistoryPseudoState;
     }
@@ -326,7 +326,7 @@ public class UMLStateDiagram extends UMLDiagram {
                 new RadioAction(
                         new CmdCreateNode(
                                 Model.getMetaTypes().getFinalState(),
-                                "FinalState"));
+                                "button.new-finalstate"));
         }
         return actionFinalPseudoState;
     }
@@ -337,7 +337,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionForkPseudoState == null) {
             actionForkPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                            Model.getPseudostateKind().getFork(), "Fork"));
+                            Model.getPseudostateKind().getFork(), "button.new-fork"));
         }
         return actionForkPseudoState;
     }
@@ -347,7 +347,7 @@ public class UMLStateDiagram extends UMLDiagram {
     protected Action getActionJoinPseudoState() {
         if (actionJoinPseudoState == null) {
             actionJoinPseudoState = new RadioAction(new ActionCreatePseudostate(
-                    Model.getPseudostateKind().getJoin(), "Join"));
+                    Model.getPseudostateKind().getJoin(), "button.new-join"));
         }
         return actionJoinPseudoState;
     }
@@ -359,7 +359,7 @@ public class UMLStateDiagram extends UMLDiagram {
             actionJunctionPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
                         Model.getPseudostateKind().getJunction(),
-                        "Junction"));
+                        "button.new-junction"));
         }
         return actionJunctionPseudoState;
     }
@@ -371,7 +371,7 @@ public class UMLStateDiagram extends UMLDiagram {
             actionShallowHistoryPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
                         Model.getPseudostateKind().getShallowHistory(),
-                        "ShallowHistory"));
+                        "button.new-shallowhistory"));
         }
         return actionShallowHistoryPseudoState;
     }
@@ -383,7 +383,7 @@ public class UMLStateDiagram extends UMLDiagram {
             actionStartPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
                         Model.getPseudostateKind().getInitial(),
-                        "Initial"));
+                        "button.new-initial"));
         }
         return actionStartPseudoState;
     }
@@ -395,7 +395,7 @@ public class UMLStateDiagram extends UMLDiagram {
             actionState =
                 new RadioAction(
                         new CmdCreateNode(Model.getMetaTypes().getState(),
-                                	  "State"));
+                                	  "button.new-state"));
         }
         return actionState;
     }
@@ -409,7 +409,7 @@ public class UMLStateDiagram extends UMLDiagram {
                 new RadioAction(
                         new CmdCreateNode(
                                 Model.getMetaTypes().getSynchState(),
-                                "SynchState"));
+                                "button.new-synchstate"));
         }
         return actionSynchState;
     }
@@ -423,7 +423,7 @@ public class UMLStateDiagram extends UMLDiagram {
                     new RadioAction(
                             new CmdCreateNode(
                                     Model.getMetaTypes().getSubmachineState(),
-                                    "SubmachineState"));
+                                    "button.new-submachinestate"));
         }
         return actionSubmachineState;
     }
@@ -437,7 +437,7 @@ public class UMLStateDiagram extends UMLDiagram {
                     new RadioAction(
                             new CmdCreateNode(
                                     Model.getMetaTypes().getStubState(),
-                                    "StubState"));
+                                    "button.new-stubstate"));
         }
         return actionStubState;
     }
@@ -452,7 +452,7 @@ public class UMLStateDiagram extends UMLDiagram {
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getTransition(),
-                        "Transition"));
+                        "button.new-transition"));
         }
         return actionTransition;
     }

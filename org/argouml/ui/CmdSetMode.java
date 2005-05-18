@@ -30,9 +30,8 @@ import java.util.Properties;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.tigris.gef.base.ModeBroom;
-import org.tigris.gef.base.ModeSelect;
 
 /**
  * Extends GEF CmdSetMode to add additional metadata such as tooltips.
@@ -40,8 +39,6 @@ import org.tigris.gef.base.ModeSelect;
  * @author Jeremy Jones
  */
 public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
-
-    private static final String ACTION_PREFIX_KEY = "action.new";
 
     /**
      * The constructor.
@@ -68,7 +65,7 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
      * @param name the name of the command = tooltip text
      */
     public CmdSetMode(Class modeClass, String name) {
-        super(modeClass, name);
+        super(modeClass, ResourceLoaderWrapper.getImageBinding(name));
         putToolTip(name);
     }
 
@@ -113,7 +110,7 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
      * @param name the name of the command = tooltip text
      */
     public CmdSetMode(Class modeClass, Hashtable modeArgs, String name) {
-    	super(modeClass, name);
+    	super(modeClass, ResourceLoaderWrapper.getImageBinding(name));
     	_modeArgs = modeArgs;
         putToolTip(name);
     }
@@ -138,7 +135,8 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
      * @param name the name of the command = tooltip text
      */
     public CmdSetMode(Class modeClass, String arg, Object value, String name) {
-        super(modeClass, arg, value, name);
+        super(modeClass, arg, value,
+                ResourceLoaderWrapper.getImageBinding(name));
         putToolTip(name);
     }
 
@@ -165,15 +163,6 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
      * Adds tooltip text to the Action.
      */
     private void putToolTip(String name) {
-        Class desiredModeClass = (Class) getArg("desiredModeClass");
-        if (ModeSelect.class.isAssignableFrom(desiredModeClass)
-            || ModeBroom.class.isAssignableFrom(desiredModeClass)) {
-            putValue(Action.SHORT_DESCRIPTION, Translator.localize(name));
-        }
-        else {
-            putValue(Action.SHORT_DESCRIPTION,
-		     Translator.localize(ACTION_PREFIX_KEY) + " "
-		     + Translator.localize(name));
-        }
+        putValue(Action.SHORT_DESCRIPTION, Translator.localize(name));
     }
 }

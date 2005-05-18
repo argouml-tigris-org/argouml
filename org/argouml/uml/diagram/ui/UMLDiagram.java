@@ -125,14 +125,14 @@ public abstract class UMLDiagram
             ModeCreatePolyEdge.class,
             "edgeClass",
             CommentEdge.class,
-            "CommentLink"));
+            "button.new-commentlink"));
 
 
     private static Action actionSelect =
-        new CmdSetMode(ModeSelect.class, "Select");
+        new CmdSetMode(ModeSelect.class, "button.select");
 
     private static Action actionBroom =
-        new CmdSetMode(ModeBroom.class, "Broom");
+        new CmdSetMode(ModeBroom.class, "button.broom");
 
     private static Action actionRectangle =
         new RadioAction(new CmdSetMode(ModeCreateFigRect.class, "Rectangle",

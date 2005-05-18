@@ -102,15 +102,15 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
     /**
      * Method to perform a number of important initializations of a
-     * <I>Deployment Diagram</I>.<p>
+     * <em>Deployment Diagram</em>.<p>
      *
-     * Each diagram type has a similar <I>UMLxxxDiagram</I> class.<p>
+     * Each diagram type has a similar <em>UMLxxxDiagram</em> class.<p>
      *
-     * Changed <I>lay</I> from <I>LayerPerspective</I> to
-     * <I>LayerPerspectiveMutable</I>.  This class is a child of
-     * <I>LayerPerspective</I> and was implemented to correct some
-     * difficulties in changing the model. <I>lay</I> is used mainly
-     * in <I>LayerManager</I>(GEF) to control the adding, changing and
+     * Changed <em>lay</em> from <em>LayerPerspective</em> to
+     * <em>LayerPerspectiveMutable</em>.  This class is a child of
+     * <em>LayerPerspective</em> and was implemented to correct some
+     * difficulties in changing the model. <em>lay</em> is used mainly
+     * in <em>LayerManager</em>(GEF) to control the adding, changing and
      * deleting layers on the diagram...<p>
      *
      * @param handle MNamespace from the model in NSUML...
@@ -177,7 +177,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * @return String
      */
     protected String getNewDiagramName() {
-        String name = "Deployment Diagram " + getNextDiagramSerial();
+        String name = getLabelName() + " " + getNextDiagramSerial();
         if (!ProjectManager.getManager().getCurrentProject()
 	        .isValidDiagramName(name)) {
             name = getNewDiagramName();
@@ -201,11 +201,12 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionAggregation() {
         if (actionAggregation == null) {
-            actionAggregation = new RadioAction(
+            actionAggregation =
+                new RadioAction(
                     new ActionAddAssociation(
                         Model.getAggregationKind().getAggregate(),
                         false,
-                        "Aggregation"));
+                        "button.new-aggregation"));
         }
         return actionAggregation;
     }
@@ -215,11 +216,12 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionAssociation() {
         if (actionAssociation == null) {
-            actionAssociation = new RadioAction(
+            actionAssociation =
+                new RadioAction(
                     new ActionAddAssociation(
                         Model.getAggregationKind().getNone(),
                         false,
-                        "Association"));
+                        "button.new-association"));
         }
         return actionAssociation;
     }
@@ -229,11 +231,12 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionComposition() {
         if (actionComposition == null) {
-            actionComposition = new RadioAction(
+            actionComposition =
+                new RadioAction(
                     new ActionAddAssociation(
                         Model.getAggregationKind().getComposite(),
                         false,
-                        "Composition"));
+                        "button.new-composition"));
         }
         return actionComposition;
     }
@@ -243,9 +246,12 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionMAssociation() {
         if (actionMAssociation == null) {
-            actionMAssociation = new RadioAction(new CmdSetMode(
-                        ModeCreatePolyEdge.class, "edgeClass",
-                        Model.getMetaTypes().getAssociation(), "Association"));
+            actionMAssociation =
+                new RadioAction(new CmdSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        Model.getMetaTypes().getAssociation(),
+                        "button.new-association"));
         }
         return actionMAssociation;
     }
@@ -258,7 +264,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
             actionMClass =
                 new RadioAction(
                         new CmdCreateNode(Model.getMetaTypes().getUMLClass(),
-                                "Class"));
+                                "button.new-class"));
         }
         return actionMClass;
     }
@@ -272,7 +278,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
                 new RadioAction(
                         new CmdCreateNode(
                                 Model.getMetaTypes().getComponent(),
-                                "Component"));
+                                "button.new-component"));
         }
         return actionMComponent;
     }
@@ -285,7 +291,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
             actionMComponentInstance =
                 new RadioAction(new CmdCreateNode(
                         Model.getMetaTypes().getComponentInstance(),
-                	"ComponentInstance"));
+                	"button.new-componentinstance"));
         }
         return actionMComponentInstance;
     }
@@ -295,9 +301,12 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionMDependency() {
         if (actionMDependency == null) {
-            actionMDependency = new RadioAction(new CmdSetMode(
-                ModeCreatePolyEdge.class, "edgeClass",
-                Model.getMetaTypes().getDependency(), "Dependency"));
+            actionMDependency =
+                new RadioAction(new CmdSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        Model.getMetaTypes().getDependency(),
+                        "button.new-dependency"));
         }
         return actionMDependency;
     }
@@ -307,9 +316,12 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionMGeneralization() {
         if (actionMGeneralization == null) {
-            actionMGeneralization = new RadioAction(new CmdSetMode(
-                ModeCreatePolyEdge.class, "edgeClass",
-                Model.getMetaTypes().getGeneralization(), "Generalization"));
+            actionMGeneralization =
+                new RadioAction(new CmdSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        Model.getMetaTypes().getGeneralization(),
+                	"button.new-generalization"));
         }
         return actionMGeneralization;
     }
@@ -319,9 +331,12 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionMAbstraction() {
         if (actionMAbstraction == null) {
-            actionMAbstraction = new RadioAction(new CmdSetMode(
-                ModeCreatePolyEdge.class, "edgeClass",
-                Model.getMetaTypes().getAbstraction(), "Realization"));
+            actionMAbstraction =
+                new RadioAction(new CmdSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        Model.getMetaTypes().getAbstraction(),
+                	"button.new-realization"));
         }
         return actionMAbstraction;
     }
@@ -335,7 +350,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
                 new RadioAction(
                         new CmdCreateNode(
                                 Model.getMetaTypes().getInterface(),
-                                "Interface"));
+                                "button.new-interface"));
         }
         return actionMInterface;
     }
@@ -345,9 +360,12 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionMLink() {
         if (actionMLink == null) {
-            actionMLink = new RadioAction(new CmdSetMode(
-                        ModeCreatePolyEdge.class, "edgeClass",
-                        Model.getMetaTypes().getLink(), "Link"));
+            actionMLink =
+                new RadioAction(new CmdSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        Model.getMetaTypes().getLink(),
+                        "button.new-link"));
         }
         return actionMLink;
     }
@@ -357,8 +375,10 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionMNode() {
         if (actionMNode == null) {
-            actionMNode = new RadioAction(new CmdCreateNode(
-                    Model.getMetaTypes().getNode(), "Node"));
+            actionMNode =
+                new RadioAction(new CmdCreateNode(
+                    Model.getMetaTypes().getNode(),
+                    "button.new-node"));
         }
         return actionMNode;
     }
@@ -368,8 +388,10 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionMNodeInstance() {
         if (actionMNodeInstance == null) {
-            actionMNodeInstance = new RadioAction(new CmdCreateNode(
-                    Model.getMetaTypes().getNodeInstance(), "NodeInstance"));
+            actionMNodeInstance =
+                new RadioAction(new CmdCreateNode(
+                    Model.getMetaTypes().getNodeInstance(),
+                    "button.new-nodeinstance"));
         }
         return actionMNodeInstance;
     }
@@ -382,7 +404,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
             actionMObject =
                 new RadioAction(
                         new CmdCreateNode(Model.getMetaTypes().getObject(),
-                                "Object"));
+                                "button.new-object"));
         }
         return actionMObject;
     }
@@ -392,10 +414,11 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionUniAggregation() {
         if (actionUniAggregation == null) {
-            actionUniAggregation = new RadioAction(
+            actionUniAggregation =
+                new RadioAction(
                     new ActionAddAssociation(
                         Model.getAggregationKind().getAggregate(),
-                        true, "UniAggregation"));
+                        true, "button.new-uniaggregation"));
         }
         return actionUniAggregation;
     }
@@ -405,10 +428,11 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionUniAssociation() {
         if (actionUniAssociation == null) {
-            actionUniAssociation = new RadioAction(
+            actionUniAssociation =
+                new RadioAction(
                     new ActionAddAssociation(
                         Model.getAggregationKind().getNone(),
-                        true, "UniAssociation"));
+                        true, "button.new-uniassociation"));
         }
         return actionUniAssociation;
     }
@@ -418,10 +442,11 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionUniComposition() {
         if (actionUniComposition == null) {
-            actionUniComposition = new RadioAction(
+            actionUniComposition =
+                new RadioAction(
                     new ActionAddAssociation(
                         Model.getAggregationKind().getComposite(),
-                        true, "UniComposition"));
+                        true, "button.new-unicomposition"));
         }
         return actionUniComposition;
     }

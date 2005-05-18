@@ -29,6 +29,7 @@ import java.util.Hashtable;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
 
 /**
@@ -52,11 +53,6 @@ import org.argouml.model.Model;
  */
 public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
     /**
-     * Prefix for the action key.
-     */
-    private static final String ACTION_PREFIX_KEY = "action.new";
-
-    /**
      * Constructor for CmdCreateNode.
      *
      * @param args a hastable of arguments
@@ -75,7 +71,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      * @param name the to be localized name of the command = tooltip name
      */
     public CmdCreateNode(Hashtable args, String name) {
-        super(args, name);
+        super(args, ResourceLoaderWrapper.getImageBinding(name));
         putToolTip(name);
     }
 
@@ -88,7 +84,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      * @param name the tooltip name
      */
     public CmdCreateNode(Class nodeClass, String resource, String name) {
-        super(nodeClass, resource, name);
+        super(nodeClass, resource, ResourceLoaderWrapper.getImageBinding(name));
         putToolTip(name);
     }
 
@@ -100,7 +96,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      * @param name the tooltip name
      */
     public CmdCreateNode(Object nodeClass, String name) {
-        super((Class) nodeClass, name);
+        super((Class) nodeClass, ResourceLoaderWrapper.getImageBinding(name));
         putToolTip(name);
     }
 
@@ -116,7 +112,8 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      */
     public CmdCreateNode(Class nodeClass, boolean sticky, String resource,
             String name) {
-        super(nodeClass, sticky, resource, name);
+        super(nodeClass, sticky, resource,
+                ResourceLoaderWrapper.getImageBinding(name));
         putToolTip(name);
     }
 
@@ -130,7 +127,8 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      * @param name the tooltip name
      */
     public CmdCreateNode(Object nodeClass, boolean sticky, String name) {
-        super((Class) nodeClass, sticky, name);
+        super((Class) nodeClass, sticky,
+                ResourceLoaderWrapper.getImageBinding(name));
         putToolTip(name);
     }
 
@@ -155,8 +153,6 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      * @param name The key to localize as the name.
      */
     private void putToolTip(String name) {
-        putValue(Action.SHORT_DESCRIPTION, Translator
-                .localize(ACTION_PREFIX_KEY)
-                + " " + Translator.localize(name));
+        putValue(Action.SHORT_DESCRIPTION, Translator.localize(name));
     }
 }
