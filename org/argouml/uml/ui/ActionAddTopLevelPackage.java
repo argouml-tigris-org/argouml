@@ -31,19 +31,11 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 
 /**
- * @stereotype singleton
+ * Add a new package at the top level, i.e. a model.<p>
+ * 
+ * TODO: ArgoUML currently only supports one model. 
  */
 public class ActionAddTopLevelPackage extends UMLAction {
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    /**
-     * The singleton.
-     */
-    public static final ActionAddTopLevelPackage SINGLETON =
-	new ActionAddTopLevelPackage();
-
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -71,7 +63,7 @@ public class ActionAddTopLevelPackage extends UMLAction {
         Model.getCoreHelper().setName(model, nameStr);
         p.addMember(model);
         super.actionPerformed(ae);
-        ActionClassDiagram.SINGLETON.actionPerformed(ae);
+        new ActionClassDiagram().actionPerformed(ae);
 
 
     }

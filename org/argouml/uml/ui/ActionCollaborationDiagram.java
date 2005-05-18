@@ -29,8 +29,8 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-/** Action to trigger creation of new collaboration diagram.
- *  @stereotype singleton
+/** 
+ * Action to trigger creation of new collaboration diagram.
  */
 public class ActionCollaborationDiagram extends ActionAddDiagram {
 
@@ -38,15 +38,9 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
         Logger.getLogger(ActionCollaborationDiagram.class);
 
     /**
-     * The singleton.
-     */
-    public static final ActionCollaborationDiagram SINGLETON =
-        new ActionCollaborationDiagram();
-
-    /**
      * Constructor.
      */
-    private ActionCollaborationDiagram() {
+    public ActionCollaborationDiagram() {
         super("action.collaboration-diagram");
     }
 

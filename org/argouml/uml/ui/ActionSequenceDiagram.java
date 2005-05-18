@@ -26,7 +26,6 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
@@ -49,19 +48,13 @@ public final class ActionSequenceDiagram extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    /**
-     * The singleton.
-     */
-    public static final ActionSequenceDiagram SINGLETON =
-        new ActionSequenceDiagram();
-
     ////////////////////////////////////////////////////////////////
     // constructors
 
     /**
      * Constructor.
      */
-    private ActionSequenceDiagram() {
+    public ActionSequenceDiagram() {
         super("action.sequence-diagram", true, true);
     }
 

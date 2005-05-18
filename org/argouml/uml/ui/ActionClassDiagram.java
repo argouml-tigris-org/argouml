@@ -29,25 +29,21 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-/** Action to trigger creation of new class diagram.
- *  @stereotype singleton
+/** 
+ * Action to trigger creation of new class diagram.
  */
 public class ActionClassDiagram extends ActionAddDiagram {
-    private static final Logger LOG =
-        Logger.getLogger(ActionClassDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    /**
-     * The singleton.
-     */
-    public static final ActionClassDiagram SINGLETON = new ActionClassDiagram();
+    private static final Logger LOG =
+                Logger.getLogger(ActionClassDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    private ActionClassDiagram() {
+    public ActionClassDiagram() {
         super("action.class-diagram");
     }
 

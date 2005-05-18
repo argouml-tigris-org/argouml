@@ -22,39 +22,24 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.ui.cmd;
 
 import java.awt.event.ActionEvent;
-import java.text.MessageFormat;
 
-import javax.swing.JOptionPane;
+import javax.swing.AbstractAction;
 
-import org.argouml.application.api.CommandLineInterface;
-import org.argouml.application.api.Configuration;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 
 /**
- * Action to exit ArgoUML.
+ * Action to trigger creation of a new project.
  */
-public class ActionExit extends UMLAction
-    implements CommandLineInterface {
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    /**
-     * The singleton.
-     */
-    public static final ActionExit SINGLETON = new ActionExit();
-
-    /**
-     * Remember if this form is already active, so that it does
-     * not popup twice.
-     */
-    private boolean active = false;
+class ActionNew extends AbstractAction {
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -62,9 +47,9 @@ public class ActionExit extends UMLAction
     /**
      * The constructor.
      */
-    public ActionExit() {
-	super ("action.exit", NO_ICON);
-	active = false;
+    public ActionNew() {
+        super(Translator.localize("action.new"),
+                ResourceLoaderWrapper.lookupIcon("action.new"));
     }
 
     ////////////////////////////////////////////////////////////////
@@ -73,56 +58,21 @@ public class ActionExit extends UMLAction
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void actionPerformed (ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-	Project p = ProjectManager.getManager().getCurrentProject();
+    public void actionPerformed(ActionEvent e) {
+        Project p = ProjectManager.getManager().getCurrentProject();
 
-	if (p != null && ProjectManager.getManager().needsSave() && !active) {
-	    active = true;
-	    String t =
-		MessageFormat.format(Translator.localize(
-			"optionpane.exit-save-changes-to"),
-			new Object[] {p.getName()});
-	    int response =
-		JOptionPane.showConfirmDialog(pb, t, t,
-					      JOptionPane.YES_NO_CANCEL_OPTION);
+        if (!ProjectBrowser.getInstance().askConfirmationAndSave()) {
+            return;
+        }
 
-	    if (response == JOptionPane.CANCEL_OPTION
-            	|| response == JOptionPane.CLOSED_OPTION) {
-		active = false;
-		return;
-	    }
-	    if (response == JOptionPane.YES_OPTION) {
-		boolean safe = false;
-
-		if (ActionSaveProject.getInstance().isEnabled()) {
-		    safe = ProjectBrowser.getInstance().trySave (true);
-		}
-		if (!safe) {
-		    safe = ActionSaveProjectAs.SINGLETON.trySave (false);
-		}
-		if (!safe) {
-		    active = false;
-		    return;
-		}
-	    }
-	    active = false;
-	}
-	if (!active) {
-	    Configuration.save();
-	    doCommand(null);
-	}
+        ProjectBrowser.getInstance().clearDialogs();
+	Designer.disableCritiquing();
+	Designer.clearCritiquing();
+	// clean the history
+	TargetManager.getInstance().cleanHistory();
+        p.remove();
+	p = ProjectManager.getManager().makeEmptyProject();
+	TargetManager.getInstance().setTarget(p.getDiagrams().toArray()[0]);
+	Designer.enableCritiquing();
     }
-
-
-    /**
-     * Execute this action from the command line.
-     *
-     * @param argument is not used.
-     * @return true if it is OK.
-     */
-    public boolean doCommand(String argument) {
-        System.exit (0);
-	return true;
-    }
-} /* end class ActionExit */
+} /* end class ActionNew */

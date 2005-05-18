@@ -29,21 +29,15 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
-/** Action to create a new use case diagram.
- *  @stereotype singleton
+/** 
+ * Action to create a new use case diagram.
  */
 public class ActionUseCaseDiagram extends ActionAddDiagram {
-
-    /**
-     * The singleton.
-     */
-    public static final ActionUseCaseDiagram SINGLETON =
-        new ActionUseCaseDiagram();
 
     private static final Logger LOG =
         Logger.getLogger(ActionUseCaseDiagram.class);
 
-    private ActionUseCaseDiagram() {
+    public ActionUseCaseDiagram() {
         super("action.usecase-diagram");
     }
 
