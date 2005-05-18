@@ -246,7 +246,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * @return a new unique name for the diagram
      */
     protected String getNewDiagramName() {
-        String name = "Use Case Diagram " + getNextDiagramSerial();
+        String name = getLabelName() + " " + getNextDiagramSerial();
         if (!(ProjectManager.getManager().getCurrentProject()
 	          .isValidDiagramName(name))) {
             name = getNewDiagramName();
@@ -267,7 +267,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Action getActionActor() {
         if (actionActor == null) {
             actionActor = new RadioAction(new CmdCreateNode(
-                    Model.getMetaTypes().getActor(), "Actor"));
+                    Model.getMetaTypes().getActor(), "button.new-actor"));
         }
         return actionActor;
     }
@@ -280,7 +280,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
                     new ActionAddAssociation(
                         Model.getAggregationKind().getAggregate(),
                         false,
-                        "Aggregation"));
+                        "button.new-aggregation"));
         }
         return actionAggregation;
     }
@@ -293,7 +293,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
                     new ActionAddAssociation(
                         Model.getAggregationKind().getNone(),
                         false,
-                        "Association"));
+                        "button.new-association"));
         }
         return actionAssociation;
     }
@@ -306,7 +306,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
                     new ActionAddAssociation(
                         Model.getAggregationKind().getComposite(),
                         false,
-                        "Composition"));
+                        "button.new-composition"));
         }
         return actionComposition;
     }
@@ -320,7 +320,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getDependency(),
-                        "Dependency"));
+                        "button.new-dependency"));
         }
         return actionDependency;
     }
@@ -334,7 +334,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getExtend(),
-                        "Extend"));
+                        "button.new-extend"));
         }
         return actionExtend;
     }
@@ -348,7 +348,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getGeneralization(),
-                        "Generalization"));
+                        "button.new-generalization"));
         }
         return actionGeneralize;
     }
@@ -362,7 +362,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getInclude(),
-                        "Include"));
+                        "button.new-include"));
         }
         return actionInclude;
     }
@@ -375,7 +375,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
                     new ActionAddAssociation(
                             Model.getAggregationKind().getAggregate(),
                             true,
-                            "UniAggregation"));
+                            "button.new-uniaggregation"));
         }
         return actionUniAggregation;
     }
@@ -388,7 +388,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
                     new ActionAddAssociation(
                             Model.getAggregationKind().getNone(),
                             true,
-                            "UniAssociation"));
+                            "button.new-uniassociation"));
         }
         return actionUniAssociation;
     }
@@ -401,7 +401,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
                     new ActionAddAssociation(
                             Model.getAggregationKind().getComposite(),
                             true,
-                            "UniComposition"));
+                            "button.new-unicomposition"));
         }
         return actionUniComposition;
     }
@@ -411,7 +411,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Action getActionUseCase() {
         if (actionUseCase == null) {
             actionUseCase = new RadioAction(new CmdCreateNode(
-                    Model.getMetaTypes().getUseCase(), "UseCase"));
+                    Model.getMetaTypes().getUseCase(), "button.new-usecase"));
         }
         return actionUseCase;
     }

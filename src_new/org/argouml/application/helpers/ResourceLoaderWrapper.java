@@ -316,12 +316,68 @@ public final class ResourceLoaderWrapper {
     }
 
     static {
+        images.put("button.broom", "Broom");
+        images.put("button.new-actionstate", "ActionState");
+        images.put("button.new-actor", "Actor");
+        images.put("button.new-aggregation", "Aggregation");
+        images.put("button.new-association", "Association");
+        images.put("button.new-associationclass", "AssociationClass");
+        images.put("button.new-associationrole", "AssociationRole");
         images.put("button.new-attribute", "New Attribute");
+        images.put("button.new-callaction", "CallAction");
+        images.put("button.new-callstate", "CallState");
+        images.put("button.new-choice", "Choice");
+        images.put("button.new-class", "Class");
+        images.put("button.new-classifierrole", "ClassifierRole");
+        images.put("button.new-commentlink", "CommentLink");
+        images.put("button.new-component", "Component");
+        images.put("button.new-componentinstance", "ComponentInstance");
+        images.put("button.new-compositestate", "CompositeState");
+        images.put("button.new-composition", "Composition");
+        images.put("button.new-createaction", "CreateAction");
+        images.put("button.new-deephistory", "DeepHistory");
+        images.put("button.new-dependency", "Dependency");
+        images.put("button.new-destroyaction", "DestroyAction");
         images.put("button.new-extension-point", "New Extension Point");
+        images.put("button.new-extend", "Extend");
+        images.put("button.new-finalstate", "FinalState");
+        images.put("button.new-fork", "Fork");
+        images.put("button.new-generalization", "Generalization");
+        images.put("button.new-include", "Include");
+        images.put("button.new-initial", "Initial");
+    }
+
+    static {
         images.put("button.new-inner-class", "Inner Class");
+        images.put("button.new-interface", "Interface");
+        images.put("button.new-join", "Join");
+        images.put("button.new-junction", "Junction");
+        images.put("button.new-link", "Link");
+        images.put("button.new-node", "Node");
+        images.put("button.new-nodeinstance", "NodeInstance");
+        images.put("button.new-object", "Object");
+        images.put("button.new-objectflowstate", "ObjectFlowState");
         images.put("button.new-operation", "New Operation");
+        images.put("button.new-package", "Package");
         images.put("button.new-parameter", "New Parameter");
+        images.put("button.new-permission", "Permission");
         images.put("button.new-reception", "New Reception");
+        images.put("button.new-realization", "Realization");
+        images.put("button.new-returnaction", "ReturnAction");
+        images.put("button.new-sendaction", "SendAction");
+        images.put("button.new-shallowhistory", "ShallowHistory");
+        images.put("button.new-state", "State");
+        images.put("button.new-stubstate", "StubState");
+        images.put("button.new-subactivitystate", "SubactivityState");
+        images.put("button.new-submachinestate", "SubmachineState");
+        images.put("button.new-synchstate", "SynchState");
+        images.put("button.new-transition", "Transition");
+        images.put("button.new-uniaggregation", "UniAggregation");
+        images.put("button.new-uniassociation", "UniAssociation");
+        images.put("button.new-unicomposition", "UniComposition");
+        images.put("button.new-usage", "Usage");
+        images.put("button.new-usecase", "UseCase");
+        images.put("button.select", "Select");
     }
 
     /**
@@ -330,7 +386,7 @@ public final class ResourceLoaderWrapper {
      * @param name the new i18n key
      * @return the file name (base part only).
      */
-    private static String getImageBinding(String name) {
+    public static String getImageBinding(String name) {
         String found = (String) images.get(name);
         if (found == null) {
             return name;

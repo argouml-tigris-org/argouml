@@ -96,7 +96,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
     /**
      * The constructor.
-     * 
+     *
      * @param collaboration the collaboration aka namespace for the diagram
      */
     public UMLCollaborationDiagram(Object collaboration) {
@@ -123,15 +123,15 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
     /**
      * Method to perform a number of important initializations of a
-     * <I>CollaborationDiagram</I>.<p>
+     * <em>CollaborationDiagram</em>.<p>
      *
-     * Each diagram type has a similar <I>UMLxxxDiagram</I> class.<p>
+     * Each diagram type has a similar <em>UMLxxxDiagram</em> class.<p>
      *
-     * Changed <I>lay</I> from <I>LayerPerspective</I> to
-     * <I>LayerPerspectiveMutable</I>.  This class is a child of
-     * <I>LayerPerspective</I> and was implemented to correct some
-     * difficulties in changing the model.  <I>Lay</I> is used mainly
-     * in <I>LayerManager</I>(GEF) to control the adding, changing and
+     * Changed <em>lay</em> from <em>LayerPerspective</em> to
+     * <em>LayerPerspectiveMutable</em>.  This class is a child of
+     * <em>LayerPerspective</em> and was implemented to correct some
+     * difficulties in changing the model.  <em>Lay</em> is used mainly
+     * in <em>LayerManager</em>(GEF) to control the adding, changing and
      * deleting layers on the diagram...
      *
      * @param handle the collaboration from the UML model
@@ -154,7 +154,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         lay.setGraphEdgeRenderer(rend);
         setLayer(lay);
     }
-    
+
     /**
      * Get the actions from which to create a toolbar or equivalent
      * graphic triggers.
@@ -196,7 +196,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
         Collection messages;
         Iterator msgIterator;
-        Collection ownedElements = 
+        Collection ownedElements =
             Model.getFacade().getOwnedElements(getNamespace());
         Iterator oeIterator = ownedElements.iterator();
         Layer lay = getLayer();
@@ -222,7 +222,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      * @return String
      */
     protected String getNewDiagramName() {
-        String name = "Collaboration Diagram " + getNextDiagramSerial();
+        String name = getLabelName() + " " + getNextDiagramSerial();
         if (!ProjectManager.getManager().getCurrentProject()
 	        .isValidDiagramName(name)) {
             name = getNewDiagramName();
@@ -245,7 +245,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
             actionClassifierRole =
                 new RadioAction(new CmdCreateNode(
                         Model.getMetaTypes().getClassifierRole(),
-                        "ClassifierRole"));
+                        "button.new-classifierrole"));
         }
         return actionClassifierRole;
     }
@@ -255,11 +255,12 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     protected Action getActionAssociation() {
         if (actionAssociation == null) {
-            actionAssociation = new RadioAction(
+            actionAssociation =
+                new RadioAction(
                     new ActionAddAssociationRole(
                         Model.getAggregationKind().getNone(),
                         false,
-                        "AssociationRole",
+                        "button.new-associationrole",
                         "Association"));
         }
         return actionAssociation;
@@ -269,11 +270,12 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     protected Action getActionComposition() {
         if (actionComposition == null) {
-            actionComposition = new RadioAction(
+            actionComposition =
+                new RadioAction(
                     new ActionAddAssociationRole(
                         Model.getAggregationKind().getComposite(),
                         false,
-                        "Composition"));
+                        "button.new-composition"));
         }
         return actionComposition;
     }
@@ -282,12 +284,13 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     protected Action getActionDepend() {
         if (actionDepend == null) {
-            actionDepend = new RadioAction(
+            actionDepend =
+                new RadioAction(
                     new CmdSetMode(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getDependency(),
-                        "Dependency"));
+                        "button.new-dependency"));
         }
         return actionDepend;
     }
@@ -296,12 +299,13 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     protected Action getActionGeneralize() {
         if (actionGeneralize == null) {
-            actionGeneralize = new RadioAction(
+            actionGeneralize =
+                new RadioAction(
                     new CmdSetMode(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getGeneralization(),
-                        "Generalization"));
+                        "button.new-generalization"));
         }
         return actionGeneralize;
     }
@@ -311,11 +315,12 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     protected Action getActionUniAggregation() {
         if (actionUniAggregation == null) {
-            actionUniAggregation = new RadioAction(
+            actionUniAggregation =
+                new RadioAction(
                     new ActionAddAssociationRole(
                         Model.getAggregationKind().getAggregate(),
                         true,
-                        "UniAggregation"));
+                        "button.new-uniaggregation"));
         }
         return actionUniAggregation;
     }
@@ -324,11 +329,12 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     protected Action getActionUniAssociation() {
         if (actionUniAssociation  == null) {
-            actionUniAssociation = new RadioAction(
+            actionUniAssociation =
+                new RadioAction(
                     new ActionAddAssociationRole(
                         Model.getAggregationKind().getNone(),
                         true,
-                        "UniAssociation"));
+                        "button.new-uniassociation"));
         }
         return actionUniAssociation;
     }
@@ -337,11 +343,12 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     protected Action getActionUniComposition() {
         if (actionUniComposition == null) {
-            actionUniComposition = new RadioAction(
+            actionUniComposition =
+                new RadioAction(
                     new ActionAddAssociationRole(
                         Model.getAggregationKind().getComposite(),
                         true,
-                        "UniComposition"));
+                        "button.new-unicomposition"));
         }
         return actionUniComposition;
     }
@@ -351,11 +358,12 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     private Action getActionAggregation() {
         if (actionAggregation == null) {
-            actionAggregation = new RadioAction(
+            actionAggregation =
+                new RadioAction(
                     new ActionAddAssociationRole(
                         Model.getAggregationKind().getAggregate(),
                         false,
-                        "Aggregation"));
+                        "button.new-aggregation"));
         }
         return actionAggregation;
     }
@@ -376,5 +384,5 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     public Object getDependentElement() {
         return getNamespace(); /* The collaboration. */
     }
-    
+
 } /* end class UMLCollaborationDiagram */

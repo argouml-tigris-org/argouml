@@ -28,7 +28,6 @@ import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -48,15 +47,6 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
  * TODO: Finish the work on swimlanes, callstates, subactivity states.
  */
 public class UMLActivityDiagram extends UMLDiagram {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(UMLActivityDiagram.class);
-
-    ///////////////////////////
-    // actions for the toolbar
-
     private Action actionState;
     private Action actionStartPseudoState;
     private Action actionFinalPseudoState;
@@ -115,13 +105,14 @@ public class UMLActivityDiagram extends UMLDiagram {
      * @see org.tigris.gef.base.Diagram#initialize(java.lang.Object)
      */
     public void initialize(Object o) {
-        if (!(Model.getFacade().isAActivityGraph(o)))
+        if (!(Model.getFacade().isAActivityGraph(o))) {
             return;
+        }
         Object context = Model.getFacade().getContext(o);
         if (context != null) {
             if (Model.getFacade().isABehavioralFeature(context)) {
                 setup(Model.getFacade().getNamespace(
-                                Model.getFacade().getOwner(context)), o);    
+                                Model.getFacade().getOwner(context)), o);
             } else {
                 setup(context, o);
             }
@@ -134,15 +125,15 @@ public class UMLActivityDiagram extends UMLDiagram {
 
     /**
      * Method to perform a number of important initializations of an
-     * <I>Activity Diagram</I>.<p>
+     * <em>Activity Diagram</em>.<p>
      *
-     * Each diagram type has a similar <I>UMLxxxDiagram</I> class.<p>
+     * Each diagram type has a similar <em>UMLxxxDiagram</em> class.<p>
      *
-     * Changed <I>lay</I> from <I>LayerPerspective</I> to
-     * <I>LayerPerspectiveMutable</I>.  This class is a child of
-     * <I>LayerPerspective</I> and was implemented to correct some
-     * difficulties in changing the model. <I>lay</I> is used mainly
-     * in <I>LayerManager</I>(GEF) to control the adding, changing and
+     * Changed <em>lay</em> from <em>LayerPerspective</em> to
+     * <em>LayerPerspectiveMutable</em>.  This class is a child of
+     * <em>LayerPerspective</em> and was implemented to correct some
+     * difficulties in changing the model. <em>lay</em> is used mainly
+     * in <em>LayerManager</em>(GEF) to control the adding, changing and
      * deleting layers on the diagram...  psager@tigris.org Jan. 24,
      * 2002
 
@@ -234,7 +225,7 @@ public class UMLActivityDiagram extends UMLDiagram {
      * @return String
      */
     protected String getNewDiagramName() {
-        String name = "Activity Diagram " + getNextDiagramSerial();
+        String name = getLabelName() + " " + getNextDiagramSerial();
         if (!ProjectManager.getManager().getCurrentProject()
                  .isValidDiagramName(name)) {
             name = getNewDiagramName();
@@ -258,7 +249,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                 new RadioAction(
                         new CmdCreateNode(
                                 Model.getMetaTypes().getCallState(),
-                                "CallState"));
+                                "button.new-callstate"));
         }
         return actionCallState;
     }
@@ -271,7 +262,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                 new RadioAction(
                         new CmdCreateNode(
                                 Model.getMetaTypes().getFinalState(),
-                        	"FinalState"));
+                        	"button.new-finalstate"));
         }
         return actionFinalPseudoState;
     }
@@ -284,7 +275,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                 new RadioAction(
                         new ActionCreatePseudostate(
                                 Model.getPseudostateKind().getFork(),
-                        	"Fork"));
+                        	"button.new-fork"));
         }
         return actionForkPseudoState;
     }
@@ -297,7 +288,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                 new RadioAction(
                         new ActionCreatePseudostate(
                                 Model.getPseudostateKind().getJoin(),
-                        	"Join"));
+                        	"button.new-join"));
         }
         return actionJoinPseudoState;
     }
@@ -310,7 +301,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                 new RadioAction(
                         new ActionCreatePseudostate(
                                 Model.getPseudostateKind().getJunction(),
-                                "Junction"));
+                                "button.new-junction"));
         }
         return actionJunctionPseudoState;
     }
@@ -334,7 +325,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                 new RadioAction(
                         new CmdCreateNode(
                                 Model.getMetaTypes().getObjectFlowState(),
-                                "ObjectFlowState"));
+                                "button.new-objectflowstate"));
         }
         return actionObjectFlowState;
     }
@@ -347,7 +338,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                 new RadioAction(
                         new ActionCreatePseudostate(
                                 Model.getPseudostateKind().getInitial(),
-                                "Initial"));
+                                "button.new-initial"));
         }
         return actionStartPseudoState;
     }
@@ -360,7 +351,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                 new RadioAction(
                         new CmdCreateNode(
                                 Model.getMetaTypes().getActionState(),
-                        	"ActionState"));
+                        	"button.new-actionstate"));
         }
         return actionState;
     }
@@ -373,7 +364,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                 new RadioAction(
                         new CmdCreateNode(
                                 Model.getMetaTypes().getSubactivityState(),
-                        "SubactivityState"));
+                        "button.new-subactivitystate"));
         }
         return actionSubactivityState;
     }
@@ -388,7 +379,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                                 ModeCreatePolyEdge.class,
                                 "edgeClass",
                                 Model.getMetaTypes().getTransition(),
-                        "Transition"));
+                        "button.new-transition"));
         }
         return actionTransition;
     }
@@ -416,6 +407,6 @@ public class UMLActivityDiagram extends UMLDiagram {
     public Object getDependentElement() {
         return getStateMachine(); /* The ActivityGraph. */
     }
-    
-    
+
+
 } /* end class UMLActivityDiagram */
