@@ -24,7 +24,7 @@
 
 package org.argouml.application.api;
 
-import org.argouml.uml.ui.ActionExit;
+import org.argouml.ui.cmd.ActionExit;
 
 /**
  * Help to test ActionExit since we don't want to really do exit in the

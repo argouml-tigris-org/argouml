@@ -30,19 +30,13 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-/** Action to trigger creation of a deployment diagram.
- *  @stereotype singleton
+/** 
+ * Action to trigger creation of a deployment diagram.
  */
 public class ActionDeploymentDiagram extends ActionAddDiagram {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-
-    /**
-     * The singleton.
-     */
-    public static final ActionDeploymentDiagram SINGLETON =
-        new ActionDeploymentDiagram();
 
     private static final Logger LOG =
         Logger.getLogger(ActionDeploymentDiagram.class);
@@ -53,7 +47,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     /**
      * Constructor.
      */
-    private ActionDeploymentDiagram() {
+    public ActionDeploymentDiagram() {
         super("action.deployment-diagram");
     }
 

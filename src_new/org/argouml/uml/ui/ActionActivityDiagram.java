@@ -35,8 +35,6 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  *
  * This used to extend the ActionStateDiagram, but lead to problems
  * implementing shouldBeEnabled() and isValidNamespace().
- *
- * @stereotype singleton
  */
 public class ActionActivityDiagram extends ActionAddDiagram {
 
@@ -44,15 +42,9 @@ public class ActionActivityDiagram extends ActionAddDiagram {
         Logger.getLogger(ActionStateDiagram.class);
 
     /**
-     * The singleton.
-     */
-    public static final ActionActivityDiagram SINGLETON =
-        new ActionActivityDiagram();
-
-    /**
      * Constructor.
      */
-    private ActionActivityDiagram() {
+    public ActionActivityDiagram() {
         super("action.activity-diagram");
     }
 

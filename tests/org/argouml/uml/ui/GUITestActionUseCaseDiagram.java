@@ -52,7 +52,7 @@ public class GUITestActionUseCaseDiagram
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
     protected ActionAddDiagram getAction() {
-        return ActionUseCaseDiagram.SINGLETON;
+        return new ActionUseCaseDiagram();
     }
 
     /**

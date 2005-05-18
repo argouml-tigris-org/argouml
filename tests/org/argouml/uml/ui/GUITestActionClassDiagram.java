@@ -49,7 +49,7 @@ public class GUITestActionClassDiagram extends AbstractTestActionAddDiagram {
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
     protected ActionAddDiagram getAction() {
-	return ActionClassDiagram.SINGLETON;
+	return new ActionClassDiagram();
     }
 
     /**

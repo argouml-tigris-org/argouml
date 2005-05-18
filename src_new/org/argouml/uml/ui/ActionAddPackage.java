@@ -35,17 +35,8 @@ import org.argouml.ui.targetmanager.TargetManager;
  * structures quickly.
  *
  * @author alexb@tigris.org
- * @stereotype singleton
  */
 public class ActionAddPackage  extends UMLAction {
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    /**
-     * The singleton.
-     */
-    public static final ActionAddPackage SINGLETON = new ActionAddPackage();
 
     ////////////////////////////////////////////////////////////////
     // constructors

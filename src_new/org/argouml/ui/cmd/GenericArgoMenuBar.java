@@ -25,6 +25,7 @@
 package org.argouml.ui.cmd;
 
 import java.awt.Toolkit;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.ListIterator;
@@ -57,14 +58,12 @@ import org.argouml.uml.ui.ActionCollaborationDiagram;
 import org.argouml.uml.ui.ActionCopy;
 import org.argouml.uml.ui.ActionCut;
 import org.argouml.uml.ui.ActionDeploymentDiagram;
-import org.argouml.uml.ui.ActionExit;
 import org.argouml.uml.ui.ActionGenerateAll;
 import org.argouml.uml.ui.ActionGenerateOne;
 import org.argouml.uml.ui.ActionGenerateProjectCode;
 import org.argouml.uml.ui.ActionGenerationSettings;
 import org.argouml.uml.ui.ActionImportFromSources;
 import org.argouml.uml.ui.ActionLayout;
-import org.argouml.uml.ui.ActionNew;
 import org.argouml.uml.ui.ActionOpenProject;
 import org.argouml.uml.ui.ActionPaste;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -400,17 +399,17 @@ public class GenericArgoMenuBar extends JMenuBar
         KeyStroke ctrlS = KeyStroke.getKeyStroke(KeyEvent.VK_S, mask);
         KeyStroke ctrlP = KeyStroke.getKeyStroke(KeyEvent.VK_P, mask);
         KeyStroke altF4 =
-            KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK);
+            KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK);
 
         JMenu file = new JMenu(menuLocalize("File"));
         add(file);
         setMnemonic(file, "File");
         fileToolbar = new ToolBar("File Toolbar");
         fileToolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
-        JMenuItem newItem = file.add(ActionNew.SINGLETON);
+        JMenuItem newItem = file.add(new ActionNew());
         setMnemonic(newItem, "New");
         setAccelerator(newItem, ctrlN);
-        fileToolbar.add((ActionNew.SINGLETON));
+        fileToolbar.add((new ActionNew()));
         JMenuItem openProjectItem = file.add(new ActionOpenProject());
         setMnemonic(openProjectItem, "Open");
         setAccelerator(openProjectItem, ctrlO);
@@ -456,7 +455,7 @@ public class GenericArgoMenuBar extends JMenuBar
 
         // and exit menu entry starting with separator
         file.addSeparator();
-        JMenuItem exitItem = file.add(ActionExit.SINGLETON);
+        JMenuItem exitItem = file.add(new ActionExit());
         setMnemonic(exitItem, "Exit");
         setAccelerator(exitItem, altF4);
     }
@@ -615,39 +614,39 @@ public class GenericArgoMenuBar extends JMenuBar
         createDiagramToolbar.putClientProperty("JToolBar.isRollover",
                                                Boolean.TRUE);
         JMenuItem usecaseDiagram =
-            createDiagrams.add(ActionUseCaseDiagram.SINGLETON);
+            createDiagrams.add(new ActionUseCaseDiagram());
         setMnemonic(usecaseDiagram, "Usecase Diagram");
-        createDiagramToolbar.add((ActionUseCaseDiagram.SINGLETON));
+        createDiagramToolbar.add((new ActionUseCaseDiagram()));
 
         JMenuItem classDiagram =
-            createDiagrams.add(ActionClassDiagram.SINGLETON);
+            createDiagrams.add(new ActionClassDiagram());
         setMnemonic(classDiagram, "Class Diagram");
-        createDiagramToolbar.add((ActionClassDiagram.SINGLETON));
+        createDiagramToolbar.add((new ActionClassDiagram()));
 
         JMenuItem sequenzDiagram =
-            createDiagrams.add(ActionSequenceDiagram.SINGLETON);
+            createDiagrams.add(new ActionSequenceDiagram());
         setMnemonic(sequenzDiagram, "Sequenz Diagram");
-        createDiagramToolbar.add((ActionSequenceDiagram.SINGLETON));
+        createDiagramToolbar.add((new ActionSequenceDiagram()));
 
         JMenuItem collaborationDiagram =
-            createDiagrams.add(ActionCollaborationDiagram.SINGLETON);
+            createDiagrams.add(new ActionCollaborationDiagram());
         setMnemonic(collaborationDiagram, "Collaboration Diagram");
-        createDiagramToolbar.add((ActionCollaborationDiagram.SINGLETON));
+        createDiagramToolbar.add((new ActionCollaborationDiagram()));
 
         JMenuItem stateDiagram =
-            createDiagrams.add(ActionStateDiagram.SINGLETON);
+            createDiagrams.add(new ActionStateDiagram());
         setMnemonic(stateDiagram, "State Diagram");
-        createDiagramToolbar.add((ActionStateDiagram.SINGLETON));
+        createDiagramToolbar.add((new ActionStateDiagram()));
 
         JMenuItem activityDiagram =
-            createDiagrams.add(ActionActivityDiagram.SINGLETON);
+            createDiagrams.add(new ActionActivityDiagram());
         setMnemonic(activityDiagram, "Activity Diagram");
-        createDiagramToolbar.add((ActionActivityDiagram.SINGLETON));
+        createDiagramToolbar.add((new ActionActivityDiagram()));
 
         JMenuItem deploymentDiagram =
-            createDiagrams.add(ActionDeploymentDiagram.SINGLETON);
+            createDiagrams.add(new ActionDeploymentDiagram());
         setMnemonic(deploymentDiagram, "Deployment Diagram");
-        createDiagramToolbar.add((ActionDeploymentDiagram.SINGLETON));
+        createDiagramToolbar.add((new ActionDeploymentDiagram()));
 
         appendPluggableMenus(createDiagrams,
 			     PluggableMenu.KEY_CREATE_DIAGRAMS);

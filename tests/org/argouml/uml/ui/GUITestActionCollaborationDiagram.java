@@ -55,7 +55,7 @@ public class GUITestActionCollaborationDiagram
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
     protected ActionAddDiagram getAction() {
-        return ActionCollaborationDiagram.SINGLETON;
+        return new ActionCollaborationDiagram();
     }
 
     /**

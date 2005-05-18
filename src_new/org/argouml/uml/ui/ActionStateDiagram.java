@@ -30,18 +30,13 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-/** Action to create a new statechart diagram.
- * @stereotype singleton
+/** 
+ * Action to create a new statechart diagram.
  */
 public class ActionStateDiagram extends ActionAddDiagram {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-
-    /**
-     * The singleton.
-     */
-    public static final ActionStateDiagram SINGLETON = new ActionStateDiagram();
 
     private static final Logger LOG =
         Logger.getLogger(ActionStateDiagram.class);
@@ -49,7 +44,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    private ActionStateDiagram() {
+    public ActionStateDiagram() {
         super("action.state-diagram");
     }
 

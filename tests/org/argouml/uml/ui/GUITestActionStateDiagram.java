@@ -53,7 +53,7 @@ public class GUITestActionStateDiagram
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
     protected ActionAddDiagram getAction() {
-        return ActionStateDiagram.SINGLETON;
+        return new ActionStateDiagram();
     }
 
     /**

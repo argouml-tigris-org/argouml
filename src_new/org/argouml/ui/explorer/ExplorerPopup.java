@@ -179,7 +179,7 @@ public class ExplorerPopup extends JPopupMenu {
 
                 if (Model.getFacade().isAPackage(selectedItem)
                         || Model.getFacade().isAModel(selectedItem)) {
-                    this.add(ActionAddPackage.SINGLETON);
+                    this.add(new ActionAddPackage());
                 }
                 
                 if (selectedItem != projectModel) {

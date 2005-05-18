@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -67,11 +68,11 @@ import org.argouml.persistence.LastLoadInfo;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFilePersister;
 import org.argouml.persistence.VersionException;
+import org.argouml.ui.cmd.ActionExit;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.ActionExit;
 import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.TabProps;
@@ -795,8 +796,7 @@ public class ProjectBrowser
         public WindowCloser() {
         }
         public void windowClosing(WindowEvent e) {
-
-            ActionExit.SINGLETON.actionPerformed(null);
+            new ActionExit().actionPerformed(null);
         }
     } /* end class WindowCloser */
 
@@ -995,6 +995,7 @@ public class ProjectBrowser
      * If the current project is dirty (needs saving) then this function will
      * ask confirmation from the user.
      * If the user indicates that saving is needed, then saving is attempted.
+     * See ActionExit.actionPerformed() for a very similar procedure!
      *
      * @return true if we can continue with opening
      */
@@ -1058,6 +1059,7 @@ public class ProjectBrowser
 
         Designer.disableCritiquing();
         Designer.clearCritiquing();
+        clearDialogs();
         Project p = null;
 
         if (!(file.canRead())) {
@@ -1202,5 +1204,18 @@ public class ProjectBrowser
             
             reportError(message, showUI);
         }
+    }
+    
+    /** We should remove all open dialogs. They have as parent the
+     * ProjectBrowser. This is needed for the non-modal dialogs 
+     * such as Find and Goto.
+     */
+    public void clearDialogs() {
+        Window[] windows = getOwnedWindows();
+        for (int i = 0; i < windows.length; i++) {
+            windows[i].dispose();
+        }
+        FindDialog.getInstance().doClearTabs();
+        FindDialog.getInstance().doResetFields();
     }
 } /* end class ProjectBrowser */
