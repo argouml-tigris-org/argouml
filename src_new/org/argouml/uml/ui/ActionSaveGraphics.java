@@ -32,7 +32,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -91,16 +90,15 @@ public class ActionSaveGraphics
      * @see UMLAction#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        trySave(false);
+        trySave(); //TODO: what to do with the return value?
     }
 
     /**
      * Method that does almost everything in this class.<p>
      *
-     * @param overwrite True if we shouldn't care that we erase an old copy.
      * @return true if all went well.
      */
-    public boolean trySave(boolean overwrite) {
+    private boolean trySave() {
         Object target =
             ProjectManager.getManager().getCurrentProject().getActiveDiagram();
         
@@ -165,16 +163,15 @@ public class ActionSaveGraphics
                     }
                     // end new code
                 
-                    return doSave(theFile, suffix, overwrite);
+                    return doSave(theFile, suffix, true);
                 }
             }
         } catch (OutOfMemoryError e) {
-            JDialog dialog = new ExceptionDialog(ProjectBrowser.getInstance(),
+            new ExceptionDialog(ProjectBrowser.getInstance(),
                 "You have run out of memory. " 
                 + "Close down ArgoUML and restart with a larger heap size.", e);
         } catch (Exception e) {
-            JDialog dialog
-                = new ExceptionDialog(ProjectBrowser.getInstance(), e);
+            new ExceptionDialog(ProjectBrowser.getInstance(), e);
             LOG.error("Got some exception", e);
         }
         
@@ -182,20 +179,18 @@ public class ActionSaveGraphics
     }
 
     /**
-     * Actually do the saving.
+     * Actually do the saving of the graphics file.
      *
      * @return true if it was successful.
      * @param theFile is the file that we are writing to
      * @param suffix is the suffix. Used for deciding what format the file
      * shall have.
-     * @param overwrite is true if we are not supposed to warn that we are
-     * replacing an old file.
+     * @param useUI is true if we are supposed to use the UI e.g. to warn 
+     *              the user that we are replacing an old file.
      */
     private boolean doSave(File theFile,
-			   String suffix, boolean overwrite)
+			   String suffix, boolean useUI)
 	throws FileNotFoundException, IOException {
-
-	ProjectBrowser pb = ProjectBrowser.getInstance();
 
 	CmdSaveGraphics cmd = null;
 	if (FileFilters.PS_FILTER.getSuffix().equals(suffix)) {
@@ -209,17 +204,22 @@ public class ActionSaveGraphics
 	} else if (FileFilters.SVG_FILTER.getSuffix().equals(suffix)) {
 	    cmd = new CmdSaveSVG();
 	} else {
-	    pb.showStatus("Unknown graphics file type with suffix "
+            if (useUI) { 
+                ProjectBrowser.getInstance().showStatus(
+                          "Unknown graphics file type with suffix "
 			  + suffix);
+            }
 	    return false;
 	}
 
-	pb.showStatus("Writing " + theFile + "...");
-	if (theFile.exists() && !overwrite) {
+        if (useUI) {
+            ProjectBrowser.getInstance().showStatus(
+                            "Writing " + theFile + "...");
+        }
+	if (theFile.exists() && useUI) {
 	    String t = "Overwrite " + theFile;
-	    int response =
-		JOptionPane.showConfirmDialog(pb, t, t,
-					      JOptionPane.YES_NO_OPTION);
+	    int response = JOptionPane.showConfirmDialog(
+                ProjectBrowser.getInstance(), t, t, JOptionPane.YES_NO_OPTION);
 	    if (response != JOptionPane.YES_OPTION) {
 		return false;
 	    }
@@ -228,7 +228,9 @@ public class ActionSaveGraphics
 	cmd.setStream(fo);
 	cmd.doIt();
 	fo.close();
-	pb.showStatus("Wrote " + theFile);
+        if (useUI) {
+            ProjectBrowser.getInstance().showStatus("Wrote " + theFile);
+        }
 	return true;
     }
 
@@ -255,7 +257,7 @@ public class ActionSaveGraphics
 	}
 
 	try {
-	    return doSave(file, suffix, true);
+	    return doSave(file, suffix, false);
 	} catch (FileNotFoundException e) {
 	    LOG.error("File not found error when writing.", e);
 	} catch (IOException e) {
