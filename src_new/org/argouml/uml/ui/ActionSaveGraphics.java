@@ -129,6 +129,7 @@ public class ActionSaveGraphics
                 chooser = new JFileChooser();
             }
         
+            //TODO: i18n
             chooser.setDialogTitle("Save Diagram as Graphics: " + defaultName);
             // Only specified format are allowed.
             chooser.removeChoosableFileFilter(chooser.
