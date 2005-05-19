@@ -353,11 +353,9 @@ public class UmlFilePersister extends AbstractFilePersister
             inputStream.realClose();
             p.postLoad();
             return p;
-        } catch (IOException e) {
-            LOG.error("IOException", e);
-            throw new OpenException(e);
-        } catch (SAXException e) {
-            LOG.error("SAXException", e);
+        } catch (OpenException e) {
+            throw e;
+        } catch (Exception e) {
             throw new OpenException(e);
         } finally {
             if (inputStream != null) {
