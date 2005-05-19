@@ -194,6 +194,11 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
         super.postLoad();
 
+        if (getNamespace() == null) {
+            throw new IllegalStateException(
+                    "The namespace of the collaboration diagram is not set");
+        }
+        
         Collection messages;
         Iterator msgIterator;
         Collection ownedElements =
