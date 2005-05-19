@@ -32,6 +32,7 @@ import java.util.StringTokenizer;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.ui.StereotypeContainer;
+import org.tigris.gef.persistence.pgml.Container;
 import org.tigris.gef.persistence.pgml.FigGroupHandler;
 import org.tigris.gef.persistence.pgml.HandlerStack;
 import org.tigris.gef.presentation.Fig;
@@ -72,35 +73,16 @@ public class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackPa
                                              String qname,
                                              Attributes attributes)
         throws SAXException {
-/*
-        // Ignore things within nodes
-        if ( qname.equals( "group") && container instanceof
-             FigGroupHandler)
-        {
-            FigGroup group=((FigGroupHandler)container).getFigGroup();
-            if ( group instanceof AttributesCompartmentContainer ||
-                group instanceof OperationsCompartmentContainer)
-            {
-                String description=attributes.getValue( "description");
-                if ( description.indexOf( "Compartment")!= -1)
-                    return null;
-            }
-        }
-        // Don't load text within node
-        if ( qname.equals( "text") && container instanceof
-             FigGroupHandler)
-        {
-            FigGroup group=((FigGroupHandler)container).getFigGroup();
-            if ( group instanceof FigNode)
-                return null;
-        }
- */
+        // Ignore non-private elements within groups
         if (container instanceof FigGroupHandler) {
             FigGroup group = ((FigGroupHandler) container).getFigGroup();
             if (group instanceof FigNode && !qname.equals("private")) {
                 return null;
             }
         }
+        // Handle ItemUID in container contents
+        if ( qname.equals("private") && ( container instanceof Container))
+        	return new PrivateHandler( this, (Container)container);
         DefaultHandler result =
             super.getHandler(stack, container, uri, localname, qname,
                     attributes);
