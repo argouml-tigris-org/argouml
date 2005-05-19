@@ -253,7 +253,7 @@ public class Main {
 	    commands = null;
 
 	    System.out.println("Exiting because we are running in batch.");
-	    new ActionExit().actionPerformed(null);
+	    new ActionExit().doCommand(null);
 	    return;
 	}
 
