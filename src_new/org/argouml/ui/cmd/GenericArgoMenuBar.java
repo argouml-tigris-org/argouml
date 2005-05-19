@@ -68,6 +68,7 @@ import org.argouml.uml.ui.ActionOpenProject;
 import org.argouml.uml.ui.ActionPaste;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.ActionRevertToSaved;
+import org.argouml.uml.ui.ActionSaveAllGraphics;
 import org.argouml.uml.ui.ActionSaveGraphics;
 import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.ActionSaveProjectAs;
@@ -443,6 +444,7 @@ public class GenericArgoMenuBar extends JMenuBar
         setAccelerator(printItem, ctrlP);
         fileToolbar.add((new ActionPrint()));
         JMenuItem saveGraphicsItem = file.add(new ActionSaveGraphics());
+        JMenuItem saveAllGraphicsItem = file.add(new ActionSaveAllGraphics());
         setMnemonic(saveGraphicsItem, "SaveGraphics");
         file.addSeparator();
         JMenuItem saveConfiguration =
