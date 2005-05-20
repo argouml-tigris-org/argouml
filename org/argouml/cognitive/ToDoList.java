@@ -427,17 +427,6 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         addE(item);
     }
 
-    /**
-     * @param list the todo items to be added
-     */
-    public synchronized void addAll(ToDoList list) {
-        Enumeration cur = list.elements();
-        while (cur.hasMoreElements()) {
-            ToDoItem item = (ToDoItem) cur.nextElement();
-            addElement(item);
-        }
-        fireToDoListChanged();
-    }
 
     /**
      * @param list the todo items to be removed
