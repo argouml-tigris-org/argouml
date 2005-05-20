@@ -679,15 +679,15 @@ public final class Designer
         return toDoList;
     }
 
-    /**
-     * Add all the items in the given list to my list.
-     *
-     * @param list the items to be added
-     */
-    public void addToDoItems(ToDoList list) {
-        toDoList.addAll(list);
-    }
-
+//    /**
+//     * Add all the items in the given list to my list.
+//     *
+//     * @param list the items to be added
+//     */
+//    public void addToDoItems(ToDoList list) {
+//        toDoList.addAll(list);
+//    }
+//
     /**
      * Remove all the items in the given list from my list.
      *
