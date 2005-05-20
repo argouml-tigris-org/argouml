@@ -158,10 +158,19 @@ public class ExplorerTree
         /** builds a pop-up menu for extra functionality for the Tree*/
         public void showPopupMenu(MouseEvent me) {
 
-            if (getLastSelectedPathComponent() == null) {
+            TreePath path = getPathForLocation( me.getX(), me.getY() );
+            if ( path == null ) {
                 return;
-	    }
-
+            }
+            
+            /* We preserve the current (multiple) selection, 
+             * if we are over part of it ...
+             */
+            if ( !isPathSelected( path ) ) {
+                /* ... otherwise we select the item below the mousepointer. */
+                getSelectionModel().setSelectionPath( path );
+            }
+            
             Object selectedItem =
                 ((DefaultMutableTreeNode) getLastSelectedPathComponent())
                         .getUserObject();
