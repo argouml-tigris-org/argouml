@@ -325,16 +325,15 @@ public class TodoParser extends SAXParserBase {
      * @param e the element
      */
     protected void handleIssueEnd(XMLElement e) {
-	Designer dsgr;
-	ResolvedCritic item;
-
-	if (critic == null)
-	    return;
-
-	item = new ResolvedCritic(critic, offenders);
-	dsgr = Designer.theDesigner();
-	dsgr.getToDoList().getResolvedItems().addElement(item);
-	// cat.debug("Added ResolvedCritic: " + item);
+        Designer dsgr;
+        ResolvedCritic item;
+        
+        if (critic == null)
+            return;
+        
+        item = new ResolvedCritic(critic, offenders);
+        dsgr = Designer.theDesigner();
+        dsgr.getToDoList().addResolvedCritic(item);
     }
 
     /**
@@ -343,7 +342,7 @@ public class TodoParser extends SAXParserBase {
      * @param e the element
      */
     protected void handlePoster(XMLElement e) {
-	critic = decode(e.getText()).trim();
+        critic = decode(e.getText()).trim();
     }
 
     /**
