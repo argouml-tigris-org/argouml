@@ -24,6 +24,9 @@
 
 package org.argouml.uml.cognitive;
 
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.cognitive.Designer;
@@ -102,19 +105,22 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
      * @return Vector conaining the resolved critics list
      */
     public Vector getResolvedCriticsList() {
-    	Vector in, out;
+    	LinkedHashSet in;
+        Vector out;
     	ResolvedCritic rci;
     	Designer dsgr;
     	int i;
 
     	dsgr = Designer.theDesigner();
     	in = dsgr.getToDoList().getResolvedItems();
+        
     	out = new Vector();
-    	for (i = 0; i < in.size(); i++) {
+    	for (Iterator it = in.iterator(); it.hasNext(); ) {
+            Object o = it.next();
     	    try {
-        	rci = (ResolvedCritic) in.elementAt(i);
-        	if (rci == null) {
-        		    continue;
+                rci = (ResolvedCritic) o;
+                if (rci == null) {
+                    continue;
                 }
     	    }
     	    catch (ClassCastException e) {
@@ -124,6 +130,4 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
     	}
     	return out;
     }
-
 }
-
