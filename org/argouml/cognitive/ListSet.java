@@ -41,7 +41,7 @@ import org.tigris.gef.util.PredicateTrue;
  * An Ordered, non-duplicated collecton of objects (not exactly a
  * mathemetical set because it is ordered).
  */
-public class ListSet implements Serializable, Set, List {
+public class ListSet implements Serializable, Set {
     ////////////////////////////////////////////////////////////////
     // constants
     private static final int TC_LIMIT = 50;
@@ -435,7 +435,9 @@ public class ListSet implements Serializable, Set, List {
      */
     public boolean add(Object arg0) {
         boolean result = contains(arg0);
-        addElement(arg0);
+        if (!result) {
+            addElement(arg0);
+        }
         return !result;
     }
 
@@ -519,7 +521,9 @@ public class ListSet implements Serializable, Set, List {
      * @see java.util.List#add(int, java.lang.Object)
      */
     public void add(int arg0, Object arg1) {
-        vector.add(arg0, arg1);
+        if (!vector.contains(arg1)) {
+            vector.add(arg0, arg1);
+        }
     }
 
     /**
