@@ -471,16 +471,19 @@ public final class ParserDisplay extends Parser {
         }
 
         if (name != null && name.startsWith("+")) {
-                name = name.substring(1).trim();
-                Model.getCoreHelper().setVisibility(me, Model.getVisibilityKind().getPublic());
+            name = name.substring(1).trim();
+            Model.getCoreHelper().setVisibility(me, 
+                            Model.getVisibilityKind().getPublic());
         }
         if (name != null && name.startsWith("-")) {
-                name = name.substring(1).trim();
-                Model.getCoreHelper().setVisibility(me, Model.getVisibilityKind().getPrivate());
+            name = name.substring(1).trim();
+            Model.getCoreHelper().setVisibility(me, 
+                            Model.getVisibilityKind().getPrivate());
         }
         if (name != null && name.startsWith("#")) {
-                name = name.substring(1).trim();
-                Model.getCoreHelper().setVisibility(me, Model.getVisibilityKind().getProtected());
+            name = name.substring(1).trim();
+            Model.getCoreHelper().setVisibility(me, 
+                            Model.getVisibilityKind().getProtected());
         }
         
         if (name != null) {
@@ -1517,10 +1520,8 @@ public final class ParserDisplay extends Parser {
         }
 
         if (value != null) {
-            Object initExpr =
-                Model.getDataTypesFactory()
-                    .createExpression(Notation.getConfigueredNotation().toString(),
-                            value.trim());
+            Object initExpr = Model.getDataTypesFactory().createExpression(
+                Notation.getConfigueredNotation().toString(), value.trim());
             Model.getCoreHelper().setInitialValue(attr, initExpr);
         }
 
@@ -3022,11 +3023,10 @@ public final class ParserDisplay extends Parser {
                                       Model.getFacade().getValue(arg)))) {
                     String value = (args.get(i) != null ? (String) args.get(i)
                             : "");
-                    Object e =
-                        Model.getDataTypesFactory()
-                            .createExpression(
-                                    Notation.getConfigueredNotation().toString(),
-                                    value.trim());
+                    Object e = 
+                        Model.getDataTypesFactory().createExpression(
+                            Notation.getConfigueredNotation().toString(), 
+                            value.trim());
                     Model.getCommonBehaviorHelper().setValue(arg, e);
                 }
             }
