@@ -1179,7 +1179,8 @@ public class FigClass extends FigNodeModelElement
         if (!isAttributesVisible()) {
             return;
         }
-        FigAttributesCompartment attributesCompartment = (FigAttributesCompartment) getAttributesFig();
+        FigAttributesCompartment attributesCompartment = 
+                (FigAttributesCompartment) getAttributesFig();
         attributesCompartment.populate();
         Fig attrPort = attributesCompartment.getBigPort();
         int xpos = attrPort.getX();
@@ -1279,7 +1280,8 @@ public class FigClass extends FigNodeModelElement
         if (!isOperationsVisible()) {
             return;
         }
-        FigOperationsCompartment operationsCompartment = ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN));
+        FigOperationsCompartment operationsCompartment = 
+                ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN));
         operationsCompartment.populate();
         Fig operPort = operationsCompartment.getBigPort();
 

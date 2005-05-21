@@ -48,24 +48,24 @@ public class MessageNode extends Object {
     public static final int CALLED = 3;
 
     /** Implicitly returned from a call */
-    public static final int IMPLICIT_RETURNED=4;
+    public static final int IMPLICIT_RETURNED = 4;
 
     /** Having been called with a return pending */
     public static final int CREATED = 5;
 
     /** After having returned from a call */
-    public static final int RETURNED=6;
+    public static final int RETURNED = 6;
 
     /** After the object is destroyed */
-    public static final int DESTROYED=7;
+    public static final int DESTROYED = 7;
 
     /** Implicitly returned from being created */
-    public static final int IMPLICIT_CREATED=8;
+    public static final int IMPLICIT_CREATED = 8;
 
     private FigMessagePort figMessagePort;
     private FigClassifierRole ownerObject;
-    private int _state;
-    private List _callers;
+    private int state;
+    private List callers;
 
     /**
      * The constructor.
@@ -73,9 +73,9 @@ public class MessageNode extends Object {
      * @param owner the owner object
      */
     public MessageNode(FigClassifierRole owner) {
-        ownerObject=owner;
-        figMessagePort=null;
-        _state=INITIAL;
+        ownerObject = owner;
+        figMessagePort = null;
+        state = INITIAL;
     }
 
     /**
@@ -85,69 +85,92 @@ public class MessageNode extends Object {
         return figMessagePort;
     }
 
+    /**
+     * @return the state
+     */
     public int getState()
     {
-        return _state;
+        return state;
     }
 
-    public void setState( int state)
+    /**
+     * @param st the state
+     */
+    public void setState( int st)
     {
-        _state=state;
+        state = st;
     }
 
-    public void setCallers( List callers)
+    /**
+     * @param theCallers the callers
+     */
+    public void setCallers( List theCallers)
     {
-        _callers=callers;
+        this.callers = theCallers;
     }
 
+    /**
+     * @return the figclassifierrole that is the owner
+     */
     public FigClassifierRole getFigClassifierRole() {
         return ownerObject;
     }
 
+    /**
+     * @return the classifierrole
+     */
     public Object getClassifierRole() {
         return ownerObject.getOwner();
     }
 
+    /**
+     * @param fmp the fig messageport
+     */
     public void setFigMessagePort( FigMessagePort fmp)
     {
-        figMessagePort=fmp;
+        figMessagePort = fmp;
     }
 
     public boolean canCall() {
-        return figMessagePort==null && (
-            _state==INITIAL || _state==CREATED || _state==CALLED ||
-            _state==DONE_SOMETHING_NO_CALL ||
-            _state==IMPLICIT_RETURNED ||
-            _state==IMPLICIT_CREATED);
+        return figMessagePort == null && (
+            state == INITIAL 
+            || state == CREATED 
+            || state == CALLED 
+            || state == DONE_SOMETHING_NO_CALL 
+            || state == IMPLICIT_RETURNED
+            || state == IMPLICIT_CREATED);
     }
 
     public boolean canBeCalled() {
-        return figMessagePort==null && (
-            _state==INITIAL || _state==CREATED || _state==DONE_SOMETHING_NO_CALL ||
-            _state==CALLED ||
-            _state==RETURNED ||
-            _state==IMPLICIT_RETURNED ||
-            _state==IMPLICIT_CREATED);
+        return figMessagePort == null && (
+            state == INITIAL 
+            || state == CREATED 
+            || state == DONE_SOMETHING_NO_CALL 
+            || state == CALLED 
+            || state == RETURNED 
+            || state == IMPLICIT_RETURNED 
+            || state == IMPLICIT_CREATED);
     }
 
     public boolean canReturn( Object caller) {
-        return figMessagePort==null && _callers!=null &&
-            _callers.contains( caller);
+        return figMessagePort == null 
+            && callers != null 
+            && callers.contains( caller);
     }
 
     public boolean canBeReturnedTo() {
-        return figMessagePort==null &&
-            ( _state==DONE_SOMETHING_NO_CALL || _state==CALLED
-            || _state==CREATED || _state==IMPLICIT_RETURNED
-            || _state==IMPLICIT_CREATED);
+        return figMessagePort == null 
+            && ( state == DONE_SOMETHING_NO_CALL || state == CALLED
+            || state == CREATED || state == IMPLICIT_RETURNED
+            || state == IMPLICIT_CREATED);
     }
 
     public boolean matchingCallerList( Object caller, int callerIndex)
     {
-        if ( _callers!=null && _callers.lastIndexOf( caller)==callerIndex)
+        if ( callers != null && callers.lastIndexOf( caller) == callerIndex)
         {
-            if ( _state==IMPLICIT_RETURNED)
-                _state=CALLED;
+            if ( state == IMPLICIT_RETURNED)
+                state = CALLED;
             return true;
         }
         return false;
@@ -162,14 +185,14 @@ public class MessageNode extends Object {
     }
 
     public boolean canBeCreated() {
-        return figMessagePort==null && _state==INITIAL;
+        return figMessagePort == null && state == INITIAL;
     }
 
     public boolean canBeDestroyed() {
-        return figMessagePort==null &&
-            ( _state==DONE_SOMETHING_NO_CALL || _state==CREATED ||
-            _state==CALLED || _state==RETURNED ||
-            _state==IMPLICIT_RETURNED ||
-            _state==IMPLICIT_CREATED);
+        return figMessagePort == null 
+            && ( state == DONE_SOMETHING_NO_CALL || state == CREATED 
+                || state == CALLED || state == RETURNED 
+                || state == IMPLICIT_RETURNED 
+                || state == IMPLICIT_CREATED);
     }
 }
