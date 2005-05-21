@@ -24,7 +24,6 @@
 
 package org.argouml.language.php.generator;
 
-import org.apache.log4j.Logger;
 
 /**
  * Generator class for PHP 5.x source code
@@ -33,10 +32,6 @@ import org.apache.log4j.Logger;
  * @since  ArgoUML 0.15.5
  */
 public final class GeneratorPHP5 extends GeneratorPHP4 {
-    /**
-     * The log4j logger to log messages to
-     */
-    private static final Logger LOG = Logger.getLogger(GeneratorPHP5.class);
 
     /**
      * The major version of the language this module generates source code for
