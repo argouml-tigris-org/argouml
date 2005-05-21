@@ -586,7 +586,6 @@ public class FigClass extends FigNodeModelElement
         }
         int i = new Vector(getAttributesFig().getFigs()).indexOf(ft);
         if (i != -1) {
-            String msg = "statusmsg.bar.error.parsing.attribute";
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
             try {
@@ -597,6 +596,7 @@ public class FigClass extends FigNodeModelElement
 				       highlightedFigText.getText().trim());
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
             } catch (ParseException pe) {
+                String msg = "statusmsg.bar.error.parsing.attribute";
                 Object[] args = {pe.getLocalizedMessage(), 
                     new Integer(pe.getErrorOffset())};
                 ProjectBrowser.getInstance().getStatusBar().showStatus(
@@ -606,7 +606,6 @@ public class FigClass extends FigNodeModelElement
         }
         i = new Vector(getOperationsFig().getFigs()).indexOf(ft);
         if (i != -1) {
-            String msg = "statusmsg.bar.error.parsing.operation";
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
             try {
@@ -617,6 +616,7 @@ public class FigClass extends FigNodeModelElement
 				       highlightedFigText.getText().trim());
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
             } catch (ParseException pe) {
+                String msg = "statusmsg.bar.error.parsing.operation";
                 Object[] args = {pe.getLocalizedMessage(), 
                     new Integer(pe.getErrorOffset())};
                 ProjectBrowser.getInstance().getStatusBar().showStatus(
