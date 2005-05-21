@@ -72,7 +72,8 @@ For each found
 		<xsl:variable name="private" select="text()"/>
 		<xsl:variable name="destFigNode" select="substring(substring-after($private,'destFigNode='),2)"/>
       <private>
-          <xsl:value-of select="$private" />sourceFigNode="tee.<xsl:value-of select="$destFigNode" />
+          <xsl:value-of select="$private" />sourcePortFig="tee.<xsl:value-of select="$destFigNode" />
+          sourceFigNode="tee.<xsl:value-of select="$destFigNode" />
       </private>
 	
 			<xsl:apply-templates/>
@@ -86,6 +87,7 @@ For each found
 	<xsl:template match='/uml/todo/resolvedcritics/issue[contains(offender/text(), "%32;%32;")]' />
 	<!--xsl:template match='/uml/todo/resolvedcritics/issue[count( /uml/XMI/XMI.content//@xmi.uuid = "sdf") = 0 ]' /-->
 
+	<!-- Onlt copy over resolved issues that refer to an offender in the XMI -->
 	<xsl:template match='/uml/todo/resolvedcritics/issue'>
 		<xsl:variable name="offender" select="offender/text()" />
 		<xsl:if test="count(/uml/XMI/XMI.content//*[@xmi.uuid = $offender]) != 0">

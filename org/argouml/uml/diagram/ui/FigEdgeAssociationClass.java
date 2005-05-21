@@ -91,10 +91,6 @@ public class FigEdgeAssociationClass
         computeRoute();
     }
     
-    public String getTipString(MouseEvent me) {
-        return "From " + getSourceFigNode().getClass().getName() + " " + getSourceFigNode().getId() + " to " + getDestFigNode().getId();
-    }
-    
     ////////////////////////////////////////////////////////////////
     // accessors
 
@@ -163,21 +159,4 @@ public class FigEdgeAssociationClass
         TargetManager.getInstance().removeHistoryElement(this);
     }
 
-//    /**
-//     * Override the ancestor to do nothing.
-//     * The dashed edge of an association edge currently has no source FigNode
-//     * as it is actually attached to a Fig Edge.
-//     * We must override this method otherwise the ancestor would throw an
-//     * exception on this condition.
-//     */
-//    public void setSourceFigNode(FigNode fromFig) {
-//    }
-//    
-//    /**
-//     * Override the ancestor to return the port.
-//     */
-//    public Fig getSourceFigNode() {
-//        return getSourcePortFig();
-//    }
-    
 } /* end class FigEdgeAssociationClass */
