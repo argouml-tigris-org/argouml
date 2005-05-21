@@ -41,9 +41,10 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
@@ -1044,43 +1045,44 @@ public class FigUseCase extends FigNodeModelElement {
      * We check that it is one of the extension point compartments and then
      * parse accordingly.<p>
      *
-     * The parameter ft is the text that has been edited.
+     * The parameter ft is the Fig with the text that has been edited.
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-
-        // Let the parent do anything it wants first
-
+        // Let the parent do anything it wants first (in casu: the usecase name)
         super.textEdited(ft);
 
+        // Remove the help text shown in the textEditStarted()
+        ProjectBrowser.getInstance().getStatusBar().showStatus("");
+        
         // Only works if we have an owner
-
         Object useCase = /*(MUseCase)*/ getOwner();
-
         if (useCase == null) {
             return;
         }
-
         // Give up if we are not one of the extension points
-
-        // TODO: in future version of GEF call getFigs returning array
-        int i = new Vector(epVec.getFigs()).indexOf(ft);
-
-        if (i == -1) {
+        if (!epVec.getFigs().contains(ft)) {
             return;
         }
-
-        // Mark the text as highlighted, then parse it
+        // Parse the text
         CompartmentFigText hlft = (CompartmentFigText) ft;
-        hlft.setHighlighted(true);
-
         Object ep = /*(MExtensionPoint)*/ (hlft.getOwner());
-        String text = hlft.getText().trim();
-
+        String text = hlft.getText();
         ParserDisplay.SINGLETON.parseExtensionPointFig(useCase, ep, text);
-
-        return;
+    }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEditStarted(FigText ft) {
+        if (ft == getNameFig()) {
+            ProjectBrowser.getInstance().getStatusBar().showStatus(
+                Translator.localize("parsing.help.fig-usecase"));
+        } else if (epVec.getFigs().contains(ft)) {
+            ProjectBrowser.getInstance().getStatusBar().showStatus(
+                Translator.localize("parsing.help.fig-extensionpoint"));
+        }
     }
 
     /**

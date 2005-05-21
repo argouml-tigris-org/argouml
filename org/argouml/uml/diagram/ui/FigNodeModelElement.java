@@ -60,7 +60,6 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationContext;
 import org.argouml.application.api.NotationName;
-import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
@@ -1064,7 +1063,8 @@ public abstract class FigNodeModelElement
      * @param ft the FigText that will be edited and contains the start-text
      */
     protected void textEditStarted(FigText ft) {
-
+        ProjectBrowser.getInstance().getStatusBar().showStatus(
+            Translator.localize("parsing.help.fig-nodemodelelement"));
     }
     
     /**
