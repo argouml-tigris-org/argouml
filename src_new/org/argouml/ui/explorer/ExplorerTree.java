@@ -172,7 +172,7 @@ public class ExplorerTree
             }
             
             Object selectedItem =
-                ((DefaultMutableTreeNode) getLastSelectedPathComponent())
+                ((DefaultMutableTreeNode) path.getLastPathComponent())
                         .getUserObject();
             JPopupMenu popup = new ExplorerPopup(selectedItem, me);
 
