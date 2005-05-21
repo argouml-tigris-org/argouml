@@ -45,7 +45,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -743,13 +742,11 @@ public class FigPackage extends FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
-        ProjectBrowser.getInstance().getStatusBar().showStatus(
-            Translator.localize("parsing.help.fig-package"));
-        
+
         /* The following 2 lines should be retained for reference.
          * They represent the better way of editing on the diagram, which 
          * 1. would work for different notations, and
-         * 2. would indicate to the user that he can edite more aspects 
+         * 2. would indicate to the user that he can edit more aspects 
          * of the modelelement than the name alone.
          * But: it is different behaviour, which I (MVW) 
          * do not know if it is acceptable.*/
