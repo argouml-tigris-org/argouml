@@ -82,6 +82,9 @@ For each found
 	<!-- Specifically ignore these nodes as they are handled above-->
 	<xsl:template match='group[starts-with(./@description, "org.argouml.uml.diagram.ui.FigEdgeAssociationClass")]/private/text()' />
 	
+	<!-- Removes any resolved items containing a corruption of multiple spaces -->
+	<xsl:template match='resolvedcritics/issue[contains(poster/text(), "%32;%32;")]' />
+	<xsl:template match='resolvedcritics/issue[contains(offender/text(), "%32;%32;")]' />
 	
 	<!-- copy all other nodes over unchanged -->
 	<xsl:template match="@*|node()">
