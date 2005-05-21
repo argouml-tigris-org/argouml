@@ -63,7 +63,7 @@ import org.tigris.gef.util.EnumerationEmpty;
  */
 public final class Designer
      implements Poster,
-         Runnable, // TODO: remove/refactor per issue 1024
+         Runnable, 
          PropertyChangeListener,
          java.io.Serializable {
     /**

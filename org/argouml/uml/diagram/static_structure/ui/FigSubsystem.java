@@ -30,7 +30,6 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
-import org.argouml.model.Model;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigPoly;
 

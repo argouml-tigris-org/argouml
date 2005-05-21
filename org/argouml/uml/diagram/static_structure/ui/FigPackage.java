@@ -62,7 +62,7 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigPackage extends FigNodeModelElement
     implements StereotypeContainer, VisibilityContainer 
-    {
+{
     private static final Logger LOG = Logger.getLogger(FigPackage.class);
 
     ////////////////////////////////////////////////////////////////
@@ -562,7 +562,7 @@ public class FigPackage extends FigNodeModelElement
 	    });
         }
         if (!visibilityVisible) {
-                showMenu.add(new UMLAction(
+            showMenu.add(new UMLAction(
                         Translator.localize("menu.popup.show.show-visibility"),
                         UMLAction.NO_ICON)
             {
@@ -576,8 +576,8 @@ public class FigPackage extends FigNodeModelElement
                     damage();
                 }
             });
-            } else {
-                showMenu.add(new UMLAction(
+        } else {
+            showMenu.add(new UMLAction(
                         Translator.localize("menu.popup.show.hide-visibility"),
                         UMLAction.NO_ICON)
             {
@@ -591,7 +591,7 @@ public class FigPackage extends FigNodeModelElement
                     damage();
                 }
             });
-            }
+        }
         popUpActions.insertElementAt(showMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 

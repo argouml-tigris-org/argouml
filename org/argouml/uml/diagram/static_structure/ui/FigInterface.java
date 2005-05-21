@@ -661,7 +661,7 @@ public class FigInterface extends FigNodeModelElement
         new ActionAddOperation().actionPerformed(null);
         List figList = fg.getFigs();
         CompartmentFigText ft =
-                (CompartmentFigText) figList.get(figList.size()-1);
+                (CompartmentFigText) figList.get(figList.size() - 1);
         if (ft != null) {
             ft.startTextEditor(ie);
             ft.setHighlighted(true);
@@ -850,7 +850,8 @@ public class FigInterface extends FigNodeModelElement
         if (!isOperationsVisible()) {
             return;
         }
-        FigOperationsCompartment operationsCompartment = ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN));
+        FigOperationsCompartment operationsCompartment = 
+                ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN));
         operationsCompartment.populate();
         Fig operPort = operationsCompartment.getBigPort();
 
