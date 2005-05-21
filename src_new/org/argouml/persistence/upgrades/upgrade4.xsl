@@ -27,8 +27,7 @@ For each found
 		<xsl:variable name="fig-id" select="@name"/>
 		
         <group name="tee.{$fig-id}"
-             description="org.argouml.uml.diagram.ui.FigAssociationClassTee[185, 51,
-10, 10]"
+             description="org.argouml.uml.diagram.ui.FigAssociationClassTee[185, 51, 10, 10]"
              href="{@href}"
              fill="{@fill}"
              fillcolor="{@fillcolor}"
@@ -83,9 +82,20 @@ For each found
 	<xsl:template match='group[starts-with(./@description, "org.argouml.uml.diagram.ui.FigEdgeAssociationClass")]/private/text()' />
 	
 	<!-- Removes any resolved items containing a corruption of multiple spaces -->
-	<xsl:template match='resolvedcritics/issue[contains(poster/text(), "%32;%32;")]' />
-	<xsl:template match='resolvedcritics/issue[contains(offender/text(), "%32;%32;")]' />
-	
+	<xsl:template match='/uml/todo/resolvedcritics/issue[contains(poster/text(), "%32;%32;")]' />
+	<xsl:template match='/uml/todo/resolvedcritics/issue[contains(offender/text(), "%32;%32;")]' />
+	<!--xsl:template match='/uml/todo/resolvedcritics/issue[count( /uml/XMI/XMI.content//@xmi.uuid = "sdf") = 0 ]' /-->
+
+	<xsl:template match='/uml/todo/resolvedcritics/issue'>
+		<xsl:variable name="offender" select="offender/text()" />
+		<xsl:if test="count(/uml/XMI/XMI.content//*[@xmi.uuid = $offender]) != 0">
+			<issue>
+				<poster><xsl:value-of select="poster/text()" /></poster>
+				<offender><xsl:value-of select="$offender" /></offender>
+			</issue>
+		</xsl:if>
+	</xsl:template>
+
 	<!-- copy all other nodes over unchanged -->
 	<xsl:template match="@*|node()">
 		<xsl:copy>
