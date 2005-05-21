@@ -174,25 +174,6 @@ public class ToDoItem implements Serializable, WizardItem {
      * The constructor.
      *
      * @param c the poster (critic)
-     * @param offs the offenders
-     * @param dsgr the designer
-     */
-    public ToDoItem(Critic c, ListSet offs, Designer dsgr) {
-	thePoster = c;
-	theHeadline = c.getHeadline(offs, dsgr);
-	theOffenders = offs;
-	thePriority = c.getPriority(theOffenders, dsgr);
-	theDescription = c.getDescription(theOffenders, dsgr);
-	theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);
-	theWizard = c.makeWizard(this);
-    }
-
-
-
-    /**
-     * The constructor.
-     *
-     * @param c the poster (critic)
      */
     public ToDoItem(Critic c) {
 	thePoster = c;
