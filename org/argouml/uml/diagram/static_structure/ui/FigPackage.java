@@ -695,7 +695,7 @@ public class FigPackage extends FigNodeModelElement
 				                    .structureChanged();
                         }
                     } catch (Exception ex) {
-                            LOG.error(ex);
+                        LOG.error(ex);
                     }
 
                     return;
@@ -740,13 +740,20 @@ public class FigPackage extends FigNodeModelElement
     }
     
     /**
-     * TODO: i18n.
-     * 
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
         ProjectBrowser.getInstance().getStatusBar().showStatus(
-            "Enter text according: [ <<stereotype>> ] [ + | - | # ] [ full_pathname :: ] [ name ]");
+            Translator.localize("parsing.help.fig-package"));
+        
+        /* The following 2 lines should be retained for reference.
+         * They represent the better way of editing on the diagram, which 
+         * 1. would work for different notations, and
+         * 2. would indicate to the user that he can edite more aspects 
+         * of the modelelement than the name alone.
+         * But: it is different behaviour, which I (MVW) 
+         * do not know if it is acceptable.*/
+        
 //        String s = GeneratorDisplay.getInstance().generate(getOwner());
 //        ft.setText(s);
     }
