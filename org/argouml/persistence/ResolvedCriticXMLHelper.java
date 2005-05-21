@@ -47,10 +47,10 @@ public class ResolvedCriticXMLHelper {
      * @param	rc	The ResolvedCritic to expose.
      */
     public ResolvedCriticXMLHelper(ResolvedCritic rc) {
-	if (rc == null) {
-	    throw new NullPointerException();
-	}
-	item = rc;
+        if (rc == null) {
+            throw new IllegalArgumentException("There must be a ResolvedCritic supplied.");
+        }
+        item = rc;
     }
 
     /**
@@ -62,7 +62,7 @@ public class ResolvedCriticXMLHelper {
      * @return	The encoded critic.
      */
     public String getCritic() {
-	return TodoParser.encode(item.getCritic());
+        return item.getCritic();
     }
 
     /**

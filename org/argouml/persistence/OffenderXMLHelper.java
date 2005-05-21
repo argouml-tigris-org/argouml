@@ -43,13 +43,13 @@ public class OffenderXMLHelper
      * described by item.
      *
      * @param	offender	A description of an offender.
-     * @throws	NullPointerException if item is null.
+     * @throws	IllegalArgumentException if item is null.
      */
-    public OffenderXMLHelper(String offender)
-    {
-	if (offender == null)
-	    throw new NullPointerException();
-	item = offender;
+    public OffenderXMLHelper(String offender) {
+        if (offender == null) {
+            throw new IllegalArgumentException("An offender string must be supplied");
+        }
+        item = offender;
     }
 
     /**
@@ -59,7 +59,7 @@ public class OffenderXMLHelper
      */
     public String getOffender()
     {
-	return TodoParser.encode(item);
+        return item;
     }
 }
 
