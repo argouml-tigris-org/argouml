@@ -225,6 +225,8 @@ public class ProjectBrowser
     /**
      * Creator method for the projectbrowser. 
      * @return the singleton instance of the projectbrowser
+     *
+     * @param splash true if we are allowed to show a splash screen
      */
     public static ProjectBrowser makeInstance(SplashScreen splash) {
         return new ProjectBrowser("ArgoUML", splash);
@@ -241,7 +243,7 @@ public class ProjectBrowser
     /**
      * Creates the panels in the working area
      *
-     * @param doSplash true if we show  the splashscreen during startup
+     * @param splash true if we show  the splashscreen during startup
      * @return Component the area between the menu and the statusbar.
      *                   It contains the workarea at centre and the toolbar
      *                   position north, south, east or west.
@@ -921,15 +923,15 @@ public class ProjectBrowser
             }
     
             String sStatus =
-            MessageFormat.format(Translator.localize(
-                "label.save-project-status-writing"),
+                MessageFormat.format(Translator.localize(
+                    "label.save-project-status-writing"),
                          new Object[] {file});
             this.showStatus (sStatus);
     
-                ProjectFilePersister persister =
+            ProjectFilePersister persister =
                     pm.getPersisterFromFileName(file.getName());
-                if (persister == null)
-                    throw new IllegalStateException("Filename " + project.getName()
+            if (persister == null)
+                throw new IllegalStateException("Filename " + project.getName()
                             + " is not of a known file type");
     
             project.preSave();
@@ -937,8 +939,8 @@ public class ProjectBrowser
             project.postSave();
     
             sStatus =
-            MessageFormat.format(Translator.localize(
-                "label.save-project-status-wrote"),
+                MessageFormat.format(Translator.localize(
+                    "label.save-project-status-wrote"),
                          new Object[] {project.getURL()});
             showStatus(sStatus);
             LOG.debug ("setting most recent project file to "
@@ -947,8 +949,8 @@ public class ProjectBrowser
             /*
              * notification of menu bar
              */
-            GenericArgoMenuBar menuBar = (GenericArgoMenuBar) getJMenuBar();
-            menuBar.addFileSaved(file.getCanonicalPath());
+            GenericArgoMenuBar menu = (GenericArgoMenuBar) getJMenuBar();
+            menu.addFileSaved(file.getCanonicalPath());
     
             Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
                         file.getCanonicalPath());
@@ -956,7 +958,7 @@ public class ProjectBrowser
             return true;
         } catch (FileNotFoundException fnfe) {
             String sMessage =
-            MessageFormat.format(Translator.localize(
+                MessageFormat.format(Translator.localize(
                     "optionpane.save-project-file-not-found"),
                          new Object[] {fnfe.getMessage()});
     
@@ -968,8 +970,8 @@ public class ProjectBrowser
             LOG.error(sMessage, fnfe);
         } catch (Exception ex) {
             String sMessage =
-            MessageFormat.format(Translator.localize(
-                "optionpane.save-project-general-exception"),
+                MessageFormat.format(Translator.localize(
+                    "optionpane.save-project-general-exception"),
                          new Object[] {ex.getMessage()});
     
             JOptionPane.showMessageDialog(this, sMessage,
@@ -1186,7 +1188,8 @@ public class ProjectBrowser
      * @param showUI true if an error message may be shown to the user,
      *               false if run in commandline mode
      */
-    private void reportError(String attemptingTo, String message, boolean showUI, Throwable ex) {
+    private void reportError(String attemptingTo, String message, 
+                    boolean showUI, Throwable ex) {
         if (showUI) {
             JDialog dialog =
                 new ExceptionDialog(
