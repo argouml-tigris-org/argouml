@@ -43,6 +43,9 @@ public class SplashScreen extends JWindow implements IStatusBar {
 
     private StatusBar statusBar = new StatusBar();
 
+    /**
+     * The constructor.
+     */
     public SplashScreen() {
         this("Loading ArgoUML...", "Splash");
     }
