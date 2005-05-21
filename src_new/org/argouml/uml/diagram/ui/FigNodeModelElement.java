@@ -69,6 +69,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
@@ -1088,8 +1089,11 @@ public abstract class FigNodeModelElement
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
                 updateNameText();
             } catch (ParseException pe) {
-                ProjectBrowser.getInstance().getStatusBar()
-		    .showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+                String msg = "statusmsg.bar.error.parsing.node-modelelement";
+                Object[] args = {pe.getLocalizedMessage(), 
+                                 new Integer(pe.getErrorOffset())};
+                ProjectBrowser.getInstance().getStatusBar().showStatus(
+                    Translator.messageFormat(msg, args));
                 // if there was a problem parsing,
                 // then reset the text in the fig - because the model was not
                 // updated.
