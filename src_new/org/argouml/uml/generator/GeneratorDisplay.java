@@ -35,9 +35,13 @@ import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
 
 /**
- * Generator2 subclass to generate code for display in diagrams in
+ * Generator2 subclass to generate notation for display in diagrams in
  * text fields in the ArgoUML user interface.  The generated code
- * looks a lot like (invalid) Java. <p>
+ * is UML. <p>
+ * 
+ * In contrary to its name, this is not the only class 
+ * to generate for the "Display". Similarely to the GeneratorJava class,
+ * this class would better have been named GeneratorUML. 
  *
  * TODO: always check for null!!!
  *

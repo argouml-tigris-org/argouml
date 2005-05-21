@@ -285,5 +285,5 @@ public final class GeneratorDummy
     public String getModuleKey() {
 	return "module.language.generator.dummylanguage";
     }
-} /* end class GeneratorJava */
+} /* end class GeneratorDummy */
 
