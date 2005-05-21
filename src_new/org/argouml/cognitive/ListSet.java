@@ -41,7 +41,7 @@ import org.tigris.gef.util.PredicateTrue;
  * An Ordered, non-duplicated collecton of objects (not exactly a
  * mathemetical set because it is ordered).
  */
-public class ListSet implements Serializable, Set {
+public class ListSet implements Serializable, Set, List {
     ////////////////////////////////////////////////////////////////
     // constants
     private static final int TC_LIMIT = 50;
