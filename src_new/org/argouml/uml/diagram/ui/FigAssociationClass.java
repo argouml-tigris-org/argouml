@@ -126,75 +126,70 @@ public class FigAssociationClass
 
                     GraphModel graphModel = editor.getGraphModel();
                     
-                    if (graphModel instanceof DeploymentDiagramGraphModel
-                            || graphModel instanceof ClassDiagramGraphModel) {
-                        
-                        MutableGraphModel mutableGraphModel =
-                            (MutableGraphModel) graphModel;
-                        mutableGraphModel.addNode(thisFig.getOwner());
+                    MutableGraphModel mutableGraphModel =
+                        (MutableGraphModel) graphModel;
+                    mutableGraphModel.addNode(thisFig.getOwner());
 
-                        Rectangle drawingArea = ProjectBrowser.getInstance()
-                                .getEditorPane().getBounds();
-                        Iterator nodes = lay.getContentsNoEdges().iterator();
-                        while (nodes.hasNext()) {
-                            Fig auxFig = (Fig) nodes.next();
-                            if (auxFig.getOwner().equals(thisFig.getOwner())) {
-                                if (auxFig instanceof FigClassAssociationClass) {
-                                    fig = (FigClassAssociationClass) auxFig;
-                                    fig.setMainFig(thisFig);
-                                } else if (auxFig instanceof FigAssociationClassTee) {
-                                    tee = (FigAssociationClassTee) auxFig;
-                                    addPathItem(tee, new PathConvPercent(thisFig, 50, 0));
-                                }
-                                if (tee != null && fig != null) {
-                                    break;
-                                }
+                    Rectangle drawingArea = ProjectBrowser.getInstance()
+                            .getEditorPane().getBounds();
+                    Iterator nodes = lay.getContents().iterator();
+                    while (nodes.hasNext()) {
+                        Fig auxFig = (Fig) nodes.next();
+                        if (auxFig.getOwner().equals(thisFig.getOwner())) {
+                            if (auxFig instanceof FigClassAssociationClass) {
+                                fig = (FigClassAssociationClass) auxFig;
+                                fig.setMainFig(thisFig);
+                            } else if (auxFig instanceof FigAssociationClassTee) {
+                                tee = (FigAssociationClassTee) auxFig;
+                                addPathItem(tee, new PathConvPercent(thisFig, 50, 0));
+                            } else if (auxFig instanceof FigEdgeAssociationClass) {
+                                edge = (FigEdgeAssociationClass) auxFig;
+                                edge.setMainFig(thisFig);
+                                //addPathItem(tee, new PathConvPercent(thisFig, 50, 0));
                             }
-                        }
-                    
-                        if (tee == null) {
-                            tee = new FigAssociationClassTee();
-                            lay.add(tee);
-                            tee.setOwner(thisFig.getOwner());
-                            addPathItem(tee, new PathConvPercent(thisFig, 50, 0));
-                            thisFig.calcBounds();
-                        }
-                        
-                        int x = tee.getX();
-                        int y = tee.getY();
-                        
-                        if (fig == null) {
-                            fig = new FigClassAssociationClass(thisFig);
-                            fig.setOwner(thisFig.getOwner());
-                            y = y - DISTANCE;
-                            if (y < 0)
-                                y = tee.getY() + fig.getHeight() + DISTANCE;
-                            if (x + fig.getWidth() > drawingArea.getWidth())
-                                x = tee.getX() - DISTANCE;
-                            fig.setLocation(x, y);
-                            lay.add(fig);
-                        }
-                        
-                        Iterator edges = lay.getContentsEdgesOnly().iterator();
-                        while (edges.hasNext()) {
-                            Fig auxFig = (Fig) edges.next();
-                            if (auxFig instanceof FigEdgeAssociationClass && auxFig.getOwner() == null) {
-                                lay.remove(auxFig);
+                            if (tee != null && fig != null && edge != null) {
                                 break;
                             }
                         }
+                    }
+                
+                    if (tee == null) {
+                        tee = new FigAssociationClassTee();
+                        lay.add(tee);
+                        tee.setOwner(thisFig.getOwner());
+                        addPathItem(tee, new PathConvPercent(thisFig, 50, 0));
+                        thisFig.calcBounds();
+                    }
+                    
+                    int x = tee.getX();
+                    int y = tee.getY();
+                    
+                    if (fig == null) {
+                        fig = new FigClassAssociationClass(thisFig);
+                        fig.setOwner(thisFig.getOwner());
+                        y = y - DISTANCE;
+                        if (y < 0)
+                            y = tee.getY() + fig.getHeight() + DISTANCE;
+                        if (x + fig.getWidth() > drawingArea.getWidth())
+                            x = tee.getX() - DISTANCE;
+                        fig.setLocation(x, y);
+                        lay.add(fig);
+                    }
+                    
+                    if (edge == null) {
                         edge =
                             new FigEdgeAssociationClass(tee, fig, thisFig);
-                        
                         edge.setOwner(thisFig.getOwner());
                         lay.add(edge);
-                        edge.damage();
-                        fig.damage();
                     }
+                    
+                    edge.damage();
+                    fig.damage();
                 }
             }
         });
     }
+    
     /**
      * Construct a new AssociationClass. Use the same layout as for
      * other edges.
@@ -206,10 +201,6 @@ public class FigAssociationClass
         this();
         setLayer(lay);
         setOwner(ed);
-    }
-    
-    public String getTipString(MouseEvent me) {
-        return "Contains " + _fig.getClass().getName() + " " + _fig.getId() + " and " + tee.getClass().getName() + tee.getId();
     }
     
     ////////////////////////////////////////////////////////////////
