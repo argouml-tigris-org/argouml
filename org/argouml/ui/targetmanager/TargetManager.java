@@ -382,10 +382,11 @@ public final class TargetManager {
     /**
      * Only for debugging.
      */
-    public void debugTM(){
+    public void debugTM() {
         if (dtm == null) { 
 //            dtm = new DebugTMDialog(targets);
 //            dtm.setVisible(true);
+            ;
         }
     }
     private DebugTMDialog dtm = null;
@@ -634,9 +635,9 @@ public final class TargetManager {
     public Object getOwner(Object o) {
         if (o instanceof Fig) { 
             if (((Fig) o).getOwner() != null) { 
-                    o = ((Fig) o).getOwner();
-                }
+                o = ((Fig) o).getOwner();
             }
+        }
         return o;
     }
     
@@ -879,7 +880,7 @@ public final class TargetManager {
      * UML modelelements that were removed.
      */
     public void checkForRemovedModelElements() {
-         historyManager.checkForRemovedModelElements();
+        historyManager.checkForRemovedModelElements();
     }
 
 }
@@ -887,58 +888,58 @@ public final class TargetManager {
 class DebugTMDialog extends JDialog 
     implements TargetListener {
         
-        private DefaultListModel lm = new DefaultListModel();
-        private JList lst;
+    private DefaultListModel lm = new DefaultListModel();
+    private JList lst;
         
         /**
          * The constructor.
          */
-        public DebugTMDialog(Collection t) {
+    public DebugTMDialog(Collection t) {
             super(ProjectBrowser.getInstance(), "TargetManager Debug",
                     false);
-            JPanel mainPanel = new JPanel(new BorderLayout());
-            getContentPane().add(mainPanel);
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        getContentPane().add(mainPanel);
             
-            lst = new JList(lm);
-            lst.setPreferredSize(new Dimension(400, 200));
-            setTarget(t);
-            mainPanel.add(lst, BorderLayout.CENTER);
-            lst.setBorder(BorderFactory.createEmptyBorder(7,7,7,7));
-            TargetManager.getInstance().addTargetListener(this);
-        }
+        lst = new JList(lm);
+        lst.setPreferredSize(new Dimension(400, 200));
+        setTarget(t);
+        mainPanel.add(lst, BorderLayout.CENTER);
+        lst.setBorder(BorderFactory.createEmptyBorder(7, 7, 7, 7));
+        TargetManager.getInstance().addTargetListener(this);
+    }
 
-        /**
-         * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
-         */
-        public void targetAdded(TargetEvent e) {
-            setTarget(e.getNewTargets());
-        }
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        setTarget(e.getNewTargets());
+    }
 
-        /**
-         * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
-         */
-        public void targetRemoved(TargetEvent e) {
-            setTarget(e.getNewTargets());    
-        }
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        setTarget(e.getNewTargets());    
+    }
 
-        /**
-         * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
-         */
-        public void targetSet(TargetEvent e) {
-            setTarget(e.getNewTargets());
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        setTarget(e.getNewTargets());
+    }
+    
+    private void setTarget(Object[] t) {
+        Collection c = new ArrayList(Arrays.asList(t));
+        setTarget(c);
+    }
+    
+    private void setTarget(Collection c) {
+        lm.clear();
+        Iterator i = c.iterator();
+        while (i.hasNext()) {
+            lm.addElement(i.next());
         }
-        
-        private void setTarget(Object[] t) {
-            Collection c = new ArrayList(Arrays.asList(t));
-            setTarget(c);
-        }
-
-        private void setTarget(Collection c) {
-            lm.clear();
-            Iterator i = c.iterator();
-            while (i.hasNext()) {
-                lm.addElement(i.next());
-            }
-        }
+    }
         
 }
