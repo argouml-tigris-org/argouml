@@ -29,6 +29,7 @@
 package org.argouml.gef;
 
 import java.awt.Graphics;
+import java.awt.Point;
 
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
@@ -59,12 +60,16 @@ public class FigEdge extends org.tigris.gef.presentation.FigEdge {
     // FigEdge API
     public FigEdge(RoutingStrategy routingStrategy) {
         this.routingStrategy = routingStrategy;
+        _fig = routingStrategy.makeEdgeFig();
     }
     
     /** Instantiate a FigPoly with its rectilinear flag set. By default
      *  the FigPoly is black and the FigEdge has no ArrowHeads. */
     protected Fig makeEdgeFig() {
-        return routingStrategy.makeEdgeFig();
+        if (routingStrategy != null) {
+            return routingStrategy.makeEdgeFig();
+        }
+        return null;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -109,5 +114,10 @@ public class FigEdge extends org.tigris.gef.presentation.FigEdge {
                 paintHighlightLine(g, xs[i - 1], ys[i - 1], xs[i], ys[i]);
             }
         }
+    }
+    
+    /** Set the end points of this edge, regardless of the number of
+     *  fixed handles. This is used when nodes move. */
+    public void setEndPoints(Point start, Point end) {
     }
 } /* end class FigEdgePoly */
