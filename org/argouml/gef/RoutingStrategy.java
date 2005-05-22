@@ -152,5 +152,14 @@ public abstract class RoutingStrategy {
     public void setPoint(FigEdge edge, Handle h, int mX, int mY) {
         edge.setPoint(h, mX, mY);
     }
+    
+    /**
+     * Return true if the given Fig as an edge following some poly routing strategy.
+     * @param f
+     * @return
+     */
+    public static boolean isPolyStrategy(Fig f) {
+        return (f instanceof FigEdge && ((FigEdge)f).isPolyRoutingStrategy());
+    }
 
 }    /* end class FigEdge */

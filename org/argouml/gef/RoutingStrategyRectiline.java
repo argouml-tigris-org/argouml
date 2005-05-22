@@ -36,6 +36,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigPoly;
 
+
 /** 
  * A Fig that paints edges between ports. This version
  * automatically routes a rectilinear edge. The routing is not very
