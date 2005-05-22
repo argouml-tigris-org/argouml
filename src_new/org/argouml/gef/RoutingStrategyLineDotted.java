@@ -33,6 +33,7 @@ import java.awt.Color;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
 
+
 /** An FigEdge that shows a straight line from the source port
  *  to the destination port. */
 
