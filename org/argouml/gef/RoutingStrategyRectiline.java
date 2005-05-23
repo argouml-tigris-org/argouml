@@ -30,10 +30,12 @@
 
 package org.argouml.gef;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Rectangle;
 
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigPoly;
 
 
@@ -49,11 +51,6 @@ import org.tigris.gef.presentation.FigPoly;
  */
 
 public class RoutingStrategyRectiline extends RoutingStrategy {
-
-    /** True if the edge has been laid out automatically once. It will
-     *  not be done automatically again since the user may have edited the
-     *  edge and I dont want to undo that work. */
-    protected boolean _initiallyLaidOut = false;
 
     /**
      * Instanciate a FigPoly with its rectilinear flag set. By default
@@ -72,10 +69,10 @@ public class RoutingStrategyRectiline extends RoutingStrategy {
      *  analysis to route around source and destination nodes.
      *  Needs-More-Work: A better algorithm would really be useful.
      *  Needs-More-Work: Sometimes the edge can get non-rectilinear. */
-    public void computeRoute(FigEdge edge) {
-        if (!_initiallyLaidOut) {
-          layoutEdge(edge);
-          _initiallyLaidOut = true;
+    public void computeRoute(FigEdgeRoutable edge) {
+        if (!edge.getInitiallyLaidOut()) {
+            layoutEdge(edge);
+            edge.setInitiallyLaidOut(true);
         }
         FigPoly p = ((FigPoly) _fig);
         
@@ -84,13 +81,12 @@ public class RoutingStrategyRectiline extends RoutingStrategy {
         Fig sourcePortFig = edge.getSourcePortFig();
         Fig destPortFig = edge.getDestPortFig();
         
-        if (_useNearest) {
-          srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
-          dstPt = destPortFig.connectionPoint(p.getPoint(p.getNumPoints()-2));
-        }
-        else {
-          srcPt = sourcePortFig.getCenter();
-          dstPt = destPortFig.getCenter();
+        if (((FigEdgeRoutable)edge).getUseNearest()) {
+            srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
+            dstPt = destPortFig.connectionPoint(p.getPoint(p.getNumPoints()-2));
+        } else {
+            srcPt = sourcePortFig.getCenter();
+            dstPt = destPortFig.getCenter();
         }
         
         p.setEndPoints(srcPt, dstPt);
@@ -99,7 +95,7 @@ public class RoutingStrategyRectiline extends RoutingStrategy {
 
   /** Internal function to actually compute the layout of the line if
    *  it has never been done on that line before. */
-  protected void layoutEdge(FigEdge edge) {
+  protected void layoutEdge(FigEdgeRoutable edge) {
     int npoints = 0;
     int xpoints[] = new int[16];
     int ypoints[] = new int[16];
@@ -110,7 +106,7 @@ public class RoutingStrategyRectiline extends RoutingStrategy {
     Point srcPt = sourcePortFig.getCenter();
     Point dstPt = destPortFig.getCenter();
 
-    if (_useNearest) {
+    if (((FigEdgeRoutable)edge).getUseNearest()) {
       srcPt = sourcePortFig.connectionPoint(dstPt);
       dstPt = destPortFig.connectionPoint(srcPt);
       srcPt = sourcePortFig.connectionPoint(dstPt);

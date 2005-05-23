@@ -50,7 +50,7 @@ import org.tigris.gef.presentation.Handle;
  *  fixed handle, a new vertex is automatically inserted.
  */
 
-public class FigEdge extends org.tigris.gef.presentation.FigEdge {
+public class FigEdgeRoutable extends org.tigris.gef.presentation.FigEdge {
 
     private RoutingStrategy routingStrategy;
     
@@ -62,7 +62,7 @@ public class FigEdge extends org.tigris.gef.presentation.FigEdge {
 
     ////////////////////////////////////////////////////////////////
     // FigEdge API
-    public FigEdge(RoutingStrategy routingStrategy) {
+    public FigEdgeRoutable(RoutingStrategy routingStrategy) {
         this.routingStrategy = routingStrategy;
         _fig = routingStrategy.makeEdgeFig();
     }
@@ -85,15 +85,26 @@ public class FigEdge extends org.tigris.gef.presentation.FigEdge {
     /** Instantiate a FigPoly with its rectilinear flag set. By default
      *  the FigPoly is black and the FigEdge has no ArrowHeads. */
     protected Fig makeEdgeFig() {
-        FigPoly res = new FigPoly(Color.black);
-        res.setRectilinear(false);
-        res.setFixedHandles(1);
-        res.setFilled(false);
-        return res;
+        if (routingStrategy == null) {
+            return null;
+        }
+        return routingStrategy.makeEdgeFig();
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
+
+    public boolean getInitiallyLaidOut() {
+        return _initiallyLaidOut;
+    }
+    
+    public boolean getUseNearest() {
+        return _useNearest;
+    }
+
+    public void setUseNearest(boolean b) {
+        _useNearest = b;
+    }
 
     public void setInitiallyLaidOut(boolean b) {
         _initiallyLaidOut = b;
@@ -107,33 +118,7 @@ public class FigEdge extends org.tigris.gef.presentation.FigEdge {
      *  Needs-More-Work: A better algorithm would really be useful.
      *  Needs-More-Work: Sometimes the edge can get non-rectilinear. */
     public void computeRoute() {
-        if (!_initiallyLaidOut) {
-            layoutEdge();
-            _initiallyLaidOut = true;
-        }
-        FigPoly p = ((FigPoly) _fig);
-        
-        Fig sourcePortFig = getSourcePortFig();
-        Fig destPortFig = getDestPortFig();
-        
-        Point srcPt = sourcePortFig.getCenter();
-        Point dstPt = destPortFig.getCenter();
-
-        if (_useNearest) {
-            if (p.getNumPoints() == 2) {
-                //? two iterations of refinement, maybe should be a for-loop
-                srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
-                dstPt = destPortFig.connectionPoint(p.getPoint(p.getNumPoints() - 2));
-                srcPt = sourcePortFig.connectionPoint(dstPt);
-                dstPt = destPortFig.connectionPoint(srcPt);
-            } else {
-                srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
-                dstPt = destPortFig.connectionPoint(p.getPoint(p.getNumPoints() - 2));
-            }
-        }
-
-        setEndPoints(srcPt, dstPt);
-        calcBounds();
+        routingStrategy.computeRoute(this);
     } /* end computeRoute */
 
     /**

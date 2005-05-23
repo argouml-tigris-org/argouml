@@ -35,7 +35,6 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
 
@@ -57,30 +56,14 @@ public class RoutingStrategyPoly extends RoutingStrategy {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** True if the edge has been laid out automatically once. It will
-     *  not be done automatically again since the user may have edited the
-     *  edge and I dont want to undo that work.
-     */
-    private boolean _initiallyLaidOut = false;
-
-    ////////////////////////////////////////////////////////////////
-    // FigEdge API
-
     /** Instantiate a FigPoly with its rectilinear flag set. By default
      *  the FigPoly is black and the FigEdge has no ArrowHeads. */
-    protected Fig makeEdgeFig() {
+    public Fig makeEdgeFig() {
         FigPoly res = new FigPoly(Color.black);
         res.setRectilinear(false);
         res.setFixedHandles(1);
         res.setFilled(false);
         return res;
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
-    public void setInitiallyLaidOut(boolean b) {
-        _initiallyLaidOut = b;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -90,12 +73,12 @@ public class RoutingStrategyPoly extends RoutingStrategy {
      *  analysis to route around source and destination nodes.
      *  Needs-More-Work: A better algorithm would really be useful.
      *  Needs-More-Work: Sometimes the edge can get non-rectilinear. */
-    public void computeRoute(FigEdge edge) {
-        if (!_initiallyLaidOut) {
+    public void computeRoute(FigEdgeRoutable edge) {
+        if (!edge.getInitiallyLaidOut()) {
             layoutEdge(edge);
-            _initiallyLaidOut = true;
+            edge.setInitiallyLaidOut(true);
         }
-        FigPoly p = ((FigPoly) _fig);
+        FigPoly p = ((FigPoly) edge.getFig());
         
         Fig sourcePortFig = edge.getSourcePortFig();
         Fig destPortFig = edge.getDestPortFig();
@@ -103,7 +86,7 @@ public class RoutingStrategyPoly extends RoutingStrategy {
         Point srcPt = sourcePortFig.getCenter();
         Point dstPt = destPortFig.getCenter();
 
-        if (_useNearest) {
+        if (((FigEdgeRoutable)edge).getUseNearest()) {
             if (p.getNumPoints() == 2) {
                 //? two iterations of refinement, maybe should be a for-loop
                 srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
@@ -125,7 +108,7 @@ public class RoutingStrategyPoly extends RoutingStrategy {
      * it has never been done on that line before.
      * @throws IllegalStateException if the edge is not connected to 2 ports
      */
-    protected void layoutEdge(FigEdge edge) {
+    protected void layoutEdge(FigEdgeRoutable edge) {
         int npoints = 0;
         int xpoints[] = new int[16];
         int ypoints[] = new int[16];
@@ -138,7 +121,7 @@ public class RoutingStrategyPoly extends RoutingStrategy {
         Point srcPt = sourcePortFig.getCenter();
         Point dstPt = destPortFig.getCenter();
 
-        if (_useNearest) {
+        if (((FigEdgeRoutable)edge).getUseNearest()) {
             int xdiff = (srcPt.x - dstPt.x);
             int ydiff = (srcPt.y - dstPt.y);
             srcPt.x = (int) (srcPt.x - 0.1 * xdiff);
@@ -157,7 +140,7 @@ public class RoutingStrategyPoly extends RoutingStrategy {
         ypoints[npoints++] = dstPt.y;
 
         Polygon routePoly = new Polygon(xpoints, ypoints, npoints);
-        ((FigPoly) _fig).setPolygon(routePoly);
+        ((FigPoly)edge.getFig()).setPolygon(routePoly);
     }
 
     /** Reply a point on the given routing rect that is "straight out"
@@ -339,15 +322,13 @@ public class RoutingStrategyPoly extends RoutingStrategy {
         return true;
     }
 
-    public void moveVertex(FigEdge edge, Handle h, int x, int y, boolean ov) {
+    public void moveVertex(FigEdgeRoutable edge, Handle h, int x, int y, boolean ov) {
         int i = h.index;
-        int np = _fig.getNumPoints();
-        FigPoly p = ((FigPoly) _fig);
+        int np = edge.getFig().getNumPoints();
+        FigPoly p = ((FigPoly) edge.getFig());
         if (!p.getRectilinear()) {
             if (p._isComplete) {
                 if (i == 0) {
-//                    if (p._xpoints[i + 1] == x && p._ypoints[i + 1] == y)
-//                    if (p._isSelfLoop && p._npoints <= 4) {
                     if (p.getXs()[i + 1] == x && p.getYs()[i + 1] == y)
                         if (p.isSelfLoop() && p.getNumPoints() <= 4) {
                             ;
@@ -401,14 +382,14 @@ public class RoutingStrategyPoly extends RoutingStrategy {
     }
 
     /** When the user drags the handles, move individual points */
-    public void setPoint(FigEdge edge, Handle h, int mX, int mY) {
+    public void setPoint(FigEdgeRoutable edge, Handle h, int mX, int mY) {
         moveVertex(edge, h, mX, mY, false);
         edge.calcBounds();
     }
 
     /** Add a point to this polygon. Fires PropertyChange with "bounds". */
-    public void insertPoint(int i, int x, int y) {
-        FigPoly p = ((FigPoly) _fig);
+    public void insertPoint(FigEdgeRoutable edge, int i, int x, int y) {
+        FigPoly p = ((FigPoly) edge.getFig());
         p.insertPoint(i, x, y);
     }
 
@@ -416,8 +397,8 @@ public class RoutingStrategyPoly extends RoutingStrategy {
 
     /** Set the end points of this polygon, regardless of the number of
      *  fixed handles. This is used when nodes move. */
-    public void setEndPoints(FigEdge edge, Point start, Point end) {
-        FigPoly p = ((FigPoly) _fig);
+    public void setEndPoints(FigEdgeRoutable edge, Point start, Point end) {
+        FigPoly p = ((FigPoly) edge.getFig());
         while (p.getNumPoints() < 2)
             p.addPoint(start);
         synchronized (_TempHandle) {
@@ -428,7 +409,7 @@ public class RoutingStrategyPoly extends RoutingStrategy {
         }
     }
 
-    public void paint(FigEdge edge, Graphics g) {
+    public void paint(FigEdgeRoutable edge, Graphics g) {
         edge.paint(g);
         if (_highlight) {
             FigPoly f = (FigPoly) edge.getFig();

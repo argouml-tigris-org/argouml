@@ -35,7 +35,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigLine;
 
 
@@ -51,13 +50,13 @@ public class RoutingStrategyLine extends RoutingStrategy {
   protected Fig makeEdgeFig() { return new FigLine(0, 0, 0, 0, Color.black); }
 
     /** Compute the shape of the line that presents an Edge. */
-    public void computeRoute(FigEdge edge) {
+    public void computeRoute(FigEdgeRoutable edge) {
         Fig sourcePortFig = edge.getSourcePortFig();
   	    Fig destPortFig = edge.getDestPortFig();
         Point srcPt = sourcePortFig.getCenter();
         Point dstPt = destPortFig.getCenter();
 
-        if (_useNearest) {
+        if (((FigEdgeRoutable)edge).getUseNearest()) {
             //? two iterations of refinement, maybe should be a for-loop
             srcPt = sourcePortFig.connectionPoint(dstPt);
             dstPt = destPortFig.connectionPoint(srcPt);
@@ -70,7 +69,7 @@ public class RoutingStrategyLine extends RoutingStrategy {
     }
 
 
-    public void paint(FigEdge edge, Graphics g) {
+    public void paint(FigEdgeRoutable edge, Graphics g) {
         edge.paint(g);
         if (_highlight) {
             FigLine f = (FigLine) edge.getFig();
