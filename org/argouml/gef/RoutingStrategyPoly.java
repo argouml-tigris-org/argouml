@@ -409,16 +409,4 @@ public class RoutingStrategyPoly extends RoutingStrategy {
         }
     }
 
-    public void paint(FigEdgeRoutable edge, Graphics g) {
-        edge.paint(g);
-        if (_highlight) {
-            FigPoly f = (FigPoly) edge.getFig();
-            int nPoints = f.getNumPoints();
-            int xs[] = f.getXs();
-            int ys[] = f.getYs();
-            for (int i = 1; i < nPoints; i++) {
-                paintHighlightLine(g, xs[i - 1], ys[i - 1], xs[i], ys[i]);
-            }
-        }
-    }
 } /* end class FigEdgePoly */
