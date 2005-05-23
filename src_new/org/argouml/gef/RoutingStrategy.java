@@ -2,6 +2,7 @@
 package org.argouml.gef;
 
 import java.awt.Graphics;
+import java.awt.Point;
 
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathConv;
@@ -13,27 +14,6 @@ import org.tigris.gef.presentation.Handle;
  * Abstract strategy for routing edge paths between ports.
  */
 public abstract class RoutingStrategy {
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
-//    /** Fig presenting the edge's from-port . */
-//    private Fig _sourcePortFig;
-//
-//    /** Fig presenting the edge's to-port. */
-//    private Fig _destPortFig;
-//
-//    /** FigNode presenting the edge's from-port's parent node. */
-//    protected FigNode _sourceFigNode;
-//
-//    /** FigNode presenting the edge's to-port's parent node. */
-//    protected FigNode _destFigNode;
-//
-//    /** Fig that presents the edge. */
-//    protected Fig _fig;
-//
-//    /** True when the FigEdgde should be drawn highlighted. */
-//    protected boolean _highlight = false;
-//
     ////////////////////////////////////////////////////////////////
     // inner classes
     private class PathItem implements java.io.Serializable {
@@ -69,7 +49,6 @@ public abstract class RoutingStrategy {
      *  FigEdgeRectiline, this method constructs a FigPoly. */
     protected abstract Fig makeEdgeFig();
 
-
     public void paintHighlightLine(Graphics g, int x1, int y1, int x2, int y2) {
         g.setColor(Globals.getPrefs().getHighlightColor());    /* needs-more-work */
         double dx = (x2 - x1);
@@ -94,6 +73,9 @@ public abstract class RoutingStrategy {
     /** When the user drags the handles, move individual points */
     public void setPoint(FigEdgeRoutable edge, Handle h, int mX, int mY) {
         edge.setPoint(h, mX, mY);
+    }
+
+    public void moveVertex(FigEdgeRoutable edge, Handle h, int x, int y, boolean ov) {
     }
     
     /**

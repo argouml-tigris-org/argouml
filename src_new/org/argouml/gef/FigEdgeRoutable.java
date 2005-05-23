@@ -108,71 +108,16 @@ public class FigEdgeRoutable extends org.tigris.gef.presentation.FigEdge {
     ////////////////////////////////////////////////////////////////
     // routing methods
 
-    /** Find the route that the edge should follow.  Basically case
-     *  analysis to route around source and destination nodes.
-     *  Needs-More-Work: A better algorithm would really be useful.
-     *  Needs-More-Work: Sometimes the edge can get non-rectilinear. */
+    /** 
+     * Compute the route that the edge should follow.
+     * Delegated to the routing strategy.
+     */
     public void computeRoute() {
         routingStrategy.computeRoute(this);
     } /* end computeRoute */
 
     public void moveVertex(Handle h, int x, int y, boolean ov) {
-        int i = h.index;
-        int np = _fig.getNumPoints();
-        FigPoly p = ((FigPoly) _fig);
-        if (!p.getRectilinear()) {
-            if (p._isComplete) {
-                if (i == 0) {
-                    if (p.getXs()[i + 1] == x && p.getYs()[i + 1] == y)
-                        if (p.isSelfLoop() && p.getNumPoints() <= 4) {
-                            ;
-                        } else
-                            p.removePoint(i + 1);
-                } else if (i == (np - 1)) {
-                    if (p.getXs()[i - 1] == x && p.getYs()[i - 1] == y)
-                        if (p.isSelfLoop() && p.getNumPoints() <= 4) {
-                            ;
-                        } else
-                            p.removePoint(i - 1);
-                }
-                if (np > 2) {
-                    //Point handlePoint = new Point(p._xpoints[i],p._ypoints[i]);
-                    Point handlePoint = new Point(x, y);
-                    
-                    Fig sourcePortFig = getSourcePortFig();
-                    Fig destPortFig = getDestPortFig();
-                    
-                    Point srcPt = sourcePortFig.getCenter();
-                    Point dstPt = destPortFig.getCenter();
-                    
-                    if (i == 1 && np == 3) {
-                        srcPt = sourcePortFig.connectionPoint(handlePoint);
-                        dstPt = destPortFig.connectionPoint(handlePoint);
-                        p.moveVertex(new Handle(0), srcPt.x, srcPt.y, true);
-                        p.moveVertex(
-                            new Handle(np - 1),
-                            dstPt.x,
-                            dstPt.y,
-                            true);
-                        calcBounds();
-                    } else if (i == 1) {
-                        srcPt = sourcePortFig.connectionPoint(handlePoint);
-                        p.moveVertex(new Handle(0), srcPt.x, srcPt.y, true);
-                        calcBounds();
-                    } else if (i == (np - 2)) {
-                        dstPt = destPortFig.connectionPoint(handlePoint);
-                        p.moveVertex(
-                            new Handle(np - 1),
-                            dstPt.x,
-                            dstPt.y,
-                            true);
-                        calcBounds();
-                    }
-                }
-            }
-            p.getXs()[i] = x;
-            p.getYs()[i] = y;
-        }
+        routingStrategy.moveVertex(this, h, x, y, ov);
     }
 
     /** When the user drags the handles, move individual points */
@@ -189,12 +134,15 @@ public class FigEdgeRoutable extends org.tigris.gef.presentation.FigEdge {
 
     private static Handle _TempHandle = new Handle(0);
 
-    /** Set the end points of this polygon, regardless of the number of
-     *  fixed handles. This is used when nodes move. */
+    /** 
+     * Set the end points of this edge, regardless of the number of
+     * fixed handles. This is used when nodes move.
+     */
     public void setEndPoints(Point start, Point end) {
         FigPoly p = ((FigPoly) _fig);
-        while (p.getNumPoints() < 2)
+        while (p.getNumPoints() < 2) {
             p.addPoint(start);
+        }
         synchronized (_TempHandle) {
             _TempHandle.index = 0;
             moveVertex(_TempHandle, start.x, start.y, true);
