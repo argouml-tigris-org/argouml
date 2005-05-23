@@ -64,17 +64,8 @@ public class RoutingStrategyLine extends RoutingStrategy {
             dstPt = destPortFig.connectionPoint(srcPt);
         }
 
-        ((FigLine) _fig).setShape(srcPt, dstPt);
+        ((FigLine) edge.getFig()).setShape(srcPt, dstPt);
         edge.calcBounds();
-    }
-
-
-    public void paint(FigEdgeRoutable edge, Graphics g) {
-        edge.paint(g);
-        if (_highlight) {
-            FigLine f = (FigLine) edge.getFig();
-            paintHighlightLine(g, f.getX1(), f.getY1(), f.getX2(), f.getY2());
-        }
     }
 } /* end class FigEdgeLine */
 

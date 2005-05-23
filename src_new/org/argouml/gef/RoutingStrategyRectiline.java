@@ -36,6 +36,7 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 
 
@@ -74,7 +75,7 @@ public class RoutingStrategyRectiline extends RoutingStrategy {
             layoutEdge(edge);
             edge.setInitiallyLaidOut(true);
         }
-        FigPoly p = ((FigPoly) _fig);
+        FigPoly p = ((FigPoly) edge.getFig());
         
         Point srcPt, dstPt;
         
@@ -113,13 +114,13 @@ public class RoutingStrategyRectiline extends RoutingStrategy {
       dstPt = destPortFig.connectionPoint(srcPt);
     }
     
-    Rectangle srcRR = _sourceFigNode.routingRect();
-    Rectangle dstRR = _destFigNode.routingRect();
+    Rectangle srcRR = edge.getSourceFigNode().routingRect();
+    Rectangle dstRR = edge.getDestFigNode().routingRect();
 
     Object srcPort = sourcePortFig.getOwner();
     Object dstPort = destPortFig.getOwner();
-    int srcSector = _sourceFigNode.getPortSector(sourcePortFig);
-    int dstSector = _destFigNode.getPortSector(destPortFig);
+    int srcSector = ((FigNode)edge.getSourceFigNode()).getPortSector(sourcePortFig);
+    int dstSector = ((FigNode)edge.getDestFigNode()).getPortSector(destPortFig);
 
     // first decide what layout case we have
     Point srcRRPt = routingRectPoint(srcPt, srcRR, srcSector);
@@ -139,7 +140,7 @@ public class RoutingStrategyRectiline extends RoutingStrategy {
     //   if (dstSector == 1 || dstSector == -1) {
     // xpoints[npoints] = dstPt.x; ypoints[npoints++] = dstPt.y; }
     Polygon routePoly = new Polygon(xpoints, ypoints, npoints);
-    ((FigPoly)_fig).setPolygon(routePoly);
+    ((FigPoly)edge.getFig()).setPolygon(routePoly);
   }
 
   /** Reply a point on the given routing rect that is "straight out"

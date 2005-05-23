@@ -16,24 +16,24 @@ public abstract class RoutingStrategy {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** Fig presenting the edge's from-port . */
-    private Fig _sourcePortFig;
-
-    /** Fig presenting the edge's to-port. */
-    private Fig _destPortFig;
-
-    /** FigNode presenting the edge's from-port's parent node. */
-    protected FigNode _sourceFigNode;
-
-    /** FigNode presenting the edge's to-port's parent node. */
-    protected FigNode _destFigNode;
-
-    /** Fig that presents the edge. */
-    protected Fig _fig;
-
-    /** True when the FigEdgde should be drawn highlighted. */
-    protected boolean _highlight = false;
-
+//    /** Fig presenting the edge's from-port . */
+//    private Fig _sourcePortFig;
+//
+//    /** Fig presenting the edge's to-port. */
+//    private Fig _destPortFig;
+//
+//    /** FigNode presenting the edge's from-port's parent node. */
+//    protected FigNode _sourceFigNode;
+//
+//    /** FigNode presenting the edge's to-port's parent node. */
+//    protected FigNode _destFigNode;
+//
+//    /** Fig that presents the edge. */
+//    protected Fig _fig;
+//
+//    /** True when the FigEdgde should be drawn highlighted. */
+//    protected boolean _highlight = false;
+//
     ////////////////////////////////////////////////////////////////
     // inner classes
     private class PathItem implements java.io.Serializable {
@@ -52,11 +52,6 @@ public abstract class RoutingStrategy {
         public Fig getFig() {
             return _fig;
         }
-    }
-
-    /** Contruct a new FigEdge without any underlying edge. */
-    public RoutingStrategy() {
-        _fig = makeEdgeFig();
     }
 
     ////////////////////////////////////////////////////////////////
