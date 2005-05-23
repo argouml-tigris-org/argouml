@@ -38,6 +38,7 @@ import org.argouml.uml.diagram.ui.FigTextGroup;
 
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathConvPercent;
+import org.tigris.gef.base.Selection;
 
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
@@ -268,5 +269,10 @@ public abstract class FigMessage
      */
     protected boolean updateClassifiers() {
         return true;
+    }
+    
+    
+    public Selection makeSelection() {
+        return new SelectionMessage(this);
     }
 }

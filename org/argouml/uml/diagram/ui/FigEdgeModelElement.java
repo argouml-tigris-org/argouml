@@ -84,8 +84,7 @@ import org.tigris.gef.presentation.FigText;
  * look like lines and that have editable names.
  */
 public abstract class FigEdgeModelElement
-//    extends FigEdgePoly
-    extends FigEdgeRoutable // TODO RoutingStrategy, replaces above line
+    extends FigEdgePoly
     implements
         VetoableChangeListener,
         DelayedVChangeListener,
@@ -151,14 +150,6 @@ public abstract class FigEdgeModelElement
      *  _name element that holds the name of the model element and adds
      *  itself as a listener. */
     public FigEdgeModelElement() {
-        this(RoutingStrategyFactory.getPolyStrategy()); // TODO RoutingStrategy
-    }
-
-    /** Partially construct a new FigNode.  This method creates the
-     *  _name element that holds the name of the model element and adds
-     *  itself as a listener. */
-    public FigEdgeModelElement(RoutingStrategy routingStrategy) {
-        super(routingStrategy); // TODO RoutingStrategy
         name = new FigText(10, 30, 90, 20);
         name.setFont(LABEL_FONT);
         name.setTextColor(Color.black);
