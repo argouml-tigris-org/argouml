@@ -57,6 +57,7 @@ import org.argouml.cognitive.ItemUID;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 import org.argouml.gef.FigEdgeRoutable;
+import org.argouml.gef.RoutingStrategy;
 import org.argouml.gef.RoutingStrategyFactory;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
@@ -150,7 +151,14 @@ public abstract class FigEdgeModelElement
      *  _name element that holds the name of the model element and adds
      *  itself as a listener. */
     public FigEdgeModelElement() {
-        super(RoutingStrategyFactory.getPolyStrategy()); // TODO RoutingStrategy
+        this(RoutingStrategyFactory.getPolyStrategy()); // TODO RoutingStrategy
+    }
+
+    /** Partially construct a new FigNode.  This method creates the
+     *  _name element that holds the name of the model element and adds
+     *  itself as a listener. */
+    public FigEdgeModelElement(RoutingStrategy routingStrategy) {
+        super(routingStrategy); // TODO RoutingStrategy
         name = new FigText(10, 30, 90, 20);
         name.setFont(LABEL_FONT);
         name.setTextColor(Color.black);
@@ -171,7 +179,6 @@ public abstract class FigEdgeModelElement
         stereo.setAllowsTab(false);
 
         setBetweenNearestPoints(true);
-        ((FigPoly) _fig).setRectilinear(false);
         ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
         currentNotationName = Notation.getConfigueredNotation();
     }
