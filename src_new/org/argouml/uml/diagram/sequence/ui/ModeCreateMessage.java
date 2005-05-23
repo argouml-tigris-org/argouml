@@ -96,12 +96,14 @@ public class ModeCreateMessage extends ModeCreate {
             Globals.getPrefs().getRubberbandColor());
     }
 
-    /**
-     * @see org.tigris.gef.base.FigModifyingMode#instructions()
-     */
-    public String instructions() {
-        return Translator.localize( "action.sequence.new."+getArg( "actionName"));
-    }
+// Commented out by Bob Tarling 22 May 2005. The i18n package throws an
+// exception. Will raise an issue.
+//    /**
+//     * @see org.tigris.gef.base.FigModifyingMode#instructions()
+//     */
+//    public String instructions() {
+//        return Translator.localize( "action.sequence.new."+getArg( "actionName"));
+//    }
 
     /**
      * On mousePressed determine what port the user is dragging from.
