@@ -56,7 +56,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
-import org.argouml.gef.FigEdge;
+import org.argouml.gef.FigEdgeRoutable;
 import org.argouml.gef.RoutingStrategyFactory;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
@@ -84,7 +84,7 @@ import org.tigris.gef.presentation.FigText;
  */
 public abstract class FigEdgeModelElement
 //    extends FigEdgePoly
-    extends FigEdge // TODO RoutingStrategy, replaces above line
+    extends FigEdgeRoutable // TODO RoutingStrategy, replaces above line
     implements
         VetoableChangeListener,
         DelayedVChangeListener,

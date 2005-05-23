@@ -2,14 +2,10 @@
 package org.argouml.gef;
 
 import java.awt.Graphics;
-import java.util.Vector;
 
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathConv;
-import org.tigris.gef.presentation.ArrowHead;
-import org.tigris.gef.presentation.ArrowHeadNone;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
 
@@ -35,21 +31,8 @@ public abstract class RoutingStrategy {
     /** Fig that presents the edge. */
     protected Fig _fig;
 
-    /** True if the FigEdge should be drawn from the nearest point of
-     *  each port Fig. */
-    protected boolean _useNearest = false;
-
     /** True when the FigEdgde should be drawn highlighted. */
     protected boolean _highlight = false;
-
-    /** The ArrowHead at the start of the line */
-    protected ArrowHead _arrowHeadStart = ArrowHeadNone.TheInstance;
-
-    /** The ArrowHead at the end of the line */
-    protected ArrowHead _arrowHeadEnd = ArrowHeadNone.TheInstance;
-
-    /** The items that are accumulated along the path, a vector. */
-    protected Vector _pathItems = new Vector();
 
     ////////////////////////////////////////////////////////////////
     // inner classes
@@ -84,48 +67,13 @@ public abstract class RoutingStrategy {
      * this does nothing. Sublcasses, like FigEdgeRectiline override
      * this method.
      */
-    abstract public void computeRoute(FigEdge edge);
+    abstract public void computeRoute(FigEdgeRoutable edge);
 
     /** Abstract method to make the Fig that will be drawn for this
      *  FigEdge. In FigEdgeLine this method constructs a FigLine. In
      *  FigEdgeRectiline, this method constructs a FigPoly. */
     protected abstract Fig makeEdgeFig();
 
-    /** Paint this FigEdge.  Needs-more-work: take Highlight into account */
-    public void paint(FigEdge edge, Graphics g) {
-        _fig.paint(g);
-        paintArrowHeads(g);
-        paintPathItems(g);
-    }
-    
-    /** Paint any labels that are located relative to this FigEdge. */
-    protected void paintPathItems(Graphics g) {
-        Vector pathVec = getPathItemsRaw();
-        for(int i = 0; i < pathVec.size(); i++) {
-            PathItem element = (PathItem)pathVec.elementAt(i);
-            Fig f = element.getFig();
-            f.paint(g);
-        }
-    }
-
-    /** Return the vector of path items on this FigEdge. */
-    public Vector getPathItemsRaw() {
-        return _pathItems;
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // display methods
-
-    /** Paint ArrowHeads on this FigEdge. Called from paint().
-     *  Determines placement and orientation by using
-     *  pointAlongPerimeter(). */
-    protected void paintArrowHeads(Graphics g) {
-        _arrowHeadStart.paintAtHead(g, _fig);
-        _arrowHeadEnd.paintAtTail(g, _fig);
-        //     _arrowHeadStart.paint(g, pointAlongPerimeter(5), pointAlongPerimeter(0));
-        //     _arrowHeadEnd.paint(g, pointAlongPerimeter(getPerimeterLength() - 6),
-        //          pointAlongPerimeter(getPerimeterLength() - 1));
-    }
 
     public void paintHighlightLine(Graphics g, int x1, int y1, int x2, int y2) {
         g.setColor(Globals.getPrefs().getHighlightColor());    /* needs-more-work */
@@ -149,7 +97,7 @@ public abstract class RoutingStrategy {
     }
     
     /** When the user drags the handles, move individual points */
-    public void setPoint(FigEdge edge, Handle h, int mX, int mY) {
+    public void setPoint(FigEdgeRoutable edge, Handle h, int mX, int mY) {
         edge.setPoint(h, mX, mY);
     }
     
@@ -159,7 +107,7 @@ public abstract class RoutingStrategy {
      * @return
      */
     public static boolean isPolyStrategy(Fig f) {
-        return (f instanceof FigEdge && ((FigEdge)f).isPolyRoutingStrategy());
+        return (f instanceof FigEdgeRoutable && ((FigEdgeRoutable)f).isPolyRoutingStrategy());
     }
 
 }    /* end class FigEdge */
