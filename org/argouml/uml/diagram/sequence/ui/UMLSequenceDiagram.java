@@ -76,7 +76,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) {
         }
-        ((SequenceDiagramGraphModel)getGraphModel()).setCollaboration( collaboration);
+        ((SequenceDiagramGraphModel) getGraphModel())
+	    .setCollaboration(collaboration);
     }
 
     /**
@@ -98,7 +99,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * @return a new unique name.
      */
     protected String getNewDiagramName() {
-        String name = getLabelName()+" " + getNextDiagramSerial();
+        String name = getLabelName() + " " + getNextDiagramSerial();
         if (!(ProjectManager.getManager().getCurrentProject()
 	      .isValidDiagramName(name))) {
             name = getNewDiagramName();
@@ -140,13 +141,13 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
             Object[][] actionList = {
                 {Model.getMetaTypes().getCallAction(),
-                    "button.new-callaction", },
+                    "CallAction", "button.new-callaction", },
                 {Model.getMetaTypes().getReturnAction(),
-                    "button.new-returnaction", },
+                    "ReturnAction", "button.new-returnaction", },
                 {Model.getMetaTypes().getCreateAction(),
-                    "button.new-createaction", },
+                    "CreateAction", "button.new-createaction", },
                 {Model.getMetaTypes().getDestroyAction(),
-                    "button.new-destroyaction", },
+                    "DestroyAction", "button.new-destroyaction", },
             };
 
 	    for (int i = 0; i < actionList.length; i++) {
@@ -157,22 +158,24 @@ public class UMLSequenceDiagram extends UMLDiagram {
 		actions[i + offset] =
                     new RadioAction(new CmdSetMode(ModeCreateMessage.class,
                     args,
-						   (String) actionList[i][1]));
+						   (String) actionList[i][2]));
 	    }
-            Hashtable args=new Hashtable();
-            args.put( "name", "SequenceExpand");
-            actions[5]=new RadioAction( new CmdSetMode(
-                ModeChangeHeight.class,
-                args,
-                (String)args.get("name")
-                ));
-            args=new Hashtable();
-            args.put( "name", "SequenceContract");
-            actions[6]=new RadioAction( new CmdSetMode(
-                ModeChangeHeight.class,
-                args,
-                (String)args.get("name")
-                ));
+            Hashtable args = new Hashtable();
+            args.put("name", "button.sequenceexpand");
+            actions[5] =
+		new RadioAction(new CmdSetMode(
+					       ModeChangeHeight.class,
+					       args,
+					       (String) args.get("name")
+					       ));
+            args = new Hashtable();
+            args.put("name", "button.sequencecontract");
+            actions[6] =
+		new RadioAction(new CmdSetMode(
+					       ModeChangeHeight.class,
+					       args,
+					       (String) args.get("name")
+					       ));
         }
         return actions;
     }
@@ -187,7 +190,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
     /**
      */
     public void setNamespace(Object ns) {
-        ((SequenceDiagramGraphModel)getGraphModel()).setCollaboration( ns);
+        ((SequenceDiagramGraphModel) getGraphModel()).setCollaboration(ns);
         super.setNamespace(ns);
     }
 
