@@ -380,6 +380,11 @@ public final class ResourceLoaderWrapper {
         images.put("button.select", "Select");
     }
 
+    static {
+        images.put("button.sequencecontract", "SequenceContract");
+        images.put("button.sequenceexpand", "SequenceExpand");
+    }
+
     /**
      * Convert the key to the image file name.
      *
