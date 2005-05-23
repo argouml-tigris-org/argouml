@@ -716,21 +716,21 @@ If you are in a hurry:
 C:\Work&gt;mkdir argouml\build
 </programlisting>
 Download and unpack the latest release of ArgoUML into this directory.
-<programlistingco>
+<programlisting>
 C:\Work&gt;set CVSROOT=:pserver:guest@cvs.tigris.org:/cvs
 C:\Work&gt;cvs login   (use guest as password)
 C:\Work&gt;cvs checkout argouml-<replaceable>XX</replaceable>
 C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
 C:\Work&gt;cd argouml-<replaceable>XX</replaceable>
 C:\Work\argouml-<replaceable>XX</replaceable>&gt;ant run
-</programlistingco>
+</programlisting>
 An ArgoUML starts with the module from the subproject 
 argouml-<replaceable>XX</replaceable> enabled.
 </para>
       <para>
 That was the short version provided that,
 you are using Windows + JDK,
-you have ant installed somewhere, and
+you have ant installed, and
 the subproject in question does not require any of the ArgoUML tools to build.
 </para>
       <para>
@@ -742,7 +742,7 @@ the chapter that describes why and how in more detail.
 	<title>The subproject's relation to ArgoUML</title>
 
 	<para>
-The purpose of a subproject to ArgoUML is always to develop things
+The purpose of a subproject to ArgoUML is to develop things
 that are run within ArgoUML.
 In ArgoUML we call them modules,
 in other tools they are called add-ins or plug-ins.
@@ -762,8 +762,10 @@ from the ArgoUML project.
 This includes
 a site for your cvs repository, mailing lists, web server...,
 a common way to set up the project,
-releases, bug fixes, xenofarm builds, static checks synchronized with ArgoUML
-(pending the interest of the other ArgoUML developers)..., and
+releases,
+bug fixes,
+xenofarm builds,
+static checks, and
 coding guidelines and license.
 </para>
 	    </listitem>
@@ -791,28 +793,31 @@ CVS, BSD license, coding guidelines.
 	<para>
 If you decide not to make your module a argouml subproject,
 you can still benefit from using a similar set up as described here
-but since you the have your module repository elsewhere,
+but since you have your module repository elsewhere,
 some adaptions are necessary.
 </para>
 
 	<para>
 The subprojects are developed close to the ArgoUML project and
 recide in the same cvs repository.
-We try to make provide a working set of tools and instructions to 
+We try to provide a working set of tools and instructions to 
 fit the whole set of projects.
 These tools are sometimes located in the argouml project and
 sometimes in the subproject.
 
 Also, to compile the module, you need the argouml interfaces,
 and to run it you need argouml in place.
+In most cases the argouml interfaces is argouml itself so this
+distinction is mostly formal.
 </para>
 
 	<para>
 There are two ways to get the argouml in place w.r.t. your module.
-The ArgoUML source way and the quicker or smaller ArgoUML distribution way.
+The ArgoUML source way and
+the quicker ArgoUML distribution way.
 </para>
 	<para>
-Using the ArgoUML source way you check out both the argouml project
+Using the ArgoUML source way you check out the argouml project
 alongside the subproject you are going to work with and build it.
 If you are doing development in the argouml project too,
 if the subproject in question requires a tool from the argouml project, or
@@ -851,6 +856,12 @@ to monitor the commits.
 It also has its own dev mailing list where the people working within
 that subproject discusses the subproject.
 Join both of these mailing list to see what is going on in the subproject!
+</para>
+	<para>
+The subprojects don't use their own issuezilla database but instead they
+are subcomponents in the ArgoUML issuezilla.
+Because of this you need to acquire an Observer role in the argouml
+project to work in a subproject.
 </para>
       </sect3>
 
@@ -892,7 +903,7 @@ with several different modules started at once.
 </para>
 	    </listitem>
 	    <listitem>
-	      <para>jar</para>
+	      <para>jar - optional</para>
 	      <para>
 This builds the whole module and puts the resulting jar file(s)
 in <filename>build</filename>.
@@ -902,6 +913,9 @@ in <filename>build</filename>.
 	      <para>run</para>
 	      <para>
 This starts argouml with this module active.
+</para>
+	      <para>
+This is the way to start this module with the newly compiled source.
 </para>
 	    </listitem>
 	    <listitem>
