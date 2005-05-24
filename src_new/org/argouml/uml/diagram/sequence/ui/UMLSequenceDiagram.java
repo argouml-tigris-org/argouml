@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.sequence.ui;
 import java.beans.PropertyVetoException;
 import java.util.Hashtable;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -46,6 +47,8 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 public class UMLSequenceDiagram extends UMLDiagram {
 
     private Object[] actions;
+    static String SEQUENCE_CONTRACT_BUTTON="button.sequence-contract";
+    static String SEQUENCE_EXPAND_BUTTON="button.sequence-expand";
 
     /**
      * Constructs a new sequence diagram with a default name and NO namespace.
@@ -76,8 +79,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) {
         }
-        ((SequenceDiagramGraphModel) getGraphModel())
-	    .setCollaboration(collaboration);
+        ((SequenceDiagramGraphModel)getGraphModel()).setCollaboration( collaboration);
     }
 
     /**
@@ -99,7 +101,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * @return a new unique name.
      */
     protected String getNewDiagramName() {
-        String name = getLabelName() + " " + getNextDiagramSerial();
+        String name = getLabelName()+" " + getNextDiagramSerial();
         if (!(ProjectManager.getManager().getCurrentProject()
 	      .isValidDiagramName(name))) {
             name = getNewDiagramName();
@@ -141,41 +143,39 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
             Object[][] actionList = {
                 {Model.getMetaTypes().getCallAction(),
-                    "CallAction", "button.new-callaction", },
+                    "button.new-callaction", },
                 {Model.getMetaTypes().getReturnAction(),
-                    "ReturnAction", "button.new-returnaction", },
+                    "button.new-returnaction", },
                 {Model.getMetaTypes().getCreateAction(),
-                    "CreateAction", "button.new-createaction", },
+                    "button.new-createaction", },
                 {Model.getMetaTypes().getDestroyAction(),
-                    "DestroyAction", "button.new-destroyaction", },
+                    "button.new-destroyaction", },
             };
 
 	    for (int i = 0; i < actionList.length; i++) {
 		Hashtable args = new Hashtable();
                 args.put("edgeClass", Model.getMetaTypes().getMessage());
 		args.put("action", actionList[i][0]);
-                args.put("actionName", actionList[i][1]);
+                args.put("actionName", ResourceLoaderWrapper.getImageBinding( (String)actionList[i][1]));
 		actions[i + offset] =
                     new RadioAction(new CmdSetMode(ModeCreateMessage.class,
                     args,
-						   (String) actionList[i][2]));
+						   (String) actionList[i][1]));
 	    }
-            Hashtable args = new Hashtable();
-            args.put("name", "button.sequenceexpand");
-            actions[5] =
-		new RadioAction(new CmdSetMode(
-					       ModeChangeHeight.class,
-					       args,
-					       (String) args.get("name")
-					       ));
-            args = new Hashtable();
-            args.put("name", "button.sequencecontract");
-            actions[6] =
-		new RadioAction(new CmdSetMode(
-					       ModeChangeHeight.class,
-					       args,
-					       (String) args.get("name")
-					       ));
+            Hashtable args=new Hashtable();
+            args.put( "name", SEQUENCE_EXPAND_BUTTON);
+            actions[5]=new RadioAction( new CmdSetMode(
+                ModeChangeHeight.class,
+                args,
+                SEQUENCE_EXPAND_BUTTON
+                ));
+            args=new Hashtable();
+            args.put( "name", SEQUENCE_CONTRACT_BUTTON);
+            actions[6]=new RadioAction( new CmdSetMode(
+                ModeChangeHeight.class,
+                args,
+                SEQUENCE_CONTRACT_BUTTON
+                ));
         }
         return actions;
     }
@@ -190,7 +190,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
     /**
      */
     public void setNamespace(Object ns) {
-        ((SequenceDiagramGraphModel) getGraphModel()).setCollaboration(ns);
+        ((SequenceDiagramGraphModel)getGraphModel()).setCollaboration( ns);
         super.setNamespace(ns);
     }
 
