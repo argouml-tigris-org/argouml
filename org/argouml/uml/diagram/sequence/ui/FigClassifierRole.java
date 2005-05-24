@@ -44,6 +44,7 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.Selection;
 import org.tigris.gef.persistence.pgml.Container;
 import org.tigris.gef.persistence.pgml.FigGroupHandler;
 import org.tigris.gef.persistence.pgml.HandlerFactory;
@@ -1268,6 +1269,11 @@ public class FigClassifierRole extends FigNodeModelElement
             }
         }
         calcBounds();
+    }
+    
+    
+    public Selection makeSelection() {
+        return new SelectionClassifierRole(this);
     }
 
     static class TempFig extends FigLine
