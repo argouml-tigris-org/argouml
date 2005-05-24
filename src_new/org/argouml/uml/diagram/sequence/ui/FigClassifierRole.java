@@ -366,12 +366,8 @@ public class FigClassifierRole extends FigNodeModelElement
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    public void superTranslate( int dx, int dy)
-    {
-        Rectangle new_bounds=getBounds( null);
-        new_bounds.x+=dx;
-        new_bounds.y+=dy;
-        setBounds( new_bounds);
+    public void superTranslate( int dx, int dy) {
+        setBounds(getX()+dx, getY(), getWidth(), getHeight());
     }
 
     /**
@@ -1272,6 +1268,12 @@ public class FigClassifierRole extends FigNodeModelElement
     }
     
     
+    
+    /**
+    /**
+     * Override to return a custom SelectionResize class that will not allow
+     * handles on the north edge to be dragged.
+     */
     public Selection makeSelection() {
         return new SelectionClassifierRole(this);
     }
