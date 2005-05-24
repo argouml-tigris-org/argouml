@@ -111,9 +111,9 @@ public class ActivityGraphsFactoryImpl
      */
     public Object createClassifierInState() {
         MClassifierInState modelElement =
-	    MFactory.getDefaultFactory().createClassifierInState();
-	super.initialize(modelElement);
-	return modelElement;
+            MFactory.getDefaultFactory().createClassifierInState();
+        super.initialize(modelElement);
+        return modelElement;
     }
 
     /**
@@ -123,9 +123,9 @@ public class ActivityGraphsFactoryImpl
      */
     public Object createObjectFlowState() {
         MObjectFlowState modelElement =
-	    MFactory.getDefaultFactory().createObjectFlowState();
-	super.initialize(modelElement);
-	return modelElement;
+            MFactory.getDefaultFactory().createObjectFlowState();
+        super.initialize(modelElement);
+        return modelElement;
     }
 
     /**
@@ -135,9 +135,9 @@ public class ActivityGraphsFactoryImpl
      */
     public Object createPartition() {
         MPartition modelElement =
-	    MFactory.getDefaultFactory().createPartition();
-	super.initialize(modelElement);
-	return modelElement;
+            MFactory.getDefaultFactory().createPartition();
+        super.initialize(modelElement);
+        return modelElement;
     }
 
     /**
@@ -147,9 +147,9 @@ public class ActivityGraphsFactoryImpl
      */
     public Object createSubactivityState() {
         MSubactivityState modelElement =
-	    MFactory.getDefaultFactory().createSubactivityState();
-	super.initialize(modelElement);
-	return modelElement;
+            MFactory.getDefaultFactory().createSubactivityState();
+        super.initialize(modelElement);
+        return modelElement;
     }
 
     /**
@@ -159,30 +159,26 @@ public class ActivityGraphsFactoryImpl
      * @return the new ActivityGraph as Object
      */
     public Object buildActivityGraph(Object theContext) {
-        if (!(theContext instanceof MModelElement)) {
-            throw new IllegalArgumentException();
+        if (!(theContext instanceof MBehavioralFeature
+                || theContext instanceof MClassifier
+                || theContext instanceof MPackage)) {
+            throw new IllegalArgumentException(
+                    "Must have a context of a behaviorial feature, " +
+                    "classifier or package to build an activity diagram.");
         }
 
         MModelElement context = (MModelElement) theContext;
-    	if (context != null
-	    && (context instanceof MBehavioralFeature
-		|| context instanceof MClassifier
-		|| context instanceof MPackage)) {
-	    MActivityGraph graph = (MActivityGraph) createActivityGraph();
-	    graph.setContext(context);
-	    if (context instanceof MNamespace) {
-		graph.setNamespace((MNamespace) context);
-	    } else
-    		if (context instanceof MBehavioralFeature) {
-		    graph.setNamespace(
-                                ((MBehavioralFeature) context).getOwner());
-    		}
-	    nsmodel.getStateMachinesFactory()
-	    	.buildCompositeStateOnStateMachine(graph);
-	    return graph;
-    	}
-        throw new IllegalArgumentException("In buildActivityGraph: "
-					       + "context null or not legal");
+        MActivityGraph graph = (MActivityGraph) createActivityGraph();
+        graph.setContext(context);
+        if (context instanceof MNamespace) {
+            graph.setNamespace((MNamespace) context);
+        } else if (context instanceof MBehavioralFeature) {
+            graph.setNamespace(
+                ((MBehavioralFeature) context).getOwner());
+        }
+        nsmodel.getStateMachinesFactory()
+        	.buildCompositeStateOnStateMachine(graph);
+        return graph;
     }
 
     /**
