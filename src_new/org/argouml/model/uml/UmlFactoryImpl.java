@@ -405,6 +405,10 @@ class UmlFactoryImpl
         } else if (elementType
                 == nsmodel.getMetaTypes().getInclude()) {
             connection = getUseCases().buildInclude(fromElement, toElement);
+        } else if (elementType
+                == nsmodel.getMetaTypes().getTransition()) {
+            connection = 
+                getStateMachines().buildTransition(fromElement, toElement);
         }
 
         if (connection == null) {
