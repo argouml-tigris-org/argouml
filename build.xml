@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$
-This requires ANT 1.4.1
+This requires ANT 1.6.2
 
 if you get a message like:
 build.xml:162: Could not create task of type: copy because I can't
                find it in the list of task class definitions
-You are not running ANT 1.4.1
+You are not running ANT 1.6.2
 
 Introduction
 ============
@@ -586,7 +586,8 @@ Property files to be searched:
     	   srcdir="${argo.src.dir}"
     	   source="1.4"
     	   target="1.4">
-       <classpath>
+    	 <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+    	<classpath>
 	  <path refid="argo.compile.classpath"/>
        </classpath>
     </javac>
