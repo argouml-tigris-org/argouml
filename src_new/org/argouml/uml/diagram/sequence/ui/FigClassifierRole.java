@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.StringTokenizer;
 
 import org.argouml.model.Model;
@@ -310,7 +309,7 @@ public class FigClassifierRole extends FigNodeModelElement
     }
 
     private void center(FigText figText) {
-        int newX = this.getX() + this.getHalfWidth() - figText.getHalfWidth();
+        int newX = this.getX() + this.getWidth()/2 - figText.getWidth()/2;
         if (figText.getX() != newX) {
             figText.setX(newX);
             updateBounds();
@@ -337,16 +336,16 @@ public class FigClassifierRole extends FigNodeModelElement
         getNameFig().setCenter(
             new Point(x + w / 2,
 		      getNameFig().getY() - oldBounds.y + y
-		      + getNameFig().getHalfHeight()));
+		      + getNameFig().getHeight()/2));
         getStereotypeFig().setCenter(
             new Point(
                 x + w / 2,
                 (getStereotypeFig().getY() - oldBounds.y
-		 + y + getStereotypeFig().getHalfHeight())));
+		 + y + getStereotypeFig().getHeight()/2)));
         reSize(outerBox, x, y, w, h);
         reSize(backgroundBox, x, y, w, h);
         lifeLine.setBounds(
-            outerBox.getX() + outerBox.getHalfWidth(),
+            outerBox.getX() + outerBox.getWidth()/2,
             outerBox.getY() + outerBox.getHeight(),
             0,
             h - outerBox.getHeight());
@@ -356,7 +355,7 @@ public class FigClassifierRole extends FigNodeModelElement
             if ( activationFigs.contains( fig) || fig instanceof FigMessagePort)
             {
                 fig.setBounds(
-                    outerBox.getX()+outerBox.getHalfWidth()-fig.getWidth()/2,
+                    outerBox.getX() + outerBox.getWidth()/2 - fig.getWidth()/2,
                     y - oldBounds.y + fig.getY(),
                     fig.getWidth(),
                     fig.getHeight());
@@ -366,6 +365,10 @@ public class FigClassifierRole extends FigNodeModelElement
         firePropChange("bounds", oldBounds, getBounds());
     }
 
+    /**
+     * This method is overridden in order to ignore change of y co-ordinate
+     * during drag.
+     */
     public void superTranslate( int dx, int dy) {
         setBounds(getX()+dx, getY(), getWidth(), getHeight());
     }
@@ -1269,7 +1272,6 @@ public class FigClassifierRole extends FigNodeModelElement
     
     
     
-    /**
     /**
      * Override to return a custom SelectionResize class that will not allow
      * handles on the north edge to be dragged.
