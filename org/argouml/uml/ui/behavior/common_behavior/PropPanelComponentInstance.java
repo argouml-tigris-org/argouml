@@ -56,7 +56,7 @@ public class PropPanelComponentInstance extends PropPanelInstance {
             Model.getMetaTypes().getClassifier(),
 	};
 
-        setNameEventListening(namesToWatch);
+        getComponentDispatcher().setNameEventListening(namesToWatch);
 
         addField(Translator.localize("label.name"), getNameTextField());
 

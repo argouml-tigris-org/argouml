@@ -62,7 +62,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
         Object[] namesToWatch = {
 	    Model.getMetaTypes().getAction(),
 	};
-        setNameEventListening(namesToWatch);
+        getComponentDispatcher().setNameEventListening(namesToWatch);
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
