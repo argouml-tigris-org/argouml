@@ -22,14 +22,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.model.uml;
 
 import java.awt.Container;
 
 import javax.swing.SwingUtilities;
 
+import org.argouml.model.ContainerDispatcher;
 import org.argouml.model.Model;
-import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.uml.ui.UMLChangeDispatch;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -38,11 +39,11 @@ import ru.novosoft.uml.MElementListener;
  * This listens for events on a component and dispatches the events to all its
  * interested child components.
  */
-public class ComponentDispatcher implements MElementListener {
+public class ContainerDispatcherImpl implements ContainerDispatcher, MElementListener {
 
     private Container container;
     
-    public ComponentDispatcher (Container container) {
+    public ContainerDispatcherImpl (Container container) {
         this.container = container;
     }
     

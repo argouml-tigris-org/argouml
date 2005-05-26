@@ -24,7 +24,9 @@
 
 package org.argouml.model;
 
+import java.awt.Container;
 import java.io.Writer;
+
 
 
 /**
@@ -283,4 +285,12 @@ public interface ModelImplementation {
      * @throws UmlException on any error while writing
      */
     XmiWriter getXmiWriter(Object model, Writer writer) throws UmlException;
+
+    /**
+     * Factory for new ContainerDispatchers
+     * @param container The container to register with the ContainerDispatcher.
+     * 
+     * @return a new instance of a ContainerDispatcher.
+     */
+    ContainerDispatcher createContainerDispatcher(Container container);
 }
