@@ -24,8 +24,6 @@
 
 package org.argouml.model;
 
-import org.argouml.model.uml.UmlModelEventPump;
-
 /**
  * This listens for events on a component and dispatches the events to all its
  * interested child components.
