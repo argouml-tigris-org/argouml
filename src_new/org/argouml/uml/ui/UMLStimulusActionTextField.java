@@ -26,13 +26,14 @@ package org.argouml.uml.ui;
 import javax.swing.event.*;
 import javax.swing.*;
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
 
 /**
  * TODO: this class should be moved to package
  * org.argouml.uml.ui.behavior.common_behavior
  */
 public class UMLStimulusActionTextField extends JTextField
-    implements DocumentListener, UMLUserInterfaceComponent {
+    implements DocumentListener, UMLUserInterfaceComponent, MElementListener {
 
     private UMLUserInterfaceContainer theContainer;
     private UMLStimulusActionTextProperty theProperty;

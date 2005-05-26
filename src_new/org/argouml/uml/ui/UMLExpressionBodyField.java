@@ -30,6 +30,7 @@ import javax.swing.event.DocumentListener;
 import org.apache.log4j.Logger;
 
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
 
 
 /**
@@ -38,7 +39,7 @@ import ru.novosoft.uml.MElementEvent;
  */
 public class UMLExpressionBodyField
     extends JTextArea
-    implements DocumentListener, UMLUserInterfaceComponent {
+    implements DocumentListener, UMLUserInterfaceComponent, MElementListener {
 
     /**
      * Logger.

@@ -28,13 +28,14 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
 
 /**
  * This text field shows the language of a UML expression.
  */
 public class UMLExpressionLanguageField
     extends JTextField
-    implements DocumentListener, UMLUserInterfaceComponent {
+    implements DocumentListener, UMLUserInterfaceComponent, MElementListener {
 
     private UMLExpressionModel2 model;
     private boolean notifyModel;

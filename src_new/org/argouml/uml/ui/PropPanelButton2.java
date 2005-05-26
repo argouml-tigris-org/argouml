@@ -29,13 +29,14 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
 
 /**
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class PropPanelButton2 extends JButton
-        implements UMLUserInterfaceComponent {
+        implements UMLUserInterfaceComponent, MElementListener {
 
     /**
      * Constructor for PropPanelButton2.
