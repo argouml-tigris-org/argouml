@@ -327,6 +327,8 @@ public class FigClass extends FigNodeModelElement
     /**
      * Returns the status of the operation field.
      * @return true if the operations are visible, false otherwise
+     *
+     * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#isOperationsVisible()
      */
     public boolean isOperationsVisible() {
         return getOperationsFig().isVisible();
@@ -335,6 +337,8 @@ public class FigClass extends FigNodeModelElement
     /**
      * Returns the status of the attribute field.
      * @return true if the attributes are visible, false otherwise
+     *
+     * @see org.argouml.uml.diagram.ui.AttributesCompartmentContainer#isAttributesVisible()
      */
     public boolean isAttributesVisible() {
         return getAttributesFig().isVisible();
@@ -342,6 +346,8 @@ public class FigClass extends FigNodeModelElement
 
     /**
      * @param isVisible true if the attribute compartment is visible
+     *
+     * @see org.argouml.uml.diagram.ui.AttributesCompartmentContainer#setAttributesVisible(boolean)
      */
     public void setAttributesVisible(boolean isVisible) {
         Rectangle rect = getBounds();
@@ -383,6 +389,8 @@ public class FigClass extends FigNodeModelElement
 
     /**
      * @param isVisible true if the operation compartment is visible
+     *
+     * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#setOperationsVisible(boolean)
      */
     public void setOperationsVisible(boolean isVisible) {
         Rectangle rect = getBounds();
