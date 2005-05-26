@@ -330,6 +330,7 @@ public class FigPackage extends FigNodeModelElement
             }
             String nameStr =
                 Notation.generate(this, Model.getFacade().getName(getOwner()));
+            nameStr = generatePath() + nameStr;
             Object v = Model.getFacade().getVisibility(getOwner());
             if (v == null) {
                 /* Initially, the visibility is not set in the model. 

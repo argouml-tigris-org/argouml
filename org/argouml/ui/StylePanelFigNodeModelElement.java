@@ -24,17 +24,21 @@
 
 package org.argouml.ui;
 
+import java.awt.FlowLayout;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyListener;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.PathContainer;
 import org.tigris.gef.ui.ColorRenderer;
 
 /**
@@ -45,12 +49,24 @@ import org.tigris.gef.ui.ColorRenderer;
 public class StylePanelFigNodeModelElement extends StylePanelFig implements
         ItemListener, FocusListener, KeyListener {
 
+    /**
+     * Flag to indicate that a refresh is going on.
+     */
+    private boolean refreshTransaction = false;
+        
     private JLabel shadowLabel = new JLabel(Translator
             .localize("label.stylepane.shadow")
             + ": ");
 
+    /* TODO: i18n */
+    private JLabel displayLabel = new JLabel("Display: ");
+
+    private JCheckBox pathCheckBox = new JCheckBox("Path");
+    
     private JComboBox shadowField = new ShadowComboBox();
 
+    private JPanel displayPane;
+    
     /**
      * The constructor.
      *
@@ -65,17 +81,37 @@ public class StylePanelFigNodeModelElement extends StylePanelFig implements
         shadowLabel.setLabelFor(shadowField);
         add(shadowLabel);
         add(shadowField);
+        
+        displayPane = new JPanel();
+        displayPane.setLayout(new FlowLayout(FlowLayout.LEFT));
+        addToDisplayPane(pathCheckBox);
+        
+        displayLabel.setLabelFor(displayPane);
+        add(displayPane, 0); // add in front of the others
+        add(displayLabel, 0); // add the label in front of the "pane"
+        
+        //This instead of the label ???
+        //displayPane.setBorder(new TitledBorder(
+        //    Translator.localize("Display: ")));
+        
+        pathCheckBox.addItemListener(this);
     }
 
+    public void addToDisplayPane(JCheckBox cb) {
+        displayPane.add(cb);
+    }
+    
     /**
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
-
+        refreshTransaction = true;
         // Let the parent do its refresh.
-
         super.refresh();
-
+        PathContainer pc = (PathContainer) getPanelTarget();
+        pathCheckBox.setSelected(pc.isPathVisible());
+        refreshTransaction = false;
+        
         // Change the shadow size if appropriate
         if (getPanelTarget() instanceof FigNodeModelElement) {
 
@@ -113,10 +149,18 @@ public class StylePanelFigNodeModelElement extends StylePanelFig implements
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent e) {
-        super.itemStateChanged(e);
-        Object src = e.getSource();
-        if (src == shadowField) setTargetShadow();
-
+        if (!refreshTransaction) {
+            Object src = e.getSource();
+            if (src == shadowField) {
+                setTargetShadow();
+            } else if (src == pathCheckBox) {
+                PathContainer pc = (PathContainer) getPanelTarget();
+                pc.setPathVisible(pathCheckBox.isSelected());
+                ProjectManager.getManager().setNeedsSave(true);
+            } else {
+                super.itemStateChanged(e);        
+            }
+        }
     }
 
 } /* end class StylePanelFigNodeModelElement */

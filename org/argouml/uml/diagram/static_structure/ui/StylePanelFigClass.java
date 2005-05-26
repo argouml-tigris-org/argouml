@@ -24,16 +24,15 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.beans.PropertyChangeEvent;
 
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.StylePanelFigNodeModelElement;
+import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 
 /**
  * Stylepanel which adds an attributes and operations checkbox and depends on
@@ -44,11 +43,10 @@ import org.argouml.ui.StylePanelFigNodeModelElement;
  */
 public class StylePanelFigClass extends StylePanelFigNodeModelElement {
 
+    /* TODO: i18n */
     private JCheckBox attrCheckBox = new JCheckBox("Attributes");
 
     private JCheckBox operCheckBox = new JCheckBox("Operations");
-
-    private JLabel displayLabel = new JLabel("Display: ");
 
     /**
      * Flag to indicate that a refresh is going on.
@@ -65,17 +63,8 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
     public StylePanelFigClass() {
         super();
 
-        JPanel pane = new JPanel();
-        pane.setLayout(new FlowLayout(FlowLayout.LEFT));
-        pane.add(attrCheckBox);
-        pane.add(operCheckBox);
-
-        //This instead of the label ???
-        //pane.setBorder(new TitledBorder(Translator.localize("Display: ")));
-        
-        displayLabel.setLabelFor(pane);
-        add(pane, 0);
-        add(displayLabel, 0);
+        addToDisplayPane(attrCheckBox);
+        addToDisplayPane(operCheckBox);
 
         attrCheckBox.setSelected(false);
         operCheckBox.setSelected(false);
@@ -104,9 +93,12 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
     public void refresh() {
         refreshTransaction = true;
         super.refresh();
-        FigClass tc = (FigClass) getPanelTarget();
-        attrCheckBox.setSelected(tc.isAttributesVisible());
-        operCheckBox.setSelected(tc.isOperationsVisible());
+        AttributesCompartmentContainer ac = 
+                (AttributesCompartmentContainer) getPanelTarget();
+        attrCheckBox.setSelected(ac.isAttributesVisible());
+        OperationsCompartmentContainer oc = 
+                (OperationsCompartmentContainer) getPanelTarget();
+        operCheckBox.setSelected(oc.isOperationsVisible());
         refreshTransaction = false;
     }
 
@@ -121,12 +113,12 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
             Object src = e.getSource();
 
             if (src == attrCheckBox) {
-                ((FigClass) getPanelTarget()).setAttributesVisible(attrCheckBox
-                        .isSelected());
+                ((AttributesCompartmentContainer) getPanelTarget())
+                    .setAttributesVisible(attrCheckBox.isSelected());
                 ProjectManager.getManager().setNeedsSave(true);
             } else if (src == operCheckBox) {
-                ((FigClass) getPanelTarget()).setOperationsVisible(operCheckBox
-                        .isSelected());
+                ((OperationsCompartmentContainer) getPanelTarget())
+                    .setOperationsVisible(operCheckBox.isSelected());
                 ProjectManager.getManager().setNeedsSave(true);
             } else
                 super.itemStateChanged(e);
