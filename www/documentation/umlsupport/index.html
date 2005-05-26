@@ -10,7 +10,10 @@ content="ArgoUML, Argo, UML, Unified Modeling Language, modeling, modelling, Gen
 
 <body>
 <h1>Known Incompatibilities</h1>
-<p>Here is a list of features which are not implemented yet and can be seen as a violation of the <a href="http://www.omg.org/cgi-bin/doc?formal/00-03-01">UML specification (1.3)</a>.
+<p>Here is a list of features which are not implemented yet and 
+can be seen as a violation of the 
+<a href="http://www.omg.org/cgi-bin/doc?formal/00-03-01">UML specification 
+(1.3)</a>.
 <!-- Issue 403 -->
 </p>
 <h2>All Diagrams</h2>
@@ -40,26 +43,21 @@ content="ArgoUML, Argo, UML, Unified Modeling Language, modeling, modelling, Gen
 <h2>Activity Diagrams</h2>
 <ul>
 <li>Swimlanes missing.
-<!-- Issue 714 -->
-<li>Object symbols / object flow relationships missing.
-<!-- Issue 714 -->
+<!-- Issue 3110 -->
+<li>CallState & SubActivity states are missing.
+<!-- Issue 3197 & issue 3198 -->
 <li>Signal receipt/sending missing.
 <!-- Issue 714 -->
 </ul>
 
 <h2>Sequence Diagrams</h2>
 <ul>
-<li>Missing completely from ArgoUML 0.14. (They were present in 0.10.1)
+<li>Missing completely from ArgoUML 0.18.1. (They were present in 0.10.1)
 </ul>
 
 <h2>Statechart Diagrams</h2>
 <ul>
-<li>Regions are drawn and handled as ordinary composite states.
-<!-- Issue 2433 -->
-<li>There is no distinction between kinds of Actions.
-<li>Distinction between kinds of Events is only partly implemented.
-<!-- Issue 1622 -->
-<li>A "junction" is only partially supported.
+<li>There is no support for multiple Actions.
 </ul>
 
 <h1>Useful Optional Features</h1>
