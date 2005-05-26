@@ -458,10 +458,17 @@ public final class UmlModelEventPump implements MElementListener {
         if (modelelement == null || !(modelelement instanceof MBase)) {
             return;
         }
-        if (listener == null
-            || modelelement == null
-            || !(listener instanceof MElementListener)) {
-            throw new IllegalArgumentException();
+        if (listener == null) {
+            throw new IllegalArgumentException("A listener must be supplied");
+        }
+        if (modelelement == null) {
+            throw new IllegalArgumentException(
+                    "A model element must be supplied");
+        }
+        if (!(listener instanceof MElementListener)) {
+            throw new IllegalArgumentException(
+                    "The listener must be an MElementListener - got a "
+                    + listener.getClass().getName());
         }
         EventKey[] keys = definition.getEventTypes(modelelement.getClass());
         for (int i = 0; i < keys.length; i++) {

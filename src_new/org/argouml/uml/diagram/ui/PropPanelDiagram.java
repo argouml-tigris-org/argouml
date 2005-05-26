@@ -42,7 +42,8 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNavigate;
-import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.ActionDeleteModelElements;
+import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkMouseListener;
@@ -71,7 +72,7 @@ public class PropPanelDiagram extends PropPanel {
 
         addButton(new PropPanelButton2(new ActionNavigateUpFromDiagram(),
                 lookupIcon("NavigateUp")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
+        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
                 lookupIcon("Delete")));
     }
 

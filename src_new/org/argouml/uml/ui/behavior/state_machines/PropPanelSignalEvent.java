@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.foundation.core.ActionNewParameter;
 import org.argouml.util.ConfigLoader;
@@ -54,7 +54,7 @@ public class PropPanelSignalEvent extends PropPanelEvent {
 
         addButton(new PropPanelButton2(new ActionNewParameter(),
                 lookupIcon("Parameter")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
+        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
                 lookupIcon("Delete")));
     }
 

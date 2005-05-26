@@ -30,8 +30,9 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
+import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -102,7 +103,7 @@ public class PropPanelClass extends PropPanelClassifier {
                 lookupIcon("Class")));
         addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
+        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
                 lookupIcon("Delete")));
     }
 
