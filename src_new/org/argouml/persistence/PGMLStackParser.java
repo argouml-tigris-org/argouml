@@ -31,6 +31,7 @@ import java.util.StringTokenizer;
 
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
+import org.argouml.uml.diagram.ui.PathContainer;
 import org.argouml.uml.diagram.ui.StereotypeContainer;
 import org.tigris.gef.persistence.pgml.Container;
 import org.tigris.gef.persistence.pgml.FigGroupHandler;
@@ -179,9 +180,12 @@ public class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackPa
                 ((AttributesCompartmentContainer) fig)
                     .setAttributesVisible(value.equalsIgnoreCase("true"));
             } else if ("stereotypeVisible".equals(name)) {
-                    ((StereotypeContainer) fig)
+                ((StereotypeContainer) fig)
                     .setStereotypeVisible(value.equalsIgnoreCase("true"));
-            }
+            } else if ("pathVisible".equals(name)) {
+                ((PathContainer) fig)
+                    .setPathVisible(value.equalsIgnoreCase("true"));
+            }  
         }
     }
 }

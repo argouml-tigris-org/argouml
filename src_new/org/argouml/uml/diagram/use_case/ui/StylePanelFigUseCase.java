@@ -24,12 +24,9 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
-import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.StylePanelFigNodeModelElement;
@@ -45,14 +42,9 @@ import org.argouml.ui.StylePanelFigNodeModelElement;
 public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
 
     /**
-     * The check box for extension points.
+     * The check box for toggling the visibility of extension points.
      */
     private JCheckBox epCheckBox = new JCheckBox("Extension Points");
-
-    /**
-     * The label alongside the check box for extension points.
-     */
-    private JLabel displayLabel = new JLabel("Display: ");
 
     /**
      * Flag to indicate that a refresh is going on.
@@ -63,24 +55,12 @@ public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
      * Build a style panel. Just layout the relevant boxes.
      */
     public StylePanelFigUseCase() {
-
         // Invoke the parent constructor first
         super();
 
-        // Create the check box, and then add it.
-
-        JPanel pane = new JPanel();
-
-        pane.setLayout(new FlowLayout(FlowLayout.LEFT));
-        pane.add(epCheckBox);
-
-        displayLabel.setLabelFor(pane);
-        add(pane, 0);
-        add(displayLabel, 0);
-        
+        addToDisplayPane(epCheckBox);
         // By default we don't show the attribute check box. Mark this object
         // as a listener for the check box.
-
         epCheckBox.setSelected(false);
         epCheckBox.addItemListener(this);
     }
