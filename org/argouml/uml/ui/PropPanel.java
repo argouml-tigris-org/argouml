@@ -40,6 +40,7 @@ import javax.swing.event.EventListenerList;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ContainerDispatcher;
 import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.AbstractArgoJPanel;
@@ -84,7 +85,7 @@ public abstract class PropPanel
     private Font smallFont = LookAndFeelMgr.getInstance().getSmallFont();
 
     // TODO: This should request a ComponentDispatcher from the model component
-    ComponentDispatcher componentDispatcher = new ComponentDispatcher(this);
+    ContainerDispatcher componentDispatcher = Model.createContainerDispatcher(this);
     
     /**
      * Construct new PropPanel using LabelledLayout.<p>
@@ -129,7 +130,7 @@ public abstract class PropPanel
      * Get the ComponentDispatcher for thie prop panel.
      * @return the ComponentDispatcher
      */
-    public ComponentDispatcher getComponentDispatcher() {
+    public ContainerDispatcher getComponentDispatcher() {
         return componentDispatcher;
     }
 

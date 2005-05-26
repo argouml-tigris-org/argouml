@@ -24,6 +24,8 @@
 
 package org.argouml.model.uml;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.io.Writer;
 
 import org.argouml.model.ActivityGraphsFactory;
@@ -35,6 +37,7 @@ import org.argouml.model.CollaborationsHelper;
 import org.argouml.model.CommonBehaviorFactory;
 import org.argouml.model.CommonBehaviorHelper;
 import org.argouml.model.ConcurrencyKind;
+import org.argouml.model.ContainerDispatcher;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.DataTypesFactory;
@@ -368,4 +371,7 @@ public class NSUMLModelImplementation implements ModelImplementation {
         return new XmiWriterImpl(model, writer);
     }
     
+    public ContainerDispatcher createContainerDispatcher(Container container) {
+        return new ContainerDispatcherImpl(container);
+    }
 }
