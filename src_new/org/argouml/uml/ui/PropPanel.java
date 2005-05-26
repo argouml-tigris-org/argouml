@@ -109,7 +109,6 @@ public abstract class PropPanel
         } else {
             titleLabel = new JLabel(title);
         }
-        //buttonPanel = new JPanel(new SerialLayout());
         titleLabel.setLabelFor(buttonPanel);
         add(titleLabel);
         add(buttonPanel);
@@ -229,32 +228,6 @@ public abstract class PropPanel
         add(LabelledLayout.getSeperator());
     }
 
-//    /**
-//     * This method (and addMElementListener) can be overriden if the
-//     * prop panel wants to monitor additional objects.
-//     * ONLY use it if the target is a NSUML modelelement.<p>
-//     *
-//     * TODO: This method is never used. Remove?
-//     *
-//     * @param theTarget target of prop panel
-//     */
-//    protected void removeMElementListener(Object theTarget) {
-//        UmlModelEventPump.getPump().removeModelEventListener(this, theTarget);
-//    }
-//
-//    /**
-//     * This method (and removeMElementListener) can be overriden if the
-//     * prop panel wants to monitor additional objects.  This method
-//     * is public only since it is called from a Runnable object.<p>
-//     *
-//     * TODO: This method is never used. Remove?
-//     *
-//     * @param theTarget target of prop panel
-//     */
-//    public void addMElementListener(Object theTarget) {
-//        UmlModelEventPump.getPump().addModelEventListener(this, theTarget);
-//    }
-//
     /**
      * Set the target to be associated with a particular property panel.<p>
      *
@@ -287,12 +260,12 @@ public abstract class PropPanel
             // This will add a new MElement listener after update is complete
 
             dispatch =
-		new UMLChangeDispatch(this,
+                new UMLChangeDispatch(this,
 				      UMLChangeDispatch.TARGET_CHANGED_ADD);
 
         } else {
             dispatch =
-		new UMLChangeDispatch(this,
+                new UMLChangeDispatch(this,
 				      UMLChangeDispatch.TARGET_REASSERTED);
 
         }
@@ -302,7 +275,7 @@ public abstract class PropPanel
         //MVW: This overrules the icon set initiallly... Why do we need this?
         if (titleLabel != null) {
             Icon icon =
-		ResourceLoaderWrapper.getInstance().lookupIcon(t);
+                ResourceLoaderWrapper.getInstance().lookupIcon(t);
             if (icon != null) {
                 titleLabel.setIcon(icon);
             }
