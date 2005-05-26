@@ -32,6 +32,7 @@ import javax.swing.JComboBox;
 import org.argouml.model.Model;
 
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
 
 /**
  * Handles communication between the initial value JComboBox and the
@@ -49,7 +50,7 @@ import ru.novosoft.uml.MElementEvent;
  * proppanels that used reflection a lot.
  */
 public class UMLInitialValueComboBox extends JComboBox
-             implements ActionListener, UMLUserInterfaceComponent {
+             implements ActionListener, UMLUserInterfaceComponent, MElementListener {
 
     private UMLUserInterfaceContainer theContainer;
 
