@@ -63,7 +63,7 @@ public class PropPanelParameter extends PropPanelModelElement {
 	    Model.getMetaTypes().getClassifier(),
 	};
 
-        setNameEventListening(namesToWatch);
+        getComponentDispatcher().setNameEventListening(namesToWatch);
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
