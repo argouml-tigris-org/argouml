@@ -39,8 +39,6 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.MElementEvent;
-
 /**
  * The properties panel for a Stimulus.
  *
@@ -90,13 +88,6 @@ public class PropPanelStimulus extends PropPanelModelElement {
         addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel()));
-    }
-
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
-     */
-    public void removed(MElementEvent mee) {
     }
 
     /**
