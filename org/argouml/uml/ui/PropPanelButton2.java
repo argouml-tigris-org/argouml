@@ -35,8 +35,7 @@ import ru.novosoft.uml.MElementListener;
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class PropPanelButton2 extends JButton
-        implements UMLUserInterfaceComponent, MElementListener {
+final public class PropPanelButton2 extends JButton {
 
     /**
      * Constructor for PropPanelButton2.
@@ -49,7 +48,10 @@ public class PropPanelButton2 extends JButton
 
     /**
      * The constructor.
-     *
+     * @deprecated by Bob Tarling. The Action class should define its own Icon
+     * then this constructor is no longer needed. Once this constructor
+     * is no longer used then this whole class is no longer needed. 
+     * See issue 3260.
      * @param a the action for this button
      * @param i the icon to be shown
      */
@@ -57,55 +59,4 @@ public class PropPanelButton2 extends JButton
         this(a);
         a.putValue(Action.SMALL_ICON, i);
     }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
-     */
-    public void targetChanged() {
-        setEnabled(isEnabled());
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
-     */
-    public void targetReasserted() {
-        setEnabled(isEnabled());
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
-     */
-    public void listRoleItemSet(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
-     */
-    public void propertySet(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
-     */
-    public void recovered(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
-     */
-    public void removed(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleAdded(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleRemoved(MElementEvent e) {
-    }
-
 }
