@@ -26,6 +26,7 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -40,6 +41,7 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -170,6 +172,7 @@ public abstract class PropPanelModelElement extends PropPanel {
         addField(Translator.localize("label.constraints"),
                 getConstraintScroll());
         add(getNamespaceVisibilityPanel());
+        
     }
 
     /**

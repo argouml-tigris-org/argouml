@@ -37,8 +37,9 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
+import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -103,7 +104,7 @@ public class PropPanelDataType extends PropPanelClassifier {
                 lookupIcon("NewOperation")));
         addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
+        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
                 lookupIcon("Delete")));
     }
 

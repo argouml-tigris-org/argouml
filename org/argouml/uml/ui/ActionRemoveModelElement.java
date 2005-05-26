@@ -34,7 +34,7 @@ import org.argouml.kernel.ProjectManager;
  * Action to delete modelelements from the model without navigating
  * to/from them.  Used in UMLMutableList for deletion of modelelements
  * from the list.
- * @see org.argouml.uml.ui.ActionRemoveFromModel
+ * @see org.argouml.uml.ui.ActionDeleteModelElements
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
@@ -61,7 +61,7 @@ public class ActionRemoveModelElement extends AbstractActionRemoveElement {
         super.actionPerformed(e);
         Project p = ProjectManager.getManager().getCurrentProject();
         if (getObjectToRemove() != null
-                && ActionRemoveFromModel.sureRemove(getObjectToRemove()))
+                && ActionDeleteModelElements.sureRemove(getObjectToRemove()))
             p.moveToTrash(getObjectToRemove());
         setObjectToRemove(null);
     }

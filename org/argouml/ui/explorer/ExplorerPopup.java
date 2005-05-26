@@ -39,7 +39,7 @@ import org.argouml.uml.diagram.ui.ActionAddAllClassesFromModel;
 import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.ui.ActionAddPackage;
-import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.ActionSetSourcePath;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Diagram;
@@ -171,7 +171,7 @@ public class ExplorerPopup extends JPopupMenu {
             }
             
             if (selectedItem != projectModel) {
-                this.add(new ActionRemoveFromModel());
+                this.add(new ActionDeleteModelElements());
             }
         }
         // TODO: Make sure this shouldn't go into a previous
@@ -186,7 +186,7 @@ public class ExplorerPopup extends JPopupMenu {
         }
         
         if (selectedItem instanceof Diagram) {
-	    this.add(new ActionRemoveFromModel());
+	    this.add(new ActionDeleteModelElements());
         }
     }
 

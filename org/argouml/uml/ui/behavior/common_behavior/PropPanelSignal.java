@@ -34,8 +34,9 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
+import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -79,7 +80,7 @@ public class PropPanelSignal extends PropPanelModelElement {
                 lookupIcon("SignalSending")));
         addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement()));
     }
 
     /**

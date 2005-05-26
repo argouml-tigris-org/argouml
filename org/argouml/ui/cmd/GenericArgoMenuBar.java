@@ -66,7 +66,7 @@ import org.argouml.uml.ui.ActionImportFromSources;
 import org.argouml.uml.ui.ActionLayout;
 import org.argouml.uml.ui.ActionOpenProject;
 import org.argouml.uml.ui.ActionPaste;
-import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.ActionRevertToSaved;
 import org.argouml.uml.ui.ActionSaveAllGraphics;
 import org.argouml.uml.ui.ActionSaveGraphics;
@@ -527,7 +527,7 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(removeItem, "Remove from Diagram");
         setAccelerator(removeItem, delKey);
 
-        JMenuItem deleteItem = edit.add(new ActionRemoveFromModel());
+        JMenuItem deleteItem = edit.add(new ActionDeleteModelElements());
         setMnemonic(deleteItem, "Delete from Model");
         setAccelerator(deleteItem, ctrlDel);
         // TODO: Bob Tarling: no toolbarbutton till a new one is

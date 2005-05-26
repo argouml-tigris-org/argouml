@@ -22,47 +22,27 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui.foundation.core;
+package org.argouml.uml.ui;
 
-import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
-import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.ActionDeleteModelElements;
-import org.argouml.uml.ui.PropPanelButton2;
-import org.argouml.util.ConfigLoader;
+import org.argouml.ui.targetmanager.TargetManager;
 
 /**
- * The properties panel for a Usage.
+ * Action for removing (moving to trash) objects from the model. Objects can be:
+ * - Modelelements (NSUML)
+ * - Diagrams (argodiagram and it's children)
+ * The root model and the last diagram in the project can not be removed. The
+ * reason for this is to prevent problems updating the detailspane and the
+ * navpane. Besides that, it is not possible to make a new root model.
  *
+ * @author original author not known.
+ * @author jaap.branderhorst@xs4all.nl extensions
  */
-public class PropPanelUsage extends PropPanelDependency {
+public class ActionDeleteModelElements extends ActionBaseDelete {
 
     /**
-     * The constructor.
-     *
+     * @return the complete array of targets
      */
-    public PropPanelUsage() {
-        super("Usage", ConfigLoader.getTabPropsOrientation());
-
-        addField(Translator.localize("label.name"),
-                getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
-        addField(Translator.localize("label.namespace"),
-                getNamespaceSelector());
-
-        addSeperator();
-
-        addField(Translator.localize("label.suppliers"),
-                getSupplierScroll());
-        addField(Translator.localize("label.clients"),
-                getClientScroll());
-
-        // TODO: add Mapping
-        addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));;
+    protected Object[] getTargets() {
+        return TargetManager.getInstance().getTargets().toArray();
     }
-
-} /* end class PropPanelUsage */
-
+} /* end class ActionRemoveFromModel */

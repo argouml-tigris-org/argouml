@@ -55,12 +55,12 @@ import org.tigris.gef.presentation.Fig;
  * @author original author not known.
  * @author jaap.branderhorst@xs4all.nl extensions
  */
-public class ActionRemoveFromModel extends UMLAction {
+public abstract class ActionBaseDelete extends UMLAction {
 
     /**
      * Constructor.
      */
-    public ActionRemoveFromModel() {
+    public ActionBaseDelete() {
         super("action.delete-from-model", true, HAS_ICON);
     }
 
@@ -117,15 +117,7 @@ public class ActionRemoveFromModel extends UMLAction {
      */
     public void actionPerformed(ActionEvent ae) {
         Project p = ProjectManager.getManager().getCurrentProject();
-        Object[] targets = null;
-        if (ae.getSource() instanceof PropPanelButton2) {
-            targets =
-                new Object[] {
-		    TargetManager.getInstance().getModelTarget(),
-		};
-        } else {
-            targets = getTargets();
-        }
+        Object[] targets = getTargets();
         Object target = null;
         Object newTarget = null;
         for (int i = targets.length - 1; i >= 0; i--) {
@@ -237,7 +229,7 @@ public class ActionRemoveFromModel extends UMLAction {
      * An utility method that asks the user if he is sure to remove a selected
      * modelement.<p>
      *
-     * @see ActionRemoveFromModel#sureRemove(Object)
+     * @see ActionBaseDelete#sureRemove(Object)
      * @param me the modelelement that may be removed
      * @return boolean
      */
@@ -296,13 +288,5 @@ public class ActionRemoveFromModel extends UMLAction {
     /**
      * @return the complete array of targets
      */
-    protected Object[] getTargets() {
-        /*
-	  Vector figs = null; try { Editor ce = Globals.curEditor();
-	  figs = ce.getSelectionManager().getFigs(); } catch
-	  (Exception e) { } return figs.size() > 0 ? figs.toArray() :
-	  new Object[] {TargetManager.getInstance().getTarget()};
-        */
-        return TargetManager.getInstance().getTargets().toArray();
-    }
+    abstract protected Object[] getTargets();
 } /* end class ActionRemoveFromModel */

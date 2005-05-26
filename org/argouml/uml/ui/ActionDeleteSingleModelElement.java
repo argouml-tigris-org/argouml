@@ -22,47 +22,25 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui.foundation.core;
+package org.argouml.uml.ui;
 
-import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
-import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.ActionDeleteModelElements;
-import org.argouml.uml.ui.PropPanelButton2;
-import org.argouml.util.ConfigLoader;
+import org.argouml.ui.targetmanager.TargetManager;
 
 /**
- * The properties panel for a Usage.
+ * This action is to delete a single model element.
+ * TODO: The recent refactoring to produce this class has made a possible
+ * bug apparent to me. Presumably this deletes the first item in the target
+ * manager and that may not be the item shown in the prop panel. Must test.
  *
+ * @author original author not known.
+ * @author jaap.branderhorst@xs4all.nl extensions
  */
-public class PropPanelUsage extends PropPanelDependency {
+public class ActionDeleteSingleModelElement extends ActionBaseDelete {
 
     /**
-     * The constructor.
-     *
+     * @return the complete array of targets
      */
-    public PropPanelUsage() {
-        super("Usage", ConfigLoader.getTabPropsOrientation());
-
-        addField(Translator.localize("label.name"),
-                getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
-        addField(Translator.localize("label.namespace"),
-                getNamespaceSelector());
-
-        addSeperator();
-
-        addField(Translator.localize("label.suppliers"),
-                getSupplierScroll());
-        addField(Translator.localize("label.clients"),
-                getClientScroll());
-
-        // TODO: add Mapping
-        addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));;
+    protected Object[] getTargets() {
+        return new Object[] {TargetManager.getInstance().getModelTarget()};
     }
-
-} /* end class PropPanelUsage */
-
+} /* end class ActionRemoveFromModel */
