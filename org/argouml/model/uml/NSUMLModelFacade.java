@@ -1978,6 +1978,11 @@ public class NSUMLModelFacade implements Facade {
         if (handle instanceof MExpression) {
             return ((MExpression) handle).getBody();
         }
+        if (handle instanceof MComment) {
+            /* In UML 1.3, get it from the name.
+             * From UML 1.4, get it from the body.*/
+            return ((MComment) handle).getName();
+        }
 	return illegalArgumentObject(handle);
     }
 

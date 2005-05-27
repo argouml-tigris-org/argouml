@@ -776,6 +776,18 @@ class CoreHelperImpl implements CoreHelper {
     }
 
     /**
+     * @see org.argouml.model.CoreHelper#getBody(java.lang.Object)
+     */
+    public String getBody(Object comment) {
+        if (comment instanceof MComment) {
+            /* In UML 1.3, get it from the name.
+             * From UML 1.4, get it from the body.*/
+            return ((MComment)comment).getName();
+        }
+        throw new IllegalArgumentException();
+    }
+    
+    /**
      * Returns all flows from some source modelelement to a target
      * modelelement.<p>
      *
@@ -2893,6 +2905,16 @@ class CoreHelperImpl implements CoreHelper {
         }
         throw new IllegalArgumentException("handle: " + handle
                 + " or name: " + name);
+    }
+    
+    /**
+     * @see org.argouml.model.CoreHelper#setBody(java.lang.Object, java.lang.String)
+     */
+    public void setBody(Object handle, String body) {
+        if ((handle instanceof MComment) && (body != null)) {
+            //in UML 1.3 we store it in the name:
+            ((MComment)handle).setName(body);
+        }
     }
 
     /**
