@@ -1240,7 +1240,7 @@ public interface Facade {
     Object getBehavioralFeature(Object handle);
 
     /**
-     * Get the body of an method/constraint/expression.<p>
+     * Get the body of an method/constraint/expression/comment.<p>
      *
      * If the argument is an expression, the body returned is a
      * {@link String} (or <code>null</code>). If you want a type-safe

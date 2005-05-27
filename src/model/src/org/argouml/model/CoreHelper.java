@@ -272,6 +272,14 @@ public interface CoreHelper {
      * @return MGeneralization
      */
     Object getGeneralization(Object achild, Object aparent);
+    
+    /**
+     * Gets the body of a comment. 
+     * 
+     * @param comment the comment
+     * @return the body of the comment
+     */
+    String getBody(Object comment);
 
     /**
      * Returns all flows from some source modelelement to a target
@@ -984,6 +992,14 @@ public interface CoreHelper {
      * @param name to set
      */
     void setName(Object handle, String name);
+    
+    /**
+     * Sets the body of a comment.
+     * 
+     * @param handle the comment
+     * @param body the string
+     */
+    void setBody(Object handle, String body);
 
     /**
      * Sets a namespace of some modelelement.

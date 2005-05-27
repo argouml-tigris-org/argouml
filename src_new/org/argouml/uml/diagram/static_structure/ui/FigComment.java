@@ -409,7 +409,7 @@ public class FigComment
      */
     public final void storeNote(String note) {
         if (getOwner() != null) {
-            Model.getCoreHelper().setName(getOwner(), note);
+            Model.getCoreHelper().setBody(getOwner(), note);
         }
     }
 
@@ -420,7 +420,7 @@ public class FigComment
      */
     public final String retrieveNote() {
         return (getOwner() != null)
-	    ? Model.getFacade().getName(getOwner())
+	    ? (String) Model.getFacade().getBody(getOwner())
 	    : null;
     }
 
