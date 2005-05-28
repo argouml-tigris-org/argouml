@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLAction;
 
@@ -51,9 +52,20 @@ public class ActionNavigability extends UMLAction {
      */
     public static final int ENDTOSTART = 2;
 
+    /**
+     * The actual navigability of this action.
+     */
     private int nav = BIDIRECTIONAL;
-    private Object assocStart = null;
-    private Object assocEnd = null;
+
+    /**
+     * The association start.
+     */
+    private Object assocStart;
+
+    /**
+     * The association end.
+     */
+    private Object assocEnd;
 
     /**
      * The <code>ActionNavigability</code> constructor.
@@ -90,22 +102,36 @@ public class ActionNavigability extends UMLAction {
     private static String getDescription(Object assocStart,
 					 Object assocEnd,
 					 int nav) {
-        String startName = 
+        String startName =
             Model.getFacade().getName(Model.getFacade().getType(assocStart));
-        String endName = 
+        String endName =
             Model.getFacade().getName(Model.getFacade().getType(assocEnd));
 
-        if (startName == null || startName.length() == 0) startName = "anon";
-        if (endName == null || endName.length() == 0) endName = "anon";
+        if (startName == null || startName.length() == 0) {
+            startName = Translator.localize("action.navigation.anon");
+        }
+        if (endName == null || endName.length() == 0) {
+            endName = Translator.localize("action.navigation.anon");
+        }
 
         if (nav == STARTTOEND) {
-            return startName + " to " + endName;
-        }
-        else if (nav == ENDTOSTART) {
-            return endName + " to " + startName;
-        }
-        else {
-            return "Bidirectional";
+            return Translator.messageFormat(
+                    "action.navigation.from-to",
+                    new Object[] {
+                        startName,
+                        endName,
+                    }
+            );
+        } else if (nav == ENDTOSTART) {
+            return Translator.messageFormat(
+                    "action.navigation.from-to",
+                    new Object[] {
+                        endName,
+                        startName,
+                    }
+            );
+        } else {
+            return Translator.localize("action.navigation.bidirectional");
         }
     }
 
@@ -132,7 +158,8 @@ public class ActionNavigability extends UMLAction {
     /**
      * To perform the action of changing navigability.
      *
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see java.awt.event.ActionListener#actionPerformed(
+     *         java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
 	Model.getCoreHelper().setNavigable(assocStart,
