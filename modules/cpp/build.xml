@@ -90,6 +90,7 @@ round-trip engineering for C++ projects.
 
     <tstamp/>
 
+    <property file="build.properties"/>
     <property file="module.properties"/>
 
     <property name="Name" value="ArgoModule-${argo.module.name}"/>
@@ -119,6 +120,7 @@ round-trip engineering for C++ projects.
     <property name="module.tests.classes" value="${module.tests.build}/classes"/>
     <property name="module.tests.reports" value="${module.tests.build}/reports"/>
     <property name="argo.build.dest" value="${argo.build.dir}/classes"/>
+    <property name="i18n.dir" value="org/argouml/i18n/"/>
 
     <property name="argo.jarfile"
               value="${argo.build.dir}/argouml.jar"/>
@@ -264,6 +266,9 @@ round-trip engineering for C++ projects.
           description="create the module jar">
     <filter token="version" value="${module.version}"/>
     <copy file="${manifest.src}" tofile="${module.build.dest}/${manifest}" filtering="on" overwrite="on" />
+    <copy todir="${module.build.dest}/${i18n.dir}" overwrite="on">
+        <fileset dir="${module.src.dir}/${i18n.dir}"/>
+    </copy>
     <jar jarfile="${module.jarfile}"
          basedir="${module.build.dest}"
          includes="org/argouml/**"
@@ -316,6 +321,26 @@ round-trip engineering for C++ projects.
     <copy todir="${developer.lib.dir}/ext">
       <fileset dir="${module.build.dir}" includes="${module.jarfile.name}"/>
     </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Runs checkstyle to find style problems.                             -->
+  <!-- =================================================================== -->
+  <target name="checkstyle" depends="init"
+          description="Run checkstyle on the cpp module.">
+    <java classname="com.puppycrawl.tools.checkstyle.Main" failonerror="false" fork="true" maxmemory="32M">
+      <sysproperty key="checkstyle.header.file" value="${argo.tools.dir}/checkstyle/java.header"/>
+      <classpath>
+        <pathelement location="${checkstyle.jar.path}"/>
+        <pathelement location="${ant-xerces.jar.path}"/>
+      </classpath>
+      <arg value="-c"/>
+      <arg value="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml"/>
+      <arg value="-r"/>
+      <arg value="${module.src.dir}"/>
+      <arg value="-r"/>
+      <arg value="${module.tests.dir}"/>
+    </java>
   </target>
 
   <!-- =================================================================== -->

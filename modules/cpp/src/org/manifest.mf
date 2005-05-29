@@ -20,3 +20,13 @@ Specification-Vendor: University of California
 Implementation-Vendor: Luis Sergio Oliveira
 Implementation-Version: 0.19.2
 Implementation-Title: ArgoUML C++ reverse engineering plugin
+
+
+Name: org/argouml/language/cpp/ui/SettingsTabCpp.class
+Extension-name: module.language.cpp.settings
+Specification-Title: ArgoUML Dynamic Load Module
+Specification-Version: 0.19.2
+Specification-Vendor: University of California
+Implementation-Vendor: Daniele Tamino
+Implementation-Version: 0.19.2
+Implementation-Title: ArgoUML C++ settings tab plugin
