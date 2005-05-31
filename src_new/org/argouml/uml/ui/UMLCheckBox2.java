@@ -24,18 +24,17 @@
 
 package org.argouml.uml.ui;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.Action;
 import javax.swing.JCheckBox;
 
 import org.argouml.model.Model;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
-
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
 
 /**
  * The checkbox to be used to show boolean attributes in the GUI's. Mostly used
@@ -48,13 +47,12 @@ import ru.novosoft.uml.MElementListener;
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class UMLCheckBox2
-    extends JCheckBox
-    implements TargetListener, MElementListener {
+public abstract class UMLCheckBox2 extends JCheckBox
+    implements TargetListener, PropertyChangeListener {
 
     private Object checkBoxTarget;
     private String propertySetName;
-
+    
     /**
      * Constructor for UMLCheckBox2.
      * @param text the text of the check box
@@ -66,52 +64,15 @@ public abstract class UMLCheckBox2
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
         propertySetName = name;
         addActionListener(a);
-
+    
         setActionCommand((String) a.getValue(Action.ACTION_COMMAND_KEY));
     }
-
+    
     /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(
-     *          ru.novosoft.uml.MElementEvent)
+     * The property value has changed so rebuild our view.
      */
-    public void propertySet(MElementEvent e) {
-        if (e.getName().equals(propertySetName))
-            buildModel();
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(
-     *          ru.novosoft.uml.MElementEvent)
-     */
-    public void roleAdded(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(
-     *          ru.novosoft.uml.MElementEvent)
-     */
-    public void roleRemoved(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(
-     *          ru.novosoft.uml.MElementEvent)
-     */
-    public void listRoleItemSet(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#removed(
-     *          ru.novosoft.uml.MElementEvent)
-     */
-    public void removed(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#recovered(
-     *          ru.novosoft.uml.MElementEvent)
-     */
-    public void recovered(MElementEvent e) {
+    public void propertyChange(PropertyChangeEvent evt) {
+        buildModel();
     }
 
     /**
@@ -133,20 +94,14 @@ public abstract class UMLCheckBox2
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (Model.getFacade().isABase(checkBoxTarget)) {
-            UmlModelEventPump.getPump().removeModelEventListener(this,
-                    checkBoxTarget, propertySetName);
+            Model.getPump().removeModelEventListener(this, checkBoxTarget, propertySetName);
         }
 
         if (Model.getFacade().isABase(target)) {
             checkBoxTarget = target;
-	    // UmlModelEventPump.getPump()
-	    // .removeModelEventListener(this, (MBase)_target,
-	    // _propertySetName);
-	    UmlModelEventPump.getPump()
-		.addModelEventListener(this, checkBoxTarget, propertySetName);
+            Model.getPump().addModelEventListener(this, checkBoxTarget, propertySetName);
             buildModel();
         }
-
     }
 
     /**
@@ -177,5 +132,4 @@ public abstract class UMLCheckBox2
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
-
 }
