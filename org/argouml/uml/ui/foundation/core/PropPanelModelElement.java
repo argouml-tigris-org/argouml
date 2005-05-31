@@ -362,17 +362,6 @@ public abstract class PropPanelModelElement extends PropPanel {
     }
 
     /**
-     * @return a checkbox for the specialization
-     */
-    protected JCheckBox getSpecializationCheckBox() {
-        if (specializationCheckBox == null) {
-            specializationCheckBox =
-		new UMLElementOwnershipSpecificationCheckBox();
-        }
-        return specializationCheckBox;
-    }
-
-    /**
      * @return a scrollpane for residence
      */
     protected JScrollPane getElementResidenceScroll() {
