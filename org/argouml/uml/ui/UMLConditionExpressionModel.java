@@ -52,7 +52,6 @@ public class UMLConditionExpressionModel extends UMLExpressionModel2 {
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     public Object getExpression() {
-        LOG.debug("getting condition");
         return Model.getFacade().getCondition(getContainer().getTarget());
     }
 
@@ -60,10 +59,13 @@ public class UMLConditionExpressionModel extends UMLExpressionModel2 {
      * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
      */
     public void setExpression(Object expression) {
-        LOG.debug("setting condidtion");
-        LOG.debug(expression);
+        UMLUserInterfaceContainer container = getContainer();
+        Object target = container.getTarget();
+        if (target == null) {
+            throw new IllegalStateException("There is no target for " + container);
+        }
         Model.getUseCasesHelper()
-        	.setCondition(getContainer().getTarget(), expression);
+        	.setCondition(target, expression);
     }
 
     /**
