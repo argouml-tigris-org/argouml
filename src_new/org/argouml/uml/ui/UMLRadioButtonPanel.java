@@ -25,6 +25,8 @@
 package org.argouml.uml.ui;
 
 import java.awt.GridLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
@@ -58,7 +60,7 @@ import ru.novosoft.uml.MElementListener;
  */
 public abstract class UMLRadioButtonPanel
     extends JPanel
-    implements TargetListener, MElementListener {
+    implements TargetListener, PropertyChangeListener {
 
     /**
      * The target object of which some attribute is shown via this panel.
@@ -158,41 +160,12 @@ public abstract class UMLRadioButtonPanel
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
-     */
-    public void listRoleItemSet(MElementEvent e) {
-    }
-
-    /**
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
-    public void propertySet(MElementEvent e) {
-        if (e.getName().equals(propertySetName))
+    public void propertyChange(PropertyChangeEvent e) {
+        if (e.getPropertyName().equals(propertySetName)) {
             buildModel();
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
-     */
-    public void recovered(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
-     */
-    public void removed(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleAdded(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleRemoved(MElementEvent e) {
+        }
     }
 
     /**
@@ -209,16 +182,14 @@ public abstract class UMLRadioButtonPanel
      */
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        UmlModelEventPump eventPump = UmlModelEventPump.getPump();
         if (Model.getFacade().isABase(panelTarget)) {
-            eventPump.removeModelEventListener(this, panelTarget,
+            Model.getPump().removeModelEventListener(this, panelTarget,
                     propertySetName);
         }
         panelTarget = target;
         if (Model.getFacade().isABase(panelTarget)) {
-            // UmlModelEventPump.getPump().removeModelEventListener(this,
-            // (MBase)panelTarget, _propertySetName);
-            eventPump.addModelEventListener(this, panelTarget, propertySetName);
+            Model.getPump().addModelEventListener(this, panelTarget,
+                    propertySetName);
         }
         if (panelTarget != null) {
             buildModel();
