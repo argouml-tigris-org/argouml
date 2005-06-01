@@ -26,8 +26,6 @@ package org.argouml.uml.ui;
 
 import org.argouml.model.Model;
 
-import ru.novosoft.uml.MElementEvent;
-
 /**
  * @author mkl
  */
@@ -57,20 +55,20 @@ public abstract class UMLExpressionModel2  {
         mustRefresh = true;
     }
 
-    /**
-     * @param event the event
-     * @return true if the property is affected
-     */
-    public boolean propertySet(MElementEvent event) {
-        boolean isAffected = false;
-        String eventName = event.getName();
-        if (eventName != null && eventName.equals(propertyName)) {
-            isAffected = true;
-            mustRefresh = true;
-        }
-        return isAffected;
-    }
-
+//    /**
+//     * @param event the event
+//     * @return true if the property is affected
+//     */
+//    public boolean propertySet(MElementEvent event) {
+//        boolean isAffected = false;
+//        String eventName = event.getName();
+//        if (eventName != null && eventName.equals(propertyName)) {
+//            isAffected = true;
+//            mustRefresh = true;
+//        }
+//        return isAffected;
+//    }
+//
     /**
      * @return the expression
      */
