@@ -23,23 +23,21 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.apache.log4j.Logger;
 
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
-
-
 /**
  * This text field shows the body of a UML expression.
  *
  */
-public class UMLExpressionBodyField
-    extends JTextArea
-    implements DocumentListener, UMLUserInterfaceComponent, MElementListener {
+public class UMLExpressionBodyField extends JTextArea
+    implements DocumentListener, UMLUserInterfaceComponent, PropertyChangeListener {
 
     /**
      * Logger.
@@ -82,52 +80,19 @@ public class UMLExpressionBodyField
     public void targetReasserted() {
     }
 
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleAdded(final MElementEvent p1) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
-     */
-    public void recovered(final MElementEvent p1) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleRemoved(final MElementEvent p1) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
-     */
-    public void listRoleItemSet(final MElementEvent p1) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
-     */
-    public void removed(final MElementEvent p1) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
-     */
-    public void propertySet(final MElementEvent event) {
-       	LOG.debug("UMLExpressionBodyField: propertySet" + event);
-       	update();
+    public void propertyChange(PropertyChangeEvent event) {
+        LOG.debug("UMLExpressionBodyField: propertySet" + event);
+        update();
     }
 
     private void update() {
         String oldText = getText();
         String newText = model.getBody();
-	LOG.debug("UMLExpressionBodyField: update: " + oldText + " " + newText);
-
-	if (oldText == null || newText == null || !oldText.equals(newText)) {
+        LOG.debug("UMLExpressionBodyField: update: " + oldText + " " + newText);
+        
+        if (oldText == null || newText == null || !oldText.equals(newText)) {
             if (oldText != newText) {
-		LOG.debug("setNewText!!");
+                LOG.debug("setNewText!!");
                 setText(newText);
             }
         }
