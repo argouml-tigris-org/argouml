@@ -130,7 +130,7 @@ public abstract class PropPanel
      * Get the ComponentDispatcher for thie prop panel.
      * @return the ComponentDispatcher
      */
-    public ContainerDispatcher getComponentDispatcher() {
+    public ContainerDispatcher getContainerDispatcher() {
         return componentDispatcher;
     }
 

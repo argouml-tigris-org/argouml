@@ -24,11 +24,13 @@
 
 package org.argouml.model;
 
+import java.beans.PropertyChangeListener;
+
 /**
  * This listens for events on a component and dispatches the events to all its
  * interested child components.
  */
-public interface ContainerDispatcher {
+public interface ContainerDispatcher extends PropertyChangeListener {
 
     /**
      * Calling this method with an array of metaclasses (for example,

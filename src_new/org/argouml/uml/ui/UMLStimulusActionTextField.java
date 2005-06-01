@@ -23,6 +23,9 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.event.*;
 import javax.swing.*;
 import ru.novosoft.uml.MElementEvent;
@@ -33,7 +36,7 @@ import ru.novosoft.uml.MElementListener;
  * org.argouml.uml.ui.behavior.common_behavior
  */
 public class UMLStimulusActionTextField extends JTextField
-    implements DocumentListener, UMLUserInterfaceComponent, MElementListener {
+    implements DocumentListener, UMLUserInterfaceComponent, PropertyChangeListener {
 
     private UMLUserInterfaceContainer theContainer;
     private UMLStimulusActionTextProperty theProperty;
@@ -66,40 +69,7 @@ public class UMLStimulusActionTextField extends JTextField
     public void targetReasserted() {
     }
 
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleAdded(final MElementEvent p1) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
-     */
-    public void recovered(final MElementEvent p1) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleRemoved(final MElementEvent p1) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
-     */
-    public void listRoleItemSet(final MElementEvent p1) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
-     */
-    public void removed(final MElementEvent p1) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
-     */
-    public void propertySet(final MElementEvent event) {
+    public void propertyChange(PropertyChangeEvent event) {
         if (theProperty.isAffected(event)) {
             //
             //   check the possibility that this is a promiscuous event
