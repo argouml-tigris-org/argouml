@@ -31,9 +31,6 @@ import javax.swing.JComboBox;
 
 import org.argouml.model.Model;
 
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
-
 /**
  * Handles communication between the initial value JComboBox and the
  * Collection.  This class also causes NSUML to refresh and so keeps
