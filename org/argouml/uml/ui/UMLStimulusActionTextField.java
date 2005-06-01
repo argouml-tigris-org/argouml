@@ -26,10 +26,9 @@ package org.argouml.uml.ui;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.event.*;
-import javax.swing.*;
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  * TODO: this class should be moved to package
