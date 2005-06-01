@@ -62,7 +62,7 @@ public class PropPanelMessage extends PropPanelModelElement {
             Model.getMetaTypes().getAction(),
         };
         
-        getComponentDispatcher().setNameEventListening(namesToWatch);
+        getContainerDispatcher().setNameEventListening(namesToWatch);
         
         addField(Translator.localize("label.name"),
                 getNameTextField());

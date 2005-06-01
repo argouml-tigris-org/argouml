@@ -25,6 +25,7 @@
 package org.argouml.model.uml;
 
 import java.awt.Container;
+import java.beans.PropertyChangeEvent;
 
 import javax.swing.SwingUtilities;
 
@@ -47,6 +48,9 @@ public class ContainerDispatcherImpl implements ContainerDispatcher, MElementLis
         this.container = container;
     }
     
+    public void propertyChange(PropertyChangeEvent event) {
+    }
+
     /**
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */

@@ -24,9 +24,9 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.model.Model;
+import java.beans.PropertyChangeEvent;
 
-import ru.novosoft.uml.MElementEvent;
+import org.argouml.model.Model;
 
 /**
  * TODO: this class should be moved to package
@@ -96,13 +96,11 @@ public class UMLStimulusActionTextProperty  {
         return value;
     }
 
-    boolean isAffected(MElementEvent event) {
-	String sourceName = event.getName();
-        if (thePropertyName == null
+    boolean isAffected(PropertyChangeEvent event) {
+        String sourceName = event.getPropertyName();
+        return (thePropertyName == null
                 || sourceName == null
-                || sourceName.equals(thePropertyName))
-            return true;
-        return false;
+                || sourceName.equals(thePropertyName));
     }
 
     void targetChanged() {
