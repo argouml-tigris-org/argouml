@@ -27,9 +27,6 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
-
 /**
  * This text field shows the language of a UML expression.
  */

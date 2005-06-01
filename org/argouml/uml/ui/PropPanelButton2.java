@@ -28,9 +28,6 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
-
 /**
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
