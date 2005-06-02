@@ -28,13 +28,9 @@ import java.awt.Component;
 import java.awt.Container;
 
 import org.argouml.model.Model;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelComponentInstance;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelNodeInstance;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelObject;
-
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
 
 /**
  * This class is used to dispatch a NSUML change event (which may
@@ -46,9 +42,7 @@ import ru.novosoft.uml.MElementListener;
  * This class is updated to cope with changes to the targetchanged
  * mechanism.
  */
-public class UMLChangeDispatch
-        implements Runnable, UMLUserInterfaceComponent, MElementListener {
-    private MElementEvent event;
+public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     private int eventType;
     private Container container;
 
@@ -58,8 +52,7 @@ public class UMLChangeDispatch
     private Object target;
 
     /**
-     * Dispatch a target changed event <em>and</em> add a NSUML listener to
-     * the target afterwards.
+     * Dispatch a target changed event
      */
     public static final int TARGET_CHANGED_ADD = -1;
 
@@ -68,55 +61,11 @@ public class UMLChangeDispatch
      * Dispatch a target changed event.
      */
     public static final int TARGET_CHANGED = 0;
-
-
-    /**
-     * Dispatch a NSUML property set event.
-     */
-    public static final int PROPERTY_SET = 1;
-
-
-    /**
-     * Dispatch a NSUML list role item set event.
-     */
-    public static final int LIST_ROLE_ITEM_SET = 2;
-
-
-    /**
-     * Dispatch a NSUML recovered event.
-     */
-
-    public static final int RECOVERED = 3;
-
-
-    /**
-     * Dispatch a NSUML removed event.
-     */
-    public static final int REMOVED = 4;
-
-
-    /**
-     * Dispatch a NSUML role added event.
-     */
-    public static final int ROLE_ADDED = 5;
-
-
-    /**
-     * Dispatch a NSUML role removed event.
-     */
-    public static final int ROLE_REMOVED = 6;
-
-
     /**
      * Dispatch a target reasserted event.
      */
     public static final int TARGET_REASSERTED = 7;
 
-
-    /**
-     * Dispatch a default (target changed) event.
-     */
-    public static final int DEFAULT = TARGET_CHANGED;
 
 
     /**
@@ -128,12 +77,12 @@ public class UMLChangeDispatch
      */
     public UMLChangeDispatch(Container uic, int et) {
         synchronized (uic) {
-	    container = uic;
-	    eventType = et;
-	    if (uic instanceof PropPanel) {
-		target = ((PropPanel) uic).getTarget();
-	    }
-	}
+            container = uic;
+            eventType = et;
+            if (uic instanceof PropPanel) {
+            	target = ((PropPanel) uic).getTarget();
+            }
+        }
     }
 
     /**
@@ -149,61 +98,6 @@ public class UMLChangeDispatch
     public void targetReasserted() {
         eventType = 7;
     }
-
-    /**
-     * Configures this instance to dispatch a propertySet event.
-     * @param mee NSUML event
-     */
-    public void propertySet(MElementEvent mee) {
-        event = mee;
-        eventType = 1;
-    }
-
-    /**
-     * Configures this instance to dispatch a listRoleItemSet event.
-     * @param mee NSUML event
-     */
-    public void listRoleItemSet(MElementEvent mee) {
-        event = mee;
-        eventType = 2;
-    }
-
-    /**
-     * Configures this instance to dispatch a recovered event.
-     * @param mee NSUML event.
-     */
-    public void recovered(MElementEvent mee) {
-        event = mee;
-        eventType = 3;
-    }
-
-    /**
-     * Configures this instance to dispatch a removed event.
-     * @param mee NSUML event.
-     */
-    public void removed(MElementEvent mee) {
-        event = mee;
-        eventType = 4;
-    }
-
-    /**
-     * Configures this instance to dispatch a roleAdded event.
-     * @param mee NSUML event.
-     */
-    public void roleAdded(MElementEvent mee) {
-        event = mee;
-        eventType = 5;
-    }
-
-    /**
-     * Configures this instance to dispatch a roleRemoved event.
-     * @param mee NSUML event
-     */
-    public void roleRemoved(MElementEvent mee) {
-        event = mee;
-        eventType = 6;
-    }
-
 
     /**
      * Called by InvokeLater on user interface thread.  Dispatches
@@ -257,50 +151,18 @@ public class UMLChangeDispatch
             component = theAWTContainer.getComponent(i);
             if (component instanceof Container)
                 dispatch((Container) component);
-            if (component instanceof Component
-                    && ((Component) component).isVisible()) {
+            if (component instanceof UMLUserInterfaceComponent
+                    && component.isVisible()) {
                 
-                if (component instanceof UMLUserInterfaceComponent) {
-                
-                    switch(eventType) {
-                        case -1:
-                        case 0:
-                            ((UMLUserInterfaceComponent) component).targetChanged();
-                            break;
-    
-                        case 7:
-                            ((UMLUserInterfaceComponent) component).targetReasserted();
-                            break;
-                    }
-                }
-                
-                if (component instanceof MElementListener) {
-                
-                    switch(eventType) {
-                        case 1:
-                            ((MElementListener) component).propertySet(event);
-                            break;
-    
-                        case 2:
-                            ((MElementListener) component).listRoleItemSet(event);
-                            break;
-    
-                        case 3:
-                            ((MElementListener) component).recovered(event);
-                            break;
-    
-                        case 4:
-                            ((MElementListener) component).removed(event);
-                            break;
-    
-                        case 5:
-                            ((MElementListener) component).roleAdded(event);
-                            break;
-    
-                        case 6:
-                            ((MElementListener) component).roleRemoved(event);
-                            break;
-                    }
+                switch(eventType) {
+                    case -1:
+                    case 0:
+                        ((UMLUserInterfaceComponent) component).targetChanged();
+                        break;
+
+                    case 7:
+                        ((UMLUserInterfaceComponent) component).targetReasserted();
+                        break;
                 }
             }
         }

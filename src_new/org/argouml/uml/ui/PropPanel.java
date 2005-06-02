@@ -266,8 +266,7 @@ public abstract class PropPanel
 
         } else {
             dispatch =
-                new UMLChangeDispatch(this,
-				      UMLChangeDispatch.TARGET_REASSERTED);
+                new UMLChangeDispatch(this, UMLChangeDispatch.TARGET_REASSERTED);
 
         }
         SwingUtilities.invokeLater(dispatch);
