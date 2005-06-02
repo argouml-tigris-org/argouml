@@ -27,11 +27,8 @@ package org.argouml.model.uml;
 import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 
-import javax.swing.SwingUtilities;
-
 import org.argouml.model.ContainerDispatcher;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLChangeDispatch;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -55,54 +52,54 @@ public class ContainerDispatcherImpl implements ContainerDispatcher, MElementLis
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent mee) {
-        UMLChangeDispatch dispatch = new UMLChangeDispatch(container, 0);
-        dispatch.propertySet((MElementEvent)mee);
-        SwingUtilities.invokeLater(dispatch);
+//        UMLChangeDispatch dispatch = new UMLChangeDispatch(container, 0);
+//        dispatch.propertySet((MElementEvent)mee);
+//        SwingUtilities.invokeLater(dispatch);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent mee) {
-        UMLChangeDispatch dispatch = new UMLChangeDispatch(container, 0);
-        dispatch.listRoleItemSet((MElementEvent)mee);
-        SwingUtilities.invokeLater(dispatch);
+//        UMLChangeDispatch dispatch = new UMLChangeDispatch(container, 0);
+//        dispatch.listRoleItemSet((MElementEvent)mee);
+//        SwingUtilities.invokeLater(dispatch);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
     public void recovered(MElementEvent mee) {
-        UMLChangeDispatch dispatch = new UMLChangeDispatch(container, 0);
-        dispatch.recovered((MElementEvent)mee);
-        SwingUtilities.invokeLater(dispatch);
+//        UMLChangeDispatch dispatch = new UMLChangeDispatch(container, 0);
+//        dispatch.recovered((MElementEvent)mee);
+//        SwingUtilities.invokeLater(dispatch);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent mee) {
-        UMLChangeDispatch dispatch = new UMLChangeDispatch(container, 0);
-        dispatch.removed((MElementEvent)mee);
-        SwingUtilities.invokeLater(dispatch);
+//        UMLChangeDispatch dispatch = new UMLChangeDispatch(container, 0);
+//        dispatch.removed((MElementEvent)mee);
+//        SwingUtilities.invokeLater(dispatch);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent mee) {
-        UMLChangeDispatch dispatch = new UMLChangeDispatch(container, 0);
-        dispatch.roleAdded((MElementEvent)mee);
-        SwingUtilities.invokeLater(dispatch);
+//        UMLChangeDispatch dispatch = new UMLChangeDispatch(container, 0);
+//        dispatch.roleAdded((MElementEvent)mee);
+//        SwingUtilities.invokeLater(dispatch);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent mee) {
-        UMLChangeDispatch dispatch = new UMLChangeDispatch(container, 0);
-        dispatch.roleRemoved((MElementEvent)mee);
-        SwingUtilities.invokeLater(dispatch);
+//        UMLChangeDispatch dispatch = new UMLChangeDispatch(container, 0);
+//        dispatch.roleRemoved((MElementEvent)mee);
+//        SwingUtilities.invokeLater(dispatch);
     }
     
     /**
