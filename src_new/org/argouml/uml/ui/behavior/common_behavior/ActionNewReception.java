@@ -61,9 +61,11 @@ public class ActionNewReception extends AbstractActionNewModelElement {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object classifier = getValue(CLASSIFIER);
-        if (!Model.getFacade().isAClassifier(classifier))
+        if (!Model.getFacade().isAClassifier(classifier)) {
             throw new IllegalArgumentException(
-                    "Argument classifier is null or not a classifier");
+                    "Argument classifier is null or not a classifier. Got: "
+                    + classifier);
+        }
         Object reception =
             Model.getCommonBehaviorFactory().buildReception(classifier);
         TargetManager.getInstance().setTarget(reception);
