@@ -137,27 +137,10 @@ public abstract class UMLComboBoxModel2
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        // TODO: complete this!
-        // propertySet
-        if (evt.getPropertyName().equals(propertySetName)
-                && evt.getSource() == getTarget()
-            && (isClearable || evt.getNewValue() != null)) {
-            Object elem = evt.getNewValue();
-            if (!contains(elem)) {
-                addElement(elem);
-            }
-            setSelectedItem(elem);
-        }
-        // removed
-//        if (contains(getChangedElement(e))) {
-//            Object o = evt.getOldValue();
-//            if (o instanceof Collection) {
-//                removeAll((Collection) o);
-//            } else {
-//                removeElement(o);
-//            }
-//        }
-        //TODO: and more to add!
+        buildingModel = true;
+        buildModelList();
+        buildingModel = false;
+        fireContentsChanged(evt.getSource(), 0, this.getSize());
     }
 
     /**

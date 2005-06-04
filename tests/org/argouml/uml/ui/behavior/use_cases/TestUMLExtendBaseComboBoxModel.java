@@ -65,6 +65,7 @@ public class TestUMLExtendBaseComboBoxModel extends TestCase {
         for (int i = 0; i < 10; i++) {
             bases[i] = Model.getUseCasesFactory().createUseCase();
             Model.getCoreHelper().addOwnedElement(m, bases[i]);
+            Model.getPump().addModelEventListener(model, bases[i]);
         }
         model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
