@@ -62,7 +62,7 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
      * The constructor.
      *
      * @param modeClass the next global editor mode
-     * @param name the name of the command = tooltip text
+     * @param name the name of the command that is the tooltip text.
      */
     public CmdSetMode(Class modeClass, String name) {
         super(modeClass, ResourceLoaderWrapper.getImageBinding(name));
@@ -74,11 +74,11 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
      *
      * @param modeClass the next global editor mode
      * @param name the to be localized name of the command
-     * @param tooltip the tooltip text
+     * @param tooltipkey The key for the tooltip text.
      */
-    public CmdSetMode(Class modeClass, String name, String tooltip) {
+    public CmdSetMode(Class modeClass, String name, String tooltipkey) {
         super(modeClass, name);
-        putToolTip(tooltip);
+        putToolTip(tooltipkey);
     }
 
     /**
@@ -107,7 +107,7 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
      *
      * @param modeClass the next global editor mode
      * @param modeArgs arguments for the new mode
-     * @param name the name of the command = tooltip text
+     * @param name the name of the command that is the tooltip text.
      */
     public CmdSetMode(Class modeClass, Hashtable modeArgs, String name) {
     	super(modeClass, ResourceLoaderWrapper.getImageBinding(name));
@@ -132,7 +132,7 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
      * @param modeClass the next global editor mode
      * @param arg the name of a new argument for the new mode
      * @param value the value of a new argument for the new mode
-     * @param name the name of the command = tooltip text
+     * @param name the name of the command that is the tooltip text.
      */
     public CmdSetMode(Class modeClass, String arg, Object value, String name) {
         super(modeClass, arg, value,
@@ -146,7 +146,7 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
      * @param modeClass the next global editor mode
      * @param arg the name of a new argument for the new mode
      * @param value the value of a new argument for the new mode
-     * @param name the name of the command = tooltip text
+     * @param name the name of the command that is the tooltip text.
      * @param icon the SMALL_ICON for the action
      */
     public CmdSetMode(
@@ -161,8 +161,10 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
 
     /**
      * Adds tooltip text to the Action.
+     *
+     * @param key The key to be localized to become the tooltip.
      */
-    private void putToolTip(String name) {
-        putValue(Action.SHORT_DESCRIPTION, Translator.localize(name));
+    private void putToolTip(String key) {
+        putValue(Action.SHORT_DESCRIPTION, Translator.localize(key));
     }
 }

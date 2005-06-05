@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLCheckBox2;
@@ -37,7 +36,9 @@ import org.argouml.uml.ui.UMLCheckBox2;
  * @since Jan 27, 2003
  */
 public class ActionSetGeneralizableElementRoot extends UMLAction {
-
+    /**
+     * The instance.
+     */
     private static final ActionSetGeneralizableElementRoot SINGLETON =
         new ActionSetGeneralizableElementRoot();
 
@@ -45,7 +46,7 @@ public class ActionSetGeneralizableElementRoot extends UMLAction {
      * Constructor for ActionSetElementOwnershipSpecification.
      */
     protected ActionSetGeneralizableElementRoot() {
-        super(Translator.localize("Set"), true, NO_ICON);
+        super("Set", true, NO_ICON);
     }
 
     /**
