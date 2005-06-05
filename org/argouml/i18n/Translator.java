@@ -25,8 +25,13 @@
 package org.argouml.i18n;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.util.Localizer;
 
 /**
@@ -37,27 +42,37 @@ import org.tigris.gef.util.Localizer;
  */
 public final class Translator {
     /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger.getLogger(Translator.class);
+
+    /**
+     * Where we search for bundles.
+     */
+    private static final String BUNDLES_PATH = "org.argouml.i18n";
+
+    /**
+     * Store bundles for current Locale.
+     */
+    private static Map bundles;
+
+    /**
      * This class should only be used in a static constant so make
-     * the constructor private. See issue 3111.
+     * the constructor private.
      */
     private Translator() {
+    }
+
+    static {
+        setLocale(new Locale(
+                System.getProperty("user.language", "en"),
+                System.getProperty("user.country", "")));
     }
 
     /**
      * Default Locale is set and resources Bundles are loaded.
      */
     public static void init () {
-
-        Locale.setDefault(new Locale(System.getProperty("user.language", "en"),
-				     System.getProperty("user.country", "")));
-
-        /* bundle default Locale, different from user default Locale */
-        org.workingfrog.i18n.util.Translator.init();
-        org.workingfrog.i18n.util.Translator.setDefaultLocale(
-		new Locale("en", ""));
-        org.workingfrog.i18n.util.Translator.setBundlesPath("org.argouml.i18n");
-        org.workingfrog.i18n.util.Translator.setLogLevel("none");
-
         Localizer.addResource("GefBase",
 			      "org.tigris.gef.base.BaseResourceBundle");
         Localizer.addResource(
@@ -68,13 +83,22 @@ public final class Translator {
     }
 
     /**
-     * For Locale selection.
+     * For Locale selection.<p>
+     *
+     * TODO: Detect the available locales from the available files.
      *
      * @return Locales used in ArgoUML
      */
     public static Locale[] getLocales() {
-        return org.workingfrog.i18n.util.Translator.getLocales(
-		new Translator());
+        return new Locale[] {
+            new Locale("en", ""),
+            new Locale("fr", ""),
+            new Locale("es", ""),
+            new Locale("nb", ""),
+            new Locale("ru", ""),
+            new Locale("zh", ""),
+            new Locale("en", "GB"),
+        };
     }
 
     /**
@@ -83,25 +107,73 @@ public final class Translator {
      * @param locale the new Locale
      */
     public static void setLocale(Locale locale) {
-        org.workingfrog.i18n.util.Translator.setLocale(locale);
+        Locale.setDefault(locale);
+        bundles = new HashMap();
     }
 
     /**
-     * Helper for those that don't want to give the bundle.<p>
+     * Loads the bundle (if not already loaded).
      *
-     * <em>Note:</em> This one argument <code>key</code>
-     * doesn't seem to work for tags that aren't prefixed with the
-     * property file name. We get a NullPointerException.
+     * @param name The name of the bundle to load.
+     */
+    private static void loadBundle(String name) {
+        if (bundles.containsKey(name)) {
+            return;
+        }
+        String resource = BUNDLES_PATH + "." + name;
+        ResourceBundle bundle = null;
+        try {
+            LOG.debug("Loading " + resource);
+            bundle = ResourceBundle.getBundle(resource, Locale.getDefault());
+        } catch (MissingResourceException e1) {
+            LOG.debug("Resource " + resource + " not found.");
+        }
+
+        bundles.put(name, bundle);
+    }
+
+    /**
+     * Calculate the name from the key.
+     *
+     * @param key The key to look up.
+     * @return The name of the file or <code>null</code> if not possible.
+     */
+    private static String getName(String key) {
+        if (key == null) {
+            return null;
+        }
+
+        int indexOfDot = key.indexOf(".");
+        if (indexOfDot > 0) {
+            return key.substring(0, indexOfDot);
+        }
+        return null;
+    }
+
+
+    /**
+     * Helper for those that don't want to give the bundle.<p>
      *
      * @param key The key to localize.
      * @return The localized String.
      */
     public static String localize(String key) {
-        if ( key.indexOf('.') == -1)
-        {
-            key = org.tigris.gef.util.Localizer.localize( "UMLMenu", key);
+        assert key != null;
+
+        String name = getName(key);
+        if (name == null) {
+            return Localizer.localize("UMLMenu", key);
         }
-        return org.workingfrog.i18n.util.Translator.localize(key, key);
+
+        loadBundle(name);
+
+        ResourceBundle bundle = (ResourceBundle) bundles.get(name);
+        try {
+            return bundle.getString(key);
+        } catch (MissingResourceException e) {
+            LOG.debug("Resource " + key + " not found.");
+            return key;
+        }
     }
 
     /**
