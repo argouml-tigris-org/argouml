@@ -38,15 +38,28 @@ import org.argouml.model.Model;
  *
  * @author jrobbins
  */
-
 public class WizManyNames extends UMLWizard {
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(WizManyNames.class);
 
-    private String instructions =
-	"Please change the name of the offending model element.";
-    private Vector mes = null;
+    /**
+     * The text that describes what to be done.
+     * TODO: I18n?
+     */
+    private static final String INSTRUCTIONS =
+	"Change each name to be significantly different from "
+	+ "the others.  "
+	+ "Names should differ my more than one character and "
+	+ "not just differ my case (capital or lower case).";
 
-    private WizStepManyTextFields step1 = null;
+    /**
+     * A vector of model elements.
+     */
+    private Vector mes;
+
+    private WizStepManyTextFields step1;
 
     /**
      * The constructor.
@@ -58,12 +71,16 @@ public class WizManyNames extends UMLWizard {
     /**
      * @param m the offenders
      */
-    public void setMEs(Vector m) { mes = m; }
+    public void setMEs(Vector m) {
+        assert m.size() <= 0
+        	|| Model.getFacade().isAModelElement(m.elementAt(0));
+        assert m.size() <= 1
+        	|| Model.getFacade().isAModelElement(m.elementAt(1));
+        assert m.size() <= 2
+        	|| Model.getFacade().isAModelElement(m.elementAt(2));
 
-    /**
-     * @param s set the new instructions
-     */
-    public void setInstructions(String s) { instructions = s; }
+        mes = m;
+    }
 
     /**
      * Create a new panel for the given step.
@@ -80,9 +97,11 @@ public class WizManyNames extends UMLWizard {
 		    Object me = /*(MModelElement)*/ mes.elementAt(i);
 		    names.addElement(Model.getFacade().getName(me));
 		}
-		step1 = new WizStepManyTextFields(this, instructions, names);
+		step1 = new WizStepManyTextFields(this, INSTRUCTIONS, names);
 	    }
 	    return step1;
+
+	default:
 	}
 	return null;
     }
@@ -101,18 +120,21 @@ public class WizManyNames extends UMLWizard {
 	switch (oldStep) {
 	case 1:
 	    Vector newNames = null;
-	    if (step1 != null) newNames = step1.getStrings();
+	    if (step1 != null) {
+	        newNames = step1.getStrings();
+	    }
 	    try {
 		int size = mes.size();
 		for (int i = 0; i < size; i++) {
 		    Object me = /*(MModelElement)*/ mes.elementAt(i);
-		    Model.getCoreHelper().setName(me, 
+		    Model.getCoreHelper().setName(me,
 		            (String) newNames.elementAt(i));
 		}
-	    }
-	    catch (Exception pve) {
+	    } catch (Exception pve) {
 		LOG.error("could not set name", pve);
 	    }
+
+	default:
 	}
     }
 } /* end class WizManyNames */
