@@ -29,16 +29,13 @@ import org.argouml.application.api.PluggableMenu;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.UMLAction;
 
-import org.workingfrog.i18n.swing.I18NJMenu;
-import org.workingfrog.i18n.swing.I18NJMenuItem;
-//import org.workingfrog.i18n.util.LocaleEvent;
-
 import java.awt.event.ActionEvent;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Vector;
 
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 /**
@@ -48,16 +45,24 @@ import javax.swing.JMenuItem;
  */
 public class LanguageChooser extends UMLAction implements PluggableMenu {
 
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(LanguageChooser.class);
 
-    /** A singleton as the only instance of this action. */
+    /**
+     * A singleton as the only instance of this action.
+     */
     private static LanguageChooser singleton = new LanguageChooser();
 
-    /** Entry point for LanguageChooser in Tools' menu. */
-    private static I18NJMenu menuItem = null;
+    /**
+     * Entry point for LanguageChooser in Tools' menu.
+     */
+    private static JMenu menu;
 
-    /** Mapper between JMenuItems and Locales. */
+    /**
+     * Mapper between JMenuItems and Locales.
+     */
     private HashMap item2Locale;
 
     /**
@@ -81,7 +86,7 @@ public class LanguageChooser extends UMLAction implements PluggableMenu {
      * @see org.argouml.application.api.ArgoModule#initializeModule()
      */
     public boolean initializeModule() {
-        if (((Locale[]) Translator.getLocales()).length < 1) {
+        if (Translator.getLocales().length < 1) {
             LOG.error ("Unable to launch LanguageChooser plugin!");
 
             return false;
@@ -120,7 +125,9 @@ public class LanguageChooser extends UMLAction implements PluggableMenu {
      * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
      * java.util.Vector, java.lang.Object)
      */
-    public Vector getModulePopUpActions(Vector v, Object o) { return null; }
+    public Vector getModulePopUpActions(Vector v, Object o) {
+        return null;
+    }
 
     /**
      * @see org.argouml.application.api.ArgoModule#shutdownModule()
@@ -169,7 +176,7 @@ public class LanguageChooser extends UMLAction implements PluggableMenu {
      */
     public Object[] buildContext(JMenuItem a, String b) {
         return new Object[] {
-	    a, b
+	    a, b,
 	};
     }
 
@@ -185,23 +192,23 @@ public class LanguageChooser extends UMLAction implements PluggableMenu {
             return null;
         }
 
-        if (menuItem == null) {
-            menuItem = new I18NJMenu("menu.item.languages");
+        if (menu == null) {
+            menu = new JMenu("menu.item.languages");
 
             Locale[] locales = Translator.getLocales();
             item2Locale = new HashMap(locales.length);
 
             for (int j = locales.length - 1; j >= 0; j--) {
-                String key = "menu.languages-"
-                    + locales[j].toString().toLowerCase();
-                I18NJMenuItem item = new I18NJMenuItem(key);
+                String key =
+                    "menu.languages-" + locales[j].toString().toLowerCase();
+                JMenuItem item = new JMenuItem(key);
                 item2Locale.put(item, locales[j]);
                 item.addActionListener(this);
-                menuItem.add(item);
+                menu.add(item);
             }
         }
 
-        return menuItem;
+        return menu;
     }
 
     /**

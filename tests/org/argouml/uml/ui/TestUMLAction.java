@@ -31,15 +31,6 @@ import junit.framework.TestCase;
  *
  */
 public class TestUMLAction extends TestCase {
-
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() {
-        org.workingfrog.i18n.util.Translator.init();
-        org.workingfrog.i18n.util.Translator.setBundlesPath("org.argouml.i18n");
-    }
-
     /**
      * The constructor.
      *
