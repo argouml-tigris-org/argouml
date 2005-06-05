@@ -1604,11 +1604,4 @@ ArgoUML to JMI.
     </exec>
   </target>
 
-
-<!-- Attempts at generating code. -->
-
-  <target name="generate">
-    <style basedir="org/argouml/xml/generator" destdir="../build/generator" in="org/argouml/xml/generator/metamodel.xml" out="../build/generator/result.xxx" style="org/argouml/xml/generator/mf.xsl"/>
-  </target>
-
 </project><!-- End of file -->
