@@ -35,7 +35,6 @@ import javax.swing.ButtonModel;
 import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
-import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
@@ -62,11 +61,11 @@ import org.tigris.toolbar.toolbutton.ToolButton;
 /**
  * This class provides support for writing a UML diagram for argo using
  * the GEF framework. <p>
- * 
+ *
  * It adds common buttons, a namespace, capability
  * to delete itself when its namespace is deleted, some help
  * with creating a valid diagram name. <p>
- * 
+ *
  * There are various methods for returning 'structures' of Actions
  * which are used to build toolbars and dropdown buttons within toolbars.
  * These structures are arrays of Objects.
@@ -75,29 +74,31 @@ import org.tigris.toolbar.toolbutton.ToolButton;
  * is used to create a spacer in the toolbar.
  * An element containing an array results in a dropdown toolbar button
  * being created which contains all the items in that array. <p>
- * 
- * The "owner" of the UMLDiagram needs to be set to the one and only 
- * UML modelelement of which the diagram depends. 
- * E.g. for a class diagram is that its namespace, 
- * and for a collaboration diagram is that the Collaboration UML object. 
+ *
+ * The "owner" of the UMLDiagram needs to be set to the one and only
+ * UML modelelement of which the diagram depends.
+ * E.g. for a class diagram is that its namespace,
+ * and for a collaboration diagram is that the Collaboration UML object.
  * Override the getOwner method to return the owner. <p>
- * 
- * TODO: MVW: I am not sure of the following: <br>
+ *
+ * TODO: MVW: I am not sure of the following:<p>
  * The "namespace" of the diagram is e.g. used when creating new elements
  * that are shown on the diagram; they will have their namespace set
  * according this. It is NOT necessarily equal to the "owner". <p>
- * 
- * MVW: I am sure about the following: <br>
- * The "namespace" of the diagram is e.g. used to register a listener 
- * to the UML model, to be notified if this element is removed; 
+ *
+ * MVW: I am sure about the following: <p>
+ * The "namespace" of the diagram is e.g. used to register a listener
+ * to the UML model, to be notified if this element is removed;
  * which will imply that this diagram has to be deleted, too.
- * Hence the namespace of e.g. a collaboration diagram should be the 
+ * Hence the namespace of e.g. a collaboration diagram should be the
  * represented classifier or, in case of a represented operation, its owner.
  */
 public abstract class UMLDiagram
     extends ArgoDiagram
     implements PropertyChangeListener {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(UMLDiagram.class);
 
     /**
@@ -115,17 +116,18 @@ public abstract class UMLDiagram
     private static Action actionComment =
 //	new RadioAction(new CmdCreateNode(Model.getFacade().COMMENT, "Note"));
         new RadioAction(new ActionAddNote());
-        
+
     /**
      * Tool to create an relationship between a comment node and some other node
      * using a polyedge.<p>
      */
-    private static Action actionCommentLink = new RadioAction(
-        new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            CommentEdge.class,
-            "button.new-commentlink"));
+    private static Action actionCommentLink =
+        new RadioAction(
+	        new CmdSetMode(
+	            ModeCreatePolyEdge.class,
+	            "edgeClass",
+	            CommentEdge.class,
+	            "button.new-commentlink"));
 
 
     private static Action actionSelect =
@@ -136,35 +138,35 @@ public abstract class UMLDiagram
 
     private static Action actionRectangle =
         new RadioAction(new CmdSetMode(ModeCreateFigRect.class, "Rectangle",
-        Translator.localize("misc.primitive.rectangle")));
+        			       "misc.primitive.rectangle"));
 
     private static Action actionRRectangle =
         new RadioAction(new CmdSetMode(ModeCreateFigRRect.class, "RRect",
-        Translator.localize("misc.primitive.rounded-rectangle")));
+        			       "misc.primitive.rounded-rectangle"));
 
     private static Action actionCircle =
         new RadioAction(new CmdSetMode(ModeCreateFigCircle.class, "Circle",
-        Translator.localize("misc.primitive.circle")));
+        			       "misc.primitive.circle"));
 
     private static Action actionLine =
         new RadioAction(new CmdSetMode(ModeCreateFigLine.class, "Line",
-        Translator.localize("misc.primitive.line")));
+        			       "misc.primitive.line"));
 
     private static Action actionText =
         new RadioAction(new CmdSetMode(ModeCreateFigText.class, "Text",
-        Translator.localize("misc.primitive.text")));
+        			       "misc.primitive.text"));
 
     private static Action actionPoly =
         new RadioAction(new CmdSetMode(ModeCreateFigPoly.class, "Polygon",
-        Translator.localize("misc.primitive.polygon")));
+        			       "misc.primitive.polygon"));
 
     private static Action actionSpline =
         new RadioAction(new CmdSetMode(ModeCreateFigSpline.class, "Spline",
-        Translator.localize("misc.primitive.spline")));
+        			       "misc.primitive.spline"));
 
     private static Action actionInk =
         new RadioAction(new CmdSetMode(ModeCreateFigInk.class, "Ink",
-        Translator.localize("misc.primitive.ink")));
+        			       "misc.primitive.ink"));
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -188,8 +190,9 @@ public abstract class UMLDiagram
     public UMLDiagram(Object ns) {
         this();
 
-        if (!Model.getFacade().isANamespace(ns))
+        if (!Model.getFacade().isANamespace(ns)) {
             throw new IllegalArgumentException();
+        }
 
         setNamespace(ns);
     }
@@ -212,9 +215,9 @@ public abstract class UMLDiagram
      */
     public void initialize(Object owner) {
         super.initialize(owner);
-        /* The following is the default implementation 
+        /* The following is the default implementation
          * for diagrams of which the owner is a namespace.
-         * */
+         */
         if (Model.getFacade().isANamespace(owner)) {
             setNamespace(owner);
         }
@@ -255,16 +258,17 @@ public abstract class UMLDiagram
      */
     public String getClassAndModelID() {
         String s = super.getClassAndModelID();
-        if (getOwner() == null)
+        if (getOwner() == null) {
             return s;
+        }
         String id = UUIDHelper.getInstance().getUUID(getOwner());
         return s + "|" + id;
     }
 
     /**
-     * The default implementation for diagrams that 
+     * The default implementation for diagrams that
      * have the namespace as their owner.
-     * 
+     *
      * @return the namespace
      */
     public Object getOwner() {
@@ -417,8 +421,9 @@ public abstract class UMLDiagram
             Model.getPump().removeModelEventListener(this, namespace, "remove");
             ProjectManager.getManager().getCurrentProject().moveToTrash(this);
 
-            Object newTarget = ProjectManager.getManager().getCurrentProject()
-                .getDiagrams().get(0);
+            Object newTarget =
+                ProjectManager.getManager().getCurrentProject()
+                	.getDiagrams().get(0);
             TargetManager.getInstance().setTarget(newTarget);
         }
     }
@@ -457,7 +462,7 @@ public abstract class UMLDiagram
                  *      (PropertyChangeListener)fig, owner);
                  * Instead, this will make sure all the correct
                  * event listeners are set:
-                 * */
+                 */
                 fig.setOwner(null);
                 fig.setOwner(owner);
             }
@@ -608,16 +613,16 @@ public abstract class UMLDiagram
      * @return true if the diagram needs to be removed
      */
     public boolean needsToBeRemoved() {
-        return Model.getUmlFactory().isRemoved(namespace) 
-        || Model.getUmlFactory().isRemoved(getOwner());
+        return Model.getUmlFactory().isRemoved(namespace)
+        	|| Model.getUmlFactory().isRemoved(getOwner());
     }
-    
+
     /**
-     * This method shall return any UML modelelements 
+     * This method shall return any UML modelelements
      * that should be deleted when the diagram gets deleted,
-     * or null if there are none. The default implementation returns null; 
+     * or null if there are none. The default implementation returns null;
      * e.g. a statechart diagram should return its statemachine.
-     * 
+     *
      * @author mvw@tigris.org
      */
     public Object getDependentElement() {

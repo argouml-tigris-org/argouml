@@ -72,26 +72,26 @@ public class UMLAction extends AbstractAction {
     /**
      * The constructor for a non-global action.
      *
-     * @param name the (to be localized) description of the action
+     * @param key the (to be localized) name of the action
      * @param hasIcon true if an icon is to be shown
      */
-    public UMLAction(String name, boolean hasIcon) {
-        this(name, false, hasIcon);
+    public UMLAction(String key, boolean hasIcon) {
+        this(key, false, hasIcon);
     }
 
     /**
      * The constructor.
      * @param hasIcon true if an icon has to be shown
-     * @param name the (to be localized) description of the action
+     * @param key the (to be localized) name of the action
      * @param global the action is global, i.e. implements shouldBeEnabled(),
      *               and listens to Target changes
      */
-    public UMLAction(String name, boolean global, boolean hasIcon) {
-        super(Translator.localize(name));
+    public UMLAction(String key, boolean global, boolean hasIcon) {
+        super(Translator.localize(key));
         if (hasIcon) {
-	    iconName = name;
+	    iconName = key;
         }
-        putValue(Action.SHORT_DESCRIPTION, Translator.localize(name));
+        putValue(Action.SHORT_DESCRIPTION, Translator.localize(key));
         if (global) {
             Actions.addAction(this);
         }

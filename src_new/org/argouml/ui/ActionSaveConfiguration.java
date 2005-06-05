@@ -25,7 +25,7 @@
 package org.argouml.ui;
 
 import java.awt.event.ActionEvent;
-import org.argouml.i18n.Translator;
+
 import org.argouml.application.api.Configuration;
 import org.argouml.uml.ui.UMLAction;
 
@@ -40,7 +40,7 @@ public class ActionSaveConfiguration extends UMLAction {
      * Constructor.
      */
     public ActionSaveConfiguration() {
-        super(Translator.localize("action.save-configuration"), NO_ICON);
+        super("action.save-configuration", NO_ICON);
     }
 
     ////////////////////////////////////////////////////////////////

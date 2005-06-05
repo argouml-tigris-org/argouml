@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -37,7 +36,9 @@ import org.argouml.uml.ui.UMLComboBox2;
  * @stereotype singleton
  */
 public class ActionSetModelElementNamespace extends UMLAction {
-
+    /**
+     * The instance.
+     */
     private static final ActionSetModelElementNamespace SINGLETON =
         new ActionSetModelElementNamespace();
 
@@ -45,7 +46,7 @@ public class ActionSetModelElementNamespace extends UMLAction {
      * Constructor for ActionSetModelElementNamespace.
      */
     protected ActionSetModelElementNamespace() {
-        super(Translator.localize("Set"), true, NO_ICON);
+        super("Set", true, NO_ICON);
     }
 
 
