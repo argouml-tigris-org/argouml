@@ -60,10 +60,14 @@ public class CrNameConfusion extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAModelElement(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAModelElement(dm))) {
+	    return NO_PROBLEM;
+	}
 	Object me = /*(MModelElement)*/ dm;
 	ListSet offs = computeOffenders(me);
-	if (offs.size() > 1) return PROBLEM_FOUND;
+	if (offs.size() > 1) {
+	    return PROBLEM_FOUND;
+	}
 	return NO_PROBLEM;
     }
 
@@ -75,19 +79,31 @@ public class CrNameConfusion extends CrUML {
 	Object ns = Model.getFacade().getNamespace(dm);
 	ListSet res = new ListSet(dm);
 	String n = Model.getFacade().getName(dm);
-	if (n == null || n.equals("")) return res;
+	if (n == null || n.equals("")) {
+	    return res;
+	}
 	String dmNameStr = n;
-	if (dmNameStr == null || dmNameStr.length() == 0) return res;
+	if (dmNameStr == null || dmNameStr.length() == 0) {
+	    return res;
+	}
 	String stripped2 = strip(dmNameStr);
-	if (ns == null) return res;
+	if (ns == null) {
+	    return res;
+	}
 	Collection oes = Model.getFacade().getOwnedElements(ns);
-	if (oes == null) return res;
+	if (oes == null) {
+	    return res;
+	}
 	Iterator elems = oes.iterator();
 	while (elems.hasNext()) {
 	    Object me2 = /*(MModelElement)*/ elems.next();
-	    if (me2 == dm) continue;
+	    if (me2 == dm) {
+	        continue;
+	    }
 	    String meName = Model.getFacade().getName(me2);
-	    if (meName == null || meName.equals("")) continue;
+	    if (meName == null || meName.equals("")) {
+	        continue;
+	    }
 	    String compareName = meName;
 	    if (confusable(stripped2, strip(compareName))
                 && !dmNameStr.equals(compareName)) {
@@ -112,10 +128,14 @@ public class CrNameConfusion extends CrUML {
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-	if (!isActive()) return false;
+	if (!isActive()) {
+	    return false;
+	}
 	ListSet offs = i.getOffenders();
 	Object dm = /*(MModelElement)*/ offs.firstElement();
-	if (!predicate(dm, dsgr)) return false;
+	if (!predicate(dm, dsgr)) {
+	    return false;
+	}
 	ListSet newOffs = computeOffenders(dm);
 	boolean res = offs.equals(newOffs);
 	return res;
@@ -140,9 +160,13 @@ public class CrNameConfusion extends CrUML {
     public int countDiffs(String s1, String s2) {
 	int len = Math.min(s1.length(), s2.length());
 	int count = Math.abs(s1.length() - s2.length());
-	if (count > 2) return count;
+	if (count > 2) {
+	    return count;
+	}
 	for (int i = 0; i < len; i++) {
-	    if (s1.charAt(i) != s2.charAt(i)) count++;
+	    if (s1.charAt(i) != s2.charAt(i)) {
+	        count++;
+	    }
 	}
 	return count;
     }
@@ -156,9 +180,9 @@ public class CrNameConfusion extends CrUML {
 	int len = s.length();
 	for (int i = 0; i < len; i++) {
 	    char c = s.charAt(i);
-	    if (Character.isLetterOrDigit(c))
-		res.append(Character.toLowerCase(c));
-	    else if (c == ']' && i > 1 && s.charAt(i - 1) == '[') {
+	    if (Character.isLetterOrDigit(c)) {
+	        res.append(Character.toLowerCase(c));
+	    } else if (c == ']' && i > 1 && s.charAt(i - 1) == '[') {
 		res.append("[]");
 	    }
 	}
@@ -180,12 +204,6 @@ public class CrNameConfusion extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizManyNames) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    String ins =
-		"Change each name to be significantly different from "
-		+ "the others.  "
-		+ "Names should differ my more than one character and "
-		+ "not just differ my case (capital or lower case).";
-	    ((WizManyNames) w).setInstructions(ins);
 	    ((WizManyNames) w).setMEs(item.getOffenders().asVector());
 	}
     }

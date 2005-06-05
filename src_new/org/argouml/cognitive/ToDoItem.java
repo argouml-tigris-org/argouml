@@ -30,6 +30,9 @@ import javax.swing.Icon;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.cognitive.ui.WizardItem;
+import org.argouml.model.Model;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.Highlightable;
 
 
@@ -103,7 +106,10 @@ public class ToDoItem implements Serializable, WizardItem {
     private String theMoreInfoURL;
 
     /**
-     * Which part of the design this issue affects.
+     * Which part of the design this issue affects.<p>
+     *
+     * Each member is either a model element, a {@link Fig}, or
+     * a {@link Diagram}.<p>
      *
      * This is set by the constructor and cannot change.
      */
@@ -127,6 +133,16 @@ public class ToDoItem implements Serializable, WizardItem {
      */
     public ToDoItem(Poster poster, String h, int p, String d, String m,
 		    ListSet offs) {
+        assert offs != null;
+        assert offs.size() <= 0
+        	|| Model.getFacade().isAModelElement(offs.elementAt(0))
+        	|| offs.elementAt(0) instanceof Fig
+        	|| offs.elementAt(0) instanceof Diagram;
+        assert offs.size() <= 1
+		|| Model.getFacade().isAModelElement(offs.elementAt(1))
+		|| offs.elementAt(1) instanceof Fig
+		|| offs.elementAt(1) instanceof Diagram;
+
 	thePoster = poster;
 	theHeadline = h;
 	theOffenders = offs;
@@ -157,11 +173,16 @@ public class ToDoItem implements Serializable, WizardItem {
      * The constructor.
      *
      * @param c the poster (critic)
-     * @param dm the offenders
+     * @param dm A single offender.
      * @param dsgr the designer
      */
     public ToDoItem(Critic c, Object dm, Designer dsgr) {
-	thePoster = c;
+        assert dm != null
+        	|| Model.getFacade().isAModelElement(dm)
+        	|| dm instanceof Fig
+        	|| dm instanceof Diagram;
+
+        thePoster = c;
 	theHeadline = c.getHeadline(dm, dsgr);
 	theOffenders = new ListSet(dm);
 	thePriority = c.getPriority(theOffenders, dsgr);
@@ -169,6 +190,35 @@ public class ToDoItem implements Serializable, WizardItem {
 	theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);
 	theWizard = c.makeWizard(this);
     }
+
+    /**
+     * The constructor.
+     *
+     * @param c the poster (critic)
+     * @param offs the offenders
+     * @param dsgr the designer
+     */
+    public ToDoItem(Critic c, ListSet offs, Designer dsgr) {
+        assert offs != null;
+        assert offs.size() <= 0
+        	|| Model.getFacade().isAModelElement(offs.elementAt(0))
+        	|| offs.elementAt(0) instanceof Fig
+        	|| offs.elementAt(0) instanceof Diagram;
+        assert offs.size() <= 1
+		|| Model.getFacade().isAModelElement(offs.elementAt(1))
+		|| offs.elementAt(1) instanceof Fig
+		|| offs.elementAt(1) instanceof Diagram;
+
+        thePoster = c;
+	theHeadline = c.getHeadline(offs, dsgr);
+	theOffenders = offs;
+	thePriority = c.getPriority(theOffenders, dsgr);
+	theDescription = c.getDescription(theOffenders, dsgr);
+	theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);
+	theWizard = c.makeWizard(this);
+    }
+
+
 
     /**
      * The constructor.
@@ -268,6 +318,11 @@ public class ToDoItem implements Serializable, WizardItem {
      * @return the offenders
      */
     public ListSet getOffenders() {
+        assert theOffenders != null;
+        assert theOffenders.size() <= 0
+        	|| Model.getFacade().isAModelElement(theOffenders.elementAt(0))
+        	|| theOffenders.elementAt(0) instanceof Fig
+        	|| theOffenders.elementAt(0) instanceof Diagram;
         return theOffenders;
     }
 
