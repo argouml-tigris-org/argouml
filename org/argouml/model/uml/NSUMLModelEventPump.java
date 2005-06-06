@@ -36,6 +36,9 @@ import java.util.WeakHashMap;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelEventPump;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.InstanceChangeEvent;
 import org.argouml.model.ModelEventPump;
 
 import ru.novosoft.uml.MElementEvent;
@@ -372,46 +375,46 @@ abstract class NSUMLEventListener implements MElementListener {
      * @see ru.novosoft.uml.MElementListener#propertySet(
      *         ru.novosoft.uml.MElementEvent)
      */
-    public void propertySet(MElementEvent arg0) {
-        fire(new PropertyChangeEvent(arg0.getSource(), arg0.getName(),
-                                     arg0.getOldValue(), arg0.getNewValue()));
+    public void propertySet(MElementEvent event) {
+        fire(new AttributeChangeEvent(event.getSource(), event.getName(),
+                event.getOldValue(), event.getNewValue(), event));
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(
      *         ru.novosoft.uml.MElementEvent)
      */
-    public void roleAdded(MElementEvent arg0) {
-        fire(new PropertyChangeEvent(arg0.getSource(), arg0.getName(),
-                		     arg0.getOldValue(), arg0.getNewValue()));
+    public void roleAdded(MElementEvent event) {
+        fire(new AssociationChangeEvent(event.getSource(), event.getName(),
+                event.getOldValue(), event.getNewValue(), event));
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleRemoved(
      *         ru.novosoft.uml.MElementEvent)
      */
-    public void roleRemoved(MElementEvent arg0) {
-        fire(new PropertyChangeEvent(arg0.getSource(), arg0.getName(),
-                		     arg0.getOldValue(), arg0.getNewValue()));
+    public void roleRemoved(MElementEvent event) {
+        fire(new AssociationChangeEvent(event.getSource(), event.getName(),
+                event.getOldValue(), event.getNewValue(), event));
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(
      *         ru.novosoft.uml.MElementEvent)
      */
-    public void listRoleItemSet(MElementEvent arg0) {
-        fire(new PropertyChangeEvent(arg0.getSource(), arg0.getName(),
-                		     arg0.getOldValue(), arg0.getNewValue()));
+    public void listRoleItemSet(MElementEvent event) {
+        fire(new PropertyChangeEvent(event.getSource(), event.getName(),
+                event.getOldValue(), event.getNewValue()));
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(
      *         ru.novosoft.uml.MElementEvent)
      */
-    public void removed(MElementEvent arg0) {
-        fire(new PropertyChangeEvent(arg0.getSource(),
+    public void removed(MElementEvent event) {
+        fire(new InstanceChangeEvent(event.getSource(),
             /*arg0.getName()*/ "removed",
-	    arg0.getOldValue(), arg0.getNewValue()));
+            event.getOldValue(), event.getNewValue(), event));
     }
 
     /**
