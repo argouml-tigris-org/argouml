@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
-import org.argouml.model.InstanceChangeEvent;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.ModelEventPump;
 
 import ru.novosoft.uml.MElementEvent;
@@ -412,8 +412,7 @@ abstract class NSUMLEventListener implements MElementListener {
      *         ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent event) {
-        fire(new InstanceChangeEvent(event.getSource(),
-            /*arg0.getName()*/ "removed",
+        fire(new DeleteInstanceEvent(event.getSource(), event.getName(),
             event.getOldValue(), event.getNewValue(), event));
     }
 

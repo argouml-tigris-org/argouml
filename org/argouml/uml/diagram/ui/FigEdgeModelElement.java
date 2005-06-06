@@ -59,6 +59,7 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionGoToCritique;
@@ -434,17 +435,20 @@ public abstract class FigEdgeModelElement
     public void propertyChange(PropertyChangeEvent pve) {
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
-        if (pName.equals("editing")
+        if (pve instanceof DeleteInstanceEvent
+                && pve.getSource() == getOwner()) {
+            ProjectManager.getManager().getCurrentProject()
+            .moveToTrash(getOwner());
+        } else if (pName.equals("editing")
             && Boolean.FALSE.equals(pve.getNewValue())) {
             LOG.debug("finished editing");
             textEdited((FigText) src);
             calcBounds();
             endTrans();
-        } else if (pName.equals("removed") && (pve.getSource() == getOwner())) {
-            ProjectManager.getManager().getCurrentProject()
-                .moveToTrash(getOwner());
-        } else
+        } else {
             super.propertyChange(pve);
+        }
+        
         if (Model.getFacade().isABase(src)) {
             /* If the source of the event is an UML object,
              * then the UML model has been changed.*/

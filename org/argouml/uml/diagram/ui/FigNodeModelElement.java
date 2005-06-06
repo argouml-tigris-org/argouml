@@ -74,6 +74,7 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
@@ -1022,7 +1023,11 @@ public abstract class FigNodeModelElement
     public void propertyChange(PropertyChangeEvent pve) {
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
-        if (pName.equals("editing")
+        if (pve instanceof DeleteInstanceEvent
+                && pve.getSource() == getOwner()) {
+            ProjectManager.getManager().getCurrentProject()
+            .moveToTrash(getOwner());
+        } else if (pName.equals("editing")
                 && Boolean.FALSE.equals(pve.getNewValue())) {
 	    LOG.debug("finished editing");
             try {
@@ -1043,9 +1048,6 @@ public abstract class FigNodeModelElement
         } else if (pName.equals("editing")
                         && Boolean.TRUE.equals(pve.getNewValue())) {
             textEditStarted((FigText) src);
-        } else if (pName.equals("removed") && (pve.getSource() == getOwner())) {
-            ProjectManager.getManager().getCurrentProject()
-                .moveToTrash(getOwner());
         } else {
             super.propertyChange(pve);
         }
