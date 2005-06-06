@@ -168,6 +168,12 @@ public final class Translator {
         loadBundle(name);
 
         ResourceBundle bundle = (ResourceBundle) bundles.get(name);
+        if (bundle == null) {
+            LOG.debug("Bundle (" + name + ") for resource "
+                    + key + " not found.");
+            return key;
+        }
+
         try {
             return bundle.getString(key);
         } catch (MissingResourceException e) {
