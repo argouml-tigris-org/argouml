@@ -267,18 +267,18 @@ public interface ModelImplementation {
      * @return The object implementing the interface.
      */
     VisibilityKind getVisibilityKind();
-    
+
     /**
-     * Getter for the XmiReader object
-     * 
+     * Getter for the XmiReader object.
+     *
      * @return the object implementing the XmiReader interface
      * @throws UmlException on any error while reading
      */
     XmiReader getXmiReader() throws UmlException;
-    
+
     /**
-     * Getter for the XmiWriter object
-     * 
+     * Getter for the XmiWriter object.
+     *
      * @param model the project member model
      * @param writer the writer
      * @return the object implementing the XmiWriter interface
@@ -287,9 +287,9 @@ public interface ModelImplementation {
     XmiWriter getXmiWriter(Object model, Writer writer) throws UmlException;
 
     /**
-     * Factory for new ContainerDispatchers
+     * Factory for new ContainerDispatchers.
+     *
      * @param container The container to register with the ContainerDispatcher.
-     * 
      * @return a new instance of a ContainerDispatcher.
      */
     ContainerDispatcher createContainerDispatcher(Container container);

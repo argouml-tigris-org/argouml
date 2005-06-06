@@ -402,18 +402,18 @@ public final class Model {
     }
 
     /**
-     * Getter for the XmiReader object
-     * 
+     * Getter for the XmiReader object.
+     *
      * @return the object implementing the XmiReader interface
      * @throws UmlException on any error while reading
      */
     public static XmiReader getXmiReader() throws UmlException {
         return impl.getXmiReader();
     }
-    
+
     /**
-     * Getter for the XmiWriter object
-     * 
+     * Getter for the XmiWriter object.
+     *
      * @param model the project member model
      * @param writer the writer
      * @return the object implementing the XmiWriter interface
@@ -423,20 +423,23 @@ public final class Model {
         throws UmlException {
         return impl.getXmiWriter(model, writer);
     }
-    
+
     /**
      * @return <code>true</code> if the Model subsystem is correctly initiated.
      */
     public static boolean isInitiated() {
         return impl != null;
     }
-    
-    
+
+
     /**
-     * Crete a new ComponentDispatcher for a Component
-     * @param component the Component the dispatcher should be registered to
+     * Crete a new ComponentDispatcher for a Component.
+     *
+     * @param container The Component the dispatcher should be registered to.
+     * @return A newly created Container Dispatcher.
      */
-    public static ContainerDispatcher createContainerDispatcher(Container container) {
+    public static ContainerDispatcher createContainerDispatcher(
+            Container container) {
         return impl.createContainerDispatcher(container);
     }
 }
