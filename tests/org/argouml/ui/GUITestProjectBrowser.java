@@ -26,6 +26,7 @@ package org.argouml.ui;
 
 import junit.framework.TestCase;
 
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -65,8 +66,8 @@ public class GUITestProjectBrowser extends TestCase {
 	assertNotNull(pb.getStatusBar());
 	assertNotNull(pb.getJMenuBar());
 	assertNotNull(pb.getEditorPane());
-	assertNotNull(pb.getNamedTab("tab.properties"));
-	assertNotNull(pb.getNamedTab("tab.source"));
+	assertNotNull(pb.getNamedTab(Translator.localize("tab.properties")));
+	assertNotNull(pb.getNamedTab(Translator.localize("tab.source")));
 	assertNotNull(pb.getTodoPane());
     }
 
@@ -84,9 +85,8 @@ public class GUITestProjectBrowser extends TestCase {
      * Test the existance of public static members.
      */
     public void compileTestPublicStaticMembers() {
-	int r =
-	    ProjectBrowser.DEFAULT_COMPONENTWIDTH
-	        + ProjectBrowser.DEFAULT_COMPONENTHEIGHT;
+	new Integer(ProjectBrowser.DEFAULT_COMPONENTWIDTH
+	        + ProjectBrowser.DEFAULT_COMPONENTHEIGHT);
     }
 
     /**
@@ -130,13 +130,5 @@ public class GUITestProjectBrowser extends TestCase {
 	p.moveToTrash(package2);
 	assertEquals("The target is not reset to the first diagram",
             p.getDiagrams().get(0), tm.getTarget());
-    }
-
-    /**
-     * Test the existance of deprecated methods.
-     */
-    public void compileExistDeprecated() {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-	pb.getTarget();
     }
 }
