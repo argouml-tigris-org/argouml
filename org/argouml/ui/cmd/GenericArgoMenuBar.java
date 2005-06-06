@@ -30,6 +30,7 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -522,8 +523,10 @@ public class GenericArgoMenuBar extends JMenuBar
 
         edit.addSeparator();
 
-        JMenuItem removeItem =
-            edit.add(ActionDeleteFromDiagram.getSingleton());
+        
+        Action removeFromDiagram = ActionDeleteFromDiagram.getSingleton();
+        JMenuItem removeItem = edit.add(removeFromDiagram);
+        
         setMnemonic(removeItem, "Remove from Diagram");
         setAccelerator(removeItem, delKey);
 

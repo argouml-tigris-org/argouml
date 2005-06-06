@@ -345,7 +345,8 @@ public class ProfileJava extends Profile {
         if (is != null) {
             try {
                 XmiReader xmiReader = Model.getXmiReader();
-                return xmiReader.parseToModel(new InputSource(is));
+                InputSource inputSource = new InputSource(is);
+                return xmiReader.parseToModel(inputSource);
             } catch (UmlException e) {
                 throw new ProfileException(e);
             }
