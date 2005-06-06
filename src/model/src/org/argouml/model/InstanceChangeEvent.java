@@ -27,12 +27,12 @@ package org.argouml.model;
 import java.util.EventObject;
 
 /**
- * A change event due to change in an association between one model element
- * and another.
+ * A change event due to change in the lifetime of a model element instance.
+ * That is, it is created or deleted.
  * 
- * @author BTarling
+ * @author Bob Tarling
  */
-public class InstanceChangeEvent extends UmlChangeEvent {
+public abstract class InstanceChangeEvent extends UmlChangeEvent {
 
     public InstanceChangeEvent(Object source, String propertyName, Object oldValue,
             Object newValue, EventObject originalEvent) {

@@ -27,16 +27,14 @@ package org.argouml.model;
 import java.util.EventObject;
 
 /**
- * A change event due to change in an attribute of a model element
- * (eg the name of a model element has changed).
+ * A change event due to deletion of a model element from the model.
  * 
  * @author Bob Tarling
  */
-public class AttributeChangeEvent extends UmlChangeEvent {
+public class DeleteInstanceEvent extends UmlChangeEvent {
 
-    public AttributeChangeEvent(Object source, String propertyName, Object oldValue,
+    public DeleteInstanceEvent(Object source, String propertyName, Object oldValue,
             Object newValue, EventObject originalEvent) {
         super(source, propertyName, oldValue, newValue, originalEvent);
     }
-
 }

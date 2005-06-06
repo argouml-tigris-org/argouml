@@ -27,16 +27,16 @@ package org.argouml.model;
 import java.util.EventObject;
 
 /**
- * A change event due to change in an attribute of a model element
- * (eg the name of a model element has changed).
+ * A change event due to adding an association between one model element
+ * and another (eg notifys that an association has been added between an exisitng
+ * generization element and a an existing class element.
  * 
  * @author Bob Tarling
  */
-public class AttributeChangeEvent extends UmlChangeEvent {
+public class AddAssociationEvent extends AssociationChangeEvent {
 
-    public AttributeChangeEvent(Object source, String propertyName, Object oldValue,
+    public AddAssociationEvent(Object source, String propertyName, Object oldValue,
             Object newValue, EventObject originalEvent) {
         super(source, propertyName, oldValue, newValue, originalEvent);
     }
-
 }

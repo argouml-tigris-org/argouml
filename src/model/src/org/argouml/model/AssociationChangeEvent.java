@@ -29,8 +29,10 @@ import java.util.EventObject;
 /**
  * A change event due to change in an association between one model element
  * and another.
+ * TODO: Break down into subclasses AddAssociationEvent and
+ * RemoveAssociationEvent
  * 
- * @author BTarling
+ * @author Bob Tarling
  */
 public class AssociationChangeEvent extends UmlChangeEvent {
 
@@ -38,5 +40,4 @@ public class AssociationChangeEvent extends UmlChangeEvent {
             Object newValue, EventObject originalEvent) {
         super(source, propertyName, oldValue, newValue, originalEvent);
     }
-
 }

@@ -27,16 +27,16 @@ package org.argouml.model;
 import java.util.EventObject;
 
 /**
- * A change event due to change in an attribute of a model element
- * (eg the name of a model element has changed).
+ * A change event due to removing an association between one model element
+ * and another. (eg notifys that an association between a generization element
+ * and a class element has been removed (but the two elements may still exist).
  * 
  * @author Bob Tarling
  */
-public class AttributeChangeEvent extends UmlChangeEvent {
+public class RemoveAssociationEvent extends AssociationChangeEvent {
 
-    public AttributeChangeEvent(Object source, String propertyName, Object oldValue,
+    public RemoveAssociationEvent(Object source, String propertyName, Object oldValue,
             Object newValue, EventObject originalEvent) {
         super(source, propertyName, oldValue, newValue, originalEvent);
     }
-
 }
