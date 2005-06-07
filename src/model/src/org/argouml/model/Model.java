@@ -65,6 +65,7 @@ public final class Model {
         String className =
             System.getProperty(
                     "argouml.model.implementation",
+            	   // "org.argouml.model.mdr.MDRModelImplementation");
             	    "org.argouml.model.uml.DefaultModelImplementation");
 
         try {

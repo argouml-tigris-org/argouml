@@ -35,9 +35,17 @@ import java.util.EventObject;
  * @author Bob Tarling
  */
 public class AssociationChangeEvent extends UmlChangeEvent {
+    
+    private Object changedValue;
 
-    public AssociationChangeEvent(Object source, String propertyName, Object oldValue,
-            Object newValue, EventObject originalEvent) {
+    public AssociationChangeEvent(
+            Object source, String propertyName, Object oldValue,
+            Object newValue, Object changedValue, EventObject originalEvent) {
         super(source, propertyName, oldValue, newValue, originalEvent);
+        this.changedValue = changedValue;
+    }
+    
+    public Object getChangedValue() {
+        return changedValue;
     }
 }
