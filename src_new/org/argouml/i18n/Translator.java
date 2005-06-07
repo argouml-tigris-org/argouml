@@ -158,7 +158,9 @@ public final class Translator {
      * @return The localized String.
      */
     public static String localize(String key) {
-        assert key != null;
+        if (key == null) {
+            throw new IllegalArgumentException("null");
+        }
 
         String name = getName(key);
         if (name == null) {
