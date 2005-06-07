@@ -45,6 +45,7 @@ public class UMLAssociationEndRoleBaseListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
+        removeAllElements();
         if (getTarget() != null
                 && Model.getFacade().getBase(getTarget()) != null) {
             addElement(Model.getFacade().getBase(getTarget()));

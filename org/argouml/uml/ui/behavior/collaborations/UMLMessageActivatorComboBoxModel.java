@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.model.Model;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -88,16 +87,22 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
     protected void setTarget(Object target) {
         if (Model.getFacade().isAMessage(getTarget())) {
             Object inter = Model.getFacade().getInteraction(getTarget());
-            if (inter != null)
-                UmlModelEventPump.getPump().removeModelEventListener(this,
-                        inter, "message");
+            if (inter != null) {
+                Model.getPump().removeModelEventListener(
+                    this,
+                    inter,
+                    "message");
+            }
         }
         super.setTarget(target);
         if (Model.getFacade().isAMessage(target)) {
             Object inter = Model.getFacade().getInteraction(target);
-            if (inter != null)
-                UmlModelEventPump.getPump().addModelEventListener(this,
-                        inter, "message");
+            if (inter != null) {
+                Model.getPump().addModelEventListener(
+                    this,
+                    inter,
+                    "message");
+            }
         }
     }
 

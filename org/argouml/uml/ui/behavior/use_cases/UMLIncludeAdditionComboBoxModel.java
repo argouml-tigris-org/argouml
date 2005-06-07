@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.model.Model;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -40,7 +39,7 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
     public UMLIncludeAdditionComboBoxModel() {
 //      there is a bug in NSUML so this model listens for base modelevents
         super("base", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this,
+        Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 

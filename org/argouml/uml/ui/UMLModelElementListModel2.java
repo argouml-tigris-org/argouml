@@ -24,21 +24,24 @@
 
 package org.argouml.uml.ui;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JPopupMenu;
 
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
-
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
 
 /**
  * The model for a list that contains Mbases. The state of the MBase is still
@@ -47,9 +50,8 @@ import ru.novosoft.uml.MElementListener;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class UMLModelElementListModel2
-    extends DefaultListModel
-    implements TargetListener, MElementListener {
+public abstract class UMLModelElementListModel2 extends DefaultListModel
+        implements TargetListener, PropertyChangeListener {
 
     private String eventName = null;
     private Object listTarget = null;
@@ -99,88 +101,58 @@ public abstract class UMLModelElementListModel2
         this.listTarget = t;
     }
 
-    /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(
-     *          ru.novosoft.uml.MElementEvent)
-     */
-    public void listRoleItemSet(MElementEvent e) { }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(
-     *          ru.novosoft.uml.MElementEvent)
-     */
-    public void propertySet(MElementEvent e) {
-        if (isValidEvent(e)) {
-            removeAllElements();
-            buildingModel = true;
-            buildModelList();
-            buildingModel = false;
-            if (getSize() > 0) {
-                fireIntervalAdded(this, 0, getSize() - 1);
-            }
-        }
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#recovered(
-     *          ru.novosoft.uml.MElementEvent)
-     */
-    public void recovered(MElementEvent e) { }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#removed(
-     *          ru.novosoft.uml.MElementEvent)
-     */
-    public void removed(MElementEvent e) { }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(
-     *          ru.novosoft.uml.MElementEvent)
-     */
-    public void roleAdded(MElementEvent e) {
-        if (isValidEvent(e)) {
-            Object o = getChangedElement(e);
-            if (o instanceof Collection) {
-                Iterator it = ((Collection) o).iterator();
-                while (it.hasNext()) {
-                    Object o2 = it.next();
-                    addElement(it.next());
+    public void propertyChange(PropertyChangeEvent e) {
+        if (e instanceof AttributeChangeEvent) {
+            if (isValidEvent(e)) {
+                removeAllElements();
+                buildingModel = true;
+                buildModelList();
+                buildingModel = false;
+                if (getSize() > 0) {
+                    fireIntervalAdded(this, 0, getSize() - 1);
                 }
+            }
+        } else if (e instanceof AddAssociationEvent) {
+            if (isValidEvent(e)) {
+                Object o = getChangedElement(e);
+                if (o instanceof Collection) {
+                    ArrayList tempList = new ArrayList((Collection)o);
+                    Iterator it = tempList.iterator();
+                    while (it.hasNext()) {
+                        Object o2 = it.next();
+                        addElement(o2);
+                    }
+                } else {
+                    addElement(o);
+                }
+            }
+        } else if (e instanceof RemoveAssociationEvent) {
+            boolean valid = false;
+            if (!(getChangedElement(e) instanceof Collection)) {
+                valid = contains(getChangedElement(e));
             } else {
-                addElement(o);
-            }
-        }
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(
-     *          ru.novosoft.uml.MElementEvent)
-     */
-    public void roleRemoved(MElementEvent e) {
-        boolean valid = false;
-        if (!(getChangedElement(e) instanceof Collection)) {
-            valid = contains(getChangedElement(e));
-        } else {
-            Collection col = (Collection) getChangedElement(e);
-            Iterator it = col.iterator();
-            valid = true;
-            while (it.hasNext()) {
-                Object o = it.next();
-                if (!contains(o)) {
-                    valid = false;
-                    break;
-                }
-            }
-        }
-        if (valid) {
-            Object o = getChangedElement(e);
-            if (o instanceof Collection) {
-                Iterator it = ((Collection) o).iterator();
+                Collection col = (Collection) getChangedElement(e);
+                Iterator it = col.iterator();
+                valid = true;
                 while (it.hasNext()) {
-                    removeElement(it.next());
+                    Object o = it.next();
+                    if (!contains(o)) {
+                        valid = false;
+                        break;
+                    }
                 }
-            } else {
-                removeElement(o);
+            }
+            if (valid) {
+                Object o = getChangedElement(e);
+                if (o instanceof Collection) {
+                    Iterator it = ((Collection) o).iterator();
+                    while (it.hasNext()) {
+                        Object o3 = it.next();
+                        removeElement(o3);
+                    }
+                } else {
+                    removeElement(o);
+                }
             }
         }
     }
@@ -233,22 +205,20 @@ public abstract class UMLModelElementListModel2
      * @param e the event
      * @return Object the changed element
      */
-    protected Object getChangedElement(MElementEvent e) {
-        if (e.getAddedValue() != null)
-            return e.getAddedValue();
-        if (e.getRemovedValue() != null)
-            return e.getRemovedValue();
-        if (e.getNewValue() != null)
-            return e.getNewValue();
-        return null;
+    protected Object getChangedElement(PropertyChangeEvent e) {
+        if (e instanceof AssociationChangeEvent) {
+            return ((AssociationChangeEvent)e).getChangedValue();
+        }
+        return e.getNewValue();
     }
 
     /**
      * @see javax.swing.DefaultListModel#contains(java.lang.Object)
      */
     public boolean contains(Object elem) {
-        if (super.contains(elem))
+        if (super.contains(elem)) {
             return true;
+        }
         if (elem instanceof Collection) {
             Iterator it = ((Collection) elem).iterator();
             while (it.hasNext()) {
@@ -274,10 +244,8 @@ public abstract class UMLModelElementListModel2
         if (Model.getFacade().isABase(theNewTarget)
                 || theNewTarget instanceof Diagram) {
             if (Model.getFacade().isABase(listTarget)) {
-                UmlModelEventPump.getPump()
-		    .removeModelEventListener(this,
-					      /*(MBase)*/listTarget,
-					      eventName);
+                Model.getPump().
+                    removeModelEventListener(this, listTarget, eventName);
             }
 
             if (Model.getFacade().isABase(theNewTarget)) {
@@ -285,10 +253,8 @@ public abstract class UMLModelElementListModel2
                 // UmlModelEventPump.getPump()
                 // .removeModelEventListener(this, (MBase)_target,
                 // _eventName);
-                UmlModelEventPump.getPump()
-		    .addModelEventListener(this,
-					   /*(MBase)*/listTarget,
-					   eventName);
+                Model.getPump().
+                    addModelEventListener(this, listTarget, eventName);
 
                 removeAllElements();
                 buildingModel = true;
@@ -324,7 +290,7 @@ public abstract class UMLModelElementListModel2
      * @param e the event
      * @return boolean true if valid
      */
-    protected boolean isValidEvent(MElementEvent e) {
+    protected boolean isValidEvent(PropertyChangeEvent e) {
         boolean valid = false;
         if (!(getChangedElement(e) instanceof Collection)) {
             valid = isValidElement(/*(MBase)*/getChangedElement(e));

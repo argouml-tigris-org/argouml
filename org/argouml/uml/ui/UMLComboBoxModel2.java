@@ -36,15 +36,17 @@ import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
-import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.model.ModelEventPump;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
-
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
 
 /**
  * ComboBoxmodel for UML modelelements. This implementation does not use
@@ -54,10 +56,8 @@ import ru.novosoft.uml.MElementListener;
  * This combobox allows selecting no value, if so indicated
  * at construction time of this class. I.e. it is "clearable".
  */
-public abstract class UMLComboBoxModel2
-    extends AbstractListModel
-    implements MElementListener, ComboBoxModel, TargetListener,
-    PropertyChangeListener {
+public abstract class UMLComboBoxModel2 extends AbstractListModel
+        implements PropertyChangeListener, ComboBoxModel, TargetListener {
 
     private static final Logger LOG =
         Logger.getLogger(UMLComboBoxModel2.class);
@@ -137,91 +137,50 @@ public abstract class UMLComboBoxModel2
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        buildingModel = true;
-        buildModelList();
-        buildingModel = false;
-        fireContentsChanged(evt.getSource(), 0, this.getSize());
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(MElementEvent)
-     */
-    public void listRoleItemSet(MElementEvent e) {
-    }
-
-    /**
-     * If the property that this comboboxmodel depicts is changed by the NSUML
-     * model, this method will make sure that it is changed in the comboboxmodel
-     * too.<p>
-     * 
-     * TODO: MVW I tested this for the PropPanelCallEvent. 
-     * It also works without this function. Why do we need this?
-     * 
-     * @see ru.novosoft.uml.MElementListener#propertySet(MElementEvent)
-     */
-    public void propertySet(MElementEvent e) {
-        if (e.getName().equals(propertySetName)
-            && e.getSource() == getTarget()
-	    && (isClearable || getChangedElement(e) != null)) {
-	    Object elem = getChangedElement(e);
-	    if (!contains(elem))
-		addElement(elem);
-            setSelectedItem(elem);
-        }
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#recovered(MElementEvent)
-     */
-    public void recovered(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#removed(MElementEvent)
-     */
-    public void removed(MElementEvent e) {
-        if (contains(getChangedElement(e))) {
-            Object o = getChangedElement(e);
-            if (o instanceof Collection) {
-                removeAll((Collection) o);
-            } else {
-                removeElement(o);
+        if (evt instanceof AttributeChangeEvent) {
+            if (evt.getPropertyName().equals(propertySetName)
+                    && evt.getSource() == getTarget()
+                && (isClearable || getChangedElement(evt) != null)) {
+                Object elem = getChangedElement(evt);
+                if (!contains(elem))
+                addElement(elem);
+                    setSelectedItem(elem);
             }
-        }
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(MElementEvent)
-     */
-    public void roleAdded(MElementEvent e) {
-        if (getTarget() != null && isValidEvent(e)) {
-            Object o = getChangedElement(e);
-            if (o instanceof Collection) { // this should not happen but
-                // you never know with NSUML
-                LOG.warn(
-			 "Collection added via roleAdded! The correct element"
-			 + "is probably not selected...");
-                Iterator it = ((Collection) o).iterator();
-                while (it.hasNext()) {
-                    Object o2 = it.next();
-                    addElement(it.next());
+        } else if (evt instanceof DeleteInstanceEvent) {
+            if (contains(getChangedElement(evt))) {
+                Object o = getChangedElement(evt);
+                if (o instanceof Collection) {
+                    removeAll((Collection) o);
+                } else {
+                    removeElement(o);
                 }
-            } else {
-                addElement(o);
             }
-        }
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(MElementEvent)
-     */
-    public void roleRemoved(MElementEvent e) {
-        if (contains(getChangedElement(e))) {
-            Object o = getChangedElement(e);
-            if (o instanceof Collection) {
-                removeAll((Collection) o);
-            } else {
-                removeElement(o);
+        } else if (evt instanceof AddAssociationEvent) {
+            if (getTarget() != null && isValidEvent(evt)) {
+                Object o = getChangedElement(evt);
+                if (o instanceof Collection) { // this should not happen but
+                    // you never know with NSUML
+                    LOG.warn(
+                 "Collection added via roleAdded! The correct element"
+                 + "is probably not selected...");
+                    Iterator it = ((Collection) o).iterator();
+                    while (it.hasNext()) {
+                        Object o2 = it.next();
+                        addElement(it.next());
+                    }
+                } else {
+                    addElement(o);
+                }
+            }
+        } else if (evt instanceof RemoveAssociationEvent) {
+            Object element = getChangedElement(evt);
+            if (contains(getChangedElement(evt))) {
+                Object o = getChangedElement(evt);
+                if (o instanceof Collection) {
+                    removeAll((Collection) o);
+                } else {
+                    removeElement(o);
+                }
             }
         }
     }
@@ -330,14 +289,11 @@ public abstract class UMLComboBoxModel2
      * @param e the given event
      * @return Object the changed element
      */
-    protected Object getChangedElement(MElementEvent e) {
-        if (e.getAddedValue() != null)
-            return e.getAddedValue();
-        if (e.getRemovedValue() != null)
-            return e.getRemovedValue();
-        if (e.getNewValue() != null)
-            return e.getNewValue();
-        return null;
+    protected Object getChangedElement(PropertyChangeEvent e) {
+        if (e instanceof AssociationChangeEvent) {
+            return ((AssociationChangeEvent)e).getChangedValue();
+        }
+        return e.getNewValue();
     }
 
     /**
@@ -350,7 +306,7 @@ public abstract class UMLComboBoxModel2
     protected void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (Model.getFacade().isABase(target) || target instanceof Diagram) {
-            UmlModelEventPump eventPump = UmlModelEventPump.getPump();
+            ModelEventPump eventPump = Model.getPump();
             if (Model.getFacade().isABase(comboBoxTarget)) {
                 eventPump.removeModelEventListener(this, comboBoxTarget,
 						   propertySetName);
@@ -509,7 +465,7 @@ public abstract class UMLComboBoxModel2
      * @param e the event
      * @return boolean true if the event is valid
      */
-    protected boolean isValidEvent(MElementEvent e) {
+    protected boolean isValidEvent(PropertyChangeEvent e) {
         boolean valid = false;
         if (!(getChangedElement(e) instanceof Collection)) {
             valid = isValidElement(getChangedElement(e));
@@ -584,7 +540,7 @@ public abstract class UMLComboBoxModel2
         }
         if (oldTarget == currentTarget) {
             if (Model.getFacade().isABase(currentTarget)) {
-                UmlModelEventPump.getPump().removeModelEventListener(this,
+                Model.getPump().removeModelEventListener(this,
                         currentTarget, propertySetName);
             }
             comboBoxTarget = e.getNewTarget();

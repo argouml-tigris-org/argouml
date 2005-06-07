@@ -70,7 +70,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
@@ -385,7 +385,7 @@ public class Import {
         //turn off critiquing for reverse engineering
         boolean b = Designer.theDesigner().getAutoCritique();
         if (b)  Designer.theDesigner().setAutoCritique(false);
-        UmlModelEventPump.getPump().stopPumpingEvents();
+        Model.getPump().stopPumpingEvents();
 
         // now start importing (with an empty problem list)
         problems = new StringBuffer();
@@ -594,8 +594,8 @@ public class Import {
                     // to avoid too many events in the event queue
                     // after a long r.e. run
                     if (act % 50 == 0) {
-                        UmlModelEventPump.getPump().flushModelEvents();
-                        UmlModelEventPump.getPump().stopPumpingEvents();
+                        Model.getPump().flushModelEvents();
+                        Model.getPump().stopPumpingEvents();
                     }
                 }
                 catch (Exception e1) {
@@ -690,7 +690,7 @@ public class Import {
             // turn criticing on again
             if (criticThreadWasOn) Designer.theDesigner().setAutoCritique(true);
 
-            UmlModelEventPump.getPump().startPumpingEvents();
+            Model.getPump().startPumpingEvents();
 
             ExplorerEventAdaptor.getInstance().structureChanged();
 

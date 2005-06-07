@@ -33,7 +33,6 @@ import java.util.TreeSet;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -47,10 +46,10 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLModelElementStereotypeComboBoxModel() {
         super("stereotype", true);
-        UmlModelEventPump.getPump()
-	    .addClassModelEventListener(this,
-					Model.getMetaTypes().getNamespace(),
-					"ownedElement");
+        Model.getPump().addClassModelEventListener(
+            this,
+            Model.getMetaTypes().getNamespace(),
+            "ownedElement");
     }
 
 

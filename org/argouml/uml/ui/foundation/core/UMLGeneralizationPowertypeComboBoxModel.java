@@ -32,7 +32,6 @@ import java.util.Set;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -47,7 +46,7 @@ public class UMLGeneralizationPowertypeComboBoxModel
      */
     public UMLGeneralizationPowertypeComboBoxModel() {
         super("powertype", true);
-        UmlModelEventPump.getPump().addClassModelEventListener(this,
+        Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 

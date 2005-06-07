@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.model.Model;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -83,7 +82,7 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
      */
     public void targetRemoved(TargetEvent e) {
         // if (e.getNewTarget() != getTarget())
-        UmlModelEventPump.getPump().removeClassModelEventListener(this,
+        Model.getPump().removeClassModelEventListener(this,
                     Model.getMetaTypes().getNamespace(), "ownedElement");
         super.targetRemoved(e);
     }
@@ -91,7 +90,7 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        UmlModelEventPump.getPump().addClassModelEventListener(this,
+        Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getNamespace(), "ownedElement");
         super.targetSet(e);
     }

@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.model.Model;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -39,7 +38,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLAssociationRoleBaseComboBoxModel() {
         super("base", true);
-        UmlModelEventPump.getPump().addClassModelEventListener(this,
+        Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
@@ -47,6 +46,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
+        removeAllElements();
         setElements(Model.getCollaborationsHelper().getAllPossibleBases(
                 /*(MAssociationRole)*/ getTarget()));
     }
