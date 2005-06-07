@@ -258,6 +258,9 @@ class NSUMLModelEventPump
         }
     }
     
+    /**
+     * @see org.argouml.model.ModelEventPump#startPumpingEvents()
+     */
     public void startPumpingEvents() {
         Iterator iter = modelEventListeners.keySet().iterator();
         while (iter.hasNext()) {
@@ -271,6 +274,9 @@ class NSUMLModelEventPump
         }
     }
     
+    /**
+     * @see org.argouml.model.ModelEventPump#stopPumpingEvents()
+     */
     public void stopPumpingEvents() {
         Iterator iter = modelEventListeners.keySet().iterator();
         while (iter.hasNext()) {
@@ -284,6 +290,9 @@ class NSUMLModelEventPump
         }
     }
     
+    /**
+     * @see org.argouml.model.ModelEventPump#stopPumpingEvents()
+     */
     public void flushModelEvents() {
         Iterator iter = modelEventListeners.keySet().iterator();
         while (iter.hasNext()) {
@@ -464,15 +473,29 @@ abstract class NSUMLEventListener implements MElementListener {
     public void recovered(MElementEvent arg0) {
     }
     
-    
+    /**
+     * Delegates any request to start the event pump to the actual
+     * implementation.
+     * @see org.argouml.model.uml.NSUMLModelEventPump#startPumpingEvents()
+     */
     public void startPumpingEvents() {
         pump.startPumpingEvents();
     }
     
+    /**
+     * Delegates any request to stop the event pump to the actual
+     * implementation.
+     * @see org.argouml.model.uml.NSUMLModelEventPump#stopPumpingEvents()
+     */
     public void stopPumpingEvents() {
         pump.stopPumpingEvents();
     }
     
+    /**
+     * Delegates any request to flush the event pump to the actual
+     * implementation.
+     * @see org.argouml.model.uml.NSUMLModelEventPump#flushModelEvents()
+     */
     public void flushModelEvents() {
         pump.flushModelEvents();
     }

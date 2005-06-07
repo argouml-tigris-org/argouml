@@ -200,7 +200,18 @@ public interface ModelEventPump {
      */
     void setSaveAction(Action saveAction);
     
+    /**
+     * Start the ModelEventPump firing events.
+     */
     void startPumpingEvents();
+    
+    /**
+     * Stop the ModelEventPump firing events.
+     */
     void stopPumpingEvents();
+    
+    /**
+     * Flush events from the ModelEventPump.
+     */
     void flushModelEvents();
 }
