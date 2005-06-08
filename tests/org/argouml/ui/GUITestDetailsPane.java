@@ -53,6 +53,15 @@ public class GUITestDetailsPane extends TestCase {
     }
 
     /**
+     * Test that we actually got the tabs by name in setUp.
+     */
+    public void testGetNamedTab() {
+        assertNotNull(todoPane);
+        assertNotNull(propertyPane);
+        assertNotNull(docPane);
+    }
+    
+    /**
      * Test setting a target.
      */
     public void testTargetSet() {
@@ -110,6 +119,7 @@ public class GUITestDetailsPane extends TestCase {
     }
 
 
+    
     /**
      * @see junit.framework.TestCase#setUp()
      */
