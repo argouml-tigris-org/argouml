@@ -184,24 +184,6 @@ public class TestModelEventPump extends TestCase {
     }
 
     /**
-     * Tests if a listener that registred for a ListRoleItemSet event really
-     * receive the event.
-     */
-    public void testListRoleItemSet() {
-        Model.getCoreHelper().addFeature(
-                elem,
-                Model.getCoreFactory().createOperation());
-        Model.getPump().addModelEventListener(listener,
-                			      elem,
-                			      new String[] {
-                				  "feature",
-        				      });
-        Model.getCoreHelper().setFeature(
-                elem, 0, Model.getCoreFactory().createOperation());
-        assertTrue(eventcalled);
-    }
-
-    /**
      * Tests if a listener that registred for a PropertySet event really
      * receive the event.
      */
