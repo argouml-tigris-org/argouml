@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 
 import junit.framework.TestCase;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -38,33 +39,26 @@ import org.tigris.swidgets.Horizontal;
  * @author jaap.branderhorst@xs4all.nl
  * Jul 21, 2003
  */
-public class GUITestDetailsPane extends TestCase {
-
-    private DetailsPane pane;
-    private JPanel todoPane;
-    private JPanel propertyPane;
-    private JPanel docPane;
+public class TestDetailsPane extends TestCase {
 
     /**
      * @param arg0 is the name of the test case.
      */
-    public GUITestDetailsPane(String arg0) {
+    public TestDetailsPane(String arg0) {
         super(arg0);
     }
 
     /**
-     * Test that we actually got the tabs by name in setUp.
-     */
-    public void testGetNamedTab() {
-        assertNotNull(todoPane);
-        assertNotNull(propertyPane);
-        assertNotNull(docPane);
-    }
-    
-    /**
      * Test setting a target.
      */
     public void testTargetSet() {
+        DetailsPane pane = new DetailsPane("detail", Horizontal.getInstance());
+        JPanel todoPane = pane.getNamedTab(Translator.localize("tab.todo-item"));
+        JPanel propertyPane = pane.getNamedTab(Translator.localize("tab.properties"));
+        
+        assertNotNull(todoPane);
+        assertNotNull(propertyPane);
+        
         Object o = new Object();
         TargetEvent e =
             new TargetEvent(
@@ -117,26 +111,4 @@ public class GUITestDetailsPane extends TestCase {
         assertEquals(_docPane, _pane.getTabs().getSelectedComponent());
         */
     }
-
-
-    
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-        pane = new DetailsPane("detail", Horizontal.getInstance());
-        todoPane = pane.getNamedTab("tab.todo-item");
-        propertyPane = pane.getNamedTab("tab.properties");
-        docPane = pane.getNamedTab("docpane.label.documentation");
-    }
-
-    /**
-     * @see junit.framework.TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        pane = null;
-    }
-
 }
