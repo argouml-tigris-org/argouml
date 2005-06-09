@@ -46,6 +46,7 @@ import javax.swing.Action;
  * a forgotten about listener might still receive events. Unless it can
  * handle them in a harmless way, this approach should not be used.<p>
  *
+ * TODO: What event names?
  * The event names generated are {@link String}s and their values and
  * meanings are not really well documented. For a full list you will have
  * to dig down in the NSUML implementation and eventtree.xml.<p>
@@ -65,12 +66,12 @@ public interface ModelEventPump {
      *
      * @param listener The listener to add
      * @param modelelement The modelelement the listener should be added too
-     * @param eventNames The array of eventnames the listener should listen
-     * to.
+     * @param propertyNames The array of property names the listener wishes to
+     * receive events for
      */
     void addModelEventListener(PropertyChangeListener listener,
             		       Object modelelement,
-			       String[] eventNames);
+			       String[] propertyNames);
 
     /**
      * Adds a listener to modelevents that are fired by some given modelelement
@@ -78,11 +79,12 @@ public interface ModelEventPump {
      *
      * @param listener The listener to add
      * @param modelelement The modelelement the listener should be added too
-     * @param eventName The eventname the listener should listen to.
+     * @param propertyName The property name the listener wishes to
+     * receive events for
      */
     void addModelEventListener(PropertyChangeListener listener,
 			       Object modelelement,
-			       String eventName);
+			       String propertyName);
 
     /**
      * Adds a listener to all events fired by some modelelement.
@@ -100,12 +102,12 @@ public interface ModelEventPump {
      * @param listener The listener to remove
      * @param modelelement The modelelement that fires the events the
      * listener is listening to.
-     * @param eventNames The list of event names the listener is
-     * no longer interested in.
+     * @param propertyNames The property names the listener no longer wishes to
+     * receive events for
      */
     void removeModelEventListener(PropertyChangeListener listener,
 				  Object modelelement,
-				  String[] eventNames);
+				  String[] propertyNames);
 
     /**
      * Removes a listener that listens to modelevents with name
@@ -114,11 +116,12 @@ public interface ModelEventPump {
      * @param listener The listener to remove.
      * @param modelelement The modelelement that fires the events the
      * listener is listening to.
-     * @param eventName The name the listener is no longer interested in.
+     * @param propertyName The property name the listener no longer wishes to
+     * receive events for
      */
     void removeModelEventListener(PropertyChangeListener listener,
 				  Object modelelement,
-				  String eventName);
+				  String propertyName);
 
     /**
      * Removes a listener that listens to all events fired by the
@@ -139,14 +142,15 @@ public interface ModelEventPump {
      *
      * @param listener is the listener to add.
      * @param modelClass is the given model class
-     * @param eventNames is a array of strings with event names.
+     * @param propertyNames The property names the listener wishes to
+     * receive events for
      * @throws IllegalArgumentException if one of the arguments is null or if
      * the modelClass is not a subclass of MBase.
      * @throws IllegalStateException if the listener is already registred.
      */
     void addClassModelEventListener(PropertyChangeListener listener,
 				    Object modelClass,
-				    String[] eventNames);
+				    String[] propertyNames);
 
     /**
      * Adds a listener that listens to the event that is named
@@ -155,14 +159,15 @@ public interface ModelEventPump {
      *
      * @param listener is the listener to add.
      * @param modelClass is the given model class
-     * @param eventName is the event name.
+     * @param propertyName The property name the listener wishes to
+     * receive events for
      * @throws IllegalArgumentException if one of the arguments is null or if
      * the modelClass is not a subclass of MBase.
      * @throws IllegalStateException if the listener is already registred.
      */
     void addClassModelEventListener(PropertyChangeListener listener,
 				    Object modelClass,
-				    String eventName);
+				    String propertyName);
 
     /**
      * Removes a listener that listens to all modelevents fired by instances of
@@ -171,12 +176,12 @@ public interface ModelEventPump {
      * @param listener The listener to remove
      * @param modelClass The class the listener does not want to listen to
      * instances anymore
-     * @param eventNames The eventnames the listener does not want to listen to
-     * anymore
+     * @param propertyNames The property names the listener no longer wishes to
+     * receive events for
      */
     void removeClassModelEventListener(PropertyChangeListener listener,
 				       Object modelClass,
-				       String[] eventNames);
+				       String[] propertyNames);
 
     /**
      * Removes a listener that listens to all modelevents fired by instances of
@@ -185,12 +190,12 @@ public interface ModelEventPump {
      * @param listener The listener to remove
      * @param modelClass The class the listener does not want to listen to
      * instances anymore.
-     * @param eventName The eventname the listener does not want to listen to
-     * anymore.
+     * @param propertyName The property name the listener no longer wishes to
+     * receive events for
      */
     void removeClassModelEventListener(PropertyChangeListener listener,
 				       Object modelClass,
-				       String eventName);
+				       String propertyName);
 
     /**
      * Register an Action with the pump that is used to perform saving.

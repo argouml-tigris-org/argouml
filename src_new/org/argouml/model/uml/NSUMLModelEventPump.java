@@ -99,15 +99,15 @@ class NSUMLModelEventPump
      */
     public void addModelEventListener(PropertyChangeListener listener,
             			      Object modelelement,
-            			      String[] eventNames) {
+            			      String[] propertyNames) {
         LOG.debug("addModelEventListener("
                   + listener + ", "
                   + modelelement + ", "
-                  + eventNames + ")");
+                  + propertyNames + ")");
 
         register(modelEventListeners,
                  new NSUMLModelEventListener(listener,
-                         (MModelElement)modelelement, eventNames, this));
+                         (MModelElement)modelelement, propertyNames, this));
     }
 
     /**
@@ -144,13 +144,13 @@ class NSUMLModelEventPump
      */
     public void removeModelEventListener(PropertyChangeListener listener,
             				 Object modelelement,
-            				 String[] eventNames) {
+            				 String[] propertyNames) {
         LOG.debug("removeModelEventListener("
                   + listener + ", "
                   + modelelement + ", "
-                  + eventNames + ")");
+                  + propertyNames + ")");
         NSUMLEventListener relay =
-            find(modelEventListeners, listener, modelelement, eventNames);
+            find(modelEventListeners, listener, modelelement, propertyNames);
         if (relay != null) {
             unregister(modelEventListeners, relay);
             relay.delete();
@@ -161,13 +161,13 @@ class NSUMLModelEventPump
      * @param listeners The listeners.
      * @param listener The PropertyChangeListener.
      * @param modelelement The model element.
-     * @param eventNames The event names.
+     * @param propertyNames The event names.
      * @return the found relay.
      */
     private NSUMLEventListener find(Map listeners,
 				    PropertyChangeListener listener,
 				    Object modelelement,
-				    String[] eventNames) {
+				    String[] propertyNames) {
         List list = (List) listeners.get(listener);
         if (list == null) {
             return null;
@@ -176,7 +176,7 @@ class NSUMLModelEventPump
         while (iter.hasNext()) {
             NSUMLEventListener theListener = (NSUMLEventListener) iter.next();
 
-            if (theListener.match(modelelement, eventNames)) {
+            if (theListener.match(modelelement, propertyNames)) {
                 return theListener;
             }
         }
@@ -228,13 +228,13 @@ class NSUMLModelEventPump
      */
     public void addClassModelEventListener(PropertyChangeListener listener,
             				   Object modelClass,
-            				   String[] eventNames) {
+            				   String[] propertyNames) {
         LOG.debug("addClassModelEventListener("
                   + listener + ", "
                   + modelClass + ", "
-                  + eventNames + ")");
+                  + propertyNames + ")");
         register(classEventListeners,
-                 new NSUMLClassEventListener(listener, modelClass, eventNames,
+                 new NSUMLClassEventListener(listener, modelClass, propertyNames,
                          		     this));
     }
 
@@ -245,11 +245,11 @@ class NSUMLModelEventPump
      */
     public void removeClassModelEventListener(PropertyChangeListener listener,
             				      Object modelClass,
-            				      String[] eventNames) {
+            				      String[] propertyNames) {
         LOG.debug("removeClassModelEventListener("
                   + listener + ", "
                   + modelClass + ", "
-                  + eventNames + ")");
+                  + propertyNames + ")");
         NSUMLEventListener relay =
             find(classEventListeners, listener, modelClass, null);
         if (relay != null) {
