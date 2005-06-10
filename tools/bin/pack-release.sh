@@ -22,6 +22,15 @@ fi
 echo "Give the name of the release (like X.Y.Z)."
 read releasename
 
+directory=VERSION_`echo $releasename | sed 's/\./_/g'`_F
+
+if test ! -d $directory
+then
+    echo The directory $directory does not exist.
+    exit 1;
+fi
+cd $directory
+
 echo "$BUILD Create the zip and tar files."
 mkdir DIST
 (
@@ -37,19 +46,25 @@ mkdir DIST
 (
   cd argouml/build;
   $JAVA_HOME/bin/jar cvf ../../DIST/ArgoUML-$releasename-modules.zip ext/*.jar
-  tar cvf ../../DIST/ArgoUML-$releasename.tar ext/*.jar
+  tar cvf ../../DIST/ArgoUML-$releasename-modules.tar ext/*.jar
 )
 ( cd DIST && gzip -v *.tar )
+cp argouml/build/*.pdf DIST
+
+# Copy the Java Web Start stuff
+mkdir DIST/jws
+cp argouml/build/*.jar DIST/jws
+mkdir DIST/jws/ext
+cp argouml/build/ext/*.jar DIST/jws/ext
+for jnlpfile in argouml/src_new/templates/jnlp/*.jnlp
+do
+  sed "s,@URLROOT@,http://argouml-downloads.tigris.org/argouml-$releasename,g;s,@VERSION@,$releasename,g" < $jnlpfile > DIST/jws/`basename $jnlpfile`
+done
+
+sed "s,@URLROOT@,http://argouml-downloads.tigris.org/nonav/argouml-$releasename,g;s,@VERSION@,$releasename,g" < argouml/src_new/templates/release_html.template > DIST/index.html
 
 echo $BUILD copying to the svn directory
-mkdir ../../../svn/argouml-downloads/trunk/www/argouml-$releasename
-(
-  cd DIST &&
-  cp * ../../../../svn/argouml-downloads/trunk/www/argouml-$releasename
-)
-
-
-
+mv DIST ../../svn/argouml-downloads/trunk/www/argouml-$releasename
 
 echo Add and commit the newly created directory
 echo ../svn/argouml-downloads/trunk/www/$directoryname

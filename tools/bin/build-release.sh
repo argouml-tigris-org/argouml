@@ -58,18 +58,27 @@ cvs co -r "$freezetag" $CHILDPROJECTS
 
 # 3. Build the release.
 echo "$BUILD Will build the release."
-chmod +x argouml/tools/ant-1.4.1/bin/ant
+chmod +x argouml/tools/ant-1.6.2/bin/ant
 ( cd argouml/src_new && ./build.sh package )
 
 # Build the childprojects and copy the result to build/ext:
 for proj in $CHILDPROJECTS
 do
-    ( cd $proj && ../argouml/tools/ant-1.4.1/bin/ant install )
+    ( cd $proj && ../argouml/tools/ant-1.6.2/bin/ant install )
+done
+
+for proj in \
+    argouml/modules/cpp \
+    argouml/modules/classfile \
+    argouml/modules/idl \
+    argouml/modules/php
+do
+    ( cd $proj && ../../tools/ant-1.6.2/bin/ant install )
 done
 
 
 echo "$BUILD build the documentation in pdf."
-( cd argouml/documentation && ../tools/ant-1.4.1/bin/ant docbook-xsl-get )
+( cd argouml/documentation && ../tools/ant-1.6.2/bin/ant docbook-xsl-get )
 if test ! -d argouml/documentation/docbook-setup/docbook-xsl-1.66.1
 then
     echo "docbook-xsl download failed. Fix it and press return."
@@ -84,7 +93,7 @@ else
     echo "Copy the jimi file to argouml/tools/lib! and press return."
     read garbage
 fi
-( cd argouml/documentation && ../tools/ant-1.4.1/bin/ant pdf ) &
+( cd argouml/documentation && ../tools/ant-1.6.2/bin/ant pdf ) &
 
 echo "$BUILD sign the files for Java Web Start"
 echo "$BUILD (all files distributed will be signed)."
@@ -106,7 +115,7 @@ echo "$BUILD Will test the release."
 echo "$BUILD Starting ArgoUML for you to do the manual testing in modules/junit"
 echo "$BUILD Give the test case TestAll, uncheck Reload at every run"
 echo "$BUILD When done, Exit the tool."
-( cd argouml/modules/junit && ../../tools/ant-1.4.1/bin/ant run )
+( cd argouml/modules/junit && ../../tools/ant-1.6.2/bin/ant run )
 echo "$BUILD Tests done."
 echo "$BUILD No more input."
 
