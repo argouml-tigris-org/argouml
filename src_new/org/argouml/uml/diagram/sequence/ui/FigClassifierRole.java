@@ -559,6 +559,7 @@ public class FigClassifierRole extends FigNodeModelElement
                     {
                         if ( lastState==MessageNode.INITIAL || lastState==MessageNode.CREATED ||
                              lastState==MessageNode.IMPLICIT_CREATED ||
+                             lastState==MessageNode.IMPLICIT_RETURNED ||
                              lastState==MessageNode.RETURNED)
                             lastState=MessageNode.CALLED;
                         if ( callers==null)
