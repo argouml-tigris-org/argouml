@@ -80,7 +80,7 @@ you need to work with ArgoUML.
 	<itemizedlist>
 	  <listitem>
 	    <para>
-A computer with and internet connection and free disk space for your work.
+A computer with and Internet connection and free disk space for your work.
 </para>
 	    <para>
 100MB is enough to download everything from the repository.
@@ -707,7 +707,7 @@ This will start ArgoUML with all modules available.
       <title>Developing in a subproject</title>
 
       <para>
-This describes how you do development in one of the argouml subprojects.
+This describes how you do development in one of the argouml sub-projects.
 </para>
 
       <para>
@@ -739,7 +739,7 @@ the chapter that describes why and how in more detail.
 </para>
 
       <sect3>
-	<title>The subproject's relation to ArgoUML</title>
+	<title>The sub-project's relation to ArgoUML</title>
 
 	<para>
 The purpose of a subproject to ArgoUML is to develop things
@@ -794,12 +794,12 @@ CVS, BSD license, coding guidelines.
 If you decide not to make your module a argouml subproject,
 you can still benefit from using a similar set up as described here
 but since you have your module repository elsewhere,
-some adaptions are necessary.
+some adaptations are necessary.
 </para>
 
 	<para>
-The subprojects are developed close to the ArgoUML project and
-recide in the same cvs repository.
+The sub-projects are developed close to the ArgoUML project and
+reside in the same cvs repository.
 We try to provide a working set of tools and instructions to 
 fit the whole set of projects.
 These tools are sometimes located in the argouml project and
@@ -858,7 +858,7 @@ that subproject discusses the subproject.
 Join both of these mailing list to see what is going on in the subproject!
 </para>
 	<para>
-The subprojects don't use their own issuezilla database but instead they
+The sub-projects don't use their own issuezilla database but instead they
 are subcomponents in the ArgoUML issuezilla.
 Because of this you need to acquire an Observer role in the argouml
 project to work in a subproject.
@@ -868,7 +868,7 @@ project to work in a subproject.
       <sect3>
 	<title>Targets in build.xml in a subproject</title>
 	<para>
-The following targets have the same documented meaning in all subprojects:
+The following targets have the same documented meaning in all sub-projects:
 
 <itemizedlist>
 	    <listitem>
@@ -1237,15 +1237,15 @@ public class GUITestUMLAction extends TestCase {
 
     // Testing all three constructors.
     public void testCreate1() {
-	UMLAction to = new UMLAction(new String("hejsan"));
+	UMLAction to = new UMLAction(new String("hexagon"));
 	assert("Disabled", to.shouldBeEnabled());
     }
     public void testCreate2() {
-	UMLAction to = new UMLAction(new String("hejsan"), true);
+	UMLAction to = new UMLAction(new String("hexagon"), true);
 	assert("Disabled", to.shouldBeEnabled());
     }
     public void testCreate3() {
-	UMLAction to = new UMLAction(new String("hejsan"), true, UMLAction.NO_ICON);
+	UMLAction to = new UMLAction(new String("hexagon"), true, UMLAction.NO_ICON);
 	assert("Disabled", to.shouldBeEnabled());
     }
 }
@@ -1836,7 +1836,7 @@ a svn project.
     </note>
 
     <para>
-The artefacts in play here are
+The artifacts in play here are
 <filename>argouml/src_new/build.xml</filename>,
 <filename>argouml/tools/bin/build-release.sh</filename>, and
 other <filename>build.xml</filename> files.
@@ -1863,7 +1863,7 @@ Prerequisites (what you need to be able to do this):
 cvs access to the argouml project (to set tags).
 </para>
 	  <para>
-You also need cvs access to the included subprojects to set the tags there:
+You also need cvs access to the included sub-projects to set the tags there:
 (argouml-csharp, argouml-nb, ... and this list will probably grow).
 </para>
 	</listitem>
@@ -1880,8 +1880,8 @@ an argouml developer.
 </para>
 	  <para>
 The machine needs
-internet access (it is not a small download and upload so at least
-128KB internet connection to keep the time reasonable &lt; 2 hours),
+Internet access (it is not a small download and upload so at least
+128KB Internet connection to keep the time reasonable &lt; 2 hours),
 the correct version of java installed (should be a JDK 1.4.2),
 cvs and svn installed,
 Unix or Cygwin to be able to run the scripts.
@@ -2004,7 +2004,7 @@ the directory where the script is started from.
 		  <para>
 <filename class="directory">somedirectory/argouml</filename> -
 the place where a checked out copy of ArgoUML resides and the documentation
-is buildable.
+is possible to build.
 </para>
 		  <para>
 The script is located here and the 
@@ -2320,8 +2320,8 @@ Search for them and Reopen them.
 	      <para>Check RESOLVED/LATER</para>
 	      <para>
 It could also be good to check that all
-RESOLVED/LATER has a valid target milstone (must be an upcoming milestone).
-Search for them and Reopen the ones that havn't.
+RESOLVED/LATER has a valid target milestone (must be an upcoming milestone).
+Search for them and Reopen the ones that haven't.
 Also, if the milestone denotes or is going to be resolved in
 the upcoming release, Reopen them with a comment that they are now
 active.
@@ -2333,21 +2333,38 @@ active.
 	<listitem>
 	  <para>Make announcements!</para>
 	  <para>
-Write a News announcements and a short note on 
-the dev, users and announce lists.
-Announcer should make sure that he/she is already subscribed to all lists
-with a reference to the news item.
+Add the index file to the directory
+<filename type="directory">argouml/www/download</filename>
+so that it will show up at the url
+<ulink url="http://argouml.tigris.org/download/releaseXXX.html"
+  >http://argouml.tigris.org/download/release<replaceable>012345</replaceable>.html</ulink>.
 </para>
 	  <para>
+Add new file to the File Sharing area under the correct release.
+Since a release is made, the Status of the files is "Baselined".
+Use the url added in the previous paragraph as Link.
+</para>
+	  <para>
+Write a News announcement in the argouml project.
+
 The announcement shall include
 a statement on what kind of release this is,
-information on what has changed (for stable releases this is a list of what
-has changed since the last stable release),
+information on what major things that have changed
+(for stable releases this is a list of what
+has changed since the last stable release).
+
+It could also include
 the list of resolved issues,
 a list of serious known problems with this release 
 (stable releases shouldn't have any),
 technical details on how the release was built, and
 the plan for the following release.
+</para>
+	  <para>
+Write a short note on 
+the users list (for development releases), and
+announce lists (for stable releases or major breakthroughs).
+Include the link to the new item.
 </para>
 	  <para>
 Freshmeat: currently Thierry Lach does the Freshmeat announcements
