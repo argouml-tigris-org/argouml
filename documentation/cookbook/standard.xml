@@ -907,14 +907,6 @@ Select compile (default target in the Targets tab),
 deselect all other targets
 and finally press Run.
 </para>
-	  <warning>
-	    <para>
-Remark from MVW: This did not work for me, 
-I first had to set the Java Build path as described below. 
-Please confirm or deny this statement, 
-so that I can adapt this explanation!
-</para>
-	  </warning>
 	  <para>
 There are some files that are built using rules in the
 <filename>build.xml</filename> file.
