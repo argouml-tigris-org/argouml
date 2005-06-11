@@ -32,6 +32,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -60,6 +61,9 @@ public class ExplorerPopup extends JPopupMenu {
      */
     public ExplorerPopup(Object selectedItem, MouseEvent me) {
         super("Explorer popup menu");
+        
+        /* Check if multiple items are selected. */
+        boolean ms = TargetManager.getInstance().getTargets().size() > 1;
         
         final Project currentProject =
                 ProjectManager.getManager().getCurrentProject();
@@ -129,7 +133,8 @@ public class ExplorerPopup extends JPopupMenu {
                     ? ((UMLStateDiagram) activeDiagram).getStateMachine()
                     : null;
 
-            if ((classifierSelected && !dataTypeSelected
+            if (!ms) {
+                if ((classifierSelected && !dataTypeSelected
                     && !classifierAndRelationShipSelected)
                         || (packageSelected && selectedItem != projectModel)
                         || (stateVertexSelected && stateDiagramActive
@@ -138,36 +143,43 @@ public class ExplorerPopup extends JPopupMenu {
                             && !sequenceDiagramActive)
                         || nAryAssociationSelected
                         || commentSelected) {
-                UMLAction action =
+                    UMLAction action =
                         new ActionAddExistingNode(
                             menuLocalize("menu.popup.add-to-diagram"),
                             selectedItem);
-                action.setEnabled(action.shouldBeEnabled());
-                this.add(action);
+                    action.setEnabled(action.shouldBeEnabled());
+                    this.add(action);
+                }
             }
 
-            if ((relationshipSelected
+            if (!ms) {
+                if ((relationshipSelected
                         && !flowSelected
                         && !nAryAssociationSelected)
                     || (linkSelected && !sequenceDiagramActive)
                     || transitionSelected) {
 
-                UMLAction action =
+                    UMLAction action =
                         new ActionAddExistingEdge(
                                 menuLocalize("menu.popup.add-to-diagram"),
                                 selectedItem);
-                action.setEnabled(action.shouldBeEnabled());
-                this.add(action);
+                    action.setEnabled(action.shouldBeEnabled());
+                    this.add(action);
+                }
             }
             
-            if (Model.getFacade().isAClassifier(selectedItem)
+            if (!ms) {
+                if (Model.getFacade().isAClassifier(selectedItem)
                         || Model.getFacade().isAPackage(selectedItem)) {
-                this.add(new ActionSetSourcePath());
+                    this.add(new ActionSetSourcePath());
+                }
             }
             
-            if (Model.getFacade().isAPackage(selectedItem)
+            if (!ms) {
+                if (Model.getFacade().isAPackage(selectedItem)
                         || Model.getFacade().isAModel(selectedItem)) {
-                this.add(new ActionAddPackage());
+                    this.add(new ActionAddPackage());
+                }
             }
             
             if (selectedItem != projectModel) {
@@ -176,13 +188,15 @@ public class ExplorerPopup extends JPopupMenu {
         }
         // TODO: Make sure this shouldn't go into a previous
         // condition -tml
-        if (selectedItem instanceof UMLClassDiagram) {
-            UMLAction action =
+        if (!ms) {
+            if (selectedItem instanceof UMLClassDiagram) {
+                UMLAction action =
 		    new ActionAddAllClassesFromModel(
 		        menuLocalize("menu.popup.add-all-classes-to-diagram"),
 			selectedItem);
-            action.setEnabled(action.shouldBeEnabled());
-            this.add(action);
+                action.setEnabled(action.shouldBeEnabled());
+                this.add(action);
+            }
         }
         
         if (selectedItem instanceof Diagram) {
