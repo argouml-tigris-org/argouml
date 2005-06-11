@@ -87,9 +87,9 @@ public interface UmlFactory {
             Object toElement);
 
     /**
-     * Deletes a modelelement. It calls the remove method of the
-     * modelelement but also does 'cascading deletes' that are not
-     * provided for in the remove method of the modelelement
+     * Deletes a model element. It calls the remove method of the
+     * model element but also does 'cascading deletes' that are not
+     * provided for in the remove method of the model element
      * itself. For example: this delete method also removes the binary
      * associations that a class has if the class is deleted. In this
      * way, it is not longer possible that illegal states exist in the
@@ -99,15 +99,9 @@ public interface UmlFactory {
      * factories. For example: a method deleteClass exists on CoreHelper.
      * Delete methods as deleteClass should only do those extra actions that are
      * necessary for the deletion of the modelelement itself. I.e. deleteClass
-     * should only take care of things specific to MClass.<p>
+     * should only take care of things specific to class.<p>
      *
-     * The delete methods in the UML Factories should not be called directly
-     * throughout the code! Calls should allways refer to this method and never
-     * call the deleteXXX method on XXXFactory directly. The reason that it is
-     * possible to call the deleteXXX methods directly is a pure implementation
-     * detail.<p>
-     *
-     * The implementation of this method uses a quite complicate if then else
+     * The implementation of this method uses a quite complicated if then else
      * tree. This is done to provide optimal performance and full compliance to
      * the UML 1.3 model. The last remark refers to the fact that the UML 1.3
      * model knows multiple inheritance in several places. This has to be taken
@@ -116,28 +110,20 @@ public interface UmlFactory {
      * Extensions and its children are not taken into account
      * here. They do not require extra cleanup actions. Not in the
      * form of a call to the remove method as is normal for all
-     * children of MBase and not in the form of other behaviour we
+     * model elements and not in the form of other behaviour we
      * want to implement via this operation.
      * @param elem The element to be deleted
      */
     void delete(Object elem);
 
     /**
-     * The Project may check if a certain MBase has been removed.
+     * The Project may check if a certain model element has been removed.
      *
      * @param o the object to be checked
      * @return true if removed
      */
     boolean isRemoved(Object o);
-
-    /**
-     * Create an empty but initialized instance of a UML ActionExpression.
-     * NSUML does not have a factory method for this.
-     *
-     * @return an initialized UML ActionExpression instance.
-     */
-    Object createActionExpression();
-
+    
     /**
      * Adds all interested (and centralized) listeners to the given
      * modelelement handle.
