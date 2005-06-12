@@ -95,6 +95,12 @@ Using English GUI
 Using German GUI
 </TD></TR>
 
+<TR><TD>
+<a href="@URLROOT@/jws/argouml-nb.jnlp">Java Web Start (nb)</a>
+</TD><TD>
+Using Norwegian Bokmål GUI
+</TD></TR>
+
 
 
 </TABLE>
