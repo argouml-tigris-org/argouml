@@ -59,6 +59,18 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2005-06-12</entry>
+          <entry>
+Change to the description on how to set up an Eclipse environment.
+(See <xref linkend="eclipse-checkout"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+
+      <tbody valign="top">
+        <row>
           <entry>2005-06-11</entry>
           <entry>
 Change to how to make an announcement.

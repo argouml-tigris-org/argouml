@@ -802,7 +802,7 @@ want to include in your Eclipse.
 If any of these instructions don't work or could be improved in some way,
 please help in making them better.
 </para>
-    <sect2>
+    <sect2 id="eclipse-checkout">
       <title>Checking out through Eclipse</title>
       <para>
 This instruction is if you want to use Eclipse to download the source
@@ -946,8 +946,9 @@ Enter Java Build Path
 	  <para>
 Under Source:
 Remove everything.
-Add <filename class="directory">argouml/src_new</filename>
-(simply add a checkmark in front of the src_new folder icon).
+Add <filename class="directory">argouml/src_new</filename> and
+<filename class="directory">argouml/src/model/src</filename>
+(simply add a checkmark in front of these folders).
 Also add
 <filename class="directory">argouml/tests</filename>,
 <filename class="directory">argouml/modules/junit/src</filename>,
@@ -955,18 +956,16 @@ and the src directories of all other modules.
 The purpose of this is to have Eclipse recompile these and
 find compilation errors
 as soon as your changes to any API has affected them.
-Currently (July 2004) some of the modules don't compile.
 </para>
 	  <para>
 Under Libraries:
 Press the Add JARs... button and add
 all files in <filename class="directory">argouml/lib</filename>.
 Press the Add JARs... button and add
-the file <filename>argouml/tools/ant-1.4.1/lib/xerces-1.2.3.jar</filename>.
-Press the Add JARs... button and add
 the file <filename>argouml/tools/junit-3.7/junit.jar</filename>.
 Every time any of these jars is updated in the project you will have to 
-update this in your environment by entering this dialog and
+update this in your environment by entering this dialog,
+removing the old ones, and
 adding the new ones.
 </para>
 	  <para>
@@ -979,10 +978,18 @@ Press OK.
 You will be asked to accept that all resources previously built can
 be removed. Press Yes.
 Eclipse shall rebuild.
+    </para>
+	  <para>
 Verify that there are no errors, just warnings left among the problems.
 If there are errors in some of the modules you will be able to 
-continue your work in spite of that but it is then perhaps best to
-remove those modules again from the Source list in the Java Build Path.
+continue your work in spite of that but it is better if you stop here and
+investigate the problem.
+    </para>
+	  <para>
+Some of the modules (cpp, idl, classfile, ???), contain antlr-generated code.
+The rules to build these are in the ant files for each module.
+Run the ant targets "generate" or "generateparser" in each of these
+modules and then reload the source trees.
 </para>
 	</listitem>
 
