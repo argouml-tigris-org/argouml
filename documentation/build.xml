@@ -265,6 +265,9 @@ To get it, call ant with the docbook-xsl-get target.
     <property name="pdf.xsl"
               value="../docbook-setup/create-pdf.xsl"/>
 
+    <property name="preprocess-pdf.xsl"
+              value="../docbook-setup/preprocess-pdf.xsl"/>
+
     <property name="javahelp.xsl"
               value="../docbook-setup/create-javahelp.xsl"/>
 
@@ -392,6 +395,7 @@ To get it, call ant with the docbook-xsl-get target.
       <param name="source.dir"  value="${documentation.dir}/${doc.subdir}"/>
       <param name="source.xml"  value="${doc.prefix}-generated.xml"/>
       <param name="source.xsl"  value="${pdf.xsl}"/>
+      <param name="preprocess.xsl"  value="${preprocess-pdf.xsl}"/>
       <param name="source.fo"   value="${doc.prefix}.fo"/>
       <param name="target.dir"  value="${pdf.dir}/${doc.subdir}"/>
       <param name="target.pdf"  value="${doc.prefix}.pdf"/>
@@ -498,6 +502,25 @@ To get it, call ant with the docbook-xsl-get target.
     <echo message="Building Formatting Objects for ${source.xml}..."/>
     <antcall target="jimi-check"/>
 
+    <!-- preprocess the document for fop 0.20.5:
+         execute the stylesheet preprocess-pdf.xsl in docbook-setup/
+         on the xml source
+         The output is written to ${source.xml}.prep, which is
+         picked up by the next step in the processing chain.
+      -->
+    <java classname="com.icl.saxon.StyleSheet"
+          fork="yes"
+	  taskname="saxon"
+          dir="${source.dir}">
+      <classpath>
+        <path refid="saxon.classpath"/>
+      </classpath>
+      <arg line='-o "${source.dir}/${source.xml}.prep"'/>
+      <arg value="${source.xml}"/>
+      <arg value="${preprocess.xsl}"/>
+    </java>
+
+
     <java classname="com.icl.saxon.StyleSheet"
           fork="yes"
 	  taskname="saxon"
@@ -506,31 +529,9 @@ To get it, call ant with the docbook-xsl-get target.
         <path refid="saxon.classpath"/>
       </classpath>
       <arg line='-o "${source.dir}/${source.fo}"'/>
-      <arg value="${source.xml}"/>
+      <arg value="${source.xml}.prep"/>
       <arg value="${source.xsl}"/>
     </java>
-
-    <!-- Fop won't handle tables properly. Mangle the source.fo file
-         in to a form where at least admonitions work. Get rid of this
-         transformation once Fop is fixed.  -->
-
-    <echo message="Patching up Fop data because of problems with Fop."/>
-    <replace file="${source.dir}/${source.fo}">
-      <replacetoken><![CDATA[<fo:table><fo:table-body]]></replacetoken>
-      <replacevalue><![CDATA[<fo:table><fo:table-column column-width="1.5cm"/><fo:table-column column-width="14.0cm"/><fo:table-body]]></replacevalue>
-    </replace>
-    <replace file="${source.dir}/${source.fo}">
-      <replacetoken><![CDATA[<fo:float float="before">]]></replacetoken>
-      <replacevalue><![CDATA[<fo:float>]]></replacevalue>
-    </replace>
-    <replace file="${source.dir}/${source.fo}">
-      <replacetoken><![CDATA[<fo:float>]]></replacetoken>
-      <replacevalue><![CDATA[]]></replacevalue>
-    </replace>
-    <replace file="${source.dir}/${source.fo}">
-      <replacetoken><![CDATA[</fo:float>]]></replacetoken>
-      <replacevalue><![CDATA[]]></replacevalue>
-    </replace>
 
     <!-- Invoke Fop on our terms. This is the only place we need more memory
          (for the user manual), so we invoke as a forked process with a bigger
@@ -547,30 +548,29 @@ To get it, call ant with the docbook-xsl-get target.
 	 not be included in the output. -->
 
     <echo message="Building PDF for ${source.fo}..."/>
-
     <java classname="org.apache.fop.apps.Fop"
-          fork="yes"
           maxmemory="176M"
+          fork="yes"
 	  taskname="fop"
           dir="${source.dir}">
       <classpath>
         <pathelement location="${jimi.jar.path}"/>
-        <pathelement location="${fop.build.dir}/fop-0.20.3-custom.jar"/>
-        <pathelement location="${fop.lib.dir}/avalon-framework-4.0.jar"/>
-        <pathelement location="${fop.lib.dir}/batik-1.1.jar"/>
-        <pathelement location="${fop.lib.dir}/logkit-1.0.jar"/>
-        <pathelement location="${fop.lib.dir}/xalan-2.0.0.jar"/>
-        <pathelement location="${fop.lib.dir}/xalanj1compat.jar"/>
+        <pathelement location="${fop.build.dir}/fop.jar"/>
+        <pathelement location="${fop.lib.dir}/avalon-framework-cvs-20020806.jar"/>
+        <pathelement location="${fop.lib.dir}/batik.jar"/>
+        <pathelement location="${fop.lib.dir}/xalan-2.4.1.jar"/>
+        <pathelement location="${fop.lib.dir}/xml-apis.jar"/>
         <pathelement location="${xerces.jar.path}"/>         
       </classpath>
       <!-- Idea 1: Change the -q to -d when you are trouble-shooting. -->
-      <arg value="-d"/>
+      <arg value="-q"/>
       <arg line='-fo "${source.dir}/${source.fo}"'/>
       <arg line='-pdf "${target.dir}/${target.pdf}"'/>
     </java>
 
     <!-- Idea 2: Comment the delete out so you can look at the .fo file. -->
-<!-- <delete file="${source.dir}/${source.fo}"/> -->
+    <delete file="${source.dir}/${source.fo}"/>
+    <delete file="${source.dir}/${source.xml}.prep"/>
     <antcall target="jimi-check"/>
 
   </target>
