@@ -30,7 +30,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -83,7 +82,6 @@ import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.generator.ParserDisplay;
-import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -467,85 +465,12 @@ public abstract class FigNodeModelElement
     protected Object buildVisibilityPopUp() {
         ArgoJMenu visibilityMenu = new ArgoJMenu("menu.popup.visibility");
 
-        visibilityMenu.addCheckItem(new ActionVisibilityPublic(getOwner()));
-        visibilityMenu.addCheckItem(new ActionVisibilityPrivate(getOwner()));
-        visibilityMenu.addCheckItem(new ActionVisibilityProtected(getOwner()));
+        visibilityMenu.addRadioItem(new ActionVisibilityPublic(getOwner()));
+        visibilityMenu.addRadioItem(new ActionVisibilityPrivate(getOwner()));
+        visibilityMenu.addRadioItem(new ActionVisibilityProtected(getOwner()));
 
         return visibilityMenu;
     }
-
-    class ActionVisibilityPublic extends UMLAction {
-        private Object owner;
-        /**
-         * The constructor.
-         *
-         * @param o the target
-         */
-        public ActionVisibilityPublic(Object o) {
-            super("checkbox.visibility.public-uc", NO_ICON);
-            owner = o;
-            putValue("SELECTED", new Boolean(
-                    Model.getVisibilityKind().getPublic()
-                    .equals(Model.getFacade().getVisibility(getOwner()))));
-        }
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setVisibility(owner,
-                    Model.getVisibilityKind().getPublic());
-        }
-    }
-
-    class ActionVisibilityProtected extends UMLAction {
-        private Object owner;
-        /**
-         * The constructor.
-         *
-         * @param o the target
-         */
-        public ActionVisibilityProtected(Object o) {
-            super("checkbox.visibility.protected-uc", NO_ICON);
-            owner = o;
-            putValue("SELECTED", new Boolean(
-                    Model.getVisibilityKind().getProtected()
-                    .equals(Model.getFacade().getVisibility(getOwner()))));
-        }
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setVisibility(owner,
-                    Model.getVisibilityKind().getProtected());
-        }
-    }
-
-    class ActionVisibilityPrivate extends UMLAction {
-        private Object owner;
-        /**
-         * The constructor.
-         *
-         * @param o the target
-         */
-        public ActionVisibilityPrivate(Object o) {
-            super("checkbox.visibility.private-uc", NO_ICON);
-            owner = o;
-            putValue("SELECTED", new Boolean(
-                    Model.getVisibilityKind().getPrivate()
-                    .equals(Model.getFacade().getVisibility(getOwner()))));
-        }
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setVisibility(owner,
-                    Model.getVisibilityKind().getPrivate());
-        }
-    }
-
 
     /**
      * Build a pop-up menu item for the various modifiers.<p>
@@ -573,102 +498,6 @@ public abstract class FigNodeModelElement
 
         return modifierMenu;
     }
-
-    class ActionModifierAbstract extends UMLAction {
-        private Object owner;
-        /**
-         * The constructor.
-         *
-         * @param o the target
-         */
-        public ActionModifierAbstract(Object o) {
-            super("checkbox.abstract-uc", NO_ICON);
-            owner = o;
-            putValue("SELECTED",
-                    new Boolean(Model.getFacade().isAbstract(owner)));
-        }
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setAbstract(owner,
-                    !Model.getFacade().isAbstract(owner));
-        }
-    }
-
-    class ActionModifierLeaf extends UMLAction {
-        private Object owner;
-
-        /**
-         * The constructor.
-         *
-         * @param o the target
-         */
-        public ActionModifierLeaf(Object o) {
-            super("checkbox.final-uc", NO_ICON);
-            owner = o;
-            putValue("SELECTED", new Boolean(Model.getFacade().isLeaf(owner)));
-        }
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setLeaf(owner,
-                    !Model.getFacade().isLeaf(owner));
-        }
-    }
-
-    class ActionModifierRoot extends UMLAction {
-        private Object owner;
-
-        /**
-         * The constructor.
-         *
-         * @param o the target
-         */
-        public ActionModifierRoot(Object o) {
-            super("checkbox.root-uc", NO_ICON);
-            owner = o;
-            putValue("SELECTED", new Boolean(Model.getFacade().isRoot(owner)));
-        }
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setRoot(owner,
-                    !Model.getFacade().isRoot(owner));
-        }
-    }
-
-    class ActionModifierActive extends UMLAction {
-        private Object owner;
-
-        /**
-         * The constructor.
-         *
-         * @param o the target
-         */
-        public ActionModifierActive(Object o) {
-            super("checkbox.active-uc", NO_ICON);
-            owner = o;
-            putValue("SELECTED",
-                    new Boolean(Model.getFacade().isActive(owner)));
-        }
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setActive(owner,
-                    !Model.getFacade().isActive(owner));
-        }
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // Fig API
 
     /**
      * @see org.tigris.gef.presentation.Fig#getEnclosingFig()
@@ -1026,7 +855,7 @@ public abstract class FigNodeModelElement
         if (pve instanceof DeleteInstanceEvent
                 && pve.getSource() == getOwner()) {
             ProjectManager.getManager().getCurrentProject()
-            .moveToTrash(getOwner());
+                .moveToTrash(getOwner());
         } else if (pName.equals("editing")
                 && Boolean.FALSE.equals(pve.getNewValue())) {
 	    LOG.debug("finished editing");
