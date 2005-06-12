@@ -29,6 +29,7 @@ import javax.swing.Icon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingConstants;
 
 import org.argouml.i18n.Translator;
@@ -68,9 +69,9 @@ public class ArgoJMenu extends JMenu {
 
     /**
      * Creates a new checkbox menu item attached to the specified
-     * Action object and appends it to the end of this menu.
+     * action object and appends it to the end of this menu.
      *
-     * @param     a      the Action for the checkbox menu item to be added
+     * @param     a     the Action for the checkbox menu item to be added
      * @return          the new checkbox menu item
      */
     public JCheckBoxMenuItem addCheckItem(Action a) {
@@ -95,4 +96,31 @@ public class ArgoJMenu extends JMenu {
 	return mi;
     }
 
+    /**
+     * Creates a new radiobutton menu item attached to the specified
+     * action object and appends it to the end of this menu.
+     *
+     * @param     a     the Action for the radiobutton menu item to be added
+     * @return          the new radiobutton menu item
+     */
+    public JRadioButtonMenuItem addRadioItem(Action a) {
+        String name = (String) a.getValue(Action.NAME);
+        Icon icon = (Icon) a.getValue(Action.SMALL_ICON);
+        // Set the checkbox on or
+        // off according to the SELECTED value of the action.  If no
+        // SELECTED value is found then this defaults to true.
+        Boolean selected = (Boolean) a.getValue("SELECTED");
+        JRadioButtonMenuItem mi =
+            new JRadioButtonMenuItem(name, icon,
+                                  (selected == null
+                                   || selected.booleanValue()));
+        mi.setHorizontalTextPosition(SwingConstants.RIGHT);
+        mi.setVerticalTextPosition(SwingConstants.CENTER);
+        mi.setEnabled(a.isEnabled());
+        mi.addActionListener(a);
+        add(mi);
+        a.addPropertyChangeListener(createActionChangeListener(mi));
+        return mi;
+    }
+    
 } /* end class ArgoJMenu */
