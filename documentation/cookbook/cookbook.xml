@@ -2027,7 +2027,7 @@ and the SPIs represent plug-ins.
 </para>
       </sect2>
 
-      <sect2>
+      <sect2 id="explorer-implementation-details">
 	<title>Details of the Explorer Implementation</title>
 
 	<para>

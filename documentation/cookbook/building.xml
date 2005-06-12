@@ -844,7 +844,7 @@ are set up to allow for both of these ways.
 </para>
       </sect3>
 
-      <sect3>
+      <sect3 id="working-with-subproject">
 	<title>Working in a subproject</title>
 	<para>
 Each subproject has its own web site with

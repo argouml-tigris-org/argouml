@@ -56,6 +56,66 @@ Change to XXX.
       </tbody>
       -->
 
+
+      <tbody valign="top">
+        <row>
+          <entry>2005-06-11</entry>
+          <entry>
+Change to how to make an announcement.
+(See <xref linkend="release_process"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
+          <entry>2005-05-23</entry>
+          <entry>
+Change to release building description.
+(See <xref linkend="release_process"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+
+      <tbody valign="top">
+        <row>
+          <entry>2005-05-06</entry>
+          <entry>
+Added instructions on how we work with sub-projects.
+(See <xref linkend="working-with-subproject"/> and
+<xref linkend="cvs"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+
+      <tbody valign="top">
+        <row>
+          <entry>2005-05-01</entry>
+          <entry>
+Change to the tools for releases.
+(See <xref linkend="release_process"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
+          <entry>2005-04-29</entry>
+          <entry>
+Added a diagram explaining Explorer.
+(See <xref linkend="explorer-implementation-details"/>).
+</entry>
+          <entry>Michiel van der Wulp</entry>
+        </row>
+      </tbody>
+
+
       <tbody valign="top">
         <row>
           <entry>2005-03-10</entry>
