@@ -34,7 +34,7 @@ class ActionModifierActive extends AbstractActionCheckBoxMenuItem {
      */
     public ActionModifierActive(Object o) {
         super("checkbox.active-uc", NO_ICON);
-        putValue("SELECTED", new Boolean(Model.getFacade().isActive(o)));
+        putValue("SELECTED", new Boolean(valueOfTarget(o)));
     }
     
     /**
