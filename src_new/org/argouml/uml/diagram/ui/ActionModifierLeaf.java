@@ -34,7 +34,7 @@ class ActionModifierLeaf extends AbstractActionCheckBoxMenuItem {
      */
     public ActionModifierLeaf(Object o) {
         super("checkbox.final-uc", NO_ICON);
-        putValue("SELECTED", new Boolean(Model.getFacade().isLeaf(o)));
+        putValue("SELECTED", new Boolean(valueOfTarget(o)));
     }
     
     /**
