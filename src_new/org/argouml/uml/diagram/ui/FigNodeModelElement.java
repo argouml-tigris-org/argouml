@@ -80,6 +80,7 @@ import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Globals;
@@ -431,24 +432,28 @@ public abstract class FigNodeModelElement
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
-        ToDoList list = Designer.theDesigner().getToDoList();
-        Vector items = (Vector) list.elementsForOffender(getOwner()).clone();
-        if (items != null && items.size() > 0) {
-            ArgoJMenu critiques = new ArgoJMenu("menu.popup.critiques");
-            ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
-            if (itemUnderMouse != null) {
-                critiques.add(new ActionGoToCritique(itemUnderMouse));
-                critiques.addSeparator();
-            }
-            int size = items.size();
-            for (int i = 0; i < size; i++) {
-                ToDoItem item = (ToDoItem) items.elementAt(i);
-                if (item != itemUnderMouse) {
-                    critiques.add(new ActionGoToCritique(item));
+        /* Check if multiple items are selected. */
+        boolean ms = TargetManager.getInstance().getTargets().size() > 1;
+        if (!ms) {
+            ToDoList list = Designer.theDesigner().getToDoList();
+            Vector items = (Vector) list.elementsForOffender(getOwner()).clone();
+            if (items != null && items.size() > 0) {
+                ArgoJMenu critiques = new ArgoJMenu("menu.popup.critiques");
+                ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
+                if (itemUnderMouse != null) {
+                    critiques.add(new ActionGoToCritique(itemUnderMouse));
+                    critiques.addSeparator();
                 }
+                int size = items.size();
+                for (int i = 0; i < size; i++) {
+                    ToDoItem item = (ToDoItem) items.elementAt(i);
+                    if (item != itemUnderMouse) {
+                        critiques.add(new ActionGoToCritique(item));
+                    }
+                }
+                popUpActions.insertElementAt(new JSeparator(), 0);
+                popUpActions.insertElementAt(critiques, 0);
             }
-            popUpActions.insertElementAt(new JSeparator(), 0);
-            popUpActions.insertElementAt(critiques, 0);
         }
         // POPUP_ADD_OFFSET should be equal to the number of items added here:
         popUpActions.addElement(new JSeparator());
