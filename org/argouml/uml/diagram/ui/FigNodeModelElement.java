@@ -436,7 +436,8 @@ public abstract class FigNodeModelElement
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
         if (!ms) {
             ToDoList list = Designer.theDesigner().getToDoList();
-            Vector items = (Vector) list.elementsForOffender(getOwner()).clone();
+            Vector items = 
+                    (Vector) list.elementsForOffender(getOwner()).clone();
             if (items != null && items.size() > 0) {
                 ArgoJMenu critiques = new ArgoJMenu("menu.popup.critiques");
                 ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
