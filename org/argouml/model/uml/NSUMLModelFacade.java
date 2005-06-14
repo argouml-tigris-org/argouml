@@ -4008,7 +4008,7 @@ public class NSUMLModelFacade implements Facade {
      * @param mclassifier the classifier you want to have the operations for
      * @return a collection of the operations
      */
-    protected Collection getOperations(MClassifier mclassifier) {
+    private Collection getOperations(MClassifier mclassifier) {
         Collection result = new ArrayList();
         Iterator features = mclassifier.getFeatures().iterator();
         while (features.hasNext()) {
