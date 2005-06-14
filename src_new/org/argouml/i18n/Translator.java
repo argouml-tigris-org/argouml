@@ -32,6 +32,8 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
 import org.tigris.gef.util.Localizer;
 
 /**
@@ -63,16 +65,19 @@ public final class Translator {
     private Translator() {
     }
 
-    static {
-        setLocale(new Locale(
-                System.getProperty("user.language", "en"),
-                System.getProperty("user.country", "")));
-    }
-
     /**
      * Default Locale is set and resources Bundles are loaded.
      */
     public static void init () {
+        String s = Configuration.getString(Argo.KEY_LOCALE);
+        if ((s != "") && (s != null)) {
+            setLocale(new Locale(s));
+        } else {
+            setLocale(new Locale(
+                    System.getProperty("user.language", "en"),
+                    System.getProperty("user.country", "")));
+        }
+        
         Localizer.addResource("GefBase",
 			      "org.tigris.gef.base.BaseResourceBundle");
         Localizer.addResource(

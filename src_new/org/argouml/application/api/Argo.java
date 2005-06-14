@@ -243,6 +243,12 @@ public class Argo {
 	Configuration.makeKey("explorer", "perspectives");
 
     /**
+     * Key for selecting the locale. 
+     */
+    public static final ConfigurationKey KEY_LOCALE =
+        Configuration.makeKey("locale");
+
+    /**
      * Standard definition of the logging category for the console.
      */
     public static final String CONSOLE_LOG = "argo.console.log";
