@@ -115,7 +115,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<ocl>self.getRed</ocl> <ocl>self.getGreen</ocl> <ocl>self.getBlue</ocl>
+<ocl>org.tigris.gef.persistence.pgml.PgmlUtility.getColor(self)</ocl>
 
 ]]>
 
