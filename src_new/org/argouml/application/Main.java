@@ -111,8 +111,6 @@ public class Main {
         String directory = Argo.getDirectory();
         org.tigris.gef.base.Globals.setLastDirectory(directory);
 
-        // load i18n bundles
-        Translator.init();
         // create an anonymous class as a kind of adaptor for the cognitive
         // System to provide proper translation/i18n.
         org.argouml.cognitive.Translator.setTranslator(
