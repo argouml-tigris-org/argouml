@@ -175,7 +175,7 @@ public class Main {
                     doSplash = false;
                 } else if (args[i].equalsIgnoreCase("-noedem")) {
 		    // TODO: document use. Ref. 2/2
-                    // useEDEM = false;
+                    /* useEDEM = false*/;
                 } else if (args[i].equalsIgnoreCase("-nopreload")) {
                     preload = false;
                 } else if (args[i].equalsIgnoreCase("-profileload")) {
