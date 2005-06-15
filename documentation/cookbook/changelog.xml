@@ -56,6 +56,16 @@ Change to XXX.
       </tbody>
       -->
 
+      <tbody valign="top">
+        <row>
+          <entry>2005-06-15</entry>
+          <entry>
+Change to how internationalization is done. Subprojects.
+(See <xref linkend="internationalization"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
 
       <tbody valign="top">
         <row>
