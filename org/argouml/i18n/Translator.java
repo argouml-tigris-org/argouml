@@ -57,6 +57,11 @@ public final class Translator {
      * Store bundles for current Locale.
      */
     private static Map bundles;
+    
+    /**
+     * Used to make this class self-initialising when needed.
+     */
+    private static boolean initialised = false;
 
     /**
      * This class should only be used in a static constant so make
@@ -157,12 +162,17 @@ public final class Translator {
 
 
     /**
-     * Helper for those that don't want to give the bundle.<p>
+     * The main function of this class that localizes strings.
      *
      * @param key The key to localize.
      * @return The localized String.
      */
     public static String localize(String key) {
+        if (!initialised) {
+            initialised = true;
+            init();
+        }
+        
         if (key == null) {
             throw new IllegalArgumentException("null");
         }
