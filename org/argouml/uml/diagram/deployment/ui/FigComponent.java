@@ -34,6 +34,7 @@ import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -317,10 +318,8 @@ public class FigComponent extends FigNodeModelElement {
     protected void updateStereotypeText() {
         Object me = /*(MModelElement)*/ getOwner();
         if (me == null) return;
-        Object stereo = null;
-        if (Model.getFacade().getStereotypes(me).size() > 0) {
-            stereo = Model.getFacade().getStereotypes(me).iterator().next();
-        }
+        Object stereo = CollectionUtil.getFirstItemOrNull(
+                Model.getFacade().getStereotypes(me));
         if (stereo == null
                 || Model.getFacade().getName(stereo) == null
                 || Model.getFacade().getName(stereo).length() == 0) {

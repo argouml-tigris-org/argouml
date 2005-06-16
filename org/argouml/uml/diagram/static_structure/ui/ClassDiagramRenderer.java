@@ -39,6 +39,7 @@ import org.argouml.uml.diagram.ui.FigNodeAssociation;
 import org.argouml.uml.diagram.ui.FigPermission;
 import org.argouml.uml.diagram.ui.FigRealization;
 import org.argouml.uml.diagram.ui.FigUsage;
+import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -179,12 +180,8 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         } else if (Model.getFacade().isAAbstraction(edge)) {
             newEdge = new FigRealization(edge);
         } else if (Model.getFacade().isADependency(edge)) {
-            Object stereotype = null;
-
-            if (Model.getFacade().getStereotypes(edge).size() > 0) {
-                stereotype =
-                    Model.getFacade().getStereotypes(edge).iterator().next();
-            }
+            Object stereotype = CollectionUtil.getFirstItemOrNull(
+                    Model.getFacade().getStereotypes(edge));
             if (stereotype != null
                     && Model.getExtensionMechanismsHelper().isStereotypeInh(
                             stereotype, "realize", "Abstraction")) {

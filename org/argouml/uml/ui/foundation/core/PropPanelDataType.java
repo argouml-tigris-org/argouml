@@ -43,6 +43,7 @@ import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
+import org.argouml.util.CollectionUtil;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -164,12 +165,8 @@ public class PropPanelDataType extends PropPanelClassifier {
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAClassifier(target)) {
-                Object stereo = null;
-                if (Model.getFacade().getStereotypes(target).size() > 0) {
-                    stereo =
-                        Model.getFacade().getStereotypes(target)
-                        	.iterator().next();
-                }
+                Object stereo = CollectionUtil.getFirstItemOrNull(
+                        Model.getFacade().getStereotypes(target));
                 if (stereo == null) {
                     //  if there is not an enumeration stereotype as
                     //     an immediate child of the model, add one

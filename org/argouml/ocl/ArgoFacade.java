@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.util.CollectionUtil;
 
 import tudresden.ocl.check.OclTypeException;
 import tudresden.ocl.check.types.Any;
@@ -176,13 +177,11 @@ class ArgoAny implements Any, Type2 {
 		    && (Model.getFacade().getUpper(multiplicity) > 1
 			|| Model.getFacade().getUpper(multiplicity)
                            == -1)) {
+            
+            Object stereotype = CollectionUtil.getFirstItemOrNull(
+                    Model.getFacade().getStereotypes(ae));
 		    // to do: think about the condition of this if-statement
 		    // ordered association end -> Sequence; otherwise -> Set
-                    Object stereotype = null;
-                    if (Model.getFacade().getStereotypes(ae).size() > 0) {
-                        stereotype = Model.getFacade().getStereotypes(ae)
-                                .iterator().next();
-                    }
 		    if (stereotype != null
 			    && stereotype.toString() != null
 			    && "ordered".equals(stereotype.toString())) {

@@ -28,6 +28,7 @@ import java.util.Iterator;
 
 import org.argouml.model.Model;
 import org.argouml.uml.Profile;
+import org.argouml.util.CollectionUtil;
 
 /**
  * A combobox entry.
@@ -201,12 +202,8 @@ public class UMLComboBoxEntry implements Comparable {
                 Model.getCoreHelper().setName(
                         clone,
                         Model.getFacade().getName(element));
-                Object stereo = null;
-                if (Model.getFacade().getStereotypes(element).size() > 0) {
-                    stereo =
-                        Model.getFacade().getStereotypes(element)
-                        	.iterator().next();
-                }
+                Object stereo = CollectionUtil.getFirstItemOrNull(
+                        Model.getFacade().getStereotypes(element));
                 Model.getCoreHelper().setStereotype(clone, stereo);
                 if (Model.getFacade().isAStereotype(clone)) {
                     Model.getExtensionMechanismsHelper().setBaseClass(clone,

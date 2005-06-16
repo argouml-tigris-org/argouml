@@ -52,6 +52,7 @@ import org.argouml.ocl.ArgoFacade;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
+import org.argouml.util.CollectionUtil;
 
 import tudresden.ocl.OclTree;
 import tudresden.ocl.parser.analysis.DepthFirstAdapter;
@@ -455,10 +456,8 @@ public class GeneratorJava
         StringBuffer sb = new StringBuffer(80);
         String nameStr = null;
         boolean constructor = false;
-        Object/*MStereotype*/ stereo = null;
-        if (Model.getFacade().getStereotypes(op).size() > 0) {
-            stereo = Model.getFacade().getStereotypes(op).iterator().next();
-        }
+        Object stereo = CollectionUtil.getFirstItemOrNull(
+                Model.getFacade().getStereotypes(op));
         if (stereo != null
                 && Model.getFacade().getName(stereo).equals("create")) {
             // constructor

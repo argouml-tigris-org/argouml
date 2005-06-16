@@ -3664,7 +3664,7 @@ public class NSUMLModelFacade implements Facade {
      * @param handle The model element.
      * @return a Collection with all stereotypes or empty if none.
      */
-    public List getStereotypes(Object handle) {
+    public Collection getStereotypes(Object handle) {
         if (isAModelElement(handle)) {
             // This returns a collection as we have an eye on the future
             // and multiple stereotypes in UML1.5

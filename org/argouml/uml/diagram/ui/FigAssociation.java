@@ -40,6 +40,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.PathConvPercentPlusConst;
@@ -295,7 +296,6 @@ public class FigAssociation extends FigEdgeModelElement {
 	String name = Model.getFacade().getName(end);
 	Object order = Model.getFacade().getOrdering(end);
         String visi = "";
-        Object stereo = null;
         Object et = Model.getFacade().getType(end);
         if (Model.getFacade().isNavigable(end)
 	    && (Model.getFacade().isAClass(et) 
@@ -303,9 +303,8 @@ public class FigAssociation extends FigEdgeModelElement {
 	    visi = 
 	        Notation.generate(this, Model.getFacade().getVisibility(end));
         }
-        if (Model.getFacade().getStereotypes(end).size() > 0) {
-            stereo = Model.getFacade().getStereotypes(end).iterator().next();
-        }
+        Object stereo = CollectionUtil.getFirstItemOrNull(
+                Model.getFacade().getStereotypes(end));
 
 	multiToUpdate.setText(Notation.generate(this, multi));
 	orderingToUpdate.setText(getOrderingName(order));
