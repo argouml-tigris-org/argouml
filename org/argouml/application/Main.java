@@ -186,11 +186,15 @@ public class Main {
 			   && i + 1 < args.length) {
 		    commands.add(args[i + 1]);
 		    i++;
+                } else if (args[i].equalsIgnoreCase("-locale")
+                           && i + 1 < args.length) {
+                    Translator.setLocale(args[i + 1]);
+                    i++;
                 } else if (args[i].equalsIgnoreCase("-batch")) {
                     batch = true;
                 } else {
                     System.err.println(
-                        "Ignoring unknown option '" + args[i] + "'");
+                        "Ignoring unknown/incomplete option '" + args[i] + "'");
                 }
             } else {
                 if (projectName == null) {
@@ -391,21 +395,21 @@ public class Main {
     private static void printUsage() {
         System.err.println("Usage: [options] [project-file]");
         System.err.println("Options include: ");
+        System.err.println("  -help           display this information");
         LookAndFeelMgr.getInstance().printThemeArgs();
-        System.err.println("  -nosplash       don't display Argo/UML logo");
+        System.err.println("  -nosplash       don't display logo at startup");
         System.err.println("  -noedem         don't report usage statistics");
         System.err.println("  -nopreload      don't preload common classes");
         System.err.println("  -profileload    report on load times");
         System.err.println("  -norecentfile   don't reload last saved file");
         System.err.println("  -command <arg>  command to perform on startup");
         System.err.println("  -batch          don't start GUI");
+        System.err.println("  -locale <arg>   set the locale (e.g. 'en_GB')");
         System.err.println("");
         System.err.println("You can also set java settings which influence "
 			   + "the behaviour of ArgoUML:");
-        System.err.println("  -Duser.language    [e.g. en]");
-        System.err.println("  -Duser.country     [e.g. US]");
         System.err.println("  -Dforce.nativelaf  [force ArgoUML to use "
-			   + "the native look and feel. UNSUPPORTED]");
+			   + "the native look and feel. [UNSUPPORTED]");
         System.err.println("\n\n");
     }
 
