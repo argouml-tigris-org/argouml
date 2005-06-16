@@ -1876,10 +1876,6 @@ public class NSUMLModelFacade implements Facade {
     public Collection getAttributes(Object handle) {
         if (handle instanceof MClassifier) {
             MClassifier c = (MClassifier) handle;
-            // TODO: We are converting back and forth between collections and
-            // iterators. I (Linus) prefer iterators.
-            //return getStructuralFeatures(c).iterator();
-            //...But I (thn) got CVS conflicts, so:
             return getStructuralFeatures(c);
         }
 
