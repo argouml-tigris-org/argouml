@@ -201,21 +201,21 @@ java -jar argouml.jar
 
     <programlisting><![CDATA[
 Usage: [options] [project-file]
-  Options include:
-    -big            use big fonts
-    -huge           use huge fonts
-    -nosplash       don't display Argo/UML logo
-    -noedem         don't report usage statistics
-    -nopreload      don't preload common classes
-    -profileload    report on load times
-    -norecentfile   don't reload last saved file
-    -command &lt;arg&gt;  command to perform on startup
-    -batch          don't start GUI
-  
-  You can also set java settings which influence the behaviour of ArgoUML:
-    -Duser.language    [e.g. en]
-    -Duser.country     [e.g. US]
-    -Dforce.nativelaf  [force ArgoUML to use the native look and feel. UNSUPPORTED]
+Options include:
+  -help           display this information
+  -big            use big fonts
+  -huge           use huge fonts
+  -nosplash       don't display logo at startup
+  -noedem         don't report usage statistics
+  -nopreload      don't preload common classes
+  -profileload    report on load times
+  -norecentfile   don't reload last saved file
+  -command <arg>  command to perform on startup
+  -batch          don't start GUI
+  -locale <arg>   set the locale (e.g. 'en_GB')
+
+You can also set java settings which influence the behaviour of ArgoUML:
+  -Dforce.nativelaf  [force ArgoUML to use the native look and feel. UNSUPPORTED]
     ]]>
     </programlisting>
 	
@@ -225,7 +225,7 @@ Usage: [options] [project-file]
 	  the country in uppercase!
 	</para>
  
-    <para><command>java -Duser.language=en -Duser.country=US -jar argouml.jar</command>
+    <para><command>java -jar argouml.jar -locale en</command>
     </para>
 
   </sect1>
