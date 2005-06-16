@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.util.CollectionUtil;
 
 /**
  * @since Oct 10, 2002
@@ -64,12 +65,8 @@ public class ActionSetModelElementStereotype extends UMLAction {
             }
             if (Model.getFacade().isAModelElement(combo.getTarget())) {
                 target = /*(MModelElement)*/ combo.getTarget();
-                oldStereo = null;
-                if (Model.getFacade().getStereotypes(target).size() > 0) {
-                    oldStereo =
-                        Model.getFacade().getStereotypes(target)
-                        	.iterator().next();
-                }
+                oldStereo = CollectionUtil.getFirstItemOrNull(
+                        Model.getFacade().getStereotypes(target));
             }
 	    if ("".equals(combo.getSelectedItem())) {
 	        newStereo = null;

@@ -32,6 +32,7 @@ import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
+import org.argouml.util.CollectionUtil;
 
 /**
  * Critic to detect whether an operation name obeys to certain rules.
@@ -53,32 +54,30 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAOperation(dm))) {
-	    return NO_PROBLEM;
-	}
-	Object oper = /*(MOperation)*/ dm;
-	String myName = Model.getFacade().getName(oper);
-	if (myName == null || myName.equals("")) {
-	    return NO_PROBLEM;
-	}
-	String nameStr = myName;
-	if (nameStr == null || nameStr.length() == 0) {
-	    return NO_PROBLEM;
-	}
-	char initalChar = nameStr.charAt(0);
-        Object stereo = null;
-        if (Model.getFacade().getStereotypes(oper).size() > 0) {
-            stereo = Model.getFacade().getStereotypes(oper).iterator().next();
+        if (!(Model.getFacade().isAOperation(dm))) {
+            return NO_PROBLEM;
         }
-	if ((stereo != null)
-            && ("create".equals(Model.getFacade().getName(stereo))
-                || "constructor".equals(Model.getFacade().getName(stereo)))) {
-	    return NO_PROBLEM;
+        Object oper = /*(MOperation)*/ dm;
+        String myName = Model.getFacade().getName(oper);
+        if (myName == null || myName.equals("")) {
+            return NO_PROBLEM;
         }
-	if (!Character.isLowerCase(initalChar)) {
-	    return PROBLEM_FOUND;
-	}
-	return NO_PROBLEM;
+        String nameStr = myName;
+        if (nameStr == null || nameStr.length() == 0) {
+            return NO_PROBLEM;
+        }
+        char initalChar = nameStr.charAt(0);
+        Object stereo = CollectionUtil.getFirstItemOrNull(
+                Model.getFacade().getStereotypes(oper));
+        if ((stereo != null)
+                && ("create".equals(Model.getFacade().getName(stereo))
+                    || "constructor".equals(Model.getFacade().getName(stereo)))) {
+            return NO_PROBLEM;
+        }
+        if (!Character.isLowerCase(initalChar)) {
+            return PROBLEM_FOUND;
+        }
+        return NO_PROBLEM;
     }
 
     /**

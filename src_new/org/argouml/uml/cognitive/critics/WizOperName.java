@@ -34,6 +34,7 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepCue;
 import org.argouml.model.Model;
+import org.argouml.util.CollectionUtil;
 
 /**
  * A wizard to help the user change the name of an operation to a better name.
@@ -198,11 +199,8 @@ public class WizOperName extends WizMEName {
                 Object oper = getModelElement();
 
                 if (!oldStereotypeIsSet) {
-                    oldStereotype = null;
-                    if (Model.getFacade().getStereotypes(oper).size() > 0) {
-                        oldStereotype = Model.getFacade().getStereotypes(oper)
-                            .iterator().next();
-                    }
+                    oldStereotype = CollectionUtil.getFirstItemOrNull(
+                            Model.getFacade().getStereotypes(oper));
                     oldStereotypeIsSet = true;
                 }
 

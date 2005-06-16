@@ -26,6 +26,8 @@ package org.argouml.model;
 
 import java.util.Collection;
 
+import org.argouml.util.CollectionUtil;
+
 import junit.framework.TestCase;
 
 /**
@@ -112,23 +114,25 @@ public class TestModelFacade2 extends TestCase {
      * Test the stereotypes.
      */
     public void testGetStereotypes() {
-	Object cls = Model.getCoreFactory().buildClass();
-
-	Collection coll1 = Model.getFacade().getStereotypes(cls);
-	assertEquals(0, coll1.size());
-
-	Object stereotype =
-	    Model.getExtensionMechanismsFactory().buildStereotype(
-	            "TestStereotype",
-	            Model.getFacade().getNamespace(cls));
-
-	Model.getCoreHelper().setStereotype(cls, stereotype);
-
-	Collection coll2 = Model.getFacade().getStereotypes(cls);
-
-	assertEquals(1, coll2.size());
-	assertTrue(coll2.contains(stereotype));
-	assertEquals(stereotype,
-	             Model.getFacade().getStereotypes(cls).iterator().next());
+        Object cls = Model.getCoreFactory().buildClass();
+        
+        Collection coll1 = Model.getFacade().getStereotypes(cls);
+        assertEquals(0, coll1.size());
+        
+        Object stereotype =
+            Model.getExtensionMechanismsFactory().buildStereotype(
+                    "TestStereotype",
+                    Model.getFacade().getNamespace(cls));
+        
+        Model.getCoreHelper().setStereotype(cls, stereotype);
+        
+        Collection coll2 = Model.getFacade().getStereotypes(cls);
+        
+        assertEquals(1, coll2.size());
+        assertTrue(coll2.contains(stereotype));
+        assertEquals(
+            stereotype,
+            CollectionUtil.getFirstItemOrNull(
+                    Model.getFacade().getStereotypes(cls)));
     }
 }

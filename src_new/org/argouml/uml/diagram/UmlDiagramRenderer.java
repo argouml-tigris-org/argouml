@@ -24,7 +24,10 @@
 
 package org.argouml.uml.diagram;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.argouml.model.Model;
@@ -82,6 +85,7 @@ import org.argouml.uml.diagram.use_case.ui.FigActor;
 import org.argouml.uml.diagram.use_case.ui.FigExtend;
 import org.argouml.uml.diagram.use_case.ui.FigInclude;
 import org.argouml.uml.diagram.use_case.ui.FigUseCase;
+import org.argouml.util.CollectionUtil;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
@@ -257,11 +261,8 @@ public abstract class UmlDiagramRenderer
         } else if (Model.getFacade().isAUsage(edge)) {
             newEdge = new FigUsage();
         } else if (Model.getFacade().isADependency(edge)) {
-            Object stereotype = null;
-
-            if (Model.getFacade().getStereotypes(edge).size() > 0) {
-                stereotype = Model.getFacade().getStereotypes(edge).get(0);
-            }
+            Object stereotype = CollectionUtil.getFirstItemOrNull(
+                    Model.getFacade().getStereotypes(edge));
             if (Model.getExtensionMechanismsHelper().isStereotypeInh(
                             stereotype, "realize", "Abstraction")) {
                 newEdge = new FigRealization();
@@ -287,5 +288,4 @@ public abstract class UmlDiagramRenderer
 
         return newEdge;
     }
-
 } /* end class CollabDiagramRenderer */

@@ -52,6 +52,7 @@ import org.argouml.uml.diagram.ui.StereotypeContainer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.VisibilityContainer;
 import org.argouml.uml.ui.UMLAction;
+import org.argouml.util.CollectionUtil;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -281,18 +282,16 @@ public class FigPackage extends FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
-        Object me = /*(MModelElement)*/ getOwner();
+        Object modelElement = getOwner();
 
-        if (me == null) {
+        if (modelElement == null) {
             return;
         }
 
         Rectangle rect = getBounds();
 
-        Object stereo = null;
-        if (Model.getFacade().getStereotypes(me).size() > 0) {
-            stereo = Model.getFacade().getStereotypes(me).iterator().next();
-        }
+        Object stereo = CollectionUtil.getFirstItemOrNull(
+                Model.getFacade().getStereotypes(modelElement));
 
         /* check if stereotype is defined */
         if ((stereo == null)

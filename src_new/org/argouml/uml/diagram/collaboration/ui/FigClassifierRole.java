@@ -39,6 +39,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
+import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -232,10 +233,8 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         Rectangle   bounds = getBounds();
 
-        Object stereo = null;
-        if (Model.getFacade().getStereotypes(me).size() > 0) {
-            stereo = Model.getFacade().getStereotypes(me).iterator().next();
-        }
+        Object stereo = CollectionUtil.getFirstItemOrNull(
+                Model.getFacade().getStereotypes(me));
 
         // Where we now have no stereotype, mark as not displayed. Were we do
         // have a stereotype, set the text and mark as displayed. If we remove

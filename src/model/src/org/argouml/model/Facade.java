@@ -2196,7 +2196,7 @@ public interface Facade {
      * @param handle The model element.
      * @return a Collection with all stereotypes or empty if none.
      */
-    List getStereotypes(Object handle);
+    Collection getStereotypes(Object handle);
 
     /**
      * Returns the stimuli belonging to some given link.

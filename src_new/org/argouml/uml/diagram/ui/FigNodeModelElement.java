@@ -83,6 +83,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.generator.ParserDisplay;
+import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -1172,17 +1173,14 @@ public abstract class FigNodeModelElement
      * FigInterface)
      */
     protected void updateStereotypeText() {
-        Object stereotype = null;
         if (getOwner() == null) {
             LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
                     + "] is null.");
             LOG.warn("I return...");
             return;
         }
-        if (Model.getFacade().getStereotypes(getOwner()).size() > 0) {
-            stereotype =
-                Model.getFacade().getStereotypes(getOwner()).iterator().next();
-        }
+        Object stereotype = CollectionUtil.getFirstItemOrNull(
+                Model.getFacade().getStereotypes(getOwner()));
         if (stereotype == null) {
             stereo.setText("");
             return;
