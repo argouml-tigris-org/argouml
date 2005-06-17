@@ -99,6 +99,11 @@ public class ActionAddOperation extends UMLAction {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
+        /* Check if multiple items are selected: */
+        if (TargetManager.getInstance().getTargets().size() > 1) {
+            return false;
+        }
+
 	Object target = TargetManager.getInstance().getModelTarget();
 	return super.shouldBeEnabled()
 	    && (Model.getFacade().isAClassifier(target)
