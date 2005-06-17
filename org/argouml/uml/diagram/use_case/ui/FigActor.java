@@ -152,7 +152,7 @@ public class FigActor extends FigNodeModelElement {
         // Modifiers ...
         popUpActions.insertElementAt(
                 buildModifierPopUp(ABSTRACT | LEAF | ROOT),
-                popUpActions.size() - POPUP_ADD_OFFSET);
+                popUpActions.size() - popupAddOffset);
         return popUpActions;
     }
 

@@ -592,15 +592,15 @@ public class FigPackage extends FigNodeModelElement
             });
         }
         popUpActions.insertElementAt(showMenu,
-            popUpActions.size() - POPUP_ADD_OFFSET);
+            popUpActions.size() - popupAddOffset);
 
         // Modifier ...
         popUpActions.insertElementAt(buildModifierPopUp(ABSTRACT | LEAF | ROOT),
-                popUpActions.size() - POPUP_ADD_OFFSET);
+                popUpActions.size() - popupAddOffset);
 
         // Visibility ...
         popUpActions.insertElementAt(buildVisibilityPopUp(),
-                popUpActions.size() - POPUP_ADD_OFFSET);
+                popUpActions.size() - popupAddOffset);
 
         return popUpActions;
     }
