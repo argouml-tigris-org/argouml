@@ -50,6 +50,7 @@ import org.argouml.application.api.NotationContext;
 import org.argouml.application.api.NotationName;
 import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.cognitive.Designer;
@@ -118,7 +119,7 @@ public abstract class FigEdgeModelElement
      * Offset from the end of the set of popup actions at which new items
      * should be inserted by concrete figures.
     **/
-    protected static final int POPUP_ADD_OFFSET = 3;
+    protected static int popupAddOffset;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -169,7 +170,7 @@ public abstract class FigEdgeModelElement
         stereo.setAllowsTab(false);
 
         setBetweenNearestPoints(true);
-        ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
+        ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
         currentNotationName = Notation.getConfigueredNotation();
     }
 
@@ -181,14 +182,14 @@ public abstract class FigEdgeModelElement
     public FigEdgeModelElement(Object edge) {
         this();
         setOwner(edge);
-        ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
+        ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
     /**
      * @see java.lang.Object#finalize()
      */
     public void finalize() {
-        ArgoEventPump.removeListener(ArgoEvent.ANY_NOTATION_EVENT, this);
+        ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -233,6 +234,15 @@ public abstract class FigEdgeModelElement
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
+
+        // popupAddOffset should be equal to the number of items added here:
+        popUpActions.addElement(new JSeparator());
+        popupAddOffset = 1;
+        if (removeFromDiagram) {
+            popUpActions.addElement(ActionDeleteFromDiagram.getSingleton());
+            popupAddOffset++;
+        }
+        
         ToDoList list = Designer.theDesigner().getToDoList();
         Vector items = (Vector) list.elementsForOffender(getOwner()).clone();
         if (items != null && items.size() > 0) {
@@ -252,12 +262,7 @@ public abstract class FigEdgeModelElement
             popUpActions.insertElementAt(new JSeparator(), 0);
             popUpActions.insertElementAt(critiques, 0);
         }
-        // POPUP_ADD_OFFSET should be equal to the number of items added here:
-        popUpActions.addElement(new JSeparator());
-        popUpActions.addElement(ActionProperties.getSingleton());
-        if (removeFromDiagram) {
-            popUpActions.addElement(ActionDeleteFromDiagram.getSingleton());
-        }
+
         return popUpActions;
     }
 
@@ -439,7 +444,7 @@ public abstract class FigEdgeModelElement
         if (pve instanceof DeleteInstanceEvent
                 && pve.getSource() == getOwner()) {
             ProjectManager.getManager().getCurrentProject()
-            .moveToTrash(getOwner());
+                    .moveToTrash(getOwner());
         } else if (pName.equals("editing")
             && Boolean.FALSE.equals(pve.getNewValue())) {
             LOG.debug("finished editing");
