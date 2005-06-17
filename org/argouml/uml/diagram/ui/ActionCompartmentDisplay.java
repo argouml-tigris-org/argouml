@@ -220,17 +220,16 @@ public class ActionCompartmentDisplay extends UMLAction {
 
 
     /**
-     * <p>Indicate whether this action should be enabled.</p>
+     * Indicate whether this action should be enabled.<p>
      *
-     * <p>Always returns <code>true</code> in this implementation.</p>
+     * Always returns <code>true</code> in this implementation.
      *
-     * @return  <code>true</code> if the action should be enabled,
-     *          <code>false</code> otherwise. Always returns <code>true</code>
-     *          in this implementation.
+     * @return  <code>true</code>  
      */
 
     public boolean shouldBeEnabled() {
-	return true;
+        Vector sels = Globals.curEditor().getSelectionManager().selections();
+	return sels.size() == 1;
     }
 
 

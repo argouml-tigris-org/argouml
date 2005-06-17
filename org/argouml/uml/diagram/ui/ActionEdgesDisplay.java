@@ -54,8 +54,7 @@ public class ActionEdgesDisplay extends UMLAction {
     // compartments
     private static UMLAction showEdges = new ActionEdgesDisplay(true,
                 Translator.localize("menu.popup.show.all-edges"));
-    private static UMLAction hideEdges
-        = new ActionEdgesDisplay(false,
+    private static UMLAction hideEdges = new ActionEdgesDisplay(false,
                 Translator.localize("menu.popup.hide.all-edges"));
 
     private boolean show;
@@ -88,7 +87,6 @@ public class ActionEdgesDisplay extends UMLAction {
         MutableGraphModel mgm = (MutableGraphModel) ce.getGraphModel();
 
         Enumeration e = ce.getSelectionManager().selections().elements();
-        // note: multiple selection not currently supported (2002-04-05)
         while (e.hasMoreElements()) {
             Selection sel = (Selection) e.nextElement();
             Object owner = sel.getContent().getOwner();

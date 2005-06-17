@@ -83,12 +83,12 @@ public class ActionAddAttribute extends UMLAction {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
+        /* Check if multiple items are selected: */
+        if (TargetManager.getInstance().getTargets().size() > 1) {
+            return false;
+        }
+
 	Object target =  TargetManager.getInstance().getModelTarget();
-	/*
-	if (target instanceof MInterface) {
-		return Notation.getDefaultNotation().getName().equals("Java");
-	}
-	*/
 	return super.shouldBeEnabled()
 	       && (Model.getFacade().isAClass(target)
 		   || (Model.getFacade().isAFeature(target)
