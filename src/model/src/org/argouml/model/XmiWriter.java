@@ -33,8 +33,9 @@ package org.argouml.model;
 public interface XmiWriter {
 
     /**
-     * Write XMI to registered writer
+     * Write XMI to registered writer.
+     *
      * @throws UmlException if it goes wrong
      */
-    public void write() throws UmlException;
+    void write() throws UmlException;
 }

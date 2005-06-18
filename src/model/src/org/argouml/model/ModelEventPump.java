@@ -204,17 +204,17 @@ public interface ModelEventPump {
      * @param saveAction the action to enable on change to model.
      */
     void setSaveAction(Action saveAction);
-    
+
     /**
      * Start the ModelEventPump firing events.
      */
     void startPumpingEvents();
-    
+
     /**
      * Stop the ModelEventPump firing events.
      */
     void stopPumpingEvents();
-    
+
     /**
      * Flush events from the ModelEventPump.
      */

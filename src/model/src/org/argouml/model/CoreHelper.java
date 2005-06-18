@@ -272,10 +272,10 @@ public interface CoreHelper {
      * @return MGeneralization
      */
     Object getGeneralization(Object achild, Object aparent);
-    
+
     /**
-     * Gets the body of a comment. 
-     * 
+     * Gets the body of a comment.
+     *
      * @param comment the comment
      * @return the body of the comment
      */
@@ -992,10 +992,10 @@ public interface CoreHelper {
      * @param name to set
      */
     void setName(Object handle, String name);
-    
+
     /**
      * Sets the body of a comment.
-     * 
+     *
      * @param handle the comment
      * @param body the string
      */

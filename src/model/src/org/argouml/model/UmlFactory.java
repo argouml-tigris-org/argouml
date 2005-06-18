@@ -123,7 +123,7 @@ public interface UmlFactory {
      * @return true if removed
      */
     boolean isRemoved(Object o);
-    
+
     /**
      * Adds all interested (and centralized) listeners to the given
      * modelelement handle.

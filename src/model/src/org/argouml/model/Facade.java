@@ -26,7 +26,6 @@ package org.argouml.model;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Facade object for the Model subsystem in ArgoUML.<p>

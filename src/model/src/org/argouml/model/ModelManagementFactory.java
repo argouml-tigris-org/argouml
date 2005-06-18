@@ -38,17 +38,19 @@ public interface ModelManagementFactory {
     Object createModel();
 
     /**
-     * Sets the root model of the project
+     * Sets the root model of the project.
+     *
      * @param rootModel the new root model.
      */
-    public void setRootModel(Object rootModel);
-    
+    void setRootModel(Object rootModel);
+
     /**
-     * Gets the root model of the project
+     * Gets the root model of the project.
+     *
      * @return the current root model.
      */
-    public Object getRootModel();
-    
+    Object getRootModel();
+
     /**
      * Create an empty but initialized instance of a UML ElementImport.
      *

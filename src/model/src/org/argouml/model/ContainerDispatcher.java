@@ -58,5 +58,5 @@ public interface ContainerDispatcher extends PropertyChangeListener {
      *
      * @param metaclasses  The metaclass array we wish to listen to.
      */
-    public void setNameEventListening(Object[] metaclasses);
+    void setNameEventListening(Object[] metaclasses);
 }
