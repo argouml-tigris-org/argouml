@@ -153,14 +153,21 @@ public final class ResourceLoaderWrapper {
     }
 
     /**
-     * @see ResourceLoader#lookupIconResource(String)
+     * Find the correct icon for a key.
+     *
+     * @param resource The name of the resource to look up.
+     * @return The ImageIcon.
      */
     public static ImageIcon lookupIconResource(String resource) {
 	return ResourceLoader.lookupIconResource(resource);
     }
 
     /**
-     * @see ResourceLoader#lookupIconResource(String, String)
+     * Find the correct icon for a key.
+     *
+     * @param resource The name of the resource to look up.
+     * @param desc The description for the icon.
+     * @return The ImageIcon.
      */
     public static ImageIcon lookupIconResource(String resource, String desc) {
 	return ResourceLoader.lookupIconResource(resource, desc);
@@ -367,6 +374,7 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-sendaction", "SendAction");
         images.put("button.new-shallowhistory", "ShallowHistory");
         images.put("button.new-state", "State");
+        images.put("button.new-stereotype", "Stereotype");
         images.put("button.new-stubstate", "StubState");
         images.put("button.new-subactivitystate", "SubactivityState");
         images.put("button.new-submachinestate", "SubmachineState");
@@ -377,6 +385,9 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-unicomposition", "UniComposition");
         images.put("button.new-usage", "Usage");
         images.put("button.new-usecase", "UseCase");
+    }
+
+    static {
         images.put("button.select", "Select");
         images.put("button.sequence-expand", "SequenceExpand");
         images.put("button.sequence-contract", "SequenceContract");
