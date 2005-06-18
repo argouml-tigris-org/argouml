@@ -174,6 +174,8 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
 
     /**
      * Get the homemodel.
+     *
+     * @return the homemodel
      */
     public Object getHomeModel() { 
         return homeModel; 
