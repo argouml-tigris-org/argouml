@@ -57,11 +57,11 @@ public final class Translator {
      * Store bundles for current Locale.
      */
     private static Map bundles;
-    
+
     /**
      * Used to make this class self-initialising when needed.
      */
-    private static boolean initialised = false;
+    private static boolean initialized;
 
     /**
      * This class should only be used in a static constant so make
@@ -74,16 +74,16 @@ public final class Translator {
      * Default Locale is set and resources Bundles are loaded.
      */
     public static void init () {
-        initialised = true;
+        initialized = true;
         String s = Configuration.getString(Argo.KEY_LOCALE);
-        if ((s != "") && (s != null)) {
+        if ((!"".equals(s)) && (s != null)) {
             setLocale(s);
         } else {
             setLocale(new Locale(
                     System.getProperty("user.language", "en"),
                     System.getProperty("user.country", "")));
         }
-        
+
         Localizer.addResource("GefBase",
 			      "org.tigris.gef.base.BaseResourceBundle");
         Localizer.addResource(
@@ -113,14 +113,14 @@ public final class Translator {
     }
 
     /**
-     * Change the current Locale. The string with the name follows 
+     * Change the current Locale. The string with the name follows
      * this BNF format: <p>
      *     language [ "_" country ]
      *
      * @param name the name of the new locale
      */
     public static void setLocale(String name) {
-        if (!initialised) {
+        if (!initialized) {
             init();
         }
         String language = name;
@@ -190,10 +190,10 @@ public final class Translator {
      * @return The localized String.
      */
     public static String localize(String key) {
-        if (!initialised) {
+        if (!initialized) {
             init();
         }
-        
+
         if (key == null) {
             throw new IllegalArgumentException("null");
         }
