@@ -58,6 +58,17 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2005-06-18</entry>
+          <entry> Restructured: all main chapters are now in seperate files. No
+            content changes.
+          </entry>
+          <entry>Michiel van der Wulp</entry>
+        </row>
+      </tbody>
+      
+      
+      <tbody valign="top">
+        <row>
           <entry>2005-06-15</entry>
           <entry>
 Change to how internationalization is done. Subprojects.
