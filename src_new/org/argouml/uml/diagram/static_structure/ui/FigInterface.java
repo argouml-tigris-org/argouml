@@ -47,6 +47,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
+import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
@@ -245,6 +246,8 @@ public class FigInterface extends FigNodeModelElement
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
         addMenu.add(new ActionAddOperation());
         addMenu.add(new ActionAddNote());
+        addMenu.add(ActionEdgesDisplay.getShowEdges());
+        addMenu.add(ActionEdgesDisplay.getHideEdges());
         popUpActions.insertElementAt(addMenu,
                 popUpActions.size() - popupAddOffset);
 
