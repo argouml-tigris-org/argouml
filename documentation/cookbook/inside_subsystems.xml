@@ -390,7 +390,7 @@ south: 	TabXXX
   </sect1>
   
   &subsysteminternationalization;
-  &cookbooklogging;
+  &subsystemlogging;
   
   <sect1 id="jre">
     <title>JRE with utils</title>

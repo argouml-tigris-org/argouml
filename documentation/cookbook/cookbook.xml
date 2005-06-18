@@ -40,15 +40,16 @@
 <!ENTITY further_reading SYSTEM "further_reading.xml">
 <!ENTITY processes SYSTEM "process.xml">
 
+<!ENTITY subsystemmodel SYSTEM "subsystemmodel.xml">
+<!ENTITY subsystemcritics SYSTEM "subsystemcritics.xml">
+<!ENTITY subsystemdiagrams SYSTEM "subsystemdiagrams.xml">
+<!ENTITY subsystempersistence SYSTEM "subsystempersistence.xml">
+<!ENTITY subsystempropertypanels SYSTEM "subsystempropertypanels.xml">
+<!ENTITY subsysteminternationalization SYSTEM "subsysteminternationalization.xml">
+<!ENTITY subsystemlogging SYSTEM "subsystemlogging.xml">
   
-<!ENTITY subsystemmodel SYSTEM "compmdl.xml">
-<!ENTITY subsystemcritics SYSTEM "compcrit.xml">
-<!ENTITY subsystemdiagrams SYSTEM "compdiag.xml">
-<!ENTITY subsystempersistence SYSTEM "persist.xml">
-<!ENTITY subsystempropertypanels SYSTEM "compprpp.xml">
-<!ENTITY subsysteminternationalization SYSTEM "compi18n.xml">
 <!ENTITY cookbookmodules SYSTEM "cookbook_modules.xml">
-<!ENTITY cookbooklogging SYSTEM "cookbook_logging.xml">
+
 
 
 <!ENTITY ooad "OOA&amp;D">
