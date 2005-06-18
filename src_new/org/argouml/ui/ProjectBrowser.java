@@ -55,7 +55,6 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
-import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
@@ -77,6 +76,7 @@ import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.ui.IStatusBar;
 import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
@@ -93,15 +93,22 @@ public class ProjectBrowser
     extends JFrame
     implements IStatusBar, PropertyChangeListener, TargetListener {
 
-    /** Default width: DEFAULT_COMPONENTWIDTH */
+    /**
+     * Default width.
+     */
     public static final int DEFAULT_COMPONENTWIDTH = 220;
-    /** Default height: DEFAULT_COMPONENTHEIGHT */
+
+    /**
+     * Default height.
+     */
     public static final int DEFAULT_COMPONENTHEIGHT = 200;
 
-    /** logger */
-    private static final Logger LOG = 
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
         Logger.getLogger(ProjectBrowser.class);
-    
+
     ////////////////////////////////////////////////////////////////
     // class variables
 
@@ -123,10 +130,8 @@ public class ProjectBrowser
     private DetailsPane northEastPane;
     private DetailsPane northPane;
     private DetailsPane northWestPane;
-    private JPanel westPane;
     private DetailsPane eastPane;
     private DetailsPane southEastPane;
-    private JPanel southWestPane;
     private DetailsPane southPane;
 
     private Map detailsPanesByCompassPoint = new HashMap();
@@ -139,8 +144,9 @@ public class ProjectBrowser
      */
     private StatusBar statusBar = new StatusBar();
 
-    /** this needs work so that users can set the font
-     * size through a gui preference window
+    /**
+     * TODO: this needs work so that users can set the font
+     * size through a gui preference window.
      */
     private Font defaultFont = new Font("Dialog", Font.PLAIN, 10);
 
@@ -153,7 +159,7 @@ public class ProjectBrowser
     private NavigatorPane explorerPane;
 
     /**
-     * The todopane (lower left corner of screen)
+     * The todopane (lower left corner of screen).
      */
     private ToDoPane todoPane;
 
@@ -221,9 +227,10 @@ public class ProjectBrowser
         }
         return theInstance;
     }
-    
+
     /**
-     * Creator method for the projectbrowser. 
+     * Creator method for the projectbrowser.
+     *
      * @return the singleton instance of the projectbrowser
      *
      * @param splash true if we are allowed to show a splash screen
@@ -231,7 +238,7 @@ public class ProjectBrowser
     public static ProjectBrowser makeInstance(SplashScreen splash) {
         return new ProjectBrowser("ArgoUML", splash);
     }
-    
+
     /**
      * @see java.awt.Component#getLocale()
      */
@@ -241,7 +248,7 @@ public class ProjectBrowser
 
 
     /**
-     * Creates the panels in the working area
+     * Creates the panels in the working area.
      *
      * @param splash true if we show  the splashscreen during startup
      * @return Component the area between the menu and the statusbar.
@@ -284,15 +291,8 @@ public class ProjectBrowser
             detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST,
 					   southEastPane);
         }
-        if (southWestPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHWEST,
-					   southWestPane);
-        }
         if (eastPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.EAST, eastPane);
-        }
-        if (westPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.WEST, westPane);
         }
         if (northWestPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.NORTHWEST,
@@ -304,13 +304,6 @@ public class ProjectBrowser
         if (northEastPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST,
 					   northEastPane);
-        }
-        if (westPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.WEST, westPane);
-        }
-        if (southWestPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHWEST,
-					   southWestPane);
         }
 
         // The workarea is all the visible space except the menu,
@@ -363,7 +356,8 @@ public class ProjectBrowser
         return toolbarBoundry;
     }
 
-    /** Set the size of each panel to that last saved in the configuration file
+    /**
+     * Set the size of each panel to that last saved in the configuration file.
      */
     private void restorePanelSizes() {
         if (northPane != null) {
@@ -439,15 +433,17 @@ public class ProjectBrowser
             setTitle(getAppName());
         } else {
             // ask the Project if we are "dirty" - i.e. need to save
-            String changeIndicator = ProjectManager.getManager().needsSave()
-                ? " *" : "";
-            ArgoDiagram activeDiagram = ProjectManager.getManager()
-                .getCurrentProject().getActiveDiagram();
+            String changeIndicator = "";
+            if (ProjectManager.getManager().needsSave()) {
+                changeIndicator = " *";
+            }
+            ArgoDiagram activeDiagram =
+                ProjectManager.getManager()
+                	.getCurrentProject().getActiveDiagram();
             if (activeDiagram != null) {
                 super.setTitle(title + " - " + activeDiagram.getName()
                     + " - " + getAppName() + changeIndicator);
-            }
-            else {
+            } else {
                 super.setTitle(title + " - " + getAppName() + changeIndicator);
             }
         }
@@ -458,8 +454,9 @@ public class ProjectBrowser
      * project name, active diagram, and save status.
      */
     protected void updateTitle() {
-        if (ProjectManager.getManager().getCurrentProject() != null)
+        if (ProjectManager.getManager().getCurrentProject() != null) {
             setTitle(ProjectManager.getManager().getCurrentProject().getName());
+        }
     }
 
     /**
@@ -488,31 +485,14 @@ public class ProjectBrowser
      * of target in one view creating a call back to this method, which
      * would then change the target in all views again...<p>
      *
-     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
-     * org.argouml.ui.targetmanager.TargetManager#setTarget(Object)
-     * TargetManager.getInstance().setTarget(Object)}
-     * Only still used in tests.
-     *
      * @param o the target
      */
-    public void setTarget(Object o) {
+    private void setTarget(Object o) {
         TargetManager.getInstance().setTarget(o);
     }
 
     /**
-     * return the current target in the editor pane
-     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
-     * org.argouml.ui.targetmanager.TargetManager#getTarget()
-     * TargetManager.getInstance().getTarget()}
-     *
-     * @return the target object
-     */
-    public Object getTarget() {
-        return TargetManager.getInstance().getTarget();
-    }
-
-    /**
-     * Select the tab page containing the todo item
+     * Select the tab page containing the todo item.
      *
      * TODO: should introduce an instance variable to go straight to
      * the correct tab instead of trying all
@@ -523,13 +503,15 @@ public class ProjectBrowser
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
             DetailsPane detailsPane = (DetailsPane) it.next();
-            if (detailsPane.setToDoItem(o))
+            if (detailsPane.setToDoItem(o)) {
                 return;
+            }
         }
     }
 
     /**
-     * Get the tab page containing the properties
+     * Get the tab page containing the properties.
+     *
      * @return the TabProps tabpage
      */
     public TabProps getTabProps() {
@@ -548,7 +530,7 @@ public class ProjectBrowser
     }
 
     /**
-     * Get the tab page instance of the given class
+     * Get the tab page instance of the given class.
      *
      * @param tabClass the given class
      * @return the tabpage
@@ -591,7 +573,7 @@ public class ProjectBrowser
     }
 
     /**
-     * Find the tabpage with the given label and make it the front tab
+     * Find the tabpage with the given label and make it the front tab.
      *
      * @param tabName The tabpage label
      */
@@ -607,7 +589,7 @@ public class ProjectBrowser
     }
 
     /**
-     * Find the tabpage with the given label
+     * Find the tabpage with the given label.
      *
      * @param tabName The tabpage label
      * @return the tabpage
@@ -628,13 +610,14 @@ public class ProjectBrowser
         return null;
     }
 
-    /** get a list of offenders and display the according diagram, aka
-     *  implement a method which jumps to the offender.
-     *  TODO: this probably needs a lot of work, as the code looks
-     *  as if it can only jump to diagram offenders
+    /**
+     * Get a list of offenders and display the according diagram, aka
+     * implement a method which jumps to the offender.
+     * TODO: this probably needs a lot of work, as the code looks
+     * as if it can only jump to diagram offenders
      *
-     *  @param dms vector of offenders
-     *  @see org.argouml.cognitive.ui.ToDoPane
+     * @param dms vector of offenders
+     * @see org.argouml.cognitive.ui.ToDoPane
      */
     public void jumpToDiagramShowing(ListSet dms) {
         if (dms.size() == 0) {
@@ -668,8 +651,9 @@ public class ProjectBrowser
                 bestNumContained = nc;
                 bestDiagram = d;
             }
-            if (nc == dms.size())
+            if (nc == dms.size()) {
                 break;
+            }
         }
         if (bestDiagram != null) {
             setTarget(bestDiagram);
@@ -690,8 +674,9 @@ public class ProjectBrowser
      */
     public void setVisible(boolean b) {
         super.setVisible(b);
-        if (b)
-            org.tigris.gef.base.Globals.setStatusBar(this);
+        if (b) {
+            Globals.setStatusBar(this);
+        }
     }
 
     ////////////////////////////////////////////////////////////////
@@ -704,41 +689,30 @@ public class ProjectBrowser
     }
 
     /**
-     * Called by a user interface element when a request to
-     * navigate to a model element has been received.
-     *
-     * @param element the navigation target
-     */
-    public void navigateTo(Object element) {
-        setTarget(element);
-    }
-
-    /**
-     * Called by a user interface element when a request to
-     * open a model element in a new window has been recieved.
-     *
-     * @param element the UI element to be opened
-     */
-    public void open(Object element) {
-    }
-
-    /**
      * Save the positions of the screen splitters, sizes and postion
-     * of main window in the properties file
+     * of main window in the properties file.
      */
     public void saveScreenConfiguration() {
-        if (explorerPane != null)
+        if (explorerPane != null) {
 	    Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH,
 				     explorerPane.getWidth());
-        if (eastPane != null)
+        }
+
+        if (eastPane != null) {
 	    Configuration.setInteger(Argo.KEY_SCREEN_EAST_WIDTH,
 				     eastPane.getWidth());
-        if (northPane != null)
+        }
+
+        if (northPane != null) {
 	    Configuration.setInteger(Argo.KEY_SCREEN_NORTH_HEIGHT,
 				     northPane.getHeight());
-        if (southPane != null)
+        }
+
+        if (southPane != null) {
 	    Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT,
 				     southPane.getHeight());
+        }
+
 	//        if (_todoPane != null)
 	// Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH,
 	// _todoPane.getWidth());
@@ -758,28 +732,8 @@ public class ProjectBrowser
     }
 
     /**
-     * @param event the event
-     */
-    public void moduleUnloaded(ArgoModuleEvent event) {
-        // TODO:  Disable menu
-    }
-
-    /**
-     * @param event the event
-     */
-    public void moduleEnabled(ArgoModuleEvent event) {
-        // TODO:  Enable menu
-    }
-
-    /**
-     * @param event the event
-     */
-    public void moduleDisabled(ArgoModuleEvent event) {
-        // TODO:  Disable menu
-    }
-
-    /**
-     * Build a new details pane for the given compass point
+     * Build a new details pane for the given compass point.
+     *
      * @param compassPoint the position for which to build the pane
      * @param orientation the required orientation of the pane.
      * @return the details pane or null if none is required for the given
@@ -789,14 +743,25 @@ public class ProjectBrowser
 					Orientation orientation) {
         DetailsPane detailsPane =
 	    new DetailsPane(compassPoint.toLowerCase(), orientation);
-        if (detailsPane.getTabCount() == 0)
+        if (detailsPane.getTabCount() == 0) {
             return null;
+        }
         return detailsPane;
     }
 
-    class WindowCloser extends WindowAdapter {
+    /**
+     * Receives window events.
+     */
+    static class WindowCloser extends WindowAdapter {
+        /**
+         * Constructor.
+         */
         public WindowCloser() {
         }
+
+        /**
+         * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
+         */
         public void windowClosing(WindowEvent e) {
             new ActionExit().actionPerformed(null);
         }
@@ -818,11 +783,9 @@ public class ProjectBrowser
                 // update all panes
                 TargetManager.getInstance().setTarget(p.getInitialTarget());
             }
-        }
-
-        // the save state changed
-        else if (evt.getPropertyName()
+        } else if (evt.getPropertyName()
             .equals(ProjectManager.SAVE_STATE_PROPERTY_NAME)) {
+            // the save state changed
             updateTitle();
         }
     }
@@ -882,7 +845,7 @@ public class ProjectBrowser
     public Font getDefaultFont() {
         return defaultFont;
     }
-    
+
     /**
      * Try to save the project.
      * @param overwrite if true, then we overwrite without asking
@@ -903,7 +866,7 @@ public class ProjectBrowser
         LOG.info("Saving the project");
         Project project = ProjectManager.getManager().getCurrentProject();
         PersistenceManager pm = PersistenceManager.getInstance();
-    
+
         try {
             if (file.exists() && !overwrite) {
                 String sConfirm =
@@ -916,28 +879,29 @@ public class ProjectBrowser
                             "optionpane.save-project-confirm-overwrite-title"),
                                   JOptionPane.YES_NO_OPTION,
                                   JOptionPane.QUESTION_MESSAGE);
-    
+
                 if (nResult != JOptionPane.YES_OPTION) {
                     return false;
                 }
             }
-    
+
             String sStatus =
                 MessageFormat.format(Translator.localize(
                     "label.save-project-status-writing"),
                          new Object[] {file});
             this.showStatus (sStatus);
-    
+
             ProjectFilePersister persister =
                     pm.getPersisterFromFileName(file.getName());
-            if (persister == null)
+            if (persister == null) {
                 throw new IllegalStateException("Filename " + project.getName()
                             + " is not of a known file type");
-    
+            }
+
             project.preSave();
             persister.save(project, file);
             project.postSave();
-    
+
             sStatus =
                 MessageFormat.format(Translator.localize(
                     "label.save-project-status-wrote"),
@@ -945,54 +909,54 @@ public class ProjectBrowser
             showStatus(sStatus);
             LOG.debug ("setting most recent project file to "
                    + file.getCanonicalPath());
-    
+
             /*
              * notification of menu bar
              */
             GenericArgoMenuBar menu = (GenericArgoMenuBar) getJMenuBar();
             menu.addFileSaved(file.getCanonicalPath());
-    
+
             Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
                         file.getCanonicalPath());
-    
+
             return true;
         } catch (FileNotFoundException fnfe) {
             String sMessage =
                 MessageFormat.format(Translator.localize(
                     "optionpane.save-project-file-not-found"),
                          new Object[] {fnfe.getMessage()});
-    
+
             JOptionPane.showMessageDialog(this, sMessage,
                     Translator.localize(
                     "optionpane.save-project-file-not-found-title"),
                           JOptionPane.ERROR_MESSAGE);
-    
+
             LOG.error(sMessage, fnfe);
         } catch (Exception ex) {
             String sMessage =
                 MessageFormat.format(Translator.localize(
                     "optionpane.save-project-general-exception"),
                          new Object[] {ex.getMessage()});
-    
+
             JOptionPane.showMessageDialog(this, sMessage,
                     Translator.localize(
                     "optionpane.save-project-general-exception-title"),
                           JOptionPane.ERROR_MESSAGE);
-    
-            reportError("save a project.", 
+
+            reportError("save a project.",
                     "Could not save the project "
                     + file.getName()
                     + " some error was found.\n"
                     + "Please report the exception below to the ArgoUML"
                     + "development team at http://argouml.tigris.org.",
                     true, ex);
-            
+
             LOG.error(sMessage, ex);
         }
-    
+
         return false;
     }
-    
+
     /**
      * If the current project is dirty (needs saving) then this function will
      * ask confirmation from the user.
@@ -1007,11 +971,13 @@ public class ProjectBrowser
 
 
         if (p != null && ProjectManager.getManager().needsSave()) {
-            String t = MessageFormat.format(Translator.localize(
+            String t =
+                MessageFormat.format(Translator.localize(
                         "optionpane.open-project-save-changes-to"),
                         new Object[] {p.getName()});
 
-            int response = JOptionPane.showConfirmDialog(pb, t, t,
+            int response =
+                JOptionPane.showConfirmDialog(pb, t, t,
                     JOptionPane.YES_NO_CANCEL_OPTION);
 
             if (response == JOptionPane.CANCEL_OPTION
@@ -1078,7 +1044,6 @@ public class ProjectBrowser
                             + file.getName()
                             + " is not of a known file type");
                 }
-                System.gc();
                 p = persister.doLoad(file);
 
                 ProjectBrowser.getInstance().showStatus(
@@ -1184,11 +1149,13 @@ public class ProjectBrowser
     /**
      * Open a Message Dialog with an error message.
      *
+     * @param attemptingTo What we were doing when the error occured.
      * @param message the message to display.
      * @param showUI true if an error message may be shown to the user,
      *               false if run in commandline mode
+     * @param ex The exception that was thrown.
      */
-    private void reportError(String attemptingTo, String message, 
+    private void reportError(String attemptingTo, String message,
                     boolean showUI, Throwable ex) {
         if (showUI) {
             JDialog dialog =
@@ -1202,15 +1169,14 @@ public class ProjectBrowser
             PrintWriter pw = new PrintWriter(sw);
             ex.printStackTrace(pw);
             String exception = sw.toString();
-            
-            message += "\n\n" + exception;
-            
-            reportError(message, showUI);
+
+            reportError(message + "\n\n" + exception, showUI);
         }
     }
-    
-    /** We should remove all open dialogs. They have as parent the
-     * ProjectBrowser. This is needed for the non-modal dialogs 
+
+    /**
+     * We should remove all open dialogs. They have as parent the
+     * ProjectBrowser. This is needed for the non-modal dialogs
      * such as Find and Goto.
      */
     public void clearDialogs() {

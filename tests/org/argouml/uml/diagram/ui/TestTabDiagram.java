@@ -32,7 +32,7 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.tigris.gef.graph.presentation.JGraph;
@@ -137,7 +137,7 @@ public class TestTabDiagram extends TestCase {
                     diagrams[i] = new UMLClassDiagram(project.getRoot());
                     diagrams[i].add(
                         new FigClass(diagrams[i].getGraphModel(), clazz));
-                    ProjectBrowser.getInstance().setTarget(diagrams[i]);
+                    TargetManager.getInstance().setTarget(diagrams[i]);
                 }
 
                 // real test

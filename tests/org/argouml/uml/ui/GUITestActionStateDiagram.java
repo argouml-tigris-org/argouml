@@ -27,7 +27,7 @@ package org.argouml.uml.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 
 import ru.novosoft.uml.foundation.core.MClassifierImpl;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -38,11 +38,11 @@ import ru.novosoft.uml.foundation.core.MNamespace;
  * @since Jan 9, 2003
  */
 public class GUITestActionStateDiagram
-    extends AbstractTestActionAddDiagram
-{
+    extends AbstractTestActionAddDiagram {
 
     /**
-     * Constructor
+     * Constructor.
+     *
      * @param arg0 test case name
      */
     public GUITestActionStateDiagram(String arg0) {
@@ -77,7 +77,7 @@ public class GUITestActionStateDiagram
      */
     protected void setUp() {
         super.setUp();
-        ProjectBrowser.getInstance().setTarget(new MClassifierImpl());
+        TargetManager.getInstance().setTarget(new MClassifierImpl());
     }
 
 }
