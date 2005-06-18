@@ -258,6 +258,8 @@ public class FigClass extends FigNodeModelElement
         addMenu.add(new ActionAddAttribute());
         addMenu.add(new ActionAddOperation());
         addMenu.add(new ActionAddNote());
+        addMenu.add(ActionEdgesDisplay.getShowEdges());
+        addMenu.add(ActionEdgesDisplay.getHideEdges());
         popUpActions.insertElementAt(addMenu,
             popUpActions.size() - popupAddOffset);
 
@@ -278,8 +280,6 @@ public class FigClass extends FigNodeModelElement
         } else {
             showMenu.add(ActionCompartmentDisplay.showOperCompartment());
         }
-        showMenu.add(ActionEdgesDisplay.getShowEdges());
-        showMenu.add(ActionEdgesDisplay.getHideEdges());
         popUpActions.insertElementAt(showMenu,
             popUpActions.size() - popupAddOffset);
 
