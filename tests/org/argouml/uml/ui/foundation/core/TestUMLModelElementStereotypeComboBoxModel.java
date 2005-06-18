@@ -31,9 +31,8 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.UUIDManager;
 import org.argouml.ui.targetmanager.TargetEvent;
-
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
  * @since Oct 13, 2002
@@ -42,12 +41,18 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
 
     private Object elem;
+
     private UMLModelElementStereotypeComboBoxModel model;
+
     private Object[] stereotypes;
+
+    private Object umlModel;
 
     /**
      * Constructor for TestUMLAssociationRoleBaseComboBoxModel.
-     * @param arg0 is the name of the test case.
+     * 
+     * @param arg0
+     *            is the name of the test case.
      */
     public TestUMLModelElementStereotypeComboBoxModel(String arg0) {
         super(arg0);
@@ -61,21 +66,20 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         Project p = ProjectManager.getManager().getCurrentProject();
         model = new UMLModelElementStereotypeComboBoxModel();
         elem = Model.getCoreFactory().createClass();
-        Object m = Model.getModelManagementFactory().createModel();
-        p.setRoot(m);
-        Model.getCoreHelper().setNamespace(elem, m);
-        stereotypes = new MStereotype[10];
-        Object theModel =
-            ProjectManager.getManager().getCurrentProject().getModel();
-        Collection models =
-            ProjectManager.getManager().getCurrentProject().getModels();
+        umlModel = Model.getModelManagementFactory().createModel();
+        p.setRoot(umlModel);
+        Model.getCoreHelper().setNamespace(elem, umlModel);
+        stereotypes = new Object[10];
+        Object theModel = ProjectManager.getManager().getCurrentProject()
+                .getModel();
+        Collection models = ProjectManager.getManager().getCurrentProject()
+                .getModels();
         for (int i = 0; i < 10; i++) {
-            stereotypes[i] =
-                Model.getExtensionMechanismsFactory()
-                	.buildStereotype(elem, "test" + i, theModel, models);
+            stereotypes[i] = Model.getExtensionMechanismsFactory()
+                    .buildStereotype(elem, "test" + i, theModel, models);
         }
         model.targetSet(new TargetEvent(this, "set", new Object[0],
-                                        new Object[] {elem}));
+                new Object[] { elem }));
     }
 
     /**
@@ -118,5 +122,33 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
     public void testRemoveBase() {
         Model.getUmlFactory().delete(stereotypes[9]);
         assertTrue(!model.contains(stereotypes[9]));
+    }
+
+    /**
+     * Tests if stereotypes contained in packages (non top level) are available
+     * for selection, for a model element for which these are valid, such as a
+     * stereotype for a classifier, contained in the same package as the class
+     * to which it would be applied.
+     * 
+     * @author euluis
+     * @since 2005-06-03
+     */
+    public void testStereotypesContainedInPackagesAreAvailable4Selection() {
+        // create a package within the model, which will contain a class and
+        // a stereotype
+        Object pack = Model.getModelManagementFactory().buildPackage("pack",
+                UUIDManager.getInstance().getNewUUID());
+        Model.getCoreHelper().setNamespace(pack, umlModel);
+
+        Object theClass = Model.getCoreFactory().buildClass("TheClass", pack);
+
+        Object theStereotype = Model.getExtensionMechanismsFactory()
+                .buildStereotype(theClass, "containedStereotype", pack);
+        
+        // now, lets check if the stereotype is found in the model to be 
+        // applied to the class it is already applied (yeah, this is failing!)
+        model.targetSet(new TargetEvent(this, TargetEvent.TARGET_SET, 
+                new Object[0], new Object[] { theClass }));
+        assertTrue(model.contains(theStereotype));
     }
 }

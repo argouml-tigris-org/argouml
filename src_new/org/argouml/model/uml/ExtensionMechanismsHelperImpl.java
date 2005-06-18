@@ -77,14 +77,14 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
         if (ns == null) {
             return l;
         }
-    	Iterator it = ((MNamespace) ns).getOwnedElements().iterator();
-    	while (it.hasNext()) {
-	    Object o = it.next();
-	    if (o instanceof MStereotype) {
-		l.add(o);
-	    }
-    	}
-    	return l;
+        Iterator it = ((MNamespace) ns).getOwnedElements().iterator();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof MStereotype) {
+                l.add(o);
+            }
+        }
+        return l;
     }
 
     /**
@@ -108,22 +108,21 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
             throw new IllegalArgumentException("stereotype");
         }
 
-    	String name = ((MModelElement) stereo).getName();
-    	String baseClass = ((MStereotype) stereo).getBaseClass();
-    	Iterator it = getStereotypes(ns).iterator();
-    	while (it.hasNext()) {
-	    Object o = it.next();
-	    if (o instanceof MStereotype
-		&& ((MStereotype) o).getName() != null
-		&& ((MStereotype) o).getName().equals(name)
-		&& ((MStereotype) o).getBaseClass() != null
-		&& ((MStereotype) o).getBaseClass().equals(baseClass)) {
+        String name = ((MModelElement) stereo).getName();
+        String baseClass = ((MStereotype) stereo).getBaseClass();
+        Iterator it = getStereotypes(ns).iterator();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof MStereotype && ((MStereotype) o).getName() != null
+                    && ((MStereotype) o).getName().equals(name)
+                    && ((MStereotype) o).getBaseClass() != null
+                    && ((MStereotype) o).getBaseClass().equals(baseClass)) {
 
-		return (MStereotype) o;
+                return (MStereotype) o;
 
-	    }
-    	}
-    	return null;
+            }
+        }
+        return null;
     }
 
     /**
@@ -158,8 +157,8 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
             while (it.hasNext()) {
                 Object o = it.next();
                 if (o instanceof MStereotype
-		    && ((MStereotype) o).getName().equals(name)
-		    && ((MStereotype) o).getBaseClass().equals(baseClass)) {
+                        && ((MStereotype) o).getName().equals(name)
+                        && ((MStereotype) o).getBaseClass().equals(baseClass)) {
 
                     return (MStereotype) o;
 
@@ -218,11 +217,30 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
         if (m == null) {
             return ret;
         }
-        Iterator it = getStereotypes(models).iterator();
-        while (it.hasNext()) {
-            MStereotype stereo = (MStereotype) it.next();
-            if (isValidStereoType(m.getClass(), stereo)) {
-                ret.add(stereo);
+        // euluis 2005-06-04 - It must check if the modelElement is contained
+        // in a sub-package of one of the models. In this case this
+        // sub-package and containing packages should be added to the models
+        // to be searched for, before calling getStereotypes.
+        Collection nameSpaces = new ArrayList(models);
+        Iterator iModels = models.iterator();
+        while (iModels.hasNext()) {
+            if (iModels.next() == m.getModel()) {
+                MModelElement me = m;
+                while (m.getModel() != (me = me.getNamespace()) && me != null) {
+                    nameSpaces.add(me);
+                }
+                break; // done - namespace hierarchy added
+            }
+        }
+
+        Iterator itNs = nameSpaces.iterator();
+        while (itNs.hasNext()) {
+            Iterator it = getStereotypes(itNs.next()).iterator();
+            while (it.hasNext()) {
+                MStereotype stereo = (MStereotype) it.next();
+                if (isValidStereoType(m.getClass(), stereo)) {
+                    ret.add(stereo);
+                }
             }
         }
         return ret;
@@ -240,8 +258,8 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
         if (clazz == null || stereo == null) {
             return false;
         }
-        if (getMetaModelName(clazz)
-                .equals(nsmodel.getFacade().getBaseClass(stereo))) {
+        if (getMetaModelName(clazz).equals(
+                nsmodel.getFacade().getBaseClass(stereo))) {
             return true;
         }
         if (getMetaModelName(clazz).equals("ModelElement")) {
@@ -264,7 +282,7 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
         if (theModelElement == null) {
             return false;
         }
-	return isValidStereoType(theModelElement.getClass(), theStereotype);
+        return isValidStereoType(theModelElement.getClass(), theStereotype);
     }
 
     /**
@@ -290,19 +308,17 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
     /**
      * Sets the stereotype of some modelelement. The method also
      * copies a stereotype that is not a part of the current model to
-     * the current model.<p>
+     * the current model.
      *
      * @param modelElement is the model element
      * @param stereotype is the stereotype
      */
     public void setStereoType(Object modelElement, Object stereotype) {
-	if (stereotype != null) {
-	    stereotype =
-		nsmodel.getModelManagementHelper().getCorrespondingElement(
-			stereotype,
-			nsmodel.getFacade().getModel(modelElement),
-			true);
-	}
+        if (stereotype != null) {
+            stereotype = nsmodel.getModelManagementHelper()
+                    .getCorrespondingElement(stereotype,
+                            nsmodel.getFacade().getModel(modelElement), true);
+        }
         nsmodel.getCoreHelper().setStereotype(modelElement, stereotype);
     }
 
@@ -315,19 +331,19 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
      * @return true if object is a stereotype with the desired characteristics.
      */
     public boolean isStereotype(Object object, String name, String base) {
-	if (object == null || !(object instanceof MStereotype)) {
-	    return false;
-	}
+        if (object == null || !(object instanceof MStereotype)) {
+            return false;
+        }
 
-	MStereotype st = (MStereotype) object;
-	if (name == null && st.getName() != null) {
-	    return false;
-	}
-	if (base == null && st.getBaseClass() != null) {
-	    return false;
-	}
+        MStereotype st = (MStereotype) object;
+        if (name == null && st.getName() != null) {
+            return false;
+        }
+        if (base == null && st.getBaseClass() != null) {
+            return false;
+        }
 
-	return name.equals(st.getName()) && base.equals(st.getBaseClass());
+        return name.equals(st.getName()) && base.equals(st.getBaseClass());
     }
 
     /**
@@ -341,19 +357,19 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
      *	desired characteristics.
      */
     public boolean isStereotypeInh(Object object, String name, String base) {
-	if (object == null || !(object instanceof MStereotype)) {
-	    return false;
-	}
-	if (isStereotype(object, name, base)) {
-	    return true;
-	}
-	Iterator it = nsmodel.getCoreHelper().getSupertypes(object).iterator();
-	while (it.hasNext()) {
-	    if (isStereotypeInh(it.next(), name, base)) {
-	        return true;
-	    }
-	}
-	return false;
+        if (object == null || !(object instanceof MStereotype)) {
+            return false;
+        }
+        if (isStereotype(object, name, base)) {
+            return true;
+        }
+        Iterator it = nsmodel.getCoreHelper().getSupertypes(object).iterator();
+        while (it.hasNext()) {
+            if (isStereotypeInh(it.next(), name, base)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -362,13 +378,11 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
      * @param handle Stereotype
      * @param extendedElement ExtensionPoint
      */
-    public void addExtendedElement(
-        Object handle,
-        Object extendedElement) {
+    public void addExtendedElement(Object handle, Object extendedElement) {
         if (handle instanceof MStereotype
-            && extendedElement instanceof MExtensionPoint) {
-            ((MStereotype) handle).addExtendedElement(
-                (MModelElement) extendedElement);
+                && extendedElement instanceof MExtensionPoint) {
+            ((MStereotype) handle)
+                    .addExtendedElement((MModelElement) extendedElement);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
@@ -402,8 +416,8 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
             ((MStereotype) handle).setIcon((String) icon);
             return;
         }
-        throw new IllegalArgumentException("handle: " + handle
-                + " or icon: " + icon);
+        throw new IllegalArgumentException("handle: " + handle + " or icon: "
+                + icon);
     }
 
     /**
@@ -417,8 +431,8 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
             ((MTaggedValue) handle).setTag((String) tag);
             return;
         }
-        throw new IllegalArgumentException("handle: " + handle
-                + " or tag: " + tag);
+        throw new IllegalArgumentException("handle: " + handle + " or tag: "
+                + tag);
     }
 
     /**
@@ -432,7 +446,7 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
             ((MTaggedValue) handle).setValue(value);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle);
+        throw new IllegalArgumentException("handle: " + handle);
     }
 }
 
