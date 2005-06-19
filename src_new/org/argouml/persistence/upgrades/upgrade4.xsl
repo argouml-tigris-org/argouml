@@ -98,8 +98,10 @@ See issue 3134 and issue 3297.
 	<xsl:template match='/uml/todo/resolvedcritics/issue[contains(offender/text(), "%32;%32;")]'/>
 
 	<!-- ToDoItems Fix 3 Only copy over resolved issues that refer to an offender in the XMI
-	     It may be possible to remove the if clause and combine it with the template match
-	     to speed this up.
+	     Perfomance improvment 1. It may be possible to remove the if clause and combine
+	     it with the template match to speed this up.
+	     Performance improvement 2. "count" is probably not the most efficient way to determine
+	     if any instance exists, investigate a better way.
 	-->
 	<xsl:template match='/uml/todo/resolvedcritics/issue'>
 		<xsl:variable name="offender" select="offender/text()" />
