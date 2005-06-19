@@ -83,12 +83,12 @@ For each found
 	<xsl:template match='group[starts-with(./@description, "org.argouml.uml.diagram.ui.FigEdgeAssociationClass")]/private/text()' />
 	
 	<!-- Removes any resolved items containing a corruption of multiple spaces -->
-	<xsl:template match='/uml/todo/resolvedcritics/issue[contains(poster/text(), "%32;%32;")]' />
-	<xsl:template match='/uml/todo/resolvedcritics/issue[contains(offender/text(), "%32;%32;")]' />
+	<xsl:template match='/uml/todo/resolvedcritics/issue[contains(poster/text(), "%32;%32;")]' priority="101"/>
+	<xsl:template match='/uml/todo/resolvedcritics/issue[contains(offender/text(), "%32;%32;")]' priority="100"/>
 	<!--xsl:template match='/uml/todo/resolvedcritics/issue[count( /uml/XMI/XMI.content//@xmi.uuid = "sdf") = 0 ]' /-->
 
 	<!-- Onlt copy over resolved issues that refer to an offender in the XMI -->
-	<xsl:template match='/uml/todo/resolvedcritics/issue'>
+	<xsl:template match='/uml/todo/resolvedcritics/issue' priority="10">
 		<xsl:variable name="offender" select="offender/text()" />
 		<xsl:if test="count(/uml/XMI/XMI.content//*[@xmi.uuid = $offender]) != 0">
 			<issue>
@@ -99,7 +99,7 @@ For each found
 	</xsl:template>
 
 	<!-- copy all other nodes over unchanged -->
-	<xsl:template match="@*|node()">
+	<xsl:template match="@*|node()" priority="-10">
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()"/>
 		</xsl:copy>
