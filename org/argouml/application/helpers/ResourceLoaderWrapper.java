@@ -187,7 +187,7 @@ public final class ResourceLoaderWrapper {
     /**
      * Find the Icon for a given model element.
      *
-     * @return The Icon.
+     * @return The Icon or <code>null</code> if there is no Icon.
      * @param value The model element.
      *
      * TODO: This should not use string matching on classnames to do this
@@ -200,7 +200,11 @@ public final class ResourceLoaderWrapper {
                     "Attempted to get an icon given a null key");
         }
 
-	Icon icon = (Icon) iconCache.get(value.getClass());
+        if (value instanceof String) {
+            return null;
+        }
+
+        Icon icon = (Icon) iconCache.get(value.getClass());
 
         if (Model.getFacade().isAPseudostate(value)) {
 
