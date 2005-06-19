@@ -100,6 +100,7 @@ public class Main {
      * @param args command line parameters
      */
     public static void main(String[] args) {
+	LOG.info("ArgoUML Started.");
 
         checkJVMVersion();
         checkHostsFile();
