@@ -5,23 +5,12 @@
 	<xsl:preserve-space elements="uml"/>
 
 <!-- 
-Fix for http://argouml.tigris.org/issues/show_bug.cgi?id=713
-
-Searches for any nodes with the path
-    Behavioral_Elements.Activity_Graphs.ActivityGraph/
-      Behavioral_Elements.State_Machines.StateMachine.top/
-      Behavioral_Elements.State_Machines.CompositeState/
-      Behavioral_Elements.State_Machines.CompositeState.subvertex/
-      Behavioral_Elements.Activity_Graphs.ActionState
-
-that does not have any child node of Behavioral_Elements.State_Machines.State.entry
-
-For each found
-- the child node will be created.
-- the model element name will be moved to  Foundation.Data_Types.Expression.body
+Fix Association Classes so that the dashed edge has both a source and
+destination node. This involves creating a new node Fig (FigAssociationClassTee)
+at the junction of the association edge and the dashed edge.
 -->
 	
-	<!-- Convert a FigAssociationClassTee before any FigClassAssociationClass -->
+	<!-- Create a FigAssociationClassTee before any FigClassAssociationClass -->
 	<xsl:template match='group[starts-with(./@description, "org.argouml.uml.diagram.ui.FigClassAssociationClass")]'>
 		
 		<xsl:variable name="fig-id" select="@name"/>
@@ -81,14 +70,38 @@ For each found
 	
 	<!-- Specifically ignore these nodes as they are handled above-->
 	<xsl:template match='group[starts-with(./@description, "org.argouml.uml.diagram.ui.FigEdgeAssociationClass")]/private/text()' />
-	
-	<!-- Removes any resolved items containing a corruption of multiple spaces -->
-	<xsl:template match='/uml/todo/resolvedcritics/issue[contains(poster/text(), "%32;%32;")]' priority="101"/>
-	<xsl:template match='/uml/todo/resolvedcritics/issue[contains(offender/text(), "%32;%32;")]' priority="100"/>
-	<!--xsl:template match='/uml/todo/resolvedcritics/issue[count( /uml/XMI/XMI.content//@xmi.uuid = "sdf") = 0 ]' /-->
 
-	<!-- Onlt copy over resolved issues that refer to an offender in the XMI -->
-	<xsl:template match='/uml/todo/resolvedcritics/issue' priority="10">
+
+<!-- 
+There are corrupt entries in the todo files of some users saves.. The cause of
+these is not yet known. One effect is that there are spaces embedded within the
+class names of posters and offenders.
+Some unusual style of encoding has been used inside todo files which means that
+a space is saved as %32;. Fix 1 and Fix 2 below will remove any items that
+multiple spaces in the class name.
+A second issue is related to the fact that we currently have a Singleton list of
+ToDo items foe the application. We should really have a list of todo items per
+project.
+The current situation means that if errors occur in other parts of ArgoUML it 
+may be possible for todo items to be carried from one project to another.
+Fix 3 attempts to resolve this by removing any todo item that refer to
+non-existent model elements.
+
+See issue 3134 and issue 3297.
+-->
+
+	
+	<!-- ToDoItems Fix 1 Removes any resolved items containing a corrupt poster -->
+	<xsl:template match='/uml/todo/resolvedcritics/issue[contains(poster/text(), "%32;%32;")]'/>
+	
+	<!-- ToDoItems Fix 2 Removes any resolved items containing a corrupt offender -->
+	<xsl:template match='/uml/todo/resolvedcritics/issue[contains(offender/text(), "%32;%32;")]'/>
+
+	<!-- ToDoItems Fix 3 Only copy over resolved issues that refer to an offender in the XMI
+	     It may be possible to remove the if clause and combine it with the template match
+	     to speed this up.
+	-->
+	<xsl:template match='/uml/todo/resolvedcritics/issue'>
 		<xsl:variable name="offender" select="offender/text()" />
 		<xsl:if test="count(/uml/XMI/XMI.content//*[@xmi.uuid = $offender]) != 0">
 			<issue>
@@ -98,8 +111,10 @@ For each found
 		</xsl:if>
 	</xsl:template>
 
-	<!-- copy all other nodes over unchanged -->
-	<xsl:template match="@*|node()" priority="-10">
+<!-- 
+Anything not touched by the fixes above must be copied over unchanged
+-->
+	<xsl:template match="@*|node()">
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()"/>
 		</xsl:copy>
