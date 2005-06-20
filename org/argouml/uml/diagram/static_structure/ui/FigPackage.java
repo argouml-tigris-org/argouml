@@ -53,7 +53,10 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.VisibilityContainer;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.util.CollectionUtil;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
@@ -528,69 +531,61 @@ public class FigPackage extends FigNodeModelElement
 
         // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
-        if (!stereotypeVisible) {
-            showMenu.add(new UMLAction(
-                    Translator.localize("menu.popup.show.show-stereotype"),
+        String miname = stereotypeVisible 
+            ? "menu.popup.show.hide-stereotype"
+            : "menu.popup.show.show-stereotype";
+        showMenu.add(new UMLAction(
+            Translator.localize(miname),
                     UMLAction.NO_ICON)
-	    {
-		/**
-		 * @see java.awt.event.ActionListener#actionPerformed(
-		 *         java.awt.event.ActionEvent)
-		 */
-		public void actionPerformed(ActionEvent ae) {
-		    stereotypeVisible = true;
-                    forceRepaintShadow();
-		    renderingChanged();
-		    damage();
-		}
-	    });
-        } else {
-            showMenu.add(new UMLAction(
-                    Translator.localize("menu.popup.show.hide-stereotype"),
-                    UMLAction.NO_ICON)
-	    {
-		/**
-		 * @see java.awt.event.ActionListener#actionPerformed(
-		 *         java.awt.event.ActionEvent)
-		 */
-		public void actionPerformed(ActionEvent ae) {
-		    stereotypeVisible = false;
-		    renderingChanged();
-		    damage();
-		}
-	    });
-        }
-        if (!visibilityVisible) {
-            showMenu.add(new UMLAction(
-                        Translator.localize("menu.popup.show.show-visibility"),
-                        UMLAction.NO_ICON)
-            {
-                /**
-                 * @see java.awt.event.ActionListener#actionPerformed(
-                 *         java.awt.event.ActionEvent)
-                 */
-                public void actionPerformed(ActionEvent ae) {
-                    visibilityVisible = true;
-                    renderingChanged();
-                    damage();
+	{
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(
+             *         java.awt.event.ActionEvent)
+             */
+            public void actionPerformed(ActionEvent ae) {
+                Editor ce = Globals.curEditor();
+                Vector figs = ce.getSelectionManager().getFigs();
+                Iterator i = figs.iterator();
+                boolean v = !stereotypeVisible;
+                while (i.hasNext()) {
+                    Fig f = (Fig) i.next();
+                    if (f instanceof StereotypeContainer) {
+                        ((StereotypeContainer) f).setStereotypeVisible(v);
+                    }
+                    if (f instanceof FigNodeModelElement) {
+                        ((FigNodeModelElement) f).forceRepaintShadow();
+                        ((FigNodeModelElement) f).renderingChanged();
+                    }
+                    f.damage();
                 }
-            });
-        } else {
-            showMenu.add(new UMLAction(
-                        Translator.localize("menu.popup.show.hide-visibility"),
-                        UMLAction.NO_ICON)
-            {
-                /**
-                 * @see java.awt.event.ActionListener#actionPerformed(
-                 *         java.awt.event.ActionEvent)
-                 */
-                public void actionPerformed(ActionEvent ae) {
-                    visibilityVisible = false;
-                    renderingChanged();
-                    damage();
+            }
+	});
+        
+        miname = visibilityVisible 
+            ? "menu.popup.show.hide-visibility"
+            : "menu.popup.show.show-visibility";
+        showMenu.add(new UMLAction(
+            Translator.localize(miname),
+                UMLAction.NO_ICON)
+        {
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(
+             *         java.awt.event.ActionEvent)
+             */
+            public void actionPerformed(ActionEvent ae) {
+                Editor ce = Globals.curEditor();
+                Vector figs = ce.getSelectionManager().getFigs();
+                Iterator i = figs.iterator();
+                boolean v = !visibilityVisible;
+                while (i.hasNext()) {
+                    Fig f = (Fig) i.next();
+                    if (f instanceof VisibilityContainer) {
+                        ((VisibilityContainer) f).setVisibilityVisible(v);
+                    }
+                    f.damage();
                 }
-            });
-        }
+            }
+        });
         popUpActions.insertElementAt(showMenu,
             popUpActions.size() - popupAddOffset);
 
