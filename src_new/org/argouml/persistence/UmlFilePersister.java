@@ -320,10 +320,15 @@ public class UmlFilePersister extends AbstractFilePersister
             while (fileVersion < PERSISTENCE_VERSION) {
                 ++fileVersion;
                 LOG.info("Upgrading to version " + fileVersion);
+                long startTime = System.currentTimeMillis();
                 file = transform(file, fileVersion);
+                long endTime = System.currentTimeMillis();
+                LOG.info("Upgrading took "
+                        + ((endTime - startTime)/1000)
+                        + " seconds");
                 ++phasesCompleted;
                 percentPhasesComplete =
-		    (phasesCompleted * 100) / progressPhaseCount;
+                    (phasesCompleted * 100) / progressPhaseCount;
                 fireProgressEvent(percentPhasesComplete);
             }
 
@@ -364,16 +369,6 @@ public class UmlFilePersister extends AbstractFilePersister
         }
     }
 
-    private File upgrade(File file, int fileVersion) throws OpenException {
-        LOG.info("Loading uml file of version " + fileVersion);
-        while (fileVersion < PERSISTENCE_VERSION) {
-            ++fileVersion;
-            LOG.info("Upgrading to version " + fileVersion);
-            file = transform(file, fileVersion);
-        }
-        return file;
-    }
-
     /**
      * Transform a string of XML data according to the service required.
      *
@@ -411,7 +406,7 @@ public class UmlFilePersister extends AbstractFilePersister
             FileOutputStream stream =
                 new FileOutputStream(transformedFile);
             Writer writer =
-		new BufferedWriter(new OutputStreamWriter(stream, encoding));
+                new BufferedWriter(new OutputStreamWriter(stream, encoding));
             Result result = new StreamResult(writer);
 
             StreamSource inputStreamSource = new StreamSource(file);
