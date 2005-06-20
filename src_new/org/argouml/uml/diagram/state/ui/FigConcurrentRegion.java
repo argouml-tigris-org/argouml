@@ -174,15 +174,15 @@ public class FigConcurrentRegion extends FigState
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
     public Vector getPopUpActions(MouseEvent me) {
-        Vector concurrentRegionpopUpActions = super.getPopUpActions(me);
-        concurrentRegionpopUpActions.remove(
+        Vector popUpActions = super.getPopUpActions(me);
+        popUpActions.remove(
                 ActionDeleteFromDiagram.getSingleton());
-        concurrentRegionpopUpActions.add(new JSeparator());
-        concurrentRegionpopUpActions.addElement(
+        popUpActions.add(new JSeparator());
+        popUpActions.addElement(
                 ActionAddConcurrentRegion.getSingleton());
-        concurrentRegionpopUpActions.addElement(
+        popUpActions.addElement(
                 ActionDeleteConcurrentRegion.getSingleton());
-        return concurrentRegionpopUpActions;
+        return popUpActions;
     }
 
 
