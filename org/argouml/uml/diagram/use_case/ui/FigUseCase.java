@@ -45,6 +45,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
@@ -372,25 +373,23 @@ public class FigUseCase extends FigNodeModelElement {
      * @return    A collection of menu items
      */
     public Vector getPopUpActions(MouseEvent me) {
-
+        /* Check if multiple items are selected: */
+        boolean ms = TargetManager.getInstance().getTargets().size() > 1;
+        
         // Get the parent vector first
-
         Vector popUpActions = super.getPopUpActions(me);
 
         // Add menu to add an extension point or note. Placed one before last,
         // so the "Properties" entry is always last.
-
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
 
-        addMenu.add(ActionAddExtensionPoint.singleton());
+        if (!ms) addMenu.add(ActionAddExtensionPoint.singleton());
         addMenu.add(new ActionAddNote());
 
         popUpActions.insertElementAt(addMenu,
             popUpActions.size() - popupAddOffset);
 
-        // Show menu to display/hide the extension point compartment. Placed
-        // one before last, so the "Properties" entry is always last.
-
+        // Show menu to display/hide the extension point compartment. 
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
 
         if (epVec.isVisible()) {
