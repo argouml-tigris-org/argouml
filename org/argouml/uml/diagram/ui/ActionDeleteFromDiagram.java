@@ -32,7 +32,6 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
