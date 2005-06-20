@@ -31,6 +31,7 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.cognitive.ui.WizardItem;
 import org.argouml.model.Model;
+import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.Highlightable;
@@ -133,22 +134,39 @@ public class ToDoItem implements Serializable, WizardItem {
      */
     public ToDoItem(Poster poster, String h, int p, String d, String m,
 		    ListSet offs) {
-        assert offs != null;
-        assert offs.size() <= 0
-        	|| Model.getFacade().isAModelElement(offs.elementAt(0))
-        	|| offs.elementAt(0) instanceof Fig
-        	|| offs.elementAt(0) instanceof Diagram;
-        assert offs.size() <= 1
-		|| Model.getFacade().isAModelElement(offs.elementAt(1))
-		|| offs.elementAt(1) instanceof Fig
-		|| offs.elementAt(1) instanceof Diagram;
+        if (offs == null) {
+            throw new IllegalArgumentException(
+                    "A ListSet of offenders must be supplied.");
+        }
+        Object offender = CollectionUtil.getFirstItemOrNull(offs);
+        if (offender != null
+                && !Model.getFacade().isAModelElement(offender)
+                && !(offender instanceof Fig)
+                && !(offender instanceof Diagram)) {
+            throw new IllegalArgumentException(
+                    "The first offender must be a model element, "
+                    + "a Fig or a Diagram");
+        }
 
-	thePoster = poster;
-	theHeadline = h;
-	theOffenders = offs;
-	thePriority = p;
-	theDescription = d;
-	theMoreInfoURL = m;
+        if (offs.size() >= 2) {
+            offender = offs.elementAt(1);
+            if (!Model.getFacade().isAModelElement(offender)
+                    && !(offender instanceof Fig)
+                    && !(offender instanceof Diagram)) {
+                throw new IllegalArgumentException(
+                        "The second offender must be a model element, "
+                        + "a Fig or a Diagram");
+            }
+        }
+        // TODO: Why do we only care about checking the first
+        // 2 offenders above?
+
+        thePoster = poster;
+        theHeadline = h;
+        theOffenders = offs;
+        thePriority = p;
+        theDescription = d;
+        theMoreInfoURL = m;
     }
 
     /**
@@ -177,18 +195,21 @@ public class ToDoItem implements Serializable, WizardItem {
      * @param dsgr the designer
      */
     public ToDoItem(Critic c, Object dm, Designer dsgr) {
-        assert dm != null
-        	|| Model.getFacade().isAModelElement(dm)
-        	|| dm instanceof Fig
-        	|| dm instanceof Diagram;
+        if (!Model.getFacade().isAModelElement(dm)
+                && !(dm instanceof Fig)
+                && !(dm instanceof Diagram)) {
+            throw new IllegalArgumentException(
+                    "The offender must be a model element, "
+                    + "a Fig or a Diagram");
+        }
 
         thePoster = c;
-	theHeadline = c.getHeadline(dm, dsgr);
-	theOffenders = new ListSet(dm);
-	thePriority = c.getPriority(theOffenders, dsgr);
-	theDescription = c.getDescription(theOffenders, dsgr);
-	theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);
-	theWizard = c.makeWizard(this);
+        theHeadline = c.getHeadline(dm, dsgr);
+        theOffenders = new ListSet(dm);
+        thePriority = c.getPriority(theOffenders, dsgr);
+        theDescription = c.getDescription(theOffenders, dsgr);
+        theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);
+        theWizard = c.makeWizard(this);
     }
 
     /**
@@ -199,23 +220,40 @@ public class ToDoItem implements Serializable, WizardItem {
      * @param dsgr the designer
      */
     public ToDoItem(Critic c, ListSet offs, Designer dsgr) {
-        assert offs != null;
-        assert offs.size() <= 0
-        	|| Model.getFacade().isAModelElement(offs.elementAt(0))
-        	|| offs.elementAt(0) instanceof Fig
-        	|| offs.elementAt(0) instanceof Diagram;
-        assert offs.size() <= 1
-		|| Model.getFacade().isAModelElement(offs.elementAt(1))
-		|| offs.elementAt(1) instanceof Fig
-		|| offs.elementAt(1) instanceof Diagram;
+        if (offs == null) {
+            throw new IllegalArgumentException(
+                    "A ListSet of offenders must be supplied.");
+        }
+        Object offender = CollectionUtil.getFirstItemOrNull(offs);
+        if (offender != null
+                && !Model.getFacade().isAModelElement(offender)
+                && !(offender instanceof Fig)
+                && !(offender instanceof Diagram)) {
+            throw new IllegalArgumentException(
+                    "The first offender must be a model element, "
+                    + "a Fig or a Diagram");
+        }
+
+        if (offs.size() >= 2) {
+            offender = offs.elementAt(1);
+            if (!Model.getFacade().isAModelElement(offender)
+                    && !(offender instanceof Fig)
+                    && !(offender instanceof Diagram)) {
+                throw new IllegalArgumentException(
+                        "The second offender must be a model element, "
+                        + "a Fig or a Diagram");
+            }
+        }
+        // TODO: Why do we only care about checking the first
+        // 2 offenders above?
 
         thePoster = c;
-	theHeadline = c.getHeadline(offs, dsgr);
-	theOffenders = offs;
-	thePriority = c.getPriority(theOffenders, dsgr);
-	theDescription = c.getDescription(theOffenders, dsgr);
-	theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);
-	theWizard = c.makeWizard(this);
+        theHeadline = c.getHeadline(offs, dsgr);
+        theOffenders = offs;
+        thePriority = c.getPriority(theOffenders, dsgr);
+        theDescription = c.getDescription(theOffenders, dsgr);
+        theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);
+        theWizard = c.makeWizard(this);
     }
 
 
