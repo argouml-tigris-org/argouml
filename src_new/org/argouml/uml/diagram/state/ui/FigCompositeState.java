@@ -39,7 +39,9 @@ import javax.swing.JSeparator;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
+import org.argouml.uml.diagram.ui.ActionAggregation;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
@@ -289,11 +291,16 @@ public class FigCompositeState extends FigState {
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
     public Vector getPopUpActions(MouseEvent me) {
-        Vector compositeStatepopUpActions = super.getPopUpActions(me);
-        compositeStatepopUpActions.add(new JSeparator());
-        compositeStatepopUpActions.addElement(
-                ActionAddConcurrentRegion.getSingleton());
-        return compositeStatepopUpActions;
+        Vector popUpActions = super.getPopUpActions(me);
+        /* Check if multiple items are selected: */
+        boolean ms = TargetManager.getInstance().getTargets().size() > 1;
+        if (!ms) {
+            popUpActions.insertElementAt(
+                ActionAddConcurrentRegion.getSingleton(),
+                                         (popUpActions.size()
+                                          - popupAddOffset));
+        }
+        return popUpActions;
     }
 
     /**
