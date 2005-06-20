@@ -1052,7 +1052,9 @@ public class Project implements java.io.Serializable, TargetListener {
     public void setDefaultModel(Object theDefaultModel) {
 
         if (!Model.getFacade().isAModel(theDefaultModel)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "The default model must be a Model type. Received a "
+                    + theDefaultModel.getClass().getName());
         }
 
         defaultModel = theDefaultModel;
