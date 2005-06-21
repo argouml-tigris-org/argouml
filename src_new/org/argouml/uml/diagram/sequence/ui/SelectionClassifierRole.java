@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.Handle;
@@ -58,4 +59,12 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
         
         super.dragHandle(mX, mY, anX, anY, hand);
     }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
+     */
+    protected Object getNewNode(int buttonCode) {
+        return null;
+    }
+
 }

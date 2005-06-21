@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
-import org.argouml.uml.diagram.ui.SelectionWButtons;
+import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.ModeManager;
@@ -49,7 +49,7 @@ import org.tigris.gef.presentation.Handle;
  * The selection buttons for a classifier role.
  *
  */
-public class SelectionClassifierRole extends SelectionWButtons {
+public class SelectionClassifierRole extends SelectionNodeClarifiers {
 
     private static final Logger LOG =
         Logger.getLogger(SelectionClassifierRole.class);

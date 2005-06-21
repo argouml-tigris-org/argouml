@@ -732,7 +732,6 @@ class PreloadClasses implements Runnable {
         c = org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode.class;
         c = org.argouml.uml.diagram.ui.SPFigEdgeModelElement.class;
         c = org.argouml.uml.diagram.ui.SelectionNodeClarifiers.class;
-        c = org.argouml.uml.diagram.ui.SelectionWButtons.class;
         c = org.argouml.uml.ui.foundation.core.PropPanelAssociation.class;
         c = org.argouml.uml.ui.foundation.core.PropPanelClass.class;
         c = org.argouml.uml.ui.foundation.core.PropPanelInterface.class;
