@@ -729,7 +729,7 @@ class PreloadClasses implements Runnable {
         c = org.argouml.uml.diagram.ui.FigAssociation.class;
         c = org.argouml.uml.diagram.ui.FigGeneralization.class;
         c = org.argouml.uml.diagram.ui.FigRealization.class;
-        c = org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode.class;
+        c = org.tigris.gef.base.ModeCreateEdgeAndNode.class;
         c = org.argouml.uml.diagram.ui.SPFigEdgeModelElement.class;
         c = org.argouml.uml.diagram.ui.SelectionNodeClarifiers.class;
         c = org.argouml.uml.ui.foundation.core.PropPanelAssociation.class;

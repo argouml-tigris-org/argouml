@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
-import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
+import org.tigris.gef.base.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
