@@ -531,11 +531,27 @@ public class FigPackage extends FigNodeModelElement
 
         // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
-        String miname = stereotypeVisible 
-            ? "menu.popup.show.hide-stereotype"
-            : "menu.popup.show.show-stereotype";
-        showMenu.add(new UMLAction(
-            Translator.localize(miname),
+        /* Only show the menuitems if they make sense: */
+        Editor ce = Globals.curEditor();
+        Vector figs = ce.getSelectionManager().getFigs();
+        Iterator i = figs.iterator();
+        boolean sOn = false;
+        boolean sOff = false;
+        boolean vOn = false;
+        boolean vOff = false;
+        while (i.hasNext()) {
+            Fig f = (Fig) i.next();
+            if (f instanceof StereotypeContainer) {
+                boolean v = ((StereotypeContainer) f).isStereotypeVisible();
+                if (v) sOn = true;
+                else sOff = true;
+                v = ((VisibilityContainer) f).isVisibilityVisible();
+                if (v) vOn = true;
+                else vOff = true;
+            }
+        }
+        if (sOn) showMenu.add(new UMLAction(
+            Translator.localize("menu.popup.show.hide-stereotype"),
                     UMLAction.NO_ICON)
 	{
             /**
@@ -543,29 +559,11 @@ public class FigPackage extends FigNodeModelElement
              *         java.awt.event.ActionEvent)
              */
             public void actionPerformed(ActionEvent ae) {
-                Editor ce = Globals.curEditor();
-                Vector figs = ce.getSelectionManager().getFigs();
-                Iterator i = figs.iterator();
-                boolean v = !stereotypeVisible;
-                while (i.hasNext()) {
-                    Fig f = (Fig) i.next();
-                    if (f instanceof StereotypeContainer) {
-                        ((StereotypeContainer) f).setStereotypeVisible(v);
-                    }
-                    if (f instanceof FigNodeModelElement) {
-                        ((FigNodeModelElement) f).forceRepaintShadow();
-                        ((FigNodeModelElement) f).renderingChanged();
-                    }
-                    f.damage();
-                }
+                doStereotype(false);
             }
 	});
-        
-        miname = visibilityVisible 
-            ? "menu.popup.show.hide-visibility"
-            : "menu.popup.show.show-visibility";
-        showMenu.add(new UMLAction(
-            Translator.localize(miname),
+        if (sOff) showMenu.add(new UMLAction(
+            Translator.localize("menu.popup.show.show-stereotype"),
                 UMLAction.NO_ICON)
         {
             /**
@@ -573,19 +571,35 @@ public class FigPackage extends FigNodeModelElement
              *         java.awt.event.ActionEvent)
              */
             public void actionPerformed(ActionEvent ae) {
-                Editor ce = Globals.curEditor();
-                Vector figs = ce.getSelectionManager().getFigs();
-                Iterator i = figs.iterator();
-                boolean v = !visibilityVisible;
-                while (i.hasNext()) {
-                    Fig f = (Fig) i.next();
-                    if (f instanceof VisibilityContainer) {
-                        ((VisibilityContainer) f).setVisibilityVisible(v);
-                    }
-                    f.damage();
-                }
+                doStereotype(true);
             }
         });
+    
+        if (vOn) showMenu.add(new UMLAction(
+            Translator.localize("menu.popup.show.hide-visibility"),
+                UMLAction.NO_ICON)
+        {
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(
+             *         java.awt.event.ActionEvent)
+             */
+            public void actionPerformed(ActionEvent ae) {
+                doVisibility(false);
+            }
+        });
+        if (vOff) showMenu.add(new UMLAction(
+                Translator.localize("menu.popup.show.show-visibility"),
+                    UMLAction.NO_ICON)
+        {
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(
+             *         java.awt.event.ActionEvent)
+             */
+            public void actionPerformed(ActionEvent ae) {
+                doVisibility(true);
+            }
+        });
+        
         popUpActions.insertElementAt(showMenu,
             popUpActions.size() - popupAddOffset);
 
@@ -600,6 +614,45 @@ public class FigPackage extends FigNodeModelElement
         return popUpActions;
     }
 
+    /**
+     * Change the visibility of the stereotypes of all Figs.
+     *
+     * @param value true if it needs to become visible
+     */
+    private void doStereotype(boolean value) {
+        Editor ce = Globals.curEditor();
+        Vector figs = ce.getSelectionManager().getFigs();
+        Iterator i = figs.iterator();
+        while (i.hasNext()) {
+            Fig f = (Fig) i.next();
+            if (f instanceof StereotypeContainer) {
+                ((StereotypeContainer) f).setStereotypeVisible(value);
+            }
+            if (f instanceof FigNodeModelElement) {
+                ((FigNodeModelElement) f).forceRepaintShadow();
+                ((FigNodeModelElement) f).renderingChanged();
+            }
+            f.damage();
+        }
+    }
+    
+    /**
+     * Change the visibility of the Visibility of all Figs.
+     *
+     * @param value true if it needs to become visible
+     */
+    private void doVisibility(boolean value) {
+        Editor ce = Globals.curEditor();
+        Vector figs = ce.getSelectionManager().getFigs();
+        Iterator i = figs.iterator();
+        while (i.hasNext()) {
+            Fig f = (Fig) i.next();
+            if (f instanceof VisibilityContainer) {
+                ((VisibilityContainer) f).setVisibilityVisible(value);
+            }
+            f.damage();
+        }
+    }
 
     class FigPackageFigText extends FigText {
 	public FigPackageFigText(int xa, int ya, int w, int h) {
