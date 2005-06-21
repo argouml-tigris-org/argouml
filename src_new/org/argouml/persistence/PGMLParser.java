@@ -58,7 +58,7 @@ import org.xml.sax.SAXException;
 
 /**
  * The PGML parser.
- *
+ * @deprecated use PGMLStackParser
  */
 public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
@@ -78,8 +78,6 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     private StringBuffer privateText = new StringBuffer();
     ////////////////////////////////////////////////////////////////
     // static variables
-
-    //    private static final PGMLParser INSTANCE = new PGMLParser();
 
     private HashMap translationTable = new HashMap();
 
