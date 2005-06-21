@@ -44,11 +44,14 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.language.ui.ActionNotation;
 import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionSaveConfiguration;
 import org.argouml.ui.ActionSettings;
 import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.ZoomSliderButton;
 import org.argouml.ui.targetmanager.NavigateTargetBackAction;
 import org.argouml.ui.targetmanager.NavigateTargetForwardAction;
@@ -284,8 +287,8 @@ public class GenericArgoMenuBar extends JMenuBar
                 generate.add(module.getMenuItem(context));
             }
             context = new Object[] {
-		edit, "Edit",
-	    };
+                edit, "Edit",
+            };
             if (module.inContext(context)) {
                 edit.add(module.getMenuItem(context));
             }
@@ -474,14 +477,23 @@ public class GenericArgoMenuBar extends JMenuBar
         KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, mask);
         KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, mask);
         KeyStroke ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, mask);
+        KeyStroke ctrlZ = KeyStroke.getKeyStroke(KeyEvent.VK_Z, mask);
         KeyStroke delKey  = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
         KeyStroke ctrlDel = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, mask);
 
         edit = add(new JMenu(menuLocalize("Edit")));
         setMnemonic(edit, "Edit");
 
+        Project project = ProjectManager.getManager().getCurrentProject();
+        
+        JMenuItem undoItem = edit.add(ProjectBrowser.getInstance().getUndoAction());
+        setMnemonic(undoItem, "Undo");
+        setAccelerator(undoItem, ctrlZ);
+
+        edit.addSeparator();
+        
         select = new JMenu(menuLocalize("Select"));
-	setMnemonic(select, "Select");
+        setMnemonic(select, "Select");
         edit.add(select);
 
         JMenuItem selectAllItem = select.add(new CmdSelectAll());
@@ -502,8 +514,6 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(selectInvert, "Invert Selection");
 
         // TODO: These are not yet implemented - Bob Tarling 12 Oct 2002
-        // _edit.add(Actions.Undo);
-        // editToolbar.add((Actions.Undo));
         // _edit.add(Actions.Redo);
         // editToolbar.add((Actions.Redo));
 

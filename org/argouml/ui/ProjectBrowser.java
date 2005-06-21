@@ -45,6 +45,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -77,6 +78,7 @@ import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.UndoAction;
 import org.tigris.gef.ui.IStatusBar;
 import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
@@ -162,6 +164,11 @@ public class ProjectBrowser
      * The todopane (lower left corner of screen).
      */
     private ToDoPane todoPane;
+
+    /**
+     * The action to undo the last user interaction
+     */
+    private final UndoAction undoAction = new UndoAction(Translator.localize("action.undo"));
 
     /**
      * For testing purposes. In tests this constructor can be called so
@@ -1186,5 +1193,13 @@ public class ProjectBrowser
         }
         FindDialog.getInstance().doClearTabs();
         FindDialog.getInstance().doResetFields();
+    }
+    
+    /**
+     * Get the action that can undo the last user interaction on this project.
+     * @return the undo action.
+     */
+    public Action getUndoAction() {
+        return undoAction;
     }
 } /* end class ProjectBrowser */
