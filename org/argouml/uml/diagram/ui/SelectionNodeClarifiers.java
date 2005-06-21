@@ -27,7 +27,7 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Graphics;
 
-import org.tigris.gef.base.SelectionResize;
+import org.tigris.gef.base.SelectionButtons;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -36,7 +36,7 @@ import org.tigris.gef.presentation.Fig;
  *
  * @author jrobbins
  */
-public class SelectionNodeClarifiers extends SelectionResize {
+public class SelectionNodeClarifiers extends SelectionButtons {
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -58,6 +58,19 @@ public class SelectionNodeClarifiers extends SelectionResize {
     public void paint(Graphics g) {
         ((FigNodeModelElement) _content).paintClarifiers(g);
         super.paint(g);
+    }
+
+    /**
+     * @see org.tigris.gef.base.SelectionButtons#paintButtons(java.awt.Graphics)
+     */
+    public void paintButtons(Graphics g) {
+    }
+
+    /**
+     * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
+     */
+    protected Object getNewNode(int arg0) {
+        return null;
     }
 
 } /* end class SelectionNodeClarifiers */

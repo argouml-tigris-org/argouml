@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
-import org.argouml.uml.diagram.ui.SelectionWButtons;
+import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.ModeManager;
@@ -48,7 +48,7 @@ import org.tigris.gef.presentation.Handle;
 /**
  * @author jrobbins@ics.uci.edu
  */
-public class SelectionInterface extends SelectionWButtons {
+public class SelectionInterface extends SelectionNodeClarifiers {
 
     private static final Logger LOG =
         Logger.getLogger(SelectionInterface.class);

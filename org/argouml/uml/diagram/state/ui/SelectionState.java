@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
-import org.argouml.uml.diagram.ui.SelectionWButtons;
+import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.ModeManager;
@@ -48,7 +48,7 @@ import org.tigris.gef.presentation.Handle;
 /**
  * @author jrobbins@ics.uci.edu
  */
-public class SelectionState extends SelectionWButtons {
+public class SelectionState extends SelectionNodeClarifiers {
 
     private static final Logger LOG = Logger.getLogger(SelectionState.class);
     ////////////////////////////////////////////////////////////////
@@ -130,7 +130,7 @@ public class SelectionState extends SelectionWButtons {
     }
 
     /**
-     * @see SelectionWButtons#paintButtons(Graphics)
+     * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
      */
     public void paintButtons(Graphics g) {
 	int cx = _content.getX();
@@ -193,14 +193,14 @@ public class SelectionState extends SelectionWButtons {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
+     * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
 	return Model.getStateMachinesFactory().createState();
     }
 
     /**
-     * @see SelectionWButtons#createEdgeAbove(
+     * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
@@ -209,7 +209,7 @@ public class SelectionState extends SelectionWButtons {
     }
 
     /**
-     * @see SelectionWButtons#createEdgeLeft(
+     * @see org.tigris.gef.base.SelectionButtons#createEdgeLeft(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
@@ -218,7 +218,7 @@ public class SelectionState extends SelectionWButtons {
     }
 
     /**
-     * @see SelectionWButtons#createEdgeRight(
+     * @see org.tigris.gef.base.SelectionButtons#createEdgeRight(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
@@ -228,7 +228,7 @@ public class SelectionState extends SelectionWButtons {
 
     /**
      * To enable this we need to add an icon.
-     * @see SelectionWButtons#createEdgeToSelf(
+     * @see org.tigris.gef.base.SelectionButtons#createEdgeToSelf(
      *         org.tigris.gef.graph.MutableGraphModel)
      */
     protected Object createEdgeToSelf(MutableGraphModel gm) {
@@ -239,7 +239,7 @@ public class SelectionState extends SelectionWButtons {
     }
 
     /**
-     * @see SelectionWButtons#createEdgeUnder(
+     * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
