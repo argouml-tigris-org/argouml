@@ -31,7 +31,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import org.tigris.gef.base.CmdAlign;
+import org.tigris.gef.base.AlignAction;
+import org.tigris.gef.base.AlignAction;
 import org.tigris.gef.base.CmdDistribute;
 import org.tigris.gef.base.CmdNudge;
 import org.tigris.gef.base.CmdReorder;
@@ -127,33 +128,33 @@ class InitMenusLater implements Runnable {
 				   KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
 
 	// ---------------------------------------------- Arrange Menu
-        JMenuItem alignTops = align.add(new CmdAlign(CmdAlign.ALIGN_TOPS));
+        JMenuItem alignTops = align.add(new AlignAction(AlignAction.ALIGN_TOPS));
 	GenericArgoMenuBar.setMnemonic(alignTops, "align tops");
 
         JMenuItem alignBottoms =
-	    align.add(new CmdAlign(CmdAlign.ALIGN_BOTTOMS));
+	    align.add(new AlignAction(AlignAction.ALIGN_BOTTOMS));
 	GenericArgoMenuBar.setMnemonic(alignBottoms, "align bottoms");
 
-	JMenuItem alignRights = align.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS));
+	JMenuItem alignRights = align.add(new AlignAction(AlignAction.ALIGN_RIGHTS));
 	GenericArgoMenuBar.setMnemonic(alignRights, "align rights");
 	GenericArgoMenuBar.setAccelerator(alignRights, ctrlR);
 
-	JMenuItem alignLefts = align.add(new CmdAlign(CmdAlign.ALIGN_LEFTS));
+	JMenuItem alignLefts = align.add(new AlignAction(AlignAction.ALIGN_LEFTS));
 	GenericArgoMenuBar.setMnemonic(alignLefts, "align lefts");
 	GenericArgoMenuBar.setAccelerator(alignLefts, ctrlL);
 
 	JMenuItem alignHCenters =
-	    align.add(new CmdAlign(CmdAlign.ALIGN_H_CENTERS));
+	    align.add(new AlignAction(AlignAction.ALIGN_H_CENTERS));
 	GenericArgoMenuBar.setMnemonic(alignHCenters,
                                        "align horizontal centers");
 
 	JMenuItem alignVCenters =
-	    align.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
+	    align.add(new AlignAction(AlignAction.ALIGN_V_CENTERS));
 	GenericArgoMenuBar.setMnemonic(alignVCenters,
 				       "align vertical centers");
 
 	JMenuItem alignToGrid =
-	    align.add(new CmdAlign(CmdAlign.ALIGN_TO_GRID));
+	    align.add(new AlignAction(AlignAction.ALIGN_TO_GRID));
 	GenericArgoMenuBar.setMnemonic(alignToGrid, "align to grid");
 
         JMenuItem distributeHSpacing =
