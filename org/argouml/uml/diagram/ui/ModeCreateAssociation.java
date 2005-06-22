@@ -307,6 +307,7 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
                 mutableGraphModel.addNode(association);
             }
         }
+        super.endAttached();
     }
 
     private FigNode placeTempNode(MouseEvent me) {
