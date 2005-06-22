@@ -28,38 +28,42 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Some helper methods for dealing with collections
+ * Some helper methods for dealing with collections.
+ *
  * @author Bob Tarling
  * @stereotype utility
  */
-public class CollectionUtil {
+public final class CollectionUtil {
 
     /**
-     * Can't construct a utility
+     * Can't construct a utility.
      */
     private CollectionUtil() {
     }
-    
+
     /**
      * Return the first item from a collection using the most efficient
      * method possible.
-     * @param c
-     * @return the first element of a collection.
+     *
+     * @param c The Collection.
+     * @return the first element of a Collection.
+     * @throws java.util.NoSuchElementException if the collection is empty.
      */
-    public static final Object getFirstItem(Collection c) {
+    public static Object getFirstItem(Collection c) {
         if (c instanceof List) {
-            return ((List)c).get(0);
+            return ((List) c).get(0);
         }
         return c.iterator().next();
     }
-    
+
     /**
      * Return the first item from a collection using the most efficient
      * method possible. Returns null for an empty collection.
-     * @param c
-     * @return the first element of a collection.
+     *
+     * @param c The Collection.
+     * @return the first element of a Collection.
      */
-    public static final Object getFirstItemOrNull(Collection c) {
+    public static Object getFirstItemOrNull(Collection c) {
         if (c.size() == 0) {
             return null;
         }
