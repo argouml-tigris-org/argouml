@@ -751,24 +751,24 @@ public class Import {
         }
 
         public void setMaximum(int i) {
-	    progress.setMaximum(i); numberOfFiles = i;
-	}
+            progress.setMaximum(i);
+            numberOfFiles = i;
+        }
 
         public void setValue(int i) {
 
             progress.setValue(i);
 
-	    String pass = "1-st pass";
+            String pass = "1-st pass";
             // if there are 2 passes:
-            if (importLevel > 0) {
-                if (i >= numberOfFiles / 2) pass = "2-nd pass";
+            if (importLevel > 0 && i >= numberOfFiles / 2) {
+                pass = "2-nd pass";
             }
 
             int fileNumber = i != 1 ? ((i - 1) % (numberOfFiles / 2) + 1) : 1;
 
             progressLabel.setText("Parsing file "
-				  + ((i - 1) % (numberOfFiles / 2) + 1)
-                                  + " of " + numberOfFiles / 2
+				  + fileNumber + " of " + numberOfFiles / 2
 				  + ", " + pass + ". ");
             pack(); // MVW: Is this not time-consuming?
                     // Better make the window big enough at the start,
