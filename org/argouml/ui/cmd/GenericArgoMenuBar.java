@@ -44,8 +44,6 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.language.ui.ActionNotation;
 import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionSaveConfiguration;
@@ -61,6 +59,7 @@ import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
 import org.argouml.uml.ui.ActionCopy;
 import org.argouml.uml.ui.ActionCut;
+import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.ActionDeploymentDiagram;
 import org.argouml.uml.ui.ActionGenerateAll;
 import org.argouml.uml.ui.ActionGenerateOne;
@@ -70,7 +69,6 @@ import org.argouml.uml.ui.ActionImportFromSources;
 import org.argouml.uml.ui.ActionLayout;
 import org.argouml.uml.ui.ActionOpenProject;
 import org.argouml.uml.ui.ActionPaste;
-import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.ActionRevertToSaved;
 import org.argouml.uml.ui.ActionSaveAllGraphics;
 import org.argouml.uml.ui.ActionSaveGraphics;
@@ -484,9 +482,8 @@ public class GenericArgoMenuBar extends JMenuBar
         edit = add(new JMenu(menuLocalize("Edit")));
         setMnemonic(edit, "Edit");
 
-        Project project = ProjectManager.getManager().getCurrentProject();
-        
-        JMenuItem undoItem = edit.add(ProjectBrowser.getInstance().getUndoAction());
+        JMenuItem undoItem = 
+            edit.add(ProjectBrowser.getInstance().getUndoAction());
         setMnemonic(undoItem, "Undo");
         setAccelerator(undoItem, ctrlZ);
 
