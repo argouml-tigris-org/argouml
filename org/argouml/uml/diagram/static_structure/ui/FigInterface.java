@@ -37,6 +37,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Action;
+
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.language.helpers.NotationHelper;
@@ -253,10 +255,9 @@ public class FigInterface extends FigNodeModelElement
 
         // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
-        if (operFig.isVisible()) {
-            showMenu.add(ActionCompartmentDisplay.hideOperCompartment());
-        } else {
-            showMenu.add(ActionCompartmentDisplay.showOperCompartment());
+        Iterator i = ActionCompartmentDisplay.getActions().iterator();
+        while(i.hasNext()) {
+            showMenu.add((Action) i.next());
         }
         popUpActions.insertElementAt(showMenu,
                 popUpActions.size() - popupAddOffset);
