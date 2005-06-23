@@ -39,6 +39,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Action;
+
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.i18n.Translator;
@@ -50,6 +52,7 @@ import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
+import org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Editor;
@@ -108,7 +111,8 @@ import org.tigris.gef.presentation.FigText;
  * origin is at our top left corner, and the Y coordinates are
  * reversed.<p>
  */
-public class FigUseCase extends FigNodeModelElement {
+public class FigUseCase extends FigNodeModelElement 
+    implements ExtensionsCompartmentContainer {
 
     private static final Logger LOG = Logger.getLogger(FigUseCase.class);
 
@@ -391,13 +395,10 @@ public class FigUseCase extends FigNodeModelElement {
 
         // Show menu to display/hide the extension point compartment. 
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
-
-        if (epVec.isVisible()) {
-            showMenu.add(ActionCompartmentDisplay.hideExtPointCompartment());
-        } else {
-            showMenu.add(ActionCompartmentDisplay.showExtPointCompartment());
+        Iterator i = ActionCompartmentDisplay.getActions().iterator();
+        while(i.hasNext()) {
+            showMenu.add((Action) i.next());
         }
-
         popUpActions.insertElementAt(showMenu,
             popUpActions.size() - popupAddOffset);
 
@@ -413,8 +414,10 @@ public class FigUseCase extends FigNodeModelElement {
     /**
      * Returns whether the extension points are currently displayed.<p>
      *
-     * @return  <code>true</code> if the attributes are visible,
+     * @return  <code>true</code> if the extensionpoints are visible,
      *          <code>false</code> otherwise.
+     *
+     * @see org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer#isExtensionPointVisible()
      */
     public boolean isExtensionPointVisible() {
         return epVec.isVisible();
@@ -433,6 +436,8 @@ public class FigUseCase extends FigNodeModelElement {
      *
      * @param isVisible  <code>true</code> if the compartment should be shown,
      *                   <code>false</code> otherwise.
+     *
+     * @see org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer#setExtensionPointVisible(boolean)
      */
     public void setExtensionPointVisible(boolean isVisible) {
 
