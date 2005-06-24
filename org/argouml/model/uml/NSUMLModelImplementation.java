@@ -46,6 +46,7 @@ import org.argouml.model.EventAdapter;
 import org.argouml.model.ExtensionMechanismsFactory;
 import org.argouml.model.ExtensionMechanismsHelper;
 import org.argouml.model.Facade;
+import org.argouml.model.MementoCreationObserver;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.ModelEventPump;
 import org.argouml.model.ModelImplementation;
@@ -111,6 +112,8 @@ public class NSUMLModelImplementation implements ModelImplementation {
     private EventAdapter theEventAdapter = new ExplorerNSUMLEventAdaptor();
 
     private KindsImpl theKindsObject = new KindsImpl();
+
+    private MementoCreationObserver mementoCreationObserver;
 
     /**
      * @see org.argouml.model.ModelImplementation#getFacade()
@@ -372,9 +375,26 @@ public class NSUMLModelImplementation implements ModelImplementation {
     }
 
     /**
-     * @see org.argouml.model.ModelImplementation#createContainerDispatcher(java.awt.Container)
+     * @see org.argouml.model.ModelImplementation#createContainerDispatcher(
+     *         java.awt.Container)
      */
     public ContainerDispatcher createContainerDispatcher(Container container) {
         return new ContainerDispatcherImpl(container);
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#setMementoCreationObserver(
+     *         org.argouml.model.MementoCreationObserver)
+     */
+    public void setMementoCreationObserver(MementoCreationObserver observer) {
+        mementoCreationObserver = observer;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getMementoCreationObserver(
+     *         org.argouml.model.MementoCreationObserver)
+     */
+    public MementoCreationObserver getMementoCreationObserver() {
+        return mementoCreationObserver;
     }
 }

@@ -32,12 +32,16 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
+import org.argouml.model.MementoCreationObserver;
 import org.argouml.model.Model;
+import org.argouml.model.ModelMemento;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.ui.ActionSaveProject;
+import org.tigris.gef.base.Memento;
+import org.tigris.gef.base.UndoManager;
 import org.tigris.gef.graph.MutableGraphSupport;
 
 /**
@@ -54,7 +58,7 @@ import org.tigris.gef.graph.MutableGraphSupport;
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
  */
-public final class ProjectManager implements PropertyChangeListener {
+public final class ProjectManager implements PropertyChangeListener, MementoCreationObserver {
 
     /**
      * The name of the property that defines the current project.
@@ -125,6 +129,7 @@ public final class ProjectManager implements PropertyChangeListener {
         // save button/menu item etc.
         Model.getPump().setSaveAction(ActionSaveProject.getInstance());
         MutableGraphSupport.setSaveAction(ActionSaveProject.getInstance());
+        Model.setMementoCreationObserver(this);
     }
 
     /**
@@ -296,5 +301,25 @@ public final class ProjectManager implements PropertyChangeListener {
                 Designer.MODEL_TODOITEM_DISMISSED)) {
             setNeedsSave(true);
         }
+    }
+
+    /**
+     * Called when the model subsystem creates a memento. We must add this to the
+     * UndoManager.
+     */
+    public void mementoCreated(final ModelMemento memento) {
+        Memento wrappedMemento = new Memento() {
+            ModelMemento modelMemento = memento;
+            public void undo() {
+                modelMemento.undo();
+            }
+            public void redo() {
+                modelMemento.redo();
+            }
+            public void dispose() {
+                modelMemento.dispose();
+            }
+        };
+        UndoManager.getInstance().addMemento(wrappedMemento);
     }
 }
