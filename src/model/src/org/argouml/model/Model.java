@@ -433,7 +433,7 @@ public final class Model {
 
 
     /**
-     * Crete a new ComponentDispatcher for a Component.
+     * Create a new ComponentDispatcher for a Component.
      *
      * @param container The Component the dispatcher should be registered to.
      * @return A newly created Container Dispatcher.
@@ -441,5 +441,23 @@ public final class Model {
     public static ContainerDispatcher createContainerDispatcher(
             Container container) {
         return impl.createContainerDispatcher(container);
+    }
+    
+    /**
+     * Allows an external system to register itself to recieve mementos created
+     * by the model subsystem
+     * @param observer the interested party
+     */
+    public static void setMementoCreationObserver(
+            MementoCreationObserver observer) {
+        impl.setMementoCreationObserver(observer);
+    }
+    
+    /**
+     * Gets the external class responsible for handling mementos.
+     * @return the MementoCreationObserver
+     */
+    public static MementoCreationObserver getMementoCreationObserver() {
+        return impl.getMementoCreationObserver();
     }
 }
