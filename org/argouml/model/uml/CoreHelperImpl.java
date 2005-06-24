@@ -2302,24 +2302,50 @@ class CoreHelperImpl implements CoreHelper {
     }
 
     /**
-     * Sets if of some model element is abstract.
+     * Sets if some model element is abstract.
      *
      * @param handle is the classifier
      * @param flag is true if it should be abstract
      */
-    public void setAbstract(Object handle, boolean flag) {
-        if (handle instanceof MGeneralizableElement) {
-            ((MGeneralizableElement) handle).setAbstract(flag);
-            return;
-        }
-        if (handle instanceof MOperation) {
-            ((MOperation) handle).setAbstract(flag);
-            return;
-        }
-        if (handle instanceof MReception) {
-            ((MReception) handle).setAbstarct(flag);
-        }
-        throw new IllegalArgumentException("handle: " + handle);
+    public void setAbstract(final Object handle, final boolean flag) {
+        
+        ModelMemento memento = Model.notifyMementoCreationObserver(
+            new ModelMemento() {
+                boolean oldValue = nsmodel.getFacade().isAbstract(handle);
+                public void undo() {
+                    if (handle instanceof MGeneralizableElement) {
+                        ((MGeneralizableElement) handle).setAbstract(oldValue);
+                        return;
+                    }
+                    if (handle instanceof MOperation) {
+                        ((MOperation) handle).setAbstract(oldValue);
+                        return;
+                    }
+                    if (handle instanceof MReception) {
+                        ((MReception) handle).setAbstarct(oldValue);
+                    }
+                    throw new IllegalArgumentException("handle: " + handle);
+                }
+                public void redo() {
+                    if (handle instanceof MGeneralizableElement) {
+                        ((MGeneralizableElement) handle).setAbstract(flag);
+                        return;
+                    }
+                    if (handle instanceof MOperation) {
+                        ((MOperation) handle).setAbstract(flag);
+                        return;
+                    }
+                    if (handle instanceof MReception) {
+                        ((MReception) handle).setAbstarct(flag);
+                    }
+                    throw new IllegalArgumentException("handle: " + handle);
+                }
+            }
+        );
+        
+        memento.redo();
+        
+        
     }
 
     /**
