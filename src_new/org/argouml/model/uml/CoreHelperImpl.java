@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.CoreHelper;
+import org.argouml.model.AbstractCoreHelper;
 import org.argouml.model.Model;
 import org.argouml.model.ModelMemento;
 import org.argouml.model.UmlException;
@@ -117,13 +117,11 @@ import ru.novosoft.uml.model_management.MPackage;
 /**
  * Helper class for UML Foundation::Core Package.<p>
  *
- * Current implementation is a placeholder.<p>
- *
  * @since ARGO0.11.2
  * @author Thierry Lach
  * @author Jaap Branderhorst
  */
-class CoreHelperImpl implements CoreHelper {
+class CoreHelperImpl extends AbstractCoreHelper {
     /**
      * Logger.
      */
@@ -776,12 +774,13 @@ class CoreHelperImpl implements CoreHelper {
     public String getBody(Object comment) {
         if (comment instanceof MComment) {
             /* In UML 1.3, get it from the name.
-             * From UML 1.4, get it from the body.*/
-            return ((MComment)comment).getName();
+             * From UML 1.4, get it from the body.
+             */
+            return ((MComment) comment).getName();
         }
         throw new IllegalArgumentException();
     }
-    
+
     /**
      * Returns all flows from some source modelelement to a target
      * modelelement.<p>
@@ -2304,48 +2303,23 @@ class CoreHelperImpl implements CoreHelper {
     /**
      * Sets if some model element is abstract.
      *
+     * @see org.argouml.model.CoreHelper#setAbstract(Object, boolean)
      * @param handle is the classifier
      * @param flag is true if it should be abstract
      */
-    public void setAbstract(final Object handle, final boolean flag) {
-        
-        ModelMemento memento = Model.notifyMementoCreationObserver(
-            new ModelMemento() {
-                boolean oldValue = nsmodel.getFacade().isAbstract(handle);
-                public void undo() {
-                    if (handle instanceof MGeneralizableElement) {
-                        ((MGeneralizableElement) handle).setAbstract(oldValue);
-                        return;
-                    }
-                    if (handle instanceof MOperation) {
-                        ((MOperation) handle).setAbstract(oldValue);
-                        return;
-                    }
-                    if (handle instanceof MReception) {
-                        ((MReception) handle).setAbstarct(oldValue);
-                    }
-                    throw new IllegalArgumentException("handle: " + handle);
-                }
-                public void redo() {
-                    if (handle instanceof MGeneralizableElement) {
-                        ((MGeneralizableElement) handle).setAbstract(flag);
-                        return;
-                    }
-                    if (handle instanceof MOperation) {
-                        ((MOperation) handle).setAbstract(flag);
-                        return;
-                    }
-                    if (handle instanceof MReception) {
-                        ((MReception) handle).setAbstarct(flag);
-                    }
-                    throw new IllegalArgumentException("handle: " + handle);
-                }
-            }
-        );
-        
-        memento.redo();
-        
-        
+    protected void realSetAbstract(Object handle, boolean flag) {
+        if (handle instanceof MGeneralizableElement) {
+            ((MGeneralizableElement) handle).setAbstract(flag);
+            return;
+        }
+        if (handle instanceof MOperation) {
+            ((MOperation) handle).setAbstract(flag);
+            return;
+        }
+        if (handle instanceof MReception) {
+            ((MReception) handle).setAbstarct(flag);
+        }
+        throw new IllegalArgumentException("handle: " + handle);
     }
 
     /**
@@ -2909,7 +2883,7 @@ class CoreHelperImpl implements CoreHelper {
             // The cause is
             // not known and the best fix available for the moment is to remove
             // the corruptions as they are found.
-            
+
             int pos = 0;
             while ((pos = name.indexOf(0xffff)) >= 0) {
                 name =
@@ -2938,20 +2912,21 @@ class CoreHelperImpl implements CoreHelper {
                 }
             );
             modelElement.setName(safeName);
-            
+
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
                 + " or name: " + name);
     }
-    
+
     /**
-     * @see org.argouml.model.CoreHelper#setBody(java.lang.Object, java.lang.String)
+     * @see org.argouml.model.CoreHelper#setBody(
+     *         java.lang.Object, java.lang.String)
      */
     public void setBody(Object handle, String body) {
         if ((handle instanceof MComment) && (body != null)) {
             //in UML 1.3 we store it in the name:
-            ((MComment)handle).setName(body);
+            ((MComment) handle).setName(body);
         }
     }
 
