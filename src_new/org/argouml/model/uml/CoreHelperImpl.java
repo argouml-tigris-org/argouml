@@ -2900,20 +2900,18 @@ class CoreHelperImpl implements CoreHelper {
             
             final MModelElement modelElement = (MModelElement) handle;
 
-            // Create a memento. This automatically queues the memento
-            // and executes its redo method.
-            ModelMemento memento = new ModelMemento() {
-                String oldName;
-                public void init() {
-                    oldName = modelElement.getName();
+            Model.notifyMementoCreationObserver(
+                new ModelMemento() {
+                    String oldName = modelElement.getName();
+                    public void undo() {
+                        modelElement.setName(oldName);
+                    }
+                    public void redo() {
+                        modelElement.setName(safeName);
+                    }
                 }
-                public void undo() {
-                    modelElement.setName(oldName);
-                }
-                public void redo() {
-                    modelElement.setName(safeName);
-                }
-            };
+            );
+            modelElement.setName(safeName);
             
             return;
         }

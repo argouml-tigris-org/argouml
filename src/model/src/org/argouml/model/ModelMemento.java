@@ -32,23 +32,6 @@ package org.argouml.model;
 public abstract class ModelMemento {
 
     /**
-     * When the memento is created it will notify any creation observer.
-     * It also calls its own redo method (this is really the first "do".
-     */
-    public ModelMemento() {
-        MementoCreationObserver mco = Model.getMementoCreationObserver();
-        if (mco != null) {
-            Model.getMementoCreationObserver().mementoCreated(this);
-        }
-        init();
-        redo();
-    }
-    
-    /**
-     * For annonymous ancestors to initialise themselves
-     */
-    public abstract void init();
-    /**
      * The method to undo this memento
      */
     public abstract void undo();

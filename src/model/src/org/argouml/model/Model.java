@@ -460,4 +460,17 @@ public final class Model {
     public static MementoCreationObserver getMementoCreationObserver() {
         return impl.getMementoCreationObserver();
     }
+    
+    /**
+     * Notify the 
+     * @return the MementoCreationObserver
+     */
+    public static ModelMemento notifyMementoCreationObserver(
+            ModelMemento memento) {
+        MementoCreationObserver mco = getMementoCreationObserver();
+        if (mco != null) {
+            Model.getMementoCreationObserver().mementoCreated(memento);
+        }
+        return memento;
+    }
 }
