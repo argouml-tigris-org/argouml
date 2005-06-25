@@ -102,7 +102,7 @@ public class FigNote extends FigNodeModelElement {
     /**
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    public void setBounds(int x, int y, int w, int h) {
+    protected void setBoundsInternal(int x, int y, int w, int h) {
 	Rectangle oldBounds = getBounds();
 	getNameFig().setBounds(x, y, w, h);
 	_x = x; _y = y; _w = w; _h = h;

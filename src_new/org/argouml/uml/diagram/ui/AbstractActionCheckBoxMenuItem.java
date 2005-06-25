@@ -84,12 +84,12 @@ abstract class AbstractActionCheckBoxMenuItem extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public final void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
         Iterator i = TargetManager.getInstance().getTargets().iterator();
         while (i.hasNext()) {
             Object t = i.next();
             toggleValueOfTarget(t);
         }
-        super.actionPerformed(e);
     }
     
     /**

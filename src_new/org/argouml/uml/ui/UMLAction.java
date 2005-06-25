@@ -26,7 +26,6 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
 
@@ -34,12 +33,13 @@ import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.Actions;
+import org.tigris.gef.base.UndoableAction;
 
 /**
  * The prototype of all actions within ArgoUML.
  *
  */
-public class UMLAction extends AbstractAction {
+public class UMLAction extends UndoableAction {
     /**
      * Logger.
      */
@@ -143,10 +143,13 @@ public class UMLAction extends AbstractAction {
      * Perform the work the action is supposed to do.
      * This method needs to be overridden by all actions,
      * since it only shows a fake progressbar...
+     * TODO: I suspect the above comment may well not be true.
+     * We need to some how get rid of this anyway. If we find everything
+     * works then delete it otherwise we find a way to fix.
      *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(ActionEvent e) {
+    public void oldActionPerformed(ActionEvent e) {
         LOG.debug("pushed " + getValue(Action.NAME));
         Actions.updateAllEnabled();
     }

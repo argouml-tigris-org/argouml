@@ -212,9 +212,10 @@ public class FigConcurrentRegion extends FigState
      *
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    public void setBounds(int x, int y, int w, int h) {
-        if (getNameFig() == null)
+    protected void setBoundsInternal(int x, int y, int w, int h) {
+        if (getNameFig() == null) {
             return;
+        }
         Rectangle oldBounds = getBounds();
         Dimension nameDim = getNameFig().getMinimumSize();
         int adjacentindex = -1;
