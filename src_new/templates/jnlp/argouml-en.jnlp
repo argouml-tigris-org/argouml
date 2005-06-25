@@ -23,15 +23,12 @@
     <jar href="argouml.jar" main="true" download="eager"/>
     <jar href="argouml-model.jar"/>
     <jar href="antlrall.jar"/>
-    <jar href="xercesImpl.jar"/>
-    <jar href="xml-apis.jar"/>
     <jar href="gef.jar"/>
     <jar href="ocl-argo.jar"/>
     <jar href="nsuml.jar"/>
     <jar href="log4j.jar"/>
     <jar href="swidgets.jar"/>
     <jar href="toolbar.jar"/>
-    <jar href="jmi.jar"/>
     <jar href="commons-logging.jar"/>
 
     <property name="user.language" value="en"/>
