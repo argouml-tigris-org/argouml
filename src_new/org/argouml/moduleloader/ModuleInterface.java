@@ -85,7 +85,7 @@ public interface ModuleInterface {
      * </ul>
      *
      * If a module does not provide a specific piece of information,
-     * <tt>null</tt> can be returned. Hence the normal implementation
+     * <code>null</code> can be returned. Hence the normal implementation
      * should be:<pre>
      * public String getInfo(int type) {
      *     switch (type) {

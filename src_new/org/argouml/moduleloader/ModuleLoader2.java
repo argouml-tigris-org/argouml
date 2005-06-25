@@ -57,7 +57,7 @@ import org.argouml.application.api.Argo;
  * @author Linus Tolke
  * @since 0.15.4
  */
-public class ModuleLoader2 {
+public final class ModuleLoader2 {
     /**
      * Logger.
      */
@@ -78,7 +78,19 @@ public class ModuleLoader2 {
      */
     private static final ModuleLoader2 INSTANCE = new ModuleLoader2();
 
-    /** Class file suffix */
+    /**
+     * The prefix in URL:s that are files.
+     */
+    private static final String FILE_PREFIX = "file:";
+
+    /**
+     * The prefix in URL:s that are jars.
+     */
+    private static final String JAR_PREFIX = "jar:";
+
+    /**
+     * Class file suffix.
+     */
     public static final String CLASS_SUFFIX = ".class";
 
     /**
@@ -99,6 +111,8 @@ public class ModuleLoader2 {
 
     /**
      * Return a collection of all available modules.
+     *
+     * @return A Collection of all available modules.
      */
     private Collection availableModules() {
 	return Collections.unmodifiableCollection(moduleStatus.keySet());
@@ -110,7 +124,7 @@ public class ModuleLoader2 {
      *
      * In short this attempts to make the modules obey their selection.<p>
      *
-     * @param failingAllowed is <tt>true</tt> if enabling or disabling of
+     * @param failingAllowed is <code>true</code> if enabling or disabling of
      *                       some of the modules is allowed to fail.
      */
     public static void doLoad(boolean failingAllowed) {
@@ -154,14 +168,18 @@ public class ModuleLoader2 {
      * Get the selected.
      *
      * @param name The name of the module.
-     * @return <tt>true</tt> if the module is selected.
+     * @return <code>true</code> if the module is selected.
      */
     public static boolean isSelected(String name) {
 	return getInstance().isSelectedInternal(name);
     }
 
     /**
+     * Get the selected.
+     *
      * @see #isSelected(String)
+     * @param name The name of the module.
+     * @return <code>true</code> if the module is selected.
      */
     private boolean isSelectedInternal(String name) {
 	Map.Entry entry = findModule(name);
@@ -189,7 +207,11 @@ public class ModuleLoader2 {
     }
 
     /**
+     * Set the selected value.
+     *
      * @see #setSelected(String, boolean)
+     * @param name The name of the module.
+     * @param value Selected or not.
      */
     public void setSelectedInternal(String name, boolean value) {
 	Map.Entry entry = findModule(name);
@@ -213,7 +235,12 @@ public class ModuleLoader2 {
     }
 
     /**
+     * Create a description of the module based on the information provided
+     * by the module itself.
+     *
      * @see #getDescription(String)
+     * @param name The name of the module.
+     * @return The description.
      */
     private String getDescriptionInternal(String name) {
 	Map.Entry entry = findModule(name);
@@ -386,7 +413,7 @@ public class ModuleLoader2 {
 
     /**
      * Return the ModuleInterface, ModuleStatus pair for the module
-     * with the given name or <tt>null</tt> if there isn't any.
+     * with the given name or <code>null</code> if there isn't any.
      *
      * @param name The given name.
      * @return A pair (Map.Entry).
@@ -431,8 +458,8 @@ public class ModuleLoader2 {
 			      extForm.length() - Argo.ARGOINI.length());
 
 	// If it's a jar, clean it up and make it look like a file url
-	if (argoRoot.startsWith("jar:")) {
-	    argoRoot = argoRoot.substring(4);
+	if (argoRoot.startsWith(JAR_PREFIX)) {
+	    argoRoot = argoRoot.substring(JAR_PREFIX.length());
 	    if (argoRoot.endsWith("!")) {
 	        argoRoot = argoRoot.substring(0, argoRoot.length() - 1);
 	    }
@@ -442,9 +469,10 @@ public class ModuleLoader2 {
 
 	if (argoRoot != null) {
 	    LOG.info("argoRoot is " + argoRoot);
-	    if (argoRoot.startsWith("file:")) {
-	        argoHome = new File(argoRoot.substring(5)).getAbsoluteFile()
-		    .getParent();
+	    if (argoRoot.startsWith(FILE_PREFIX)) {
+	        argoHome =
+	            new File(argoRoot.substring(FILE_PREFIX.length()))
+	            	.getAbsoluteFile().getParent();
 	    } else {
 	        argoHome = new File(argoRoot).getAbsoluteFile().getParent();
 	    }
@@ -454,9 +482,10 @@ public class ModuleLoader2 {
 	    LOG.info("argoHome is " + argoHome);
 	}
 	if (argoHome != null) {
-	    if (argoHome.startsWith("file:")) {
-	        huntModulesFromNamedDirectory(argoHome.substring(5)
-					      + File.separator + "ext");
+	    if (argoHome.startsWith(FILE_PREFIX)) {
+	        huntModulesFromNamedDirectory(
+	                argoHome.substring(FILE_PREFIX.length())
+	                + File.separator + "ext");
 	    } else {
 	        huntModulesFromNamedDirectory(argoHome
 					      + File.separator + "ext");
@@ -492,8 +521,7 @@ public class ModuleLoader2 {
 			    });
 	                processJarFile(classloader, file[i]);
 		    }
-		}
-		catch (IOException ioe) {
+		} catch (IOException ioe) {
 		    LOG.debug("Cannot open the directory " + dirname, ioe);
 		}
 	    }
@@ -514,8 +542,7 @@ public class ModuleLoader2 {
 	LOG.info("Opening jar file " + file);
 	try {
 	    jarfile = new JarFile(file);
-	}
-	catch (IOException e) {
+	} catch (IOException e) {
 	    LOG.debug("Unable to open " + file, e);
 	}
 
@@ -526,8 +553,7 @@ public class ModuleLoader2 {
 	            LOG.debug(file + " does not have a manifest");
 		    return;
 	        }
-	    }
-	    catch (IOException e) {
+	    } catch (IOException e) {
 	        LOG.debug("Unable to read manifest of " + file, e);
 		return;
 	    }
@@ -593,6 +619,8 @@ public class ModuleLoader2 {
     /**
      * Add a newly found module to {@link #moduleStatus}. If we already
      * know about it, don't add it.
+     *
+     * @param mf The module to add.
      */
     private void addModule(ModuleInterface mf) {
 	// Since there is no way to compare the objects as equal,
@@ -621,7 +649,13 @@ public class ModuleLoader2 {
     }
 
 
+    /**
+     * The file filter that selects Jar files.
+     */
     class JarFileFilter implements FileFilter {
+	/**
+	 * @see java.io.FileFilter#accept(java.io.File)
+	 */
 	public boolean accept(File pathname) {
 	    return (pathname.canRead()
 		    && pathname.isFile()
@@ -636,7 +670,14 @@ public class ModuleLoader2 {
  * available module.
  */
 class ModuleStatus {
+    /**
+     * If the module is enabled.
+     */
     private boolean enabled;
+
+    /**
+     * If the module is selected.
+     */
     private boolean selected;
 
     /**
@@ -688,6 +729,8 @@ class ModuleStatus {
 
     /**
      * Setter for selected.
+     *
+     * @param value The value to set.
      */
     public void setSelected(boolean value) {
 	if (value) {
