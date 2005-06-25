@@ -73,8 +73,9 @@ public class GeneratorCpp extends Generator2
 
     private boolean verboseDocs = false;
     private boolean lfBeforeCurly = false;
+    private String indent = INDENT; // customizable (non final) indent
     /**
-     * TODO: make it configurable.
+     * TODO: remove me
      */
     private static final boolean VERBOSE_DOCS = false;
 
@@ -208,6 +209,7 @@ public class GeneratorCpp extends Generator2
     protected GeneratorCpp() {
         super (Notation.makeNotation("Cpp", null,
                                      Argo.lookupIconResource ("CppNotation")));
+        LOG.debug("GeneratorCpp: I AM "+this);
     }
 
     /** Reset the generator in the initial state before
@@ -299,6 +301,7 @@ public class GeneratorCpp extends Generator2
      */
     public String generateCpp(Object o) {
         generatorPass = SOURCE_PASS;
+        LOG.debug("generateCpp: I AM "+this);
 	String name =
 	    generateRelativePackage(o, null, "/").substring(1);
 	if (name.length() > 0) name += "/";
@@ -493,9 +496,9 @@ public class GeneratorCpp extends Generator2
             // -> sections which are moved from header(inline) to source
             // file are prevented to be outputted in header pass
             if (generatorPass == HEADER_PASS)   {
-                sect.write(pathname, INDENT, false);
+                sect.write(pathname, indent, false);
             }
-            else sect.write(pathname, INDENT, true);
+            else sect.write(pathname, indent, true);
 
             LOG.info("written: " + pathname);
 
@@ -622,7 +625,7 @@ public class GeneratorCpp extends Generator2
     private String generateHeaderTop(String pathname) {
         StringBuffer sb = new StringBuffer(80);
         //TODO: add user-defined copyright
-        if (VERBOSE_DOCS) {
+        if (verboseDocs) {
             sb.append("// FILE: ").append(pathname.replace('\\', '/'));
             sb.append(LINE_SEPARATOR).append(LINE_SEPARATOR);
         }
@@ -1091,7 +1094,7 @@ public class GeneratorCpp extends Generator2
         }
         StringBuffer sb = new StringBuffer(80);
         StringBuffer nameBuffer = new StringBuffer(20);
-        String operationIndent = (generatorPass == HEADER_PASS) ? INDENT : "";
+        String operationIndent = (generatorPass == HEADER_PASS) ? indent : "";
         boolean constructor =
             generateOperationNameAndTestForConstructor(op, nameBuffer);
 
@@ -1246,7 +1249,7 @@ public class GeneratorCpp extends Generator2
         if (documented || generatorPass != NONE_PASS) {
             String tv = generateTaggedValues (attr, DOC_COMMENT_TAGS);
             if (tv != null && tv.length() > 0) {
-                sb.append (LINE_SEPARATOR).append (INDENT).append (tv);
+                sb.append (LINE_SEPARATOR).append (indent).append (tv);
             }
         }
         // cat.info("generate Visibility for Attribute");
@@ -1367,7 +1370,7 @@ public class GeneratorCpp extends Generator2
         // list tagged values for documentation
         String tv = generateTaggedValues (cls, DOC_COMMENT_TAGS);
         if (tv != null && tv.length() > 0) {
-            sb.append (LINE_SEPARATOR).append (INDENT).append (tv);
+            sb.append (LINE_SEPARATOR).append (indent).append (tv);
         }
 
         // add classifier keyword and classifier name
@@ -1403,7 +1406,7 @@ public class GeneratorCpp extends Generator2
         // list tagged values for documentation
         tv = generateTaggedValues (cls, ALL_BUT_DOC_TAGS);
         if (tv != null && tv.length() > 0) {
-            sb.append(LINE_SEPARATOR).append (INDENT).append (tv);
+            sb.append(LINE_SEPARATOR).append (indent).append (tv);
         }
 
         return sb;
@@ -1583,7 +1586,7 @@ public class GeneratorCpp extends Generator2
         String tv = null; // helper for tagged values
         sb.append(LINE_SEPARATOR);
         if (verboseDocs && Model.getFacade().isAClass(cls)) {
-            sb.append(INDENT).append("// Attributes").append(LINE_SEPARATOR);
+            sb.append(indent).append("// Attributes").append(LINE_SEPARATOR);
         }
 
         // generate attributes in order public, protected, private
@@ -1596,11 +1599,11 @@ public class GeneratorCpp extends Generator2
 	    Object attr = attrIter.next();
 	    int i = getVisibilityPart(attr);
 
-	    part[i].append(INDENT).append(generate(attr));
+	    part[i].append(indent).append(generate(attr));
 
 	    tv = generateTaggedValues(attr, ALL_BUT_DOC_TAGS);
 	    if (tv != null && tv.length() > 0) {
-		part[i].append(INDENT).append(tv);
+		part[i].append(indent).append(tv);
 	    }
 	}
 	sb.append(generateAllParts(part));
@@ -1622,7 +1625,7 @@ public class GeneratorCpp extends Generator2
 
             sb.append(LINE_SEPARATOR);
             if (verboseDocs && Model.getFacade().isAClass(cls)) {
-                sb.append(INDENT).append("// Associations").append(
+                sb.append(indent).append("// Associations").append(
                         LINE_SEPARATOR);
             }
 
@@ -1642,7 +1645,7 @@ public class GeneratorCpp extends Generator2
         // all the AssociationEnds
         if (Model.getFacade().isAAssociationClass(cls)) {
             if (verboseDocs) {
-                sb.append(LINE_SEPARATOR).append(INDENT);
+                sb.append(LINE_SEPARATOR).append(indent);
                 sb.append("// AssociationClass associated classes");
             }
             // make all ends public... does it make sense?
@@ -1657,7 +1660,7 @@ public class GeneratorCpp extends Generator2
                 sb.append(LINE_SEPARATOR);
                 String comment = generateConstraintEnrichedDocComment(cls, ae);
                 if (comment.length() > 0)
-                    sb.append(comment).append(INDENT);
+                    sb.append(comment).append(indent);
 
                 String n = Model.getFacade().getName(ae);
                 String name;
@@ -1679,7 +1682,7 @@ public class GeneratorCpp extends Generator2
 
                 String tv = generateTaggedValues(ae, ALL_BUT_DOC_TAGS);
                 if (tv != null && tv.length() > 0) {
-                    sb.append(INDENT).append(tv);
+                    sb.append(indent).append(tv);
                 }
             }
         }
@@ -1713,18 +1716,18 @@ public class GeneratorCpp extends Generator2
             return;
         }
         // generate for attributes with class-type:
-        // "INDENT void set_<name>( const <type> &value ) { <name> = value; };"
+        // "indent void set_<name>( const <type> &value ) { <name> = value; };"
         // generate for other (small) data types:
-        // "INDENT void set_<name>( <type> value ) { <name> = value; };"
-        // generate: "INDENT void set_<name>( "
-        sb.append(LINE_SEPARATOR).append(INDENT);
+        // "indent void set_<name>( <type> value ) { <name> = value; };"
+        // generate: "indent void set_<name>( "
+        sb.append(LINE_SEPARATOR).append(indent);
         sb.append("/** simple access function to set the attribute ");
         sb.append(Model.getFacade().getName(attr));
-        sb.append(" by function").append(LINE_SEPARATOR).append(INDENT);
+        sb.append(" by function").append(LINE_SEPARATOR).append(indent);
         sb.append("  * @param value value to set for the attribute ");
         sb.append(Model.getFacade().getName(attr)).append(LINE_SEPARATOR);
-        sb.append(INDENT).append("  */").append(LINE_SEPARATOR);
-        sb.append(INDENT);
+        sb.append(indent).append("  */").append(LINE_SEPARATOR);
+        sb.append(indent);
         sb.append("void set_").append(Model.getFacade().getName(attr))
             .append("( ");
         String modifier = generateAttributeParameterModifier(attr);
@@ -1758,11 +1761,11 @@ public class GeneratorCpp extends Generator2
         // "const <type>& get_<name>( void ) { return <name>; };"
         // generate for other (small) data types
         // "<type> get_<name>( void ) { return <name>; };"
-        // generate: "INDENT"
-        sb.append(LINE_SEPARATOR).append(INDENT);
+        // generate: "indent"
+        sb.append(LINE_SEPARATOR).append(indent);
         sb.append("/** simple access function to get the attribute ");
         sb.append(Model.getFacade().getName(attr));
-        sb.append(" by function */").append(LINE_SEPARATOR).append(INDENT);
+        sb.append(" by function */").append(LINE_SEPARATOR).append(indent);
         String modifier = generateAttributeParameterModifier(attr);
         if (modifier != null && modifier.length() > 0) {
             // generate: "const <type><modifier>"
@@ -1843,7 +1846,7 @@ public class GeneratorCpp extends Generator2
         if (behs.isEmpty()) return;
         sb.append(LINE_SEPARATOR);
         if (verboseDocs) {
-            sb.append(INDENT).append("// Operations").append(LINE_SEPARATOR);
+            sb.append(indent).append("// Operations").append(LINE_SEPARATOR);
         }
 
         // generate tag controlled access functions for attributes
@@ -1863,7 +1866,7 @@ public class GeneratorCpp extends Generator2
             int p = getVisibilityPart(bf);
             if (p < 0) continue;
             tb = funcs[p];
-            tb.append(LINE_SEPARATOR).append(INDENT);
+            tb.append(LINE_SEPARATOR).append(indent);
 
             boolean mustGenBody = checkGenerateOperationBody(bf);
             if (tb != null 
@@ -1882,7 +1885,7 @@ public class GeneratorCpp extends Generator2
                 } else {
                     tb.append(";").append(LINE_SEPARATOR);
                     if (tv.length() > 0) {
-                        tb.append(INDENT).append(tv).append(LINE_SEPARATOR);
+                        tb.append(indent).append(tv).append(LINE_SEPARATOR);
                     }
                 }
             }
@@ -1906,48 +1909,48 @@ public class GeneratorCpp extends Generator2
                 findTagValues(cls, "typedef_private");
             if (!publicTypedefStatements.isEmpty()) {
                 sb.append(LINE_SEPARATOR).append(" public:")
-                    .append(LINE_SEPARATOR).append(INDENT);
+                    .append(LINE_SEPARATOR).append(indent);
                 sb.append("// public type definitions for header defined "
                       + "by Tag entries in ArgoUML").append(LINE_SEPARATOR);
-                sb.append(INDENT);
+                sb.append(indent);
                 sb.append("// Result: typedef <typedef_public> "
                       + "<tag_value>;").append(LINE_SEPARATOR);
                 Iterator typedefEnum = publicTypedefStatements.iterator();
 
                 while (typedefEnum.hasNext()) {
-                    sb.append(INDENT).append("typedef ");
+                    sb.append(indent).append("typedef ");
                     sb.append(typedefEnum.next())
                         .append(";").append(LINE_SEPARATOR);
                 }
             }
             if (!protectedTypedefStatements.isEmpty()) {
                 sb.append(LINE_SEPARATOR).append(" protected:")
-                    .append(LINE_SEPARATOR).append(INDENT);
+                    .append(LINE_SEPARATOR).append(indent);
                 sb.append("// protected type definitions for header defined "
                       + "by Tag entries in ArgoUML").append(LINE_SEPARATOR);
-                sb.append(INDENT);
+                sb.append(indent);
                 sb.append("// Result: typedef <typedef_protected> "
                       + "<tag_value>;").append(LINE_SEPARATOR);
                 Iterator typedefEnum = protectedTypedefStatements.iterator();
 
                 while (typedefEnum.hasNext()) {
-                    sb.append(INDENT).append("typedef ");
+                    sb.append(indent).append("typedef ");
                     sb.append(typedefEnum.next())
                         .append(";").append(LINE_SEPARATOR);
                 }
             }
             if (!privateTypedefStatements.isEmpty()) {
                 sb.append(LINE_SEPARATOR).append(" private:")
-                    .append(LINE_SEPARATOR).append(INDENT);
+                    .append(LINE_SEPARATOR).append(indent);
                 sb.append("// private type definitions for header defined "
                       + "by Tag entries in ArgoUML").append(LINE_SEPARATOR);
-                sb.append(INDENT);
+                sb.append(indent);
                 sb.append("// Result: typedef <typedef_private> "
                       + "<tag_value>;").append(LINE_SEPARATOR);
                 Iterator typedefEnum = privateTypedefStatements.iterator();
 
                 while (typedefEnum.hasNext()) {
-                    sb.append(INDENT).append("typedef ");
+                    sb.append(indent).append("typedef ");
                     sb.append(typedefEnum.next()).append(";")
                         .append(LINE_SEPARATOR);
                 }
@@ -1964,9 +1967,9 @@ public class GeneratorCpp extends Generator2
         if (Model.getFacade().isAInterface(cls) 
                 && generatorPass == HEADER_PASS) {
             sb.append(LINE_SEPARATOR).append("public:").append(LINE_SEPARATOR);
-            sb.append(INDENT).append("// virtual destructor for interface ")
+            sb.append(indent).append("// virtual destructor for interface ")
                 .append(LINE_SEPARATOR);
-            sb.append(INDENT).append("virtual ").append('~').append(
+            sb.append(indent).append("virtual ").append('~').append(
                 Model.getFacade().getName(cls)).append("() { }")
                     .append(LINE_SEPARATOR);
         }
@@ -2016,7 +2019,7 @@ public class GeneratorCpp extends Generator2
             boolean methodFound = false;
             String tv = generateTaggedValues(op, ALL_BUT_DOC_TAGS);
             String operationIndent =
-                (generatorPass == HEADER_PASS) ? INDENT : "";
+                (generatorPass == HEADER_PASS) ? indent : "";
 
             // append tags which are not Doc-Comments
             if (tv.length() > 0) {
@@ -2097,7 +2100,7 @@ public class GeneratorCpp extends Generator2
         if (res == null) {
 	    return ""; // in doubt, let the choice to the user
         }
-        return INDENT + res + LINE_SEPARATOR;
+        return indent + res + LINE_SEPARATOR;
     }
 
     private String generateTaggedValues(Object e, int tagSelection) {
@@ -2131,7 +2134,7 @@ public class GeneratorCpp extends Generator2
                         // insert main documentation for DocComment at first
                         String doc =
                             (DocumentationManager.hasDocs(e))
-                            ? DocumentationManager.getDocs(e, INDENT)
+                            ? DocumentationManager.getDocs(e, indent)
                             : null;
                         if (doc != null && doc.trim().length() > 0) {
                             buf.append(doc.substring(0, doc.indexOf("*/") + 1));
@@ -2149,7 +2152,7 @@ public class GeneratorCpp extends Generator2
                 else {
                     if (tagSelection == DOC_COMMENT_TAGS) {
                         buf.append(LINE_SEPARATOR)
-                            .append(INDENT).append(" *  ");
+                            .append(indent).append(" *  ");
                     }
                     else {
                         buf.append(", ");
@@ -2168,7 +2171,7 @@ public class GeneratorCpp extends Generator2
          */
         if (!first) {
             if (tagSelection == DOC_COMMENT_TAGS) {
-                buf.append(LINE_SEPARATOR).append(INDENT).append(" */")
+                buf.append(LINE_SEPARATOR).append(indent).append(" */")
                     .append(LINE_SEPARATOR);
             } else {
                 buf.append ("}*/").append(LINE_SEPARATOR);
@@ -2177,7 +2180,7 @@ public class GeneratorCpp extends Generator2
         else if (tagSelection == DOC_COMMENT_TAGS) {
             // create at least main documentation field, if no other tag found
             String doc = (DocumentationManager.hasDocs(e))
-                ? DocumentationManager.getDocs(e, INDENT)
+                ? DocumentationManager.getDocs(e, indent)
                 : null;
             if (doc != null && doc.trim().length() > 0) {
                 buf.append(doc).append(LINE_SEPARATOR);
@@ -2326,12 +2329,12 @@ public class GeneratorCpp extends Generator2
             // Prepare doccomment
             if (!(s == null || "".equals(s))) {
                 // Just remove closing "*/"
-                sDocComment.append(INDENT)
+                sDocComment.append(indent)
                     .append(s.substring(0, s.indexOf("*/") + 1));
             }
             else {
-                sDocComment.append(INDENT).append("/**").append(LINE_SEPARATOR);
-                sDocComment.append(INDENT).append(" *");
+                sDocComment.append(indent).append("/**").append(LINE_SEPARATOR);
+                sDocComment.append(indent).append(" *");
             }
 
             // Build doccomment
@@ -2340,7 +2343,7 @@ public class GeneratorCpp extends Generator2
                 sDocComment.append(" @element-type ");
                 sDocComment.append(Model.getFacade().getName(type));
             }
-            sDocComment.append(LINE_SEPARATOR).append(INDENT)
+            sDocComment.append(LINE_SEPARATOR).append(indent)
                 .append(" */").append(LINE_SEPARATOR);
             return sDocComment.toString();
         }
@@ -2364,7 +2367,7 @@ public class GeneratorCpp extends Generator2
          *
          * Was:
          *
-         s += DocumentationManager.getDocs(a) + "\n" + INDENT;
+         s += DocumentationManager.getDocs(a) + "\n" + indent;
         */
 
         Collection connections = Model.getFacade().getConnections(a);
@@ -2387,12 +2390,12 @@ public class GeneratorCpp extends Generator2
                         if (comment.length() > 0)
                             sb.append(comment);
                         // both comment and assend ends with simple newline
-                        sb.append(INDENT).append(assend);
+                        sb.append(indent).append(assend);
                     }
 
                     String tv = generateTaggedValues(a, ALL_BUT_DOC_TAGS);
                     if (tv != null && tv.length() > 0) {
-                        sb.append(INDENT).append(tv);
+                        sb.append(indent).append(tv);
                     }
                 }
             }
@@ -2936,6 +2939,13 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
+     * @return The current width of the indentation.
+     */
+    public int getIndent() {
+        return indent.length();
+    }
+
+    /**
      * Sets the _lfBeforeCurly.
      * @param beforeCurly The _lfBeforeCurly to set
      */
@@ -2951,4 +2961,15 @@ public class GeneratorCpp extends Generator2
         this.verboseDocs = verbose;
     }
 
+    /**
+     * Sets the indentation width.
+     * @param indWidth The number of spaces to use for indentation.
+     */
+    public void setIndent(int indWidth) {
+        char[] ind = new char[indWidth];
+        for (int i = 0; i < indWidth; i++)
+            ind[i] = ' ';
+        this.indent = new String(ind);
+        LOG.debug("setIndent: I AM "+this);
+    }
 } /* end class GeneratorCpp */

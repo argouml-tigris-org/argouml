@@ -89,8 +89,8 @@ public class SettingsTabCpp extends SettingsTabHelper
         // let the minimum size be a little wider than the default
 	// FIXME: this doesn't seem to do anything at all :-(
         Dimension minSize = indent.getMinimumSize();
-        minSize.setSize(minSize.getWidth()+50, minSize.getHeight());
-        LOG.debug("setting spinner minimum size to "+minSize);
+        minSize.setSize(minSize.getWidth() + 50, minSize.getHeight());
+        LOG.debug("setting spinner minimum size to " + minSize);
         indent.setMinimumSize(minSize);
         
 	label.setLabelFor(indent);
@@ -129,7 +129,11 @@ public class SettingsTabCpp extends SettingsTabHelper
      * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabSave
      */
     public void handleSettingsTabSave() {
-
+        GeneratorCpp cpp = GeneratorCpp.getInstance();
+        cpp.setLfBeforeCurly(lfBeforeCurly.isSelected());
+        cpp.setVerboseDocs(verboseDocs.isSelected());
+        cpp.setIndent(((Integer)indent.getValue()).intValue());
+        // TODO: save to disk!
     }
 
     /**
@@ -145,7 +149,10 @@ public class SettingsTabCpp extends SettingsTabHelper
      * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabRefresh
      */
     public void handleSettingsTabRefresh() {
-
+        GeneratorCpp cpp = GeneratorCpp.getInstance();
+        lfBeforeCurly.setSelected(cpp.isLfBeforeCurly());
+        verboseDocs.setSelected(cpp.isVerboseDocs());
+        indent.setValue(new Integer(cpp.getIndent()));
     }
 
     /**
