@@ -529,39 +529,10 @@ Property files to be searched:
   </target>
 
   <!-- =================================================================== -->
-  <!-- Check dependencies.                                                 -->
-  <!--                                                                     -->
-  <!-- This process can be bypassed during the normal compile              -->
-  <!-- by setting the property "skip.dependency.check" to any value.       -->
-  <!--                                                                     -->
-  <!-- It can still be run directly using the "depend" target.             -->
-  <!-- =================================================================== -->
-  <target depends="prepare,prerequisites" name="depend">
-
-    <!-- create directories -->
-    <mkdir dir="${argo.build.classes}"/>
-
-    <!-- TODO:  Investigate cache -->
-    <!-- TODO:  Decide whether to use dump or not -->
-    <!-- TODO:  Decide whether to use closure or not -->
-    <!-- TODO:  Allow setting of dump and closure in properties -->
-    <depend closure="true" destdir="${argo.build.classes}" dump="true" srcdir="${argo.src.dir}">
-       <classpath>
-	  <path refid="argo.compile.classpath"/>
-       </classpath>
-    </depend>
-  </target>
-
-  <target name="check-dependencies" unless="skip.dependency.check">
-      <antcall inheritall="true" target="depend"/>
-  </target>
-  
-  
-  <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
   <target name="compile"
-          depends="prepare,prerequisites,update-version,check-dependencies,generateparser"
+          depends="prepare,prerequisites,update-version,generateparser"
           description="Compile the sources.">
 
     <echo message="Compiling the sources"/>
@@ -1511,7 +1482,7 @@ you will have to resurrect them using cvs update.
   <!-- =================================================================== -->
 
   <target name="compile-without-nsuml"
-          depends="prepare,prerequisites,update-version,check-dependencies"
+          depends="prepare,prerequisites,update-version"
           description="Compiles without nsuml.">
 
     <!-- create directories -->
