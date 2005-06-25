@@ -210,7 +210,7 @@ public class FigSubmachineState extends FigState {
      * 
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    public void setBounds(int x, int y, int w, int h) {
+    protected void setBoundsInternal(int x, int y, int w, int h) {
         if (getNameFig() == null)
             return;
 

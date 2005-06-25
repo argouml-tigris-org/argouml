@@ -176,7 +176,7 @@ public class FigActor extends FigNodeModelElement {
     /**
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    public void setBounds(int x, int y, int w, int h) {
+    protected void setBoundsInternal(int x, int y, int w, int h) {
         int middle = w / 2;
         h = _h;
         Rectangle oldBounds = getBounds();

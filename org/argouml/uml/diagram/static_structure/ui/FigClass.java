@@ -915,7 +915,7 @@ public class FigClass extends FigNodeModelElement
      *
      * @param h  Desired height of the FigClass
      */
-    public void setBounds(int x, int y, int w, int h) {
+    protected void setBoundsInternal(int x, int y, int w, int h) {
 
         // Save our old boundaries (needed later), and get minimum size
         // info. "aSize will be used to maintain a running calculation of our
