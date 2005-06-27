@@ -766,28 +766,28 @@ public class CoreHelperProxy implements CoreHelper {
      * @see org.argouml.model.CoreHelper#setKindToIn(java.lang.Object)
      */
     public void setKindToIn(Object handle) {
-        impl.setKindToIn(handle);
+        setKind(handle, Model.getDirectionKind().getInParameter());
     }
 
     /**
      * @see org.argouml.model.CoreHelper#setKindToInOut(java.lang.Object)
      */
     public void setKindToInOut(Object handle) {
-        impl.setKindToInOut(handle);
+        setKind(handle, Model.getDirectionKind().getInOutParameter());
     }
 
     /**
      * @see org.argouml.model.CoreHelper#setKindToOut(java.lang.Object)
      */
     public void setKindToOut(Object handle) {
-        impl.setKindToOut(handle);
+        setKind(handle, Model.getDirectionKind().getOutParameter());
     }
 
     /**
      * @see org.argouml.model.CoreHelper#setKindToReturn(java.lang.Object)
      */
     public void setKindToReturn(Object handle) {
-        impl.setKindToReturn(handle);
+        setKind(handle, Model.getDirectionKind().getReturnParameter());
     }
 
     /**
