@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.AbstractCoreHelper;
+import org.argouml.model.CoreHelper;
 import org.argouml.model.Model;
 import org.argouml.model.ModelMemento;
 import org.argouml.model.UmlException;
@@ -121,7 +121,7 @@ import ru.novosoft.uml.model_management.MPackage;
  * @author Thierry Lach
  * @author Jaap Branderhorst
  */
-class CoreHelperImpl extends AbstractCoreHelper {
+class CoreHelperImpl implements CoreHelper {
     /**
      * Logger.
      */
@@ -2307,7 +2307,7 @@ class CoreHelperImpl extends AbstractCoreHelper {
      * @param handle is the classifier
      * @param flag is true if it should be abstract
      */
-    protected void realSetAbstract(Object handle, boolean flag) {
+    public void setAbstract(Object handle, boolean flag) {
         if (handle instanceof MGeneralizableElement) {
             ((MGeneralizableElement) handle).setAbstract(flag);
             return;
