@@ -49,6 +49,8 @@ public final class Model {
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(Model.class);
+    
+    private static CoreHelperProxy coreHelperProxy;
 
     /**
      * Constructor to prohibit creation.
@@ -77,6 +79,7 @@ public final class Model {
         } catch (IllegalAccessException e) {
             reportError(e);
         }
+        coreHelperProxy = new CoreHelperProxy(impl);
     }
 
     /**
@@ -189,7 +192,7 @@ public final class Model {
      * @return The helper.
      */
     public static CoreHelper getCoreHelper() {
-        return impl.getCoreHelper();
+        return coreHelperProxy;
     }
 
     /**
