@@ -591,31 +591,61 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
+     * Interface to set a boolean value.
+     */
+    protected interface BooleanSetter {
+        /**
+         * Do the actual setting.
+         *
+         * @param value The new value.
+         */
+        void set(boolean value);
+    }
+
+    /**
+     * Create a memento for a setter of a boolean value.
+     *
+     * @param accesser The accesser.
+     * @param newValue The new value.
+     * @param oldValue The old value.
+     */
+    private void doUndoable(final BooleanSetter accesser,
+            final boolean newValue, final boolean oldValue) {
+        if (newValue == oldValue) {
+            return;
+        }
+        ModelMemento memento = new ModelMemento() {
+            public void undo() {
+                accesser.set(oldValue);
+            }
+            public void redo() {
+                accesser.set(newValue);
+            }
+        };
+        Model.notifyMementoCreationObserver(memento);
+        memento.redo();
+    }
+
+    /**
      * @see org.argouml.model.CoreHelper#setAbstract(java.lang.Object, boolean)
      */
-    public void setAbstract(final Object handle, final boolean flag) {
-        if (Model.getFacade().isAbstract(handle) != flag) {
-            ModelMemento memento =
-                Model.notifyMementoCreationObserver(new ModelMemento() {
-                    private boolean oldValue =
-                        Model.getFacade().isAbstract(handle);
-                    public void undo() {
-                        impl.setAbstract(handle, oldValue);
-                    }
-                    public void redo() {
-                        impl.setAbstract(handle, flag);
-                    }
-                }
-            );
-            impl.setAbstract(handle, flag);
-        }
+    public void setAbstract(final Object handle, boolean flag) {
+        doUndoable(new BooleanSetter() {
+            public void set(boolean value) {
+                impl.setAbstract(handle, value);
+            }
+        }, flag, Model.getFacade().isAbstract(handle));
     }
 
     /**
      * @see org.argouml.model.CoreHelper#setActive(java.lang.Object, boolean)
      */
-    public void setActive(Object handle, boolean active) {
-        impl.setActive(handle, active);
+    public void setActive(final Object handle, boolean active) {
+        doUndoable(new BooleanSetter() {
+            public void set(boolean value) {
+                impl.setActive(handle, value);
+            }
+        }, active, Model.getFacade().isActive(handle));
     }
 
     /**
@@ -642,8 +672,12 @@ public class CoreHelperProxy implements CoreHelper {
     /**
      * @see org.argouml.model.CoreHelper#setLeaf(java.lang.Object, boolean)
      */
-    public void setLeaf(Object handle, boolean flag) {
-        impl.setLeaf(handle, flag);
+    public void setLeaf(final Object handle, boolean flag) {
+        doUndoable(new BooleanSetter() {
+            public void set(boolean value) {
+                impl.setLeaf(handle, value);
+            }
+        }, flag, Model.getFacade().isLeaf(handle));
     }
 
     /**
