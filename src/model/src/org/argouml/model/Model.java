@@ -34,11 +34,8 @@ import org.apache.log4j.Logger;
  * This is the root class of the Model subsystem. All other subsystems
  * can retreive the correct version of the API from this class.<p>
  *
- * Currently these API:s are hard-coded to work with NSUML but eventually
- * another model component will replace them and then all these API:s
- * will instead work against that component.<p>
- *
- * Notice that all API:s returned from this class are to be NSUML-free.<p>
+ * Notice that all API's returned from this class are to be independant
+ * of and specific UML model implementation.<p>
  *
  * @stereotype utility
  * @since 0.15.5
@@ -79,7 +76,7 @@ public final class Model {
         } catch (IllegalAccessException e) {
             reportError(e);
         }
-        coreHelperProxy = new CoreHelperProxy(impl);
+        coreHelperProxy = new CoreHelperProxy(impl.getCoreHelper());
     }
 
     /**

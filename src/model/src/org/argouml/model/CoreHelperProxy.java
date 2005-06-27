@@ -19,8 +19,8 @@ public class CoreHelperProxy implements CoreHelper {
     /**
      * Construct a new CoreHelperProxy
      */
-    CoreHelperProxy(ModelImplementation implementation) {
-        impl = implementation.getCoreHelper();
+    CoreHelperProxy(CoreHelper implementation) {
+        impl = implementation;
     }
 
     /**
