@@ -79,9 +79,18 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object event = createEvent();
+        Object trans = getTarget();
         if (getValue(ROLE).equals(Roles.TRIGGER)) {
             Model.getStateMachinesHelper()
-                        .setEventAsTrigger(getTarget(), event);
+                        .setEventAsTrigger(trans, event);
+        }
+        Object enclosing = Model.getStateMachinesHelper().getStateMachine(trans);
+        while ((!Model.getFacade().isAPackage(enclosing))
+                && (enclosing != null)) {
+            enclosing = Model.getFacade().getNamespace(enclosing);
+        }
+        if (enclosing != null) {
+            Model.getCoreHelper().setNamespace(event, enclosing);
         }
         TargetManager.getInstance().setTarget(event);
     }
