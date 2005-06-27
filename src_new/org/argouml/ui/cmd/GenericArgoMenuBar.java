@@ -475,6 +475,7 @@ public class GenericArgoMenuBar extends JMenuBar
         KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, mask);
         KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, mask);
         KeyStroke ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, mask);
+        KeyStroke ctrlY = KeyStroke.getKeyStroke(KeyEvent.VK_Y, mask);
         KeyStroke ctrlZ = KeyStroke.getKeyStroke(KeyEvent.VK_Z, mask);
         KeyStroke delKey  = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
         KeyStroke ctrlDel = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, mask);
@@ -486,6 +487,11 @@ public class GenericArgoMenuBar extends JMenuBar
             edit.add(ProjectBrowser.getInstance().getUndoAction());
         setMnemonic(undoItem, "Undo");
         setAccelerator(undoItem, ctrlZ);
+
+        JMenuItem redoItem = 
+            edit.add(ProjectBrowser.getInstance().getRedoAction());
+        setMnemonic(redoItem, "Redo");
+        setAccelerator(redoItem, ctrlY);
 
         edit.addSeparator();
         

@@ -78,7 +78,9 @@ import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.RedoAction;
 import org.tigris.gef.base.UndoAction;
+import org.tigris.gef.base.UndoManager;
 import org.tigris.gef.ui.IStatusBar;
 import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
@@ -164,6 +166,11 @@ public class ProjectBrowser
      * The todopane (lower left corner of screen).
      */
     private ToDoPane todoPane;
+
+    /**
+     * The action to redo the last undone action
+     */
+    private final RedoAction redoAction = new RedoAction(Translator.localize("action.redo"));
 
     /**
      * The action to undo the last user interaction
@@ -1127,6 +1134,7 @@ public class ProjectBrowser
                     LOG.info("There are " + p.getMembers().size()
                             + " members in the current project");
                 }
+                UndoManager.getInstance().empty();
                 Designer.enableCritiquing();
             }
         }
@@ -1201,5 +1209,13 @@ public class ProjectBrowser
      */
     public Action getUndoAction() {
         return undoAction;
+    }
+    
+    /**
+     * Get the action that can redo the last undone action.
+     * @return the redo action.
+     */
+    public Action getRedoAction() {
+        return redoAction;
     }
 } /* end class ProjectBrowser */

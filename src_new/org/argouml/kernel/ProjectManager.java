@@ -246,6 +246,7 @@ public final class ProjectManager implements PropertyChangeListener, MementoCrea
         firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME, 
                             oldProject, currentProject);
         creatingCurrentProject = false;
+        UndoManager.getInstance().empty();
         return currentProject;
     }
 
