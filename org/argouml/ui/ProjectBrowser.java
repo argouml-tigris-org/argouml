@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -228,6 +229,30 @@ public class ProjectBrowser
         // adds this as listener to TargetManager so gets notified
         // when the active diagram changes
         TargetManager.getInstance().addTargetListener(this);
+        
+        // Add a listener to focus changes. 
+        // Rationale: reset the undo manager to start a new chain.
+        KeyboardFocusManager kfm = 
+            KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        kfm.addPropertyChangeListener(new PropertyChangeListener() {
+            private Object obj = null;
+            
+            /**
+             * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+             */
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("focusOwner".equals(evt.getPropertyName())
+                        && (evt.getNewValue() != null)
+                        /* We get many many events (why?), so let's filter: */
+                        && (obj != evt.getNewValue())) {
+                    obj = evt.getNewValue();
+                    UndoManager.getInstance().startChain();
+                    /* This next line is ideal for debugging the taborder 
+                     * (focus traversal), see e.g. issue 1849.*/
+//                  System.out.println("Focus changed " + obj);
+                }
+            }
+        });
     }
 
     /**
