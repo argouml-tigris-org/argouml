@@ -26,21 +26,14 @@ package org.argouml.language.cpp.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
+import javax.swing.Box;
 
-//import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
-//import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-//import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
@@ -74,11 +67,10 @@ public class SettingsTabCpp extends SettingsTabHelper
         setLayout(new BorderLayout());
 
         JPanel opts = new JPanel();
-        opts.setLayout(new BoxLayout(opts, BoxLayout.Y_AXIS));
+        opts.setLayout(new BoxLayout(opts, BoxLayout.PAGE_AXIS));
         
 	// adds option widgets
-        JPanel indentPanel = new JPanel(new FlowLayout());
-        
+
 	JLabel label = createLabel("cpp.indent");
 	// The actual value is loaded in handleSettingsTabRefresh()
         Integer spinVal = new Integer(4); 
@@ -86,18 +78,18 @@ public class SettingsTabCpp extends SettingsTabHelper
         Integer spinStep = new Integer(1);
         indent = new JSpinner(
                 new SpinnerNumberModel(spinVal, spinMin, null, spinStep));
-        // let the minimum size be a little wider than the default
-	// FIXME: this doesn't seem to do anything at all :-(
-        Dimension minSize = indent.getMinimumSize();
-        minSize.setSize(minSize.getWidth() + 50, minSize.getHeight());
-        LOG.debug("setting spinner minimum size to " + minSize);
-        indent.setMinimumSize(minSize);
-        
 	label.setLabelFor(indent);
+
+        JPanel indentPanel = new JPanel();
+	indentPanel.setLayout(new BoxLayout(indentPanel, BoxLayout.LINE_AXIS));
+	indentPanel.add(Box.createHorizontalGlue());
 	indentPanel.add(label);
+	indentPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 	indentPanel.add(indent);
-        // force the minimum size
-        indentPanel.setMaximumSize(indentPanel.getMinimumSize());
+	indentPanel.add(Box.createHorizontalGlue());
+  	Dimension maxSize  = indentPanel.getMinimumSize();
+  	maxSize.setSize(Double.MAX_VALUE, maxSize.getHeight());
+  	indentPanel.setMaximumSize(maxSize);
 	opts.add(indentPanel);
 
 	verboseDocs = createCheckBox("cpp.verbose-docs");
@@ -106,14 +98,8 @@ public class SettingsTabCpp extends SettingsTabHelper
 	lfBeforeCurly = createCheckBox("cpp.lf-before-curly");
 	opts.add(lfBeforeCurly);
 
-	opts.add(new JLabel("TODO: add more options!!!"));
+	// TODO: add more options
 
-	// ... more?
-
-        // put all the options in a scroll pane
-        //JScrollPane sp = new JScrollPane();
-        //sp.add(opts);
-	//add(sp, BorderLayout.CENTER);
         add(opts, BorderLayout.CENTER);
 
 	// TODO: add a text field to show a preview of what the generated
