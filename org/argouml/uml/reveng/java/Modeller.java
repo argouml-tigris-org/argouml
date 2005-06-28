@@ -792,8 +792,10 @@ public class Modeller {
 		    .getCurrentProject().findFigsForMember(mOperation);
 		mParameter = Model.getCoreFactory().buildParameter(
 		        mOperation, mdl, voidType, propertyChangeListeners);
-		Model.getCoreHelper().setName(mParameter, "return");
-		Model.getCoreHelper().setKindToReturn(mParameter);
+                Model.getCoreHelper().setName(mParameter, "return");
+                Model.getCoreHelper().setKind(
+                        mParameter,
+                        Model.getDirectionKind().getReturnParameter());
 
                 Model.getCoreHelper().setType(mParameter, mClassifier);
 	    } catch (ClassifierNotFoundException e) {
@@ -825,7 +827,9 @@ public class Modeller {
                         mOperation, mdl, voidType, propertyChangeListeners);
 		Model.getCoreHelper().setName(mParameter,
 				    (String) parameter.elementAt(2));
-		Model.getCoreHelper().setKindToIn(mParameter);
+		Model.getCoreHelper().setKind(
+                mParameter,
+                Model.getDirectionKind().getInParameter());
                 if (Model.getFacade().isAClassifier(mClassifier)) {
                     Model.getCoreHelper().setType(mParameter, mClassifier);
                 } else {

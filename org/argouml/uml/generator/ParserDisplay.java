@@ -1254,14 +1254,22 @@ public final class ParserDisplay extends Parser {
         Model.getCoreHelper().setType(param, type);
     }
 
-    private void setParamKind(Object p, String s) {
-        if ("out".equalsIgnoreCase(s)) {
-            Model.getCoreHelper().setKindToOut(p);
-        } else if ("inout".equalsIgnoreCase(s)) {
-            Model.getCoreHelper().setKindToInOut(p);
+    /**
+     * Set a parameters kind according to a string description of
+     * that kind.
+     * @param parameter the parameter
+     * @param description the string description
+     */
+    private void setParamKind(Object parameter, String description) {
+        Object kind;
+        if ("out".equalsIgnoreCase(description)) {
+            kind = Model.getDirectionKind().getOutParameter();
+        } else if ("inout".equalsIgnoreCase(description)) {
+            kind = Model.getDirectionKind().getInOutParameter();
         } else {
-            Model.getCoreHelper().setKindToIn(p);
+            kind = Model.getDirectionKind().getInParameter();
         }
+        Model.getCoreHelper().setKind(parameter, kind);
     }
 
 
