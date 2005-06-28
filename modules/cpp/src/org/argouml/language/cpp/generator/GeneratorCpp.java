@@ -188,7 +188,7 @@ public class GeneratorCpp extends Generator2
     private static final int REFERENCE_MOD = 1;
     private static final int POINTER_MOD = 2;
 
-    private static final GeneratorCpp SINGLETON = new GeneratorCpp();
+    private static GeneratorCpp singleton;
 
     /**
      * Prefix for names in the std namespace. Defaults to "std::",
@@ -201,7 +201,11 @@ public class GeneratorCpp extends Generator2
      *
      * @return the singleton of the generator.
      */
-    public static GeneratorCpp getInstance() { return SINGLETON; }
+    public static GeneratorCpp getInstance() {
+	if (singleton != null)
+	    return singleton;
+	return new GeneratorCpp(); // the constructor will set singleton
+    }
 
     /**
      * Constructor.
@@ -209,7 +213,8 @@ public class GeneratorCpp extends Generator2
     protected GeneratorCpp() {
         super (Notation.makeNotation("Cpp", null,
                                      Argo.lookupIconResource ("CppNotation")));
-        LOG.debug("GeneratorCpp: I AM "+this);
+	singleton = this;
+        LOG.debug("GeneratorCpp: I AM " + this);
     }
 
     /** Reset the generator in the initial state before
@@ -242,7 +247,7 @@ public class GeneratorCpp extends Generator2
      * @return the generated string
      */
     public static String cppGenerate(Object o) {
-        return SINGLETON.generate(o);
+        return getInstance().generate(o);
     }
 
 
@@ -301,7 +306,7 @@ public class GeneratorCpp extends Generator2
      */
     public String generateCpp(Object o) {
         generatorPass = SOURCE_PASS;
-        LOG.debug("generateCpp: I AM "+this);
+        LOG.debug("generateCpp: I AM " + this);
 	String name =
 	    generateRelativePackage(o, null, "/").substring(1);
 	if (name.length() > 0) name += "/";
@@ -2970,6 +2975,6 @@ public class GeneratorCpp extends Generator2
         for (int i = 0; i < indWidth; i++)
             ind[i] = ' ';
         this.indent = new String(ind);
-        LOG.debug("setIndent: I AM "+this);
+        LOG.debug("setIndent: I AM " + this);
     }
 } /* end class GeneratorCpp */
