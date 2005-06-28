@@ -1338,7 +1338,7 @@ public class Modeller {
             Iterator iter = stereos.iterator();
             while (iter.hasNext()) {
                 Object stereotype = iter.next();
-                if (Model.getUmlHelper().getExtensionMechanisms()
+                if (Model.getExtensionMechanismsHelper()
                         .isStereotypeInh(stereotype, name, baseClass)) {
                     LOG.info("Returning the existing stereotype of <<"
                             + Model.getFacade().getName(stereotype) + ">>");
