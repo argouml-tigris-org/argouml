@@ -56,7 +56,7 @@ import org.argouml.language.cpp.generator.GeneratorCpp;
 public class SettingsTabCpp extends SettingsTabHelper
     implements SettingsTabPanel
 {
-    private static final Logger LOG = Logger.getLogger(GeneratorCpp.class);
+    private static final Logger LOG = Logger.getLogger(SettingsTabCpp.class);
 
     private JSpinner indent;
     private JCheckBox verboseDocs;
@@ -132,7 +132,7 @@ public class SettingsTabCpp extends SettingsTabHelper
         GeneratorCpp cpp = GeneratorCpp.getInstance();
         cpp.setLfBeforeCurly(lfBeforeCurly.isSelected());
         cpp.setVerboseDocs(verboseDocs.isSelected());
-        cpp.setIndent(((Integer)indent.getValue()).intValue());
+        cpp.setIndent(((Integer) indent.getValue()).intValue());
         // TODO: save to disk!
     }
 
