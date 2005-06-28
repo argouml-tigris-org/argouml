@@ -201,7 +201,7 @@ public class GeneratorCpp extends Generator2
      *
      * @return the singleton of the generator.
      */
-    public static GeneratorCpp getInstance() {
+    public static synchronized GeneratorCpp getInstance() {
 	if (singleton != null)
 	    return singleton;
 	return new GeneratorCpp(); // the constructor will set singleton
