@@ -3,7 +3,7 @@
 REM
 REM build.sh always calls the version of ant distributed with ArgoUML
 REM
-set ANT_HOME=..\..\tools\ant-1.4.1
+set ANT_HOME=..\..\tools\ant-1.6.2
 
 
 if not "%ANT_HOME%"=="" goto CHECKJAVA
