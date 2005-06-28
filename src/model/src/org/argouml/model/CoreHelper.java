@@ -931,6 +931,7 @@ public interface CoreHelper {
      * Set some parameters kind to 'in'.
      *
      * @param handle is the parameter
+     * @deprecated use setKind(Object, Object)
      */
     void setKindToIn(Object handle);
 
@@ -938,6 +939,7 @@ public interface CoreHelper {
      * Set some parameters kind to 'in/out'.
      *
      * @param handle is the parameter
+     * @deprecated use setKind(Object, Object)
      */
     void setKindToInOut(Object handle);
 
@@ -945,6 +947,7 @@ public interface CoreHelper {
      * Set some parameters kind to 'out'.
      *
      * @param handle is the parameter
+     * @deprecated use setKind(Object, Object)
      */
     void setKindToOut(Object handle);
 
@@ -952,6 +955,7 @@ public interface CoreHelper {
      * Set some parameters kind to 'return'.
      *
      * @param handle is the parameter
+     * @deprecated use setKind(Object, Object)
      */
     void setKindToReturn(Object handle);
 

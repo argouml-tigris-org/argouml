@@ -47,7 +47,15 @@ public final class Model {
      */
     private static final Logger LOG = Logger.getLogger(Model.class);
     
+    private static ActivityGraphsHelperProxy activityGraphsHelperProxy;
+    private static CollaborationsHelperProxy collaborationsHelperProxy;
+    private static CommonBehaviorHelperProxy commonBehaviorHelperProxy;
     private static CoreHelperProxy coreHelperProxy;
+    private static DataTypesHelperProxy dataTypesHelperProxy;
+    private static ExtensionMechanismsHelperProxy extensionMechanismsHelperProxy;
+    private static StateMachinesHelperProxy stateMachinesHelperProxy;
+    private static UmlHelperProxy umlHelperProxy;
+    private static UseCasesHelperProxy useCasesHelperProxy;
 
     /**
      * Constructor to prohibit creation.
@@ -76,7 +84,15 @@ public final class Model {
         } catch (IllegalAccessException e) {
             reportError(e);
         }
+        activityGraphsHelperProxy = new ActivityGraphsHelperProxy(impl.getActivityGraphsHelper());
+        collaborationsHelperProxy = new CollaborationsHelperProxy(impl.getCollaborationsHelper());
+        commonBehaviorHelperProxy = new CommonBehaviorHelperProxy(impl.getCommonBehaviorHelper());
         coreHelperProxy = new CoreHelperProxy(impl.getCoreHelper());
+        dataTypesHelperProxy = new DataTypesHelperProxy(impl.getDataTypesHelper());
+        extensionMechanismsHelperProxy = new ExtensionMechanismsHelperProxy(impl.getExtensionMechanismsHelper());
+        stateMachinesHelperProxy = new StateMachinesHelperProxy(impl.getStateMachinesHelper());
+        umlHelperProxy = new UmlHelperProxy(impl.getUmlHelper());
+        useCasesHelperProxy = new UseCasesHelperProxy(impl.getUseCasesHelper());
     }
 
     /**
@@ -135,7 +151,7 @@ public final class Model {
      * @return the instance of the helper
      */
     public static ActivityGraphsHelper getActivityGraphsHelper() {
-        return impl.getActivityGraphsHelper();
+        return activityGraphsHelperProxy;
     }
 
     /**
@@ -153,7 +169,7 @@ public final class Model {
      * @return the helper
      */
     public static CollaborationsHelper getCollaborationsHelper() {
-        return impl.getCollaborationsHelper();
+        return collaborationsHelperProxy;
     }
 
     /**
@@ -171,7 +187,7 @@ public final class Model {
      * @return the helper
      */
     public static CommonBehaviorHelper getCommonBehaviorHelper() {
-        return impl.getCommonBehaviorHelper();
+        return commonBehaviorHelperProxy;
     }
 
     /**
@@ -207,7 +223,7 @@ public final class Model {
      * @return the helper.
      */
     public static DataTypesHelper getDataTypesHelper() {
-        return impl.getDataTypesHelper();
+        return dataTypesHelperProxy;
     }
 
     /**
@@ -225,7 +241,7 @@ public final class Model {
      * @return the helper
      */
     public static ExtensionMechanismsHelper getExtensionMechanismsHelper() {
-        return impl.getExtensionMechanismsHelper();
+        return extensionMechanismsHelperProxy;
     }
 
     /**
@@ -270,7 +286,7 @@ public final class Model {
      * @return the helper
      */
     public static StateMachinesHelper getStateMachinesHelper() {
-        return impl.getStateMachinesHelper();
+        return stateMachinesHelperProxy;
     }
 
     /**
@@ -288,7 +304,7 @@ public final class Model {
      * @return the helper
      */
     public static UmlHelper getUmlHelper() {
-        return impl.getUmlHelper();
+        return umlHelperProxy;
     }
 
     /**
@@ -306,7 +322,7 @@ public final class Model {
      * @return the helper
      */
     public static UseCasesHelper getUseCasesHelper() {
-        return impl.getUseCasesHelper();
+        return useCasesHelperProxy;
     }
 
     /**

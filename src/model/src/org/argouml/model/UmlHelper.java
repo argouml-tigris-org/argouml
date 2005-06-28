@@ -46,6 +46,7 @@ public interface UmlHelper {
      * package Foundation::ExtensionMechanisms.
      *
      * @return the ExtensionMechanisms helper instance.
+     * @deprecated Use Model.getExtensionMechanismsHelper()
      */
     ExtensionMechanismsHelper getExtensionMechanisms();
 
@@ -54,6 +55,7 @@ public interface UmlHelper {
      * package Foundation::DataTypes.
      *
      * @return the DataTypes helper instance.
+     * @deprecated Use Model.getDataTypesHelper()
      */
     DataTypesHelper getDataTypes();
 
@@ -62,6 +64,7 @@ public interface UmlHelper {
      * package Foundation::Core.
      *
      * @return the Core helper instance.
+     * @deprecated Use Model.getCoreHelper()
      */
     CoreHelper getCore();
 
@@ -70,6 +73,7 @@ public interface UmlHelper {
      * package BehavioralElements::CommonBehavior.
      *
      * @return the CommonBehavior helper instance.
+     * @deprecated Use Model.getCommonBehaviourHelper()
      */
     CommonBehaviorHelper getCommonBehavior();
 
@@ -78,6 +82,7 @@ public interface UmlHelper {
      * package BehavioralElements::UseCases.
      *
      * @return the UseCases helper instance.
+     * @deprecated Use Model.getUseCasesHelper()
      */
     UseCasesHelper getUseCases();
 
@@ -86,6 +91,7 @@ public interface UmlHelper {
      * package BehavioralElements::StateMachines.
      *
      * @return the StateMachines helper instance.
+     * @deprecated Use Model.getStateMachinesHelper()
      */
     StateMachinesHelper getStateMachines();
 
@@ -94,6 +100,7 @@ public interface UmlHelper {
      * package BehavioralElements::Collaborations.
      *
      * @return the Collaborations helper instance.
+     * @deprecated Use Model.getCollaborationsHelper()
      */
     CollaborationsHelper getCollaborations();
 
@@ -102,6 +109,7 @@ public interface UmlHelper {
      * package BehavioralElements::ActivityGraphs.
      *
      * @return the ActivityGraphs helper instance.
+     * @deprecated Use Model.getActivityGraphsHelper()
      */
     ActivityGraphsHelper getActivityGraphs();
 
@@ -110,6 +118,7 @@ public interface UmlHelper {
      * package ModelManagement.
      *
      * @return the ModelManagement helper instance.
+     * @deprecated Use Model.getModelManagementHelper()
      */
     ModelManagementHelper getModelManagement();
 
@@ -118,6 +127,7 @@ public interface UmlHelper {
      *
      * @param base the modelelement
      * @return Object the helper
+     * @deprecated this method is not used or implemented
      */
     Object getHelper(Object base);
 
