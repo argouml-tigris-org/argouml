@@ -330,7 +330,7 @@ round-trip engineering for C++ projects.
   <!-- =================================================================== -->
   <!-- Runs checkstyle to find style problems.                             -->
   <!-- =================================================================== -->
-  <target name="checkstyle" depends="init"
+  <target name="checkstyle" depends="init, cleanparser"
           description="Run checkstyle on the cpp module.">
     <java classname="com.puppycrawl.tools.checkstyle.Main" failonerror="false" fork="true" maxmemory="32M">
       <sysproperty key="checkstyle.header.file" value="${argo.tools.dir}/checkstyle/java.header"/>
