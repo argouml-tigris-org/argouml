@@ -168,7 +168,11 @@ round-trip engineering for C++ projects.
     
     <path id="ant.optional.classpath">
       <pathelement location="${ant.home}/optional.jar"/>
+      <pathelement location="${ant.home}/libopt/ant-junit.jar"/>
       <pathelement location="${junit.jar.path}"/>
+      <pathelement location="${jdepend.jar.path}"/>
+      <pathelement location="${bsf.jar.path}"/>
+      <pathelement location="${javasrc.jar.path}"/>
     </path>
 
     <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" name="junit">
