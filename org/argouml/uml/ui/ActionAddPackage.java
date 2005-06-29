@@ -45,8 +45,7 @@ public class ActionAddPackage  extends UMLAction {
      * Creates a new instance of ActionAddPackage.
      */
     public ActionAddPackage() {
-
-        super("Add package", NO_ICON);
+        super("action.add-package", NO_ICON);
     }
 
     /**
