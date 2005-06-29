@@ -56,6 +56,7 @@ public class SettingsTabNotation extends SettingsTabHelper {
     private JCheckBox showInitialValue = null;
     private JCheckBox showProperties = null;
     private JCheckBox showStereotypes = null;
+    private JCheckBox showTypes = null;
     private ShadowComboBox defaultShadowWidth = null;
 
     /**
@@ -78,11 +79,10 @@ public class SettingsTabNotation extends SettingsTabHelper {
         constraints.weightx = 1.0;
         constraints.insets = new Insets(0, 30, 0, 4);
 
-        constraints.gridy = 0;
+        constraints.gridy = GridBagConstraints.RELATIVE;
         allowNotations = createCheckBox("label.uml-notation-only");
         top.add(allowNotations, constraints);
 
-        constraints.gridy = 1;
         useGuillemots = createCheckBox("label.use-guillemots");
         top.add(useGuillemots, constraints);
 
@@ -90,27 +90,24 @@ public class SettingsTabNotation extends SettingsTabHelper {
         // Jaap Branderhorst
         // from here made visibility etc. configurable
 
-        constraints.gridy = 2;
         showVisibility = createCheckBox("label.show-visibility");
         top.add(showVisibility, constraints);
 
-        constraints.gridy = 3;
         showMultiplicity = createCheckBox("label.show-multiplicity");
         top.add(showMultiplicity, constraints);
 
-        constraints.gridy = 4;
         showInitialValue = createCheckBox("label.show-initialvalue");
         top.add(showInitialValue, constraints);
 
-        constraints.gridy = 5;
         showProperties = createCheckBox("label.show-properties");
         top.add(showProperties, constraints);
 
-        constraints.gridy = 6;
+        showTypes = createCheckBox("label.show-types");
+        top.add(showTypes, constraints);
+        
         showStereotypes = createCheckBox("label.show-stereotypes");
         top.add(showStereotypes, constraints);
 
-        constraints.gridy = 7;
         constraints.insets = new Insets(5, 30, 0, 4);
         JPanel defaultShadowWidthPanel =
             new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
@@ -135,6 +132,10 @@ public class SettingsTabNotation extends SettingsTabHelper {
         showInitialValue.setSelected(
             getBoolean(Notation.KEY_SHOW_INITIAL_VALUE));
         showProperties.setSelected(getBoolean(Notation.KEY_SHOW_PROPERTIES));
+        /* The next one defaults to TRUE, to stay compatible with older
+         * ArgoUML versions that did not have this setting: */
+        showTypes.setSelected(Configuration.getBoolean(
+                Notation.KEY_SHOW_TYPES, true));
         showMultiplicity.setSelected(
             getBoolean(Notation.KEY_SHOW_MULTIPLICITY));
         showStereotypes.setSelected(getBoolean(Notation.KEY_SHOW_STEREOTYPES));
@@ -165,6 +166,8 @@ public class SettingsTabNotation extends SettingsTabHelper {
                  showMultiplicity.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_PROPERTIES,
                  showProperties.isSelected());
+        Configuration.setBoolean(Notation.KEY_SHOW_TYPES,
+                showTypes.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_INITIAL_VALUE,
                  showInitialValue.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_STEREOTYPES,
