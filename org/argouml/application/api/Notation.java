@@ -121,6 +121,13 @@ public final class Notation implements PropertyChangeListener {
         Configuration.makeKey("notation", "show", "properties");
 
     /**
+     * Indicates if the user wants to see the types and parameters
+     * of attributes and operations.
+     */
+    public static final ConfigurationKey KEY_SHOW_TYPES =
+        Configuration.makeKey("notation", "show", "types");
+    
+    /**
      * Default value for the shadow size of classes, interfaces etc.
      */
     public static final ConfigurationKey KEY_DEFAULT_SHADOW_WIDTH =
@@ -133,6 +140,11 @@ public final class Notation implements PropertyChangeListener {
         Configuration.addListener(KEY_USE_GUILLEMOTS, this);
         Configuration.addListener(KEY_DEFAULT_NOTATION, this);
         Configuration.addListener(KEY_UML_NOTATION_ONLY, this);
+        Configuration.addListener(KEY_SHOW_TYPES, this);
+        Configuration.addListener(KEY_SHOW_MULTIPLICITY, this);
+        Configuration.addListener(KEY_SHOW_PROPERTIES, this);
+        Configuration.addListener(KEY_SHOW_VISIBILITY, this);
+        Configuration.addListener(KEY_SHOW_INITIAL_VALUE, this);
     }
 
     /**
@@ -143,6 +155,11 @@ public final class Notation implements PropertyChangeListener {
         Configuration.removeListener(KEY_DEFAULT_NOTATION, this);
         Configuration.removeListener(KEY_USE_GUILLEMOTS, this);
         Configuration.removeListener(KEY_UML_NOTATION_ONLY, this);
+        Configuration.removeListener(KEY_SHOW_TYPES, this);
+        Configuration.removeListener(KEY_SHOW_MULTIPLICITY, this);
+        Configuration.removeListener(KEY_SHOW_PROPERTIES, this);
+        Configuration.removeListener(KEY_SHOW_VISIBILITY, this);
+        Configuration.removeListener(KEY_SHOW_INITIAL_VALUE, this);
     }
 
     private static NotationProvider2 getProvider(NotationName notation) {
