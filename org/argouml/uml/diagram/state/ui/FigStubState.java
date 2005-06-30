@@ -207,7 +207,7 @@ public class FigStubState extends FigStateVertex {
     /**
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    protected void setBoundsInternal(int theX, int theY, int theW, int theH) {
+    protected void setBoundsImpl(int theX, int theY, int theW, int theH) {
         Rectangle oldBounds = getBounds();
         theW = 60;
 

@@ -133,7 +133,7 @@ public class FigActionState extends FigStateVertex {
      * Override setBounds to keep shapes looking right
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    protected void setBoundsInternal(int x, int y, int w, int h) {
+    protected void setBoundsImpl(int x, int y, int w, int h) {
         if (getNameFig() == null) return;
         Rectangle oldBounds = getBounds();
 

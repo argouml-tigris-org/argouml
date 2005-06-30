@@ -78,7 +78,7 @@ public class FigMessagePort extends FigGroup {
         }
     }
 
-    protected void setBoundsInternal( int x, int y, int w, int h)
+    protected void setBoundsImpl( int x, int y, int w, int h)
     {
         if ( getFigs().size()>0)
         {

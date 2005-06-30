@@ -450,7 +450,7 @@ public class FigComment
     /**
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    protected void setBoundsInternal(int px, int py, int w, int h) {
+    protected void setBoundsImpl(int px, int py, int w, int h) {
         if (text == null) {
             return;
         }

@@ -743,7 +743,7 @@ public class FigInterface extends FigNodeModelElement
      *
      * @param h  Desired height of the FigInterface
      */
-    protected void setBoundsInternal(int x, int y, int w, int h) {
+    protected void setBoundsImpl(int x, int y, int w, int h) {
 
         // Save our old boundaries (needed later), and get minimum size
         // info. "aSize will be used to maintain a running calculation of our

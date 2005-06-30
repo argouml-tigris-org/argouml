@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.Actions;
-import org.tigris.gef.base.UndoableAction;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * The prototype of all actions within ArgoUML.
