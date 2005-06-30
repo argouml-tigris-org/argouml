@@ -325,7 +325,7 @@ public class FigClassifierRole extends FigNodeModelElement
      *
      * @see Fig#setBounds(int, int, int, int)
      */
-    public void setBoundsInternal(int x, int y, int w, int h) {
+    public void setBoundsImpl(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
         if (getNameFig().getWidth() > w) {
             w = getNameFig().getWidth() + 2 * MARGIN;

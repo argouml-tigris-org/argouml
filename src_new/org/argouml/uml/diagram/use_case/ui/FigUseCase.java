@@ -634,7 +634,7 @@ public class FigUseCase extends FigNodeModelElement
      * @param h  height of bounding box
      */
 
-    protected void setBoundsInternal(int x, int y, int w, int h) {
+    protected void setBoundsImpl(int x, int y, int w, int h) {
 
         // Remember where we are at present, so we can tell GEF later. Then
         // check we are as big as the minimum size

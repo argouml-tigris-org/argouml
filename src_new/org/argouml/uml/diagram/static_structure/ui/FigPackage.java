@@ -449,7 +449,7 @@ public class FigPackage extends FigNodeModelElement
      *
      * @param h  Desired height of the FigClass
      */
-    protected void setBoundsInternal(int xa, int ya, int w, int h) {
+    protected void setBoundsImpl(int xa, int ya, int w, int h) {
         // Save our old boundaries (needed later), and get minimum size
         // info. "aSize will be used to maintain a running calculation of our
         // size at various points.
