@@ -84,7 +84,10 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
             Model.getStateMachinesHelper()
                         .setEventAsTrigger(trans, event);
         }
-        Object enclosing = Model.getStateMachinesHelper().getStateMachine(trans);
+        /* TODO: move this method of setting the event's namespace 
+         * into the model subsystem, since it is mandatory. */
+        Object enclosing = 
+        	Model.getStateMachinesHelper().getStateMachine(trans);
         while ((!Model.getFacade().isAPackage(enclosing))
                 && (enclosing != null)) {
             enclosing = Model.getFacade().getNamespace(enclosing);
