@@ -852,7 +852,7 @@ public class CoreHelperProxy implements CoreHelper {
             public void set(String value) {
                 impl.setBody(handle, value);
             }
-        }, body, Model.getDataTypesHelper().getBody(handle));
+        }, body, Model.getCoreHelper().getBody(handle));
     }
 
     /**
