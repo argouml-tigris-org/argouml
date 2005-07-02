@@ -109,7 +109,8 @@ round-trip engineering for C++ projects.
     <property name="module.lib.dir" value="${module.root}/lib"/>
     
     <property name="commons-io.jar.path" value="${module.lib.dir}/commons-io-1.0.jar"/>
-  <property name="easymock.jar.path" value="${module.lib.dir}/easymock-1.1.jar"/>
+    <property name="easymock.jar.path" value="${module.lib.dir}/easymock-1.1.jar"/>
+    <property name="junit.jar.path" value="${argo.root}/tools/junit-3.8.1/junit.jar"/>
 
     <property name="manifest" value="manifest.mf"/>
     <property name="manifest.src" value="${module.src.dir}/org/${manifest}"/>
@@ -255,7 +256,9 @@ round-trip engineering for C++ projects.
            excludes="*.txt,*.bat,*.xml,*.sh"
            debug="${debug}"
            deprecation="${deprecation}"
-           optimize="${optimize}">
+           optimize="${optimize}"
+           source="1.4"
+           target="1.4">
         <classpath>
             <path refid="module.compile.classpath"/>
         </classpath>
@@ -360,7 +363,9 @@ round-trip engineering for C++ projects.
            destdir="${module.tests.classes}"
            debug="true"
            deprecation="false"
-           optimize="false">
+           optimize="false"
+           source="1.4"
+           target="1.4">
       <classpath>
         <path refid="module.compile-tests.classpath"/>
       </classpath>
