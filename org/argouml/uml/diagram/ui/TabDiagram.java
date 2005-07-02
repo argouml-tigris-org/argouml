@@ -125,7 +125,7 @@ public class TabDiagram
     public TabDiagram(String tag) {
         super(tag);
         setLayout(new BorderLayout());
-        graph = new JGraph();
+        graph = new DnDJGraph();
         graph.setDrawingSize((612 - 30) * 2, (792 - 55 - 20) * 2);
         // TODO: should update to size of diagram contents
 

@@ -26,7 +26,6 @@ package org.argouml.ui.explorer;
 
 import java.awt.Cursor;
 import java.awt.Point;
-import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
@@ -56,6 +55,7 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.ui.TransferableModelElements;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
 
@@ -386,56 +386,3 @@ public class DnDExplorerTree
 }
 
 
-/**
- * A transferable wraps the data that is transferred 
- * (in casu a collection of UML modelelements) 
- * from a drag source to a drop target. 
- * The initiator of a drag wraps data in a transferable, 
- * and drops are handled by accessing a transferable's data.
- */
-class TransferableModelElements implements Transferable {
-
-    static final DataFlavor UML_COLLECTION_FLAVOR =
-        new DataFlavor(Collection.class, "UML ModelElements Collection");
-
-    private static DataFlavor[] flavors = {UML_COLLECTION_FLAVOR };
-
-    private Collection theModelElements;
-
-    public TransferableModelElements(Collection data) {
-
-        theModelElements = data;
-    }
-
-    /**
-     * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
-     */
-    public Object getTransferData(DataFlavor dataFlavor)
-        throws UnsupportedFlavorException,
-               IOException {
-
-        if (dataFlavor.match(UML_COLLECTION_FLAVOR)) {
-            return theModelElements;
-        } 
-        /* TODO: We could also support other flavors here, 
-         * e.g. image (then you can drag modelelements directly into 
-         * your wordprocessor, to be inserted as an image). */
-        throw new UnsupportedFlavorException(dataFlavor);
-    }
-
-    /**
-     * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
-     */
-    public DataFlavor[] getTransferDataFlavors() {
-        return flavors;
-    }
-
-    /**
-     * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(java.awt.datatransfer.DataFlavor)
-     */
-    public boolean isDataFlavorSupported(DataFlavor dataFlavor) {
-
-        return dataFlavor.match(UML_COLLECTION_FLAVOR);
-    }
-
-}
