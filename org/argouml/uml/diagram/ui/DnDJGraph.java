@@ -132,6 +132,7 @@ class DnDJGraph
             return;
         }
         
+        dropTargetDropEvent.acceptDrop(dropTargetDropEvent.getDropAction());
         //get the model elements that are being transfered.
         Collection modelElements;
         MutableGraphModel gm = (MutableGraphModel) ProjectManager.getManager().
@@ -151,6 +152,7 @@ class DnDJGraph
                     }
                 }
             }
+            dropTargetDropEvent.getDropTargetContext().dropComplete(true);
         } catch (UnsupportedFlavorException e) {
             e.printStackTrace();
         } catch (IOException e) {
