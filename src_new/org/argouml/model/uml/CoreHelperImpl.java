@@ -620,9 +620,8 @@ class CoreHelperImpl implements CoreHelper {
                 }
             }
             return ret;
-        } else {
-            throw new IllegalArgumentException("Argument is not a classifier");
         }
+        throw new IllegalArgumentException("Argument is not a classifier");
     }
 
     /**
@@ -1170,9 +1169,8 @@ class CoreHelperImpl implements CoreHelper {
 	        nsmodel.getFacade().getConnections(relationship).iterator();
 	    if (it.hasNext()) {
 		return nsmodel.getFacade().getInstance(it.next());
-	    } else {
-		return null;
-	    }
+	    } 
+            return null;
         }
         if (relationship instanceof MAssociation) {
             MAssociation assoc = (MAssociation) relationship;
@@ -1251,12 +1249,10 @@ class CoreHelperImpl implements CoreHelper {
 		it.next();
 		if (it.hasNext()) {
 		    return nsmodel.getFacade().getInstance(it.next());
-		} else {
-		    return null;
-		}
-	    } else {
-	        return null;
+		} 
+		return null;
 	    }
+            return null;
 	}
 
 
@@ -1764,10 +1760,9 @@ class CoreHelperImpl implements CoreHelper {
         if (kindType.equals("composite")) {
             return MAggregationKind.COMPOSITE.equals(
                             associationEnd1.getAggregation());
-        } else {
-            throw new IllegalArgumentException("kindType: " + kindType
+        } 
+        throw new IllegalArgumentException("kindType: " + kindType
 					       + " not supported");
-        }
     }
 
     /**
@@ -2491,11 +2486,10 @@ class CoreHelperImpl implements CoreHelper {
                 ((MStructuralFeature) handle).setChangeability(
                     MChangeableKind.CHANGEABLE);
                     return;
-            } else {
-                ((MStructuralFeature) handle).setChangeability(
+            } 
+            ((MStructuralFeature) handle).setChangeability(
                     MChangeableKind.FROZEN);
             return;
-            }
         } else if (handle instanceof MAssociationEnd) {
             MAssociationEnd ae = (MAssociationEnd) handle;
             if (flag) {
