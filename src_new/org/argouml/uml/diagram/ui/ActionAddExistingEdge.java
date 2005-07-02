@@ -44,7 +44,7 @@ public class ActionAddExistingEdge extends UMLAction {
      * Constructor for ActionAddExistingEdge.
      *
      * @param name       the name of the action
-     * @param edgeObject    the edge
+     * @param edgeObject    the edge (the UML ModelElement!)
      */
     public ActionAddExistingEdge(String name, Object edgeObject) {
         super(name, true, NO_ICON);
@@ -53,13 +53,12 @@ public class ActionAddExistingEdge extends UMLAction {
     }
 
 
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent arg0) {
         super.actionPerformed(arg0);
-        // we have an edge
+        // we have an edge (the UML modelelement!)
         if (edge == null) return;
         // let's test which situation we have. 3 Possibilities:
         // 1. The nodes are allready on the diagram, we can use
