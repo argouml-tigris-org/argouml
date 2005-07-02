@@ -40,14 +40,15 @@ import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.InputEvent;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
 
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -55,10 +56,14 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
 
 /**
  * This class extends the default Argo JTree with Drag and drop capabilities.<p>
+ * See:
+ * http://java.sun.com/j2se/1.4.2/docs/guide/dragndrop/spec/dnd1.html
+ * http://java.sun.com/products/jfc/tsc/articles/dragndrop/index.html
  *
  * And it adds the 'copy to clipboard' capability for diagrams. See: <p>
  * http://java.sun.com/j2se/1.3/docs/guide/swing/KeyBindChanges.html
@@ -97,6 +102,8 @@ public class DnDExplorerTree
 
         dragSource = DragSource.getDefaultDragSource();
 
+        /* The drag gesture recognizer fires events 
+         * in response to drag gestures in a component. */
         DragGestureRecognizer dgr =
 	    dragSource
 	        .createDefaultDragGestureRecognizer(
@@ -109,8 +116,7 @@ public class DnDExplorerTree
 
         // First argument:  Component to associate the target with
         // Second argument: DropTargetListener
-        DropTarget dropTarget =
-	    new DropTarget(this, new ArgoDropTargetListener());
+        new DropTarget(this, new ArgoDropTargetListener());
 
         KeyStroke ctrlC = KeyStroke.getKeyStroke("control C");
         this.getInputMap().put(ctrlC, DIAGRAM_TO_CLIPBOARD_ACTION);
@@ -119,39 +125,80 @@ public class DnDExplorerTree
     }
 
     /**
-     * Recognises the start of the drag.
+     * The drag gesture listener is notified of drag gestures by a recognizer. 
+     * The typical response is to initiate a drag 
+     * by invoking DragSource.startDrag().
      *
      * @see java.awt.dnd.DragGestureListener#dragGestureRecognized(java.awt.dnd.DragGestureEvent)
      */
     public void dragGestureRecognized(DragGestureEvent dragGestureEvent) {
 
-        //Get the selected node from the JTree
-        selectedTreePath = getSelectionPath();
-        if (selectedTreePath == null) {
-            return;
-        }
-        Object dragNode =
-            ((DefaultMutableTreeNode) selectedTreePath
-                    .getLastPathComponent()).getUserObject();
-        if (dragNode != null) {
-
-            //Get the Transferable Object
-            Transferable transferable = new TransferableModelElement(dragNode);
-
-            //Select the appropriate cursor;
-            Cursor cursor = DragSource.DefaultCopyNoDrop;
-            int action = dragGestureEvent.getDragAction();
-            if (action == DnDConstants.ACTION_MOVE) {
-                cursor = DragSource.DefaultMoveDrop;
-            }
-
-            //begin the drag
-            dragSource.startDrag(dragGestureEvent, cursor, transferable, this);
-        }
+        //Get the selected targets (UML ModelElements) from the TargetManager
+        Collection targets = TargetManager.getInstance().getModelTargets();
+        if (targets.size() < 1) return;
+        LOG.debug("Drag: start transferring " + targets.size() + " targets.");
+        Transferable tf = new TransferableModelElements(targets);
+        
+        //Select the appropriate initial cursor:
+        Cursor cursor = DragSource.DefaultCopyNoDrop;
+        
+        //begin the drag
+        dragGestureEvent.startDrag(cursor, tf, this);
     }
 
+    private boolean isValidDrag(TreePath destinationPath, Transferable tf) {
+        if (destinationPath == null) {
+            LOG.debug("No valid Drag: no destination found.");
+            return false;
+        }
+        if (selectedTreePath.isDescendant(destinationPath)) {
+            LOG.debug("No valid Drag: move to descendent.");
+            return false;
+        }
+        if (! tf.isDataFlavorSupported(
+                TransferableModelElements.UML_COLLECTION_FLAVOR)) {
+            LOG.debug("No valid Drag: flavor not supported.");
+            return false;
+        }
+        Object dest = ((DefaultMutableTreeNode) destinationPath
+                .getLastPathComponent()).getUserObject();
+        
+        /* TODO: support other types of drag. 
+         * Here you set the owner by dragging into a namespace. 
+         * An alternative could be to drag states into composite states... */
+        
+        /* If the destination is not a NameSpace, then abort: */
+        if (!Model.getFacade().isANamespace(dest)) {
+            LOG.debug("No valid Drag: not a namespace.");
+            return false;
+        }
+        
+        /* Let's check all dragged elements - if one of these may be dropped, 
+         * then the drag is valid. The others will be ignored when dropping.*/
+        Collection c;
+        try {
+            c = (Collection) tf.getTransferData(
+                    TransferableModelElements.UML_COLLECTION_FLAVOR);
+            Iterator i = c.iterator();
+            while (i.hasNext()) {
+                Object me = i.next();
+                if (Model.getCoreHelper().isValidNamespace(me, dest)) {
+                    LOG.debug("Valid Drag: namespace " + dest);
+                    return true;
+                }
+            }
+        } catch (UnsupportedFlavorException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        LOG.debug("No valid Drag: not a valid namespace.");
+        return false;
+    }
+    
     /**
-     *
+     * The DropTargetListener. 
+     * Handles drop target events including the drop itself.
      */
     class ArgoDropTargetListener implements DropTargetListener {
 
@@ -161,38 +208,34 @@ public class DnDExplorerTree
 
         public void dragExit(DropTargetEvent dropTargetEvent) {
             LOG.debug("dragExit");
-            //dropTargetEvent.getDropTargetContext().getComponent()
-            //        .setCursor(Cursor.getDefaultCursor());
         }
 
-        /**
-         * set correct cursor.
+        /** 
+         * Called when a drag operation is ongoing, while the mouse pointer 
+         * is still over the operable part of the drop site 
+         * for the <code>DropTarget</code> registered with this listener.
          */
         public void dragOver(DropTargetDragEvent dropTargetDragEvent) {
-
-            // _cat.debug("dragOver");
-            //set cursor location. Needed in setCursor method
-            Point cursorLocationBis = dropTargetDragEvent.getLocation();
-            TreePath destinationPath =
-		getPathForLocation(cursorLocationBis.x, cursorLocationBis.y);
-
-            // if destination path is okay accept drop...
-            // can't drag to a descendant
-            // there will be other rules.
-            if (!selectedTreePath.isDescendant(destinationPath)) {
-                dropTargetDragEvent
-		    .acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
-            }
-            // ...otherwise reject drop
-            else {
-		dropTargetDragEvent.rejectDrag();
-	    }
+            // LOG.debug("dragOver"); //many many of these!
+            
+            /* TODO: The next only works from Java 1.5 onwards :-( */
+            /* Testcase: drag something from another application into ArgoUML,
+             * and the explorer shows the drop icon, instead of the noDrop.*/
+            /*
+            Transferable tf = dropTargetDragEvent.getTransferable();
+            if (tf.isDataFlavorSupported(
+                     TransferableModelElements.UML_COLLECTION_FLAVOR)) {
+                dropTargetDragEvent.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+            } else {
+                dropTargetDragEvent.rejectDrag();
+            } 
+            */
         }
 
         /**
-         * what is done when drag is released.
+         * The drop: what is done when the mousebutton is released.
          */
-        public void drop(java.awt.dnd.DropTargetDropEvent dropTargetDropEvent) {
+        public void drop(DropTargetDropEvent dropTargetDropEvent) {
 
             LOG.debug("dropping ... ");
             try {
@@ -200,63 +243,51 @@ public class DnDExplorerTree
 
                 //flavor not supported, reject drop
                 if (!tr.isDataFlavorSupported(
-			     TransferableModelElement.ELEM_FLAVOR)) {
+			     TransferableModelElements.UML_COLLECTION_FLAVOR)) {
                     LOG.debug("! isDataFlavorSupported");
                     dropTargetDropEvent.rejectDrop();
+                    return;
                 }
 
-                //get the model element that is being transfered.
-                Object modelElement =
-		    tr.getTransferData(TransferableModelElement.ELEM_FLAVOR);
-
-                LOG.debug("transfer data = " + modelElement);
+                //get the model elements that are being transfered.
+                Collection modelElements = (Collection) tr.getTransferData(
+                            TransferableModelElements.UML_COLLECTION_FLAVOR);
+                LOG.debug("transfer data = " + modelElements);
 
                 //get new parent node
                 Point loc = dropTargetDropEvent.getLocation();
                 TreePath destinationPath = getPathForLocation(loc.x, loc.y);
+                LOG.debug("Drop location: x=" + loc.x + " y=" + loc.y);
 
-                final String msg = isValidDropTarget(destinationPath,
-                                                     selectedTreePath);
-                if (msg != null) {
-                    dropTargetDropEvent.rejectDrop();
-
-                    SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-			    JOptionPane.showMessageDialog(
-			            null,
-				    msg,
-				    "Error Dialog",
-				    JOptionPane.ERROR_MESSAGE);
-			}
-		    });
-                    // reset the cursor.
-                    //dropTargetDropEvent.getDropTargetContext()
-                    //  .getComponent().setCursor(Cursor.getDefaultCursor());
-                    return;
-                }
-
-                Object destinationModelElement =
-		    ((DefaultMutableTreeNode) destinationPath
+                Object dest = ((DefaultMutableTreeNode) destinationPath
 		             .getLastPathComponent()).getUserObject();
 
                 int action = dropTargetDropEvent.getDropAction();
+                /* The user-DropActions are: 
+                 * Ctrl + Shift -> ACTION_LINK
+                 * Ctrl         -> ACTION_COPY
+                 * Shift        -> ACTION_MOVE  
+                 * (none)       -> ACTION_MOVE
+                 */
                 boolean copyAction = (action == DnDConstants.ACTION_COPY);
                 boolean moveAction = (action == DnDConstants.ACTION_MOVE);
 
+                if(!(moveAction || copyAction)) {
+                    dropTargetDropEvent.rejectDrop();
+                    return;
+                }
                 try {
-                    if (moveAction) {
-                        LOG.debug("move " + modelElement);
-                        Model.getCoreHelper().setNamespace(modelElement,
-                                                 destinationModelElement);
+                    dropTargetDropEvent.acceptDrop(action);
+                    Iterator i = modelElements.iterator();
+                    while (i.hasNext()) {
+                        Object me = i.next();
+                        LOG.debug((moveAction ? "move " : "copy ") + me);
+                        if (Model.getCoreHelper().isValidNamespace(me, dest)) {
+                            Model.getCoreHelper().setNamespace(me, dest);
+                        }
                     }
-
-                    if (copyAction) {
-                        dropTargetDropEvent
-			    .acceptDrop(DnDConstants.ACTION_COPY);
-                    } else {
-                        dropTargetDropEvent
-			    .acceptDrop(DnDConstants.ACTION_MOVE);
-                    }
+                    dropTargetDropEvent.getDropTargetContext()
+                        .dropComplete(true);
                 } catch (java.lang.IllegalStateException ils) {
                     LOG.debug("drop IllegalStateException");
                     dropTargetDropEvent.rejectDrop();
@@ -276,35 +307,6 @@ public class DnDExplorerTree
         }
 
         /**
-         * @return a string message if dest is valid,
-         *         else returns <code>null</code>.
-         */
-        private String isValidDropTarget(TreePath destinationPath,
-					 TreePath sourceTreePath) {
-
-            if (destinationPath == null
-		|| sourceTreePath == null) {
-                return null;
-            }
-
-            Object dest =
-		((DefaultMutableTreeNode) destinationPath
-		        .getLastPathComponent()).getUserObject();
-            Object src =
-		((DefaultMutableTreeNode) sourceTreePath
-		        .getLastPathComponent()).getUserObject();
-
-            boolean isValid =
-		Model.getCoreHelper().isValidNamespace(src, dest);
-
-            if (isValid) {
-                return null;
-            } else {
-                return "you can't drag there.";
-	    }
-        }
-
-        /**
          * empty implementation - not used.
          */
         public void dropActionChanged(DropTargetDragEvent dropTargetDragEvent) {
@@ -317,28 +319,51 @@ public class DnDExplorerTree
      *
      * @see java.awt.dnd.DragSourceListener#dragDropEnd(java.awt.dnd.DragSourceDropEvent)
      */
-    public void dragDropEnd(DragSourceDropEvent dragSourceDropEvent) { }
+    public void dragDropEnd(DragSourceDropEvent dragSourceDropEvent) { 
+    }
 
     /**
      * DragSourceListener empty implementation - not used.
      *
      * @see java.awt.dnd.DragSourceListener#dragEnter(java.awt.dnd.DragSourceDragEvent)
      */
-    public void dragEnter(DragSourceDragEvent dragSourceDragEvent) { }
+    public void dragEnter(DragSourceDragEvent dragSourceDragEvent) { 
+    }
 
     /**
      * DragSourceListener empty implementation - not used.
      *
      * @see java.awt.dnd.DragSourceListener#dragExit(java.awt.dnd.DragSourceEvent)
      */
-    public void dragExit(DragSourceEvent dragSourceEvent) { }
+    public void dragExit(DragSourceEvent dragSourceEvent) { 
+    }
 
     /**
-     * DragSourceListener empty implementation - not used.
+     * Set the cursor.
      *
      * @see java.awt.dnd.DragSourceListener#dragOver(java.awt.dnd.DragSourceDragEvent)
      */
-    public void dragOver(DragSourceDragEvent dragSourceDragEvent) { }
+    public void dragOver(DragSourceDragEvent dragSourceDragEvent) { 
+        Transferable tf = 
+            dragSourceDragEvent.getDragSourceContext().getTransferable();
+        /* This is the mouse location on the screen: */
+        Point dragLoc = dragSourceDragEvent.getLocation();
+//        LOG.debug("Drag over location: x=" + dragLoc.x + " y=" + dragLoc.y);
+        /* This is the JTree location on the screen: */
+        Point treeLoc = getLocationOnScreen();
+        /* Now substract to find the location within the JTree: */
+        dragLoc.translate(- treeLoc.x, - treeLoc.y);
+//        LOG.debug("Drag location on tree: x=" + dragLoc.x + " y=" + dragLoc.y);
+        TreePath destinationPath = getPathForLocation(dragLoc.x, dragLoc.y);
+         if (!isValidDrag(destinationPath, tf)) {
+            dragSourceDragEvent.getDragSourceContext()
+                .setCursor(DragSource.DefaultCopyNoDrop);
+        } else {
+            dragSourceDragEvent.getDragSourceContext()
+                .setCursor(DragSource.DefaultMoveDrop);
+        }
+
+    }
 
     /**
      * DragSourceListener empty implementation - not used.
@@ -360,35 +385,42 @@ public class DnDExplorerTree
     }
 }
 
+
 /**
- * Encapsulates a UML Model element for data transfer.
+ * A transferable wraps the data that is transferred 
+ * (in casu a collection of UML modelelements) 
+ * from a drag source to a drop target. 
+ * The initiator of a drag wraps data in a transferable, 
+ * and drops are handled by accessing a transferable's data.
  */
-class TransferableModelElement implements Transferable {
+class TransferableModelElements implements Transferable {
 
-    public static final DataFlavor ELEM_FLAVOR =
-	new DataFlavor(Object.class, "UML Model Element");
+    static final DataFlavor UML_COLLECTION_FLAVOR =
+        new DataFlavor(Collection.class, "UML ModelElements Collection");
 
-    private static DataFlavor[] flavors = {ELEM_FLAVOR };
+    private static DataFlavor[] flavors = {UML_COLLECTION_FLAVOR };
 
-    private Object theModelElement;
+    private Collection theModelElements;
 
-    public TransferableModelElement(Object modelElement) {
+    public TransferableModelElements(Collection data) {
 
-        theModelElement = modelElement;
+        theModelElements = data;
     }
 
     /**
      * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
      */
     public Object getTransferData(DataFlavor dataFlavor)
-	throws UnsupportedFlavorException,
-	       IOException {
+        throws UnsupportedFlavorException,
+               IOException {
 
-        if (dataFlavor.match(ELEM_FLAVOR)) {
-            return theModelElement;
-        } else {
-            throw new UnsupportedFlavorException(dataFlavor);
-        }
+        if (dataFlavor.match(UML_COLLECTION_FLAVOR)) {
+            return theModelElements;
+        } 
+        /* TODO: We could also support other flavors here, 
+         * e.g. image (then you can drag modelelements directly into 
+         * your wordprocessor, to be inserted as an image). */
+        throw new UnsupportedFlavorException(dataFlavor);
     }
 
     /**
@@ -403,7 +435,7 @@ class TransferableModelElement implements Transferable {
      */
     public boolean isDataFlavorSupported(DataFlavor dataFlavor) {
 
-        return dataFlavor.match(ELEM_FLAVOR);
+        return dataFlavor.match(UML_COLLECTION_FLAVOR);
     }
 
 }
