@@ -38,11 +38,11 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
- * UMTreeCellRenderer determines how the entries in the Navigationpane
+ * UMTreeCellRenderer determines how the entries in the Explorerpane
  * and ToDoList will be represented graphically.<p>
  *
- * In particular it makes decisions about the icons
- * to use in order to display a Navigationpane artifact depending on the kind
+ * In particular it makes decisions about the icons to use,
+ * in order to display an Explorerpane artifact depending on the kind
  * of object to be displayed.<p>
  *
  * This class must be efficient as it is called many 1000's of times.
