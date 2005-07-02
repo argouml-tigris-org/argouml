@@ -173,6 +173,12 @@ public class DnDExplorerTree
             return false;
         }
         
+        /* If the destination is a DataType, then abort: */
+        if (Model.getFacade().isADataType(dest)) {
+            LOG.debug("No valid Drag: destination is a DataType.");
+            return false;
+        }
+        
         /* Let's check all dragged elements - if one of these may be dropped, 
          * then the drag is valid. The others will be ignored when dropping.*/
         Collection c;
@@ -240,11 +246,12 @@ public class DnDExplorerTree
             LOG.debug("dropping ... ");
             try {
                 Transferable tr = dropTargetDropEvent.getTransferable();
+                //get new parent node
+                Point loc = dropTargetDropEvent.getLocation();
+                TreePath destinationPath = getPathForLocation(loc.x, loc.y);
+                LOG.debug("Drop location: x=" + loc.x + " y=" + loc.y);
 
-                //flavor not supported, reject drop
-                if (!tr.isDataFlavorSupported(
-			     TransferableModelElements.UML_COLLECTION_FLAVOR)) {
-                    LOG.debug("! isDataFlavorSupported");
+                if (!isValidDrag(destinationPath, tr)) {
                     dropTargetDropEvent.rejectDrop();
                     return;
                 }
@@ -253,12 +260,7 @@ public class DnDExplorerTree
                 Collection modelElements = (Collection) tr.getTransferData(
                             TransferableModelElements.UML_COLLECTION_FLAVOR);
                 LOG.debug("transfer data = " + modelElements);
-
-                //get new parent node
-                Point loc = dropTargetDropEvent.getLocation();
-                TreePath destinationPath = getPathForLocation(loc.x, loc.y);
-                LOG.debug("Drop location: x=" + loc.x + " y=" + loc.y);
-
+                
                 Object dest = ((DefaultMutableTreeNode) destinationPath
 		             .getLastPathComponent()).getUserObject();
 
