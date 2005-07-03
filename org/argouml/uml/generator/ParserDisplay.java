@@ -410,11 +410,11 @@ public final class ParserDisplay extends Parser {
         String token;
 
         try {
-            st = new MyTokenizer(text, "<<,ï¿½,ï¿½,>>,::");
+            st = new MyTokenizer(text, "<<,«,»,>>,::");
             while (st.hasMoreTokens()) {
                 token = st.nextToken();
 
-                if ("<<".equals(token) || "ï¿½".equals(token)) {
+                if ("<<".equals(token) || "«".equals(token)) {
                     if (stereotype != null) {
                         throw new ParseException("Element cannot have "
                                 + "two stereotypes", st.getTokenIndex());
@@ -423,7 +423,7 @@ public final class ParserDisplay extends Parser {
                     stereotype = "";
                     while (true) {
                         token = st.nextToken();
-                        if (">>".equals(token) || "ï¿½".equals(token)) {
+                        if (">>".equals(token) || "»".equals(token)) {
                             break;
                         }
                         stereotype += token;
