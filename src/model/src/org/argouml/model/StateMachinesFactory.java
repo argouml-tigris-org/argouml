@@ -265,76 +265,77 @@ public interface StateMachinesFactory {
     Object buildTransition(Object source, Object target);
 
     /**
-     * Builds a callevent whose namespace (and therefore the ownership) is the
-     * rootmodel.
-     * @param model the model
+     * Builds a callevent with given namespace 
+     * (and therefore the ownership).
+     * 
+     * @param ns the namespace
      * @return MCallEvent
      */
-    Object buildCallEvent(Object model);
-
+    Object buildCallEvent(Object ns);
+    
     /**
      * Create a initialized instance of a CallEvent with a name
-     * as a trigger for a Transition.
+     * as a trigger for a Transition, within a given namespace.
      * If an operation with corresponding name can be found, it is linked.
      *
      * @param trans Object MTransition for which the CallEvent is a trigger
      * @param name String with the trigger name - should not include "()"
-     * @param model the model
+     * @param ns the namespace
      * @return an initialized UML CallEvent instance.
      */
-    Object buildCallEvent(Object trans, String name, Object model);
+    Object buildCallEvent(Object trans, String name, Object ns);
 
     /**
-     * Builds a signalevent whose namespace (and therefore the
-     * ownership) is the rootmodel.<p>
-     * @param model the model
+     * Builds a signalevent within a given namespace.
+     * 
+     * @param ns the Namespace
      * @return MSignalEvent
      */
-    Object buildSignalEvent(Object model);
+    Object buildSignalEvent(Object ns);
 
     /**
-     * Builds a named signalevent whose namespace (and therefore the
-     * ownership) is the rootmodel.<p>
-     * @param model the model
+     * Builds a named signalevent within a given namespace.
+     * 
+     * @param ns the Namespace
      * @param name String the name of the SignalEvent
      * @return MSignalEvent
      */
-    Object buildSignalEvent(String name, Object model);
+    Object buildSignalEvent(String name, Object ns);
 
     /**
-     * Builds a timeevent whose namespace (and therefore the
-     * ownership) is the rootmodel.<p>
-     * @param model the Model
+     * Builds a timeevent within a given namespace.
+     * 
+     * @param ns the Namespace
      * @return MTimeEvent
      */
-    Object buildTimeEvent(Object model);
+    Object buildTimeEvent(Object ns);
 
     /**
-     * Builds a timeevent whose namespace (and therefore the
-     * ownership) is the rootmodel.<p>
+     * Builds a timeevent within a given namespace.
      *
      * @param s String for creating the TimeExpression
-     * @param model the model
+     * @param ns the Namespace
      * @return MTimeEvent
      */
-    Object buildTimeEvent(String s, Object model);
+    Object buildTimeEvent(String s, Object ns);
 
     /**
-     * Builds a changeevent whose namespace (and therefore the
-     * ownership) is the rootmodel.<p>
-     * @param model the model
+     * Builds a changeevent within a given namespace.
+     * 
+     * @param ns the Namespace
      * @return MChangeEvent
      */
-    Object buildChangeEvent(Object model);
+    Object buildChangeEvent(Object ns);
 
     /**
-     * Builds a changeevent whose namespace (and therefore the
-     * ownership) is the rootmodel.<p>
-     * @param model the model
+     * Create a initialized instance of a ChangeEvent, 
+     * within a given namespace.
+     * 
+     * @param ns the Namespace
      * @param s String for creating the BooleanExpression
      * @return MChangeEvent
      */
-    Object buildChangeEvent(String s, Object model);
+    Object buildChangeEvent(String s, Object ns);
 
     /**
      * Builds a guard condition with a given transition. The guard condition is

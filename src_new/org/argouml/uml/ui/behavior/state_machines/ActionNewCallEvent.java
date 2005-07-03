@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 
 /**
@@ -45,13 +44,10 @@ public class ActionNewCallEvent extends ActionNewEvent {
     }
 
     /**
-     * @see org.argouml.uml.ui.behavior.state_machines.ActionNewEvent#createEvent()
+     * @see org.argouml.uml.ui.behavior.state_machines.ActionNewEvent#createEvent(java.lang.Object)
      */
-    protected Object createEvent() {
-        Object model =
-            ProjectManager.getManager().getCurrentProject().getModel();
-
-        return Model.getStateMachinesFactory().buildCallEvent(model);
+    protected Object createEvent(Object ns) {
+        return Model.getStateMachinesFactory().buildCallEvent(ns);
     }
 
     /**

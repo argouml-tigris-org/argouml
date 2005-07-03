@@ -311,5 +311,12 @@ public class StateMachinesHelperProxy implements StateMachinesHelper {
     public void setReferenceState(Object o, String referenced) {
         impl.setReferenceState(o, referenced);
     }
+    
+    /**
+     * @see org.argouml.model.StateMachinesHelper#findNamespaceForEvent(java.lang.Object)
+     */
+    public Object findNamespaceForEvent(Object trans, Object model) {
+        return impl.findNamespaceForEvent(trans, model);
+    }
 
 }
