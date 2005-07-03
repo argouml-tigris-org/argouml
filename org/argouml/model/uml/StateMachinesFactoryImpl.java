@@ -50,8 +50,8 @@ import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * Factory to create UML classes for the UML
@@ -519,14 +519,15 @@ public class StateMachinesFactoryImpl
     }
 
     /**
-     * Builds a callevent whose namespace (and therefore the ownership) is the
-     * rootmodel.
-     * @param model the model
+     * Builds a callevent with given namespace 
+     * (and therefore the ownership).
+     * 
+     * @param ns the namespace
      * @return MCallEvent
      */
-    public Object buildCallEvent(Object model) {
+    public Object buildCallEvent(Object ns) {
         MCallEvent event = (MCallEvent) createCallEvent();
-        event.setNamespace((MModel) model);
+        event.setNamespace((MNamespace) ns);
         event.setName("");
         return event;
     }
@@ -538,15 +539,15 @@ public class StateMachinesFactoryImpl
      *
      * @param trans Object MTransition for which the CallEvent is a trigger
      * @param name String with the trigger name - should not include "()"
-     * @param model the model
+     * @param ns the namespace
      * @return an initialized UML CallEvent instance.
      */
-    public Object buildCallEvent(Object trans, String name, Object model) {
+    public Object buildCallEvent(Object trans, String name, Object ns) {
         if (!(trans instanceof MTransition)) {
             throw new IllegalArgumentException();
         }
         MCallEvent evt = MFactory.getDefaultFactory().createCallEvent();
-        evt.setNamespace((MModel) model);
+        evt.setNamespace((MNamespace) ns);
 
         String operationName =
             (name.indexOf("(") > 0)
@@ -564,55 +565,58 @@ public class StateMachinesFactoryImpl
 
     /**
      * Builds a signalevent whose namespace (and therefore the
-     * ownership) is the rootmodel.<p>
-     * @param model the model
+     * ownership) is given.
+     * 
+     * @param ns the Namespace
      * @return MSignalEvent
      */
-    public Object buildSignalEvent(Object model) {
+    public Object buildSignalEvent(Object ns) {
         MSignalEvent event = (MSignalEvent) createSignalEvent();
-        event.setNamespace((MModel) model);
+        event.setNamespace((MNamespace) ns);
         event.setName("");
         return event;
     }
 
     /**
      * Builds a named signalevent whose namespace (and therefore the
-     * ownership) is the rootmodel.<p>
-     * @param model the model
+     * ownership) is given.
+     * 
+     * @param ns the Namespace
      * @param name String the name of the SignalEvent
      * @return MSignalEvent
      */
-    public Object buildSignalEvent(String name, Object model) {
+    public Object buildSignalEvent(String name, Object ns) {
         MSignalEvent event = (MSignalEvent) createSignalEvent();
-        event.setNamespace((MModel) model);
+        event.setNamespace((MNamespace) ns);
         event.setName(name);
         return event;
     }
 
     /**
      * Builds a timeevent whose namespace (and therefore the
-     * ownership) is the rootmodel.<p>
-     * @param model the Model
+     * ownership) is given.
+     * 
+     * @param ns the Namespace
      * @return MTimeEvent
      */
-    public Object buildTimeEvent(Object model) {
+    public Object buildTimeEvent(Object ns) {
         MTimeEvent event = (MTimeEvent) createTimeEvent();
-        event.setNamespace((MModel) model);
+        event.setNamespace((MNamespace) ns);
         event.setName("");
         return event;
     }
 
     /**
      * Builds a timeevent whose namespace (and therefore the
-     * ownership) is the rootmodel.<p>
+     * ownership) is given.
      *
      * @param s String for creating the TimeExpression
-     * @param model the model
+     * @param ns the Namespace
      * @return MTimeEvent
      */
-    public Object buildTimeEvent(String s, Object model) {
+    public Object buildTimeEvent(String s, Object ns) {
         MTimeEvent event = (MTimeEvent) createTimeEvent();
-        event.setNamespace((MModel) model);
+        event.setNamespace((MNamespace) ns);
         event.setName("");
         Object te =
             nsmodel.getDataTypesFactory()
@@ -623,27 +627,29 @@ public class StateMachinesFactoryImpl
 
     /**
      * Builds a changeevent whose namespace (and therefore the
-     * ownership) is the rootmodel.<p>
-     * @param model the model
+     * ownership) is given.
+     * 
+     * @param ns the Namespace
      * @return MChangeEvent
      */
-    public Object buildChangeEvent(Object model) {
+    public Object buildChangeEvent(Object ns) {
         MChangeEvent event = (MChangeEvent) createChangeEvent();
-        event.setNamespace((MModel) model);
+        event.setNamespace((MNamespace) ns);
         event.setName("");
         return event;
     }
 
     /**
      * Builds a changeevent whose namespace (and therefore the
-     * ownership) is the rootmodel.<p>
-     * @param model the model
+     * ownership) is given.
+     * 
+     * @param ns the Namespace
      * @param s String for creating the BooleanExpression
      * @return MChangeEvent
      */
-    public Object buildChangeEvent(String s, Object model) {
+    public Object buildChangeEvent(String s, Object ns) {
         MChangeEvent event = (MChangeEvent) createChangeEvent();
-        event.setNamespace((MModel) model);
+        event.setNamespace((MNamespace) ns);
         event.setName("");
         Object ce =
             nsmodel.getDataTypesFactory()

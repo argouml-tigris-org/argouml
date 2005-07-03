@@ -410,11 +410,11 @@ public final class ParserDisplay extends Parser {
         String token;
 
         try {
-            st = new MyTokenizer(text, "<<,«,»,>>,::");
+            st = new MyTokenizer(text, "<<,ï¿½,ï¿½,>>,::");
             while (st.hasMoreTokens()) {
                 token = st.nextToken();
 
-                if ("<<".equals(token) || "«".equals(token)) {
+                if ("<<".equals(token) || "ï¿½".equals(token)) {
                     if (stereotype != null) {
                         throw new ParseException("Element cannot have "
                                 + "two stereotypes", st.getTokenIndex());
@@ -423,7 +423,7 @@ public final class ParserDisplay extends Parser {
                     stereotype = "";
                     while (true) {
                         token = st.nextToken();
-                        if (">>".equals(token) || "»".equals(token)) {
+                        if (">>".equals(token) || "ï¿½".equals(token)) {
                             break;
                         }
                         stereotype += token;
@@ -2178,29 +2178,32 @@ public final class ParserDisplay extends Parser {
          */
         Object evt = Model.getFacade().getTrigger(trans);
         Object model = 
-                ProjectManager.getManager().getCurrentProject().getModel();
-        StateMachinesFactory sMFactory = Model.getStateMachinesFactory();
+        	ProjectManager.getManager().getCurrentProject().getModel();
+        Object ns = Model.getStateMachinesHelper()
+        		.findNamespaceForEvent(trans, model);
+        StateMachinesFactory sMFactory = 
+        	Model.getStateMachinesFactory();
         boolean createdEvent = false;
         if (trigger.length() > 0) {
             // case 1 and 2
             if (evt == null) {
                 // case 1
                 if (timeEvent) { // after(...)
-                    evt = sMFactory.buildTimeEvent(s, model);
+                    evt = sMFactory.buildTimeEvent(s, ns);
                 }
                 if (changeEvent) { // when(...)
-                    evt = sMFactory.buildChangeEvent(s, model);
+                    evt = sMFactory.buildChangeEvent(s, ns);
                 }
                 if (callEvent) { // operation(paramlist)
                     String triggerName = trigger.indexOf("(") > 0
                         ? trigger.substring(0, trigger.indexOf("(")).trim()
                         : trigger;
-                    evt = sMFactory.buildCallEvent(trans, triggerName, model);
+                    evt = sMFactory.buildCallEvent(trans, triggerName, ns);
                     // and parse the parameter list
                     parseParamList(evt, s, 0);
                 }
                 if (signalEvent) { // signalname
-                    evt = sMFactory.buildSignalEvent(trigger, model);
+                    evt = sMFactory.buildSignalEvent(trigger, ns);
                 }
                 createdEvent = true;
             } else {
@@ -2209,17 +2212,17 @@ public final class ParserDisplay extends Parser {
                     Model.getCoreHelper().setName(evt, trigger);
                     if (timeEvent && !Model.getFacade().isATimeEvent(evt)) {
                         delete(evt);
-                        evt = sMFactory.buildTimeEvent(s, model);
+                        evt = sMFactory.buildTimeEvent(s, ns);
                         createdEvent = true;
                     }
                     if (changeEvent && !Model.getFacade().isAChangeEvent(evt)) {
                         delete(evt);
-                        evt = sMFactory.buildChangeEvent(s, model);
+                        evt = sMFactory.buildChangeEvent(s, ns);
                         createdEvent = true;
                     }
                     if (callEvent && !Model.getFacade().isACallEvent(evt)) {
                         delete(evt);
-                        evt = sMFactory.buildCallEvent(trans, trigger, model);
+                        evt = sMFactory.buildCallEvent(trans, trigger, ns);
                         // and parse the parameter list
                         parseParamList(evt, s, 0);
                         createdEvent = true;
@@ -2227,31 +2230,13 @@ public final class ParserDisplay extends Parser {
                     if (signalEvent
                             && !Model.getFacade().isASignalEvent(evt)) {
                         delete(evt);
-                        evt = sMFactory.buildSignalEvent(trigger, model);
+                        evt = sMFactory.buildSignalEvent(trigger, ns);
                         createdEvent = true;
                     }
                 }
             }
             if (createdEvent && (evt != null)) {
                 Model.getStateMachinesHelper().setEventAsTrigger(trans, evt);
-
-                /* The next part is explained by the following
-                 * quote from the UML spec:
-                 * "The event declaration has scope within
-                 * the package it appears in and may be used in
-                 * state diagrams for classes that have visibility
-                 * inside the package. An event is not local to
-                 * a single class."
-                 */
-                Object enclosing = Model.getStateMachinesHelper()
-                    .getStateMachine(trans);
-                while ((!Model.getFacade().isAPackage(enclosing))
-                        && (enclosing != null)) {
-                    enclosing = Model.getFacade().getNamespace(enclosing);
-                }
-                if (enclosing != null) {
-                    Model.getCoreHelper().setNamespace(evt, enclosing);
-                }
             }
         } else {
             // case 3 and 4

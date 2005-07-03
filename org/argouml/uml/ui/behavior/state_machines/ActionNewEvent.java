@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
@@ -68,33 +69,30 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
     /**
      * Implementors should create a concrete event like an instance of
      * SignalEvent in this method.
+     * @param ns the namespace
      * @return Object
      */
-    protected abstract Object createEvent();
+    protected abstract Object createEvent(Object ns);
 
     /**
-     * Creates the event, sets its role, and navigates towards it.
+     * Creates the event, sets its role and namespace, 
+     * and navigates towards it.
+     * 
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        Object event = createEvent();
         Object trans = getTarget();
+        Object model = 
+        	ProjectManager.getManager().getCurrentProject().getModel();
+        Object ns = Model.getStateMachinesHelper()
+        		.findNamespaceForEvent(trans, model);
+        Object event = createEvent(ns);
         if (getValue(ROLE).equals(Roles.TRIGGER)) {
             Model.getStateMachinesHelper()
                         .setEventAsTrigger(trans, event);
         }
-        /* TODO: move this method of setting the event's namespace 
-         * into the model subsystem, since it is mandatory. */
-        Object enclosing = 
-        	Model.getStateMachinesHelper().getStateMachine(trans);
-        while ((!Model.getFacade().isAPackage(enclosing))
-                && (enclosing != null)) {
-            enclosing = Model.getFacade().getNamespace(enclosing);
-        }
-        if (enclosing != null) {
-            Model.getCoreHelper().setNamespace(event, enclosing);
-        }
+        
         TargetManager.getInstance().setTarget(event);
     }
 
