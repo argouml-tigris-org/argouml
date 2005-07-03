@@ -23,6 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.helpers;
+
 import java.util.Vector;
 
 import javax.swing.JMenuItem;
@@ -32,7 +33,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.ui.ArgoDiagram;
 
 /**
- * Helper object for Diagrams
+ * Helper object for Diagrams.
  *
  * @author Thomas Neustupny
  * @since 0.9.5
@@ -41,21 +42,15 @@ public abstract class DiagramHelper extends ArgoDiagram
     implements PluggableDiagram {
 
     /**
-     * Default localization key for diagrams
+     * Default localization key for diagrams.
      */
     public static final String DIAGRAM_BUNDLE = "DiagramType";
-
-    /**
-     * String naming the resource bundle to use for localization.
-     */
-    private String bundle = "";
 
     /**
      * The constructor.
      *
      */
     public DiagramHelper() {
-        bundle = getDiagramResourceBundleKey();
     }
 
     /**
