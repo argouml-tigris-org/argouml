@@ -85,11 +85,10 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
 					       "The argument " + handle
 					       + "is not a namespace.");
         }
-        Object/*MNamespace*/ ns = handle;
         // may only occur as child of the model or in a package
         return (
-		ns == ProjectManager.getManager().getCurrentProject().getModel()
-                || Model.getFacade().isAPackage(ns));
+		handle == ProjectManager.getManager().getCurrentProject().getModel()
+                || Model.getFacade().isAPackage(handle));
     }
 
 } /* end class ActionDeploymentDiagram */
