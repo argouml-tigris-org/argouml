@@ -37,14 +37,6 @@ package org.argouml.model;
 public class IllegalModelElementConnectionException extends UmlException {
 
     /**
-     * Creates a new instance of
-     * <code>IllegalModelElementConnection</code> without detail
-     * message.
-     */
-    public IllegalModelElementConnectionException() {
-    }
-
-    /**
      * Constructs an instance of
      * <code>IllegalModelElementConnection</code> with the specified
      * detail message.
