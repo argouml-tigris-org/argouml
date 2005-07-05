@@ -44,6 +44,7 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -119,17 +120,7 @@ public class FigComment
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
 
-        text = new FigText(2, 2, width - 2 - gapY, height - 4, true);
-        text.setFont(getLabelFont());
-        text.setTextColor(Color.black);
-        text.setMultiLine(true);
-        text.setLineSeparator("\n");
-        text.setAllowsTab(false);
-        // _text.setText(placeString());
-        text.setJustification(FigText.JUSTIFY_LEFT);
-        text.setFilled(false);
-        text.setLineWidth(0);
-        //_text.setLineColor(Color.white);
+        text = new FigMultiLineText(2, 2, width - 2 - gapY, height - 4, true);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
