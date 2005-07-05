@@ -120,6 +120,21 @@ public final class MetaTypesImpl implements MetaTypes {
     }
 
     /**
+     * Given a model element instance returns the name of its meta type.
+     */
+    public String getName(Object modelElement) {
+        String name = modelElement.getClass().getName();
+        name = name.substring(name.lastIndexOf('.')+1);
+        if (name.startsWith("M")) {
+            name = name.substring(1);
+        }
+        if (name.endsWith("Impl")) {
+            name = name.substring(0, name.length() - 4);
+        }
+        return name;
+    }
+    
+    /**
      * @return Returns the Abstraction.
      */
     public Object getAbstraction() {

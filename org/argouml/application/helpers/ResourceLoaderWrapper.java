@@ -249,26 +249,8 @@ public final class ResourceLoaderWrapper {
 
         if (icon == null) {
 
-            StringNamespace sns =
-                (StringNamespace) StringNamespace.parse(value.getClass());
-            StringNamespace org =
-                new StringNamespace(new String[] {"org"});
-            StringNamespace ru = new StringNamespace(new String[] {"ru"});
-
-            String cName = sns.popNamespaceElement().toString();
-            if (ru.equals(sns.getCommonNamespace(ru))
-                    || org.equals(sns.getCommonNamespace(org))) {
-
-                if (cName.startsWith("UML")) {
-                    cName = cName.substring(3);
-                }
-                if (cName.startsWith("M")) {
-                    cName = cName.substring(1);
-                }
-                if (cName.endsWith("Impl")) {
-                    cName = cName.substring(0, cName.length() - 4);
-                }
-            }
+            String cName = Model.getMetaTypes().getName(value);
+            
             icon = lookupIconResource(cName);
             if (icon == null) {
                 LOG.warn("Can't find icon for " + cName);
@@ -279,7 +261,7 @@ public final class ResourceLoaderWrapper {
             }
 
         }
-	return icon;
+        return icon;
     }
 
     /**
