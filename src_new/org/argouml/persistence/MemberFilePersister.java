@@ -26,10 +26,12 @@ package org.argouml.persistence;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Writer;
 
@@ -85,7 +87,7 @@ public abstract class MemberFilePersister {
                 "                                          "
                 	.substring(0, indent);
             BufferedReader reader =
-                new BufferedReader(new FileReader(file));
+                new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 
             // Skip the <?xml... first line
             String line = reader.readLine();
