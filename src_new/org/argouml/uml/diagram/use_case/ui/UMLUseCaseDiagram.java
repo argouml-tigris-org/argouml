@@ -425,4 +425,22 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         }
         return actionExtensionPoint;
     }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
+     */
+    public boolean isRelocationAllowed(Object base)  {
+    	return false; 
+		/* TODO: We may return the following when the 
+		 * relocate() has been implemented. */
+//    	Model.getFacade().isAPackage(base)
+//        	|| Model.getFacade().isAClassifier(base);
+    }
+
+	/**
+	 * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
+	 */
+	public boolean relocate(Object base) {
+		return false;
+	}
 } /* end class UMLUseCaseDiagram */
