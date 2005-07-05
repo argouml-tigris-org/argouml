@@ -34,6 +34,12 @@ package org.argouml.model;
  * @see org.argouml.model.UmlFactory#buildNode(Object)
  */
 public interface MetaTypes {
+    
+    /**
+     * Given a model element instance returns the name of its meta type.
+     */
+    String getName(Object modelElement);
+    
     /**
      * @return Returns the Abstraction.
      */
