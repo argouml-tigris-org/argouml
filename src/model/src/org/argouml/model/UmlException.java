@@ -30,96 +30,38 @@
 
 package org.argouml.model;
 
-import org.apache.log4j.Logger;
-
 /**
- *
- * @author  unknown (Bob Tarling?)
+ * An exception class to wrap any checked exceptions from the model subsystem.
+ * 
+ * @author Bob Tarling
  */
 public class UmlException extends Exception {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(UmlException.class);
 
     /**
-     * Contains the causing Exception (or <code>null</code>).
-     */
-    private final Throwable cause;
-
-    /**
-     * Constructor.
-     */
-    public UmlException() {
-	super();
-	cause = null;
-    }
-
-    /**
-     * Constructor.
+     * Constructor the exception with a message
      *
      * @param message the message
      */
     public UmlException(String message) {
-	super(message);
-	cause = null;
+        super(message);
     }
 
     /**
+     * Constructor the exception with a message and a causing exception
+     *
      * @param message the message
      * @param c the cause of the exception
      */
     public UmlException(String message, Throwable c) {
-        super(message);
-        cause = c;
+        super(message, c);
     }
 
     /**
+     * Constructor the exception a causing exception
+     *
      * @param c the cause of the exception
      */
     public UmlException(Throwable c) {
-        super();
-        cause = c;
-    }
-
-    /**
-     * @see java.lang.Throwable#getCause()
-     */
-    public Throwable getCause() {
-	return cause;
-    }
-
-    /**
-     * @see java.lang.Throwable#printStackTrace()
-     */
-    public void printStackTrace() {
-	super.printStackTrace();
-	if (cause != null) {
-	    LOG.error("Caused by:", cause);
-	}
-    }
-
-    /**
-     * @see java.lang.Throwable#printStackTrace(java.io.PrintStream)
-     */
-    public void printStackTrace(java.io.PrintStream ps) {
-	super.printStackTrace(ps);
-	if (cause != null) {
-	    ps.println("Caused by:");
-	    cause.printStackTrace(ps);
-	}
-    }
-
-    /**
-     * @see java.lang.Throwable#printStackTrace(java.io.PrintWriter)
-     */
-    public void printStackTrace(java.io.PrintWriter pw) {
-	super.printStackTrace(pw);
-	if (cause != null) {
-	    pw.println("Caused by:");
-	    cause.printStackTrace(pw);
-	}
+        super(c);
     }
 }
-
