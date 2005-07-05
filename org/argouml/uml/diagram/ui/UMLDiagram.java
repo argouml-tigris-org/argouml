@@ -246,6 +246,9 @@ public abstract class UMLDiagram
             LOG.error(ns);
             throw new IllegalArgumentException("Given object not a namespace");
         }
+        if ((namespace != null) && (namespace != ns)) {
+        	Model.getPump().removeModelEventListener(this, namespace);
+        }
         namespace = ns;
         // add the diagram as a listener to the namspace so
         // that when the namespace is removed the diagram is deleted also.
@@ -628,6 +631,28 @@ public abstract class UMLDiagram
     public Object getDependentElement() {
         return null;
     }
+    
+    /**
+     * This function should return true if it is allowed to relocate 
+     * this type of diagram to the given modelelement.
+     * 
+     * @param base the given modelelement
+     * @return true if adding a diagram here is allowed
+     */
+    public abstract boolean isRelocationAllowed(Object base);
 
+    /**
+     * Relocate this diagram, 
+     * e.g. for a class diagram assign it a new namespace, 
+     * e.g. for a statechart move it together with the 
+     * statemachine to a new operation/classifier. <p>
+     * 
+     * Precondition: isRelocationAllowed(base) is true. 
+     * 
+     * @param base the new location, i.e. base modelelement
+     * @return true if successful
+     */
+    public abstract boolean relocate(Object base);
+    
 } /* end class UMLDiagram */
 

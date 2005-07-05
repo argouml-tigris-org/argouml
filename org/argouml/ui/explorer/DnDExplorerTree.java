@@ -51,6 +51,7 @@ import javax.swing.KeyStroke;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
@@ -58,6 +59,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.TransferableModelElements;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
  * This class extends the default Argo JTree with Drag and drop capabilities.<p>
@@ -192,6 +194,13 @@ public class DnDExplorerTree
                     LOG.debug("Valid Drag: namespace " + dest);
                     return true;
                 }
+                if (me instanceof UMLDiagram) {
+                	UMLDiagram d = (UMLDiagram) me;
+                	if(d.isRelocationAllowed(dest)) {
+                		LOG.debug("Valid Drag: diagram " + dest);
+                		return true;
+                	}
+                }
             }
         } catch (UnsupportedFlavorException e) {
             e.printStackTrace();
@@ -287,6 +296,25 @@ public class DnDExplorerTree
                         if (Model.getCoreHelper().isValidNamespace(me, dest)) {
                             Model.getCoreHelper().setNamespace(me, dest);
                         }
+                        if (me instanceof UMLDiagram) {
+                        	UMLDiagram d = (UMLDiagram) me;
+                        	if (d.isRelocationAllowed(dest)) {
+                        		d.relocate(dest);
+                        		/*TODO: Make the tree refresh!
+                        		 * Some loose fragments of nonsense code below
+                        		 * that may help solving this...*/
+                        		
+//                        		ExplorerEventAdaptor.getInstance().modelElementRemoved(dest);
+//                        		ExplorerEventAdaptor.getInstance().modelElementAdded(dest);
+                        		
+//                        		((DefaultMutableTreeNode) destinationPath
+//                				.getLastPathComponent()).
+//                        		TreeModel model = getModel();
+//                        		ExplorerTreeNode root = (ExplorerTreeNode) model.getRoot();
+//                        		int a = model.getIndexOfChild(root, me);
+//                        		makeVisible(getPathForRow(a));
+                        	}
+                        }
                     }
                     dropTargetDropEvent.getDropTargetContext()
                         .dropComplete(true);
@@ -301,9 +329,6 @@ public class DnDExplorerTree
                 dropTargetDropEvent.rejectDrop();
             } catch (UnsupportedFlavorException ufe) {
                 LOG.debug("drop UnsupportedFlavorException");
-                dropTargetDropEvent.rejectDrop();
-            } catch (Exception e) {
-                LOG.debug("drop Exception");
                 dropTargetDropEvent.rejectDrop();
             }
         }
