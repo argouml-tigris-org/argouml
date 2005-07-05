@@ -478,15 +478,14 @@ public final class Model {
     }
     
     /**
-     * Notify the 
+     * Notify any observer that a memento has been created.
      * @return the MementoCreationObserver
      */
-    public static ModelMemento notifyMementoCreationObserver(
+    public static void notifyMementoCreationObserver(
             ModelMemento memento) {
         MementoCreationObserver mco = getMementoCreationObserver();
         if (mco != null) {
-            Model.getMementoCreationObserver().mementoCreated(memento);
+            mco.mementoCreated(memento);
         }
-        return memento;
     }
 }
