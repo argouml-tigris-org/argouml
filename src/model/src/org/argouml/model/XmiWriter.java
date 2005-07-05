@@ -25,8 +25,12 @@
 package org.argouml.model;
 
 /**
- * A wrapper around the genuine XmiReader that provides public
+ * A wrapper around the genuine XmiWriter that provides public
  * access with no knowledge of actual UML implementation.
+ * Unlike many of the interfaces to the model there is no control to force
+ * a single instance of an XmiWriter. This is to allow work objects generated
+ * by the imlementation to be garbage collected when an XmiWriter instance
+ * falls out of scope.
  *
  * @author Bob Tarling
  */

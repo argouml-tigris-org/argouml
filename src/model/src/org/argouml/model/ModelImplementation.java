@@ -269,7 +269,8 @@ public interface ModelImplementation {
     VisibilityKind getVisibilityKind();
 
     /**
-     * Getter for the XmiReader object.
+     * A factory method that creates a new instance of an XmiReader on each
+     * call.
      *
      * @return the object implementing the XmiReader interface
      * @throws UmlException on any error while reading
@@ -277,7 +278,8 @@ public interface ModelImplementation {
     XmiReader getXmiReader() throws UmlException;
 
     /**
-     * Getter for the XmiWriter object.
+     * A factory method that creates a new instance of an XmiWriter on each
+     * call.
      *
      * @param model the project member model
      * @param writer the writer

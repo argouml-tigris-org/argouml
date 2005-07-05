@@ -31,6 +31,10 @@ import org.xml.sax.InputSource;
 /**
  * A wrapper around the genuine XmiReader that provides public
  * access with no knowledge of actual UML implementation.
+ * Unlike many of the interfaces to the model there is no control to force
+ * a single instance of an XmiReader. This is to allow work objects generated
+ * by the imlementation to be garbage collected when an XmiReader instance
+ * falls out of scope.
  *
  * @author Bob Tarling
  */
