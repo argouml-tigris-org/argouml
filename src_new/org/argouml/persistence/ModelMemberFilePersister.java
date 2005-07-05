@@ -124,14 +124,16 @@ public class ModelMemberFilePersister extends MemberFilePersister {
         if (w == null) {
             throw new IllegalArgumentException("No Writer specified!");
         }
+        
+        try {
+            ProjectMemberModel pmm = (ProjectMemberModel) member;
+            Object model = pmm.getModel();
 
-        ProjectMemberModel pmm = (ProjectMemberModel) member;
-        Object model = pmm.getModel();
-
-        File tempFile = null;
-        Writer writer = null;
-        if (indent != null) {
-            try {
+            File tempFile = null;
+            Writer writer = null;
+            if (indent != null) {
+                // If we have an indent then we are adding this file to a superfile.
+                // That is most likely inserting the XMI into the .uml file
                 tempFile = File.createTempFile("xmi", null);
                 tempFile.deleteOnExit();
                 
@@ -139,21 +141,19 @@ public class ModelMemberFilePersister extends MemberFilePersister {
                         new OutputStreamWriter(
                                 new FileOutputStream(tempFile), "UTF-8"));
                 //writer = new FileWriter(tempFile);
-            } catch (IOException e) {
-                throw new SaveException(e);
+                XmiWriter xmiWriter = Model.getXmiWriter(model, writer);
+                xmiWriter.write();
+                addXmlFileToWriter((PrintWriter) w, tempFile, indent.intValue());
+            } else {
+                // Othewise we are writing into a zip writer.
+                XmiWriter xmiWriter = Model.getXmiWriter(model, w);
+                xmiWriter.write();
             }
-        } else {
-            writer = w;
+        } catch (IOException e) {
+            throw new SaveException(e);
+        } catch (UmlException e) {
+            throw new SaveException(e);
         }
 
-        try {
-            XmiWriter xmiWriter = Model.getXmiWriter(model, writer);
-            xmiWriter.write();
-        } catch (UmlException ex) {
-            throw new SaveException(ex);
-        }
-        if (indent != null) {
-            addXmlFileToWriter((PrintWriter) w, tempFile, indent.intValue());
-        }
     }
 }
