@@ -123,6 +123,7 @@ public class FigComment
         text.setFont(getLabelFont());
         text.setTextColor(Color.black);
         text.setMultiLine(true);
+        text.setLineSeparator("\n");
         text.setAllowsTab(false);
         // _text.setText(placeString());
         text.setJustification(FigText.JUSTIFY_LEFT);
