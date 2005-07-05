@@ -144,6 +144,7 @@ class DnDJGraph
             while (i.hasNext()) {
                 Object me = i.next();
                 if (Model.getFacade().isAModelElement(me)) { 
+                	/* TODO: Find a better way to do this! */
                     if (gm.canAddEdge(me)) { 
                         gm.addEdge(me);
                     } else if (gm.canAddNode(me)) { 
