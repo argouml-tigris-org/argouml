@@ -63,7 +63,13 @@ import org.argouml.uml.diagram.ui.PropPanelUMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.PropPanelUMLStateDiagram;
 import org.argouml.uml.diagram.ui.PropPanelUMLUseCaseDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
+import org.argouml.uml.ui.behavior.use_cases.PropPanelUseCase;
+import org.argouml.uml.ui.foundation.core.PropPanelAbstraction;
+import org.argouml.uml.ui.foundation.core.PropPanelAssociation;
+import org.argouml.uml.ui.foundation.core.PropPanelAttribute;
 import org.argouml.uml.ui.foundation.core.PropPanelClass;
+import org.argouml.uml.ui.foundation.core.PropPanelDependency;
+import org.argouml.uml.ui.foundation.core.PropPanelGeneralization;
 import org.argouml.util.ConfigLoader;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
@@ -140,8 +146,6 @@ public class TabProps
         }
 
         ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
-
-        initPanels();
     }
 
     /**
@@ -169,44 +173,6 @@ public class TabProps
                 orientable.setOrientation(orientation);
             }
         }
-    }
-
-    /**
-     * Preload property panels that are commonly used within the first
-     * few seconds after the tool is launched.
-     */
-    protected void initPanels() {
-
-        panels.put(Model.getMetaTypes().getUMLClass(), new PropPanelClass());
-        panels.put(ArgoDiagram.class, new PropPanelDiagram());
-
-        // Put all the diagram PropPanels here explicitly. They would eventually
-        // pick up their superclass ArgoDiagram, but in the meantime
-        // panelClassFor() would moan that they can't be found.
-
-        // Note that state digrams do actually have a diagram property panel!
-
-        panels.put(UMLActivityDiagram.class,
-                new PropPanelUMLActivityDiagram());
-        panels.put(UMLClassDiagram.class,
-                new PropPanelUMLClassDiagram());
-        panels.put(UMLCollaborationDiagram.class,
-                new PropPanelUMLCollaborationDiagram());
-        panels.put(UMLDeploymentDiagram.class,
-                new PropPanelUMLDeploymentDiagram());
-        panels.put(UMLSequenceDiagram.class,
-                new PropPanelUMLSequenceDiagram());
-        panels.put(UMLStateDiagram.class,
-                new PropPanelUMLStateDiagram());
-        panels.put(UMLUseCaseDiagram.class,
-                new PropPanelUMLUseCaseDiagram());
-
-        // FigText has no owner, so we do it directly
-        panels.put(FigText.class, new PropPanelString());
-        // now a plugin
-        // panels.put(MModelImpl.class, new PropPanelModel());
-        // panels.put((Class)Model.getFacade().USE_CASE/*MUseCaseImpl.class*/,
-        //                 new PropPanelUseCase());
     }
 
     /**
@@ -264,13 +230,7 @@ public class TabProps
             shouldBeEnabled = true;
             TabModelTarget newPanel = null;
             Class targetClass = t.getClass();
-            while (newPanel == null) {
-                newPanel = findPanelFor(targetClass);
-                targetClass = targetClass.getSuperclass();
-                if (targetClass == java.lang.Object.class) {
-                    break;
-                }
-            }
+            newPanel = findPanelFor(t);
             if (newPanel != null) {
                 addTargetListener(newPanel);
             }
@@ -298,49 +258,134 @@ public class TabProps
      * @param targetClass the target class
      * @return the tab model target
      */
-    public TabModelTarget findPanelFor(Class targetClass) {
-        TabModelTarget p = (TabModelTarget) panels.get(targetClass);
-        LOG.info("Getting prop panel for:" + targetClass + ", "
+    private TabModelTarget findPanelFor(Object target) {
+        TabModelTarget p = (TabModelTarget) panels.get(target.getClass());
+        LOG.info("Getting prop panel for: " + target.getClass().getName() + ", "
                 + "found (in cache?) " + p);
+        
+        // If we didn't find the panel then use the factory to create a new one
         if (p == null) {
-            Class panelClass = panelClassFor(targetClass);
-            if (panelClass == null) {
-                return null;
+            p = createPropPanel(target);
+            if (p != null) {
+                LOG.info("Factory created " + p.getClass().getName()
+                        + " for " + target.getClass().getName());
+                panels.put(target.getClass(), p);
+                return p;
             }
-            LOG.info("panelClass for found: " + panelClass);
-            try {
-                // if a class is abstract we do not need to try
-                // to instantiate it.
-                if (Modifier.isAbstract(panelClass.getModifiers())) {
-                    return null;
-                }
-                p = (TabModelTarget) panelClass.newInstance();
-                // moved next line inside try block to avoid filling
-                // the hashmap with bogus values.
-                panels.put(targetClass, p);
-            } catch (IllegalAccessException ignore) {
-                // doubtfull if this must be ignored.
-                LOG.error(ignore);
-                return null;
-            } catch (InstantiationException ignore) {
-                // doubtfull if this must be ignored.
-                LOG.error(ignore);
-                return null;
-            }
-
-        } else {
-            LOG.info("found props for " + targetClass.getName());
         }
+        
+        // TODO: If the factory didn't know how to create the panel then
+        // we fall through to the old reflection method. The code below
+        // should be removed one the createPropPanel method is complete.
+        
+        Class panelClass = panelClassFor(target.getClass());
+        if (panelClass == null) {
+            LOG.error("No panel class found for: " + target.getClass());
+            return null;
+        }
+        LOG.info("panelClass found for: " + panelClass);
+        try {
+            // if a class is abstract we do not need to try
+            // to instantiate it.
+            if (Modifier.isAbstract(panelClass.getModifiers())) {
+                return null;
+            }
+            p = (TabModelTarget) panelClass.newInstance();
+            // moved next line inside try block to avoid filling
+            // the hashmap with bogus values.
+            panels.put(target.getClass(), p);
+        } catch (IllegalAccessException ignore) {
+            // doubtfull if this must be ignored.
+            LOG.error("Failed to create a prop panel", ignore);
+            return null;
+        } catch (InstantiationException ignore) {
+            // doubtfull if this must be ignored.
+            LOG.error("Failed to create a prop panel", ignore);
+            return null;
+        }
+
+        LOG.warn(p.getClass().getName()
+                + " has been created by reflection. "
+                + "This should be added to the createPropPanel method.");
         return p;
     }
 
     /**
+     * A factory method to create a PropPanel for a particular model
+     * element.
+     * TODO: Needs completing for all PropPanels
+     * @param modelElement The model element
+     * @return A new prop panel to display any model element of the given type
+     */
+    private TabModelTarget createPropPanel(Object modelElement) {
+        
+        
+        
+        // Register prop panels for diagrams
+        if (modelElement instanceof UMLActivityDiagram) {
+            return new PropPanelUMLActivityDiagram();
+        }
+        if (modelElement instanceof UMLClassDiagram) {
+            return new PropPanelUMLClassDiagram();
+        }
+        if (modelElement instanceof UMLCollaborationDiagram) {
+            return new PropPanelUMLCollaborationDiagram();
+        }
+        if (modelElement instanceof UMLDeploymentDiagram) {
+            return new PropPanelUMLDeploymentDiagram();
+        }
+        if (modelElement instanceof UMLSequenceDiagram) {
+            return new PropPanelUMLSequenceDiagram();
+        }
+        if (modelElement instanceof UMLStateDiagram) {
+            return new PropPanelUMLStateDiagram();
+        }
+        if (modelElement instanceof UMLUseCaseDiagram) {
+            return new PropPanelUMLUseCaseDiagram();
+        }
+        
+        // Register prop panels for model elements
+        if (Model.getFacade().isAAbstraction(modelElement)) {
+            return new PropPanelAbstraction();
+        } 
+        if (Model.getFacade().isAAssociation(modelElement)) {
+            return new PropPanelAssociation();
+        } 
+        if (Model.getFacade().isAAttribute(modelElement)) {
+            return new PropPanelAttribute();
+        } 
+        if (Model.getFacade().isAClass(modelElement)) {
+            return new PropPanelClass();
+        } 
+        if (Model.getFacade().isADependency(modelElement)) {
+            return new PropPanelDependency();
+        } 
+        if (Model.getFacade().isAGeneralization(modelElement)) {
+            return new PropPanelGeneralization();
+        } 
+        if (Model.getFacade().isAUseCase(modelElement)) {
+            return new PropPanelUseCase();
+        } 
+
+        // Register prop panels for primitives
+        if (modelElement instanceof FigText) {
+            return new PropPanelString();
+        }
+
+        
+        
+        return null;
+    }
+    
+    /**
      * Locate the panel for the given class.
+     * TODO: Remove when createPropPanel complete
      *
      * @param targetClass the given class
      * @return the properties panel for the given class, or null if not found
      */
-    public Class panelClassFor(Class targetClass) {
+    private Class panelClassFor(Class targetClass) {
+        
         String panelClassName = "";
         String pack = "org.argouml.uml";
         String base = "";
