@@ -141,7 +141,14 @@ public final class MetaTypesImpl implements MetaTypes {
             endName -= 4;
         }
         
-        return name.substring(startName, endName);
+        name = name.substring(startName, endName);
+        
+        if (name.startsWith("UML")) {
+            // a diagram...
+            name = name.substring(3);
+        }
+        
+        return name;
     }
     
     /**
