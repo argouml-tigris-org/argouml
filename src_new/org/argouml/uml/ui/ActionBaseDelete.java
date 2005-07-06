@@ -29,8 +29,10 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.JOptionPane;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -62,6 +64,7 @@ public abstract class ActionBaseDelete extends UMLAction {
      */
     public ActionBaseDelete() {
         super("action.delete-from-model", true, HAS_ICON);
+        putValue(Action.SMALL_ICON, ResourceLoaderWrapper.lookupIcon("Delete"));
     }
 
 
