@@ -285,7 +285,6 @@ public class TabProps
         } else {
             shouldBeEnabled = true;
             TabModelTarget newPanel = null;
-            Class targetClass = t.getClass();
             newPanel = findPanelFor(t);
             if (newPanel != null) {
                 addTargetListener(newPanel);
@@ -311,29 +310,35 @@ public class TabProps
     }
 
     /**
+     * Find the correct properties panel for the target.
+     * 
      * @param targetClass the target class
-     * @return the tab model target
+     * @return the tab panel
      */
     private TabModelTarget findPanelFor(Object target) {
+        /* 1st attempt: get a panel that we created before: */
         TabModelTarget p = (TabModelTarget) panels.get(target.getClass());
-        LOG.info("Getting prop panel for: " + target.getClass().getName() + ", "
-                + "found (in cache?) " + p);
+        if (p != null) {
+            LOG.info("Getting prop panel for: " + target.getClass().getName() 
+                    + ", " + "found (in cache?) " + p);
+            return p;
+        }
         
-        // If we didn't find the panel then use the factory to create a new one
-        if (p == null) {
-            p = createPropPanel(target);
-            if (p != null) {
-                LOG.info("Factory created " + p.getClass().getName()
-                        + " for " + target.getClass().getName());
-                panels.put(target.getClass(), p);
-                return p;
-            }
+        /* 2nd attempt: If we didn't find the panel then 
+         * use the factory to create a new one*/
+        p = createPropPanel(target);
+        if (p != null) {
+            LOG.info("Factory created " + p.getClass().getName()
+                    + " for " + target.getClass().getName());
+            panels.put(target.getClass(), p);
+            return p;
         }
         
         // TODO: If the factory didn't know how to create the panel then
         // we fall through to the old reflection method. The code below
         // should be removed one the createPropPanel method is complete.
         
+        /* 3rd attempt: use the reflection method: */
         Class panelClass = panelClassFor(target.getClass());
         if (panelClass == null) {
             LOG.error("No panel class found for: " + target.getClass());
@@ -374,10 +379,8 @@ public class TabProps
      * @return A new prop panel to display any model element of the given type
      */
     private TabModelTarget createPropPanel(Object modelElement) {
-        
-        
-        
-        // Register prop panels for diagrams
+
+        // Create prop panels for diagrams
         if (modelElement instanceof UMLActivityDiagram) {
             return new PropPanelUMLActivityDiagram();
         }
@@ -400,7 +403,7 @@ public class TabProps
             return new PropPanelUMLUseCaseDiagram();
         }
         
-        // Register prop panels for model elements
+        // Create prop panels for model elements
         if (Model.getFacade().isAAbstraction(modelElement)) { 
                 return new PropPanelAbstraction();}
         if (Model.getFacade().isAActionState(modelElement)) { 
@@ -530,15 +533,13 @@ public class TabProps
         if (Model.getFacade().isAUseCase(modelElement)) { 
                 return new PropPanelUseCase();}
 
-        
-        
-        // Register prop panels for primitives
+
+        // Create prop panels for primitives
         if (modelElement instanceof FigText) {
             return new PropPanelString();
         }
 
-        
-        
+
         return null;
     }
     
