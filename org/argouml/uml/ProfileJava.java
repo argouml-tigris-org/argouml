@@ -292,6 +292,7 @@ public class ProfileJava extends Profile {
         // TODO: We need to put this NSUML/MDR dependent code
         // behind a method in the model interface
         // Will create an issue to discuss best solution.
+        // See http://argouml.tigris.org/issues/show_bug.cgi?id=3300
         if (Model.getFacade() instanceof NSUMLModelFacade) {
             // NSUML implementation
             //
