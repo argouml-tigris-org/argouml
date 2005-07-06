@@ -130,14 +130,18 @@ public final class MetaTypesImpl implements MetaTypes {
             clazz = modelElement.getClass();
         }
         String name = clazz.getName();
-        name = name.substring(name.lastIndexOf('.')+1);
-        if (name.startsWith("M")) {
-            name = name.substring(1);
+        
+        int startName = name.lastIndexOf('.')+1;
+        if (name.charAt(startName) == 'M') {
+            ++startName;
         }
+        
+        int endName = name.length();
         if (name.endsWith("Impl")) {
-            name = name.substring(0, name.length() - 4);
+            endName -= 4;
         }
-        return name;
+        
+        return name.substring(startName, endName);
     }
     
     /**
