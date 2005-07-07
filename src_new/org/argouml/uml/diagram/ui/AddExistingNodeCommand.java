@@ -26,8 +26,8 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.dnd.DropTargetDropEvent;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
 import org.argouml.i18n.Translator;
@@ -41,9 +41,6 @@ import org.tigris.gef.graph.MutableGraphModel;
 
 /**
 * ActionAddExistingNode enables pasting of an existing node into a Diagram.
-*
-* @author Eugenio Alvarez
-* Data Access Technologies.
 */
 public class AddExistingNodeCommand implements Command, GraphFactory {
 
@@ -55,15 +52,40 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
      */
     private Object object;
     
+    /**
+     * the DropTargetDropEvent that caused this action
+     */
     private DropTargetDropEvent dropEvent;
     
+    /**
+     * 0 if this is the 1st element dropped here, 
+     * n if this is the (n+1)-th element dropped here.
+     */
+    private int count;
+    
+    /**
+     * The constructor.
+     * 
+     * @param o the UML modelelement to be added
+     */
     public AddExistingNodeCommand(Object o) {
         object = o;
     }
 
-    public AddExistingNodeCommand(Object o, DropTargetDropEvent event) {
+    /**
+     * The constructor.
+     * 
+     * @param o the UML modelelement to be added
+     * @param event the DropTargetDropEvent that caused this. 
+     *              Also <code>null</code> is acceptable 
+     * @param count 0 if this is the 1st element dropped here, 
+     *              n if this is the (n+1)-th element dropped here.
+     */
+    public AddExistingNodeCommand(Object o, DropTargetDropEvent event, 
+            int cnt) {
         object = o;
         dropEvent = event;
+        count = cnt;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -90,23 +112,35 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
         if (dropEvent == null) {
             Globals.mode(placeMode, false);
         } else {
+            /* Calculate the drop location, and place every n-th element 
+             * at an offset proportional to n. */
+            Point p = new Point(
+                    dropEvent.getLocation().x + (count * 100), 
+                    dropEvent.getLocation().y);
+            /* Take canvas scrolling into account. 
+             * The implementation below does place the element correctly 
+             * when the canvas has been scrolled. */
+            Rectangle r = ce.getJComponent().getVisibleRect();
+            p.translate(r.x, r.y);
+            /* Simulate a press of the mouse above the calculated point: */
             MouseEvent me = new MouseEvent(
                     ce.getJComponent(),
                     0,
                     0,
                     0,
-                    dropEvent.getLocation().x,
-                    dropEvent.getLocation().y,
+                    p.x,
+                    p.y,
                     0,
                     false);
             placeMode.mousePressed(me);
+            /* Simulate a release of the mouse: */
             me = new MouseEvent(
                     ce.getJComponent(),
                     0,
                     0,
                     0,
-                    dropEvent.getLocation().x,
-                    dropEvent.getLocation().y,
+                    p.x,
+                    p.y,
                     0,
                     false);
             placeMode.mouseReleased(me);
