@@ -222,6 +222,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	}
         if (Model.getFacade().isAAssociation(node)) {
             Collection ends = Model.getFacade().getConnections(node);
+            /* This only applies to N-ary associations (i.e. N > 2): */
+            if (ends.size() < 3) return false;
             Iterator iter = ends.iterator();
             boolean canAdd = true;
             while (iter.hasNext()) {
