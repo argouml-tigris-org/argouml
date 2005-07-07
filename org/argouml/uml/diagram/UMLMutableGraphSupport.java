@@ -527,11 +527,10 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
                    && Model.getFacade().isAModelElement(toElement))
                  || (Model.getFacade().isAComment(toElement)
                    && Model.getFacade().isAModelElement(fromElement)));
-        } else {
-            return Model.getUmlFactory().isConnectionValid(
+        }
+        return Model.getUmlFactory().isConnectionValid(
                 edgeType,
                 fromElement,
                 toElement);
-        }
     }
 }
