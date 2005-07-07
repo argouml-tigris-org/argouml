@@ -25,13 +25,13 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Point;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.base.Command;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.ModePlace;
@@ -45,7 +45,7 @@ import org.tigris.gef.graph.MutableGraphModel;
 * @author Eugenio Alvarez
 * Data Access Technologies.
 */
-public class ActionAddExistingNode extends UMLAction {
+public class AddExistingNodeCommand implements Command, GraphFactory {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -54,38 +54,83 @@ public class ActionAddExistingNode extends UMLAction {
      * The UML object to be added to the diagram.
      */
     private Object object;
+    
+    private DropTargetDropEvent dropEvent;
+    
+    public AddExistingNodeCommand(Object o) {
+        object = o;
+    }
+
+    public AddExistingNodeCommand(Object o, DropTargetDropEvent event) {
+        object = o;
+        dropEvent = event;
+    }
 
     ////////////////////////////////////////////////////////////////
     // constructor
 
     /**
-     * The Constructor.
-     *
-     * @param name the name of the action
-     * @param o the node object to be added
-     */
-    public ActionAddExistingNode(String name, Object o) {
-        super(name, false, NO_ICON);
-        object = o;
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() {
-        Object target = TargetManager.getInstance().getTarget();
-        ArgoDiagram dia = ProjectManager.getManager().
-            getCurrentProject().getActiveDiagram();
-        if (dia == null) return false;
-        MutableGraphModel gm = (MutableGraphModel) dia.getGraphModel();
-        return gm.canAddNode(target);
-    }
-
-    /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(ActionEvent ae) {
-        AddExistingNodeCommand cmd = new AddExistingNodeCommand(object);
-        cmd.execute();
+    public void execute() {
+        Editor ce = Globals.curEditor();
+        GraphModel gm = ce.getGraphModel();
+        if (!(gm instanceof MutableGraphModel)) return;
+
+        String instructions = null;
+        if (object != null) {
+            instructions =
+                Translator.localize("misc.message.click-on-diagram-to-add")
+                    + object.toString();
+            Globals.showStatus(instructions);
+        }
+        ModePlace placeMode = new ModePlace(this, instructions);
+        placeMode.setAddRelatedEdges(true);
+
+        if (dropEvent == null) {
+            Globals.mode(placeMode, false);
+        } else {
+            MouseEvent me = new MouseEvent(
+                    ce.getJComponent(),
+                    0,
+                    0,
+                    0,
+                    dropEvent.getLocation().x,
+                    dropEvent.getLocation().y,
+                    0,
+                    false);
+            placeMode.mousePressed(me);
+            me = new MouseEvent(
+                    ce.getJComponent(),
+                    0,
+                    0,
+                    0,
+                    dropEvent.getLocation().x,
+                    dropEvent.getLocation().y,
+                    0,
+                    false);
+            placeMode.mouseReleased(me);
+        }
     }
+
+    ////////////////////////////////////////////////////////////////
+    // GraphFactory implementation
+
+    /**
+     * @see org.tigris.gef.graph.GraphFactory#makeGraphModel()
+     */
+    public GraphModel makeGraphModel() { return null; }
+
+    /**
+     * @see org.tigris.gef.graph.GraphFactory#makeEdge()
+     */
+    public Object makeEdge() { return null; }
+
+    /**
+     * @see org.tigris.gef.graph.GraphFactory#makeNode()
+     */
+    public Object makeNode() {
+        return object;
+    }
+
 } /* end class ActionAddExistingNode */

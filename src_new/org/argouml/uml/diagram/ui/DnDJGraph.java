@@ -39,8 +39,10 @@ import java.util.Iterator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.TransferableModelElements;
+import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.ModePlace;
 import org.tigris.gef.graph.ConnectionConstrainer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
@@ -147,9 +149,10 @@ class DnDJGraph
                 	/* TODO: Find a better way to do this! */
                     if (gm.canAddEdge(me)) { 
                         gm.addEdge(me);
-                    } else if (gm.canAddNode(me)) { 
-                        gm.addNode(me);
-                        gm.addNodeRelatedEdges(me);
+                    } else if (gm.canAddNode(me)) {
+                        AddExistingNodeCommand cmd =
+                            new AddExistingNodeCommand(me, dropTargetDropEvent);
+                        cmd.execute();
                     }
                 }
             }
