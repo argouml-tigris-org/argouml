@@ -42,7 +42,7 @@ public class FigMultiLineText extends FigText {
         super(x, y, w, h, expandOnly);
         setFont(FigNodeModelElement.getLabelFont());
         setTextColor(Color.black);
-        setMultiLine(true);
+        setReturnAction(FigText.INSERT);
         setLineSeparator("\n");
         setAllowsTab(false);
         setJustification(FigText.JUSTIFY_LEFT);
