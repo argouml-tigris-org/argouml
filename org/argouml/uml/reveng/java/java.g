@@ -494,7 +494,7 @@ classOrInterfaceType returns [String type=null]
 	:	t1:IDENT {sb.append(t1.getText());} (typeArguments)?
 		(options{greedy=true;}: // match as many as possible
 			DOT
-			t3:IDENT {sb.append('.').append(t3);} (typeArguments)?
+			t3:IDENT {sb.append('.').append(t3.getText());} (typeArguments)?
 		)*
 		{type = sb.toString();}
 	;
@@ -1015,12 +1015,17 @@ variableDefinitions[String javadoc, short modifiers, String returnType]
  *  It can also include possible initialization.
  */
 variableDeclarator[String javadoc, short modifiers, String varType]
-{String initializer=null;}
-	:	IDENT declaratorBrackets initializer=varInitializer
+{String initializer=null; String b=null;}
+	:	(id:IDENT b=declaratorBrackets initializer=varInitializer)
+		{
+		if (!isInCompoundStatement() && level > 0) {
+		getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc);
+		}
+		}
 	;
 
-declaratorBrackets returns [String pdb=""]
-	:	(LBRACK RBRACK {pdb += "[]";} )*
+declaratorBrackets returns [String b=""]
+	:	(LBRACK RBRACK {b += "[]";} )*
 	;
 
 varInitializer returns [String expression=null]
