@@ -602,11 +602,12 @@ Property files to be searched:
     <mkdir dir="${argo.javadocs.dir}"/>
 
     <javadoc author="${javadoc.author}" 
-             bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;25%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2005 (${javadoc.dstamp})&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Homepage&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/dev.html&apos; target=&apos;_blank&apos;&gt;ArgoUML Developers' page&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+             bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;25%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2005 (${DSTAMP})&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Homepage&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/dev.html&apos; target=&apos;_blank&apos;&gt;ArgoUML Developers' page&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
              destdir="${argo.javadocs.dir}"
              maxmemory="128M"
              overview="org/argouml/overview-argo.html"
              packagenames="org.argouml.*"
+             source="1.4"
              private="true"
              splitindex="${javadoc.splitindex}"
              use="${javadoc.use}"
@@ -660,6 +661,7 @@ Property files to be searched:
              maxmemory="128M"
              overview="org/argouml/overview-api.html"
              packagenames="org.argouml.model,org.argouml.cognitive,org.argouml.uml.reveng,org.argouml.application,org.argouml.i18n,org.argouml.ui.explorer,org.argouml.application.api,org.argouml.application.modules,org.argouml.ocl,org.argouml.moduleloader"
+             source="1.4"
              private="false"
              splitindex="${javadoc.splitindex}"
              use="${javadoc.use}"
