@@ -602,7 +602,7 @@ Property files to be searched:
     <mkdir dir="${argo.javadocs.dir}"/>
 
     <javadoc author="${javadoc.author}" 
-             bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;25%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2005 (${DSTAMP})&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Homepage&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/dev.html&apos; target=&apos;_blank&apos;&gt;ArgoUML Developers' page&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+             bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;25%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2005&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Homepage&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/dev.html&apos; target=&apos;_blank&apos;&gt;ArgoUML Developers' page&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
              destdir="${argo.javadocs.dir}"
              maxmemory="128M"
              overview="org/argouml/overview-argo.html"
@@ -656,7 +656,7 @@ Property files to be searched:
          all subsystems that are available for modules.
       -->
     <javadoc author="${javadoc.author}"
-             bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;33%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2004 (${DSTAMP})&lt;/td&gt;&lt;td width=&apos;34%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Homepage&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;33%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+             bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;33%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2005&lt;/td&gt;&lt;td width=&apos;34%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Homepage&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;33%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
              destdir="${argo.api.dir}"
              maxmemory="128M"
              overview="org/argouml/overview-api.html"
