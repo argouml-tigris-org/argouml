@@ -265,14 +265,14 @@ public interface StateMachinesFactory {
     Object buildTransition(Object source, Object target);
 
     /**
-     * Builds a callevent with given namespace 
+     * Builds a callevent with given namespace
      * (and therefore the ownership).
-     * 
+     *
      * @param ns the namespace
      * @return MCallEvent
      */
     Object buildCallEvent(Object ns);
-    
+
     /**
      * Create a initialized instance of a CallEvent with a name
      * as a trigger for a Transition, within a given namespace.
@@ -287,7 +287,7 @@ public interface StateMachinesFactory {
 
     /**
      * Builds a signalevent within a given namespace.
-     * 
+     *
      * @param ns the Namespace
      * @return MSignalEvent
      */
@@ -295,7 +295,7 @@ public interface StateMachinesFactory {
 
     /**
      * Builds a named signalevent within a given namespace.
-     * 
+     *
      * @param ns the Namespace
      * @param name String the name of the SignalEvent
      * @return MSignalEvent
@@ -304,7 +304,7 @@ public interface StateMachinesFactory {
 
     /**
      * Builds a timeevent within a given namespace.
-     * 
+     *
      * @param ns the Namespace
      * @return MTimeEvent
      */
@@ -321,16 +321,16 @@ public interface StateMachinesFactory {
 
     /**
      * Builds a changeevent within a given namespace.
-     * 
+     *
      * @param ns the Namespace
      * @return MChangeEvent
      */
     Object buildChangeEvent(Object ns);
 
     /**
-     * Create a initialized instance of a ChangeEvent, 
+     * Create a initialized instance of a ChangeEvent,
      * within a given namespace.
-     * 
+     *
      * @param ns the Namespace
      * @param s String for creating the BooleanExpression
      * @return MChangeEvent

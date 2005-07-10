@@ -295,14 +295,15 @@ public interface ModelImplementation {
      * @return a new instance of a ContainerDispatcher.
      */
     ContainerDispatcher createContainerDispatcher(Container container);
-    
+
     /**
      * Allows an external system to register itself to recieve mementos created
-     * by the model subsystem
+     * by the model subsystem.
+     *
      * @param observer the interested party
      */
     void setMementoCreationObserver(MementoCreationObserver observer);
-    
+
     /**
      * Gets the external class responsible for handling mementos.
      * @return the MementoCreationObserver

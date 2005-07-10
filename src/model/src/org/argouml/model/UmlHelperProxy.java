@@ -37,16 +37,16 @@ import java.util.Collection;
 public class UmlHelperProxy implements UmlHelper {
 
     /**
-     ** The delegate
+     * The component.
      */
     private UmlHelper impl;
 
 
     /**
-     * 
+     * @param component The component to decorate.
      */
-    public UmlHelperProxy(UmlHelper implementation) {
-        impl = implementation;
+    public UmlHelperProxy(UmlHelper component) {
+        impl = component;
     }
 
     /**

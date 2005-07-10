@@ -46,16 +46,16 @@ public final class Model {
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(Model.class);
-    
-    private static ActivityGraphsHelperProxy activityGraphsHelperProxy;
-    private static CollaborationsHelperProxy collaborationsHelperProxy;
-    private static CommonBehaviorHelperProxy commonBehaviorHelperProxy;
-    private static CoreHelperProxy coreHelperProxy;
-    private static DataTypesHelperProxy dataTypesHelperProxy;
-    private static ExtensionMechanismsHelperProxy extensionMechanismsHelperProxy;
-    private static StateMachinesHelperProxy stateMachinesHelperProxy;
-    private static UmlHelperProxy umlHelperProxy;
-    private static UseCasesHelperProxy useCasesHelperProxy;
+
+    private static ActivityGraphsHelper activityGraphsHelper;
+    private static CollaborationsHelper collaborationsHelper;
+    private static CommonBehaviorHelper commonBehaviorHelper;
+    private static CoreHelper coreHelper;
+    private static DataTypesHelper dataTypesHelper;
+    private static ExtensionMechanismsHelper extensionMechanismsHelper;
+    private static StateMachinesHelper stateMachinesHelper;
+    private static UmlHelper umlHelper;
+    private static UseCasesHelper useCasesHelper;
 
     /**
      * Constructor to prohibit creation.
@@ -84,15 +84,23 @@ public final class Model {
         } catch (IllegalAccessException e) {
             reportError(e);
         }
-        activityGraphsHelperProxy = new ActivityGraphsHelperProxy(impl.getActivityGraphsHelper());
-        collaborationsHelperProxy = new CollaborationsHelperProxy(impl.getCollaborationsHelper());
-        commonBehaviorHelperProxy = new CommonBehaviorHelperProxy(impl.getCommonBehaviorHelper());
-        coreHelperProxy = new CoreHelperProxy(impl.getCoreHelper());
-        dataTypesHelperProxy = new DataTypesHelperProxy(impl.getDataTypesHelper());
-        extensionMechanismsHelperProxy = new ExtensionMechanismsHelperProxy(impl.getExtensionMechanismsHelper());
-        stateMachinesHelperProxy = new StateMachinesHelperProxy(impl.getStateMachinesHelper());
-        umlHelperProxy = new UmlHelperProxy(impl.getUmlHelper());
-        useCasesHelperProxy = new UseCasesHelperProxy(impl.getUseCasesHelper());
+
+	// Install the decorators
+        activityGraphsHelper =
+	    new ActivityGraphsHelperProxy(impl.getActivityGraphsHelper());
+        collaborationsHelper =
+	    new CollaborationsHelperProxy(impl.getCollaborationsHelper());
+        commonBehaviorHelper =
+	    new CommonBehaviorHelperProxy(impl.getCommonBehaviorHelper());
+        coreHelper = new CoreHelperProxy(impl.getCoreHelper());
+        dataTypesHelper = new DataTypesHelperProxy(impl.getDataTypesHelper());
+        extensionMechanismsHelper =
+	    new ExtensionMechanismsHelperProxy(
+		impl.getExtensionMechanismsHelper());
+        stateMachinesHelper =
+	    new StateMachinesHelperProxy(impl.getStateMachinesHelper());
+        umlHelper = new UmlHelperProxy(impl.getUmlHelper());
+        useCasesHelper = new UseCasesHelperProxy(impl.getUseCasesHelper());
     }
 
     /**
@@ -151,7 +159,7 @@ public final class Model {
      * @return the instance of the helper
      */
     public static ActivityGraphsHelper getActivityGraphsHelper() {
-        return activityGraphsHelperProxy;
+        return activityGraphsHelper;
     }
 
     /**
@@ -169,7 +177,7 @@ public final class Model {
      * @return the helper
      */
     public static CollaborationsHelper getCollaborationsHelper() {
-        return collaborationsHelperProxy;
+        return collaborationsHelper;
     }
 
     /**
@@ -187,7 +195,7 @@ public final class Model {
      * @return the helper
      */
     public static CommonBehaviorHelper getCommonBehaviorHelper() {
-        return commonBehaviorHelperProxy;
+        return commonBehaviorHelper;
     }
 
     /**
@@ -205,7 +213,7 @@ public final class Model {
      * @return The helper.
      */
     public static CoreHelper getCoreHelper() {
-        return coreHelperProxy;
+        return coreHelper;
     }
 
     /**
@@ -223,7 +231,7 @@ public final class Model {
      * @return the helper.
      */
     public static DataTypesHelper getDataTypesHelper() {
-        return dataTypesHelperProxy;
+        return dataTypesHelper;
     }
 
     /**
@@ -241,7 +249,7 @@ public final class Model {
      * @return the helper
      */
     public static ExtensionMechanismsHelper getExtensionMechanismsHelper() {
-        return extensionMechanismsHelperProxy;
+        return extensionMechanismsHelper;
     }
 
     /**
@@ -286,7 +294,7 @@ public final class Model {
      * @return the helper
      */
     public static StateMachinesHelper getStateMachinesHelper() {
-        return stateMachinesHelperProxy;
+        return stateMachinesHelper;
     }
 
     /**
@@ -304,7 +312,7 @@ public final class Model {
      * @return the helper
      */
     public static UmlHelper getUmlHelper() {
-        return umlHelperProxy;
+        return umlHelper;
     }
 
     /**
@@ -322,7 +330,7 @@ public final class Model {
      * @return the helper
      */
     public static UseCasesHelper getUseCasesHelper() {
-        return useCasesHelperProxy;
+        return useCasesHelper;
     }
 
     /**
@@ -458,17 +466,18 @@ public final class Model {
             Container container) {
         return impl.createContainerDispatcher(container);
     }
-    
+
     /**
      * Allows an external system to register itself to recieve mementos created
-     * by the model subsystem
+     * by the model subsystem.
+     *
      * @param observer the interested party
      */
     public static void setMementoCreationObserver(
             MementoCreationObserver observer) {
         impl.setMementoCreationObserver(observer);
     }
-    
+
     /**
      * Gets the external class responsible for handling mementos.
      * @return the MementoCreationObserver
@@ -476,10 +485,11 @@ public final class Model {
     public static MementoCreationObserver getMementoCreationObserver() {
         return impl.getMementoCreationObserver();
     }
-    
+
     /**
      * Notify any observer that a memento has been created.
-     * @return the MementoCreationObserver
+     *
+     * @param memento The newly created memento.
      */
     public static void notifyMementoCreationObserver(
             ModelMemento memento) {

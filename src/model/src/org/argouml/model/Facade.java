@@ -908,7 +908,7 @@ public interface Facade {
      * @return true if handle is a UninterpretedAction
      */
     boolean isAUninterpretedAction(Object handle);
-    
+
     /**
      * Recognizer for Usage.
      *

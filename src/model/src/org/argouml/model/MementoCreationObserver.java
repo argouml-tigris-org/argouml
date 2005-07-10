@@ -27,7 +27,7 @@ package org.argouml.model;
 /**
  * An interface to be implemented by the class responsible for managing
  * or delegating mementos.
- * 
+ *
  * @author Bob Tarling
  */
 public interface MementoCreationObserver {

@@ -35,20 +35,21 @@ package org.argouml.model;
 public class DataTypesHelperProxy implements DataTypesHelper {
 
     /**
-     * * The delegate
+     * The component.
      */
     private DataTypesHelper impl;
 
     /**
-     * 
+     * @param component The component to decorate.
      */
-    public DataTypesHelperProxy(DataTypesHelper implementation) {
-        impl = implementation;
+    public DataTypesHelperProxy(DataTypesHelper component) {
+        impl = component;
     }
 
     /**
-     * @see org.argouml.model.DataTypesHelper#copyTaggedValues(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.DataTypesHelper#copyTaggedValues(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void copyTaggedValues(Object from, Object to) {
         impl.copyTaggedValues(from, to);

@@ -42,14 +42,17 @@ public class CoreHelperProxy implements CoreHelper {
     private CoreHelper impl;
 
     /**
-     * Construct a new CoreHelperProxy
+     * Construct a new CoreHelperProxy.
+     *
+     * @param component The component to decorate.
      */
-    CoreHelperProxy(CoreHelper implementation) {
-        impl = implementation;
+    CoreHelperProxy(CoreHelper component) {
+        impl = component;
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#isSubType(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#isSubType(
+     *         java.lang.Object, java.lang.Object)
      */
     public boolean isSubType(Object type, Object subType) {
         return impl.isSubType(type, subType);
@@ -84,7 +87,8 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#removeFeature(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#removeFeature(
+     *         java.lang.Object, java.lang.Object)
      */
     public void removeFeature(Object cls, Object feature) {
         impl.removeFeature(cls, feature);
@@ -119,7 +123,8 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setOperations(java.lang.Object, java.util.Collection)
+     * @see org.argouml.model.CoreHelper#setOperations(
+     *         java.lang.Object, java.util.Collection)
      */
     public void setOperations(Object classifier, Collection operations) {
         impl.setOperations(classifier, operations);
@@ -133,7 +138,8 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setAttributes(java.lang.Object, java.util.Collection)
+     * @see org.argouml.model.CoreHelper#setAttributes(
+     *         java.lang.Object, java.util.Collection)
      */
     public void setAttributes(Object classifier, Collection attributes) {
         impl.setAttributes(classifier, attributes);
@@ -189,14 +195,16 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getAllBehavioralFeatures(java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getAllBehavioralFeatures(
+     *         java.lang.Object)
      */
     public Collection getAllBehavioralFeatures(Object element) {
         return impl.getAllBehavioralFeatures(element);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getBehavioralFeatures(java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getBehavioralFeatures(
+     *         java.lang.Object)
      */
     public Collection getBehavioralFeatures(Object clazz) {
         return impl.getBehavioralFeatures(clazz);
@@ -217,21 +225,24 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getRealizedInterfaces(java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getRealizedInterfaces(
+     *         java.lang.Object)
      */
     public Collection getRealizedInterfaces(Object cls) {
         return impl.getRealizedInterfaces(cls);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getExtendedClassifiers(java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getExtendedClassifiers(
+     *         java.lang.Object)
      */
     public Collection getExtendedClassifiers(Object clazz) {
         return impl.getExtendedClassifiers(clazz);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getGeneralization(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getGeneralization(
+     *         java.lang.Object, java.lang.Object)
      */
     public Object getGeneralization(Object child, Object parent) {
         return impl.getGeneralization(child, parent);
@@ -245,7 +256,8 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getFlows(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getFlows(
+     *         java.lang.Object, java.lang.Object)
      */
     public Collection getFlows(Object source, Object target) {
         return impl.getFlows(source, target);
@@ -259,7 +271,8 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getExtendingClassifiers(java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getExtendingClassifiers(
+     *         java.lang.Object)
      */
     public Collection getExtendingClassifiers(Object clazz) {
         return impl.getExtendingClassifiers(clazz);
@@ -287,14 +300,16 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getAssociatedClassifiers(java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getAssociatedClassifiers(
+     *         java.lang.Object)
      */
     public Collection getAssociatedClassifiers(Object classifier) {
         return impl.getAssociatedClassifiers(classifier);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getAssociations(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getAssociations(
+     *         java.lang.Object, java.lang.Object)
      */
     public Collection getAssociations(Object from, Object to) {
         return impl.getAssociations(from, to);
@@ -315,7 +330,8 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getAssociationEnd(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getAssociationEnd(
+     *         java.lang.Object, java.lang.Object)
      */
     public Object getAssociationEnd(Object type, Object assoc) {
         return impl.getAssociationEnd(type, assoc);
@@ -350,37 +366,43 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getDependencies(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getDependencies(
+     *         java.lang.Object, java.lang.Object)
      */
     public Collection getDependencies(Object supplierObj, Object clientObj) {
         return impl.getDependencies(supplierObj, clientObj);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getRelationships(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getRelationships(
+     *         java.lang.Object, java.lang.Object)
      */
     public Collection getRelationships(Object source, Object dest) {
         return impl.getRelationships(source, dest);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#isValidNamespace(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#isValidNamespace(
+     *         java.lang.Object, java.lang.Object)
      */
     public boolean isValidNamespace(Object mObj, Object nsObj) {
         return impl.isValidNamespace(mObj, nsObj);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getFirstSharedNamespace(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getFirstSharedNamespace(
+     *         java.lang.Object, java.lang.Object)
      */
     public Object getFirstSharedNamespace(Object ns1, Object ns2) {
         return impl.getFirstSharedNamespace(ns1, ns2);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getAllPossibleNamespaces(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getAllPossibleNamespaces(
+     *         java.lang.Object, java.lang.Object)
      */
-    public Collection getAllPossibleNamespaces(Object modelElement, Object model) {
+    public Collection getAllPossibleNamespaces(Object modelElement,
+					       Object model) {
         return impl.getAllPossibleNamespaces(modelElement, model);
     }
 
@@ -392,7 +414,8 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getAllRealizedInterfaces(java.lang.Object)
+     * @see org.argouml.model.CoreHelper#getAllRealizedInterfaces(
+     *         java.lang.Object)
      */
     public Collection getAllRealizedInterfaces(Object o) {
         return impl.getAllRealizedInterfaces(o);
@@ -406,210 +429,241 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#equalsAggregationKind(java.lang.Object, java.lang.String)
+     * @see org.argouml.model.CoreHelper#equalsAggregationKind(
+     *         java.lang.Object, java.lang.String)
      */
-    public boolean equalsAggregationKind(Object associationEnd, String kindType) {
+    public boolean equalsAggregationKind(Object associationEnd,
+					 String kindType) {
         return impl.equalsAggregationKind(associationEnd, kindType);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#removeAnnotatedElement(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#removeAnnotatedElement(
+     *         java.lang.Object, java.lang.Object)
      */
     public void removeAnnotatedElement(Object handle, Object me) {
         impl.removeAnnotatedElement(handle, me);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#removeClientDependency(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#removeClientDependency(
+     *         java.lang.Object, java.lang.Object)
      */
     public void removeClientDependency(Object handle, Object dep) {
         impl.removeClientDependency(handle, dep);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#removeConstraint(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#removeConstraint(
+     *         java.lang.Object, java.lang.Object)
      */
     public void removeConstraint(Object handle, Object cons) {
         impl.removeConstraint(handle, cons);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#removeOwnedElement(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#removeOwnedElement(
+     *         java.lang.Object, java.lang.Object)
      */
     public void removeOwnedElement(Object handle, Object value) {
         impl.removeOwnedElement(handle, value);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#removeParameter(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#removeParameter(
+     *         java.lang.Object, java.lang.Object)
      */
     public void removeParameter(Object handle, Object parameter) {
         impl.removeParameter(handle, parameter);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#removeSourceFlow(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#removeSourceFlow(
+     *         java.lang.Object, java.lang.Object)
      */
     public void removeSourceFlow(Object handle, Object flow) {
         impl.removeSourceFlow(handle, flow);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#removeSupplierDependency(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#removeSupplierDependency(
+     *         java.lang.Object, java.lang.Object)
      */
     public void removeSupplierDependency(Object supplier, Object dependency) {
         impl.removeSupplierDependency(supplier, dependency);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#removeTaggedValue(java.lang.Object, java.lang.String)
+     * @see org.argouml.model.CoreHelper#removeTaggedValue(
+     *         java.lang.Object, java.lang.String)
      */
     public void removeTaggedValue(Object handle, String name) {
         impl.removeTaggedValue(handle, name);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#removeTargetFlow(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#removeTargetFlow(
+     *         java.lang.Object, java.lang.Object)
      */
     public void removeTargetFlow(Object handle, Object flow) {
         impl.removeTargetFlow(handle, flow);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addAnnotatedElement(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addAnnotatedElement(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addAnnotatedElement(Object comment, Object annotatedElement) {
         impl.addAnnotatedElement(comment, annotatedElement);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addClient(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addClient(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addClient(Object handle, Object element) {
         impl.addClient(handle, element);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addClientDependency(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addClientDependency(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addClientDependency(Object handle, Object dependency) {
         impl.addClientDependency(handle, dependency);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addComment(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addComment(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addComment(Object element, Object comment) {
         impl.addComment(element, comment);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addConnection(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addConnection(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addConnection(Object handle, Object connection) {
         impl.addConnection(handle, connection);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addConstraint(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addConstraint(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addConstraint(Object handle, Object mc) {
         impl.addConstraint(handle, mc);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addDeploymentLocation(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addDeploymentLocation(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addDeploymentLocation(Object handle, Object node) {
         impl.addDeploymentLocation(handle, node);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addFeature(java.lang.Object, int, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addFeature(
+     *         java.lang.Object, int, java.lang.Object)
      */
     public void addFeature(Object handle, int index, Object f) {
         impl.addFeature(handle, index, f);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addFeature(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addFeature(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addFeature(Object handle, Object f) {
         impl.addFeature(handle, f);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addLink(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addLink(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addLink(Object handle, Object link) {
         impl.addLink(handle, link);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addMethod(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addMethod(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addMethod(Object handle, Object m) {
         impl.addMethod(handle, m);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addOwnedElement(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addOwnedElement(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addOwnedElement(Object handle, Object me) {
         impl.addOwnedElement(handle, me);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addParameter(java.lang.Object, int, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addParameter(
+     *         java.lang.Object, int, java.lang.Object)
      */
     public void addParameter(Object handle, int index, Object parameter) {
         impl.addParameter(handle, index, parameter);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addParameter(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addParameter(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addParameter(Object handle, Object parameter) {
         impl.addParameter(handle, parameter);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addRaisedSignal(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addRaisedSignal(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addRaisedSignal(Object handle, Object sig) {
         impl.addRaisedSignal(handle, sig);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addSourceFlow(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addSourceFlow(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addSourceFlow(Object handle, Object flow) {
         impl.addSourceFlow(handle, flow);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addSupplier(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addSupplier(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addSupplier(Object handle, Object element) {
         impl.addSupplier(handle, element);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addSupplierDependency(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addSupplierDependency(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addSupplierDependency(Object supplier, Object dependency) {
         impl.addSupplierDependency(supplier, dependency);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addTaggedValue(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addTaggedValue(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addTaggedValue(Object handle, Object taggedValue) {
         impl.addTaggedValue(handle, taggedValue);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#addTargetFlow(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#addTargetFlow(
+     *         java.lang.Object, java.lang.Object)
      */
     public void addTargetFlow(Object handle, Object flow) {
         impl.addTargetFlow(handle, flow);
@@ -638,7 +692,8 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setAggregation(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setAggregation(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setAggregation(final Object handle, Object aggregationKind) {
         createMemento(new ObjectSetter() {
@@ -649,14 +704,16 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setAnnotatedElements(java.lang.Object, java.util.Collection)
+     * @see org.argouml.model.CoreHelper#setAnnotatedElements(
+     *         java.lang.Object, java.util.Collection)
      */
     public void setAnnotatedElements(Object handle, Collection elems) {
         impl.setAnnotatedElements(handle, elems);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setAssociation(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setAssociation(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setAssociation(Object handle, Object association) {
         impl.setAssociation(handle, association);
@@ -674,21 +731,24 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setRaisedSignals(java.lang.Object, java.util.Collection)
+     * @see org.argouml.model.CoreHelper#setRaisedSignals(
+     *         java.lang.Object, java.util.Collection)
      */
     public void setRaisedSignals(Object handle, Collection raisedSignals) {
         impl.setRaisedSignals(handle, raisedSignals);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setBody(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setBody(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setBody(Object handle, Object expr) {
         impl.setBody(handle, expr);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setChangeability(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setChangeability(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setChangeability(final Object handle, Object ck) {
         createMemento(new ObjectSetter() {
@@ -699,7 +759,8 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setChangeable(java.lang.Object, boolean)
+     * @see org.argouml.model.CoreHelper#setChangeable(
+     *         java.lang.Object, boolean)
      */
     public void setChangeable(final Object handle, boolean flag) {
         createMemento(new BooleanSetter() {
@@ -710,14 +771,16 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setChild(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setChild(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setChild(Object handle, Object child) {
         impl.setChild(handle, child);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setConcurrency(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setConcurrency(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setConcurrency(final Object handle, Object concurrencyKind) {
         createMemento(new ObjectSetter() {
@@ -728,56 +791,64 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setConnections(java.lang.Object, java.util.Collection)
+     * @see org.argouml.model.CoreHelper#setConnections(
+     *         java.lang.Object, java.util.Collection)
      */
     public void setConnections(Object handle, Collection elems) {
         impl.setConnections(handle, elems);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setDefaultValue(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setDefaultValue(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setDefaultValue(Object handle, Object expr) {
         impl.setDefaultValue(handle, expr);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setDiscriminator(java.lang.Object, java.lang.String)
+     * @see org.argouml.model.CoreHelper#setDiscriminator(
+     *         java.lang.Object, java.lang.String)
      */
     public void setDiscriminator(Object handle, String discriminator) {
         impl.setDiscriminator(handle, discriminator);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setFeature(java.lang.Object, int, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setFeature(
+     *         java.lang.Object, int, java.lang.Object)
      */
     public void setFeature(Object elem, int i, Object feature) {
         impl.setFeature(elem, i, feature);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setFeatures(java.lang.Object, java.util.Collection)
+     * @see org.argouml.model.CoreHelper#setFeatures(
+     *         java.lang.Object, java.util.Collection)
      */
     public void setFeatures(Object handle, Collection features) {
         impl.setFeatures(handle, features);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setImplementationLocation(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setImplementationLocation(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setImplementationLocation(Object handle, Object component) {
         impl.setImplementationLocation(handle, component);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setInitialValue(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setInitialValue(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setInitialValue(Object at, Object expr) {
         impl.setInitialValue(at, expr);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setKind(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setKind(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setKind(final Object handle, Object kind) {
         createMemento(new ObjectSetter() {
@@ -816,14 +887,16 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setModelElementContainer(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setModelElementContainer(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setModelElementContainer(Object handle, Object container) {
         impl.setModelElementContainer(handle, container);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setMultiplicity(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setMultiplicity(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setMultiplicity(final Object handle, Object arg) {
         createMemento(new ObjectSetter() {
@@ -834,7 +907,8 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setName(java.lang.Object, java.lang.String)
+     * @see org.argouml.model.CoreHelper#setName(
+     *         java.lang.Object, java.lang.String)
      */
     public void setName(final Object handle, String name) {
         createMemento(new StringSetter() {
@@ -845,7 +919,8 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setBody(java.lang.Object, java.lang.String)
+     * @see org.argouml.model.CoreHelper#setBody(
+     *         java.lang.Object, java.lang.String)
      */
     public void setBody(final Object handle, String body) {
         createMemento(new StringSetter() {
@@ -856,14 +931,16 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setNamespace(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setNamespace(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setNamespace(Object handle, Object ns) {
         impl.setNamespace(handle, ns);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setNavigable(java.lang.Object, boolean)
+     * @see org.argouml.model.CoreHelper#setNavigable(
+     *         java.lang.Object, boolean)
      */
     public void setNavigable(final Object handle, boolean flag) {
         createMemento(new BooleanSetter() {
@@ -874,7 +951,8 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setOrdering(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setOrdering(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setOrdering(final Object handle, Object ok) {
         createMemento(new ObjectSetter() {
@@ -885,35 +963,40 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setOwner(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setOwner(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setOwner(Object handle, Object owner) {
         impl.setOwner(handle, owner);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setOwnerScope(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setOwnerScope(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setOwnerScope(Object handle, Object os) {
         impl.setOwnerScope(handle, os);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setParameters(java.lang.Object, java.util.Collection)
+     * @see org.argouml.model.CoreHelper#setParameters(
+     *         java.lang.Object, java.util.Collection)
      */
     public void setParameters(Object handle, Collection parameters) {
         impl.setParameters(handle, parameters);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setParent(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setParent(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setParent(Object handle, Object parent) {
         impl.setParent(handle, parent);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setPowertype(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setPowertype(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setPowertype(final Object handle, Object pt) {
         createMemento(new ObjectSetter() {
@@ -924,7 +1007,8 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setQualifiers(java.lang.Object, java.util.Collection)
+     * @see org.argouml.model.CoreHelper#setQualifiers(
+     *         java.lang.Object, java.util.Collection)
      */
     public void setQualifiers(Object handle, Collection elems) {
         impl.setQualifiers(handle, elems);
@@ -942,14 +1026,16 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setResident(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setResident(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setResident(Object handle, Object resident) {
         impl.setResident(handle, resident);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setResidents(java.lang.Object, java.util.Collection)
+     * @see org.argouml.model.CoreHelper#setResidents(
+     *         java.lang.Object, java.util.Collection)
      */
     public void setResidents(Object handle, Collection residents) {
         impl.setResidents(handle, residents);
@@ -967,14 +1053,16 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setSources(java.lang.Object, java.util.Collection)
+     * @see org.argouml.model.CoreHelper#setSources(
+     *         java.lang.Object, java.util.Collection)
      */
     public void setSources(Object handle, Collection specifications) {
         impl.setSources(handle, specifications);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setSpecification(java.lang.Object, boolean)
+     * @see org.argouml.model.CoreHelper#setSpecification(
+     *         java.lang.Object, boolean)
      */
     public void setSpecification(final Object handle, boolean specification) {
         createMemento(new BooleanSetter() {
@@ -985,35 +1073,40 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setSpecifications(java.lang.Object, java.util.Collection)
+     * @see org.argouml.model.CoreHelper#setSpecifications(
+     *         java.lang.Object, java.util.Collection)
      */
     public void setSpecifications(Object handle, Collection specifications) {
         impl.setSpecifications(handle, specifications);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setStereotype(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setStereotype(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setStereotype(Object handle, Object stereo) {
         impl.setStereotype(handle, stereo);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setTaggedValue(java.lang.Object, java.lang.String, java.lang.String)
+     * @see org.argouml.model.CoreHelper#setTaggedValue(
+     *         java.lang.Object, java.lang.String, java.lang.String)
      */
     public void setTaggedValue(Object handle, String tag, String value) {
         impl.setTaggedValue(handle, tag, value);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setTaggedValues(java.lang.Object, java.util.Collection)
+     * @see org.argouml.model.CoreHelper#setTaggedValues(
+     *         java.lang.Object, java.util.Collection)
      */
     public void setTaggedValues(Object handle, Collection taggedValues) {
         impl.setTaggedValues(handle, taggedValues);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setTargetScope(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setTargetScope(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setTargetScope(final Object handle, Object scopeKind) {
         createMemento(new ObjectSetter() {
@@ -1024,21 +1117,24 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setType(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setType(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setType(Object handle, Object type) {
         impl.setType(handle, type);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setUUID(java.lang.Object, java.lang.String)
+     * @see org.argouml.model.CoreHelper#setUUID(
+     *         java.lang.Object, java.lang.String)
      */
     public void setUUID(Object handle, String uuid) {
         impl.setUUID(handle, uuid);
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setVisibility(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setVisibility(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setVisibility(final Object handle, Object visibility) {
         createMemento(new ObjectSetter() {
@@ -1049,7 +1145,8 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#removeDeploymentLocation(java.lang.Object, java.lang.Object)
+     * @see org.argouml.model.CoreHelper#removeDeploymentLocation(
+     *         java.lang.Object, java.lang.Object)
      */
     public void removeDeploymentLocation(Object handle, Object node) {
         impl.removeDeploymentLocation(handle, node);

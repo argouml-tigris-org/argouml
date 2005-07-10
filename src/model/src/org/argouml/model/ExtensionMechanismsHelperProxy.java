@@ -32,57 +32,62 @@ import java.util.Collection;
  * before and after the implementation is called.
  * For the current implementation that is to generate mementos for any
  * mutable methods.
+ *
  * @author Bob Tarling
  */
 public class ExtensionMechanismsHelperProxy implements
         ExtensionMechanismsHelper {
 
     /**
-     * * The delegate
+     * The component.
      */
     private ExtensionMechanismsHelper impl;
 
     /**
-     * 
+     * @param component The component to decorate.
      */
-    public ExtensionMechanismsHelperProxy(
-            ExtensionMechanismsHelper implementation) {
-        impl = implementation;
+    public ExtensionMechanismsHelperProxy(ExtensionMechanismsHelper component) {
+        impl = component;
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#getStereotypes(java.lang.Object)
+     * @see org.argouml.model.ExtensionMechanismsHelper#getStereotypes(
+     *         java.lang.Object)
      */
     public Collection getStereotypes(Object ns) {
         return impl.getStereotypes(ns);
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#getStereotype(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.ExtensionMechanismsHelper#getStereotype(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public Object getStereotype(Object ns, Object stereo) {
         return impl.getStereotype(ns, stereo);
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#getStereotype(java.util.Collection,
-     *      java.lang.Object)
+     * @see org.argouml.model.ExtensionMechanismsHelper#getStereotype(
+     *         java.util.Collection,
+     *         java.lang.Object)
      */
     public Object getStereotype(Collection models, Object stereo) {
         return impl.getStereotype(models, stereo);
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#getMetaModelName(java.lang.Object)
+     * @see org.argouml.model.ExtensionMechanismsHelper#getMetaModelName(
+     *         java.lang.Object)
      */
     public String getMetaModelName(Object m) {
         return impl.getMetaModelName(m);
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#getAllPossibleStereotypes(java.util.Collection,
-     *      java.lang.Object)
+     * @see org.argouml.model.ExtensionMechanismsHelper#getAllPossibleStereotypes(
+     *         java.util.Collection,
+     *         java.lang.Object)
      */
     public Collection getAllPossibleStereotypes(Collection models,
             Object modelElement) {
@@ -90,8 +95,9 @@ public class ExtensionMechanismsHelperProxy implements
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#isValidStereoType(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.ExtensionMechanismsHelper#isValidStereoType(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public boolean isValidStereoType(Object theModelElement,
             Object theStereotype) {
@@ -99,71 +105,80 @@ public class ExtensionMechanismsHelperProxy implements
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#getStereotypes(java.util.Collection)
+     * @see org.argouml.model.ExtensionMechanismsHelper#getStereotypes(
+     *         java.util.Collection)
      */
     public Collection getStereotypes(Collection models) {
         return impl.getStereotypes(models);
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#setStereoType(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.ExtensionMechanismsHelper#setStereoType(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void setStereoType(Object modelElement, Object stereotype) {
         impl.setStereoType(modelElement, stereotype);
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#isStereotype(java.lang.Object,
-     *      java.lang.String, java.lang.String)
+     * @see org.argouml.model.ExtensionMechanismsHelper#isStereotype(
+     *         java.lang.Object,
+     *         java.lang.String, java.lang.String)
      */
     public boolean isStereotype(Object object, String name, String base) {
         return impl.isStereotype(object, name, base);
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#isStereotypeInh(java.lang.Object,
-     *      java.lang.String, java.lang.String)
+     * @see org.argouml.model.ExtensionMechanismsHelper#isStereotypeInh(
+     *         java.lang.Object,
+     *         java.lang.String, java.lang.String)
      */
     public boolean isStereotypeInh(Object object, String name, String base) {
         return impl.isStereotypeInh(object, name, base);
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#addExtendedElement(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.ExtensionMechanismsHelper#addExtendedElement(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void addExtendedElement(Object handle, Object extendedElement) {
         impl.addExtendedElement(handle, extendedElement);
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#setBaseClass(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.ExtensionMechanismsHelper#setBaseClass(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void setBaseClass(Object handle, Object baseClass) {
         impl.setBaseClass(handle, baseClass);
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#setIcon(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.ExtensionMechanismsHelper#setIcon(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void setIcon(Object handle, Object icon) {
         impl.setIcon(handle, icon);
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#setTag(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.ExtensionMechanismsHelper#setTag(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void setTag(Object handle, Object tag) {
         impl.setTag(handle, tag);
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#setValueOfTag(java.lang.Object,
-     *      java.lang.String)
+     * @see org.argouml.model.ExtensionMechanismsHelper#setValueOfTag(
+     *         java.lang.Object,
+     *         java.lang.String)
      */
     public void setValueOfTag(Object handle, String value) {
         impl.setValueOfTag(handle, value);

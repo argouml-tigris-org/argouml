@@ -331,7 +331,7 @@ public interface StateMachinesHelper {
      * @param referenced state
      */
     void setReferenceState(Object o, String referenced);
-    
+
     /**
      * Find the correct namespace for an event.
      * This explained by the following
@@ -341,10 +341,10 @@ public interface StateMachinesHelper {
      * state diagrams for classes that have visibility
      * inside the package. An event is not local to
      * a single class."
-     * 
+     *
      * @param trans the transition of which the event is a trigger
      * @param model the default is the model
      * @return the enclosing namespace for the event
      */
-    public Object findNamespaceForEvent(Object trans, Object model) ;
+    Object findNamespaceForEvent(Object trans, Object model);
 }

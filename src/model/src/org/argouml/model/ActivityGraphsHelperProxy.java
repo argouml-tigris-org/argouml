@@ -35,15 +35,15 @@ package org.argouml.model;
 public class ActivityGraphsHelperProxy implements ActivityGraphsHelper {
 
     /**
-     * * The delegate
+     * The component.
      */
     private ActivityGraphsHelper impl;
 
     /**
-     * 
+     * @param component The component to decorate.
      */
-    public ActivityGraphsHelperProxy(ActivityGraphsHelper implementation) {
-        impl = implementation;
+    public ActivityGraphsHelperProxy(ActivityGraphsHelper component) {
+        impl = component;
     }
 
     /**

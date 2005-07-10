@@ -32,13 +32,13 @@ package org.argouml.model;
 
 /**
  * An exception class to wrap any checked exceptions from the model subsystem.
- * 
+ *
  * @author Bob Tarling
  */
 public class UmlException extends Exception {
 
     /**
-     * Constructor the exception with a message
+     * Constructor the exception with a message.
      *
      * @param message the message
      */
@@ -47,7 +47,7 @@ public class UmlException extends Exception {
     }
 
     /**
-     * Constructor the exception with a message and a causing exception
+     * Constructor the exception with a message and a causing exception.
      *
      * @param message the message
      * @param c the cause of the exception
@@ -57,7 +57,7 @@ public class UmlException extends Exception {
     }
 
     /**
-     * Constructor the exception a causing exception
+     * Constructor the exception a causing exception.
      *
      * @param c the cause of the exception
      */

@@ -32,24 +32,26 @@ import java.util.Collection;
  * before and after the implementation is called.
  * For the current implementation that is to generate mementos for any
  * mutable methods.
+ *
  * @author Bob Tarling
  */
 public class UseCasesHelperProxy implements UseCasesHelper {
 
     /**
-     * * The delegate
+     * The component.
      */
     private UseCasesHelper impl;
 
     /**
-     * 
+     * @param component The component to decorate.
      */
-    public UseCasesHelperProxy(UseCasesHelper implementation) {
-        impl = implementation;
+    public UseCasesHelperProxy(UseCasesHelper component) {
+        impl = component;
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#getExtensionPoints(java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#getExtensionPoints(
+     *         java.lang.Object)
      */
     public Collection getExtensionPoints(Object useCase) {
         return impl.getExtensionPoints(useCase);
@@ -70,156 +72,176 @@ public class UseCasesHelperProxy implements UseCasesHelper {
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#getExtendedUseCases(java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#getExtendedUseCases(
+     *         java.lang.Object)
      */
     public Collection getExtendedUseCases(Object ausecase) {
         return impl.getExtendedUseCases(ausecase);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#getExtendingUseCases(java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#getExtendingUseCases(
+     *         java.lang.Object)
      */
     public Collection getExtendingUseCases(Object usecase) {
         return impl.getExtendingUseCases(usecase);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#getExtends(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#getExtends(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public Object getExtends(Object abase, Object anextension) {
         return impl.getExtends(abase, anextension);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#getIncludedUseCases(java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#getIncludedUseCases(
+     *         java.lang.Object)
      */
     public Collection getIncludedUseCases(Object ausecase) {
         return impl.getIncludedUseCases(ausecase);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#getIncludes(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#getIncludes(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public Object getIncludes(Object abase, Object aninclusion) {
         return impl.getIncludes(abase, aninclusion);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#getSpecificationPath(java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#getSpecificationPath(
+     *         java.lang.Object)
      */
     public Collection getSpecificationPath(Object ausecase) {
         return impl.getSpecificationPath(ausecase);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#setBase(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#setBase(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void setBase(Object extend, Object base) {
         impl.setBase(extend, base);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#removeExtend(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#removeExtend(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void removeExtend(Object elem, Object extend) {
         impl.removeExtend(elem, extend);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#removeExtensionPoint(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#removeExtensionPoint(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void removeExtensionPoint(Object elem, Object ep) {
         impl.removeExtensionPoint(elem, ep);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#removeInclude(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#removeInclude(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void removeInclude(Object usecase, Object include) {
         impl.removeInclude(usecase, include);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#addExtend(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#addExtend(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void addExtend(Object elem, Object extend) {
         impl.addExtend(elem, extend);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#addExtensionPoint(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#addExtensionPoint(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void addExtensionPoint(Object handle, Object extensionPoint) {
         impl.addExtensionPoint(handle, extensionPoint);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#addInclude(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#addInclude(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void addInclude(Object usecase, Object include) {
         impl.addInclude(usecase, include);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#setAddition(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#setAddition(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void setAddition(Object handle, Object useCase) {
         impl.setAddition(handle, useCase);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#setCondition(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#setCondition(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void setCondition(Object handle, Object booleanExpression) {
         impl.setCondition(handle, booleanExpression);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#setExtension(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#setExtension(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void setExtension(Object handle, Object ext) {
         impl.setExtension(handle, ext);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#setExtensionPoints(java.lang.Object,
-     *      java.util.Collection)
+     * @see org.argouml.model.UseCasesHelper#setExtensionPoints(
+     *         java.lang.Object,
+     *         java.util.Collection)
      */
     public void setExtensionPoints(Object handle, Collection extensionPoints) {
         impl.setExtensionPoints(handle, extensionPoints);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#setIncludes(java.lang.Object,
-     *      java.util.Collection)
+     * @see org.argouml.model.UseCasesHelper#setIncludes(
+     *         java.lang.Object,
+     *         java.util.Collection)
      */
     public void setIncludes(Object handle, Collection includes) {
         impl.setIncludes(handle, includes);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#setLocation(java.lang.Object,
-     *      java.lang.String)
+     * @see org.argouml.model.UseCasesHelper#setLocation(
+     *         java.lang.Object,
+     *         java.lang.String)
      */
     public void setLocation(Object handle, String loc) {
         impl.setLocation(handle, loc);
     }
 
     /**
-     * @see org.argouml.model.UseCasesHelper#setUseCase(java.lang.Object,
-     *      java.lang.Object)
+     * @see org.argouml.model.UseCasesHelper#setUseCase(
+     *         java.lang.Object,
+     *         java.lang.Object)
      */
     public void setUseCase(Object elem, Object usecase) {
         impl.setUseCase(elem, usecase);
