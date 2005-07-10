@@ -293,7 +293,9 @@ public class ProfileJava extends Profile {
         // behind a method in the model interface
         // Will create an issue to discuss best solution.
         // See http://argouml.tigris.org/issues/show_bug.cgi?id=3300
-        if (Model.getFacade() instanceof NSUMLModelFacade) {
+        if ("org.argouml.model.uml.NSUMLModelImplementation"
+                .equals(System.getProperty("argouml.model.implementation",
+                        "org.argouml.model.uml.NSUMLModelImplementation"))) {
             // NSUML implementation
             //
             //    get a file name for the default model
