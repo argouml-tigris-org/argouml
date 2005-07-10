@@ -70,6 +70,9 @@ import org.argouml.cognitive.critics.Critic;
  * @author Jason Robbins
  */
 public class ToDoList extends Observable implements Runnable, Serializable {
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(ToDoList.class);
 
     private static Object recentOffender;
@@ -78,12 +81,19 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** Pending ToDoItems for the designer to consider. */
+    /**
+     * Pending ToDoItems for the designer to consider.
+     */
     private Vector items;
 
-    /** These are computed when needed. */
+    /**
+     * These are computed when needed.
+     */
     private ListSet allOffenders;
-    /** These are computed when needed. */
+
+    /**
+     * These are computed when needed.
+     */
     private ListSet allPosters;
 
     /**
@@ -126,7 +136,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     // constructor
 
     /**
-     * creates a new todolist. use getInstance() if you want to create the
+     * Creates a new todolist. Use getInstance() if you want to create the
      * validity checking thread.
      */
     public ToDoList() {
@@ -185,8 +195,9 @@ public class ToDoList extends Observable implements Runnable, Serializable {
 
             forceValidityCheck(removes);
             removes.removeAllElements();
-            try { Thread.sleep(3000); }
-            catch (InterruptedException ignore) {
+            try {
+		Thread.sleep(3000);
+	    } catch (InterruptedException ignore) {
                 LOG.error("InterruptedException!!!", ignore);
             }
         }
@@ -209,7 +220,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
      * ValidityCheckingThread, and it can be called by the user
      * pressing a button via forceValidityCheck(). <p>
      *
-     * <b>Warning: Fragile code!<b> No method that this method calls can
+     * <em>Warning: Fragile code!</em> No method that this method calls can
      * synchronized the Designer, otherwise there will be deadlock.
      *
      * @param removes the items removed
@@ -220,8 +231,9 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         for (int i = 0; i < size; ++i) {
             ToDoItem item = (ToDoItem) items.elementAt(i);
             boolean valid;
-            try { valid = item.stillValid(designer); }
-            catch (Exception ex) {
+            try {
+		valid = item.stillValid(designer);
+	    } catch (Exception ex) {
                 valid = false;
                 StringBuffer buf =
                     new StringBuffer("Exception raised in to do list cleaning");
@@ -386,7 +398,9 @@ public class ToDoList extends Observable implements Runnable, Serializable {
      */
     public static Vector getGoals() { return new Vector(); }
 
-    /** needs documenting, why synchronised? */
+    /**
+     * TODO: needs documenting, why synchronised?
+     */
     private synchronized void addE(ToDoItem item) {
         /* remove any identical items already on the list */
         if (items.contains(item)) {
@@ -396,8 +410,10 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         if (item.getPoster() instanceof Critic) {
             ResolvedCritic rc;
             try {
-                rc = new ResolvedCritic((Critic) item.getPoster(),
-                                        item.getOffenders(), false);
+                rc =
+		    new ResolvedCritic((Critic) item.getPoster(),
+				       item.getOffenders(),
+				       false);
                 Iterator elems = resolvedItems.iterator();
                 //cat.debug("Checking for inhibitors " + rc);
                 while (elems.hasNext()) {
@@ -501,15 +517,16 @@ public class ToDoList extends Observable implements Runnable, Serializable {
 					    + item.getPoster().getClass());
 	}
 
-        ResolvedCritic rc = new ResolvedCritic((Critic) item.getPoster(),
-					       item.getOffenders());
+        ResolvedCritic rc =
+	    new ResolvedCritic((Critic) item.getPoster(),
+			       item.getOffenders());
         boolean res = resolve(item);
         if (res) {
             res = addResolvedCritic(rc);
         }
         return res;
     }
-    
+
     public boolean addResolvedCritic(ResolvedCritic rc) {
         return resolvedItems.add(rc);
     }
