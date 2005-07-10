@@ -38,10 +38,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import org.argouml.application.helpers.SettingsTabHelper;
+import org.argouml.application.modules.ModuleLoader;
 
 /**
  * Tab for the settings dialog that makes it possible to
@@ -52,13 +54,26 @@ import org.argouml.application.helpers.SettingsTabHelper;
  * @author Linus Tolke
  */
 public class SettingsTabModules extends SettingsTabHelper {
-
+    /**
+     * The table of modules.
+     */
     private JTable table;
-    private JPanel notYetLoadedPanel = null;
 
+    /**
+     * The panel below the table that shows not yet loaded modules.
+     */
+    private JPanel notYetLoadedPanel;
+
+    /**
+     * The names of the columns in the table.
+     */
     private String[] columnNames = {
 	"Module", "Enabled",
     };
+
+    /**
+     * The objects representing the modules from the new module loader.
+     */
     private Object[][] elements;
 
     /**
@@ -71,8 +86,8 @@ public class SettingsTabModules extends SettingsTabHelper {
 
         table = new JTable(new ModuleTableModel());
         table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-	table.setShowVerticalLines(false);
-        add(table, BorderLayout.CENTER);
+	table.setShowVerticalLines(true);
+        add(new JScrollPane(table), BorderLayout.CENTER);
 
 	createNotYetLoaded();
     }
@@ -81,6 +96,9 @@ public class SettingsTabModules extends SettingsTabHelper {
      * Table model for the table with modules.
      */
     class ModuleTableModel extends AbstractTableModel {
+	/**
+	 * Constructor.
+	 */
 	public ModuleTableModel() {
 	    Object[] arr = ModuleLoader2.allModules().toArray();
 
@@ -111,14 +129,28 @@ public class SettingsTabModules extends SettingsTabHelper {
 	 * @see javax.swing.table.TableModel#getRowCount()
 	 */
 	public int getRowCount() {
-	    return elements.length;
+	    return elements.length
+		+ ModuleLoader.getInstance().getModules().size();
 	}
 
 	/**
 	 * @see javax.swing.table.TableModel#getValueAt(int, int)
 	 */
 	public Object getValueAt(int row, int col) {
-	    return elements[row][col];
+	    if (row < elements.length) {
+		return elements[row][col];
+	    } else {
+		switch (col) {
+		case 0:
+		    return ModuleLoader.getInstance()
+			.getModules().get(row - elements.length);
+		case 1:
+		    return Boolean.TRUE;
+
+		default:
+		    throw new IllegalArgumentException("Too many columns");
+		}
+	    }
 	}
 
 	/**
@@ -147,10 +179,13 @@ public class SettingsTabModules extends SettingsTabHelper {
 	 * @see javax.swing.table.TableModel#isCellEditable(int, int)
 	 */
 	public boolean isCellEditable(int row, int col) {
-	    return col >= 1;
+	    return col >= 1 && row < elements.length;
 	}
     }
 
+    /**
+     * Create the pane with not yet loaded modules.
+     */
     private void createNotYetLoaded() {
 	if (notYetLoadedPanel != null) {
 	    remove(notYetLoadedPanel);
@@ -169,7 +204,7 @@ public class SettingsTabModules extends SettingsTabHelper {
 	    final String classname = (String) entry.getValue();
 
 	    JLabel label = new JLabel(name);
-	    JButton button = new JButton("Attempt");
+	    JButton button = new JButton("Attempt to load");
 	    button.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent event) {
 		    try {
