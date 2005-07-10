@@ -58,7 +58,9 @@ import org.tigris.gef.presentation.Fig;
  */
 public abstract class UMLComboBoxModel2 extends AbstractListModel
         implements PropertyChangeListener, ComboBoxModel, TargetListener {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(UMLComboBoxModel2.class);
 
@@ -68,12 +70,12 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     private Object comboBoxTarget = null;
 
     /**
-     * The list with objects that should be shown in the combobox
+     * The list with objects that should be shown in the combobox.
      */
     private List objects = new ArrayList();
 
     /**
-     * The selected object
+     * The selected object.
      */
     private Object selectedObject = null;
 
@@ -92,12 +94,12 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     private String propertySetName;
 
     /**
-     * Flag to indicate wether list events should be fired
+     * Flag to indicate wether list events should be fired.
      */
     private boolean fireListEvents = true;
 
     /**
-     * Flag to indicate wether the model is being build
+     * Flag to indicate wether the model is being build.
      */
     private boolean buildingModel = false;
 
@@ -119,8 +121,9 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      */
     public UMLComboBoxModel2(String name, boolean clearable) {
         super();
-        if (name == null || name.equals(""))
+        if (name == null || name.equals("")) {
             throw new IllegalArgumentException("one of the arguments is null");
+	}
         // it would be better that we don't need the container to get
         // the target this constructor can be without parameters as
         // soon as we improve targetChanged
@@ -142,9 +145,10 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                     && evt.getSource() == getTarget()
                 && (isClearable || getChangedElement(evt) != null)) {
                 Object elem = getChangedElement(evt);
-                if (!contains(elem))
-                addElement(elem);
-                    setSelectedItem(elem);
+                if (!contains(elem)) {
+		    addElement(elem);
+		}
+		setSelectedItem(elem);
             }
         } else if (evt instanceof DeleteInstanceEvent) {
             if (contains(getChangedElement(evt))) {
@@ -160,9 +164,9 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 Object o = getChangedElement(evt);
                 if (o instanceof Collection) { // this should not happen but
                     // you never know with NSUML
-                    LOG.warn(
-                 "Collection added via roleAdded! The correct element"
-                 + "is probably not selected...");
+                    LOG.warn("Collection added via roleAdded! "
+			     + "The correct element "
+			     + "is probably not selected...");
                     Iterator it = ((Collection) o).iterator();
                     while (it.hasNext()) {
                         Object o2 = it.next();
@@ -186,8 +190,10 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     }
 
     /**
-     * Returns true if the given element is valid, i.e. it may be added to the
-     * list of elements.
+     * Returns true if the given element is valid.<p>
+     *
+     * It is valid if it may be added to the list of elements.
+     *
      * @param element the given element
      * @return true if the given element is valid
      */
@@ -221,13 +227,14 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
             if (isClearable && !elements.contains("")) {
                 addElement("");
             }
-        } else
+        } else {
             throw new IllegalArgumentException("In setElements: may not set "
 					       + "elements to null collection");
+	}
     }
 
     /**
-     * Utility method to get the target. 
+     * Utility method to get the target.
      *
      * @return  the ModelElement
      */
@@ -267,7 +274,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     }
 
     /**
-     * Utility method to add a collection of elements to the model
+     * Utility method to add a collection of elements to the model.
+     *
      * @param col the elements to be addd
      */
     protected void addAll(Collection col) {
@@ -285,13 +293,14 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     }
 
     /**
-     * Utility method to get the changed element from some event e
+     * Utility method to get the changed element from some event e.
+     *
      * @param e the given event
      * @return Object the changed element
      */
     protected Object getChangedElement(PropertyChangeEvent e) {
         if (e instanceof AssociationChangeEvent) {
-            return ((AssociationChangeEvent)e).getChangedValue();
+            return ((AssociationChangeEvent) e).getChangedValue();
         }
         return e.getNewValue();
     }
@@ -355,8 +364,9 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @see javax.swing.ListModel#getElementAt(int)
      */
     public Object getElementAt(int index) {
-        if (index >= 0 && index < objects.size())
+        if (index >= 0 && index < objects.size()) {
             return objects.get(index);
+	}
         return null;
     }
 
@@ -437,18 +447,21 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     }
 
     /**
-     * Returns true if some object elem is contained by the list of choices
+     * Returns true if some object elem is contained by the list of choices.
+     *
      * @param elem the given element
      * @return boolean true if it is in the selection
      */
     public boolean contains(Object elem) {
-        if (objects.contains(elem))
+        if (objects.contains(elem)) {
             return true;
+	}
         if (elem instanceof Collection) {
             Iterator it = ((Collection) elem).iterator();
             while (it.hasNext()) {
-                if (!objects.contains(it.next()))
+                if (!objects.contains(it.next())) {
                     return false;
+		}
             }
             return true;
         }
@@ -499,8 +512,9 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      *          Object, int, int)
      */
     protected void fireContentsChanged(Object source, int index0, int index1) {
-        if (fireListEvents && !buildingModel)
+        if (fireListEvents && !buildingModel) {
             super.fireContentsChanged(source, index0, index1);
+	}
     }
 
     /**
@@ -508,8 +522,9 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      *          Object, int, int)
      */
     protected void fireIntervalAdded(Object source, int index0, int index1) {
-        if (fireListEvents && !buildingModel)
+        if (fireListEvents && !buildingModel) {
             super.fireIntervalAdded(source, index0, index1);
+	}
     }
 
     /**
@@ -517,8 +532,9 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      *          Object, int, int)
      */
     protected void fireIntervalRemoved(Object source, int index0, int index1) {
-        if (fireListEvents && !buildingModel)
+        if (fireListEvents && !buildingModel) {
             super.fireIntervalRemoved(source, index0, index1);
+	}
     }
 
     /**
@@ -533,7 +549,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      */
     public void targetRemoved(TargetEvent e) {
         Object currentTarget = comboBoxTarget;
-        Object oldTarget = e.getOldTargets().length > 0
+        Object oldTarget =
+	    e.getOldTargets().length > 0
             ? e.getOldTargets()[0] : null;
         if (oldTarget instanceof Fig) {
             oldTarget = ((Fig) oldTarget).getOwner();

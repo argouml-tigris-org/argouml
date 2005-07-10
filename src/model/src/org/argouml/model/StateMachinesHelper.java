@@ -316,9 +316,9 @@ public interface StateMachinesHelper {
     String getPath(Object o);
 
     /**
-     * Returns a state contained into container. path is the whole pathname
-     * of the state we are looking for.
-     * @param path the path the state
+     * Returns a state contained into container.
+     *
+     * @param path The whole pathname of the state we are looking for.
      * @param container of the state
      * @return Object
      */

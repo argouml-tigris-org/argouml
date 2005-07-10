@@ -77,7 +77,7 @@ public interface ModelManagementHelper {
     Collection getAllModelElementsOfKind(Object nsa, Object type);
 
     /**
-     * helper method for {@link #getAllModelElementsOfKind(Object, Class)}.
+     * helper method for {@link #getAllModelElementsOfKind(Object, Object)}.
      *
      * @param nsa namespace.
      * @param kind name of class to find, this implementation will add the "M"
