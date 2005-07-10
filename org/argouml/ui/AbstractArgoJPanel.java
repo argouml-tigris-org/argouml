@@ -160,7 +160,8 @@ public abstract class AbstractArgoJPanel extends JPanel
     // actions
 
     /**
-     * this should take its inspiration from org.tigris.gef.base.CmdSpawn<p>
+     * This should take its inspiration from
+     * {@link org.tigris.gef.base.CmdSpawn}.<p>
      *
      * The spawned/cloned tab will be a JFrame. Currently this feature is
      * disabled for ArgoUML, except for the find dialog.

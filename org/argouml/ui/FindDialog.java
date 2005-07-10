@@ -60,8 +60,10 @@ import org.tigris.gef.util.PredicateType;
 
 
 /**
+ * TODO: What does this class do?<p>
+ *
  * This is one of the few classes in Argo that is
- * self running (i.e. not modal).
+ * self running (i.e. not modal).<p>
  *
  * The search is buggy and needs work.
  */
@@ -83,9 +85,11 @@ public class FindDialog extends ArgoDialog
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    private JButton     search     = new JButton(
+    private JButton     search     =
+	new JButton(
             Translator.localize("dialog.find.button.find"));
-    private JButton     clearTabs  = new JButton(
+    private JButton     clearTabs  =
+	new JButton(
             Translator.localize("dialog.find.button.clear-tabs"));
     private JTabbedPane tabs       = new JTabbedPane();
     private JPanel      nameLocTab = new JPanel();
@@ -201,13 +205,17 @@ public class FindDialog extends ArgoDialog
         GridBagLayout gb = new GridBagLayout();
         nameLocTab.setLayout(gb);
 
-        JLabel elementNameLabel = new JLabel(
+        JLabel elementNameLabel =
+	    new JLabel(
                 Translator.localize("dialog.find.label.element-name"));
-        JLabel diagramNameLabel = new JLabel(
+        JLabel diagramNameLabel =
+	    new JLabel(
                 Translator.localize("dialog.find.label.in-diagram"));
-        JLabel typeLabel = new JLabel(
+        JLabel typeLabel =
+	    new JLabel(
                 Translator.localize("dialog.find.label.element-type"));
-        JLabel locLabel = new JLabel(
+        JLabel locLabel =
+	    new JLabel(
                 Translator.localize("dialog.find.label.find-in"));
 
         location.addItem(
@@ -248,7 +256,7 @@ public class FindDialog extends ArgoDialog
         gb.setConstraints(diagramName, c);
         nameLocTab.add(diagramName);
 
-        // open space at gridy = 2
+        // open space at gridy = 2;
 
         c.gridx = 0;     c.gridy = 3;
         c.weightx = 0.0;
@@ -422,7 +430,8 @@ public class FindDialog extends ArgoDialog
         String name = eName;
         if (dName.length() > 0) {
             Object[] msgArgs = {name, dName };
-            name = Translator.messageFormat(
+            name =
+		Translator.messageFormat(
                     "dialog.find.comboboxitem.element-in-diagram", msgArgs);
             //name += " in " + dName;
         }
@@ -476,8 +485,9 @@ public class FindDialog extends ArgoDialog
      */
     public void doClearTabs() {
         int numTabs = resultTabs.size();
-        for (int i = 0; i < numTabs; i++)
+        for (int i = 0; i < numTabs; i++) {
             results.remove((Component) resultTabs.elementAt(i));
+	}
         resultTabs.removeAllElements();
         clearTabs.setEnabled(false);
         getOkButton().setEnabled(false);
@@ -555,9 +565,12 @@ public class FindDialog extends ArgoDialog
         int tab = results.getSelectedIndex();
         if (tab != -1) {
             Rectangle tabBounds = results.getBoundsAt(tab);
-            if (!tabBounds.contains(me.getX(), me.getY())) return;
-            if (tab >= 1 && me.getClickCount() >= 2)
+            if (!tabBounds.contains(me.getX(), me.getY())) {
+		return;
+	    }
+            if (tab >= 1 && me.getClickCount() >= 2) {
                 myDoubleClick(tab - 1); //help tab is 0
+	    }
         }
     }
 
@@ -574,7 +587,7 @@ public class FindDialog extends ArgoDialog
             if (((AbstractArgoJPanel) t).spawn() != null) {
                 resultTabs.removeElementAt(tab);
                 //TODO: This next line does not work...
-                location.removeItem("In Tab:" 
+                location.removeItem("In Tab:"
                                 + ((AbstractArgoJPanel) t).getTitle());
             }
         }

@@ -51,6 +51,9 @@ import org.tigris.gef.util.UnexpectedException;
  * @author mvw@tigris.org
  */
 public class PersistenceManager {
+    /**
+     * The singleton instance.
+     */
     private static final PersistenceManager INSTANCE =
         new PersistenceManager();
 
@@ -63,7 +66,7 @@ public class PersistenceManager {
      */
     private DiagramMemberFilePersister diagramMemberFilePersister
         = new DiagramMemberFilePersister();
-    
+
     /**
      * @return returns the singleton
      */
@@ -83,7 +86,8 @@ public class PersistenceManager {
     }
 
     /**
-     * This function allows e.g. modules to easily add new persisters.<p>
+     * This function allows to add new persisters. This can be done e.g.
+     * by modules.<p>
      *
      * @param fp the persister
      */
@@ -96,8 +100,10 @@ public class PersistenceManager {
      * @return the persister
      */
     public AbstractFilePersister getPersisterFromFileName(String name) {
-        if (name.toLowerCase().endsWith("." + defaultPersister.getExtension()))
+        if (name.toLowerCase()
+	    .endsWith("." + defaultPersister.getExtension())) {
             return defaultPersister;
+	}
         Iterator iter = otherPersisters.iterator();
         while (iter.hasNext()) {
             AbstractFilePersister persister =
@@ -195,17 +201,19 @@ public class PersistenceManager {
         }
         return stream.toString();
     }
-    
+
     /**
-     * Get the file persister for diagrams
+     * Get the file persister for diagrams.
+     *
      * @return the diagram file persister.
      */
     DiagramMemberFilePersister getDiagramMemberFilePersister() {
     	return diagramMemberFilePersister;
     }
-    
+
     /**
-     * Set an alternative file persister for diagrams
+     * Set an alternative file persister for diagrams.
+     *
      * @param persister the persister to use instead of the default
      */
     public void setDiagramMemberFilePersister(

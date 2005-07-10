@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -73,8 +73,11 @@ public abstract class SAXParserBase extends DefaultHandler {
     //protected static  boolean       _verbose       = false;
 
     /**
-     * This acts as a stack of elements. startElement places
-     * an item on the stack end endElement removes it.
+     * This acts as a stack of elements.<p>
+     *
+     * {@link #startElement(String, String, String, Attribtes)} places
+     * an item on the stack end {@link #endElement(String, String, String)}
+     * removes it.
      */
     private   static  XMLElement[]  elements      = new XMLElement[100];
 
@@ -84,8 +87,11 @@ public abstract class SAXParserBase extends DefaultHandler {
     private   static  int           nElements     = 0;
 
     /**
-     * This acts as a stack of elements. startElement places
-     * an item on the stack end endElement removes it.
+     * This acts as a stack of elements.<p>
+     *
+     * {@link #startElement(String, String, String, Attribtes)} places
+     * an item on the stack end {@link #endElement(String, String, String)}
+     * removes it.
      */
     private   static  XMLElement[]  freeElements  = new XMLElement[100];
     private   static  int           nFreeElements = 0;
