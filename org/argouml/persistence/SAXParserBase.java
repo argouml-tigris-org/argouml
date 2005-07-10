@@ -75,7 +75,7 @@ public abstract class SAXParserBase extends DefaultHandler {
     /**
      * This acts as a stack of elements.<p>
      *
-     * {@link #startElement(String, String, String, Attribtes)} places
+     * {@link #startElement(String, String, String, Attributes)} places
      * an item on the stack end {@link #endElement(String, String, String)}
      * removes it.
      */
@@ -89,7 +89,7 @@ public abstract class SAXParserBase extends DefaultHandler {
     /**
      * This acts as a stack of elements.<p>
      *
-     * {@link #startElement(String, String, String, Attribtes)} places
+     * {@link #startElement(String, String, String, Attributes)} places
      * an item on the stack end {@link #endElement(String, String, String)}
      * removes it.
      */
