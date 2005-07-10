@@ -1128,6 +1128,19 @@ Running checkstyle on ${source.dir}.
     </java>
   </target>
 
+  <target name="checkstyle-cond">
+    <available file="${source.dir}" type="dir" property="directory.exists"/>
+    <antcall target="checkstyle-cond2">
+      <param name="source.dir" value="${source.dir}"/>
+    </antcall>
+  </target>
+
+  <target name="checkstyle-cond2" if="directory.exists">
+    <antcall target="checkstyle-main">
+      <param name="source.dir" value="${source.dir}"/>
+    </antcall>
+  </target>
+
   <target name="checkstyle" depends="init,cleanparser"
           description="Run checkstyle on all source.">
     <antcall target="checkstyle-main">
@@ -1142,7 +1155,21 @@ Running checkstyle on ${source.dir}.
     <antcall target="checkstyle-main">
       <param name="source.dir" value="${argo.root.dir}/modules"/>
     </antcall>
+
+    <antcall target="checkstyle-cond">
+      <param name="source.dir" value="${argo.root.dir}/../argouml-mdr/src"/>
+    </antcall>
+    <antcall target="checkstyle-cond">
+      <param name="source.dir" value="${argo.root.dir}/../argouml-emf/src"/>
+    </antcall>
+    <antcall target="checkstyle-cond">
+      <param name="source.dir" value="${argo.root.dir}/../argouml-nb/src"/>
+    </antcall>
+    <antcall target="checkstyle-cond">
+      <param name="source.dir" value="${argo.root.dir}/../argouml-i18n-zh/src"/>
+    </antcall>
   </target>
+
 
   <!-- =================================================================== -->
   <!-- Removes generated files so that they are not checked by xenofarm.   -->
