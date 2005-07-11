@@ -74,10 +74,14 @@ import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
+import org.argouml.uml.diagram.state.StateDiagramGraphModel;
+import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
 import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.ui.IStatusBar;
 import org.tigris.gef.undo.RedoAction;
@@ -177,6 +181,13 @@ public class ProjectBrowser
      * The action to undo the last user interaction
      */
     private final UndoAction undoAction = new UndoAction(Translator.localize("action.undo"));
+    
+    /**
+     * The action to remove the current selected Figs from the diagram
+     */
+    private final ActionRemoveFromDiagram removeFromDiagram =
+        new ActionRemoveFromDiagram(
+                Translator.localize("action.remove-from-diagram"));
 
     /**
      * For testing purposes. In tests this constructor can be called so
@@ -839,10 +850,9 @@ public class ProjectBrowser
     public void targetAdded(TargetEvent e) {
         Object target = e.getNewTarget();
         if (target instanceof ArgoDiagram) {
-	    // ProjectManager.getManager().getCurrentProject().
-	    // setActiveDiagram((ArgoDiagram) target);
             updateTitle();
         }
+        determineRemoveEnabled();
     }
 
     /**
@@ -851,10 +861,9 @@ public class ProjectBrowser
     public void targetRemoved(TargetEvent e) {
         Object target = e.getNewTarget();
         if (target instanceof ArgoDiagram) {
-	    // ProjectManager.getManager().getCurrentProject().
-	    // setActiveDiagram((ArgoDiagram) target);
             updateTitle();
         }
+        determineRemoveEnabled();
     }
 
     /**
@@ -863,12 +872,25 @@ public class ProjectBrowser
     public void targetSet(TargetEvent e) {
         Object target = e.getNewTarget();
         if (target instanceof ArgoDiagram) {
-	    // ProjectManager.getManager().getCurrentProject().
-	    // setActiveDiagram((ArgoDiagram) target);
             updateTitle();
         }
+        determineRemoveEnabled();
     }
-    // End TargetListener methods
+
+    /**
+     * Enabled the remove action if an item is selected in anything other then
+     * the activity or state diagrams
+     */
+    private void determineRemoveEnabled() {
+        Editor editor = Globals.curEditor();
+        boolean removeEnabled =
+            !editor.getSelectionManager().getFigs().isEmpty();
+        if (editor.getGraphModel() instanceof ActivityDiagramGraphModel ||
+                editor.getGraphModel() instanceof StateDiagramGraphModel) {
+            removeEnabled = false;
+        }
+        removeFromDiagram.setEnabled(removeEnabled);
+    }
 
     /**
      * Returns the todopane.
@@ -1243,4 +1265,13 @@ public class ProjectBrowser
     public Action getRedoAction() {
         return redoAction;
     }
+    
+    /**
+     * Get the action that removes selected figs from the diagram.
+     * @return the remove from diagram action.
+     */
+    public Action getRemoveFromDiagramAction() {
+        return removeFromDiagram;
+    }
+    
 } /* end class ProjectBrowser */

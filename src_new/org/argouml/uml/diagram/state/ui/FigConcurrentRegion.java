@@ -46,7 +46,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
-import org.argouml.uml.diagram.ui.ActionDeleteFromDiagram;
+import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -176,7 +176,7 @@ public class FigConcurrentRegion extends FigState
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         popUpActions.remove(
-                ActionDeleteFromDiagram.getSingleton());
+                ProjectBrowser.getInstance().getRemoveFromDiagramAction());
         popUpActions.add(new JSeparator());
         popUpActions.addElement(
                 ActionAddConcurrentRegion.getSingleton());

@@ -438,7 +438,8 @@ public abstract class FigNodeModelElement
         popUpActions.addElement(new JSeparator());
         popupAddOffset = 1;
         if (removeFromDiagram) {
-            popUpActions.addElement(ActionDeleteFromDiagram.getSingleton());
+            popUpActions.addElement(
+                    ProjectBrowser.getInstance().getRemoveFromDiagramAction());
             popupAddOffset++;
         }
 
