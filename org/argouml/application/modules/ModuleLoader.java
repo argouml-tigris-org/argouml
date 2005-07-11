@@ -33,6 +33,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -51,7 +53,6 @@ import org.argouml.application.api.ArgoSingletonModule;
 import org.argouml.application.api.Pluggable;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoModuleEvent;
-import org.argouml.application.security.ArgoJarClassLoader;
 
 /**
  * Handles loading of modules and plugins for ArgoUML.
@@ -285,17 +286,15 @@ public class ModuleLoader {
 	    for (int i = 0; i < file.length; i++) {
 		JarFile jarfile = null;
 		// Try-catch only the JarFile instantiation so we
-		// don't accidentally mask anything in ArgoJarClassLoader
-		// or processJarFile.
+		// don't accidentally mask anything in processJarFile.
 		try {
 		    jarfile = new JarFile(file[i]);
 		    if (jarfile != null) {
 	                ClassLoader classloader =
-			    new ArgoJarClassLoader(file[i].toURL());
-	                // ClassLoader classloader =
-			// getClass().getClassLoader();
+			    new URLClassLoader(new URL[] {
+				file[i].toURL()
+			    });
 	                processJarFile(classloader, file[i]);
-	                // processJarFile(getClass().getClassLoader(), file[i]);
 		    }
 		} catch (IOException ioe) { }
 	    }
