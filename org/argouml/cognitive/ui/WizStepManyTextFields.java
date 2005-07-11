@@ -59,6 +59,7 @@ public class WizStepManyTextFields extends WizStep {
 	// store wizard?
 	instructions.setText(instr);
 	instructions.setWrapStyleWord(true);
+        instructions.setLineWrap(true);
 	instructions.setEditable(false);
 	instructions.setBorder(null);
 	instructions.setBackground(getMainPanel().getBackground());

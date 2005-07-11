@@ -38,7 +38,6 @@ import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
@@ -60,7 +59,6 @@ import org.argouml.util.osdep.StartBrowser;
 
 public class WizStep extends JPanel
     implements TabToDoTarget, ActionListener, DocumentListener {
-    private static final Logger LOG = Logger.getLogger(WizStep.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
