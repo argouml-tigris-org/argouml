@@ -48,7 +48,6 @@ import org.argouml.application.api.ArgoEventListener;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationContext;
 import org.argouml.application.api.NotationName;
-import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
@@ -67,6 +66,7 @@ import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.UUIDHelper;
@@ -158,8 +158,8 @@ public abstract class FigEdgeModelElement
         name.setFilled(false);
         name.setLineWidth(0);
         name.setExpandOnly(false);
-        name.setMultiLine(false);
-        name.setAllowsTab(false);
+        name.setReturnAction(FigText.IGNORE);
+        name.setTabAction(FigText.IGNORE);
 
         stereo.setFont(LABEL_FONT);
         stereo.setTextColor(Color.black);
@@ -167,8 +167,8 @@ public abstract class FigEdgeModelElement
         stereo.setFilled(false);
         stereo.setLineWidth(0);
         stereo.setExpandOnly(false);
-        stereo.setMultiLine(false);
-        stereo.setAllowsTab(false);
+        stereo.setReturnAction(FigText.IGNORE);
+        stereo.setTabAction(FigText.IGNORE);
 
         setBetweenNearestPoints(true);
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
@@ -240,7 +240,8 @@ public abstract class FigEdgeModelElement
         popUpActions.addElement(new JSeparator());
         popupAddOffset = 1;
         if (removeFromDiagram) {
-            popUpActions.addElement(ActionDeleteFromDiagram.getSingleton());
+            popUpActions.addElement(
+                    ProjectBrowser.getInstance().getRemoveFromDiagramAction());
             popupAddOffset++;
         }
         
@@ -873,7 +874,9 @@ public abstract class FigEdgeModelElement
 
         FigPoly edgeShape = new FigPoly();
         //newFC = _content;
-        Point fcCenter = getSourceFigNode().center();
+        Point fcCenter =
+            new Point(getSourceFigNode().getX() / 2,
+                    getSourceFigNode().getY() / 2);
         Point centerRight =
             new Point(
 		      (int) (fcCenter.x
