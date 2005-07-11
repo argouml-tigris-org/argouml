@@ -51,8 +51,8 @@ public class WizManyNames extends UMLWizard {
     private static final String INSTRUCTIONS =
 	"Change each name to be significantly different from "
 	+ "the others.  "
-	+ "Names should differ my more than one character and "
-	+ "not just differ my case (capital or lower case).";
+	+ "Names should differ by more than one character and "
+	+ "not just differ by case (capital or lower case).";
 
     /**
      * A vector of model elements.
@@ -73,9 +73,11 @@ public class WizManyNames extends UMLWizard {
      */
     public void setMEs(Vector m) {
         int mSize = m.size();
-        for (int i=0; i < 3 && i <= mSize; ++i) {
+        for (int i=0; i < 3 && i < mSize; ++i) {
             if (!Model.getFacade().isAModelElement(m.get(i))) {
-                throw new IllegalArgumentException("The vector should contain model elements in the first 3 positions");
+                throw new IllegalArgumentException(
+                    "The vector should contain model elements in "
+                    + "the first 3 positions");
             }
         }
 

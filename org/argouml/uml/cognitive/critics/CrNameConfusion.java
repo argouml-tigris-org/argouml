@@ -144,7 +144,7 @@ public class CrNameConfusion extends CrUML {
     /**
      * @param stripped1 given string 1
      * @param stripped2 given string 2
-     * @return true if the both  iven strings are confusingly similar
+     * @return true if the both given strings are confusingly similar
      */
     public boolean confusable(String stripped1, String stripped2) {
 	int countDiffs = countDiffs(stripped1, stripped2);
