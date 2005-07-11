@@ -658,6 +658,9 @@ public class GeneratorDisplay extends Generator2 {
             }
 
             action = generateAction(act);
+            /* Dirty fix for issue 1758 (Needs to be amended 
+             * when we start supporting parameters): */
+            if (!action.endsWith(")")) action = action + "()";
         }
 
         return predecessors + number + " : " + action;
