@@ -626,10 +626,10 @@ I (Jeremy Bennet 2002?) suggest the priorities here
 
 Local Variables:
 mode: xml
-sgml-doctype: "argomanual.xml"
-sgml-parent-document: ("argomanual.xml" "appendix" nil)
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
-  argomanual.xml"
+  cookbook.xml"
 indent-tabs-mode: nil
 End:
 

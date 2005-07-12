@@ -211,8 +211,7 @@ permutations that you can think of.
 	<para>
 The top level document
 of the document
-is in <filename>documentname.in</filename>
-(copied to <filename>documentname.xml</filename> by the build script). 
+is in <filename>documentname.xml</filename>. 
 Each chapter (or
         preface, glossary, appendix etc) is a separate file, defined as a
         system entity and included from this top level
@@ -231,9 +230,8 @@ product (ArgoUML) and allow us to change it later (to Argo/UML,
         <para>
 In the build script there is some magic that
 translates @tagname@ to a real value.
-E.g. @VERSION@ in the <filename>documentname.in</filename> file 
-into <replaceable>what.ever</replaceable> in 
-the <filename>documentname.xml</filename> file.
+E.g. @VERSION@ in the <filename>documentname.xml</filename> file 
+into <replaceable>0.16</replaceable>.
 </para>
       </listitem>
 
@@ -409,10 +407,10 @@ Please don't delete these!
 
 Local Variables:
 mode: xml
-sgml-doctype: "argomanual.xml"
-sgml-parent-document: ("argomanual.xml" "appendix" nil)
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
-  argomanual.xml"
+  cookbook.xml"
 indent-tabs-mode: nil
 End:
 
