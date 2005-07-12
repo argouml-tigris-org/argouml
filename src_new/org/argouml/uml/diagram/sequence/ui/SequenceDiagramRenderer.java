@@ -32,7 +32,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
-import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
@@ -46,6 +45,9 @@ import org.tigris.gef.presentation.FigNode;
  * @author 5eichler
  */
 public class SequenceDiagramRenderer extends UmlDiagramRenderer {
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(SequenceDiagramRenderer.class);
 
@@ -56,17 +58,18 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
      *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      *         java.lang.Object, java.util.Map)
      */
-    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map styleAttributes) {
-        FigNode result=null;
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node,
+				 Map styleAttributes) {
+        FigNode result = null;
         if (Model.getFacade().isAClassifierRole(node)) {
-            result=new FigClassifierRole(node);
+            result = new FigClassifierRole(node);
         }
-        if ( Model.getFacade().isAComment(node)) {
-            result=new FigComment( gm, node);
+        if (Model.getFacade().isAComment(node)) {
+            result = new FigComment(gm, node);
         }
         // if (node instanceof MStimulus) return new FigSeqStimulus(gm, node);
         // TODO: Something here.
-        LOG.debug("SequenceDiagramRenderer getFigNodeFor "+result);
+        LOG.debug("SequenceDiagramRenderer getFigNodeFor " + result);
         return result;
     }
 
@@ -77,8 +80,9 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
      *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      *         java.lang.Object, java.util.Map)
      */
-    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, Map styleAttributes) {
-        return getFigEdgeFor( edge, styleAttributes);
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge,
+				 Map styleAttributes) {
+        return getFigEdgeFor(edge, styleAttributes);
     }
 
     /**
@@ -93,16 +97,16 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
             throw new IllegalArgumentException("A model edge must be supplied");
         }
         if (Model.getFacade().isAMessage(edge)) {
-            Object action = Model.getFacade().getAction( edge);
-            FigEdge result=null;
+            Object action = Model.getFacade().getAction(edge);
+            FigEdge result = null;
             if (Model.getFacade().isACallAction(action)) {
-                result= new FigCallActionMessage(edge);
+                result = new FigCallActionMessage(edge);
             } else if (Model.getFacade().isAReturnAction(action)) {
-                result= new FigReturnActionMessage(edge);
+                result = new FigReturnActionMessage(edge);
             } else if (Model.getFacade().isADestroyAction(action)) {
-                result= new FigDestroyActionMessage(edge);
+                result = new FigDestroyActionMessage(edge);
             } else if (Model.getFacade().isACreateAction(action)) {
-                result= new FigCreateActionMessage(edge);
+                result = new FigCreateActionMessage(edge);
             }
             return result;
         }

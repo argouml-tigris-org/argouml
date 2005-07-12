@@ -36,99 +36,96 @@ import org.argouml.i18n.Translator;
 
 public class ModeChangeHeight extends FigModifyingModeImpl {
 
-    public ModeChangeHeight()
-    {
-        _contractSet=false;
-        _editor=Globals.curEditor();
-        _rubberbandColor=Globals.getPrefs().getRubberbandColor();
+    public ModeChangeHeight() {
+        contractSet = false;
+        editor = Globals.curEditor();
+        rubberbandColor = Globals.getPrefs().getRubberbandColor();
     }
 
-    public void mousePressed( MouseEvent me)
-    {
-        if ( me.isConsumed())
+    public void mousePressed(MouseEvent me) {
+        if (me.isConsumed()) {
             return;
-        _startY=me.getY();
-        _startX=me.getX();
+	}
+
+        startY = me.getY();
+        startX = me.getX();
         start();
         me.consume();
     }
 
-    public void mouseDragged( MouseEvent me)
-    {
-        if ( me.isConsumed())
+    public void mouseDragged(MouseEvent me) {
+        if (me.isConsumed()) {
             return;
-        _currentY=me.getY();
-        _editor.damageAll();
+	}
+
+        currentY = me.getY();
+        editor.damageAll();
         me.consume();
     }
 
-    public void mouseReleased( MouseEvent me)
-    {
-        if ( me.isConsumed())
+    public void mouseReleased(MouseEvent me) {
+        if (me.isConsumed()) {
             return;
-        SequenceDiagramLayout layout=(SequenceDiagramLayout)Globals.curEditor().getLayerManager().getActiveLayer();
-        int endY=me.getY();
-        if ( isContract())
-        {
-            int startOffset=layout.getNodeIndex( _startY);
+	}
+
+        SequenceDiagramLayout layout =
+	    (SequenceDiagramLayout) Globals.curEditor().getLayerManager()
+	        .getActiveLayer();
+        int endY = me.getY();
+        if (isContract()) {
+            int startOffset = layout.getNodeIndex(startY);
             int endOffset;
-            if ( _startY>endY)
-            {
-                endOffset=startOffset;
-                startOffset=layout.getNodeIndex( endY);
+            if (startY > endY) {
+                endOffset = startOffset;
+                startOffset = layout.getNodeIndex(endY);
+            } else {
+                endOffset = layout.getNodeIndex(endY);
+	    }
+            int diff = endOffset - startOffset;
+            if (diff > 0) {
+                layout.contractDiagram(startOffset, diff);
             }
-            else
-                endOffset=layout.getNodeIndex( endY);
-            int diff=endOffset-startOffset;
-            if ( diff>0)
-            {
-                layout.contractDiagram( startOffset, diff);
-            }
-        }
-        else
-        {
-            int startOffset=layout.getNodeIndex( _startY);
-            if ( startOffset>0 && endY<_startY)
+        } else {
+            int startOffset = layout.getNodeIndex(startY);
+            if (startOffset > 0 && endY < startY) {
                 startOffset--;
-            int diff=layout.getNodeIndex( endY)-startOffset;
-            if ( diff<0)
-                diff= -diff;
-            if ( diff>0)
-                layout.expandDiagram( startOffset, diff);
+	    }
+            int diff = layout.getNodeIndex(endY) - startOffset;
+            if (diff < 0) {
+                diff = -diff;
+	    }
+            if (diff > 0) {
+                layout.expandDiagram(startOffset, diff);
+	    }
         }
 
         me.consume();
         done();
     }
 
-    public void paint(Graphics g)
-    {
-        g.setColor( _rubberbandColor);
-        g.drawLine( _startX, _startY, _startX, _currentY);
+    public void paint(Graphics g) {
+        g.setColor(rubberbandColor);
+        g.drawLine(startX, startY, startX, currentY);
     }
 
-    public String instructions()
-    {
-        if ( isContract())
-        {
-            return Translator.localize( "action.sequence-contract");
+    public String instructions() {
+        if (isContract()) {
+            return Translator.localize("action.sequence-contract");
         }
-        return Translator.localize( "action.sequence-expand");
+        return Translator.localize("action.sequence-expand");
     }
 
-    private boolean isContract()
-    {
-        if ( ! _contractSet)
-        {
-            _contract=getArg("name").equals( "SequenceContract");
-            _contractSet=true;
+    private boolean isContract() {
+        if (!contractSet) {
+            contract = getArg("name").equals("SequenceContract");
+            contractSet = true;
         }
-        return _contract;
+        return contract;
     }
 
-    private boolean _contract;
-    private boolean _contractSet;
-    private int _startX, _startY, _currentY;
-    private Editor _editor;
-    private Color _rubberbandColor;
+    private boolean contract;
+    private boolean contractSet;
+    private int startX, startY, currentY;
+    private Editor editor;
+    private Color rubberbandColor;
 }

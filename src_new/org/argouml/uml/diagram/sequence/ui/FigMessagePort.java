@@ -38,10 +38,8 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigLine;
 
-
 /**
  * The port fig for links.
- * @author : jaap.branderhorst@xs4all.nl
  *
  * @author jaap.branderhorst
  */
@@ -50,62 +48,55 @@ public class FigMessagePort extends FigGroup {
     private MessageNode node;
 
     /**
-     * Creates a new horizontal FigMessagePort that's not displayed
+     * Creates a new horizontal FigMessagePort that's not displayed.
      *
      * @param x first x coordinate.
      * @param y y coordinate.
      * @param x2 second x coordinate.
      */
-    public FigMessagePort( int x, int y, int x2) {
+    public FigMessagePort(int x, int y, int x2) {
         super();
-        FigLine myLine=new FigLine( x, y, x2, y);
-        addFig( myLine);
+        FigLine myLine = new FigLine(x, y, x2, y);
+        addFig(myLine);
         setVisible(false);
     }
 
-    public void addFig( Fig toAdd)
-    {
-        if ( toAdd instanceof FigLine && getFigs().size()==0)
-        {
-            toAdd.setVisible( false);
-            toAdd.addPropertyChangeListener( new PropertyChangeListener() {
-                public void propertyChange( PropertyChangeEvent pce)
-                {
+    public void addFig(Fig toAdd) {
+        if (toAdd instanceof FigLine && getFigs().size() == 0) {
+            toAdd.setVisible(false);
+            toAdd.addPropertyChangeListener(new PropertyChangeListener() {
+                public void propertyChange(PropertyChangeEvent pce) {
                     calcBounds();
                 }
             });
-            super.addFig( toAdd);
+            super.addFig(toAdd);
         }
     }
 
-    protected void setBoundsImpl( int x, int y, int w, int h)
-    {
-        if ( getFigs().size()>0)
-        {
-            getMyLine().setShape( x, y, x+w, y+h);
+    protected void setBoundsImpl(int x, int y, int w, int h) {
+        if (getFigs().size() > 0) {
+            getMyLine().setShape(x, y, x + w, y + h);
             calcBounds();
         }
     }
 
     public void calcBounds() {
-        if ( getFigs().size()>0)
-        {
-            FigLine line=getMyLine();
-            _x=line.getX();
-            _y=line.getY();
-            _w=line.getWidth();
-            _h=line.getHeight();
-            firePropChange( "bounds", null, null);
+        if (getFigs().size() > 0) {
+            FigLine line = getMyLine();
+            _x = line.getX();
+            _y = line.getY();
+            _w = line.getWidth();
+            _h = line.getHeight();
+            firePropChange("bounds", null, null);
         }
     }
 
     /**
      * Creates a new FigMessagePort that's not displayed; used when loading
-     * PGML
+     * PGML.
      */
-    public FigMessagePort()
-    {
-        setVisible( false);
+    public FigMessagePort() {
+        setVisible(false);
     }
 
     /**
@@ -113,42 +104,51 @@ public class FigMessagePort extends FigGroup {
      */
     public List getGravityPoints() {
         ArrayList ret = new ArrayList();
-        FigLine myLine=getMyLine();
+        FigLine myLine = getMyLine();
         Point p1 = new Point(myLine.getX(), myLine.getY());
-        Point p2 = new Point(myLine.getX() + myLine.getWidth(), myLine.getY() + myLine.getHeight());
+        Point p2 =
+	    new Point(myLine.getX() + myLine.getWidth(),
+		      myLine.getY() + myLine.getHeight());
         ret.add(p1);
         ret.add(p2);
         return ret;
     }
 
-    MessageNode getNode()
-    {
-        if ( node==null)
-        {
-            ((FigClassifierRole)this.getGroup()).setMatchingNode( this);
+    MessageNode getNode() {
+        if (node == null) {
+            ((FigClassifierRole) this.getGroup()).setMatchingNode(this);
         }
         return node;
     }
 
-    void clearNode()
-    {
-        Fig owner=getGroup();
-        if ( owner instanceof FigClassifierRole)
-            ((FigClassifierRole)owner).removeFigMessagePort( this);
+    void clearNode() {
+        Fig owner = getGroup();
+        if (owner instanceof FigClassifierRole) {
+            ((FigClassifierRole) owner).removeFigMessagePort(this);
+	}
     }
 
-    void setNode( MessageNode n)
-    {
-        node=n;
+    void setNode(MessageNode n) {
+        node = n;
     }
 
-    public int getX1() { return getMyLine().getX1(); }
-    public int getY1() { return getMyLine().getY1(); }
-    public int getX2() { return getMyLine().getX2(); }
-    public int getY2() { return getMyLine().getY2(); }
+    public int getX1() {
+	return getMyLine().getX1();
+    }
 
-    private FigLine getMyLine()
-    {
-        return (FigLine)getFigs().get(0);
+    public int getY1() {
+	return getMyLine().getY1();
+    }
+
+    public int getX2() {
+	return getMyLine().getX2();
+    }
+
+    public int getY2() {
+	return getMyLine().getY2();
+    }
+
+    private FigLine getMyLine() {
+        return (FigLine) getFigs().get(0);
     }
 }

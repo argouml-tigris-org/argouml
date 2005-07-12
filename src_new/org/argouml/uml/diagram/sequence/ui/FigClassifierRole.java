@@ -71,10 +71,9 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class FigClassifierRole extends FigNodeModelElement
     implements MouseListener, HandlerFactory {
-    
     /**
-    * The width of an activation box
-    */
+     * The width of an activation box.
+     */
     public static final int WIDTH = 20;
 
     /**
@@ -95,8 +94,8 @@ public class FigClassifierRole extends FigNodeModelElement
         (3 * ROWHEIGHT + 3 * ROWDISTANCE + STEREOHEIGHT);
 
     /**
-    * The defaultwidth of the object rectangle
-    */
+     * The defaultwidth of the object rectangle.
+     */
     public static final int DEFAULT_WIDTH = 3 * DEFAULT_HEIGHT / 2;
 
     /**
@@ -112,12 +111,12 @@ public class FigClassifierRole extends FigNodeModelElement
 
     /**
      * The lifeline (dashed line under the object box to which activations are
-     * attached)
+     * attached).
      */
     private FigLine lifeLine;
 
     /**
-     * The list where the nodes to which links can be attached are stored
+     * The list where the nodes to which links can be attached are stored.
      */
     private List linkPositions = new ArrayList();
 
@@ -133,7 +132,7 @@ public class FigClassifierRole extends FigNodeModelElement
     private String classifierRoleName = "";
 
     /**
-     * The set of activation figs
+     * The set of activation figs.
      */
     private HashSet activationFigs;
 
@@ -186,18 +185,18 @@ public class FigClassifierRole extends FigNodeModelElement
                 1000,
                 Color.black);
         lifeLine.setDashed(true);
-        linkPositions.add(new MessageNode( this));
+        linkPositions.add(new MessageNode(this));
         for (int i = 0;
             i <= lifeLine.getHeight() / SequenceDiagramLayout.LINK_DISTANCE;
             i++) {
-            linkPositions.add(new MessageNode( this));
+            linkPositions.add(new MessageNode(this));
         }
         addFig(lifeLine);
         addFig(backgroundBox);
         addFig(getStereotypeFig());
         addFig(getNameFig());
         addFig(outerBox);
-        activationFigs=new HashSet();
+        activationFigs = new HashSet();
     }
 
     /**
@@ -209,7 +208,7 @@ public class FigClassifierRole extends FigNodeModelElement
     }
 
     /**
-     * When the mouse button is released, this fig will be moved into position
+     * When the mouse button is released, this fig will be moved into position.
      *
      * @see MouseListener#mouseReleased(MouseEvent)
      */
@@ -243,43 +242,40 @@ public class FigClassifierRole extends FigNodeModelElement
         center(getStereotypeFigText());
     }
 
-    int getNodeCount()
-    {
+    int getNodeCount() {
         return linkPositions.size();
     }
 
     /**
-     * Change a node to point to an actual FigMessagePort
+     * Change a node to point to an actual FigMessagePort.
      */
-    FigMessagePort createFigMessagePort( Object owner, Fig fig)
-    {
-        TempFig tempFig=(TempFig)fig;
-        MessageNode node=(MessageNode)fig.getOwner();
-        FigMessagePort fmp=new FigMessagePort( tempFig.getX1(), tempFig.getY1(),
-                                               tempFig.getX2());
-        node.setFigMessagePort( fmp);
-        fmp.setNode( node);
-        fmp.setOwner( owner);
+    FigMessagePort createFigMessagePort(Object owner, Fig fig) {
+        TempFig tempFig = (TempFig) fig;
+        MessageNode node = (MessageNode) fig.getOwner();
+        FigMessagePort fmp =
+	    new FigMessagePort(tempFig.getX1(), tempFig.getY1(),
+			       tempFig.getX2());
+        node.setFigMessagePort(fmp);
+        fmp.setNode(node);
+        fmp.setOwner(owner);
         addFig(fmp);
         updateNodeStates();
         return fmp;
     }
 
     /**
-     * Connect a FigMessagePort with a MessageNode by position
+     * Connect a FigMessagePort with a MessageNode by position.
      */
-    void setMatchingNode( FigMessagePort fmp)
-    {
-        while ( getYCoordinate( getNodeCount()-1)<fmp.getY1())
-            growToSize( getNodeCount()+10);
-        int i=0;
-        for ( Iterator it=linkPositions.iterator(); it.hasNext(); ++i)
-        {
-            MessageNode node=(MessageNode)it.next();
-            if ( getYCoordinate( i)==fmp.getY1())
-            {
-                node.setFigMessagePort( fmp);
-                fmp.setNode( node);
+    void setMatchingNode(FigMessagePort fmp) {
+        while (getYCoordinate(getNodeCount() - 1) < fmp.getY1()) {
+            growToSize(getNodeCount() + 10);
+	}
+        int i = 0;
+        for (Iterator it = linkPositions.iterator(); it.hasNext(); ++i) {
+            MessageNode node = (MessageNode) it.next();
+            if (getYCoordinate(i) == fmp.getY1()) {
+                node.setFigMessagePort(fmp);
+                fmp.setNode(node);
                 updateNodeStates();
                 break;
             }
@@ -287,21 +283,18 @@ public class FigClassifierRole extends FigNodeModelElement
     }
 
     /**
-     * Set the node's fig to a FigMessagePort if one is available
+     * Set the node's fig to a FigMessagePort if one is available.
      */
-    private void setMatchingFig( MessageNode node)
-    {
-        if ( node.getFigMessagePort()==null)
-        {
+    private void setMatchingFig(MessageNode node) {
+        if (node.getFigMessagePort() == null) {
             int y = getYCoordinate(node);
-            for (Iterator it = getFigs().iterator(); it.hasNext();)
-            {
-                Fig fig=(Fig)it.next();
-                if ( fig instanceof FigMessagePort){
-                    FigMessagePort fmp=(FigMessagePort)fig;
+            for (Iterator it = getFigs().iterator(); it.hasNext();) {
+                Fig fig = (Fig) it.next();
+                if (fig instanceof FigMessagePort) {
+                    FigMessagePort fmp = (FigMessagePort) fig;
                     if (fmp.getY1() == y) {
-                        node.setFigMessagePort( fmp);
-                        fmp.setNode( node);
+                        node.setFigMessagePort(fmp);
+                        fmp.setNode(node);
                         updateNodeStates();
                     }
                 }
@@ -310,7 +303,7 @@ public class FigClassifierRole extends FigNodeModelElement
     }
 
     private void center(FigText figText) {
-        int newX = this.getX() + this.getWidth()/2 - figText.getWidth()/2;
+        int newX = this.getX() + this.getWidth() / 2 - figText.getWidth() / 2;
         if (figText.getX() != newX) {
             figText.setX(newX);
             updateBounds();
@@ -337,26 +330,26 @@ public class FigClassifierRole extends FigNodeModelElement
         getNameFig().setCenter(
             new Point(x + w / 2,
 		      getNameFig().getY() - oldBounds.y + y
-		      + getNameFig().getHeight()/2));
+		      + getNameFig().getHeight() / 2));
         getStereotypeFig().setCenter(
             new Point(
                 x + w / 2,
                 (getStereotypeFig().getY() - oldBounds.y
-		 + y + getStereotypeFig().getHeight()/2)));
+		 + y + getStereotypeFig().getHeight() / 2)));
         reSize(outerBox, x, y, w, h);
         reSize(backgroundBox, x, y, w, h);
         lifeLine.setBounds(
-            outerBox.getX() + outerBox.getWidth()/2,
+            outerBox.getX() + outerBox.getWidth() / 2,
             outerBox.getY() + outerBox.getHeight(),
             0,
             h - outerBox.getHeight());
-        for ( Iterator figIt=getFigs().iterator(); figIt.hasNext();)
-        {
-            Fig fig=(Fig)figIt.next();
-            if ( activationFigs.contains( fig) || fig instanceof FigMessagePort)
-            {
+        for (Iterator figIt = getFigs().iterator(); figIt.hasNext();) {
+            Fig fig = (Fig) figIt.next();
+            if (activationFigs.contains(fig) || fig instanceof FigMessagePort) {
                 fig.setBounds(
-                    outerBox.getX() + outerBox.getWidth()/2 - fig.getWidth()/2,
+                    outerBox.getX()
+		    + outerBox.getWidth() / 2
+		    - fig.getWidth() / 2,
                     y - oldBounds.y + fig.getY(),
                     fig.getWidth(),
                     fig.getHeight());
@@ -370,8 +363,8 @@ public class FigClassifierRole extends FigNodeModelElement
      * This method is overridden in order to ignore change of y co-ordinate
      * during drag.
      */
-    public void superTranslate( int dx, int dy) {
-        setBounds(getX()+dx, getY(), getWidth(), getHeight());
+    public void superTranslate(int dx, int dy) {
+        setBounds(getX() + dx, getY(), getWidth(), getHeight());
     }
 
     /**
@@ -389,7 +382,7 @@ public class FigClassifierRole extends FigNodeModelElement
                 (_w == 0)
                     ? x
                     : x + (int) ((f.getX() - _x) * ((float) w / (float) _w));
-            int newY = f.getY()+y-_y;
+            int newY = f.getY() + y - _y;
             int newW =
                 (_w == 0)
                     ? 0
@@ -428,53 +421,47 @@ public class FigClassifierRole extends FigNodeModelElement
         _w = bounds.width;
     }
 
-    static public boolean isCallMessage( Object message)
-    {
-        return Model.getFacade().isACallAction( Model.getFacade().getAction( message));
+    public static boolean isCallMessage(Object message) {
+        return Model.getFacade()
+	    .isACallAction(Model.getFacade().getAction(message));
     }
 
-    static public boolean isReturnMessage( Object message)
-    {
-        return Model.getFacade().isAReturnAction( Model.getFacade().getAction( message));
+    public static boolean isReturnMessage(Object message) {
+        return Model.getFacade()
+	    .isAReturnAction(Model.getFacade().getAction(message));
     }
 
-    static public boolean isCreateMessage( Object message)
-    {
-        return Model.getFacade().isACreateAction( Model.getFacade().getAction( message));
+    public static boolean isCreateMessage(Object message) {
+        return Model.getFacade()
+	    .isACreateAction(Model.getFacade().getAction(message));
     }
 
-    static public boolean isDestroyMessage( Object message)
-    {
-        return Model.getFacade().isADestroyAction( Model.getFacade().getAction( message));
+    public static boolean isDestroyMessage(Object message) {
+        return Model.getFacade()
+	    .isADestroyAction(Model.getFacade().getAction(message));
     }
 
-    private void setPreviousState( int start, int newState)
-    {
-        for ( int i=start-1; i>=0; --i)
-        {
-            MessageNode node=(MessageNode)linkPositions.get( i);
-            if ( node.getFigMessagePort()!=null)
-            {
+    private void setPreviousState(int start, int newState) {
+        for (int i = start - 1; i >= 0; --i) {
+            MessageNode node = (MessageNode) linkPositions.get(i);
+            if (node.getFigMessagePort() != null) {
                 break;
-            }
-            else
-                node.setState( newState);
+            } else {
+                node.setState(newState);
+	    }
         }
     }
 
-    private int setFromActionNode( int lastState, int offset)
-    {
-        if ( lastState==MessageNode.INITIAL)
-        {
-            setPreviousState( offset, lastState=MessageNode.DONE_SOMETHING_NO_CALL);
-        }
-        else if ( lastState==MessageNode.IMPLICIT_RETURNED)
-        {
-            setPreviousState( offset, lastState=MessageNode.CALLED);
-        }
-        else if ( lastState==MessageNode.IMPLICIT_CREATED)
-        {
-            setPreviousState( offset, lastState=MessageNode.CREATED);
+    private int setFromActionNode(int lastState, int offset) {
+        if (lastState == MessageNode.INITIAL) {
+	    lastState = MessageNode.DONE_SOMETHING_NO_CALL;
+            setPreviousState(offset, lastState);
+        } else if (lastState == MessageNode.IMPLICIT_RETURNED) {
+	    lastState = MessageNode.CALLED;
+            setPreviousState(offset, lastState);
+        } else if (lastState == MessageNode.IMPLICIT_CREATED) {
+	    lastState = MessageNode.CREATED;
+            setPreviousState(offset, lastState);
         }
         return lastState;
     }
@@ -488,257 +475,252 @@ public class FigClassifierRole extends FigNodeModelElement
      * After a classifier is created, the state is CREATED and
      * the state for prior nodes is set to PRECREATED
      * If the classifier does something:<p>
-     * <p>
+     *
      * If the state is INITIAL, the state for that and prior
      * nodes becomes DONE_SOMETHING_NO_CALL<p>
+     *
      * else if the state is IMPLICIT_RETURNED, the state for that
      * and prior nodes becomes CALLED<p>
-     * Otherwise, the state doesn't change
-     * <p>
+     *
+     * Otherwise, the state doesn't change<p>
+     *
      * If the classifier is called:<p>
-     * <p>
-     * If the caller list is empty, the state becomes CALLED
-     * <p>
-     * The caller is added to the caller list
-     * <p>
+     *
+     * If the caller list is empty, the state becomes CALLED<p>
+     *
+     * The caller is added to the caller list<p>
+     *
      * If the classifier returns, the caller being returned to and any callers
      * added to the list since that call are removed from the caller list.
-     * If the caller list is empty the state becomes RETURNED.
-     * <p>
+     * If the caller list is empty the state becomes RETURNED.<p>
+     *
      * If nothing happens on the node:<p>
+     *
      * If the previous state was CALLED, the state becomes IMPLICIT_RETURNED<p>
+     *
      * Otherwise, the state is the same as the previous node's state<p>
+     *
      * Start or stop a rectangle when the state changes.
      *
      */
-    private void updateNodeStates()
-    {
-        int lastState=MessageNode.INITIAL;
-        ArrayList callers=null;
-        int nodeCount=linkPositions.size();
-        Rectangle fmpBounds=new Rectangle();
+    private void updateNodeStates() {
+        int lastState = MessageNode.INITIAL;
+        ArrayList callers = null;
+        int nodeCount = linkPositions.size();
+        Rectangle fmpBounds = new Rectangle();
 
-        for ( int i=0; i<nodeCount; ++i)
-        {
-            MessageNode node=(MessageNode)linkPositions.get(i);
-            FigMessagePort fmp=node.getFigMessagePort();
+        for (int i = 0; i < nodeCount; ++i) {
+            MessageNode node = (MessageNode) linkPositions.get(i);
+            FigMessagePort fmp = node.getFigMessagePort();
             // If the node has a FigMessagePort
-            if ( fmp!=null)
-            {
-                fmpBounds=fmp.getBounds( fmpBounds);
-                int fmpY=getYCoordinate( i);
-                if ( fmpBounds.y!=fmpY)
-                {
-                    fmpBounds.y=fmpY;
-                    fmp.setBounds( fmpBounds);
+            if (fmp != null) {
+                fmpBounds = fmp.getBounds(fmpBounds);
+                int fmpY = getYCoordinate(i);
+                if (fmpBounds.y != fmpY) {
+                    fmpBounds.y = fmpY;
+                    fmp.setBounds(fmpBounds);
                 }
-                Object message=fmp.getOwner();
-                boolean selfMessage=( Model.getFacade().isAMessage( message) &&
-                Model.getFacade().getSender( message)==
-                Model.getFacade().getReceiver( message));
-                boolean selfReceiving=false;
-                if ( selfMessage)
-                {
-                    for ( int j=i-1; j>=0; --j)
-                    {
-                        MessageNode prev=(MessageNode)linkPositions.get(j);
-                        FigMessagePort prevmp=prev.getFigMessagePort();
-                        if ( prevmp!=null && prevmp.getOwner()==message)
-                            selfReceiving=true;
+                Object message = fmp.getOwner();
+                boolean selfMessage =
+		    (Model.getFacade().isAMessage(message)
+		     && (Model.getFacade().getSender(message)
+			 == Model.getFacade().getReceiver(message)));
+                boolean selfReceiving = false;
+                if (selfMessage) {
+                    for (int j = i - 1; j >= 0; --j) {
+                        MessageNode prev = (MessageNode) linkPositions.get(j);
+                        FigMessagePort prevmp = prev.getFigMessagePort();
+                        if (prevmp != null && prevmp.getOwner() == message) {
+                            selfReceiving = true;
+			}
                     }
                 }
-                if ( isCallMessage( message))
-                {
-                    if ( Model.getFacade().getSender( message)==getOwner()
-                         && ! selfReceiving)
-                    {
-                        lastState=setFromActionNode( lastState, i);
-                        node.setState( lastState);
-                        node.setCallers( callers);
+                if (isCallMessage(message)) {
+                    if (Model.getFacade().getSender(message) == getOwner()
+                         && !selfReceiving) {
+                        lastState = setFromActionNode(lastState, i);
+                        node.setState(lastState);
+                        node.setCallers(callers);
+                    } else {
+			if (lastState == MessageNode.INITIAL
+			    || lastState == MessageNode.CREATED
+			    || lastState == MessageNode.IMPLICIT_CREATED
+			    || lastState == MessageNode.IMPLICIT_RETURNED
+			    || lastState == MessageNode.RETURNED) {
+
+                            lastState = MessageNode.CALLED;
+
+			}
+
+                        if (callers == null) {
+                            callers = new ArrayList();
+			} else {
+                            callers = new ArrayList(callers);
+			}
+                        callers.add(Model.getFacade().getSender(message));
+                        node.setState(lastState);
+                        node.setCallers(callers);
                     }
-                    else
-                    {
-                        if ( lastState==MessageNode.INITIAL || lastState==MessageNode.CREATED ||
-                             lastState==MessageNode.IMPLICIT_CREATED ||
-                             lastState==MessageNode.IMPLICIT_RETURNED ||
-                             lastState==MessageNode.RETURNED)
-                            lastState=MessageNode.CALLED;
-                        if ( callers==null)
-                            callers=new ArrayList();
-                        else
-                            callers=new ArrayList(callers);
-                        callers.add( Model.getFacade().getSender( message));
-                        node.setState( lastState);
-                        node.setCallers( callers);
-                    }
-                }
-                else if ( isReturnMessage( message))
-                {
-                    if (lastState == MessageNode.IMPLICIT_RETURNED)
-                    {
+                } else if (isReturnMessage(message)) {
+                    if (lastState == MessageNode.IMPLICIT_RETURNED) {
                         setPreviousState(i, MessageNode.CALLED);
-                        lastState=MessageNode.CALLED;
+                        lastState = MessageNode.CALLED;
                     }
-                    if ( Model.getFacade().getSender( message)==getOwner() &&
-                         ! selfReceiving)
-                    {
-                        Object caller=Model.getFacade().getReceiver( message);
-                        int callerIndex=callers.lastIndexOf( caller);
-                        if ( callerIndex!= -1)
-                        {
-                            for ( int backNodeIndex=i-1;
-                                  backNodeIndex>0 &&
-                                  ((MessageNode)linkPositions.get( backNodeIndex)).matchingCallerList( caller, callerIndex);
-                                  --backNodeIndex);
+                    if (Model.getFacade().getSender(message) == getOwner()
+			&& !selfReceiving) {
+                        Object caller = Model.getFacade().getReceiver(message);
+                        int callerIndex = callers.lastIndexOf(caller);
+                        if (callerIndex != -1) {
+                            for (int backNodeIndex = i - 1;
+                                  backNodeIndex > 0
+				     && ((MessageNode) linkPositions
+					 .get(backNodeIndex))
+				     .matchingCallerList(caller, callerIndex);
+                                  --backNodeIndex) {
+				;
+			    }
                             if (callerIndex == 0) {
                                 callers = null;
-                                if (lastState == MessageNode.CALLED)
+                                if (lastState == MessageNode.CALLED) {
                                     lastState = MessageNode.RETURNED;
-                            }
-                            else {
-                                callers = new ArrayList(callers.subList(0,
-                                    callerIndex));
+				}
+                            } else {
+                                callers =
+				    new ArrayList(callers.subList(0,
+								  callerIndex));
                             }
                         }
                     }
-                    node.setState( lastState);
-                    node.setCallers( callers);
-                }
-                else if ( isCreateMessage( message))
-                {
-                    if ( Model.getFacade().getSender( message)==getOwner())
-                    {
-                        lastState=setFromActionNode( lastState, i);
-                        node.setState( lastState);
-                        node.setCallers( callers);
+                    node.setState(lastState);
+                    node.setCallers(callers);
+                } else if (isCreateMessage(message)) {
+                    if (Model.getFacade().getSender(message) == getOwner()) {
+                        lastState = setFromActionNode(lastState, i);
+                        node.setState(lastState);
+                        node.setCallers(callers);
+                    } else {
+                        lastState = MessageNode.CREATED;
+                        setPreviousState(i, MessageNode.PRECREATED);
+                        node.setState(lastState);
+                        node.setCallers(callers);
                     }
-                    else
-                    {
-                        lastState=MessageNode.CREATED;
-                        setPreviousState( i, MessageNode.PRECREATED);
-                        node.setState( lastState);
-                        node.setCallers( callers);
-                    }
-                }
-                else if ( isDestroyMessage( message))
-                {
-                    if ( Model.getFacade().getSender( message)==getOwner()
-                         && ! selfReceiving)
-                    {
-                        lastState=setFromActionNode( lastState, i);
-                        node.setState( lastState);
-                        node.setCallers( callers);
-                    }
-                    else
-                    {
-                        lastState=MessageNode.DESTROYED;
-                        callers=null;
-                        node.setState( lastState);
-                        node.setCallers( callers);
+                } else if (isDestroyMessage(message)) {
+                    if (Model.getFacade().getSender(message) == getOwner()
+                         && !selfReceiving) {
+                        lastState = setFromActionNode(lastState, i);
+                        node.setState(lastState);
+                        node.setCallers(callers);
+                    } else {
+                        lastState = MessageNode.DESTROYED;
+                        callers = null;
+                        node.setState(lastState);
+                        node.setCallers(callers);
                     }
                 }
-            }
-            else
-            {
-                if ( lastState==MessageNode.CALLED)
-                    lastState=MessageNode.IMPLICIT_RETURNED;
-                if ( lastState==MessageNode.CREATED)
-                    lastState=MessageNode.IMPLICIT_CREATED;
-                node.setState( lastState);
-                node.setCallers( callers);
+            } else {
+                if (lastState == MessageNode.CALLED) {
+                    lastState = MessageNode.IMPLICIT_RETURNED;
+		}
+                if (lastState == MessageNode.CREATED) {
+                    lastState = MessageNode.IMPLICIT_CREATED;
+		}
+                node.setState(lastState);
+                node.setCallers(callers);
             }
         }
     }
 
     private void removeActivations() {
-        ArrayList activations=new ArrayList( activationFigs);
+        ArrayList activations = new ArrayList(activationFigs);
         activationFigs.clear();
-        for ( Iterator it=activations.iterator();
+        for (Iterator it = activations.iterator();
               it.hasNext();
-              )
-            removeFig( (Fig)it.next());
+	     ) {
+            removeFig((Fig) it.next());
+	}
         calcBounds();
     }
 
-    private void addActivationFig( Fig f)
-    {
-        addFig( f);
-        activationFigs.add( f);
+    private void addActivationFig(Fig f) {
+        addFig(f);
+        activationFigs.add(f);
     }
 
     private void addActivations() {
         MessageNode startActivationNode = null;
         MessageNode endActivationNode = null;
-        int lastState=MessageNode.INITIAL;
-        boolean startFull=false;
-        boolean endFull=false;
-        int nodeCount=linkPositions.size();
+        int lastState = MessageNode.INITIAL;
+        boolean startFull = false;
+        boolean endFull = false;
+        int nodeCount = linkPositions.size();
         int x = lifeLine.getX() - WIDTH / 2;
-        for ( int i=0; i<nodeCount; ++i)
-        {
+        for (int i = 0; i < nodeCount; ++i) {
             MessageNode node = (MessageNode) linkPositions.get(i);
             int nextState = node.getState();
-            if ( lastState!=nextState && nextState==MessageNode.CREATED)
-            {
-                FigRect birthFig=new FigRect( lifeLine.getX()-WIDTH/2,
-                                              getYCoordinate( i)-
-                                              SequenceDiagramLayout.LINK_DISTANCE/4,
-                                              WIDTH,
-                                              SequenceDiagramLayout.LINK_DISTANCE/4);
-                birthFig.setFilled( true);
-                birthFig.setFillColor( Color.BLACK);
-                addActivationFig( birthFig);
+            if (lastState != nextState && nextState == MessageNode.CREATED) {
+                FigRect birthFig =
+		    new FigRect(lifeLine.getX() - WIDTH / 2,
+				getYCoordinate(i)
+				- SequenceDiagramLayout.LINK_DISTANCE / 4,
+				WIDTH,
+				SequenceDiagramLayout.LINK_DISTANCE / 4);
+                birthFig.setFilled(true);
+                birthFig.setFillColor(Color.BLACK);
+                addActivationFig(birthFig);
             }
-            if ( lastState!=nextState && nextState==MessageNode.DESTROYED)
-            {
-                int y=getYCoordinate( i)-SequenceDiagramLayout.LINK_DISTANCE/2;
-                addActivationFig( new FigLine( x, y+SequenceDiagramLayout.LINK_DISTANCE/2, x+WIDTH,
-                                               y+SequenceDiagramLayout.LINK_DISTANCE));
-                addActivationFig( new FigLine( x, y+SequenceDiagramLayout.LINK_DISTANCE,
-                                               x+WIDTH, y+SequenceDiagramLayout.LINK_DISTANCE/2));
+            if (lastState != nextState && nextState == MessageNode.DESTROYED) {
+                int y =
+		    getYCoordinate(i) - SequenceDiagramLayout.LINK_DISTANCE / 2;
+                addActivationFig(
+			new FigLine(x,
+				    y + SequenceDiagramLayout.LINK_DISTANCE / 2,
+				    x + WIDTH,
+				    y + SequenceDiagramLayout.LINK_DISTANCE));
+                addActivationFig(
+			new FigLine(x,
+				    y + SequenceDiagramLayout.LINK_DISTANCE,
+				    x + WIDTH,
+				    y
+				    + SequenceDiagramLayout.LINK_DISTANCE / 2));
             }
             if (startActivationNode == null) {
                 switch (nextState) {
-                    case MessageNode.DONE_SOMETHING_NO_CALL:
-                        startActivationNode = node;
-                        startFull=true;
-                        break;
-                    case MessageNode.CALLED:
-                    case MessageNode.CREATED:
-                        startActivationNode = node;
-                        startFull=false;
+		case MessageNode.DONE_SOMETHING_NO_CALL:
+		    startActivationNode = node;
+		    startFull = true;
+		    break;
+		case MessageNode.CALLED:
+		case MessageNode.CREATED:
+		    startActivationNode = node;
+		    startFull = false;
                 }
-            }
-            else
-            {
+            } else {
                 switch (nextState) {
-                    case MessageNode.DESTROYED :
-                    case MessageNode.RETURNED :
-                        endActivationNode=node;
-                        endFull=false;
-                        break;
-                    case MessageNode.IMPLICIT_RETURNED :
-                    case MessageNode.IMPLICIT_CREATED :
-                        endActivationNode=(MessageNode)linkPositions.get( i-1);
-                        endFull=true;
-                        break;
-                    case MessageNode.CALLED :
-                        if ( lastState==MessageNode.CREATED)
-                        {
-                            endActivationNode=(MessageNode)linkPositions.get( i-1);
-                            endFull=false;
-                            --i;
-                            nextState=lastState;
-                        }
-                        break;
+		case MessageNode.DESTROYED :
+		case MessageNode.RETURNED :
+		    endActivationNode = node;
+		    endFull = false;
+		    break;
+		case MessageNode.IMPLICIT_RETURNED :
+		case MessageNode.IMPLICIT_CREATED :
+		    endActivationNode = (MessageNode) linkPositions.get(i - 1);
+		    endFull = true;
+		    break;
+		case MessageNode.CALLED :
+		    if (lastState == MessageNode.CREATED) {
+			endActivationNode =
+			    (MessageNode) linkPositions.get(i - 1);
+			endFull = false;
+			--i;
+			nextState = lastState;
+		    }
+		    break;
                 }
             }
-            lastState=nextState;
-            if ( startActivationNode!=null && endActivationNode!=null)
-            {
-                if ( startActivationNode!=endActivationNode ||
-                     startFull || endFull)
-                {
+            lastState = nextState;
+            if (startActivationNode != null && endActivationNode != null) {
+                if (startActivationNode != endActivationNode
+		    || startFull || endFull) {
                     int y1 = getYCoordinate(startActivationNode);
                     if (startFull) {
                         y1 -= SequenceDiagramLayout.LINK_DISTANCE / 2;
@@ -749,14 +731,15 @@ public class FigClassifierRole extends FigNodeModelElement
                     }
                     addActivationFig(new FigRect(x, y1, WIDTH, y2 - y1));
                 }
-                startActivationNode=endActivationNode=null;
-                startFull=endFull=false;
+                startActivationNode = null;
+		endActivationNode = null;
+                startFull = false;
+		endFull = false;
             }
         }
-        if ( startActivationNode!=null)
-        {
-            endActivationNode=(MessageNode)linkPositions.get( nodeCount-1);
-            endFull=true;
+        if (startActivationNode != null) {
+            endActivationNode = (MessageNode) linkPositions.get(nodeCount - 1);
+            endFull = true;
             int y1 = getYCoordinate(startActivationNode);
             if (startFull) {
                 y1 -= SequenceDiagramLayout.LINK_DISTANCE / 2;
@@ -766,8 +749,10 @@ public class FigClassifierRole extends FigNodeModelElement
                 y2 += SequenceDiagramLayout.LINK_DISTANCE / 2;
             }
             addActivationFig(new FigRect(x, y1, WIDTH, y2 - y1));
-            startActivationNode=endActivationNode=null;
-            startFull=endFull=false;
+            startActivationNode = null;
+	    endActivationNode = null;
+            startFull = false;
+	    endFull = false;
         }
     }
 
@@ -782,17 +767,20 @@ public class FigClassifierRole extends FigNodeModelElement
 
     //////////////////////////////////////////////////////////////////////////
     // HandlerFactory implementation
-    public DefaultHandler getHandler( HandlerStack stack,
+    public DefaultHandler getHandler(HandlerStack stack,
                                Object container,
                                String uri,
                                String localname,
                                String qname,
                                Attributes attributes)
-    throws SAXException
-    {
-        PGMLStackParser parser=(PGMLStackParser)stack;
-        StringTokenizer st = new StringTokenizer(attributes.getValue( "description"), ",;[] ");
-        if ( st.hasMoreElements()) st.nextToken();
+	throws SAXException {
+
+        PGMLStackParser parser = (PGMLStackParser) stack;
+        StringTokenizer st =
+	    new StringTokenizer(attributes.getValue("description"), ",;[] ");
+        if (st.hasMoreElements()) {
+	    st.nextToken();
+	}
         String xStr = null;
         String yStr = null;
         String wStr = null;
@@ -803,24 +791,24 @@ public class FigClassifierRole extends FigNodeModelElement
             wStr = st.nextToken();
             hStr = st.nextToken();
         }
-        if(xStr != null && !xStr.equals("")) {
+        if (xStr != null && !xStr.equals("")) {
             int x = Integer.parseInt(xStr);
             int y = Integer.parseInt(yStr);
             int w = Integer.parseInt(wStr);
             int h = Integer.parseInt(hStr);
             setBounds(x, y, w, h);
         }
-        PGMLStackParser.setCommonAttrs( this, attributes);
-        String ownerRef=attributes.getValue( "href");
-        if ( ownerRef!=null)
-        {
-            Object owner=parser.findOwner( ownerRef);
-            if ( owner!=null)
-                setOwner( owner);
+        PGMLStackParser.setCommonAttrs(this, attributes);
+        String ownerRef = attributes.getValue("href");
+        if (ownerRef != null) {
+            Object owner = parser.findOwner(ownerRef);
+            if (owner != null) {
+		setOwner(owner);
+	    }
         }
-        parser.registerFig( this, attributes.getValue( "name"));
-        ((Container)container).addObject( this);
-        return new FigClassifierRoleHandler( parser, this);
+        parser.registerFig(this, attributes.getValue("name"));
+        ((Container) container).addObject(this);
+        return new FigClassifierRoleHandler(parser, this);
     }
 
     /**
@@ -905,7 +893,7 @@ public class FigClassifierRole extends FigNodeModelElement
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
         ModelEventPump pump = Model.getPump();
-        if ( oldOwner != null) {
+        if (oldOwner != null) {
             pump.removeModelEventListener(this, oldOwner);
             Iterator it = Model.getFacade().getBases(oldOwner).iterator();
             while (it.hasNext()) {
@@ -917,37 +905,35 @@ public class FigClassifierRole extends FigNodeModelElement
 			       new String[] {
 				   "name",
 				   "stereotype",
-                   "base"
+				   "base",
 			       });
-		Iterator it = Model.getFacade().getBases( newOwner).iterator();
-		String[] names=new String[] { "name" };
-		while (it.hasNext()) {
-			Object base=it.next();
-			pump.removeModelEventListener( this, base);
-			pump.addModelEventListener( this, base, names);
-		}
+	Iterator it = Model.getFacade().getBases(newOwner).iterator();
+	String[] names = new String[] {
+	    "name",
+	};
+	while (it.hasNext()) {
+	    Object base = it.next();
+	    pump.removeModelEventListener(this, base);
+	    pump.addModelEventListener(this, base, names);
+	}
     }
 
-    void growToSize( int nodeCount)
-    {
-        grow( linkPositions.size(), nodeCount-linkPositions.size());
+    void growToSize(int nodeCount) {
+        grow(linkPositions.size(), nodeCount - linkPositions.size());
     }
 
     /**
-     * Add count link spaces before nodePosition
+     * Add count link spaces before nodePosition.
      */
-    void grow( int nodePosition, int count)
-    {
-        for ( int i=0; i<count; ++i)
-        {
-            linkPositions.add( nodePosition, new MessageNode( this));
+    void grow(int nodePosition, int count) {
+        for (int i = 0; i < count; ++i) {
+            linkPositions.add(nodePosition, new MessageNode(this));
         }
-        if ( count>0)
-        {
+        if (count > 0) {
             updateNodeStates();
-            Rectangle r=getBounds();
-            r.height+=count*SequenceDiagramLayout.LINK_DISTANCE;
-            setBounds( r);
+            Rectangle r = getBounds();
+            r.height += count * SequenceDiagramLayout.LINK_DISTANCE;
+            setBounds(r);
             updateEdges();
         }
     }
@@ -958,17 +944,18 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         boolean nameChanged = false;
-        if ( mee.getPropertyName().equals("name")) {
-            if ( mee.getSource()==getOwner())
+        if (mee.getPropertyName().equals("name")) {
+            if (mee.getSource() == getOwner()) {
             	updateClassifierRoleName();
-            else
+            } else {
             	updateBaseNames();
+	    }
             nameChanged = true;
-        } else if ( mee.getPropertyName().equals("stereotype")) {
+        } else if (mee.getPropertyName().equals("stereotype")) {
             updateStereotypeText();
-        } else if ( mee.getPropertyName().equals( "base")) {
+        } else if (mee.getPropertyName().equals("base")) {
             updateBaseNames();
-            updateListeners( getOwner());
+            updateListeners(getOwner());
             nameChanged = true;
         }
         if (nameChanged) {
@@ -977,13 +964,12 @@ public class FigClassifierRole extends FigNodeModelElement
     }
 
     /**
-     * Remove a FigMessagePort that's associated with a removed FigMessage
+     * Remove a FigMessagePort that's associated with a removed FigMessage.
      */
-    void removeFigMessagePort( FigMessagePort fmp)
-    {
-        fmp.getNode().setFigMessagePort( null);
+    void removeFigMessagePort(FigMessagePort fmp) {
+        fmp.getNode().setFigMessagePort(null);
         fmp.setNode(null);
-        removeFig( fmp);
+        removeFig(fmp);
         updateNodeStates();
     }
 
@@ -995,54 +981,55 @@ public class FigClassifierRole extends FigNodeModelElement
      * with the index in the array + start (at creation the entire array
      * is set to true)
      */
-    void updateEmptyNodeArray( int start, boolean[] emptyNodes)
-    {
-        for ( int i=0; i<emptyNodes.length; ++i)
-        {
-            if ( ((MessageNode)linkPositions.get(i+start)).getFigMessagePort()!=null)
-                emptyNodes[i]=false;
+    void updateEmptyNodeArray(int start, boolean[] emptyNodes) {
+        for (int i = 0; i < emptyNodes.length; ++i) {
+            if (((MessageNode) linkPositions.get(i + start)).getFigMessagePort()
+		!= null) {
+                emptyNodes[i] = false;
+	    }
         }
     }
 
     /**
      * Remove nodes according to the emptyNodes array; contract total height
-     * of fig
+     * of fig.
+     *
      * @param start Index of first node in array
      * @param emptyNodes True where there is no FigMessagePort at the node
      * with the index in the array + start
      */
-    void contractNodes( int start, boolean[] emptyNodes)
-    {
-        int contracted=0;
-        for ( int i=0; i<emptyNodes.length; ++i)
-        {
-            if ( emptyNodes[i])
-            {
-                if ( ((MessageNode)linkPositions.get(i+start-contracted)).getFigMessagePort()!=null)
-                    throw new IllegalArgumentException( "Trying to contract non-empty MessageNode");
-                linkPositions.remove( i+start-contracted);
+    void contractNodes(int start, boolean[] emptyNodes) {
+        int contracted = 0;
+        for (int i = 0; i < emptyNodes.length; ++i) {
+            if (emptyNodes[i]) {
+                if (((MessageNode) linkPositions.get(i + start - contracted))
+		        .getFigMessagePort()
+		    != null) {
+                    throw new IllegalArgumentException(
+		    	"Trying to contract non-empty MessageNode");
+		}
+                linkPositions.remove(i + start - contracted);
                 ++contracted;
             }
         }
-        if ( contracted>0)
-        {
+        if (contracted > 0) {
             updateNodeStates();
-            Rectangle r=getBounds();
-            r.height-=contracted*SequenceDiagramLayout.LINK_DISTANCE;
+            Rectangle r = getBounds();
+            r.height -= contracted * SequenceDiagramLayout.LINK_DISTANCE;
             updateEdges();
-            setBounds( r);
+            setBounds(r);
         }
     }
 
     private void updateBaseNames() {
-		StringBuffer b=new StringBuffer();
-		Iterator it = Model.getFacade().getBases( getOwner()).iterator();
-		while (it.hasNext()) {
-			b.append( getBeautifiedName(it.next()));
-			if (it.hasNext()) {
-				b.append(',');
-			}
-		}
+	StringBuffer b = new StringBuffer();
+	Iterator it = Model.getFacade().getBases(getOwner()).iterator();
+	while (it.hasNext()) {
+	    b.append(getBeautifiedName(it.next()));
+	    if (it.hasNext()) {
+		b.append(',');
+	    }
+	}
         baseNames = b.toString();
     }
 
@@ -1068,7 +1055,7 @@ public class FigClassifierRole extends FigNodeModelElement
      *
      * @see org.tigris.gef.presentation.FigNode#deepHitPort(int, int)
      */
-     public Object deepHitPort(int x, int y) {
+    public Object deepHitPort(int x, int y) {
         Rectangle rect = new Rectangle(getX(), y - 16, getWidth(), 32);
         MessageNode foundNode = null;
         if (lifeLine.intersects(rect)) {
@@ -1076,10 +1063,10 @@ public class FigClassifierRole extends FigNodeModelElement
                 i < linkPositions.size();
                 i++) {
                 MessageNode node = (MessageNode) linkPositions.get(i);
-                int position = getYCoordinate( i);
+                int position = getYCoordinate(i);
                 if (i < linkPositions.size() - 1) {
                     int nextPosition =
-                        getYCoordinate( i + 1);
+                        getYCoordinate(i + 1);
                     if (nextPosition >= y && position <= y) {
                         if ((y - position) <= (nextPosition - y)) {
                             foundNode = node;
@@ -1090,35 +1077,38 @@ public class FigClassifierRole extends FigNodeModelElement
                     }
                 } else {
                     foundNode =
-                        (MessageNode) linkPositions.get(linkPositions.size() - 1);
+                        (MessageNode) linkPositions
+			.get(linkPositions.size() - 1);
                     MessageNode nextNode;
-                    linkPositions.add( nextNode=new MessageNode( this));
-                    int nextPosition=getYCoordinate( i+1);
-                    if ( ( y-position)>=(nextPosition-y))
-                        foundNode=nextNode;
+		    nextNode = new MessageNode(this);
+                    linkPositions.add(nextNode);
+                    int nextPosition = getYCoordinate(i + 1);
+                    if ((y - position) >= (nextPosition - y)) {
+                        foundNode = nextNode;
+		    }
                     break;
                 }
             }
 
         } else if (outerBox.intersects(rect)) {
-            foundNode=getClassifierRoleNode();
+            foundNode = getClassifierRoleNode();
         } else {
             return null;
         }
-        setMatchingFig( (MessageNode)foundNode);
+        setMatchingFig((MessageNode) foundNode);
         return foundNode;
     }
 
     private int getYCoordinate(MessageNode node) {
-        return getYCoordinate( linkPositions.indexOf( node));
+        return getYCoordinate(linkPositions.indexOf(node));
     }
 
-    private int getYCoordinate( int nodeIndex) {
+    private int getYCoordinate(int nodeIndex) {
         return
             nodeIndex * SequenceDiagramLayout.LINK_DISTANCE
                 + getY()
                 + outerBox.getHeight()
-                + SequenceDiagramLayout.LINK_DISTANCE/2;
+                + SequenceDiagramLayout.LINK_DISTANCE / 2;
     }
 
     /**
@@ -1173,10 +1163,10 @@ public class FigClassifierRole extends FigNodeModelElement
      * @return the Node
      */
     public MessageNode nextNode(MessageNode node) {
-        if (getIndexOf(node) < linkPositions.size())
+        if (getIndexOf(node) < linkPositions.size()) {
             return (MessageNode) linkPositions.get(getIndexOf(node) + 1);
-        else
-            return null;
+        }
+	return null;
     }
 
     /**
@@ -1188,36 +1178,33 @@ public class FigClassifierRole extends FigNodeModelElement
     public MessageNode previousNode(MessageNode node) {
         if (getIndexOf(node) > 0) {
             return (MessageNode) linkPositions.get(getIndexOf(node) - 1);
-        } else
-            return null;
+        }
+	return null;
     }
 
     /**
      * @see org.tigris.gef.presentation.FigNode#getPortFig(java.lang.Object)
      */
     public Fig getPortFig(Object np) {
-        if ( np==null)
+        if (np == null) {
             return null;
+	}
         if (np instanceof MessageNode) {
-            setMatchingFig( (MessageNode)np);
+            setMatchingFig((MessageNode) np);
         }
-        if ( ( np instanceof MessageNode) && ((MessageNode)np).getFigMessagePort()!= null)
-        {
+        if ((np instanceof MessageNode)
+	    && ((MessageNode) np).getFigMessagePort() != null) {
             return ((MessageNode) np).getFigMessagePort();
-        }
-        else if ( Model.getFacade().isAMessage( np))
-        {
-            for ( Iterator it=getFigs().iterator(); it.hasNext();)
-            {
-                Fig fig=(Fig)it.next();
-                if ( fig.getOwner()==np)
+        } else if (Model.getFacade().isAMessage(np)) {
+            for (Iterator it = getFigs().iterator(); it.hasNext();) {
+                Fig fig = (Fig) it.next();
+                if (fig.getOwner() == np) {
                     return fig;
+		}
             }
-        }
-        else if ( np instanceof MessageNode)
-        {
+        } else if (np instanceof MessageNode) {
             return new TempFig(np, lifeLine.getX() - WIDTH / 2,
-                               getYCoordinate( (MessageNode) np),
+                               getYCoordinate((MessageNode) np),
                                lifeLine.getX() + WIDTH / 2);
         }
         return null;
@@ -1230,7 +1217,7 @@ public class FigClassifierRole extends FigNodeModelElement
      * @return the ClassifierRoleNode.
      */
     public MessageNode getClassifierRoleNode() {
-        return (MessageNode)linkPositions.get(0);
+        return (MessageNode) linkPositions.get(0);
     }
 
     /**
@@ -1258,7 +1245,8 @@ public class FigClassifierRole extends FigNodeModelElement
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MessageNode) {
-                FigMessagePort figMessagePort = ((MessageNode) o).getFigMessagePort();
+                FigMessagePort figMessagePort =
+		    ((MessageNode) o).getFigMessagePort();
                 if (figMessagePort != null) {
                     figMessagePort.setY(
                         figMessagePort.getY()
@@ -1268,9 +1256,7 @@ public class FigClassifierRole extends FigNodeModelElement
         }
         calcBounds();
     }
-    
-    
-    
+
     /**
      * Override to return a custom SelectionResize class that will not allow
      * handles on the north edge to be dragged.
@@ -1279,22 +1265,18 @@ public class FigClassifierRole extends FigNodeModelElement
         return new SelectionClassifierRole(this);
     }
 
-    static class TempFig extends FigLine
-    {
-        TempFig( Object owner, int x, int y, int x2)
-        {
-            super( x, y, x2, y);
-            setVisible( false);
-            setOwner( owner);
+    static class TempFig extends FigLine {
+        TempFig(Object owner, int x, int y, int x2) {
+            super(x, y, x2, y);
+            setVisible(false);
+            setOwner(owner);
         }
     }
 
-    static class FigClassifierRoleHandler extends FigGroupHandler
-    {
-        FigClassifierRoleHandler( PGMLStackParser parser, FigClassifierRole
-                                  classifierRole)
-        {
-            super( parser, classifierRole);
+    static class FigClassifierRoleHandler extends FigGroupHandler {
+        FigClassifierRoleHandler(PGMLStackParser parser, FigClassifierRole
+				 classifierRole) {
+            super(parser, classifierRole);
         }
 
         protected DefaultHandler getElementHandler(HandlerStack stack,
@@ -1303,31 +1285,31 @@ public class FigClassifierRole extends FigNodeModelElement
             String localname,
             String qname,
             Attributes attributes)
-        throws SAXException {
+	    throws SAXException {
+
             DefaultHandler result = null;
             if (qname.equals("group")) {
                 FigMessagePort fmp = new FigMessagePort();
-                ((FigGroupHandler)container).getFigGroup().addFig(fmp);
-                result = new FigGroupHandler( (PGMLStackParser) stack, fmp);
-                PGMLStackParser parser=(PGMLStackParser)stack;
-                PGMLStackParser.setCommonAttrs( fmp, attributes);
-                String ownerRef=attributes.getValue( "href");
-                if ( ownerRef!=null)
-                {
-                    Object owner=parser.findOwner( ownerRef);
-                    if ( owner!=null)
-                        fmp.setOwner( owner);
+                ((FigGroupHandler) container).getFigGroup().addFig(fmp);
+                result = new FigGroupHandler((PGMLStackParser) stack, fmp);
+                PGMLStackParser parser = (PGMLStackParser) stack;
+                PGMLStackParser.setCommonAttrs(fmp, attributes);
+                String ownerRef = attributes.getValue("href");
+                if (ownerRef != null) {
+                    Object owner = parser.findOwner(ownerRef);
+                    if (owner != null) {
+                        fmp.setOwner(owner);
+		    }
                 }
-                parser.registerFig( fmp, attributes.getValue( "name"));
-            }
-            else {
-                result = ( (PGMLStackParser) stack).getHandler(
-                    stack,
-                    container,
-                    uri,
-                    localname,
-                    qname,
-                    attributes);
+                parser.registerFig(fmp, attributes.getValue("name"));
+            } else {
+                result =
+		    ((PGMLStackParser) stack).getHandler(stack,
+							 container,
+							 uri,
+							 localname,
+							 qname,
+							 attributes);
             }
             return result;
         }

@@ -54,16 +54,24 @@ public class ModeCreateMessage extends ModeCreate {
     private static final Logger LOG =
 	Logger.getLogger(ModeCreateMessage.class);
 
-    /** The NetPort where the arc is paintn from */
+    /**
+     * The NetPort where the arc is paintn from.
+     */
     private Object startPort;
 
-    /** The Fig that presents the starting NetPort */
+    /**
+     * The Fig that presents the starting NetPort.
+     */
     private Fig startPortFig;
 
-    /** The FigNode on the NetNode that owns the start port */
+    /**
+     * The FigNode on the NetNode that owns the start port.
+     */
     private FigNode sourceFigNode;
 
-    /** The new NetEdge that is being created */
+    /**
+     * The new NetEdge that is being created.
+     */
     private Object newEdge;
 
     /**
@@ -100,7 +108,8 @@ public class ModeCreateMessage extends ModeCreate {
      * @see org.tigris.gef.base.FigModifyingMode#instructions()
      */
     public String instructions() {
-        return Translator.localize( "action.sequence.new."+getArg( "actionName"));
+        return Translator.localize("action.sequence.new."
+				   + getArg("actionName"));
     }
 
     /**
@@ -110,8 +119,9 @@ public class ModeCreateMessage extends ModeCreate {
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
-        if (me.isConsumed())
+        if (me.isConsumed()) {
             return;
+	}
         int x = me.getX(), y = me.getY();
         Editor ce = Globals.curEditor();
         Fig underMouse = ce.hit(x, y);
@@ -161,8 +171,9 @@ public class ModeCreateMessage extends ModeCreate {
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
-        if (me.isConsumed())
+        if (me.isConsumed()) {
             return;
+	}
         if (sourceFigNode == null) {
             done();
             me.consume();
@@ -177,8 +188,9 @@ public class ModeCreateMessage extends ModeCreate {
             f = ce.hit(x - 16, y - 16, 32, 32);
         }
         GraphModel gm = ce.getGraphModel();
-        if (!(gm instanceof MutableGraphModel))
+        if (!(gm instanceof MutableGraphModel)) {
             f = null;
+	}
         MutableGraphModel mgm = (MutableGraphModel) gm;
         if (f instanceof FigNode) {
             FigNode destFigNode = (FigNode) f;
@@ -221,17 +233,21 @@ public class ModeCreateMessage extends ModeCreate {
                     fe.setDestPortFig(destPortFig);
                     fe.setDestFigNode(destFigNode);
 				// set the new edge in place
-                    if (sourceFigNode != null)
+                    if (sourceFigNode != null) {
                         sourceFigNode.updateEdges();
-                    if (destFigNode != null)
+		    }
+                    if (destFigNode != null) {
                         destFigNode.updateEdges();
-                    if (fe != null)
+		    }
+                    if (fe != null) {
                         ce.getSelectionManager().select(fe);
+		    }
                     done();
                     me.consume();
                     return;
-                } else
+                } else {
                     LOG.debug("connection return null");
+		}
             }
         }
         sourceFigNode.damage();
@@ -245,8 +261,9 @@ public class ModeCreateMessage extends ModeCreate {
      * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
      */
     public void mouseDragged(MouseEvent me) {
-        if (me.isConsumed())
+        if (me.isConsumed()) {
             return;
+	}
         if (_newItem != null) {
             editor.damaged(_newItem);
             creationDrag(me.getX(), startPortFig.getY());
