@@ -641,9 +641,9 @@ public abstract class FigEdgeModelElement
             if (Model.getFacade().isAModelElement(newOwner)) {
                 Model.getPump().addModelEventListener(this, newOwner);
                 
-                if (UUIDHelper.getInstance().getUUID(newOwner) == null) {
+                if (UUIDHelper.getUUID(newOwner) == null) {
                     Model.getCoreHelper().setUUID(newOwner,
-                            UUIDHelper.getInstance().getNewUUID());
+                            UUIDHelper.getNewUUID());
                 }
             }
         }

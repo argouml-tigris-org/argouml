@@ -1158,9 +1158,8 @@ public abstract class FigNodeModelElement
         updateListeners(own);
         super.setOwner(own);
         if (Model.getFacade().isAModelElement(own)
-                && UUIDHelper.getInstance().getUUID(own) == null) {
-            Model.getCoreHelper().setUUID(own,
-                    UUIDHelper.getInstance().getNewUUID());
+                && UUIDHelper.getUUID(own) == null) {
+            Model.getCoreHelper().setUUID(own, UUIDHelper.getNewUUID());
         }
         readyToEdit = true;
         if (own != null) {

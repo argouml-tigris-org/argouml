@@ -26,44 +26,30 @@ package org.argouml.uml;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
+import org.tigris.gef.presentation.Fig;
 
 /**
- * @stereotype singleton
+ * @stereotype utility
  */
 public final class UUIDHelper {
-    ////////////////////////////////////////////////////////////////
-    // static variables
 
     /**
-     * The singleton.
-     */
-    private static final UUIDHelper INSTANCE = new UUIDHelper();
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    /**
-     * Constructor for the UUIDManager. This is private to make sure that
-     * we are a proper singleton.
+     * Hide constructor for the UUIDManager. This is private to make sure that
+     * we are a utility.
      */
     private UUIDHelper() { }
 
     /**
-     * Return the UUIDManager singleton.
-     *
-     * @return an UUIDManager
-     */
-    public static UUIDHelper getInstance() {
-        return INSTANCE;
-    }
-
-    /**
      * Return the UUID of the element.
      *
-     * @param base base element (MBase type)
+     * @param A model element or a Fig representing a model element
      * @return UUID
      */
-    public String getUUID(Object base) {
+    public static String getUUID(Object base) {
+        if (base instanceof Fig) {
+            base = ((Fig)base).getOwner();
+        }
+        if (base == null) return null;
         if (base instanceof CommentEdge) {
             return (String) ((CommentEdge) base).getUUID();
         }
@@ -73,7 +59,7 @@ public final class UUIDHelper {
     /**
      * @return a new UUID
      */
-    public String getNewUUID() {
+    public static String getNewUUID() {
         return org.argouml.model.UUIDManager.getInstance().getNewUUID();
     }
 

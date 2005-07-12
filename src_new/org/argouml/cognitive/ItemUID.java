@@ -158,7 +158,7 @@ public class ItemUID {
      */
     protected static String readObjectID(Object obj) {
         if (Model.getFacade().isABase(obj)) {
-            return UUIDHelper.getInstance().getUUID(obj);
+            return UUIDHelper.getUUID(obj);
         }
 	/*
 	// Want to use the "built in" UID of the MXxx instances
