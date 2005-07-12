@@ -53,6 +53,7 @@ import org.argouml.application.api.ArgoSingletonModule;
 import org.argouml.application.api.Pluggable;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoModuleEvent;
+import org.argouml.i18n.Translator;
 
 /**
  * Handles loading of modules and plugins for ArgoUML.
@@ -294,6 +295,7 @@ public class ModuleLoader {
 			    new URLClassLoader(new URL[] {
 				file[i].toURL()
 			    });
+			Translator.addClassLoader(classloader);
 	                processJarFile(classloader, file[i]);
 		    }
 		} catch (IOException ioe) { }
