@@ -264,7 +264,7 @@ public abstract class UMLDiagram
         if (getOwner() == null) {
             return s;
         }
-        String id = UUIDHelper.getInstance().getUUID(getOwner());
+        String id = UUIDHelper.getUUID(getOwner());
         return s + "|" + id;
     }
 

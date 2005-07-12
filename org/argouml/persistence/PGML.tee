@@ -348,7 +348,7 @@ height="<ocl>self.height.intValue</ocl>"
 
      description="<ocl>self.classNameAndBounds</ocl>"
 
-     href="<ocl ignoreNull>self.owner.UUID</ocl>"
+     href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self)</ocl>"
 
      FILL_AND_STROKE
 
@@ -380,7 +380,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <group name="<ocl>self.id</ocl>"
      description="<ocl>self.classNameAndBounds</ocl>"
-     href="<ocl ignoreNull>self.owner.UUID</ocl>"
+     href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self)</ocl>"
      FILL_AND_STROKE
 >
 
@@ -412,7 +412,7 @@ height="<ocl>self.height.intValue</ocl>"
 
      description="<ocl>self.class.name</ocl>"
 
-     href="<ocl ignoreNull>self.owner.UUID</ocl>"
+     href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self)</ocl>"
 
      stroke="<ocl>self.lineWidth</ocl>"
 
@@ -454,7 +454,7 @@ height="<ocl>self.height.intValue</ocl>"
 
      description="<ocl>self.class.name</ocl>"
 
-     href="<ocl ignoreNull>self.owner.UUID</ocl>"
+     href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self)</ocl>"
 
      stroke="<ocl>self.lineWidth</ocl>"
 
