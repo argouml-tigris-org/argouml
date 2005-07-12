@@ -1528,7 +1528,7 @@ public class GeneratorCSharp extends Generator2
     }
 
     private String generateSection(Object cls) {
-        String id = UUIDHelper.getInstance().getUUID(cls);
+        String id = UUIDHelper.getUUID(cls);
 	if (id == null) {
 	    id = (new UID().toString());
 	    // id = cls.getName() + "__" + static_count;

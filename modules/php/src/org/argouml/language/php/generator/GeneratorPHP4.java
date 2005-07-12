@@ -1227,7 +1227,7 @@ public class GeneratorPHP4
      */
     private String generateSection(Object modelElement, String sIndent,
                                    String sSuffix) {
-        String uuid = UUIDHelper.getInstance().getUUID(modelElement);
+        String uuid = UUIDHelper.getUUID(modelElement);
         if (uuid == null) {
             uuid = (new UID().toString());
             Model.getCoreHelper().setUUID(modelElement, uuid);
