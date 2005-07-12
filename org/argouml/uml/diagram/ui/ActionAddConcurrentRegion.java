@@ -83,7 +83,8 @@ public class ActionAddConcurrentRegion extends UMLAction {
             size = figs.size();
         } catch (Exception e) {
         }
-        return super.shouldBeEnabled() & (size > 0);
+        return super.shouldBeEnabled() && (size > 0) 
+            && (TargetManager.getInstance().getModelTargets().size() < 2);
     }
 
     /**
@@ -92,7 +93,7 @@ public class ActionAddConcurrentRegion extends UMLAction {
     public void actionPerformed(ActionEvent ae) {
         try {
             /*Here the actions to divide a region*/
-            Fig f = (Fig) TargetManager.getInstance().getTarget();
+            Fig f = (Fig) TargetManager.getInstance().getFigTarget();
 
             if (Model.getFacade().isAConcurrentRegion(f.getOwner()))
                 f = f.getEnclosingFig();
