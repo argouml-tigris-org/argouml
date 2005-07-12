@@ -451,7 +451,7 @@ public class FigPackage extends FigNodeModelElement
      */
     protected void setBoundsImpl(int xa, int ya, int w, int h) {
         // Save our old boundaries (needed later), and get minimum size
-        // info. "aSize will be used to maintain a running calculation of our
+        // info. "aSize" will be used to maintain a running calculation of our
         // size at various points.
 
         Rectangle oldBounds = getBounds();
