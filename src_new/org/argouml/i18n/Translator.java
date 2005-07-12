@@ -24,8 +24,11 @@
 
 package org.argouml.i18n;
 
+import java.util.ArrayList;
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -57,6 +60,11 @@ public final class Translator {
      * Store bundles for current Locale.
      */
     private static Map bundles;
+
+    /**
+     * Store of ClassLoaders where we could find the bundles.
+     */
+    private static List classLoaders = new ArrayList();
 
     /**
      * Used to make this class self-initialising when needed.
@@ -144,6 +152,17 @@ public final class Translator {
     }
 
     /**
+     * Add another class loader that the resource bundle could be located
+     * through.
+     *
+     * @param cl The classloader to add.
+     */
+    public static void addClassLoader(ClassLoader cl) {
+	classLoaders.add(cl);
+    }
+
+
+    /**
      * Loads the bundle (if not already loaded).
      *
      * @param name The name of the bundle to load.
@@ -158,7 +177,23 @@ public final class Translator {
             LOG.debug("Loading " + resource);
             bundle = ResourceBundle.getBundle(resource, Locale.getDefault());
         } catch (MissingResourceException e1) {
-            LOG.debug("Resource " + resource + " not found.");
+            LOG.debug("Resource " + resource
+		      + " not found in the default class loader.");
+
+	    Iterator iter = classLoaders.iterator();
+	    while (iter.hasNext()) {
+		ClassLoader cl = (ClassLoader) iter.next();
+		try {
+		    LOG.debug("Loading " + resource + " from " + cl);
+		    bundle =
+			ResourceBundle.getBundle(resource,
+						 Locale.getDefault(),
+						 cl);
+		    break;
+		} catch (MissingResourceException e2) {
+		    LOG.debug("Resource " + resource + " not found in " + cl);
+		}
+	    }
         }
 
         bundles.put(name, bundle);

@@ -36,6 +36,7 @@ import java.util.TreeMap;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashSet;
@@ -45,6 +46,7 @@ import java.util.jar.Manifest;
 import org.apache.log4j.Logger;
 
 import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 /**
  * This is the module loader that loads modules implementing the
@@ -477,10 +479,15 @@ public final class ModuleLoader2 {
 	        argoHome = new File(argoRoot).getAbsoluteFile().getParent();
 	    }
 
-	    argoHome = java.net.URLDecoder.decode(argoHome);
+	    try {
+		argoHome = java.net.URLDecoder.decode(argoHome, "UTF-8");
+	    } catch (UnsupportedEncodingException e) {
+		LOG.warn("Encoding UTF-8 is unknown.");
+	    }
 
 	    LOG.info("argoHome is " + argoHome);
 	}
+
 	if (argoHome != null) {
 	    if (argoHome.startsWith(FILE_PREFIX)) {
 	        huntModulesFromNamedDirectory(
@@ -492,6 +499,7 @@ public final class ModuleLoader2 {
 	    }
 
 	}
+
         String extdir = System.getProperty("argo.ext.dir");
 	if (extdir != null) {
 	    huntModulesFromNamedDirectory(extdir);
@@ -519,6 +527,7 @@ public final class ModuleLoader2 {
 			    new URLClassLoader(new URL[] {
 				file[i].toURL(),
 			    });
+			Translator.addClassLoader(classloader);
 	                processJarFile(classloader, file[i]);
 		    }
 		} catch (IOException ioe) {
