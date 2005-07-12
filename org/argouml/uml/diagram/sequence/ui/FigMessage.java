@@ -28,9 +28,6 @@ import java.awt.Point;
 
 import java.beans.PropertyChangeEvent;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
@@ -41,7 +38,7 @@ import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Selection;
 
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.Handle;
 
 /**
  * The fig for a link in a sequence diagram.
@@ -51,7 +48,7 @@ import org.tigris.gef.presentation.FigPoly;
 public abstract class FigMessage
     extends FigEdgeModelElement {
 
-    private FigTextGroup _textGroup;
+    private FigTextGroup textGroup;
 
     /**
      * Contructs a new figlink and sets the owner of the figlink.
@@ -60,10 +57,10 @@ public abstract class FigMessage
      */
     public FigMessage(Object owner) {
         super();
-        _textGroup=new FigTextGroup();
-        _textGroup.addFig( getNameFig());
-        _textGroup.addFig( getStereotypeFig());
-        addPathItem( _textGroup, new PathConvPercent( this, 50, 10));
+        textGroup = new FigTextGroup();
+        textGroup.addFig(getNameFig());
+        textGroup.addFig(getStereotypeFig());
+        addPathItem(textGroup, new PathConvPercent(this, 50, 10));
         setOwner(owner);
     }
 
@@ -83,31 +80,29 @@ public abstract class FigMessage
     public Object getAction() {
         Object owner = getOwner();
         if (owner != null && Model.getFacade().isAMessage(owner)) {
-            return Model.getFacade().getAction( owner);
+            return Model.getFacade().getAction(owner);
         }
         return null;
     }
 
-    public void setOwner( Object newOwner)
-    {
-        super.setOwner( newOwner);
-        if ( Model.getFacade().isAMessage( newOwner))
-        {
-            Model.getPump().addModelEventListener( this, newOwner, "name");
+    public void setOwner(Object newOwner) {
+        super.setOwner(newOwner);
+        if (Model.getFacade().isAMessage(newOwner)) {
+            Model.getPump().addModelEventListener(this, newOwner, "name");
         }
     }
 
     /**
      * @see org.tigris.gef.presentation.FigEdge#getSourcePortFig
      */
-    public Fig getSourcePortFig()
-    {
-        Fig result=super.getSourcePortFig();
-        if ( result instanceof FigClassifierRole.TempFig &&
-             getOwner()!=null)
-        {
-            setSourcePortFig( result=getSrcFigClassifierRole().createFigMessagePort( getOwner(),
-                result));
+    public Fig getSourcePortFig() {
+        Fig result = super.getSourcePortFig();
+        if (result instanceof FigClassifierRole.TempFig
+	    && getOwner() != null) {
+	    result =
+		getSrcFigClassifierRole().createFigMessagePort(getOwner(),
+							       result);
+            setSourcePortFig(result);
         }
         return result;
     }
@@ -115,14 +110,14 @@ public abstract class FigMessage
     /**
      * @see org.tigris.gef.presentation.FigEdge#getDestPortFig
      */
-    public Fig getDestPortFig()
-    {
-        Fig result=super.getDestPortFig();
-        if ( result instanceof FigClassifierRole.TempFig &&
-             getOwner()!=null)
-        {
-            setDestPortFig( result=getDestFigClassifierRole().createFigMessagePort( getOwner(),
-                result));
+    public Fig getDestPortFig() {
+        Fig result = super.getDestPortFig();
+        if (result instanceof FigClassifierRole.TempFig
+	    && getOwner() != null) {
+	    result =
+		getDestFigClassifierRole().createFigMessagePort(getOwner(),
+								result);
+            setDestPortFig(result);
         }
         return result;
     }
@@ -137,63 +132,57 @@ public abstract class FigMessage
      * @see org.tigris.gef.presentation.FigEdge#computeRoute()
      */
     public void computeRoute() {
-        Fig sourceFig=getSourcePortFig();
-        Fig destFig=getDestPortFig();
-        if ( sourceFig!=null && destFig!=null)
-        {
-            Point startPoint=sourceFig.connectionPoint( destFig.center());
-            Point endPoint=destFig.connectionPoint( sourceFig.center());
-            if ( sourceFig instanceof FigMessagePort &&
-                 destFig instanceof FigMessagePort)
-            {
-                FigMessagePort srcMP=(FigMessagePort)sourceFig;
-                FigMessagePort destMP=(FigMessagePort)destFig;
+        Fig sourceFig = getSourcePortFig();
+        Fig destFig = getDestPortFig();
+        if (sourceFig != null && destFig != null) {
+            Point startPoint = sourceFig.connectionPoint(destFig.center());
+            Point endPoint = destFig.connectionPoint(sourceFig.center());
+            if (sourceFig instanceof FigMessagePort
+		&& destFig instanceof FigMessagePort) {
+                FigMessagePort srcMP = (FigMessagePort) sourceFig;
+                FigMessagePort destMP = (FigMessagePort) destFig;
                 // If it is a self-message
-                if ( srcMP.getNode().getFigClassifierRole()==
-                    destMP.getNode().getFigClassifierRole())
-                {
-                    if ( startPoint.x<sourceFig.center().x)
-                        startPoint.x+=sourceFig.getWidth();
-                    endPoint.x=startPoint.x;
-                    setEndPoints( startPoint, endPoint);
+                if (srcMP.getNode().getFigClassifierRole()
+		    == destMP.getNode().getFigClassifierRole()) {
+                    if (startPoint.x < sourceFig.center().x) {
+                        startPoint.x += sourceFig.getWidth();
+		    }
+                    endPoint.x = startPoint.x;
+                    setEndPoints(startPoint, endPoint);
                     // If this is the first time it is laid out, will only
                     // have 2 points, add the middle point
-                    if ( getNumPoints()<=2)
-                    {
-                        insertPoint(0, startPoint.x +
-                                    SequenceDiagramLayout.OBJECT_DISTANCE / 3,
+                    if (getNumPoints() <= 2) {
+                        insertPoint(0, startPoint.x
+				    + SequenceDiagramLayout.OBJECT_DISTANCE / 3,
                                     (startPoint.y + endPoint.y) / 2);
-                    }
-                    // Otherwise, move the middle point
-                    else
-                    {
-                        int middleX=startPoint.x+SequenceDiagramLayout.OBJECT_DISTANCE/3;
-                        int middleY=(startPoint.y+endPoint.y)/2;
-                        Point p=getPoint( 1);
-                        if ( p.x!=middleX || p.y!=middleY)
-                        {
-                           setPoint( new org.tigris.gef.presentation.Handle(1),middleX,middleY);
+                    } else {
+			// Otherwise, move the middle point
+                        int middleX =
+			    startPoint.x
+			    + SequenceDiagramLayout.OBJECT_DISTANCE / 3;
+                        int middleY = (startPoint.y + endPoint.y) / 2;
+                        Point p = getPoint(1);
+                        if (p.x != middleX || p.y != middleY) {
+			    setPoint(new Handle(1), middleX, middleY);
                         }
                     }
-                }
-                else
-                    setEndPoints( startPoint, endPoint);
-            }
-            else
-                setEndPoints( startPoint, endPoint);
+                } else {
+                    setEndPoints(startPoint, endPoint);
+		}
+            } else {
+                setEndPoints(startPoint, endPoint);
+	    }
             calcBounds();
             layoutEdge();
         }
     }
 
-    public MessageNode getSrcMessagePort()
-    {
-        return ((FigMessagePort)getSourcePortFig()).getNode();
+    public MessageNode getSrcMessagePort() {
+        return ((FigMessagePort) getSourcePortFig()).getNode();
     }
 
-    public MessageNode getDestMessagePort()
-    {
-        return ((FigMessagePort)getDestPortFig()).getNode();
+    public MessageNode getDestMessagePort() {
+        return ((FigMessagePort) getDestPortFig()).getNode();
     }
 
     /**
@@ -210,11 +199,11 @@ public abstract class FigMessage
      * @see org.tigris.gef.presentation.FigEdgePoly#layoutEdge()
      */
     protected void layoutEdge() {
-        if ( getSourcePortFig() instanceof FigMessagePort && getDestPortFig() instanceof FigMessagePort)
-        {
-            if ( ((FigMessagePort)getSourcePortFig()).getNode() !=null &&
-                 ((FigMessagePort)getDestPortFig()).getNode() != null) {
-                ( (SequenceDiagramLayout) getLayer()).updateActivations();
+        if (getSourcePortFig() instanceof FigMessagePort
+	    && getDestPortFig() instanceof FigMessagePort) {
+            if (((FigMessagePort) getSourcePortFig()).getNode() != null
+		&& ((FigMessagePort) getDestPortFig()).getNode() != null) {
+                ((SequenceDiagramLayout) getLayer()).updateActivations();
                 Globals.curEditor().damageAll();
             }
         }
@@ -223,30 +212,29 @@ public abstract class FigMessage
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getSource()
      */
-    protected Object getSource()
-    {
-        Object owner=getOwner();
-        if ( owner==null)
+    protected Object getSource() {
+        Object owner = getOwner();
+        if (owner == null) {
             return null;
-        return Model.getFacade().getSender( owner);
+	}
+        return Model.getFacade().getSender(owner);
     }
 
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getDestination()
      */
-    protected Object getDestination()
-    {
-        Object owner=getOwner();
-        if ( owner==null)
+    protected Object getDestination() {
+        Object owner = getOwner();
+        if (owner == null) {
             return null;
+	}
 
-        return Model.getFacade().getReceiver( owner);
+        return Model.getFacade().getReceiver(owner);
     }
 
-    public void modelChanged( PropertyChangeEvent pce)
-    {
-        super.modelChanged( pce);
-        _textGroup.calcBounds();
+    public void modelChanged(PropertyChangeEvent pce) {
+        super.modelChanged(pce);
+        textGroup.calcBounds();
     }
 
     /**
@@ -264,14 +252,14 @@ public abstract class FigMessage
     }
 
     /**
-     * This won't work, so this implementation does nothing
+     * This won't work, so this implementation does nothing.
+     *
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateClassifiers
      */
     protected boolean updateClassifiers() {
         return true;
     }
-    
-    
+
     public Selection makeSelection() {
         return new SelectionMessage(this);
     }

@@ -31,8 +31,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.graph.GraphEvent;
@@ -61,17 +59,17 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
 
     /**
      * The distance between the top side of the diagram and the top of
-     * the highest {@link FigClassifierRole}
+     * the highest {@link FigClassifierRole}.
      */
     public static final int DIAGRAM_TOP_MARGE = 50;
 
     /**
-     * The vertical distance between two links
+     * The vertical distance between two links.
      */
     public static final int LINK_DISTANCE = 32;
 
     /**
-     * Linked list with all fig objects sorted by x coordinate in it
+     * Linked list with all fig objects sorted by x coordinate in it.
      */
     private LinkedList figObjectsX = new LinkedList();
 
@@ -91,9 +89,10 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
      */
     public void putInPosition(Fig f) {
         if (f instanceof FigClassifierRole) {
-            distributeFigClassifierRoles((FigClassifierRole)f);
-        } else
+            distributeFigClassifierRoles((FigClassifierRole) f);
+        } else {
             super.putInPosition(f);
+	}
     }
 
     /**
@@ -103,7 +102,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
      * @param f
      */
     private void distributeFigClassifierRoles(FigClassifierRole f) {
-        reshuffleFigClassifierRolesX( f);
+        reshuffleFigClassifierRolesX(f);
         int listPosition = figObjectsX.indexOf(f);
         Iterator it =
             figObjectsX.subList(listPosition, figObjectsX.size()).iterator();
@@ -115,13 +114,14 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
                     + OBJECT_DISTANCE);
         while (it.hasNext()) {
             FigClassifierRole fig = (FigClassifierRole) it.next();
-            Rectangle r=fig.getBounds();
-            if ( r.x<positionX)
-                r.x=positionX;
-            r.y=DIAGRAM_TOP_MARGE;
-            fig.setBounds( r);
+            Rectangle r = fig.getBounds();
+            if (r.x < positionX) {
+                r.x = positionX;
+	    }
+            r.y = DIAGRAM_TOP_MARGE;
+            fig.setBounds(r);
             fig.updateEdges();
-            positionX = (fig.getX()+fig.getWidth() + OBJECT_DISTANCE);
+            positionX = (fig.getX() + fig.getWidth() + OBJECT_DISTANCE);
         }
     }
 
@@ -146,105 +146,104 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
                 ListIterator it = figObjectsX.listIterator(0);
                 while (it.hasNext()) {
                     Fig fig = (Fig) it.next();
-                    if ( fig.getX()>=f.getX())
-                    {
-                      it.previous();
-                      it.add( f);
-                      break;
+                    if (fig.getX() >= f.getX()) {
+			it.previous();
+			it.add(f);
+			break;
                     }
                 }
-                if ( ! it.hasNext())
-                  it.add(f);
-            } else
+                if (!it.hasNext()) {
+		    it.add(f);
+		}
+            } else {
                 figObjectsX.add(f);
-            distributeFigClassifierRoles( (FigClassifierRole)f);
+	    }
+            distributeFigClassifierRoles((FigClassifierRole) f);
         }
     }
 
     /**
-     * Return the node index at a certain y point
+     * Return the node index at a certain y point.
      */
-    int getNodeIndex( int y)
-    {
-        y-=DIAGRAM_TOP_MARGE+FigClassifierRole.DEFAULT_HEIGHT;
-        if ( y<0)
-            y=0;
-        return y/LINK_DISTANCE;
+    int getNodeIndex(int y) {
+        y -= DIAGRAM_TOP_MARGE + FigClassifierRole.DEFAULT_HEIGHT;
+        if (y < 0) {
+            y = 0;
+	}
+        return y / LINK_DISTANCE;
     }
 
     /**
-     * Makes all the figclassifier roles have uniform size
+     * Makes all the figclassifier roles have uniform size.
+     *
      * @return The number of nodes that the FigClassifierRole
      * objects have
      */
-    int makeUniformNodeCount()
-    {
-        int max_nodes= -1;
-        for ( Iterator it=figObjectsX.iterator(); it.hasNext();)
-        {
-            Object o=it.next();
-            if ( o instanceof FigClassifierRole)
-            {
-                int node_count=((FigClassifierRole)o).getNodeCount();
-                if ( node_count>max_nodes)
-                    max_nodes=node_count;
+    int makeUniformNodeCount() {
+        int maxNodes = -1;
+        for (Iterator it = figObjectsX.iterator(); it.hasNext();) {
+            Object o = it.next();
+            if (o instanceof FigClassifierRole) {
+                int nodeCount = ((FigClassifierRole) o).getNodeCount();
+                if (nodeCount > maxNodes) {
+                    maxNodes = nodeCount;
+		}
             }
         }
-        for ( Iterator it=figObjectsX.iterator(); it.hasNext();)
-        {
-            Object o=it.next();
-            if ( o instanceof FigClassifierRole)
-            {
-                ((FigClassifierRole)o).growToSize( max_nodes);
+        for (Iterator it = figObjectsX.iterator(); it.hasNext();) {
+            Object o = it.next();
+            if (o instanceof FigClassifierRole) {
+                ((FigClassifierRole) o).growToSize(maxNodes);
             }
         }
 
-        return max_nodes;
+        return maxNodes;
     }
 
-    public void contractDiagram( int startNodeIndex, int numberOfNodes)
-    {
-        if ( makeUniformNodeCount()<=startNodeIndex)
+    public void contractDiagram(int startNodeIndex, int numberOfNodes) {
+        if (makeUniformNodeCount() <= startNodeIndex) {
             return;
-        boolean[] emptyArray=new boolean[numberOfNodes];
-        java.util.Arrays.fill( emptyArray, true);
-        for ( Iterator it=figObjectsX.iterator(); it.hasNext();)
-        {
-            ((FigClassifierRole)it.next()).updateEmptyNodeArray( startNodeIndex, emptyArray);
+	}
+        boolean[] emptyArray = new boolean[numberOfNodes];
+        java.util.Arrays.fill(emptyArray, true);
+        for (Iterator it = figObjectsX.iterator(); it.hasNext();) {
+            ((FigClassifierRole) it.next())
+		.updateEmptyNodeArray(startNodeIndex, emptyArray);
         }
-        for ( Iterator it=figObjectsX.iterator(); it.hasNext();)
-        {
-            ((FigClassifierRole)it.next()).contractNodes( startNodeIndex, emptyArray);
+        for (Iterator it = figObjectsX.iterator(); it.hasNext();) {
+            ((FigClassifierRole) it.next())
+		.contractNodes(startNodeIndex, emptyArray);
         }
         updateActivations();
     }
 
-    public void expandDiagram( int startNodeIndex, int numberOfNodes)
-    {
-        if ( makeUniformNodeCount()<=startNodeIndex)
+    public void expandDiagram(int startNodeIndex, int numberOfNodes) {
+        if (makeUniformNodeCount() <= startNodeIndex) {
             return;
-        for ( Iterator it=figObjectsX.iterator(); it.hasNext();)
-        {
-            ((FigClassifierRole)it.next()).grow( startNodeIndex, numberOfNodes);
+	}
+        for (Iterator it = figObjectsX.iterator(); it.hasNext();) {
+            ((FigClassifierRole) it.next())
+		.grow(startNodeIndex, numberOfNodes);
         }
         updateActivations();
     }
 
     /**
-     * Add nodes to
+     * Add nodes to.
+     *
+     * TODO: Linus doesn't understand this comment. Please elaborate!
      */
-
     private void reshuffleFigClassifierRolesX(Fig f) {
         figObjectsX.remove(f);
         int x = f.getX();
         int i;
-        for ( i = 0; i < figObjectsX.size(); i++) {
+        for (i = 0; i < figObjectsX.size(); i++) {
             Fig fig = (Fig) figObjectsX.get(i);
             if (fig.getX() > x) {
-                    break;
-                }
-                }
-        figObjectsX.add( i, f);
+		break;
+	    }
+	}
+        figObjectsX.add(i, f);
     }
 
     /**
@@ -265,7 +264,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
      */
     public void updateActivations() {
         makeUniformNodeCount();
-        for ( Iterator it=figObjectsX.iterator(); it.hasNext();) {
+        for (Iterator it = figObjectsX.iterator(); it.hasNext();) {
             Object fig = it.next();
             if (fig instanceof FigClassifierRole) {
                 ((FigClassifierRole) fig).updateActivations();
@@ -273,15 +272,13 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
         }
     }
 
-    public void remove( Fig f)
-    {
-        if ( f instanceof FigMessage)
-        {
-            FigMessage fm=(FigMessage)f;
-            ((FigMessagePort)fm.getSourcePortFig()).clearNode();
-            ((FigMessagePort)fm.getDestPortFig()).clearNode();
+    public void remove(Fig f) {
+        if (f instanceof FigMessage) {
+            FigMessage fm = (FigMessage) f;
+            ((FigMessagePort) fm.getSourcePortFig()).clearNode();
+            ((FigMessagePort) fm.getDestPortFig()).clearNode();
         }
-        super.remove( f);
+        super.remove(f);
         updateActivations();
     }
 

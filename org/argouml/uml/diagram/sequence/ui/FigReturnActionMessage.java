@@ -24,12 +24,8 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
-import java.util.List;
-
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.Fig;
-
-import org.argouml.uml.diagram.sequence.MessageNode;
 
 /**
  * @author Jaap
@@ -46,20 +42,19 @@ public class FigReturnActionMessage extends FigMessage {
     }
 
     /**
-     * Override to make sure dashed is preserved across saves
+     * Override to make sure dashed is preserved across saves.
      *
      * @see org.tigris.gef.presentation.FigEdge#setFig
      */
-    public void setFig( Fig f)
-    {
-        super.setFig( f);
-        setDashed( true);
+    public void setFig(Fig f) {
+        super.setFig(f);
+        setDashed(true);
     }
 
     /**
      *
      */
     public FigReturnActionMessage() {
-        this( null);
+        this(null);
     }
 }

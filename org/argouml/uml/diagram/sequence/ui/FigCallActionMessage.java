@@ -24,14 +24,10 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
-import java.util.List;
-
-import org.argouml.uml.diagram.sequence.MessageNode;
-
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 
 /**
- * Fig that represents a link on a sequence diagram that has a callaction
+ * Fig that represents a link on a sequence diagram that has a callaction.
  *
  * @author jaap.branderhorst@xs4all.nl
  */

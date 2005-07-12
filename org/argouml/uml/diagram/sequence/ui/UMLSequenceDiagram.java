@@ -47,8 +47,8 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 public class UMLSequenceDiagram extends UMLDiagram {
 
     private Object[] actions;
-    static String SEQUENCE_CONTRACT_BUTTON="button.sequence-contract";
-    static String SEQUENCE_EXPAND_BUTTON="button.sequence-expand";
+    static final String SEQUENCE_CONTRACT_BUTTON = "button.sequence-contract";
+    static final String SEQUENCE_EXPAND_BUTTON = "button.sequence-expand";
 
     /**
      * Constructs a new sequence diagram with a default name and NO namespace.
@@ -79,7 +79,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) {
         }
-        ((SequenceDiagramGraphModel)getGraphModel()).setCollaboration( collaboration);
+        ((SequenceDiagramGraphModel) getGraphModel())
+	    .setCollaboration(collaboration);
     }
 
     /**
@@ -101,7 +102,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * @return a new unique name.
      */
     protected String getNewDiagramName() {
-        String name = getLabelName()+" " + getNextDiagramSerial();
+        String name = getLabelName() + " " + getNextDiagramSerial();
         if (!(ProjectManager.getManager().getCurrentProject()
 	      .isValidDiagramName(name))) {
             name = getNewDiagramName();
@@ -156,26 +157,26 @@ public class UMLSequenceDiagram extends UMLDiagram {
 		Hashtable args = new Hashtable();
                 args.put("edgeClass", Model.getMetaTypes().getMessage());
 		args.put("action", actionList[i][0]);
-                args.put("actionName", ResourceLoaderWrapper.getImageBinding( (String)actionList[i][1]));
+                args.put("actionName",
+			 ResourceLoaderWrapper
+			 .getImageBinding((String) actionList[i][1]));
 		actions[i + offset] =
                     new RadioAction(new CmdSetMode(ModeCreateMessage.class,
                     args,
 						   (String) actionList[i][1]));
 	    }
-            Hashtable args=new Hashtable();
-            args.put( "name", SEQUENCE_EXPAND_BUTTON);
-            actions[5]=new RadioAction( new CmdSetMode(
-                ModeChangeHeight.class,
-                args,
-                SEQUENCE_EXPAND_BUTTON
-                ));
-            args=new Hashtable();
-            args.put( "name", SEQUENCE_CONTRACT_BUTTON);
-            actions[6]=new RadioAction( new CmdSetMode(
-                ModeChangeHeight.class,
-                args,
-                SEQUENCE_CONTRACT_BUTTON
-                ));
+            Hashtable args = new Hashtable();
+            args.put("name", SEQUENCE_EXPAND_BUTTON);
+            actions[5] =
+		new RadioAction(new CmdSetMode(ModeChangeHeight.class,
+					       args,
+					       SEQUENCE_EXPAND_BUTTON));
+            args = new Hashtable();
+            args.put("name", SEQUENCE_CONTRACT_BUTTON);
+            actions[6] =
+		new RadioAction(new CmdSetMode(ModeChangeHeight.class,
+					       args,
+					       SEQUENCE_CONTRACT_BUTTON));
         }
         return actions;
     }
@@ -190,7 +191,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
     /**
      */
     public void setNamespace(Object ns) {
-        ((SequenceDiagramGraphModel)getGraphModel()).setCollaboration( ns);
+        ((SequenceDiagramGraphModel) getGraphModel()).setCollaboration(ns);
         super.setNamespace(ns);
     }
 
@@ -203,23 +204,25 @@ public class UMLSequenceDiagram extends UMLDiagram {
         ProjectManager.getManager().getCurrentProject().moveToTrash(collab);
 */
     }
-    
+
     /**
-     * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(
+     *         java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base)  {
-    	return false; 
-		/* TODO: We may return the following when the 
-		 * relocate() has been implemented. */
+    	return false;
+	/* TODO: We may return the following when the
+	 * relocate() has been implemented.
+	 */
 //    	Model.getFacade().isAClassifier(base)
 //        	|| Model.getFacade().isAOperation(base);
     }
 
-	/**
-	 * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
-	 */
-	public boolean relocate(Object base) {
-		return false;
-	}
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
+     */
+    public boolean relocate(Object base) {
+	return false;
+    }
 
 } /* end class UMLSequenceDiagram */
