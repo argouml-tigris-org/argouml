@@ -909,9 +909,8 @@ public abstract class FigEdgeModelElement
         if (owner != null) {
             if (owner instanceof CommentEdge) {
                 return ((CommentEdge) owner).getSource();
-            } else {
-                return Model.getCoreHelper().getSource(owner);
             }
+            return Model.getCoreHelper().getSource(owner);
         }
         return null;
     }
@@ -927,9 +926,8 @@ public abstract class FigEdgeModelElement
         if (owner != null) {
             if (owner instanceof CommentEdge) {
                 return ((CommentEdge) owner).getDestination();
-            } else {
-                return Model.getCoreHelper().getDestination(owner);
             }
+            return Model.getCoreHelper().getDestination(owner);
         }
         return null;
     }
