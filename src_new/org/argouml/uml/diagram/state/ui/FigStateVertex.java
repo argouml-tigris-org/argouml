@@ -51,6 +51,7 @@ public abstract class FigStateVertex extends FigNodeModelElement {
      * The main constructor
      */
     public FigStateVertex() {
+        this.allowRemoveFromDiagram(false);
     }
 
     /** The constructor which hooks the Fig into the UML element
