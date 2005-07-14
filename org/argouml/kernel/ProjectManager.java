@@ -241,7 +241,7 @@ public final class ProjectManager implements PropertyChangeListener, MementoCrea
         ArgoDiagram d = DiagramFactory.getInstance().createClassDiagram(model);
         currentProject.addMember(d);
         currentProject.addMember(
-                DiagramFactory.getInstance().createClassDiagram(model));
+                DiagramFactory.getInstance().createUseCaseDiagram(model));
         currentProject.addMember(new ProjectMemberTodoList("", currentProject));
         ProjectManager.getManager().setNeedsSave(false);
         currentProject.setActiveDiagram(d);
