@@ -30,6 +30,7 @@ import java.util.Iterator;
 
 import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.DiDiagram;
 import org.argouml.model.Model;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
@@ -38,11 +39,12 @@ import org.tigris.gef.presentation.Fig;
 /**
  * This class represents all Diagrams within ArgoUML.
  * It is based upon the GEF Diagram.
- *
  */
 public class ArgoDiagram extends Diagram {
 
     private ItemUID id;
+    
+    private DiDiagram diDiagram = null;
 
     /**
      * Hack to use vetocheck in constructing names.
@@ -64,11 +66,11 @@ public class ArgoDiagram extends Diagram {
      * @param diagramName the name of the diagram
      */
     public ArgoDiagram(String diagramName) {
-  	// next line patch to issue 596 (hopefully)
-  	super(diagramName);
-	try {
-	    setName(diagramName);
-	} catch (PropertyVetoException pve) { }
+        // next line patch to issue 596 (hopefully)
+        super(diagramName);
+        try {
+            setName(diagramName);
+        } catch (PropertyVetoException pve) { }
     }
 
     ////////////////////////////////////////////////////////////////
@@ -78,21 +80,21 @@ public class ArgoDiagram extends Diagram {
      * @see org.tigris.gef.base.Diagram#setName(java.lang.String)
      */
     public void setName(String n) throws PropertyVetoException {
-	super.setName(n);
+        super.setName(n);
     }
 
     /**
      * @param i the new id
      */
     public void setItemUID(ItemUID i) {
-	id = i;
+        id = i;
     }
 
     /**
      * @return the item UID
      */
     public ItemUID getItemUID() {
-	return id;
+        return id;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -146,8 +148,8 @@ public class ArgoDiagram extends Diagram {
      * @see org.tigris.gef.base.Diagram#initialize(Object)
      */
     public void initialize(Object owner) {
-	super.initialize(owner);
-	ProjectManager.getManager().getCurrentProject().setActiveDiagram(this);
+        super.initialize(owner);
+        ProjectManager.getManager().getCurrentProject().setActiveDiagram(this);
     }
 
     /**
@@ -190,5 +192,20 @@ public class ArgoDiagram extends Diagram {
         return "Diagram: " + getName();
     }
 
+    /**
+     * Package scope. Only the factory is supposed to set this.
+     * @param diDiagram
+     */
+    void setDiDiagram(DiDiagram diDiagram) {
+        this.diDiagram = diDiagram;
+    }
+    
+    /**
+     * Get the object that represents this diagram in the DiagramInterchangeModel
+     * @return the Diagram Interchange Diagram.
+     */
+    public DiDiagram getDiDiagram() {
+        return diDiagram;
+    }
 
 } /* end class ArgoDiagram */
