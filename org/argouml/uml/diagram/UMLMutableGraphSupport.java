@@ -34,6 +34,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.DiDiagram;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
@@ -53,12 +54,15 @@ import org.tigris.gef.graph.MutableGraphSupport;
  * @since November 14, 2002, 10:20 PM
  */
 public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
+    
     /**
      * Logger.
      */
     private static final Logger LOG =
-	Logger.getLogger(UMLMutableGraphSupport.class);
+        Logger.getLogger(UMLMutableGraphSupport.class);
 
+    private DiDiagram diDiagram;
+    
     /**
      * Contains all the nodes in the graphmodel/diagram.
      */
@@ -533,4 +537,21 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
                 fromElement,
                 toElement);
     }
+    
+    /**
+     * Package scope. Only the factory is supposed to set this.
+     * @param diDiagram
+     */
+    void setDiDiagram(DiDiagram diDiagram) {
+        this.diDiagram = diDiagram;
+    }
+    
+    /**
+     * Get the object that represents this diagram in the DiagramInterchangeModel
+     * @return the Diagram Interchange Diagram.
+     */
+    public DiDiagram getDiDiagram() {
+        return diDiagram;
+    }
+
 }

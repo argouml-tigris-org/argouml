@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui;
+package org.argouml.uml.diagram;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ActivityDiagram;
@@ -34,6 +34,8 @@ import org.argouml.model.Model;
 import org.argouml.model.SequenceDiagram;
 import org.argouml.model.StateDiagram;
 import org.argouml.model.UseCaseDiagram;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.GraphChangeAdapter;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
@@ -43,7 +45,7 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
 /**
-* Provide a factory methods to create different UML diagrams.
+* Provide a factory method to create different UML diagrams.
 * @author Bob Tarling
 */
 public class DiagramFactory {
@@ -69,7 +71,7 @@ public class DiagramFactory {
         ArgoDiagram diagram = null;
         
         if (type == ClassDiagram.class) {
-            diagram = new UMLClassDiagram(model); 
+            diagram = new UMLClassDiagram(model);
         } else if (type == UseCaseDiagram.class) {
             diagram = new UMLUseCaseDiagram(model);
         } else if (type == StateDiagram.class) {
@@ -93,7 +95,7 @@ public class DiagramFactory {
                  GraphChangeAdapter.getInstance());
             DiDiagram dd =
                 GraphChangeAdapter.getInstance().createDiagram(type);
-            diagram.setDiDiagram(dd);
+            ((UMLMutableGraphSupport)diagram.getGraphModel()).setDiDiagram(dd);
         }
         return diagram;
     }
@@ -105,7 +107,8 @@ public class DiagramFactory {
      */
     public ArgoDiagram removeDiagram(ArgoDiagram diagram) {
         
-        DiDiagram dd = diagram.getDiDiagram();
+        DiDiagram dd =
+            ((UMLMutableGraphSupport)diagram.getGraphModel()).getDiDiagram();
         if (dd != null) {
             GraphChangeAdapter.getInstance().removeDiagram(dd);
         }
