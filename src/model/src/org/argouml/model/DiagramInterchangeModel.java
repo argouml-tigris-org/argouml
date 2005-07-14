@@ -38,6 +38,9 @@ public interface DiagramInterchangeModel {
     public DiDiagram createDiagram(Class type);
     public void deleteDiagram(DiDiagram diagram);
     
+    public DiElement createElement(DiDiagram diagram, Object modelElement);
+    public void deleteElement(DiElement diagram);
+    
     // These methods are based on the GraphEvents. These need replacing by
     // more specic meaningful requests of the diagram interface model
     public void nodeAdded(Object source, Object arg);
