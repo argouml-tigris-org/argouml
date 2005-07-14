@@ -87,18 +87,18 @@ public final class Model {
 
 	// Install the decorators
         activityGraphsHelper =
-	    new ActivityGraphsHelperProxy(impl.getActivityGraphsHelper());
+            new ActivityGraphsHelperProxy(impl.getActivityGraphsHelper());
         collaborationsHelper =
-	    new CollaborationsHelperProxy(impl.getCollaborationsHelper());
+            new CollaborationsHelperProxy(impl.getCollaborationsHelper());
         commonBehaviorHelper =
-	    new CommonBehaviorHelperProxy(impl.getCommonBehaviorHelper());
+            new CommonBehaviorHelperProxy(impl.getCommonBehaviorHelper());
         coreHelper = new CoreHelperProxy(impl.getCoreHelper());
         dataTypesHelper = new DataTypesHelperProxy(impl.getDataTypesHelper());
         extensionMechanismsHelper =
-	    new ExtensionMechanismsHelperProxy(
+            new ExtensionMechanismsHelperProxy(
 		impl.getExtensionMechanismsHelper());
         stateMachinesHelper =
-	    new StateMachinesHelperProxy(impl.getStateMachinesHelper());
+            new StateMachinesHelperProxy(impl.getStateMachinesHelper());
         umlHelper = new UmlHelperProxy(impl.getUmlHelper());
         useCasesHelper = new UseCasesHelperProxy(impl.getUseCasesHelper());
     }
@@ -142,6 +142,15 @@ public final class Model {
      */
     public static ModelEventPump getPump() {
         return impl.getModelEventPump();
+    }
+
+    /**
+     * Getter for DiagramInterchangeModel.
+     *
+     * @return the diagram interchange model
+     */
+    public static DiagramInterchangeModel getDiagramInterchangeModel() {
+        return impl.getDiagramInterchangeModel();
     }
 
     /**

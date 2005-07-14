@@ -41,6 +41,7 @@ import org.argouml.model.CoreFactory;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.DataTypesFactory;
 import org.argouml.model.DataTypesHelper;
+import org.argouml.model.DiagramInterchangeModel;
 import org.argouml.model.DirectionKind;
 import org.argouml.model.EventAdapter;
 import org.argouml.model.ExtensionMechanismsFactory;
@@ -120,6 +121,15 @@ public class NSUMLModelImplementation implements ModelImplementation {
      */
     public Facade getFacade() {
         return theFacade;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getDiagramInterchangeModel()
+     * This implementation returns null as NSUML is not aware of the OMG DI
+     * model.
+     */
+    public DiagramInterchangeModel getDiagramInterchangeModel() {
+        return null;
     }
 
     /**

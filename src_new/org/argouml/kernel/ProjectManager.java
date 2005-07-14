@@ -36,6 +36,7 @@ import org.argouml.model.MementoCreationObserver;
 import org.argouml.model.Model;
 import org.argouml.model.ModelMemento;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.DiagramFactory;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
@@ -237,9 +238,10 @@ public final class ProjectManager implements PropertyChangeListener, MementoCrea
         currentProject.setRoot(model);
         currentProject.setCurrentNamespace(model);
         currentProject.addMember(model);
-        ArgoDiagram d = new UMLClassDiagram(model);
+        ArgoDiagram d = DiagramFactory.getInstance().createClassDiagram(model);
         currentProject.addMember(d);
-        currentProject.addMember(new UMLUseCaseDiagram(model));
+        currentProject.addMember(
+                DiagramFactory.getInstance().createClassDiagram(model));
         currentProject.addMember(new ProjectMemberTodoList("", currentProject));
         ProjectManager.getManager().setNeedsSave(false);
         currentProject.setActiveDiagram(d);

@@ -42,6 +42,13 @@ public interface ModelImplementation {
     Facade getFacade();
 
     /**
+     * Get the diagram interchange model.
+     *
+     * @return the diagram interchange model.
+     */
+    DiagramInterchangeModel getDiagramInterchangeModel();
+
+    /**
      * Get the event pump.
      *
      * @return the current ModelEventPump.
