@@ -286,8 +286,8 @@ public abstract class FigNodeModelElement
         name.setFont(getLabelFont());
         name.setTextColor(Color.black);
         // _name.setFilled(false);
-        name.setMultiLine(false);
-        name.setAllowsTab(false);
+        name.setReturnAction(FigText.END_EDITING);
+        name.setTabAction(FigText.END_EDITING);
         name.setText(placeString());
 
         stereo = new FigText(10, 10, 90, 15, true);
@@ -1407,12 +1407,12 @@ public abstract class FigNodeModelElement
         //Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT).getMaxAscent();
 
         //set new bounds for all included figs
-        Enumeration figs = fg.elements();
-        Fig myBigPort = (Fig) figs.nextElement();
+        Iterator figs = fg.iterator();
+        Fig myBigPort = (Fig) figs.next();
         Fig fi;
         int fw, yy = y;
-        while (figs.hasMoreElements()) {
-            fi = (Fig) figs.nextElement();
+        while (figs.hasNext()) {
+            fi = (Fig) figs.next();
             fw = fi.getMinimumSize().width;
             if (!checkSize && fw > newW - 2) {
                 fw = newW - 2;
