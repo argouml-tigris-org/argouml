@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -25,24 +25,11 @@
 package org.argouml.model;
 
 /**
- * An interface to the OMG Diagram Interchange Model. Only implemented
- * by model implementations that wrap a repository that is aware of such
- * a model.<p>
- * 
- * This interface is open for change as DI requirements become more clearly
- * understood.
+ * This is a wrapper class around a diagram from the Diagram Interchange Model.
+ * The intention here is to pass a class of this type around instead of just
+ * an Object. This will give us better compile time safety than we currently
+ * get with model elements which are currently passed about as Object.
  * @author Bob Tarling
  */
-public interface DiagramInterchangeModel {
-    
-    public DiDiagram createDiagram(Class type);
-    public void deleteDiagram(DiDiagram diagram);
-    
-    // These methods are based on the GraphEvents. These need replacing by
-    // more specic meaningful requests of the diagram interface model
-    public void nodeAdded(Object source, Object arg);
-    public void edgeAdded(Object source, Object arg);
-    public void nodeRemoved(Object source, Object arg);
-    public void edgeRemoved(Object source, Object arg);
-    public void graphChanged(Object source, Object arg);
+public interface DiDiagram {
 }

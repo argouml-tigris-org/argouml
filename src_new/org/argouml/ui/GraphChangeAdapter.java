@@ -24,6 +24,7 @@
 
 package org.argouml.ui;
 
+import org.argouml.model.DiDiagram;
 import org.argouml.model.Model;
 import org.tigris.gef.graph.GraphEvent;
 import org.tigris.gef.graph.GraphListener;
@@ -54,7 +55,7 @@ public class GraphChangeAdapter implements GraphListener {
      */
     private GraphChangeAdapter() {
     }
-
+    
     public void nodeAdded(GraphEvent e) {
         Object source = e.getSource();
         Object arg = e.getArg();
@@ -94,4 +95,13 @@ public class GraphChangeAdapter implements GraphListener {
         if (arg instanceof Fig) arg = ((Fig)arg).getOwner();
         Model.getDiagramInterchangeModel().graphChanged(source, arg);
     }
- }
+    
+    public DiDiagram createDiagram(Class type) {
+        return Model.getDiagramInterchangeModel().createDiagram(type);
+    }
+    
+    
+    public void removeDiagram(DiDiagram dd) {
+        Model.getDiagramInterchangeModel().deleteDiagram(dd);
+    }
+}
