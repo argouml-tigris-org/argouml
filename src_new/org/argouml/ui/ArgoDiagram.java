@@ -192,20 +192,4 @@ public class ArgoDiagram extends Diagram {
         return "Diagram: " + getName();
     }
 
-    /**
-     * Package scope. Only the factory is supposed to set this.
-     * @param diDiagram
-     */
-    void setDiDiagram(DiDiagram diDiagram) {
-        this.diDiagram = diDiagram;
-    }
-    
-    /**
-     * Get the object that represents this diagram in the DiagramInterchangeModel
-     * @return the Diagram Interchange Diagram.
-     */
-    public DiDiagram getDiDiagram() {
-        return diDiagram;
-    }
-
 } /* end class ArgoDiagram */

@@ -29,6 +29,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
@@ -120,9 +121,10 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         }
         
         if (Model.getDiagramInterchangeModel() != null) {
-            // TODO can't get the DiDiagram here looks like I will have to store
-            // it in GraphModel instead of ArgoDiagram
-            Model.getDiagramInterchangeModel().createElement(null, node);
+            // If there is a diagram interchange model then we tell it that there
+            // is a new element.
+            Model.getDiagramInterchangeModel().createElement(
+                    ((UMLMutableGraphSupport)gm).getDiDiagram(), node);
         }
         
         return figNode;
@@ -257,9 +259,10 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         }
         
         if (Model.getDiagramInterchangeModel() != null) {
-            // TODO can't get the DiDiagram here looks like I will have to store
-            // it in GraphModel instead of ArgoDiagram
-            Model.getDiagramInterchangeModel().createElement(null, edge);
+            // If there is a diagram interchange model then we tell it that there
+            // is a new element.
+            Model.getDiagramInterchangeModel().createElement(
+                    ((UMLMutableGraphSupport)gm).getDiDiagram(), edge);
         }
         
         return newEdge;
