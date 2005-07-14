@@ -74,6 +74,7 @@ import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.DiElement;
 import org.argouml.model.Model;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
@@ -118,6 +119,8 @@ public abstract class FigNodeModelElement
     private static final Logger LOG =
         Logger.getLogger(FigNodeModelElement.class);
 
+    private DiElement diElement = null;
+    
     ////////////////////////////////////////////////////////////////
     // constants
 
@@ -1667,6 +1670,14 @@ public abstract class FigNodeModelElement
      */
     public void forceRepaintShadow() {
         forceRepaint = true;
+    }
+    
+    public void setDiElement(DiElement diElement) {
+        this.diElement = diElement;
+    }
+    
+    public DiElement getDiElement() {
+        return diElement;
     }
     
 } /* end class FigNodeModelElement */
