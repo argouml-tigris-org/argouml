@@ -89,7 +89,7 @@ public class DiagramFactory {
         
         if (Model.getDiagramInterchangeModel() != null) {
             diagram.getGraphModel().addGraphEventListener(
-                 GraphEventMediator.getInstance());
+                 GraphChangeAdapter.getInstance());
         }
         return diagram;
     }
