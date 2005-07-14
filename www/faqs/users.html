@@ -9,24 +9,28 @@ DT {
 <body>
 <H2>Frequently asked questions for ArgoUML</H2>
 <div class="app">
+
 <H3>List of all questions</H3>
-<H4><a href="#introduction_link">Introduction</a></H4>
+
+<H4>Introduction</H4>
 <ul>
-<li><a href="#link1">What is ArgoUML?</a>
-<li><a href="#name_argouml">Where does the name ArgoUML come from?</a>
-<li><a href="#helpdeveloping">How can I help?</a>
-<li><a href="#manual_link">Is there a manual?</a>
-<li><a href="#source_link">Where do I get the source code for ArgoUML?</a>
-<li><a href="#commer_link">Is there commercial support for ArgoUML?</a>
-<li><a href="#uml_versions">What versions of UML are supported?</a>
-<li><a href="#help_link">When I click on help I get sent to a server... Where can I get the help files?</a>
+<li><a href="#link1">What is ArgoUML?</a></li>
+<li><a href="#name_argouml">Where does the name ArgoUML come from?</a></li>
+<li><a href="#helpdeveloping">How can I help?</a></li>
+<li><a href="#manual_link">Is there a manual?</a></li>
+<li><a href="#source_link">Where do I get the source code for ArgoUML?</a></li>
+<li><a href="#commer_link">Is there commercial support for ArgoUML?</a></li>
+<li><a href="#uml_versions">What versions of UML are supported?</a></li>
+<li><a href="#help_link">When I click on help I get sent to a server... 
+  Where can I get the help files?</a></li>
 </ul>
 
-<H4><a href="#quickstart_link">Quickstart, install and use</a></H4>
+<H4>Quickstart, install and use</H4>
 <ul>
-<li><a href="#install_link">How do I install ArgoUML?</a>
+<li><a href="#install_link">How do I install ArgoUML?</a></li>
 <li><a href="#community_link">Where can I discuss ArgoUML usage
-with other users?</a>
+with other users?</a></li>
+<li><a href="#xmx">Can I use ArgoUML for "large" projects?</a></li>
 </ul>
 
 <H4>OS Specific</H4>
@@ -320,8 +324,20 @@ with other users?</a>
 See <a href="http://argouml.tigris.org/servlets/SummarizeList?listName=users">
   the list home page
 </a>.
+
+<DT><a name="xmx">Can I use ArgoUML for "large" projects?</a></DT>
+<DD>Yes. But be sure to increase the default heap space, 
+  when you have more than about 50 modelelements.
+  You can increase the heap space for any Java application by starting that
+  application from the command prompt and doing the likes of:<br>
+<PRE>
+    java -jar -Xmx512m argouml.jar
+</PRE>
+</br></DD>
+  
 </DL>
 
+  
 
 <H3>OS Specific</H3>
 <DL>
