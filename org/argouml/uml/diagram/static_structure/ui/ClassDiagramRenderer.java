@@ -90,30 +90,43 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay,
 				 Object node, Map styleAttributes) {
+        
+        FigNode figNode = null;
+        
         if (node == null) {
             throw new IllegalArgumentException("A node must be supplied");
         }
         if (Model.getFacade().isAClass(node)) {
-            return new FigClass(gm, node);
+            figNode = new FigClass(gm, node);
         } else if (Model.getFacade().isAInterface(node)) {
-            return new FigInterface(gm, node);
+            figNode = new FigInterface(gm, node);
         } else if (Model.getFacade().isAInstance(node)) {
-            return new FigInstance(gm, node);
+            figNode = new FigInstance(gm, node);
         } else if (Model.getFacade().isAModel(node)) {
-            return new FigModel(gm, node);
+            figNode = new FigModel(gm, node);
         } else if (Model.getFacade().isASubsystem(node)) {
-            return new FigSubsystem(gm, node);
+            figNode = new FigSubsystem(gm, node);
         } else if (Model.getFacade().isAPackage(node)) {
-            return new FigPackage(gm, node);
+            figNode = new FigPackage(gm, node);
         } else if (Model.getFacade().isAComment(node)) {
-            return new FigComment(gm, node);
+            figNode = new FigComment(gm, node);
         } else if (Model.getFacade().isAAssociation(node)) {
-            return new FigNodeAssociation(gm, node);
+            figNode = new FigNodeAssociation(gm, node);
+        } else {
+            LOG.error("TODO: ClassDiagramRenderer getFigNodeFor " + node);
+            throw new IllegalArgumentException(
+                    "Node is not a recognised type. Received "
+                    + node.getClass().getName());
         }
-        LOG.error("TODO: ClassDiagramRenderer getFigNodeFor " + node);
-        throw new IllegalArgumentException(
-                "Node is not a recognised type. Received "
-                + node.getClass().getName());
+        
+        if (Model.getDiagramInterchangeModel() != null) {
+            // TODO can't get the DiDiagram here looks like I will have to store
+            // it in GraphModel instead of ArgoDiagram
+            Model.getDiagramInterchangeModel().createElement(null, node);
+        }
+        
+        return figNode;
+
     }
 
     /**
@@ -137,6 +150,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         FigEdge newEdge = null;
         if (Model.getFacade().isAAssociationClass(edge)) {
             FigAssociationClass ascCFig = new FigAssociationClass(edge, lay);
+            //TODO check why we are returning early for an association class.
             return ascCFig;
         } else if (Model.getFacade().isAAssociationEnd(edge)) {
             FigAssociationEnd asend = new FigAssociationEnd(edge, lay);
@@ -214,6 +228,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
                     "Don't know how to create FigEdge for model type "
                     + edge.getClass().getName());
         }
+        
         if (newEdge.getSourcePortFig() == null) {
             Object source;
             if (edge instanceof CommentEdge) {
@@ -223,6 +238,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             }
             setSourcePort(newEdge, (FigNode) lay.presentationFor(source));
         }
+        
         if (newEdge.getDestPortFig() == null) {
             Object dest;
             if (edge instanceof CommentEdge) {
@@ -232,12 +248,20 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             }
             setDestPort(newEdge, (FigNode) lay.presentationFor(dest));
         }
+        
         if (newEdge.getSourcePortFig() == null
                 || newEdge.getDestPortFig() == null) {
             throw new IllegalStateException("Edge of type "
                     + newEdge.getClass().getName()
                     + " created with no source or destination port");
         }
+        
+        if (Model.getDiagramInterchangeModel() != null) {
+            // TODO can't get the DiDiagram here looks like I will have to store
+            // it in GraphModel instead of ArgoDiagram
+            Model.getDiagramInterchangeModel().createElement(null, edge);
+        }
+        
         return newEdge;
     }
 
