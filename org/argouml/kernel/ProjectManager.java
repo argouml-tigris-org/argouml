@@ -32,9 +32,11 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
+import org.argouml.model.ClassDiagram;
 import org.argouml.model.MementoCreationObserver;
 import org.argouml.model.Model;
 import org.argouml.model.ModelMemento;
+import org.argouml.model.UseCaseDiagram;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.DiagramFactory;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
@@ -238,10 +240,10 @@ public final class ProjectManager implements PropertyChangeListener, MementoCrea
         currentProject.setRoot(model);
         currentProject.setCurrentNamespace(model);
         currentProject.addMember(model);
-        ArgoDiagram d = DiagramFactory.getInstance().createClassDiagram(model);
+        ArgoDiagram d = DiagramFactory.getInstance().createDiagram(ClassDiagram.class, model, null);
         currentProject.addMember(d);
         currentProject.addMember(
-                DiagramFactory.getInstance().createUseCaseDiagram(model));
+                DiagramFactory.getInstance().createDiagram(UseCaseDiagram.class, model, null));
         currentProject.addMember(new ProjectMemberTodoList("", currentProject));
         ProjectManager.getManager().setNeedsSave(false);
         currentProject.setActiveDiagram(d);
