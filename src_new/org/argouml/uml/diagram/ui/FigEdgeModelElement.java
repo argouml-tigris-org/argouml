@@ -60,6 +60,7 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.DiElement;
 import org.argouml.model.Model;
 import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionGoToCritique;
@@ -97,6 +98,8 @@ public abstract class FigEdgeModelElement
 
     private static final Logger LOG =
         Logger.getLogger(FigEdgeModelElement.class);
+    
+    private DiElement diElement = null;
     
     /**
      * Set the removeFromDiagram to false if this edge may not 
@@ -963,4 +966,13 @@ public abstract class FigEdgeModelElement
     protected void allowRemoveFromDiagram(boolean allowed) {
         this.removeFromDiagram = allowed;
     }
+    
+    public void setDiElement(DiElement diElement) {
+        this.diElement = diElement;
+    }
+    
+    public DiElement getDiElement() {
+        return diElement;
+    }
+    
 } /* end class FigEdgeModelElement */

@@ -28,13 +28,16 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.ui.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigDependency;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigGeneralization;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -89,23 +92,29 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node,
             Map styleAttributes) {
 
+        FigNodeModelElement figNode = null;
+        
         // Create a new version of the relevant fig
 
         if (Model.getFacade().isAActor(node)) {
-            return new FigActor(gm, node);
+            figNode = new FigActor(gm, node);
         } else if (Model.getFacade().isAUseCase(node)) {
-            return new FigUseCase(gm, node);
+            figNode = new FigUseCase(gm, node);
         } else if (Model.getFacade().isAComment(node)) {
-            return new FigComment(gm, node);
+            figNode = new FigComment(gm, node);
+        } else {
+            LOG.debug(this.getClass().toString()
+                  + ": getFigNodeFor(" + gm.toString() + ", "
+                  + lay.toString() + ", " + node.toString()
+                  + ") - cannot create this sort of node.");
+            return null;
+            // TODO: Shouldn't we throw an excdeption here?!?!
         }
 
-        // If we get here we were asked for a fig we can't handle.
-
-        LOG.debug(this.getClass().toString()
-		  + ": getFigNodeFor(" + gm.toString() + ", "
-		  + lay.toString() + ", " + node.toString()
-		  + ") - cannot create this sort of node.");
-        return null;
+        figNode.setDiElement(
+                GraphChangeAdapter.getInstance().createElement(gm, node));
+        
+        return figNode;
     }
 
 
@@ -141,7 +150,7 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
             throw new IllegalArgumentException("A model edge must be supplied");
         }
 
-        FigEdge newEdge = null;
+        FigEdgeModelElement newEdge = null;
 
         if (Model.getFacade().isAAssociation(edge)) {
             // If the edge is an association, we'll need a FigAssociation
@@ -264,6 +273,10 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
                     + " created with no source or destination port");
             }
         }
+        
+        newEdge.setDiElement(
+                GraphChangeAdapter.getInstance().createElement(gm, edge));
+        
         return newEdge;
     }
 

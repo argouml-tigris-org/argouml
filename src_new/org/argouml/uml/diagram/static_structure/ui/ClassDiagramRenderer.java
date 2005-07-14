@@ -29,14 +29,16 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import org.argouml.ui.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigAssociationEnd;
 import org.argouml.uml.diagram.ui.FigDependency;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigNodeAssociation;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigPermission;
 import org.argouml.uml.diagram.ui.FigRealization;
 import org.argouml.uml.diagram.ui.FigUsage;
@@ -92,7 +94,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
     public FigNode getFigNodeFor(GraphModel gm, Layer lay,
 				 Object node, Map styleAttributes) {
         
-        FigNode figNode = null;
+        FigNodeModelElement figNode = null;
         
         if (node == null) {
             throw new IllegalArgumentException("A node must be supplied");
@@ -120,12 +122,9 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
                     + node.getClass().getName());
         }
         
-        if (Model.getDiagramInterchangeModel() != null) {
-            // If there is a diagram interchange model then we tell it that there
-            // is a new element.
-            Model.getDiagramInterchangeModel().createElement(
-                    ((UMLMutableGraphSupport)gm).getDiDiagram(), node);
-        }
+        figNode.setDiElement(
+                GraphChangeAdapter.getInstance().createElement(gm, node));
+                
         
         return figNode;
 
@@ -149,7 +148,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         if (edge == null) {
             throw new IllegalArgumentException("A model edge must be supplied");
         }
-        FigEdge newEdge = null;
+        FigEdgeModelElement newEdge = null;
         if (Model.getFacade().isAAssociationClass(edge)) {
             FigAssociationClass ascCFig = new FigAssociationClass(edge, lay);
             //TODO check why we are returning early for an association class.
@@ -258,12 +257,8 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
                     + " created with no source or destination port");
         }
         
-        if (Model.getDiagramInterchangeModel() != null) {
-            // If there is a diagram interchange model then we tell it that there
-            // is a new element.
-            Model.getDiagramInterchangeModel().createElement(
-                    ((UMLMutableGraphSupport)gm).getDiDiagram(), edge);
-        }
+        newEdge.setDiElement(
+            GraphChangeAdapter.getInstance().createElement(gm, edge));
         
         return newEdge;
     }
