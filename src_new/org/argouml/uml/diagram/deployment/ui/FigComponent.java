@@ -48,15 +48,15 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigComponent extends FigNodeModelElement {
     /** The distance between the left edge of the fig and the left edge of the
-     main rectangle. */
-    private static final int BIGPORT_X = 10;
+     * main rectangle. 
+     * Originally named BIGPORT_X (which explains what BX stands for). */
+    private static final int BX = 10;
 
     private static final int OVERLAP = 4;
 
     private FigRect cover;
     private FigRect upperRect;
     private FigRect lowerRect;
-
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -65,9 +65,9 @@ public class FigComponent extends FigNodeModelElement {
      * Constructor.
      */
     public FigComponent() {
-        cover = new FigRect(BIGPORT_X, 10, 120, 80, Color.black, Color.white);
-        upperRect = new FigRect(0, 20, 20, 10, Color.black, Color.white);
-        lowerRect = new FigRect(0, 40, 20, 10, Color.black, Color.white);
+        cover = new FigRect(BX, 10, 120, 80, Color.black, Color.white);
+        upperRect = new FigRect(0, 2 * BX, 2 * BX, BX, Color.black, Color.white);
+        lowerRect = new FigRect(0, 4 * BX, 2 * BX, BX, Color.black, Color.white);
 
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);
@@ -151,7 +151,6 @@ public class FigComponent extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color c) {
-        //super.setLineColor(c);
         cover.setLineColor(c);
         getStereotypeFig().setFilled(false);
         getStereotypeFig().setLineWidth(0);
@@ -160,7 +159,6 @@ public class FigComponent extends FigNodeModelElement {
         upperRect.setLineColor(c);
         lowerRect.setLineColor(c);
     }
-
 
     /**
      * @see org.tigris.gef.presentation.Fig#makeSelection()
@@ -176,8 +174,8 @@ public class FigComponent extends FigNodeModelElement {
         Dimension stereoDim = getStereotypeFig().getMinimumSize();
         Dimension nameDim = getNameFig().getMinimumSize();
 
-        int h = stereoDim.height + nameDim.height - OVERLAP;
-        int w = Math.max(stereoDim.width, nameDim.width) + BIGPORT_X;
+        int h = Math.max(stereoDim.height + nameDim.height - OVERLAP, 4 * BX);
+        int w = Math.max(stereoDim.width, nameDim.width) + 2 * BX;
 
         return new Dimension(w, h);
     }
@@ -188,33 +186,35 @@ public class FigComponent extends FigNodeModelElement {
     protected void setBoundsImpl(int x, int y, int w, int h) {
 
         Rectangle oldBounds = getBounds();
-        getBigPort().setBounds(x + BIGPORT_X, y, w - BIGPORT_X, h);
-        cover.setBounds(x + BIGPORT_X, y, w - BIGPORT_X, h);
+        getBigPort().setBounds(x + BX, y, w - BX, h);
+        cover.setBounds(x + BX, y, w - BX, h);
 
         Dimension stereoDim = getStereotypeFig().getMinimumSize();
         Dimension nameDim = getNameFig().getMinimumSize();
-        if (h < 50) {
-            upperRect.setBounds(x, y + h / 6, 20, 10);
-            lowerRect.setBounds(x, y + 3 * h / 6, 20, 10);
+        if (h < (6 * BX)) {
+            upperRect.setBounds(x, y + 2 * h / 6, 20, 10);
+            lowerRect.setBounds(x, y + 4 * h / 6, 20, 10);
         }
         else {
-            upperRect.setBounds(x, y + 13, 20, 10);
-            lowerRect.setBounds(x, y + 39, 20, 10);
+            upperRect.setBounds(x, y + 2 * BX, 2 * BX, BX);
+            lowerRect.setBounds(x, y + 4 * BX, 2 * BX, BX);
         }
 
-        getStereotypeFig().setBounds(x + BIGPORT_X + 1,
+        getStereotypeFig().setBounds(x + 2 * BX + 1,
                 y + 1,
-                w - BIGPORT_X - 2,
+                w - 2 * BX - 2,
                 stereoDim.height);
-        getNameFig().setBounds(x + BIGPORT_X + 1,
+        getNameFig().setBounds(x + 2 * BX + 1,
                 y + stereoDim.height - OVERLAP + 1,
-                w - BIGPORT_X - 2,
+                w - 2 * BX - 2,
                 nameDim.height);
-        _x = x; _y = y; _w = w; _h = h;
+        _x = x;
+        _y = y;
+        _w = w;
+        _h = h;
         firePropChange("bounds", oldBounds, getBounds());
         updateEdges();
     }
-
 
     ////////////////////////////////////////////////////////////////
     // user interaction methods
@@ -258,7 +258,6 @@ public class FigComponent extends FigNodeModelElement {
                 // elementOrdering(figures);
                 List contents = getLayer().getContents();
                 Iterator it = contents.iterator();
-                int contentsSize = contents.size();
                 while (it.hasNext()) {
                     Object o = it.next();
                     if (o instanceof FigEdgeModelElement) {
@@ -306,8 +305,9 @@ public class FigComponent extends FigNodeModelElement {
     /**
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
-    public boolean getUseTrapRect() { return true; }
-
+    public boolean getUseTrapRect() {
+        return true;
+    }
 
     ////////////////////////////////////////////////////////////////
     // internal methods
@@ -344,7 +344,7 @@ public class FigComponent extends FigNodeModelElement {
     public Rectangle getHandleBox() {
 
         Rectangle r = getBounds();
-        return new Rectangle(r.x + BIGPORT_X, r.y, r.width - BIGPORT_X,
+        return new Rectangle(r.x + BX, r.y, r.width - BX,
                 r.height);
 
     }
@@ -354,7 +354,7 @@ public class FigComponent extends FigNodeModelElement {
      */
     public void setHandleBox(int x, int y, int w, int h) {
 
-        setBounds(x - BIGPORT_X, y, w + BIGPORT_X, h);
+        setBounds(x - BX, y, w + BX, h);
 
     }
 
