@@ -28,6 +28,6 @@ package org.argouml.model;
  * An interface to act as an enumerated type for a di class diagram
  * @author Bob Tarling
  */
-public interface UseCaseDiagram {
+public interface UseCaseDiagram extends DiDiagram {
 
 }

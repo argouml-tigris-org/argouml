@@ -28,6 +28,6 @@ package org.argouml.model;
  * An interface to act as an enumerated type for a di activity diagram
  * @author Bob Tarling
  */
-public interface ActivityDiagram {
+public interface ActivityDiagram extends DiDiagram {
 
 }
