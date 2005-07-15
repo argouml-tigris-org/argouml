@@ -131,9 +131,8 @@ public abstract class FigStateVertex extends FigNodeModelElement {
                     Model.getFacade().getStateMachine(
                             Model.getFacade().getContainer(pstate)))) {
                 return new SelectionActionState(this);
-            } else {
-                return new SelectionState(this);
-            }
+            } 
+            return new SelectionState(this);
         }
         return null;
     }

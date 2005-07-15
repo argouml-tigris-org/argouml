@@ -226,8 +226,8 @@ public class FigActor extends FigNodeModelElement {
     public List getGravityPoints() {
         final int maxPoints = 20;
         List ret = new ArrayList(maxPoints + 8);
-        int cx = getFigAt(HEAD_POSN).center().x;
-        int cy = getFigAt(HEAD_POSN).center().y;
+        int cx = getFigAt(HEAD_POSN).getCenter().x;
+        int cy = getFigAt(HEAD_POSN).getCenter().y;
         int radiusx = Math.round(getFigAt(HEAD_POSN).getWidth() / 2) + 1;
         int radiusy = Math.round(getFigAt(HEAD_POSN).getHeight() / 2) + 1;
         Point point = null;
