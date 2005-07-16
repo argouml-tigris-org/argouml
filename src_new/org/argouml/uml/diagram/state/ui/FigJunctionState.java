@@ -25,14 +25,19 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
+
+import org.tigris.gef.base.Geometry;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigPoly;
 
-/** Class to display graphics for a UML Junction State in a diagram.
+/** 
+ * Class to display graphics for a UML Junction State 
+ * in e.g. a statechart diagram - the diamond.
  *
  * @author pepargouml
  */
@@ -85,7 +90,6 @@ public class FigJunctionState extends FigStateVertex {
 //        addFig(getNameFig());
 
 	setBlinkPorts(false); //make port invisble unless mouse enters
-	Rectangle r = getBounds();
     }
 
     /**
@@ -189,4 +193,25 @@ public class FigJunctionState extends FigStateVertex {
     public void keyPressed(KeyEvent ke) { }
 
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
+     */
+    public Point getClosestPoint(Point anotherPt) {
+        Rectangle r = getBounds();
+        int xs[] = {r.x + r.width / 2, 
+                    r.x + r.width,      
+                    r.x + r.width / 2, 
+                    r.x,
+                    r.x + r.width / 2};
+        int ys[] = {r.y,
+                    r.y + r.height / 2, 
+                    r.y + r.height,
+                    r.y + r.height / 2, 
+                    r.y};
+        Point p = Geometry.ptClosestTo(
+                xs, 
+                ys,
+                5 , anotherPt);
+        return p;
+    }
 } /* end class FigJunctionState */

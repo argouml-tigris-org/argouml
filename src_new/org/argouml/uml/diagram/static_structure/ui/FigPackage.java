@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -54,6 +55,7 @@ import org.argouml.uml.diagram.ui.VisibilityContainer;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -78,6 +80,7 @@ public class FigPackage extends FigNodeModelElement
     private int indentX = 50;
     //private int indentY = 20;
     private int textH = 20;
+    private int tabHeight = 20; // the total height of the tab
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -506,6 +509,7 @@ public class FigPackage extends FigNodeModelElement
         currentY += minHeight - 1; // -1 for 1 pixel overlap
         body.setBounds(xa, currentY, newW, newH + ya - currentY);
 
+        tabHeight = currentY - ya;
         // set bounds of big box
 
         getBigPort().setBounds(xa, ya, newW, newH);
@@ -801,6 +805,22 @@ public class FigPackage extends FigNodeModelElement
         
 //        String s = GeneratorDisplay.getInstance().generate(getOwner());
 //        ft.setText(s);
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
+     */
+    public Point getClosestPoint(Point anotherPt) {
+        Rectangle r = getBounds();
+        int xs[] = {r.x, r.x + r.width - indentX, r.x + r.width - indentX, 
+                    r.x + r.width,   r.x + r.width,  r.x,            r.x};
+        int ys[] = {r.y, r.y,                     r.y + tabHeight,
+                    r.y + tabHeight, r.y + r.height, r.y + r.height, r.y};
+        Point p = Geometry.ptClosestTo(
+                xs, 
+                ys,
+                7 , anotherPt);
+        return p;
     }
     
 } /* end class FigPackage */
