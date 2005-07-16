@@ -279,7 +279,7 @@ public class DnDExplorerTree
             LOG.debug("No valid Drag: destination is a DataType.");
             return false;
         }
-        
+
         /* Let's check all dragged elements - if one of these 
          * may be dropped, then the drag is valid. 
          * The others will be ignored when dropping.*/
@@ -337,29 +337,30 @@ public class DnDExplorerTree
     }
 
     /**
-     * Set the cursor.
+     * This is not the correct location to set the cursor.
+     * The commented out code illustrates the calculation 
+     * of coordinates.
      *
      * @see java.awt.dnd.DragSourceListener#dragOver(java.awt.dnd.DragSourceDragEvent)
      */
     public void dragOver(DragSourceDragEvent dragSourceDragEvent) { 
-        Transferable tf = 
-            dragSourceDragEvent.getDragSourceContext().getTransferable();
-        /* This is the mouse location on the screen: */
-        Point dragLoc = dragSourceDragEvent.getLocation();
-        /* This is the JTree location on the screen: */
-        Point treeLoc = getLocationOnScreen();
-        /* Now substract to find the location within the JTree: */
-        dragLoc.translate(- treeLoc.x, - treeLoc.y);
-        TreePath destinationPath = 
-        	getPathForLocation(dragLoc.x, dragLoc.y);
-         if (!isValidDrag(destinationPath, tf)) {
-            dragSourceDragEvent.getDragSourceContext()
-                .setCursor(DragSource.DefaultCopyNoDrop);
-        } else {
-            dragSourceDragEvent.getDragSourceContext()
-                .setCursor(DragSource.DefaultMoveDrop);
-        }
-
+//        Transferable tf = 
+//            dragSourceDragEvent.getDragSourceContext().getTransferable();
+//        /* This is the mouse location on the screen: */
+//        Point dragLoc = dragSourceDragEvent.getLocation();
+//        /* This is the JTree location on the screen: */
+//        Point treeLoc = getLocationOnScreen();
+//        /* Now substract to find the location within the JTree: */
+//        dragLoc.translate(- treeLoc.x, - treeLoc.y);
+//        TreePath destinationPath = 
+//        	getPathForLocation(dragLoc.x, dragLoc.y);
+//         if (isValidDrag(destinationPath, tf)) {
+////           dragSourceDragEvent.getDragSourceContext()
+////           .setCursor(DragSource.DefaultMoveDrop);
+//        } else {
+////          dragSourceDragEvent.getDragSourceContext()
+////          .setCursor(DragSource.DefaultCopyNoDrop);
+//        }
     }
 
     /**
@@ -551,7 +552,7 @@ public class DnDExplorerTree
 				paintImmediately(cueLine.getBounds());	
 			}
 			
-			TreePath path = getClosestPathForLocation(pt.x, pt.y);
+			TreePath path = getPathForLocation(pt.x, pt.y);
 			if (!(path == lastPath))			
 			{
 				lastPath = path;
@@ -561,37 +562,73 @@ public class DnDExplorerTree
 			/* In any case draw (over the ghost image if necessary) 
 			 * a cue line indicating where a drop will occur */
 			Rectangle raPath = getPathBounds(path);
-			cueLine.setRect(0,  raPath.y+(int)raPath.getHeight(), 
-					getWidth(), 2);
-
+			if (raPath != null) {
+				cueLine.setRect(0,  
+					raPath.y+(int)raPath.getHeight(), 
+					getWidth(), 
+					2);
+			}
+			
 			g2.setColor(cueLineColor);
 			g2.fill(cueLine);
 
 			// And include the cue line in the area to be rubbed out next time
 			ghostRectangle = ghostRectangle.createUnion(cueLine);	
 			
-			// Do this if you want to prohibit dropping onto the drag source
-			if (path.equals(sourcePath)) {			
-				dropTargetDragEvent.rejectDrag();
-			} else {
-				dropTargetDragEvent.acceptDrag(
-						dropTargetDragEvent.getDropAction());
-			}
-				
-            /* TODO: The next only works from Java 1.5 onwards :-( */
             /* Testcase: drag something from another 
              * application into ArgoUML,
-             * and the explorer shows the drop icon, instead of the noDrop.*/
-            /*
-            Transferable tf = dropTargetDragEvent.getTransferable();
-            if (tf.isDataFlavorSupported(
-                     TransferableModelElements.UML_COLLECTION_FLAVOR)) {
-                dropTargetDragEvent.acceptDrag(
-                    DnDConstants.ACTION_COPY_OR_MOVE);
-            } else {
-                dropTargetDragEvent.rejectDrag();
-            } 
-            */
+             * and the explorer shows the drop icon, instead of the noDrop.
+             */
+			if (!dropTargetDragEvent.isDataFlavorSupported(
+					TransferableModelElements.UML_COLLECTION_FLAVOR)) {
+				dropTargetDragEvent.rejectDrag();
+				return;
+			}
+			if (path==null) {
+				dropTargetDragEvent.rejectDrag();
+				return;
+			}
+			// to prohibit dropping onto the drag source:
+			if (path.equals(sourcePath)) {
+				dropTargetDragEvent.rejectDrag();
+				return;
+			}
+			if (selectedTreePath.isDescendant(path)) {
+				dropTargetDragEvent.rejectDrag();
+				return;
+			}
+			
+			Object dest = ((DefaultMutableTreeNode) path
+		                .getLastPathComponent()).getUserObject();
+
+	        /* If the destination is not a NameSpace, then reject: */
+	        if (!Model.getFacade().isANamespace(dest)) {
+	            LOG.debug("No valid Drag: not a namespace.");
+				dropTargetDragEvent.rejectDrag();
+	            return;
+	        }
+	        
+	        /* If the destination is a DataType, then reject: */
+	        if (Model.getFacade().isADataType(dest)) {
+	            LOG.debug("No valid Drag: destination is a DataType.");
+				dropTargetDragEvent.rejectDrag();
+	            return;
+	        }
+
+//            /* TODO: The next only works from Java 1.5 onwards :-( */
+//            Transferable tf = dropTargetDragEvent.getTransferable();
+//            if (tf.isDataFlavorSupported(
+//                     TransferableModelElements.UML_COLLECTION_FLAVOR)) {
+//            	/* Check tf contents like in isValidDrag(). */
+//                dropTargetDragEvent.acceptDrag(
+//                    dropTargetDragEvent.getDropAction());
+//            } else {
+//                dropTargetDragEvent.rejectDrag();
+//            } 
+
+	        dropTargetDragEvent.acceptDrag(
+					dropTargetDragEvent.getDropAction());
+
         }
 
         /**
@@ -727,7 +764,10 @@ public class DnDExplorerTree
 
 			// Do this if you want to prohibit dropping onto the drag source...
 			Point pt = dropTargetEvent.getLocation();
-			TreePath path = getClosestPathForLocation(pt.x, pt.y);
+			TreePath path = getPathForLocation(pt.x, pt.y);
+			if (path == null) {
+				return false;
+			}
 			if (path.equals(sourcePath)) {			
 				return false;
 			}
@@ -749,7 +789,10 @@ public class DnDExplorerTree
 			
 			// Do this if you want to prohibit dropping onto the drag source...
 			Point pt = dropTargetDropEvent.getLocation();
-			TreePath path = getClosestPathForLocation(pt.x, pt.y);
+			TreePath path = getPathForLocation(pt.x, pt.y);
+			if (path == null) {
+				return false;
+			}
 			if (path.equals(sourcePath)) {			
 				return false;
 			}
