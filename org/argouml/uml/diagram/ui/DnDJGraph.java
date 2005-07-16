@@ -113,21 +113,29 @@ class DnDJGraph
     }
 
     public void dragEnter(DropTargetDragEvent dtde) {
-    	if (dtde.isDataFlavorSupported(
-    			TransferableModelElements.UML_COLLECTION_FLAVOR)) {
-    		dtde.acceptDrag(dtde.getDropAction());
-    	} else {
-    		dtde.rejectDrag();
-    	}
+    	try {
+			if (dtde.isDataFlavorSupported(
+					TransferableModelElements.UML_COLLECTION_FLAVOR)) {
+				dtde.acceptDrag(dtde.getDropAction());
+				return;
+			}
+		} catch (NullPointerException e) {
+//			System.err.println("NullPointerException ignored.");
+		}
+    	dtde.rejectDrag();
     }
 
     public void dragOver(DropTargetDragEvent dtde) {
-    	if (dtde.isDataFlavorSupported(
-    			TransferableModelElements.UML_COLLECTION_FLAVOR)) {
-    		dtde.acceptDrag(dtde.getDropAction());
-    	} else {
-    		dtde.rejectDrag();
+    	try {
+    		if (dtde.isDataFlavorSupported(
+    				TransferableModelElements.UML_COLLECTION_FLAVOR)) {
+    			dtde.acceptDrag(dtde.getDropAction());
+    			return;
+    		}
+    	} catch (NullPointerException e) {
+//    		System.err.println("NullPointerException ignored.");
     	}
+    	dtde.rejectDrag();
     }
 
     public void dropActionChanged(DropTargetDragEvent dtde) {

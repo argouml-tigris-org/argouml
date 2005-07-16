@@ -317,6 +317,7 @@ public class DnDExplorerTree
     public void dragDropEnd(
     		DragSourceDropEvent dragSourceDropEvent) { 
     			sourcePath = null;
+    			ghostImage = null;
     }
 
     /**
@@ -532,24 +533,28 @@ public class DnDExplorerTree
 			
 			Graphics2D g2 = (Graphics2D) getGraphics();
 
-			/* If a drag image is not supported by the platform, 
-			 * then draw my own drag image. */
-			if (!DragSource.isDragImageSupported()) {
-				/* Rub out the last ghost image and cue line: */
-				paintImmediately(ghostRectangle.getBounds());
-				/* And remember where we are about to draw 
-				 * the new ghost image: */
-				ghostRectangle.setRect(pt.x - clickOffset.x, 
-						pt.y - clickOffset.y, 
-						ghostImage.getWidth(), 
-						ghostImage.getHeight());
-				g2.drawImage(ghostImage, 
-						AffineTransform.getTranslateInstance(
-								ghostRectangle.getX(), 
-								ghostRectangle.getY()), null);				
-			} else {	
-				// Just rub out the last cue line
-				paintImmediately(cueLine.getBounds());	
+			/* The next condition becomes false when dragging in 
+			 * something from another application.*/
+			if (ghostImage != null) {
+				/* If a drag image is not supported by the platform, 
+				 * then draw my own drag image. */
+				if (!DragSource.isDragImageSupported()) {
+					/* Rub out the last ghost image and cue line: */
+					paintImmediately(ghostRectangle.getBounds());
+					/* And remember where we are about to draw 
+					 * the new ghost image: */
+					ghostRectangle.setRect(pt.x - clickOffset.x, 
+							pt.y - clickOffset.y, 
+							ghostImage.getWidth(), 
+							ghostImage.getHeight());
+					g2.drawImage(ghostImage, 
+							AffineTransform.getTranslateInstance(
+									ghostRectangle.getX(), 
+									ghostRectangle.getY()), null);				
+				} else {	
+					// Just rub out the last cue line
+					paintImmediately(cueLine.getBounds());	
+				}
 			}
 			
 			TreePath path = getPathForLocation(pt.x, pt.y);
@@ -579,11 +584,17 @@ public class DnDExplorerTree
              * application into ArgoUML,
              * and the explorer shows the drop icon, instead of the noDrop.
              */
-			if (!dropTargetDragEvent.isDataFlavorSupported(
-					TransferableModelElements.UML_COLLECTION_FLAVOR)) {
+			try {
+				if (!dropTargetDragEvent.isDataFlavorSupported(
+						TransferableModelElements.UML_COLLECTION_FLAVOR)) {
+					dropTargetDragEvent.rejectDrag();
+					return;
+				}
+			} catch (NullPointerException e) {
 				dropTargetDragEvent.rejectDrag();
 				return;
 			}
+    	
 			if (path==null) {
 				dropTargetDragEvent.rejectDrag();
 				return;
