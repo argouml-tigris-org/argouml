@@ -41,7 +41,6 @@ import javax.swing.text.JTextComponent;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.tigris.gef.base.CmdPaste;
 import org.tigris.gef.base.Globals;
 
 /**
@@ -109,8 +108,9 @@ public class ActionPaste
      */
     public void actionPerformed(ActionEvent ae) {
         if (Globals.clipBoard != null && !Globals.clipBoard.isEmpty()) {
-            CmdPaste cmd = new CmdPaste();
-            cmd.doIt();
+        	 /* Disable pasting as long as issue 594 is not solved:*/
+//            CmdPaste cmd = new CmdPaste();
+//            cmd.doIt();
         } else {
             if (!isSystemClipBoardEmpty() && textSource != null) {
                 textSource.paste();
