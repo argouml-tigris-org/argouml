@@ -237,22 +237,14 @@ public class FigActor extends FigNodeModelElement {
 			      (int) (cy + Math.sin(angle) * radiusy));
             ret.add(point);
         }
-        ret.add(new Point(getFigAt(BODY_POSN).getX(),
-                          getFigAt(BODY_POSN).getY()));
-        ret.add(new Point(((FigLine) getFigAt(BODY_POSN)).getX1(),
-                          ((FigLine) getFigAt(BODY_POSN)).getY1()));
-        ret.add(new Point(getFigAt(LEFT_LEG_POSN).getX(),
-                          getFigAt(LEFT_LEG_POSN).getY()));
-        ret.add(new Point(((FigLine) getFigAt(LEFT_LEG_POSN)).getX1(),
-                          ((FigLine) getFigAt(LEFT_LEG_POSN)).getY1()));
-        ret.add(new Point(getFigAt(RIGHT_LEG_POSN).getX(),
-                          getFigAt(RIGHT_LEG_POSN).getY()));
-        ret.add(new Point(((FigLine) getFigAt(RIGHT_LEG_POSN)).getX1(),
-                          ((FigLine) getFigAt(RIGHT_LEG_POSN)).getY1()));
-        ret.add(new Point(getFigAt(ARMS_POSN).getX(),
-                          getFigAt(ARMS_POSN).getY()));
+        ret.add(new Point(((FigLine) getFigAt(LEFT_LEG_POSN)).getX2(),
+                          ((FigLine) getFigAt(LEFT_LEG_POSN)).getY2()));
+        ret.add(new Point(((FigLine) getFigAt(RIGHT_LEG_POSN)).getX2(),
+                          ((FigLine) getFigAt(RIGHT_LEG_POSN)).getY2()));
         ret.add(new Point(((FigLine) getFigAt(ARMS_POSN)).getX1(),
                           ((FigLine) getFigAt(ARMS_POSN)).getY1()));
+        ret.add(new Point(((FigLine) getFigAt(ARMS_POSN)).getX2(),
+                          ((FigLine) getFigAt(ARMS_POSN)).getY2()));
         return ret;
     }
 
