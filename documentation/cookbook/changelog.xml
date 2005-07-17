@@ -31,6 +31,9 @@
   <table>
     <title>Changes done</title>
     <tgroup cols="3">
+      <colspec colnum="1" colname="When" colwidth="1*"/>
+      <colspec colnum="2" colname="What" colwidth="5*"/>
+      <colspec colnum="3" colname="Who" colwidth="1.5*"/>
       <thead>
         <row>
           <entry>When</entry>
