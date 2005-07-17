@@ -47,9 +47,13 @@ import org.tigris.gef.presentation.FigRect;
  */
 public class FigActor extends FigNodeModelElement {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
+    /**
+     * The minimum padding allowed above and below the rectangle for
+     * the use case name and extension points to the top of the use
+     * case oval itself.<p>
+     */
+    protected static final int MIN_VERT_PADDING = 4;
+    
     //These are the positions of child figs inside this fig
     //They mst be added in the constructor in this order.
     //For now the name must not be last as this would force
@@ -68,20 +72,23 @@ public class FigActor extends FigNodeModelElement {
      */
     public FigActor() {
         // Put this rectangle behind the rest, so it goes first
-        FigRect bigPort = new FigRect(10, 30, 15, 60);
+        FigRect bigPort = new FigRect(10, 30-20, 15, 60);
         bigPort.setVisible(false);
         FigCircle head =
-            new FigCircle(10, 30, 15, 15, Color.black, Color.white);
-        FigLine body = new FigLine(20, 45, 20, 60, Color.black);
-        FigLine arms = new FigLine(10, 50, 30, 50, Color.black);
-        FigLine leftLeg = new FigLine(20, 60, 15, 75, Color.black);
-        FigLine rightLeg = new FigLine(20, 60, 25, 75, Color.black);
-        getNameFig().setBounds(5, 75, 35, 20);
+            new FigCircle(10, 30-20, 15, 15, Color.black, Color.white);
+        FigLine body = new FigLine(20, 45-20, 20, 60-20, Color.black);
+        FigLine arms = new FigLine(10, 50-20, 30, 50-20, Color.black);
+        FigLine leftLeg = new FigLine(20, 60-20, 15, 75-20, Color.black);
+        FigLine rightLeg = new FigLine(20, 60-20, 25, 75-20, Color.black);
+        getNameFig().setBounds(5, 75-20, 35, 20);
 
         getNameFig().setTextFilled(false);
         getNameFig().setFilled(false);
         getNameFig().setLineWidth(0);
         // initialize any other Figs here
+        getStereotypeFig().setBounds(getBigPort().getCenter().x,
+                                     getBigPort().getCenter().y,
+                                     0, 0);
 
         // add Figs to the FigNode in back-to-front order
         addFig(bigPort);
@@ -91,6 +98,7 @@ public class FigActor extends FigNodeModelElement {
         addFig(arms);
         addFig(leftLeg);
         addFig(rightLeg);
+        addFig(getStereotypeFig());
         setBigPort(bigPort);
     }
 
@@ -196,7 +204,7 @@ public class FigActor extends FigNodeModelElement {
 			       y + h - minTextSize.height,
 			       minTextSize.width,
 			       minTextSize.height);
-
+//        updateStereotypeText();
         updateEdges();
         _x = x;
         _y = y;
@@ -225,7 +233,7 @@ public class FigActor extends FigNodeModelElement {
      */
     public List getGravityPoints() {
         final int maxPoints = 20;
-        List ret = new ArrayList(maxPoints + 8);
+        List ret = new ArrayList();
         int cx = getFigAt(HEAD_POSN).getCenter().x;
         int cy = getFigAt(HEAD_POSN).getCenter().y;
         int radiusx = Math.round(getFigAt(HEAD_POSN).getWidth() / 2) + 1;
@@ -314,5 +322,29 @@ public class FigActor extends FigNodeModelElement {
         super.updateNameText();
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
+    
+    /**
+     * @see
+     * org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     */
+    protected void updateStereotypeText() {
+        super.updateStereotypeText();
+        if (!(getStereotype() == null || getStereotype().equals(""))) {
+            getStereotypeFig().setBounds(
+                (getBigPort().getCenter().x 
+                                     - getStereotypeFig().getWidth() / 2),
+                (getBigPort().getY() + getBigPort().getHeight()
+                                     + MIN_VERT_PADDING),
+                getStereotypeFig().getWidth(),
+                getStereotypeFig().getHeight());
+        } else {
+            getStereotypeFig().setBounds(getBigPort().getCenter().x,
+                                         getBigPort().getCenter().y,
+                                         0, 
+                                         0);
+        }
+        damage();
+    }
+
 
 } /* end class FigActor */
