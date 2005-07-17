@@ -53,7 +53,6 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.ZoomSliderButton;
 import org.argouml.ui.targetmanager.NavigateTargetBackAction;
 import org.argouml.ui.targetmanager.NavigateTargetForwardAction;
-import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
@@ -446,7 +445,7 @@ public class GenericArgoMenuBar extends JMenuBar
         setAccelerator(printItem, ctrlP);
         fileToolbar.add((new ActionPrint()));
         JMenuItem saveGraphicsItem = file.add(new ActionSaveGraphics());
-        JMenuItem saveAllGraphicsItem = file.add(new ActionSaveAllGraphics());
+        file.add(new ActionSaveAllGraphics());
         setMnemonic(saveGraphicsItem, "SaveGraphics");
         file.addSeparator();
         JMenuItem saveConfiguration =
