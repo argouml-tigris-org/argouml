@@ -38,6 +38,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.tigris.gef.base.CmdSaveGIF;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -56,6 +58,14 @@ import org.tigris.gef.base.Globals;
 public class ActionSaveDiagramToClipboard
     extends AbstractAction
     implements ClipboardOwner {
+
+    /**
+     * The constructor.
+     */
+    public ActionSaveDiagramToClipboard() {
+        super(Translator.localize("menu.popup.copy-diagram-to-clip"), 
+                ResourceLoaderWrapper.lookupIcon("action.copy"));
+    }
 
     /** get diagram image and put in system clipboard.
      *
@@ -84,8 +94,8 @@ public class ActionSaveDiagramToClipboard
         // avoid GEF calcDrawingArea bug when nothing in a diagram.
         if (drawingArea.x < 0
 	    || drawingArea.y < 0
-	    || drawingArea.width < 0
-	    || drawingArea.height < 0) {
+	    || drawingArea.width <= 0
+	    || drawingArea.height <= 0) {
             return null;
         }
 
@@ -111,6 +121,24 @@ public class ActionSaveDiagramToClipboard
      * java.awt.datatransfer.Clipboard, java.awt.datatransfer.Transferable)
      */
     public void lostOwnership(Clipboard clipboard, Transferable transferable) {
+    }
+
+    /**
+     * @see javax.swing.AbstractAction#isEnabled()
+     */
+    public boolean isEnabled() {
+        Editor ce = Globals.curEditor();
+        Rectangle drawingArea =
+            ce.getLayerManager().getActiveLayer().calcDrawingArea();
+
+        // avoid GEF calcDrawingArea bug when nothing in a diagram.
+        if (drawingArea.x < 0
+            || drawingArea.y < 0
+            || drawingArea.width <= 0
+            || drawingArea.height <= 0) {
+            return false;
+        }
+        return super.isEnabled();
     }
 }
 

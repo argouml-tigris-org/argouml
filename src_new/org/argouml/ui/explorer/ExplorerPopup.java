@@ -39,6 +39,7 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.ActionAddAllClassesFromModel;
 import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
+import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
 import org.argouml.uml.ui.ActionAddPackage;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.ActionSetSourcePath;
@@ -200,7 +201,8 @@ public class ExplorerPopup extends JPopupMenu {
         }
         
         if (selectedItem instanceof Diagram) {
-	    this.add(new ActionDeleteModelElements());
+            this.add(new ActionSaveDiagramToClipboard());
+            this.add(new ActionDeleteModelElements());
         }
     }
 
