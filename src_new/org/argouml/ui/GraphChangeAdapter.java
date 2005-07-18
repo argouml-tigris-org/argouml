@@ -59,9 +59,9 @@ public class GraphChangeAdapter implements GraphListener {
     private GraphChangeAdapter() {
     }
     
-    public DiDiagram createDiagram(Class type) {
+    public DiDiagram createDiagram(Class type, Object owner) {
         if (Model.getDiagramInterchangeModel() != null) {
-            return Model.getDiagramInterchangeModel().createDiagram(type);
+            return Model.getDiagramInterchangeModel().createDiagram(type,owner);
         } else {
             return null;
         }

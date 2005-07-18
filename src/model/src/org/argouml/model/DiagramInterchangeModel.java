@@ -35,7 +35,7 @@ package org.argouml.model;
  */
 public interface DiagramInterchangeModel {
     
-    public DiDiagram createDiagram(Class type);
+    public DiDiagram createDiagram(Class type, Object owner);
     public void deleteDiagram(DiDiagram diagram);
     
     public DiElement createElement(DiDiagram diagram, Object modelElement);

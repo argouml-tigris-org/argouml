@@ -34,6 +34,7 @@ import java.io.Writer;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ocl.ExpansionException;
@@ -57,20 +58,26 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
     public void load(Project project, InputStream inputStream)
         throws OpenException {
 
-        try {
-            // Give the parser a map of model elements
-            // keyed by their UUID. This is used to allocate
-            // figs to their owner using the "href" attribute
-            // in PGML.
-            PGMLStackParser parser = new PGMLStackParser(project.getUUIDRefs());
-            Diagram d = parser.readDiagram(inputStream, false);
-            inputStream.close();
-            project.addMember(d);
-        } catch (Exception e) {
-            if (e instanceof OpenException) {
-                throw (OpenException) e;
+        if (Model.getDiagramInterchangeModel() == null) {
+            // If the model repository doesn't manage a DI model
+            // then we must generate our Figs by inspecting PGML
+            try {
+                // Give the parser a map of model elements
+                // keyed by their UUID. This is used to allocate
+                // figs to their owner using the "href" attribute
+                // in PGML.
+                PGMLStackParser parser = new PGMLStackParser(project.getUUIDRefs());
+                Diagram d = parser.readDiagram(inputStream, false);
+                inputStream.close();
+                project.addMember(d);
+            } catch (Exception e) {
+                if (e instanceof OpenException) {
+                    throw (OpenException) e;
+                }
+                throw new OpenException(e);
             }
-            throw new OpenException(e);
+        } else {
+            // Build Figs by reading the DI in the Model
         }
     }
 

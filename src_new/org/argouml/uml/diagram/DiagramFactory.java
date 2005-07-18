@@ -24,6 +24,11 @@
 
 package org.argouml.uml.diagram;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+
 import org.apache.log4j.Logger;
 import org.argouml.model.ActivityDiagram;
 import org.argouml.model.ClassDiagram;
@@ -36,13 +41,22 @@ import org.argouml.model.StateDiagram;
 import org.argouml.model.UseCaseDiagram;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.GraphChangeAdapter;
+import org.argouml.uml.diagram.activity.ui.ActivityDiagramRenderer;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
+import org.argouml.uml.diagram.collaboration.ui.CollabDiagramRenderer;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
+import org.argouml.uml.diagram.deployment.ui.DeploymentDiagramRenderer;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.argouml.uml.diagram.sequence.ui.SequenceDiagramRenderer;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
+import org.argouml.uml.diagram.state.ui.StateDiagramRenderer;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.static_structure.ui.ClassDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
+import org.argouml.uml.diagram.use_case.ui.UseCaseDiagramRenderer;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
 
 /**
 * Provide a factory method to create different UML diagrams.
@@ -54,6 +68,8 @@ public class DiagramFactory {
     
     private static DiagramFactory diagramFactory = new DiagramFactory();
  
+    private List diagrams = new Vector();
+    
     private DiagramFactory() {
     }
 
@@ -61,9 +77,15 @@ public class DiagramFactory {
         return diagramFactory;
     }
  
+    public List getDiagram() {
+    		return diagrams;
+    }
+    
     /**
      * Factory method to create a new instance of a Class Diagram
+     * @param type The class of rendering diagram to create
      * @param model The model that this class diagram represents
+     * @param owningElement The modelElement which own this diagram (can be the model)
      * @return the newly instantiated class diagram
      */
     public ArgoDiagram createDiagram(Class type, Object model, Object owningElement) {
@@ -93,10 +115,15 @@ public class DiagramFactory {
         if (Model.getDiagramInterchangeModel() != null) {
             diagram.getGraphModel().addGraphEventListener(
                  GraphChangeAdapter.getInstance());
+            // The diagram are always owned by the model in this first implementation
             DiDiagram dd =
-                GraphChangeAdapter.getInstance().createDiagram(type);
+                GraphChangeAdapter.getInstance().createDiagram(type,model);
             ((UMLMutableGraphSupport)diagram.getGraphModel()).setDiDiagram(dd);
         }
+        
+        //keep a reference on it in the case where we must add all the diagrams
+        //as project members (loading)
+        diagrams.add(diagram);
         return diagram;
     }
     
@@ -114,4 +141,57 @@ public class DiagramFactory {
         }
         return diagram;
     }
+
+    public DiDiagram getDiDiagram(Object graphModel) {
+    		if (graphModel instanceof UMLMutableGraphSupport)
+    			return ((UMLMutableGraphSupport)graphModel).getDiDiagram();
+    		throw new IllegalArgumentException("graphModel: "+graphModel);
+    }
+    
+    public void addElement(Object diagram, Object element) {
+		if (!(diagram instanceof ArgoDiagram))
+			throw new IllegalArgumentException("diagram: "+diagram);
+		if (!(element instanceof Fig))
+			throw new IllegalArgumentException("fig: "+element);
+		((ArgoDiagram)diagram).add((Fig)element);
+    }
+
+    
+    private UmlDiagramRenderer classDiagramRenderer = new ClassDiagramRenderer();
+
+    private UmlDiagramRenderer collabDiagramRenderer = new CollabDiagramRenderer();
+    
+    private UmlDiagramRenderer deploymentDiagramRenderer = new DeploymentDiagramRenderer();
+    
+    private UmlDiagramRenderer sequenceDiagramRenderer = new SequenceDiagramRenderer();
+    
+    private UmlDiagramRenderer stateDiagramRenderer = new StateDiagramRenderer();
+    
+    private UmlDiagramRenderer useCaseDiagramRenderer = new UseCaseDiagramRenderer();
+
+    private UmlDiagramRenderer activityDiagramRenderer = new ActivityDiagramRenderer();
+	
+	private final Map noStyleProperties = new HashMap();
+    
+	public Object createRenderingElement(Object diagram, Object model) {
+		Object renderingElement = null;
+		if (diagram instanceof UMLClassDiagram) {
+			renderingElement = classDiagramRenderer.getFigNodeFor(model,noStyleProperties);
+		} else if (diagram instanceof UMLActivityDiagram) {
+			renderingElement = activityDiagramRenderer.getFigNodeFor(model,noStyleProperties);
+		} else if (diagram instanceof UMLCollaborationDiagram) {
+			renderingElement = collabDiagramRenderer.getFigNodeFor(model,noStyleProperties);
+		} else if (diagram instanceof UMLDeploymentDiagram) {
+			renderingElement = deploymentDiagramRenderer.getFigNodeFor(model,noStyleProperties);
+		} else if (diagram instanceof UMLSequenceDiagram) {
+			renderingElement = sequenceDiagramRenderer.getFigNodeFor(model,noStyleProperties);
+		} else if (diagram instanceof UMLStateDiagram) {
+			renderingElement = stateDiagramRenderer.getFigNodeFor(model,noStyleProperties);
+		} else if (diagram instanceof UMLUseCaseDiagram) {
+			renderingElement = useCaseDiagramRenderer.getFigNodeFor(model,noStyleProperties);
+		} else {
+			throw new IllegalArgumentException("diag: "+diagram+", model: "+model);
+		}		
+		return renderingElement;
+	}    
 }
