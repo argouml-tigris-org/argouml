@@ -24,7 +24,8 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.Enumeration;
+import java.util.List;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
@@ -32,7 +33,6 @@ import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
-import org.argouml.uml.SuperclassGen;
 import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 
@@ -78,53 +78,5 @@ public class CrCircularInheritance extends CrUML {
 	return problem;
     }
 
-    /**
-     * @see org.argouml.cognitive.critics.Critic#toDoItem(
-     * java.lang.Object, org.argouml.cognitive.Designer)
-     */
-    public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	ListSet offs = computeOffenders(dm);
-	return new UMLToDoItem(this, offs, dsgr);
-    }
-
-    /**
-     * @param dm the object
-     * @return the set of offenders
-     */
-    protected ListSet computeOffenders(Object dm) {
-	ListSet offs = new ListSet(dm);
-	ListSet above = offs.reachable(new SuperclassGen());
-	Enumeration elems = above.elements();
-	while (elems.hasMoreElements()) {
-	    Object ge2 = elems.nextElement();
-	    ListSet trans =
-		(new ListSet(ge2)).reachable(new SuperclassGen());
-	    if (trans.contains(dm)) {
-	        offs.addElement(ge2);
-	    }
-	}
-	return offs;
-    }
-
-    /**
-     * @see org.argouml.cognitive.Poster#stillValid(
-     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
-     */
-    public boolean stillValid(ToDoItem i, Designer dsgr) {
-	if (!isActive()) {
-	    return false;
-	}
-	ListSet offs = i.getOffenders();
-	Object dm =  offs.firstElement();
-	if (!predicate(dm, dsgr)) {
-	    return false;
-	}
-	ListSet newOffs = computeOffenders(dm);
-	boolean res = offs.equals(newOffs);
-	LOG.debug("offs=" + offs.toString()
-		  + " newOffs=" + newOffs.toString()
-		  + " res = " + res);
-	return res;
-    }
 } /* end class CrCircularInheritance.java */
 
