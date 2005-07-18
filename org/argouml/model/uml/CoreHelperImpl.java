@@ -26,9 +26,11 @@ package org.argouml.model.uml;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
@@ -1634,12 +1636,13 @@ class CoreHelperImpl implements CoreHelper {
     // TODO: Use an exception that needs to be caugh so users of
     //       getChildren won't forget that they need to catch it.
     public Collection getChildren(Object o) {
-        Collection col = new ArrayList();
+	    Collection col = new ArrayList();
+		Collection generalizations = new ArrayList();
         if (o instanceof MGeneralizableElement) {
             Iterator it =
                 ((MGeneralizableElement) o).getSpecializations().iterator();
             while (it.hasNext()) {
-                getChildren(col, (MGeneralization) it.next());
+                getChildren(col, (MGeneralization) it.next(), generalizations);
             }
         }
         return col;
@@ -1647,23 +1650,30 @@ class CoreHelperImpl implements CoreHelper {
 
     /**
      * Adds all children recursively to the Collection in the first argument.
+     * The algorithm assumes that there is a cycle when a node has been visited twice
+     * using already known generalizations.
      *
      * @param currentChildren collection to collect them in.
      * @param gen element whose children are added.
+     * @param generalizations the list of already traversed generalizations.
      * @throws IllegalStateException if there is a circular reference.
      */
-    private void getChildren(Collection currentChildren, MGeneralization gen) {
+    private void getChildren(Collection currentChildren, MGeneralization gen, Collection generalizations) {
 
 	MGeneralizableElement child = gen.getChild();
-	if (currentChildren.contains(child)) {
-	    throw new IllegalStateException("Circular inheritance occured.");
+	if (currentChildren.contains(child) && generalizations.contains(gen)) {
+			throw new IllegalStateException("Circular inheritance occured.");
 	}
-	currentChildren.add(child);
+	else {
+		currentChildren.add(child);
+		generalizations.add(gen);
+	}
 	Iterator it = child.getSpecializations().iterator();
 	while (it.hasNext()) {
-	    getChildren(currentChildren, (MGeneralization) it.next());
+	    getChildren(currentChildren, (MGeneralization) it.next(), generalizations);
 	}
     }
+	
 
     /**
      * Returns all interfaces that are realized by the given class or
