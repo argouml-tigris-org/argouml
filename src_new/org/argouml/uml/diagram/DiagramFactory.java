@@ -41,22 +41,16 @@ import org.argouml.model.StateDiagram;
 import org.argouml.model.UseCaseDiagram;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.GraphChangeAdapter;
-import org.argouml.uml.diagram.activity.ui.ActivityDiagramRenderer;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
-import org.argouml.uml.diagram.collaboration.ui.CollabDiagramRenderer;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
-import org.argouml.uml.diagram.deployment.ui.DeploymentDiagramRenderer;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
-import org.argouml.uml.diagram.sequence.ui.SequenceDiagramRenderer;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-import org.argouml.uml.diagram.state.ui.StateDiagramRenderer;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.static_structure.ui.ClassDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
-import org.argouml.uml.diagram.use_case.ui.UseCaseDiagramRenderer;
+import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigNode;
 
 /**
 * Provide a factory method to create different UML diagrams.
@@ -157,41 +151,12 @@ public class DiagramFactory {
     }
 
     
-    private UmlDiagramRenderer classDiagramRenderer = new ClassDiagramRenderer();
-
-    private UmlDiagramRenderer collabDiagramRenderer = new CollabDiagramRenderer();
-    
-    private UmlDiagramRenderer deploymentDiagramRenderer = new DeploymentDiagramRenderer();
-    
-    private UmlDiagramRenderer sequenceDiagramRenderer = new SequenceDiagramRenderer();
-    
-    private UmlDiagramRenderer stateDiagramRenderer = new StateDiagramRenderer();
-    
-    private UmlDiagramRenderer useCaseDiagramRenderer = new UseCaseDiagramRenderer();
-
-    private UmlDiagramRenderer activityDiagramRenderer = new ActivityDiagramRenderer();
-	
 	private final Map noStyleProperties = new HashMap();
     
 	public Object createRenderingElement(Object diagram, Object model) {
-		Object renderingElement = null;
-		if (diagram instanceof UMLClassDiagram) {
-			renderingElement = classDiagramRenderer.getFigNodeFor(model,noStyleProperties);
-		} else if (diagram instanceof UMLActivityDiagram) {
-			renderingElement = activityDiagramRenderer.getFigNodeFor(model,noStyleProperties);
-		} else if (diagram instanceof UMLCollaborationDiagram) {
-			renderingElement = collabDiagramRenderer.getFigNodeFor(model,noStyleProperties);
-		} else if (diagram instanceof UMLDeploymentDiagram) {
-			renderingElement = deploymentDiagramRenderer.getFigNodeFor(model,noStyleProperties);
-		} else if (diagram instanceof UMLSequenceDiagram) {
-			renderingElement = sequenceDiagramRenderer.getFigNodeFor(model,noStyleProperties);
-		} else if (diagram instanceof UMLStateDiagram) {
-			renderingElement = stateDiagramRenderer.getFigNodeFor(model,noStyleProperties);
-		} else if (diagram instanceof UMLUseCaseDiagram) {
-			renderingElement = useCaseDiagramRenderer.getFigNodeFor(model,noStyleProperties);
-		} else {
-			throw new IllegalArgumentException("diag: "+diagram+", model: "+model);
-		}		
+        GraphNodeRenderer rend =
+            ((UMLDiagram)diagram).getLayer().getGraphNodeRenderer();
+        Object renderingElement = rend.getFigNodeFor(model,noStyleProperties);
 		return renderingElement;
 	}    
 }
