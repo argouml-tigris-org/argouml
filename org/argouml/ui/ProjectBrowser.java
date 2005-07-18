@@ -40,6 +40,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
@@ -65,6 +66,7 @@ import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.persistence.LastLoadInfo;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFilePersister;
@@ -74,6 +76,7 @@ import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
@@ -1105,8 +1108,20 @@ public class ProjectBrowser
                             + file.getName()
                             + " is not of a known file type");
                 }
+                
+                DiagramFactory.getInstance().getDiagram().clear();
+                
                 p = persister.doLoad(file);
 
+                if (Model.getDiagramInterchangeModel() != null) {
+                    Collection diagrams = DiagramFactory.getInstance().getDiagram();
+                    Iterator diag = diagrams.iterator();
+                    while (diag.hasNext()) {
+                            p.addMember(diag.next());
+                    }
+                    p.setActiveDiagram((ArgoDiagram)diagrams.iterator().next());        
+                }
+                
                 ProjectBrowser.getInstance().showStatus(
                     MessageFormat.format(Translator.localize(
                         "label.open-project-status-read"),
