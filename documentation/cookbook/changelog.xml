@@ -61,6 +61,17 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2005-07-18</entry>
+          <entry>
+Change to the short list of subsystems and responsibilities.
+(See <xref linkend="inside_subsystems"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2005-06-18</entry>
           <entry> Restructured: all main chapters are now in seperate files. No
             content changes.

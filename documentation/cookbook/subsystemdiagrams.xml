@@ -26,13 +26,16 @@
 -->
 
 
-    <sect1 id="diagrams">
-      <title>Diagrams</title>
-      <indexterm>
-	<primary>Diagrams</primary>
-      </indexterm>
+<sect1 id="diagrams">
+  <title>Diagrams</title>
+  <indexterm>
+    <primary>Diagrams</primary>
+  </indexterm>
+  <indexterm>
+    <primary>Notation</primary>
+  </indexterm>
 
-      <para>
+  <para>
 Purpose - to keep the information of objects in diagrams and to
 generate a graphical view.
 The contents of the diagrams and also the Uml elements that are

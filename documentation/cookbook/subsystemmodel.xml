@@ -25,9 +25,13 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 
-    <sect1 id="model">
-      <title>Model</title>
-      <para id="comp-model-purpose">
+<sect1 id="model">
+  <title>Model</title>
+  <indexterm>
+    <primary>Model</primary>
+  </indexterm>
+
+  <para id="comp-model-purpose">
 Purpose - to provide the data structures that keep track of the
 element in the UML model.
 This comes with a complete set of methods to modify the model

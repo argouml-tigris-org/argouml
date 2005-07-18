@@ -205,31 +205,39 @@
       for every other subsystem to use. </para>
     <para> They are all insignificant enough not to be mentioned when listing
       dependencies. </para>
+    <para>
+All these subsystems are all started and initiated (if needed) from the
+Application subsystem.
+</para>
     <itemizedlist>
       
       <listitem>
-        <para>Logging</para> <indexterm>
-        <primary>Logging</primary> </indexterm>
-        <para> Calls can be spread all over that would go through some rule set and
-          then end up on file, on the output or not at all. </para>
+        <para>Logging - see <xref linkend="logging"></xref>
+</para>
       </listitem>
       
       <listitem>
-        <para>Internationalization</para> <indexterm>
-        <primary>Internationalization</primary> </indexterm> <indexterm>
-        <primary>I18n</primary> </indexterm>
-        <para> This is the set of files that is a repository of localized strings.
-          Every other module uses these strings in all communications with the
-          user. </para>
-        <para> The Internationalization Subsystem is described in detail in
-            <xref linkend="internationalization"></xref>. </para>
+        <para>Internationalization -
+see <xref linkend="internationalization"></xref>.
+</para>
       </listitem>
       
       <listitem>
-        <para>JRE with utils</para> <indexterm>
-        <primary>JRE</primary> </indexterm>
-        <para> Every other subsystem can use the classes available with the JRE.
-          </para>
+        <para>GUI -
+see <xref linkend="guiframework"></xref>.
+</para>
+      </listitem>
+
+      <listitem>
+        <para>Help system -
+see <xref linkend="help"></xref>.
+</para>
+      </listitem>
+        
+      <listitem>
+        <para>JRE with utils -
+see <xref linkend="jre"></xref>
+</para>
       </listitem>
       
     </itemizedlist>
@@ -244,53 +252,38 @@
   
   <sect1 id="model_subsystems">
     <title>Model subsystems</title>
-    <para> These subsystems do not rely on any other part of ArgoUML to do their work
-      (except the infrastructure). They can all be tested in full individually
-      i.e. independent of any other subsystem. </para>
+    <para>
+These subsystems do not rely on any other part of ArgoUML to do their work
+(except the infrastructure).
+They can all be tested in full individually
+i.e. independent of any other subsystem.
+</para>
+    <para>
+They contain all the information used by all other subsystems so for that
+reason they represent the model in the MVC pattern.
+</para>
+    <para>
+All these subsystems are all started and initiated from the Application
+subsystem.
+</para>
+
     <para>
       <itemizedlist>
         
         <listitem>
-          <para>The Model</para> <indexterm>
-          <primary>Model</primary> </indexterm>
-          <para> The Model contains a modifiable storage of the UML model and the
-            diagrams. </para>
-          <para> The Model presents several different interfaces and access
-            methods for the information. Among other things, the information
-            can be saved, loaded, examined, and observed. </para>
-          <para> The Model is described in detail in <xref linkend="model"/>.
-            </para>
+          <para>The Model -
+See <xref linkend="model"/>.
+</para>
         </listitem>
         
         <listitem>
-          <para>To do items</para> <indexterm>
-          <primary>To Do Items</primary> </indexterm>
-          <para> This is the To do items. They can be created, deleted and saved.
-            </para>
-          <para> The To Do Items Subsystem is described in detail in <xref
-              linkend="todoitems"></xref>. </para>
+          <para>To do items -
+see <xref linkend="todoitems"></xref>.
+</para>
         </listitem>
         
-        <listitem>
-          <para>The GUI Framework</para> <indexterm>
-          <primary>GUI Framework</primary> </indexterm>
-          <para> This is the framework with menus, tabs, and panes available for
-            the other subsystems to fill with actions and contents. </para>
-          <para> The GUI Framework Subsystem is described in detail in <xref
-              linkend="guiframework"></xref>. </para>
-        </listitem>
-        
-        <listitem>
-          <para>Help system</para> <indexterm>
-          <primary>Help system</primary> </indexterm>
-          <para> Not yet implemented. </para>
-          <para> This is the subsystem that the other subsystems can call to
-            present some help for the user. </para>
-          <para> The Help System Subsystem is described in detail in <xref
-              linkend="help"></xref>. </para>
-        </listitem>
-        
-      </itemizedlist> </para>
+      </itemizedlist>
+</para>
     <para>
       <mediaobject>
         <imageobject>
@@ -301,78 +294,67 @@
   
   <sect1 id="view_control_subsystems">
     <title>View and Control subsystems</title>
-    <para> These subsystems rely on model subsystems in order to do their work.
-      </para>
+    <para>
+These subsystems rely on the information in the model subsystems
+in order to do their work.
+</para>
     
+    <para>
+All these subsystems are all started and initiated from the Application
+subsystem.
+</para>
     <para>
       <itemizedlist>
         <listitem>
-          <para>Diagrams</para> <indexterm>
-          <primary>Diagrams</primary> </indexterm> <indexterm>
-          <primary>Notation</primary> </indexterm>
-          <para> This is the diagram view of the model. The notation is a property
-            that belongs in the Diagrams so the different language register
-            their provided notation in the Diagrams subsystem. </para>
-          <para> The Diagrams Subsystem is described in detail in <xref
-              linkend="diagrams"></xref>. </para>
+          <para>Application -
+see <xref linkend="application"></xref>.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>Diagrams -
+see <xref linkend="diagrams"></xref>.
+</para>
         </listitem>
         
         <listitem>
-          <para>Property panels</para> <indexterm>
-          <primary>Property panels</primary> </indexterm>
-          <para> This is the property panel view of the model. </para>
-          <para> The Property Panels Subsystem is described in detail in <xref
-              linkend="propertypanels"></xref>. </para>
+          <para>Property panels -
+see <xref linkend="propertypanels"></xref>.
+</para>
         </listitem>
         
         <listitem>
-          <para>Explorer</para> <indexterm>
-          <primary>Explorer</primary> </indexterm> <indexterm>
-          <primary>Object Explorer</primary> </indexterm> <indexterm>
-          <primary>Navigator Tree</primary> </indexterm>
-          <para> This is the tree view of the model. </para>
-          <para> The Explorer Subsystem is described in detail in <xref
-              linkend="explorer"></xref>. </para>
+          <para>Explorer -
+see <xref linkend="explorer"></xref>.
+</para>
         </listitem>
         
         <listitem>
-          <para>Code Generation</para> <indexterm>
-          <primary>Code Generation</primary> </indexterm>
-          <para> This is the common code for and the point where each language with
-            Code Generation possibility registers. </para>
-          <para> The Code Generation Subsystem is described in detail in <xref
-              linkend="codegeneration"></xref>. </para>
+          <para>Code Generation -
+see <xref linkend="codegeneration"></xref>.
+</para>
         </listitem>
         
         <listitem>
-          <para>Reverse Engineering</para> <indexterm>
-          <primary>Reverse Engineering</primary> </indexterm>
-          <para> This is the common code for and the point where each language with
-            Reverse Engineering possibility registers. </para>
-          <para> The Reverse Engineering Subsystem is described in detail in
-              <xref linkend="reverseengineering"></xref>. </para>
+          <para>Reverse Engineering - 
+see <xref linkend="reverseengineering"></xref>.
+</para>
         </listitem>
         
         <listitem>
-          <para>Module loader</para> <indexterm>
-          <primary>Module loader</primary> </indexterm> <indexterm>
-          <primary>Pluggable interface</primary> </indexterm>
-          <para> This is the load mechanism for loading all loadable subsystems
-            and other modules into ArgoUML. </para>
-          <para> The Module Loader Subsystem is described in detail in <xref
-              linkend="moduleloader"></xref>. </para>
+          <para>Module loader -
+see <xref linkend="moduleloader"></xref>.
+</para>
         </listitem>
-      </itemizedlist> </para>
+      </itemizedlist>
+</para>
     <para>
       <mediaobject>
         <imageobject>
           <imagedata fileref="images/cookbook/Layer2.gif" format="GIF"/>
         </imageobject>
       </mediaobject> </para>
-    <para> The subsystems are all started and initiated from the Application
-      subsystem. The Application subsystem starts the ball rolling. The
-      Application subsystem is described in detail in <xref
-        linkend="application"></xref>. </para>
+
     <para>
       <mediaobject>
         <imageobject>
@@ -384,50 +366,44 @@
   
   <sect1 id="loadable_subsystems">
     <title>Loadable subsystems</title>
-    <para> These subsystems are eventually connected through the pluggable
-      interfaces provided by the control subsystems. This means that they can be
-      individually enabled and disabled using the module loader. Note: The
-      module loader does not really have this possibility currently (August
-      2004). </para>
+    <para>
+These subsystems should be connected only through the interfaces
+provided by other subsystems.
+This means that they can be individually enabled and disabled using
+the module loader.
+Note: The old module loader does not have the possibility to disable modules.
+The new one has but is not widely used. (July 2005).
+</para>
     
     <para>
       <itemizedlist>
         
         <listitem>
-          <para>Java Code generation, Reverse engineering</para>
-          <indexterm>
-          <primary>Java</primary> </indexterm>
-          <para> This is the ArgoUML connection to the Java language. </para>
-          <para> The Java Subsystem is described in detail in <xref
-              linkend="java"></xref>. </para>
+          <para>Java Code generation, Reverse engineering -
+see <xref linkend="java"></xref>.
+</para>
         </listitem>
         
         <listitem>
-          <para>Other languages - Code generation, Reverse
-            engineering</para>
-          <para> Languages are plugged into the notation, the import (reverse
-            engineering), and code generation. </para>
-          <para> See <xref linkend="otherlanguages"></xref>. </para>
+          <para>Other languages - Code generation, Reverse engineering -
+see <xref linkend="otherlanguages"></xref>.
+</para>
         </listitem>
         
         <listitem>
-          <para>Critics and checklists</para> <indexterm>
-          <primary>Critics</primary> </indexterm> <indexterm>
-          <primary>checklists</primary> </indexterm>
-          <para> This is the critics. </para>
-          <para> The Critics Subsystem is described in detail in <xref
-              linkend="critics"></xref>. </para>
+          <para>Critics and checklists -
+see <xref linkend="critics"></xref>.
+</para>
         </listitem>
         
         <listitem>
-          <para>OCL</para> <indexterm>
-          <primary>OCL</primary> </indexterm>
-          <para> This is the editing of the OCL strings. </para>
-          <para> The OCL Subsystem is described in detail in <xref
-              linkend="ocl"></xref>. </para>
+          <para>OCL -
+see <xref linkend="ocl"></xref>.
+</para>
         </listitem>
         
-      </itemizedlist> </para>
+      </itemizedlist>
+</para>
     <para>
       <mediaobject>
         <imageobject>

@@ -26,8 +26,12 @@
 -->
 
 <sect1 id="logging">
-<title>Logging</title>
-<para id="comp-logging-purpose">
+  <title>Logging</title>
+  <indexterm>
+    <primary>Logging</primary>
+  </indexterm>
+
+  <para id="comp-logging-purpose">
 Purpose - to provide an api for debug log and trace messages.
 </para>
 <para>

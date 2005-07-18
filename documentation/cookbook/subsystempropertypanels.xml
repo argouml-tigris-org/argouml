@@ -25,9 +25,13 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 
-    <sect1 id="propertypanels">
-      <title>Property panels</title>
-      <para>
+<sect1 id="propertypanels">
+  <title>Property panels</title>
+  <indexterm>
+    <primary>Property panels</primary>
+  </indexterm>
+
+  <para>
 Purpose - to provide a form view of the diagrams and objects in the model.
 The contents of the model is modifiable.
 </para>
