@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
@@ -33,7 +34,7 @@ import org.tigris.gef.presentation.FigCircle;
 //import org.tigris.gef.presentation.FigPoly;
 
 /**
- * Class to display graphics for a UML Choice State in a diagram.
+ * Class to display graphics for a UML Choice State in a diagram - the circle.
  *
  * @author pepargouml
  */
@@ -51,6 +52,7 @@ public class FigBranchState extends FigStateVertex {
     // instance variables
 
     private FigCircle head;
+    private FigCircle bp;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -59,8 +61,8 @@ public class FigBranchState extends FigStateVertex {
      * constructor
      */
     public FigBranchState() {
-        setBigPort(new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan,
-                Color.cyan));
+        bp = new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan);
+        setBigPort(bp);
         head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.white);
 
         // add Figs to the FigNode in back-to-front order
@@ -77,6 +79,16 @@ public class FigBranchState extends FigStateVertex {
     public FigBranchState(GraphModel gm, Object node) {
         this();
         setOwner(node);
+    }
+
+    /**
+     * This makes dragging connected edges very smooth.
+     * 
+     * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
+     */
+    public Point getClosestPoint(Point anotherPt) {
+        Point p = bp.connectionPoint(anotherPt);
+        return p;
     }
 
     /**

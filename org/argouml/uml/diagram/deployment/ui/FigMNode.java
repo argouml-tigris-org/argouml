@@ -68,10 +68,10 @@ public class FigMNode extends FigNodeModelElement {
     // constructors
 
     /**
-     * Main constructor - used for file loading.
+     * Main constructor - only directly used for file loading.
      */
     public FigMNode() {
-	setBigPort(new FigRect(x, y - d, width + d, height + d));
+	setBigPort(new CubePortFigRect(x, y - d, width + d, height + d, d));
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
 	cover = new FigCube(x, y, width, height, Color.black, Color.white);
@@ -308,3 +308,53 @@ public class FigMNode extends FigNodeModelElement {
     static final long serialVersionUID = 8822005566372687713L;
 
 } /* end class FigMNode */
+
+
+/**
+ * The bigport needs to overrule the getClosestPoint, 
+ * because it is the port of this FigNode.
+ * 
+ * @author mvw@tigris.org
+ */
+class CubePortFigRect extends FigRect {
+    private int d;
+    /**
+     * The constructor.
+     * 
+     * @param x the x
+     * @param y the y
+     * @param w the width
+     * @param h the hight
+     */
+    public CubePortFigRect(int x, int y, int w, int h, int depth) {
+        super(x, y, w, h);
+        this.d = depth;
+    }
+    
+    /**
+     * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
+     */
+    public Point getClosestPoint(Point anotherPt) {
+        Rectangle r = getBounds();
+        int xs[] = {r.x,     
+                r.x + d, 
+                r.x + r.width, 
+                r.x + r.width,
+                r.x + r.width - d,  
+                r.x,            
+                r.x};
+        int ys[] = {r.y + d, 
+                r.y,
+                r.y, 
+                r.y + r.height - d,
+                r.y + r.height, 
+                r.y + r.height,
+                r.y + d};
+        Point p = Geometry.ptClosestTo(
+                xs, 
+                ys,
+                7 , anotherPt);
+        return p;
+    }
+    
+}    

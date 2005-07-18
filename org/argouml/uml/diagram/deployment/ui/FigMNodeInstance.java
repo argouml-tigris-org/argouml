@@ -72,7 +72,7 @@ public class FigMNodeInstance extends FigNodeModelElement {
      * Main constructor - used for file loading.
      */
     public FigMNodeInstance() {
-        setBigPort(new FigRect(x, y - d, width + d, height + d));
+        setBigPort(new CubePortFigRect(x, y - d, width + d, height + d, d));
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
         cover = new FigCube(x, y, width, height, Color.black, Color.white);
