@@ -58,6 +58,15 @@ public class CrNoTriggerOrGuard extends CrUML {
 	Object/*MEvent*/ t = Model.getFacade().getTrigger(tr);
 	Object g = Model.getFacade().getGuard(tr);
 	Object sv = Model.getFacade().getSource(tr);
+	Object dv = Model.getFacade().getTarget(tr);
+	if (!(Model.getFacade().isAPseudostate(dv))) return NO_PROBLEM;
+	
+	//	 WFR Transitions, OMG UML 1.3
+    Object k = Model.getFacade().getPseudostateKind(dv);
+    if (Model.getFacade().
+            equalsPseudostateKind(k,
+                    Model.getPseudostateKind().getJoin()))
+        return NO_PROBLEM;
 	if (!(Model.getFacade().isAState(sv))) return NO_PROBLEM;
 	if (Model.getFacade().getDoActivity(sv) != null) return NO_PROBLEM;
 	boolean hasTrigger =
