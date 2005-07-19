@@ -36,7 +36,6 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.DataTypesHelper;
 import org.argouml.model.Model;
-import org.argouml.uml.util.namespace.StringNamespace;
 import org.tigris.gef.util.ResourceLoader;
 
 /**
@@ -328,6 +327,7 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-compositestate", "CompositeState");
         images.put("button.new-composition", "Composition");
         images.put("button.new-createaction", "CreateAction");
+        images.put("button.new-datatype", "Datatype");
         images.put("button.new-deephistory", "DeepHistory");
         images.put("button.new-dependency", "Dependency");
         images.put("button.new-destroyaction", "DestroyAction");
