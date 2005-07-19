@@ -294,7 +294,6 @@ public class PerspectiveManager {
                 loadDefaultPerspectives();
             }
         } catch (Exception e1) {
-            int i = 0;
         }
     }
 
