@@ -42,12 +42,6 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 public class ActionNewReception extends AbstractActionNewModelElement {
 
     /**
-     * CLASSIFIER is the name of the property that
-     * holds the Classifier of this reception.
-     */
-    public static final String CLASSIFIER = "classifier";
-
-    /**
      * The constructor.
      */
     public ActionNewReception() {
@@ -60,7 +54,8 @@ public class ActionNewReception extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        Object classifier = getValue(CLASSIFIER);
+        Object classifier =  
+            TargetManager.getInstance().getModelTarget();
         if (!Model.getFacade().isAClassifier(classifier)) {
             throw new IllegalArgumentException(
                     "Argument classifier is null or not a classifier. Got: "
