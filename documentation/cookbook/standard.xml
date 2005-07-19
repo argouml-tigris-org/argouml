@@ -83,10 +83,10 @@ The year in the copyright notice is maintained manually.
 </para>
         <para>
 This differs from the Sun Code Conventions that 
-requires the initial comment to be a c-style comment.
+requires the initial comment to be a C-style comment.
 </para>
         <para>
-This is checked by checkstyle.
+This is checked by Checkstyle.
 </para>
       </listitem>
       <listitem>
@@ -98,12 +98,12 @@ This is not required by the Sun Code Conventions but
 an additional requirement for ArgoUML.
 </para>
         <para>
-This is checked by checkstyle.
+This is checked by Checkstyle.
 </para>
       </listitem>
       <listitem>
         <para>
-Use javadoc for each class, instance variable, and method. 
+Use Javadoc for each class, instance variable, and method. 
 In general do not put comments in the body of a method. 
 If you are doing something complex enough to need a comment, consider
 breaking it out into its own private commented method.
@@ -113,8 +113,8 @@ This is not required by the Sun Code Conventions but
 an additional requirement for ArgoUML.
 </para>
         <para>
-This is partly checked by checkstyle.
-Checkstyle does currently only warn if a javadoc comment is omitted for
+This is partly checked by Checkstyle.
+Checkstyle does currently only warn if a Javadoc comment is omitted for
 a public, protected or default visibility variable or method.
 </para>
       </listitem>
@@ -140,7 +140,7 @@ This is exactly as it is stated in the Sun Code Conventions.
 It is here just for the emphasis.
 </para>
         <para>
-This is checked by checkstyle.
+This is checked by Checkstyle.
 </para>
       </listitem>
       <listitem>
@@ -152,13 +152,13 @@ This is exactly as it is stated in the Sun Code Conventions.
 It is here just for the emphasis.
 </para>
         <para>
-This is checked by checkstyle.
+This is checked by Checkstyle.
 Checkstyle ignores three kinds of lines in this check because of the
 historical use of long class names and package names.
 These are lines that contain
 "//&nbsp;&dollar;Id:<replaceable>whatever</replaceable>&dollar;",
 import statements, and
-javadoc comments with @see-tags.
+Javadoc comments with @see-tags.
 </para>
       </listitem>
       <listitem>
@@ -208,7 +208,7 @@ Write deprecation statements like this:
 </programlisting>
 </para>
         <para>
-This is not checked by checkstyle.
+This is not checked by Checkstyle.
 </para>
         <para>
 Rationale:
@@ -315,14 +315,14 @@ Code Conventions for the Java Programming Language
 
     <para>
 Some of these rules are marked with a comment that they are 
-checked by a checkstyle.
+checked by a Checkstyle.
 Checkstyle is a tool available with the ArgoUML development environment
 preconfigured for these rules.
 The current configuration can be found in
 <filename>argouml/tools/checkstyle/checkstyle_argouml.xml</filename>.
 </para>
     <para>
-To run checkstyle run the command
+To run Checkstyle run the command
 <command>build checkstyle</command> from the
 <filename class="directory">argouml/src_new</filename>
 directory.
@@ -332,13 +332,13 @@ This requires you to have checked out the directories
 <filename class="directory">argouml/src_new</filename>.
 </para>
     <para>
-The last couple of checkstyle result are also available in 
+The last couple of Checkstyle result are also available in 
 the Xenofarm result.
 </para>
     <para>
 Checkstyle will also check some of the rules from the
 Sun Code Conventions that are not stated here.
-Furthermore checkstyle nags about when the order of modifiers does
+Furthermore Checkstyle nags about when the order of modifiers does
 not conform to the suggestions in the
 Java Language Specification, Section 8.1.1, 8.3.1, 8.4.3.
 </para>
@@ -467,7 +467,7 @@ This automated use must be able to run without relying on access to some
 server and without user intervention.
 </para>
         <para>
-The API documentation of the sub-product (assumed to be javadoc)
+The API documentation of the sub-product (assumed to be Javadoc)
 we can use from some web site belonging to that sub-product.
 </para>
         <para>
@@ -525,7 +525,7 @@ planning and evolving.
 </para>
     <para>
 Here are the steps to go through and the recommended order
-once the decision is taken to use the subproduct in ArgoUML:
+once the decision is taken to use the sub-product in ArgoUML:
 </para>
     <itemizedlist>
       <listitem>
@@ -534,7 +534,7 @@ Documentation
 </para>
         <para>
 Describe in the Cookbook in the appropriate subsystem section
-what part of the problem that the subproduct solves and
+what part of the problem that the sub-product solves and
 how it is used in ArgoUML.
 </para>
       </listitem>
@@ -545,14 +545,14 @@ Javadoc
         <para>
 Enter the package list file in a special directory under
 <filename class="directory">argouml/lib/javadocs</filename>.
-Update the list of links used when building the javadocs.
+Update the list of links used when building the Javadocs.
 One place in <filename>default.properties</filename>,
 One or two places in <filename>build.xml</filename>
 (targets javadocs and javadocs-api).
 </para>
         <para>
-Test by referencing some class from the subproduct,
-building the javadoc, and
+Test by referencing some class from the sub-product,
+building the Javadoc, and
 check that the link is working.
 </para>
       </listitem>
@@ -561,7 +561,7 @@ check that the link is working.
 Repository
 </para>
         <para>
-Assuming that the subproduct is distributed in a set of jar files,
+Assuming that the sub-product is distributed in a set of jar files,
 add the jar files to the <filename class="directory">lib</filename> directory
 in a versioned way together with the license file.
 Use filenames like:
@@ -570,7 +570,7 @@ Use filenames like:
 </para>
         <para>
 A future plan is to have each subsystem in their own directory.
-If the subproduct in question belongs to a subsystem that is moved to a
+If the sub-product in question belongs to a subsystem that is moved to a
 separate directory you should put it in
 the <filename class="directory">lib</filename> directory for that subsystem.
 For the time being, there is only one
@@ -582,7 +582,7 @@ For the time being, there is only one
 Building
 </para>
         <para>
-Assuming that the subproduct is distributed in a set of jar files,
+Assuming that the sub-product is distributed in a set of jar files,
 add the jar files to the list of files that are to be included
 when building ArgoUML.
 One place in <filename>default.properties</filename>,
@@ -596,10 +596,10 @@ Notice especially that <filename>build.xml</filename> shall not contain
 any version information.
 Notice also that the text in <filename>AboutBox.java</filename>
 shall not contain anything that needs to be localized but just
-the subproduct name, reference and possibly version.
+the sub-product name, reference and possibly version.
 </para>
         <para>
-Check by having some class from the subproduct loaded immediately
+Check by having some class from the sub-product loaded immediately
 when starting ArgoUML and start using
 <command>build run</command>.
 </para>
@@ -619,7 +619,7 @@ Go through the list of files <filename>argouml/modules/*/build.xml</filename>
 and update.
 </para>
         <para>
-Check by having some class from the subproduct loaded immediately
+Check by having some class from the sub-product loaded immediately
 when starting ArgoUML and start in each of these directories.
 </para>
       </listitem>
@@ -628,7 +628,7 @@ when starting ArgoUML and start in each of these directories.
 Distribution
 </para>
         <para>
-Assuming that the subproduct is distributed in a set of jar files,
+Assuming that the sub-product is distributed in a set of jar files,
 add the jar files to the list of files that are to be included
 when releasing ArgoUML.
 One place in <filename>build.xml</filename> (target dist-javawebstart),
@@ -637,7 +637,7 @@ In each of the Java Web Start files (resources),
 In the <filename>Info.plist</filename> (ClassPath).
 </para>
         <para>
-Check by having some class from the subproduct loaded immediately
+Check by having some class from the sub-product loaded immediately
 when starting ArgoUML and start with
 <command>java -jar argouml.jar</command>,
 using each of the Java Web Start files, and
@@ -649,7 +649,7 @@ from the Appbund (on a Mac).
     <para>
 See <xref linkend="issues_subproducts"></xref> for a discussion on 
 how to handle bugs found in sub-products and
-updates of the version of a subproduct.
+updates of the version of a sub-product.
 </para>
   </sect1>
 
@@ -907,7 +907,7 @@ Select compile (default target in the Targets tab),
 deselect all other targets
 and finally press Run.
 </para>
-	  <para>
+	    <para>
 There are some files that are built using rules in the
 <filename>build.xml</filename> file.
 This is the antlr files and the file containing a version.
@@ -948,7 +948,7 @@ Under Source:
 Remove everything.
 Add <filename class="directory">argouml/src_new</filename> and
 <filename class="directory">argouml/src/model/src</filename>
-(simply add a checkmark in front of these folders).
+(simply add a check mark in front of these folders).
 Also add
 <filename class="directory">argouml/tests</filename>,
 <filename class="directory">argouml/modules/junit/src</filename>,
@@ -984,9 +984,9 @@ Verify that there are no errors, just warnings left among the problems.
 If there are errors in some of the modules you will be able to 
 continue your work in spite of that but it is better if you stop here and
 investigate the problem.
-    </para>
+</para>
 	  <para>
-Some of the modules (cpp, idl, classfile, ???), contain antlr-generated code.
+Some of the modules (cpp, idl, classfile, ???), contain ANTLR-generated code.
 The rules to build these are in the ant files for each module.
 Run the ant targets "generate" or "generateparser" in each of these
 modules and then reload the source trees.
@@ -1158,13 +1158,13 @@ In the ArgoUML project we have decided to keep source compliance to JDK 1.4.
 (See <xref linkend="REQ7"/>).
 This setting enables Eclipse to tell you where some
 JDK 1.5
-features has creaped in.
+features have crept in.
 </para>
 	</listitem>
 
 	<listitem>
 	  <para>
-Find forgotten and incorrect javadoc comments.
+Find forgotten and incorrect Javadoc comments.
 </para>
 	  <para>
 In the menu select Window => Preferences.
@@ -1280,7 +1280,7 @@ Unused code => Unnecessary declaration of thrown checked exception: Warning.
       In the Java perspective, select the project argouml, 
       i.e. the icon at the top of the Package Explorer.
       Then, in the menu, select Project => Properties,
-select Checkclipse (appears only if checkclipse is correctly installed)
+select Checkclipse (appears only if Checkclipse is correctly installed)
 and then fill the fields like this:
 </para>
       <itemizedlist>
