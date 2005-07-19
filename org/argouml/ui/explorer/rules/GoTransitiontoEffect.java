@@ -33,15 +33,17 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
 /**
- * Rule for Transition->Source State.
+ * Rule for Transition->Effect.
+ * 
+ * @author MarkusK
  */
-public class GoTransitionToSource extends AbstractPerspectiveRule {
+public class GoTransitionToEffect extends AbstractPerspectiveRule {
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize("misc.transition.source-state");
+        return Translator.localize("misc.transition.effect");
     }
 
     /**
@@ -50,7 +52,7 @@ public class GoTransitionToSource extends AbstractPerspectiveRule {
     public Collection getChildren(Object parent) {
         if (Model.getFacade().isATransition(parent)) {
             Collection col = new ArrayList();
-            col.add(Model.getFacade().getSource(parent));
+            col.add(Model.getFacade().getEffect(parent));
             return col;
         }
         return null;
