@@ -78,7 +78,7 @@ package <replaceable>whatever</replaceable>;
 </programlisting>
 </para>
         <para>
-The file and version is maintained by cvs using keyword substitution.
+The file and version is maintained by CVS using keyword substitution.
 The year in the copyright notice is maintained manually.
 </para>
         <para>
@@ -156,9 +156,9 @@ This is checked by checkstyle.
 Checkstyle ignores three kinds of lines in this check because of the
 historical use of long class names and package names.
 These are lines that contain
-"// &dollar;Id:<replaceable>whatever</replaceable>&dollar;",
+"//&nbsp;&dollar;Id:<replaceable>whatever</replaceable>&dollar;",
 import statements, and
-javadoc comments with @see tags.
+javadoc comments with @see-tags.
 </para>
       </listitem>
       <listitem>
@@ -219,9 +219,9 @@ exactly how it works.
 Deprecation shows the intent between decision to remove a method and
 the point where it is actually removed 
 and this without breaking anything of the old code.
-There are also modules or plugins that we might know nothing about that
+There are also modules or plug ins that we might know nothing about that
 could be loaded by some user to run within ArgoUML to add functionality.
-It is for the modules and plugins that we always save 
+It is for the modules and plug ins that we always save 
 deprecated methods to the next stable release.
 It makes it possible for the module developers to do work during the 
 unstable releases and release at the same time as ArgoUML releases its
@@ -245,7 +245,7 @@ is for this reason not allowed.
 Rationale 2:
 If you feel like you really want to use a method that is deprecated instead
 of the replacement you should first convince the person responsible
-for doing the deprecation that he has made a misstake and upgrade ArgoUML
+for doing the deprecation that he has made a mistake and upgrade ArgoUML
 to a version of that library without that method or class deprecated.
 If it is within ArgoUML discuss it with the person who actually did 
 the deprecation or in the development team.
@@ -257,9 +257,9 @@ the calls to deprecated methods and classes that
 has been deprecated after used in ArgoUML.
 This is a normal part of improving ArgoUML.
 If this work is too slow it makes it impossible to upgrade to new
-versions of different subtools. 
-This problem is seen by "the person responsible for sourceing of the subtool"
-when actually trying to upgrade the subtool.
+versions of different sub-tools. 
+This problem is seen by "the person responsible for sourcing of the sub-tool"
+when actually trying to upgrade the sub-tool.
 (See <xref linkend="issues_subproducts"></xref>.)
 </para>
       </listitem>
@@ -277,14 +277,14 @@ have at most four levels of packages.
 Historically in the ArgoUML design,
 a deep package structure has been used.
 There are several places in the code where the package structure is
-mimicing the UML hierarchy of objects resulting in impossibly long
+mimicking the UML hierarchy of objects resulting in impossibly long
 package names like
-<classname>org.argouml.model.uml.behavioralelements.collaborations.<replaceable>classname</replaceable></classname>, and
-<classname>org.argouml.uml.ui.behavior.common_behavior.<replaceable>classname</replaceable></classname>.
+<classname>org.argouml.model.uml.behavioralelements.collaborations.<replaceable>class name</replaceable></classname>, and
+<classname>org.argouml.uml.ui.behavior.common_behavior.<replaceable>class name</replaceable></classname>.
 </para>
         <para>
 While establishing the subsystems we use a two-level approach much
-like the rest of the java world.
+like the rest of the Java world.
 For the subsystem API we always use:
 <classname>org.argouml.<replaceable>subsystem package name</replaceable></classname>
 i.e. the classes are in the subsystem's directory and all subsystems have
@@ -357,10 +357,10 @@ Be careful when downloading stuff.
         <para>
 ArgoUML is supposed to be a self-contains development environment.
 Some times it is better to have things downloaded from the ant script
-instead of from the cvs repository.
+instead of from the CVS repository.
 In that case separate the download-targets from the target that does
 building so that it is easy for everyone to know when their 
-development machine is working against the internet and when it is not.     
+development machine is working against the Internet and when it is not.     
         </para>
       </listitem>
 
@@ -374,7 +374,7 @@ Non-public targets shall not have description
 
       <listitem>
         <para>
-Use ant-builtins for everything.
+Use ant-built-ins for everything.
         </para>
         <para>
 ArgoUML is supposed to be a self-contains development environment.
@@ -393,24 +393,24 @@ run a development environment.
         <surname>Tolke</surname>
       </author>
     </sect1info>
-    <title>Checklist for using subproducts</title>
+    <title>Checklist for using sub-products</title>
 
     <para>
-In the ArgoUML project we use several subproducts to solve parts
+In the ArgoUML project we use several sub-products to solve parts
 of the problem for us.
-These subproducts are an important part of the ArgoUML tool and
+These sub-products are an important part of the ArgoUML tool and
 must be handled in a good way if ArgoUML is going to be successful.
 </para>
     <para>
 When this is written (March 2004) we have had problems with the
-discontinuance of one of the subproducts (NSUML) and will continue to 
+discontinuance of one of the sub-products (NSUML) and will continue to 
 have it for well some time in the future, until we have managed to replace it.
 The problem with NSUML could probably not have been foreseen or avoided
 if this checklist would have been in place when NSUML was taken into
-the project but some more appearant risks with subproduct candidates might be.
+the project but some more apparent risks with sub-product candidates might be.
 </para>
     <para>
-Here is the list of things to check in the subproduct
+Here is the list of things to check in the sub-product
 and to discuss with yourself and maybe with the ArgoUML development team
 before considering to use it in the ArgoUML project.
 </para>
@@ -425,7 +425,7 @@ develop against,
 release with,
 distribute, and
 use
-the subproduct indefinately
+the sub-product indefinitely
 without monetary or other compensation.
 </para>
         <para>
@@ -441,8 +441,8 @@ We don't want to require our users to enter agreements to use ArgoUML.
 Java version
 </para>
         <para>
-The subproduct must have a policy that matches the ArgoUML project policy
-on java version requirements.
+The sub-product must have a policy that matches the ArgoUML project policy
+on Java version requirements.
 </para>
         <para>
 Rationale: 
@@ -452,7 +452,7 @@ Java is still under development and there are nice features available in
 future releases.
 In ArgoUML we have a plan for how to handle this. It is to always support
 two major releases of Java (currently JDK 1.3 and 1.4).
-We cannot have a subproduct that restricts us in this aspect.
+We cannot have a sub-product that restricts us in this aspect.
 </para>
       </listitem>
       <listitem>
@@ -460,15 +460,15 @@ We cannot have a subproduct that restricts us in this aspect.
 Distribution
 </para>
         <para>
-We require the subproducts to make it possible for us to take the distribution,
+We require the sub-products to make it possible for us to take the distribution,
 enter it in our CVS repository and write rules to automate
-the use of the subproduct while developing, releasing and running ArgoUML.
+the use of the sub-product while developing, releasing and running ArgoUML.
 This automated use must be able to run without relying on access to some
 server and without user intervention.
 </para>
         <para>
-The API documentation of the subproduct (assumed to be javadoc)
-we can use from some web site belonging to that subproduct.
+The API documentation of the sub-product (assumed to be javadoc)
+we can use from some web site belonging to that sub-product.
 </para>
         <para>
 Rationale: 
@@ -481,17 +481,17 @@ the releases.
       </listitem>
       <listitem>
         <para>
-Roadmap
+Road map
 </para>
         <para>
-The project developing the subproduct must have a plan that fits
+The project developing the sub-product must have a plan that fits
 the ArgoUML plan for the future.
 </para>
         <para>
 Rationale: 
-If a subproduct will soon go somewhere else
+If a sub-product will soon go somewhere else
 i.e. stop doing what we require or stop supporting what we require,
-then we will soon have troubles with that subproduct.
+then we will soon have troubles with that sub-product.
 </para>
       </listitem>
       <listitem>
@@ -499,7 +499,7 @@ then we will soon have troubles with that subproduct.
 Working project
 </para>
         <para>
-The project that develops the subproduct should be a working project.
+The project that develops the sub-product should be a working project.
 Check that there is some person responsible for it,
 preferably with a team or organization backing him.
 Check that there is a plan for upcoming releases.
@@ -507,20 +507,20 @@ Check that there is a way to report bugs and enhancement requests.
 </para>
         <para>
 Rationale:
-We don't want to rely on a subproduct where there is no chance of ever
+We don't want to rely on a sub-product where there is no chance of ever
 getting a bug that we encounter fixed.
 We are also part of an ever-evolving world.
 Soon we want the tool to do more for us.
-We should then be able to wish that and eventually get an updated subproduct.
+We should then be able to wish that and eventually get an updated sub-product.
 </para>
       </listitem>
     </itemizedlist>
   <para>
 Notice that we should not and don't need to do this in a passive way.
-We should explain to the subproduct team what we want and why.
-Especially for subproducts that we have already in ArgoUML but also
+We should explain to the sub-product team what we want and why.
+Especially for sub-products that we have already in ArgoUML but also
 for project that we consider taking in.
-This is to increase the likelyhood that they will have us in mind when
+This is to increase the likelihood that they will have us in mind when
 planning and evolving.
 </para>
     <para>
@@ -599,7 +599,7 @@ shall not contain anything that needs to be localized but just
 the subproduct name, reference and possibly version.
 </para>
         <para>
-Check by having some class from the subproduct loaded immediatly
+Check by having some class from the subproduct loaded immediately
 when starting ArgoUML and start using
 <command>build run</command>.
 </para>
@@ -619,7 +619,7 @@ Go through the list of files <filename>argouml/modules/*/build.xml</filename>
 and update.
 </para>
         <para>
-Check by having some class from the subproduct loaded immediatly
+Check by having some class from the subproduct loaded immediately
 when starting ArgoUML and start in each of these directories.
 </para>
       </listitem>
@@ -637,7 +637,7 @@ In each of the Java Web Start files (resources),
 In the <filename>Info.plist</filename> (ClassPath).
 </para>
         <para>
-Check by having some class from the subproduct loaded immediatly
+Check by having some class from the subproduct loaded immediately
 when starting ArgoUML and start with
 <command>java -jar argouml.jar</command>,
 using each of the Java Web Start files, and
@@ -648,7 +648,7 @@ from the Appbund (on a Mac).
 
     <para>
 See <xref linkend="issues_subproducts"></xref> for a discussion on 
-how to handle bugs found in subproducts and
+how to handle bugs found in sub-products and
 updates of the version of a subproduct.
 </para>
   </sect1>
@@ -759,7 +759,7 @@ Number of Spaces per indentation level).
     </sect1info>
     <title>Settings for Emacs</title>
     <para>
-These style guides correspond to the default java settings in Emacs:
+These style guides correspond to the default Java settings in Emacs:
 <programlisting>
  ("java"
   (c-basic-offset . 4)
@@ -833,7 +833,7 @@ cvs.tigris.org
 	    </listitem>
 	    <listitem>
 	      <para>User:
-<replaceable>Your Tigris username.</replaceable>
+<replaceable>Your Tigris user name.</replaceable>
 </para>
 	    </listitem>
 	    <listitem>
@@ -861,7 +861,7 @@ Check out.
 In the CVS Repository Exploring perspective,
 unfold the newly created repository 
 (called something like
-:pserver:<replaceable>yourname</replaceable>@cvs.tigris.org:/cvs)
+:pserver:<replaceable>your user name</replaceable>@cvs.tigris.org:/cvs)
 and within it, HEAD.
 </para>
 	  <para>
@@ -920,7 +920,7 @@ Refresh the project.
 </para>
 	  <para>
 This must be done after having built using ant to find the newly created
-java files.
+Java files.
 </para>
 	  <para>
 Select the top resource of the argouml project
@@ -1083,7 +1083,7 @@ At the right hand side, open the tree for Comments, and
 set the Code Templates for Overriding methods to
 <programlisting>
 /**
- * ${see_to_overridden}
+ * &dollar;{see_to_overridden}
  */
 </programlisting>
 </para>
@@ -1117,10 +1117,10 @@ set the Code Templates for Overriding methods to
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-${package_declaration}
+&dollar;{package_declaration}
 
-${typecomment}
-${type_declaration}
+&dollar;{typecomment}
+&dollar;{type_declaration}
 </programlisting>
 </para>
 	</listitem>
@@ -1273,7 +1273,7 @@ Unused code => Unnecessary declaration of thrown checked exception: Warning.
     <sect2 id="checkclipse">
       <title>Settings for checkclipse</title>
       <para>
-      Checkclipse is a plugin for Eclipse wich needs to be installed seperately.
+      Checkclipse is a plug in for Eclipse which needs to be installed separately.
       It enables style checking according the rules set for the ArgoUML project.
     </para>
       <para>
