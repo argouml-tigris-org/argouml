@@ -36,11 +36,8 @@
   </indexterm>
 
   <para>
-Purpose - to keep the information of objects in diagrams and to
-generate a graphical view.
-The contents of the diagrams and also the Uml elements that are
-represented are modifiable from the diagrams.
-TODO: Notation!
+Purpose - To present the diagrams to the user and allow the user to manipulate
+the diagrams through the view.
 </para>
       <para>
 The Diagrams are be located in <classname>org.argouml.uml.diagram</classname>.
@@ -49,8 +46,28 @@ The Diagrams are be located in <classname>org.argouml.uml.diagram</classname>.
 The Diagrams is a View subsystem. <xref linkend="view_control_subsystems"></xref>.
 </para>
       <para>
-The Diagrams are depending on the Model subsystem and the GUI framework.
+The Diagrams are depending on the Model subsystem and the GUI.
 </para>
+
+  <para>
+The classes in this subsystem are extensions of the GEF base classes
+(GraphModels, Figs, Selections etc) together with some supporting classes.
+</para>
+
+  <para>
+This subsystem has no direct access to a specific implementation of the OMG
+model repository. However it does update such a repository via the interface of
+the Model Subsystem.
+</para>
+
+  <para>
+There is an intention (Bob Tarling) to split this subsystem into several smaller
+subsystems, one for each diagram type. This is to allow for indiviual diagram
+reuse by other applications and to allow us to fast track developers onto a
+specific subproject containing that subsystem (Michael MacDonald and sequence
+diagrams in mind).
+</para>
+
 
       <sect2>
 	<title>Multi editor pane</title>
