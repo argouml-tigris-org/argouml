@@ -48,8 +48,9 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Test the CppImport class. FIXME: duplicate code from TestCppFileGeneration
- * and BaseTestGeneratorCpp.
+ * Test the CppImport class.
+ * 
+ * FIXME: duplicate code from TestCppFileGeneration and BaseTestGeneratorCpp.
  * 
  * @author Luis Sergio Oliveira (euluis)
  * @since 0.19.3
@@ -111,6 +112,21 @@ public class TestCppImport extends TestCase {
     private Project proj;
 
     /**
+     * The editor(?).
+     */
+    private Editor ed;
+
+    /**
+     * The diagram interface.
+     */
+    private DiagramInterface di;
+
+    /**
+     * The Import that contains details about the user configured import.
+     */
+    private Import imp;
+
+    /**
      * @throws Exception if something goes wrong
      * @see junit.framework.TestCase#setUp()
      */
@@ -118,6 +134,20 @@ public class TestCppImport extends TestCase {
         super.setUp();
         tmpDir = new File(System.getProperty(SYSPROPNAME_TMPDIR));
         proj = ProjectManager.getManager().getCurrentProject();
+        ed = Globals.curEditor();
+        di = new DiagramInterface(ed);
+        imp = null;
+        // FIXME: The following fails because it can't find PluggableImport
+        // modules. I must get ModuleLoader to load the CppImport module.
+        // From a different perspective, I don't like being too tied to the
+        // Import class, since it seams to be doing too much - i.e., it
+        // contains things related to the view, to the model and to the
+        // controller, while it should be only a controller. The view
+        // (e.g., details pannel) and the model (e.g.,
+        // CreateDiagramsChecked, DiscendDirectoriesRecursively and
+        // Attribute properties).
+        // Bottom line: for now I simply don't need it!
+        //!imp = new Import();
         cppImp = new CppImport();
     }
 
@@ -154,37 +184,137 @@ public class TestCppImport extends TestCase {
         genDir = setUpDirectory4Test("testParseFileSimpleClass");
         File srcFile = setupSrcFile4Reverse("SimpleClass.cpp");
 
-        Editor ed = Globals.curEditor();
-        DiagramInterface di = new DiagramInterface(ed);
-        Import imp = null;
-        // FIXME: The following fails because it can't find PluggableImport
-        // modules. I must get ModuleLoader to load the CppImport module.
-        // From a different perspective, I don't like being too tied to the
-        // Import class, since it seams to be doing too much - i.e., it
-        // contains things related to the view, to the model and to the
-        // controller, while it should be only a controller. The view
-        // (e.g., details pannel) and the model (e.g.,
-        // CreateDiagramsChecked, DiscendDirectoriesRecursively and
-        // Attribute properties).
-        // Bottom line: for now I simply don't need it!
-        //!imp = new Import();
         cppImp.parseFile(proj, srcFile, di, imp);
 
         Collection nss = Model.getModelManagementHelper().getAllNamespaces(
-                proj.getModel());
+            proj.getModel());
         Object pack = findModelElementWithName(nss, "pack");
         assertNotNull("The pack namespace wasn't found in the model!", pack);
 
         Collection clss = Model.getCoreHelper().getAllClasses(pack);
         Object simpleClass = findModelElementWithName(clss, "SimpleClass");
-        assertNotNull("The pack.SimpleClass class wasn't found in the model!",
-                simpleClass);
+        assertNotNull("The pack::SimpleClass class wasn't found in the model!",
+            simpleClass);
+        assertTrue(Model.getFacade().isPublic(simpleClass));
 
         Collection opers = Model.getCoreHelper().getBehavioralFeatures(
-                simpleClass);
+            simpleClass);
         Object newOperation = findModelElementWithName(opers, "newOperation");
-        assertNotNull("The pack.SimpleClass.newOperation() model element "
-                + "doesn't exist!", newOperation);
+        assertNotNull("The pack::SimpleClass::newOperation() model element "
+            + "doesn't exist!", newOperation);
+        assertTrue(Model.getFacade().isPublic(newOperation));
+
+        Collection attrs = Model.getCoreHelper().getAllAttributes(simpleClass);
+        Object newAttr = findModelElementWithName(attrs, "newAttr");
+        assertNotNull(
+            "The pack::SimpleClass::newAttr attribute doesn't exist!", newAttr);
+        assertTrue(Model.getFacade().isPublic(newAttr));
+        // TODO: verify reveng of SimpleClass.newOperation definition
+        // TODO: 1. how to model a namespace alias in UML? A variation of the
+        // import or access relationship would be nice, but, I don't know if
+        // that would be to force things a bit...
+        // TODO: 2. verify namespace alias p = pack.
+    }
+
+    /**
+     * Ditto for DerivedFromAbstract.cxx translation unit.
+     * 
+     * @throws Exception something wen't wrong
+     */
+    public void testParseFileDerivedFromAbstract() throws Exception {
+        genDir = setUpDirectory4Test("testParseFileDerivedFromAbstract");
+        File srcFile = setupSrcFile4Reverse("DerivedFromAbstract.cxx");
+
+        cppImp.parseFile(proj, srcFile, di, imp);
+
+        // verify the Dummy struct reveng
+        Collection classes = Model.getCoreHelper().getAllClasses(
+            proj.getModel());
+        Object dummyStruct = findModelElementWithName(classes, "Dummy");
+        assertNotNull("The Dummy structure doesn't exist in the model!",
+            dummyStruct);
+        Object structTV = Model.getFacade().getTaggedValue(dummyStruct,
+            ProfileCpp.TV_NAME_CLASS_SPECIFIER);
+        assertNotNull(structTV);
+        assertEquals("struct", Model.getFacade().getValueOfTag(structTV));
+
+        Collection attributes = Model.getCoreHelper().getAllAttributes(
+            dummyStruct);
+        Object c = findModelElementWithName(attributes, "c");
+        assertNotNull("The Dummy::c attribute doesn't exist in the model!", c);
+        assertTrue("Dummy::c must be public!", Model.getFacade().isPublic(c));
+        Object signedChar = Model.getFacade().getType(c);
+        assertEquals("signed char", Model.getFacade().getName(signedChar));
+        assertTrue("signed char must be a DataType!", Model.getFacade()
+                .isADataType(signedChar));
+
+        // verify Base reveng
+        Object baseClass = findModelElementWithName(classes, "Base");
+        assertNotNull("The Base class doesn't exist in the model!", baseClass);
+        assertNull(Model.getFacade().getTaggedValue(baseClass,
+            ProfileCpp.TV_NAME_CLASS_SPECIFIER));
+
+        Collection opers = Model.getCoreHelper().getBehavioralFeatures(
+            baseClass);
+        Object baseFooOper = findModelElementWithName(opers, "foo");
+        assertNotNull(
+            "The Base::foo(xxx) operation doesn't exist in the model!",
+            baseFooOper);
+        assertTrue(Model.getFacade().isAbstract(baseFooOper));
+        Object baseFooRv = Model.getCoreHelper()
+                .getReturnParameter(baseFooOper);
+        assertEquals("unsigned int", Model.getFacade().getName(
+            Model.getFacade().getType(baseFooRv)));
+        Collection params = Model.getFacade().getParameters(baseFooOper);
+        Object baseFooOtherParam = findModelElementWithName(params, "other");
+        assertNotNull(baseFooOtherParam);
+        assertEquals(baseClass, Model.getFacade().getType(baseFooOtherParam));
+        Object refTV = Model.getFacade().getTaggedValue(baseFooOtherParam,
+            ProfileCpp.TV_NAME_REFERENCE);
+        assertNotNull(refTV);
+        assertEquals("true", Model.getFacade().getValueOfTag(refTV));
+
+        attributes = Model.getCoreHelper().getAllAttributes(baseClass);
+        Object baseUiAttr = findModelElementWithName(attributes, "ui");
+        assertNotNull("The Base::ui attribute doesn't exist in the model!",
+            baseUiAttr);
+        assertTrue(Model.getFacade().isProtected(baseUiAttr));
+        assertEquals("unsigned long", Model.getFacade().getName(
+            Model.getFacade().getType(baseUiAttr)));
+
+        Object baseMakeMeADummyOper = findModelElementWithName(opers,
+            "makeMeADummy");
+        assertNotNull(
+            "The Base::makeMeADummy() operation doesn't exit in the model!",
+            baseMakeMeADummyOper);
+        assertTrue(Model.getFacade().isProtected(baseMakeMeADummyOper));
+        assertEquals(dummyStruct, Model.getFacade().getType(
+            Model.getCoreHelper().getReturnParameter(baseMakeMeADummyOper)));
+
+        Object baseHelperMethodOper = findModelElementWithName(opers,
+            "helperMethod");
+        assertNotNull(
+            "The Base::helperMethod(xxx) operation doesn't exist in the model!",
+            baseHelperMethodOper);
+        assertEquals("void", Model.getFacade()
+                .getName(
+                    Model.getFacade().getType(
+                        Model.getCoreHelper().getReturnParameter(
+                            baseHelperMethodOper))));
+        assertTrue(Model.getFacade().isPrivate(baseHelperMethodOper));
+        params = Model.getFacade().getParameters(baseHelperMethodOper);
+        Object baseHelperMethodCstrParam = findModelElementWithName(params,
+            "cstr");
+        assertNotNull("Base::helperMethod(xxx) cstr parameter doesn't exist!",
+            baseHelperMethodCstrParam);
+        assertEquals("signed char", Model.getFacade().getName(
+            Model.getFacade().getType(baseHelperMethodCstrParam)));
+        Object ptrTV = Model.getFacade().getTaggedValue(
+            baseHelperMethodCstrParam, "pointer");
+        assertNotNull(ptrTV);
+        assertEquals("true", Model.getFacade().getValueOfTag(ptrTV));
+
+        // TODO: much more!
     }
 
     /**

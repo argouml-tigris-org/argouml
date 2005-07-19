@@ -133,7 +133,7 @@ round-trip engineering for C++ projects.
     <property file="${user.home}/.argo.ant.properties"/>
     <property file="${user.home}/.ant.properties"/>
 
-    <property name="debug" value="off"/>
+    <property name="debug" value="on"/>
     <property name="optimize" value="on"/>
     <property name="deprecation" value="on"/>
     <property name="developer.lib.dir" value="${argo.build.dir}"/>
@@ -291,6 +291,7 @@ round-trip engineering for C++ projects.
     <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
           fork="yes">
+      <sysproperty key="log4j.configuration" value="org/argouml/resource/full_console.lcf"/>
       <classpath>
         <fileset dir="${module.build.dir}">
             <include name="${module.jarfile.name}" />
@@ -385,6 +386,8 @@ round-trip engineering for C++ projects.
     <copy file="${tests.reveng.src}/UnionInlineDefInMember.cpp"
       todir="${tests.reveng.classes}"/>
     <copy file="${tests.reveng.src}/CastExpressions.cpp"
+      todir="${tests.reveng.classes}"/>
+    <copy file="${tests.reveng.src}/DerivedFromAbstract.cxx"
       todir="${tests.reveng.classes}"/>
   </target> 
 

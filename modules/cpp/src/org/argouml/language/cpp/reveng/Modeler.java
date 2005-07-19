@@ -158,4 +158,71 @@ public interface Modeler {
      * @param identifier the function identifier.
      */
     void functionDirectDeclarator(String identifier);
+
+    /**
+     * Signals the begin of a parameter declaration.
+     */
+    void beginParameterDeclaration();
+
+    /**
+     * Signals the end of a parameter declaration.
+     */
+    void endParameterDeclaration();
+
+    /**
+     * 
+     */
+    void beginInitializer();
+
+    /**
+     * 
+     */
+    void endInitializer();
+
+    /**
+     * Signals the begin of a member declaration.
+     */
+    void beginMemberDeclaration();
+
+    /**
+     * Signals the end of a member declaration.
+     */
+    void endMemberDeclaration();
+
+    /**
+     * Signals the begin of a compound statement.
+     */
+    void beginCompoundStatement();
+
+    /**
+     * Signals the end of a compound statement.
+     */
+    void endCompoundStatement();
+
+    /**
+     * Receives a pointer symbol from the ptr_operator rule. In simple 
+     * cases should be a "&" or a "*".
+     * 
+     * @param ptrSymbol the pointer symbol found
+     */
+    void ptrOperator(String ptrSymbol);
+
+    /**
+     * Signals the begin of the ptr_operator rule.
+     */
+    void beginPtrOperator();
+
+    /**
+     * Signals the end of the ptr_operator rule.
+     */
+    void endPtrOperator();
+
+    /**
+     * Found a pointer to member construct. Partial results, being the rest 
+     * (if existing) delivered in a typeQualifier() call.
+     * @param scopedItem The scoped item, such as A::B::C::
+     * @param star The "*" symbol, just that the call is clear. In the future 
+     * may be removed.
+     */
+    void ptrToMember(String scopedItem, String star);
 }

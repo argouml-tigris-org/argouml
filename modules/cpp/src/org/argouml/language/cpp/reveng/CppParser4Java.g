@@ -585,6 +585,7 @@ decl_namespace
 member_declaration
 	{String q="";}
 	:
+	{m.beginMemberDeclaration();}
 	(
 		// Class definition
 		// This is separated out otherwise the next alternative
@@ -680,6 +681,7 @@ member_declaration
 	|  
 		SEMICOLON 
 	)
+	{m.endMemberDeclaration();}
 	;	// end member_declaration
 
 
@@ -769,6 +771,7 @@ simple_type_specifier
 	} 
 	:	(	{qualifiedItemIsOneOf(auxBitSet,0)}? 
 			 s = qualified_type 
+			{sts.add(s); m.simpleTypeSpecifier(sts);}
 		|	
 			(	"char"					{sts.add("char");}
 			|	"wchar_t"				{sts.add("wchar_t");}
@@ -820,9 +823,9 @@ class_specifier
 				{	saveClass = enclosingClass;
 				 	enclosingClass = id;
 				}
+				{m.beginClassDefinition(type, id);} 
 				(base_clause)? 
 				LCURLY
-				{m.beginClassDefinition(type, id);} 
 				{
 					if(!symbols.containsKey(id))
 						symbols.put(id,type);
@@ -935,11 +938,15 @@ init_declarator
 	;
 
 initializer
-   : 
-      remainder_expression // DW 18/4/01 assignment_expression
-   | 
-     LCURLY initializer (COMMA initializer)* RCURLY
-   ;
+	:
+	{m.beginInitializer();} 
+	(
+			remainder_expression // DW 18/4/01 assignment_expression
+		|
+			LCURLY initializer (COMMA initializer)* RCURLY
+	)
+	{m.endInitializer();}
+	;
 
 class_head
 	:	// Used only by predicates	
@@ -1207,7 +1214,7 @@ parameter_declaration_list
 
 parameter_declaration
 	{java.util.BitSet auxBitSet=(java.util.BitSet)CPPvariables.QI_TYPE.clone(); auxBitSet.or(CPPvariables.QI_CTOR);}
-	:	
+	:	{m.beginParameterDeclaration();}
 		(
 			{!((LA(1)==SCOPE) && (LA(2)==STAR||LA(2)==OPERATOR))&&( !(LA(1)==SCOPE||LA(1)==ID) || qualifiedItemIsOneOf(auxBitSet,0) )}?
 			declaration_specifiers	// DW 24/3/98 Mods for K & R
@@ -1224,6 +1231,7 @@ parameter_declaration
 		(ASSIGNEQUAL 
 		 remainder_expression // DW 18/4/01 assignment_expression
 		)?
+		{m.endParameterDeclaration();}
 	;
 
 type_name // aka type_id
@@ -1382,7 +1390,9 @@ default_statement
 
 compound_statement
 	:	
-	  LCURLY (statement_list)? RCURLY 
+		{m.beginCompoundStatement();}
+		LCURLY (statement_list)? RCURLY 
+		{m.endCompoundStatement();}
 	;
 
 /* NOTE: cannot remove ELSE ambiguity, but it parses correctly.
@@ -1477,7 +1487,8 @@ expression
 /* right-to-left for assignment op */
 assignment_expression
 	:	conditional_expression
-		(	(ASSIGNEQUAL|TIMESEQUAL|DIVIDEEQUAL|MINUSEQUAL|PLUSEQUAL
+		(	(ASSIGNEQUAL
+			|TIMESEQUAL|DIVIDEEQUAL|MINUSEQUAL|PLUSEQUAL
 			|MODEQUAL
 			|SHIFTLEFTEQUAL
 			|SHIFTRIGHTEQUAL
@@ -1506,7 +1517,7 @@ conditional_expression
 	;
 
 constant_expression
-	:	
+	:
 		conditional_expression
 	;
 
@@ -1749,22 +1760,31 @@ new_declarator
 	;
 
 ptr_operator
-	:	(	AMPERSAND 	
+	:	
+		{m.beginPtrOperator();}
+		(	AMPERSAND 						{m.ptrOperator("&");}
 		|	("_cdecl"|"__cdecl") 
 		|	("_near"|"__near") 
 		|	("_far"|"__far") 
 		|	"__interrupt" 
 		|	("pascal"|"_pascal"|"__pascal") 
 		|	("_stdcall"|"__stdcall") 
-		|	ptr_to_member	// e.g. STAR 
-		)	
+		|	ptr_to_member // e.g. STAR; euluis (2005-07-13): calls 
+			              // m.ptrOperator("*") or m.ptrToMember(s, "*").
+		)
+		{m.endPtrOperator();}
    ;
 
 // Match A::B::*
 ptr_to_member
 	{String s="";}
 	:
-	s = scope_override STAR  cv_qualifier_seq
+	s = scope_override STAR 
+	{
+		if (s.length() != 0) m.ptrToMember(s, "*");
+		else m.ptrOperator("*");
+	}
+	cv_qualifier_seq 
 	;
 
 // Match the A::B::C:: or nothing

@@ -2071,7 +2071,7 @@ public class GeneratorCpp extends Generator2
 
 
     private String generateSectionTop(Object op, String localIndent) {
-        String id = UUIDHelper.getInstance().getUUID(op);
+        String id = UUIDHelper.getUUID(op);
         if (id == null) {
             id = (new UID().toString());
             Model.getCoreHelper().setUUID(op, id);
@@ -2080,7 +2080,7 @@ public class GeneratorCpp extends Generator2
     }
 
     private String generateSectionBottom(Object op, String localIndent) {
-        String id = UUIDHelper.getInstance().getUUID(op);
+        String id = UUIDHelper.getUUID(op);
         if (id == null) {
             id = (new UID().toString());
             Model.getCoreHelper().setUUID(op, id);
