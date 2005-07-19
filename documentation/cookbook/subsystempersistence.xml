@@ -35,13 +35,30 @@
   </indexterm>
 
   <para>
-Purpose - To transform all data that is to be stored into a file.
-To read a file and create the model elements and diagrams from the contents.
+Purpose - To package and unpackage the
+persistence data from different subsystems to and from some storage medium.
 </para>
   <para>
 The Persistence subsystem is located in
 <classname>org.argouml.persistence</classname>.
 </para>
+
+  <para>
+Currently the storage medium is
+a flat file (.uml - xml format) or
+a zipped file (.zargo - zip format)
+</para>
+
+  <para>
+During save the persistence subsystem requests each subsystem for its
+persistence data and adds that data to output it is collating.
+</para>
+
+  <para>
+During load the persistence subsystem unwraps the persistence data and passes
+these to the relevant subsystems for those subsystems to build themselves.
+</para>
+
 </sect1>
 
 
