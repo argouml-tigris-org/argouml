@@ -36,20 +36,21 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 
 import org.apache.log4j.Logger;
+
 /**
  * Provides a model and event management for perspectives(views) of the
- * Explorer. <p>
+ * Explorer.
+ * <p>
+ * This class defines the complete list of perspective rules, and knows the
+ * default perspectives and their contents.
  * 
- * This class defines the complete list of perspective rules, 
- * and knows the default perspectives and their contents. 
- *
- * @author  alexb
+ * @author alexb
  * @since 0.15.2
  */
 public class PerspectiveManager {
 
-    private static final Logger LOG =
-	Logger.getLogger(PerspectiveManager.class);
+    private static final Logger LOG = Logger
+            .getLogger(PerspectiveManager.class);
 
     private static PerspectiveManager instance;
 
@@ -79,36 +80,40 @@ public class PerspectiveManager {
     }
 
     /**
-     * @param listener the listener to be added
+     * @param listener
+     *            the listener to be added
      */
     public void addListener(PerspectiveManagerListener listener) {
         perspectiveListeners.add(listener);
     }
 
     /**
-     * @param listener the listener to be removed
+     * @param listener
+     *            the listener to be removed
      */
     public void removeListener(PerspectiveManagerListener listener) {
         perspectiveListeners.remove(listener);
     }
 
     /**
-     * @param perspective the perspective to be added
+     * @param perspective
+     *            the perspective to be added
      */
     public void addPerspective(Object perspective) {
         perspectives.add(perspective);
         Iterator listenerIt = perspectiveListeners.iterator();
         while (listenerIt.hasNext()) {
 
-            PerspectiveManagerListener listener =
-                (PerspectiveManagerListener) listenerIt.next();
+            PerspectiveManagerListener listener = (PerspectiveManagerListener) listenerIt
+                    .next();
 
             listener.addPerspective(perspective);
         }
     }
 
     /**
-     * @param newPerspectives the collection of perspectives to be added
+     * @param newPerspectives
+     *            the collection of perspectives to be added
      */
     public void addAllPerspectives(Collection newPerspectives) {
 
@@ -121,7 +126,8 @@ public class PerspectiveManager {
     }
 
     /**
-     * @param perspective the perspective to be removed
+     * @param perspective
+     *            the perspective to be removed
      */
     public void removePerspective(Object perspective) {
 
@@ -129,8 +135,8 @@ public class PerspectiveManager {
         Iterator listenerIt = perspectiveListeners.iterator();
         while (listenerIt.hasNext()) {
 
-            PerspectiveManagerListener listener =
-                (PerspectiveManagerListener) listenerIt.next();
+            PerspectiveManagerListener listener = (PerspectiveManagerListener) listenerIt
+                    .next();
 
             listener.removePerspective(perspective);
         }
@@ -156,75 +162,72 @@ public class PerspectiveManager {
     }
 
     /**
-     * Tries to load user defined perspectives, if it can't it
-     * loads the (predefined) default perspectives.
+     * Tries to load user defined perspectives, if it can't it loads the
+     * (predefined) default perspectives.
      */
     public void loadUserPerspectives() {
 
         try {
-	    String userPerspectives =
-		Configuration.getString(Argo.KEY_USER_EXPLORER_PERSPECTIVES,
-					"");
+            String userPerspectives = Configuration.getString(
+                    Argo.KEY_USER_EXPLORER_PERSPECTIVES, "");
 
-	    StringTokenizer pst =
-		new StringTokenizer(userPerspectives, ";");
+            StringTokenizer pst = new StringTokenizer(userPerspectives, ";");
 
-	    if (pst.hasMoreTokens()) {
+            if (pst.hasMoreTokens()) {
 
-		// load user perspectives
-		while (pst.hasMoreTokens()) {
-		    String perspective = pst.nextToken();
-		    StringTokenizer perspectiveDetails =
-			new StringTokenizer(perspective, ",");
+                // load user perspectives
+                while (pst.hasMoreTokens()) {
+                    String perspective = pst.nextToken();
+                    StringTokenizer perspectiveDetails = new StringTokenizer(
+                            perspective, ",");
 
-		    //get the perspective name
-		    String perspectiveName = perspectiveDetails.nextToken();
+                    // get the perspective name
+                    String perspectiveName = perspectiveDetails.nextToken();
 
-		    ExplorerPerspective userDefinedPerspective =
-			new ExplorerPerspective(perspectiveName);
+                    ExplorerPerspective userDefinedPerspective = new ExplorerPerspective(
+                            perspectiveName);
 
-		    // make sure there are some rules...
-		    if (perspectiveDetails.hasMoreTokens()) {
+                    // make sure there are some rules...
+                    if (perspectiveDetails.hasMoreTokens()) {
 
-			//get the rules
-			while (perspectiveDetails.hasMoreTokens()) {
+                        // get the rules
+                        while (perspectiveDetails.hasMoreTokens()) {
 
-			    //get the rule name
-			    String ruleName = perspectiveDetails.nextToken();
+                            // get the rule name
+                            String ruleName = perspectiveDetails.nextToken();
 
-			    // create the rule:
-			    try {
-				Class ruleClass =
-				    Class.forName(ruleName);
+                            // create the rule:
+                            try {
+                                Class ruleClass = Class.forName(ruleName);
 
-				PerspectiveRule rule =
-				    (PerspectiveRule) ruleClass.newInstance();
+                                PerspectiveRule rule = (PerspectiveRule) ruleClass
+                                        .newInstance();
 
-				userDefinedPerspective.addRule(rule);
+                                userDefinedPerspective.addRule(rule);
 
-			    } catch (Exception ex) {
-				LOG.error("could not create rule ", ex);
-			    }
-			}
-		    }
-		    // rule name but no rules
-		    else {
-			continue;
-		    }
+                            } catch (Exception ex) {
+                                LOG.error("could not create rule ", ex);
+                            }
+                        }
+                    }
+                    // rule name but no rules
+                    else {
+                        continue;
+                    }
 
-		    // add the perspective
-		    addPerspective(userDefinedPerspective);
-		}
-	    }
-	    // no user defined perspectives, so load defaults.
-	    else {
-		loadDefaultPerspectives();
-	    }
+                    // add the perspective
+                    addPerspective(userDefinedPerspective);
+                }
+            }
+            // no user defined perspectives, so load defaults.
+            else {
+                loadDefaultPerspectives();
+            }
 
-	    // one last check that some loaded.
-	    if (getPerspectives().size() == 0) {
-		loadDefaultPerspectives();
-	    }
+            // one last check that some loaded.
+            if (getPerspectives().size() == 0) {
+                loadDefaultPerspectives();
+            }
         } catch (Exception e1) {
             int i = 0;
         }
@@ -243,8 +246,8 @@ public class PerspectiveManager {
      * @return a collection of default perspectives (i.e. the predefined ones)
      */
     public Collection getDefaultPerspectives() {
-        ExplorerPerspective classPerspective =
-            new ExplorerPerspective("combobox.item.class-centric");
+        ExplorerPerspective classPerspective = new ExplorerPerspective(
+                "combobox.item.class-centric");
         classPerspective.addRule(new GoProjectToModel());
         classPerspective.addRule(new GoNamespaceToClassifierAndPackage());
         classPerspective.addRule(new GoNamespaceToDiagram());
@@ -256,8 +259,8 @@ public class PerspectiveManager {
         classPerspective.addRule(new GoSummaryToIncomingDependency());
         classPerspective.addRule(new GoSummaryToOutgoingDependency());
 
-        ExplorerPerspective packagePerspective =
-            new ExplorerPerspective("combobox.item.package-centric");
+        ExplorerPerspective packagePerspective = new ExplorerPerspective(
+                "combobox.item.package-centric");
         packagePerspective.addRule(new GoProjectToModel());
         packagePerspective.addRule(new GoNamespaceToOwnedElements());
         packagePerspective.addRule(new GoNamespaceToDiagram());
@@ -272,8 +275,10 @@ public class PerspectiveManager {
         packagePerspective.addRule(new GoStimulusToAction());
         packagePerspective.addRule(new GoClassifierToCollaboration());
         packagePerspective.addRule(new GoOperationToCollaboration());
-        /* Removed the next one due to issue 2165.
-        packagePerspective.addRule(new GoOperationToCollaborationDiagram());*/
+        /*
+         * Removed the next one due to issue 2165.
+         * packagePerspective.addRule(new GoOperationToCollaborationDiagram());
+         */
         packagePerspective.addRule(new GoBehavioralFeatureToStateMachine());
         packagePerspective.addRule(new GoBehavioralFeatureToStateDiagram());
         // works for both statediagram as activitygraph
@@ -284,14 +289,15 @@ public class PerspectiveManager {
         packagePerspective.addRule(new GoStateToDoActivity());
         packagePerspective.addRule(new GoStateToEntry());
         packagePerspective.addRule(new GoStateToExit());
-	packagePerspective.addRule(new GoClassifierToSequenceDiagram());
-	packagePerspective.addRule(new GoOperationToSequenceDiagram());
-	packagePerspective.addRule(new GoClassifierToInstance());
-	packagePerspective.addRule(new GoStateToIncomingTrans());
-	packagePerspective.addRule(new GoStateToOutgoingTrans());
+        packagePerspective.addRule(new GoClassifierToSequenceDiagram());
+        packagePerspective.addRule(new GoOperationToSequenceDiagram());
+        packagePerspective.addRule(new GoClassifierToInstance());
+        packagePerspective.addRule(new GoStateToIncomingTrans());
+        packagePerspective.addRule(new GoStateToOutgoingTrans());
+        packagePerspective.addRule(new GoSubmachineStateToStateMachine());
 
-        ExplorerPerspective diagramPerspective =
-            new ExplorerPerspective("combobox.item.diagram-centric");
+        ExplorerPerspective diagramPerspective = new ExplorerPerspective(
+                "combobox.item.diagram-centric");
         diagramPerspective.addRule(new GoProjectToModel());
         diagramPerspective.addRule(new GoModelToDiagrams());
         diagramPerspective.addRule(new GoDiagramToNode());
@@ -300,29 +306,29 @@ public class PerspectiveManager {
         diagramPerspective.addRule(new GoClassifierToStructuralFeature());
         diagramPerspective.addRule(new GoClassifierToBehavioralFeature());
 
-        ExplorerPerspective inheritancePerspective =
-            new ExplorerPerspective("combobox.item.inheritance-centric");
+        ExplorerPerspective inheritancePerspective = new ExplorerPerspective(
+                "combobox.item.inheritance-centric");
         inheritancePerspective.addRule(new GoProjectToModel());
         inheritancePerspective.addRule(new GoModelToBaseElements());
-        inheritancePerspective.addRule(
-                new GoGeneralizableElementToSpecialized());
+        inheritancePerspective
+                .addRule(new GoGeneralizableElementToSpecialized());
 
-        ExplorerPerspective associationsPerspective =
-            new ExplorerPerspective("combobox.item.class-associations");
+        ExplorerPerspective associationsPerspective = new ExplorerPerspective(
+                "combobox.item.class-associations");
         associationsPerspective.addRule(new GoProjectToModel());
         associationsPerspective.addRule(new GoNamespaceToDiagram());
         associationsPerspective.addRule(new GoPackageToClass());
         associationsPerspective.addRule(new GoClassToAssociatedClass());
 
-        ExplorerPerspective residencePerspective =
-            new ExplorerPerspective("combobox.item.residence-centric");
+        ExplorerPerspective residencePerspective = new ExplorerPerspective(
+                "combobox.item.residence-centric");
         residencePerspective.addRule(new GoProjectToModel());
         residencePerspective.addRule(new GoModelToNode());
         residencePerspective.addRule(new GoNodeToResidentComponent());
         residencePerspective.addRule(new GoComponentToResidentModelElement());
 
-        ExplorerPerspective statePerspective =
-            new ExplorerPerspective("combobox.item.state-centric");
+        ExplorerPerspective statePerspective = new ExplorerPerspective(
+                "combobox.item.state-centric");
         statePerspective.addRule(new GoProjectToStateMachine());
         statePerspective.addRule(new GoStatemachineToDiagram());
         statePerspective.addRule(new GoStateMachineToState());
@@ -330,8 +336,8 @@ public class PerspectiveManager {
         statePerspective.addRule(new GoStateToIncomingTrans());
         statePerspective.addRule(new GoStateToOutgoingTrans());
 
-        ExplorerPerspective transitionsPerspective =
-            new ExplorerPerspective("combobox.item.transitions-centric");
+        ExplorerPerspective transitionsPerspective = new ExplorerPerspective(
+                "combobox.item.transitions-centric");
         transitionsPerspective.addRule(new GoProjectToStateMachine());
         transitionsPerspective.addRule(new GoStatemachineToDiagram());
         transitionsPerspective.addRule(new GoStateMachineToTransition());
@@ -351,89 +357,66 @@ public class PerspectiveManager {
     }
 
     /**
-     * Get the predefined rules. <p>
-     *
-     * This is a hard coded rules library for now,
-     * since it is quite a lot of work to
-     * get all possible rule names in "org.argouml.ui.explorer.rules" from
-     * the classpath
-     * (which would also not allow adding rules from other locations).
+     * Get the predefined rules.
+     * <p>
+     * This is a hard coded rules library for now, since it is quite a lot of
+     * work to get all possible rule names in "org.argouml.ui.explorer.rules"
+     * from the classpath (which would also not allow adding rules from other
+     * locations).
      */
     public void loadRules() {
 
-        PerspectiveRule[] ruleNamesArray =
-	{new GoAssocRoleToMessages(),
-	 new GoBehavioralFeatureToStateDiagram(),
-	 new GoBehavioralFeatureToStateMachine(),
-	 new GoClassifierToBehavioralFeature(),
-	 new GoClassifierToCollaboration(),
-	 new GoClassifierToInstance(),
-	 new GoClassifierToSequenceDiagram(),
-	 new GoClassifierToStateMachine(),
-	 new GoClassifierToStructuralFeature(),
-	 new GoClassToAssociatedClass(),
-	 new GoClassToNavigableClass(),
-	 new GoClassToSummary(),
-	 new GoCollaborationToDiagram(),
-	 new GoCollaborationToInteraction(),
-         new GoComponentToResidentModelElement(),
-	 new GoCompositeStateToSubvertex(),
-	 new GoDiagramToEdge(),
-	 new GoDiagramToNode(),
-	 new GoElementToMachine(),
-	 new GoGeneralizableElementToSpecialized(),
-	 new GoInteractionToMessages(),
-	 new GoLinkToStimuli(),
-	 new GoMessageToAction(),
-	 new GoModelElementToComment(),
-	 new GoModelToBaseElements(),
-	 new GoModelToCollaboration(),
-	 new GoModelToDiagrams(),
-	 new GoModelToElements(),
-         new GoModelToNode(),
-	 new GoNamespaceToClassifierAndPackage(),
-	 new GoNamespaceToDiagram(),
-	 new GoNamespaceToOwnedElements(),
-         new GoNodeToResidentComponent(),
-	 new GoOperationToCollaborationDiagram(),
-	 new GoOperationToCollaboration(),
-	 new GoOperationToSequenceDiagram(),
-	 new GoPackageToClass(),
-	 new GoProjectToCollaboration(),
-	 new GoProjectToDiagram(),
-	 new GoProjectToModel(),
-	 new GoProjectToStateMachine(),
-	 new GoSignalToReception(),
-	 new GoStateMachineToTop(),
-	 new GoStatemachineToDiagram(),
-	 new GoStateMachineToState(),
-         new GoStateMachineToTransition(),
-	 new GoStateToDoActivity(),
-	 new GoStateToDownstream(),
-	 new GoStateToEntry(),
-	 new GoStateToExit(),
-	 new GoStateToIncomingTrans(),
-	 new GoStateToInternalTrans(),
-	 new GoStateToOutgoingTrans(),
-	 new GoStimulusToAction(),
-	 new GoSummaryToAssociation(),
-	 new GoSummaryToAttribute(),
-	 new GoSummaryToIncomingDependency(),
-	 new GoSummaryToInheritance(),
-	 new GoSummaryToOperation(),
-	 new GoSummaryToOutgoingDependency(),
-	 new GoTransitionToSource(),
-	 new GoTransitionToTarget(),
-	 new GoUseCaseToExtensionPoint(),
-	};
+        PerspectiveRule[] ruleNamesArray = { new GoAssocRoleToMessages(),
+                new GoBehavioralFeatureToStateDiagram(),
+                new GoBehavioralFeatureToStateMachine(),
+                new GoClassifierToBehavioralFeature(),
+                new GoClassifierToCollaboration(),
+                new GoClassifierToInstance(),
+                new GoClassifierToSequenceDiagram(),
+                new GoClassifierToStateMachine(),
+                new GoClassifierToStructuralFeature(),
+                new GoClassToAssociatedClass(), new GoClassToNavigableClass(),
+                new GoClassToSummary(), new GoCollaborationToDiagram(),
+                new GoCollaborationToInteraction(),
+                new GoComponentToResidentModelElement(),
+                new GoCompositeStateToSubvertex(), new GoDiagramToEdge(),
+                new GoDiagramToNode(), new GoElementToMachine(),
+                new GoGeneralizableElementToSpecialized(),
+                new GoInteractionToMessages(), new GoLinkToStimuli(),
+                new GoMessageToAction(), new GoModelElementToComment(),
+                new GoModelToBaseElements(), new GoModelToCollaboration(),
+                new GoModelToDiagrams(), new GoModelToElements(),
+                new GoModelToNode(), new GoNamespaceToClassifierAndPackage(),
+                new GoNamespaceToDiagram(), new GoNamespaceToOwnedElements(),
+                new GoNodeToResidentComponent(),
+                new GoOperationToCollaborationDiagram(),
+                new GoOperationToCollaboration(),
+                new GoOperationToSequenceDiagram(), new GoPackageToClass(),
+                new GoProjectToCollaboration(), new GoProjectToDiagram(),
+                new GoProjectToModel(), new GoProjectToStateMachine(),
+                new GoSignalToReception(), new GoStateMachineToTop(),
+                new GoStatemachineToDiagram(), new GoStateMachineToState(),
+                new GoStateMachineToTransition(), new GoStateToDoActivity(),
+                new GoStateToDownstream(), new GoStateToEntry(),
+                new GoStateToExit(), new GoStateToIncomingTrans(),
+                new GoStateToInternalTrans(), new GoStateToOutgoingTrans(),
+                new GoStimulusToAction(), new GoSummaryToAssociation(),
+                new GoSummaryToAttribute(),
+                new GoSummaryToIncomingDependency(),
+                new GoSummaryToInheritance(), new GoSummaryToOperation(),
+                new GoSummaryToOutgoingDependency(),
+                new GoTransitionToSource(), new GoTransitionToTarget(),
+                new GoUseCaseToExtensionPoint(),
+                new GoSubmachineStateToStateMachine(),};
 
-	rules = Arrays.asList(ruleNamesArray);
+        rules = Arrays.asList(ruleNamesArray);
     }
 
     /**
      * Add a rule to the list of rules.
-     *
-     * @param rule the PerspectiveRule to be added
+     * 
+     * @param rule
+     *            the PerspectiveRule to be added
      */
     public void addRule(PerspectiveRule rule) {
         rules.add(rule);
@@ -441,8 +424,9 @@ public class PerspectiveManager {
 
     /**
      * Remove a rule from the list.
-     *
-     * @param rule the PerspectiveRule to be removed
+     * 
+     * @param rule
+     *            the PerspectiveRule to be removed
      */
     public void removeRule(PerspectiveRule rule) {
         rules.remove(rule);
@@ -459,14 +443,14 @@ public class PerspectiveManager {
      * save the user perspectives in the ArgoUML configuration
      */
     public void saveUserPerspectives() {
-        Configuration.setString(Argo.KEY_USER_EXPLORER_PERSPECTIVES,
-            this.toString());
+        Configuration.setString(Argo.KEY_USER_EXPLORER_PERSPECTIVES, this
+                .toString());
     }
 
     /**
-     * string representation of the perspectives in the same format as
-     * saved in the user properties.
-     *
+     * string representation of the perspectives in the same format as saved in
+     * the user properties.
+     * 
      * @see java.lang.Object#toString()
      */
     public String toString() {
@@ -476,8 +460,8 @@ public class PerspectiveManager {
         Iterator perspectivesIt = getPerspectives().iterator();
         while (perspectivesIt.hasNext()) {
 
-            ExplorerPerspective perspective =
-                (ExplorerPerspective) perspectivesIt.next();
+            ExplorerPerspective perspective = (ExplorerPerspective) perspectivesIt
+                    .next();
 
             String name = perspective.toString();
 
