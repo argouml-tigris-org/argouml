@@ -30,6 +30,7 @@ import javax.swing.JPopupMenu;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionRemoveModelElement;
 import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.behavior.activity_graphs.ActionAddEventAsTrigger;
 
 /**
  * @since Dec 15, 2002
@@ -51,6 +52,11 @@ public class PopupMenuNewEvent extends JPopupMenu {
     public PopupMenuNewEvent(String role, UMLMutableLinkedList list) {
         super();
 
+        JMenu select = new JMenu();
+        select.setText(Translator.localize("action.select"));
+        ActionAddEventAsTrigger.SINGLETON.setTarget(list.getTarget());
+        select.add(ActionAddEventAsTrigger.SINGLETON);
+        add(select);
         JMenu newMenu = new JMenu();
         newMenu.setText(Translator.localize("action.new"));
         newMenu.add(ActionNewCallEvent.getSingleton());
