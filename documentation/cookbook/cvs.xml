@@ -40,8 +40,6 @@
       <secondary>CVS</secondary>
     </indexterm>
 
-  <sect1 id="groundrules">
-    <title>How to work against the CVS repository</title>
     <para>
 The CVS repository is a shared resource in the project.
 This means that once you commit your stuff it has the potential
@@ -50,6 +48,9 @@ For this reason special considerations are needed.
 This chapter describes the how you should do to limit the risk
 of causing someone else problems.
 </para>
+
+  <sect1 id="groundrules">
+    <title>How to work against the CVS repository</title>
       <para>
 When you have done all the work, and all the testing and
 are about to commit something please do:
@@ -180,7 +181,7 @@ and send a mail (1 minute),
 wait for some response (1 hour wait),
 update (1 minute),
 compile (1 minute).
-This amounts to 10 hours wait and 1,5 hours extra work for
+This amounts to 10 hours wait and 1.5 hours extra work for
 all developers in the project.
 </para>
 
@@ -223,7 +224,7 @@ e.g. tlach (Thierry Lach) or mkl (Markus Klink).
 </para>
       <para>Merging branches together is causing some work. So please use them sparingly and announce your intentions before on the mailing list.
 </para>
-      <sect2 id="howdoi_cvs">
+      <sect1 id="howdoi_cvs">
 	<title>How do I ...?</title>
 	<para>
 	  <itemizedlist>
@@ -429,7 +430,7 @@ code works also with the additions on that branch.
 	    </listitem>
 	  </itemizedlist>
 	</para>
-      </sect2>
+      </sect1>
 
 </sect1>
 
