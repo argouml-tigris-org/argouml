@@ -141,7 +141,7 @@
                 <listitem><para> Go to the menu
                   <command>Edit->Settings</command> and look at the
                   <command>Environment</command> tab. Find the entry
-                  labeled <literal>${argo.ext.dir}</literal>. Create that
+                  labeled <literal>&dollar;{argo.ext.dir}</literal>. Create that
                   directory if it does not already exist. </para></listitem>
                 <listitem><para> Copy the plug-in jar and any other jars
                   required by it into that directory. </para></listitem>

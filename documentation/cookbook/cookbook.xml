@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 <!--
 // Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -24,7 +25,6 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 <!DOCTYPE book SYSTEM "../docbook-setup/docbookx/docbookx.dtd" [
-<!-- $Id$ -->
 
 <!ENTITY changelog SYSTEM "changelog.xml">
 <!ENTITY introduction SYSTEM "introduction.xml">

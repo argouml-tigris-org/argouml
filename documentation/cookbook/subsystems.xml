@@ -511,13 +511,13 @@ see <xref linkend="ocl"></xref>.
   ###############################################################################
   # The source trees for ordinary source and generated source and where we put it
   # all.
-  NSUML_HOME=$HOME/nsuml0_4_19/nsuml
-  SRCDIR=${NSUML_HOME}/src
-  GENDIR=${NSUML_HOME}/gen
-  DESTDIR=${NSUML_HOME}/docs/javadocs
+  NSUML_HOME=&dollar;HOME/nsuml0_4_19/nsuml
+  SRCDIR=&dollar;{NSUML_HOME}/src
+  GENDIR=&dollar;{NSUML_HOME}/gen
+  DESTDIR=&dollar;{NSUML_HOME}/docs/javadocs
   
   # Run the javadoc command
-  javadoc -d $DESTDIR -sourcepath $GENDIR:$SRCDIR @${NSUML_HOME}/package_list
+  javadoc -d &dollar;DESTDIR -sourcepath &dollar;GENDIR:&dollar;SRCDIR @&dollar;{NSUML_HOME}/package_list
   </programlisting>
   Where package_list is:
   <programlisting>
