@@ -25,13 +25,13 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 
-<sect1 id="model">
-  <title>Model</title>
+    <sect1 id="model">
+      <title>Model</title>
   <indexterm>
     <primary>Model</primary>
   </indexterm>
 
-  <para id="comp-model-purpose">
+      <para id="comp-model-purpose">
 Purpose - To remove knowledge from the rest of ArgoUML of what model repository
 is in use (e.g. MDR, EMF, NSUML) and to give a consistent interface for
 manipulating data within those repositories.
@@ -42,7 +42,6 @@ The Model is located in <classname>org.argouml.model</classname>.
       <para>
 The Model is a Model subsystem. See <xref linkend="model_subsystems"></xref>.
 </para>
-
       <para>
 Currently there is a full implementation using NSUML to store
 the OMG UML Model.
@@ -80,9 +79,6 @@ interface. This will allow the complexities of the existing interfaces to be
 rationalized without affcting the facade user.
 </para>
 
-
-
-
       <para>
 The factories contain all methods that deal with
 creating and building model elements.
@@ -99,7 +95,6 @@ are interfaces that are fetched through static methods in the Model object.
 Because the same interface is used internally
 each implementation must provide objects for each of these interfaces.
 </para>
-
       <sect2 id="model_factories">
 	<title>Factories</title>
 	<para>
@@ -494,9 +489,6 @@ but they are only used internally within the Model subsystem.
   </sect2>
 
 
-
-
-
   <sect2 id="working-with-the-model">
     <title>How to work against the model</title>
 
@@ -525,14 +517,18 @@ come up with would provide the implementation of those interfaces.
     <table>
       <title>How to work against the model</title>
       <tgroup cols="4">
-	<thead>
-	  <row>
-	    <entry>What</entry>
-	    <entry>NS-UML (use only within Model subsystem)</entry>
-	    <entry>JMI/MDR (use only within Model subsystem)</entry>
-	    <entry>Model subsystem</entry>
-	  </row>
-	</thead>
+        <colspec colnum="1" colname="What" colwidth="1*"/>
+        <colspec colnum="2" colname="NS-UML" colwidth="2*"/>
+        <colspec colnum="3" colname="JMI/MDR" colwidth="2*"/>
+        <colspec colnum="4" colname="Model" colwidth="3*"/>
+        <thead>
+          <row>
+            <entry>What</entry>
+            <entry>NS-UML (use only within Model subsystem)</entry>
+            <entry>JMI/MDR (use only within Model subsystem)</entry>
+            <entry>Model subsystem</entry>
+          </row>
+        </thead>
 
 	<tbody>
 	  <row>
@@ -541,54 +537,54 @@ come up with would provide the implementation of those interfaces.
 o instanceof M<replaceable>modelelementtype</replaceable> &rarr; boolean
 </entry>
 	    <entry>
-???CLASSNAME???.isInstanceOf(RefObject toTest, String className) &rarr; boolean
+???CLASSNAME???&#8203;.isInstanceOf(&#8203;RefObject toTest, String className) &rarr; boolean
 </entry>
 	    <entry>
-Model.getFacade().isA<replaceable>modelelementtype</replaceable>(o) &rarr; boolean
+Model.getFacade()&#8203;.isA<replaceable>modelelementtype</replaceable>(o) &rarr; boolean
 </entry>
 	  </row>
 
 	  <row>
 	    <entry>Get a single valued model element from an Object o</entry>
 	    <entry>
-((M<replaceable>modelelementtype</replaceable>) o).get<replaceable>property</replaceable>()
+((M<replaceable>modelelementtype</replaceable>)o)&#8203;.get<replaceable>property</replaceable>()
 &rarr; model element
 </entry>
 	    <entry>
-((RefFeatured) obj).refGetValue(String propName) &rarr; ???Type???
+((RefFeatured)obj)&#8203;.refGetValue(&#8203;String propName) &rarr; ???Type???
 </entry>
 	    <entry>
-Model.getFacade().get<replaceable>property</replaceable>(o) &rarr; Object
+Model.getFacade()&#8203;.get<replaceable>property</replaceable>(o) &rarr; Object
 </entry>
 	  </row>
 	  <row>
 	    <entry>Get a multi valued property from an Object o</entry>
 	    <entry>
-((M<replaceable>modelelementtype</replaceable>) o).get<replaceable>property</replaceable>()
+((M<replaceable>modelelementtype</replaceable>)o)&#8203;.get<replaceable>property</replaceable>()
 &rarr; Collection
 </entry>
 	    <entry>
-((RefFeatured) obj).refGetValue(String propName) &rarr; Collection
+((RefFeatured)obj)&#8203;.refGetValue(String propName) &rarr; Collection
 </entry>
 	    <entry>
-Model.getFacade().get<replaceable>property</replaceable>(o)
+Model.getFacade()&#8203;.get<replaceable>property</replaceable>(o)
 &rarr; Iterator or Collection (total confusion!)
 </entry>
 	  </row>
 	  <row>
 	    <entry>Create a new model element of type Type:</entry>
 	    <entry>
-MFactory.getDefaultFactory().create<replaceable>Type</replaceable>()
+MFactory&#8203;.getDefaultFactory()&#8203;.create<replaceable>Type</replaceable>()
 </entry>
 	    <entry>
-???CLASSNAME???.creatInstance(String "<replaceable>Type</replaceable>", 
+???CLASSNAME???&#8203;.creatInstance(&#8203;String "<replaceable>Type</replaceable>", 
                               List argument)
 &rarr; RefObject 
 </entry>
 	    <entry>
-Model.get<replaceable>ModelElementDomain?</replaceable>Factory.build<replaceable>modelelementtype</replaceable>(args)
+Model&#8203;.get<replaceable>ModelElementDomain?</replaceable>Factory&#8203;.build<replaceable>modelelementtype</replaceable>(args)
 or
-Model.get<replaceable>ModelElementDomain?</replaceable>Factory.create<replaceable>modelelementtype</replaceable>()
+Model&#8203;.get<replaceable>ModelElementDomain?</replaceable>Factory&#8203;.create<replaceable>modelelementtype</replaceable>()
 to create them completely empty.
 </entry>
 	  </row>
@@ -601,7 +597,7 @@ to create them completely empty.
         &nbsp;
   		</entry>
       <entry>
-Model.getUmlFactory().delete(<replaceable>object</replaceable>) 
+Model&#8203;.getUmlFactory()&#8203;.delete(&#8203;<replaceable>object</replaceable>) 
       </entry>
 	  </row>
 	  <row>
@@ -609,13 +605,13 @@ Model.getUmlFactory().delete(<replaceable>object</replaceable>)
 Register for notification that a model element Object o has changed:
 </entry>
 	    <entry>
-((MBase) o).addMElementListener(MElementListener el)
+((MBase) o)&#8203;.addMElementListener(&#8203;MElementListener el)
 </entry>
 	    <entry>
-((MDRChangeSource) obj).addChangeListener(???)
+((MDRChangeSource) obj)&#8203;.addChangeListener(???)
 </entry>
 	    <entry>
-Model.getPump().addModelEventListener((PropertyChangeListener) li,
+Model.getPump()&#8203;.addModelEventListener(&#8203;(PropertyChangeListener)li,
                                       Object o, String[] eventnames)
 </entry>
 	  </row>
@@ -627,11 +623,11 @@ Register for notification on all model elements of a certain type Type:
 Not possible!
 </entry>
 	    <entry>
-((MDRChangeSource) obj.refClass()).addChangeListener(???)
+((MDRChangeSource)obj&#8203;.refClass())&#8203;.addChangeListener(???)
 </entry>
 	    <entry>
-Model.getPump().addModelEventListener((PropertyChangeListener) li,
-                                      (Object) Model.getMetaTypes().getMODELELEMENTTYPE(),
+Model.getPump()&#8203;.addModelEventListener(&#8203;(PropertyChangeListener)li,
+                                      (Object)Model&#8203;.getMetaTypes()&#8203;.getMODELELEMENTTYPE(),
                                       String[] eventnames)
 </entry>
 	  </row>
@@ -732,3 +728,4 @@ sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
 End:
 
 -->
+

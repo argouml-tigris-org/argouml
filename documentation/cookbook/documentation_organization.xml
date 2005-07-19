@@ -30,7 +30,7 @@
     <chapterinfo>
       <abstract>
 	<para>
-This chapter contains written down ideas on what goes into what
+This chapter describes what goes into which
 part of the documentation. These ideas are formulated by Linus Tolke.
 </para>
       </abstract>
@@ -80,6 +80,10 @@ the purpose of this chapter is to try to define that.
     <table>
       <title>Bits of documentation</title>
       <tgroup cols="4">
+        <colspec colnum="1" colname="Bit" colwidth="1*"/>
+        <colspec colnum="2" colname="Audience" colwidth="2*"/>
+        <colspec colnum="3" colname="Main Purpose" colwidth="3*"/>
+        <colspec colnum="4" colname="Contains" colwidth="3*"/>
 	<thead>
 	  <row>
 	    <entry>Bit</entry>
@@ -91,7 +95,7 @@ the purpose of this chapter is to try to define that.
 	<tbody valign="top">
 	  <row>
 	    <!-- Bit -->
-	    <entry>The code</entry>
+	    <entry>Source Code</entry>
 
 	    <!-- Audience -->
 	    <entry>
@@ -122,7 +126,7 @@ See <xref linkend="standards"/> for details on how to write the code.
 
 	  <row>
 	    <!-- Bit -->
-	    <entry>The javadoc</entry>
+	    <entry>Javadoc</entry>
 
 	    <!-- Audience -->
 	    <entry>
@@ -145,7 +149,7 @@ all public and protected methods, variables, and constants.
 
 	  <row>
 	    <!-- Bit -->
-	    <entry>The cookbook</entry>
+	    <entry>Cookbook</entry>
 
 	    <!-- Audience -->
 	    <entry>
@@ -177,7 +181,7 @@ description of processes that achieves that level.
 
 	  <row>
 	    <!-- Bit -->
-	    <entry>The web site in CVS</entry>
+	    <entry>Web site in CVS</entry>
 
 	    <!-- Audience -->
 	    <entry>
@@ -209,7 +213,7 @@ Examples, tours.
 
 	  <row>
 	    <!-- Bit -->
-	    <entry>The manual and quick-guide</entry>
+	    <entry>Manual and quick-guide</entry>
 
 	    <!-- Audience -->
 	    <entry>
@@ -234,7 +238,7 @@ Complete reference on how to use ArgoUML.
 
 	  <row>
 	    <!-- Bit -->
-	    <entry>Help texts within the running ArgoUML</entry>
+	    <entry>Help text in ArgoUML</entry>
 
 	    <!-- Audience -->
 	    <entry>
@@ -255,7 +259,7 @@ A complete set of quick help and explanations.
 
 	  <row>
 	    <!-- Bit -->
-	    <entry>The FAQ</entry>
+	    <entry>FAQ</entry>
 
 	    <!-- Audience -->
 	    <entry>
