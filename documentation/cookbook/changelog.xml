@@ -28,6 +28,12 @@
 <preface id="changelog">
   <title>Change Log</title>
 
+  <para>
+This will also be a log of major design decisions.
+A major design decision is a decision that changes
+responsibilities or functions of the subsystems.
+</para>
+
   <table>
     <title>Changes done</title>
     <tgroup cols="3">
@@ -58,6 +64,27 @@ Change to XXX.
         </row>
       </tbody>
       -->
+
+      <tbody valign="top">
+        <row>
+          <entry>2005-07-19</entry>
+          <entry>
+Change to the descriptions of the Model, Diagrams, and Persistence subsystems
+(See <xref linkend="model"/>,
+<xref linkend="diagrams"/>, and
+<xref linkend="subsystem-persistence"/>).
+
+<note>
+              <title>Design decision - Bob Tarling 2005-07-14</title>
+              <para>
+The Diagrams subsystem does not store any data.
+All data it works on is stored in the Model subsystem.
+</para>
+            </note>
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
 
       <tbody valign="top">
         <row>
