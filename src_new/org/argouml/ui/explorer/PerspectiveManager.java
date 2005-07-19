@@ -31,11 +31,76 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.argouml.ui.explorer.rules.*;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
-
-import org.apache.log4j.Logger;
+import org.argouml.ui.explorer.rules.GoAssocRoleToMessages;
+import org.argouml.ui.explorer.rules.GoBehavioralFeatureToStateDiagram;
+import org.argouml.ui.explorer.rules.GoBehavioralFeatureToStateMachine;
+import org.argouml.ui.explorer.rules.GoClassToAssociatedClass;
+import org.argouml.ui.explorer.rules.GoClassToNavigableClass;
+import org.argouml.ui.explorer.rules.GoClassToSummary;
+import org.argouml.ui.explorer.rules.GoClassifierToBehavioralFeature;
+import org.argouml.ui.explorer.rules.GoClassifierToCollaboration;
+import org.argouml.ui.explorer.rules.GoClassifierToInstance;
+import org.argouml.ui.explorer.rules.GoClassifierToSequenceDiagram;
+import org.argouml.ui.explorer.rules.GoClassifierToStateMachine;
+import org.argouml.ui.explorer.rules.GoClassifierToStructuralFeature;
+import org.argouml.ui.explorer.rules.GoCollaborationToDiagram;
+import org.argouml.ui.explorer.rules.GoCollaborationToInteraction;
+import org.argouml.ui.explorer.rules.GoComponentToResidentModelElement;
+import org.argouml.ui.explorer.rules.GoCompositeStateToSubvertex;
+import org.argouml.ui.explorer.rules.GoDiagramToEdge;
+import org.argouml.ui.explorer.rules.GoDiagramToNode;
+import org.argouml.ui.explorer.rules.GoElementToMachine;
+import org.argouml.ui.explorer.rules.GoGeneralizableElementToSpecialized;
+import org.argouml.ui.explorer.rules.GoInteractionToMessages;
+import org.argouml.ui.explorer.rules.GoLinkToStimuli;
+import org.argouml.ui.explorer.rules.GoMessageToAction;
+import org.argouml.ui.explorer.rules.GoModelElementToComment;
+import org.argouml.ui.explorer.rules.GoModelToBaseElements;
+import org.argouml.ui.explorer.rules.GoModelToCollaboration;
+import org.argouml.ui.explorer.rules.GoModelToDiagrams;
+import org.argouml.ui.explorer.rules.GoModelToElements;
+import org.argouml.ui.explorer.rules.GoModelToNode;
+import org.argouml.ui.explorer.rules.GoNamespaceToClassifierAndPackage;
+import org.argouml.ui.explorer.rules.GoNamespaceToDiagram;
+import org.argouml.ui.explorer.rules.GoNamespaceToOwnedElements;
+import org.argouml.ui.explorer.rules.GoNodeToResidentComponent;
+import org.argouml.ui.explorer.rules.GoOperationToCollaboration;
+import org.argouml.ui.explorer.rules.GoOperationToCollaborationDiagram;
+import org.argouml.ui.explorer.rules.GoOperationToSequenceDiagram;
+import org.argouml.ui.explorer.rules.GoPackageToClass;
+import org.argouml.ui.explorer.rules.GoProjectToCollaboration;
+import org.argouml.ui.explorer.rules.GoProjectToDiagram;
+import org.argouml.ui.explorer.rules.GoProjectToModel;
+import org.argouml.ui.explorer.rules.GoProjectToStateMachine;
+import org.argouml.ui.explorer.rules.GoSignalToReception;
+import org.argouml.ui.explorer.rules.GoStateMachineToState;
+import org.argouml.ui.explorer.rules.GoStateMachineToTop;
+import org.argouml.ui.explorer.rules.GoStateMachineToTransition;
+import org.argouml.ui.explorer.rules.GoStateToDoActivity;
+import org.argouml.ui.explorer.rules.GoStateToDownstream;
+import org.argouml.ui.explorer.rules.GoStateToEntry;
+import org.argouml.ui.explorer.rules.GoStateToExit;
+import org.argouml.ui.explorer.rules.GoStateToIncomingTrans;
+import org.argouml.ui.explorer.rules.GoStateToInternalTrans;
+import org.argouml.ui.explorer.rules.GoStateToOutgoingTrans;
+import org.argouml.ui.explorer.rules.GoStatemachineToDiagram;
+import org.argouml.ui.explorer.rules.GoStimulusToAction;
+import org.argouml.ui.explorer.rules.GoSubmachineStateToStateMachine;
+import org.argouml.ui.explorer.rules.GoSummaryToAssociation;
+import org.argouml.ui.explorer.rules.GoSummaryToAttribute;
+import org.argouml.ui.explorer.rules.GoSummaryToIncomingDependency;
+import org.argouml.ui.explorer.rules.GoSummaryToInheritance;
+import org.argouml.ui.explorer.rules.GoSummaryToOperation;
+import org.argouml.ui.explorer.rules.GoSummaryToOutgoingDependency;
+import org.argouml.ui.explorer.rules.GoTransitionToGuard;
+import org.argouml.ui.explorer.rules.GoTransitionToSource;
+import org.argouml.ui.explorer.rules.GoTransitionToTarget;
+import org.argouml.ui.explorer.rules.GoTransitionToEffect;
+import org.argouml.ui.explorer.rules.GoUseCaseToExtensionPoint;
+import org.argouml.ui.explorer.rules.PerspectiveRule;
 
 /**
  * Provides a model and event management for perspectives(views) of the
@@ -335,6 +400,8 @@ public class PerspectiveManager {
         statePerspective.addRule(new GoCompositeStateToSubvertex());
         statePerspective.addRule(new GoStateToIncomingTrans());
         statePerspective.addRule(new GoStateToOutgoingTrans());
+        statePerspective.addRule(new GoTransitionToEffect());
+        statePerspective.addRule(new GoTransitionToGuard());
 
         ExplorerPerspective transitionsPerspective = new ExplorerPerspective(
                 "combobox.item.transitions-centric");
@@ -343,6 +410,8 @@ public class PerspectiveManager {
         transitionsPerspective.addRule(new GoStateMachineToTransition());
         transitionsPerspective.addRule(new GoTransitionToSource());
         transitionsPerspective.addRule(new GoTransitionToTarget());
+        transitionsPerspective.addRule(new GoTransitionToEffect());
+        transitionsPerspective.addRule(new GoTransitionToGuard());
 
         Collection c = new ArrayList();
         c.add(packagePerspective);
@@ -406,8 +475,9 @@ public class PerspectiveManager {
                 new GoSummaryToInheritance(), new GoSummaryToOperation(),
                 new GoSummaryToOutgoingDependency(),
                 new GoTransitionToSource(), new GoTransitionToTarget(),
+                new GoTransitionToEffect(), new GoTransitionToGuard(),
                 new GoUseCaseToExtensionPoint(),
-                new GoSubmachineStateToStateMachine(),};
+                new GoSubmachineStateToStateMachine(), };
 
         rules = Arrays.asList(ruleNamesArray);
     }
