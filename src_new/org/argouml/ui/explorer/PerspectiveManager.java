@@ -98,7 +98,7 @@ import org.argouml.ui.explorer.rules.GoSummaryToOutgoingDependency;
 import org.argouml.ui.explorer.rules.GoTransitionToGuard;
 import org.argouml.ui.explorer.rules.GoTransitionToSource;
 import org.argouml.ui.explorer.rules.GoTransitionToTarget;
-import org.argouml.ui.explorer.rules.GoTransitionToEffect;
+import org.argouml.ui.explorer.rules.GoTransitiontoEffect;
 import org.argouml.ui.explorer.rules.GoUseCaseToExtensionPoint;
 import org.argouml.ui.explorer.rules.PerspectiveRule;
 
@@ -400,7 +400,7 @@ public class PerspectiveManager {
         statePerspective.addRule(new GoCompositeStateToSubvertex());
         statePerspective.addRule(new GoStateToIncomingTrans());
         statePerspective.addRule(new GoStateToOutgoingTrans());
-        statePerspective.addRule(new GoTransitionToEffect());
+        statePerspective.addRule(new GoTransitiontoEffect());
         statePerspective.addRule(new GoTransitionToGuard());
 
         ExplorerPerspective transitionsPerspective = new ExplorerPerspective(
@@ -410,7 +410,7 @@ public class PerspectiveManager {
         transitionsPerspective.addRule(new GoStateMachineToTransition());
         transitionsPerspective.addRule(new GoTransitionToSource());
         transitionsPerspective.addRule(new GoTransitionToTarget());
-        transitionsPerspective.addRule(new GoTransitionToEffect());
+        transitionsPerspective.addRule(new GoTransitiontoEffect());
         transitionsPerspective.addRule(new GoTransitionToGuard());
 
         Collection c = new ArrayList();
@@ -475,7 +475,7 @@ public class PerspectiveManager {
                 new GoSummaryToInheritance(), new GoSummaryToOperation(),
                 new GoSummaryToOutgoingDependency(),
                 new GoTransitionToSource(), new GoTransitionToTarget(),
-                new GoTransitionToEffect(), new GoTransitionToGuard(),
+                new GoTransitiontoEffect(), new GoTransitionToGuard(),
                 new GoUseCaseToExtensionPoint(),
                 new GoSubmachineStateToStateMachine(), };
 
