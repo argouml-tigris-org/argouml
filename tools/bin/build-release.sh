@@ -97,7 +97,7 @@ fi
 
 # 4. Test the release!
 echo "$BUILD Will test the release."
-( cd argouml/src_new && ./build.sh alltests
+( cd argouml/src_new && ./build.sh alltests )
 
 echo "$BUILD Starting ArgoUML for you to do the manual testing in modules/junit"
 echo "$BUILD Give the test case TestAll, uncheck Reload at every run"
@@ -117,6 +117,7 @@ echo "$BUILD (all files distributed will be signed)."
   done
 )
 
+wait
 releasename=`sed '/^argo.core.version=/!d;s/argo.core.version=//' < argouml/documentation/default.properties`
 for pdffile in argouml/build/documentation/pdf/*/*.pdf
 do
