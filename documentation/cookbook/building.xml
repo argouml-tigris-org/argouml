@@ -75,6 +75,7 @@ work on Unix/Linux systems as well.
 If you don't understand these instructions or they don't work, please read the rest of 
 the chapter for more detailed instructions on how to build ArgoUML.
 </para>
+  </sect1>
 
   <sect1 id="starting">
     <title>Preparations</title>
@@ -89,7 +90,7 @@ Notice that the CVS contents is not only a set of source files but
 instead it is the complete development environment for
 all work within the ArgoUML project.
 </para>
-</sect1>
+
       <sect2>
 	<title>Which tools do I need to build ArgoUML?</title>
 	<indexterm>
@@ -130,7 +131,64 @@ JDK, at least version 1.4.2 (includes the Java compiler)
 </para>
 	  </listitem>
 	</itemizedlist>
-      </sect2>
+
+    <para>
+For building the documentation from DocBook format, 
+you futhermore needs these tools:
+</para>
+    <itemizedlist>
+      <listitem>
+	<para>
+	  <indexterm>
+	    <primary>DocBook</primary>
+	  </indexterm>
+          <indexterm>
+	    <primary>XSL style sheets</primary>
+	  </indexterm>
+DocBook XSL style sheets.
+</para>
+
+	<para>
+There exists rules in the
+<filename>argouml/documentation/build.xml</filename>
+for downloading this correctly.
+</para>
+      </listitem>
+
+      <listitem id="download-jimi">
+	<para>
+          <indexterm>
+	    <primary id="download-jimi-name">Jimi</primary>
+	  </indexterm>
+Jimi
+</para>
+	<para>
+Used by FOP for including PNG pictures.
+</para>
+	<para>
+Detailed instructions:
+          <orderedlist>
+	    <listitem>
+	      <para>
+Download the file 
+<filename>jimi1_0.zip</filename>
+from
+<ulink url="http://java.sun.com/products/jimi/">java.sun.com</ulink>.
+It contains a file: 
+<filename>"JimiProClasses.zip"</filename>.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Copy this file into the
+<filename>argouml\tools\lib</filename> directory.
+</para>
+	    </listitem>
+	  </orderedlist>
+</para>
+      </listitem>
+    </itemizedlist>
+  </sect2>
       <sect2>
 	<title>
 Which tools are part of the ArgoUML development environment?
@@ -191,23 +249,15 @@ Saxon for building documentation from DocBook format.
 	  <listitem>
 	    <para>
 	    <indexterm>
-	      <primary>DocBook</primary>
-	    </indexterm>
-            <indexterm>
-	      <primary>XSL style sheets</primary>
-            </indexterm>
-DocBook XSL style sheets.
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-	    <indexterm>
 	      <primary>fop</primary>
 	    </indexterm>
 fop for generating PDF versions of the DocBook format.
 </para>
 	    <para>
-To build a PDF file with the pictures included you need Jimi.
+To build a PDF file with the pictures included you need Jimi
+that is downloaded separately.
+See 
+<xref linkend="download-jimi" endterm="download-jimi-name"/>.
 </para>
 	  </listitem>
 	</itemizedlist>
@@ -289,7 +339,7 @@ antlrall, the run-time part of the ANTLR tool.
 	</itemizedlist>
       </sect2>
 
- </sect1>
+  </sect1>
     <sect1 id="cvs_checkout">
       <title id="cvs_checkout_term">Download from the CVS repository</title>
       <indexterm>
@@ -1905,7 +1955,9 @@ You also need CVS access to the included sub-projects to set the tags there:
 </para>
 	</listitem>
 	<listitem>
+	  <para>
 SVN access to the argouml-downloads project (to upload the result).
+</para>
 	</listitem>
 	<listitem>
 	  <para>
@@ -2091,6 +2143,13 @@ Notice that this is starts one step up, on the same level as
 It will be accessed using a path like
 <filename class="directory">../svn/argouml-downloads/trunk/www</filename>.
 </para>
+		  <para>
+This is achieved using the following commands:
+<programlisting>
+cd ..
+svn co -N http://argouml-downloads.tigris.org/svn/argouml-downloads/trunk/www argouml-downloads/trunk/www
+</programlisting>
+</para>
 		</listitem>
 	      </itemizedlist>
 </para>
@@ -2146,14 +2205,12 @@ Copy the file <filename>JimiProClasses.zip</filename>.
 </para>
 	      <para>
 This is done automatically from the working copy you have alongside.
-If now, you will be asked to copy this in manually.
+If not, you will be asked to copy this in manually.
 </para>
-	      <para>
-The
-<filename>JimiProClasses.zip</filename>
-is downloaded from Sun.
-Instructions for this is in the fop README file:
-<filename>argouml/tools/fop-0.20.3/README</filename>.
+	    <para>
+Jimi is downloaded separately.
+See 
+<xref linkend="download-jimi" endterm="download-jimi-name"/>.
 </para>
 	    </listitem>
 
