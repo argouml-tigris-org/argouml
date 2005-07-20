@@ -80,8 +80,8 @@ public class FigClass extends FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // constants
 
-    //These are the positions of child figs inside this fig
-    //They mst be added in the constructor in this order.
+    //These are the positions of child figs inside this fig (counting from 0)
+    //They must be added in the constructor in this order.
     private static final int OPERATIONS_POSN = 3;
     private static final int ATTRIBUTES_POSN = 4;
 
