@@ -51,11 +51,6 @@ import org.tigris.gef.presentation.FigText;
 public class FigSubmachineState extends FigState {
 
     ////////////////////////////////////////////////////////////////
-    // constants
-
-    private static final int MARGIN = 2;
-
-    ////////////////////////////////////////////////////////////////
     // instance variables
 
     private FigRect cover;
@@ -98,8 +93,8 @@ public class FigSubmachineState extends FigState {
         include = new FigText(10, 10, 90, 21, true);
         include.setFont(getLabelFont());
         include.setTextColor(Color.black);
-        include.setMultiLine(false);
-        include.setAllowsTab(false);
+        include.setReturnAction(FigText.END_EDITING);
+        include.setTabAction(FigText.END_EDITING);
         include.setText(placeString());
         include.setLineWidth(0);
         include.setBounds(getInitialX() + 2, getInitialY() + 2,
@@ -192,8 +187,12 @@ public class FigSubmachineState extends FigState {
         Dimension internalDim = getInternal().getMinimumSize();
         Dimension includeDim = include.getMinimumSize();
 
-        int h = nameDim.height + 4 + internalDim.height + includeDim.height;
-        int waux = Math.max(nameDim.width + 4, internalDim.width + 4);
+        int h = SPACE_TOP + nameDim.height 
+        + SPACE_MIDDLE + includeDim.height
+        + SPACE_MIDDLE + internalDim.height 
+        + SPACE_BOTTOM;
+        int waux = Math.max(nameDim.width, 
+                internalDim.width) + 2 * MARGIN;
         int w = Math.max(waux, includeDim.width + 50);
         return new Dimension(w, h);
     }
@@ -218,20 +217,29 @@ public class FigSubmachineState extends FigState {
         Dimension nameDim = getNameFig().getMinimumSize();
         Dimension includeDim = include.getMinimumSize();
 
-        getNameFig().setBounds(x + 2, y + 2, w - 4, nameDim.height);
-        divider.setShape(x, y + nameDim.height + 1,
-                x + w - 1, y + nameDim.height + 1);
+        getNameFig().setBounds(x + MARGIN, 
+                y + SPACE_TOP, 
+                w - 2 * MARGIN, 
+                nameDim.height);
+        divider.setShape(x, 
+                y + DIVIDER_Y + nameDim.height,
+                x + w - 1, 
+                y + DIVIDER_Y + nameDim.height);
 
-        include.setBounds(x + 2, y + 3 + nameDim.height,
-                w - 4, includeDim.height);
+        include.setBounds(x + MARGIN, 
+                y + SPACE_TOP + nameDim.height + SPACE_TOP,
+                w - 2 * MARGIN, 
+                includeDim.height);
         divider2.setShape(x,
-                y + nameDim.height + 2 + includeDim.height + 1,
+                y + nameDim.height + DIVIDER_Y + includeDim.height + DIVIDER_Y,
                 x + w - 1,
-                y + nameDim.height + 2 + includeDim.height + 1);
+                y + nameDim.height + DIVIDER_Y + includeDim.height + DIVIDER_Y);
 
-        getInternal().setBounds(x + 2,
-                y + nameDim.height + includeDim.height + 4,
-                w - 4, h - nameDim.height - includeDim.height - 4);
+        getInternal().setBounds(
+                x + MARGIN,
+                y + SPACE_TOP + nameDim.height + SPACE_TOP + includeDim.height + SPACE_MIDDLE,
+                w - 2 * MARGIN, 
+                h - SPACE_TOP - nameDim.height - SPACE_TOP - includeDim.height - SPACE_MIDDLE - SPACE_BOTTOM);
 
         circle1.setBounds(x + w - 55,
                 y + h - 15,

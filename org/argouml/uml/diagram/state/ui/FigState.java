@@ -46,6 +46,13 @@ import org.tigris.gef.presentation.FigText;
  */
 public abstract class FigState extends FigStateVertex {
 
+    protected final static int SPACE_TOP = 1;
+    protected final static int SPACE_MIDDLE = 5;
+    protected final static int DIVIDER_Y = 4;
+    protected final static int SPACE_BOTTOM = 6;
+ 
+    protected static final int MARGIN = 2;
+    
     /**
      * the text inside the state
      */
@@ -64,7 +71,7 @@ public abstract class FigState extends FigStateVertex {
         internal.setLineWidth(0);
         internal.setFilled(false);
         internal.setExpandOnly(true);
-        internal.setMultiLine(true);
+        internal.setReturnAction(FigText.INSERT);
         internal.setJustification(FigText.JUSTIFY_LEFT);
     }
 

@@ -46,7 +46,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
-import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -68,11 +67,6 @@ public class FigConcurrentRegion extends FigState
         MouseMotionListener {
 
     ////////////////////////////////////////////////////////////////
-    // constants
-
-    private static final int MARGIN = 2;
-
-    ////////////////////////////////////////////////////////////////
     // instance variables
 
     /** The main label on this icon. */
@@ -80,8 +74,6 @@ public class FigConcurrentRegion extends FigState
 
     private FigRect cover;
     private FigLine dividerline;
-    private Color color = Color.black;
-
     private static Handle curHandle = new Handle(-1);
 
     ////////////////////////////////////////////////////////////////
@@ -193,7 +185,7 @@ public class FigConcurrentRegion extends FigState
         Dimension nameDim = getNameFig().getMinimumSize();
         Dimension internalDim = getInternal().getMinimumSize();
         int h = nameDim.height + 4 + internalDim.height;
-        int w = nameDim.width + 4;
+        int w = nameDim.width + 2 * MARGIN;
         return new Dimension(w, h);
     }
 
@@ -282,9 +274,15 @@ public class FigConcurrentRegion extends FigState
         }
 
         dividerline.setShape(x, y, x + w, y);
-        getNameFig().setBounds(x + 2, y + 2, w - 4, nameDim.height);
-        getInternal().setBounds(x + 2, y + nameDim.height + 4,
-                w - 4, h - nameDim.height - 8);
+        getNameFig().setBounds(x + MARGIN, 
+                y + SPACE_TOP, 
+                w - 2 * MARGIN, 
+                nameDim.height);
+        getInternal().setBounds(
+                x + MARGIN, 
+                y + nameDim.height + SPACE_TOP + SPACE_MIDDLE,
+                w - 2 * MARGIN, 
+                h - nameDim.height - SPACE_TOP - SPACE_MIDDLE - SPACE_BOTTOM);
         getBigPort().setBounds(x, y, w, h);
         cover.setBounds(x, y, w, h);
 

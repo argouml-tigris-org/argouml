@@ -34,14 +34,11 @@ import java.text.ParseException;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.JSeparator;
-
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
-import org.argouml.uml.diagram.ui.ActionAggregation;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
@@ -55,8 +52,6 @@ import org.tigris.gef.presentation.FigText;
  * @author jrobbins@ics.uci.edu
  */
 public class FigCompositeState extends FigState {
-
-    private static final int MARGIN = 2;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -147,8 +142,11 @@ public class FigCompositeState extends FigState {
         Dimension nameDim = getNameFig().getMinimumSize();
         Dimension internalDim = getInternal().getMinimumSize();
 
-        int h = nameDim.height + 4 + internalDim.height;
-        int w = Math.max(nameDim.width + 4, internalDim.width + 4);
+        int h = SPACE_TOP + nameDim.height 
+        + SPACE_MIDDLE + internalDim.height 
+        + SPACE_BOTTOM;
+        int w = Math.max(nameDim.width + 2 * MARGIN, 
+                internalDim.width + 2 * MARGIN);
         return new Dimension(w, h);
     }
 
@@ -158,35 +156,6 @@ public class FigCompositeState extends FigState {
     public boolean getUseTrapRect() {
         return true;
     }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
-     *
-     * Override setBounds to keep shapes looking right.
-     */
-    /*public void setBounds(int x, int y, int w, int h) {
-        if (getNameFig() == null) {
-            return;
-	}
-        Rectangle oldBounds = getBounds();
-        Dimension nameDim = getNameFig().getMinimumSize();
-
-        getNameFig().setBounds(x + 2, y + 2, w - 4, nameDim.height);
-        divider.setShape(x, y + nameDim.height + 1,
-			  x + w - 1, y + nameDim.height + 1);
-
-        getInternal().setBounds(x + 2, y + nameDim.height + 4,
-			    w - 4, h - nameDim.height - 6);
-
-        getBigPort().setBounds(x, y, w, h);
-        cover.setBounds(x, y, w, h);
-
-        calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-        updateEdges();
-        firePropChange("bounds", oldBounds, getBounds());
-    }*/
-
-
 
     /** 
      * Override setBounds to keep shapes looking right.
@@ -220,12 +189,20 @@ public class FigCompositeState extends FigState {
             }
         }
 
-        getNameFig().setBounds(x + 2, y + 2, w - 4, nameDim.height);
-        divider.setShape(x, y + nameDim.height + 1,
-                          x + w - 1, y + nameDim.height + 1);
+        getNameFig().setBounds(x + MARGIN, 
+                y + SPACE_TOP, 
+                w - 2 * MARGIN, 
+                nameDim.height);
+        divider.setShape(x, 
+                y + DIVIDER_Y + nameDim.height,
+                x + w - 1, 
+                y + DIVIDER_Y + nameDim.height);
 
-        getInternal().setBounds(x + 2, y + nameDim.height + 4,
-                            w - 4, h - nameDim.height - 6);
+        getInternal().setBounds(
+                x + MARGIN, 
+                y + nameDim.height + SPACE_TOP + SPACE_MIDDLE,
+                w - 2 * MARGIN, 
+                h - nameDim.height - SPACE_TOP - SPACE_MIDDLE - SPACE_BOTTOM);
 
         getBigPort().setBounds(x, y, w, h);
         cover.setBounds(x, y, w, h);
