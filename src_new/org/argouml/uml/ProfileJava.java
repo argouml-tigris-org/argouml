@@ -32,7 +32,6 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
-import org.argouml.model.uml.NSUMLModelFacade;
 import org.xml.sax.InputSource;
 
 /**
