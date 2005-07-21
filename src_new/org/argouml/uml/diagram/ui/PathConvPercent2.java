@@ -101,9 +101,20 @@ public class PathConvPercent2 extends PathConv {
         int width = itemFig.getHalfWidth();
         
         if (recipnumerator != 0) {
-            double factor = (Math.tanh(((double)recipdenominator / (double)recipnumerator)));
+            double slope = (double)recipdenominator / (double)recipnumerator;
+            
+            double factor = tanh(slope);
             res.x += (Math.abs(factor) * width);
         }
         else res.x += width;
+    }
+    
+    /** 
+     * calculate the tangens hyperbolicus
+     * @param x
+     * @return tangens hyberbolicus
+     */
+    private double tanh(double x) {
+        return ((Math.exp(x)-Math.exp(-x))/2)/((Math.exp(x)+Math.exp(-x))/2);
     }
 }
