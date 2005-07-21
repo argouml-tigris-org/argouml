@@ -806,7 +806,7 @@ public abstract class FigNodeModelElement
             && Globals.curEditor().getSelectionManager().containsFig(this)) {
             tip = item.getHeadline() + " ";
         } else if (getOwner() != null) {
-            tip = getOwner().toString();
+            tip = Model.getFacade().getTipString(getOwner());
         } else {
             tip = toString();
         }
