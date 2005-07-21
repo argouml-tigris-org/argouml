@@ -289,4 +289,25 @@ public class CommonBehaviorHelperProxy implements CommonBehaviorHelper {
         impl.setValue(handle, value);
     }
 
+    /**
+     * @see CommonBehaviorHelper#getInstantiation(Object)
+     */
+    public Object getInstantiation(Object createaction) {
+        return impl.getInstantiation(createaction);
+    }
+
+    /**
+     * @see CommonBehaviorHelper#setInstantiation(Object, Object)
+     */
+    public void setInstantiation(Object createaction, Object instantiation) {
+        impl.setInstantiation(createaction, instantiation);
+    }
+
+    /**
+     * @see CommonBehaviorHelper#getActionOwner(Object)
+     */
+    public Object getActionOwner(Object handle) {
+        return impl.getActionOwner(handle);
+    }
+
 }
