@@ -58,7 +58,6 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
     public void load(Project project, InputStream inputStream)
         throws OpenException {
 
-        if (Model.getDiagramInterchangeModel() == null) {
             // If the model repository doesn't manage a DI model
             // then we must generate our Figs by inspecting PGML
             try {
@@ -76,9 +75,6 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
                 }
                 throw new OpenException(e);
             }
-        } else {
-            // Build Figs by reading the DI in the Model
-        }
     }
 
     /**

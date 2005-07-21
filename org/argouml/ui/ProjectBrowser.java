@@ -1119,7 +1119,10 @@ public class ProjectBrowser
                     while (diag.hasNext()) {
                             p.addMember(diag.next());
                     }
-                    p.setActiveDiagram((ArgoDiagram)diagrams.iterator().next());        
+                    if (!diagrams.isEmpty()) {
+                        p.setActiveDiagram((ArgoDiagram) diagrams.iterator()
+                                .next());
+                    }
                 }
                 
                 ProjectBrowser.getInstance().showStatus(
