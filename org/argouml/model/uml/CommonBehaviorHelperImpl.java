@@ -25,9 +25,11 @@
 package org.argouml.model.uml;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.model.CommonBehaviorHelper;
+import org.argouml.model.Model;
 
 import ru.novosoft.uml.MExtension;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
@@ -37,6 +39,7 @@ import ru.novosoft.uml.behavior.common_behavior.MArgument;
 import ru.novosoft.uml.behavior.common_behavior.MAttributeLink;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
+import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
@@ -556,4 +559,69 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
     throw new IllegalArgumentException("handle: " + handle);
     }
 
-}
+    public Object getInstantiation(Object createaction) {
+        if (createaction instanceof MCreateAction) {
+            return ((MCreateAction) createaction).getInstantiation();
+        }
+        throw new IllegalArgumentException("handle: " + createaction);
+    }
+
+    public void setInstantiation(Object createaction, Object instantiation) {
+        if (createaction instanceof MCreateAction
+                && (instantiation instanceof MClassifier || instantiation == null)) {
+            ((MCreateAction) createaction)
+                    .setInstantiation((MClassifier) instantiation);
+            return;
+        }
+        throw new IllegalArgumentException("createaction: " + createaction
+                + " or instantiation: " + instantiation);
+    }
+
+    public Object getActionOwner(Object action) {
+            if (!(Model.getFacade().isAAction(action)))
+                return null;
+            
+            if (Model.getFacade().getStimuli(action)!=null){
+                Iterator iter = Model.getFacade().getStimuli(action).iterator();
+                if (iter.hasNext()){
+                    return iter.next();
+                }
+            }
+
+            if (Model.getFacade().getMessages(action)!=null){
+                Iterator iter = Model.getFacade().getMessages(action).iterator();
+                if (iter.hasNext()){
+                    return iter.next();
+                }
+            }
+/*
+            if (Model.getFacade().getState1(action)!=null){
+                return Model.getFacade().getState1(action);
+                
+            }
+
+            if (Model.getFacade().getState2(action)!=null){
+                return Model.getFacade().getState2(action);
+                
+            }
+
+            if (Model.getFacade().getState3(action)!=null){
+                return Model.getFacade().getState3(action);
+                
+            }
+            
+            if (Model.getFacade().getState3(action)!=null){
+                return Model.getFacade().getState3(action);
+                
+            }
+ */           
+            if (Model.getFacade().getTransition(action)!=null){
+                return Model.getFacade().getTransition(action);
+                
+            }
+            
+            return null;
+        }    
+    }
+
+
