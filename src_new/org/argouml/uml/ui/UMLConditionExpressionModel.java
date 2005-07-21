@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  *
@@ -52,17 +53,17 @@ public class UMLConditionExpressionModel extends UMLExpressionModel2 {
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     public Object getExpression() {
-        return Model.getFacade().getCondition(getContainer().getTarget());
+        return Model.getFacade().getCondition(TargetManager.getInstance().getTarget());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
      */
     public void setExpression(Object expression) {
-        UMLUserInterfaceContainer container = getContainer();
-        Object target = container.getTarget();
+        Object target = TargetManager.getInstance().getTarget();
+        
         if (target == null) {
-            throw new IllegalStateException("There is no target for " + container);
+            throw new IllegalStateException("There is no target for " + getContainer());
         }
         Model.getUseCasesHelper()
         	.setCondition(target, expression);
