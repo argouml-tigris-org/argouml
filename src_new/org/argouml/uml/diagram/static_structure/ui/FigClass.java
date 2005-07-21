@@ -993,7 +993,7 @@ public class FigClass extends FigNodeModelElement
 
         currentY += stereotypeHeight;
 
-        getStereotypeFig().setBounds(x, y, newW, STEREOHEIGHT + 1);
+        getStereotypeFig().setBounds(x, y, newW + 1, STEREOHEIGHT + 2);
 
         if (displayedFigs == 1) {
             height = newH;
