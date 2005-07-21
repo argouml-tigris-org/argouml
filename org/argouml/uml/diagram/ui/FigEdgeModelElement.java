@@ -222,14 +222,17 @@ public abstract class FigEdgeModelElement
         ToDoItem item = hitClarifier(me.getX(), me.getY());
         String tip = "";
         if (item != null
-            && Globals.curEditor().getSelectionManager().containsFig(this))
+            && Globals.curEditor().getSelectionManager().containsFig(this)) {
             tip = item.getHeadline();
-        else if (getOwner() != null)
-            tip = getOwner().toString();
-        else
+        } else if (getOwner() != null) {
+            tip = Model.getFacade().getTipString(getOwner());
+        } else {
             tip = toString();
-        if (tip != null && tip.length() > 0 && !tip.endsWith(" "))
+        }
+        
+        if (tip != null && tip.length() > 0 && !tip.endsWith(" ")) {
             tip += " ";
+        }
         return tip;
     }
 

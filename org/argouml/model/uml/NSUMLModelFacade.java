@@ -4650,4 +4650,11 @@ public class NSUMLModelFacade implements Facade {
 	illegalArgument(arg1, arg2);
 	return null;
     }
+
+    /**
+     * @see org.argouml.model.Facade#getTipString(java.lang.Object)
+     */
+    public String getTipString(Object modelElement) {
+        return modelElement.toString();
+    }
 }
