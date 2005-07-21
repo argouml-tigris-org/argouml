@@ -27,7 +27,13 @@ package org.argouml.model.uml;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 
+import org.apache.log4j.Logger;
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.EventAdapter;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
+import org.argouml.uml.ProfileJava;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -42,6 +48,9 @@ public final class ExplorerNSUMLEventAdaptor
     extends PropertyChangeSupport
     implements MElementListener, EventAdapter {
 
+    private static final Logger LOG =
+        Logger.getLogger(ExplorerNSUMLEventAdaptor.class);
+    
     /**
      * Creates a new instance of ExplorerUMLEventAdaptor.
      */
@@ -51,28 +60,31 @@ public final class ExplorerNSUMLEventAdaptor
     }
 
     /**
-     * fires a umlModelStructureChanged event.
-     *
-     * If a element changes, this will be catched by this method and reflected
-     * in the tree.
+     * This is called whenever a model element refencing multiple other model
+     * elements has one of the mdeo lements replaced.<p>
+     * For example an attribute in a class is replaced by another.<p>
+     * Operations of this sort do not take place in ArgoUML and so we make no
+     * effort to convert them.
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(
      *         ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
-        if (e.getAddedValue() != null
-            || e.getRemovedValue() != null
-            || (e.getNewValue() != null
-                && !e.getNewValue().equals(e.getOldValue()))) {
-            firePropertyChanged("umlModelStructureChanged", e.getSource());
-        }
-
+//        if (e.getAddedValue() != null
+//            || e.getRemovedValue() != null
+//            || (e.getNewValue() != null
+//                && !e.getNewValue().equals(e.getOldValue()))) {
+//            firePropertyChanged("umlModelStructureChanged", e.getSource());
+//        }
+        // If anyone sees this error produced then please inform me. Bob.
+        LOG.error("ExplorerNSUMLEventAdaptor.listRoleItemSet is purposely not"
+                + "implemented. Do not expect to be here.");
     }
 
     /**
-     * Fires a modelElementChanged event.
-     *
-     * If a element changes, this will be catched by this method and reflected
-     * in the tree.
+     * This is called whenever a property of a model element is changed.
+     * For example when the name of a class is changed.<p>
+     * These are converted to AttributeChangeEvents which are recognised by the
+     * rest of ArgoUML.
      * @see ru.novosoft.uml.MElementListener#propertySet(
      *         ru.novosoft.uml.MElementEvent)
      */
@@ -82,34 +94,45 @@ public final class ExplorerNSUMLEventAdaptor
             || (e.getNewValue() != null
                 && !e.getNewValue().equals(e.getOldValue()))) {
 
-	    firePropertyChanged("modelElementChanged", e.getSource());
+            
+//	    firePropertyChanged("modelElementChanged", e.getSource());
+            AttributeChangeEvent event =
+                new AttributeChangeEvent(e.getSource(),
+                        e.getName(),
+                        e.getOldValue(),
+                        e.getNewValue(),
+                        e);
+
+            this.firePropertyChange(event);
         }
 
     }
 
     /**
-     * fires a modelElementAdded event.
-     *
-     * If a element changes, this will be catched by this method and reflected
-     * in the tree.
+     * I can find no documentation of when this is used. During debuging I have
+     * never found it called (Bob Tarling).
+     * My assumption is this is triggered when an item is recovered from some
+     * trash and not relevent to us so we make no effort to convert them.
      * @see
      * ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
     public void recovered(MElementEvent e) {
-        if (e.getAddedValue() != null
-            || e.getRemovedValue() != null
-            || (e.getNewValue() != null
-                && !e.getNewValue().equals(e.getOldValue()))) {
-            firePropertyChanged("modelElementAdded", e.getSource());
-        }
-
+//        if (e.getAddedValue() != null
+//            || e.getRemovedValue() != null
+//            || (e.getNewValue() != null
+//                && !e.getNewValue().equals(e.getOldValue()))) {
+//            firePropertyChanged("modelElementAdded", e.getSource());
+//        }
+        // If anyone sees this error produced then please inform me. Bob.
+        LOG.error("ExplorerNSUMLEventAdaptor.recovered is purposely not "
+                + "implemented. Do not expect to be here.");
     }
 
     /**
-     * Not used.
-     *
-     * If a element changes, this will be catched by this method and reflected
-     * in the tree.
+     * This is called whenever a model element is removed from the repository
+     * (in our case deleted). This appears to be of no interest to the
+     * explorer, presumably it detects this in some other way.
+     * So we make no effort to convert these events.
      * @see ru.novosoft.uml.MElementListener#removed(
      *         ru.novosoft.uml.MElementEvent)
      */
@@ -125,10 +148,11 @@ public final class ExplorerNSUMLEventAdaptor
     }
 
     /**
-     * fires a modelElementAdded event.
-     *
-     * If a element changes, this will be catched by this method and reflected
-     * in the tree.
+     * This is called whenever a model element referencing collections other
+     * model elements has has a model element added to one of those
+     * collections.
+     * For example an existing attribute is added to an existing class.<p>
+     * We convert these to AddAssociationEvents.
      * @see
      * ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
@@ -137,17 +161,28 @@ public final class ExplorerNSUMLEventAdaptor
             || e.getRemovedValue() != null
             || (e.getNewValue() != null
                 && !e.getNewValue().equals(e.getOldValue()))) {
-            firePropertyChanged("modelElementAdded", e.getSource());
+            //firePropertyChanged("modelElementAdded", e.getSource());
+            AddAssociationEvent event =
+                new AddAssociationEvent(e.getSource(),
+                        e.getName(),
+                        e.getOldValue(),
+                        e.getNewValue(),
+                        e.getSource(),
+                        e);
+
+            this.firePropertyChange(event);
         }
 
     }
 
     /**
-     * fires a modelElementRemoved event. removed value translates to
-     * the new value.
-     *
-     * If a element changes, this will be catched by this method and reflected
-     * in the tree.
+     * This is called whenever a model element referencing collections of other
+     * model elements has a model element removed from one of those
+     * collections.
+     * For example an attribute is removed from a class.<p>
+     * It does not mean that the attribute has also been removed from the
+     * repository<p>
+     * We convert these to RemoveAssociationEvents.
      *
      * TODO: Checking if an extendedElement is being removed from a stereotype
      * is somewhat bogus since that would break an Explorer view where
@@ -158,34 +193,43 @@ public final class ExplorerNSUMLEventAdaptor
      *         ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-	if (e.getSource() instanceof MStereotype
-	    && "extendedElement".equals(e.getName())) {
-	    return;
-	}
+        if (e.getSource() instanceof MStereotype
+            && "extendedElement".equals(e.getName())) {
+            return;
+        }
 
         if (e.getAddedValue() != null
             || e.getRemovedValue() != null
             || (e.getNewValue() != null
                 && !e.getNewValue().equals(e.getOldValue()))) {
-            firePropertyChanged("modelElementRemoved", e.getRemovedValue());
+            //firePropertyChanged("modelElementRemoved", e.getRemovedValue());
+            RemoveAssociationEvent event =
+                new RemoveAssociationEvent(e.getSource(),
+                        e.getName(),
+                        e.getOldValue(),
+                        e.getNewValue(),
+                        e.getSource(),
+                        e);
+
+            this.firePropertyChange(event);
         }
 
     }
 
     // ------- property change events ----------
 
-    /**
-     * Source of the model element changed translates to the new value.
-     */
-    private void firePropertyChanged(String propertyName,
-				     Object source) {
-        PropertyChangeEvent pce =
-            new PropertyChangeEvent(
-                    this,
-                    propertyName,
-                    null,
-                    source);
-
-        this.firePropertyChange(pce);
-    }
+//    /**
+//     * Source of the model element changed translates to the new value.
+//     */
+//    private void firePropertyChanged(String propertyName,
+//				     Object source) {
+//        PropertyChangeEvent pce =
+//            new PropertyChangeEvent(
+//                    this,
+//                    propertyName,
+//                    null,
+//                    source);
+//
+//        this.firePropertyChange(pce);
+//    }
 }
