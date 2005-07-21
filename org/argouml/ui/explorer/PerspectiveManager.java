@@ -261,7 +261,7 @@ public class PerspectiveManager {
                             // get the rule name
                             String ruleName = perspectiveDetails.nextToken();
 
-                            // create the rule:
+                            // create the rule
                             try {
                                 Class ruleClass = Class.forName(ruleName);
 
@@ -269,9 +269,11 @@ public class PerspectiveManager {
                                         .newInstance();
 
                                 userDefinedPerspective.addRule(rule);
-
-                            } catch (Exception ex) {
-                                LOG.error("could not create rule ", ex);
+                            } catch (NoClassDefFoundError ex) {
+                                LOG
+                                        .error(
+                                                "could not create rule, you can try to refresh the perspectives to the default settings.",
+                                                ex);
                             }
                         }
                     }
