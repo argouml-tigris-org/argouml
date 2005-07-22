@@ -2225,37 +2225,14 @@ Build the PDF documentation.
 Run through the automatic tests!
 </para>
 	      <para>
-There are two sets of automatic test cases.
-<itemizedlist>
-		  <listitem>
-		    <para>
-The JUnit test cases in
-<filename class="directory">argouml/tests</filename>
-are run by issuing the command
+This is done by issuing the command
 <command>build alltests</command>
 in the <filename class="directory">argouml/src_new</filename> directory.
 </para>
-		    <para>
+	      <para>
 There should not be any failed tests. 
 (See details on where to find the result in
 <xref linkend="junittests"></xref>).
-</para>
-		  </listitem>
-		  <listitem>
-		    <para>
-The JUnit test cases in 
-<filename class="directory">modules/junit</filename>
-are run by invoking JUnit tests from the Tools menu,
-specifying the Test Case TestAll,
-and running without "Reload classes every run" checked
-in the ArgoUML window that opens.
-(See details in <xref linkend="junittests"></xref>).
-</para>
-		    <para>
-No problems shall be found.
-</para>
-		  </listitem>
-		</itemizedlist>
 </para>
 	      <para>
 If the tests did not pass See <xref linkend="release_process_test_failed"/>.

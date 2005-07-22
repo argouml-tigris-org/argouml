@@ -67,6 +67,17 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2005-07-22</entry>
+          <entry>
+Removed the /modules/junit.
+(See <xref linkend="release_process"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2005-07-19</entry>
           <entry>
 Change to the descriptions of the Model, Diagrams, and Persistence subsystems

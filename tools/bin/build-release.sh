@@ -99,10 +99,6 @@ fi
 echo "$BUILD Will test the release."
 ( cd argouml/src_new && ./build.sh alltests )
 
-echo "$BUILD Starting ArgoUML for you to do the manual testing in modules/junit"
-echo "$BUILD Give the test case TestAll, uncheck Reload at every run"
-echo "$BUILD When done, Exit the tool."
-( cd argouml/modules/junit && ../../tools/ant-1.6.2/bin/ant run )
 echo "$BUILD Tests done."
 
 echo "$BUILD sign the files for Java Web Start"

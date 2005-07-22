@@ -951,7 +951,7 @@ Add <filename class="directory">argouml/src_new</filename> and
 (simply add a check mark in front of these folders).
 Also add
 <filename class="directory">argouml/tests</filename>,
-<filename class="directory">argouml/modules/junit/src</filename>,
+<filename class="directory">argouml/modules/classfile/src</filename>,
 and the src directories of all other modules.
 The purpose of this is to have Eclipse recompile these and
 find compilation errors
