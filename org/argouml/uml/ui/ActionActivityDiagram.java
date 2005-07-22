@@ -27,6 +27,7 @@ package org.argouml.uml.ui;
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -59,8 +60,10 @@ public class ActionActivityDiagram extends ActionAddDiagram {
             ns = Model.getFacade().getNamespace(target);
             // this fails always, see issue 1817
         }*/
-        UMLActivityDiagram d = new UMLActivityDiagram(ns, graph);
-        return d;
+        return (UMLDiagram)DiagramFactory.getInstance().createDiagram(
+                UMLActivityDiagram.class, 
+                ns,
+                graph);
     }
 
     /**

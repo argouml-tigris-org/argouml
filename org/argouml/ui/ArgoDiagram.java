@@ -30,7 +30,6 @@ import java.util.Iterator;
 
 import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.DiDiagram;
 import org.argouml.model.Model;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
@@ -44,8 +43,6 @@ public class ArgoDiagram extends Diagram {
 
     private ItemUID id;
     
-    private DiDiagram diDiagram = null;
-
     /**
      * Hack to use vetocheck in constructing names.
      */

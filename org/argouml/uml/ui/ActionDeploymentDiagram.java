@@ -27,6 +27,7 @@ package org.argouml.uml.ui;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -68,7 +69,10 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
 					       "The argument " + handle
 					       + "is not a namespace.");
         }
-        return new UMLDeploymentDiagram(handle);
+        return (UMLDiagram)DiagramFactory.getInstance().createDiagram(
+                UMLDeploymentDiagram.class, 
+                handle,
+                null);
     }
 
     /**

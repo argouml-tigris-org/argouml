@@ -74,6 +74,7 @@ public class DiagramFactory {
     public List getDiagram() {
     		return diagrams;
     }
+
     
     /**
      * Factory method to create a new instance of a Class Diagram
@@ -85,21 +86,29 @@ public class DiagramFactory {
     public ArgoDiagram createDiagram(Class type, Object model, Object owningElement) {
         
         ArgoDiagram diagram = null;
+        Class diType = null;
         
-        if (type == ClassDiagram.class) {
+        if (type == UMLClassDiagram.class) {
             diagram = new UMLClassDiagram(model);
-        } else if (type == UseCaseDiagram.class) {
+            diType = ClassDiagram.class;
+        } else if (type == UMLUseCaseDiagram.class) {
             diagram = new UMLUseCaseDiagram(model);
-        } else if (type == StateDiagram.class) {
+            diType = UseCaseDiagram.class;
+        } else if (type == UMLStateDiagram.class) {
             diagram = new UMLStateDiagram(model, owningElement);
-        } else if (type == DeploymentDiagram.class) {
+            diType = StateDiagram.class;
+        } else if (type == UMLDeploymentDiagram.class) {
             diagram = new UMLDeploymentDiagram(model);
-        } else if (type == CollaborationDiagram.class) {
+            diType = DeploymentDiagram.class;
+        } else if (type == UMLCollaborationDiagram.class) {
             diagram = new UMLCollaborationDiagram(model);
-        } else if (type == ActivityDiagram.class) {
+            diType = CollaborationDiagram.class;
+        } else if (type == UMLActivityDiagram.class) {
             diagram = new UMLActivityDiagram(model, owningElement);
-        } else if (type == SequenceDiagram.class) {
+            diType = ActivityDiagram.class;
+        } else if (type == UMLSequenceDiagram.class) {
             diagram = new UMLSequenceDiagram(model);
+            diType = SequenceDiagram.class;
         }
             
         if (diagram == null) {
@@ -111,7 +120,7 @@ public class DiagramFactory {
                  GraphChangeAdapter.getInstance());
             // The diagram are always owned by the model in this first implementation
             DiDiagram dd =
-                GraphChangeAdapter.getInstance().createDiagram(type,model);
+                GraphChangeAdapter.getInstance().createDiagram(diType, model);
             ((UMLMutableGraphSupport)diagram.getGraphModel()).setDiDiagram(dd);
         }
         

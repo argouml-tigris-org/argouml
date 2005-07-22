@@ -30,7 +30,9 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
  * Action to add a new sequence diagram.<p>
@@ -74,10 +76,15 @@ public final class ActionSequenceDiagram extends UMLAction {
             Model.getCollaborationsFactory().buildCollaboration(
                 owner,
                 target);
-        UMLSequenceDiagram diagram = new UMLSequenceDiagram(collaboration);
+        UMLDiagram diagram = 
+            (UMLDiagram)DiagramFactory.getInstance().createDiagram(
+                UMLSequenceDiagram.class, 
+                collaboration,
+                null);
+        
         ProjectManager.getManager().getCurrentProject().addMember(diagram);
         TargetManager.getInstance().setTarget(diagram);
-	ExplorerEventAdaptor.getInstance().modelElementChanged(owner);
+        ExplorerEventAdaptor.getInstance().modelElementChanged(owner);
     }
 
     /**

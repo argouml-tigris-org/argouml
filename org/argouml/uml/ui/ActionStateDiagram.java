@@ -27,6 +27,7 @@ package org.argouml.uml.ui;
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -55,10 +56,10 @@ public class ActionStateDiagram extends ActionAddDiagram {
         Object target = TargetManager.getInstance().getModelTarget();
         Object/*MStateMachine*/ machine =
             Model.getStateMachinesFactory().buildStateMachine(target);
-        UMLStateDiagram d =
-            new UMLStateDiagram(
-                    Model.getFacade().getNamespace(machine), machine);
-        return d;
+        return (UMLDiagram)DiagramFactory.getInstance().createDiagram(
+                UMLStateDiagram.class, 
+                Model.getFacade().getNamespace(machine),
+                machine);
     }
 
     /**
