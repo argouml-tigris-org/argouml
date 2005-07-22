@@ -1063,10 +1063,27 @@ Set the Code Formatter to "Java conventions [built-in]".
 TAB character width is 8.
 </para>
 	  <para>
+Solution for Eclipse 3.0:
 See in the menu Window => Preferences.
 Then select
 Java => Editor. Then select the tab Appearance.
 Set the Displayed tab width to 8.
+</para>
+	  <para>
+Solution for Eclipse 3.1:
+In Eclipse 3.1 the Tab size is part of the profile that the 
+Code Formatter uses.
+Alas, the "Java conventions [built-in]"-profile contains a bug at this point
+(<ulink url="https://bugs.eclipse.org/bugs/show_bug.cgi?id=104765"/>)
+so the best solution is to create and use a new profile with the fix.
+In Window => Preferences => Java => Code Style => Code Formatter,
+set the Code Formatter to "Java conventions [built-in]" (as above),
+press "Show",
+select the "Indentation"-tab,
+change "Tab size" to 8,
+press "Apply", and
+give the name 
+<replaceable>Fixed Java conventions</replaceable>.
 </para>
 	</listitem>
 
