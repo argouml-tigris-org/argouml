@@ -54,6 +54,7 @@ import org.argouml.uml.ProfileException;
 import org.argouml.uml.ProfileJava;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -414,7 +415,8 @@ public class Project implements java.io.Serializable, TargetListener {
          */
         if (diagrams.size() < 1) {
             Object treeRoot = Model.getModelManagementFactory().getRootModel();
-            ArgoDiagram defaultDiagram = new UMLClassDiagram(treeRoot);
+            ArgoDiagram defaultDiagram =
+                DiagramFactory.getInstance().createDiagram(UMLClassDiagram.class, treeRoot, null);
             addMember(defaultDiagram);
             activeDiagram = defaultDiagram;
             TargetManager.getInstance().setTarget(defaultDiagram);

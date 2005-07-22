@@ -36,10 +36,12 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.DiDiagram;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
+import org.argouml.ui.GraphChangeAdapter;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;

@@ -31,6 +31,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
@@ -48,6 +49,7 @@ import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.StereotypeContainer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -700,57 +702,28 @@ public class FigPackage extends FigNodeModelElement
 				return;
 			    }
 			}
-		    } /*while*/
+        } /*while*/
 
-		    /* if we get here then we didnt get the
-		     * default diagram*/
-		    if (lFirst != null) {
+        /* if we get here then we didnt get the
+         * default diagram*/
+        if (lFirst != null) {
 			me.consume();
 			super.mouseClicked(me);
 
 			TargetManager.getInstance().setTarget(lFirst);
 			return;
-		    }
-                    /* try to create a new class diagram */
-                    me.consume();
-                    super.mouseClicked(me);
-                    try {
-			String nameSpace;
-                        if (lNS != null
-			    && Model.getFacade().getName(lNS) != null)
-                            nameSpace = Model.getFacade().getName(lNS);
-                        else
-                            nameSpace = "(anon)";
-
-                        String dialogText =
-				"Add new class diagram to "
-				+ nameSpace
-				+ "?";
-                        int option =
-				JOptionPane.showConfirmDialog(
-					null,
-					dialogText,
-					"Add new class diagram?",
-					JOptionPane.YES_NO_OPTION);
-                        if (option == JOptionPane.YES_OPTION) {
-			    ArgoDiagram lNew =
-				    new UMLClassDiagram(lNS);
-                            String diagramName =
-				    lsDefaultName + "_" + lNew.getName();
-
-                            lP.addMember(lNew);
-
-                            TargetManager.getInstance().setTarget(lNew);
-                            /* change prefix */
-                            lNew.setName(diagramName);
-                            ExplorerEventAdaptor.getInstance()
-				                    .structureChanged();
-                        }
-                    } catch (Exception ex) {
-                        LOG.error(ex);
-                    }
-
-                    return;
+        }
+        
+        /* try to create a new class diagram */
+        me.consume();
+        super.mouseClicked(me);
+        try {
+            createClassDiagram(lNS, lsDefaultName, lP);
+        } catch (Exception ex) {
+            LOG.error(ex);
+        }
+        
+        return;
 
 		} /*if package */
 	    } /* if doubleclicks */
@@ -758,6 +731,43 @@ public class FigPackage extends FigNodeModelElement
 	}
     }
 
+    private void createClassDiagram(
+            Object namespace, 
+            String defaultName, 
+            Project project) throws PropertyVetoException {
+        
+        String namespaceDescr;
+        if (namespace != null
+                && Model.getFacade().getName(namespace) != null) {
+            namespaceDescr = Model.getFacade().getName(namespace);
+        } else {
+            namespaceDescr = "(anon)";
+        }
+
+        String dialogText = "Add new class diagram to " + namespaceDescr + "?";
+        int option =
+            JOptionPane.showConfirmDialog(
+                null,
+                dialogText,
+                "Add new class diagram?",
+                JOptionPane.YES_NO_OPTION);
+        
+        if (option == JOptionPane.YES_OPTION) {
+                        
+            ArgoDiagram classDiagram =
+                DiagramFactory.getInstance().
+                createDiagram(UMLClassDiagram.class, namespace, null);
+                
+            String diagramName = defaultName + "_" + classDiagram.getName();
+            
+            project.addMember(classDiagram);
+            
+            TargetManager.getInstance().setTarget(classDiagram);
+            /* change prefix */
+            classDiagram.setName(diagramName);
+            ExplorerEventAdaptor.getInstance().structureChanged();
+        }
+    }
 
     /**
      * @see org.argouml.uml.diagram.ui.StereotypeContainer#isStereotypeVisible()
