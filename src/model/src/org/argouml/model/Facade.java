@@ -2402,9 +2402,9 @@ public interface Facade {
     Collection getSuppliers(Object handle);
 
     /**
-     * Returns the action belonging to some message.
+     * Returns the action belonging to some message or argument.
      *
-     * @param handle is the message
+     * @param handle is the message or argument.
      * @return the action
      */
     Object getAction(Object handle);
@@ -2595,6 +2595,13 @@ public interface Facade {
      * @return classname of modelelement
      */
     String getUMLClassName(Object handle);
+
+    /** 
+     * Recognizer for Arguments
+     * @param modelElement
+     * @return
+     */
+    boolean isAArgument(Object modelElement);
     
     /**
      * Returns a tooltip that should be shown for the given model element.<p>
