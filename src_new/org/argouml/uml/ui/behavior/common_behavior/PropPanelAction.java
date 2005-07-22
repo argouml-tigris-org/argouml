@@ -24,15 +24,11 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.awt.Color;
-
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.PropPanelButton2;
@@ -44,8 +40,6 @@ import org.argouml.uml.ui.UMLScriptExpressionModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
-
-import tudresden.ocl.check.types.ModelFacade;
 
 /**
  * An abstract representatation of the properties panel of an Action. TODO: this
