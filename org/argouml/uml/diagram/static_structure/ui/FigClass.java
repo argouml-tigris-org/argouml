@@ -201,11 +201,11 @@ public class FigClass extends FigNodeModelElement
         // we're all done for efficiency.
         enableSizeChecking(false);
         setSuppressCalcBounds(true);
-        addFig(getStereotypeFig());
-        addFig(getNameFig());
-        addFig(bigPort);
-        addFig(operationsFigCompartment);
-        addFig(attributesFigCompartment);
+        addFig(getStereotypeFig());             //0
+        addFig(getNameFig());                   //1
+        addFig(bigPort);                        //2
+        addFig(operationsFigCompartment);       //3
+        addFig(attributesFigCompartment);       //4
 
         setSuppressCalcBounds(false);
         // Set the bounds of the figure to the total of the above (hardcoded)
@@ -222,8 +222,9 @@ public class FigClass extends FigNodeModelElement
      */
     public FigClass(GraphModel gm, Object node) {
         this();
-        enableSizeChecking(true);
         setOwner(node);
+        enableSizeChecking(true);
+        
     }
 
     /**
@@ -343,15 +344,15 @@ public class FigClass extends FigNodeModelElement
      */
     public void setAttributesVisible(boolean isVisible) {
         Rectangle rect = getBounds();
-        int h;
-    	if (isCheckSize()) {
-    	    h = ((ROWHEIGHT
-                * Math.max(1, getAttributesFig().getFigs().size() - 1) + 2)
-                * rect.height
-                / getMinimumSize().height);
-        } else {
-            h = 0;
-        }
+//        int h;
+//    	if (isCheckSize()) {
+//    	    h = ((ROWHEIGHT
+//                * Math.max(1, getAttributesFig().getFigs().size() - 1) + 2)
+//                * rect.height
+//                / getMinimumSize().height);
+//        } else {
+//            h = 0;
+//        }
         if (getAttributesFig().isVisible()) {
             if (!isVisible) {  // hide compartment
                 damage();
@@ -386,13 +387,13 @@ public class FigClass extends FigNodeModelElement
      */
     public void setOperationsVisible(boolean isVisible) {
         Rectangle rect = getBounds();
-        int h =
-    	    isCheckSize()
-    	    ? ((ROWHEIGHT
-                * Math.max(1, getOperationsFig().getFigs().size() - 1) + 2)
-    	        * rect.height
-    	        / getMinimumSize().height)
-    	    : 0;
+//        int h =
+//    	    isCheckSize()
+//    	    ? ((ROWHEIGHT
+//                * Math.max(1, getOperationsFig().getFigs().size() - 1) + 2)
+//    	        * rect.height
+//    	        / getMinimumSize().height)
+//    	    : 0;
         if (isOperationsVisible()) { // if displayed
             if (!isVisible) {
                 damage();
