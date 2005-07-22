@@ -176,74 +176,75 @@ public class DnDExplorerTree
      * @see java.awt.dnd.DragGestureListener#dragGestureRecognized(java.awt.dnd.DragGestureEvent)
      */
     public void dragGestureRecognized(
-    		DragGestureEvent dragGestureEvent) {
-
-    	/*Get the selected targets (UML ModelElements) 
-    	 * from the TargetManager. */
+            DragGestureEvent dragGestureEvent) {
+        
+        /*Get the selected targets (UML ModelElements) 
+         * from the TargetManager. */
         Collection targets = TargetManager.getInstance().getModelTargets();
         if (targets.size() < 1) return;
         LOG.debug("Drag: start transferring " + targets.size() + " targets.");
         TransferableModelElements tf = 
-        	new TransferableModelElements(targets);
+            new TransferableModelElements(targets);
         
         Point ptDragOrigin = dragGestureEvent.getDragOrigin();
         TreePath path = 
-        	getPathForLocation(ptDragOrigin.x, ptDragOrigin.y);
+            getPathForLocation(ptDragOrigin.x, ptDragOrigin.y);
+        if (path == null) return;
         Rectangle raPath = getPathBounds(path);
         clickOffset.setLocation(ptDragOrigin.x - raPath.x, 
-        		ptDragOrigin.y - raPath.y);
+                ptDragOrigin.y - raPath.y);
         
-		/* Get the cell renderer (which is a JLabel) 
-		 * for the path being dragged.*/
+        /* Get the cell renderer (which is a JLabel) 
+         * for the path being dragged.*/
         JLabel lbl = 
-        	(JLabel) getCellRenderer().getTreeCellRendererComponent(
-        		this, 											// tree
-        		path.getLastPathComponent(),	// value
-        		false,			// isSelected	(dont want a colored background)
-        		isExpanded(path), 						// isExpanded
-        		getModel().isLeaf(path.getLastPathComponent()), // isLeaf
-        		0, 				// row			(not important for rendering)
-        		false			// hasFocus		(dont want a focus rectangle)
-        );
+            (JLabel) getCellRenderer().getTreeCellRendererComponent(
+                    this, 											// tree
+                    path.getLastPathComponent(),// value
+                    false,	// isSelected	(dont want a colored background)
+                    isExpanded(path), 		// isExpanded
+                    getModel().isLeaf(path.getLastPathComponent()), // isLeaf
+                    0, 		// row	(not important for rendering)
+                    false	// hasFocus (dont want a focus rectangle)
+            );
         /* The layout manager would normally do this: */
         lbl.setSize((int)raPath.getWidth(), (int)raPath.getHeight());
         
-		// Get a buffered image of the selection for dragging a ghost image
-		ghostImage = new BufferedImage(
-				(int)raPath.getWidth(), (int)raPath.getHeight(), 
-				BufferedImage.TYPE_INT_ARGB_PRE);
-		Graphics2D g2 = ghostImage.createGraphics();
-
-		/* Ask the cell renderer to paint itself into the BufferedImage. 
-		 * Make the image ghostlike. */
-		g2.setComposite(AlphaComposite.getInstance(
-				AlphaComposite.SRC, 0.5f));
-		lbl.paint(g2);
-
-		/* Now paint a gradient UNDER the ghosted JLabel text 
-		 * (but not under the icon if any). 
-		 */
-		Icon icon = lbl.getIcon();
-		int nStartOfText = (icon == null) ? 0 : 
-			icon.getIconWidth()+lbl.getIconTextGap();
-		/* Make the gradient ghostlike: */
-		g2.setComposite(AlphaComposite.getInstance(
-				AlphaComposite.DST_OVER, 0.5f));
-		g2.setPaint(new GradientPaint(nStartOfText,	0, 
-				SystemColor.controlShadow, 
-				getWidth(),	0, new Color(255,255,255,0)));
-		g2.fillRect(nStartOfText, 0, getWidth(), ghostImage.getHeight());
-
-		g2.dispose();
-
-		/* Remember the path being dragged (because if it is being moved, 
-		 * we will have to delete it later). */
-		sourcePath = path;
-		
-		/* We pass our drag image just in case 
-		 * it IS supported by the platform. */
-		dragGestureEvent.startDrag(null, ghostImage, 
-				new Point(5,5), tf, this);
+        // Get a buffered image of the selection for dragging a ghost image
+        ghostImage = new BufferedImage(
+                (int)raPath.getWidth(), (int)raPath.getHeight(), 
+                BufferedImage.TYPE_INT_ARGB_PRE);
+        Graphics2D g2 = ghostImage.createGraphics();
+        
+        /* Ask the cell renderer to paint itself into the BufferedImage. 
+         * Make the image ghostlike. */
+        g2.setComposite(AlphaComposite.getInstance(
+                AlphaComposite.SRC, 0.5f));
+        lbl.paint(g2);
+        
+        /* Now paint a gradient UNDER the ghosted JLabel text 
+         * (but not under the icon if any). 
+         */
+        Icon icon = lbl.getIcon();
+        int nStartOfText = (icon == null) ? 0 : 
+            icon.getIconWidth()+lbl.getIconTextGap();
+        /* Make the gradient ghostlike: */
+        g2.setComposite(AlphaComposite.getInstance(
+                AlphaComposite.DST_OVER, 0.5f));
+        g2.setPaint(new GradientPaint(nStartOfText,	0, 
+                SystemColor.controlShadow, 
+                getWidth(),	0, new Color(255,255,255,0)));
+        g2.fillRect(nStartOfText, 0, getWidth(), ghostImage.getHeight());
+        
+        g2.dispose();
+        
+        /* Remember the path being dragged (because if it is being moved, 
+         * we will have to delete it later). */
+        sourcePath = path;
+        
+        /* We pass our drag image just in case 
+         * it IS supported by the platform. */
+        dragGestureEvent.startDrag(null, ghostImage, 
+                new Point(5,5), tf, this);
     }
 
     private boolean isValidDrag(TreePath destinationPath, 
