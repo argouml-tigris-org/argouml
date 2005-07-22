@@ -79,7 +79,7 @@ public class FigModel extends FigPackage {
                     - oldBounds.y);
 
         }
-        super.setBounds(x, y, w, h);
+        super.setBoundsImpl(x, y, w, h);
     }
 
     /**
