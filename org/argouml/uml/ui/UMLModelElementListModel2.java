@@ -159,7 +159,8 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
 
     /**
      * Builds the list of elements. Called from targetChanged every time the
-     * target of the proppanel is changed.
+     * target of the proppanel is changed. Usually the method setAllElements is
+     * called with the result.
      */
     protected abstract void buildModelList();
 

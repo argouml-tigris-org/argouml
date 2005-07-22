@@ -25,6 +25,7 @@
 package org.argouml.uml.ui;
 
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  *
@@ -48,7 +49,7 @@ public class UMLScriptExpressionModel extends UMLExpressionModel2 {
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     public Object getExpression() {
-        return Model.getFacade().getScript(getContainer().getTarget());
+        return Model.getFacade().getScript(TargetManager.getInstance().getTarget());
     }
 
     /**
@@ -56,7 +57,7 @@ public class UMLScriptExpressionModel extends UMLExpressionModel2 {
      */
     public void setExpression(Object expression) {
         Model.getCommonBehaviorHelper()
-        	.setScript(getContainer().getTarget(), expression);
+        	.setScript(TargetManager.getInstance().getTarget(), expression);
     }
 
     /**
