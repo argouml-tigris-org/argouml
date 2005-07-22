@@ -33,6 +33,7 @@ import org.argouml.model.Model;
 import org.argouml.model.StateMachinesHelper;
 
 import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MArgument;
 import ru.novosoft.uml.behavior.state_machines.MChangeEvent;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
@@ -49,6 +50,7 @@ import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
+import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MTimeExpression;
 
 /**
@@ -496,6 +498,11 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
                 && (value == null || value instanceof MBooleanExpression)) {
             MChangeEvent ce = (MChangeEvent) handle;
             ce.setChangeExpression((MBooleanExpression) value);
+            return;
+        }
+        if (handle instanceof MArgument && (value == null || value instanceof MExpression)) {
+            MArgument arg = (MArgument) handle;
+            arg.setValue((MExpression)value);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
