@@ -24,33 +24,51 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
+import java.awt.Color;
+
 import javax.swing.ImageIcon;
+import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
+import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLScriptExpressionModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
+import tudresden.ocl.check.types.ModelFacade;
+
 /**
- * An abstract representatation of the properties panel of an Action.
- *
- * TODO: this property panel needs refactoring to remove dependency on
- *       old gui components.
+ * An abstract representatation of the properties panel of an Action. TODO: this
+ * property panel needs refactoring to remove dependency on old gui components.
  */
 public abstract class PropPanelAction extends PropPanelModelElement {
 
+    private JScrollPane expressionScroll;
+
+    private UMLExpressionLanguageField languageField;
+
+    private JScrollPane recurrenceScroll;
+
+    private JScrollPane argumentsScroll;
+
+    private UMLExpressionModel2 expressionModel;
+
+    private UMLExpressionModel2 recurrenceModel;
+
+    private JList argumentsList;
+
     /**
      * The constructor.
-     *
      */
     public PropPanelAction() {
         this("Action", null);
@@ -58,13 +76,14 @@ public abstract class PropPanelAction extends PropPanelModelElement {
 
     /**
      * The constructor.
-     *
-     * @param name the name of the properties panel
-     * @param icon the icon to be shown next to the name
+     * 
+     * @param name
+     *            the name of the properties panel
+     * @param icon
+     *            the icon to be shown next to the name
      */
     public PropPanelAction(String name, ImageIcon icon) {
-        super(name, icon,
-              ConfigLoader.getTabPropsOrientation());
+        super(name, icon, ConfigLoader.getTabPropsOrientation());
         initialize();
     }
 
@@ -73,17 +92,23 @@ public abstract class PropPanelAction extends PropPanelModelElement {
      */
     public void initialize() {
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
+        addField(Translator.localize("label.name"), getNameTextField());
 
-        UMLExpressionModel2 expressionModel =
-            new UMLScriptExpressionModel(this, "script");
-        addField(Translator.localize("label.expression"),
-                new JScrollPane(
-                        new UMLExpressionBodyField(expressionModel, true)));
-
+        UMLExpressionModel2 expressionModel = new UMLScriptExpressionModel(
+                this, "script");
+        addField(Translator.localize("label.expression"), new JScrollPane(
+                new UMLExpressionBodyField(expressionModel, true)));
         addField(Translator.localize("label.language"),
                 new UMLExpressionLanguageField(expressionModel, true));
+
+        addSeperator();
+
+        argumentsList = new UMLMutableLinkedList(
+                new UMLActionArgumentListModel(), null,
+                new ActionNewArgument(), new ActionRemoveArgument(), true);
+        argumentsList.setVisibleRowCount(5);
+        JScrollPane argumentsScroll = new JScrollPane(argumentsList);
+        addField(Translator.localize("label.arguments"), argumentsScroll);
 
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
         addButton(new PropPanelButton2(new ActionNewStereotype(),
@@ -92,4 +117,52 @@ public abstract class PropPanelAction extends PropPanelModelElement {
                 lookupIcon("Delete")));
     }
 
-} /* end class PropPanelCallAction */
+    public JScrollPane getExpressionScroll() {
+        if (expressionScroll == null) {
+            UMLExpressionBodyField field = new UMLExpressionBodyField(
+                    expressionModel, true);
+            field.setRows(3);
+            expressionScroll = new JScrollPane(field);
+        }
+        return expressionScroll;
+    }
+
+    public UMLExpressionLanguageField getLanguageField() {
+        if (languageField == null) {
+            languageField = new UMLExpressionLanguageField(expressionModel,
+                    true);
+        }
+        return languageField;
+    }
+
+    public JScrollPane getRecurrenceScroll() {
+        if (recurrenceScroll == null) {
+            recurrenceScroll = new JScrollPane(new UMLExpressionBodyField(
+                    recurrenceModel, true),
+                    JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        }
+        return recurrenceScroll;
+    }
+
+    public JScrollPane getArgumentsScroll() {
+        if (argumentsScroll == null) {
+            argumentsScroll = new JScrollPane(argumentsList);
+        }
+        return argumentsScroll;
+    }
+
+    /*
+     * public void initialize() { _expressionModel = new UMLExpressionModel(
+     * this, (Class) ModelFacade.ACTION, "script", (Class)
+     * ModelFacade.ACTION_EXPRESSION, "getScript", "setScript" );
+     * _recurrenceModel = new UMLExpressionModel( this, (Class)
+     * ModelFacade.ACTION, "recurrence", (Class)
+     * ModelFacade.ITERATION_EXPRESSION, "getRecurrence", "setRecurrence" );
+     * _argumentsList = new UMLMutableLinkedList(new
+     * UMLActionActualArgumentListModel(), null, ActionNewArgument.SINGLETON,
+     * ActionRemoveArgument.SINGLETON, false);
+     * _argumentsList.setForeground(Color.blue);
+     * _argumentsList.setVisibleRowCount(5); _argumentsList.setFont(smallFont); }
+     */
+}
