@@ -231,7 +231,7 @@ public class Modeller {
         ownerPackageName = getPackageName(currentName);
 	while (!"".equals(ownerPackageName)) {
 	    if (getDiagram() != null
-		&& importSession.isCreateDiagramsChecked()
+		&& importSession != null && importSession.isCreateDiagramsChecked()
 		&& getDiagram().isDiagramInProject(ownerPackageName)) {
 
                 getDiagram().selectClassDiagram(getPackage(ownerPackageName),
@@ -244,7 +244,7 @@ public class Modeller {
 	}
 	// Save src_path in the upper package
 	Object mPackage = getPackage(currentName);
-	if (importSession.getSrcPath() != null
+	if (importSession != null && importSession.getSrcPath() != null
 	    && Model.getFacade().getTaggedValue(mPackage, "src_path") == null) {
 	    Model.getCoreHelper().setTaggedValue(mPackage, "src_path",
 				       importSession.getSrcPath());
@@ -671,7 +671,7 @@ public class Modeller {
     */
     public void popClassifier() {
         // now create diagram if it doesn't exists in project
-	if (importSession.isCreateDiagramsChecked()) {
+	if (importSession != null && importSession.isCreateDiagramsChecked()) {
 	    if (getDiagram() == null) {
 		diagram = new DiagramInterface(Globals.curEditor());
 		if (currentPackageName != null
@@ -701,14 +701,14 @@ public class Modeller {
         // add the current classifier to the diagram.
         Object classifier = parseState.getClassifier();
         if (Model.getFacade().isAInterface(classifier)) {
-            if (getDiagram() != null
+            if (getDiagram() != null && importSession != null
                     && importSession.isCreateDiagramsChecked()) {
 		diagram.addInterface(classifier,
 				      importSession.isMinimiseFigsChecked());
             }
         } else {
             if (Model.getFacade().isAClass(classifier)) {
-                if (getDiagram() != null
+                if (getDiagram() != null && importSession != null
                         && importSession.isCreateDiagramsChecked()) {
                     diagram.addClass(classifier,
 				      importSession.isMinimiseFigsChecked());
