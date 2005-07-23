@@ -37,7 +37,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLConditionExpressionModel;
@@ -70,7 +69,8 @@ public class PropPanelExtend extends PropPanelModelElement {
      */
 
     public PropPanelExtend() {
-        super("Extend", ConfigLoader.getTabPropsOrientation());
+        super("Extend", lookupIcon("Extend"), 
+                ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
 		 getNameTextField());

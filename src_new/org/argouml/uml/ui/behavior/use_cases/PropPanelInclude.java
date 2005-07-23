@@ -30,7 +30,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -52,7 +51,9 @@ public class PropPanelInclude extends PropPanelModelElement {
      * Constructor. Builds up the various fields required.
      */
     public PropPanelInclude() {
-        super("Include", ConfigLoader.getTabPropsOrientation());
+        super("Include", 
+                lookupIcon("Include"), 
+                ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
 		 getNameTextField());

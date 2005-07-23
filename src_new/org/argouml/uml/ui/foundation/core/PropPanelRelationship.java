@@ -25,6 +25,8 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.ImageIcon;
+
 import org.tigris.swidgets.Orientation;
 import org.argouml.util.ConfigLoader;
 
@@ -35,6 +37,18 @@ import org.argouml.util.ConfigLoader;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class PropPanelRelationship extends PropPanelModelElement {
+
+    /**
+     * The constructor.
+     * 
+     * @param name
+     * @param icon
+     * @param orientation
+     */
+    public PropPanelRelationship(String name, ImageIcon icon, 
+            Orientation orientation) {
+        super(name, icon, orientation);
+    }
 
     /**
      * Constructor for PropPanelRelationship.

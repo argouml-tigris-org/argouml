@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.use_cases;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -50,7 +49,8 @@ public class PropPanelActor extends PropPanelClassifier {
      * <p>Constructor. Builds up the various fields required.</p>
      */
     public PropPanelActor() {
-    	super("Actor", ConfigLoader.getTabPropsOrientation());
+    	super("Actor", lookupIcon("Actor"), 
+                ConfigLoader.getTabPropsOrientation());
 
 
     	addField(Translator.localize("label.name"),
