@@ -24,10 +24,14 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
+import javax.swing.Icon;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.util.ConfigLoader;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * Property Panel for the collection of pseudostates (branch, fork, ...). It
@@ -55,7 +59,8 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
                 getIncomingScroll());
         addField(Translator.localize("label.outgoing"),
                 getOutgoingScroll());
-
+        
+        TargetManager.getInstance().addTargetListener(this);
     }
 
     /**
@@ -63,19 +68,11 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
      * according to the type of the pseudo state displayed in the property
      * panel. This is required as pseudostates share a common class and are
      * distinguished only by an attribute (pseudostatekind).
-     *
-     * @param target
-     *            the current target
      */
-    public void setTarget(Object target) {
-        super.setTarget(target);
-
-        Object o =
-            ((target instanceof Fig)
-                    ? ((Fig) target).getOwner()
-                    : target);
-        if (Model.getFacade().isAPseudostate(o)) {
-            Object kind = Model.getFacade().getPseudostateKind(o);
+    public void refreshTarget() {
+        Object target = TargetManager.getInstance().getModelTarget();
+        if (Model.getFacade().isAPseudostate(target)) {
+            Object kind = Model.getFacade().getPseudostateKind(target);
             if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getFork())) {
                 getTitleLabel().setText(
@@ -111,7 +108,37 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.junction"));
             }
+            Icon icon =
+                ResourceLoaderWrapper.getInstance().lookupIcon(target);
+            if (icon != null) {
+                getTitleLabel().setIcon(icon);
+            }
         }
 
     }
+
+    /**
+     * @see org.argouml.uml.ui.PropPanel#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        refreshTarget();
+        super.targetAdded(e);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.PropPanel#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        refreshTarget();
+        super.targetRemoved(e);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.PropPanel#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        refreshTarget();
+        super.targetSet(e);
+    }
+
 } /* end class PropPanelPseudostate */
