@@ -89,15 +89,19 @@ import org.argouml.uml.ui.behavior.common_behavior.PropPanelSignal;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelStimulus;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelTerminateAction;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelUninterpretedAction;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelCallEvent;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelChangeEvent;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelCompositeState;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelFinalState;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelGuard;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelPseudostate;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelSignalEvent;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelState;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelStateMachine;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelStubState;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelSubmachineState;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelSynchState;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelTimeEvent;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelTransition;
 import org.argouml.uml.ui.behavior.use_cases.PropPanelActor;
 import org.argouml.uml.ui.behavior.use_cases.PropPanelExtend;
@@ -535,9 +539,20 @@ public class TabProps
         if (Model.getFacade().isAUsage(modelElement)) { 
                 return new PropPanelUsage();}
         if (Model.getFacade().isAUseCase(modelElement)) { 
-                return new PropPanelUseCase();}
-
-
+                return new PropPanelUseCase();
+        }        
+        if (Model.getFacade().isACallEvent(modelElement)) {
+			return new PropPanelCallEvent();
+        }
+        if (Model.getFacade().isAChangeEvent(modelElement)) {
+			return new PropPanelChangeEvent();
+        }
+        if (Model.getFacade().isASignalEvent(modelElement)) {
+			return new PropPanelSignalEvent();
+        }
+        if (Model.getFacade().isATimeEvent(modelElement)) {
+			return new PropPanelTimeEvent();
+        }
         // Create prop panels for primitives
         if (modelElement instanceof FigText) {
             return new PropPanelString();
