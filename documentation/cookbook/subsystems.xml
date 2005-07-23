@@ -77,8 +77,11 @@
             . </para>
           <para> The section shall for each subsystem contain the
             responsibilities, the package name, the API, the Facade (if any),
-            all the plug-in interfaces (if any), and documents the insides of the
-            subsystem. </para>
+all the plug-in interfaces (if any).
+This shall be in the first part of the section i.e. not in a subsection.
+It should also document the design of the subsystem.
+This is in subsections.
+</para>
         </listitem>
       </itemizedlist> </para>
     <para> Each subsystem can have:
