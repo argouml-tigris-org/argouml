@@ -374,13 +374,11 @@ public class TabProps
     /**
      * A factory method to create a PropPanel for a particular model
      * element.
-     * TODO: Needs completing for all PropPanels
+     * 
      * @param modelElement The model element
      * @return A new prop panel to display any model element of the given type
      */
     private TabModelTarget createPropPanel(Object modelElement) {
-        
-       
 
         // Create prop panels for diagrams
         if (modelElement instanceof UMLActivityDiagram) {
