@@ -59,7 +59,9 @@ public class PropPanelUseCase extends PropPanelClassifier {
     public PropPanelUseCase() {
         // Invoke the Classifier constructor, but passing in our name and
         // representation and requesting 3 columns
-        super("UseCase", ConfigLoader.getTabPropsOrientation());
+        super("UseCase", 
+            lookupIcon("UseCase"), 
+            ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
                 getNameTextField());

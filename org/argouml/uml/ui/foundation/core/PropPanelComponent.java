@@ -24,16 +24,16 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
-
-import javax.swing.*;
 
 /**
  * PropPanel for a UML component.<p>
@@ -50,7 +50,9 @@ public class PropPanelComponent extends PropPanelClassifier {
      *
      */
     public PropPanelComponent() {
-        super("Component", ConfigLoader.getTabPropsOrientation());
+        super("Component", 
+            lookupIcon("Component"),
+            ConfigLoader.getTabPropsOrientation());
         addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.stereotype"),

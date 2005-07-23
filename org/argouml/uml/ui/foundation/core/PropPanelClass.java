@@ -32,7 +32,6 @@ import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -59,7 +58,9 @@ public class PropPanelClass extends PropPanelClassifier {
      * The constructor.
      */
     public PropPanelClass() {
-        super("Class", ConfigLoader.getTabPropsOrientation());
+        super("Class", 
+            lookupIcon("Class"),
+            ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
                 getNameTextField());

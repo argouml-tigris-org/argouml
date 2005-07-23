@@ -33,7 +33,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -66,7 +65,9 @@ public class PropPanelGeneralization extends PropPanelModelElement {
      *
      */
     public PropPanelGeneralization() {
-        super("Generalization", ConfigLoader.getTabPropsOrientation());
+        super("Generalization", 
+            lookupIcon("Generalization"), 
+            ConfigLoader.getTabPropsOrientation());
         Object[] namesToWatch = {
             Model.getMetaTypes().getStereotype(),
             Model.getMetaTypes().getNamespace(),
