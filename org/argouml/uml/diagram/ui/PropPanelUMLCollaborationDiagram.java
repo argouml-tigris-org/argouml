@@ -37,7 +37,8 @@ public class PropPanelUMLCollaborationDiagram extends PropPanelDiagram {
      * Constructor for PropPanelUMLCollaborationDiagram.
      */
     public PropPanelUMLCollaborationDiagram() {
-        super(Translator.localize("label.collaboration-diagram"));
+        super(Translator.localize("label.collaboration-diagram"),
+                lookupIcon("CollaborationDiagram"));
     }
 
 }

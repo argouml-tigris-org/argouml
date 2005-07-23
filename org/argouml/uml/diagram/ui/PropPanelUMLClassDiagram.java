@@ -36,7 +36,8 @@ public class PropPanelUMLClassDiagram extends PropPanelDiagram {
      * Constructor for PropPanelUMLClassDiagram.
      */
     public PropPanelUMLClassDiagram() {
-        super(Translator.localize("label.class-diagram"));
+        super(Translator.localize("label.class-diagram"),
+                lookupIcon("ClassDiagram"));
     }
 
 }
