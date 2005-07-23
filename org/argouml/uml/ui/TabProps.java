@@ -420,10 +420,10 @@ public class TabProps
             return new PropPanelActivityGraph();}
         if (Model.getFacade().isAActor(modelElement)) { 
                 return new PropPanelActor();}
-        if (Model.getFacade().isAAssociation(modelElement)) { 
-                return new PropPanelAssociation();}
         if (Model.getFacade().isAAssociationClass(modelElement)) { 
                 return new PropPanelAssociationClass();}
+        if (Model.getFacade().isAAssociation(modelElement)) { 
+                return new PropPanelAssociation();}
         if (Model.getFacade().isAAssociationEnd(modelElement)) { 
                 return new PropPanelAssociationEnd();}
         if (Model.getFacade().isAAssociationEndRole(modelElement)) { 
