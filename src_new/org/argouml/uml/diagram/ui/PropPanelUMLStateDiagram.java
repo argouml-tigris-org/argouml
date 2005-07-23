@@ -37,7 +37,8 @@ public class PropPanelUMLStateDiagram extends PropPanelDiagram {
      *
      */
     public PropPanelUMLStateDiagram() {
-	super(Translator.localize("label.state-chart-diagram"));
+	super(Translator.localize("label.state-chart-diagram"),
+                lookupIcon("StateDiagram"));
 
     }
 

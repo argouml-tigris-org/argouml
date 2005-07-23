@@ -37,7 +37,8 @@ public class PropPanelUMLSequenceDiagram extends PropPanelDiagram {
      * Constructor for PropPanelUMLSequenceDiagram.
      */
     public PropPanelUMLSequenceDiagram() {
-        super(Translator.localize("label.sequence-diagram"));
+        super(Translator.localize("label.sequence-diagram"),
+                lookupIcon("SequenceDiagram"));
     }
 
 }

@@ -37,7 +37,8 @@ public class PropPanelUMLDeploymentDiagram extends PropPanelDiagram {
      * Constructor for PropPanelUMLDeploymentDiagram.
      */
     public PropPanelUMLDeploymentDiagram() {
-        super(Translator.localize("label.deployment-diagram"));
+        super(Translator.localize("label.deployment-diagram"),
+                lookupIcon("DeploymentDiagram"));
     }
 
 }

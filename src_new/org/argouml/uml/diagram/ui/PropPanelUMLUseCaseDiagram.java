@@ -36,7 +36,8 @@ public class PropPanelUMLUseCaseDiagram extends PropPanelDiagram {
      * Constructor for PropPanelUMLUseCaseDiagram.
      */
     public PropPanelUMLUseCaseDiagram() {
-        super(Translator.localize("label.usecase-diagram"));
+        super(Translator.localize("label.usecase-diagram"),
+                lookupIcon("UseCaseDiagram"));
     }
 
 }

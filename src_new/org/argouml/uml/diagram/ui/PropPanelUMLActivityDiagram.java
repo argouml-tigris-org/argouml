@@ -37,7 +37,8 @@ public class PropPanelUMLActivityDiagram extends PropPanelDiagram {
      * Constructor for PropPanelUMLActivityDiagram.
      */
     public PropPanelUMLActivityDiagram() {
-        super(Translator.localize("label.activity-diagram"));
+        super(Translator.localize("label.activity-diagram"),
+                lookupIcon("ActivityDiagram"));
     }
 
 }
