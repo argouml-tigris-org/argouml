@@ -72,9 +72,8 @@ import org.tigris.gef.presentation.FigText;
 /**
  * Class to display graphics for a UML Class in a diagram.<p>
  */
-public class FigClass extends FigNodeModelElement
-        implements AttributesCompartmentContainer,
-        OperationsCompartmentContainer {
+public class FigClass extends FigClassifierBox
+        implements AttributesCompartmentContainer {
 
 
     ////////////////////////////////////////////////////////////////
@@ -163,12 +162,12 @@ public class FigClass extends FigNodeModelElement
         getNameFig().setFilled(true);
 
         // Attributes inside. First one is the attribute box itself.
-        FigCompartment attributesFigCompartment =
+        FigCompartment attributesFig =
             new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
 
         // this rectangle marks the operation section; all operations
         // are inside it
-        FigCompartment operationsFigCompartment =
+        operationsFig =
             new FigOperationsCompartment(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
@@ -201,11 +200,11 @@ public class FigClass extends FigNodeModelElement
         // we're all done for efficiency.
         enableSizeChecking(false);
         setSuppressCalcBounds(true);
-        addFig(getStereotypeFig());             //0
-        addFig(getNameFig());                   //1
-        addFig(bigPort);                        //2
-        addFig(operationsFigCompartment);       //3
-        addFig(attributesFigCompartment);       //4
+        addFig(getStereotypeFig());  //0
+        addFig(getNameFig());        //1
+        addFig(bigPort);             //2
+        addFig(operationsFig);       //3
+        addFig(attributesFig);       //4
 
         setSuppressCalcBounds(false);
         // Set the bounds of the figure to the total of the above (hardcoded)
@@ -288,13 +287,6 @@ public class FigClass extends FigNodeModelElement
     }
 
     /**
-     * @return The bounds of the operations compartment.
-     */
-    public Rectangle getOperationsBounds() {
-        return ((FigGroup) getFigAt(OPERATIONS_POSN)).getBounds();
-    }
-
-    /**
      * @return The bounds of the attributes compartment.
      */
     public Rectangle getAttributesBounds() {
@@ -305,7 +297,7 @@ public class FigClass extends FigNodeModelElement
      * @return The vector of graphics for operations (if any).
      * First one is the rectangle for the entire operations box.
      */
-    private FigOperationsCompartment getOperationsFig() {
+    protected FigOperationsCompartment getOperationsFig() {
         return (FigOperationsCompartment) getFigAt(OPERATIONS_POSN);
     }
 
@@ -315,16 +307,6 @@ public class FigClass extends FigNodeModelElement
      */
     private FigAttributesCompartment getAttributesFig() {
         return (FigAttributesCompartment) getFigAt(ATTRIBUTES_POSN);
-    }
-
-    /**
-     * Returns the status of the operation field.
-     * @return true if the operations are visible, false otherwise
-     *
-     * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#isOperationsVisible()
-     */
-    public boolean isOperationsVisible() {
-        return getOperationsFig().isVisible();
     }
 
     /**
@@ -1269,31 +1251,6 @@ public class FigClass extends FigNodeModelElement
 //        setBounds(rect.x, rect.y, rect.width, rect.height);
 //        damage();
 //    }
-
-    /**
-     * Updates the operations box. Called from modelchanged if there is
-     * a modelevent effecting the attributes and from renderingChanged in all
-     * cases.
-     */
-    protected void updateOperations() {
-        if (!isOperationsVisible()) {
-            return;
-        }
-        FigOperationsCompartment operationsCompartment = 
-                ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN));
-        operationsCompartment.populate();
-        Fig operPort = operationsCompartment.getBigPort();
-
-        int xpos = operPort.getX();
-        int ypos = operPort.getY();
-
-        Rectangle rect = getBounds();
-        updateFigGroupSize(getOperationsFig(), xpos, ypos, 0, 0);
-        // ouch ugly but that's for a next refactoring
-        // TODO: make setBounds, calcBounds and updateBounds consistent
-        setBounds(rect.x, rect.y, rect.width, rect.height);
-        damage();
-    }
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
