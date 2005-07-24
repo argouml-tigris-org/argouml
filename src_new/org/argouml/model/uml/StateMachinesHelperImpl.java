@@ -139,15 +139,15 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
      * model, the parameters of the method are of type Object.<p>
      *
      * @param transition the given transition
-     * @param event the given event
+     * @param event the given event or null
      */
     public void setEventAsTrigger(Object transition, Object event) {
         if (transition == null || !(transition instanceof MTransition)) {
             throw new IllegalArgumentException("Transition either null or not "
 					       + "an instance of MTransition");
         }
-        if (event == null || !(event instanceof MEvent)) {
-            throw new IllegalArgumentException("Event either null or not an "
+        if (event != null && !(event instanceof MEvent)) {
+            throw new IllegalArgumentException("Event not an "
 					       + "instance of MEvent");
         }
         ((MTransition) transition).setTrigger((MEvent) event);

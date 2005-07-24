@@ -296,7 +296,7 @@ public interface StateMachinesHelper {
      * Sets the trigger event of a transition.
      *
      * @param handle is the transition
-     * @param event is the trigger event
+     * @param event is the trigger event or null
      */
     void setTrigger(Object handle, Object event);
 
