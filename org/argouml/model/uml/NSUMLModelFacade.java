@@ -4220,6 +4220,8 @@ public class NSUMLModelFacade implements Facade {
             name = ((MModelElement) handle).getName();
 //        } else if (handle instanceof Diagram) {
 //            name = ((Diagram) handle).getName();
+        } else if (handle instanceof MMultiplicity) {
+            name = handle.toString();
         } else if (handle instanceof MOrderingKind) {
             name = ((MOrderingKind) handle).getName();
         } else if (handle instanceof MAggregationKind) {

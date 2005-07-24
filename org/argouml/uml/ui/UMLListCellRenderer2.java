@@ -141,7 +141,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
                 name = "(anon " + makeTypeName(elem) + ")";
             }
         } else if (Model.getFacade().isAMultiplicity(value)) {
-            name = value.toString();
+            name = Model.getFacade().getName(value);
         } else {
             name = makeTypeName(value);
         }
