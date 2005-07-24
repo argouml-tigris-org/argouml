@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
@@ -117,7 +118,7 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
 			            getTarget(),
 			            action);
 			}
-
+        TargetManager.getInstance().setTarget(action);
     }
 
     /**
