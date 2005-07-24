@@ -240,9 +240,6 @@ public class DetailsPane
                 Component tab = topLevelTabbedPane.getComponentAt(i);
                 if (tab instanceof TabTarget) {
                     if (((TabTarget) tab).shouldBeEnabled(target)) {
-                        if (!(tab instanceof TargetListener)) {
-                            ((TabTarget) tab).setTarget(target);
-                        }
                         topLevelTabbedPane.setSelectedIndex(i);
                         tabSelected = true;
                         lastNonNullTab = i;
