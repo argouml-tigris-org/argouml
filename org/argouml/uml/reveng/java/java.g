@@ -963,7 +963,7 @@ interfaceField
 			// allows it, a semantic check could be used if you want a more strict
 			// grammar.
 			t=typeSpec		// method or variable declaration(s)
-			(	IDENT				// the name of the method
+			(	name:IDENT				// the name of the method
 
 				// parse the formal parameter declarations.
 				LPAREN param=parameterDeclarationList RPAREN
@@ -975,6 +975,10 @@ interfaceField
 				(throwsClause)?
 
 				SEMI
+				{if (isOutestCompStat && level > 0) {
+				     setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()));
+				     setMethod(null);
+				}}
 			|	variableDefinitions[getJavadocComment(), mods, t] SEMI
 			)
 		)
