@@ -87,11 +87,6 @@ public class DetailsPane
     // instance variables
 
     /**
-     * The currently selected todo item.
-     */
-    private Object selectedTodoItem = null;
-
-    /**
      * The top level pane, which is a tabbed pane.
      */
     private JTabbedPane topLevelTabbedPane = new JTabbedPane();
@@ -189,7 +184,6 @@ public class DetailsPane
             }
         }
         setTarget(null);
-        selectedTodoItem = null;
         topLevelTabbedPane.addMouseListener(this);
         topLevelTabbedPane.addChangeListener(this);
     }
@@ -212,12 +206,11 @@ public class DetailsPane
      * @return true if ? Yes when? TODO: Explain.
      */
     public boolean setToDoItem(Object item) {
-        selectedTodoItem = item;
         enableTabs(item);
         for (int i = 0; i < tabPanelList.size(); i++) {
             JPanel t = (JPanel) tabPanelList.elementAt(i);
             if (t instanceof TabToDo) {
-                ((TabToDo) t).setTarget(selectedTodoItem);
+                ((TabToDo) t).setTarget(item);
                 topLevelTabbedPane.setSelectedComponent(t);
                 return true;
             }
