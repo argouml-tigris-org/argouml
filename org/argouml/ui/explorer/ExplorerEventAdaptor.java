@@ -195,7 +195,7 @@ public final class ExplorerEventAdaptor
 //        }
         if (pce instanceof AddAssociationEvent) {
             treeModel.modelElementAdded(
-                    ((AddAssociationEvent)pce).getChangedValue());
+                    ((AddAssociationEvent)pce).getSource());
         }
         
 
