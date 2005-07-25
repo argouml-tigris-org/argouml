@@ -56,6 +56,9 @@ import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.FigOperationsCompartment;
+import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Editor;
@@ -69,8 +72,9 @@ import org.tigris.gef.presentation.FigText;
 /**
  * Class to display graphics for a UML Class in a diagram.<p>
  */
-public class FigClass extends FigClassifierBox
-        implements AttributesCompartmentContainer {
+public class FigClass extends FigNodeModelElement
+        implements AttributesCompartmentContainer,
+        OperationsCompartmentContainer {
 
 
     ////////////////////////////////////////////////////////////////
@@ -152,8 +156,31 @@ public class FigClass extends FigClassifierBox
      * maintained.<p>
      */
     public FigClass() {
-        super();
-        
+
+        // Set name box. Note the upper line will be blanked out if there is
+        // eventually a stereotype above.
+        getNameFig().setLineWidth(1);
+        getNameFig().setFilled(true);
+
+        // Attributes inside. First one is the attribute box itself.
+        FigCompartment attributesFigCompartment =
+            new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
+
+        // this rectangle marks the operation section; all operations
+        // are inside it
+        FigCompartment operationsFigCompartment =
+            new FigOperationsCompartment(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
+
+        // Set properties of the stereotype box. Make it 1 pixel higher than
+        // before, so it overlaps the name box, and the blanking takes out both
+        // lines. Initially not set to be displayed, but this will be changed
+        // when we try to render it, if we find we have a stereotype.
+        getStereotypeFigText().setExpandOnly(true);
+        getStereotypeFig().setFilled(true);
+        getStereotypeFig().setLineWidth(1);
+        getStereotypeFigText().setEditable(false);
+        getStereotypeFig().setHeight(STEREOHEIGHT + 1);
+        // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setVisible(false);
 
         FigEmptyRect bigPort = new FigEmptyRect(10, 10, 0, 0);
@@ -173,20 +200,16 @@ public class FigClass extends FigClassifierBox
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.
         enableSizeChecking(false);
-        addFigsNoCalcBounds();
+        setSuppressCalcBounds(true);
+        addFig(getStereotypeFig());             //0
+        addFig(getNameFig());                   //1
+        addFig(bigPort);                        //2
+        addFig(operationsFigCompartment);       //3
+        addFig(attributesFigCompartment);       //4
 
+        setSuppressCalcBounds(false);
         // Set the bounds of the figure to the total of the above (hardcoded)
         setBounds(10, 10, 60, 22 + 2 * ROWHEIGHT);
-    }
-    
-    void addFigs() {
-        super.addFigs();
-        // Attributes inside. First one is the attribute box itself.
-        FigCompartment attributesFig =
-            new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
-
-        addFig(operationsFig);       //3
-        addFig(attributesFig);       //4
     }
 
     /**
@@ -265,19 +288,26 @@ public class FigClass extends FigClassifierBox
     }
 
     /**
+     * @return The bounds of the operations compartment.
+     */
+    public Rectangle getOperationsBounds() {
+        return ((FigGroup) getFigAt(OPERATIONS_POSN)).getBounds();
+    }
+
+    /**
      * @return The bounds of the attributes compartment.
      */
     public Rectangle getAttributesBounds() {
         return ((FigGroup) getFigAt(ATTRIBUTES_POSN)).getBounds();
     }
 
-//    /**
-//     * @return The vector of graphics for operations (if any).
-//     * First one is the rectangle for the entire operations box.
-//     */
-//    protected FigOperationsCompartment getOperationsFig() {
-//        return (FigOperationsCompartment) getFigAt(OPERATIONS_POSN);
-//    }
+    /**
+     * @return The vector of graphics for operations (if any).
+     * First one is the rectangle for the entire operations box.
+     */
+    private FigOperationsCompartment getOperationsFig() {
+        return (FigOperationsCompartment) getFigAt(OPERATIONS_POSN);
+    }
 
     /**
      * @return The vector of graphics for operations (if any).
@@ -285,6 +315,16 @@ public class FigClass extends FigClassifierBox
      */
     private FigAttributesCompartment getAttributesFig() {
         return (FigAttributesCompartment) getFigAt(ATTRIBUTES_POSN);
+    }
+
+    /**
+     * Returns the status of the operation field.
+     * @return true if the operations are visible, false otherwise
+     *
+     * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#isOperationsVisible()
+     */
+    public boolean isOperationsVisible() {
+        return getOperationsFig().isVisible();
     }
 
     /**
@@ -340,46 +380,46 @@ public class FigClass extends FigClassifierBox
         }
     }
 
-//    /**
-//     * @param isVisible true if the operation compartment is visible
-//     *
-//     * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#setOperationsVisible(boolean)
-//     */
-//    public void setOperationsVisible(boolean isVisible) {
-//        Rectangle rect = getBounds();
-////        int h =
-////    	    isCheckSize()
-////    	    ? ((ROWHEIGHT
-////                * Math.max(1, getOperationsFig().getFigs().size() - 1) + 2)
-////    	        * rect.height
-////    	        / getMinimumSize().height)
-////    	    : 0;
-//        if (isOperationsVisible()) { // if displayed
-//            if (!isVisible) {
-//                damage();
-//                Iterator it = getOperationsFig().getFigs().iterator();
-//                while (it.hasNext()) {
-//                    ((Fig) (it.next())).setVisible(false);
-//                }
-//                getOperationsFig().setVisible(false);
-//                Dimension aSize = this.getMinimumSize();
-//                setBounds(rect.x, rect.y,
-//			  (int) aSize.getWidth(), (int) aSize.getHeight());
-//            }
-//        } else {
-//            if (isVisible) {
-//                Iterator it = getOperationsFig().getFigs().iterator();
-//                while (it.hasNext()) {
-//                    ((Fig) (it.next())).setVisible(true);
-//                }
-//                getOperationsFig().setVisible(true);
-//                Dimension aSize = this.getMinimumSize();
-//                setBounds(rect.x, rect.y,
-//                    (int) aSize.getWidth(), (int) aSize.getHeight());
-//                damage();
-//            }
-//        }
-//    }
+    /**
+     * @param isVisible true if the operation compartment is visible
+     *
+     * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#setOperationsVisible(boolean)
+     */
+    public void setOperationsVisible(boolean isVisible) {
+        Rectangle rect = getBounds();
+//        int h =
+//    	    isCheckSize()
+//    	    ? ((ROWHEIGHT
+//                * Math.max(1, getOperationsFig().getFigs().size() - 1) + 2)
+//    	        * rect.height
+//    	        / getMinimumSize().height)
+//    	    : 0;
+        if (isOperationsVisible()) { // if displayed
+            if (!isVisible) {
+                damage();
+                Iterator it = getOperationsFig().getFigs().iterator();
+                while (it.hasNext()) {
+                    ((Fig) (it.next())).setVisible(false);
+                }
+                getOperationsFig().setVisible(false);
+                Dimension aSize = this.getMinimumSize();
+                setBounds(rect.x, rect.y,
+			  (int) aSize.getWidth(), (int) aSize.getHeight());
+            }
+        } else {
+            if (isVisible) {
+                Iterator it = getOperationsFig().getFigs().iterator();
+                while (it.hasNext()) {
+                    ((Fig) (it.next())).setVisible(true);
+                }
+                getOperationsFig().setVisible(true);
+                Dimension aSize = this.getMinimumSize();
+                setBounds(rect.x, rect.y,
+                    (int) aSize.getWidth(), (int) aSize.getHeight());
+                damage();
+            }
+        }
+    }
 
     /**
      * USED BY PGML.tee.
@@ -473,8 +513,28 @@ public class FigClass extends FigClassifierBox
         return aSize;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#translate(int, int)
+     */
+    public void translate(int dx, int dy) {
+        super.translate(dx, dy);
+        Editor ce = Globals.curEditor();
+        Selection sel = ce.getSelectionManager().findSelectionFor(this);
+        if (sel instanceof SelectionClass) {
+            ((SelectionClass) sel).hideButtons();
+        }
+    }
+
     ////////////////////////////////////////////////////////////////
     // user interaction methods
+
+    /**
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
+    public void mouseExited(MouseEvent me) {
+        super.mouseExited(me);
+        unhighlight();
+    }
 
     /**
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
@@ -667,13 +727,22 @@ public class FigClass extends FigClassifierBox
      * @return the compartment
      */
     protected CompartmentFigText unhighlight() {
-        CompartmentFigText ft = super.unhighlight();
-        if (ft != null) {
-            return ft;
+        CompartmentFigText ft;
+        // TODO: in future version of GEF call getFigs returning array
+        Vector v = new Vector(getAttributesFig().getFigs());
+        int i;
+        for (i = 1; i < v.size(); i++) {
+            ft = (CompartmentFigText) v.elementAt(i);
+            if (ft.isHighlighted()) {
+                ft.setHighlighted(false);
+                highlightedFigText = null;
+                return ft;
+            }
         }
-        List figs = getAttributesFig().getFigs();
-        for (int i = 1; i < figs.size(); i++) {
-            ft = (CompartmentFigText) figs.get(i);
+        // TODO: in future version of GEF call getFigs returning array
+        v = new Vector(getOperationsFig().getFigs());
+        for (i = 1; i < v.size(); i++) {
+            ft = (CompartmentFigText) v.elementAt(i);
             if (ft.isHighlighted()) {
                 ft.setHighlighted(false);
                 highlightedFigText = null;
@@ -859,6 +928,7 @@ public class FigClass extends FigClassifierBox
         // compartment
 
         getNameFig().setLineWidth(0);
+        getNameFig().setLineColor(Color.red);
         
         int stereotypeHeight = 0;
         if (getStereotypeFig().isVisible()) {
@@ -1199,6 +1269,31 @@ public class FigClass extends FigClassifierBox
 //        setBounds(rect.x, rect.y, rect.width, rect.height);
 //        damage();
 //    }
+
+    /**
+     * Updates the operations box. Called from modelchanged if there is
+     * a modelevent effecting the attributes and from renderingChanged in all
+     * cases.
+     */
+    protected void updateOperations() {
+        if (!isOperationsVisible()) {
+            return;
+        }
+        FigOperationsCompartment operationsCompartment = 
+                ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN));
+        operationsCompartment.populate();
+        Fig operPort = operationsCompartment.getBigPort();
+
+        int xpos = operPort.getX();
+        int ypos = operPort.getY();
+
+        Rectangle rect = getBounds();
+        updateFigGroupSize(getOperationsFig(), xpos, ypos, 0, 0);
+        // ouch ugly but that's for a next refactoring
+        // TODO: make setBounds, calcBounds and updateBounds consistent
+        setBounds(rect.x, rect.y, rect.width, rect.height);
+        damage();
+    }
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()

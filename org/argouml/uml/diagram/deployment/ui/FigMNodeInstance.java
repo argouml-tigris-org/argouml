@@ -76,7 +76,8 @@ public class FigMNodeInstance extends FigNodeModelElement {
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
         cover = new FigCube(x, y, width, height, Color.black, Color.white);
-        d = cover.getDepth();
+        d = 20;
+        //d = cover.getDepth();
 
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);

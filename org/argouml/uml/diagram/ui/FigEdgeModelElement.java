@@ -161,8 +161,10 @@ public abstract class FigEdgeModelElement
         name.setFilled(false);
         name.setLineWidth(0);
         name.setExpandOnly(false);
-        name.setReturnAction(FigText.IGNORE);
-        name.setTabAction(FigText.IGNORE);
+        name.setMultiLine(false);
+        name.setAllowsTab(false);
+//        name.setReturnAction(FigText.IGNORE);
+//        name.setTabAction(FigText.IGNORE);
 
         stereo.setFont(LABEL_FONT);
         stereo.setTextColor(Color.black);
@@ -170,8 +172,10 @@ public abstract class FigEdgeModelElement
         stereo.setFilled(false);
         stereo.setLineWidth(0);
         stereo.setExpandOnly(false);
-        stereo.setReturnAction(FigText.IGNORE);
-        stereo.setTabAction(FigText.IGNORE);
+        stereo.setMultiLine(false);
+        stereo.setAllowsTab(false);
+//        stereo.setReturnAction(FigText.IGNORE);
+//        stereo.setTabAction(FigText.IGNORE);
 
         setBetweenNearestPoints(true);
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);

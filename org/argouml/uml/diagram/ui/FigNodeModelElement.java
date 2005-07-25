@@ -288,8 +288,10 @@ public abstract class FigNodeModelElement
         name.setFont(getLabelFont());
         name.setTextColor(Color.black);
         // _name.setFilled(false);
-        name.setReturnAction(FigText.END_EDITING);
-        name.setTabAction(FigText.END_EDITING);
+        name.setAllowsTab(false);
+        name.setMultiLine(false);
+//        name.setReturnAction(FigText.END_EDITING);
+//        name.setTabAction(FigText.END_EDITING);
         name.setText(placeString());
 
         stereo = new FigText(10, 10, 90, 15, true);

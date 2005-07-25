@@ -161,7 +161,8 @@ public class FigClassifierRole extends FigNodeModelElement
 				     "Dialog",
 				     12,
 				     false));
-        getStereotypeFigText().setTabAction(FigText.IGNORE);
+        getStereotypeFigText().setAllowsTab(false);
+//        getStereotypeFigText().setTabAction(FigText.IGNORE);
         getStereotypeFigText().setEditable(false);
         getStereotypeFig().setFilled(false);
         getStereotypeFig().setLineWidth(0);
@@ -174,7 +175,8 @@ public class FigClassifierRole extends FigNodeModelElement
 			       12,
 			       false));
         getNameFig().setEditable(false);
-        getNameFig().setTabAction(FigText.IGNORE);
+        getStereotypeFigText().setAllowsTab(false);
+        //getNameFig().setTabAction(FigText.IGNORE);
         getNameFig().setFilled(false);
         getNameFig().setLineWidth(0);
         lifeLine =

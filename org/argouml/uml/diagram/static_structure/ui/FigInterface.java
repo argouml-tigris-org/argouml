@@ -51,7 +51,9 @@ import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
+import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Editor;
@@ -66,7 +68,8 @@ import org.tigris.gef.presentation.FigText;
 /**
  * Class to display graphics for a UML Interface in a diagram.
  */
-public class FigInterface extends FigClassifierBox {
+public class FigInterface extends FigNodeModelElement
+        implements OperationsCompartmentContainer {
 
     private static final Logger LOG = Logger.getLogger(FigInterface.class);
 
@@ -81,6 +84,11 @@ public class FigInterface extends FigClassifierBox {
     // instance variables
 
     /**
+     * The Fig for the operations compartment (if any). 
+     */
+    private FigOperationsCompartment operFig;
+
+    /**
      * A rectangle to blank out the line that would otherwise appear at the
      * bottom of the stereotype text box.<p>
      */
@@ -93,6 +101,11 @@ public class FigInterface extends FigClassifierBox {
      */
     private Object resident =
             Model.getCoreFactory().createElementResidence();
+
+    /**
+     * Text highlighted by mouse actions on the diagram.<p>
+     */
+    private CompartmentFigText highlightedFigText = null;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -126,11 +139,28 @@ public class FigInterface extends FigClassifierBox {
      * a project. In this case, the parsed size must be maintained.<p>
      */
     public FigInterface() {
-        super();
-        
-        getStereotypeFig().setVisible(true);
+
+        // Set name box. Note the upper line will be blanked out if there is
+        // eventually a stereotype above.
+        getNameFig().setLineWidth(1);
+        getNameFig().setFilled(true);
+
+        operFig = new FigOperationsCompartment(
+                10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
+
+        // Set properties of the stereotype box. Make it 1 pixel higher than
+        // before, so it overlaps the name box, and the blanking takes out both
+        // lines. Initially not set to be displayed, but this will be changed
+        // when we try to render it, if we find we have a stereotype.
         setStereotype(NotationHelper.getLeftGuillemot()
                 + "Interface" + NotationHelper.getRightGuillemot());
+        getStereotypeFigText().setExpandOnly(true);
+        getStereotypeFig().setFilled(true);
+        getStereotypeFig().setLineWidth(1);
+        getStereotypeFigText().setEditable(false);
+        getStereotypeFig().setHeight(STEREOHEIGHT + 1);
+        // +1 to have 1 pixel overlap with getNameFig()
+        getStereotypeFig().setVisible(true);
 
         // A thin rectangle to overlap the boundary line between stereotype
         // and name. This is just 2 pixels high, and we rely on the line
@@ -145,17 +175,18 @@ public class FigInterface extends FigClassifierBox {
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.
         enableSizeChecking(false);
-        addFigsNoCalcBounds();
+        setSuppressCalcBounds(true);
+        addFig(getBigPort());
+        addFig(getStereotypeFig());
+        addFig(getNameFig());
+        addFig(stereoLineBlinder);
+        addFig(operFig);
+        
+        setSuppressCalcBounds(false);
 
         // Set the bounds of the figure to the total of the above (hardcoded)
         enableSizeChecking(true);
         setBounds(10, 10, 60, 21 + ROWHEIGHT);
-    }
-    
-    void addFigs() {
-        super.addFigs();
-        addFig(stereoLineBlinder);  // 3
-        addFig(operationsFig);      // 4
     }
 
     /**
@@ -189,7 +220,7 @@ public class FigInterface extends FigClassifierBox {
         figClone.setStereotypeFig((FigText) it.next());
         figClone.setNameFig((FigText) it.next());
         figClone.stereoLineBlinder = (FigRect) it.next();
-        figClone.operationsFig = (FigOperationsCompartment) it.next();
+        figClone.operFig = (FigOperationsCompartment) it.next();
         return figClone;
     }
 
@@ -243,6 +274,66 @@ public class FigInterface extends FigClassifierBox {
     }
 
     /**
+     * Getter for operFig.
+     *
+     * @return operFig
+     */
+    public FigGroup getOperationsFig() {
+        return operFig;
+    }
+
+    /**
+     * Getter for operFig.
+     *
+     * @return operFig
+     */
+    public Rectangle getOperationsBounds() {
+        return operFig.getBounds();
+    }
+
+    /**
+     * Returns the status of the operation field.
+     * @return true if the operations are visible, false otherwise
+     */
+    public boolean isOperationsVisible() {
+        return operFig.isVisible();
+    }
+
+    /**
+     * @param isVisible true will show the operations compartiment
+     */
+    public void setOperationsVisible(boolean isVisible) {
+        Rectangle rect = getBounds();
+        int h =
+                isCheckSize()
+                ? ((ROWHEIGHT * Math.max(1, operFig.getFigs().size() - 1) + 2)
+                * rect.height
+                / getMinimumSize().height)
+                : 0;
+        if (operFig.isVisible()) {
+            if (!isVisible) {
+                damage();
+                Iterator it = operFig.getFigs().iterator();
+                while (it.hasNext()) {
+                    ((Fig) (it.next())).setVisible(false);
+                }
+                operFig.setVisible(false);
+                setBounds(rect.x, rect.y, rect.width, rect.height - h);
+            }
+        } else {
+            if (isVisible) {
+                Iterator it = operFig.getFigs().iterator();
+                while (it.hasNext()) {
+                    ((Fig) (it.next())).setVisible(true);
+                }
+                operFig.setVisible(true);
+                setBounds(rect.x, rect.y, rect.width, rect.height + h);
+                damage();
+            }
+        }
+    }
+
+    /**
      * Gets the minimum size permitted for an interface on the diagram.<p>
      *
      * Parts of this are hardcoded, notably the fact that the name
@@ -272,12 +363,12 @@ public class FigInterface extends FigClassifierBox {
 
         // Allow space for each of the operations we have
 
-        if (operationsFig.isVisible()) {
+        if (operFig.isVisible()) {
 
             // Loop through all the operations, to find the widest (remember
             // the first fig is the box for the whole lot, so ignore it).
 
-            Iterator it = operationsFig.getFigs().iterator();
+            Iterator it = operFig.getFigs().iterator();
             it.next(); // ignore
 
             while (it.hasNext()) {
@@ -286,7 +377,7 @@ public class FigInterface extends FigClassifierBox {
                 aSize.width = Math.max(aSize.width, elemWidth);
             }
             aSize.height +=
-                    ROWHEIGHT * Math.max(1, operationsFig.getFigs().size() - 1) + 1;
+                    ROWHEIGHT * Math.max(1, operFig.getFigs().size() - 1) + 1;
         }
 
         // we want to maintain a minimum width for Interfaces
@@ -313,6 +404,18 @@ public class FigInterface extends FigClassifierBox {
         stereoLineBlinder.setLineColor(stereoLineBlinder.getFillColor());
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#translate(int, int)
+     */
+    public void translate(int dx, int dy) {
+        super.translate(dx, dy);
+        Editor ce = Globals.curEditor();
+        Selection sel = ce.getSelectionManager().findSelectionFor(this);
+        if (sel instanceof SelectionClass) {
+            ((SelectionClass) sel).hideButtons();
+        }
+    }
+
     ////////////////////////////////////////////////////////////////
     // user interaction methods
 
@@ -336,11 +439,11 @@ public class FigInterface extends FigClassifierBox {
         //display op properties if necessary:
         Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
         Fig f = hitFig(r);
-        if (f == operationsFig && operationsFig.getHeight() > 0) {
-            List v = operationsFig.getFigs();
+        if (f == operFig && operFig.getHeight() > 0) {
+            List v = operFig.getFigs();
             i = (v.size() - 1)
                     * (me.getY() - f.getY() - 3)
-                    / operationsFig.getHeight();
+                    / operFig.getHeight();
             if (i >= 0 && i < v.size() - 1) {
                 me.consume();
                 f = (Fig) v.get(i + 1);
@@ -352,6 +455,14 @@ public class FigInterface extends FigClassifierBox {
     }
 
     /**
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
+    public void mouseExited(MouseEvent me) {
+        super.mouseExited(me);
+        unhighlight();
+    }
+
+    /**
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {
@@ -359,7 +470,7 @@ public class FigInterface extends FigClassifierBox {
         if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
             CompartmentFigText ft = unhighlight();
             if (ft != null) {
-                int i = operationsFig.getFigs().indexOf(ft);
+                int i = operFig.getFigs().indexOf(ft);
                 if (i != -1) {
                     if (key == KeyEvent.VK_UP) {
                         ft =
@@ -456,7 +567,7 @@ public class FigInterface extends FigClassifierBox {
         if (cls == null) {
             return;
         }
-        int i = operationsFig.getFigs().indexOf(ft);
+        int i = operFig.getFigs().indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
@@ -485,7 +596,7 @@ public class FigInterface extends FigClassifierBox {
      */
     protected FigText getPreviousVisibleFeature(FigText ft, int i) {
         FigText ft2 = null;
-        List figs = operationsFig.getFigs();
+        List figs = operFig.getFigs();
         if (i < 1 || i >= figs.size()
                 || !((FigText) figs.get(i)).isVisible()) {
             return null;
@@ -512,7 +623,7 @@ public class FigInterface extends FigClassifierBox {
      */
     protected FigText getNextVisibleFeature(FigText ft, int i) {
         FigText ft2 = null;
-        Vector v = new Vector(operationsFig.getFigs());
+        Vector v = new Vector(operFig.getFigs());
         if (i < 1 || i >= v.size()
                 || !((FigText) v.elementAt(i)).isVisible()) {
             return null;
@@ -561,6 +672,24 @@ public class FigInterface extends FigClassifierBox {
             highlightedFigText = ft;
         }
         ie.consume();
+    }
+
+    /**
+     * @return the FigText for the compartment
+     */
+    protected CompartmentFigText unhighlight() {
+        CompartmentFigText ft;
+        List v = operFig.getFigs();
+        int i;
+        for (i = 1; i < v.size(); i++) {
+            ft = (CompartmentFigText) v.get(i);
+            if (ft.isHighlighted()) {
+                ft.setHighlighted(false);
+                highlightedFigText = null;
+                return ft;
+            }
+        }
+        return null;
     }
 
     /**
@@ -650,7 +779,7 @@ public class FigInterface extends FigClassifierBox {
 
             int displayedFigs = 1; //this is for getNameFig()
 
-            if (operationsFig.isVisible()) {
+            if (operFig.isVisible()) {
                 displayedFigs++;
             }
 
@@ -699,7 +828,8 @@ public class FigInterface extends FigClassifierBox {
 
         // Finally update the bounds of the operations box
 
-        aSize = updateFigGroupSize(operationsFig, x, currentY,
+        aSize =
+                updateFigGroupSize(operFig, x, currentY,
                         newW, newH + y - currentY);
 
         // set bounds of big box
@@ -713,6 +843,31 @@ public class FigInterface extends FigClassifierBox {
         calcBounds();
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
+    }
+
+    /**
+     * Updates the operations box. Called from modelchanged if there is
+     * a modelevent effecting the attributes and from renderingChanged in all
+     * cases.
+     */
+    protected void updateOperations() {
+        if (!isOperationsVisible()) {
+            return;
+        }
+        FigOperationsCompartment operationsCompartment = 
+                ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN));
+        operationsCompartment.populate();
+        Fig operPort = operationsCompartment.getBigPort();
+
+        int xpos = operPort.getX();
+        int ypos = operPort.getY();
+
+        Rectangle rect = getBounds();
+        updateFigGroupSize(getOperationsFig(), xpos, ypos, 0, 0);
+        // ouch ugly but that's for a next refactoring
+        // TODO: make setBounds, calcBounds and updateBounds consistent
+        setBounds(rect.x, rect.y, rect.width, rect.height);
+        damage();
     }
 
     /**
