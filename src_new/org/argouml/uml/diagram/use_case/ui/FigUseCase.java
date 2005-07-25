@@ -1211,9 +1211,8 @@ public class FigUseCase extends FigNodeModelElement
 
         ActionAddExtensionPoint.singleton().actionPerformed(null);
 
-        // TODO: in future version of GEF call getFigs returning array
         CompartmentFigText ft =
-            (CompartmentFigText) new Vector(fg.getFigs()).lastElement();
+            (CompartmentFigText) fg.getFigs().get(fg.getFigs().size()-1);
 
         if (ft != null) {
             ft.startTextEditor(ie);
