@@ -71,7 +71,8 @@ public abstract class FigState extends FigStateVertex {
         internal.setLineWidth(0);
         internal.setFilled(false);
         internal.setExpandOnly(true);
-        internal.setReturnAction(FigText.INSERT);
+        internal.setMultiLine(true);
+//        internal.setReturnAction(FigText.INSERT);
         internal.setJustification(FigText.JUSTIFY_LEFT);
     }
 

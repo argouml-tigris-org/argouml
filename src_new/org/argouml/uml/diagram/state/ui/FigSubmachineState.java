@@ -93,8 +93,10 @@ public class FigSubmachineState extends FigState {
         include = new FigText(10, 10, 90, 21, true);
         include.setFont(getLabelFont());
         include.setTextColor(Color.black);
-        include.setReturnAction(FigText.END_EDITING);
-        include.setTabAction(FigText.END_EDITING);
+        include.setAllowsTab(false);
+        include.setMultiLine(false);
+//        include.setReturnAction(FigText.END_EDITING);
+//        include.setTabAction(FigText.END_EDITING);
         include.setText(placeString());
         include.setLineWidth(0);
         include.setBounds(getInitialX() + 2, getInitialY() + 2,
