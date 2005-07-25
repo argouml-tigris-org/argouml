@@ -285,11 +285,11 @@ public abstract class FigNodeModelElement
         bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
 
         name = new FigSingleLineText(10, 10, 90, 21, true);
+        name.setLineWidth(1);
+        name.setFilled(true);
         name.setText(placeString());
 
         stereo = new FigSingleLineText(10, 10, 90, 15, true);
-        stereo.setFilled(false);
-        stereo.setLineWidth(0);
         stereo.setEditable(false);
 
         readyToEdit = false;
