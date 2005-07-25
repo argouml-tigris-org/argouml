@@ -284,22 +284,12 @@ public abstract class FigNodeModelElement
         // is inside it:
         bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
 
-        name = new FigText(10, 10, 90, 21, true);
-        name.setFont(getLabelFont());
-        name.setTextColor(Color.black);
-        // _name.setFilled(false);
-        name.setAllowsTab(false);
-        name.setMultiLine(false);
-//        name.setReturnAction(FigText.END_EDITING);
-//        name.setTabAction(FigText.END_EDITING);
+        name = new FigSingleLineText(10, 10, 90, 21, true);
         name.setText(placeString());
 
-        stereo = new FigText(10, 10, 90, 15, true);
-        stereo.setFont(getLabelFont());
-        stereo.setTextColor(Color.black);
+        stereo = new FigSingleLineText(10, 10, 90, 15, true);
         stereo.setFilled(false);
         stereo.setLineWidth(0);
-        //_stereo.setLineColor(Color.black);
         stereo.setEditable(false);
 
         readyToEdit = false;
