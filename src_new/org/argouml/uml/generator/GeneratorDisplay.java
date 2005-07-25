@@ -858,6 +858,9 @@ public class GeneratorDisplay extends Generator2 {
         if (o == null) {
             return "";
         }
+        if (!Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY, true)) {
+            return "";
+        }
         if (Model.getFacade().isAModelElement(o)) {
             if (Model.getFacade().isPublic(o)) {
                 return "+";
