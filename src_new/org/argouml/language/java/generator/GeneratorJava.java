@@ -1443,7 +1443,7 @@ public class GeneratorJava
     }
 
     /**
-     * Returns a visibility String eihter for a MVisibilityKind (according to
+     * Returns a visibility String either for a MVisibilityKind (according to
      * the definition in NotationProvider2), but also for a model element,
      * because if it is a MFeature, then the tag 'src_visibility' is to be
      * taken into account for generating language dependent visibilities.
