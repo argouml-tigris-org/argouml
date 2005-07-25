@@ -167,7 +167,7 @@ public final class ExplorerNSUMLEventAdaptor
                         e.getName(),
                         e.getOldValue(),
                         e.getNewValue(),
-                        e.getSource(),
+                        e.getAddedValue(),
                         e);
 
             this.firePropertyChange(event);
@@ -208,28 +208,10 @@ public final class ExplorerNSUMLEventAdaptor
                         e.getName(),
                         e.getOldValue(),
                         e.getNewValue(),
-                        e.getSource(),
+                        e.getRemovedValue(),
                         e);
 
             this.firePropertyChange(event);
         }
-
     }
-
-    // ------- property change events ----------
-
-//    /**
-//     * Source of the model element changed translates to the new value.
-//     */
-//    private void firePropertyChanged(String propertyName,
-//				     Object source) {
-//        PropertyChangeEvent pce =
-//            new PropertyChangeEvent(
-//                    this,
-//                    propertyName,
-//                    null,
-//                    source);
-//
-//        this.firePropertyChange(pce);
-//    }
 }

@@ -204,7 +204,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * @see org.argouml.ui.explorer.TreeModelUMLEventListener#modelElementChanged(java.lang.Object)
      */
     public void modelElementChanged(Object node) {
-	traverseModified((TreeNode) getRoot(), node);
+        traverseModified((TreeNode) getRoot(), node);
     }
 
     /**
@@ -213,7 +213,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * @see org.argouml.ui.explorer.TreeModelUMLEventListener#modelElementAdded(java.lang.Object)
      */
     public void modelElementAdded(Object node) {
-	traverseModified((TreeNode) getRoot(), node);
+        traverseModified((TreeNode) getRoot(), node);
     }
 
     /**
@@ -249,7 +249,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
             }
         }
 
-	traverseModified((TreeNode) getRoot(), node);
+        traverseModified((TreeNode) getRoot(), node);
     }
 
     /**
