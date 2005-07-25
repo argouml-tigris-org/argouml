@@ -30,7 +30,13 @@ import org.tigris.gef.presentation.FigText;
 
 /**
  * A MultiLine FigText to provide consistency across Figs displaying multiple
- * lines of text. 
+ * lines of text.
+ * By default -
+ * <ul>
+ * <li>Text is black</li>
+ * <li>The display area is transparent</li>
+ * <li>Text is left justified</li>
+ * <li>There is no line border</li>
  * @author Bob Tarling
  */
 public class FigMultiLineText extends FigText {

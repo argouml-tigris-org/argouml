@@ -40,7 +40,7 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author thn
  */
-public class CompartmentFigText extends FigText {
+public class CompartmentFigText extends FigSingleLineText {
     private static final Logger LOG =
 	Logger.getLogger(CompartmentFigText.class);
 
