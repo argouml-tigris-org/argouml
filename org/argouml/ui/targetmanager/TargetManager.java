@@ -54,12 +54,31 @@ import org.tigris.gef.presentation.Fig;
  * The manager of the target of ArgoUML.
  * The target of ArgoUML is the element currently selected by the user.
  * This can either be an instance of a meta-class (an
- * Interface or a Class for example) but it can also be a diagram or a figure
+ * Interface or a Class for example) but it can also be a diagram 
+ * or anything that is shown
  * on a diagram.<p>
  *
  * There can be multiple targets in case
- * someone selected multiple modelelements or
- * figs in the explorer or on the diagram .<p>
+ * someone selected multiple items in the explorer or on the diagram. 
+ * This can be done by shift-clicking or Ctrl-clicking items, 
+ * or by drawing a box on the diagram around the items to select.<p>
+ * 
+ * In case multiple targets are selected, the target manager will add each
+ * target to the beginning of the list of targets. This way, 
+ * the first item of the list is the last selected item. 
+ * Most functions in ArgoUML work on all selected items. 
+ * However, a few (intentionally) only work on one target, 
+ * such as the properties panels. 
+ * These functions have 2 ways of retrieving the target they should work on: 
+ * <ul>
+ * <li>1. Use the functions that return one target only, 
+ * such as getTarget(), getModelTarget(), getFigTarget().
+ * <li>2. Use the first item in the list returned by 
+ * getTargets(), getModelTargets(). </ul><p>
+ * 
+ * Remark: There is currently no function getFigs(), 
+ * returning a list of selected figs. 
+ * But you can obtain such a list from GEF. <p>
  *
  * The purpose of the targetmanager is to have a central spot where we
  * manage the list of current targets.<p>
