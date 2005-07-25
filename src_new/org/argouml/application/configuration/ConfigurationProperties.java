@@ -201,9 +201,9 @@ public class ConfigurationProperties extends ConfigurationHandler {
 	} catch (Exception e) {
 	    result = defaultValue;
 	}
-	if (LOG.isDebugEnabled()) {
-	    LOG.debug("key '" + key + "' returns '" + result + "'");
-	}
+//	if (LOG.isDebugEnabled()) {
+//	    LOG.debug("key '" + key + "' returns '" + result + "'");
+//	}
 	return result;
     }
 
