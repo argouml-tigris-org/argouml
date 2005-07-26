@@ -68,8 +68,7 @@ import org.tigris.gef.presentation.FigText;
 /**
  * Class to display graphics for a UML Interface in a diagram.
  */
-public class FigInterface extends FigNodeModelElement
-        implements OperationsCompartmentContainer {
+public class FigInterface extends FigClassifierBox {
 
     private static final Logger LOG = Logger.getLogger(FigInterface.class);
 
@@ -82,11 +81,6 @@ public class FigInterface extends FigNodeModelElement
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-
-    /**
-     * The Fig for the operations compartment (if any). 
-     */
-    private FigOperationsCompartment operFig;
 
     /**
      * A rectangle to blank out the line that would otherwise appear at the
@@ -145,7 +139,7 @@ public class FigInterface extends FigNodeModelElement
         getNameFig().setLineWidth(1);
         getNameFig().setFilled(true);
 
-        operFig = new FigOperationsCompartment(
+        operationsFig = new FigOperationsCompartment(
                 10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
@@ -180,7 +174,7 @@ public class FigInterface extends FigNodeModelElement
         addFig(getStereotypeFig());
         addFig(getNameFig());
         addFig(stereoLineBlinder);
-        addFig(operFig);
+        addFig(operationsFig);
         
         setSuppressCalcBounds(false);
 
@@ -220,7 +214,7 @@ public class FigInterface extends FigNodeModelElement
         figClone.setStereotypeFig((FigText) it.next());
         figClone.setNameFig((FigText) it.next());
         figClone.stereoLineBlinder = (FigRect) it.next();
-        figClone.operFig = (FigOperationsCompartment) it.next();
+        figClone.operationsFig = (FigOperationsCompartment) it.next();
         return figClone;
     }
 
@@ -274,59 +268,33 @@ public class FigInterface extends FigNodeModelElement
     }
 
     /**
-     * Getter for operFig.
-     *
-     * @return operFig
-     */
-    public FigGroup getOperationsFig() {
-        return operFig;
-    }
-
-    /**
-     * Getter for operFig.
-     *
-     * @return operFig
-     */
-    public Rectangle getOperationsBounds() {
-        return operFig.getBounds();
-    }
-
-    /**
-     * Returns the status of the operation field.
-     * @return true if the operations are visible, false otherwise
-     */
-    public boolean isOperationsVisible() {
-        return operFig.isVisible();
-    }
-
-    /**
      * @param isVisible true will show the operations compartiment
      */
     public void setOperationsVisible(boolean isVisible) {
         Rectangle rect = getBounds();
         int h =
                 isCheckSize()
-                ? ((ROWHEIGHT * Math.max(1, operFig.getFigs().size() - 1) + 2)
+                ? ((ROWHEIGHT * Math.max(1, operationsFig.getFigs().size() - 1) + 2)
                 * rect.height
                 / getMinimumSize().height)
                 : 0;
-        if (operFig.isVisible()) {
+        if (operationsFig.isVisible()) {
             if (!isVisible) {
                 damage();
-                Iterator it = operFig.getFigs().iterator();
+                Iterator it = operationsFig.getFigs().iterator();
                 while (it.hasNext()) {
                     ((Fig) (it.next())).setVisible(false);
                 }
-                operFig.setVisible(false);
+                operationsFig.setVisible(false);
                 setBounds(rect.x, rect.y, rect.width, rect.height - h);
             }
         } else {
             if (isVisible) {
-                Iterator it = operFig.getFigs().iterator();
+                Iterator it = operationsFig.getFigs().iterator();
                 while (it.hasNext()) {
                     ((Fig) (it.next())).setVisible(true);
                 }
-                operFig.setVisible(true);
+                operationsFig.setVisible(true);
                 setBounds(rect.x, rect.y, rect.width, rect.height + h);
                 damage();
             }
@@ -363,12 +331,12 @@ public class FigInterface extends FigNodeModelElement
 
         // Allow space for each of the operations we have
 
-        if (operFig.isVisible()) {
+        if (operationsFig.isVisible()) {
 
             // Loop through all the operations, to find the widest (remember
             // the first fig is the box for the whole lot, so ignore it).
 
-            Iterator it = operFig.getFigs().iterator();
+            Iterator it = operationsFig.getFigs().iterator();
             it.next(); // ignore
 
             while (it.hasNext()) {
@@ -377,7 +345,7 @@ public class FigInterface extends FigNodeModelElement
                 aSize.width = Math.max(aSize.width, elemWidth);
             }
             aSize.height +=
-                    ROWHEIGHT * Math.max(1, operFig.getFigs().size() - 1) + 1;
+                    ROWHEIGHT * Math.max(1, operationsFig.getFigs().size() - 1) + 1;
         }
 
         // we want to maintain a minimum width for Interfaces
@@ -439,11 +407,11 @@ public class FigInterface extends FigNodeModelElement
         //display op properties if necessary:
         Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
         Fig f = hitFig(r);
-        if (f == operFig && operFig.getHeight() > 0) {
-            List v = operFig.getFigs();
+        if (f == operationsFig && operationsFig.getHeight() > 0) {
+            List v = operationsFig.getFigs();
             i = (v.size() - 1)
                     * (me.getY() - f.getY() - 3)
-                    / operFig.getHeight();
+                    / operationsFig.getHeight();
             if (i >= 0 && i < v.size() - 1) {
                 me.consume();
                 f = (Fig) v.get(i + 1);
@@ -470,7 +438,7 @@ public class FigInterface extends FigNodeModelElement
         if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
             CompartmentFigText ft = unhighlight();
             if (ft != null) {
-                int i = operFig.getFigs().indexOf(ft);
+                int i = operationsFig.getFigs().indexOf(ft);
                 if (i != -1) {
                     if (key == KeyEvent.VK_UP) {
                         ft =
@@ -567,7 +535,7 @@ public class FigInterface extends FigNodeModelElement
         if (cls == null) {
             return;
         }
-        int i = operFig.getFigs().indexOf(ft);
+        int i = operationsFig.getFigs().indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
@@ -596,7 +564,7 @@ public class FigInterface extends FigNodeModelElement
      */
     protected FigText getPreviousVisibleFeature(FigText ft, int i) {
         FigText ft2 = null;
-        List figs = operFig.getFigs();
+        List figs = operationsFig.getFigs();
         if (i < 1 || i >= figs.size()
                 || !((FigText) figs.get(i)).isVisible()) {
             return null;
@@ -623,7 +591,7 @@ public class FigInterface extends FigNodeModelElement
      */
     protected FigText getNextVisibleFeature(FigText ft, int i) {
         FigText ft2 = null;
-        Vector v = new Vector(operFig.getFigs());
+        Vector v = new Vector(operationsFig.getFigs());
         if (i < 1 || i >= v.size()
                 || !((FigText) v.elementAt(i)).isVisible()) {
             return null;
@@ -679,7 +647,7 @@ public class FigInterface extends FigNodeModelElement
      */
     protected CompartmentFigText unhighlight() {
         CompartmentFigText ft;
-        List v = operFig.getFigs();
+        List v = operationsFig.getFigs();
         int i;
         for (i = 1; i < v.size(); i++) {
             ft = (CompartmentFigText) v.get(i);
@@ -779,7 +747,7 @@ public class FigInterface extends FigNodeModelElement
 
             int displayedFigs = 1; //this is for getNameFig()
 
-            if (operFig.isVisible()) {
+            if (operationsFig.isVisible()) {
                 displayedFigs++;
             }
 
@@ -829,7 +797,7 @@ public class FigInterface extends FigNodeModelElement
         // Finally update the bounds of the operations box
 
         aSize =
-                updateFigGroupSize(operFig, x, currentY,
+                updateFigGroupSize(operationsFig, x, currentY,
                         newW, newH + y - currentY);
 
         // set bounds of big box
