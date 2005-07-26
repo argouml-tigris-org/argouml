@@ -37,6 +37,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
+import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggableMenu;
 import org.argouml.application.events.ArgoEventPump;
@@ -482,17 +483,19 @@ public class GenericArgoMenuBar extends JMenuBar
         edit = add(new JMenu(menuLocalize("Edit")));
         setMnemonic(edit, "Edit");
 
-        JMenuItem undoItem = 
-            edit.add(ProjectBrowser.getInstance().getUndoAction());
-        setMnemonic(undoItem, "Undo");
-        setAccelerator(undoItem, ctrlZ);
+        if (ArgoVersion.isDevRelease()) {
+            JMenuItem undoItem = 
+                edit.add(ProjectBrowser.getInstance().getUndoAction());
+            setMnemonic(undoItem, "Undo");
+            setAccelerator(undoItem, ctrlZ);
 
-        JMenuItem redoItem = 
-            edit.add(ProjectBrowser.getInstance().getRedoAction());
-        setMnemonic(redoItem, "Redo");
-        setAccelerator(redoItem, ctrlY);
+            JMenuItem redoItem = 
+                edit.add(ProjectBrowser.getInstance().getRedoAction());
+            setMnemonic(redoItem, "Redo");
+            setAccelerator(redoItem, ctrlY);
 
-        edit.addSeparator();
+            edit.addSeparator();
+        }
         
         select = new JMenu(menuLocalize("Select"));
         setMnemonic(select, "Select");

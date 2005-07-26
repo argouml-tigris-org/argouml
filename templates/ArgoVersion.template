@@ -53,4 +53,17 @@ public final class ArgoVersion {
      */
     private ArgoVersion() {
     }
+    
+    /**
+     * Determine if the version of ArgoUML running is a developers release.
+     * This method can be used to determine whether developer specific
+     * features should be enabled.
+     * @return true if this is a developer release.
+     */
+    public static boolean isDevRelease() {
+        int firstDot = VERSION.indexOf('.');
+        int secondDot = VERSION.indexOf('.', firstDot + 1);
+        int releaseNo = Integer.parseInt(VERSION.substring(firstDot + 1, secondDot));
+        return (releaseNo % 2) == 1;
+    }
 }
