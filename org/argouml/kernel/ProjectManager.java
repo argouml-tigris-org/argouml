@@ -250,12 +250,13 @@ public final class ProjectManager implements PropertyChangeListener, MementoCrea
                             oldProject, currentProject);
         creatingCurrentProject = false;
         UndoManager.getInstance().empty();
-        if (!ArgoVersion.isDevRelease()) {
+        
+        if (!UndoEnabler.ENABLED) {
             UndoManager.getInstance().setUndoMax(0);
         }
         return currentProject;
     }
-
+    
     /**
      * Test if the model needs to be saved.
      *
