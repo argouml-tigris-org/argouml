@@ -72,9 +72,8 @@ import org.tigris.gef.presentation.FigText;
 /**
  * Class to display graphics for a UML Class in a diagram.<p>
  */
-public class FigClass extends FigNodeModelElement
-        implements AttributesCompartmentContainer,
-        OperationsCompartmentContainer {
+public class FigClass extends FigClassifierBox
+        implements AttributesCompartmentContainer {
 
 
     ////////////////////////////////////////////////////////////////
@@ -168,8 +167,8 @@ public class FigClass extends FigNodeModelElement
 
         // this rectangle marks the operation section; all operations
         // are inside it
-        FigCompartment operationsFigCompartment =
-            new FigOperationsCompartment(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
+//        FigCompartment operationsFigCompartment =
+//            new FigOperationsCompartment(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
@@ -204,7 +203,7 @@ public class FigClass extends FigNodeModelElement
         addFig(getStereotypeFig());             //0
         addFig(getNameFig());                   //1
         addFig(bigPort);                        //2
-        addFig(operationsFigCompartment);       //3
+        addFig(operationsFig);       //3
         addFig(attributesFigCompartment);       //4
 
         setSuppressCalcBounds(false);
@@ -299,14 +298,6 @@ public class FigClass extends FigNodeModelElement
      */
     public Rectangle getAttributesBounds() {
         return ((FigGroup) getFigAt(ATTRIBUTES_POSN)).getBounds();
-    }
-
-    /**
-     * @return The vector of graphics for operations (if any).
-     * First one is the rectangle for the entire operations box.
-     */
-    private FigOperationsCompartment getOperationsFig() {
-        return (FigOperationsCompartment) getFigAt(OPERATIONS_POSN);
     }
 
     /**

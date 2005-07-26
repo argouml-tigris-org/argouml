@@ -46,6 +46,16 @@ import org.tigris.gef.presentation.FigGroup;
 abstract public class FigClassifierBox extends FigNodeModelElement
         implements OperationsCompartmentContainer {
 
+    /**
+     * The Fig for the operations compartment (if any). 
+     */
+    protected FigOperationsCompartment operationsFig;
+    
+    /**
+     * Text highlighted by mouse actions on the diagram.<p>
+     */
+    protected CompartmentFigText highlightedFigText = null;
+
     FigClassifierBox() {
 
         // Set name box. Note the upper line will be blanked out if there is
@@ -85,16 +95,6 @@ abstract public class FigClassifierBox extends FigNodeModelElement
     }
     
     
-    /**
-     * The Fig for the operations compartment (if any). 
-     */
-    protected FigOperationsCompartment operationsFig;
-    
-    /**
-     * Text highlighted by mouse actions on the diagram.<p>
-     */
-    protected CompartmentFigText highlightedFigText = null;
-
     /**
      * Updates the operations box. Called from modelchanged if there is
      * a modelevent effecting the attributes and from renderingChanged in all
