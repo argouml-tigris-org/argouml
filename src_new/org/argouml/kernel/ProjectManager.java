@@ -31,6 +31,7 @@ import java.util.Vector;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.ArgoVersion;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.MementoCreationObserver;
 import org.argouml.model.Model;
@@ -249,6 +250,9 @@ public final class ProjectManager implements PropertyChangeListener, MementoCrea
                             oldProject, currentProject);
         creatingCurrentProject = false;
         UndoManager.getInstance().empty();
+        if (!ArgoVersion.isDevRelease()) {
+            UndoManager.getInstance().setUndoMax(0);
+        }
         return currentProject;
     }
 
