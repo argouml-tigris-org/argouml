@@ -45,6 +45,8 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.UndoEnabler;
 import org.argouml.language.ui.ActionNotation;
 import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionSaveConfiguration;
@@ -483,7 +485,7 @@ public class GenericArgoMenuBar extends JMenuBar
         edit = add(new JMenu(menuLocalize("Edit")));
         setMnemonic(edit, "Edit");
 
-        if (ArgoVersion.isDevRelease()) {
+        if (UndoEnabler.ENABLED) {
             JMenuItem undoItem = 
                 edit.add(ProjectBrowser.getInstance().getUndoAction());
             setMnemonic(undoItem, "Undo");

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,35 +22,22 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.application;
+package org.argouml.kernel;
 
 /**
- * This class <strong>only</strong> encapsulates the ArgoUML version string.<p>
- *
- * It should <strong>not</strong> be edited manually because it is
- * build from the file ArgoVersion.template when necessary.<p>
- *
- * @author Thierry Lach
- * @since  Argo0.11.1
+ * Control for enabling undo functionality. Remove once undo has acceptable
+ * support through all of GEF and ArgoUML
+ * @author Bob Tarling
  */
-public final class ArgoVersion {
-    /** 
-     * Version number.
-     */
-    private static final String VERSION = "@ARGO_RELEASE_VERSION@";
+public class UndoEnabler {
 
     /**
-     * Retrieve the version number.
-     *
-     * @return the version number.
+     * Change this value to true to enable undo.
+     * Do not commit to CVS in this state.
      */
-    public static String getVersion() {
-        return VERSION;
-    }
-
-    /**
-     * Don't allow instantiation.
-     */
-    private ArgoVersion() {
+    public final static boolean ENABLED = false;
+    
+    private UndoEnabler() {
+        super();
     }
 }
