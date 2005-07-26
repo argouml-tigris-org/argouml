@@ -96,11 +96,6 @@ public class FigInterface extends FigClassifierBox {
     private Object resident =
             Model.getCoreFactory().createElementResidence();
 
-    /**
-     * Text highlighted by mouse actions on the diagram.<p>
-     */
-    private CompartmentFigText highlightedFigText = null;
-
     ////////////////////////////////////////////////////////////////
     // constructors
 

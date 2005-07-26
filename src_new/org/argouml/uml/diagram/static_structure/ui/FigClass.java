@@ -287,13 +287,6 @@ public class FigClass extends FigClassifierBox
     }
 
     /**
-     * @return The bounds of the operations compartment.
-     */
-    public Rectangle getOperationsBounds() {
-        return ((FigGroup) getFigAt(OPERATIONS_POSN)).getBounds();
-    }
-
-    /**
      * @return The bounds of the attributes compartment.
      */
     public Rectangle getAttributesBounds() {

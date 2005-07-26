@@ -148,39 +148,6 @@ abstract public class FigClassifierBox extends FigNodeModelElement
     }
     
     /**
-     * @param isVisible true will show the operations compartiment
-     */
-    public void setOperationsVisible(boolean isVisible) {
-        Rectangle rect = getBounds();
-        int h = isCheckSize()
-                ? ((ROWHEIGHT * Math.max(1, operationsFig.getFigs().size() - 1) + 2)
-                * rect.height
-                / getMinimumSize().height)
-                : 0;
-        if (operationsFig.isVisible()) {
-            if (!isVisible) {
-                damage();
-                Iterator it = operationsFig.getFigs().iterator();
-                while (it.hasNext()) {
-                    ((Fig) (it.next())).setVisible(false);
-                }
-                operationsFig.setVisible(false);
-                setBounds(rect.x, rect.y, rect.width, rect.height - h);
-            }
-        } else {
-            if (isVisible) {
-                Iterator it = operationsFig.getFigs().iterator();
-                while (it.hasNext()) {
-                    ((Fig) (it.next())).setVisible(true);
-                }
-                operationsFig.setVisible(true);
-                setBounds(rect.x, rect.y, rect.width, rect.height + h);
-                damage();
-            }
-        }
-    }
-    
-    /**
      * @see org.tigris.gef.presentation.Fig#translate(int, int)
      */
     public void translate(int dx, int dy) {
