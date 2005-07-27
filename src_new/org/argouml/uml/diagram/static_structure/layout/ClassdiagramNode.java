@@ -118,7 +118,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
      */
     private float weight = NOWEIGHT;
 
-    private static float uplinkFactor = 5;
+    private static final float UPLINK_FACTOR = 5;
 
     /**
      * Operation ClassdiagramNode creates a new ClassdiagramNode.
@@ -169,7 +169,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
      * related node. For standard-nodes the weight is a function of
      * up-/downlinks, column and uplink factor.
      *
-     * @return The weigth of this node.
+     * @return The weight of this node.
      */
     public float calculateWeight() {
         weight = 0;
@@ -178,13 +178,13 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
             for (Iterator iter = uplinks.iterator(); iter.hasNext();) {
                 ClassdiagramNode node = (ClassdiagramNode) iter.next();
                 weight =
-		    Math.max(weight,
-			     node.getWeight() * uplinkFactor
-			     * (1 + 1 / (float) Math.max(1, node.getColumn()
-							 + uplinkFactor)));
+                    Math.max(weight,
+                         node.getWeight() * UPLINK_FACTOR
+                         * (1 + 1 / (float) Math.max(1, node.getColumn()
+							 + UPLINK_FACTOR)));
             }
         }
-        weight += w + 1 / (float) Math.max(1, getColumn() + uplinkFactor);
+        weight += w + 1 / (float) Math.max(1, getColumn() + UPLINK_FACTOR);
         return weight;
     }
 
@@ -335,15 +335,16 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
      *
      * @return The weight of the subtree.
      */
-    public float getSubtreeWeight() {
+    private float getSubtreeWeight() {
+        
         float w = 1;
         for (Iterator iter = downlinks.iterator(); iter.hasNext();) {
             w += ((ClassdiagramNode) iter.next()).getSubtreeWeight()
-                    / (float) uplinkFactor;
+                    / (float) UPLINK_FACTOR;
         }
         return w;
     }
-
+    
     /**
      * Get the type order number of this node. This number may be used to
      * influence the sort order of ClassdiagramNodes.
