@@ -49,7 +49,6 @@ public final class AllTests {
         suite.addTestSuite(TestCommonBehaviorHelper.class);
         suite.addTestSuite(TestModelManagementHelper.class);
         suite.addTestSuite(TestUmlModel.class);
-        suite.addTestSuite(GUITestCopyHelper.class);
         suite.addTestSuite(TestActivityGraphsHelper.class);
         suite.addTestSuite(TestCollaborationsHelper.class);
         suite.addTestSuite(TestUmlActor.class);

@@ -61,15 +61,16 @@ import org.tigris.gef.util.EnumerationSingle;
 import org.tigris.swidgets.Horizontal;
 
 /**
- * GuiTestPropertyPanels attempts to load a project file and iterates through
+ * TestPropertyPanels attempts to load a project file and iterates through
  * all known modelelements of this project. For each modelelement it creates
  * a test case, which tries to invoke the according property panel.
  * This test implements a simple verification that creation of property panels
  * is at least exception free. It does not provide a test for the functionality
  * of the respective modelelements.
+ *
  * @author mkl
  */
-public class GUITestPropertyPanels extends TestCase {
+public class TestPropertyPanels extends TestCase {
 
     private static Project p = null;
     private Object modelElement;
@@ -94,7 +95,7 @@ public class GUITestPropertyPanels extends TestCase {
      * @param me is the type of object to test
      * @param arg0 is the name of the test case
      */
-    public GUITestPropertyPanels(Object me, String arg0) {
+    public TestPropertyPanels(Object me, String arg0) {
         super(arg0);
         modelElement = me;
     }
@@ -146,7 +147,7 @@ public class GUITestPropertyPanels extends TestCase {
 			  + "for all known model elements");
 
         p = ProjectManager.getManager().makeEmptyProject();
-        URL url = GUITestPropertyPanels.class.getResource(
+        URL url = TestPropertyPanels.class.getResource(
                         "/testmodels/GUITestPropertyPanels.zargo");
 
         File testfile = new File(url.getFile());
@@ -167,7 +168,7 @@ public class GUITestPropertyPanels extends TestCase {
             Object obj = meEnum.nextElement();
             if (Model.getFacade().isAModelElement(obj)) {
                 if (!meMap.containsKey(obj.getClass())) {
-                    suite.addTest(new GUITestPropertyPanels(
+                    suite.addTest(new TestPropertyPanels(
 			    obj,
 			    "PropPanel"
 			    + Model.getFacade().getUMLClassName(obj)));
