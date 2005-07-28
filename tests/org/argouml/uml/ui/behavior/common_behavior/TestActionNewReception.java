@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,54 +22,45 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.util.ArrayList;
-import java.util.List;
+import junit.framework.TestCase;
 
-import ru.novosoft.uml.foundation.core.MClassifierImpl;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MPackageImpl;
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 
 /**
- * Test for actionusecasediagram.
- * @author jaap.branderhorst@xs4all.nl
- * @since Jan 9, 2003
+ * Test for the ActionNewReception.
+ *
+ * @author mkl
  */
-public class GUITestActionUseCaseDiagram
-    extends AbstractTestActionAddDiagram
-{
+public class TestActionNewReception extends TestCase {
 
     /**
-     * Constructor
-     * @param arg0 test case name.
+     * The constructor.
+     *
+     * @param arg0 the name of the test
      */
-    public GUITestActionUseCaseDiagram(String arg0) {
+    public TestActionNewReception(String arg0) {
         super(arg0);
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
+     * @see TestCase#setUp()
      */
-    protected ActionAddDiagram getAction() {
-        return new ActionUseCaseDiagram();
+    protected void setUp() throws Exception {
+        super.setUp();
+        Translator.init();
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
+     * Test whether the icon of this action can be found.
      */
-    protected MNamespace getNamespace() {
-        return new MPackageImpl();
-    }
+    public void testHasIcon() {
+        ActionNewReception action = new ActionNewReception();
 
-    /**
-     * @see AbstractTestActionAddDiagram#getValidNamespaceClasses()
-     */
-    protected List getValidNamespaceClasses() {
-        List rl = new ArrayList();
-        rl.add(MPackageImpl.class);
-        rl.add(MClassifierImpl.class);
-        return rl;
+        assertNotNull(action.getValue(Action.SMALL_ICON));
     }
 
 }

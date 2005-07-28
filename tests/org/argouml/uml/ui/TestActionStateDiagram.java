@@ -24,26 +24,60 @@
 
 package org.argouml.uml.ui;
 
-import junit.framework.TestCase;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.argouml.ui.targetmanager.TargetManager;
+
+import ru.novosoft.uml.foundation.core.MClassifierImpl;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 9, 2003
  */
-public class TestActionStateDiagram extends TestCase
-{
+public class GUITestActionStateDiagram
+    extends AbstractTestActionAddDiagram {
 
     /**
-     * Constructor
+     * Constructor.
+     *
      * @param arg0 test case name
      */
-    public TestActionStateDiagram(String arg0) {
+    public GUITestActionStateDiagram(String arg0) {
         super(arg0);
     }
 
     /**
-     * Dummy testcase.
+     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
-    public void testDummy() { }
+    protected ActionAddDiagram getAction() {
+        return new ActionStateDiagram();
+    }
+
+    /**
+     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
+     */
+    protected MNamespace getNamespace() {
+        return new MClassifierImpl();
+    }
+
+    /**
+     * @see AbstractTestActionAddDiagram#getValidNamespaceClasses()
+     */
+    protected List getValidNamespaceClasses() {
+        List rl = new ArrayList();
+        rl.add(MClassifierImpl.class);
+        return rl;
+    }
+
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() {
+        super.setUp();
+        TargetManager.getInstance().setTarget(new MClassifierImpl());
+    }
+
 }

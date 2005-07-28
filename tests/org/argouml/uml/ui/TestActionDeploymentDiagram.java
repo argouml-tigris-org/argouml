@@ -24,27 +24,50 @@
 
 package org.argouml.uml.ui;
 
-import junit.framework.TestCase;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.argouml.kernel.ProjectManager;
+
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 9, 2003
  */
-public class TestActionDeploymentDiagram extends TestCase
-
+public class GUITestActionDeploymentDiagram
+    extends AbstractTestActionAddDiagram
 {
 
     /**
-     * Constructor for TestActionDeploymentDiagram.
+     * Constructor.
      * @param arg0 test case name.
      */
-    public TestActionDeploymentDiagram(String arg0) {
+    public GUITestActionDeploymentDiagram(String arg0) {
         super(arg0);
     }
 
     /**
-     * Dummy testcase.
+     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
-    public void testDummy() { }
+    protected ActionAddDiagram getAction() {
+        return new ActionDeploymentDiagram();
+    }
+
+    /**
+     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
+     */
+    protected MNamespace getNamespace() {
+        return (MNamespace) (ProjectManager.getManager().getCurrentProject()
+                .getModel());
+    }
+
+    /**
+     * @see AbstractTestActionAddDiagram#getValidNamespaceClasses()
+     */
+    protected List getValidNamespaceClasses() {
+        return new ArrayList();
+    }
+
 }

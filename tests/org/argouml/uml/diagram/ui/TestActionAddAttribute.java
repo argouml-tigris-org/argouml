@@ -22,12 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.uml.diagram.ui;
 
-import javax.swing.Action;
-
 import junit.framework.TestCase;
+
+import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 
@@ -36,17 +35,15 @@ import org.argouml.i18n.Translator;
  * Test the ActionAddAttribute.
  *
  * @author mkl
- *
  */
-public class GUITestActionAddAttribute extends TestCase {
-
+public class TestActionAddAttribute extends TestCase {
 
     /**
      * The constructor.
      *
      * @param arg0 the test name
      */
-    public GUITestActionAddAttribute(String arg0) {
+    public TestActionAddAttribute(String arg0) {
         super(arg0);
     }
 
@@ -65,5 +62,4 @@ public class GUITestActionAddAttribute extends TestCase {
         ActionAddAttribute action = new ActionAddAttribute();
         assertNotNull(action.getValue(Action.SMALL_ICON));
     }
-
 }

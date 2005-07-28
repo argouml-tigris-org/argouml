@@ -24,40 +24,67 @@
 
 package org.argouml.uml.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+
+import ru.novosoft.uml.foundation.core.MClassImpl;
+import ru.novosoft.uml.foundation.core.MClassifierImpl;
+import ru.novosoft.uml.foundation.core.MNamespace;
+
 /**
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 9, 2003
  */
-public class TestActionCollaborationDiagram
-    extends GUITestActionCollaborationDiagram
-{
+public class GUITestActionCollaborationDiagram
+    extends AbstractTestActionAddDiagram {
 
     /**
      * Constructor for TestActionCollaborationDiagram.
      * @param arg0 name of the test case
      */
-    public TestActionCollaborationDiagram(String arg0) {
+    public GUITestActionCollaborationDiagram(String arg0) {
         super(arg0);
     }
 
     /**
-     * Disable the test that doesn't work without head.
+     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
-    public void testCreateDiagram() { }
+    protected ActionAddDiagram getAction() {
+        return new ActionCollaborationDiagram();
+    }
 
     /**
-     * Disable the test that doesn't work without head.
+     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
-    public void testDifferentNames() { }
+    protected MNamespace getNamespace() {
+        //return new MCollaborationImpl();
+        MNamespace c = new MClassImpl();
+        TargetManager.getInstance().setTarget(c);
+        return c;
+    }
 
     /**
-     * Disable the test that doesn't work without head.
+     * @see AbstractTestActionAddDiagram#getValidNamespaceClasses()
      */
-    // public void testValidTestNamespace() { }
+    protected List getValidNamespaceClasses() {
+        List rl = new ArrayList();
+        rl.add(MClassifierImpl.class);
+        return rl;
+    }
 
     /**
-     * Disable the test that doesn't work without head.
+     * Test if the namespace is correct for the diagram.<p>
+     *
+     * @param diagram The diagram to check the namespace for.
      */
-    // public void testValidNamespaces() { }
+    protected void checkNamespace(UMLDiagram diagram) {
+        assertTrue(
+        	   "The Collaboration diagram has a non-valid namespace",
+        	   Model.getFacade().isACollaboration(diagram.getNamespace()));
+    }
 }
