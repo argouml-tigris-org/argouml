@@ -25,14 +25,12 @@
 package org.argouml.model;
 
 /**
- * A proxy onto a specific implementation of the ActivityGraphsHelper.
- * The proxy is responsible for any framework processing
- * before and after the implementation is called.
- * For the current implementation that is to generate mementos for any
- * mutable methods.
+ * The abstract Decorator for the {@link ActivityGraphsHelper}.
+ *
  * @author Bob Tarling
  */
-public class ActivityGraphsHelperProxy implements ActivityGraphsHelper {
+public abstract class AbstractActivityGraphsHelperDecorator
+	implements ActivityGraphsHelper {
 
     /**
      * The component.
@@ -42,8 +40,17 @@ public class ActivityGraphsHelperProxy implements ActivityGraphsHelper {
     /**
      * @param component The component to decorate.
      */
-    public ActivityGraphsHelperProxy(ActivityGraphsHelper component) {
+    AbstractActivityGraphsHelperDecorator(ActivityGraphsHelper component) {
         impl = component;
+    }
+
+    /**
+     * The component we are decorating.
+     *
+     * @return Returns the component.
+     */
+    protected ActivityGraphsHelper getComponent() {
+        return impl;
     }
 
     /**

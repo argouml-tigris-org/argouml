@@ -27,15 +27,12 @@ package org.argouml.model;
 import java.util.Collection;
 
 /**
- * A proxy onto a specific implementation of the UseCaseHelper.
- * The proxy is responsible for any framework processing
- * before and after the implementation is called.
- * For the current implementation that is to generate mementos for any
- * mutable methods.
+ * An abstract Decorator for the {@link UseCasesHelper}.
  *
  * @author Bob Tarling
  */
-public class UseCasesHelperProxy implements UseCasesHelper {
+public abstract class AbstractUseCasesHelperDecorator
+	implements UseCasesHelper {
 
     /**
      * The component.
@@ -45,8 +42,17 @@ public class UseCasesHelperProxy implements UseCasesHelper {
     /**
      * @param component The component to decorate.
      */
-    public UseCasesHelperProxy(UseCasesHelper component) {
+    AbstractUseCasesHelperDecorator(UseCasesHelper component) {
         impl = component;
+    }
+
+    /**
+     * The component we are decorating.
+     *
+     * @return Returns the component.
+     */
+    protected UseCasesHelper getComponent() {
+        return impl;
     }
 
     /**

@@ -27,14 +27,11 @@ package org.argouml.model;
 import java.util.Collection;
 
 /**
- * A proxy onto a specific implementation of the CoreHelper.
- * The proxy is responsible for any framework processing
- * before and after the implementation is called.
- * For the current implementation that is to generate mementos for any
- * muatable methods.
+ * An abstract Decorator for the {@link CoreHelper}.
+ *
  * @author Bob Tarling
  */
-public class CoreHelperProxy implements CoreHelper {
+public abstract class AbstractCoreHelperDecorator implements CoreHelper {
 
     /**
      * The delegate.
@@ -42,12 +39,21 @@ public class CoreHelperProxy implements CoreHelper {
     private CoreHelper impl;
 
     /**
-     * Construct a new CoreHelperProxy.
+     * Construct a new AbstractCoreHelperDecorator.
      *
      * @param component The component to decorate.
      */
-    CoreHelperProxy(CoreHelper component) {
+    AbstractCoreHelperDecorator(CoreHelper component) {
         impl = component;
+    }
+
+    /**
+     * The component we are decorating.
+     *
+     * @return Returns the component.
+     */
+    protected CoreHelper getComponent() {
+        return impl;
     }
 
     /**
@@ -670,40 +676,6 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setAbstract(java.lang.Object, boolean)
-     */
-    public void setAbstract(final Object handle, boolean flag) {
-        createMemento(new BooleanSetter() {
-            public void set(boolean value) {
-                impl.setAbstract(handle, value);
-            }
-        }, flag, Model.getFacade().isAbstract(handle));
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setActive(java.lang.Object, boolean)
-     */
-    public void setActive(final Object handle, boolean active) {
-        createMemento(new BooleanSetter() {
-            public void set(boolean value) {
-                impl.setActive(handle, value);
-            }
-        }, active, Model.getFacade().isActive(handle));
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setAggregation(
-     *         java.lang.Object, java.lang.Object)
-     */
-    public void setAggregation(final Object handle, Object aggregationKind) {
-        createMemento(new ObjectSetter() {
-            public void set(Object value) {
-                impl.setAggregation(handle, value);
-            }
-        }, aggregationKind, Model.getFacade().getAggregation(handle));
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#setAnnotatedElements(
      *         java.lang.Object, java.util.Collection)
      */
@@ -717,17 +689,6 @@ public class CoreHelperProxy implements CoreHelper {
      */
     public void setAssociation(Object handle, Object association) {
         impl.setAssociation(handle, association);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setLeaf(java.lang.Object, boolean)
-     */
-    public void setLeaf(final Object handle, boolean flag) {
-        createMemento(new BooleanSetter() {
-            public void set(boolean value) {
-                impl.setLeaf(handle, value);
-            }
-        }, flag, Model.getFacade().isLeaf(handle));
     }
 
     /**
@@ -747,47 +708,11 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setChangeability(
-     *         java.lang.Object, java.lang.Object)
-     */
-    public void setChangeability(final Object handle, Object ck) {
-        createMemento(new ObjectSetter() {
-            public void set(Object value) {
-                impl.setChangeability(handle, value);
-            }
-        }, ck, Model.getFacade().getChangeability(handle));
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setChangeable(
-     *         java.lang.Object, boolean)
-     */
-    public void setChangeable(final Object handle, boolean flag) {
-        createMemento(new BooleanSetter() {
-            public void set(boolean value) {
-                impl.setChangeable(handle, value);
-            }
-        }, flag, Model.getFacade().isChangeable(handle));
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#setChild(
      *         java.lang.Object, java.lang.Object)
      */
     public void setChild(Object handle, Object child) {
         impl.setChild(handle, child);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setConcurrency(
-     *         java.lang.Object, java.lang.Object)
-     */
-    public void setConcurrency(final Object handle, Object concurrencyKind) {
-        createMemento(new ObjectSetter() {
-            public void set(Object value) {
-                impl.setConcurrency(handle, value);
-            }
-        }, concurrencyKind, Model.getFacade().getConcurrency(handle));
     }
 
     /**
@@ -847,46 +772,6 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setKind(
-     *         java.lang.Object, java.lang.Object)
-     */
-    public void setKind(final Object handle, Object kind) {
-        createMemento(new ObjectSetter() {
-            public void set(Object value) {
-                impl.setKind(handle, value);
-            }
-        }, kind, Model.getFacade().getKind(handle));
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToIn(java.lang.Object)
-     */
-    public void setKindToIn(Object handle) {
-        setKind(handle, Model.getDirectionKind().getInParameter());
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToInOut(java.lang.Object)
-     */
-    public void setKindToInOut(Object handle) {
-        setKind(handle, Model.getDirectionKind().getInOutParameter());
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToOut(java.lang.Object)
-     */
-    public void setKindToOut(Object handle) {
-        setKind(handle, Model.getDirectionKind().getOutParameter());
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToReturn(java.lang.Object)
-     */
-    public void setKindToReturn(Object handle) {
-        setKind(handle, Model.getDirectionKind().getReturnParameter());
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#setModelElementContainer(
      *         java.lang.Object, java.lang.Object)
      */
@@ -895,71 +780,11 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setMultiplicity(
-     *         java.lang.Object, java.lang.Object)
-     */
-    public void setMultiplicity(final Object handle, Object arg) {
-        createMemento(new ObjectSetter() {
-            public void set(Object value) {
-                impl.setMultiplicity(handle, value);
-            }
-        }, arg, Model.getFacade().getMultiplicity(handle));
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setName(
-     *         java.lang.Object, java.lang.String)
-     */
-    public void setName(final Object handle, String name) {
-        createMemento(new StringSetter() {
-            public void set(String value) {
-                impl.setName(handle, value);
-            }
-        }, name, Model.getFacade().getName(handle));
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setBody(
-     *         java.lang.Object, java.lang.String)
-     */
-    public void setBody(final Object handle, String body) {
-        createMemento(new StringSetter() {
-            public void set(String value) {
-                impl.setBody(handle, value);
-            }
-        }, body, Model.getCoreHelper().getBody(handle));
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#setNamespace(
      *         java.lang.Object, java.lang.Object)
      */
     public void setNamespace(Object handle, Object ns) {
         impl.setNamespace(handle, ns);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setNavigable(
-     *         java.lang.Object, boolean)
-     */
-    public void setNavigable(final Object handle, boolean flag) {
-        createMemento(new BooleanSetter() {
-            public void set(boolean value) {
-                impl.setNavigable(handle, value);
-            }
-        }, flag, Model.getFacade().isNavigable(handle));
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setOrdering(
-     *         java.lang.Object, java.lang.Object)
-     */
-    public void setOrdering(final Object handle, Object ok) {
-        createMemento(new ObjectSetter() {
-            public void set(Object value) {
-                impl.setOrdering(handle, value);
-            }
-        }, ok, Model.getFacade().getOrdering(handle));
     }
 
     /**
@@ -995,34 +820,11 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setPowertype(
-     *         java.lang.Object, java.lang.Object)
-     */
-    public void setPowertype(final Object handle, Object pt) {
-        createMemento(new ObjectSetter() {
-            public void set(Object value) {
-                impl.setPowertype(handle, value);
-            }
-        }, pt, Model.getFacade().getPowertype(handle));
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#setQualifiers(
      *         java.lang.Object, java.util.Collection)
      */
     public void setQualifiers(Object handle, Collection elems) {
         impl.setQualifiers(handle, elems);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setQuery(java.lang.Object, boolean)
-     */
-    public void setQuery(final Object handle, boolean flag) {
-        createMemento(new BooleanSetter() {
-            public void set(boolean value) {
-                impl.setQuery(handle, value);
-            }
-        }, flag, Model.getFacade().isQuery(handle));
     }
 
     /**
@@ -1042,34 +844,11 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setRoot(java.lang.Object, boolean)
-     */
-    public void setRoot(final Object handle, boolean flag) {
-        createMemento(new BooleanSetter() {
-            public void set(boolean value) {
-                impl.setRoot(handle, value);
-            }
-        }, flag, Model.getFacade().isRoot(handle));
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#setSources(
      *         java.lang.Object, java.util.Collection)
      */
     public void setSources(Object handle, Collection specifications) {
         impl.setSources(handle, specifications);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setSpecification(
-     *         java.lang.Object, boolean)
-     */
-    public void setSpecification(final Object handle, boolean specification) {
-        createMemento(new BooleanSetter() {
-            public void set(boolean value) {
-                impl.setSpecification(handle, value);
-            }
-        }, specification, Model.getFacade().isSpecification(handle));
     }
 
     /**
@@ -1105,18 +884,6 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setTargetScope(
-     *         java.lang.Object, java.lang.Object)
-     */
-    public void setTargetScope(final Object handle, Object scopeKind) {
-        createMemento(new ObjectSetter() {
-            public void set(Object value) {
-                impl.setTargetScope(handle, value);
-            }
-        }, scopeKind, Model.getFacade().getTargetScope(handle));
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#setType(
      *         java.lang.Object, java.lang.Object)
      */
@@ -1133,18 +900,6 @@ public class CoreHelperProxy implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setVisibility(
-     *         java.lang.Object, java.lang.Object)
-     */
-    public void setVisibility(final Object handle, Object visibility) {
-        createMemento(new ObjectSetter() {
-            public void set(Object value) {
-                impl.setVisibility(handle, value);
-            }
-        }, visibility, Model.getFacade().getVisibility(handle));
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#removeDeploymentLocation(
      *         java.lang.Object, java.lang.Object)
      */
@@ -1152,121 +907,177 @@ public class CoreHelperProxy implements CoreHelper {
         impl.removeDeploymentLocation(handle, node);
     }
 
-
-    // Helper interfaces and methods.
     /**
-     * Interface to set a boolean value.
+     * @see org.argouml.model.CoreHelper#setAbstract(java.lang.Object, boolean)
      */
-    protected interface BooleanSetter {
-        /**
-         * Do the actual setting.
-         *
-         * @param value The new value.
-         */
-        void set(boolean value);
+    public void setAbstract(Object handle, boolean flag) {
+        impl.setAbstract(handle, flag);
     }
 
     /**
-     * Interface to set a Object value.
+     * @see org.argouml.model.CoreHelper#setActive(java.lang.Object, boolean)
      */
-    protected interface ObjectSetter {
-        /**
-         * Do the actual setting.
-         *
-         * @param value The new value.
-         */
-        void set(Object value);
+    public void setActive(Object handle, boolean active) {
+        impl.setActive(handle, active);
     }
 
     /**
-     * Interface to set a String value.
+     * @see org.argouml.model.CoreHelper#setAggregation(
+     *         java.lang.Object, java.lang.Object)
      */
-    protected interface StringSetter {
-        /**
-         * Do the actual setting.
-         *
-         * @param value The new value.
-         */
-        void set(String value);
+    public void setAggregation(Object handle, Object aggregationKind) {
+        impl.setAggregation(handle, aggregationKind);
     }
 
     /**
-     * Create a memento for a setter of a boolean value.
-     *
-     * @param accesser The accesser.
-     * @param newValue The new value.
-     * @param oldValue The old value.
+     * @see org.argouml.model.CoreHelper#setLeaf(java.lang.Object, boolean)
      */
-    private void createMemento(final BooleanSetter accesser,
-            final boolean newValue, final boolean oldValue) {
-        if (newValue == oldValue) {
-            return;
-        }
-        ModelMemento memento = new ModelMemento() {
-            public void undo() {
-                accesser.set(oldValue);
-            }
-            public void redo() {
-                accesser.set(newValue);
-            }
-        };
-        Model.notifyMementoCreationObserver(memento);
-        memento.redo();
+    public void setLeaf(Object handle, boolean flag) {
+        impl.setLeaf(handle, flag);
     }
 
     /**
-     * Create a memento for a setter of a Object value.
-     *
-     * @param accesser The accesser.
-     * @param newValue The new value.
-     * @param oldValue The old value.
+     * @see org.argouml.model.CoreHelper#setChangeability(
+     *         java.lang.Object, java.lang.Object)
      */
-    private void createMemento(final ObjectSetter accesser,
-            final Object newValue, final Object oldValue) {
-        if (newValue == oldValue) {
-            return;
-        }
-        if (newValue != null
-                && newValue.equals(oldValue)) {
-            return;
-        }
-        ModelMemento memento = new ModelMemento() {
-            public void undo() {
-                accesser.set(oldValue);
-            }
-            public void redo() {
-                accesser.set(newValue);
-            }
-        };
-        Model.notifyMementoCreationObserver(memento);
-        memento.redo();
+    public void setChangeability(Object handle, Object ck) {
+        impl.setChangeability(handle, ck);
     }
 
     /**
-     * Create a memento for a setter of a String value.
-     *
-     * @param accesser The accesser.
-     * @param newValue The new value.
-     * @param oldValue The old value.
+     * @see org.argouml.model.CoreHelper#setChangeable(
+     *         java.lang.Object, boolean)
      */
-    private void createMemento(final StringSetter accesser,
-            final String newValue, final String oldValue) {
-        if (newValue == oldValue) {
-            return;
-        }
-        if (newValue != null
-                && newValue.equals(oldValue)) {
-            return;
-        }
-        ModelMemento memento = new ModelMemento() {
-            public void undo() {
-                accesser.set(oldValue);
-            }
-            public void redo() {
-                accesser.set(newValue);
-            }
-        };
-        Model.notifyMementoCreationObserver(memento);
-        memento.redo();
+    public void setChangeable(Object handle, boolean flag) {
+        impl.setChangeable(handle, flag);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setConcurrency(
+     *         java.lang.Object, java.lang.Object)
+     */
+    public void setConcurrency(Object handle, Object concurrencyKind) {
+        impl.setConcurrency(handle, concurrencyKind);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setKind(
+     *         java.lang.Object, java.lang.Object)
+     */
+    public void setKind(Object handle, Object kind) {
+        impl.setKind(handle, kind);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setKindToIn(java.lang.Object)
+     */
+    public void setKindToIn(Object handle) {
+        impl.setKindToIn(handle);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setKindToInOut(java.lang.Object)
+     */
+    public void setKindToInOut(Object handle) {
+        impl.setKindToInOut(handle);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setKindToOut(java.lang.Object)
+     */
+    public void setKindToOut(Object handle) {
+        impl.setKindToOut(handle);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setKindToReturn(java.lang.Object)
+     */
+    public void setKindToReturn(Object handle) {
+        impl.setKindToReturn(handle);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setMultiplicity(
+     *         java.lang.Object, java.lang.Object)
+     */
+    public void setMultiplicity(Object handle, Object arg) {
+        impl.setMultiplicity(handle, arg);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setName(
+     *         java.lang.Object, java.lang.String)
+     */
+    public void setName(Object handle, String name) {
+        impl.setName(handle, name);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setBody(
+     *         java.lang.Object, java.lang.String)
+     */
+    public void setBody(Object handle, String body) {
+        impl.setBody(handle, body);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setNavigable(java.lang.Object, boolean)
+     */
+    public void setNavigable(Object handle, boolean flag) {
+        impl.setNavigable(handle, flag);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setOrdering(
+     *         java.lang.Object, java.lang.Object)
+     */
+    public void setOrdering(Object handle, Object ok) {
+        impl.setOrdering(handle, ok);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setPowertype(
+     *         java.lang.Object, java.lang.Object)
+     */
+    public void setPowertype(Object handle, Object pt) {
+        impl.setPowertype(handle, pt);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setQuery(java.lang.Object, boolean)
+     */
+    public void setQuery(Object handle, boolean flag) {
+        impl.setQuery(handle, flag);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setRoot(java.lang.Object, boolean)
+     */
+    public void setRoot(Object handle, boolean flag) {
+        impl.setRoot(handle, flag);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setSpecification(
+     *         java.lang.Object, boolean)
+     */
+    public void setSpecification(Object handle, boolean specification) {
+        impl.setSpecification(handle, specification);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setTargetScope(
+     *         java.lang.Object, java.lang.Object)
+     */
+    public void setTargetScope(Object handle, Object scopeKind) {
+        impl.setTargetScope(handle, scopeKind);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setVisibility(
+     *         java.lang.Object, java.lang.Object)
+     */
+    public void setVisibility(Object handle, Object visibility) {
+        impl.setVisibility(handle, visibility);
     }
 }

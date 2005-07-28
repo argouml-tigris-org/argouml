@@ -27,14 +27,12 @@ package org.argouml.model;
 import java.util.Collection;
 
 /**
- * A proxy onto a specific implementation of the CollaborationsHelper.
- * The proxy is responsible for any framework processing
- * before and after the implementation is called.
- * For the current implementation that is to generate mementos for any
- * mutable methods.
+ * An abstract Decorator for the {@link CollaborationsHelper}.
+ *
  * @author Bob Tarling
  */
-public class CollaborationsHelperProxy implements CollaborationsHelper {
+public abstract class AbstractCollaborationsHelperDecorator
+	implements CollaborationsHelper {
 
     /**
      * The component.
@@ -45,8 +43,17 @@ public class CollaborationsHelperProxy implements CollaborationsHelper {
     /**
      * @param component The component to decorate.
      */
-    public CollaborationsHelperProxy(CollaborationsHelper component) {
+    AbstractCollaborationsHelperDecorator(CollaborationsHelper component) {
         impl = component;
+    }
+
+    /**
+     * The component we are decorating.
+     *
+     * @return Returns the component.
+     */
+    protected CollaborationsHelper getComponent() {
+        return impl;
     }
 
     /**

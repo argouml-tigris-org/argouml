@@ -47,14 +47,49 @@ public final class Model {
      */
     private static final Logger LOG = Logger.getLogger(Model.class);
 
+    /**
+     * The decorated helper.
+     */
     private static ActivityGraphsHelper activityGraphsHelper;
+
+    /**
+     * The decorated helper.
+     */
     private static CollaborationsHelper collaborationsHelper;
+
+    /**
+     * The decorated helper.
+     */
     private static CommonBehaviorHelper commonBehaviorHelper;
+
+    /**
+     * The decorated helper.
+     */
     private static CoreHelper coreHelper;
+
+    /**
+     * The decorated helper.
+     */
     private static DataTypesHelper dataTypesHelper;
+
+    /**
+     * The decorated helper.
+     */
     private static ExtensionMechanismsHelper extensionMechanismsHelper;
+
+    /**
+     * The decorated helper.
+     */
     private static StateMachinesHelper stateMachinesHelper;
+
+    /**
+     * The decorated helper.
+     */
     private static UmlHelper umlHelper;
+
+    /**
+     * The decorated helper.
+     */
     private static UseCasesHelper useCasesHelper;
 
     /**
@@ -87,20 +122,25 @@ public final class Model {
 
 	// Install the decorators
         activityGraphsHelper =
-            new ActivityGraphsHelperProxy(impl.getActivityGraphsHelper());
+            new UndoActivityGraphsHelperDecorator(
+                    impl.getActivityGraphsHelper());
         collaborationsHelper =
-            new CollaborationsHelperProxy(impl.getCollaborationsHelper());
+            new UndoCollaborationsHelperDecorator(
+                    impl.getCollaborationsHelper());
         commonBehaviorHelper =
-            new CommonBehaviorHelperProxy(impl.getCommonBehaviorHelper());
-        coreHelper = new CoreHelperProxy(impl.getCoreHelper());
-        dataTypesHelper = new DataTypesHelperProxy(impl.getDataTypesHelper());
+            new UndoCommonBehaviorHelperDecorator(
+                    impl.getCommonBehaviorHelper());
+        coreHelper = new UndoCoreHelperDecorator(impl.getCoreHelper());
+        dataTypesHelper =
+            new UndoDataTypesHelperDecorator(impl.getDataTypesHelper());
         extensionMechanismsHelper =
-            new ExtensionMechanismsHelperProxy(
+            new UndoExtensionMechanismsHelperDecorator(
 		impl.getExtensionMechanismsHelper());
         stateMachinesHelper =
-            new StateMachinesHelperProxy(impl.getStateMachinesHelper());
-        umlHelper = new UmlHelperProxy(impl.getUmlHelper());
-        useCasesHelper = new UseCasesHelperProxy(impl.getUseCasesHelper());
+            new UndoStateMachinesHelperDecorator(impl.getStateMachinesHelper());
+        umlHelper = new UndoUmlHelperDecorator(impl.getUmlHelper());
+        useCasesHelper =
+            new UndoUseCasesHelperDecorator(impl.getUseCasesHelper());
     }
 
     /**

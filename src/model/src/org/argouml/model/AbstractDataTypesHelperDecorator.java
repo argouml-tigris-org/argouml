@@ -25,14 +25,12 @@
 package org.argouml.model;
 
 /**
- * A proxy onto a specific implementation of the DataTypesHelper.
- * The proxy is responsible for any framework processing
- * before and after the implementation is called.
- * For the current implementation that is to generate mementos for any
- * mutable methods.
+ * An abstract Decorator for the {@link DataTypesHelper}.
+ *
  * @author Bob Tarling
  */
-public class DataTypesHelperProxy implements DataTypesHelper {
+public abstract class AbstractDataTypesHelperDecorator
+	implements DataTypesHelper {
 
     /**
      * The component.
@@ -42,8 +40,17 @@ public class DataTypesHelperProxy implements DataTypesHelper {
     /**
      * @param component The component to decorate.
      */
-    public DataTypesHelperProxy(DataTypesHelper component) {
+    AbstractDataTypesHelperDecorator(DataTypesHelper component) {
         impl = component;
+    }
+
+    /**
+     * The component we are decorating.
+     *
+     * @return Returns the component.
+     */
+    protected DataTypesHelper getComponent() {
+        return impl;
     }
 
     /**
