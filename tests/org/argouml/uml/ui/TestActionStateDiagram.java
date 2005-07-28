@@ -37,7 +37,7 @@ import ru.novosoft.uml.foundation.core.MNamespace;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 9, 2003
  */
-public class GUITestActionStateDiagram
+public class TestActionStateDiagram
     extends AbstractTestActionAddDiagram {
 
     /**
@@ -45,7 +45,7 @@ public class GUITestActionStateDiagram
      *
      * @param arg0 test case name
      */
-    public GUITestActionStateDiagram(String arg0) {
+    public TestActionStateDiagram(String arg0) {
         super(arg0);
     }
 

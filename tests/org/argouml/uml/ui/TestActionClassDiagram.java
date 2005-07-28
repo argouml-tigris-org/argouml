@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2002, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,16 +32,16 @@ import ru.novosoft.uml.model_management.MModelImpl;
 import ru.novosoft.uml.model_management.MPackageImpl;
 
 /**
- * Test for ActionClassDiagram.
+ * Test for {@link ActionClassDiagram}.
  * @author JBranderhorst
  */
-public class GUITestActionClassDiagram extends AbstractTestActionAddDiagram {
+public class TestActionClassDiagram extends AbstractTestActionAddDiagram {
 
     /**
      * Constructor for GUITestActionClassDiagram.
      * @param arg0 the name of the test case.
      */
-    public GUITestActionClassDiagram(String arg0) {
+    public TestActionClassDiagram(String arg0) {
 	super(arg0);
     }
 

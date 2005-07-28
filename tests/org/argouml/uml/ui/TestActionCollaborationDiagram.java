@@ -40,14 +40,14 @@ import ru.novosoft.uml.foundation.core.MNamespace;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 9, 2003
  */
-public class GUITestActionCollaborationDiagram
+public class TestActionCollaborationDiagram
     extends AbstractTestActionAddDiagram {
 
     /**
      * Constructor for TestActionCollaborationDiagram.
      * @param arg0 name of the test case
      */
-    public GUITestActionCollaborationDiagram(String arg0) {
+    public TestActionCollaborationDiagram(String arg0) {
         super(arg0);
     }
 

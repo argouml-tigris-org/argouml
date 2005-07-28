@@ -32,19 +32,18 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.model_management.MPackageImpl;
 
 /**
- * Test for actionusecasediagram.
+ * Test for {@link ActionUseCaseDiagram}.
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 9, 2003
  */
-public class GUITestActionUseCaseDiagram
-    extends AbstractTestActionAddDiagram
-{
+public class TestActionUseCaseDiagram
+    extends AbstractTestActionAddDiagram {
 
     /**
      * Constructor
      * @param arg0 test case name.
      */
-    public GUITestActionUseCaseDiagram(String arg0) {
+    public TestActionUseCaseDiagram(String arg0) {
         super(arg0);
     }
 
