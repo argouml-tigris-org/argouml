@@ -142,9 +142,8 @@ public class ActionSaveProjectAs extends ActionSaveProject {
                 }
             }
             return file;
-        } else {
-            return null;
-        }
+        } 
+        return null;
     }
 
 } /* end class ActionSaveProjectAs */
