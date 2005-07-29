@@ -36,17 +36,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Category;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.util.FileFilters;
-import org.tigris.gef.base.CmdSaveEPS;
-import org.tigris.gef.base.CmdSaveGIF;
 import org.tigris.gef.base.CmdSaveGraphics;
-import org.tigris.gef.base.CmdSavePS;
-import org.tigris.gef.base.CmdSaveSVG;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.Util;
 
@@ -91,6 +87,10 @@ public class ActionSaveAllGraphics extends UMLAction {
 	Vector  targets = p.getDiagrams();
 	Iterator it = targets.iterator();
 	File saveDir = getSaveDir(p);
+        if (saveDir == null) {
+            /* The user cancelled! */
+            return false;
+        }
 	boolean okSoFar = true;
 	ArgoDiagram activeDiagram = p.getActiveDiagram();
 	while (it.hasNext() && okSoFar) {
@@ -112,13 +112,15 @@ public class ActionSaveAllGraphics extends UMLAction {
 	    // coming, I'm sure.
 	    try {
 		File theFile = new File(saveDir, defaultName + "."
-					+ FileFilters.GIF_FILTER.getSuffix() );
+		    + SaveGraphicsManager.getInstance().getDefaultSuffix());
 		String name = theFile.getName();
 		String path = theFile.getParent();
-		CmdSaveGraphics cmd = getCmdSaveGraphics(FileFilters.GIF_FILTER.getSuffix());
+		CmdSaveGraphics cmd = SaveGraphicsManager.getInstance()
+                    .getSaveCommandBySuffix(
+                        SaveGraphicsManager.getInstance().getDefaultSuffix());
 		if (cmd == null) {
 		    pb.showStatus("Unknown graphics file type with extension "
-				  + FileFilters.GIF_FILTER.getSuffix());
+			+ SaveGraphicsManager.getInstance().getDefaultSuffix());
 		    return false;
 		}
 		pb.showStatus( "Writing " + path + name + "..." );
@@ -139,6 +141,10 @@ public class ActionSaveAllGraphics extends UMLAction {
     }
     
 
+    /**
+     * @param p the current project
+     * @return returns null if the user did not approve his choice
+     */
     protected File getSaveDir(Project p) {
 	JFileChooser chooser = getFileChooser(p);
 	ProjectBrowser pb = ProjectBrowser.getInstance();
@@ -171,20 +177,6 @@ public class ActionSaveAllGraphics extends UMLAction {
 	return true;
     }
     
-    private CmdSaveGraphics getCmdSaveGraphics(String extension) {
-	if (FileFilters.PS_FILTER.getSuffix().equals(extension))
-	    return  new CmdSavePS();
-	else if (FileFilters.EPS_FILTER.getSuffix().equals(extension))
-	    return new CmdSaveEPS();
-	else if (FileFilters.GIF_FILTER.getSuffix().equals(extension))
-	    return new CmdSaveGIF();
-	else if (FileFilters.SVG_FILTER.getSuffix().equals(extension)) {
-	    return new CmdSaveSVG(); 
-	} else {
-	    return null;
-	}
-    }
-    
     private JFileChooser getFileChooser(Project p) {
 	JFileChooser chooser = null;
 	try {
@@ -201,7 +193,8 @@ public class ActionSaveAllGraphics extends UMLAction {
 	}
 	
 	if ( chooser == null ) chooser = new JFileChooser();
-	chooser.setDialogTitle( "Save All Diagrams as Graphics" ); //TODO: i18n
+	chooser.setDialogTitle(
+                Translator.localize("filechooser.save-all-graphics"));
 	chooser.setDialogType(JFileChooser.OPEN_DIALOG);
 	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 	chooser.setMultiSelectionEnabled(false);

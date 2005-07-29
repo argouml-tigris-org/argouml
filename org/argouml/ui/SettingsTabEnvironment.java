@@ -25,32 +25,35 @@
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.io.File;
+import java.util.Collection;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JLabel;
+
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
+import org.argouml.uml.ui.SaveGraphicsManager;
+import org.argouml.util.SuffixFilter;
+import org.tigris.swidgets.LabelledLayout;
 
 
 
 /**
- * Action object for handling Argo settings.
+ * Settings panel for handling ArgoUML environment related settings.
  *
  * @author Thierry Lach
  * @since  0.9.4
  */
 public class SettingsTabEnvironment extends SettingsTabHelper
     implements SettingsTabPanel {
-
-    private String userDir;
 
     private JTextField fieldArgoRoot;
     private JTextField fieldArgoHome;
@@ -59,93 +62,81 @@ public class SettingsTabEnvironment extends SettingsTabHelper
     private JTextField fieldUserHome;
     private JTextField fieldUserDir;
     private JTextField fieldStartupDir;
-
-    private JButton userDirButton;
+    private JComboBox fieldGraphicsFormat;
 
     /**
      * The constructor.
-     *
      */
     public SettingsTabEnvironment() {
         super();
         setLayout(new BorderLayout());
-	JPanel top = new JPanel();
-    	top.setLayout(new GridBagLayout());
+        int labelGap = 10;
+        int componentGap = 5;
+        JPanel top = new JPanel(new LabelledLayout(labelGap, componentGap));
 
-	GridBagConstraints labelConstraints = new GridBagConstraints();
-	labelConstraints.anchor = GridBagConstraints.WEST;
-	labelConstraints.gridy = 0;
-	labelConstraints.gridx = 0;
-	labelConstraints.gridwidth = 1;
-	labelConstraints.gridheight = 1;
-	labelConstraints.insets = new Insets(2, 20, 2, 4);
-
-	GridBagConstraints fieldConstraints = new GridBagConstraints();
-	fieldConstraints.anchor = GridBagConstraints.EAST;
-	fieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-	fieldConstraints.gridy = 0;
-	fieldConstraints.gridx = 1;
-	fieldConstraints.gridwidth = 3;
-	fieldConstraints.gridheight = 1;
-	fieldConstraints.weightx = 1.0;
-	fieldConstraints.insets = new Insets(2, 4, 2, 20);
-
-	labelConstraints.gridy = 0;
-	fieldConstraints.gridy = 0;
+        JLabel label = createLabel("label.default.graphics-format");
+        Collection c = SaveGraphicsManager.getInstance().getSettingsList();
+        fieldGraphicsFormat = new JComboBox(c.toArray());
+        label.setLabelFor(fieldGraphicsFormat);
+        top.add(label);
+        top.add(fieldGraphicsFormat);
+        
 	// This string is NOT to be translated! See issue 2381.
-	//top.add(createLabel("${argo.root}"), labelConstraints);
-	top.add(new JLabel("${argo.root}"), labelConstraints);
+	label = new JLabel("${argo.root}");
 	fieldArgoRoot = createTextField();
 	fieldArgoRoot.setEnabled(false);
-	top.add(fieldArgoRoot, fieldConstraints);
+        label.setLabelFor(fieldArgoRoot);
+        top.add(label);
+	top.add(fieldArgoRoot);
 
-	labelConstraints.gridy = 1;
-	fieldConstraints.gridy = 1;
 	// This string is NOT to be translated! See issue 2381.
-	top.add(new JLabel("${argo.home}"), labelConstraints);
+	label = new JLabel("${argo.home}");
         fieldArgoHome = createTextField();
 	fieldArgoHome.setEnabled(false);
-	top.add(fieldArgoHome, fieldConstraints);
+        label.setLabelFor(fieldArgoHome);
+        top.add(label);
+	top.add(fieldArgoHome);
 
-	labelConstraints.gridy = 2;
-	fieldConstraints.gridy = 2;
  	// This string is NOT to be translated! See issue 2381.
-	top.add(new JLabel("${argo.ext.dir}"), labelConstraints);
+	label = new JLabel("${argo.ext.dir}");
         fieldArgoExtDir = createTextField();
 	fieldArgoExtDir.setEnabled(false);
-	top.add(fieldArgoExtDir, fieldConstraints);
+        label.setLabelFor(fieldArgoExtDir);
+        top.add(label);
+        top.add(fieldArgoExtDir);
 
-	labelConstraints.gridy = 3;
-	fieldConstraints.gridy = 3;
   	// This string is NOT to be translated! See issue 2381.
-	top.add(new JLabel("${java.home}"), labelConstraints);
+	label = new JLabel("${java.home}");
         fieldJavaHome = createTextField();
 	fieldJavaHome.setEnabled(false);
-	top.add(fieldJavaHome, fieldConstraints);
+        label.setLabelFor(fieldJavaHome);
+        top.add(label);
+        top.add(fieldJavaHome);
 
-	labelConstraints.gridy = 4;
-	fieldConstraints.gridy = 4;
   	// This string is NOT to be translated! See issue 2381.
-	top.add(new JLabel("${user.home}"), labelConstraints);
+	label = new JLabel("${user.home}");
         fieldUserHome = createTextField();
 	fieldUserHome.setEnabled(false);
-	top.add(fieldUserHome, fieldConstraints);
+        label.setLabelFor(fieldUserHome);
+        top.add(label);
+        top.add(fieldUserHome);
 
-	labelConstraints.gridy = 5;
-	fieldConstraints.gridy = 5;
 	// This string is NOT to be translated! See issue 2381.
-	top.add(new JLabel("${user.dir}"), labelConstraints);
+	label = new JLabel("${user.dir}");
         fieldUserDir = createTextField();
 	fieldUserDir.setEnabled(false);
-	top.add(fieldUserDir, fieldConstraints);
+        label.setLabelFor(fieldUserDir);
+        top.add(label);
+        top.add(fieldUserDir);
 
-	labelConstraints.gridy = 6;
-	fieldConstraints.gridy = 6;
-  	top.add(createLabel("label.startup-directory"), labelConstraints);
+  	label = createLabel("label.startup-directory");
         fieldStartupDir = createTextField();
 	fieldStartupDir.setEnabled(false);
-	top.add(fieldStartupDir, fieldConstraints);
+        label.setLabelFor(fieldStartupDir);
+        top.add(label);
+        top.add(fieldStartupDir);
 
+        top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 	add(top, BorderLayout.NORTH);
     }
 
@@ -161,6 +152,10 @@ public class SettingsTabEnvironment extends SettingsTabHelper
         fieldUserDir.setText(Configuration.getString(Argo.KEY_STARTUP_DIR,
 		System.getProperty("user.dir")));
         fieldStartupDir.setText(Argo.getDirectory());
+        
+        fieldGraphicsFormat.removeAllItems();
+        Collection c = SaveGraphicsManager.getInstance().getSettingsList();
+        fieldGraphicsFormat.setModel(new DefaultComboBoxModel(c.toArray()));
     }
 
     /**
@@ -168,6 +163,9 @@ public class SettingsTabEnvironment extends SettingsTabHelper
      */
     public void handleSettingsTabSave() {
         Configuration.setString(Argo.KEY_STARTUP_DIR, fieldUserDir.getText());
+        
+        SaveGraphicsManager.getInstance().setDefaultFilter( 
+                (SuffixFilter) fieldGraphicsFormat.getSelectedItem());
     }
 
     /**
