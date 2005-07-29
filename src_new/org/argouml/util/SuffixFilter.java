@@ -102,4 +102,14 @@ public class SuffixFilter extends FileFilter {
         return suffix;
     }
 
+    /**
+     * Adding this function enables easy selection of suffixfilters 
+     * e.g. in a combobox.
+     * 
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        return getDescription();
+    }
+
 } /* end class SuffixFilter */

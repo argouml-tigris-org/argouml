@@ -24,35 +24,25 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ExceptionDialog;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
-import org.tigris.gef.base.CmdSaveEPS;
-import org.tigris.gef.base.CmdSaveGIF;
 import org.tigris.gef.base.CmdSaveGraphics;
-import org.tigris.gef.base.CmdSavePNG;
-import org.tigris.gef.base.CmdSavePS;
-import org.tigris.gef.base.CmdSaveSVG;
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.persistence.PostscriptWriter;
 import org.tigris.gef.util.Util;
 
 
@@ -65,12 +55,6 @@ public class ActionSaveGraphics
 
     private static final Logger LOG =
         Logger.getLogger(ActionSaveGraphics.class);
-    
-    private static final String PS_SFX = FileFilters.PS_FILTER.getSuffix();
-    private static final String EPS_SFX = FileFilters.EPS_FILTER.getSuffix();
-    private static final String GIF_SFX = FileFilters.GIF_FILTER.getSuffix();
-    private static final String PNG_SFX = FileFilters.PNG_FILTER.getSuffix();
-    private static final String SVG_SFX = FileFilters.SVG_FILTER.getSuffix();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -111,6 +95,7 @@ public class ActionSaveGraphics
         
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p =  ProjectManager.getManager().getCurrentProject();
+        SaveGraphicsManager sgm = SaveGraphicsManager.getInstance(); 
         try {
             JFileChooser chooser = null;
         
@@ -129,41 +114,21 @@ public class ActionSaveGraphics
                 chooser = new JFileChooser();
             }
         
-            //TODO: i18n
-            chooser.setDialogTitle("Save Diagram as Graphics: " + defaultName);
+            Object[] s = { defaultName };
+            chooser.setDialogTitle(
+                    Translator.messageFormat("filechooser.save-graphics", s));
             // Only specified format are allowed.
-            chooser.removeChoosableFileFilter(chooser.
-        				      getAcceptAllFileFilter());
-            chooser.addChoosableFileFilter(FileFilters.PNG_FILTER);
-            chooser.addChoosableFileFilter(FileFilters.GIF_FILTER);
-            chooser.addChoosableFileFilter(FileFilters.PS_FILTER);
-            chooser.addChoosableFileFilter(FileFilters.EPS_FILTER);
-            chooser.addChoosableFileFilter(FileFilters.SVG_FILTER);
-            // concerning the following lines: is .GIF preferred?
-            chooser.setFileFilter(FileFilters.PNG_FILTER);
-            String fileName = defaultName + "."
-        	+ FileFilters.PNG_FILTER.getSuffix();
-            chooser.setSelectedFile(new File(fileName));
+            chooser.setAcceptAllFileFilterUsed(false);
+            sgm.setFileChooserFilters(chooser, defaultName);
         
             int retval = chooser.showSaveDialog(pb);
-            if (retval == 0) {
+            if (retval == JFileChooser.APPROVE_OPTION) {
                 File theFile = chooser.getSelectedFile();
                 if (theFile != null) {
-                    String suffix = SuffixFilter.getExtension(theFile);
-                    if (suffix == null
-                            || !(suffix.equals(PS_SFX)
-                            || suffix.equals(EPS_SFX)
-                            || suffix.equals(GIF_SFX)
-                            || suffix.equals(PNG_SFX)
-                            || suffix.equals(SVG_SFX))) {
-                		// add the selected filter suffix
-        		FileFilter filter = chooser.getFileFilter();
-              		suffix = FileFilters.getSuffix(filter);
-               		theFile = new File(theFile.getParentFile(),
-       			     theFile.getName() + "." + suffix);
-                    }
-                    // end new code
-                
+                    theFile = new File(theFile.getParentFile(), 
+                            sgm.fixExtension(theFile.getName()));
+                    String suffix = sgm.getFilterFromFileName(theFile.getName())
+                        .getSuffix();
                     return doSave(theFile, suffix, true);
                 }
             }
@@ -192,27 +157,15 @@ public class ActionSaveGraphics
     private boolean doSave(File theFile,
 			   String suffix, boolean useUI)
 	throws FileNotFoundException, IOException {
-
-	CmdSaveGraphics cmd = null;
-	if (FileFilters.PS_FILTER.getSuffix().equals(suffix)) {
-	    cmd = new CmdSavePS();
-	} else if (FileFilters.EPS_FILTER.getSuffix().equals(suffix)) {
-	    cmd = new ActionSaveGraphicsCmdSaveEPS();
-	} else if (FileFilters.PNG_FILTER.getSuffix().equals(suffix)) {
-	    cmd = new CmdSavePNG();
-	} else if (FileFilters.GIF_FILTER.getSuffix().equals(suffix)) {
-	    cmd = new CmdSaveGIF();
-	} else if (FileFilters.SVG_FILTER.getSuffix().equals(suffix)) {
-	    cmd = new CmdSaveSVG();
-	} else {
-            if (useUI) { 
-                ProjectBrowser.getInstance().showStatus(
-                          "Unknown graphics file type with suffix "
-			  + suffix);
-            }
-	    return false;
-	}
-
+        
+        SaveGraphicsManager sgm = SaveGraphicsManager.getInstance(); 
+        CmdSaveGraphics cmd = null;
+        
+        cmd = sgm.getSaveCommandBySuffix(suffix);
+        if (cmd == null) {
+            return false;
+        }
+        
         if (useUI) {
             ProjectBrowser.getInstance().showStatus(
                             "Writing " + theFile + "...");
@@ -269,31 +222,3 @@ public class ActionSaveGraphics
 } /* end class ActionSaveGraphics */
 
 
-/**
- * Class to adjust {@link org.tigris.gef.base.CmdSaveEPS} for our purpuses.<p>
- *
- * While doing this refactoring (February 2004) it is unclear to me (Linus
- * Tolke) why this modification in the {@link org.tigris.gef.base.CmdSaveEPS}
- * behavior is needed. Is it a bug in GEF? Is it an added feature?
- * The old comment was: override gef default to cope with scaling.
- */
-class ActionSaveGraphicsCmdSaveEPS extends CmdSaveEPS {
-    protected void saveGraphics(OutputStream s, Editor ce,
-				Rectangle drawingArea)
-	throws IOException {
-
-	double scale = ce.getScale();
-	int x = (int) (drawingArea.x * scale);
-	int y = (int) (drawingArea.y * scale);
-	int h = (int) (drawingArea.height * scale);
-	int w = (int) (drawingArea.width * scale);
-	drawingArea = new Rectangle(x, y, w, h);
-
-	PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
-
-	ps.scale(scale, scale);
-
-	ce.print(ps);
-	ps.dispose();
-    }
-}
