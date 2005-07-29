@@ -394,6 +394,7 @@ public class UmlFilePersister extends AbstractFilePersister
             // openStream from url and wrap in StreamSource
             StreamSource xsltStreamSource =
                 new StreamSource(xsltUrl.openStream());
+            xsltStreamSource.setSystemId(xsltUrl.toExternalForm());
 
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer(xsltStreamSource);
@@ -410,6 +411,7 @@ public class UmlFilePersister extends AbstractFilePersister
             Result result = new StreamResult(writer);
 
             StreamSource inputStreamSource = new StreamSource(file);
+            xsltStreamSource.setSystemId(file);
             transformer.transform(inputStreamSource, result);
 
             writer.close();
