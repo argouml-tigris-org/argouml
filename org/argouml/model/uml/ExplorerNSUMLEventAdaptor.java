@@ -24,7 +24,6 @@
 
 package org.argouml.model.uml;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 
 import org.apache.log4j.Logger;
@@ -32,8 +31,6 @@ import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.EventAdapter;
 import org.argouml.model.RemoveAssociationEvent;
-import org.argouml.model.UmlChangeEvent;
-import org.argouml.uml.ProfileJava;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
