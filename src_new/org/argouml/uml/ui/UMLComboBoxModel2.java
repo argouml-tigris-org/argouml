@@ -177,9 +177,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 }
             }
         } else if (evt instanceof RemoveAssociationEvent) {
-            Object element = getChangedElement(evt);
-            if (contains(getChangedElement(evt))) {
-                Object o = getChangedElement(evt);
+            Object o = getChangedElement(evt);
+            if (contains(o)) {
                 if (o instanceof Collection) {
                     removeAll((Collection) o);
                 } else {
