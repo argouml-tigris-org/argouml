@@ -113,7 +113,7 @@ public class ActionOpenProject extends AbstractAction
             FileFilter allFiles = chooser.getFileFilter();
             chooser.removeChoosableFileFilter(allFiles);
 
-            pm.setFileChooserFilters(chooser);
+            pm.setOpenFileChooserFilter(chooser);
 
             int retval = chooser.showOpenDialog(pb);
             if (retval == 0) {
