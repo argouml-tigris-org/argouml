@@ -29,9 +29,9 @@ import java.io.File;
 import java.net.URL;
 
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Configuration;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -122,26 +122,34 @@ public class ActionSaveProjectAs extends ActionSaveProject {
 	    Translator.localize("filechooser.save-as-project");
         chooser.setDialogTitle(sChooserTitle + " " + p.getName());
 
-        FileFilter allFiles = chooser.getFileFilter();
-        chooser.removeChoosableFileFilter(allFiles);
-
+        chooser.setAcceptAllFileFilterUsed(false);
         PersistenceManager.getInstance().setSaveFileChooserFilters(chooser);
+
+        String fn = Configuration.getString(
+                PersistenceManager.KEY_SAVE_PROJECT_PATH);
+        if (fn.length() > 0) {
+            chooser.setSelectedFile(new File(fn));
+        }
 
         int retval = chooser.showSaveDialog(pb);
         if (retval == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
+            File theFile = chooser.getSelectedFile();
             AbstractFilePersister filter =
                 (AbstractFilePersister) chooser.getFileFilter();
-            if (file != null) {
-                String name = file.getName();
+            if (theFile != null) {
+                Configuration.setString(
+                        PersistenceManager.KEY_SAVE_PROJECT_PATH,
+                        theFile.getPath());
+
+                String name = theFile.getName();
                 if (!name.endsWith("." + filter.getExtension())) {
-                    file =
+                    theFile =
                         new File(
-                            file.getParent(),
+                            theFile.getParent(),
                             name + "." + filter.getExtension());
                 }
             }
-            return file;
+            return theFile;
         } 
         return null;
     }
