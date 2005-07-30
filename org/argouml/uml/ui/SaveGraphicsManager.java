@@ -198,12 +198,12 @@ public class SaveGraphicsManager {
             /* The next line does not work: */
             // chooser.setSelectedFile(new File(fileName));
             /* So, let's do it the hard way: */
-            SwingUtilities.invokeLater(new r(fileName));
+            SwingUtilities.invokeLater(new Anonymous1(fileName));
         }
         
-        class r implements Runnable {
+        class Anonymous1 implements Runnable {
             private String fileName;
-            r(String fn){
+            Anonymous1(String fn){
                 fileName = fn;
             }
             public void run() {

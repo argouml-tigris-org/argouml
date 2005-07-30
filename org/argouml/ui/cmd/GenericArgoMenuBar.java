@@ -37,7 +37,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
-import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggableMenu;
 import org.argouml.application.events.ArgoEventPump;
@@ -45,7 +44,6 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.UndoEnabler;
 import org.argouml.language.ui.ActionNotation;
 import org.argouml.ui.ActionAutoResize;
