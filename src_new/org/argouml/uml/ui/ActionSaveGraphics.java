@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
+import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -120,11 +121,22 @@ public class ActionSaveGraphics
             // Only specified format are allowed.
             chooser.setAcceptAllFileFilterUsed(false);
             sgm.setFileChooserFilters(chooser, defaultName);
-        
+            
+            String fn = Configuration.getString(
+                    SaveGraphicsManager.KEY_SAVE_GRAPHICS_PATH);
+            if (fn.length() > 0) {
+                chooser.setSelectedFile(new File(fn));
+            }
+            
             int retval = chooser.showSaveDialog(pb);
             if (retval == JFileChooser.APPROVE_OPTION) {
                 File theFile = chooser.getSelectedFile();
                 if (theFile != null) {
+                    String path = theFile.getPath();
+                    Configuration.setString(
+                            SaveGraphicsManager.KEY_SAVE_GRAPHICS_PATH,
+                            path);
+                    
                     theFile = new File(theFile.getParentFile(), 
                             sgm.fixExtension(theFile.getName()));
                     String suffix = sgm.getFilterFromFileName(theFile.getName())
