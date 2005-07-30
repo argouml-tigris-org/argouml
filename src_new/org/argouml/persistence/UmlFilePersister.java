@@ -57,7 +57,6 @@ import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
-import org.xml.sax.SAXException;
 
 /**
  * To persist to and from argo (xml file) storage.
@@ -411,7 +410,7 @@ public class UmlFilePersister extends AbstractFilePersister
             Result result = new StreamResult(writer);
 
             StreamSource inputStreamSource = new StreamSource(file);
-            xsltStreamSource.setSystemId(file);
+            inputStreamSource.setSystemId(file);
             transformer.transform(inputStreamSource, result);
 
             writer.close();
