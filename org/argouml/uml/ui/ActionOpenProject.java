@@ -30,10 +30,10 @@ import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
+import org.argouml.application.api.Configuration;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -41,7 +41,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
-import org.tigris.gef.base.Globals;
 
 /**
  * Action that loads the project.
@@ -110,11 +109,16 @@ public class ActionOpenProject extends AbstractAction
             chooser.setDialogTitle(
                     Translator.localize("filechooser.open-project"));
 
-            FileFilter allFiles = chooser.getFileFilter();
-            chooser.removeChoosableFileFilter(allFiles);
+            chooser.setAcceptAllFileFilterUsed(false);
 
             pm.setOpenFileChooserFilter(chooser);
-
+            
+            String fn = Configuration.getString(
+                    PersistenceManager.KEY_OPEN_PROJECT_PATH);
+            if (fn.length() > 0) {
+                chooser.setSelectedFile(new File(fn));
+            }
+            
             int retval = chooser.showOpenDialog(pb);
             if (retval == 0) {
                 File theFile = chooser.getSelectedFile();
@@ -132,11 +136,9 @@ public class ActionOpenProject extends AbstractAction
                     }
                 }
                 if (theFile != null) {
-                    String path = theFile.getParent();
-                    // TODO: Use something other than Globals to
-                    // store last directory. We should rely on GEF
-                    // only for Diagrams. Bob Tarling 15 Jan 2004.
-                    Globals.setLastDirectory(path);
+                    Configuration.setString(
+                            PersistenceManager.KEY_OPEN_PROJECT_PATH,
+                            theFile.getPath());
 
                     if (ProjectBrowser.getInstance().loadProject(theFile, true)) {
                         // notification of menu bar
