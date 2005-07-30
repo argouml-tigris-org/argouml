@@ -25,15 +25,20 @@
 package org.argouml.persistence;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.tigris.gef.util.UnexpectedException;
 
@@ -118,13 +123,28 @@ public class PersistenceManager {
     /**
      * @param chooser the filechooser of which the filters will be set
      */
-    public void setFileChooserFilters(JFileChooser chooser) {
+    public void setSaveFileChooserFilters(JFileChooser chooser) {
         chooser.addChoosableFileFilter(defaultPersister);
         Iterator iter = otherPersisters.iterator();
         while (iter.hasNext()) {
             chooser.addChoosableFileFilter((AbstractFilePersister) iter.next());
         }
         chooser.setFileFilter(defaultPersister);
+    }
+
+    /**
+     * @param chooser the filechooser of which the filters will be set
+     */
+    public void setOpenFileChooserFilter(JFileChooser chooser) {
+        MultitypeFileFilter mf = new MultitypeFileFilter();
+        mf.add(defaultPersister);
+        Iterator iter = otherPersisters.iterator();
+        while (iter.hasNext()) {
+            AbstractFilePersister ff = (AbstractFilePersister) iter.next();
+            mf.add(ff);
+        }
+        chooser.addChoosableFileFilter(mf);
+        chooser.setFileFilter(mf);            
     }
 
     /**
@@ -220,4 +240,50 @@ public class PersistenceManager {
             DiagramMemberFilePersister persister) {
     	diagramMemberFilePersister = persister;
     }
+}
+
+/**
+ * Composite file filter which will accept any
+ * file type added to it.
+ * 
+ * @author Tom Morris
+ *
+ */
+class MultitypeFileFilter extends FileFilter {
+    Vector filters;
+    String desc;
+
+    public MultitypeFileFilter() {
+        super();
+        filters = new Vector();
+    }
+
+    public boolean add(AbstractFilePersister filter) {
+        filters.add(filter);
+        desc = ((desc == null) 
+                ? Translator.localize("filechooser.all-types-desc") 
+                : desc + ", ") 
+            + "*." + filter.getExtension();
+        return false;
+    }
+
+    public Collection getAll() {
+        return filters;
+    }
+    
+    // Accept any file that any of our filters will accept
+    public boolean accept(File arg0) {
+        Iterator it = filters.iterator();
+        while (it.hasNext()) {
+            if ( ((FileFilter)it.next()).accept(arg0) ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getDescription() {
+        return desc + ")";
+    }
+
 }

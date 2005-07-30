@@ -125,7 +125,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         FileFilter allFiles = chooser.getFileFilter();
         chooser.removeChoosableFileFilter(allFiles);
 
-        PersistenceManager.getInstance().setFileChooserFilters(chooser);
+        PersistenceManager.getInstance().setSaveFileChooserFilters(chooser);
 
         int retval = chooser.showSaveDialog(pb);
         if (retval == JFileChooser.APPROVE_OPTION) {
