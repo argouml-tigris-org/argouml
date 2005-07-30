@@ -36,6 +36,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Category;
+import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -147,10 +148,23 @@ public class ActionSaveAllGraphics extends UMLAction {
      */
     protected File getSaveDir(Project p) {
 	JFileChooser chooser = getFileChooser(p);
+
+        String fn = Configuration.getString(
+                SaveGraphicsManager.KEY_SAVEALL_GRAPHICS_PATH);
+        if (fn.length() > 0) {
+            chooser.setSelectedFile(new File(fn));
+        }
 	ProjectBrowser pb = ProjectBrowser.getInstance();
-	int retval = chooser.showSaveDialog( pb );
-	if ( retval == JFileChooser.APPROVE_OPTION ) {
-	    return chooser.getSelectedFile();
+
+        int retval = chooser.showSaveDialog( pb );
+
+        if ( retval == JFileChooser.APPROVE_OPTION ) {
+            File theFile = chooser.getSelectedFile(); 
+            String path = theFile.getPath();
+            Configuration.setString(
+                    SaveGraphicsManager.KEY_SAVEALL_GRAPHICS_PATH,
+                    path);
+	    return theFile;
 	}
         return null;
     }

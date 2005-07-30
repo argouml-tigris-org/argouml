@@ -70,6 +70,18 @@ public class SaveGraphicsManager {
      */
     public static final ConfigurationKey KEY_DEFAULT_GRAPHICS_FILTER =
         Configuration.makeKey("graphics", "default", "filter");
+
+    /**
+     * The configuration key for the "save graphics" file location.
+     */
+    public static final ConfigurationKey KEY_SAVE_GRAPHICS_PATH =
+        Configuration.makeKey("graphics", "save", "path");
+
+    /**
+     * The configuration key for the "save all graphics" file location.
+     */
+    public static final ConfigurationKey KEY_SAVEALL_GRAPHICS_PATH =
+        Configuration.makeKey("graphics", "save-all", "path");
     
     /**
      * the default file format
