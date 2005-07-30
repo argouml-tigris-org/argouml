@@ -31,7 +31,6 @@ import java.util.Vector;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.ArgoVersion;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.MementoCreationObserver;
 import org.argouml.model.Model;
