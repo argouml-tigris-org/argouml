@@ -261,7 +261,7 @@ class MultitypeFileFilter extends FileFilter {
     public boolean add(AbstractFilePersister filter) {
         filters.add(filter);
         desc = ((desc == null) 
-                ? Translator.localize("filechooser.all-types-desc") 
+                ? "" 
                 : desc + ", ") 
             + "*." + filter.getExtension();
         return false;
@@ -283,7 +283,8 @@ class MultitypeFileFilter extends FileFilter {
     }
 
     public String getDescription() {
-        return desc + ")";
+        Object[] s = {desc};
+        return Translator.messageFormat("filechooser.all-types-desc", s);
     }
 
 }
