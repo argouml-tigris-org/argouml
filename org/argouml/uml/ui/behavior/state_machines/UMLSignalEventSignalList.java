@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,52 +22,43 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
-import javax.swing.JList;
-import javax.swing.JScrollPane;
+import javax.swing.JPopupMenu;
 
-import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
-import org.argouml.uml.ui.PropPanelButton2;
-import org.argouml.uml.ui.foundation.core.ActionNewParameter;
-import org.argouml.util.ConfigLoader;
+import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewSignal;
 
 /**
- * The properties panel for a SignalEvent.
+ * 
+ * @author MarkusK
  *
- *
- * @author oliver.heyden
  */
-public class PropPanelSignalEvent extends PropPanelEvent {
+class UMLSignalEventSignalList extends UMLMutableLinkedList {
 
     /**
-     * The constructor.
-     *
+     * Constructor for UMLTransitionTriggerList.
+     * @param dataModel the model
      */
-    public PropPanelSignalEvent() {
-        super("Signal event", lookupIcon("SignalEvent"),
-              ConfigLoader.getTabPropsOrientation());
+    public UMLSignalEventSignalList(
+        UMLModelElementListModel2 dataModel) {
+        super(dataModel, null, null, null, true);
+        setDelete(false);
+        setDeleteAction(null);
     }
 
     /**
-     * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
+     * @see org.argouml.uml.ui.UMLMutableLinkedList#getPopupMenu()
      */
-    public void initialize() {
-        super.initialize();
-        
-        JList signalList = new UMLSignalEventSignalList(
-                new UMLSignalEventSignalListModel());
-        signalList.setVisibleRowCount(1);
-        addField(Translator.localize("label.signal"),
-                new JScrollPane(signalList));
-
-        addButton(new PropPanelButton2(new ActionNewParameter(),
-                lookupIcon("Parameter")));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));
+    public JPopupMenu getPopupMenu() {
+        JPopupMenu menu = new JPopupMenu();
+        ActionAddSignalsToSignalEvent.SINGLETON.setTarget(getTarget());
+        menu.add(ActionAddSignalsToSignalEvent.SINGLETON);
+        menu.add(new ActionNewSignal());
+        return menu;
     }
+
 
 }
-
-
