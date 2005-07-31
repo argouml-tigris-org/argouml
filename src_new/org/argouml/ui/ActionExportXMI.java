@@ -31,11 +31,13 @@ import java.util.Vector;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
-import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Configuration;
 import org.argouml.application.api.PluggableMenu;
 import org.argouml.i18n.Translator;
+import org.argouml.persistence.PersistenceManager;
+import org.argouml.persistence.XmiFilePersister;
 
 /**
  * Exports the xmi of a project to a file choosen by the user.
@@ -185,27 +187,28 @@ public final class ActionExportXMI extends AbstractAction
 				       "action.export-project-as-xmi"));
         chooser.setApproveButtonText(Translator.localize(
 					     "filechooser.export"));
+        chooser.setAcceptAllFileFilterUsed(false);
+        chooser.setFileFilter(new XmiFilePersister());
 
-        chooser.setFileFilter(new FileFilter() {
-            public boolean accept(File file) {
-                return (file.getName().endsWith(".xmi")
-                	|| file.getName().indexOf('.') == -1);
-            }
-            public String getDescription() {
-                return "An XMI project file";
-            }
-        });
-
+        String fn = Configuration.getString(
+                PersistenceManager.KEY_EXPORT_XMI_PATH);
+        if (fn.length() > 0) {
+            chooser.setSelectedFile(new File(fn));
+        }
+        
         int result = chooser.showSaveDialog(ProjectBrowser.getInstance());
         if (result == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
-            if (file != null) {
-                String name = file.getName();
+            File theFile = chooser.getSelectedFile();
+            if (theFile != null) {
+                String name = theFile.getName();
+                Configuration.setString(
+                        PersistenceManager.KEY_EXPORT_XMI_PATH,
+                        theFile.getPath());
                 if (!name.endsWith(".xmi")) {
-                    file = new File(file.getParent(), name + ".xmi");
+                    theFile = new File(theFile.getParent(), name + ".xmi");
                 }
             }
-            ProjectBrowser.getInstance().trySave(false, file);
+            ProjectBrowser.getInstance().trySave(false, theFile);
         }
     }
 }
