@@ -78,6 +78,18 @@ public class PersistenceManager {
      */
     public static final ConfigurationKey KEY_OPEN_PROJECT_PATH =
         Configuration.makeKey("project", "open", "path");
+
+    /**
+     * The configuration key for the "export xmi" file location.
+     */
+    public static final ConfigurationKey KEY_EXPORT_XMI_PATH =
+        Configuration.makeKey("xmi", "export", "path");
+
+    /**
+     * The configuration key for the "import xmi" file location.
+     */
+    public static final ConfigurationKey KEY_IMPORT_XMI_PATH =
+        Configuration.makeKey("xmi", "import", "path");
     
     /**
      * Create the default diagram persister.
