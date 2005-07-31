@@ -22,52 +22,39 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-
-import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
-import org.argouml.uml.ui.PropPanelButton2;
-import org.argouml.uml.ui.foundation.core.ActionNewParameter;
-import org.argouml.util.ConfigLoader;
+import org.argouml.model.Model;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- * The properties panel for a SignalEvent.
+ * 
+ * @author MarkusK
  *
- *
- * @author oliver.heyden
  */
-public class PropPanelSignalEvent extends PropPanelEvent {
+class UMLSignalEventSignalListModel extends UMLModelElementListModel2 {
 
     /**
-     * The constructor.
-     *
+     * Constructor for UMLTransitionTriggerListModel.
      */
-    public PropPanelSignalEvent() {
-        super("Signal event", lookupIcon("SignalEvent"),
-              ConfigLoader.getTabPropsOrientation());
+    public UMLSignalEventSignalListModel() {
+        super("signal");
     }
 
     /**
-     * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
-    public void initialize() {
-        super.initialize();
-        
-        JList signalList = new UMLSignalEventSignalList(
-                new UMLSignalEventSignalListModel());
-        signalList.setVisibleRowCount(1);
-        addField(Translator.localize("label.signal"),
-                new JScrollPane(signalList));
+    protected void buildModelList() {
+        removeAllElements();
+        addElement(Model.getFacade().getSignal(getTarget()));
+    }
 
-        addButton(new PropPanelButton2(new ActionNewParameter(),
-                lookupIcon("Parameter")));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
+     */
+    protected boolean isValidElement(Object/*MBase*/ element) {
+        return element == Model.getFacade().getSignal(getTarget());
     }
 
 }
-
-

@@ -24,26 +24,33 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.uml.ui.ActionDeleteModelElements;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.TitledBorder;
+
+import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.PropPanelButton2;
+import org.argouml.uml.ui.UMLExpressionBodyField;
+import org.argouml.uml.ui.UMLExpressionLanguageField;
+import org.argouml.uml.ui.UMLExpressionModel2;
+import org.argouml.uml.ui.UMLTimeExpressionModel;
 import org.argouml.util.ConfigLoader;
+import org.tigris.swidgets.GridLayout2;
 
 /**
  * The properties panel for a TimeEvent.
- *
- *
+ * 
  * @author oliver.heyden
  */
 public class PropPanelTimeEvent extends PropPanelEvent {
 
     /**
      * The constructor.
-     *
      */
     public PropPanelTimeEvent() {
-        super("Time event", lookupIcon("TimeEvent"),
-              ConfigLoader.getTabPropsOrientation());
+        super("Time event", lookupIcon("TimeEvent"), ConfigLoader
+                .getTabPropsOrientation());
     }
 
     /**
@@ -52,10 +59,21 @@ public class PropPanelTimeEvent extends PropPanelEvent {
     public void initialize() {
         super.initialize();
 
+        UMLExpressionModel2 whenModel = new UMLTimeExpressionModel(
+                this, "when");
+
+        JPanel whenPanel = new JPanel(new GridLayout2());
+        whenPanel.setBorder(new TitledBorder(Translator
+                .localize("label.when")));
+        whenPanel.add(new JScrollPane(new UMLExpressionBodyField(
+                whenModel, true)));
+        whenPanel.add(new UMLExpressionLanguageField(whenModel,
+                false));
+
+        add(whenPanel);
         addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));;
+                lookupIcon("Delete")));
+        ;
     }
 
 }
-
-
