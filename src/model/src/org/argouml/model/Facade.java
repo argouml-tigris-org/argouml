@@ -2610,4 +2610,10 @@ public interface Facade {
      * @return the tip
      */
     String getTipString(Object modelElement);
+
+    /**
+     * @param the TimeEvent
+     * @return TimeExpression
+     */
+    Object getWhen(Object target);
 }

@@ -4461,6 +4461,16 @@ public class NSUMLModelFacade implements Facade {
         //
 	return illegalArgumentObject(handle);
     }
+    
+    /** 
+     * @see org.argouml.model.Facade#getWhen(java.lang.Object)
+     */
+    public Object getWhen(Object target) {
+        if (isATimeEvent(target)) {
+            return ((MTimeEvent) target).getWhen();
+        }
+        return illegalArgumentObject(target);
+    }
 
     /**
      * Get the partitions from a container.
@@ -4672,4 +4682,6 @@ public class NSUMLModelFacade implements Facade {
     public String getTipString(Object modelElement) {
         return modelElement.toString();
     }
+
+    
 }
