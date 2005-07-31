@@ -24,16 +24,11 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.awt.event.ActionEvent;
 
-import javax.swing.Action;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
-import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionDeleteModelElements;
@@ -81,39 +76,6 @@ public class PropPanelSignal extends PropPanelModelElement {
         addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionDeleteSingleModelElement()));
-    }
-
-    /**
-     * Create a new Signal.
-     */
-    private class ActionNewSignal
-        extends AbstractActionNewModelElement {
-
-        /**
-         * The constructor.
-         */
-        public ActionNewSignal() {
-            super("button.new-signal");
-            putValue(Action.NAME,
-                    Translator.localize("button.new-signal"));
-        }
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            Object target = TargetManager.getInstance().getModelTarget();
-            if (Model.getFacade().isASignal(target)) {
-                Object ns = Model.getFacade().getNamespace(target);
-                if (ns != null) {
-                    Object newSig = Model.getCommonBehaviorFactory()
-                        .createSignal();
-                    Model.getCoreHelper().addOwnedElement(ns, newSig);
-                    TargetManager.getInstance().setTarget(newSig);
-                    super.actionPerformed(e);
-                }
-            }
-        }
     }
 
 
