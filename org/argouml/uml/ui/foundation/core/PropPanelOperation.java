@@ -138,15 +138,6 @@ public class PropPanelOperation extends PropPanelFeature {
         }
     }
 
-    /**
-     * The button to add a raised signal is pressed.
-     */
-    public void buttonAddRaisedSignal() {
-        Object target = getTarget();
-        if (Model.getFacade().isAOperation(target)) {
-            addRaisedSignal(new Integer(1));
-        }
-    }
 
     private class ActionNewRaisedSignal extends AbstractActionNewModelElement {
 
