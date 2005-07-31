@@ -31,6 +31,7 @@ import java.util.Iterator;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
@@ -84,7 +85,7 @@ class UMLCallEventOperationComboBox2 extends UMLSearchableComboBox {
      */
     public UMLCallEventOperationComboBox2(UMLComboBoxModel2 arg0) {
         super(arg0, null); // no external action; we do it ourselves
-        setEditable(true);
+        setEditable(false);
     }
 
     /**
