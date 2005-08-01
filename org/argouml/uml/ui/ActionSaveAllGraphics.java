@@ -172,10 +172,12 @@ public class ActionSaveAllGraphics extends UMLAction {
     private boolean saveGraphicsToFile(File theFile, CmdSaveGraphics cmd, boolean overwrite) throws IOException {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	if ( theFile.exists() && !overwrite ) {
-	    String t = "Overwrite " + theFile.getPath();
 	    int response =
-		JOptionPane.showConfirmDialog(pb, t, t,
-					      JOptionPane.YES_NO_OPTION);
+		JOptionPane.showConfirmDialog(pb, 
+                    Translator.messageFormat("optionpane.confirm-overwrite", 
+                            new Object[] {theFile}), 
+                    Translator.localize("optionpane.confirm-overwrite-title"), 
+                    JOptionPane.YES_NO_OPTION);
 	    if (response == JOptionPane.NO_OPTION) return false;
 	}
 	FileOutputStream fo = null;
