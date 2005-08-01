@@ -115,25 +115,29 @@ public class ActionGenerateProjectCode extends UMLAction {
     }
 
     private boolean isCodeRelevantClassifier(Object/*MClassifier*/ cls) {
-	String path = Generator2.getCodePath(cls);
-	String name = Model.getFacade().getName(cls);
-	if (name == null
+        if (cls == null
+            || (!Model.getFacade().isAClass(cls) && !Model.getFacade().isAInterface(cls))) {
+            return false;
+        }
+        String path = Generator2.getCodePath(cls);
+        String name = Model.getFacade().getName(cls);
+        if (name == null
             || name.length() == 0
             || Character.isDigit(name.charAt(0))) {
-	    return false;
-	}
-	if (path != null) {
-	    return (path.length() > 0);
-	}
-	Object/*MNamespace*/ parent = Model.getFacade().getNamespace(cls);
-	while (parent != null) {
-	    path = Generator2.getCodePath(parent);
-	    if (path != null) {
-		return (path.length() > 0);
-	    }
-	    parent = Model.getFacade().getNamespace(parent);
-	}
-	return false;
+            return false;
+        }
+        if (path != null) {
+            return (path.length() > 0);
+        }
+        Object/*MNamespace*/ parent = Model.getFacade().getNamespace(cls);
+        while (parent != null) {
+            path = Generator2.getCodePath(parent);
+            if (path != null) {
+        	    return (path.length() > 0);
+            }
+            parent = Model.getFacade().getNamespace(parent);
+        }
+        return false;
     }
 
 
