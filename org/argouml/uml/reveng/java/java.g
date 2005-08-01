@@ -247,19 +247,36 @@ tokens {
 
 	// Constants for access modifiers according to the JVM specs chapter 4
    	public static final short ACC_PUBLIC    = 0x0001;
-        public static final short ACC_PRIVATE   = 0x0002;
-        public static final short ACC_PROTECTED = 0x0004;
-        public static final short ACC_STATIC    = 0x0008;
-        public static final short ACC_FINAL     = 0x0010;
-        public static final short ACC_SUPER     = 0x0020;
-        public static final short ACC_VOLATILE  = 0x0040;
-        public static final short ACC_TRANSIENT = 0x0080;
-        public static final short ACC_NATIVE    = 0x0100;
-        public static final short ACC_INTERFACE = 0x0200;
-        public static final short ACC_ABSTRACT  = 0x0400;                     
+    public static final short ACC_PRIVATE   = 0x0002;
+    public static final short ACC_PROTECTED = 0x0004;
+    public static final short ACC_STATIC    = 0x0008;
+    public static final short ACC_FINAL     = 0x0010;
+    public static final short ACC_SUPER     = 0x0020;
+    public static final short ACC_VOLATILE  = 0x0040;
+    public static final short ACC_TRANSIENT = 0x0080;
+    public static final short ACC_NATIVE    = 0x0100;
+    public static final short ACC_INTERFACE = 0x0200;
+    public static final short ACC_ABSTRACT  = 0x0400;                     
 
+    /** Parser mode for the first pass of the import from sources */
+    public static final int MODE_IMPORT_PASS1 = 1;
+    /** Parser mode for the second pass of the import from sources */
+    public static final int MODE_IMPORT_PASS2 = 2;
+    /** Parser mode for the source code generation in update mode */
+    public static final int MODE_GENERATION_UPDATE = 4;
+    /** Parser mode for the reverse engineering of a sequence diagram */
+    public static final int MODE_REVENG_SEQUENCE = 8;
+
+    /** The parser mode, that controls which semantic expressions will be active */
+    private int parserMode = 0;
+   
 	/** Import details level */
 	private int level = 2;
+
+    /** Set the parser mode, to control which semantic expressions will be active */
+    public void setParserMode(int mode) {
+        parserMode = mode;
+    }
 	
 	// This one is not(!) in the JVM specs, but required
 	public static final short ACC_SYNCHRONIZED  = 0x0800;
@@ -288,11 +305,11 @@ tokens {
 	
         private Modeller _modeller;
 
-	Modeller getModeller() {
+	public Modeller getModeller() {
 	    return _modeller;
 	}
 
-	void setModeller(Modeller modeller) {
+	public void setModeller(Modeller modeller) {
 	    _modeller = modeller;
 	    Object lvl = modeller.getAttribute("level");
 	    if (lvl != null) {
@@ -403,7 +420,7 @@ tokens {
 }
 
 // Compilation Unit: In Java, this is a single file. This is the start
-// rule for this parser
+// rule for this parser in most modes
 compilationUnit[ Modeller modeller, JavaLexer lexer]
 { setModeller(modeller);
   setLexer(lexer);
@@ -1022,9 +1039,12 @@ variableDeclarator[String javadoc, short modifiers, String varType]
 {String initializer=null; String b=null;}
 	:	(id:IDENT b=declaratorBrackets initializer=varInitializer)
 		{
-		if (!isInCompoundStatement() && level > 0) {
-		getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc);
-		}
+		  if (!isInCompoundStatement() && level > 0) {
+		    getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc);
+		  }
+		  if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+		    getModeller().addLocalVariableDeclaration(varType+b, id.getText());
+		  }
 		}
 	;
 
@@ -1490,10 +1510,8 @@ unaryExpressionNotPlusMinus
 
 // qualified names, array expressions, method invocation, post inc/dec
 postfixExpression
-{String ex; String id = "UNHANDLED ID"; Vector els = new Vector();}
 	:
-		ex=primaryExpression
-		{els.add(ex);}
+		primaryExpression
 		(
 			/*
 			options {
@@ -1507,63 +1525,44 @@ postfixExpression
 			//type arguments are only appropriate for a parameterized method/ctor invocations
 			//semantic check may be needed here to ensure that this is the case
 			DOT (typeArguments)?
-				(	ide:IDENT { id = ide.getText(); }
-					{els.add("."); els.add(id);}
+				(	id:IDENT
 					(	LPAREN
 						argList
 						RPAREN
-						{if (els.size() > 0) {
-						   StringBuffer sb = new StringBuffer();
-						   // All except the last two elements.
-						   for (int i = 0; i < els.size() - 2; i++) {
-						     sb.append((String)els.elementAt(i));
-						   }
-						   getModeller().addCall((String)els.lastElement(),
-									 sb.toString());
-						 }
-						 els.add("()");
+						{ if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+						    StringBuffer sb = new StringBuffer();
+						    String prev = (String)getModeller().getMethodCalls().lastElement();
+						    if (prev != null) {
+						      sb.append(prev).append("().");
+						    }
+						    sb.append(id.getText());
+						    getModeller().addCall(sb.toString());
+						  }
 						}
 					)?
 				|	"super"
-					{els.add("."); els.add(id);}
 					(	// (new Outer()).super() (create enclosing instance)
 						LPAREN argList RPAREN
-						{if (els.size() > 0) {
-						   StringBuffer sb = new StringBuffer();
-						   // All except the last two elements.
-						   for (int i = 0; i < els.size() - 2; i++) {
-						     sb.append((String)els.elementAt(i));
-						   }
-						   getModeller().addCall((String)els.lastElement(),
-									 sb.toString());
-						 }
-						 els.add("()");
-						}
-					|	DOT (typeArguments)? ide2:IDENT { id = ide.getText(); }
-						{els.add("."); els.add(id);}
+					|	DOT (typeArguments)? IDENT
 						(	LPAREN
 							argList
 							RPAREN
-							{if (els.size() > 0) {
-							   StringBuffer sb = new StringBuffer();
-							   // All except the last two elements.
-							   for (int i = 0; i < els.size() - 2; i++) {
-							     sb.append((String)els.elementAt(i));
-							   }
-							   getModeller().addCall((String)els.lastElement(),
-										 sb.toString());
-							 }
-							 els.add("()");
+							{ if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+							    StringBuffer sb = new StringBuffer();
+							    String prev = (String)getModeller().getMethodCalls().lastElement();
+							    if (prev != null) {
+							      sb.append(prev).append("().");
+							    }
+							    sb.append("super");
+							    getModeller().addCall(sb.toString());
+							  }
 							}
 						)?
 					)
 				)
 		|	DOT "this"
-			{els.add(".this");}
-		|	DOT id=newExpression
-			{els.add("."); els.add(id);}
+		|	DOT newExpression
 		|	LBRACK expression RBRACK
-			{els.add("[]");}
 		)*
 
 		(	// possibly add on a post-increment or post-decrement.
@@ -1574,16 +1573,16 @@ postfixExpression
  	;
 
 // the basic element of an expression
-primaryExpression returns [String name = "UNHANDLED PRIMARY EXPRESSION";]
-	:	name=identPrimary ( options {greedy=true;} : DOT "class" )?
-	|	name=constant
+primaryExpression
+	:	identPrimary ( options {greedy=true;} : DOT "class" )?
+	|	constant
 	|	"true"
 	|	"false"
 	|	"null"
-	|	name=newExpression
-	|	"this" { name = "this"; }
-	|	"super" { name = "super"; }
-	|	LPAREN assignmentExpression RPAREN { name = "EXPRESSION"; }
+	|	newExpression
+	|	"this"
+	|	"super"
+	|	LPAREN assignmentExpression RPAREN
 		// look for int.class and int[].class
 	|	builtInType
 		( LBRACK RBRACK )*
@@ -1594,9 +1593,14 @@ primaryExpression returns [String name = "UNHANDLED PRIMARY EXPRESSION";]
  *  and a.b.c.class refs. Also this(...) and super(...). Match
  *  this or super.
  */
-identPrimary returns [String name = null;]
+identPrimary
+{ StringBuffer sb = null; }
 	:	(typeArguments)?
-		id:IDENT { name = id.getText(); }
+		id:IDENT
+		{ if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+		    sb = new StringBuffer(id.getText());
+		  }
+		}
 		// Syntax for method invocation with type arguments is
 		// <String>foo("blah")
 		(
@@ -1614,7 +1618,11 @@ identPrimary returns [String name = null;]
 			// DOT typeArguments "super" in postfixExpression (k=2)
 			// A proper solution would require a lot of refactoring...
 		:	(DOT (typeArguments)? IDENT) =>
-				DOT (typeArguments)? IDENT
+				DOT (typeArguments)? id2:IDENT
+				{ if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+				    sb.append('.').append(id2.getText());
+				  }
+				}
 		|	{false}?	// FIXME: this is very ugly but it seems to work...
 						// this will also produce an ANTLR warning!
 				// Unfortunately a syntactic predicate can only select one of
@@ -1632,6 +1640,10 @@ identPrimary returns [String name = null;]
 				greedy=true;
 			}
 		:	(	LPAREN argList RPAREN
+		        { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+		            getModeller().addCall(sb.toString());
+		          }
+		        }
 			)
 		|	( options {greedy=true;} :
 				LBRACK RBRACK
@@ -1688,10 +1700,14 @@ identPrimary returns [String name = null;]
  *			   2
  *
  */
-newExpression returns [String res = null]
+newExpression
 	{String t = null;}
 	:	"new" (typeArguments)? t=type
-		(	LPAREN argList RPAREN { res = "new " + t + "(...)"; }
+		(	LPAREN argList RPAREN
+		    { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+		        getModeller().addCall("new " + t);
+		      }
+		    }
 			(	{ getModeller().addAnonymousClass(t); }
 				classBlock
 				{ getModeller().popClassifier(); }
@@ -1731,13 +1747,13 @@ newArrayDeclarator
 		)+
 	;
 
-constant returns [String constant = null]
-	:	ni:NUM_INT { constant = ni.getText(); }
-	|	nc:CHAR_LITERAL { constant = nc.getText(); }
-	|	sl:STRING_LITERAL { constant = sl.getText(); }
-	|	nf:NUM_FLOAT { constant = nf.getText(); }
-	|	nl:NUM_LONG { constant = nl.getText(); }
-	|	nd:NUM_DOUBLE { constant = nd.getText(); }
+constant
+	:	NUM_INT
+	|	CHAR_LITERAL
+	|	STRING_LITERAL
+	|	NUM_FLOAT
+	|	NUM_LONG
+	|	NUM_DOUBLE
 	;
 
 

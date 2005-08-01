@@ -42,6 +42,7 @@ import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
 import org.argouml.uml.ui.ActionAddPackage;
 import org.argouml.uml.ui.ActionDeleteModelElements;
+import org.argouml.uml.ui.ActionRESequenceDiagram;
 import org.argouml.uml.ui.ActionSetSourcePath;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Diagram;
@@ -62,14 +63,14 @@ public class ExplorerPopup extends JPopupMenu {
      */
     public ExplorerPopup(Object selectedItem, MouseEvent me) {
         super("Explorer popup menu");
-        
+
         /* Check if multiple items are selected. */
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
-        
+
         final Project currentProject =
                 ProjectManager.getManager().getCurrentProject();
         final Diagram activeDiagram = currentProject.getActiveDiagram();
-            
+
         // TODO: I've made some attempt to rationalize the conditions here
         // and make them more readable. However I'd suggest that the
         // conditions should move to each diagram.
@@ -168,21 +169,27 @@ public class ExplorerPopup extends JPopupMenu {
                     this.add(action);
                 }
             }
-            
+
             if (!ms) {
                 if (Model.getFacade().isAClassifier(selectedItem)
                         || Model.getFacade().isAPackage(selectedItem)) {
                     this.add(new ActionSetSourcePath());
                 }
             }
-            
+
+            if (!ms) {
+                if (Model.getFacade().isAOperation(selectedItem)) {
+                    this.add(new ActionRESequenceDiagram());
+                }
+            }
+
             if (!ms) {
                 if (Model.getFacade().isAPackage(selectedItem)
                         || Model.getFacade().isAModel(selectedItem)) {
                     this.add(new ActionAddPackage());
                 }
             }
-            
+
             if (selectedItem != projectModel) {
                 this.add(new ActionDeleteModelElements());
             }
@@ -199,7 +206,7 @@ public class ExplorerPopup extends JPopupMenu {
                 this.add(action);
             }
         }
-        
+
         if (selectedItem instanceof Diagram) {
             this.add(new ActionSaveDiagramToClipboard());
             this.add(new ActionDeleteModelElements());
