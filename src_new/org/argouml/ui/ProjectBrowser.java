@@ -932,21 +932,9 @@ public class ProjectBrowser
         PersistenceManager pm = PersistenceManager.getInstance();
 
         try {
-            if (file.exists() && !overwrite) {
-                String sConfirm =
-                    MessageFormat.format(Translator.localize(
-                        "optionpane.save-project-confirm-overwrite"),
-                        new Object[] {file});
-                int nResult =
-                    JOptionPane.showConfirmDialog(this, sConfirm,
-                            Translator.localize(
-                            "optionpane.save-project-confirm-overwrite-title"),
-                                  JOptionPane.YES_NO_OPTION,
-                                  JOptionPane.QUESTION_MESSAGE);
-
-                if (nResult != JOptionPane.YES_OPTION) {
-                    return false;
-                }
+            if (!PersistenceManager.getInstance()
+                    .confirmOverwrite(overwrite, file)) { 
+                return false;
             }
 
             String sStatus =

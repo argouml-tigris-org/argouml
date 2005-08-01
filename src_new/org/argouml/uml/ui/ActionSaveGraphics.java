@@ -183,9 +183,12 @@ public class ActionSaveGraphics
                             "Writing " + theFile + "...");
         }
 	if (theFile.exists() && useUI) {
-	    String t = "Overwrite " + theFile;
 	    int response = JOptionPane.showConfirmDialog(
-                ProjectBrowser.getInstance(), t, t, JOptionPane.YES_NO_OPTION);
+                ProjectBrowser.getInstance(), 
+                Translator.messageFormat("optionpane.confirm-overwrite", 
+                        new Object[] {theFile}), 
+                Translator.localize("optionpane.confirm-overwrite-title"), 
+                JOptionPane.YES_NO_OPTION);
 	    if (response != JOptionPane.YES_OPTION) {
 		return false;
 	    }
