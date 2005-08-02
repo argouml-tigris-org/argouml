@@ -70,6 +70,7 @@ public class PersistenceManager {
     private AbstractFilePersister defaultPersister;
     private List otherPersisters = new ArrayList();
     private UmlFilePersister quickViewDump;
+    private XmiFilePersister xmiPersister;
 
     /**
      * The configuration key for the "save project" file location.
@@ -115,12 +116,16 @@ public class PersistenceManager {
         defaultPersister = new ZargoFilePersister();
         quickViewDump = new UmlFilePersister();
         otherPersisters.add(quickViewDump);
-        otherPersisters.add(new XmiFilePersister());
+        xmiPersister = new XmiFilePersister();
+        /* Exclude the XMIPersister as an otherPersister, 
+         * since it does not retain 
+         * the complete project after a save/load cycle.
+         * See issue 3099. */
     }
 
     /**
      * This function allows to add new persisters. This can be done e.g.
-     * by modules.<p>
+     * by plugins/modules.
      *
      * @param fp the persister
      */
@@ -137,6 +142,10 @@ public class PersistenceManager {
 	    .endsWith("." + defaultPersister.getExtension())) {
             return defaultPersister;
 	}
+        if (name.toLowerCase()
+            .endsWith("." + xmiPersister.getExtension())) {
+                return xmiPersister;
+        }
         Iterator iter = otherPersisters.iterator();
         while (iter.hasNext()) {
             AbstractFilePersister persister =
@@ -177,6 +186,14 @@ public class PersistenceManager {
         chooser.setFileFilter(mf);
     }
 
+    /**
+     * @param chooser the filechooser of which the filters will be set
+     */
+    public void setXmiFileChooserFilter(JFileChooser chooser) {
+        chooser.addChoosableFileFilter(xmiPersister);
+        chooser.setFileFilter(xmiPersister);
+    }
+    
     /**
      * @return the extension of the default persister
      *         (just the text, not the ".")
@@ -273,6 +290,7 @@ public class PersistenceManager {
     
     /**
      * Returns true if we are allowed to overwrite the given file.
+     * 
      * @param overwrite if true, then the user is not asked
      * @param file the given file
      * @return true if we are allowed to overwrite the given file

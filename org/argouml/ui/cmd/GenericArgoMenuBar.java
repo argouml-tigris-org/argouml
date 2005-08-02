@@ -47,6 +47,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.UndoEnabler;
 import org.argouml.language.ui.ActionNotation;
 import org.argouml.ui.ActionAutoResize;
+import org.argouml.ui.ActionImportXMI;
 import org.argouml.ui.ActionSaveConfiguration;
 import org.argouml.ui.ActionSettings;
 import org.argouml.ui.ArgoJMenu;
@@ -752,6 +753,7 @@ public class GenericArgoMenuBar extends JMenuBar
         tools = new JMenu(menuLocalize("Tools"));
         setMnemonic(tools, "Tools");
         tools.setEnabled(false);
+        tools.add(new ActionImportXMI());
         appendPluggableMenus(tools, PluggableMenu.KEY_TOOLS);
         add(tools);
 
