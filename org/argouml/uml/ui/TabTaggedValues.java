@@ -158,9 +158,10 @@ public class TabTaggedValues extends AbstractArgoJPanel
         //valCol.setWidth(550);
         //valCol.setPreferredWidth(550);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        table.sizeColumnsToFit(0);
-
+        
         tableModel.setTarget(target);
+        table.sizeColumnsToFit(0);
+        
         if (target != null) {
             titleLabel.setText("Target: "
 				+ Model.getFacade().getUMLClassName(target)
