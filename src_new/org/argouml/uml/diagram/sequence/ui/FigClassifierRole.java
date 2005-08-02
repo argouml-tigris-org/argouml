@@ -40,7 +40,6 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelEventPump;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
@@ -54,10 +53,8 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -902,22 +899,24 @@ public class FigClassifierRole extends FigNodeModelElement
                 pump.removeModelEventListener(this, it.next());
             }
         }
-        pump.addModelEventListener(this,
-			       newOwner,
-			       new String[] {
-				   "name",
-				   "stereotype",
-				   "base",
-			       });
-	Iterator it = Model.getFacade().getBases(newOwner).iterator();
-	String[] names = new String[] {
-	    "name",
-	};
-	while (it.hasNext()) {
-	    Object base = it.next();
-	    pump.removeModelEventListener(this, base);
-	    pump.addModelEventListener(this, base, names);
-	}
+        if (newOwner != null) {
+            pump.addModelEventListener(this,
+                    newOwner,
+                    new String[] {
+                    "name",
+                    "stereotype",
+                    "base",
+            });
+            Iterator it = Model.getFacade().getBases(newOwner).iterator();
+            String[] names = new String[] {
+                    "name",
+            };
+            while (it.hasNext()) {
+                Object base = it.next();
+                pump.removeModelEventListener(this, base);
+                pump.addModelEventListener(this, base, names);
+            }
+        }
     }
 
     void growToSize(int nodeCount) {
