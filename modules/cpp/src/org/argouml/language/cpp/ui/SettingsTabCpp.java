@@ -26,10 +26,16 @@ package org.argouml.language.cpp.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
 import javax.swing.BoxLayout;
 import javax.swing.Box;
 
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -37,10 +43,10 @@ import javax.swing.SpinnerNumberModel;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
-import org.argouml.application.api.Configuration;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
 import org.argouml.language.cpp.generator.GeneratorCpp;
+import org.argouml.language.cpp.generator.Section;
 
 
 /**
@@ -54,6 +60,7 @@ public class SettingsTabCpp extends SettingsTabHelper
     private JSpinner indent;
     private JCheckBox verboseDocs;
     private JCheckBox lfBeforeCurly;
+    private JComboBox useSect;
 
     /**
      * Creates the widgets in a JScrollPanel (there may be many options),
@@ -65,49 +72,64 @@ public class SettingsTabCpp extends SettingsTabHelper
         LOG.debug("SettingsTabCpp being created...");
 
         setLayout(new BorderLayout());
+        JPanel top = new JPanel();
+        top.setLayout(new GridBagLayout());
 
-        JPanel opts = new JPanel();
-        opts.setLayout(new BoxLayout(opts, BoxLayout.PAGE_AXIS));
-        
-	// adds option widgets
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridy = GridBagConstraints.RELATIVE;
+        constraints.gridx = 0;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        constraints.weightx = 1.0;
+        constraints.insets = new Insets(0, 30, 0, 4);
 
-	JLabel label = createLabel("cpp.indent");
-	// The actual value is loaded in handleSettingsTabRefresh()
+        // adds indent width spinner
+        JLabel label = createLabel("cpp.indent");
+        // The actual value is loaded in handleSettingsTabRefresh()
         Integer spinVal = new Integer(4); 
         Integer spinMin = new Integer(0);
         Integer spinStep = new Integer(1);
         indent = new JSpinner(
                 new SpinnerNumberModel(spinVal, spinMin, null, spinStep));
-	label.setLabelFor(indent);
-
+        label.setLabelFor(indent);
+        
         JPanel indentPanel = new JPanel();
-	indentPanel.setLayout(new BoxLayout(indentPanel, BoxLayout.LINE_AXIS));
-	indentPanel.add(Box.createHorizontalGlue());
-	indentPanel.add(label);
-	indentPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-	indentPanel.add(indent);
-	indentPanel.add(Box.createHorizontalGlue());
-  	Dimension maxSize  = indentPanel.getMinimumSize();
-  	maxSize.setSize(Double.MAX_VALUE, maxSize.getHeight());
-  	indentPanel.setMaximumSize(maxSize);
-	opts.add(indentPanel);
+        indentPanel.setLayout(new BoxLayout(indentPanel, BoxLayout.LINE_AXIS));
+        indentPanel.add(label);
+        indentPanel.add(Box.createRigidArea(new Dimension(5, 0)));
+        indentPanel.add(indent);
+        indentPanel.add(Box.createHorizontalGlue());
+        top.add(indentPanel, constraints);
+        
+        verboseDocs = createCheckBox("cpp.verbose-docs");
+        top.add(verboseDocs, constraints);
 
-	verboseDocs = createCheckBox("cpp.verbose-docs");
-	opts.add(verboseDocs);
-
-	lfBeforeCurly = createCheckBox("cpp.lf-before-curly");
-	opts.add(lfBeforeCurly);
-
+        lfBeforeCurly = createCheckBox("cpp.lf-before-curly");
+        top.add(lfBeforeCurly, constraints);
+        
+        // adds section combobox
+        String[] sectOpts = new String[3];
+        sectOpts[Section.SECT_NONE] = localize("cpp.sections.none"); 
+        sectOpts[Section.SECT_NORMAL] = localize("cpp.sections.normal"); 
+        sectOpts[Section.SECT_BRIEF] = localize("cpp.sections.brief"); 
+        useSect = new JComboBox(sectOpts);
+        label = createLabel("cpp.sections");
+        label.setLabelFor(useSect);
+        JPanel sectPanel =
+            new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        sectPanel.add(label);
+        sectPanel.add(useSect);
+        top.add(sectPanel, constraints);
+        
 	// TODO: add more options
 
-        add(opts, BorderLayout.CENTER);
+        add(top, BorderLayout.NORTH);
 
-	// TODO: add a text field to show a preview of what the generated
-	// code will look like (like in eclipse)
-	
         LOG.debug("SettingsTabCpp created!");
     }
-
+    
     /*** implements SettingsTabPanel ***/
 
     /**
@@ -116,10 +138,11 @@ public class SettingsTabCpp extends SettingsTabHelper
      */
     public void handleSettingsTabSave() {
         GeneratorCpp cpp = GeneratorCpp.getInstance();
+        int indWidth = ((Integer) indent.getValue()).intValue();
+        cpp.setIndent(indWidth);
         cpp.setLfBeforeCurly(lfBeforeCurly.isSelected());
         cpp.setVerboseDocs(verboseDocs.isSelected());
-        cpp.setIndent(((Integer) indent.getValue()).intValue());
-        // TODO: save to disk!
+        cpp.setUseSect(useSect.getSelectedIndex());
     }
 
     /**
@@ -139,6 +162,7 @@ public class SettingsTabCpp extends SettingsTabHelper
         lfBeforeCurly.setSelected(cpp.isLfBeforeCurly());
         verboseDocs.setSelected(cpp.isVerboseDocs());
         indent.setValue(new Integer(cpp.getIndent()));
+        useSect.setSelectedIndex(cpp.getUseSect());
     }
 
     /**

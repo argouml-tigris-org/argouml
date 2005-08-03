@@ -44,6 +44,8 @@ import java.util.LinkedHashSet;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
+import org.argouml.application.api.ConfigurationKey;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.PluggableNotation;
 import org.argouml.model.Model;
@@ -71,14 +73,22 @@ public class GeneratorCpp extends Generator2
      */
     private static final Logger LOG = Logger.getLogger(GeneratorCpp.class);
 
+    // Customizable variables
+
     private boolean verboseDocs = false;
     private boolean lfBeforeCurly = false;
     private String indent = INDENT; // customizable (non final) indent
-    /**
-     * TODO: remove me
-     */
-    private static final boolean VERBOSE_DOCS = false;
 
+    // Configuration keys for the above configurable variables
+    private static final ConfigurationKey KEY_CPP_INDENT =
+        Configuration.makeKey("cpp", "indent");
+    private static final ConfigurationKey KEY_CPP_LF_BEFORE_CURLY =
+        Configuration.makeKey("cpp", "lf-before-curly");
+    private static final ConfigurationKey KEY_CPP_VERBOSE_COMM =
+        Configuration.makeKey("cpp", "verbose-comments");
+    private static final ConfigurationKey KEY_CPP_SECT =
+        Configuration.makeKey("cpp", "sections");
+    
     private static final String ANY_RANGE = "0..*";
 
     private static Section sect;
@@ -197,7 +207,7 @@ public class GeneratorCpp extends Generator2
     private String stdPrefix = "std::";
     
     /**
-     * Get the instance.
+     * Get the instance of the singleton for the C++ generator.
      *
      * @return the singleton of the generator.
      */
@@ -213,8 +223,8 @@ public class GeneratorCpp extends Generator2
     protected GeneratorCpp() {
         super (Notation.makeNotation("Cpp", null,
                                      Argo.lookupIconResource ("CppNotation")));
-	singleton = this;
-        LOG.debug("GeneratorCpp: I AM " + this);
+        singleton = this;
+	loadConfig();
     }
 
     /** Reset the generator in the initial state before
@@ -306,7 +316,6 @@ public class GeneratorCpp extends Generator2
      */
     public String generateCpp(Object o) {
         generatorPass = SOURCE_PASS;
-        LOG.debug("generateCpp: I AM " + this);
 	String name =
 	    generateRelativePackage(o, null, "/").substring(1);
 	if (name.length() > 0) name += "/";
@@ -447,26 +456,28 @@ public class GeneratorCpp extends Generator2
 
         // use unique section for both passes -> allow move of
         // normal function body to inline and vice versa
-        sect = new Section();
+	if (Section.getUseSect() != Section.SECT_NONE) {
+	    sect = new Section();
 
-        /*
-         * 2002-11-28 Achim Spangler
-         * first read header and source file into global/unique section
-         */
-        for (generatorPass = HEADER_PASS;
-             generatorPass <= SOURCE_PASS;
-             generatorPass++) {
-            pathname = generateDirectoriesPathname(o, path);
-            //String pathname = path + filename;
-            // TODO: package, project basepath, tagged values to configure
-            File f = new File(pathname);
-            if (f.exists()) {
-                LOG.info("Generating (updated) " + f.getPath());
-                sect.read(pathname);
-            } else {
-                LOG.info("Generating (new) " + f.getPath());
-            }
-        }
+	    /*
+	     * 2002-11-28 Achim Spangler
+	     * first read header and source file into global/unique section
+	     */
+	    for (generatorPass = HEADER_PASS;
+		 generatorPass <= SOURCE_PASS;
+		 generatorPass++) {
+		pathname = generateDirectoriesPathname(o, path);
+		//String pathname = path + filename;
+		// TODO: package, project basepath, tagged values to configure
+		File f = new File(pathname);
+		if (f.exists()) {
+		    LOG.info("Generating (updated) " + f.getPath());
+		    sect.read(pathname);
+		} else {
+		    LOG.info("Generating (new) " + f.getPath());
+		}
+	    }
+	}
 
         /**
          * 2002-11-28 Achim Spangler
@@ -497,31 +508,33 @@ public class GeneratorCpp extends Generator2
                 }
             }
 
-            // output lost sections only in the second path
-            // -> sections which are moved from header(inline) to source
-            // file are prevented to be outputted in header pass
-            if (generatorPass == HEADER_PASS)   {
-                sect.write(pathname, indent, false);
-            }
-            else sect.write(pathname, indent, true);
+	    if (Section.getUseSect() != Section.SECT_NONE) {
+		// output lost sections only in the second path
+		// -> sections which are moved from header(inline) to source
+		// file are prevented to be outputted in header pass
+		if (generatorPass == HEADER_PASS)   {
+		    sect.write(pathname, indent, false);
+		} else {
+		    sect.write(pathname, indent, true);
+		}
 
-            LOG.info("written: " + pathname);
+		LOG.info("written: " + pathname);
 
-            File f1 = new File(pathname + ".bak");
-            if (f1.exists()) {
-                f1.delete();
-            }
+		File f1 = new File(pathname + ".bak");
+		if (f1.exists()) {
+		    f1.delete();
+		}
 
-            File f2 = new File(pathname);
-            if (f2.exists()) {
-                f2.renameTo(new File(pathname + ".bak"));
-            }
+		File f2 = new File(pathname);
+		if (f2.exists()) {
+		    f2.renameTo(new File(pathname + ".bak"));
+		}
 
-            File f3 = new File(pathname + ".out");
-            if (f3.exists()) {
-                f3.renameTo(new File(pathname));
-            }
-
+		File f3 = new File(pathname + ".out");
+		if (f3.exists()) {
+		    f3.renameTo(new File(pathname));
+		}
+	    }
             LOG.info("----- end updating -----");
         }
         // reset generator pass to NONE for the notation to be correct
@@ -1457,7 +1470,7 @@ public class GeneratorCpp extends Generator2
         for (int i = 0; i < ALL_PARTS.length; i++) {
             if (parts[i].toString().trim().length() > 0) {
                 if (generatorPass != SOURCE_PASS) {
-                    sb.append(LINE_SEPARATOR);
+                    if (i != 0) sb.append(LINE_SEPARATOR);
                     sb.append(' ').append(PART_NAME[i]).append(':');
                     sb.append(LINE_SEPARATOR);
                 }
@@ -1485,8 +1498,8 @@ public class GeneratorCpp extends Generator2
     /**
      * @see org.argouml.application.api.NotationProvider2#generateClassifier(java.lang.Object)
      *
-     * Generates code for a classifier. In case of Java code is
-     * generated for classes and interfaces only at the moment.
+     * Generates code for a classifier, for classes and interfaces only
+     * at the moment.
      */
     public String generateClassifier(Object cls) {
         if (generatorPass == NONE_PASS
@@ -1871,7 +1884,7 @@ public class GeneratorCpp extends Generator2
             int p = getVisibilityPart(bf);
             if (p < 0) continue;
             tb = funcs[p];
-            tb.append(LINE_SEPARATOR).append(indent);
+            tb.append(LINE_SEPARATOR);
 
             boolean mustGenBody = checkGenerateOperationBody(bf);
             if (tb != null 
@@ -1989,7 +2002,8 @@ public class GeneratorCpp extends Generator2
         StringBuffer sb = new StringBuffer();
         if (Model.getFacade().isAClass(cls) 
                 || Model.getFacade().isAInterface(cls))
-        { // add operations
+        { 
+	    // add operations
             // TODO: constructors
             generateClassifierBodyOperations(cls, sb);
 
@@ -2096,7 +2110,7 @@ public class GeneratorCpp extends Generator2
         if (clsName.equals("void")) res = "";
         else if (clsName.equals("char")) res = "return 'x';";
         else if (clsName.equals("int")) res = "return 0;";
-        else if (clsName.equals("boolean")) res = "return false;";
+        else if (clsName.equals("bool")) res = "return false;";
         else if (clsName.equals("byte")) res = "return 0;";
         else if (clsName.equals("long")) res = "return 0;";
         else if (clsName.equals("float")) res = "return 0.0;";
@@ -2927,20 +2941,55 @@ public class GeneratorCpp extends Generator2
      * @see org.argouml.application.api.ArgoModule#getModuleKey()
      */
     public String getModuleKey() { return "module.language.cpp.generator"; }
+
+    /** Load configurable parameters.
+     */
+    public void loadConfig() {
+        int indWidth = Configuration.getInteger(KEY_CPP_INDENT, 4);
+        char[] ind = new char[indWidth];
+        for (int i = 0; i < indWidth; i++)
+            ind[i] = ' ';
+        this.indent = new String(ind);
+        lfBeforeCurly =
+            Configuration.getBoolean(KEY_CPP_LF_BEFORE_CURLY, false);
+        verboseDocs = Configuration.getBoolean(KEY_CPP_VERBOSE_COMM, false);
+        int useSect = Configuration.getInteger(KEY_CPP_SECT,
+					       Section.SECT_NORMAL);
+	Section.setUseSect(useSect);
+    }
+
     /**
-     * Returns the _lfBeforeCurly.
-     * @return boolean
+     * @return true if the generator outputs a newline before the
+     * curly brace starting a class declaration.
      */
     public boolean isLfBeforeCurly() {
         return lfBeforeCurly;
     }
 
     /**
-     * Returns the _verboseDocs.
-     * @return boolean
+     * Sets whether to output a newline character before the curly
+     * brace starting a class declaration.
+     * @param beforeCurly true to generate the '{' on a line on its own.
+     */
+    public void setLfBeforeCurly(boolean beforeCurly) {
+        this.lfBeforeCurly = beforeCurly;
+        Configuration.setBoolean(KEY_CPP_LF_BEFORE_CURLY, beforeCurly);
+    }
+
+    /**
+     * @return If the generator generates verbose comments and docs or not.
      */
     public boolean isVerboseDocs() {
         return verboseDocs;
+    }
+    
+    /**
+     * Tells whether to generate verbose comments and docs or not.
+     * @param verbose true to generate more verbose comments.
+     */
+    public void setVerboseDocs(boolean verbose) {
+        this.verboseDocs = verbose;
+        Configuration.setBoolean(KEY_CPP_VERBOSE_COMM, verbose);
     }
 
     /**
@@ -2948,22 +2997,6 @@ public class GeneratorCpp extends Generator2
      */
     public int getIndent() {
         return indent.length();
-    }
-
-    /**
-     * Sets the _lfBeforeCurly.
-     * @param beforeCurly The _lfBeforeCurly to set
-     */
-    public void setLfBeforeCurly(boolean beforeCurly) {
-        this.lfBeforeCurly = beforeCurly;
-    }
-
-    /**
-     * Sets the _verboseDocs.
-     * @param verbose The _verboseDocs to set
-     */
-    public void setVerboseDocs(boolean verbose) {
-        this.verboseDocs = verbose;
     }
 
     /**
@@ -2975,6 +3008,29 @@ public class GeneratorCpp extends Generator2
         for (int i = 0; i < indWidth; i++)
             ind[i] = ' ';
         this.indent = new String(ind);
-        LOG.debug("setIndent: I AM " + this);
+        Configuration.setInteger(KEY_CPP_INDENT, indWidth);
+    }
+
+    /**
+     * @return Whether sections are generated and how.
+     * @see setUseSect
+     */
+    public int getUseSect() {
+	return Section.getUseSect();
+    }
+
+    /**
+     * Tells the generator if and how to generate sections.
+     * @param use Must be one of: 
+     * <ul>
+     *   <li>SECT_NONE: sections are not generated;</li>
+     *   <li>SECT_NORMAL: sections are generated;</li>
+     *   <li>SECT_BRIEF: sections are generated, but the "do not delete..."
+     *       line is skipped.</li>
+     * </ul>
+     */
+    public void setUseSect(int use) {
+	Section.setUseSect(use);
+        Configuration.setInteger(KEY_CPP_SECT, use);
     }
 } /* end class GeneratorCpp */
