@@ -38,6 +38,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
@@ -71,7 +72,7 @@ public class FigActor extends FigNodeModelElement {
      */
     public FigActor() {
         // Put this rectangle behind the rest, so it goes first
-        FigRect bigPort = new FigRect(10, 30-20, 15, 60);
+        FigRect bigPort = new ActorPortFigRect(10, 30-20, 15, 60, this);
         bigPort.setVisible(false);
         FigCircle head =
             new FigCircle(10, 30-20, 15, 15, Color.black, Color.white);
@@ -345,5 +346,40 @@ public class FigActor extends FigNodeModelElement {
         damage();
     }
 
+    /**
+     * The bigport needs to overrule the getGravityPoints, 
+     * because it is the port of this FigNode.
+     * 
+     * @author mvw@tigris.org
+     */
+    class ActorPortFigRect extends FigRect {
+        
+        /**
+         * the parent fig, i.e. the Actor
+         */
+        private Fig parent;
+        
+        /**
+         * The constructor.
+         * 
+         * @param x the x
+         * @param y the y
+         * @param w the width
+         * @param h the hight
+         * @param p the Actor fig
+         */
+        public ActorPortFigRect(int x, int y, int w, int h, Fig p) {
+            super(x, y, w, h, null, null);
+            parent = p;
+        }
+        
+        /**
+         * Makes sure that the edges stick to the outline of the fig.
+         * @see org.tigris.gef.presentation.Fig#getGravityPoints()
+         */
+        public List getGravityPoints() {
+            return parent.getGravityPoints();
+        }
+    }    
 
 } /* end class FigActor */
