@@ -48,9 +48,8 @@ import org.tigris.gef.presentation.FigRect;
 public class FigActor extends FigNodeModelElement {
 
     /**
-     * The minimum padding allowed above and below the rectangle for
-     * the use case name and extension points to the top of the use
-     * case oval itself.<p>
+     * The padding between 
+     * the actor body and name and the top of the stereotype.<p>
      */
     protected static final int MIN_VERT_PADDING = 4;
     
@@ -103,6 +102,18 @@ public class FigActor extends FigNodeModelElement {
     }
 
     /**
+     * Constructor for use if this figure is created for an existing actor
+     * node in the metamodel.<p>
+     *
+     * @param gm ignored!
+     * @param node The UML object being placed.
+     */
+    public FigActor(GraphModel gm, Object node) {
+        this();
+        setOwner(node);
+    }
+
+    /**
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int width) {
@@ -120,18 +131,6 @@ public class FigActor extends FigNodeModelElement {
     public void setFilled(boolean filled) {
         // Only the head should be filled (not the text)
         getFigAt(HEAD_POSN).setFilled(filled);
-    }
-
-    /**
-     * Constructor for use if this figure is created for an existing actor
-     * node in the metamodel.<p>
-     *
-     * @param gm ignored!
-     * @param node The UML object being placed.
-     */
-    public FigActor(GraphModel gm, Object node) {
-        this();
-        setOwner(node);
     }
 
     /**
