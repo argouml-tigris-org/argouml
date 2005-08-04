@@ -287,69 +287,48 @@ public class ProfileJava extends Profile {
      * @return the model object
      * @throws ProfileException if failed to load profile
      */
-    public Object/* MModel */loadProfileModel() throws ProfileException {
-        // TODO: We need to put this NSUML/MDR dependent code
-        // behind a method in the model interface
-        // Will create an issue to discuss best solution.
-        // See http://argouml.tigris.org/issues/show_bug.cgi?id=3300
-        if ("org.argouml.model.uml.NSUMLModelImplementation"
-                .equals(System.getProperty("argouml.model.implementation",
-                        "org.argouml.model.uml.NSUMLModelImplementation"))) {
-            // NSUML implementation
-            //
-            //    get a file name for the default model
-            //
-            String defaultModelFileName = System
-                    .getProperty("argo.defaultModel");
-
-            //
-            //   if the property was set
-            //
-            InputStream is = null;
-            if (defaultModelFileName != null) {
-                //
-                //  try to find a file with that name
-                //
-                try {
-                    is = new FileInputStream(defaultModelFileName);
-                } catch (FileNotFoundException ex) {
-                    //
-                    //   no file found, try looking in the resources
-                    //
-                    is = new Object().getClass().getResourceAsStream(
-                            defaultModelFileName);
-                    if (is == null) {
-                        LOG
-                                .error("Value of property argo.defaultModel ("
-                                        + defaultModelFileName
-                                        + ") did not correspond to an available file.\n");
-                    }
-                }
+    public Object loadProfileModel() throws ProfileException {
+        //
+        //    get a file name for the default model
+        //
+        String modelFileName = System.getProperty("argo.defaultModel");
+        
+        // if we use the NSUML implementation use the file default.xmi
+        String nsumlImpl = "org.argouml.model.uml.NSUMLModelImplementation";
+        String mdrImpl = "org.argouml.model.mdr.MDRModelImplementation";
+        
+        if (modelFileName==null) {
+            //TODO: Remove the ",nsumlImpl" when we will switch the 
+            //default metamodel to UML 1.4/MDR.
+            if (nsumlImpl.equals(System.getProperty(
+                    "argouml.model.implementation",nsumlImpl))) {
+                modelFileName = "/org/argouml/default.xmi";           		
+            } else if (mdrImpl.equals(System.getProperty(
+                "argouml.model.implementation"))) {
+                modelFileName = "/org/argouml/model/mdr/mof/default-uml14.xmi";
             }
-
+        }
+        //
+        //   if there is a default model
+        //
+        if (modelFileName != null) {
+            InputStream is = null;
             //
-            //   either no name specified or file not found
-            //        load the default
-            if (is == null) {
-                defaultModelFileName = "/org/argouml/default.xmi";
-
+            //  try to find a file with that name
+            //
+            try {
+                is = new FileInputStream(modelFileName);
+            } catch (FileNotFoundException ex) {
+                //
+                // No file found, try looking in the resources
+                //
                 // Notice that the class that we run getClass() in needs to be
                 // in the same ClassLoader that the default.xmi.
                 // If we run using Java Web Start then we have every ArgoUML
                 // file in the same jar (i.e. the same ClassLoader).
-                is = new Object() {
-                }.getClass().getResourceAsStream(defaultModelFileName);
-
-                if (is == null) {
-                    try {
-                        is = new FileInputStream(defaultModelFileName
-                                .substring(1));
-                    } catch (FileNotFoundException ex) {
-                        throw new ProfileException(ex);
-                    }
-                }
+                is = new Object().getClass().getResourceAsStream(
+                        modelFileName);
             }
-
             if (is != null) {
                 try {
                     XmiReader xmiReader = Model.getXmiReader();
@@ -358,22 +337,12 @@ public class ProfileJava extends Profile {
                 } catch (UmlException e) {
                     throw new ProfileException(e);
                 }
-            }
-
-            return null;
+            } 
+            LOG.error("Value of property argo.defaultModel ("
+                    + modelFileName
+                    + ") did not correspond to an available file.\n");    			
         }
-        // MDR implementation
-        Object model = Model.getModelManagementFactory().createModel();
-        assert model != null : "A model should have been created";
-        // TODO: Here we should code what is to be added to the model as part
-        // of the java profile. Not attempt to load a predesigned file.
-        // If that had been done for NSUML then there would have been no
-        // need for the NSUML based if block above. Setting to the Java profile
-        // would have been independent of model implementation calling only
-        // model interface methods to add java datatypes etc.
-        // What is to be done? Set datatypes? Is that all?
-        // Once this is done we can in theory remove the NSUML based if block
-        // above.
-        return model;
+        return Model.getModelManagementFactory().createModel();
     }
+    
 }
