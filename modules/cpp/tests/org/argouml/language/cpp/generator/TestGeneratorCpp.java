@@ -86,6 +86,9 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
     /** AExtended extends AClass generalization */
     private Object aGeneralization;
 
+    /** OtherClass is another class */
+    private Object otherClass;
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
@@ -96,6 +99,7 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
         setUpNamespaces("AModel");
         setUpARealization(getAClass(), aInterface);
         setUpAGeneralization(aExtended, getAClass());
+	otherClass = getFactory().buildClass("OtherClass");
     }
 
     /**
@@ -351,5 +355,39 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
         assertNotNull(strConstr);
         LOG.debug("generated constructor is '" + strConstr + "'");
         assertEquals("AClass()", strConstr.trim());
+    }
+
+    private Object setUpInner() {
+        Model.getCoreHelper().setNamespace(otherClass, getAClass());
+        Object voidType =
+            ProjectManager.getManager().getCurrentProject().findType("void");
+        buildOperation(otherClass, voidType, "foo");
+	return otherClass;
+    }
+
+    /**
+     * Test if inner classes are generated correctly.
+     */
+    public void testGenerateInnerClassesHeader() {
+	Object inner = setUpInner();
+        String code = getGenerator().generateH(getAClass());
+	String re = "(?m)(?s).*\\sclass\\s+AClass\\s*(:\\s*.*)?\\{.*"
+	    + "class\\s+OtherClass\\s*\\{.*\\};.*\\};.*";
+        assertTrue(code.matches(re));
+    }
+
+    /**
+     * Test if inner classes operations are generated correctly.
+     */
+    public void testGenerateInnerClassesCpp() {
+	Object inner = setUpInner();
+        String code = getGenerator().generateCpp(getAClass());
+	String re = "(?m)(?s).*void\\s+AClass\\s*::\\s*OtherClass"
+	    + "\\s*::\\s*foo\\s*\\(\\s*\\).*\\{.*\\}.*";
+	if (!code.matches(re)) {
+	    LOG.debug("Code for inner class (.cpp):");
+	    LOG.debug(code);
+	}
+        assertTrue(code.matches(re));
     }
 }

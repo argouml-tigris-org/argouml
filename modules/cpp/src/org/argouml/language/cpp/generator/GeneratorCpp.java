@@ -273,6 +273,7 @@ public class GeneratorCpp extends Generator2
 	String headerTop = generateHeaderTop(pathname);
 	String header = generateHeader(o);
 	String src = generate(o);
+	String footer = generateFooter();
 	// generate #includes and predeclarations
 	// this must be *after* generate()
 	StringBuffer incl = new StringBuffer();
@@ -288,10 +289,11 @@ public class GeneratorCpp extends Generator2
 	StringBuffer result = new StringBuffer();
 	if (generatorPass == HEADER_PASS) {
 	    String name = Model.getFacade().getName(o);
-	    String guardPack = generateRelativePackage(o, null, "_");
+	    String guardPack =
+		generateRelativePackage(o, null, "_").substring(1);
 	    String guard = name + getFileExtension().replace('.', '_');
 	    if (guardPack.length() > 0) {
-		guard = guardPack.substring(1) + "_" + guard;
+		guard = guardPack + "_" + guard;
 	    }
 	    result.append("#ifndef " + guard + LINE_SEPARATOR 
 		      + "#define " + guard 
@@ -301,6 +303,7 @@ public class GeneratorCpp extends Generator2
 	result.append(incl.toString());
 	result.append(header);
 	result.append(src);
+	result.append(footer);
 	if (generatorPass == HEADER_PASS) {
 	    result.append("#endif");
 	    result.append(LINE_SEPARATOR);
@@ -432,6 +435,14 @@ public class GeneratorCpp extends Generator2
         return pathname;
     }
 
+    /* Returns true if the given object is a class (or interface) within
+     * another class (not within a package).
+     */
+    private static boolean isAInnerClass(Object cls) {
+	Object parent = Model.getFacade().getNamespace(cls);
+	return parent != null && !Model.getFacade().isAPackage(parent);
+    }
+
     /**
      * Generates a file for the classifier.
      * This method could have been static if it where not for the need to
@@ -452,6 +463,10 @@ public class GeneratorCpp extends Generator2
             // TODO: is returning null a correct behaviour here?
             return null;
         }
+	if (isAInnerClass(o)) {
+	    return null;
+	}
+
         String pathname = null;
 
         // use unique section for both passes -> allow move of
@@ -954,6 +969,9 @@ public class GeneratorCpp extends Generator2
         return sb.toString();
     }
 
+    /* This generates the file internal header, not the .h file!
+     * That is, things before the class declaration.
+     */
     private String generateHeader(Object cls) {
         StringBuffer sb = new StringBuffer(240);
 
@@ -968,6 +986,17 @@ public class GeneratorCpp extends Generator2
         }
 
         return sb.toString();
+    }
+
+    /* This generates all the things that go after the class declaration.
+     */
+    private String generateFooter() {
+        StringBuffer sb = new StringBuffer(80);
+	sb.append(generateHeaderPackageEnd());
+	if (sb.length() > 0) {
+	    sb.insert(0, LINE_SEPARATOR);
+	}
+	return sb.toString();
     }
 
     /**
@@ -1078,8 +1107,13 @@ public class GeneratorCpp extends Generator2
     private boolean generateOperationNameAndTestForConstructor(Object op,
             StringBuffer sb) {
         if (generatorPass == SOURCE_PASS) {
-            sb.append(Model.getFacade().getName(
-                          Model.getFacade().getOwner(op))).append("::");
+	    Object cls = Model.getFacade().getOwner(op);
+	    String prefix = new String();
+	    while (!Model.getFacade().isAPackage(cls)) {
+		prefix = Model.getFacade().getName(cls) + "::" + prefix;
+		cls = Model.getFacade().getNamespace(cls);
+	    }
+	    sb.append(prefix);
         }
         boolean constructor = false;
         String name;
@@ -1404,8 +1438,7 @@ public class GeneratorCpp extends Generator2
             hasBaseClass = true;
         }
 
-        // add implemented interfaces, if needed
-        // nsuml: realizations!
+        // add implemented interfaces, if needed (uml: realizations)
         if (Model.getFacade().isAClass(cls)) {
             String interfaces = generateSpecification(cls);
             if (!interfaces.equals ("")) {
@@ -1449,11 +1482,6 @@ public class GeneratorCpp extends Generator2
             }
             if (generatorPass != SOURCE_PASS)
                 sb.append("};").append(LINE_SEPARATOR);
-	    String pkgend = generateHeaderPackageEnd();
-	    if (pkgend.length() > 0) {
-		sb.append(LINE_SEPARATOR);
-		sb.append(pkgend);
-	    }
         }
         return sb;
     }
@@ -1495,6 +1523,22 @@ public class GeneratorCpp extends Generator2
         }
     }
     
+    /* Indent each line of the given string by n indent spaces.
+     */
+    private String indentString(String s, int n) {
+	String ind = new String();
+	for(; n > 0; n--)
+	    ind += indent;
+	// This works only with jdk 1.5: return s.replace("\n", "\n" + ind);
+	StringBuffer result = new StringBuffer();
+	for (int i = s.indexOf('\n'); i != -1; i = s.indexOf('\n')) {
+	    result.append(s.substring(0, i+1)).append(ind);
+	    s = s.substring(i+1);
+	}
+	result.append(s);
+	return result.toString();
+    }
+
     /**
      * @see org.argouml.application.api.NotationProvider2#generateClassifier(java.lang.Object)
      *
@@ -1502,11 +1546,16 @@ public class GeneratorCpp extends Generator2
      * at the moment.
      */
     public String generateClassifier(Object cls) {
+	// If we're in the notation pane, do a special trick
+	// to show both header and source
         if (generatorPass == NONE_PASS
                 && (Model.getFacade().isAClass(cls)
                     || Model.getFacade().isAInterface(cls))) {
-            // we're probably in the notation pane, so do a special trick
-            // to show both header and source
+	    // for inner classes, show source of top level class
+	    // TODO: don't know if this is the best thing to do
+	    while (isAInnerClass(cls)) {
+		cls = Model.getFacade().getNamespace(cls);
+	    }
             StringBuffer sb = new StringBuffer();
             String name = Model.getFacade().getName(cls);
             sb.append("// ").append(name).append(".h");
@@ -1993,6 +2042,30 @@ public class GeneratorCpp extends Generator2
         }
     }
 
+    private void generateClassifierInnerClasses(Object cls, StringBuffer sb) {
+	StringBuffer part[] = new StringBuffer[ALL_PARTS.length];
+	for (int i = 0; i < part.length; i++)
+	    part[i] = new StringBuffer(80);
+
+	Collection inners = Model.getFacade().getOwnedElements(cls);
+	for (Iterator it = inners.iterator(); it.hasNext();) {
+	    Object inner = it.next();
+	    if (Model.getFacade().isAClass(inner)
+		|| Model.getFacade().isAInterface(inner)) {
+		String innerCode = generateClassifier(inner);
+		int p = getVisibilityPart(inner);
+		part[p].append(LINE_SEPARATOR);
+		if (generatorPass == HEADER_PASS) {
+		    part[p].append(indentString(innerCode, 1));
+		} else {
+		    part[p].append(innerCode);
+		}
+		part[p].append(LINE_SEPARATOR);
+	    }
+	}
+	sb.append(generateAllParts(part));
+    }
+
     /**
      * Generates the body of a class or interface.
      * @param cls
@@ -2003,6 +2076,9 @@ public class GeneratorCpp extends Generator2
         if (Model.getFacade().isAClass(cls) 
                 || Model.getFacade().isAInterface(cls))
         { 
+            // Inner classes
+	    generateClassifierInnerClasses(cls, sb);
+
 	    // add operations
             // TODO: constructors
             generateClassifierBodyOperations(cls, sb);
@@ -2665,8 +2741,8 @@ public class GeneratorCpp extends Generator2
 
     /**
      * Generates "synchronized" keyword for guarded operations.
-     * FIXME: not needed for c++, it doesn't handle concurrency
-     * directly. Maybe, implement this in the methods body using 
+     * Not needed for c++, it doesn't handle concurrency directly.
+     * TODO: Maybe, implement this in the methods body using 
      * some kind of API (posix, win32, ... as user wishes ...)?
      * @param op The operation
      * @return The synchronized keyword if the operation is guarded, else ""
