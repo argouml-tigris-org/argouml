@@ -63,9 +63,8 @@ public class SettingsTabCpp extends SettingsTabHelper
     private JComboBox useSect;
 
     /**
-     * Creates the widgets in a JScrollPanel (there may be many options),
-     * but do not initialize them with the values (this is
-     * handleSettingsTabRefresh() duty).
+     * Creates the widgets but do not initialize them with the values
+     * (this is handleSettingsTabRefresh() duty).
      */
     public SettingsTabCpp() {
         super();
