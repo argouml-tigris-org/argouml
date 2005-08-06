@@ -146,6 +146,8 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
      */
     public void testGenerateAfterModifyAndIssue2828() throws IOException {
         genDir = setUpDirectory4Test("testIssue2828");
+	// enable sections, in case they were disabled
+	getGenerator().setUseSect(Section.SECT_NORMAL);
         // generate the classifier for the first time in temp dir
         String filePath = getGenerator().generateFile2(
                 getAClass(), genDir.getPath());
