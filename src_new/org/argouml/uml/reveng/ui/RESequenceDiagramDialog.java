@@ -58,15 +58,26 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.sequence.MessageNode;
+import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.sequence.ui.FigClassifierRole;
+import org.argouml.uml.diagram.sequence.ui.FigMessage;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
+import org.argouml.uml.diagram.sequence.ui.SequenceDiagramRenderer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.reveng.java.JavaLexer;
 import org.argouml.uml.reveng.java.JavaRecognizer;
 import org.argouml.uml.reveng.java.Modeller;
 import org.argouml.uml.ui.ActionBaseDelete;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerManager;
 import org.tigris.gef.presentation.Fig;
+
+import org.tigris.gef.base.Mode;
+import org.tigris.gef.base.ModeManager;
 
 /**
  * The dialog that starts the reverse engineering of operations.
@@ -89,8 +100,12 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         _model = ProjectManager.getManager().getCurrentProject().getModel();
         try {
             _modeller = new Modeller(_model, null, null, true, true, null);
-            parseBody();
         } catch (Exception ex) {}
+
+        _classifier = Model.getFacade().getOwner(_operation);
+        buildSequenceDiagram(_classifier);
+        _classifierRole = buildClassifierRole(_classifier, "obj");
+        parseBody();
 
         JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
         JTabbedPane tabs = new JTabbedPane();
@@ -98,20 +113,6 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         tabs.addTab("Automatic", getAutomaticallyTab());
         contentPanel.add(tabs, BorderLayout.CENTER);
         setContent(contentPanel);
-
-        Object classifier = Model.getFacade().getOwner(_operation);
-        Object owner = Model.getFacade().getNamespace(classifier);
-        _collaboration = Model.getCollaborationsFactory().buildCollaboration(owner, classifier);
-        _diagram = 
-            (UMLDiagram)DiagramFactory.getInstance().createDiagram(
-                UMLSequenceDiagram.class, 
-                _collaboration,
-                null);
-        ProjectManager.getManager().getCurrentProject().addMember(_diagram);
-        TargetManager.getInstance().setTarget(_diagram);
-        Object node = Model.getCollaborationsFactory().buildClassifierRole(_collaboration);
-        _diagram.add(new FigClassifierRole(node));
-        ExplorerEventAdaptor.getInstance().modelElementChanged(owner);
     }
 
     /**
@@ -120,8 +121,13 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
 
-        // Generate Button --------------------------------------
-        if (e.getSource() == getCancelButton()) {
+        if (e.getSource() == _processButton) {
+            for (int i = 0; i < _callTable.getRowCount(); i++) {
+                if (Boolean.TRUE.equals((Boolean)_callTable.getValueAt(i, 1))) {
+                    buildAction((String)_callTable.getValueAt(i, 0));
+                }
+            }
+        } else if (e.getSource() == getCancelButton()) {
             // remove SD and clean up everything
             Project p = ProjectManager.getManager().getCurrentProject();
             Object newTarget = null;
@@ -250,10 +256,13 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         fieldConstraints.weightx = 1.0;
         fieldConstraints.insets = new Insets(10, 4, 2, 4);
 
+        _processButton = new JButton("Process");
+        _processButton.addActionListener(this);
         top.add(new JLabel("Method call table:"), labelConstraints);
-        top.add(new JButton("Process"), fieldConstraints);
+        top.add(_processButton, fieldConstraints);
 
-        JTable table = new JTable(new SelectionTableModel(_calls.toArray(), "Method calls", "Enable"));
+        _callTable = new SelectionTableModel(_calls.toArray(), "Method calls", "Enable");
+        JTable table = new JTable(_callTable);
         table.setShowVerticalLines(true);
 
         fieldConstraints.gridx = 0;
@@ -268,23 +277,45 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
     }
 
     /**
-     * Gets the (first) body of an operation.
+     * Buiids the sequence diagram for a classifier.
      */
-    private static String getBody(Object operation) {
-        String body = null;
-        Collection methods = Model.getFacade().getMethods(operation);
-        if (methods != null && !methods.isEmpty()) {
-            Object expression = Model.getFacade().getBody(methods.iterator().next());
-            body = (String)Model.getFacade().getBody(expression);
-        }
-        if (body == null) {
-            body = "";
-        }
-        return body;
+    private void buildSequenceDiagram(Object classifier) {
+        _namespace = Model.getFacade().getNamespace(classifier);
+        _collaboration =
+            Model.getCollaborationsFactory().buildCollaboration(
+                _namespace,
+                classifier);
+        _diagram = 
+            (UMLDiagram)DiagramFactory.getInstance().createDiagram(
+                UMLSequenceDiagram.class, 
+                _collaboration,
+                null);
+        _graphModel = (SequenceDiagramGraphModel)_diagram.getGraphModel();
+        ProjectManager.getManager().getCurrentProject().addMember(_diagram);
+        TargetManager.getInstance().setTarget(_diagram);
     }
 
     /**
-     * parses a body of an operation.
+     * Builds the classifier role for a classifier.
+     */
+    private FigClassifierRole buildClassifierRole(Object classifier, String objName) {
+        FigClassifierRole crFig = null;
+        Object node =
+            Model.getCollaborationsFactory().buildClassifierRole(
+                _collaboration);
+        Collection coll = new ArrayList();
+        coll.add(classifier);
+        Model.getCollaborationsHelper().setBases(node, coll);
+        Model.getCoreHelper().setName(node, objName);
+        crFig = new FigClassifierRole(node);
+        _diagram.add(crFig);
+        _graphModel.addNode(node);
+        ExplorerEventAdaptor.getInstance().modelElementChanged(_namespace);
+        return crFig;
+    }
+
+    /**
+     * Parses a body of the actual operation.
      */
     private void parseBody() {
         JavaLexer lexer = null;
@@ -309,17 +340,119 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
             Collection methodCalls = _modeller.getMethodCalls();
             if (methodCalls != null) {
                 _calls.addAll(methodCalls);
-                Iterator iter = methodCalls.iterator();
-                while (iter.hasNext()) {
-                    determineCallee((String)iter.next());
-                }
             }
         }
     }
-    
-    private void determineCallee(String call) {
-        StringBuffer sb = new StringBuffer(call);
+
+    /**
+     * Gets the (first) body of an operation.
+     */
+    private static String getBody(Object operation) {
+        String body = null;
+        Collection methods = Model.getFacade().getMethods(operation);
+        if (methods != null && !methods.isEmpty()) {
+            Object expression = Model.getFacade().getBody(methods.iterator().next());
+            body = (String)Model.getFacade().getBody(expression);
+        }
+        if (body == null) {
+            body = "";
+        }
+        return body;
     }
+    
+    /**
+     * Builds the complete action and its target classifier role (if not existing).
+     */
+    private Object buildAction(String call) {
+        Object action = null;
+        StringBuffer sb = new StringBuffer(call);
+        boolean isCreate = call.startsWith("new ");
+        int findpos = sb.lastIndexOf(".");
+        if (!isCreate && findpos == -1) {
+            // call of a method of the class
+            action = buildEdge(call, _classifierRole, _classifierRole, Model.getMetaTypes().getCallAction());
+        } else {
+            String type = null;
+            if (isCreate) {
+                type = sb.substring(4);
+                FigClassifierRole endFig = getClassifierFromModel(type);
+                action = buildEdge(call, _classifierRole, _classifierRole, Model.getMetaTypes().getCreateAction());
+            } else {
+                String teststring = call.substring(0, findpos);
+                type = (String)_types.get(teststring);
+            }
+            if (type != null) {
+                // call of a method of a local object
+                // or call of a static method of a classifier
+            } else {
+                // whatever
+            }
+        }
+        return action;
+    }
+
+    /**
+     * Builds the edge figure for an action.
+     */
+    private FigMessage buildEdge(String call, FigClassifierRole startFig, FigClassifierRole endFig, Object callType) {
+        FigMessage figEdge = null;
+        MessageNode startPort = new MessageNode(startFig);
+        startFig.addNode(1, startPort);
+        MessageNode foundPort = new MessageNode(endFig);
+        endFig.addNode(2, foundPort);
+        Fig startPortFig = startFig.getPortFig(startPort);
+        Fig destPortFig = endFig.getPortFig(foundPort);
+        Object edgeType = Model.getMetaTypes().getMessage();
+        Editor ce = Globals.curEditor();
+        Hashtable args = new Hashtable();
+        args.put("action", callType);
+        Mode mode = (Mode)ce.getModeManager().top();
+        mode.setArgs(args);
+        Object newEdge = _graphModel.connect(startPort, foundPort, edgeType);
+        if (null != newEdge) {
+            Model.getCoreHelper().setName(newEdge, call);
+            LayerManager lm = ce.getLayerManager();
+            figEdge =
+                (FigMessage) ce.getLayerManager()
+                    .getActiveLayer().presentationFor(newEdge);
+            figEdge.setSourcePortFig(startPortFig);
+            figEdge.setSourceFigNode(startFig);
+            figEdge.setDestPortFig(destPortFig);
+            figEdge.setDestFigNode(endFig);
+            endFig.updateEdges();
+            if (startFig != endFig) {
+                startFig.updateEdges();
+            }
+        }
+        return figEdge;
+    }
+
+    private FigClassifierRole getClassifierFromModel(String type) {
+        FigClassifierRole crFig = null;
+        // TODO: get the REAL classifier, not this fake:
+        Object classifier = Model.getCoreFactory().buildClass(type);
+        crFig = buildClassifierRole(classifier, "obj");
+        return crFig;
+    }
+
+    private Object _model = null;
+    private Modeller _modeller = null;
+    private Object _namespace = null;
+    private Object _classifier = null;
+    private Object _operation = null;
+    private FigClassifierRole _classifierRole = null;
+    private ArrayList _calls = new ArrayList();
+    private ArrayList _conditions = new ArrayList();
+    private Hashtable _types = new Hashtable();
+    private Object _collaboration = null;
+    private UMLDiagram _diagram = null;
+    private SequenceDiagramGraphModel _graphModel = null;
+    private Object default_state = null;
+    private Object default_state_machine = null;
+    private SelectionTableModel _callTable = null;
+    private SelectionTableModel _assumptionTable = null;
+    private JButton _processButton = null;
+    
 
     /**
      * Logger.
@@ -327,16 +460,6 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
     private static final Logger LOG =
         Logger.getLogger(RESequenceDiagramDialog.class);
 
-    private static Object _model = null;
-    private static Modeller _modeller = null;
-
-    private Object _operation = null;
-    private ArrayList _calls = new ArrayList();
-    private ArrayList _conditions = new ArrayList();
-    private Hashtable _types = new Hashtable();
-    private Object _collaboration = null;
-    private UMLDiagram _diagram = null;
-    
     /**
      * Table model for the assumption table.
      */
