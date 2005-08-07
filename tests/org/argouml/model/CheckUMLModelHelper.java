@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.util;
+package org.argouml.model;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
@@ -42,7 +42,12 @@ import org.argouml.model.Model;
  * @author Linus Tolke
  * @since 0.11.2
  */
-public class CheckUMLModelHelper {
+public final class CheckUMLModelHelper {
+    /**
+     * Constructor.
+     */
+    private CheckUMLModelHelper() {
+    }
 
     /**
      * Deleted a model object, looses the refence and then checks that
@@ -51,11 +56,9 @@ public class CheckUMLModelHelper {
      * This must be called with just one reference to the object or
      * else it will fail.
      *
-     * @param tc the test case where we run the assertions.
      * @param mo the model object that we try to delete, release and reclaim.
      */
-    public static void deleteAndRelease(TestCase tc,
-					Object mo) {
+    public static void deleteAndRelease(Object mo) {
 	Class c = mo.getClass();
 
 	// Call methods that exists for all objects and that always return
@@ -77,13 +80,10 @@ public class CheckUMLModelHelper {
      *
      * This must be called with just one reference to the object or
      * else it will fail.
-     *
-     * @param tc the test case where we run the assertions.
      * @param mo the model object that we try to delete, release and reclaim.
      * @param name the class name of the uml object
      */
-    private static void deleteAndRelease(TestCase tc,
-					 Object mo,
+    private static void deleteAndRelease(Object mo,
 					 String name) {
 	Class c = mo.getClass();
 
@@ -112,13 +112,11 @@ public class CheckUMLModelHelper {
      * Then deletes it, looses the reference and then checks that
      * the object is reclaimed.
      *
-     * @param tc the testcase class
      * @param f the DataTypesFactory
      * @param names the UML elements to test
      * @param args the arguments of the UML elements
      */
-    public static void createAndRelease(TestCase tc,
-					Object f,
+    public static void createAndRelease(Object f,
 					String [] names,
 					Object [] args) {
 	Class [] classes = new Class[args.length];
@@ -143,13 +141,13 @@ public class CheckUMLModelHelper {
 		// Extra careful now, not to keep any references to the
 		// second argument.
 		try {
-		    deleteAndRelease(tc, m.invoke(f, args), names[i]);
+		    deleteAndRelease(m.invoke(f, args), names[i]);
 		} catch (ClassCastException e) {
 		    // Here it is another object sent to the test.
-		    deleteAndRelease(tc, m.invoke(f, args));
+		    deleteAndRelease(m.invoke(f, args));
 		} catch (IllegalArgumentException e) {
 		    // Here it is another object sent to the test.
-		    deleteAndRelease(tc, m.invoke(f, args));
+		    deleteAndRelease(m.invoke(f, args));
 		}
 	    } catch (IllegalAccessException e) {
 		TestCase.fail("Method create" + names[i]
@@ -164,28 +162,24 @@ public class CheckUMLModelHelper {
     }
 
     /**
-     * @param tc the testcase class
      * @param f the DataTypesFactory
      * @param names the UML elements to test
      */
-    public static void createAndRelease(TestCase tc,
-					Object f,
+    public static void createAndRelease(Object f,
 					String [] names) {
 	Object[] noarguments = {
 	};
 
-	createAndRelease(tc, f, names, noarguments);
+	createAndRelease(f, names, noarguments);
     }
 
     /**
      * Check if for every metamodel element name a create function exists.
      *
-     * @param tc the testcase class
      * @param f the modelfactory that should contain the creation function
      * @param names the metamodel class names
      */
-    public static void metaModelNameCorrect(TestCase tc,
-            Object f, String[] names) {
+    public static void metaModelNameCorrect(Object f, String[] names) {
         try {
             for (int i = 0; i < names.length; i++) {
                 try {
@@ -213,15 +207,11 @@ public class CheckUMLModelHelper {
     /**
      * Try creating a stereotype for every modelelement type.
      *
-     * @param tc the testcase class
      * @param f the factory containing the creation function for
      *          all the given metamodel element names
      * @param names the metamodel element names
      */
-    public static void isValidStereoType(
-            TestCase tc,
-            Object f,
-            String[] names) {
+    public static void isValidStereoType(Object f, String[] names) {
         try {
             Object ns = Model.getCoreFactory().createNamespace();
             Object clazz = Model.getCoreFactory().buildClass(ns);

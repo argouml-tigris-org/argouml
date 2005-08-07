@@ -26,7 +26,6 @@ package org.argouml.model;
 
 import junit.framework.TestCase;
 
-import org.argouml.util.CheckUMLModelHelper;
 
 /**
  * Test the CommonBehaviorFactory.
@@ -104,7 +103,6 @@ public class TestCommonBehaviorFactory extends TestCase {
 	};
 
 	CheckUMLModelHelper.createAndRelease(
-					     this,
 					     Model.getCommonBehaviorFactory(),
 					     objs);
 

@@ -26,8 +26,8 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.CheckUMLModelHelper;
 import org.argouml.model.Model;
-import org.argouml.util.CheckUMLModelHelper;
 
 /**
  * Test the ExtensionMechanismsFactory class.
@@ -71,7 +71,6 @@ public class TestExtensionMechanismsFactory extends TestCase {
 	};
 
 	CheckUMLModelHelper.createAndRelease(
-		     this,
 		     Model.getExtensionMechanismsFactory(),
 		     objs);
 

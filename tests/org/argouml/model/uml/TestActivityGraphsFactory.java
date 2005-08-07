@@ -26,8 +26,8 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.CheckUMLModelHelper;
 import org.argouml.model.Model;
-import org.argouml.util.CheckUMLModelHelper;
 
 
 /**
@@ -80,8 +80,7 @@ public class TestActivityGraphsFactory extends TestCase {
 	    null,
 	};
 
-	CheckUMLModelHelper.createAndRelease(this,
-					     Model.getActivityGraphsFactory(),
+	CheckUMLModelHelper.createAndRelease(Model.getActivityGraphsFactory(),
 					     objs);
     }
 

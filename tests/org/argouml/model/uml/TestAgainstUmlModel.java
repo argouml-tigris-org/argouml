@@ -36,8 +36,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.argouml.model.CheckUMLModelHelper;
 import org.argouml.model.Model;
-import org.argouml.util.CheckUMLModelHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -49,13 +49,14 @@ import org.xml.sax.SAXException;
  */
 public class TestAgainstUmlModel extends TestCase {
 
-    /** List of element references and the factories that create them.
+    /**
+     * List of element references and the factories that create them.
      *
-     *  This contains a complete list of the model elements
-     *  that are <strong>expected</strong> to be found
-     *  in the model.
+     * This contains a complete list of the model elements
+     * that are <strong>expected</strong> to be found
+     * in the model.
      */
-    private static Hashtable refs = null;
+    private static Hashtable refs;
 
     /**
      * The constructor.
@@ -105,21 +106,22 @@ public class TestAgainstUmlModel extends TestCase {
      * Make all preparations for the tests by preparing the document.
      *
      * @return the document or null if not available.
+     * @throws SAXException when things go wrong with SAX
+     * @throws IOException when there's an IO error
+     * @throws ParserConfigurationException when the parser finds wrong syntax
      */
     private static Document prepareDocument()
 	throws ParserConfigurationException, SAXException, IOException {
 	DocumentBuilder builder =
 	    DocumentBuilderFactory.newInstance().newDocumentBuilder();
 	String fileName = System.getProperty("test.model.uml13");
-	if (fileName == null)
-	{
+	if (fileName == null) {
 	    printInconclusiveMessage("The property test.model.uml13 "
 				     + "is not set.");
 	    return null;
 	}
 	File file = new File(fileName);
-	if (!file.exists())
-	{
+	if (!file.exists()) {
 	    printInconclusiveMessage("The file " + fileName
 				     + " cannot be found.");
 	    return null;
@@ -128,19 +130,20 @@ public class TestAgainstUmlModel extends TestCase {
     }
 
 
-    /** Walk through the UML Classes found.
+    /**
+     * Walk through the UML Classes found.
      *
-     *  Though some of the DOM methods such as getAttributes
-     *  may return null values under other conditions,
-     *  in the context of this test
-     *  and assuming a valid XMI file
-     *  none should occur.
+     * Though some of the DOM methods such as getAttributes
+     * may return null values under other conditions,
+     * in the context of this test
+     * and assuming a valid XMI file
+     * none should occur.
      *
-     *  Hence there is no special checking for those abnormal
-     *  cases, allowing the test to fail simply with a
-     *  NullPointerException, with this comment indicating that
-     *  either the input data is incorrect or the test needs
-     *  to be improved.
+     * Hence there is no special checking for those abnormal
+     * cases, allowing the test to fail simply with a
+     * NullPointerException, with this comment indicating that
+     * either the input data is incorrect or the test needs
+     * to be improved.
      */
     private void processClassNode(String indent, Node node) {
         String umlclass =
@@ -151,36 +154,35 @@ public class TestAgainstUmlModel extends TestCase {
         System.out.println ("Class:" + umlclass);
         if (factory instanceof CannotTestThisClass) {
             System.out.println ("Explicitly not checking for " + umlclass);
-        }
-        else if (factory instanceof AbstractUmlModelFactory) {
+        } else if (factory instanceof AbstractUmlModelFactory) {
             String[] classarg = {umlclass, null};
-            CheckUMLModelHelper.createAndRelease(
-		    this,
-		    (AbstractUmlModelFactory) factory,
-		    classarg);
-        }
-        else {
+            CheckUMLModelHelper.createAndRelease(factory, classarg);
+        } else {
             fail("Test is invalid for uml method '" + umlclass + "'");
         }
     }
 
-    /** Initialize the lookup map to link the uml class names
-     *  to the factories.
+    /**
+     * Initialize the lookup map to link the uml class names
+     * to the factories.
      *
-     *  This brute force method should be investigated
-     *  in favor of determining the Uml Class namespace from
-     *  the XMI data model and computing the factory
-     *  at run time.
+     * This brute force method should be investigated
+     * in favor of determining the Uml Class namespace from
+     * the XMI data model and computing the factory
+     * at run time.
      *
-     *  Certain classes that cannot be tested directly in this way
-     *  should be calculcated.  Event and StateVertex, for example,
-     *  are marked abstract in the model.  But we need to make sure
-     *  that the reverse is true, that there are no elements
-     *  marked abstract in the model that in fact are instantiable
-     *  by NSUML.
+     * Certain classes that cannot be tested directly in this way
+     * should be calculcated.  Event and StateVertex, for example,
+     * are marked abstract in the model.  But we need to make sure
+     * that the reverse is true, that there are no elements
+     * marked abstract in the model that in fact are instantiable
+     * by NSUML.
      */
     static {
         refs = new Hashtable(127);
+    }
+
+    static {
         refs.put("Multiplicity",          new CannotTestFactoryMethod());
         refs.put("MultiplicityRange",     new CannotTestFactoryMethod());
         refs.put("Expression",            new CannotTestFactoryMethod());
@@ -193,6 +195,9 @@ public class TestAgainstUmlModel extends TestCase {
         refs.put("ArgListsExpression",    new CannotTestFactoryMethod());
         refs.put("MappingExpression",     new CannotTestFactoryMethod());
         refs.put("ProcedureExpression",   new CannotTestFactoryMethod());
+    }
+
+    static {
         refs.put("Element",               new CannotTestFactoryMethod());
         refs.put("ModelElement",          new CannotTestFactoryMethod());
         refs.put("GeneralizableElement",  new CannotTestFactoryMethod());
@@ -216,6 +221,9 @@ public class TestAgainstUmlModel extends TestCase {
         refs.put("AssociationClass",      Model.getCoreFactory());
         refs.put("Dependency",            Model.getCoreFactory());
         refs.put("Abstraction",           Model.getCoreFactory());
+    }
+
+    static {
         refs.put("PresentationElement",   new CannotTestFactoryMethod());
         refs.put("Usage",                 Model.getCoreFactory());
         refs.put("Binding",               Model.getCoreFactory());
@@ -236,6 +244,9 @@ public class TestAgainstUmlModel extends TestCase {
         refs.put("CreateAction",          Model.getCommonBehaviorFactory());
         refs.put("DestroyAction",         Model.getCommonBehaviorFactory());
         refs.put("UninterpretedAction",   Model.getCommonBehaviorFactory());
+    }
+
+    static {
         refs.put("AttributeLink",         Model.getCommonBehaviorFactory());
         refs.put("Object",                Model.getCommonBehaviorFactory());
         refs.put("Link",                  Model.getCommonBehaviorFactory());
@@ -253,12 +264,18 @@ public class TestAgainstUmlModel extends TestCase {
         refs.put("Exception",             Model.getCommonBehaviorFactory());
         refs.put("ComponentInstance",     Model.getCommonBehaviorFactory());
         refs.put("NodeInstance",          Model.getCommonBehaviorFactory());
+    }
+
+    static {
         refs.put("UseCase",               Model.getUseCasesFactory());
         refs.put("Actor",                 Model.getUseCasesFactory());
         refs.put("UseCaseInstance",       Model.getUseCasesFactory());
         refs.put("Extend",                Model.getUseCasesFactory());
         refs.put("Include",               Model.getUseCasesFactory());
         refs.put("ExtensionPoint",        Model.getUseCasesFactory());
+    }
+
+    static {
         refs.put("StateMachine",          Model.getStateMachinesFactory());
         refs.put("Event",                 new CannotTestClassIsAbstract());
         refs.put("StateVertex",           new CannotTestClassIsAbstract());
@@ -276,6 +293,9 @@ public class TestAgainstUmlModel extends TestCase {
         refs.put("SynchState",            Model.getStateMachinesFactory());
         refs.put("StubState",             Model.getStateMachinesFactory());
         refs.put("FinalState",            Model.getStateMachinesFactory());
+    }
+
+    static {
         refs.put("Collaboration",         Model.getCollaborationsFactory());
         refs.put("ClassifierRole",        Model.getCollaborationsFactory());
         refs.put("AssociationRole",       Model.getCollaborationsFactory());
@@ -297,6 +317,7 @@ public class TestAgainstUmlModel extends TestCase {
 
     /**
      * Returns the refs.
+     *
      * @return Hashtable
      */
     public static Hashtable getRefs() {
@@ -313,8 +334,8 @@ public class TestAgainstUmlModel extends TestCase {
          * navigator pane.  This is a temporary hack until the object
          * model is cleaned up.
          */
-//        NavigatorPane.setInstance(null);
-//        assertNull("Still getting NavigatorPane", NavigatorPane.getInstance());
+//      NavigatorPane.setInstance(null);
+//      assertNull("Still getting NavigatorPane", NavigatorPane.getInstance());
     }
 
     /**
@@ -351,8 +372,10 @@ public class TestAgainstUmlModel extends TestCase {
         return suite;
     }
 
-    /** Test a specific element
-     *  @see junit.framework.TestCase#runTest()
+    /**
+     * Test a specific element.
+     *
+     * @see junit.framework.TestCase#runTest()
      */
     protected void runTest() throws Throwable {
         String umlclass = getName();
@@ -362,15 +385,10 @@ public class TestAgainstUmlModel extends TestCase {
         System.out.println ("Class:" + umlclass);
         if (factory instanceof CannotTestThisClass) {
             System.out.println ("Explicitly not checking for " + umlclass);
-        }
-        else if (factory instanceof AbstractUmlModelFactory) {
+        } else if (factory instanceof AbstractUmlModelFactory) {
             String[] classarg = {umlclass, null};
-            CheckUMLModelHelper.createAndRelease(
-		    this,
-		    (AbstractUmlModelFactory) factory,
-		    classarg);
-        }
-        else {
+            CheckUMLModelHelper.createAndRelease(factory, classarg);
+        } else {
             fail("Test is invalid for uml method '" + umlclass + "'");
         }
     }
@@ -378,12 +396,21 @@ public class TestAgainstUmlModel extends TestCase {
 
 }
 
+/**
+ * Token for keeping track of what to test.
+ */
 interface CannotTestThisClass {
 }
 
+/**
+ * Token with reason.
+ */
 class CannotTestFactoryMethod implements CannotTestThisClass {
 }
 
+/**
+ * Token with reason.
+ */
 class CannotTestClassIsAbstract implements CannotTestThisClass {
 }
 

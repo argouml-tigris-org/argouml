@@ -28,7 +28,6 @@ import java.lang.ref.WeakReference;
 
 import junit.framework.TestCase;
 
-import org.argouml.util.CheckUMLModelHelper;
 
 /**
  * Test the collaborations factory for all model implementations.<p>
@@ -75,7 +74,6 @@ public class TestCollaborationsFactory extends TestCase {
 	};
 
         CheckUMLModelHelper.createAndRelease(
-            this,
             Model.getCollaborationsFactory(),
             objs);
 
@@ -107,7 +105,7 @@ public class TestCollaborationsFactory extends TestCase {
 
         WeakReference cr1wr = new WeakReference(cr1);
         WeakReference rolewr = new WeakReference(role);
-        WeakReference interwr = new WeakReference(inter);
+        // WeakReference interwr = new WeakReference(inter);
         WeakReference meswr = new WeakReference(mes);
 
         Model.getUmlFactory().delete(cr1);

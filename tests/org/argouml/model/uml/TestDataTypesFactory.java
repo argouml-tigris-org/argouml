@@ -28,9 +28,9 @@ import java.util.LinkedList;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.CheckUMLModelHelper;
 import org.argouml.model.DataTypesFactory;
 import org.argouml.model.Model;
-import org.argouml.util.CheckUMLModelHelper;
 
 /**
  * Test the DataTypesFactory class.
@@ -87,22 +87,18 @@ public class TestDataTypesFactory extends TestCase {
 	DataTypesFactory dtf = Model.getDataTypesFactory();
 
 	CheckUMLModelHelper.createAndRelease(
-					     this,
 					     dtf,
 					     objs,
 					     args);
 
 	// Multiplicity
 
-	CheckUMLModelHelper.deleteAndRelease(this,
-					     dtf.createMultiplicity(1, 10));
+	CheckUMLModelHelper.deleteAndRelease(dtf.createMultiplicity(1, 10));
 
 	CheckUMLModelHelper.deleteAndRelease(
-		this,
 		dtf.createMultiplicity(new LinkedList()));
 
-	CheckUMLModelHelper.deleteAndRelease(this,
-					     dtf.createMultiplicity("1..10"));
+	CheckUMLModelHelper.deleteAndRelease(dtf.createMultiplicity("1..10"));
 
 	// Do we need to add tests for the following?
 	//

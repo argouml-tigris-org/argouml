@@ -26,8 +26,8 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.CheckUMLModelHelper;
 import org.argouml.model.Model;
-import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
@@ -84,8 +84,7 @@ public class TestUseCasesFactory extends TestCase {
 	    null,
 	};
 
-	CheckUMLModelHelper.createAndRelease(this,
-					     Model.getUseCasesFactory(),
+	CheckUMLModelHelper.createAndRelease(Model.getUseCasesFactory(),
 					     objs);
     }
 

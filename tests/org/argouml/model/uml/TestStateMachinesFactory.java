@@ -26,8 +26,8 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.CheckUMLModelHelper;
 import org.argouml.model.Model;
-import org.argouml.util.CheckUMLModelHelper;
 
 /**
  * Test the StateMachinesFactory class.
@@ -107,7 +107,6 @@ public class TestStateMachinesFactory extends TestCase {
 	};
 
 	CheckUMLModelHelper.createAndRelease(
-					     this,
 					     Model.getStateMachinesFactory(),
 					     objs);
     }

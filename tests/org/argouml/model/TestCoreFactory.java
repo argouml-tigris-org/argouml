@@ -28,7 +28,6 @@ import java.lang.ref.WeakReference;
 
 import junit.framework.TestCase;
 
-import org.argouml.util.CheckUMLModelHelper;
 
 /**
  * Test the CoreFactory interface and implementation beyond.
@@ -131,7 +130,6 @@ public class TestCoreFactory extends TestCase {
 	};
 
 	CheckUMLModelHelper.createAndRelease(
-					     this,
 					     Model.getCoreFactory(),
 					     objs);
     }

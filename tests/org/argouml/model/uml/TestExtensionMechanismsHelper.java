@@ -29,8 +29,8 @@ import java.util.Collection;
 import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.CheckUMLModelHelper;
 import org.argouml.model.Model;
-import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -92,8 +92,8 @@ public class TestExtensionMechanismsHelper extends TestCase {
      * Test if we can create modelelements with the names given.
      */
     public void testGetMetaModelName() {
-        CheckUMLModelHelper.metaModelNameCorrect(this,
-		Model.getExtensionMechanismsFactory(),
+        CheckUMLModelHelper.metaModelNameCorrect(
+                Model.getExtensionMechanismsFactory(),
 		TestExtensionMechanismsFactory.getAllModelElements());
     }
 
@@ -101,8 +101,8 @@ public class TestExtensionMechanismsHelper extends TestCase {
      * Test if we can create a valid stereotype for all the modelelements.
      */
     public void testIsValidStereoType() {
-        CheckUMLModelHelper.isValidStereoType(this,
-		Model.getExtensionMechanismsFactory(),
-                TestExtensionMechanismsFactory.getAllModelElements());
+        CheckUMLModelHelper.isValidStereoType(
+                Model.getExtensionMechanismsFactory(),
+		TestExtensionMechanismsFactory.getAllModelElements());
     }
 }

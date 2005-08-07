@@ -26,8 +26,8 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.CheckUMLModelHelper;
 import org.argouml.model.Model;
-import org.argouml.util.CheckUMLModelHelper;
 
 /**
  * Test the ModelManagementFactory class.
@@ -74,7 +74,6 @@ public class TestModelManagementFactory extends TestCase {
 	};
 
 	CheckUMLModelHelper.createAndRelease(
-		     this,
 		     Model.getModelManagementFactory(),
 		     objs);
 
