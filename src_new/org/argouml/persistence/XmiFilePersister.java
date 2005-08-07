@@ -177,6 +177,7 @@ public class XmiFilePersister extends AbstractFilePersister {
             p.setUUIDRefs(XMIParser.getSingleton().getUUIDRefs());
             p.addMember(new ProjectMemberTodoList("", p));
             p.addMember(model);
+            p.setRoot(model);
             ProjectManager.getManager().setNeedsSave(false);
             return p;
         } catch (IOException e) {
