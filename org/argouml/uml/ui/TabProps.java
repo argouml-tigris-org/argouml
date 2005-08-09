@@ -426,14 +426,14 @@ public class TabProps
                 return new PropPanelActor();}
         if (Model.getFacade().isAAssociationClass(modelElement)) { 
                 return new PropPanelAssociationClass();}
+        if (Model.getFacade().isAAssociationRole(modelElement)) { 
+            return new PropPanelAssociationRole();}
         if (Model.getFacade().isAAssociation(modelElement)) { 
                 return new PropPanelAssociation();}
+        if (Model.getFacade().isAAssociationEndRole(modelElement)) { 
+            return new PropPanelAssociationEndRole();}
         if (Model.getFacade().isAAssociationEnd(modelElement)) { 
                 return new PropPanelAssociationEnd();}
-        if (Model.getFacade().isAAssociationEndRole(modelElement)) { 
-                return new PropPanelAssociationEndRole();}
-        if (Model.getFacade().isAAssociationRole(modelElement)) { 
-                return new PropPanelAssociationRole();}
         if (Model.getFacade().isAAttribute(modelElement)) { 
                 return new PropPanelAttribute();}
         if (Model.getFacade().isACallAction(modelElement)) { 
