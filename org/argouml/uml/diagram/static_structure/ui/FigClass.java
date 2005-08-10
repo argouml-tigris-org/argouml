@@ -58,7 +58,6 @@ import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
-import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Editor;
