@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
@@ -48,6 +49,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.util.CollectionUtil;
+import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -608,6 +610,22 @@ public class FigComment
         // Whatever happened we are no longer newly created, so clear the
         // flag. Then set the bounds for the rectangle we have defined.
         newlyCreated = false;
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
+     */
+    public Point getClosestPoint(Point anotherPt) {
+        Rectangle r = getBounds();
+        int xs[] = {r.x, r.x + r.width - dogear, r.x + r.width, 
+                    r.x + r.width,  r.x,            r.x};
+        int ys[] = {r.y, r.y,                    r.y + dogear,
+                    r.y + r.height, r.y + r.height, r.y};
+        Point p = Geometry.ptClosestTo(
+                xs, 
+                ys,
+                6 , anotherPt);
+        return p;
     }
 
 } /* end class FigComment */
