@@ -41,11 +41,13 @@ import java.util.Iterator;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Notation;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -77,7 +79,7 @@ public class FigComment
     private int y = 0;
     private int width = 80;
     private int height = 60;
-    private int gapY = 10;
+    private int dogear = 10; // a dog-ear = a bent corner in a book
 
     private boolean readyToEdit = true;
 
@@ -89,6 +91,13 @@ public class FigComment
 
     private FigPoly body;
     private FigPoly urCorner; // the upper right corner
+    
+    /**
+     * Flag to indicate that we have just been created. This is to fix the
+     * problem with loading comments that have stereotypes already
+     * defined.<p>
+     */
+    private boolean newlyCreated = false;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -100,8 +109,8 @@ public class FigComment
 
         body = new FigPoly(Color.black, Color.white);
         body.addPoint(x, y);
-        body.addPoint(x + width - 1 - gapY, y);
-        body.addPoint(x + width - 1, y + gapY);
+        body.addPoint(x + width - 1 - dogear, y);
+        body.addPoint(x + width - 1, y + dogear);
         body.addPoint(x + width - 1, y + height - 1);
         body.addPoint(x, y + height - 1);
         body.addPoint(x, y);
@@ -109,23 +118,31 @@ public class FigComment
         body.setLineWidth(1);
 
         urCorner = new FigPoly(Color.black, Color.white);
-        urCorner.addPoint(x + width - 1 - gapY, y);
-        urCorner.addPoint(x + width - 1, y + gapY);
-        urCorner.addPoint(x + width - 1 - gapY, y + gapY);
-        urCorner.addPoint(x + width - 1 - gapY, y);
+        urCorner.addPoint(x + width - 1 - dogear, y);
+        urCorner.addPoint(x + width - 1, y + dogear);
+        urCorner.addPoint(x + width - 1 - dogear, y + dogear);
+        urCorner.addPoint(x + width - 1 - dogear, y);
         urCorner.setFilled(true);
         urCorner.setLineWidth(1);
 
+        getStereotypeFigText().setExpandOnly(true);
+        getStereotypeFig().setFilled(true);
+        getStereotypeFig().setLineWidth(0);
+        getStereotypeFigText().setEditable(false);
+        getStereotypeFig().setHeight(STEREOHEIGHT);
+        getStereotypeFig().setVisible(false);
+        
         setBigPort(new FigRect(x, y, width, height, null, null));
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
 
-        text = new FigMultiLineText(2, 2, width - 2 - gapY, height - 4, true);
+        text = new FigMultiLineText(x + 2, y + 2, width - 2 - dogear, height - 4, true);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
         addFig(body);
         addFig(urCorner);
+        addFig(getStereotypeFig());
         addFig(text);
 
         setBlinkPorts(false); //make port invisble unless mouse enters
@@ -134,6 +151,14 @@ public class FigComment
         updateEdges();
 
         readyToEdit = false;
+        // Mark this as newly created. This is to get round the problem with
+        // creating figs for loaded comments that had stereotypes. They are
+        // saved with their dimensions INCLUDING the stereotype, but since we
+        // pretend the stereotype is not visible, we add height the first time
+        // we render such a comment. This is a complete fudge, and really we
+        // ought to address how comment objects with stereotypes are saved. But
+        // that will be hard work.
+        newlyCreated = true;
     }
 
     /**
@@ -431,12 +456,22 @@ public class FigComment
     public Dimension getMinimumSize() {
 
         // Get the size of the text field.
-        Dimension textMinimumSize = text.getMinimumSize();
+        Dimension aSize = text.getMinimumSize();
 
+        // If we have a stereotype displayed, then allow some space for that
+        // (width and height)
+
+        if (getStereotypeFig().isVisible()) {
+            aSize.width =
+                Math.max(aSize.width,
+                         getStereotypeFig().getMinimumSize().width);
+            aSize.height += STEREOHEIGHT;
+        }
+        
         // And add the gaps around the textfield to get the minimum
         // size of the note.
-        return new Dimension(textMinimumSize.width + 4 + gapY,
-			     textMinimumSize.height + 4);
+        return new Dimension(aSize.width + 4 + dogear,
+			     aSize.height + 4);
     }
 
     /**
@@ -446,27 +481,36 @@ public class FigComment
         if (text == null) {
             return;
         }
-
+        
+        int stereotypeHeight = 0;
+        if (getStereotypeFig().isVisible()) {
+            stereotypeHeight = STEREOHEIGHT;
+        }
+        
         Rectangle oldBounds = getBounds();
 
         // Resize the text figure
-        text.setBounds(px + 2, py + 2, w - 4 - gapY, h - 4);
+        text.setBounds(px + 2, py + 2 + stereotypeHeight, 
+                w - 4 - dogear, h - 4 - stereotypeHeight);
 
+        getStereotypeFig().setBounds(px + 2, py + 2,
+                w - 4 - dogear, STEREOHEIGHT);
+        
         // Resize the big port around the figure
         getBigPort().setBounds(px, py, w, h);
 
         // Since this is a complex polygon, there's no easy way to resize it.
         Polygon newPoly = new Polygon();
         newPoly.addPoint(px, py);
-        newPoly.addPoint(px + w - 1 - gapY, py);
-        newPoly.addPoint(px + w - 1, py + gapY);
+        newPoly.addPoint(px + w - 1 - dogear, py);
+        newPoly.addPoint(px + w - 1, py + dogear);
         newPoly.addPoint(px + w - 1, py + h - 1);
         newPoly.addPoint(px, py + h - 1);
         newPoly.addPoint(px, py);
         body.setPolygon(newPoly);
 
         // Just move the corner to it's new position.
-        urCorner.setBounds(px + w - 1 - gapY, py, gapY, gapY);
+        urCorner.setBounds(px + w - 1 - dogear, py, dogear, dogear);
 
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
         firePropChange("bounds", oldBounds, getBounds());
@@ -513,6 +557,57 @@ public class FigComment
                 setBounds(getBounds());
             }
         }
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     */
+    protected void updateStereotypeText() {
+        Object me = /*(MModelElement)*/ getOwner();
+
+        if (me == null) {
+            return;
+        }
+
+        Rectangle rect = getBounds();
+        Object stereo = CollectionUtil.getFirstItemOrNull(
+                Model.getFacade().getStereotypes(me));
+
+        if ((stereo == null)
+                || (Model.getFacade().getName(stereo) == null)
+                || (Model.getFacade().getName(stereo).length() == 0))   {
+
+            if (getStereotypeFig().isVisible()) {
+                getStereotypeFig().setVisible(false);
+                rect.y += STEREOHEIGHT;
+                rect.height -= STEREOHEIGHT;
+                setBounds(rect.x, rect.y, rect.width, rect.height);
+                calcBounds();
+            }
+        } else {
+            setStereotype(Notation.generateStereotype(this, stereo));
+
+            if (!getStereotypeFig().isVisible()) {
+                getStereotypeFig().setVisible(true);
+
+                // Only adjust the stereotype height if we are not newly
+                // created. This gets round the problem of loading classes with
+                // stereotypes defined, which have the height already including
+                // the stereotype.
+
+                if (!newlyCreated) {
+                    rect.y -= STEREOHEIGHT;
+                    rect.height += STEREOHEIGHT;
+                    rect.width = 
+                        Math.max(getMinimumSize().width, rect.width);
+                    setBounds(rect.x, rect.y, rect.width, rect.height);
+                    calcBounds();
+                }
+            }
+        }
+        // Whatever happened we are no longer newly created, so clear the
+        // flag. Then set the bounds for the rectangle we have defined.
+        newlyCreated = false;
     }
 
 } /* end class FigComment */
