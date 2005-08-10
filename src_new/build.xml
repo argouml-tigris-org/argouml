@@ -186,6 +186,7 @@ Property files to be searched:
 
     <path id="argouml-mdr.runtime.classpath">
       <fileset dir="../../argouml-mdr/build" includes="*.jar"/>
+      <fileset dir="../../argouml-mdr/lib" includes="*.jar"/>
     </path>
 
     <!-- In order to use ant optional tasks which use jars that are not -->
