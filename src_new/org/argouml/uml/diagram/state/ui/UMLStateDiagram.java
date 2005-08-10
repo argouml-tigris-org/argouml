@@ -461,14 +461,14 @@ public class UMLStateDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#needsToBeRemoved()
      */
     public boolean needsToBeRemoved() {
-        Object context = Model.getFacade().getContext(theStateMachine);
-        if (context == null) {
-            return true;
-        }
         if (Model.getUmlFactory().isRemoved(theStateMachine)) {
             return true;
         }
         if (Model.getUmlFactory().isRemoved(getNamespace())) {
+            return true;
+        }            	
+        Object context = Model.getFacade().getContext(theStateMachine);
+        if (context == null) {
             return true;
         }
         return false;
