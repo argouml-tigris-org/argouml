@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
@@ -47,7 +46,6 @@ public class FigInitialState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private static final int MARGIN = 2;
     private static final int X = 10;
     private static final int Y = 10;
     private static final int WIDTH = 16;
@@ -76,7 +74,6 @@ public class FigInitialState extends FigStateVertex {
         setBigPort(bigPort);
 
         setBlinkPorts(false); //make port invisble unless mouse enters
-        Rectangle r = getBounds();
     }
 
     /**
