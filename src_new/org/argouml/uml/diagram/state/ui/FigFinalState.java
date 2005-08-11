@@ -25,10 +25,12 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
-import java.awt.Rectangle;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
@@ -85,7 +87,6 @@ public class FigFinalState extends FigStateVertex {
         setBigPort(bigPort);
 
         setBlinkPorts(false); //make port invisble unless mouse enters
-        Rectangle r = getBounds();
     }
 
     /**
@@ -140,10 +141,6 @@ public class FigFinalState extends FigStateVertex {
     public boolean isResizable() {
         return false;
     }
-
-    //   public Selection makeSelection() {
-    //     return new SelectionMoveClarifiers(this);
-    //   }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
@@ -225,7 +222,7 @@ public class FigFinalState extends FigStateVertex {
      *
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    /*public void setBounds(int boundX, int boundY, int boundW, int boundH) {
+    /*public void setBoundsImpl(int boundX, int boundY, int boundW, int boundH) {
         _x = boundX;
         _y = boundY;
         getBigPort().setX(boundX);
@@ -235,29 +232,26 @@ public class FigFinalState extends FigStateVertex {
     }*/
 
     /**
-     * Makes sure that edges stick to the outer circle and not to the name or
-     * stereobox.
-     *
-     * TODO: MVW: I do not see any reason for this. Can we remove it?
+     * Makes sure that edges stick to the outer circle and not to the box.
      *
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
-    /*public Vector getGravityPoints() {
+    public List getGravityPoints() {
         Vector ret = new Vector();
-        int cx = getBigPort().center().x;
-        int cy = getBigPort().center().y;
-        int radius = Math.round(getBigPort().getWidth() / 2) + 1;
-        final int maxPoints = 20;
+        int cx = getBigPort().getCenter().x;
+        int cy = getBigPort().getCenter().y;
+        double radius = getBigPort().getWidth() / 2 + 1;
+        final int maxPoints = 32;
         Point point = null;
         final double pi2 = Math.PI * 2;
         for (int i = 0; i < maxPoints; i++) {
-            int px = (int) (cx + Math.cos(pi2 / maxPoints * i) * radius);
-            int py = (int) (cy + Math.sin(pi2 / maxPoints * i) * radius);
+            int px = (int) (cx + Math.cos(pi2 * i / maxPoints) * radius);
+            int py = (int) (cy + Math.sin(pi2 * i / maxPoints) * radius);
             point = new Point(px, py);
             ret.add(point);
         }
         return ret;
 
-    }*/
+    }
 
 } /* end class FigFinalState */
