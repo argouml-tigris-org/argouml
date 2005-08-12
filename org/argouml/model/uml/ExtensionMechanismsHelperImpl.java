@@ -448,5 +448,44 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
         }
         throw new IllegalArgumentException("handle: " + handle);
     }
+
+	/* (non-Javadoc)
+	 * @see org.argouml.model.ExtensionMechanismsHelper#addTaggedValue(java.lang.Object, java.lang.Object)
+	 */
+	public void addTaggedValue(Object handle, Object taggedValue) {
+        if (handle instanceof MModelElement
+                && taggedValue instanceof MTaggedValue) {
+            ((MModelElement) handle).addTaggedValue((MTaggedValue) taggedValue);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or taggedValue: " + taggedValue);
+    }
+
+	/* (non-Javadoc)
+	 * @see org.argouml.model.ExtensionMechanismsHelper#removeTaggedValue(java.lang.Object, java.lang.Object)
+	 */
+	public void removeTaggedValue(Object handle, Object taggedValue) {
+        if (handle instanceof MModelElement
+                && taggedValue instanceof MTaggedValue) {
+            ((MModelElement) handle).removeTaggedValue((MTaggedValue) taggedValue);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or taggedValue: " + taggedValue);
+    }
+
+	/* (non-Javadoc)
+	 * @see org.argouml.model.ExtensionMechanismsHelper#setTaggedValue(java.lang.Object, java.util.Collection)
+	 */
+	public void setTaggedValue(Object handle, Collection taggedValues) {
+        if (handle instanceof MModelElement
+                && taggedValues instanceof Collection) {
+            ((MModelElement) handle).setTaggedValues(taggedValues);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or taggedValues: " + taggedValues);
+	}
 }
 

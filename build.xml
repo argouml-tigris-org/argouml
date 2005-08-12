@@ -996,7 +996,8 @@ Property files to be searched:
       <batchtest todir="${argo.tests.reports}/junit/output/mdr">
         <fileset dir="${argo.tests.src}">
           <include name="org/argouml/**/Test*.java"/>
-          <exclude name="org/argouml/model/uml/**"/>
+        	<!-- this is the only test specific to MDR -->
+        	  <exclude name="org/argouml/**/TestUmlModelEventPumpDeprecated.java"/>
         </fileset>
       </batchtest>
     </junit>

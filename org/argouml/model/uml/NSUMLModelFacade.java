@@ -4683,5 +4683,21 @@ public class NSUMLModelFacade implements Facade {
         return modelElement.toString();
     }
 
-    
+
+	/**
+	 * Not implemented in the UML 1.3 metamodel.
+	 * @see org.argouml.model.Facade#isATagDefinition(java.lang.Object)
+	 */
+	public boolean isATagDefinition(Object handle) {
+		return false;
+	}
+
+	/**
+	 * Not implemented in the UML 1.3 metamodel.
+	 * @see org.argouml.model.Facade#isATagDefinition(java.lang.Object)
+	 */
+	public boolean isAEnumeration(Object handle) {
+		return false;
+	}
+	
 }

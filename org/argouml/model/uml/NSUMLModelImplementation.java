@@ -184,7 +184,7 @@ public class NSUMLModelImplementation implements ModelImplementation {
     /**
      * @return The Copy helper.
      */
-    CopyHelper getCopyHelper() {
+    public org.argouml.model.CopyHelper getCopyHelper() {
         return theCopyHelper;
     }
 
