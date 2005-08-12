@@ -24,6 +24,7 @@
 
 package org.argouml.model.uml;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.Model;
 import org.argouml.model.UUIDManager;
 
@@ -36,7 +37,7 @@ import ru.novosoft.uml.MBase;
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
-public abstract class AbstractUmlModelFactory {
+public abstract class AbstractUmlModelFactory implements AbstractModelFactory {
 
     /**
      * Default constructor.

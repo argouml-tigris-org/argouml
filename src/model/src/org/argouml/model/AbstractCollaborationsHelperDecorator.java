@@ -312,4 +312,11 @@ public abstract class AbstractCollaborationsHelperDecorator
         impl.setSender(handle, sender);
     }
 
+	/**
+	 * @see org.argouml.model.CollaborationsHelper#removeInteraction(java.lang.Object, java.lang.Object)
+	 */
+	public void removeInteraction(Object collab, Object interaction) {
+		impl.removeInteraction(collab, interaction);
+	}
+
 }

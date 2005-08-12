@@ -33,8 +33,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /**
  * @author JBranderhorst
  */
@@ -48,7 +46,7 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
     /**
      * The namespace a created diagram should have.
      */
-    private MNamespace ns;
+    private Object ns;
 
     /**
      * A list with namespaces that should be valid for the diagram to be
@@ -95,10 +93,10 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      *
      * @return a valid namespace for the diagram to be tested
      */
-    protected abstract MNamespace getNamespace();
+    protected abstract Object getNamespace();
 
     /**
-     * Should return a list with classes that implement MNamespace (or the JMI
+     * Should return a list with classes that implement Namespace (or the JMI
      * equivalent in the future) and that are valid to use at creating the
      * diagram.
      * @return List

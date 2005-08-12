@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<!-- ====================================================================== 
+     7 juil. 2005 08:39:27                                                        
+
+     ArgoUML Maven migration    
+     This script create a Maven build for ArgoUML from an existing source tree.
+     Usage:
+      * download ArgoUML from CVS
+      * download ArgoUML-MDR from CVS (if you want the MDR dev tree)
+      * download this file and the accompanying file (argouml-maven.jar) into the ArgoUML folder
+      * run the following targets : prepare migrate
+      * you can now go to the maven folder where reside the ArgoUML Maven build, and use maven inside it. 
+     Please report any error/improvements to me: ludovic.maitre@ubik-products.com.
+     lmaitre                                                                
+     ====================================================================== -->
+<project name="ArgoUML Maven migration" default="usage">
+    <description>
+            This script create a Maven build for ArgoUML from an existing source tree
+    </description>
+
+	<property file="src_new/default.properties"/>
+	<property name="argouml.maven.dir" value="maven"/>
+	<property name="argouml.maven.jar" value="argouml-maven.jar"/>
+	<property name="argouml.maven.jar.dir" value="argouml-maven"/>
+	<property name="argouml.model.dir" value="${argouml.maven.dir}/argouml-model"/>
+	<property name="argouml.core.dir" value="${argouml.maven.dir}/argouml"/>
+	<property name="argouml.mdr.dir" value="${argouml.maven.dir}/argouml-mdr"/>
+	<property name="argouml.nsuml.dir" value="${argouml.maven.dir}/argouml-nsuml"/>
+	
+	<property name="argo.build.version" value="PRE-${argo.core.version}"/>
+	<property name="version.package" value="org/argouml/application"/>
+	
+    <!-- ================================= 
+          target: usage              
+         ================================= -->
+    <target name="usage" description="--> This script create a Maven build for ArgoUML from an existing source tree">
+        <echo>Usage:</echo>
+        <echo>clean				--> Clean the argouml maven folder</echo>
+	    <echo>prepare			--> Unjar the projects descriptors and empty directory structure</echo>
+	    <echo>migrate			--> Populate the argouml maven folder</echo>
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: clean                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="clean">
+    		<delete dir="${argouml.maven.dir}" failonerror="false"/>
+    </target>
+
+    <!-- ================================= 
+          target: migrate              
+         ================================= -->
+    <target name="migrate" description="--> This script create a Maven build for ArgoUML from an existing source tree">
+		<!-- Model component -->
+		<copy todir="${argouml.model.dir}/src">    			
+			<fileset dir="src/model/src">
+			    <include name="org/**"/>
+			</fileset>
+		</copy>
+		<!-- Core component -->
+		<copy todir="${argouml.core.dir}/src">    			
+			<fileset dir="src_new">
+	    			<include name="org/**"/>
+	    			<exclude name="org/argouml/model/**"/>
+			</fileset>
+		</copy>
+		<copy todir="${argouml.core.dir}/tests">    			
+			<fileset dir="src_new/tests">
+		    		<include name="**"/>
+			</fileset>
+		</copy>
+		<!-- NSUML Component -->
+		<copy todir="${argouml.nsuml.dir}/src">    			
+			<fileset dir="src_new">
+		    		<include name="org/argouml/model/**"/>
+			</fileset>
+		</copy>
+		<move todir="${argouml.nsuml.dir}/tests">    			
+			<fileset dir="${argouml.core.dir}/tests">
+		    		<include name="org/argouml/model/uml**"/>
+			</fileset>
+		</move>    		
+		<copy todir="${argouml.nsuml.dir}/tests">    			
+			<fileset dir="src_new/tests">
+		    		<include name="**"/>
+			</fileset>
+		</copy>
+    		<!-- MDR Component (if available) -->
+		<copy todir="${argouml.mdr.dir}/src">
+			<fileset dir="../argouml-mdr/src">
+			    <include name="org/**"/>
+			</fileset>
+		</copy>
+		<copy todir="${argouml.mdr.dir}/tests">
+			<fileset dir="../argouml-mdr/tests">
+		    		<include name="org/**"/>
+			</fileset>
+		</copy>
+    		<!-- Apply patchs -->
+    		<antcall target="patch"/>
+    		<!-- Create ArgoVersion -->
+    	   <echo message="Creating ArgoVersion.java for version ${argo.build.version}"/>
+    	    <filter token="ARGO_RELEASE_VERSION" value="${argo.build.version}"/>
+    	    <copy file="src_new/templates/ArgoVersion.template" filtering="on" overwrite="on" tofile="${argouml.core.dir}/src/${version.package}/ArgoVersion.java"/>
+    		<replace dir="${argouml.maven.dir}" token="@ARGO_RELEASE_VERSION@" value="${argo.build.version}" includes="**/project.xml"></replace>
+    </target>
+
+	<target name="patch">
+		<!-- Remove the dependencies over NSUML in ArgoUML core -->
+		<patch patchfile="${argouml.maven.dir}/patchs/ProfileJava.java.diff" 
+			originalfile="${argouml.core.dir}/src/org/argouml/uml/ProfileJava.java"/>
+		<!-- Various patchs for MDR impl
+		<patch patchfile="${argouml.maven.dir}/patchs/FacadeMDRImpl.java.diff" 
+			originalfile="${argouml.core.dir}/src/org/argouml/model/mdr/FacadeMDRImpl.java"/>
+		<patch patchfile="${argouml.maven.dir}/patchs/MDRModelImplemtation.java.diff" 
+			originalfile="${argouml.core.dir}/src/org/argouml/model/mdr/MDRModelImplementation.java"/>
+		<patch patchfile="${argouml.maven.dir}/patchs/MetaTypesMDRImpl.java.diff" 
+			originalfile="${argouml.core.dir}/src/org/argouml/model/mdr/MetaTypesMDRImpl.java"/>
+		<patch patchfile="${argouml.maven.dir}/patchs/ModelEventPumpMDRImpl.java.diff" 
+			originalfile="${argouml.core.dir}/src/org/argouml/model/mdr/ModelEventPumpMDRImpl.java"/>
+		<patch patchfile="${argouml.maven.dir}/patchs/XmiReaderImpl.java.diff" 
+			originalfile="${argouml.core.dir}/src/org/argouml/model/mdr/XmiReaderImpl.java"/>
+		<patch patchfile="${argouml.maven.dir}/patchs/XmiWriterMDRImpl.java.diff" 
+			originalfile="${argouml.core.dir}/src/org/argouml/model/mdr/XmiWriterMDRImpl.java"/>
+		 -->			
+	</target>
+	
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: depends                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="prepare">
+    		<!--<available file="${argouml.maven.dir}" type="dir" property="argouml.maven.dir.exist"/>
+    		<condition property=""></condition>-->
+    		<mkdir dir="${argouml.maven.dir}"/>
+    		<unjar src="${argouml.maven.jar}" dest="${argouml.maven.dir}"/>
+    </target>
+	
+	
+    <!-- ================================= 
+          target: refresh              
+         ================================= -->
+    <target name="refresh" description="--> Refresh the main jar">
+		<delete file="${argouml.maven.jar}"/>
+		<jar destfile="${argouml.maven.jar}">			
+			<fileset dir="${argouml.maven.jar.dir}">
+			    <include name="**"/>
+			</fileset>
+		</jar>
+    </target>
+
+</project>
+

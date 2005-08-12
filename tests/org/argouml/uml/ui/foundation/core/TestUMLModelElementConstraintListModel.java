@@ -28,8 +28,6 @@ import junit.framework.TestCase;
 
 import org.argouml.model.Model;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 /**
  * @since Oct 27, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -54,7 +52,7 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         ns = Model.getModelManagementFactory().createModel();
-        elem = (MModelElement) Model.getCoreFactory().buildClass(ns);
+        elem = Model.getCoreFactory().buildClass(ns);
         model = new UMLModelElementConstraintListModel();
         model.setTarget(elem);
     }

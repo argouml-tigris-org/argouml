@@ -27,9 +27,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-
 /**
  * @since Oct 27, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -78,8 +75,7 @@ public class TestUMLAssociationRoleAssociationEndRoleListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MAssociationRole) getElem())
-		.removeConnection((MAssociationEnd) elements[i]);
+        		Model.getCoreHelper().removeConnection(getElem(),elements[i]);
         }
     }
 

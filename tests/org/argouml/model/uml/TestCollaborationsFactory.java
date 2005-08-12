@@ -27,12 +27,9 @@ package org.argouml.model.uml;
 import java.lang.ref.WeakReference;
 
 import junit.framework.TestCase;
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.model_management.MModel;
+
+import org.argouml.model.CollaborationsFactory;
+import org.argouml.model.Model;
 
 /**
  * Test the collaborations factory in the NSUML implementation.<p>
@@ -54,8 +51,6 @@ public class TestCollaborationsFactory extends TestCase {
 	"Message",
     };
 
-    private NSUMLModelImplementation nsumlmodel;
-
     /**
      * The constructor.
      *
@@ -69,7 +64,8 @@ public class TestCollaborationsFactory extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {
-        nsumlmodel = new NSUMLModelImplementation();
+    		//this should instantiate a new implementation
+    		Model.getFacade();
     }
 
     /**
@@ -89,7 +85,7 @@ public class TestCollaborationsFactory extends TestCase {
 
         CheckNSUMLModelHelper.createAndRelease(
             this,
-            nsumlmodel.getCollaborationsFactory(),
+            Model.getCollaborationsFactory(),
             objs);
 
     }
@@ -100,7 +96,7 @@ public class TestCollaborationsFactory extends TestCase {
     public void testDeleteComplete() {
         CheckNSUMLModelHelper.deleteComplete(
             this,
-            nsumlmodel.getCollaborationsFactory(),
+            Model.getCollaborationsFactory(),
             allModelElements);
     }
 
@@ -111,30 +107,22 @@ public class TestCollaborationsFactory extends TestCase {
      * AssociationRole.
      */
     public void testDeleteClassifierRole() {
-        MModel model =
-            (MModel) nsumlmodel.getModelManagementFactory().createModel();
+        Object model = Model.getModelManagementFactory().createModel();
 
-        CollaborationsFactoryImpl collabFactory =
-            (CollaborationsFactoryImpl) nsumlmodel.getCollaborationsFactory();
-        MCollaboration collab =
-            (MCollaboration) collabFactory.buildCollaboration(model);
-        MClassifierRole cr1 =
-            (MClassifierRole) collabFactory.createClassifierRole();
-        MClassifierRole cr2 =
-            (MClassifierRole) collabFactory.createClassifierRole();
-        MAssociationRole role =
-            (MAssociationRole) collabFactory.buildAssociationRole(cr1, cr2);
-        MInteraction inter =
-            (MInteraction) collabFactory.buildInteraction(collab);
-        MMessage mes =
-            (MMessage) collabFactory.buildMessage(inter, role);
+        CollaborationsFactory collabFactory = Model.getCollaborationsFactory();
+        Object collab = collabFactory.buildCollaboration(model);
+        Object cr1 = collabFactory.createClassifierRole();
+        Object cr2 = collabFactory.createClassifierRole();
+        Object role = collabFactory.buildAssociationRole(cr1, cr2);
+        Object inter = collabFactory.buildInteraction(collab);
+        Object mes = collabFactory.buildMessage(inter, role);
 
         WeakReference cr1wr = new WeakReference(cr1);
         WeakReference rolewr = new WeakReference(role);
         WeakReference interwr = new WeakReference(inter);
         WeakReference meswr = new WeakReference(mes);
 
-        nsumlmodel.getUmlFactory().delete(cr1);
+        Model.getUmlFactory().delete(cr1);
         cr1 = null;
         role = null;
         inter = null;

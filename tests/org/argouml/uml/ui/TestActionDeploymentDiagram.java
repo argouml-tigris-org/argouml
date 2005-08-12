@@ -29,8 +29,6 @@ import java.util.List;
 
 import org.argouml.kernel.ProjectManager;
 
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /**
  *
  * @author jaap.branderhorst@xs4all.nl
@@ -57,9 +55,9 @@ public class TestActionDeploymentDiagram
     /**
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
-    protected MNamespace getNamespace() {
-        return (MNamespace) (ProjectManager.getManager().getCurrentProject()
-                .getModel());
+    protected Object getNamespace() {
+        return ProjectManager.getManager().getCurrentProject()
+                .getModel();
     }
 
     /**

@@ -26,6 +26,7 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.Model;
 import org.argouml.model.UmlFactory;
 
 
@@ -43,11 +44,6 @@ public class TestUmlFactory extends TestCase {
     public TestUmlFactory(String arg0) { super(arg0); }
 
     /**
-     * The ModelImplementation for these tests.
-     */
-    private NSUMLModelImplementation nsmodel;
-
-    /**
      * The UmlFactory for these tests.
      */
     private UmlFactory fy;
@@ -56,8 +52,7 @@ public class TestUmlFactory extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {
-        nsmodel = new NSUMLModelImplementation();
-	fy = nsmodel.getUmlFactory();
+	fy = Model.getUmlFactory();
     }
 
     /**
@@ -67,28 +62,28 @@ public class TestUmlFactory extends TestCase {
      * deleted.
      */
     public void testDeleteCore() {
-	//	fy.delete(nsmodel.getCoreFactory().
-	fy.delete(nsmodel.getCoreFactory().createAssociationEnd());
-	fy.delete(nsmodel.getCoreFactory().createAttribute());
-	fy.delete(nsmodel.getCoreFactory().createBinding());
-	fy.delete(nsmodel.getCoreFactory().createClass());
-	fy.delete(nsmodel.getCoreFactory().createClassifier());
-	fy.delete(nsmodel.getCoreFactory().createComment());
-	fy.delete(nsmodel.getCoreFactory().createComponent());
-	fy.delete(nsmodel.getCoreFactory().createConstraint());
-	fy.delete(nsmodel.getCoreFactory().createDataType());
-	fy.delete(nsmodel.getCoreFactory().createElementResidence());
-	fy.delete(nsmodel.getCoreFactory().createFlow());
-	fy.delete(nsmodel.getCoreFactory().createInterface());
-	fy.delete(nsmodel.getCoreFactory().createMethod());
-	fy.delete(nsmodel.getCoreFactory().createNamespace());
-	fy.delete(nsmodel.getCoreFactory().createNode());
-	fy.delete(nsmodel.getCoreFactory().createOperation());
-	fy.delete(nsmodel.getCoreFactory().createParameter());
-	fy.delete(nsmodel.getCoreFactory().createPermission());
-	fy.delete(nsmodel.getCoreFactory().createRelationship());
-	fy.delete(nsmodel.getCoreFactory().createTemplateParameter());
-	fy.delete(nsmodel.getCoreFactory().createUsage());
+	//	fy.delete(Model.getCoreFactory().
+	fy.delete(Model.getCoreFactory().createAssociationEnd());
+	fy.delete(Model.getCoreFactory().createAttribute());
+	fy.delete(Model.getCoreFactory().createBinding());
+	fy.delete(Model.getCoreFactory().createClass());
+	fy.delete(Model.getCoreFactory().createClassifier());
+	fy.delete(Model.getCoreFactory().createComment());
+	fy.delete(Model.getCoreFactory().createComponent());
+	fy.delete(Model.getCoreFactory().createConstraint());
+	fy.delete(Model.getCoreFactory().createDataType());
+	fy.delete(Model.getCoreFactory().createElementResidence());
+	fy.delete(Model.getCoreFactory().createFlow());
+	fy.delete(Model.getCoreFactory().createInterface());
+	fy.delete(Model.getCoreFactory().createMethod());
+	fy.delete(Model.getCoreFactory().createNamespace());
+	fy.delete(Model.getCoreFactory().createNode());
+	fy.delete(Model.getCoreFactory().createOperation());
+	fy.delete(Model.getCoreFactory().createParameter());
+	fy.delete(Model.getCoreFactory().createPermission());
+	fy.delete(Model.getCoreFactory().createRelationship());
+	fy.delete(Model.getCoreFactory().createTemplateParameter());
+	fy.delete(Model.getCoreFactory().createUsage());
     }
 
     /**
@@ -98,13 +93,13 @@ public class TestUmlFactory extends TestCase {
      * deleted.
      */
     public void testDeleteActivityGraphs() {
-	fy.delete(nsmodel.getActivityGraphsFactory().createActionState());
-	fy.delete(nsmodel.getActivityGraphsFactory().createActivityGraph());
-	fy.delete(nsmodel.getActivityGraphsFactory().createCallState());
-	fy.delete(nsmodel.getActivityGraphsFactory().createClassifierInState());
-	fy.delete(nsmodel.getActivityGraphsFactory().createObjectFlowState());
-	fy.delete(nsmodel.getActivityGraphsFactory().createPartition());
-	fy.delete(nsmodel.getActivityGraphsFactory().createSubactivityState());
+	fy.delete(Model.getActivityGraphsFactory().createActionState());
+	fy.delete(Model.getActivityGraphsFactory().createActivityGraph());
+	fy.delete(Model.getActivityGraphsFactory().createCallState());
+	fy.delete(Model.getActivityGraphsFactory().createClassifierInState());
+	fy.delete(Model.getActivityGraphsFactory().createObjectFlowState());
+	fy.delete(Model.getActivityGraphsFactory().createPartition());
+	fy.delete(Model.getActivityGraphsFactory().createSubactivityState());
     }
 
     /**
@@ -114,12 +109,12 @@ public class TestUmlFactory extends TestCase {
      * deleted.
      */
     public void testDeleteUseCases() {
-	fy.delete(nsmodel.getUseCasesFactory().createExtend());
-	fy.delete(nsmodel.getUseCasesFactory().createExtensionPoint());
-	fy.delete(nsmodel.getUseCasesFactory().createActor());
-	fy.delete(nsmodel.getUseCasesFactory().createInclude());
-	fy.delete(nsmodel.getUseCasesFactory().createUseCase());
-	fy.delete(nsmodel.getUseCasesFactory().createUseCaseInstance());
+	fy.delete(Model.getUseCasesFactory().createExtend());
+	fy.delete(Model.getUseCasesFactory().createExtensionPoint());
+	fy.delete(Model.getUseCasesFactory().createActor());
+	fy.delete(Model.getUseCasesFactory().createInclude());
+	fy.delete(Model.getUseCasesFactory().createUseCase());
+	fy.delete(Model.getUseCasesFactory().createUseCaseInstance());
     }
 
     /**
@@ -129,21 +124,21 @@ public class TestUmlFactory extends TestCase {
      * deleted.
      */
     public void testDeleteStateMachines() {
-	fy.delete(nsmodel.getStateMachinesFactory().createCallEvent());
-	fy.delete(nsmodel.getStateMachinesFactory().createChangeEvent());
-	fy.delete(nsmodel.getStateMachinesFactory().createCompositeState());
-	fy.delete(nsmodel.getStateMachinesFactory().createFinalState());
-	fy.delete(nsmodel.getStateMachinesFactory().createGuard());
-	fy.delete(nsmodel.getStateMachinesFactory().createPseudostate());
-	fy.delete(nsmodel.getStateMachinesFactory().createSignalEvent());
-	fy.delete(nsmodel.getStateMachinesFactory().createSimpleState());
-	fy.delete(nsmodel.getStateMachinesFactory().createState());
-	fy.delete(nsmodel.getStateMachinesFactory().createStateMachine());
-	fy.delete(nsmodel.getStateMachinesFactory().createStubState());
-	fy.delete(nsmodel.getStateMachinesFactory().createSubmachineState());
-	fy.delete(nsmodel.getStateMachinesFactory().createSynchState());
-	fy.delete(nsmodel.getStateMachinesFactory().createTimeEvent());
-	fy.delete(nsmodel.getStateMachinesFactory().createTransition());
+	fy.delete(Model.getStateMachinesFactory().createCallEvent());
+	fy.delete(Model.getStateMachinesFactory().createChangeEvent());
+	fy.delete(Model.getStateMachinesFactory().createCompositeState());
+	fy.delete(Model.getStateMachinesFactory().createFinalState());
+	fy.delete(Model.getStateMachinesFactory().createGuard());
+	fy.delete(Model.getStateMachinesFactory().createPseudostate());
+	fy.delete(Model.getStateMachinesFactory().createSignalEvent());
+	fy.delete(Model.getStateMachinesFactory().createSimpleState());
+	fy.delete(Model.getStateMachinesFactory().createState());
+	fy.delete(Model.getStateMachinesFactory().createStateMachine());
+	fy.delete(Model.getStateMachinesFactory().createStubState());
+	fy.delete(Model.getStateMachinesFactory().createSubmachineState());
+	fy.delete(Model.getStateMachinesFactory().createSynchState());
+	fy.delete(Model.getStateMachinesFactory().createTimeEvent());
+	fy.delete(Model.getStateMachinesFactory().createTransition());
     }
 
     // TODO:

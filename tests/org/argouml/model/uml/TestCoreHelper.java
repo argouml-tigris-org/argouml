@@ -27,12 +27,8 @@ package org.argouml.model.uml;
 import junit.framework.TestCase;
 
 import org.argouml.model.CheckUMLModelHelper;
+import org.argouml.model.CoreFactory;
 import org.argouml.model.Model;
-
-import ru.novosoft.uml.foundation.core.MClassifierImpl;
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MGeneralizationImpl;
 
 /**
  * @since Oct 10, 2002
@@ -91,30 +87,31 @@ public class TestCoreHelper extends TestCase {
      * Test getting children.
      */
     public void testGetChildren() {
-	// Create an element with an element without children.
-	MGeneralizableElement ge = new MClassifierImpl();
+    		CoreFactory coreFactory = Model.getCoreFactory();
+    		// Create a generalizable element with an element without children.
+    		Object ge = coreFactory.createClassifier();
 
-	assertTrue(Model.getCoreHelper().getChildren(ge).size() == 0);
+    		assertTrue(Model.getCoreHelper().getChildren(ge).size() == 0);
 
 	// Add one child.
-	MGeneralization g1 = new MGeneralizationImpl();
-	g1.setParent(ge);
-	g1.setChild(new MClassifierImpl());
+    		Object g1 = coreFactory.createGeneralization();
+	Model.getCoreHelper().setParent(g1,ge);
+	Model.getCoreHelper().setChild(g1,coreFactory.createClassifier());
 
 	assertTrue(Model.getCoreHelper().getChildren(ge).size() == 1);
 
 	// Add another child.
-	MGeneralization g2 = new MGeneralizationImpl();
-	g2.setParent(ge);
-	MGeneralizableElement ge2 = new MClassifierImpl();
-	g2.setChild(ge2);
+	Object g2 = coreFactory.createGeneralization();
+	Model.getCoreHelper().setParent(g2,ge);
+	Object ge2 = coreFactory.createClassifier();
+	Model.getCoreHelper().setChild(g2,ge2);
 
 	assertTrue(Model.getCoreHelper().getChildren(ge).size() == 2);
 
 	// Add grandchild.
-	MGeneralization g3 = new MGeneralizationImpl();
-	g3.setParent(ge2);
-	g3.setChild(new MClassifierImpl());
+	Object g3 = coreFactory.createGeneralization();
+	Model.getCoreHelper().setParent(g3,ge2);
+	Model.getCoreHelper().setChild(g3,coreFactory.createClassifier());
 
 	assertTrue(Model.getCoreHelper().getChildren(ge).size() == 3);
     }

@@ -182,4 +182,13 @@ public interface ExtensionMechanismsHelper {
      * @param value is the value
      */
     void setValueOfTag(Object handle, String value);
+    
+    //additional support for tagged values
+    
+    void addTaggedValue(Object handle, Object taggedValue);
+    
+    void removeTaggedValue(Object handle, Object taggedValue);
+    
+    void setTaggedValue(Object handle, Collection taggedValues);
+    
 }

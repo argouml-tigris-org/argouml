@@ -1202,4 +1202,29 @@ public interface CoreHelper {
      * @param node Node
      */
     void removeDeploymentLocation(Object handle, Object node);
+
+    //additional support for Connection [IIRC, perhaps it was already here]    
+    /**
+     * 
+     * @param handle
+     * @param connection
+     */
+    void removeConnection(Object handle, Object connection);
+    
+    //additional support for ElementResidence
+    
+    /**
+     * 
+     * @param handle
+     * @param residence
+     */
+    void addElementResidence(Object handle, Object residence);
+
+    /**
+     * 
+     * @param handle
+     * @param residence
+     */
+    void removeElementResidence(Object handle, Object residence);
+    
 }

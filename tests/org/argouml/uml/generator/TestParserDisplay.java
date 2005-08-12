@@ -35,15 +35,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.util.CollectionUtil;
 
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.core.MParameter;
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
-import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-
 /**
  * Test the ParserDisplay.
  *
@@ -179,29 +170,6 @@ public class TestParserDisplay extends TestCase {
 	checkThrowsClassifierRole(cr, nclro04, true, false, false);
     }
 
-    private void checkNameAttribute(MAttribute attr, String text, String name) {
-	try {
-	    ParserDisplay.SINGLETON.parseAttribute(text, attr);
-	    assertTrue(
-		       text + " gave wrong name: " + attr.getName(),
-		       name.equals(attr.getName()));
-	} catch (Exception e) {
-	    assertTrue(text + " threw unexpectedly: " + e, false);
-	}
-    }
-
-    private void checkNameOperation(MOperation op, String text, String name) {
-	try {
-	    ParserDisplay.SINGLETON.parseOperation(text, op);
-	    assertTrue(
-		       (text
-			+ " gave wrong name: " + op.getName() + " != " + name),
-		       name.equals(op.getName()));
-	} catch (Exception e) {
-	    assertTrue(text + " threw unexpectedly: " + e, false);
-	}
-    }
-
     private void checkNameClassifierRole(Object ro, String text, String name) {
         try {
             ParserDisplay.SINGLETON.parseClassifierRole(ro, text);
@@ -209,225 +177,6 @@ public class TestParserDisplay extends TestCase {
             fail("Could not parse expression " + text);
         }
         assertEquals(name, Model.getFacade().getName(ro));
-    }
-
-    private void checkType(MAttribute attr, String text, String type) {
-	try {
-	    ParserDisplay.SINGLETON.parseAttribute(text, attr);
-	    assertTrue(
-		       text
-		       + " gave wrong type: "
-		       + (attr.getType() == null
-			  ? "(null)"
-			  : attr.getType().getName()),
-		       attr.getType() != null
-		       && type.equals(attr.getType().getName()));
-	} catch (Exception e) {
-	    assertTrue(text + " threw unexpectedly: " + e, false);
-	}
-    }
-
-    private void checkType(MOperation op, String text, String type) {
-	try {
-	    ParserDisplay.SINGLETON.parseOperation(text, op);
-	    Collection ret =
-		Model.getCoreHelper().getReturnParameters(op);
-	    Iterator it = ret.iterator();
-	    assertTrue(
-		       text + " gave extra return value",
-		       !(type == null && it.hasNext()));
-	    assertTrue(
-		       text + " lacks return value",
-		       !(type != null && !it.hasNext()));
-	    if (it.hasNext()) {
-		MParameter p = (MParameter) it.next();
-		assertTrue(
-			   text + " gave wrong return",
-			   (type == null && p.getType() == null)
-			   || (type != null
-			       && type.equals(p.getType().getName())));
-	    }
-	    assertTrue(text + " gave extra return value", !it.hasNext());
-	} catch (Exception e) {
-	    assertTrue(text + " threw unexpectedly: " + e, false);
-	}
-    }
-
-    private void checkParameters(MOperation op, String text, String[] params) {
-	int i;
-
-	try {
-	    ParserDisplay.SINGLETON.parseOperation(text, op);
-	    Collection prm = op.getParameters();
-	    Iterator it = prm.iterator();
-	    assertTrue(
-		       text + " lacks parameters",
-		       !(params.length > 0 && !it.hasNext()));
-	    for (i = 0; i + 3 < params.length; i += 4) {
-		MParameter p;
-		do {
-		    assertTrue(text + " lacks parameters", it.hasNext());
-		    p = (MParameter) it.next();
-		} while (p.getKind().equals(MParameterDirectionKind.RETURN));
-		assertTrue(
-			   text + "gave wrong inout in parameter " + (i / 4),
-			   params[i].equals(p.getKind().getName()));
-		assertTrue(
-			   text + "gave wrong name in parameter " + (i / 4),
-			   params[i + 1].equals(p.getName()));
-		assertTrue(
-			   text + "gave wrong type in parameter " + (i / 4),
-			   params[i + 2].equals(p.getType().getName()));
-		assertTrue(
-			   (text
-			    + "gave wrong default value in parameter "
-			    + (i / 4)),
-			   (params[i + 3] == null
-			    && p.getDefaultValue() == null)
-			   || (params[i + 3] != null
-			       && p.getDefaultValue() != null)
-			   && params[i + 3].equals(
-				      p.getDefaultValue().getBody()));
-	    }
-	    while (it.hasNext()) {
-		MParameter p = (MParameter) it.next();
-		assertTrue(
-			   text + " gave extra parameters",
-			   p.getKind().equals(MParameterDirectionKind.RETURN));
-	    }
-	} catch (Exception e) {
-	    assertTrue(text + " threw unexpectedly: " + e, false);
-	}
-    }
-
-    private void checkVisibility(MAttribute attr, String text, String vis) {
-	try {
-	    ParserDisplay.SINGLETON.parseAttribute(text, attr);
-	    assertTrue(
-		       text
-		       + " gave wrong visibility: "
-		       + (attr.getVisibility() == null
-			  ? "(null)"
-			  : attr.getVisibility().getName()),
-		       attr.getVisibility() != null
-		       && vis.equals(attr.getVisibility().getName()));
-	} catch (Exception e) {
-	    assertTrue(text + " threw unexpectedly: " + e, false);
-	}
-    }
-
-    private void checkVisibility(MOperation op, String text, String vis) {
-	try {
-	    ParserDisplay.SINGLETON.parseOperation(text, op);
-	    assertTrue(
-		       text
-		       + " gave wrong visibility: "
-		       + (op.getVisibility() == null
-			  ? "(null)"
-			  : op.getVisibility().getName()),
-		       op.getVisibility() != null
-		       && vis.equals(op.getVisibility().getName()));
-	} catch (Exception e) {
-	    assertTrue(text + " threw unexpectedly: " + e, false);
-	}
-    }
-
-    private void checkProperties(
-				 MAttribute attr,
-				 String text,
-				 String[] props) {
-	int i;
-	try {
-	    ParserDisplay.SINGLETON.parseAttribute(text, attr);
-	    for (i = 0; i + 1 < props.length; i += 2) {
-		if (props[i + 1] == null) {
-		    assertTrue(
-			       "TaggedValue " + props[i] + " exists!",
-			       attr.getTaggedValue(props[i]) == null);
-		} else {
-		    assertTrue(
-			       "TaggedValue " + props[i] + " wrong!",
-			       props[i + 1].equals(
-				       attr.getTaggedValue(props[i])));
-		}
-	    }
-	} catch (Exception e) {
-	    assertTrue(text + " threw Exception " + e, false);
-	}
-    }
-
-    private void checkProperties(MOperation op, String text, String[] props) {
-	int i;
-	try {
-	    ParserDisplay.SINGLETON.parseOperation(text, op);
-	    for (i = 0; i + 1 < props.length; i += 2) {
-		if (props[i + 1] == null) {
-		    assertTrue(
-			       "TaggedValue " + props[i] + " exists!",
-			       op.getTaggedValue(props[i]) == null);
-		} else {
-		    assertTrue(
-			       "TaggedValue " + props[i] + " wrong!",
-			       props[i + 1].equals(
-				       op.getTaggedValue(props[i])));
-		}
-	    }
-	} catch (Exception e) {
-	    assertTrue(text + " threw Exception " + e, false);
-	}
-    }
-
-    private void checkMultiplicity(
-				   MAttribute attr,
-				   String text,
-				   MMultiplicity mult) {
-	try {
-	    ParserDisplay.SINGLETON.parseAttribute(text, attr);
-	    assertTrue(
-		       text
-		       + " gave wrong multiplicity: "
-		       + (attr.getMultiplicity() == null
-			  ? "(null)"
-			  : attr.getMultiplicity().toString()),
-		       mult == null
-		       && attr.getMultiplicity() == null
-		       || mult != null
-		       && mult.equals(attr.getMultiplicity()));
-	} catch (Exception e) {
-	    assertTrue(text + " threw unexpectedly: " + e, false);
-	}
-    }
-
-    private void checkThrowsAttribute(
-			     MAttribute attr,
-			     String text,
-			     boolean prsEx,
-			     boolean ex2,
-			     boolean ex3) {
-	try {
-	    ParserDisplay.SINGLETON.parseAttribute(text, attr);
-	    assertTrue("didn't throw for " + text, false);
-	} catch (ParseException pe) {
-	    assertTrue(text + " threw ParseException " + pe, prsEx);
-	} catch (Exception e) {
-	    assertTrue(text + " threw Exception " + e, !prsEx);
-	}
-    }
-
-    private void checkThrowsOperation(
-			     MOperation op,
-			     String text,
-			     boolean prsEx,
-			     boolean ex2,
-			     boolean ex3) {
-	try {
-	    ParserDisplay.SINGLETON.parseOperation(text, op);
-	    assertTrue("didn't throw for " + text, false);
-	} catch (ParseException pe) {
-	    assertTrue(text + " threw ParseException " + pe, prsEx);
-	} catch (Exception e) {
-	    assertTrue(text + " threw Exception " + e, !prsEx);
-	}
     }
 
     private void checkThrowsClassifierRole(
@@ -446,67 +195,11 @@ public class TestParserDisplay extends TestCase {
 	}
     }
 
-    private void checkValue(MAttribute attr, String text, String val) {
-	try {
-	    ParserDisplay.SINGLETON.parseAttribute(text, attr);
-	    assertTrue(
-		       text
-		       + " gave wrong visibility: "
-		       + (attr.getInitialValue() == null
-			  ? "(null)"
-			  : attr.getInitialValue().getBody()),
-		       val == null
-		       && (attr.getInitialValue() == null
-			   || "".equals(attr.getInitialValue().getBody()))
-		       || val != null
-		       && attr.getInitialValue() != null
-		       && val.equals(attr.getInitialValue().getBody()));
-	} catch (Exception e) {
-	    assertTrue(text + " threw unexpectedly: " + e, false);
-	}
-    }
-
-    private void checkStereotype(MAttribute attr, String text, String val) {
-	try {
-	    ParserDisplay.SINGLETON.parseAttribute(text, attr);
-	    assertTrue(
-		       text
-		       + " gave wrong stereotype "
-		       + (attr.getStereotype() != null
-			  ? attr.getStereotype().getName()
-			  : "(null)"),
-		       (val == null && attr.getStereotype() == null)
-		       || (val != null
-			   && attr.getStereotype() != null
-			   && val.equals(attr.getStereotype().getName())));
-	} catch (Exception e) {
-	    assertTrue(text + " threw unexpectedly: " + e, false);
-	}
-    }
-
-    private void checkStereotype(MOperation op, String text, String val) {
-	try {
-	    ParserDisplay.SINGLETON.parseOperation(text, op);
-	    assertTrue(
-		       text
-		       + " gave wrong stereotype "
-		       + (op.getStereotype() != null
-			  ? op.getStereotype().getName()
-			  : "(null)"),
-		       (val == null && op.getStereotype() == null)
-		       || (val != null
-			   && op.getStereotype() != null
-			   && val.equals(op.getStereotype().getName())));
-	} catch (Exception e) {
-	    assertTrue(text + " threw unexpectedly: " + e, false);
-	}
-    }
-
     private void checkBases(Object cr, String text, String[] bases) {
 	int i;
 	Collection c;
 	Iterator it;
-	MClassifier cls;
+	Object cls;
 
 	try {
 	    ParserDisplay.SINGLETON.parseClassifierRole(cr, text);
@@ -514,15 +207,15 @@ public class TestParserDisplay extends TestCase {
 	    it = c.iterator();
 	checkAllValid :
 	    while (it.hasNext()) {
-		cls = (MClassifier) it.next();
+		cls =  it.next();
 		for (i = 0; i < bases.length; i++) {
-		    if (bases[i].equals(cls.getName())) {
+		    if (bases[i].equals(Model.getFacade().getName(cls))) {
 		        continue checkAllValid;
 		    }
 		}
 		assertTrue(
 			   "Base "
-			   + cls.getName()
+			   + Model.getFacade().getName(cls)
 			   + " falsely "
 			   + "generated by "
 			   + text,
@@ -533,8 +226,8 @@ public class TestParserDisplay extends TestCase {
 	    for (i = 0; i < bases.length; i++) {
 		it = c.iterator();
 		while (it.hasNext()) {
-		    cls = (MClassifier) it.next();
-		    if (bases[i].equals(cls.getName())) {
+		    cls =  it.next();
+		    if (bases[i].equals(Model.getFacade().getName(cls))) {
 		        continue checkAllExist;
 		    }
 		}
@@ -556,7 +249,7 @@ public class TestParserDisplay extends TestCase {
     throws ParseException {
         Object attr;
 
-        MNamespace ns = (MNamespace)
+        Object ns = 
             ProjectManager.getManager().getCurrentProject().getModel();
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
@@ -694,7 +387,7 @@ public class TestParserDisplay extends TestCase {
             null,
         };
 
-        MNamespace ns =  (MNamespace)
+        Object ns =  
             ProjectManager.getManager().getCurrentProject().getModel();
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
@@ -723,7 +416,7 @@ public class TestParserDisplay extends TestCase {
     public void testAttributeMultiplicity() throws ParseException {
         Object attr;
 
-        MNamespace ns =  (MNamespace)
+        Object ns =  
             ProjectManager.getManager().getCurrentProject().getModel();
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
@@ -731,17 +424,17 @@ public class TestParserDisplay extends TestCase {
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
-        checkMultiplicity(attr, ATTR04, new MMultiplicity("1..1"));
+        checkMultiplicity(attr, ATTR04,  Model.getDataTypesFactory().createMultiplicity("1..1"));
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
-        checkMultiplicity(attr, ATTR05, new MMultiplicity("1..*"));
+        checkMultiplicity(attr, ATTR05,  Model.getDataTypesFactory().createMultiplicity("1..*"));
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
-        checkMultiplicity(attr, ATTR06, new MMultiplicity("*..*"));
+        checkMultiplicity(attr, ATTR06,  Model.getDataTypesFactory().createMultiplicity("*..*"));
     }
 
     /**
@@ -750,7 +443,7 @@ public class TestParserDisplay extends TestCase {
     public void testAttributeParseExceptions() {
         Object attr;
 
-        MNamespace ns =  (MNamespace)
+        Object ns =  
             ProjectManager.getManager().getCurrentProject().getModel();
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
@@ -781,7 +474,7 @@ public class TestParserDisplay extends TestCase {
     public void testAttributeValue() throws ParseException {
         Object attr;
 
-        MNamespace ns =  (MNamespace)
+        Object ns =  
             ProjectManager.getManager().getCurrentProject().getModel();
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
@@ -825,15 +518,15 @@ public class TestParserDisplay extends TestCase {
     }
 
     private void softAddStereotype(String name, Object elem) {
-        MNamespace ns =  (MNamespace)
+        Object ns =  
             ProjectManager.getManager().getCurrentProject().getModel();
 
         Iterator it =
             Model.getExtensionMechanismsHelper()
                 .getStereotypes(ns).iterator();
         while (it.hasNext()) {
-            MStereotype s = (MStereotype) it.next();
-            if (name.equals(s.getName())) {
+            Object s =  it.next();
+            if (name.equals(Model.getFacade().getName(s))) {
                 return;
             }
         }
@@ -852,7 +545,7 @@ public class TestParserDisplay extends TestCase {
     public void testAttributeStereotype() throws ParseException {
         Object attr;
 
-        MNamespace ns =  (MNamespace)
+        Object ns =  
             ProjectManager.getManager().getCurrentProject().getModel();
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
@@ -889,7 +582,7 @@ public class TestParserDisplay extends TestCase {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
 
-        MNamespace ns =  (MNamespace)
+        Object ns =  
             ProjectManager.getManager().getCurrentProject().getModel();
         Collection propertyChangeListeners =
             ProjectManager.getManager().getCurrentProject()
@@ -924,7 +617,7 @@ public class TestParserDisplay extends TestCase {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
 
-        MNamespace ns =  (MNamespace)
+        Object ns =  
             ProjectManager.getManager().getCurrentProject().getModel();
         Collection propertyChangeListeners =
             ProjectManager.getManager().getCurrentProject()
@@ -959,7 +652,7 @@ public class TestParserDisplay extends TestCase {
     public void testOperationVisibility() throws ParseException {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
-        MNamespace ns =  (MNamespace)
+        Object ns =  
             ProjectManager.getManager().getCurrentProject().getModel();
         Collection propertyChangeListeners =
             ProjectManager.getManager().getCurrentProject()
@@ -1000,7 +693,7 @@ public class TestParserDisplay extends TestCase {
     public void testOperationParameters() throws ParseException {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
-        MNamespace ns =  (MNamespace)
+        Object ns =  
             ProjectManager.getManager().getCurrentProject().getModel();
         Collection propertyChangeListeners =
             ProjectManager.getManager().getCurrentProject()
@@ -1052,7 +745,7 @@ public class TestParserDisplay extends TestCase {
     public void testOperationProperties() throws ParseException {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
-        MNamespace ns =  (MNamespace)
+        Object ns =  
             ProjectManager.getManager().getCurrentProject().getModel();
         Collection propertyChangeListeners =
             ProjectManager.getManager().getCurrentProject()
@@ -1099,7 +792,7 @@ public class TestParserDisplay extends TestCase {
 
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
-        MNamespace ns =  (MNamespace)
+        Object ns =  
             ProjectManager.getManager().getCurrentProject().getModel();
 
         Model.getCoreHelper().setNamespace(cl, ns);
@@ -1139,7 +832,7 @@ public class TestParserDisplay extends TestCase {
     public void testOperationParseExceptions() {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
-        MNamespace ns =  (MNamespace)
+        Object ns =  
             ProjectManager.getManager().getCurrentProject().getModel();
 
         Model.getCoreHelper().setNamespace(cl, ns);
@@ -1215,11 +908,12 @@ public class TestParserDisplay extends TestCase {
                    text + " lacks return value",
                    !(type != null && !it.hasNext()));
             if (it.hasNext()) {
-                MParameter p = (MParameter) it.next();
+                Object p =  it.next();
+                Object pType = Model.getFacade().getType(p);
                 assertTrue(
                        text + " gave wrong return",
-                       (type == null && p.getType() == null)
-                       || (type != null && type.equals(p.getType().getName())));
+                       (type == null && pType == null)
+                       || (type != null && type.equals(Model.getFacade().getName(pType))));
             }
             assertTrue(text + " gave extra return value", !it.hasNext());
         } else {
@@ -1239,30 +933,32 @@ public class TestParserDisplay extends TestCase {
                text + " lacks parameters",
                !(params.length > 0 && !it.hasNext()));
         for (i = 0; i + 3 < params.length; i += 4) {
-            MParameter p;
+            Object p;
             do {
             assertTrue(text + " lacks parameters", it.hasNext());
-            p = (MParameter) it.next();
-            } while (p.getKind().equals(MParameterDirectionKind.RETURN));
+            p =  it.next();
+            } while (Model.getFacade().getKind(p).equals(Model.getDirectionKind().getReturnParameter()));
             assertTrue(text + "gave wrong inout in parameter " + (i / 4),
-                   params[i].equals(p.getKind().getName()));
+                   params[i].equals(Model.getFacade().getName(Model.getFacade().getKind(p))));
             assertTrue(text + "gave wrong name in parameter " + (i / 4),
-                   params[i + 1].equals(p.getName()));
+                   params[i + 1].equals(Model.getFacade().getName(p)));
+            Object pType = Model.getFacade().getType(p);
             assertTrue(text + "gave wrong type in parameter " + (i / 4),
-                   params[i + 2].equals(p.getType().getName()));
+                   params[i + 2].equals(Model.getFacade().getName(pType)));
+            Object defaultValue = Model.getFacade().getDefaultValue(p);
             assertTrue(text + "gave wrong default value in parameter "
                    + (i / 4),
-                   (params[i + 3] == null && p.getDefaultValue() == null)
+                   (params[i + 3] == null && defaultValue == null)
                    || ((params[i + 3] != null
-                       && p.getDefaultValue() != null)
+                       && defaultValue != null)
                        && params[i + 3].equals(
-                               p.getDefaultValue().getBody())));
+                               Model.getFacade().getBody(defaultValue))));
         }
         while (it.hasNext()) {
-            MParameter p = (MParameter) it.next();
+            Object p =  it.next();
             assertTrue(
                    text + " gave extra parameters",
-                   p.getKind().equals(MParameterDirectionKind.RETURN));
+                   Model.getFacade().getKind(p).equals(Model.getDirectionKind().getReturnParameter()));
         }
     }
 
@@ -1304,14 +1000,16 @@ public class TestParserDisplay extends TestCase {
                 if (props[i + 1] == null) {
                     assertTrue(
                             "TaggedValue " + props[i] + " exists!",
-                            ((MAttribute) feature).getTaggedValue(props[i])
+                            Model.getFacade().getTaggedValue(feature,props[i])
                             == null);
                 } else {
                     assertTrue(
                             "TaggedValue " + props[i] + " wrong!",
                             props[i + 1]
-                                  .equals(((MAttribute) feature)
-                                          .getTaggedValue(props[i])));
+                                  .equals(
+                                		  Model.getFacade().getTaggedValue(feature,props[i])
+                                  )
+                            );
                 }
             }
         } else if (Model.getFacade().isAOperation(feature)) {
@@ -1322,14 +1020,14 @@ public class TestParserDisplay extends TestCase {
                 if (props[i + 1] == null) {
                     assertTrue(
                             "TaggedValue " + props[i] + " exists!",
-                            ((MOperation) feature).getTaggedValue(props[i])
+                            Model.getFacade().getTaggedValue(feature,props[i])
                             == null);
                 } else {
                     assertTrue(
                             "TaggedValue " + props[i] + " wrong!",
                             props[i + 1]
-                                  .equals(((MOperation) feature)
-                                          .getTaggedValue(props[i])));
+                                  .equals(Model.getFacade().getTaggedValue(
+                                		  feature,props[i])));
                 }
             }
         }
@@ -1338,7 +1036,7 @@ public class TestParserDisplay extends TestCase {
     private void checkMultiplicity(
                    Object attr,
                    String text,
-                   MMultiplicity mult)
+                   Object mult)
     throws ParseException {
 
         ParserDisplay.SINGLETON.parseAttribute(text, attr);

@@ -28,9 +28,6 @@ import junit.framework.TestCase;
 
 import org.argouml.model.Model;
 
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MFactoryImpl;
-
 /**
  * An abstract class that serves as a basis for testing listmodels. Only works
  * for listmodels that can contain multiple elements.
@@ -58,8 +55,8 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         buildElement();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+        //oldEventPolicy = MFactoryImpl.getEventPolicy();
+        //MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         buildModel();
         model.setTarget(elem);
     }
@@ -67,7 +64,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     /**
      * Developers should build the target element in this method and assing
      * this to the variable elem. The target
-     * element is the MBase of which the listmodel to be tested shows
+     * element is the ModelElement of which the listmodel to be tested shows
      * an attribute
      */
     protected abstract void buildElement();
@@ -84,7 +81,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
+        //MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
 
@@ -102,9 +99,9 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     /**
      * Developers should set the attribute that the listmodel shows in this
      * method. They should return the contents of the attribute in the form of
-     * a MBase[]. The number of elements inside the attribute should be
+     * a ModelElement[]. The number of elements inside the attribute should be
      * 10.
-     * @return MBase[]
+     * @return ModelElement[]
      */
     protected abstract Object[] fillModel();
 
@@ -151,8 +148,8 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     /**
      * @return Returns the elem.
      */
-    protected MBase getElem() {
-        return (MBase) elem;
+    protected Object getElem() {
+        return elem;
     }
 
 }

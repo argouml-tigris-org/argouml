@@ -324,7 +324,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Generalization instance.
      */
-    Object createGeneralization() {
+    public Object createGeneralization() {
 	MGeneralization modelElement =
 	    MFactory.getDefaultFactory().createGeneralization();
 	super.initialize(modelElement);

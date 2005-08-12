@@ -32,12 +32,6 @@ import junit.framework.TestCase;
 
 import org.argouml.model.Model;
 
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-
 
 /**
  * This class is the base class of tests that tests
@@ -95,7 +89,7 @@ public final class CheckNSUMLModelHelper {
      * @param name the class name of the uml object
      */
     private static void deleteAndRelease(TestCase tc,
-					 MBase mo,
+					 Object mo,
 					 String name) {
 	Class c = mo.getClass();
 
@@ -108,7 +102,7 @@ public final class CheckNSUMLModelHelper {
 
 	TestCase.assertTrue(
             "getUMLClassName() different from expected in " + c,
-	    name.equals(mo.getUMLClassName()));
+	    name.equals(Model.getFacade().getUMLClassName(mo)));
 
 	Model.getUmlFactory().delete(mo);
 
@@ -158,7 +152,7 @@ public final class CheckNSUMLModelHelper {
 		// Extra careful now, not to keep any references to the
 		// second argument.
 		try {
-		    deleteAndRelease(tc, (MBase) m.invoke(f, args), names[i]);
+		    deleteAndRelease(tc, m.invoke(f, args), names[i]);
 		} catch (ClassCastException e) {
 		    // Here it is another object sent to the test.
 		    deleteAndRelease(tc, m.invoke(f, args));
@@ -242,7 +236,7 @@ public final class CheckNSUMLModelHelper {
                         f.getClass()
                         	.getMethod("create" + names[i], new Class[] {});
                     Object base = m.invoke(f, new Object[] {});
-                    if (base instanceof MModelElement) {
+                    if (Model.getFacade().isAModelElement(base)) {
                         TestCase.assertTrue(
                             "not a valid metaModelName " + names[i],
                             Model.getExtensionMechanismsHelper()
@@ -272,12 +266,9 @@ public final class CheckNSUMLModelHelper {
             Object f,
             String[] names) {
         try {
-            MNamespace ns =
-                (MNamespace) Model.getCoreFactory().createNamespace();
-            MClass clazz = (MClass) Model.getCoreFactory().buildClass(ns);
-            MStereotype stereo1 =
-                (MStereotype)
-                	Model.getExtensionMechanismsFactory()
+            Object ns = Model.getCoreFactory().createNamespace();
+            Object clazz = Model.getCoreFactory().buildClass(ns);
+            Object stereo1 = Model.getExtensionMechanismsFactory()
                 		.buildStereotype(clazz, "test1", ns);
             for (int i = 0; i < names.length; i++) {
                 try {
@@ -285,16 +276,15 @@ public final class CheckNSUMLModelHelper {
                         f.getClass()
                         	.getMethod("create" + names[i], new Class[] {});
                     Object base = m.invoke(f, new Object[] {});
-                    if (base instanceof MModelElement) {
-                        MStereotype stereo2 =
-                            (MStereotype)
+                    if (Model.getFacade().isAModelElement(base)) {
+                        Object stereo2 =
                             	Model.getExtensionMechanismsFactory()
                             		.buildStereotype(base, "test2", ns);
                         TestCase.assertTrue(
                             "Unexpected invalid stereotype",
                             Model.getExtensionMechanismsHelper()
                                 .isValidStereoType(base, stereo2));
-                        if (!(base instanceof MClass)) {
+                        if (!(Model.getFacade().isAClass(base))) {
                             TestCase.assertTrue(
                                 "Unexpected invalid stereotype",
                                 !Model.getExtensionMechanismsHelper()
@@ -302,9 +292,7 @@ public final class CheckNSUMLModelHelper {
                         } else {
                             Object inter =
                                 Model.getCoreFactory().createInterface();
-                            MStereotype stereo3 =
-                                (MStereotype)
-                                	Model.getExtensionMechanismsFactory()
+                            Object stereo3 = Model.getExtensionMechanismsFactory()
                                 		.buildStereotype(
                                 		        inter,
                                 		        "test3",

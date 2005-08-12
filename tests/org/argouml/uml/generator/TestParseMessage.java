@@ -31,9 +31,6 @@ import junit.framework.TestCase;
 
 import org.argouml.model.Model;
 
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.collaborations.MMessageImpl;
-
 /**
  * Test class to test the parsing of a message.<p>
  *
@@ -54,7 +51,7 @@ public class TestParseMessage extends TestCase {
      * @throws ParseException if the parsing fails.
      */
     public void compileTestParseMessage() throws ParseException {
-        ParserDisplay.SINGLETON.parseMessage(new MMessageImpl(), "hej");
+        ParserDisplay.SINGLETON.parseMessage(Model.getCollaborationsFactory().createMessage(), "hej");
     }
 
     /**
@@ -97,37 +94,39 @@ public class TestParseMessage extends TestCase {
 
         /* START TESTING STUFF */
 
-        MMessage m1 =
-            (MMessage) Model.getCollaborationsFactory()
+        Object m1 =
+             Model.getCollaborationsFactory()
             	.buildMessage(inter, r1to2);
-        assertTrue(m1.getSender() == cl1);
-        assertTrue(m1.getReceiver() == cl2);
-        assertTrue(m1.getInteraction() == inter);
-        assertNull(m1.getActivator());
+        assertTrue(Model.getFacade().getSender(m1) == cl1);
+        assertTrue(Model.getFacade().getReceiver(m1) == cl2);
+        assertTrue(Model.getFacade().getInteraction(m1) == inter);
+        assertNull(Model.getFacade().getActivator(m1));
+        Object action = Model.getFacade().getAction(m1);
         assertTrue(
-            m1.getAction() == null || m1.getAction().getRecurrence() == null);
-        assertTrue(m1.getPredecessors().size() == 0);
-        m1.setName("m1");
+            action == null || Model.getFacade().getRecurrence(action) == null);
+        assertTrue(Model.getFacade().getPredecessors(m1).size() == 0);
+        Model.getCoreHelper().setName(m1,"m1");
 
-        MMessage m2 =
-            (MMessage) Model.getCollaborationsFactory()
+        Object m2 =
+             Model.getCollaborationsFactory()
             	.buildMessage(inter, r2to3);
-        assertTrue(m2.getSender() == cl2);
-        assertTrue(m2.getReceiver() == cl3);
-        assertTrue(m2.getActivator() == m1);
+        assertTrue(Model.getFacade().getSender(m2) == cl2);
+        assertTrue(Model.getFacade().getReceiver(m2) == cl3);
+        assertTrue(Model.getFacade().getActivator(m2) == m1);
+        action = Model.getFacade().getAction(m2);
         assertTrue(
-            m2.getAction() == null || m2.getAction().getRecurrence() == null);
-        assertTrue(m2.getPredecessors().size() == 0);
-        m2.setName("m2");
+            action == null || Model.getFacade().getRecurrence(action) == null);
+        assertTrue(Model.getFacade().getPredecessors(m2).size() == 0);
+        Model.getCoreHelper().setName(m2,"m2");
 
-        MMessage m3 =
-            (MMessage) Model.getCollaborationsFactory()
+        Object m3 =
+             Model.getCollaborationsFactory()
             	.buildMessage(inter, r2to3);
-        assertTrue(m3.getActivator() == m1);
+        assertTrue(Model.getFacade().getActivator(m3) == m1);
         assertTrue(
-            m3.getPredecessors().iterator().next() == m2
-                && m3.getPredecessors().size() == 1);
-        m3.setName("m3");
+            Model.getFacade().getPredecessors(m3).iterator().next() == m2
+                && Model.getFacade().getPredecessors(m3).size() == 1);
+        Model.getCoreHelper().setName(m3,"m3");        
 
         /* TRY MOVING IN A SIMPLE MANER */
 
@@ -166,33 +165,33 @@ public class TestParseMessage extends TestCase {
 
         checkParseException(m3, "1.2.1 / 1.2 :");
 
-        MMessage m4 =
-            (MMessage) Model.getCollaborationsFactory()
+        Object m4 =
+             Model.getCollaborationsFactory()
             	.buildMessage(inter, r3to4);
-        MMessage m5 =
-            (MMessage) Model.getCollaborationsFactory()
+        Object m5 =
+             Model.getCollaborationsFactory()
             	.buildMessage(inter, r4to5);
-        MMessage m6 =
-            (MMessage) Model.getCollaborationsFactory()
+        Object m6 =
+             Model.getCollaborationsFactory()
             	.buildMessage(inter, r5to3);
-        MMessage m7 =
-            (MMessage) Model.getCollaborationsFactory()
+        Object m7 =
+             Model.getCollaborationsFactory()
             	.buildMessage(inter, r3to1);
 
         checkParseException(m6, "1.2.2 :");
 
         parseMessage(m7, "2:");
-        assertTrue(m7.getSender() == cl1);
-        assertTrue(m7.getReceiver() == cl3);
-        assertNull(m7.getActivator());
-        assertTrue(m7.getPredecessors().iterator().next() == m1);
-        assertTrue(m7.getPredecessors().size() == 1);
+        assertTrue(Model.getFacade().getSender(m7) == cl1);
+        assertTrue(Model.getFacade().getReceiver(m7) == cl3);
+        assertNull(Model.getFacade().getActivator(m7));
+        assertTrue(Model.getFacade().getPredecessors(m7).iterator().next() == m1);
+        assertTrue(Model.getFacade().getPredecessors(m7).size() == 1);
 
         parseMessage(m7, "1.2.1.1.1.1:");
-        assertTrue(m7.getSender() == cl3);
-        assertTrue(m7.getReceiver() == cl1);
-        assertTrue(m7.getActivator() == m6);
-        assertTrue(m7.getPredecessors().size() == 0);
+        assertTrue(Model.getFacade().getSender(m7) == cl3);
+        assertTrue(Model.getFacade().getReceiver(m7) == cl1);
+        assertTrue(Model.getFacade().getActivator(m7) == m6);
+        assertTrue(Model.getFacade().getPredecessors(m7).size() == 0);
 
         /* TRY PREDECESSORS */
         tryPredecessors(m1, m3, m4, m5, m7);
@@ -209,26 +208,26 @@ public class TestParseMessage extends TestCase {
      * @param m7 message to be tested
      * @throws ParseException if the parser found a syntax error
      */
-    private void tryPredecessors(MMessage m1, MMessage m3, MMessage m4,
-            MMessage m5, MMessage m7) throws ParseException {
-        MMessage m;
+    private void tryPredecessors(Object m1, Object m3, Object m4,
+            Object m5, Object m7) throws ParseException {
+        Object m;
         Iterator it;
-        assertNull(m1.getActivator());
-        assertTrue(m1.getPredecessors().size() == 0);
-        assertTrue(m4.getActivator() == m3);
-        assertTrue(m4.getPredecessors().size() == 0);
-        assertTrue(m3.getActivator() == m1);
-        assertTrue(m3.getPredecessors().size() == 1);
+        assertNull(Model.getFacade().getActivator(m1));
+        assertTrue(Model.getFacade().getPredecessors(m1).size() == 0);
+        assertTrue(Model.getFacade().getActivator(m4) == m3);
+        assertTrue(Model.getFacade().getPredecessors(m4).size() == 0);
+        assertTrue(Model.getFacade().getActivator(m3) == m1);
+        assertTrue(Model.getFacade().getPredecessors(m3).size() == 1);
 
         parseMessage(m7, "1.2.1 / 1.2.1.1.1.1:");
-        assertTrue(m7.getPredecessors().iterator().next() == m4);
-        assertTrue(m7.getPredecessors().size() == 1);
+        assertTrue(Model.getFacade().getPredecessors(m7).iterator().next() == m4);
+        assertTrue(Model.getFacade().getPredecessors(m7).size() == 1);
 
         parseMessage(m7, "1.2.1, 1.2.1.1 / 1.2.1.1.1.1:");
         boolean pre1 = false;
         boolean pre2 = false;
-        it = m7.getPredecessors().iterator();
-        m = (MMessage) it.next();
+        it = Model.getFacade().getPredecessors(m7).iterator();
+        m =  it.next();
         if (m == m4) {
             pre1 = true;
         } else if (m == m5) {
@@ -236,7 +235,7 @@ public class TestParseMessage extends TestCase {
         } else {
             assertTrue("Strange message found", false);
         }
-        m = (MMessage) it.next();
+        m =  it.next();
         if (m == m4) {
             pre1 = true;
         } else if (m == m5) {
@@ -253,7 +252,7 @@ public class TestParseMessage extends TestCase {
      * @param m2 message to be tested
      * @param m3 message to be tested
      */
-    private void trySomePredecessorErrors(MMessage m2, MMessage m3) {
+    private void trySomePredecessorErrors(Object m2, Object m3) {
         checkParseException(m2, "1.2 / 1.1 :");
         checkParseException(m2, "1.2.1 / 1.1 :");
         checkParseException(m3, "1.2.1 / 1.2 :");
@@ -262,7 +261,7 @@ public class TestParseMessage extends TestCase {
     /**
      * @param m3 message to be tested
      */
-    private void trySomeActionErrors(MMessage m3) {
+    private void trySomeActionErrors(Object m3) {
         checkParseException(m3, "1.2 : func() ()");
         checkParseException(m3, "1.2 : func() foo()");
         checkParseException(m3, "1.2 : func(), foo()");
@@ -280,35 +279,51 @@ public class TestParseMessage extends TestCase {
      * @param m3 message to be tested
      * @throws ParseException if the parser found a syntax error
      */
-    private void tryTheActions(MMessage m3) throws ParseException {
+    private void tryTheActions(Object m3) throws ParseException {
+    	
         parseMessage(m3, " 1.2 : func() ");
-        assertEquals("func", m3.getAction().getScript().getBody());
+        Object script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
+        Object body = Model.getFacade().getBody(script);
+        assertEquals("func", body);
+        
         parseMessage(m3, " 1.2 ");
-        assertEquals("func", m3.getAction().getScript().getBody());
+        script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
+        body = Model.getFacade().getBody(script);        
+        assertEquals("func", body);
+        
         parseMessage(m3, " 1.2 : ");
-        assertEquals("", m3.getAction().getScript().getBody());
+        script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
+        body = Model.getFacade().getBody(script);        
+        assertEquals("", body);
 
         parseMessage(m3, " 1.2 : var := func() ");
-        assertEquals("var := func", m3.getAction().getScript().getBody());
+        script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
+        body = Model.getFacade().getBody(script);        
+        assertEquals("var := func", body);
 
         parseMessage(m3, " 1.2 : var = func() ");
-        assertEquals("var := func", m3.getAction().getScript().getBody());
+        script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
+        body = Model.getFacade().getBody(script);        
+        assertEquals("var := func", body);
 
         parseMessage(m3, "1.2:var2:=func2()");
-        assertEquals("var2 := func2", m3.getAction().getScript().getBody());
+        script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
+        body = Model.getFacade().getBody(script);        
+        assertEquals("var2 := func2", body);
 
         parseMessage(m3, " 1.2 : var, var2, var3 := func() ");
-        assertEquals(
-            "var, var2, var3 := func",
-            m3.getAction().getScript().getBody());
+        script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
+        body = Model.getFacade().getBody(script);        
+        assertEquals("var, var2, var3 := func",body);
 
         parseMessage(m3, "1.2 : load_the_accumulating_taxes");
+        //TODO: Why there is not test here ? It's just for resetting the message body ?
     }
 
     /**
      * @param m3 message to be tested
      */
-    private void trySomeGuardAndIteratorErrors(MMessage m3) {
+    private void trySomeGuardAndIteratorErrors(Object m3) {
         checkParseException(m3, " [x < 5] 1.2 [x > 6] : ");
         checkParseException(m3, " 1 [x < 5] / 1.2 : ");
         checkParseException(m3, " 1 * / 1.2 : ");
@@ -324,22 +339,38 @@ public class TestParseMessage extends TestCase {
      * @param m3 message to be tested
      * @throws ParseException if the parser found a syntax error
      */
-    private void tryGuardAndIteratorSyntax(MMessage m3) throws ParseException {
+    private void tryGuardAndIteratorSyntax(Object m3) throws ParseException {
         parseMessage(m3, " 1.2 [ x < 5 ] : ");
-        assertNotNull(m3.getAction());
-        assertNotNull(m3.getAction().getRecurrence());
-        assertTrue("[x < 5]".equals(m3.getAction().getRecurrence().getBody()));
+        Object action = Model.getFacade().getAction(m3);        
+        assertNotNull(action);
+        Object recurrence = Model.getFacade().getRecurrence(action);
+        Object body = Model.getFacade().getBody(recurrence);
+        assertNotNull(recurrence);
+        assertTrue("[x < 5]".equals(body));
 
         parseMessage(m3, " 1.2 * [ i = 1..10 ] : ");
-        assertEquals("*[i = 1..10]", m3.getAction().getRecurrence().getBody());
+        action = Model.getFacade().getAction(m3);        
+        recurrence = Model.getFacade().getRecurrence(action);
+        body = Model.getFacade().getBody(recurrence);
+        assertEquals("*[i = 1..10]", body);
 
         parseMessage(m3, " 1.2 *// : ");
-        assertEquals("*[i = 1..10]", m3.getAction().getRecurrence().getBody());
+        action = Model.getFacade().getAction(m3);        
+        recurrence = Model.getFacade().getRecurrence(action);
+        body = Model.getFacade().getBody(recurrence);        
+        assertEquals("*[i = 1..10]", body);
 
         parseMessage(m3, " * // [i=1..] 1.2 : ");
-        assertEquals("*//[i=1..]", m3.getAction().getRecurrence().getBody());
+        action = Model.getFacade().getAction(m3);        
+        recurrence = Model.getFacade().getRecurrence(action);
+        body = Model.getFacade().getBody(recurrence);        
+        assertEquals("*//[i=1..]", body);
+
         parseMessage(m3, " 1.2 : ");
-        assertEquals("*//[i=1..]", m3.getAction().getRecurrence().getBody());
+        action = Model.getFacade().getAction(m3);        
+        recurrence = Model.getFacade().getRecurrence(action);
+        body = Model.getFacade().getBody(recurrence);        
+        assertEquals("*//[i=1..]", body);
     }
 
     /**
@@ -348,29 +379,29 @@ public class TestParseMessage extends TestCase {
      * @param m3 message to be tested
      * @throws ParseException if the parser found a syntax error
      */
-    private void trySomeMoreComplexMoving(MMessage m1, MMessage m2,
-            MMessage m3) throws ParseException {
+    private void trySomeMoreComplexMoving(Object m1, Object m2,
+            Object m3) throws ParseException {
         parseMessage(m3, " 1.1.1 : ");
-        assertTrue(m3.getActivator() == m2);
-        assertTrue(m3.getPredecessors().size() == 0);
+        assertTrue(Model.getFacade().getActivator(m3) == m2);
+        assertTrue(Model.getFacade().getPredecessors(m3).size() == 0);
 
         parseMessage(m3, " / 1..2 : ");
-        assertTrue(m3.getActivator() == m1);
-        assertTrue(m2.getPredecessors().size() == 0);
+        assertTrue(Model.getFacade().getActivator(m3) == m1);
+        assertTrue(Model.getFacade().getPredecessors(m2).size() == 0);
         assertTrue(
-            m3.getPredecessors().iterator().next() == m2
-                && m3.getPredecessors().size() == 1);
+            Model.getFacade().getPredecessors(m3).iterator().next() == m2
+                && Model.getFacade().getPredecessors(m3).size() == 1);
         parseMessage(m3, "");
-        assertTrue(m3.getActivator() == m1);
+        assertTrue(Model.getFacade().getActivator(m3) == m1);
         assertTrue(
-            m3.getPredecessors().iterator().next() == m2
-                && m3.getPredecessors().size() == 1);
+            Model.getFacade().getPredecessors(m3).iterator().next() == m2
+                && Model.getFacade().getPredecessors(m3).size() == 1);
     }
 
     /**
      * @param m3 message to be tested
      */
-    private void trySomeErrors(MMessage m3) {
+    private void trySomeErrors(Object m3) {
         checkParseException(m3, " 2.1 : ");
         checkParseException(m3, " 1.2 : 1.2 :");
         checkParseException(m3, " / / 1.2 : ");
@@ -382,28 +413,28 @@ public class TestParseMessage extends TestCase {
      * @param m3 message to be tested
      * @throws ParseException if the parser found a syntax error
      */
-    private void trySimpleMoving(MMessage m1, MMessage m2, MMessage m3)
+    private void trySimpleMoving(Object m1, Object m2, Object m3)
         throws ParseException {
         parseMessage(m3, " \t1.1 : ");
-        assertTrue(m3.getActivator() == m1);
-        assertTrue(m3.getPredecessors().size() == 0);
+        assertTrue(Model.getFacade().getActivator(m3) == m1);
+        assertTrue(Model.getFacade().getPredecessors(m3).size() == 0);
         assertTrue(
-            m2.getPredecessors().iterator().next() == m3
-                && m2.getPredecessors().size() == 1);
+            Model.getFacade().getPredecessors(m2).iterator().next() == m3
+                && Model.getFacade().getPredecessors(m2).size() == 1);
 
         parseMessage(m3, " / 1.2\t: ");
-        assertTrue(m3.getActivator() == m1);
-        assertTrue(m2.getPredecessors().size() == 0);
+        assertTrue(Model.getFacade().getActivator(m3) == m1);
+        assertTrue(Model.getFacade().getPredecessors(m2).size() == 0);
         assertTrue(
-            m3.getPredecessors().iterator().next() == m2
-                && m3.getPredecessors().size() == 1);
+            Model.getFacade().getPredecessors(m3).iterator().next() == m2
+                && Model.getFacade().getPredecessors(m3).size() == 1);
     }
 
-    private void parseMessage(MMessage m, String s) throws ParseException {
+    private void parseMessage(Object m, String s) throws ParseException {
         ParserDisplay.SINGLETON.parseMessage(m, s);
     }
 
-    private void checkParseException(MMessage m, String s) {
+    private void checkParseException(Object m, String s) {
         try {
             ParserDisplay.SINGLETON.parseMessage(m, s);
             assertTrue("Didn't throw for \"" + s + "\" in " + m, false);

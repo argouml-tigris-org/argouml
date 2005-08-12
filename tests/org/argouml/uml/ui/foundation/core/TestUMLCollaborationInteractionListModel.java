@@ -28,9 +28,6 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 import org.argouml.uml.ui.behavior.collaborations.UMLCollaborationInteractionListModel;
 
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
-
 /**
  * @since Oct 28, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -77,8 +74,7 @@ public class TestUMLCollaborationInteractionListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MCollaboration) getElem()).removeInteraction(
-                    (MInteraction) elements[i]);
+        		Model.getCollaborationsHelper().removeInteraction(getElem(),elements[i]);
         }
     }
 

@@ -32,11 +32,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.CheckUMLModelHelper;
 import org.argouml.model.Model;
 
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.MModel;
-
 /**
  * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -57,24 +52,20 @@ public class TestExtensionMechanismsHelper extends TestCase {
      * isolating the project from the projectbrowser.
      */
     public void testGetAllPossibleStereotypes1() {
-        MNamespace ns = (MNamespace) Model.getCoreFactory().createNamespace();
-        MClass clazz = (MClass) Model.getCoreFactory().buildClass(ns);
-        MModel model =
-            (MModel) ProjectManager.getManager().getCurrentProject()
+        Object ns = Model.getCoreFactory().createNamespace();
+        Object clazz = Model.getCoreFactory().buildClass(ns);
+        Model model =
+            (Model) ProjectManager.getManager().getCurrentProject()
             	.getModel();
         Collection models =
             ProjectManager.getManager().getCurrentProject()
             	.getModels();
-        MStereotype stereo1 =
-            (MStereotype)
-            	Model.getExtensionMechanismsFactory().buildStereotype(
+        Object stereo1 = Model.getExtensionMechanismsFactory().buildStereotype(
             	        clazz,
             	        "test1",
             	        model,
             	        models);
-        MStereotype stereo2 =
-            (MStereotype)
-	        Model.getExtensionMechanismsFactory().buildStereotype(
+        Object stereo2 = Model.getExtensionMechanismsFactory().buildStereotype(
 	                clazz,
 		        "test2",
 		        model,

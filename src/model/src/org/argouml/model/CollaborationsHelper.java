@@ -332,4 +332,7 @@ public interface CollaborationsHelper {
      * @param sender the sender
      */
     void setSender(Object handle, Object sender);
+    
+    //additionnal support for interactions
+    void removeInteraction(Object collab, Object interaction);
 }

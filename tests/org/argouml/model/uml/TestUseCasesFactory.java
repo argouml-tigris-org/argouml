@@ -29,10 +29,6 @@ import junit.framework.TestCase;
 import org.argouml.model.CheckUMLModelHelper;
 import org.argouml.model.Model;
 
-import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-
 
 
 /**
@@ -92,23 +88,22 @@ public class TestUseCasesFactory extends TestCase {
      * Test building extensions.
      */
     public void testBuildExtend1() {
-        MUseCase base = (MUseCase) Model.getUseCasesFactory().createUseCase();
-        MUseCase extension =
-            (MUseCase) Model.getUseCasesFactory().createUseCase();
-        MExtensionPoint point =
-            (MExtensionPoint) Model.getUseCasesFactory()
+        Object base = Model.getUseCasesFactory().createUseCase();
+        Object extension = Model.getUseCasesFactory().createUseCase();
+        Object point = Model.getUseCasesFactory()
             	.buildExtensionPoint(base);
-        MExtend extend =
-            (MExtend) Model.getUseCasesFactory()
+        Object extend = Model.getUseCasesFactory()
             	.buildExtend(base, extension, point);
         assertTrue("extensionpoint not added to base",
-		   !base.getExtensionPoints().isEmpty());
-        assertTrue("extend not added to base", !base.getExtends2().isEmpty());
+		   !Model.getFacade().getExtensionPoints(base).isEmpty());
+        //TODO: Check that extended use cases are getExtends2 (else use getExtendingUseCases)
+        assertTrue("extend not added to base", !Model.getUseCasesHelper().getExtendedUseCases(base).isEmpty());
+        //TODO: Check that this is ok to use getExtends, and not getExtends2
         assertTrue("extend not added to extension",
-		   !extension.getExtends().isEmpty());
+		   !Model.getFacade().getExtends(extension).isEmpty());
         assertTrue("extend not added to correct extensionpoint",
-		   (extend.getExtensionPoints().contains(point)
-		    && extend.getExtensionPoints().size() == 1));
+		   (Model.getFacade().getExtensionPoints(extend).contains(point)
+		    && Model.getFacade().getExtensionPoints(extend).size() == 1));
     }
 
 

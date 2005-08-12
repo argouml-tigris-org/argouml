@@ -91,7 +91,7 @@ public final class Model {
      * The decorated helper.
      */
     private static UseCasesHelper useCasesHelper;
-
+    
     /**
      * Constructor to prohibit creation.
      */
@@ -379,7 +379,7 @@ public final class Model {
      * @return the helper
      */
     public static UseCasesHelper getUseCasesHelper() {
-        return useCasesHelper;
+        return impl.getUseCasesHelper();
     }
 
     /**
@@ -546,5 +546,9 @@ public final class Model {
         if (mco != null) {
             mco.mementoCreated(memento);
         }
+    }
+    
+    public static CopyHelper getCopyHelper() {
+    		return impl.getCopyHelper();
     }
 }

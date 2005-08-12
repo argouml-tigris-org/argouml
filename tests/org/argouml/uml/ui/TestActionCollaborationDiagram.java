@@ -31,10 +31,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-import ru.novosoft.uml.foundation.core.MClassImpl;
-import ru.novosoft.uml.foundation.core.MClassifierImpl;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /**
  *
  * @author jaap.branderhorst@xs4all.nl
@@ -61,9 +57,9 @@ public class TestActionCollaborationDiagram
     /**
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
-    protected MNamespace getNamespace() {
-        //return new MCollaborationImpl();
-        MNamespace c = new MClassImpl();
+    protected Object getNamespace() {
+        //return new CollaborationImpl();
+        Object c = Model.getCoreFactory().createClass();
         TargetManager.getInstance().setTarget(c);
         return c;
     }
@@ -73,7 +69,7 @@ public class TestActionCollaborationDiagram
      */
     protected List getValidNamespaceClasses() {
         List rl = new ArrayList();
-        rl.add(MClassifierImpl.class);
+        rl.add(Model.getMetaTypes().getUMLClass());
         return rl;
     }
 

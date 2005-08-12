@@ -616,4 +616,9 @@ public interface CoreFactory {
      * @param target the target namespace
      */
     void doCopyNamespace(Object source, Object target);
+    
+    //additional support for generalization
+    
+    Object createGeneralization();
+    
 }

@@ -27,8 +27,6 @@ package org.argouml.uml.ui.foundation.core;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
-import ru.novosoft.uml.foundation.core.MFlow;
-
 /**
  * @since Oct 30, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -64,7 +62,7 @@ public class TestUMLModelElementSourceFlowListModel
     protected Object[] fillModel() {
         Object[] ext = new Object[10];
         for (int i = 0; i < 10; i++) {
-            ext[i] = (MFlow) Model.getCoreFactory().createFlow();
+            ext[i] = Model.getCoreFactory().createFlow();
             Model.getCoreHelper().addSourceFlow(getElem(), ext[i]);
         }
         return ext;

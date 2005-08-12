@@ -2616,4 +2616,12 @@ public interface Facade {
      * @return TimeExpression
      */
     Object getWhen(Object target);
+    /**
+     * Recognizer for TagDefinition. Implemented only in UML 1.4+ metamodels.
+     *
+     * @param handle candidate
+     * @return true if handle is a TagDefinition
+     */
+    boolean isATagDefinition(Object handle);
+        
 }

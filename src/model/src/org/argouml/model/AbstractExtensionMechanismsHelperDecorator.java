@@ -190,4 +190,24 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
         impl.setValueOfTag(handle, value);
     }
 
+	/**
+	 * @see org.argouml.model.ExtensionMechanismsHelper#addTaggedValue(java.lang.Object, java.lang.Object)
+	 */
+	public void addTaggedValue(Object handle, Object taggedValue) {
+		impl.addTaggedValue(handle,taggedValue);
+	}
+
+	/**
+	 * @see org.argouml.model.ExtensionMechanismsHelper#removeTaggedValue(java.lang.Object, java.lang.Object)
+	 */
+	public void removeTaggedValue(Object handle, Object taggedValue) {
+		impl.removeTaggedValue(handle,taggedValue);
+	}
+
+	/**
+	 * @see org.argouml.model.ExtensionMechanismsHelper#setTaggedValue(java.lang.Object, java.util.Collection)
+	 */
+	public void setTaggedValue(Object handle, Collection taggedValues) {
+		impl.setTaggedValue(handle,taggedValues);		
+ 	}
 }

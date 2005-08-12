@@ -79,13 +79,17 @@ public class TestProject extends TestCase {
         // Let's make it a bit more difficult by setting the target:
         TargetManager.getInstance().setTarget(cls2);
         p.moveToTrash(package1);
-        Collection c = Model.getFacade().getOwnedElements(p.getRoot());
+        //TODO: We should also test that the object have been removed from their namespace.
+        //This is done in the MDR implementation (CoreFactory.deleteModelElement) but i don't 
+        //know for the NSUML implementation, and even if this is coded the new test code
+        //doesn't test this.
+        //Collection c = Model.getFacade().getOwnedElements(p.getRoot());
         assertTrue("Package not in trash", p.isInTrash(package1));
-        assertTrue("Package not deleted", !c.contains(package1));
-        assertTrue("Class 1 not deleted", !c.contains(cls1));
-        assertTrue("Class 2 not deleted", !c.contains(cls2));
-        assertTrue("Class 3 not deleted", !c.contains(cls3));
-        assertTrue("Class 4 has been deleted", c.contains(cls4));
+        assertTrue("Package not deleted", Model.getUmlFactory().isRemoved(package1));
+        assertTrue("Class 1 not deleted", Model.getUmlFactory().isRemoved(cls1));
+        assertTrue("Class 2 not deleted", Model.getUmlFactory().isRemoved(cls2));
+        assertTrue("Class 3 not deleted", Model.getUmlFactory().isRemoved(cls3));
+        assertTrue("Class 4 has been deleted", !Model.getUmlFactory().isRemoved(cls4));
     }
 
     /**
@@ -106,12 +110,12 @@ public class TestProject extends TestCase {
             Model.getCoreFactory().buildOperation(
                     cls2, p.getRoot(), typ, new ArrayList());
         p.moveToTrash(aClass);
-        Collection c = Model.getFacade().getOwnedElements(p.getRoot());
+        //Collection c = Model.getFacade().getOwnedElements(p.getRoot());
         assertTrue("Package not in trash", p.isInTrash(aClass));
-        assertTrue("Package not deleted", !c.contains(aClass));
-        assertTrue("Class 1 not deleted", !c.contains(cls1));
-        assertTrue("Class 2 not deleted", !c.contains(cls2));
-        assertTrue("Class 3 not deleted", !c.contains(cls3));
+        assertTrue("Package not deleted", Model.getUmlFactory().isRemoved(aClass));
+        assertTrue("Class 1 not deleted", Model.getUmlFactory().isRemoved(cls1));
+        assertTrue("Class 2 not deleted", Model.getUmlFactory().isRemoved(cls2));
+        assertTrue("Class 3 not deleted", Model.getUmlFactory().isRemoved(cls3));
     }
 
 

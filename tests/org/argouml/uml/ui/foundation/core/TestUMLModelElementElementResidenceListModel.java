@@ -24,16 +24,10 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.Model;
-
 import junit.framework.TestCase;
 
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MClassImpl;
-import ru.novosoft.uml.foundation.core.MElementResidence;
-import ru.novosoft.uml.foundation.core.MElementResidenceImpl;
-import ru.novosoft.uml.foundation.core.MModelElement;
+import org.argouml.model.CoreHelper;
+import org.argouml.model.Model;
 
 /**
  * @since Oct 12, 2002
@@ -44,6 +38,7 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
     private Object elem;
     private UMLModelElementElementResidenceListModel list;
 
+    private CoreHelper helper;
     /**
      * Constructor for TestUMLModelElementElementResidenceListModel.
      * @param arg0 is the name of the test case.
@@ -57,7 +52,7 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+        helper = Model.getCoreHelper();        
         elem = Model.getUmlFactory().buildNode(Model.getMetaTypes().getUMLClass());
         list = new UMLModelElementElementResidenceListModel();
         list.setTarget(elem);
@@ -78,9 +73,8 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
      * Test addElementResidence().
      */
     public void testElementAdded() {
-        MElementResidence res = new MElementResidenceImpl();
-        
-        ((MClass)elem).addElementResidence(res);
+        Object res = Model.getCoreFactory().createElementResidence();
+        helper.addElementResidence(elem,res);
         assertTrue(list.getSize() == 1);
         assertTrue(list.getElementAt(0) == res);
     }
@@ -89,11 +83,11 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
      * Test removeElementResidence().
      */
     public void testElementRemoved() {
-        MElementResidence res = new MElementResidenceImpl();
-        ((MClass)elem).addElementResidence(res);
+        Object res = Model.getCoreFactory().createElementResidence();
+        helper.addElementResidence(elem,res);
         assertTrue(list.getSize() == 1);
         assertTrue(list.getElementAt(0) == res);
-        ((MClass)elem).removeElementResidence(res);
+        helper.removeElementResidence(elem,res);
         assertTrue(list.getSize() == 0);
     }
 
@@ -107,7 +101,7 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
         }
         catch (ArrayIndexOutOfBoundsException a) { }
         assertTrue(list.size() == 0);
-        assertTrue(((MClass)elem).getElementResidences().isEmpty());
+        assertTrue(Model.getFacade().getElementResidences(elem).isEmpty());
     }
 
 

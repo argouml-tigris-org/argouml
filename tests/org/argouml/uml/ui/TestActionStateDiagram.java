@@ -27,10 +27,8 @@ package org.argouml.uml.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-
-import ru.novosoft.uml.foundation.core.MClassifierImpl;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  *
@@ -59,8 +57,8 @@ public class TestActionStateDiagram
     /**
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
-    protected MNamespace getNamespace() {
-        return new MClassifierImpl();
+    protected Object getNamespace() {
+        return Model.getCoreFactory().createClassifier();
     }
 
     /**
@@ -68,7 +66,7 @@ public class TestActionStateDiagram
      */
     protected List getValidNamespaceClasses() {
         List rl = new ArrayList();
-        rl.add(MClassifierImpl.class);
+        rl.add(Model.getMetaTypes().getClassifier());
         return rl;
     }
 
@@ -77,7 +75,8 @@ public class TestActionStateDiagram
      */
     protected void setUp() {
         super.setUp();
-        TargetManager.getInstance().setTarget(new MClassifierImpl());
+        TargetManager.getInstance().setTarget(
+        		Model.getCoreFactory().createClassifier());
     }
 
 }

@@ -28,8 +28,6 @@ import junit.framework.TestCase;
 
 import org.argouml.model.Model;
 
-import ru.novosoft.uml.foundation.data_types.MScopeKind;
-
 /**
  * @since Nov 6, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -80,7 +78,7 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
 	}
         box.doClick();
         assertEquals(
-                MScopeKind.CLASSIFIER,
+        		Model.getScopeKind().getClassifier(),
                 Model.getFacade().getOwnerScope(elem));
     }
 
@@ -94,9 +92,9 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
 	}
         boolean selected = box.isSelected();
         if (selected) {
-            Model.getCoreHelper().setOwnerScope(elem, MScopeKind.INSTANCE);
+            Model.getCoreHelper().setOwnerScope(elem, Model.getScopeKind().getInstance());
         } else {
-            Model.getCoreHelper().setOwnerScope(elem, MScopeKind.CLASSIFIER);
+            Model.getCoreHelper().setOwnerScope(elem, Model.getScopeKind().getClassifier());
         }
         assertEquals(!selected, box.isSelected());
     }

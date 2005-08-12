@@ -38,7 +38,7 @@ import ru.novosoft.uml.model_management.MPackage;
  * @author Michael Stockman
  * @since 0.13.2
  */
-final class CopyHelper {
+final class CopyHelper implements org.argouml.model.CopyHelper {
 
     /**
      * The model implementation.
@@ -73,7 +73,7 @@ final class CopyHelper {
      *
      * @throws IllegalArgumentException if element is null.
      */
-    Object copy(Object anelement, Object ans) {
+    public Object copy(Object anelement, Object ans) {
 	// Don't explicitly check if element is null
         MModelElement element = (MModelElement) anelement;
         MNamespace ns = (MNamespace) ans;
