@@ -35,7 +35,7 @@ import java.util.Vector;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -58,18 +58,17 @@ import org.tigris.gef.util.Util;
  */
 
 public class ActionSaveAllGraphics extends UMLAction {
-    protected static Category cat =
-	Category.getInstance(ActionSaveAllGraphics.class);
-    
-    ////////////////////////////////////////////////////////////////
-    // static variables
-    
-    public static final String separator = "/";
+    private static final Logger LOG = 
+        Logger.getLogger(ActionSaveAllGraphics.class);
     
     
     ////////////////////////////////////////////////////////////////
     // constructors
     
+    /**
+     * The constructor.
+     * 
+     */
     public ActionSaveAllGraphics() {
 	super( "action.save-all-graphics", NO_ICON);
     }
@@ -78,10 +77,17 @@ public class ActionSaveAllGraphics extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // main methods
     
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed( ActionEvent ae ) {
 	trySave( false );
     }
     
+    /**
+     * @param overwrite true if we can overwrite without asking
+     * @return success
+     */
     public boolean trySave(boolean overwrite) {
 	Project p =  ProjectManager.getManager().getCurrentProject();
 	TargetManager tm = TargetManager.getInstance();
@@ -103,7 +109,14 @@ public class ActionSaveAllGraphics extends UMLAction {
 	return okSoFar;
     }	
 
-    protected boolean trySaveDiagram(boolean overwrite, Object target, File saveDir) {
+    /**
+     * @param overwrite true if we can overwrite without asking
+     * @param target the diagram
+     * @param saveDir the directory to save to
+     * @return success
+     */
+    protected boolean trySaveDiagram(boolean overwrite, Object target, 
+            File saveDir) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	if ( target instanceof Diagram ) {
 	    String defaultName = ((Diagram) target).getName();
@@ -125,18 +138,16 @@ public class ActionSaveAllGraphics extends UMLAction {
 		    return false;
 		}
 		pb.showStatus( "Writing " + path + name + "..." );
-		saveGraphicsToFile(theFile, cmd,overwrite);
+		saveGraphicsToFile(theFile, cmd, overwrite);
 		pb.showStatus( "Wrote " + path + name );
 		return true;
 	    }
-	    catch ( FileNotFoundException ignore )
-		{
-		    cat.error("got a FileNotFoundException", ignore);
-		}
-	    catch ( IOException ignore )
-		{
-		    cat.error("got an IOException", ignore);
-		}
+	    catch ( FileNotFoundException ignore ) {
+	        LOG.error("got a FileNotFoundException", ignore);
+	    }
+	    catch ( IOException ignore ) {
+		LOG.error("got an IOException", ignore);
+	    }
 	}
 	return false;
     }
@@ -169,7 +180,8 @@ public class ActionSaveAllGraphics extends UMLAction {
         return null;
     }
 
-    private boolean saveGraphicsToFile(File theFile, CmdSaveGraphics cmd, boolean overwrite) throws IOException {
+    private boolean saveGraphicsToFile(File theFile, CmdSaveGraphics cmd, 
+            boolean overwrite) throws IOException {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	if ( theFile.exists() && !overwrite ) {
 	    int response =
@@ -196,8 +208,8 @@ public class ActionSaveAllGraphics extends UMLAction {
     private JFileChooser getFileChooser(Project p) {
 	JFileChooser chooser = null;
 	try {
-	    if ( p != null && p.getURL() != null &&
-		 p.getURL().getFile().length() > 0 ) {
+	    if ( p != null && p.getURL() != null 
+                    && p.getURL().getFile().length() > 0 ) {
 		String filename = p.getURL().getFile();
 		if ( !filename.startsWith( "/FILE1/+/" ) )
 		    chooser  =
@@ -205,7 +217,7 @@ public class ActionSaveAllGraphics extends UMLAction {
 	    }
 	}
 	catch ( Exception ex ) {
-	    cat.error("exception in opening JFileChooser", ex);
+	    LOG.error("exception in opening JFileChooser", ex);
 	}
 	
 	if ( chooser == null ) chooser = new JFileChooser();
