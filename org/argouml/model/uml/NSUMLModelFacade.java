@@ -4230,6 +4230,8 @@ public class NSUMLModelFacade implements Facade {
             name = ((MVisibilityKind) handle).getName();
         } else if (handle instanceof MCallConcurrencyKind) {
             name = ((MCallConcurrencyKind) handle).getName();
+        } else if (handle instanceof MParameterDirectionKind) {
+        		name = ((MParameterDirectionKind) handle).getName();
         } else {
             illegalArgument(handle);
         }
