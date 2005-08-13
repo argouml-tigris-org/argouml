@@ -35,7 +35,7 @@ public class UndoEnabler {
      * Change this value to true to enable undo.
      * Do not commit to CVS in this state.
      */
-    public final static boolean ENABLED = false;
+    public static final boolean ENABLED = false;
     
     private UndoEnabler() {
         super();

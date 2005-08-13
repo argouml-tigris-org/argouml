@@ -222,7 +222,8 @@ public class FigFinalState extends FigStateVertex {
      *
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    /*public void setBoundsImpl(int boundX, int boundY, int boundW, int boundH) {
+    /*public void setBoundsImpl(int boundX, int boundY, 
+        int boundW, int boundH) {
         _x = boundX;
         _y = boundY;
         getBigPort().setX(boundX);

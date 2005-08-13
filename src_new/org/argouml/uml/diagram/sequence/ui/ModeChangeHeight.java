@@ -36,12 +36,19 @@ import org.argouml.i18n.Translator;
 
 public class ModeChangeHeight extends FigModifyingModeImpl {
 
+    /**
+     * The constructor.
+     * 
+     */
     public ModeChangeHeight() {
         contractSet = false;
         editor = Globals.curEditor();
         rubberbandColor = Globals.getPrefs().getRubberbandColor();
     }
 
+    /**
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
     public void mousePressed(MouseEvent me) {
         if (me.isConsumed()) {
             return;
@@ -53,6 +60,9 @@ public class ModeChangeHeight extends FigModifyingModeImpl {
         me.consume();
     }
 
+    /**
+     * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
+     */
     public void mouseDragged(MouseEvent me) {
         if (me.isConsumed()) {
             return;
@@ -63,6 +73,9 @@ public class ModeChangeHeight extends FigModifyingModeImpl {
         me.consume();
     }
 
+    /**
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
     public void mouseReleased(MouseEvent me) {
         if (me.isConsumed()) {
             return;
@@ -103,11 +116,17 @@ public class ModeChangeHeight extends FigModifyingModeImpl {
         done();
     }
 
+    /**
+     * @see org.tigris.gef.base.FigModifyingMode#paint(java.awt.Graphics)
+     */
     public void paint(Graphics g) {
         g.setColor(rubberbandColor);
         g.drawLine(startX, startY, startX, currentY);
     }
 
+    /**
+     * @see org.tigris.gef.base.FigModifyingMode#instructions()
+     */
     public String instructions() {
         if (isContract()) {
             return Translator.localize("action.sequence-contract");

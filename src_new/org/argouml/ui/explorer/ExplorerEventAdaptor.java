@@ -185,7 +185,7 @@ public final class ExplorerEventAdaptor
 //        }
         if (pce instanceof RemoveAssociationEvent) {
             treeModel.modelElementRemoved(
-                    ((RemoveAssociationEvent)pce).getChangedValue());
+                    ((RemoveAssociationEvent) pce).getChangedValue());
         }
         
 
@@ -195,7 +195,7 @@ public final class ExplorerEventAdaptor
 //        }
         if (pce instanceof AddAssociationEvent) {
             treeModel.modelElementAdded(
-                    ((AddAssociationEvent)pce).getSource());
+                    ((AddAssociationEvent) pce).getSource());
         }
         
 
@@ -205,7 +205,7 @@ public final class ExplorerEventAdaptor
 //        }
         if (pce instanceof AttributeChangeEvent) {
             treeModel.modelElementChanged(pce.getSource());
-         }
+        }
         
         
     }

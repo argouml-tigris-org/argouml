@@ -42,12 +42,12 @@ public final class UUIDHelper {
     /**
      * Return the UUID of the element.
      *
-     * @param A model element or a Fig representing a model element
+     * @param base A model element or a Fig representing a model element
      * @return UUID
      */
     public static String getUUID(Object base) {
         if (base instanceof Fig) {
-            base = ((Fig)base).getOwner();
+            base = ((Fig) base).getOwner();
         }
         if (base == null) return null;
         if (base instanceof CommentEdge) {

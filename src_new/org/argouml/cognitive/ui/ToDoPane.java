@@ -125,7 +125,7 @@ public class ToDoPane extends JPanel
     /**
      * The constructor.
      *
-     * @param doSplash if true, then we have to show progress in the splash
+     * @param splash if true, then we have to show progress in the splash
      */
     public ToDoPane(SplashScreen splash) {
 

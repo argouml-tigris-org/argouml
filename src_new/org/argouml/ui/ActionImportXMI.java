@@ -109,7 +109,8 @@ public class ActionImportXMI extends AbstractAction {
                     /* Try adding the extension from the chosen filter. */
                     FileFilter ffilter = chooser.getFileFilter();
                     if (ffilter instanceof AbstractFilePersister) {
-                        AbstractFilePersister afp = (AbstractFilePersister) ffilter;
+                        AbstractFilePersister afp = 
+                            (AbstractFilePersister) ffilter;
                         File m =
                             new File(theFile.getPath() + "."
                                     + afp.getExtension());
@@ -123,7 +124,8 @@ public class ActionImportXMI extends AbstractAction {
                             PersistenceManager.KEY_IMPORT_XMI_PATH,
                             theFile.getPath());
 
-                    if (ProjectBrowser.getInstance().loadProject(theFile, true)) {
+                    if (ProjectBrowser.getInstance()
+                            .loadProject(theFile, true)) {
                         // notification of menu bar
                         GenericArgoMenuBar menuBar =
                             (GenericArgoMenuBar) pb.getJMenuBar();

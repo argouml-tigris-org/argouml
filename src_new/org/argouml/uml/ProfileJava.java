@@ -297,11 +297,11 @@ public class ProfileJava extends Profile {
         String nsumlImpl = "org.argouml.model.uml.NSUMLModelImplementation";
         String mdrImpl = "org.argouml.model.mdr.MDRModelImplementation";
         
-        if (modelFileName==null) {
+        if (modelFileName == null) {
             //TODO: Remove the ",nsumlImpl" when we will switch the 
             //default metamodel to UML 1.4/MDR.
             if (nsumlImpl.equals(System.getProperty(
-                    "argouml.model.implementation",nsumlImpl))) {
+                    "argouml.model.implementation", nsumlImpl))) {
                 modelFileName = "/org/argouml/default.xmi";           		
             } else if (mdrImpl.equals(System.getProperty(
                 "argouml.model.implementation"))) {
@@ -340,7 +340,7 @@ public class ProfileJava extends Profile {
             } 
             LOG.error("Value of property argo.defaultModel ("
                     + modelFileName
-                    + ") did not correspond to an available file.\n");    			
+                    + ") did not correspond to an available file.\n");
         }
         return Model.getModelManagementFactory().createModel();
     }

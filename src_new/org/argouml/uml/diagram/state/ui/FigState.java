@@ -38,7 +38,7 @@ import org.tigris.gef.presentation.FigText;
  * UML metamodel. Reason for this is to make sure that events from the model are
  * not missed by the figs. The hierarchy of the states was not compliant to
  * this. This resulted in a number of issues (issue 1430 for example). Therefore
- * introduced a FigState and made FigCompositeState and FigSimpleState
+ * introduced an abstract FigState and made FigCompositeState and FigSimpleState
  * subclasses of this state.
  *
  * @author jaap.branderhorst@xs4all.nl
@@ -46,10 +46,10 @@ import org.tigris.gef.presentation.FigText;
  */
 public abstract class FigState extends FigStateVertex {
 
-    protected final static int SPACE_TOP = 1;
-    protected final static int SPACE_MIDDLE = 5;
-    protected final static int DIVIDER_Y = 4;
-    protected final static int SPACE_BOTTOM = 6;
+    protected static final int SPACE_TOP = 1;
+    protected static final int SPACE_MIDDLE = 5;
+    protected static final int DIVIDER_Y = 4;
+    protected static final int SPACE_BOTTOM = 6;
  
     protected static final int MARGIN = 2;
     

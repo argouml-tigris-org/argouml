@@ -26,14 +26,13 @@ package org.argouml.uml.cognitive;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ResolvedCritic;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.kernel.Project;
 import org.argouml.kernel.AbstractProjectMember;
+import org.argouml.kernel.Project;
 import org.argouml.persistence.ResolvedCriticXMLHelper;
 import org.argouml.persistence.ToDoItemXMLHelper;
 
@@ -109,7 +108,6 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
         Vector out;
     	ResolvedCritic rci;
     	Designer dsgr;
-    	int i;
 
     	dsgr = Designer.theDesigner();
     	in = dsgr.getToDoList().getResolvedItems();

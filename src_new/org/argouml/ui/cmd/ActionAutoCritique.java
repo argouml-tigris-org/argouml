@@ -39,7 +39,8 @@ class ActionAutoCritique extends UMLAction {
 
     public ActionAutoCritique() {
 	super("action.toggle-auto-critique", NO_ICON);
-	putValue("SELECTED", new Boolean(Designer.theDesigner().getAutoCritique()));
+	putValue("SELECTED", 
+                new Boolean(Designer.theDesigner().getAutoCritique()));
     }
 
     /**

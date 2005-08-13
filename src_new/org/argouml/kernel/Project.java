@@ -415,8 +415,8 @@ public class Project implements java.io.Serializable, TargetListener {
          */
         if (diagrams.size() < 1) {
             Object treeRoot = Model.getModelManagementFactory().getRootModel();
-            ArgoDiagram defaultDiagram =
-                DiagramFactory.getInstance().createDiagram(UMLClassDiagram.class, treeRoot, null);
+            ArgoDiagram defaultDiagram = DiagramFactory.getInstance()
+                .createDiagram(UMLClassDiagram.class, treeRoot, null);
             addMember(defaultDiagram);
             activeDiagram = defaultDiagram;
             TargetManager.getInstance().setTarget(defaultDiagram);

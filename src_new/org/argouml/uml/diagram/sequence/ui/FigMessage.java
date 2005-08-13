@@ -85,6 +85,9 @@ public abstract class FigMessage
         return null;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
     public void setOwner(Object newOwner) {
         super.setOwner(newOwner);
         if (Model.getFacade().isAMessage(newOwner)) {
@@ -232,6 +235,9 @@ public abstract class FigMessage
         return Model.getFacade().getReceiver(owner);
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */
     public void modelChanged(PropertyChangeEvent pce) {
         super.modelChanged(pce);
         textGroup.calcBounds();
@@ -260,6 +266,9 @@ public abstract class FigMessage
         return true;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#makeSelection()
+     */
     public Selection makeSelection() {
         return new SelectionMessage(this);
     }

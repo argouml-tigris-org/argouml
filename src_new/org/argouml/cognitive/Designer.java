@@ -90,6 +90,10 @@ public final class Designer
         unspecGoalVector.addElement(Goal.getUnspecifiedGoal());
     }
 
+    /**
+     * The key to remember persistently the latest choice made 
+     * for the menuitem Toggle Auto-Critique. 
+     */
     public static final ConfigurationKey AUTO_CRITIQUE =
         Configuration.makeKey("cognitive", "autocritique");
 
@@ -281,7 +285,8 @@ public final class Designer
 
             // the critiquing thread should wait if disabled.
             synchronized (this) {
-                while (!Configuration.getBoolean(Designer.AUTO_CRITIQUE, true)) {
+                while (!Configuration.getBoolean(
+                        Designer.AUTO_CRITIQUE, true)) {
                     try {
                         this.wait();
                     } catch (InterruptedException ignore) {
