@@ -52,10 +52,9 @@ public class TestExtensionMechanismsHelper extends TestCase {
      * isolating the project from the projectbrowser.
      */
     public void testGetAllPossibleStereotypes1() {
-        Object ns = Model.getCoreFactory().createNamespace();
+        Object ns = Model.getModelManagementFactory().createPackage();
         Object clazz = Model.getCoreFactory().buildClass(ns);
-        Model model =
-            (Model) ProjectManager.getManager().getCurrentProject()
+        Object model = ProjectManager.getManager().getCurrentProject()
             	.getModel();
         Collection models =
             ProjectManager.getManager().getCurrentProject()

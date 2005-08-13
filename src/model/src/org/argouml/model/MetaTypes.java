@@ -401,6 +401,12 @@ public interface MetaTypes {
     Object getSynchState();
 
     /**
+     * @since UML 1.4
+     * @return Returns the TagDefinition, or null in UML 1.3
+     */
+    Object getTagDefinition();
+    
+    /**
      * @return Returns the TerminateAction.
      */
     Object getTerminateAction();
@@ -424,4 +430,10 @@ public interface MetaTypes {
      * @return Returns the VisibilityKind.
      */
     Object getVisibilityKind();
+    
+    /**
+     * @return Returns the Interaction
+     */
+    Object getInteraction();
+    
 }

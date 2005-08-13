@@ -25,6 +25,8 @@
 package org.argouml.model;
 
 import java.lang.ref.WeakReference;
+import java.util.Collection;
+import java.util.Vector;
 
 import junit.framework.TestCase;
 
@@ -87,12 +89,71 @@ public class TestCoreFactory extends TestCase {
      * Test creation.
      */
     public void testCreates() {
-	// Do not test BehavioralFeature, Feature, PresentationElement,
-	//    StructuralFeature yet.
-	// NSUML does not have create method.
-	//
-	// Never test for ModelElement.
-	String[] objs = {
+	// See issue #3407 for the elements not tested. 
+        // These are the abstract meta classes,
+    	// which cannot be instantiated.
+    	// Ludo: I want to preserve the existing tests for NSUML, 
+        // even if this is wrong regarding
+    	// the UML specs to instantiates abstract classes like RelationShip. 
+        // So do a switch when needed.
+
+    	String nsumlImpl = "org.argouml.model.uml.NSUMLModelImplementation";
+    	// Here we determine the UML version by looking at the model
+    	// implementation in use. This is the right test in this case
+    	// because we can imagine that a model implementation for UML 1.3
+    	// other than NSUML (like the UML 1.3 metamodel 
+        // of the OMG [01-12-02.xml])
+    	// doesn't allow to instantiate the Namespace and others metaclasses.
+    	boolean nsuml = nsumlImpl.equals(System.getProperty(
+                    "argouml.model.implementation", nsumlImpl));    	
+    	//Here we determine if the implementation support UML 1.4
+    	boolean UML_14 = (Model.getMetaTypes().getTagDefinition()!=null);
+    	
+	Collection objs = new Vector();
+	
+	// The abstract metaclasses in UML 1.3 include Element, ModelElement, 
+        // Feature, Namespace, GeneralizableElement, Classifier, 
+        // StructuralFeature, BehavioralFeature, Relationship, 
+        // PresentationElement, Action, StateVertex, and
+    	// Event.
+        // UML 1.4 changes Instance and State to be abstract also.
+
+	objs.add("Abstraction");
+	objs.add("AssociationClass");
+	objs.add("AssociationEnd");
+	objs.add("Attribute");
+	objs.add("Binding");
+	objs.add("Class");
+	objs.add("Comment");
+	objs.add("Component");
+	objs.add("Constraint");
+	objs.add("DataType");
+	objs.add("Dependency");
+	objs.add("ElementResidence");
+	objs.add("Flow");
+	objs.add("Generalization");
+	objs.add("Interface");
+	objs.add("Method");
+	if (nsuml) {
+	    objs.add("Namespace");
+	}
+	objs.add("Node");
+	objs.add("Operation");
+	objs.add("Parameter");
+	objs.add("Permission");
+	if (nsuml) {
+	    objs.add("Relationship");
+	}
+	objs.add("TemplateParameter");
+	objs.add("Usage");
+	
+	CheckUMLModelHelper.createAndRelease(
+	    Model.getCoreFactory(),
+	    // +1 in the size of the array because we also test the null value
+	    (String[]) objs.toArray(new String[objs.size() + 1]));
+    
+	/*if (NSUML) {
+		objs = new String[] {
 	    // "Abstraction",
 	    // "Association",
 	    // "AssociationClass",
@@ -128,10 +189,9 @@ public class TestCoreFactory extends TestCase {
 
 	    null,
 	};
-
-	CheckUMLModelHelper.createAndRelease(
-					     Model.getCoreFactory(),
-					     objs);
+	} else {
+		
+	}*/
     }
 
     /**
@@ -279,7 +339,8 @@ public class TestCoreFactory extends TestCase {
 	assertTrue("Constraint is not set",
 	        !Model.getFacade().getConstraints(elem).isEmpty());
 	Model.getCoreHelper().setNamespace(elem,
-	        Model.getCoreFactory().createNamespace());
+	//see issue #3407 for the use of a UmlPackage instead of a Namespace
+	        Model.getModelManagementFactory().createPackage());
 	con = Model.getCoreFactory().buildConstraint(elem);
 	assertNotNull("Namespace is not set",
 	        Model.getFacade().getNamespace(con));

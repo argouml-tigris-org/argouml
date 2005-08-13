@@ -1031,16 +1031,20 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
                 + " or sender: " + sender);
     }
 
-	/* (non-Javadoc)
-	 * @see org.argouml.model.CollaborationsHelper#removeInteraction(java.lang.Object, java.lang.Object)
-	 */
-	public void removeInteraction(Object collab, Object interaction) {
-		if (collab instanceof MCollaboration && interaction instanceof MInteraction) {
-			((MCollaboration)collab).getInteractions().remove(interaction);
-		}
+    /**
+     * @see org.argouml.model.CollaborationsHelper#removeInteraction(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeInteraction(Object collab, Object interaction) {
+        if (collab instanceof MCollaboration 
+                && interaction instanceof MInteraction) {
+            ((MCollaboration) collab).removeInteraction(
+                    (MInteraction) interaction);
+            return;
+        }
         throw new IllegalArgumentException(
                 "collab: " + collab
                 + " or interaction: " + interaction);		
-	}
+    }
 }
 

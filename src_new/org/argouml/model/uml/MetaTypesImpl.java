@@ -35,6 +35,7 @@ import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
@@ -685,5 +686,17 @@ public final class MetaTypesImpl implements MetaTypes {
     public Object getVisibilityKind() {
         return MVisibilityKind.class;
     }
+
+	/**
+	 * Return null since NSUML is UML 1.3 only.
+	 * @see org.argouml.model.MetaTypes#getTagDefinition()
+	 */
+	public Object getTagDefinition() {
+		return null;
+	}
+	
+	public Object getInteraction() {
+		return MInteraction.class;
+	}
 }
 

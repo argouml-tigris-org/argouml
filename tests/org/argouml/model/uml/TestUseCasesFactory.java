@@ -96,9 +96,7 @@ public class TestUseCasesFactory extends TestCase {
             	.buildExtend(base, extension, point);
         assertTrue("extensionpoint not added to base",
 		   !Model.getFacade().getExtensionPoints(base).isEmpty());
-        //TODO: Check that extended use cases are getExtends2 (else use getExtendingUseCases)
-        assertTrue("extend not added to base", !Model.getUseCasesHelper().getExtendedUseCases(base).isEmpty());
-        //TODO: Check that this is ok to use getExtends, and not getExtends2
+        assertTrue("extend not added to base", !Model.getUseCasesHelper().getExtendingUseCases(base).isEmpty());
         assertTrue("extend not added to extension",
 		   !Model.getFacade().getExtends(extension).isEmpty());
         assertTrue("extend not added to correct extensionpoint",

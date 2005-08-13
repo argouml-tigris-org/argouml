@@ -25,9 +25,12 @@
 package org.argouml.model.uml;
 
 import java.lang.ref.WeakReference;
+import java.util.Collection;
+import java.util.Vector;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.CheckUMLModelHelper;
 import org.argouml.model.Model;
 
 /**
@@ -98,50 +101,68 @@ public class TestCoreFactory extends TestCase {
      * Test creation.
      */
     public void testCreates() {
-	// Do not test BehavioralFeature, Feature, PresentationElement,
-	//    StructuralFeature yet.
-	// NSUML does not have create method.
-	//
-	// Never test for ModelElement.
-	String[] objs = {
-	    "Abstraction",
-	    "Association",
-	    "AssociationClass",
-	    "AssociationEnd",
-	    "Attribute",
+    	// See issue #3407 for the elements not tested. These are the abstract meta classes,
+    	// which cannot be instantiated.
+    	// Ludo: I want to preserve the existing tests for NSUML, even if this is wrong regarding
+    	// the UML specs to instantiates abstract classes like RelationShip. So do a switch when needed.
 
-	    // "BehavioralFeature",
-	    "Binding",
-	    "Class",
-	    "Classifier",
-	    "Comment",
-	    "Component",
-	    "Constraint",
-	    "DataType",
-	    "Dependency",
+    	//Here we determine the UML version by looking at the model
+    	//implementation in use. This is the right test in this case
+    	//because we can imagine that a model implementation for UML 1.3
+    	//other than NSUML (like the UML 1.3 metamodel of the OMG [01-12-02.xml])
+    	//doesn't allow to instantiate the Namespace and others metaclasses.
+    	String nsumlImpl = "org.argouml.model.uml.NSUMLModelImplementation";
+    	boolean NSUML = nsumlImpl.equals(System.getProperty(
+                    "argouml.model.implementation",nsumlImpl));
+    	
+	Collection objs = new Vector();
+	
+	//The abstract metaclasses in UML 1.3 include Element, ModelElement, Feature,
+    //	Namespace, GeneralizableElement, Classifier, StructuralFeature,
+    //	BehavioralFeature, Relationship, PresentationElement, Action, StateVertex, and
+    	//Event.
+    //	UML 1.4 changes Instance and State to be abstract also.
 
-	    // "Element",
-	    "ElementResidence",
+	objs.add("Abstraction");
+	//Association are abstract metaclass but we return an UmlAssociation 
+	//from the createAssociation method of the CoreFactory interface
+	objs.add("Association");
+	objs.add("AssociationClass");
+	objs.add("AssociationEnd");
+	objs.add("Attribute");
+	objs.add("Binding");
+	objs.add("Class");
+	if (NSUML) {
+		objs.add("Classifier");
+	}
+	objs.add("Comment");
+	objs.add("Component");
+	objs.add("Constraint");
+	objs.add("DataType");
+	objs.add("Dependency");
+	objs.add("ElementResidence");
+	objs.add("Flow");
+	objs.add("Generalization");
+	objs.add("Interface");
+	objs.add("Method");
+	if (NSUML) {
+		objs.add("Namespace");
+	}
+	objs.add("Node");
+	objs.add("Operation");
+	objs.add("Parameter"); 
+	objs.add("Permission");
+	if (NSUML) {
+		objs.add("Relationship");
+	}
+	objs.add("TemplateParameter");
+	objs.add("Usage");
+    
+	CheckUMLModelHelper.createAndRelease(
+		     Model.getCoreFactory(),
+		     // +1 in the size of the array because we also test the null value
+		     (String[]) objs.toArray(new String[objs.size()+1]));
 
-	    // "Feature",
-	    "Flow", "Generalization", "Interface", "Method",
-
-	    // "ModelElement",
-	    "Namespace", "Node", "Operation", "Parameter", "Permission",
-
-	    // "PresentationElement",
-	    "Relationship",
-
-	    // "StructuralFeature",
-	    "TemplateParameter", "Usage",
-
-	    null,
-	};
-
-	CheckNSUMLModelHelper.createAndRelease(
-					     this,
-					     Model.getCoreFactory(),
-					     objs);
     }
 
     /**
@@ -158,8 +179,7 @@ public class TestCoreFactory extends TestCase {
      * Test if deleting a classifier does also delete its association.
      */
     public void testDeleteClassifier1() {
-        Model model = 
-            (Model) Model.getModelManagementFactory().createModel();
+        Object model =  Model.getModelManagementFactory().createModel();
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object class2 = Model.getCoreFactory().buildClass(model);
         Object assoc = Model.getCoreFactory().buildAssociation(class1, class2);
@@ -177,8 +197,8 @@ public class TestCoreFactory extends TestCase {
      * Test if deleting a classifier does also delete its association.
      */
     public void testDeleteClassifierAssociation() {
-        Model model =
-            (Model) Model.getModelManagementFactory().createModel();
+        Object model =
+             Model.getModelManagementFactory().createModel();
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object class2 = Model.getCoreFactory().buildClass(model);
         Object assoc = Model.getCoreFactory().buildAssociation(class1, class2);
@@ -197,8 +217,8 @@ public class TestCoreFactory extends TestCase {
      * Test if deleting a class also deletes its dependency.
      */
     public void testDeleteModelelementDependency() {
-        Model model =
-            (Model) Model.getModelManagementFactory().createModel();
+        Object model =
+             Model.getModelManagementFactory().createModel();
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object class2 = Model.getCoreFactory().buildClass(model);
         Object dep =
@@ -237,8 +257,8 @@ public class TestCoreFactory extends TestCase {
      * Test if deleting a class also deletes its dependency.
      */
     public void testDeleteModelelementDependencySupplier() {
-        Model model =
-            (Model) Model.getModelManagementFactory().createModel();
+        Object model =
+             Model.getModelManagementFactory().createModel();
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object class2 = Model.getCoreFactory().buildClass(model);
         Object dep = Model.getCoreFactory().buildDependency(class1, class2);
@@ -259,8 +279,8 @@ public class TestCoreFactory extends TestCase {
      * Test if both associations were deleted in the process.
      */
     public void testDeleteModelelementClassSelfAssociations() {
-        Model model = 
-            (Model) Model.getModelManagementFactory().createModel();
+        Object model = 
+             Model.getModelManagementFactory().createModel();
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object assoc1 = Model.getCoreFactory().buildAssociation(class1, class1);
         Object assoc2 = Model.getCoreFactory().buildAssociation(class1, class1);
@@ -294,7 +314,8 @@ public class TestCoreFactory extends TestCase {
 		   "Constrained element is not set",
 		   !Model.getFacade().getConstrainedElements(con).isEmpty());
 	assertTrue("Constraint is not set", !Model.getFacade().getConstraints(elem).isEmpty());
-	Model.getCoreHelper().setNamespace(elem,Model.getCoreFactory().createNamespace());
+	//see issue #3407
+	Model.getCoreHelper().setNamespace(elem,Model.getModelManagementFactory().createPackage());
 	con = Model.getCoreFactory().buildConstraint(elem);
 	assertNotNull("Namespace is not set", Model.getFacade().getNamespace(con));
     }

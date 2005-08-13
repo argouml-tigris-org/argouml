@@ -50,14 +50,15 @@ import org.xml.sax.SAXException;
  * Notice: this version has been rewrotten to take into account issue #3407:
  * The OMG specs state that:
  * "Abstract constructs are not instantiable and are commonly used to reify key
- * constructs, share structure, and organize the UML metamodel. Concrete metamodel
- * constructs are instantiable and reflect the modeling constructs used by object
+ * constructs, share structure, and organize the UML metamodel. 
+ * Concrete metamodel constructs are instantiable and reflect 
+ * the modeling constructs used by object
  * modelers (cf. metamodelers). "
  * (see 4.5.1 - Core : overview, in the ISO specs [05-04-01.pdf]).
  * The abstract metaclasses in UML 1.3 include Element, ModelElement, Feature,
  * Namespace, GeneralizableElement, Classifier, StructuralFeature,
- * BehavioralFeature, Relationship, PresentationElement, Action, StateVertex, and
- * Event.
+ * BehavioralFeature, Relationship, PresentationElement, Action, StateVertex, 
+ * and Event.
  * UML 1.4 changes Instance and State to be abstract also.
  */
 public class TestAgainstUmlModel extends TestCase {
@@ -210,7 +211,7 @@ public class TestAgainstUmlModel extends TestCase {
         String nsumlImpl = "org.argouml.model.uml.NSUMLModelImplementation";
         
         UML_14 = !nsumlImpl.equals(System.getProperty(
-                "argouml.model.implementation",nsumlImpl));    	
+                "argouml.model.implementation", nsumlImpl));    	
     }
     
     static {
@@ -265,15 +266,15 @@ public class TestAgainstUmlModel extends TestCase {
         refs.put("Flow",                  Model.getCoreFactory());
         refs.put("ElementResidence",      Model.getCoreFactory());
         refs.put("TemplateParameter",     Model.getCoreFactory());
-        refs.put("Stereotype",
-		 Model.getExtensionMechanismsFactory());
+        refs.put("Stereotype", 
+        		new CannotTestFactoryMethod());
         refs.put("TaggedValue",
 		 Model.getExtensionMechanismsFactory());
         //see issue #3407
         if (UML_14) {
-        	refs.put("Instance",              new CannotTestClassIsAbstract());
+            refs.put("Instance",          new CannotTestClassIsAbstract());
         } else {
-        	refs.put("Instance",              Model.getCommonBehaviorFactory());
+            refs.put("Instance",          Model.getCommonBehaviorFactory());
         }
         refs.put("Signal",                Model.getCommonBehaviorFactory());
         refs.put("Action",                new CannotTestClassIsAbstract());
@@ -316,10 +317,10 @@ public class TestAgainstUmlModel extends TestCase {
         refs.put("Event",                 new CannotTestClassIsAbstract());
         refs.put("StateVertex",           new CannotTestClassIsAbstract());
         if (UML_14) {
-    		refs.put("State",             	new CannotTestClassIsAbstract());
-        	} else {
-        	refs.put("State",             	Model.getStateMachinesFactory());
-        	}        
+            refs.put("State",             new CannotTestClassIsAbstract());
+        } else {
+            refs.put("State",             Model.getStateMachinesFactory());
+        }        
         refs.put("TimeEvent",             Model.getStateMachinesFactory());
         refs.put("CallEvent",             Model.getStateMachinesFactory());
         refs.put("SignalEvent",           Model.getStateMachinesFactory());

@@ -54,17 +54,17 @@ public class TestParserDisplay extends TestCase {
     private static final String ATTR03 = "-name : void";
     private static final String ATTR04 = "#name [1..1] : int {a=b}";
     private static final String ATTR05 =
-    "public name {a=b, c = d } : [1..*] int = 0";
+        "public name {a=b, c = d } : [1..*] int = 0";
     private static final String ATTR06 =
-    "private name {a=b, c = d } [*..*] : int = 15 {frozen}";
+        "private name {a=b, c = d } [*..*] : int = 15 {frozen}";
     private static final String ATTR07 = "+name : String = \'val[15] \'";
     private static final String ATTR08 =
-    "  + name : String = \"a <<string>>\"";
+        "  + name : String = \"a <<string>>\"";
     private static final String ATTR09 = "+name : String = (a * (b+c) - d)";
     private static final String ATTR10 =
-    "+name << attrstereo1 >> : String = 2 * (b+c) - 10";
+        "+name << attrstereo1 >> : String = 2 * (b+c) - 10";
     private static final String ATTR11 =
-    "<<attrstereo2>> +name : String = a[15]";
+        "<<attrstereo2>> +name : String = a[15]";
     private static final String ATTR12 = "+ name : String = a << 5";
 
     private static final String NATTR01 = "too many string in an attribute";
@@ -83,12 +83,12 @@ public class TestParserDisplay extends TestCase {
 
     private static final String OPER01 = "name()";
     private static final String OPER02 =
-    "<<opstereo1>> -name(in foo: float = 0) "
-    + "{root, abstract = false} : int";
+        "<<opstereo1>> -name(in foo: float = 0) "
+        + "{root, abstract = false} : int";
     private static final String OPER03 =
-    "<< opstereo2 >> protected name2("
-    + "out foo: double = 0., inout bar = \"\"some\"\":String) "
-    + "{leaf,query} : String";
+        "<< opstereo2 >> protected name2("
+        + "out foo: double = 0., inout bar = \"\"some\"\":String) "
+        + "{leaf,query} : String";
     private static final String OPER04 = "<<>> # name2()";
 
     private static final String NOPER01 = "name(";
@@ -246,7 +246,7 @@ public class TestParserDisplay extends TestCase {
      * @throws ParseException if the parsing fails.
      */
     public void testAttributeName()
-    throws ParseException {
+        throws ParseException {
         Object attr;
 
         Object ns = 
@@ -424,17 +424,20 @@ public class TestParserDisplay extends TestCase {
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
-        checkMultiplicity(attr, ATTR04,  Model.getDataTypesFactory().createMultiplicity("1..1"));
+        checkMultiplicity(attr, ATTR04,  
+                Model.getDataTypesFactory().createMultiplicity("1..1"));
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
-        checkMultiplicity(attr, ATTR05,  Model.getDataTypesFactory().createMultiplicity("1..*"));
+        checkMultiplicity(attr, ATTR05,  
+                Model.getDataTypesFactory().createMultiplicity("1..*"));
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
-        checkMultiplicity(attr, ATTR06,  Model.getDataTypesFactory().createMultiplicity("*..*"));
+        checkMultiplicity(attr, ATTR06,  
+                Model.getDataTypesFactory().createMultiplicity("*..*"));
     }
 
     /**
@@ -913,7 +916,8 @@ public class TestParserDisplay extends TestCase {
                 assertTrue(
                        text + " gave wrong return",
                        (type == null && pType == null)
-                       || (type != null && type.equals(Model.getFacade().getName(pType))));
+                       || (type != null 
+                           && type.equals(Model.getFacade().getName(pType))));
             }
             assertTrue(text + " gave extra return value", !it.hasNext());
         } else {
@@ -923,7 +927,7 @@ public class TestParserDisplay extends TestCase {
 
 
     private void checkParameters(Object op, String text, String[] params)
-    throws ParseException {
+        throws ParseException {
         int i;
 
         ParserDisplay.SINGLETON.parseOperation(text, op);
@@ -935,11 +939,13 @@ public class TestParserDisplay extends TestCase {
         for (i = 0; i + 3 < params.length; i += 4) {
             Object p;
             do {
-            assertTrue(text + " lacks parameters", it.hasNext());
-            p =  it.next();
-            } while (Model.getFacade().getKind(p).equals(Model.getDirectionKind().getReturnParameter()));
+                assertTrue(text + " lacks parameters", it.hasNext());
+                p =  it.next();
+            } while (Model.getFacade().getKind(p).equals(
+                    Model.getDirectionKind().getReturnParameter()));
             assertTrue(text + "gave wrong inout in parameter " + (i / 4),
-                   params[i].equals(Model.getFacade().getName(Model.getFacade().getKind(p))));
+                   params[i].equals(Model.getFacade()
+                           .getName(Model.getFacade().getKind(p))));
             assertTrue(text + "gave wrong name in parameter " + (i / 4),
                    params[i + 1].equals(Model.getFacade().getName(p)));
             Object pType = Model.getFacade().getType(p);
@@ -957,8 +963,9 @@ public class TestParserDisplay extends TestCase {
         while (it.hasNext()) {
             Object p =  it.next();
             assertTrue(
-                   text + " gave extra parameters",
-                   Model.getFacade().getKind(p).equals(Model.getDirectionKind().getReturnParameter()));
+                text + " gave extra parameters",
+                Model.getFacade().getKind(p).equals(
+                       Model.getDirectionKind().getReturnParameter()));
         }
     }
 
@@ -1000,16 +1007,17 @@ public class TestParserDisplay extends TestCase {
                 if (props[i + 1] == null) {
                     assertTrue(
                             "TaggedValue " + props[i] + " exists!",
-                            Model.getFacade().getTaggedValue(feature,props[i])
+                            Model.getFacade().getTaggedValue(feature, props[i])
                             == null);
                 } else {
+                    Object tv = 
+                        Model.getFacade().getTaggedValue(feature, props[i]);
+                    Object tvValue = Model.getFacade().getValueOfTag(tv);
+                    
                     assertTrue(
                             "TaggedValue " + props[i] + " wrong!",
-                            props[i + 1]
-                                  .equals(
-                                		  Model.getFacade().getTaggedValue(feature,props[i])
-                                  )
-                            );
+                            props[i + 1].equals(tvValue)
+                    );
                 }
             }
         } else if (Model.getFacade().isAOperation(feature)) {
@@ -1020,14 +1028,15 @@ public class TestParserDisplay extends TestCase {
                 if (props[i + 1] == null) {
                     assertTrue(
                             "TaggedValue " + props[i] + " exists!",
-                            Model.getFacade().getTaggedValue(feature,props[i])
+                            Model.getFacade().getTaggedValue(feature, props[i])
                             == null);
                 } else {
+                    Object tv = 
+                        Model.getFacade().getTaggedValue(feature, props[i]);
+                    Object tvValue = Model.getFacade().getValueOfTag(tv);
                     assertTrue(
                             "TaggedValue " + props[i] + " wrong!",
-                            props[i + 1]
-                                  .equals(Model.getFacade().getTaggedValue(
-                                		  feature,props[i])));
+                            props[i + 1].equals(tvValue));
                 }
             }
         }
@@ -1037,7 +1046,7 @@ public class TestParserDisplay extends TestCase {
                    Object attr,
                    String text,
                    Object mult)
-    throws ParseException {
+        throws ParseException {
 
         ParserDisplay.SINGLETON.parseAttribute(text, attr);
         if (mult == null) {
@@ -1106,15 +1115,15 @@ public class TestParserDisplay extends TestCase {
                             Model.getFacade().getInitialValue(attr))));
         } else {
             assertTrue(
-               text
-               + " gave wrong visibility: "
-               + (Model.getFacade().getInitialValue(attr) == null
+                text
+                + " gave wrong visibility: "
+                + (Model.getFacade().getInitialValue(attr) == null
                   ? "(null)"
                   : Model.getFacade().getBody(
-                          Model.getFacade().getInitialValue(attr))),
-               Model.getFacade().getInitialValue(attr) != null
-               && val.equals(Model.getFacade().getBody(
-                       Model.getFacade().getInitialValue(attr))));
+                      Model.getFacade().getInitialValue(attr))),
+                      Model.getFacade().getInitialValue(attr) != null
+                          && val.equals(Model.getFacade().getBody(
+                              Model.getFacade().getInitialValue(attr))));
         }
     }
 

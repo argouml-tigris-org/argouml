@@ -115,7 +115,8 @@ public class TestModelFacade2 extends TestCase {
      */
     public void testGetStereotypes() {
         Object cls = Model.getCoreFactory().buildClass();
-        
+        Model.getCoreHelper().setNamespace(cls,
+        		Model.getModelManagementFactory().createPackage());
         Collection coll1 = Model.getFacade().getStereotypes(cls);
         assertEquals(0, coll1.size());
         

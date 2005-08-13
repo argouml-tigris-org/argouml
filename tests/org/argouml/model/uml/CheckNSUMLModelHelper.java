@@ -28,6 +28,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
@@ -66,7 +67,7 @@ public final class CheckNSUMLModelHelper {
 
 	// Call methods that exists for all objects and that always return
 	// something meaningfull.
-	TestCase.assertTrue("toString() corrupt in " + c,
+	Assert.assertTrue("toString() corrupt in " + c,
 		      	    mo.toString() != null);
 
 	Model.getUmlFactory().delete(mo);
@@ -74,7 +75,7 @@ public final class CheckNSUMLModelHelper {
 	WeakReference wo = new WeakReference(mo);
 	mo = null;
 	System.gc();
-	TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);
+        Assert.assertTrue("Could not reclaim " + c, wo.get() == null);
     }
 
     /**
@@ -95,12 +96,12 @@ public final class CheckNSUMLModelHelper {
 
 	// Call methods that exists for all objects and that always return
 	// something meaningfull.
-	TestCase.assertTrue("toString() corrupt in " + c,
+        Assert.assertTrue("toString() corrupt in " + c,
 		      	    mo.toString() != null);
-	TestCase.assertTrue("getUMLClassName() corrupt in " + c,
+        Assert.assertTrue("getUMLClassName() corrupt in " + c,
 		      	    Model.getFacade().getUMLClassName(mo) != null);
 
-	TestCase.assertTrue(
+        Assert.assertTrue(
             "getUMLClassName() different from expected in " + c,
 	    name.equals(Model.getFacade().getUMLClassName(mo)));
 
@@ -110,7 +111,7 @@ public final class CheckNSUMLModelHelper {
 
 	mo = null;
 	System.gc();
-	TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);
+        Assert.assertTrue("Could not reclaim " + c, wo.get() == null);
     }
 
     /**
@@ -143,7 +144,7 @@ public final class CheckNSUMLModelHelper {
 		            "create" + names[i],
 		            classes);
 	    } catch (NoSuchMethodException e) {
-		TestCase.fail("Method create" + names[i]
+                Assert.fail("Method create" + names[i]
 			      + " does not exist in " + f);
 		return;
 	    }
@@ -158,11 +159,11 @@ public final class CheckNSUMLModelHelper {
 		    deleteAndRelease(tc, m.invoke(f, args));
 		}
 	    } catch (IllegalAccessException e) {
-		TestCase.fail("Method create" + names[i]
+                Assert.fail("Method create" + names[i]
 			      + " in " + f + " cannot be called");
 		return;
 	    } catch (InvocationTargetException e) {
-		TestCase.fail("Method create" + names[i]
+                Assert.fail("Method create" + names[i]
 			      + " in " + f + " throws an exception.");
 		return;
 	    }
@@ -198,7 +199,7 @@ public final class CheckNSUMLModelHelper {
         try {
             methods = f.getClass().getDeclaredMethods();
         } catch (SecurityException se) {
-            TestCase.fail(
+            Assert.fail(
                     "SecurityException while retrieving all methods from "
                     + f.getClass().getName());
             return;
@@ -214,7 +215,7 @@ public final class CheckNSUMLModelHelper {
                 }
             }
             if (testFailed) {
-                TestCase.fail("Method " + methodName + " not found in "
+                Assert.fail("Method " + methodName + " not found in "
                         + f.getClass().getName());
             }
         }
@@ -237,7 +238,7 @@ public final class CheckNSUMLModelHelper {
                         	.getMethod("create" + names[i], new Class[] {});
                     Object base = m.invoke(f, new Object[] {});
                     if (Model.getFacade().isAModelElement(base)) {
-                        TestCase.assertTrue(
+                        Assert.assertTrue(
                             "not a valid metaModelName " + names[i],
                             Model.getExtensionMechanismsHelper()
                                 .getMetaModelName(base)
@@ -247,7 +248,7 @@ public final class CheckNSUMLModelHelper {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            TestCase.fail(
+            Assert.fail(
                     "Exception during test metaModelnameCorrect. Message: "
                     + ex.getMessage());
         }
@@ -266,7 +267,7 @@ public final class CheckNSUMLModelHelper {
             Object f,
             String[] names) {
         try {
-            Object ns = Model.getCoreFactory().createNamespace();
+            Object ns = Model.getModelManagementFactory().createPackage();
             Object clazz = Model.getCoreFactory().buildClass(ns);
             Object stereo1 = Model.getExtensionMechanismsFactory()
                 		.buildStereotype(clazz, "test1", ns);
@@ -280,24 +281,25 @@ public final class CheckNSUMLModelHelper {
                         Object stereo2 =
                             	Model.getExtensionMechanismsFactory()
                             		.buildStereotype(base, "test2", ns);
-                        TestCase.assertTrue(
+                        Assert.assertTrue(
                             "Unexpected invalid stereotype",
                             Model.getExtensionMechanismsHelper()
                                 .isValidStereoType(base, stereo2));
                         if (!(Model.getFacade().isAClass(base))) {
-                            TestCase.assertTrue(
+                            Assert.assertTrue(
                                 "Unexpected invalid stereotype",
                                 !Model.getExtensionMechanismsHelper()
                                     .isValidStereoType(base, stereo1));
                         } else {
                             Object inter =
                                 Model.getCoreFactory().createInterface();
-                            Object stereo3 = Model.getExtensionMechanismsFactory()
+                            Object stereo3 = 
+                                Model.getExtensionMechanismsFactory()
                                 		.buildStereotype(
                                 		        inter,
                                 		        "test3",
                                 		        ns);
-                            TestCase.assertTrue(
+                            Assert.assertTrue(
                                 "Unexpected invalid stereotype",
                                 !Model.getExtensionMechanismsHelper()
                                     .isValidStereoType(base, stereo3));
@@ -307,7 +309,7 @@ public final class CheckNSUMLModelHelper {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            TestCase.fail(
+            Assert.fail(
                     "Exception during test metaModelnameCorrect. Message: "
                     + ex.getMessage());
         }
