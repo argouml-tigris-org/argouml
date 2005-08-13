@@ -31,6 +31,8 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.MouseEvent;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ArgoDiagram;
 import org.tigris.gef.base.Command;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -38,6 +40,7 @@ import org.tigris.gef.base.ModePlace;
 import org.tigris.gef.graph.GraphFactory;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
 
 /**
 * ActionAddExistingNode enables pasting of an existing node into a Diagram.
@@ -144,6 +147,15 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
                     0,
                     false);
             placeMode.mouseReleased(me);
+
+            /* Set the size of the object's fig to minimum. 
+             * See issue 3410. 
+             * This binds the use of this Command to the 
+             * current diagram of the current project! */
+            ArgoDiagram diagram = ProjectManager.getManager()
+                .getCurrentProject().getActiveDiagram();
+            Fig aFig = diagram.presentationFor(object);
+            aFig.setSize(aFig.getPreferredSize());
         }
     }
 
