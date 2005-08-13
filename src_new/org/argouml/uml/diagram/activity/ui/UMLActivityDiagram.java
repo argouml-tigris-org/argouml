@@ -84,7 +84,7 @@ public class UMLActivityDiagram extends UMLDiagram {
         }
 
         if (namespace != null && Model.getFacade().getName(namespace) != null) {
-            if (Model.getFacade().getName(namespace).trim() != "") {
+            if (!Model.getFacade().getName(namespace).trim().equals("")) {
                 String name =
                     Model.getFacade().getName(namespace)
                     + " activity "

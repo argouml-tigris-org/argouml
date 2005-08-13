@@ -112,7 +112,7 @@ public class UMLStateDiagram extends UMLDiagram {
         }
 
         if (namespace != null && Model.getFacade().getName(namespace) != null) {
-            if (Model.getFacade().getName(namespace).trim() != "") {
+            if (!Model.getFacade().getName(namespace).trim().equals("")) {
                 String name = null;
                 String diagramName = Model.getFacade().getName(namespace);
                 int number =
