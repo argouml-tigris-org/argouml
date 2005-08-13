@@ -99,7 +99,7 @@ public class DnDExplorerTree
     implements DragGestureListener, 
     DragSourceListener,
     Autoscroll
-    {
+{
 
     private static final Logger LOG = 
     	Logger.getLogger(DnDExplorerTree.class);
@@ -111,14 +111,14 @@ public class DnDExplorerTree
      * Where, in the drag image, the mouse was clicked.
      */
     private Point	clickOffset = new Point();
-	/**
-	 * The path being dragged.
-	 */
-	private TreePath		sourcePath; 
-	/**
-	 * The 'drag image'.
-	 */
-	private BufferedImage	ghostImage; 
+    /**
+     * The path being dragged.
+     */
+    private TreePath		sourcePath; 
+    /**
+     * The 'drag image'.
+     */
+    private BufferedImage	ghostImage; 
 
 
     /**
@@ -198,20 +198,20 @@ public class DnDExplorerTree
          * for the path being dragged.*/
         JLabel lbl = 
             (JLabel) getCellRenderer().getTreeCellRendererComponent(
-                    this, 											// tree
-                    path.getLastPathComponent(),// value
+                    this,                        // tree
+                    path.getLastPathComponent(), // value
                     false,	// isSelected	(dont want a colored background)
-                    isExpanded(path), 		// isExpanded
+                    isExpanded(path), 		 // isExpanded
                     getModel().isLeaf(path.getLastPathComponent()), // isLeaf
                     0, 		// row	(not important for rendering)
                     false	// hasFocus (dont want a focus rectangle)
             );
         /* The layout manager would normally do this: */
-        lbl.setSize((int)raPath.getWidth(), (int)raPath.getHeight());
+        lbl.setSize((int) raPath.getWidth(), (int) raPath.getHeight());
         
         // Get a buffered image of the selection for dragging a ghost image
         ghostImage = new BufferedImage(
-                (int)raPath.getWidth(), (int)raPath.getHeight(), 
+                (int) raPath.getWidth(), (int) raPath.getHeight(), 
                 BufferedImage.TYPE_INT_ARGB_PRE);
         Graphics2D g2 = ghostImage.createGraphics();
         
@@ -225,14 +225,14 @@ public class DnDExplorerTree
          * (but not under the icon if any). 
          */
         Icon icon = lbl.getIcon();
-        int nStartOfText = (icon == null) ? 0 : 
-            icon.getIconWidth()+lbl.getIconTextGap();
+        int nStartOfText = (icon == null) ? 0 
+                : icon.getIconWidth() + lbl.getIconTextGap();
         /* Make the gradient ghostlike: */
         g2.setComposite(AlphaComposite.getInstance(
                 AlphaComposite.DST_OVER, 0.5f));
         g2.setPaint(new GradientPaint(nStartOfText,	0, 
                 SystemColor.controlShadow, 
-                getWidth(),	0, new Color(255,255,255,0)));
+                getWidth(), 0, new Color(255, 255, 255, 0)));
         g2.fillRect(nStartOfText, 0, getWidth(), ghostImage.getHeight());
         
         g2.dispose();
@@ -244,7 +244,7 @@ public class DnDExplorerTree
         /* We pass our drag image just in case 
          * it IS supported by the platform. */
         dragGestureEvent.startDrag(null, ghostImage, 
-                new Point(5,5), tf, this);
+                new Point(5, 5), tf, this);
     }
 
     private boolean isValidDrag(TreePath destinationPath, 
@@ -257,7 +257,7 @@ public class DnDExplorerTree
             LOG.debug("No valid Drag: move to descendent.");
             return false;
         }
-        if (! tf.isDataFlavorSupported(
+        if (!tf.isDataFlavorSupported(
                 TransferableModelElements.UML_COLLECTION_FLAVOR)) {
             LOG.debug("No valid Drag: flavor not supported.");
             return false;
@@ -296,11 +296,11 @@ public class DnDExplorerTree
                     return true;
                 }
                 if (me instanceof UMLDiagram) {
-                	UMLDiagram d = (UMLDiagram) me;
-                	if(d.isRelocationAllowed(dest)) {
-                		LOG.debug("Valid Drag: diagram " + dest);
-                		return true;
-                	}
+                    UMLDiagram d = (UMLDiagram) me;
+                    if (d.isRelocationAllowed(dest)) {
+                        LOG.debug("Valid Drag: diagram " + dest);
+                        return true;
+                    }
                 }
             }
         } catch (UnsupportedFlavorException e) {
@@ -317,8 +317,8 @@ public class DnDExplorerTree
      */
     public void dragDropEnd(
     		DragSourceDropEvent dragSourceDropEvent) { 
-    			sourcePath = null;
-    			ghostImage = null;
+        sourcePath = null;
+        ghostImage = null;
     }
 
     /**
@@ -395,126 +395,126 @@ public class DnDExplorerTree
 //  The relevant chapter of which can be found at:
 // 		http://www.oreilly.com/catalog/jswing/chapter/dnd.beta.pdf
  	
- 	private static final int AUTOSCROLL_MARGIN = 12;
-
- 	/**
- 	 * Ok, we've been told to scroll because the mouse cursor is in our
- 	 * scroll zone.
- 	 * @see java.awt.dnd.Autoscroll#autoscroll(java.awt.Point)
- 	 */
- 	public void autoscroll(Point pt) 
- 	{
- 		// Figure out which row we're on.
- 		int nRow = getRowForLocation(pt.x, pt.y);
- 		
- 		// If we are not on a row then ignore this autoscroll request
- 		if (nRow < 0)
- 			return;
-
- 		Rectangle raOuter = getBounds();
- 		// Now decide if the row is at the top of the screen or at the
- 		// bottom. We do this to make the previous row (or the next
- 		// row) visible as appropriate. If were at the absolute top or
- 		// bottom, just return the first or last row respectively.
- 		
- 		// Is row at top of screen?
- 		nRow =	(pt.y + raOuter.y <= AUTOSCROLL_MARGIN)  
- 				 ?	
- 				// Yes, scroll up one row
- 				(nRow <= 0 ? 0 : nRow - 1) 
- 				 :
-                // No, scroll down one row
- 				(nRow < getRowCount() - 1 ? nRow + 1 : nRow);	
-
- 		scrollRowToVisible(nRow);
- 	}
-
- 	/**
- 	 * Calculate the insets for the *JTREE*, not the viewport the tree is in. 
- 	 * This makes it a bit messy.
- 	 * 
- 	 * @see java.awt.dnd.Autoscroll#getAutoscrollInsets()
- 	 */
- 	public Insets getAutoscrollInsets() 
- 	{
- 		Rectangle raOuter = getBounds();
- 		Rectangle raInner = getParent().getBounds();
- 		return new Insets(
- 			raInner.y - raOuter.y + AUTOSCROLL_MARGIN, 
- 			raInner.x - raOuter.x + AUTOSCROLL_MARGIN,
- 			raOuter.height - raInner.height 
- 				- raInner.y + raOuter.y + AUTOSCROLL_MARGIN,
- 			raOuter.width - raInner.width 
- 				- raInner.x + raOuter.x + AUTOSCROLL_MARGIN);
- 	}
-
+    private static final int AUTOSCROLL_MARGIN = 12;
+    
+    /**
+     * Ok, we've been told to scroll because the mouse cursor is in our
+     * scroll zone.
+     * @see java.awt.dnd.Autoscroll#autoscroll(java.awt.Point)
+     */
+    public void autoscroll(Point pt) 
+    {
+        // Figure out which row we're on.
+        int nRow = getRowForLocation(pt.x, pt.y);
+        
+        // If we are not on a row then ignore this autoscroll request
+        if (nRow < 0)
+            return;
+        
+        Rectangle raOuter = getBounds();
+        // Now decide if the row is at the top of the screen or at the
+        // bottom. We do this to make the previous row (or the next
+        // row) visible as appropriate. If were at the absolute top or
+        // bottom, just return the first or last row respectively.
+        
+        // Is row at top of screen?
+        nRow =	(pt.y + raOuter.y <= AUTOSCROLL_MARGIN)  
+                ?	
+                // Yes, scroll up one row
+                (nRow <= 0 ? 0 : nRow - 1) 
+                :
+                    // No, scroll down one row
+                    (nRow < getRowCount() - 1 ? nRow + 1 : nRow);	
+                
+        scrollRowToVisible(nRow);
+    }
+    
+    /**
+     * Calculate the insets for the *JTREE*, not the viewport the tree is in. 
+     * This makes it a bit messy.
+     * 
+     * @see java.awt.dnd.Autoscroll#getAutoscrollInsets()
+     */
+    public Insets getAutoscrollInsets() 
+    {
+        Rectangle raOuter = getBounds();
+        Rectangle raInner = getParent().getBounds();
+        return new Insets(
+                raInner.y - raOuter.y + AUTOSCROLL_MARGIN, 
+                raInner.x - raOuter.x + AUTOSCROLL_MARGIN,
+                raOuter.height - raInner.height 
+                - raInner.y + raOuter.y + AUTOSCROLL_MARGIN,
+                raOuter.width - raInner.width 
+                - raInner.x + raOuter.x + AUTOSCROLL_MARGIN);
+    }
+    
     /**
      * The DropTargetListener. 
      * Handles drop target events including the drop itself.
      */
     class ArgoDropTargetListener implements DropTargetListener {
-
-		private TreePath	 lastPath = null;
-		private Rectangle2D cueLine = new Rectangle2D.Float();
-		private Rectangle2D ghostRectangle = new Rectangle2D.Float();
-		private Color cueLineColor;
-		private Point lastMouseLocation = new Point();
-		private Timer hoverTimer;
-    	
-		/**
-		 * The constructor.
-		 */
-		public ArgoDropTargetListener() {
-			cueLineColor = new Color(
-					SystemColor.controlShadow.getRed(),
-					SystemColor.controlShadow.getGreen(),
-					SystemColor.controlShadow.getBlue(),
-					64
-			);
-			
-			/* Set up a hover timer, so that a node will be 
-			 * automatically expanded or collapsed 
-			 * if the user lingers on it for more than a short time. */
-			hoverTimer = new Timer(1000, new ActionListener()
-					{
-				public void actionPerformed(ActionEvent e)
-				{
-					if (getPathForRow(0).equals/*isRootPath*/(lastPath))
-						return;
-					if (isExpanded(lastPath))
-						collapsePath(lastPath);
-					else
-						expandPath(lastPath);
-				}
-					});
-			hoverTimer.setRepeats(false);	// Set timer to one-shot mode
-		}
-		
+        
+        private TreePath	 lastPath = null;
+        private Rectangle2D cueLine = new Rectangle2D.Float();
+        private Rectangle2D ghostRectangle = new Rectangle2D.Float();
+        private Color cueLineColor;
+        private Point lastMouseLocation = new Point();
+        private Timer hoverTimer;
+        
+        /**
+         * The constructor.
+         */
+        public ArgoDropTargetListener() {
+            cueLineColor = new Color(
+                    SystemColor.controlShadow.getRed(),
+                    SystemColor.controlShadow.getGreen(),
+                    SystemColor.controlShadow.getBlue(),
+                    64
+                );
+            
+            /* Set up a hover timer, so that a node will be 
+             * automatically expanded or collapsed 
+             * if the user lingers on it for more than a short time. */
+            hoverTimer = new Timer(1000, new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    if (getPathForRow(0).equals/*isRootPath*/(lastPath))
+                        return;
+                    if (isExpanded(lastPath))
+                        collapsePath(lastPath);
+                    else
+                        expandPath(lastPath);
+                }
+            });
+            hoverTimer.setRepeats(false);	// Set timer to one-shot mode
+        }
+        
         /**
          * @see java.awt.dnd.DropTargetListener#dragEnter(java.awt.dnd.DropTargetDragEvent)
          */
         public void dragEnter(
-        		DropTargetDragEvent dropTargetDragEvent) {
+                DropTargetDragEvent dropTargetDragEvent) {
             LOG.debug("dragEnter");
-			if (!isDragAcceptable(dropTargetDragEvent)) {
-				dropTargetDragEvent.rejectDrag();
-			} else {
-				dropTargetDragEvent.acceptDrag(
-						dropTargetDragEvent.getDropAction());
-			}
+            if (!isDragAcceptable(dropTargetDragEvent)) {
+                dropTargetDragEvent.rejectDrag();
+            } else {
+                dropTargetDragEvent.acceptDrag(
+                        dropTargetDragEvent.getDropAction());
+            }
         }
-
+        
         /**
          * @see java.awt.dnd.DropTargetListener#dragExit(java.awt.dnd.DropTargetEvent)
          */
         public void dragExit(DropTargetEvent dropTargetEvent) {
             LOG.debug("dragExit");
-    		if (!DragSource.isDragImageSupported())
-    		{
-    			repaint(ghostRectangle.getBounds());				
-    		}
+            if (!DragSource.isDragImageSupported())
+            {
+                repaint(ghostRectangle.getBounds());				
+            }
         }
-
+        
         /** 
          * Called when a drag operation is ongoing, while the mouse pointer 
          * is still over the operable part of the drop site 
@@ -524,125 +524,125 @@ public class DnDExplorerTree
          */
         public void dragOver(DropTargetDragEvent dropTargetDragEvent) {
             // LOG.debug("dragOver"); //many many of these!
-        	Point pt = dropTargetDragEvent.getLocation();
-			if (pt.equals(lastMouseLocation)) {
-				return;
-			}
+            Point pt = dropTargetDragEvent.getLocation();
+            if (pt.equals(lastMouseLocation)) {
+                return;
+            }
             LOG.debug("dragOver");
-			
-			lastMouseLocation = pt;
-			
-			Graphics2D g2 = (Graphics2D) getGraphics();
-
-			/* The next condition becomes false when dragging in 
-			 * something from another application.*/
-			if (ghostImage != null) {
-				/* If a drag image is not supported by the platform, 
-				 * then draw my own drag image. */
-				if (!DragSource.isDragImageSupported()) {
-					/* Rub out the last ghost image and cue line: */
-					paintImmediately(ghostRectangle.getBounds());
-					/* And remember where we are about to draw 
-					 * the new ghost image: */
-					ghostRectangle.setRect(pt.x - clickOffset.x, 
-							pt.y - clickOffset.y, 
-							ghostImage.getWidth(), 
-							ghostImage.getHeight());
-					g2.drawImage(ghostImage, 
-							AffineTransform.getTranslateInstance(
-									ghostRectangle.getX(), 
-									ghostRectangle.getY()), null);				
-				} else {	
-					// Just rub out the last cue line
-					paintImmediately(cueLine.getBounds());	
-				}
-			}
-			
-			TreePath path = getPathForLocation(pt.x, pt.y);
-			if (!(path == lastPath))			
-			{
-				lastPath = path;
-				hoverTimer.restart();
-			}
-			
-			/* In any case draw (over the ghost image if necessary) 
-			 * a cue line indicating where a drop will occur */
-			Rectangle raPath = getPathBounds(path);
-			if (raPath != null) {
-				cueLine.setRect(0,  
-					raPath.y+(int)raPath.getHeight(), 
-					getWidth(), 
-					2);
-			}
-			
-			g2.setColor(cueLineColor);
-			g2.fill(cueLine);
-
-			// And include the cue line in the area to be rubbed out next time
-			ghostRectangle = ghostRectangle.createUnion(cueLine);	
-			
+            
+            lastMouseLocation = pt;
+            
+            Graphics2D g2 = (Graphics2D) getGraphics();
+            
+            /* The next condition becomes false when dragging in 
+             * something from another application.*/
+            if (ghostImage != null) {
+                /* If a drag image is not supported by the platform, 
+                 * then draw my own drag image. */
+                if (!DragSource.isDragImageSupported()) {
+                    /* Rub out the last ghost image and cue line: */
+                    paintImmediately(ghostRectangle.getBounds());
+                    /* And remember where we are about to draw 
+                     * the new ghost image: */
+                    ghostRectangle.setRect(pt.x - clickOffset.x, 
+                            pt.y - clickOffset.y, 
+                            ghostImage.getWidth(), 
+                            ghostImage.getHeight());
+                    g2.drawImage(ghostImage, 
+                            AffineTransform.getTranslateInstance(
+                                    ghostRectangle.getX(), 
+                                    ghostRectangle.getY()), null);
+                } else {	
+                    // Just rub out the last cue line
+                    paintImmediately(cueLine.getBounds());	
+                }
+            }
+            
+            TreePath path = getPathForLocation(pt.x, pt.y);
+            if (!(path == lastPath))			
+            {
+                lastPath = path;
+                hoverTimer.restart();
+            }
+            
+            /* In any case draw (over the ghost image if necessary) 
+             * a cue line indicating where a drop will occur */
+            Rectangle raPath = getPathBounds(path);
+            if (raPath != null) {
+                cueLine.setRect(0,  
+                        raPath.y + (int) raPath.getHeight(),
+                        getWidth(), 
+                        2);
+            }
+            
+            g2.setColor(cueLineColor);
+            g2.fill(cueLine);
+            
+            // And include the cue line in the area to be rubbed out next time
+            ghostRectangle = ghostRectangle.createUnion(cueLine);	
+            
             /* Testcase: drag something from another 
              * application into ArgoUML,
              * and the explorer shows the drop icon, instead of the noDrop.
              */
-			try {
-				if (!dropTargetDragEvent.isDataFlavorSupported(
-						TransferableModelElements.UML_COLLECTION_FLAVOR)) {
-					dropTargetDragEvent.rejectDrag();
-					return;
-				}
-			} catch (NullPointerException e) {
-				dropTargetDragEvent.rejectDrag();
-				return;
-			}
-    	
-			if (path==null) {
-				dropTargetDragEvent.rejectDrag();
-				return;
-			}
-			// to prohibit dropping onto the drag source:
-			if (path.equals(sourcePath)) {
-				dropTargetDragEvent.rejectDrag();
-				return;
-			}
-			if (selectedTreePath.isDescendant(path)) {
-				dropTargetDragEvent.rejectDrag();
-				return;
-			}
-			
-			Object dest = ((DefaultMutableTreeNode) path
-		                .getLastPathComponent()).getUserObject();
-
-	        /* If the destination is not a NameSpace, then reject: */
-	        if (!Model.getFacade().isANamespace(dest)) {
-	            LOG.debug("No valid Drag: not a namespace.");
-				dropTargetDragEvent.rejectDrag();
-	            return;
-	        }
-	        
-	        /* If the destination is a DataType, then reject: */
-	        if (Model.getFacade().isADataType(dest)) {
-	            LOG.debug("No valid Drag: destination is a DataType.");
-				dropTargetDragEvent.rejectDrag();
-	            return;
-	        }
-
-//            /* TODO: The next only works from Java 1.5 onwards :-( */
-//            Transferable tf = dropTargetDragEvent.getTransferable();
-//            if (tf.isDataFlavorSupported(
-//                     TransferableModelElements.UML_COLLECTION_FLAVOR)) {
-//            	/* Check tf contents like in isValidDrag(). */
-//                dropTargetDragEvent.acceptDrag(
-//                    dropTargetDragEvent.getDropAction());
-//            } else {
-//                dropTargetDragEvent.rejectDrag();
-//            } 
-
-	        dropTargetDragEvent.acceptDrag(
-					dropTargetDragEvent.getDropAction());
-
+            try {
+                if (!dropTargetDragEvent.isDataFlavorSupported(
+                        TransferableModelElements.UML_COLLECTION_FLAVOR)) {
+                    dropTargetDragEvent.rejectDrag();
+                    return;
+                }
+            } catch (NullPointerException e) {
+                dropTargetDragEvent.rejectDrag();
+                return;
+            }
+            
+            if (path == null) {
+                dropTargetDragEvent.rejectDrag();
+                return;
+            }
+            // to prohibit dropping onto the drag source:
+            if (path.equals(sourcePath)) {
+                dropTargetDragEvent.rejectDrag();
+                return;
+            }
+            if (selectedTreePath.isDescendant(path)) {
+                dropTargetDragEvent.rejectDrag();
+                return;
+            }
+            
+            Object dest = ((DefaultMutableTreeNode) path
+                    .getLastPathComponent()).getUserObject();
+            
+            /* If the destination is not a NameSpace, then reject: */
+            if (!Model.getFacade().isANamespace(dest)) {
+                LOG.debug("No valid Drag: not a namespace.");
+                dropTargetDragEvent.rejectDrag();
+                return;
+            }
+            
+            /* If the destination is a DataType, then reject: */
+            if (Model.getFacade().isADataType(dest)) {
+                LOG.debug("No valid Drag: destination is a DataType.");
+                dropTargetDragEvent.rejectDrag();
+                return;
+            }
+            
+//          /* TODO: The next only works from Java 1.5 onwards :-( */
+//          Transferable tf = dropTargetDragEvent.getTransferable();
+//          if (tf.isDataFlavorSupported(
+//          TransferableModelElements.UML_COLLECTION_FLAVOR)) {
+//          /* Check tf contents like in isValidDrag(). */
+//          dropTargetDragEvent.acceptDrag(
+//          dropTargetDragEvent.getDropAction());
+//          } else {
+//          dropTargetDragEvent.rejectDrag();
+//          } 
+            
+            dropTargetDragEvent.acceptDrag(
+                    dropTargetDragEvent.getDropAction());
+            
         }
-
+        
         /**
          * The drop: what is done when the mousebutton is released.
          *
@@ -652,38 +652,38 @@ public class DnDExplorerTree
             LOG.debug("dropping ... ");
             /* Prevent hover timer from doing an unwanted 
              * expandPath or collapsePath: */
-			hoverTimer.stop();
-
-			/* Clear the ghost image: */
-			repaint(ghostRectangle.getBounds());
-			
-			if (!isDropAcceptable(dropTargetDropEvent))
-			{
-				dropTargetDropEvent.rejectDrop();
-				return;
-			}
-			
+            hoverTimer.stop();
+            
+            /* Clear the ghost image: */
+            repaint(ghostRectangle.getBounds());
+            
+            if (!isDropAcceptable(dropTargetDropEvent))
+            {
+                dropTargetDropEvent.rejectDrop();
+                return;
+            }
+            
             try {
                 Transferable tr = dropTargetDropEvent.getTransferable();
                 //get new parent node
                 Point loc = dropTargetDropEvent.getLocation();
                 TreePath destinationPath = getPathForLocation(loc.x, loc.y);
                 LOG.debug("Drop location: x=" + loc.x + " y=" + loc.y);
-
+                
                 if (!isValidDrag(destinationPath, tr)) {
                     dropTargetDropEvent.rejectDrop();
                     return;
                 }
-
+                
                 //get the model elements that are being transfered.
                 Collection modelElements = (Collection) tr.getTransferData(
                         TransferableModelElements.UML_COLLECTION_FLAVOR);
                 LOG.debug("transfer data = " + modelElements);
                 
                 Object dest = ((DefaultMutableTreeNode) destinationPath
-		             .getLastPathComponent()).getUserObject();
+                        .getLastPathComponent()).getUserObject();
                 Object src = ((DefaultMutableTreeNode) sourcePath
-   		             .getLastPathComponent()).getUserObject();
+                        .getLastPathComponent()).getUserObject();
                 
                 int action = dropTargetDropEvent.getDropAction();
                 /* The user-DropActions are: 
@@ -693,11 +693,11 @@ public class DnDExplorerTree
                  * (none)       -> ACTION_MOVE
                  */
                 boolean copyAction = 
-                	(action == DnDConstants.ACTION_COPY);
+                    (action == DnDConstants.ACTION_COPY);
                 boolean moveAction = 
-                	(action == DnDConstants.ACTION_MOVE);
-
-                if(!(moveAction || copyAction)) {
+                    (action == DnDConstants.ACTION_MOVE);
+                
+                if (!(moveAction || copyAction)) {
                     dropTargetDropEvent.rejectDrop();
                     return;
                 }
@@ -713,21 +713,21 @@ public class DnDExplorerTree
                             newTargets.add(me);
                         }
                         if (me instanceof UMLDiagram) {
-                        	UMLDiagram d = (UMLDiagram) me;
-                        	if (d.isRelocationAllowed(dest)) {
-                        		if (d.relocate(dest)) {
-                        			ExplorerEventAdaptor.getInstance()
-                        				.modelElementChanged(src);
-                        			ExplorerEventAdaptor.getInstance()
-                        				.modelElementChanged(dest);
-                        			/*TODO: Make the tree refresh and expand
-                        			 * really work in all cases!
-                        			 */
-                        			makeVisible(destinationPath);
-                        			expandPath(destinationPath);
-                        			newTargets.add(me);
-                        		}
-                        	}
+                            UMLDiagram d = (UMLDiagram) me;
+                            if (d.isRelocationAllowed(dest)) {
+                                if (d.relocate(dest)) {
+                                    ExplorerEventAdaptor.getInstance()
+                                        .modelElementChanged(src);
+                                    ExplorerEventAdaptor.getInstance()
+                                        .modelElementChanged(dest);
+                                    /*TODO: Make the tree refresh and expand
+                                     * really work in all cases!
+                                     */
+                                    makeVisible(destinationPath);
+                                    expandPath(destinationPath);
+                                    newTargets.add(me);
+                                }
+                            }
                         }
                     }
                     dropTargetDropEvent.getDropTargetContext()
@@ -737,9 +737,9 @@ public class DnDExplorerTree
                     LOG.debug("drop IllegalStateException");
                     dropTargetDropEvent.rejectDrop();
                 }
-
+                
                 dropTargetDropEvent.getDropTargetContext()
-                			.dropComplete(true);
+                    .dropComplete(true);
             } catch (IOException io) {
                 LOG.debug("drop IOException");
                 dropTargetDropEvent.rejectDrop();
@@ -748,71 +748,71 @@ public class DnDExplorerTree
                 dropTargetDropEvent.rejectDrop();
             }
         }
-
+        
         /**
          * @see java.awt.dnd.DropTargetListener#dropActionChanged(java.awt.dnd.DropTargetDragEvent)
          */
         public void dropActionChanged(
-        		DropTargetDragEvent dropTargetDragEvent) {
-        	if (!isDragAcceptable(dropTargetDragEvent))
-        		dropTargetDragEvent.rejectDrag();
-        	else
-        		dropTargetDragEvent.acceptDrag(
-        				dropTargetDragEvent.getDropAction());
+                DropTargetDragEvent dropTargetDragEvent) {
+            if (!isDragAcceptable(dropTargetDragEvent))
+                dropTargetDragEvent.rejectDrag();
+            else
+                dropTargetDragEvent.acceptDrag(
+                        dropTargetDragEvent.getDropAction());
         }
-
-		/**
-		 * @param dropTargetEvent the droptargetevent
-		 * @return true if the drag is acceptable
-		 */
-		public boolean isDragAcceptable(
-				DropTargetDragEvent dropTargetEvent)
-		{
-			// Only accept COPY or MOVE gestures (ie LINK is not supported)
-			if ((dropTargetEvent.getDropAction() 
-					& DnDConstants.ACTION_COPY_OR_MOVE) == 0) {
-				return false;
-			}
-
-			// Do this if you want to prohibit dropping onto the drag source...
-			Point pt = dropTargetEvent.getLocation();
-			TreePath path = getPathForLocation(pt.x, pt.y);
-			if (path == null) {
-				return false;
-			}
-			if (path.equals(sourcePath)) {			
-				return false;
-			}
-			return true;
-		}
-		
-		/**
-		 * @param dropTargetDropEvent the droptargetdropevent
-		 * @return true if the drop is acceptable
-		 */
-		public boolean isDropAcceptable(
-				DropTargetDropEvent dropTargetDropEvent)
-		{
-			// Only accept COPY or MOVE gestures (ie LINK is not supported)
-			if ((dropTargetDropEvent.getDropAction() 
-					& DnDConstants.ACTION_COPY_OR_MOVE) == 0) {
-				return false;
-			}
-			
-			// Do this if you want to prohibit dropping onto the drag source...
-			Point pt = dropTargetDropEvent.getLocation();
-			TreePath path = getPathForLocation(pt.x, pt.y);
-			if (path == null) {
-				return false;
-			}
-			if (path.equals(sourcePath)) {			
-				return false;
-			}
-			return true;
-		}
-		
+        
+        /**
+         * @param dropTargetEvent the droptargetevent
+         * @return true if the drag is acceptable
+         */
+        public boolean isDragAcceptable(
+                DropTargetDragEvent dropTargetEvent)
+        {
+            // Only accept COPY or MOVE gestures (ie LINK is not supported)
+            if ((dropTargetEvent.getDropAction() 
+                    & DnDConstants.ACTION_COPY_OR_MOVE) == 0) {
+                return false;
+            }
+            
+            // Do this if you want to prohibit dropping onto the drag source...
+            Point pt = dropTargetEvent.getLocation();
+            TreePath path = getPathForLocation(pt.x, pt.y);
+            if (path == null) {
+                return false;
+            }
+            if (path.equals(sourcePath)) {			
+                return false;
+            }
+            return true;
+        }
+        
+        /**
+         * @param dropTargetDropEvent the droptargetdropevent
+         * @return true if the drop is acceptable
+         */
+        public boolean isDropAcceptable(
+                DropTargetDropEvent dropTargetDropEvent)
+        {
+            // Only accept COPY or MOVE gestures (ie LINK is not supported)
+            if ((dropTargetDropEvent.getDropAction() 
+                    & DnDConstants.ACTION_COPY_OR_MOVE) == 0) {
+                return false;
+            }
+            
+            // Do this if you want to prohibit dropping onto the drag source...
+            Point pt = dropTargetDropEvent.getLocation();
+            TreePath path = getPathForLocation(pt.x, pt.y);
+            if (path == null) {
+                return false;
+            }
+            if (path.equals(sourcePath)) {			
+                return false;
+            }
+            return true;
+        }
+        
     } /* end class */
-
+    
 }
 
 

@@ -33,8 +33,7 @@ import org.argouml.application.api.Notation;
  * their double bracket alternative, 
  * based on the choice made by the user in the Settings menu.
  */
-public class NotationHelper
-    {
+public class NotationHelper {
 
     /**
      * @return the left pointing guillemot, i.e. << or the one-character symbol

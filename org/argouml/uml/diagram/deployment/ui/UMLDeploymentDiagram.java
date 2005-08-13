@@ -461,10 +461,10 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 //    	base == ProjectManager.getManager().getCurrentProject().getModel();
     }
 
-	/**
-	 * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
-	 */
-	public boolean relocate(Object base) {
-		return false;
-	}
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
+     */
+    public boolean relocate(Object base) {
+        return false;
+    }
 } /* end class UMLDeploymentDiagram */

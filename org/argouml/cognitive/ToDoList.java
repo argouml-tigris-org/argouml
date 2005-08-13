@@ -527,6 +527,13 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         return res;
     }
 
+    /**
+     * Add the given resolved critic to the list of resolved critics.
+     * 
+     * @param rc the resolved critic
+     * @return <code>true</code> if successfully added; 
+     *         <code>false</code> otherwise
+     */
     public boolean addResolvedCritic(ResolvedCritic rc) {
         return resolvedItems.add(rc);
     }

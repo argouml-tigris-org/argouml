@@ -407,24 +407,24 @@ public class UMLActivityDiagram extends UMLDiagram {
     public Object getDependentElement() {
         return getStateMachine(); /* The ActivityGraph. */
     }
-
-	/** 
-	 * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
-	 */
-	public boolean isRelocationAllowed(Object base) {
-		return false; 
-		/* TODO: We may return the following when the 
-		 * relocate() has been implemented. */
-//		Model.getActivityGraphsHelper()
-//        	.isAddingActivityGraphAllowed(base);
-	}
-
-	/**
-	 * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
-	 */
-	public boolean relocate(Object base) {
-		return false;
-	}
+    
+    /** 
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
+     */
+    public boolean isRelocationAllowed(Object base) {
+        return false; 
+        /* TODO: We may return the following when the 
+         * relocate() has been implemented. */
+//      Model.getActivityGraphsHelper()
+//      .isAddingActivityGraphAllowed(base);
+    }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
+     */
+    public boolean relocate(Object base) {
+        return false;
+    }
 
 
 } /* end class UMLActivityDiagram */

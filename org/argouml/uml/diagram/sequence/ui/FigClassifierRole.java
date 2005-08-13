@@ -158,7 +158,7 @@ public class FigClassifierRole extends FigNodeModelElement
 				     "Dialog",
 				     12,
 				     false));
-        getStereotypeFigText().setAllowsTab(false);
+        getStereotypeFigText().setTabAction(FigText.END_EDITING);
 //        getStereotypeFigText().setTabAction(FigText.IGNORE);
         getStereotypeFigText().setEditable(false);
         getStereotypeFig().setFilled(false);
@@ -172,7 +172,7 @@ public class FigClassifierRole extends FigNodeModelElement
 			       12,
 			       false));
         getNameFig().setEditable(false);
-        getStereotypeFigText().setAllowsTab(false);
+        getStereotypeFigText().setTabAction(FigText.END_EDITING);
         //getNameFig().setTabAction(FigText.IGNORE);
         getNameFig().setFilled(false);
         getNameFig().setLineWidth(0);
@@ -361,6 +361,8 @@ public class FigClassifierRole extends FigNodeModelElement
     /**
      * This method is overridden in order to ignore change of y co-ordinate
      * during drag.
+     *
+     * @see org.tigris.gef.presentation.FigNode#superTranslate(int, int)
      */
     public void superTranslate(int dx, int dy) {
         setBounds(getX() + dx, getY(), getWidth(), getHeight());
@@ -445,9 +447,8 @@ public class FigClassifierRole extends FigNodeModelElement
             MessageNode node = (MessageNode) linkPositions.get(i);
             if (node.getFigMessagePort() != null) {
                 break;
-            } else {
-                node.setState(newState);
-	    }
+            } 
+            node.setState(newState);
         }
     }
 
@@ -766,6 +767,12 @@ public class FigClassifierRole extends FigNodeModelElement
 
     //////////////////////////////////////////////////////////////////////////
     // HandlerFactory implementation
+    /**
+     * @see org.tigris.gef.persistence.pgml.HandlerFactory#getHandler(
+     * org.tigris.gef.persistence.pgml.HandlerStack, java.lang.Object, 
+     * java.lang.String, java.lang.String, java.lang.String, 
+     * org.xml.sax.Attributes)
+     */
     public DefaultHandler getHandler(HandlerStack stack,
                                Object container,
                                String uri,
@@ -903,13 +910,13 @@ public class FigClassifierRole extends FigNodeModelElement
             pump.addModelEventListener(this,
                     newOwner,
                     new String[] {
-                    "name",
-                    "stereotype",
-                    "base",
-            });
+                        "name",
+                        "stereotype",
+                        "base",
+                    });
             Iterator it = Model.getFacade().getBases(newOwner).iterator();
             String[] names = new String[] {
-                    "name",
+                "name",
             };
             while (it.hasNext()) {
                 Object base = it.next();
@@ -1261,6 +1268,8 @@ public class FigClassifierRole extends FigNodeModelElement
     /**
      * Override to return a custom SelectionResize class that will not allow
      * handles on the north edge to be dragged.
+     *
+     * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
         return new SelectionClassifierRole(this);

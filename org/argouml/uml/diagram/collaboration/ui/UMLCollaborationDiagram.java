@@ -389,25 +389,25 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     public Object getDependentElement() {
         return getNamespace(); /* The collaboration. */
     }
-
-	/**
-	 * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
-	 */
-	public boolean isRelocationAllowed(Object base) {
-		/* TODO: We may return the following when the 
-		 * relocate() has been implemented. */
-//		if (Model.getFacade().isAOperation(base) 
-//				|| Model.getFacade().isANamespace(base))
-//            return Model.getCollaborationsHelper()
-//                    .isAddingCollaborationAllowed(base);
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
+     */
+    public boolean isRelocationAllowed(Object base) {
+        /* TODO: We may return the following when the 
+         * relocate() has been implemented. */
+//      if (Model.getFacade().isAOperation(base) 
+//      || Model.getFacade().isANamespace(base))
+//      return Model.getCollaborationsHelper()
+//      .isAddingCollaborationAllowed(base);
         return false;
-	}
-
-	/**
-	 * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
-	 */
-	public boolean relocate(Object base) {
-		return false;
-	}
+    }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
+     */
+    public boolean relocate(Object base) {
+        return false;
+    }
 
 } /* end class UMLCollaborationDiagram */

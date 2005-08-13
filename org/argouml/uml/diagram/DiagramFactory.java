@@ -58,7 +58,7 @@ import org.tigris.gef.presentation.Fig;
 */
 public class DiagramFactory {
  
-    private static Logger LOG = Logger.getLogger(DiagramFactory.class);
+    private static final Logger LOG = Logger.getLogger(DiagramFactory.class);
     
     private static DiagramFactory diagramFactory = new DiagramFactory();
  
@@ -67,12 +67,18 @@ public class DiagramFactory {
     private DiagramFactory() {
     }
 
+    /**
+     * @return the singleton
+     */
     public static DiagramFactory getInstance() {
         return diagramFactory;
     }
  
+    /**
+     * @return the list of diagrams
+     */
     public List getDiagram() {
-    		return diagrams;
+        return diagrams;
     }
 
     
@@ -80,10 +86,12 @@ public class DiagramFactory {
      * Factory method to create a new instance of a Class Diagram
      * @param type The class of rendering diagram to create
      * @param model The model that this class diagram represents
-     * @param owningElement The modelElement which own this diagram (can be the model)
+     * @param owningElement The modelElement which own this diagram 
+     *                      (can be the model)
      * @return the newly instantiated class diagram
      */
-    public ArgoDiagram createDiagram(Class type, Object model, Object owningElement) {
+    public ArgoDiagram createDiagram(Class type, Object model, 
+            Object owningElement) {
         
         ArgoDiagram diagram = null;
         Class diType = null;
@@ -118,10 +126,11 @@ public class DiagramFactory {
         if (Model.getDiagramInterchangeModel() != null) {
             diagram.getGraphModel().addGraphEventListener(
                  GraphChangeAdapter.getInstance());
-            // The diagram are always owned by the model in this first implementation
+            /* The diagram are always owned by the model 
+             * in this first implementation */
             DiDiagram dd =
                 GraphChangeAdapter.getInstance().createDiagram(diType, model);
-            ((UMLMutableGraphSupport)diagram.getGraphModel()).setDiDiagram(dd);
+            ((UMLMutableGraphSupport) diagram.getGraphModel()).setDiDiagram(dd);
         }
         
         //keep a reference on it in the case where we must add all the diagrams
@@ -131,14 +140,15 @@ public class DiagramFactory {
     }
     
     /**
-     * Factory method to create a new instance of a Class Diagram
-     * @param model The model that this class diagram represents
+     * Factory method to create a new instance of a Class Diagram.
+     * 
+     * @param diagram the diagram
      * @return the newly instantiated class diagram
      */
     public ArgoDiagram removeDiagram(ArgoDiagram diagram) {
         
         DiDiagram dd =
-            ((UMLMutableGraphSupport)diagram.getGraphModel()).getDiDiagram();
+            ((UMLMutableGraphSupport) diagram.getGraphModel()).getDiDiagram();
         if (dd != null) {
             GraphChangeAdapter.getInstance().removeDiagram(dd);
         }
@@ -146,26 +156,26 @@ public class DiagramFactory {
     }
 
     public DiDiagram getDiDiagram(Object graphModel) {
-    		if (graphModel instanceof UMLMutableGraphSupport)
-    			return ((UMLMutableGraphSupport)graphModel).getDiDiagram();
-    		throw new IllegalArgumentException("graphModel: "+graphModel);
+        if (graphModel instanceof UMLMutableGraphSupport)
+            return ((UMLMutableGraphSupport) graphModel).getDiDiagram();
+        throw new IllegalArgumentException("graphModel: " + graphModel);
     }
     
     public void addElement(Object diagram, Object element) {
-		if (!(diagram instanceof ArgoDiagram))
-			throw new IllegalArgumentException("diagram: "+diagram);
-		if (!(element instanceof Fig))
-			throw new IllegalArgumentException("fig: "+element);
-		((ArgoDiagram)diagram).add((Fig)element);
+        if (!(diagram instanceof ArgoDiagram))
+            throw new IllegalArgumentException("diagram: " + diagram);
+        if (!(element instanceof Fig))
+            throw new IllegalArgumentException("fig: " + element);
+        ((ArgoDiagram) diagram).add((Fig) element);
     }
 
     
-	private final Map noStyleProperties = new HashMap();
+    private final Map noStyleProperties = new HashMap();
     
-	public Object createRenderingElement(Object diagram, Object model) {
+    public Object createRenderingElement(Object diagram, Object model) {
         GraphNodeRenderer rend =
-            ((UMLDiagram)diagram).getLayer().getGraphNodeRenderer();
-        Object renderingElement = rend.getFigNodeFor(model,noStyleProperties);
-		return renderingElement;
-	}    
+            ((UMLDiagram) diagram).getLayer().getGraphNodeRenderer();
+        Object renderingElement = rend.getFigNodeFor(model, noStyleProperties);
+        return renderingElement;
+    }    
 }

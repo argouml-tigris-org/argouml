@@ -36,6 +36,11 @@ import org.tigris.gef.presentation.Handle;
  */
 public class SelectionClassifierRole extends SelectionNodeClarifiers {
 
+    /**
+     * The constructor.
+     * 
+     * @param f the fig
+     */
     public SelectionClassifierRole(Fig f) {
         super(f);
     }
@@ -43,10 +48,13 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
     /**
      * Make sure that the north facing handles cannot be dragged as
      * part of a resize.
+     *
+     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int, 
+     * org.tigris.gef.presentation.Handle)
      */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
 
-        if (!_content.isResizable()) {
+        if (!getContent().isResizable()) {
             return;
         }
 

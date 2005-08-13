@@ -40,6 +40,9 @@ import java.util.Collection;
  */
 public class TransferableModelElements implements Transferable {
 
+    /**
+     * The data flavor we use for collections of UML elements. 
+     */
     public static final DataFlavor UML_COLLECTION_FLAVOR =
         new DataFlavor(Collection.class, "UML ModelElements Collection");
 
@@ -47,6 +50,11 @@ public class TransferableModelElements implements Transferable {
 
     private Collection theModelElements;
 
+    /**
+     * The constructor.
+     * 
+     * @param data the collection of UML elements
+     */
     public TransferableModelElements(Collection data) {
 
         theModelElements = data;

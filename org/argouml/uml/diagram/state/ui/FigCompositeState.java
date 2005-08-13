@@ -143,8 +143,8 @@ public class FigCompositeState extends FigState {
         Dimension internalDim = getInternal().getMinimumSize();
 
         int h = SPACE_TOP + nameDim.height 
-        + SPACE_MIDDLE + internalDim.height 
-        + SPACE_BOTTOM;
+            + SPACE_MIDDLE + internalDim.height 
+            + SPACE_BOTTOM;
         int w = Math.max(nameDim.width + 2 * MARGIN, 
                 internalDim.width + 2 * MARGIN);
         return new Dimension(w, h);

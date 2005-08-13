@@ -540,14 +540,16 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     
     /**
      * Package scope. Only the factory is supposed to set this.
-     * @param diDiagram
+     * @param dd
      */
-    void setDiDiagram(DiDiagram diDiagram) {
-        this.diDiagram = diDiagram;
+    void setDiDiagram(DiDiagram dd) {
+        this.diDiagram = dd;
     }
     
     /**
-     * Get the object that represents this diagram in the DiagramInterchangeModel
+     * Get the object that represents this diagram 
+     * in the DiagramInterchangeModel.
+     * 
      * @return the Diagram Interchange Diagram.
      */
     public DiDiagram getDiDiagram() {

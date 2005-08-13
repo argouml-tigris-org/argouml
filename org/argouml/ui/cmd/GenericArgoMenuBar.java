@@ -536,7 +536,8 @@ public class GenericArgoMenuBar extends JMenuBar
         edit.addSeparator();
 
         
-        Action removeFromDiagram = ProjectBrowser.getInstance().getRemoveFromDiagramAction();
+        Action removeFromDiagram = 
+            ProjectBrowser.getInstance().getRemoveFromDiagramAction();
         JMenuItem removeItem = edit.add(removeFromDiagram);
         
         setMnemonic(removeItem, "Remove from Diagram");
@@ -804,7 +805,8 @@ public class GenericArgoMenuBar extends JMenuBar
             editToolbar.add(ActionCopy.getInstance());
             editToolbar.add(ActionPaste.getInstance());
             editToolbar.addFocusListener(ActionPaste.getInstance());
-            editToolbar.add(ProjectBrowser.getInstance().getRemoveFromDiagramAction());
+            editToolbar.add(
+                    ProjectBrowser.getInstance().getRemoveFromDiagramAction());
             editToolbar.add(NavigateTargetBackAction.getInstance());
             editToolbar.add(NavigateTargetForwardAction.getInstance());
         }

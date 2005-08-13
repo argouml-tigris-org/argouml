@@ -189,6 +189,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
     }
 
     /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#setNamespace(java.lang.Object)
      */
     public void setNamespace(Object ns) {
         ((SequenceDiagramGraphModel) getGraphModel()).setCollaboration(ns);

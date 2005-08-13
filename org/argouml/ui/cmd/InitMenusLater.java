@@ -32,7 +32,6 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import org.tigris.gef.base.AlignAction;
-import org.tigris.gef.base.AlignAction;
 import org.tigris.gef.base.CmdDistribute;
 import org.tigris.gef.base.CmdNudge;
 import org.tigris.gef.base.CmdReorder;
@@ -128,18 +127,21 @@ class InitMenusLater implements Runnable {
 				   KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
 
 	// ---------------------------------------------- Arrange Menu
-        JMenuItem alignTops = align.add(new AlignAction(AlignAction.ALIGN_TOPS));
+        JMenuItem alignTops = 
+            align.add(new AlignAction(AlignAction.ALIGN_TOPS));
 	GenericArgoMenuBar.setMnemonic(alignTops, "align tops");
 
         JMenuItem alignBottoms =
 	    align.add(new AlignAction(AlignAction.ALIGN_BOTTOMS));
 	GenericArgoMenuBar.setMnemonic(alignBottoms, "align bottoms");
 
-	JMenuItem alignRights = align.add(new AlignAction(AlignAction.ALIGN_RIGHTS));
+	JMenuItem alignRights = 
+            align.add(new AlignAction(AlignAction.ALIGN_RIGHTS));
 	GenericArgoMenuBar.setMnemonic(alignRights, "align rights");
 	GenericArgoMenuBar.setAccelerator(alignRights, ctrlR);
 
-	JMenuItem alignLefts = align.add(new AlignAction(AlignAction.ALIGN_LEFTS));
+	JMenuItem alignLefts = 
+            align.add(new AlignAction(AlignAction.ALIGN_LEFTS));
 	GenericArgoMenuBar.setMnemonic(alignLefts, "align lefts");
 	GenericArgoMenuBar.setAccelerator(alignLefts, ctrlL);
 

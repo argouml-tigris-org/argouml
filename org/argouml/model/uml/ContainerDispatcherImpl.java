@@ -37,14 +37,23 @@ import ru.novosoft.uml.MElementListener;
  * This listens for events on a component and dispatches the events to all its
  * interested child components.
  */
-public class ContainerDispatcherImpl implements ContainerDispatcher, MElementListener {
+public class ContainerDispatcherImpl 
+    implements ContainerDispatcher, MElementListener {
 
     private Container container;
     
-    public ContainerDispatcherImpl (Container container) {
-        this.container = container;
+    /**
+     * The constructor.
+     * 
+     * @param ctr the container
+     */
+    public ContainerDispatcherImpl (Container ctr) {
+        this.container = ctr;
     }
     
+    /**
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
     public void propertyChange(PropertyChangeEvent event) {
     }
 
@@ -158,17 +167,17 @@ public class ContainerDispatcherImpl implements ContainerDispatcher, MElementLis
                     Model.getMetaTypes().getNamespace(),
                     clazz)) {
                 UmlModelEventPump.getPump()
-            .addClassModelEventListener(this, clazz, "ownedElement");
+                    .addClassModelEventListener(this, clazz, "ownedElement");
             }
             if (Model.getCoreHelper().isSubType(
                     Model.getMetaTypes().getModelElement(),
                     clazz)) {
                 UmlModelEventPump.getPump()
-            .addClassModelEventListener(this, clazz, "name");
+                    .addClassModelEventListener(this, clazz, "name");
             }
             if (clazz.equals(Model.getMetaTypes().getStereotype())) {
                 UmlModelEventPump.getPump()
-            .addClassModelEventListener(this, clazz, "baseClass");
+                    .addClassModelEventListener(this, clazz, "baseClass");
             }
         }
     }

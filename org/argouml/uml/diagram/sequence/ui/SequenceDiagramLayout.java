@@ -272,6 +272,9 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
         }
     }
 
+    /**
+     * @see org.tigris.gef.base.Layer#remove(org.tigris.gef.presentation.Fig)
+     */
     public void remove(Fig f) {
         if (f instanceof FigMessage) {
             FigMessage fm = (FigMessage) f;

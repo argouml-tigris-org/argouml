@@ -190,9 +190,9 @@ public class FigSubmachineState extends FigState {
         Dimension includeDim = include.getMinimumSize();
 
         int h = SPACE_TOP + nameDim.height 
-        + SPACE_MIDDLE + includeDim.height
-        + SPACE_MIDDLE + internalDim.height 
-        + SPACE_BOTTOM;
+            + SPACE_MIDDLE + includeDim.height
+            + SPACE_MIDDLE + internalDim.height 
+            + SPACE_BOTTOM;
         int waux = Math.max(nameDim.width, 
                 internalDim.width) + 2 * MARGIN;
         int w = Math.max(waux, includeDim.width + 50);
@@ -239,9 +239,12 @@ public class FigSubmachineState extends FigState {
 
         getInternal().setBounds(
                 x + MARGIN,
-                y + SPACE_TOP + nameDim.height + SPACE_TOP + includeDim.height + SPACE_MIDDLE,
+                y + SPACE_TOP + nameDim.height 
+                    + SPACE_TOP + includeDim.height + SPACE_MIDDLE,
                 w - 2 * MARGIN, 
-                h - SPACE_TOP - nameDim.height - SPACE_TOP - includeDim.height - SPACE_MIDDLE - SPACE_BOTTOM);
+                h - SPACE_TOP - nameDim.height 
+                    - SPACE_TOP - includeDim.height 
+                    - SPACE_MIDDLE - SPACE_BOTTOM);
 
         circle1.setBounds(x + w - 55,
                 y + h - 15,
