@@ -211,7 +211,7 @@ public class TabProps
     /**
      * @see java.lang.Object#finalize()
      */
-    public void finalize() throws Throwable {
+    protected void finalize() throws Throwable {
         super.finalize();
         ArgoEventPump.removeListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
     }

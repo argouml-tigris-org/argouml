@@ -67,7 +67,7 @@ public class TabSrc
     /**
      * @see java.lang.Object#finalize()
      */
-    public void finalize() {
+    protected void finalize() {
         NotationComboBox.getInstance().removeItemListener(this);
     }
     

@@ -316,7 +316,7 @@ public abstract class FigNodeModelElement
     /**
      * @see java.lang.Object#finalize()
      */
-    public void finalize() {
+    protected void finalize() {
         ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
