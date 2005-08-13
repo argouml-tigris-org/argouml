@@ -319,22 +319,22 @@ public class TabProps
      * @param targetClass the target class
      * @return the tab panel
      */
-    private TabModelTarget findPanelFor(Object target) {
+    private TabModelTarget findPanelFor(Object trgt) {
         /* 1st attempt: get a panel that we created before: */
-        TabModelTarget p = (TabModelTarget) panels.get(target.getClass());
+        TabModelTarget p = (TabModelTarget) panels.get(trgt.getClass());
         if (p != null) {
-            LOG.info("Getting prop panel for: " + target.getClass().getName() 
+            LOG.info("Getting prop panel for: " + trgt.getClass().getName() 
                     + ", " + "found (in cache?) " + p);
             return p;
         }
         
         /* 2nd attempt: If we didn't find the panel then 
          * use the factory to create a new one*/
-        p = createPropPanel(target);
+        p = createPropPanel(trgt);
         if (p != null) {
             LOG.info("Factory created " + p.getClass().getName()
-                    + " for " + target.getClass().getName());
-            panels.put(target.getClass(), p);
+                    + " for " + trgt.getClass().getName());
+            panels.put(trgt.getClass(), p);
             return p;
         }
         
@@ -343,9 +343,9 @@ public class TabProps
         // should be removed one the createPropPanel method is complete.
         
         /* 3rd attempt: use the reflection method: */
-        Class panelClass = panelClassFor(target.getClass());
+        Class panelClass = panelClassFor(trgt.getClass());
         if (panelClass == null) {
-            LOG.error("No panel class found for: " + target.getClass());
+            LOG.error("No panel class found for: " + trgt.getClass());
             return null;
         }
         LOG.info("panelClass found for: " + panelClass);
@@ -358,7 +358,7 @@ public class TabProps
             p = (TabModelTarget) panelClass.newInstance();
             // moved next line inside try block to avoid filling
             // the hashmap with bogus values.
-            panels.put(target.getClass(), p);
+            panels.put(trgt.getClass(), p);
         } catch (IllegalAccessException ignore) {
             // doubtfull if this must be ignored.
             LOG.error("Failed to create a prop panel", ignore);
@@ -404,161 +404,220 @@ public class TabProps
             return new PropPanelUMLStateDiagram();
         }
         if (modelElement instanceof UMLUseCaseDiagram) {
-            return new PropPanelUMLUseCaseDiagram();
+            return new PropPanelUMLUseCaseDiagram(); 
         }
-        
-        // if (1 == 1) return null;
         
         if (Model.getFacade().isASubmachineState(modelElement)) { 
-            return new PropPanelSubmachineState();}
-
+            return new PropPanelSubmachineState(); 
+        }
         if (Model.getFacade().isASubactivityState(modelElement)) { 
-                return new PropPanelSubactivityState();}
-        
+            return new PropPanelSubactivityState();
+        }
         // Create prop panels for model elements
         if (Model.getFacade().isAAbstraction(modelElement)) { 
-                return new PropPanelAbstraction();}
+            return new PropPanelAbstraction(); 
+        }
         if (Model.getFacade().isAActionState(modelElement)) { 
-                return new PropPanelActionState();}
+            return new PropPanelActionState(); 
+        }
         if (Model.getFacade().isAActivityGraph(modelElement)) { 
-            return new PropPanelActivityGraph();}
+            return new PropPanelActivityGraph(); 
+        }
         if (Model.getFacade().isAActor(modelElement)) { 
-                return new PropPanelActor();}
+            return new PropPanelActor(); 
+        }
         if (Model.getFacade().isAAssociationClass(modelElement)) { 
-                return new PropPanelAssociationClass();}
+            return new PropPanelAssociationClass(); 
+        }
         if (Model.getFacade().isAAssociationRole(modelElement)) { 
-            return new PropPanelAssociationRole();}
+            return new PropPanelAssociationRole(); 
+        }
         if (Model.getFacade().isAAssociation(modelElement)) { 
-                return new PropPanelAssociation();}
+            return new PropPanelAssociation(); 
+        }
         if (Model.getFacade().isAAssociationEndRole(modelElement)) { 
-            return new PropPanelAssociationEndRole();}
+            return new PropPanelAssociationEndRole();
+        }
         if (Model.getFacade().isAAssociationEnd(modelElement)) { 
-                return new PropPanelAssociationEnd();}
+            return new PropPanelAssociationEnd();
+        }
         if (Model.getFacade().isAAttribute(modelElement)) { 
-                return new PropPanelAttribute();}
+            return new PropPanelAttribute();
+        }
         if (Model.getFacade().isACallAction(modelElement)) { 
-                return new PropPanelCallAction();}
+            return new PropPanelCallAction();
+        }
         if (Model.getFacade().isACallState(modelElement)) { 
-                return new PropPanelCallState();}
+            return new PropPanelCallState();
+        }
         if (Model.getFacade().isAClass(modelElement)) { 
-                return new PropPanelClass();}
+            return new PropPanelClass();
+        }
         if (Model.getFacade().isAClassifierRole(modelElement)) { 
-                return new PropPanelClassifierRole();}
+            return new PropPanelClassifierRole();
+        }
         if (Model.getFacade().isACollaboration(modelElement)) { 
-                return new PropPanelCollaboration();}
+            return new PropPanelCollaboration();
+        }
         if (Model.getFacade().isAComment(modelElement)) { 
-                return new PropPanelComment();}
+            return new PropPanelComment();
+        }
         if (Model.getFacade().isAComponent(modelElement)) { 
-                return new PropPanelComponent();}
+            return new PropPanelComponent();
+        }
         if (Model.getFacade().isAComponentInstance(modelElement)) { 
-                return new PropPanelComponentInstance();}
+            return new PropPanelComponentInstance();
+        }
         if (Model.getFacade().isACompositeState(modelElement)) { 
-                return new PropPanelCompositeState();}
+            return new PropPanelCompositeState();
+        }
         if (Model.getFacade().isACreateAction(modelElement)) { 
-                return new PropPanelCreateAction();}
+            return new PropPanelCreateAction();
+        }
         if (Model.getFacade().isADataType(modelElement)) { 
-                return new PropPanelDataType();}
+            return new PropPanelDataType();
+        }
         if (Model.getFacade().isADependency(modelElement)) { 
-                return new PropPanelDependency();}
+            return new PropPanelDependency();
+        }
         if (Model.getFacade().isADestroyAction(modelElement)) { 
-                return new PropPanelDestroyAction();}
+            return new PropPanelDestroyAction();
+        }
         if (Model.getFacade().isAExtend(modelElement)) { 
-                return new PropPanelExtend();}
+            return new PropPanelExtend();
+        }
         if (Model.getFacade().isAExtensionPoint(modelElement)) { 
-            return new PropPanelExtensionPoint();}
+            return new PropPanelExtensionPoint();
+        }
         if (Model.getFacade().isAFinalState(modelElement)) { 
-                return new PropPanelFinalState();}
+            return new PropPanelFinalState();
+        }
         if (Model.getFacade().isAFlow(modelElement)) { 
-            return new PropPanelFlow();}
+            return new PropPanelFlow();
+        }
         if (Model.getFacade().isAGeneralization(modelElement)) { 
-                return new PropPanelGeneralization();}
+            return new PropPanelGeneralization();
+        }
         if (Model.getFacade().isAGuard(modelElement)) { 
-                return new PropPanelGuard();}
+            return new PropPanelGuard();
+        }
         if (Model.getFacade().isAInclude(modelElement)) { 
-                return new PropPanelInclude();}
+            return new PropPanelInclude();
+        }
         if (Model.getFacade().isAInteraction(modelElement)) { 
-            return new PropPanelInteraction();}
+            return new PropPanelInteraction();
+        }
         if (Model.getFacade().isAInterface(modelElement)) { 
-                return new PropPanelInterface();}
+            return new PropPanelInterface();
+        }
         if (Model.getFacade().isALink(modelElement)) { 
-                return new PropPanelLink();}
+            return new PropPanelLink();
+        }
         if (Model.getFacade().isALinkEnd(modelElement)) { 
-            return new PropPanelLinkEnd();}
+            return new PropPanelLinkEnd();
+        }
         if (Model.getFacade().isAMessage(modelElement)) { 
-                return new PropPanelMessage();}
+            return new PropPanelMessage();
+        }
         if (Model.getFacade().isAModel(modelElement)) { 
-                return new PropPanelModel();}
+            return new PropPanelModel();
+        }
         if (Model.getFacade().isANode(modelElement)) { 
-                return new PropPanelNode();}
+            return new PropPanelNode();
+        }
         if (Model.getFacade().isANodeInstance(modelElement)) { 
-                return new PropPanelNodeInstance();}
+            return new PropPanelNodeInstance();
+        }
         if (Model.getFacade().isAObject(modelElement)) { 
-                return new PropPanelObject();}
+            return new PropPanelObject();
+        }
         if (Model.getFacade().isAObjectFlowState(modelElement)) { 
-                return new PropPanelObjectFlowState();}
+            return new PropPanelObjectFlowState();
+        }
         if (Model.getFacade().isAOperation(modelElement)) { 
-                return new PropPanelOperation();}
+            return new PropPanelOperation();
+        }
         if (Model.getFacade().isAPackage(modelElement)) { 
-                return new PropPanelPackage();}
+            return new PropPanelPackage();
+        }
         if (Model.getFacade().isAParameter(modelElement)) { 
-                return new PropPanelParameter();}
+            return new PropPanelParameter();
+        }
         if (Model.getFacade().isAPartition(modelElement)) { 
-                return new PropPanelPartition();}
+            return new PropPanelPartition();
+        }
         if (Model.getFacade().isAPermission(modelElement)) { 
-                return new PropPanelPermission();}
+            return new PropPanelPermission();
+        }
         if (Model.getFacade().isAPseudostate(modelElement)) { 
-                return new PropPanelPseudostate();}
+            return new PropPanelPseudostate();
+        }
         if (Model.getFacade().isAReception(modelElement)) { 
-                return new PropPanelReception();}
+            return new PropPanelReception();
+        }
         if (Model.getFacade().isAReturnAction(modelElement)) { 
-                return new PropPanelReturnAction();}
+            return new PropPanelReturnAction();
+        }
         if (Model.getFacade().isASendAction(modelElement)) { 
-                return new PropPanelSendAction();}
+            return new PropPanelSendAction();
+        }
         if (Model.getFacade().isASignal(modelElement)) { 
-                return new PropPanelSignal();}
+            return new PropPanelSignal();
+        }
         if (Model.getFacade().isAState(modelElement)) { 
-                return new PropPanelState();}
+            return new PropPanelState();
+        }
         if (Model.getFacade().isAStateMachine(modelElement)) { 
-                return new PropPanelStateMachine();}
+            return new PropPanelStateMachine();
+        }
         if (Model.getFacade().isAStereotype(modelElement)) { 
-                return new PropPanelStereotype();}
+            return new PropPanelStereotype();
+        }
         if (Model.getFacade().isAStimulus(modelElement)) { 
-                return new PropPanelStimulus();}
+            return new PropPanelStimulus();
+        }
         if (Model.getFacade().isAStubState(modelElement)) { 
-                return new PropPanelStubState();}
+            return new PropPanelStubState();
+        }
         if (Model.getFacade().isASubsystem(modelElement)) { 
-                return new PropPanelSubsystem();}
+            return new PropPanelSubsystem();
+        }
         if (Model.getFacade().isASynchState(modelElement)) { 
-                return new PropPanelSynchState();}
+            return new PropPanelSynchState();
+        }
         if (Model.getFacade().isATerminateAction(modelElement)) { 
-                return new PropPanelTerminateAction();}
+            return new PropPanelTerminateAction();
+        }
         if (Model.getFacade().isATransition(modelElement)) { 
-                return new PropPanelTransition();}
+            return new PropPanelTransition();
+        }
         if (Model.getFacade().isAUninterpretedAction(modelElement)) { 
-            return new PropPanelUninterpretedAction();}
+            return new PropPanelUninterpretedAction();
+        }
         if (Model.getFacade().isAUsage(modelElement)) { 
-                return new PropPanelUsage();}
+            return new PropPanelUsage();
+        }
         if (Model.getFacade().isAUseCase(modelElement)) { 
-                return new PropPanelUseCase();
+            return new PropPanelUseCase();
         }        
         if (Model.getFacade().isACallEvent(modelElement)) {
-			return new PropPanelCallEvent();
+            return new PropPanelCallEvent();
         }
         if (Model.getFacade().isAChangeEvent(modelElement)) {
-			return new PropPanelChangeEvent();
+            return new PropPanelChangeEvent();
         }
         if (Model.getFacade().isASignalEvent(modelElement)) {
-			return new PropPanelSignalEvent();
+            return new PropPanelSignalEvent();
         }
         if (Model.getFacade().isATimeEvent(modelElement)) {
-			return new PropPanelTimeEvent();
+            return new PropPanelTimeEvent();
         }
         // Create prop panels for primitives
         if (modelElement instanceof FigText) {
             return new PropPanelString();
         }
-
-
+        
+        
         return null;
     }
     
