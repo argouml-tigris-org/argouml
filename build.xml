@@ -956,17 +956,22 @@ Property files to be searched:
       </batchtest>
     </junit>
 
-    <available file="../../argouml-mdr/build/argouml-mdr.jar"
-               property="mdr-available"/>
-    <antcall target="tests-using-mdr"/>
-
     <antcall target="junit-report-create"/>
+
+    <antcall target="tests-using-mdr"/>
 
   </target>
 
   <target name="tests-using-mdr"
+          description="Run all tests that doesn't require any GUI components in headleass mode using the mdr model implementation.">
+    <available file="../../argouml-mdr/build/argouml-mdr.jar"
+               property="mdr-available"/>
+    <antcall target="internal-tests-using-mdr"/>
+
+  </target>
+
+  <target name="internal-tests-using-mdr"
           depends="compile,junit-fetch-init,junit-setup,ant.optional.init"
-          description="Run all tests that doesn't require any GUI components in headleass mode using the mdr model implementation."
 	  if="mdr-available">
     <!-- ant 1.4 uses printsummary="true"                          -->
     <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
@@ -1001,6 +1006,9 @@ Property files to be searched:
         </fileset>
       </batchtest>
     </junit>
+
+    <antcall target="junit-report-create"/>
+
   </target>
 
 
