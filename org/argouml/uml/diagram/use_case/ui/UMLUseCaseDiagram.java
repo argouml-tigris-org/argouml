@@ -437,10 +437,10 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 //        	|| Model.getFacade().isAClassifier(base);
     }
 
-	/**
-	 * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
-	 */
-	public boolean relocate(Object base) {
-		return false;
-	}
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
+     */
+    public boolean relocate(Object base) {
+        return false;
+    }
 } /* end class UMLUseCaseDiagram */

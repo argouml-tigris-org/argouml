@@ -277,7 +277,7 @@ public class TabDiagram
 
             List removedTargets = new ArrayList(currentSelection);
             Iterator i = sels.iterator();
-            while(i.hasNext()) {
+            while (i.hasNext()) {
                 Object o = i.next();
                 o = TargetManager.getInstance().getOwner(o);
                 if (currentSelection.contains(o)) {
