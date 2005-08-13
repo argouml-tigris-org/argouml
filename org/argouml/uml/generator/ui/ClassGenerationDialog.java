@@ -379,7 +379,7 @@ public class ClassGenerationDialog
                         .getSelectedItem());
 
             if (chooser == null) {
-                chooser = FileChooserFactory.getFileChooser();
+                chooser = new JFileChooser();
             }
 
             chooser.setFileHidingEnabled(true);
@@ -390,7 +390,7 @@ public class ClassGenerationDialog
             chooser.showDialog(this, Translator.localize(
                     "dialog.generation.chooser.approve-button-text"));
 
-            if ("" != chooser.getSelectedFile().getPath()) {
+            if (!"".equals(chooser.getSelectedFile().getPath())) {
                 String path = chooser.getSelectedFile().getPath();
                 outputDirectoryComboBox.addItem(path);
                 outputDirectoryComboBox.getModel().setSelectedItem(path);
@@ -575,9 +575,8 @@ public class ClassGenerationDialog
             } else if (col >= 0 && col < getLanguagesCount()) {
                 if (checked[col].contains(cls)) {
                     return Boolean.TRUE;
-                } else {
-                    return Boolean.FALSE;
-                }
+                } 
+                return Boolean.FALSE;
             } else {
                 return "CC-r:" + row + " c:" + col;
             }
