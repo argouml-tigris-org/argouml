@@ -247,7 +247,7 @@ public abstract class UMLDiagram
             throw new IllegalArgumentException("Given object not a namespace");
         }
         if ((namespace != null) && (namespace != ns)) {
-        	Model.getPump().removeModelEventListener(this, namespace);
+            Model.getPump().removeModelEventListener(this, namespace);
         }
         namespace = ns;
         // add the diagram as a listener to the namspace so
@@ -627,6 +627,8 @@ public abstract class UMLDiagram
      * e.g. a statechart diagram should return its statemachine.
      *
      * @author mvw@tigris.org
+     *
+     * @return the dependent element - in the general case there aren't, so null
      */
     public Object getDependentElement() {
         return null;

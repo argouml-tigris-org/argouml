@@ -208,8 +208,7 @@ public class FigUseCase extends FigNodeModelElement
         getNameFig().setTextFilled(false);
         getNameFig().setFilled(false);
         getNameFig().setLineWidth(0);
-        getNameFig().setMultiLine(false);
-//        getNameFig().setReturnAction(FigText.END_EDITING);
+        getNameFig().setReturnAction(FigText.END_EDITING);
 
         // The separator, again with arbitrary bounds for now.
 
@@ -397,7 +396,7 @@ public class FigUseCase extends FigNodeModelElement
         // Show menu to display/hide the extension point compartment. 
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
         Iterator i = ActionCompartmentDisplay.getActions().iterator();
-        while(i.hasNext()) {
+        while (i.hasNext()) {
             showMenu.add((Action) i.next());
         }
         popUpActions.insertElementAt(showMenu,
@@ -1213,7 +1212,7 @@ public class FigUseCase extends FigNodeModelElement
         ActionAddExtensionPoint.singleton().actionPerformed(null);
 
         CompartmentFigText ft =
-            (CompartmentFigText) fg.getFigs().get(fg.getFigs().size()-1);
+            (CompartmentFigText) fg.getFigs().get(fg.getFigs().size() - 1);
 
         if (ft != null) {
             ft.startTextEditor(ie);
@@ -1331,8 +1330,7 @@ public class FigUseCase extends FigNodeModelElement
                     epFig.setFont(getLabelFont());
                     epFig.setTextColor(Color.black);
                     epFig.setJustification(FigText.JUSTIFY_LEFT);
-                    epFig.setMultiLine(false);
-//                    epFig.setReturnAction(FigText.END_EDITING);
+                    epFig.setReturnAction(FigText.END_EDITING);
 
                     epVec.addFig(epFig);
                 } else {
