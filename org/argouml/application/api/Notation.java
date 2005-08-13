@@ -151,7 +151,7 @@ public final class Notation implements PropertyChangeListener {
      * Remove the notation change listener.
      * <code>finalize</code> should never happen, but play it safe.
      */
-    public void finalize() {
+    protected void finalize() {
         Configuration.removeListener(KEY_DEFAULT_NOTATION, this);
         Configuration.removeListener(KEY_USE_GUILLEMOTS, this);
         Configuration.removeListener(KEY_UML_NOTATION_ONLY, this);

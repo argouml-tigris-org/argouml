@@ -94,7 +94,7 @@ public final class NotationProviderFactory
      *
      * @throws Throwable if something goes wrong in the super finalize.
      */
-    public void finalize() throws Throwable {
+    protected void finalize() throws Throwable {
 	ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
 	super.finalize();
     }
