@@ -208,7 +208,6 @@ Options include:
   -nosplash       don't display logo at startup
   -noedem         don't report usage statistics
   -nopreload      don't preload common classes
-  -profileload    report on load times
   -norecentfile   don't reload last saved file
   -command <arg>  command to perform on startup
   -batch          don't start GUI
