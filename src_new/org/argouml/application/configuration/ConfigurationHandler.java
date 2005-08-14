@@ -117,7 +117,7 @@ public abstract class ConfigurationHandler {
      *
      * @return the default configuration path or url.
      */
-    public abstract String getDefaultPath();
+    abstract String getDefaultPath();
 
     /**
      * Internal worker which is called prior to any getValue
@@ -561,7 +561,7 @@ public abstract class ConfigurationHandler {
      * @return the value of the key or the default value
      * if the key does not exist.
      */
-    public abstract String getValue(String key, String defaultValue);
+    abstract String getValue(String key, String defaultValue);
 
     /**
      * Sets the string value of a configuration property.
