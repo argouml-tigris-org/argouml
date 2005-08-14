@@ -5,8 +5,8 @@ Welcome to ArgoUML!
 In case you just downloaded and unzipped your ArgoUML distribution,
 here's how to proceed.
 
-First, you need the runtime environment for J2SE installed, get it
-from http://java.sun.com for your platform.
+First, you need the runtime environment for Java (J2SE) installed, get it
+from http://www.java.com for your platform.
 
 At least a JRE 1.4 is required. Please let us know if you experience
 any JDK related problems. Try typing "java" in a console window to see
@@ -15,11 +15,12 @@ options. If not, try reinstalling Java.
 
 Now (after unpacking the distro, which you obviously have done,
 because this file was in it) you should have a bunch of .jar files
-(argouml.jar, nsuml.jar and others...) in your directory.  Please do
+(argouml.jar, gef.jar and others...) in your directory.  Please do
 NOT unpack the .jars! Just leave them as jar files.
 
-Now you can just start the argouml.jar, on a Windows platform by
-double-clicking it. You can just as well type the following at a
+Now you can start the argouml.jar, on a Windows platform by
+(double-)clicking it. 
+Alternatively, you can type the following at a
 command line console: java -jar argouml.jar
 
 The same effect can be obtained by creating a batch-file (in the same
@@ -44,14 +45,15 @@ Then type:
 to see everything in the ArgoUML folder. You should have the
 argouml.jar file present in this folder. Note that you need all
 downloaded jar files together in this directory (except if you
-downloaded modules. There jar files should be an the ext
+downloaded modules. There jar files should be in the ext
 subdirectory).
+
 Then type
   java -jar argouml.jar
 That's it, ArgoUML should start up now. 
 
 If not, there is a problem with the downloading on your computer.
-Please have a look at the FAQ and then consider posting an issue at
-http://argouml.tigris.org.
+Please have a look at http://argouml.tigris.org in the FAQ 
+and then consider posting an issue.
 
 Have fun!
