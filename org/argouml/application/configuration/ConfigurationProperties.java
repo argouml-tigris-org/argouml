@@ -34,19 +34,10 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 /**
- *  This class provides a user configuration based upon properties files.
- * Eventually this configuration file will be
- * available to users via a GUI interface to
- * set keyboards
- * memory allocations
- * which modules to load
- * user preferences
- * font sizes
- * user names and data
- * etc.*
+ * This class provides a user configuration based upon properties files.
  * @author Thierry Lach
  */
-public class ConfigurationProperties extends ConfigurationHandler {
+class ConfigurationProperties extends ConfigurationHandler {
     /**
      * Logger.
      */
@@ -74,7 +65,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
     /**
      * Anonymous constructor.
      */
-    public ConfigurationProperties() {
+    ConfigurationProperties() {
 	super(true);
 	Properties defaults = new Properties();
 	try {
@@ -92,7 +83,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
      *
      * @return a generic path string.
      */
-    public String getDefaultPath() {
+    String getDefaultPath() {
 	return System.getProperty("user.home") + "/argo.user.properties";
     }
 
@@ -104,7 +95,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
      *
      * @return true if the load was successful, false if not.
      */
-    public boolean loadFile(File file) {
+    boolean loadFile(File file) {
         try {
             propertyBundle.load(new FileInputStream(file));
             LOG.info("Configuration loaded from " + file);
@@ -140,7 +131,8 @@ public class ConfigurationProperties extends ConfigurationHandler {
      */
     boolean saveFile(File file) {
 	try {
-	    propertyBundle.store(new FileOutputStream(file), "Argo properties");
+	    propertyBundle.store(new FileOutputStream(file), 
+                    "ArgoUML properties");
 	    LOG.info("Configuration saved to " + file);
 	    return true;
 	} catch (Exception e) {
@@ -160,7 +152,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
      *
      * @return true if the load was successful, false if not.
      */
-    public boolean loadURL(URL url) {
+    boolean loadURL(URL url) {
 	try {
 	    propertyBundle.load(url.openStream());
 	    LOG.info("Configuration loaded from " + url + "\n");
@@ -194,16 +186,13 @@ public class ConfigurationProperties extends ConfigurationHandler {
      *
      * @return the string value of the key if found, otherwise null;
      */
-    public String getValue(String key, String defaultValue) {
+    String getValue(String key, String defaultValue) {
 	String result = "";
 	try {
 	    result = propertyBundle.getProperty(key, defaultValue);
 	} catch (Exception e) {
 	    result = defaultValue;
 	}
-//	if (LOG.isDebugEnabled()) {
-//	    LOG.debug("key '" + key + "' returns '" + result + "'");
-//	}
 	return result;
     }
 
@@ -213,7 +202,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
      * @param key the key to set.
      * @param value the value to set the key to.
      */
-    public void setValue(String key, String value) {
+    void setValue(String key, String value) {
 	LOG.debug("key '" + key + "' set to '" + value + "'");
 	propertyBundle.setProperty(key, value);
     }
