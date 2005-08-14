@@ -47,7 +47,6 @@ public class SettingsTabPreferences extends SettingsTabHelper
 
     private JCheckBox chkSplash = null;
     private JCheckBox chkPreload = null;
-    private JCheckBox chkProfile = null;
     private JCheckBox chkReloadRecent = null;
 
     /**
@@ -99,10 +98,6 @@ public class SettingsTabPreferences extends SettingsTabHelper
  	top.add(chkPreload, checkConstraints);
 
 	checkConstraints.gridy = 3;
-        chkProfile = createCheckBox("label.profile");
- 	top.add(chkProfile, checkConstraints);
-
-	checkConstraints.gridy = 4;
         chkReloadRecent = createCheckBox("label.reload-recent");
  	top.add(chkReloadRecent, checkConstraints);
 
@@ -116,8 +111,6 @@ public class SettingsTabPreferences extends SettingsTabHelper
         chkSplash.setSelected(Configuration.getBoolean(Argo.KEY_SPLASH, true));
         chkPreload.setSelected(Configuration.getBoolean(Argo.KEY_PRELOAD,
                 true));
-        chkProfile.setSelected(Configuration.getBoolean(Argo.KEY_PROFILE,
-                false));
         chkReloadRecent.setSelected(
 		Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT,
 					 false));
@@ -129,7 +122,6 @@ public class SettingsTabPreferences extends SettingsTabHelper
     public void handleSettingsTabSave() {
         Configuration.setBoolean(Argo.KEY_SPLASH, chkSplash.isSelected());
         Configuration.setBoolean(Argo.KEY_PRELOAD, chkPreload.isSelected());
-        Configuration.setBoolean(Argo.KEY_PROFILE, chkProfile.isSelected());
         Configuration.setBoolean(Argo.KEY_RELOAD_RECENT_PROJECT,
 				 chkReloadRecent.isSelected());
     }

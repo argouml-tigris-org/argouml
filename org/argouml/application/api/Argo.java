@@ -88,12 +88,6 @@ public class Argo {
 	Configuration.makeKey("init", "edem");
 
     /**
-     * Key to profile initialization.
-     */
-    public static final ConfigurationKey KEY_PROFILE =
-	Configuration.makeKey("init", "profile");
-
-    /**
      * Key for last saved project URL.
      */
     public static final ConfigurationKey KEY_MOST_RECENT_PROJECT_FILE =

@@ -144,7 +144,6 @@ public class Main {
         boolean doSplash = Configuration.getBoolean(Argo.KEY_SPLASH, true);
 	// TODO: document use. Ref. 1/2
         boolean preload = Configuration.getBoolean(Argo.KEY_PRELOAD, true);
-        boolean profileLoad = Configuration.getBoolean(Argo.KEY_PROFILE, false);
         boolean reloadRecent =
             Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT, false);
 	boolean batch = false;
@@ -179,8 +178,6 @@ public class Main {
                     /* useEDEM = false*/;
                 } else if (args[i].equalsIgnoreCase("-nopreload")) {
                     preload = false;
-                } else if (args[i].equalsIgnoreCase("-profileload")) {
-                    profileLoad = true;
                 } else if (args[i].equalsIgnoreCase("-norecentfile")) {
                     reloadRecent = false;
                 } else if (args[i].equalsIgnoreCase("-command")
@@ -347,16 +344,14 @@ public class Main {
         Thread postLoadThead = new Thread(pl);
         postLoadThead.start();
 
-        if (profileLoad) {
-            LOG.info("");
-            LOG.info("profile of load time ############");
-            for (Enumeration i = st.result(); i.hasMoreElements();) {
-                LOG.info(i.nextElement());
-            }
-
-            LOG.info("#################################");
-            LOG.info("");
+        LOG.info("");
+        LOG.info("profile of load time ############");
+        for (Enumeration i = st.result(); i.hasMoreElements();) {
+            LOG.info(i.nextElement());
         }
+        LOG.info("#################################");
+        LOG.info("");
+
         st = null;
         pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
@@ -401,7 +396,6 @@ public class Main {
         System.err.println("  -nosplash       don't display logo at startup");
         System.err.println("  -noedem         don't report usage statistics");
         System.err.println("  -nopreload      don't preload common classes");
-        System.err.println("  -profileload    report on load times");
         System.err.println("  -norecentfile   don't reload last saved file");
         System.err.println("  -command <arg>  command to perform on startup");
         System.err.println("  -batch          don't start GUI");
