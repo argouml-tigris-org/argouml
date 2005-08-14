@@ -121,6 +121,7 @@ public class PersistenceManager {
          * since it does not retain 
          * the complete project after a save/load cycle.
          * See issue 3099. */
+//        otherPersisters.add(xmiPersister);
     }
 
     /**
@@ -193,7 +194,7 @@ public class PersistenceManager {
         chooser.addChoosableFileFilter(xmiPersister);
         chooser.setFileFilter(xmiPersister);
     }
-    
+
     /**
      * @return the extension of the default persister
      *         (just the text, not the ".")
@@ -202,6 +203,14 @@ public class PersistenceManager {
         return defaultPersister.getExtension();
     }
 
+    /**
+     * @return the extension of the xmi persister
+     *         (just the text, not the ".")
+     */
+    public String getXmiExtension() {
+        return xmiPersister.getExtension();
+    }
+    
     /**
      * @param in the input file or path name which may or may not
      *           have a recognised extension
@@ -215,6 +224,20 @@ public class PersistenceManager {
         return in;
     }
 
+    /**
+     * @param in the input file or path name which may or may not
+     *           have a "xmi" extension
+     * @return the amended file or pathname, guaranteed to have
+     *         a "xmi" extension
+     */
+    public String fixXmiExtension(String in) {
+        if (getPersisterFromFileName(in) != xmiPersister) {
+            in += "." + getXmiExtension();
+        }
+        return in;
+    }
+
+    
     /**
      * @param in the input url which may or may not have a recognised extension
      * @return the url with default extension added,

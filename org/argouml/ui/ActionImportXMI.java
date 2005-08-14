@@ -119,18 +119,15 @@ public class ActionImportXMI extends AbstractAction {
                         }
                     }
                 }
-                if (theFile != null) {
-                    Configuration.setString(
-                            PersistenceManager.KEY_IMPORT_XMI_PATH,
-                            theFile.getPath());
-
-                    if (ProjectBrowser.getInstance()
-                            .loadProject(theFile, true)) {
-                        // notification of menu bar
-                        GenericArgoMenuBar menuBar =
-                            (GenericArgoMenuBar) pb.getJMenuBar();
-                        menuBar.addFileSaved(theFile.getCanonicalPath());
-                    }
+                Configuration.setString(
+                        PersistenceManager.KEY_IMPORT_XMI_PATH,
+                        theFile.getPath());
+                
+                if (ProjectBrowser.getInstance().loadProject(theFile, true)) {
+                    // notification of menu bar
+                    GenericArgoMenuBar menuBar =
+                        (GenericArgoMenuBar) pb.getJMenuBar();
+                    menuBar.addFileSaved(theFile.getCanonicalPath());
                 }
             }
         } catch (IOException ignore) {

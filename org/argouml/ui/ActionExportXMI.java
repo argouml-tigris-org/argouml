@@ -26,18 +26,13 @@ package org.argouml.ui;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
-import javax.swing.JMenuItem;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
-import org.argouml.application.api.PluggableMenu;
 import org.argouml.i18n.Translator;
 import org.argouml.persistence.PersistenceManager;
-import org.argouml.persistence.XmiFilePersister;
 
 /**
  * Exports the xmi of a project to a file choosen by the user.
@@ -45,135 +40,13 @@ import org.argouml.persistence.XmiFilePersister;
  * Jun 7, 2003
  */
 public final class ActionExportXMI extends AbstractAction
-        implements PluggableMenu {
-
-    /** logger */
-    private static final Logger LOG = Logger.getLogger(ActionExportXMI.class);
-
-    private static ActionExportXMI instance = new ActionExportXMI();
+{
 
     /**
-     * Constructor.
+     * The constructor.
      */
-    private ActionExportXMI() {
+    public ActionExportXMI() {
         super(Translator.localize("action.export-project-as-xmi"));
-    }
-
-    /**
-     * Singleton instance method
-     * @return the singleton instance
-     */
-    public static ActionExportXMI getInstance() {
-        return instance;
-    }
-
-    /**
-     * @see
-     * org.argouml.application.api.PluggableMenu#getMenuItem(java.lang.Object[])
-     */
-    public JMenuItem getMenuItem(Object[] context) {
-        if (!inContext(context)) {
-            return null;
-        }
-        // next code does not work with JDK 1.2
-        return new JMenuItem(this);
-    }
-
-    /**
-     * @see PluggableMenu#buildContext(javax.swing.JMenuItem, String)
-     */
-    public Object[] buildContext(JMenuItem parentMenuItem, String menuType) {
-        return new Object[] {
-	    parentMenuItem, menuType,
-	};
-    }
-
-    /**
-     * @see org.argouml.application.api.Pluggable#inContext(java.lang.Object[])
-     */
-    public boolean inContext(Object[] context) {
-        if (context.length < 2) {
-            return false;
-        }
-        if ((context[0] instanceof JMenuItem)
-            && ("Tools".equals(context[1]))) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#initializeModule()
-     */
-    public boolean initializeModule() {
-        LOG.info("+---------------------------------+");
-        LOG.info("| Export XMI plugin enabled!      |");
-        LOG.info("+---------------------------------+");
-
-        return true;
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#shutdownModule()
-     */
-    public boolean shutdownModule() {
-        return true;
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
-     */
-    public void setModuleEnabled(boolean tf) {
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
-     */
-    public boolean isModuleEnabled() {
-        return true;
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleName()
-     */
-    public String getModuleName() {
-        return "Export as XMI";
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
-     */
-    public String getModuleDescription() {
-        return "A module to export a projectfile as XMI";
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
-     */
-    public String getModuleVersion() {
-        return "0.1";
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
-     */
-    public String getModuleAuthor() {
-        return "Jaap Branderhorst";
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
-     * Vector, Object)
-     */
-    public Vector getModulePopUpActions(Vector popUpActions, Object context) {
-        return null;
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleKey()
-     */
-    public String getModuleKey() {
-        return "module.menu.file.export.xmi";
     }
 
     /**
@@ -181,6 +54,7 @@ public final class ActionExportXMI extends AbstractAction
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+        PersistenceManager pm = PersistenceManager.getInstance();
         // show a chooser dialog for the file name, only xmi is allowed
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle(Translator.localize(
@@ -188,7 +62,7 @@ public final class ActionExportXMI extends AbstractAction
         chooser.setApproveButtonText(Translator.localize(
 					     "filechooser.export"));
         chooser.setAcceptAllFileFilterUsed(false);
-        chooser.setFileFilter(new XmiFilePersister());
+        pm.setXmiFileChooserFilter(chooser);
 
         String fn = Configuration.getString(
                 PersistenceManager.KEY_EXPORT_XMI_PATH);
@@ -204,11 +78,10 @@ public final class ActionExportXMI extends AbstractAction
                 Configuration.setString(
                         PersistenceManager.KEY_EXPORT_XMI_PATH,
                         theFile.getPath());
-                if (!name.endsWith(".xmi")) {
-                    theFile = new File(theFile.getParent(), name + ".xmi");
-                }
+                name = pm.fixXmiExtension(name);
+                theFile = new File(theFile.getParent(), name);
+                ProjectBrowser.getInstance().trySave(false, theFile);
             }
-            ProjectBrowser.getInstance().trySave(false, theFile);
         }
     }
 }
