@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
@@ -48,6 +49,7 @@ import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.DisplayTextTree;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -55,7 +57,6 @@ import org.argouml.uml.generator.GeneratorDisplay;
 import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
-
 
 /**
  * This class is the JTree for the explorer. It provides:<p>
@@ -153,6 +154,22 @@ public class ExplorerTree
             if (me.isPopupTrigger()) {
                 me.consume();
                 showPopupMenu(me);
+            }
+            if (me.getClickCount() >= 2) {
+                myDoubleClick();
+            }
+        }
+        
+        /**
+         * Double-clicking on an item attempts 
+         * to show the item in a diagram.
+         */
+        private void myDoubleClick() {
+            Object target = TargetManager.getInstance().getTarget();
+            if (target != null) {
+                Vector show = new Vector();
+                show.add(target);
+                ProjectBrowser.getInstance().jumpToDiagramShowing(show);
             }
         }
 
@@ -332,8 +349,9 @@ public class ExplorerTree
         int rows = getRowCount();
         for (int i = 0; i < targets.length; i++) {
             Object target = targets[i];
-            target =
-		target instanceof Fig ? ((Fig) target).getOwner() : target;
+            if(target instanceof Fig) {
+                target = ((Fig) target).getOwner();
+            }
             for (int j = 0; j < rows; j++) {
                 Object rowItem =
 		    ((DefaultMutableTreeNode) getPathForRow(j)
@@ -472,8 +490,9 @@ public class ExplorerTree
                 int rows = getRowCount();
                 for (int i = 0; i < targets.length; i++) {
                     Object target = targets[i];
-                    target = target instanceof Fig ? ((Fig) target).getOwner()
-                            : target;
+                    if(target instanceof Fig) {
+                        target = ((Fig) target).getOwner();
+                    }
                     for (int j = 0; j < rows; j++) {
                         Object rowItem = ((DefaultMutableTreeNode)
                             getPathForRow(j).getLastPathComponent())
@@ -507,8 +526,9 @@ public class ExplorerTree
                 int rows = getRowCount();
                 for (int i = 0; i < targets.length; i++) {
                     Object target = targets[i];
-                    target = target instanceof Fig ? ((Fig) target).getOwner()
-                            : target;
+                    if(target instanceof Fig) {
+                        target = ((Fig) target).getOwner();
+                    }
                     for (int j = 0; j < rows; j++) {
                         Object rowItem = ((DefaultMutableTreeNode)
                             getPathForRow(j).getLastPathComponent())
