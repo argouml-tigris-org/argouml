@@ -254,19 +254,18 @@ public class LookAndFeelMgr {
 
         if (currentLookAndFeel == null) {
             return DEFAULT_KEY;
-        } else {
-            String name = null;
-
-            UIManager.LookAndFeelInfo[] lafs =
-		UIManager.getInstalledLookAndFeels();
-            for (int i = 0; i < lafs.length; ++i) {
-                if (lafs[i].getClassName().equals(currentLookAndFeel)) {
-		    name = lafs[i].getName();
-                }
+        } 
+        String name = null;
+        
+        UIManager.LookAndFeelInfo[] lafs =
+            UIManager.getInstalledLookAndFeels();
+        for (int i = 0; i < lafs.length; ++i) {
+            if (lafs[i].getClassName().equals(currentLookAndFeel)) {
+                name = lafs[i].getName();
             }
-
-            return name;
         }
+        
+        return name;
     }
 
     /**
@@ -318,16 +317,15 @@ public class LookAndFeelMgr {
 
         if (currentTheme == null) {
             return DEFAULT_THEME.getName();
-        } else {
-            String name = null;
-
-            for (int i = 0; i < THEMES.length; ++i) {
-                if (THEMES[i].getClass().getName().equals(currentTheme)) {
-                    name = THEMES[i].getName();
-                }
+        } 
+        String name = null;
+        
+        for (int i = 0; i < THEMES.length; ++i) {
+            if (THEMES[i].getClass().getName().equals(currentTheme)) {
+                name = THEMES[i].getName();
             }
-            return name;
         }
+        return name;
     }
 
     /**
@@ -372,9 +370,7 @@ public class LookAndFeelMgr {
         if (font.getSize2D() >= 12f) {
             return font.deriveFont(font.getSize2D() - 2f);
         }
-        else {
-            return font;
-        }
+        return font;
     }
 
     /**
