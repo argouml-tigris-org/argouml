@@ -60,7 +60,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.i18n.Translator;
@@ -86,6 +85,7 @@ import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.IStatusBar;
 import org.tigris.gef.undo.RedoAction;
 import org.tigris.gef.undo.UndoAction;
@@ -666,15 +666,13 @@ public class ProjectBrowser
     }
 
     /**
-     * Get a list of offenders and display the according diagram, aka
-     * implement a method which jumps to the offender.
-     * TODO: this probably needs a lot of work, as the code looks
-     * as if it can only jump to diagram offenders
-     *
+     * Given a list of offenders, displays the according diagram.
+     * This method jumps to the diagram showing the offender,
+     * and scrolls to make it visible.
+     * 
      * @param dms vector of offenders
-     * @see org.argouml.cognitive.ui.ToDoPane
      */
-    public void jumpToDiagramShowing(ListSet dms) {
+    public void jumpToDiagramShowing(Vector dms) {
         if (dms.size() == 0) {
             return;
         }
@@ -711,13 +709,25 @@ public class ProjectBrowser
             }
         }
         if (bestDiagram != null) {
-            setTarget(bestDiagram);
+            if (!ProjectManager.getManager().getCurrentProject()
+                    .getActiveDiagram().equals(bestDiagram)) {
+                setTarget(bestDiagram);
+            }
             setTarget(first);
         }
         // making it possible to jump to the modelroot
         if (first.equals(ProjectManager.getManager().getCurrentProject()
 			 .getRoot())) {
             setTarget(first);
+        }
+        
+        // and finally, adjust the scrollbars to show the Fig
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p != null) {
+            Object f = TargetManager.getInstance().getFigTarget();
+            if (f instanceof Fig) {
+                Globals.curEditor().scrollToShow((Fig) f);
+            }
         }
     }
 

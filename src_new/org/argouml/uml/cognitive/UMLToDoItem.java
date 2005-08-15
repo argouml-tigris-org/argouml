@@ -35,17 +35,13 @@ import java.util.Enumeration;
 import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.targetmanager.TargetManager;
-
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.Highlightable;
 
 
@@ -129,15 +125,8 @@ public class UMLToDoItem extends ToDoItem {
     public void action() {
         deselect();
         // this also sets the target as a convenient side effect
-        ProjectBrowser.getInstance().jumpToDiagramShowing(getOffenders());
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p != null) {
-            Object f = TargetManager.getInstance().getFigTarget();
-            if (f instanceof Fig) {
-                Fig fig = (Fig) f;
-                Globals.curEditor().scrollToShow(fig.getX(), fig.getY());
-            }
-        }
+        ProjectBrowser.getInstance()
+            .jumpToDiagramShowing(getOffenders().asVector());
         select();
     }
 
