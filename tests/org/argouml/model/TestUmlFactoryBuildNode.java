@@ -32,6 +32,15 @@ import junit.framework.TestCase;
  */
 public class TestUmlFactoryBuildNode extends TestCase {
     /**
+     * Constructor.
+     *
+     * @param arg0 name of the test case
+     */
+    public TestUmlFactoryBuildNode(String arg0) {
+        super(arg0);
+    }
+
+    /**
      * Testing Core elements.
      */
     public void testBuildCoreNodes() {
