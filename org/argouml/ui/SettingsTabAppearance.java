@@ -167,13 +167,9 @@ public class SettingsTabAppearance
      * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
-        LookAndFeelMgr.getInstance().setCurrentLookAndFeel(
-            LookAndFeelMgr.getInstance().getLookAndFeelFromName(
-                (String) lookAndFeel.getSelectedItem()));
-
-        LookAndFeelMgr.getInstance().setCurrentTheme(
-            LookAndFeelMgr.getInstance().getThemeFromName(
-                (String) metalTheme.getSelectedItem()));
+        LookAndFeelMgr.getInstance().setCurrentLAFAndThemeByName(
+                (String) lookAndFeel.getSelectedItem(),
+                (String) metalTheme.getSelectedItem());
 
         Configuration.setBoolean(Argo.KEY_SMOOTH_EDGES,
             smoothEdges.isSelected());
