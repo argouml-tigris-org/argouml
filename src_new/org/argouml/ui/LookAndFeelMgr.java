@@ -47,7 +47,15 @@ import org.argouml.application.api.Configuration;
  * Controls the look and feel and theme of ArgoUML. LookAndFeelMgr has a
  * "Look and Feel" property which represents the Swing Pluggable Look-and-feel.
  * It also has a "Theme" property which represents a MetalTheme when the
- * Metal look-and-feel is selected.
+ * Metal look-and-feel is selected 
+ * (for other LAFs, a theme is not supported). <p>
+ * 
+ * Themes have 2 kinds of names: 
+ * 1. The "display name" shown in the UI, 
+ * which is retrieved by theme.getName(), and 
+ * 2. the "class name", 
+ * which is the name of the theme class, 
+ * and is retrieved by theme.getClass().getName(). 
  *
  * @author Bob Tarling
  * @author Jeremy Jones
@@ -58,7 +66,7 @@ public class LookAndFeelMgr {
     private static final LookAndFeelMgr	SINGLETON = new LookAndFeelMgr();
 
     // The Metal look and feel class name
-    private static final String                 METAL_LAF =
+    private static final String                 METAL_LAF_CLASS_NAME =
 	"javax.swing.plaf.metal.MetalLookAndFeel";
 
     // Display name and configuration key for default look and feel and theme
@@ -110,8 +118,11 @@ public class LookAndFeelMgr {
      * the LookAndFeel and Theme properties.
      **/
     public void initializeLookAndFeel() {
-        setLookAndFeel(getCurrentLookAndFeel());
-        setTheme(getMetalTheme(getCurrentTheme()));
+        String n = getCurrentLookAndFeel();
+        setLookAndFeel(n);
+        if (isThemeCompatibleLookAndFeel(n)) {
+            setTheme(getMetalTheme(getCurrentThemeClassName()));
+        }
     }
 
     /**
@@ -120,7 +131,7 @@ public class LookAndFeelMgr {
      * @param arg the argument from the command line
      * @return the theme
      */
-    public String getThemeFromArg(String arg) {
+    public String getThemeClassNameFromArg(String arg) {
         if (arg.equalsIgnoreCase("-big")) {
             return BIG_THEME.getClass().getName();
         }
@@ -140,6 +151,8 @@ public class LookAndFeelMgr {
 
     /**
      * Returns the display names of the available look and feel choices.
+     * This may be used to fill a combobox to allow the user 
+     * to select the LAF.
      *
      * @return	look and feel display names
      **/
@@ -157,6 +170,8 @@ public class LookAndFeelMgr {
 
     /**
      * Returns the display names of the available theme choices.
+     * This may be used to fill a combobox to allow the user 
+     * to select the theme.
      *
      * @return	theme display names
      **/
@@ -224,7 +239,8 @@ public class LookAndFeelMgr {
      * @return				true if supports themes
      **/
     public boolean isThemeCompatibleLookAndFeel(String lafClass) {
-        return (lafClass == null || lafClass.equals(METAL_LAF));
+        if (lafClass == null) return false;
+        return (/*lafClass == null ||*/ lafClass.equals(METAL_LAF_CLASS_NAME));
     }
 
     /**
@@ -273,33 +289,38 @@ public class LookAndFeelMgr {
      * Configuration.  If argument is null, indicates that Swing's default
      * look and feel should be used.
      *
-     * @param	lafClass	class name of desired look and feel
+     * @param lafName	the name of desired look and feel
+     * @param themeName the name of the theme
      **/
-    public void setCurrentLookAndFeel(String lafClass) {
+    public void setCurrentLAFAndThemeByName(String lafName, String themeName) {
+        String lafClass = getLookAndFeelFromName(lafName);
         String currentLookAndFeel = getCurrentLookAndFeel();
 
-        if ((lafClass == null && currentLookAndFeel == null)
-            || (lafClass != null && lafClass.equals(currentLookAndFeel))) {
+        if (lafClass == null && currentLookAndFeel == null) {
             return;
         }
+//        if (!(lafClass != null && lafClass.equals(currentLookAndFeel))) {
+//            setLookAndFeel(lafClass); 
+//            Disabled until UI supports dynamic switching
+//        }
 
-        //setLookAndFeel(lafClass); Disabled until UI supports dynamic switching
-
-        String lafValue = lafClass;
-        if (lafValue == null) {
-            lafValue = DEFAULT_KEY;
+        if (lafClass == null) {
+            lafClass = DEFAULT_KEY;
         }
-        Configuration.setString(Argo.KEY_LOOK_AND_FEEL_CLASS, lafValue);
+        Configuration.setString(Argo.KEY_LOOK_AND_FEEL_CLASS, lafClass);
+        
+        setCurrentTheme(getThemeFromName(themeName));
     }
 
     /**
      * Returns the string identifier for the current theme.
      * This is the class name of the MetalTheme class for the theme.
-     * This method should never return null.
+     * This method returns null when the configuration 
+     * does not return a valid metaltheme.
      *
-     * @return	current theme class name
+     * @return	current theme class name or null
      **/
-    public String getCurrentTheme() {
+    public String getCurrentThemeClassName() {
 	String value = Configuration.getString(Argo.KEY_THEME_CLASS, null);
 	if (DEFAULT_KEY.equals(value)) {
 	    value = null;
@@ -309,23 +330,25 @@ public class LookAndFeelMgr {
 
     /**
      * Returns the display name of the current theme.
+     * Guaranteed to return the display name 
+     * of one of the themes in the THEMES list.
      *
      * @return	theme display name
      **/
     public String getCurrentThemeName() {
-        String currentTheme = getCurrentTheme();
+        String currentThemeClassName = getCurrentThemeClassName();
 
-        if (currentTheme == null) {
-            return DEFAULT_THEME.getName();
+        if (currentThemeClassName == null) {
+            /* Make up a default */
+            return THEMES[0].getName();
         } 
-        String name = null;
         
         for (int i = 0; i < THEMES.length; ++i) {
-            if (THEMES[i].getClass().getName().equals(currentTheme)) {
-                name = THEMES[i].getName();
+            if (THEMES[i].getClass().getName().equals(currentThemeClassName)) {
+                return THEMES[i].getName();
             }
         }
-        return name;
+        return THEMES[0].getName();
     }
 
     /**
@@ -338,7 +361,7 @@ public class LookAndFeelMgr {
     public void setCurrentTheme(String themeClass) {
         MetalTheme theme = getMetalTheme(themeClass);
 
-        if (theme.getClass().getName().equals(getCurrentTheme())) {
+        if (theme.getClass().getName().equals(getCurrentThemeClassName())) {
             return;
         }
 
@@ -408,12 +431,13 @@ public class LookAndFeelMgr {
         String currentLookAndFeel = getCurrentLookAndFeel();
 
         // If LAF is Metal (either set explicitly, or as the default)
-        if ((currentLookAndFeel != null && currentLookAndFeel.equals(METAL_LAF))
+        if ((currentLookAndFeel != null 
+                && currentLookAndFeel.equals(METAL_LAF_CLASS_NAME))
 	    || (currentLookAndFeel == null
-	        && defaultLafClass.equals(METAL_LAF))) {
+	        && defaultLafClass.equals(METAL_LAF_CLASS_NAME))) {
             try {
                 MetalLookAndFeel.setCurrentTheme(theme);
-                UIManager.setLookAndFeel(METAL_LAF);
+                UIManager.setLookAndFeel(METAL_LAF_CLASS_NAME);
             } catch (UnsupportedLookAndFeelException e) {
                 LOG.error(e);
             } catch (ClassNotFoundException e) {
