@@ -1750,9 +1750,6 @@ public class Modeller {
     }
 
     public synchronized Vector getMethodCalls() {
-        if (methodCalls == null) {
-            methodCalls = new Vector();
-        }
         return methodCalls;
     }
 

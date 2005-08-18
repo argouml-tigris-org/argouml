@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,6 +39,7 @@ import java.util.Iterator;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -46,7 +48,6 @@ import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.table.AbstractTableModel;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
@@ -54,6 +55,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDialog;
+import org.argouml.ui.CheckboxTableModel;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -63,7 +65,6 @@ import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.sequence.ui.FigClassifierRole;
 import org.argouml.uml.diagram.sequence.ui.FigMessage;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-import org.argouml.uml.diagram.sequence.ui.SequenceDiagramRenderer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.reveng.java.JavaLexer;
 import org.argouml.uml.reveng.java.JavaRecognizer;
@@ -72,17 +73,20 @@ import org.argouml.uml.ui.ActionBaseDelete;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.Mode;
 import org.tigris.gef.base.LayerManager;
 import org.tigris.gef.presentation.Fig;
 
-import org.tigris.gef.base.Mode;
-import org.tigris.gef.base.ModeManager;
-
 /**
- * The dialog that starts the reverse engineering of operations.
+ * The dialog that starts the reverse engineering of operations.<br>
+ * TODO: subsequent parsing of further operation bodies <br>
+ * TODO: suppressing multiple creation of already created classifier roles<br>
+ * TODO: suppressing multiple creation of already created messages<br>
+ * TODO: ...<br>
  */
 public class RESequenceDiagramDialog extends ArgoDialog implements ActionListener {
+
+    private final static int X_OFFSET = 100;
 
     /**
      * Constructor.
@@ -92,10 +96,11 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
     public RESequenceDiagramDialog(Object operation) {
         super(
             ProjectBrowser.getInstance(),
-            Translator.localize("dialog.title.generate-classes"),
+            Translator.localize("dialog.title.reverse-engineer-sequence-diagram")
+             + (operation != null ? (' ' + Model.getFacade().getName(operation) + "()") : ""),
             ArgoDialog.OK_CANCEL_OPTION,
             true);
-        
+
         _operation = operation;
         _model = ProjectManager.getManager().getCurrentProject().getModel();
         try {
@@ -220,7 +225,12 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         ArrayList assumptions = new ArrayList();
         assumptions.add("calls.hasMoreElements()");
         assumptions.add("methods != null && !methods.isEmpty()");
-        JTable table = new JTable(new SelectionTableModel(assumptions.toArray(), "Conditions", "Assume true"));
+        Object[] data = null;
+        JTable table = new JTable(new CheckboxTableModel(
+            assumptions.toArray(),
+            data,
+            "Conditions",
+            "Assume true"));
         table.setShowVerticalLines(true);
 
         fieldConstraints.gridx = 0;
@@ -261,7 +271,11 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         top.add(new JLabel("Method call table:"), labelConstraints);
         top.add(_processButton, fieldConstraints);
 
-        _callTable = new SelectionTableModel(_calls.toArray(), "Method calls", "Enable");
+        _callTable = new CheckboxTableModel(
+            _calls.toArray(),
+            _calldata.toArray(),
+            "Method calls",
+            "Enable");
         JTable table = new JTable(_callTable);
         table.setShowVerticalLines(true);
 
@@ -272,6 +286,20 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         fieldConstraints.fill = GridBagConstraints.BOTH;
         fieldConstraints.weighty = 1.0;
         top.add(new JScrollPane(table), fieldConstraints);
+
+        fieldConstraints.insets = new Insets(2, 4, 2, 4);
+        JCheckBox checkbox1 = new JCheckBox("create calls", true);
+        fieldConstraints.gridy = 2;
+        top.add(checkbox1, fieldConstraints);
+        JCheckBox checkbox2 = new JCheckBox("local calls", true);
+        fieldConstraints.gridy = 3;
+        top.add(checkbox2, fieldConstraints);
+        JCheckBox checkbox3 = new JCheckBox("package calls", true);
+        fieldConstraints.gridy = 4;
+        top.add(checkbox3, fieldConstraints);
+        JCheckBox checkbox4 = new JCheckBox("far calls", true);
+        fieldConstraints.gridy = 5;
+        top.add(checkbox3, fieldConstraints);
 
         return top;
     }
@@ -285,9 +313,9 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
             Model.getCollaborationsFactory().buildCollaboration(
                 _namespace,
                 classifier);
-        _diagram = 
+        _diagram =
             (UMLDiagram)DiagramFactory.getInstance().createDiagram(
-                UMLSequenceDiagram.class, 
+                UMLSequenceDiagram.class,
                 _collaboration,
                 null);
         _graphModel = (SequenceDiagramGraphModel)_diagram.getGraphModel();
@@ -308,6 +336,12 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         Model.getCollaborationsHelper().setBases(node, coll);
         Model.getCoreHelper().setName(node, objName);
         crFig = new FigClassifierRole(node);
+
+        // location must be set for correct automatic layouting (how funny)
+        // otherwise, the new classifier role is not the rightmost
+        crFig.setLocation(_maxXPos, 0);
+        _maxXPos += X_OFFSET;
+
         _diagram.add(crFig);
         _graphModel.addNode(node);
         ExplorerEventAdaptor.getInstance().modelElementChanged(_namespace);
@@ -359,24 +393,33 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         }
         return body;
     }
-    
+
     /**
      * Builds the complete action and its target classifier role (if not existing).
      */
     private Object buildAction(String call) {
         Object action = null;
         StringBuffer sb = new StringBuffer(call);
-        boolean isCreate = call.startsWith("new ");
         int findpos = sb.lastIndexOf(".");
+        int createAssignPos = sb.indexOf("=new ");
+        boolean isCreate = createAssignPos != -1;
         if (!isCreate && findpos == -1) {
             // call of a method of the class
+            action = buildEdge(call, _classifierRole, _classifierRole, Model.getMetaTypes().getCallAction());
+        } else if (!isCreate && findpos <= 5 && (call.startsWith("super.") || call.startsWith("this."))){
+            // also call of a method of the class, but prefixed with "super." or "this."
             action = buildEdge(call, _classifierRole, _classifierRole, Model.getMetaTypes().getCallAction());
         } else {
             String type = null;
             if (isCreate) {
-                type = sb.substring(4);
+                type = sb.substring(createAssignPos + 5);
                 FigClassifierRole endFig = getClassifierFromModel(type);
-                action = buildEdge(call, _classifierRole, _classifierRole, Model.getMetaTypes().getCreateAction());
+                Model.getCoreHelper().setName(endFig.getOwner(), sb.substring(0, createAssignPos));
+                action = buildEdge(
+                    sb.substring(createAssignPos + 1),
+                    _classifierRole,
+                    endFig,
+                    Model.getMetaTypes().getCreateAction());
             } else {
                 String teststring = call.substring(0, findpos);
                 type = (String)_types.get(teststring);
@@ -396,10 +439,14 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
      */
     private FigMessage buildEdge(String call, FigClassifierRole startFig, FigClassifierRole endFig, Object callType) {
         FigMessage figEdge = null;
+        _maxPort++;
         MessageNode startPort = new MessageNode(startFig);
-        startFig.addNode(1, startPort);
+        startFig.addNode(_maxPort, startPort);
+        if (startFig == endFig) {
+            _maxPort++;
+        }
         MessageNode foundPort = new MessageNode(endFig);
-        endFig.addNode(2, foundPort);
+        endFig.addNode(_maxPort, foundPort);
         Fig startPortFig = startFig.getPortFig(startPort);
         Fig destPortFig = endFig.getPortFig(foundPort);
         Object edgeType = Model.getMetaTypes().getMessage();
@@ -430,6 +477,10 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
     private FigClassifierRole getClassifierFromModel(String type) {
         FigClassifierRole crFig = null;
         // TODO: get the REAL classifier, not this fake:
+        int pos = type.lastIndexOf(".");
+        if (pos != -1) {
+            type = type.substring(pos + 1);
+        }
         Object classifier = Model.getCoreFactory().buildClass(type);
         crFig = buildClassifierRole(classifier, "obj");
         return crFig;
@@ -442,6 +493,7 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
     private Object _operation = null;
     private FigClassifierRole _classifierRole = null;
     private ArrayList _calls = new ArrayList();
+    private ArrayList _calldata = new ArrayList();
     private ArrayList _conditions = new ArrayList();
     private Hashtable _types = new Hashtable();
     private Object _collaboration = null;
@@ -449,100 +501,17 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
     private SequenceDiagramGraphModel _graphModel = null;
     private Object default_state = null;
     private Object default_state_machine = null;
-    private SelectionTableModel _callTable = null;
-    private SelectionTableModel _assumptionTable = null;
+    private CheckboxTableModel _callTable = null;
+    private CheckboxTableModel _assumptionTable = null;
     private JButton _processButton = null;
-    
+    private int _maxXPos = 0;
+    private int _maxPort = 0;
+
 
     /**
      * Logger.
      */
     private static final Logger LOG =
         Logger.getLogger(RESequenceDiagramDialog.class);
-
-    /**
-     * Table model for the assumption table.
-     */
-    class SelectionTableModel extends AbstractTableModel {
-        /**
-         * Constructor.
-         */
-        public SelectionTableModel(Object[] arr, String colName1, String colName2) {
-            elements = new Object[arr.length][2];
-            for (int i = 0; i < elements.length; i++) {
-            elements[i][0] = arr[i];
-            elements[i][1] = new Boolean(true);
-            }
-            columnName1 = colName1;
-            columnName2 = colName2;
-        }
-    
-        /**
-         * @see javax.swing.table.TableModel#getColumnCount()
-         */
-        public int getColumnCount() {
-            return 2;
-        }
-    
-        /**
-         * @see javax.swing.table.TableModel#getColumnName(int)
-         */
-        public String getColumnName(int col) {
-            if (col == 0) {
-                return columnName1;
-            } else if (col == 1) {
-                return columnName2;
-            }
-            return null;
-        }
-    
-        /**
-         * @see javax.swing.table.TableModel#getRowCount()
-         */
-        public int getRowCount() {
-            return elements.length;
-        }
-    
-        /**
-         * @see javax.swing.table.TableModel#getValueAt(int, int)
-         */
-        public Object getValueAt(int row, int col) {
-            if (row < elements.length) {
-                return elements[row][col];
-            } else {
-                throw new IllegalArgumentException("Too many columns");
-            }
-        }
-    
-        /**
-         * @see javax.swing.table.TableModel#setValueAt(
-         *         java.lang.Object, int, int)
-         */
-        public void setValueAt(Object ob, int row, int col) {
-            elements[row][col] = ob;
-        }
-    
-        /**
-         * @see javax.swing.table.TableModel#getColumnClass(int)
-         */
-        public Class getColumnClass(int col) {
-            if (col == 0) {
-                return String.class;
-            } else if (col == 1) {
-                return Boolean.class;
-            }
-            return null;
-        }
-    
-        /**
-         * @see javax.swing.table.TableModel#isCellEditable(int, int)
-         */
-        public boolean isCellEditable(int row, int col) {
-            return col >= 1 && row < elements.length;
-        }
-        
-        private Object[][] elements;
-        private String columnName1, columnName2;
-    } /* end class SelectionTableModel */
 
 } /* end class RESequenceDiagramDialog */

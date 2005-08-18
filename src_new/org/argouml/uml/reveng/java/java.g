@@ -269,6 +269,9 @@ tokens {
 
     /** The parser mode, that controls which semantic expressions will be active */
     private int parserMode = 0;
+
+    /** The name of the variable to which a created object (new...) is assigned to */
+    private String createdObjectVarName = null;
    
 	/** Import details level */
 	private int level = 2;
@@ -1054,18 +1057,28 @@ declaratorBrackets returns [String b=""]
 
 varInitializer returns [String expression=null]
 {String trackedSoFar = null;}
-	:	( ASSIGN
-		  {trackedSoFar=getExpression();
-		   if (!isInCompoundStatement())
-		     activateExpressionTracking();}
+	:	( { if ((parserMode & MODE_REVENG_SEQUENCE) != 0
+		        && "new".equals(LT(2).getText())) {
+		      createdObjectVarName = LT(0).getText();
+		    }
+		  }
+		  ASSIGN
+		  { trackedSoFar=getExpression();
+		    if (!isInCompoundStatement())
+		      activateExpressionTracking();
+		  }
 		  initializer
-		  {expression=getExpression();
-		   if (isInCompoundStatement()) {
-		     activateExpressionTracking();
-		     appendExpression(trackedSoFar);
-		     appendExpression(expression);
-		   } else
-		     deactivateExpressionTracking();})?
+		  { expression=getExpression();
+		    if (isInCompoundStatement()) {
+		      activateExpressionTracking();
+		      appendExpression(trackedSoFar);
+		      appendExpression(expression);
+		    } else {
+		      deactivateExpressionTracking();
+		    }
+		    createdObjectVarName = null;
+		  }
+		)?
 	;
 
 // This is an initializer used to set up an array.
@@ -1381,7 +1394,12 @@ expressionList
 // assignment expression (level 13)
 assignmentExpression
 	:	conditionalExpression
-		(	(	ASSIGN
+		(	(	{ if ((parserMode & MODE_REVENG_SEQUENCE) != 0
+				      && "new".equals(LT(2).getText())) {
+				    createdObjectVarName = LT(0).getText();
+				  }
+				}
+				ASSIGN
 			|	PLUS_ASSIGN
 			|	MINUS_ASSIGN
 			|	STAR_ASSIGN
@@ -1395,6 +1413,7 @@ assignmentExpression
 			|	BOR_ASSIGN
 			)
 			assignmentExpression
+			{ createdObjectVarName = null; }
 		)?
 	;
 
@@ -1510,6 +1529,7 @@ unaryExpressionNotPlusMinus
 
 // qualified names, array expressions, method invocation, post inc/dec
 postfixExpression
+{ String thisOrSuper = null; }
 	:
 		primaryExpression
 		(
@@ -1524,6 +1544,12 @@ postfixExpression
 		:	*/
 			//type arguments are only appropriate for a parameterized method/ctor invocations
 			//semantic check may be needed here to ensure that this is the case
+			{ if ("this".equals(LT(0).getText())) {
+			    thisOrSuper = "this.";
+			  } else if ("super".equals(LT(0).getText())) {
+			    thisOrSuper = "super.";
+			  }
+			}
 			DOT (typeArguments)?
 				(	id:IDENT
 					(	LPAREN
@@ -1532,7 +1558,9 @@ postfixExpression
 						{ if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
 						    StringBuffer sb = new StringBuffer();
 						    String prev = (String)getModeller().getMethodCalls().lastElement();
-						    if (prev != null) {
+						    if (thisOrSuper != null) {
+						      sb.append(thisOrSuper);
+						    } else if (prev != null) {
 						      sb.append(prev).append("().");
 						    }
 						    sb.append(id.getText());
@@ -1550,7 +1578,9 @@ postfixExpression
 							{ if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
 							    StringBuffer sb = new StringBuffer();
 							    String prev = (String)getModeller().getMethodCalls().lastElement();
-							    if (prev != null) {
+							    if (thisOrSuper != null) {
+							      sb.append(thisOrSuper);
+							    } else if (prev != null) {
 							      sb.append(prev).append("().");
 							    }
 							    sb.append("super");
@@ -1705,7 +1735,12 @@ newExpression
 	:	"new" (typeArguments)? t=type
 		(	LPAREN argList RPAREN
 		    { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
-		        getModeller().addCall("new " + t);
+		        StringBuffer sb = new StringBuffer();
+		        if (";".equals(LT(1).getText()) && createdObjectVarName != null) {
+		          sb.append(createdObjectVarName).append('=');
+		        }
+		        sb.append("new ").append(t);
+		        getModeller().addCall(sb.toString());
 		      }
 		    }
 			(	{ getModeller().addAnonymousClass(t); }
