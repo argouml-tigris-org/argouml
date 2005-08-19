@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -82,6 +83,8 @@ import org.tigris.gef.presentation.Fig;
  * TODO: subsequent parsing of further operation bodies <br>
  * TODO: suppressing multiple creation of already created classifier roles<br>
  * TODO: suppressing multiple creation of already created messages<br>
+ * TODO: processing of non-constructor-calls to other classifiers<br>
+ * TODO: i18n<br>
  * TODO: ...<br>
  */
 public class RESequenceDiagramDialog extends ArgoDialog implements ActionListener {
@@ -96,6 +99,7 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
     public RESequenceDiagramDialog(Object operation) {
         super(
             ProjectBrowser.getInstance(),
+            "NOT FUNCTIONAL!!! " +
             Translator.localize("dialog.title.reverse-engineer-sequence-diagram")
              + (operation != null ? (' ' + Model.getFacade().getName(operation) + "()") : ""),
             ArgoDialog.OK_CANCEL_OPTION,
@@ -331,10 +335,14 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         Object node =
             Model.getCollaborationsFactory().buildClassifierRole(
                 _collaboration);
+        if (objName != null) {
+            Model.getCoreHelper().setName(node, objName);
+        } else {
+            Model.getCoreHelper().setName(node, "anon" + (++_anonCnt));
+        }
         Collection coll = new ArrayList();
         coll.add(classifier);
         Model.getCollaborationsHelper().setBases(node, coll);
-        Model.getCoreHelper().setName(node, objName);
         crFig = new FigClassifierRole(node);
 
         // location must be set for correct automatic layouting (how funny)
@@ -401,8 +409,8 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         Object action = null;
         StringBuffer sb = new StringBuffer(call);
         int findpos = sb.lastIndexOf(".");
-        int createAssignPos = sb.indexOf("=new ");
-        boolean isCreate = createAssignPos != -1;
+        int createPos = sb.indexOf("new ");
+        boolean isCreate = createPos != -1;
         if (!isCreate && findpos == -1) {
             // call of a method of the class
             action = buildEdge(call, _classifierRole, _classifierRole, Model.getMetaTypes().getCallAction());
@@ -412,11 +420,12 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         } else {
             String type = null;
             if (isCreate) {
-                type = sb.substring(createAssignPos + 5);
-                FigClassifierRole endFig = getClassifierFromModel(type);
-                Model.getCoreHelper().setName(endFig.getOwner(), sb.substring(0, createAssignPos));
+                type = sb.substring(createPos + 4);
+                String objName = createPos >= 2 ? sb.substring(0, createPos - 1) : null;
+                FigClassifierRole endFig =
+                    getClassifierFromModel(type, objName);
                 action = buildEdge(
-                    sb.substring(createAssignPos + 1),
+                    sb.substring(createPos),
                     _classifierRole,
                     endFig,
                     Model.getMetaTypes().getCreateAction());
@@ -474,16 +483,115 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         return figEdge;
     }
 
-    private FigClassifierRole getClassifierFromModel(String type) {
+    /**
+     * Builds a classifier role from a type. The type is a classifier name,
+     * either fully qualified (with whole package path) or not. Also ensures
+     * that there is an association to the actual classifier.
+     */
+    private FigClassifierRole getClassifierFromModel(String type, String objName) {
         FigClassifierRole crFig = null;
-        // TODO: get the REAL classifier, not this fake:
+        Object classifier = null;
         int pos = type.lastIndexOf(".");
         if (pos != -1) {
-            type = type.substring(pos + 1);
+            // full package path given, so let's get it from the model
+            Object namespace = _model;
+            pos = 0;
+            StringTokenizer st = new StringTokenizer(type, ".");
+            while (st.hasMoreTokens()) {
+                String s = st.nextToken();
+                pos += s.length();
+                Object element = Model.getFacade().lookupIn(namespace, s);
+                if (element == null) {
+                    // package/classifier is missing, so create one
+                    if (st.hasMoreTokens()) {
+                        // must be a package
+                        element = Model.getModelManagementFactory().buildPackage(s, type.substring(0, pos));
+                    } else {
+                        // must be a classifier, let's assume a class
+                        element = Model.getCoreFactory().buildClass(s);
+                    }
+                    Model.getCoreHelper().setNamespace(element, namespace);
+                    Model.getCoreHelper().addOwnedElement(namespace, element);
+                }
+                namespace = element;
+                pos++;
+            }
+            classifier = namespace;
+        } else {
+            // classifier without package information given
+            // let's search for it in the imports (component dependencies)
+            Collection sdeps = Model.getFacade().getSupplierDependencies(_classifier);
+            Iterator iter1 = sdeps != null ? sdeps.iterator() : null;
+            while(classifier == null && iter1 != null && iter1.hasNext()) {
+                Object dep = iter1.next();
+                if (Model.getFacade().isADependency(dep)) {
+                    Collection clients = Model.getFacade().getClients(dep);
+                    Iterator iter2 = clients != null ? clients.iterator() : null;
+                    while(classifier == null && iter2 != null && iter2.hasNext()) {
+                        Object comp = iter2.next();
+                        if (Model.getFacade().isAComponent(comp)) {
+                            classifier = permissionLookup(comp, type);
+                        }
+                    }
+                }
+            }
         }
-        Object classifier = Model.getCoreFactory().buildClass(type);
-        crFig = buildClassifierRole(classifier, "obj");
+        if (classifier == null) {
+            // not found any matching classifier, so create a top level one
+            classifier = Model.getCoreFactory().buildClass(type);
+            Model.getCoreHelper().setNamespace(classifier, _model);
+        }
+        ensureDirectedAssociation(_classifier, classifier);
+        crFig = buildClassifierRole(classifier, objName);
         return crFig;
+    }
+
+    /**
+     * Checks if there is a directed association between two classifiers, and
+     * creates one if necessary.
+     */
+    private void ensureDirectedAssociation(Object fromCls, Object toCls) {
+        String fromName = Model.getFacade().getName(fromCls);
+        String toName = Model.getFacade().getName(toCls);
+        Object assocEnd = null;
+        for (Iterator i = Model.getFacade().getAssociationEnds(toCls).iterator(); i.hasNext();) {
+            Object ae = i.next();
+            if (Model.getFacade().getType(Model.getFacade().getOppositeEnd(ae)) == fromCls
+                 && Model.getFacade().getName(ae) == null
+                 && Model.getFacade().isNavigable(ae)) {
+                assocEnd = ae;
+            }
+        }
+        if (assocEnd == null) {
+            String assocName = fromName + " -> " + toName;
+            Object assoc = Model.getCoreFactory().buildAssociation(fromCls, false, toCls, true, assocName);
+        }
+
+    }
+
+    /**
+     * Get the classifier with the given name from a permission
+     * (null if not found).
+     */
+    private Object permissionLookup(Object comp, String clsName) {
+        Object classifier = null;
+        Collection cdeps = Model.getFacade().getClientDependencies(comp);
+        Iterator iter1 = cdeps != null ? cdeps.iterator() : null;
+        while(classifier == null && iter1 != null && iter1.hasNext()) {
+            Object perm = iter1.next();
+            if (Model.getFacade().isAPermission(perm)) {
+                Collection suppliers = Model.getFacade().getSuppliers(perm);
+                Iterator iter2 = suppliers != null ? suppliers.iterator() : null;
+                while(classifier == null && iter2 != null && iter2.hasNext()) {
+                    Object elem = iter2.next();
+                    if (Model.getFacade().isAClassifier(elem)
+                         && clsName.equals(Model.getFacade().getName(elem))) {
+                        classifier = elem;
+                    }
+                }
+            }
+        }
+        return classifier;
     }
 
     private Object _model = null;
@@ -506,7 +614,7 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
     private JButton _processButton = null;
     private int _maxXPos = 0;
     private int _maxPort = 0;
-
+    private int _anonCnt = 0;
 
     /**
      * Logger.
