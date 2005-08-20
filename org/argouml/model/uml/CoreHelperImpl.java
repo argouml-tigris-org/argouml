@@ -2630,8 +2630,21 @@ class CoreHelperImpl implements CoreHelper {
      *
      * @param handle the ElementResidence
      * @param component the Component
+     * @deprecated UML 1.3 only see setContainer
      */
-    public void setImplementationLocation(
+    public void setImplementationLocation(Object handle, Object component) {
+        setContainer(handle, component);
+    }
+
+    /**
+     * Set the Container of the given ElementResidence to the given Component.
+     *
+     * @param handle
+     *            the ElementResidence
+     * @param component
+     *            the Component
+     */
+    public void setContainer(
         Object handle,
         Object component) {
         if (handle instanceof MElementResidence

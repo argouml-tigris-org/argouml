@@ -299,7 +299,7 @@ public class Init {
         Object namespaceCls = Model.getMetaTypes().getNamespace();
         Object genElementCls = Model.getMetaTypes().getGeneralizableElement();
         Object genCls = Model.getMetaTypes().getGeneralization();
-        Object datatypeCls = Model.getMetaTypes().getDatatype();
+        Object datatypeCls = Model.getMetaTypes().getDataType();
         Object useCaseCls = Model.getMetaTypes().getUseCase();
         Object actorCls = Model.getMetaTypes().getActor();
         Object stateVertexCls = Model.getMetaTypes().getStateVertex();

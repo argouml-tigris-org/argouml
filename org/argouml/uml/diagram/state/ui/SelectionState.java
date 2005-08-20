@@ -192,12 +192,6 @@ public class SelectionState extends SelectionNodeClarifiers {
 	}
     }
 
-    /**
-     * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
-     */
-    protected Object getNewNode(int buttonCode) {
-	return Model.getStateMachinesFactory().createState();
-    }
 
     /**
      * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
