@@ -333,7 +333,7 @@ public final class MetaTypesImpl implements MetaTypes {
     /**
      * @return Returns the Datatype.
      */
-    public Object getDatatype() {
+    public Object getDataType() {
         return MDataType.class;
     }
 

@@ -86,17 +86,6 @@ public class CommonBehaviorFactoryImpl
     }
 
     /**
-     * Create an empty but initialized instance of a UML Action.
-     *
-     * @return an initialized UML Action instance.
-     */
-    public Object createAction() {
-        Object modelElement = MFactory.getDefaultFactory().createAction();
-        super.initialize(modelElement);
-        return modelElement;
-    }
-
-    /**
      * Create an empty but initialized instance of a UML ActionSequence.
      *
      * @return an initialized UML ActionSequence instance.
@@ -199,17 +188,6 @@ public class CommonBehaviorFactoryImpl
     public Object createException() {
         MException modelElement =
             MFactory.getDefaultFactory().createException();
-        super.initialize(modelElement);
-        return modelElement;
-    }
-
-    /**
-     * Create an empty but initialized instance of a UML Instance.
-     *
-     * @return an initialized UML Instance instance.
-     */
-    public Object createInstance() {
-        MInstance modelElement = MFactory.getDefaultFactory().createInstance();
         super.initialize(modelElement);
         return modelElement;
     }

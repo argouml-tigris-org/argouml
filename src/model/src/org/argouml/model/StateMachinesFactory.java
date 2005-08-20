@@ -88,13 +88,6 @@ public interface StateMachinesFactory {
     Object createSimpleState();
 
     /**
-     * Create an empty but initialized instance of a UML State.
-     *
-     * @return an initialized UML State instance.
-     */
-    Object createState();
-
-    /**
      * Create an empty but initialized instance of a UML StateMachine.
      *
      * @return an initialized UML StateMachine instance.

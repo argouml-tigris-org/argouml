@@ -1428,7 +1428,7 @@ public interface Facade {
 
     /**
      * Returns all extends of a use case.
-     *
+     * 
      * @param handle is the use case
      * @return the extends
      */
@@ -1506,11 +1506,14 @@ public interface Facade {
      *
      * @param handle is an element residence
      * @return component
+     * @deprecated see getModelElementContainer
      */
     Object getImplementationLocation(Object handle);
 
     /**
-     * Returns the includes for some use case.
+     * Returns the includers for some use case.
+     * <p><em>Note:</em> Changes from getIncludes in UML 1.3
+     * to getIncluders in UML 1.4 
      *
      * @param handle is the use case
      * @return the includes as a Collection
@@ -1519,6 +1522,8 @@ public interface Facade {
 
     /**
      * Returns the includes for some use case.
+     * <p><em>Note:</em>Changes from getIncludes2 in UML 1.3
+     * to getIncludes in UML 1.4 
      *
      * @param handle is the use case
      * @return the includes as a Collection
@@ -1749,6 +1754,7 @@ public interface Facade {
     /**
      * Returns the CompositeState that is the container of
      * the given StateVertex.
+     * <p>UML 1.4 adds support for ElementResidence
      *
      * @param handle the StateVertex
      * @return the CompositeState that is the container
@@ -2169,6 +2175,7 @@ public interface Facade {
      *
      * @param handle GeneralizableElement to retrieve from.
      * @return Collection of Specializations.
+     * @deprecated UML 1.3 only
      */
     Collection getSpecializations(Object handle);
 

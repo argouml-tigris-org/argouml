@@ -154,8 +154,17 @@ class DataTypesHelperImpl implements DataTypesHelper {
     /**
      * @param kind the pseudostate kind (Choice)
      * @return if this is a branch-choice kind
+     * @deprecated UML 1.3 only - use equalsCHOICEKind
      */
     public boolean equalsBRANCHKind(Object kind) {
+        return equalsCHOICEKind(kind);
+    }
+
+    /**
+     * @param kind the pseudostate kind (Choice)
+     * @return if this is a branch-choice kind
+     */
+    public boolean equalsCHOICEKind(Object kind) {
 
         if (!(kind instanceof MPseudostateKind)) {
             throw new IllegalArgumentException();

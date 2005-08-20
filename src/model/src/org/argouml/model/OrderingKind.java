@@ -34,11 +34,6 @@ public interface OrderingKind {
     Object getOrdered();
 
     /**
-     * @return Returns the Sorted OrderingKind.
-     */
-    Object getSorted();
-
-    /**
      * @return Returns the Unordered OrderingKind.
      */
     Object getUnordered();

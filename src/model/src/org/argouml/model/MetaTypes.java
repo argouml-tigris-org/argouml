@@ -173,7 +173,7 @@ public interface MetaTypes {
     /**
      * @return Returns the Datatype.
      */
-    Object getDatatype();
+    Object getDataType();
 
     /**
      * @return Returns the Dependency.

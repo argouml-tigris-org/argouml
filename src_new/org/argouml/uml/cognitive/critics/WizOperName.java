@@ -38,7 +38,7 @@ import org.argouml.util.CollectionUtil;
 
 /**
  * A wizard to help the user change the name of an operation to a better name.
- * Same as WizMEName expect that it handles the special case where the operation
+ * Same as WizMEName except that it handles the special case where the operation
  * instead should be made a constructor of the class. This is helpful in
  * languages where constructors have names that do not agree with the convention
  * for method names (i.e. Java).<p>
@@ -305,7 +305,7 @@ public class WizOperName extends WizMEName {
             }
         }
         if (ns == null) {
-            ns = Model.getCoreFactory().createNamespace();
+            ns = Model.getModelManagementFactory().createPackage();
             Model.getCoreHelper().setName(ns, phantomName);
             Model.getCoreHelper().addOwnedElement(targetParentNS, ns);
         }

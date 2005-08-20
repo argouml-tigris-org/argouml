@@ -31,12 +31,6 @@ package org.argouml.model;
  * Created from the old CommonBehaviorFactory.
  */
 public interface CommonBehaviorFactory {
-    /**
-     * Create an empty but initialized instance of a UML Action.
-     *
-     * @return an initialized UML Action instance.
-     */
-    Object createAction();
 
     /**
      * Create an empty but initialized instance of a UML ActionSequence.
@@ -93,13 +87,6 @@ public interface CommonBehaviorFactory {
      * @return an initialized UML Exception instance.
      */
     Object createException();
-
-    /**
-     * Create an empty but initialized instance of a UML Instance.
-     *
-     * @return an initialized UML Instance instance.
-     */
-    Object createInstance();
 
     /**
      * Create an empty but initialized instance of a UML Link.

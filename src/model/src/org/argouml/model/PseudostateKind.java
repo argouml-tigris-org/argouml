@@ -30,8 +30,15 @@ package org.argouml.model;
 public interface PseudostateKind {
     /**
      * @return Returns the Branch PseudostateKind.
+     * @deprecated UML 1.3 - use getChoice
      */
     Object getBranch();
+
+    /**
+     * @return Returns the Choice (Branch in UML 1.3) PseudostateKind.
+     * @since UML 1.4
+     */
+    Object getChoice();
 
     /**
      * @return Returns the DeepHistory PseudostateKind.

@@ -179,17 +179,6 @@ public class StateMachinesFactoryImpl
     }
 
     /**
-     * Create an empty but initialized instance of a UML State.
-     *
-     * @return an initialized UML State instance.
-     */
-    public Object createState() {
-        MState modelElement = MFactory.getDefaultFactory().createState();
-	super.initialize(modelElement);
-	return modelElement;
-    }
-
-    /**
      * Create an empty but initialized instance of a UML StateMachine.
      *
      * @return an initialized UML StateMachine instance.
@@ -345,7 +334,7 @@ public class StateMachinesFactoryImpl
 
     /**
      * Builds a pseudostate initialized as a choice pseudostate. The
-     * pseudostate will be a subvertix of the given
+     * pseudostate will be a subvertex of the given
      * compositestate. The parameter compositeState is of type Object
      * to decouple the factory and NSUML as much as possible from the
      * rest of ArgoUML.<p>
@@ -356,7 +345,10 @@ public class StateMachinesFactoryImpl
     public Object buildPseudoState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
             MPseudostate state = (MPseudostate) createPseudostate();
+
+	    // equivalent to CHOICE in UML 1.4
             state.setKind(MPseudostateKind.BRANCH);
+
             state.setContainer((MCompositeState) compositeState);
             ((MCompositeState) compositeState).addSubvertex(state);
             return state;

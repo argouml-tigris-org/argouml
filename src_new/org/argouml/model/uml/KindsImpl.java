@@ -73,10 +73,17 @@ public class KindsImpl
     }
 
     /**
-     * @return Returns the Branch PseudostateKind.
+     * @return Returns the Branch/Choice PseudostateKind.
      */
     public Object getBranch() {
         return MPseudostateKind.BRANCH;
+    }
+
+    /**
+     * @return Returns the Branch/Choice PseudostateKind.
+     */
+    public Object getChoice() {
+        return getBranch(); // NSUML uses Branch, not Choice
     }
 
     /**
@@ -266,13 +273,6 @@ public class KindsImpl
      */
     public Object getShallowHistory() {
         return MPseudostateKind.SHALLOW_HISTORY;
-    }
-
-    /**
-     * @return Returns the Sorted OrderingKind.
-     */
-    public Object getSorted() {
-        return MOrderingKind.SORTED;
     }
 
     /**

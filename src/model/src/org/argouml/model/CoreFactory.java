@@ -73,13 +73,6 @@ public interface CoreFactory {
     Object createClass();
 
     /**
-     * Create an empty but initialized instance of a UML Classifier.
-     *
-     * @return an initialized UML Classifier instance.
-     */
-    Object createClassifier();
-
-    /**
      * Create an empty but initialized instance of a UML Comment.
      *
      * @return an initialized UML Comment instance.
@@ -136,13 +129,6 @@ public interface CoreFactory {
     Object createMethod();
 
     /**
-     * Create an empty but initialized instance of a UML Namespace.
-     *
-     * @return an initialized UML Namespace instance.
-     */
-    Object createNamespace();
-
-    /**
      * Create an empty but initialized instance of a UML Node.
      *
      * @return an initialized UML Node instance.
@@ -169,13 +155,6 @@ public interface CoreFactory {
      * @return an initialized UML Permission instance.
      */
     Object createPermission();
-
-    /**
-     * Create an empty but initialized instance of a UML Relationship.
-     *
-     * @return an initialized UML Relationship instance.
-     */
-    Object createRelationship();
 
     /**
      * Create an empty but initialized instance of a UML TemplateParameter.

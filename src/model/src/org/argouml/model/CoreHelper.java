@@ -908,6 +908,7 @@ public interface CoreHelper {
      *
      * @param handle the ElementResidence
      * @param component the Component
+     * @deprecated UML 1.3 only - use setModelElementContainer
      */
     void setImplementationLocation(Object handle, Object component);
 
