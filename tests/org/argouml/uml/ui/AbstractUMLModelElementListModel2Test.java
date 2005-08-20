@@ -55,6 +55,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         buildElement();
+        // TODO: is this commented out for a reason?  Remove? - tfm
         //oldEventPolicy = MFactoryImpl.getEventPolicy();
         //MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         buildModel();
@@ -81,6 +82,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
+        // TODO: review - tfm
         //MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }

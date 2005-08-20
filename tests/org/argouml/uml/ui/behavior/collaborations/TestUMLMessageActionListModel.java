@@ -70,7 +70,8 @@ public class TestUMLMessageActionListModel
      * Test setAction().
      */
     public void testSetAction() {
-        Object action = Model.getCommonBehaviorFactory().createAction();
+        Object action =
+	    Model.getCommonBehaviorFactory().createUninterpretedAction();
         Model.getCollaborationsHelper().setAction(elem, action);
         assertEquals(1, model.getSize());
         assertEquals(action, model.getElementAt(0));
@@ -80,7 +81,8 @@ public class TestUMLMessageActionListModel
      * Test setAction() for removing.
      */
     public void testRemoveAction() {
-        Object action = Model.getCommonBehaviorFactory().createAction();
+        Object action =
+	    Model.getCommonBehaviorFactory().createUninterpretedAction();
         Model.getCollaborationsHelper().setAction(elem, action);
         Model.getCollaborationsHelper().setAction(elem, null);
         assertEquals(0, model.getSize());

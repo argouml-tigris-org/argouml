@@ -60,7 +60,7 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
             Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().setName(mmodel, "untitledModel");
         Model.getModelManagementFactory().setRootModel(mmodel);
-        namespace = Model.getCoreFactory().createNamespace();
+        namespace = Model.getModelManagementFactory().createPackage();
         child = Model.getCoreFactory().buildClass("child", namespace);
         parent = Model.getCoreFactory().buildClass("parent", namespace);
         elem = Model.getCoreFactory().buildGeneralization(child, parent);
@@ -74,7 +74,7 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
         ProjectManager.getManager().getCurrentProject().setRoot(m);
         Model.getCoreHelper().setNamespace(elem, m);
         for (int i = 0; i < 10; i++) {
-            types[i] = Model.getCoreFactory().createClassifier();
+            types[i] = Model.getCoreFactory().createClass();
             Model.getCoreHelper().addOwnedElement(m, types[i]);
         }
     }

@@ -65,8 +65,20 @@ public class TestUmlFactoryBuildNode extends TestCase {
                 Model.getMetaTypes().getUseCase()));
         assertNotNull(Model.getUmlFactory().buildNode(
                 Model.getMetaTypes().getPackage()));
-        assertNotNull(Model.getUmlFactory().buildNode(
-                Model.getMetaTypes().getClassifier()));
+
+         // Instance (in UML 1.4) and Classifier are abstract and not tested
+
+        /*
+         *  Extend, Include, UseCaseInstance & ExtensionPoint not implemented
+         */
+//        assertNotNull(Model.getUmlFactory().buildNode(
+//                Model.getMetaTypes().getExtend()));
+//        assertNotNull(Model.getUmlFactory().buildNode(
+//                Model.getMetaTypes().getInclude()));
+//        assertNotNull(Model.getUmlFactory().buildNode(
+//                Model.getMetaTypes().getUseCaseInstance()));
+//        assertNotNull(Model.getUmlFactory().buildNode(
+//                Model.getMetaTypes().getExtensionPoint()));
         // ...
     }
 
@@ -78,12 +90,24 @@ public class TestUmlFactoryBuildNode extends TestCase {
                 Model.getMetaTypes().getCompositeState()));
         assertNotNull(Model.getUmlFactory().buildNode(
                 Model.getMetaTypes().getFinalState()));
+        // SimpleState not currently supported
+//        assertNotNull(Model.getUmlFactory().buildNode(
+//                Model.getMetaTypes().getSimpleState()));
+
+        /*
+         * State is concrete in UML 1.3, but becomes abstract in UML 1.4, so we
+         * never allow it to be created (and don't test creation)
+         */
+//        assertNotNull(Model.getUmlFactory().buildNode(
+//                Model.getMetaTypes().getState()));
         assertNotNull(Model.getUmlFactory().buildNode(
                 Model.getMetaTypes().getPseudostate()));
         assertNotNull(Model.getUmlFactory().buildNode(
-                Model.getMetaTypes().getState()));
-        assertNotNull(Model.getUmlFactory().buildNode(
                 Model.getMetaTypes().getSynchState()));
+        assertNotNull(Model.getUmlFactory().buildNode(
+                Model.getMetaTypes().getStubState()));
+        assertNotNull(Model.getUmlFactory().buildNode(
+                Model.getMetaTypes().getSubmachineState()));
         // ...
     }
 

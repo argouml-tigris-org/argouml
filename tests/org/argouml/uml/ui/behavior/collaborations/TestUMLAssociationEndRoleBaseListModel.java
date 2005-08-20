@@ -66,7 +66,8 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
 
         elem = Model.getCollaborationsFactory().createAssociationEndRole();
 
-        Object classNamespace = Model.getCoreFactory().createNamespace();
+        Object classNamespace =
+	    Model.getModelManagementFactory().createPackage();
         baseAssoc =
             Model.getCoreFactory().buildAssociation(
                     Model.getCoreFactory().buildClass("from", classNamespace),

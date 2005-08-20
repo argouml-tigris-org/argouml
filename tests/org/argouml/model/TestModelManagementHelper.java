@@ -22,60 +22,40 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.argouml.model.Model;
+import junit.framework.TestCase;
 
 /**
- * Test for {@link ActionUseCaseDiagram}.
+ * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl
- * @since Jan 9, 2003
  */
-public class TestActionUseCaseDiagram
-    extends AbstractTestActionAddDiagram {
+public class TestModelManagementHelper extends TestCase {
 
     /**
-     * Constructor
-     * @param arg0 test case name.
+     * Constructor for TestModelManagementHelper.
+     *
+     * @param arg0 is the name of the test case.
      */
-    public TestActionUseCaseDiagram(String arg0) {
-        super(arg0);
+    public TestModelManagementHelper(String arg0) {
+	super(arg0);
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
+     * Test getting the metamodel name.
      */
-    protected ActionAddDiagram getAction() {
-        return new ActionUseCaseDiagram();
+    public void testGetMetaModelName() {
+	CheckUMLModelHelper.metaModelNameCorrect(
+			 Model.getModelManagementFactory(),
+			 TestModelManagementFactory.getAllModelElements());
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
+     * Test stereotypes.
      */
-    protected Object getNamespace() {
-        return Model.getModelManagementFactory().createPackage();
+    public void testIsValidStereoType() {
+	CheckUMLModelHelper.isValidStereoType(
+		      Model.getModelManagementFactory(),
+		      TestModelManagementFactory.getAllModelElements());
     }
-
-    /**
-     * @see AbstractTestActionAddDiagram#getValidNamespaceClasses()
-     */
-    protected List getValidNamespaceClasses() {
-        List rl = new ArrayList();
-        rl.add(Model.getMetaTypes().getPackage());
-        /*
-         * This needs to be a concrete metatype, so we can't use
-         * the general, but abstract, Classifier.  Replace with its
-         * concrete subtypes.
-         */
-        rl.add(Model.getMetaTypes().getUMLClass());
-        rl.add(Model.getMetaTypes().getInterface());
-        rl.add(Model.getMetaTypes().getDataType());
-        rl.add(Model.getMetaTypes().getNode());
-        rl.add(Model.getMetaTypes().getComponent());
-        return rl;
-    }
-
 }

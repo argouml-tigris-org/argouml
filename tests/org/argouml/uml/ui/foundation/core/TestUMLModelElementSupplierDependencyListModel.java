@@ -53,7 +53,7 @@ public class TestUMLModelElementSupplierDependencyListModel
     public void setUp() throws Exception {
         super.setUp();
 
-        namespace = Model.getCoreFactory().createNamespace();
+        namespace = Model.getModelManagementFactory().createPackage();
         from = Model.getCoreFactory().buildClass("from", namespace);
         to = Model.getCoreFactory().buildClass("to", namespace);
     }

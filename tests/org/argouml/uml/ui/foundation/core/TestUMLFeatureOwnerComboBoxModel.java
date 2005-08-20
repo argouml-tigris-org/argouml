@@ -65,7 +65,7 @@ public class TestUMLFeatureOwnerComboBoxModel extends TestCase {
         Object m = Model.getModelManagementFactory().createModel();
 	ProjectManager.getManager().getCurrentProject().setRoot(m);
         for (int i = 0; i < 10; i++) {
-            types[i] = Model.getCoreFactory().createClassifier();
+            types[i] = Model.getCoreFactory().createClass();
             Model.getCoreHelper().addOwnedElement(m, types[i]);
         }
     }

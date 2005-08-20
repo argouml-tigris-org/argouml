@@ -58,7 +58,7 @@ public class TestActionStateDiagram
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
     protected Object getNamespace() {
-        return Model.getCoreFactory().createClassifier();
+        return Model.getCoreFactory().createClass();
     }
 
     /**
@@ -66,7 +66,16 @@ public class TestActionStateDiagram
      */
     protected List getValidNamespaceClasses() {
         List rl = new ArrayList();
-        rl.add(Model.getMetaTypes().getClassifier());
+        /*
+         * This needs to be a concrete metatype, so we can't use
+         * the general, but abstract, Classifier.  Replace with its
+         * concrete subtypes.
+         */
+        rl.add(Model.getMetaTypes().getUMLClass());
+        rl.add(Model.getMetaTypes().getInterface());
+        rl.add(Model.getMetaTypes().getDataType());
+        rl.add(Model.getMetaTypes().getNode());
+        rl.add(Model.getMetaTypes().getComponent());
         return rl;
     }
 
@@ -76,7 +85,7 @@ public class TestActionStateDiagram
     protected void setUp() {
         super.setUp();
         TargetManager.getInstance().setTarget(
-        		Model.getCoreFactory().createClassifier());
+                Model.getCoreFactory().createClass());
     }
 
 }

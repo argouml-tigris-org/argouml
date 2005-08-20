@@ -86,29 +86,20 @@ public class TestCoreFactory extends TestCase {
     }
 
     /**
-     * Test creation.
+     * @see junit.framework.TestCase#setUp()
+     */
+    // TODO: From NSUML test - do we need this?
+    public void setUp() {
+	Model.getFacade();
+    }
+
+    /**
+     * Test creation of metatypes.
+     *
+     * TODO: we could add tests here to make sure that we can NOT
+     * create abstract types
      */
     public void testCreates() {
-	// See issue #3407 for the elements not tested. 
-        // These are the abstract meta classes,
-    	// which cannot be instantiated.
-    	// Ludo: I want to preserve the existing tests for NSUML, 
-        // even if this is wrong regarding
-    	// the UML specs to instantiates abstract classes like RelationShip. 
-        // So do a switch when needed.
-
-    	String nsumlImpl = "org.argouml.model.uml.NSUMLModelImplementation";
-    	// Here we determine the UML version by looking at the model
-    	// implementation in use. This is the right test in this case
-    	// because we can imagine that a model implementation for UML 1.3
-    	// other than NSUML (like the UML 1.3 metamodel 
-        // of the OMG [01-12-02.xml])
-    	// doesn't allow to instantiate the Namespace and others metaclasses.
-    	boolean nsuml = nsumlImpl.equals(System.getProperty(
-                    "argouml.model.implementation", nsumlImpl));    	
-    	//Here we determine if the implementation support UML 1.4
-    	boolean UML_14 = (Model.getMetaTypes().getTagDefinition()!=null);
-    	
 	Collection objs = new Vector();
 	
 	// The abstract metaclasses in UML 1.3 include Element, ModelElement, 
@@ -119,6 +110,9 @@ public class TestCoreFactory extends TestCase {
         // UML 1.4 changes Instance and State to be abstract also.
 
 	objs.add("Abstraction");
+	//Association are abstract metaclass but we return an UmlAssociation 
+	//from the createAssociation method of the CoreFactory interface
+	objs.add("Association");
 	objs.add("AssociationClass");
 	objs.add("AssociationEnd");
 	objs.add("Attribute");
@@ -134,16 +128,10 @@ public class TestCoreFactory extends TestCase {
 	objs.add("Generalization");
 	objs.add("Interface");
 	objs.add("Method");
-	if (nsuml) {
-	    objs.add("Namespace");
-	}
 	objs.add("Node");
 	objs.add("Operation");
 	objs.add("Parameter");
 	objs.add("Permission");
-	if (nsuml) {
-	    objs.add("Relationship");
-	}
 	objs.add("TemplateParameter");
 	objs.add("Usage");
 	
@@ -151,47 +139,14 @@ public class TestCoreFactory extends TestCase {
 	    Model.getCoreFactory(),
 	    // +1 in the size of the array because we also test the null value
 	    (String[]) objs.toArray(new String[objs.size() + 1]));
-    
-	/*if (NSUML) {
-		objs = new String[] {
-	    // "Abstraction",
-	    // "Association",
-	    // "AssociationClass",
-	    "AssociationEnd",
-	    "Attribute",
+    }
 
-	    // "BehavioralFeature",
-	    "Binding",
-	    "Class",
-	    "Classifier",
-	    "Comment",
-	    "Component",
-	    "Constraint",
-	    "DataType",
-	    // "Dependency",
-
-	    // "Element",
-	    "ElementResidence",
-
-	    // "Feature",
-	    "Flow",
-	    // "Generalization",
-	    "Interface", "Method",
-
-	    // "ModelElement",
-	    "Namespace", "Node", "Operation", "Parameter", "Permission",
-
-	    // "PresentationElement",
-	    "Relationship",
-
-	    // "StructuralFeature",
-	    "TemplateParameter", "Usage",
-
-	    null,
-	};
-	} else {
-		
-	}*/
+    /**
+     * Test complete deletion.
+     */
+    public void testDeleteComplete() {
+        CheckUMLModelHelper.hasDeleteMethod(Model.getCoreFactory(),
+                allModelElements);
     }
 
     /**
@@ -201,8 +156,7 @@ public class TestCoreFactory extends TestCase {
         Object model = Model.getModelManagementFactory().createModel();
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object class2 = Model.getCoreFactory().buildClass(model);
-        Object assoc =
-            Model.getCoreFactory().buildAssociation(class1, class2);
+        Object assoc = Model.getCoreFactory().buildAssociation(class1, class2);
         WeakReference class1wr = new WeakReference(class1);
         WeakReference assocwr = new WeakReference(assoc);
         Model.getUmlFactory().delete(class1);
@@ -220,8 +174,7 @@ public class TestCoreFactory extends TestCase {
         Object model = Model.getModelManagementFactory().createModel();
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object class2 = Model.getCoreFactory().buildClass(model);
-        Object assoc =
-            Model.getCoreFactory().buildAssociation(class1, class2);
+        Object assoc = Model.getCoreFactory().buildAssociation(class1, class2);
         Model.getCoreHelper().addConnection(assoc,
                 Model.getCoreFactory().createAssociationEnd());
         WeakReference class1wr = new WeakReference(class1);
@@ -241,8 +194,7 @@ public class TestCoreFactory extends TestCase {
         Object model = Model.getModelManagementFactory().createModel();
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object class2 = Model.getCoreFactory().buildClass(model);
-        Object dep =
-            Model.getCoreFactory().buildDependency(class1, class2);
+        Object dep = Model.getCoreFactory().buildDependency(class1, class2);
         WeakReference class1wr = new WeakReference(class1);
         WeakReference depwr = new WeakReference(dep);
         Model.getUmlFactory().delete(class1);
@@ -260,8 +212,7 @@ public class TestCoreFactory extends TestCase {
         Object model = Model.getModelManagementFactory().createModel();
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object class2 = Model.getCoreFactory().buildClass(model);
-        Object dep =
-            Model.getCoreFactory().buildDependency(class1, class2);
+        Object dep = Model.getCoreFactory().buildDependency(class1, class2);
         Object class3 = Model.getCoreFactory().buildClass(model);
         Model.getCoreHelper().addClient(dep, class3);
         WeakReference class1wr = new WeakReference(class1);
@@ -281,8 +232,7 @@ public class TestCoreFactory extends TestCase {
         Object model = Model.getModelManagementFactory().createModel();
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object class2 = Model.getCoreFactory().buildClass(model);
-        Object dep =
-            Model.getCoreFactory().buildDependency(class1, class2);
+        Object dep = Model.getCoreFactory().buildDependency(class1, class2);
         Object class3 = Model.getCoreFactory().buildClass(model);
         Model.getCoreHelper().addSupplier(dep, class3);
         WeakReference class1wr = new WeakReference(class1);
@@ -302,10 +252,8 @@ public class TestCoreFactory extends TestCase {
     public void testDeleteModelelementClassSelfAssociations() {
         Object model = Model.getModelManagementFactory().createModel();
         Object class1 = Model.getCoreFactory().buildClass(model);
-        Object assoc1 =
-            Model.getCoreFactory().buildAssociation(class1, class1);
-        Object assoc2 =
-            Model.getCoreFactory().buildAssociation(class1, class1);
+        Object assoc1 = Model.getCoreFactory().buildAssociation(class1, class1);
+        Object assoc2 = Model.getCoreFactory().buildAssociation(class1, class1);
         WeakReference class1wr = new WeakReference(class1);
         WeakReference assoc1wr = new WeakReference(assoc1);
         WeakReference assoc2wr = new WeakReference(assoc2);
@@ -331,19 +279,14 @@ public class TestCoreFactory extends TestCase {
 	}
 	Object elem = Model.getModelManagementFactory().createModel();
 	Object con = Model.getCoreFactory().buildConstraint(elem);
-	assertNull("Namespace is unexpectly set",
-            Model.getFacade().getNamespace(con));
+	assertNull("Namespace is unexpectly set", Model.getFacade().getNamespace(con));
 	assertTrue(
 		   "Constrained element is not set",
 		   !Model.getFacade().getConstrainedElements(con).isEmpty());
-	assertTrue("Constraint is not set",
-	        !Model.getFacade().getConstraints(elem).isEmpty());
-	Model.getCoreHelper().setNamespace(elem,
-	//see issue #3407 for the use of a UmlPackage instead of a Namespace
-	        Model.getModelManagementFactory().createPackage());
+	assertTrue("Constraint is not set", !Model.getFacade().getConstraints(elem).isEmpty());
+	Model.getCoreHelper().setNamespace(elem, Model.getModelManagementFactory().createPackage());
 	con = Model.getCoreFactory().buildConstraint(elem);
-	assertNotNull("Namespace is not set",
-	        Model.getFacade().getNamespace(con));
+	assertNotNull("Namespace is not set", Model.getFacade().getNamespace(con));
     }
 
     /**

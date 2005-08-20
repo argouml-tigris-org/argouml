@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,60 +22,45 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import org.argouml.model.Model;
 
 /**
- * Test for {@link ActionUseCaseDiagram}.
- * @author jaap.branderhorst@xs4all.nl
- * @since Jan 9, 2003
+ * @author Thierry Lach
  */
-public class TestActionUseCaseDiagram
-    extends AbstractTestActionAddDiagram {
-
+public class TestUmlModel extends GenericUmlObjectTestFixture {
     /**
-     * Constructor
-     * @param arg0 test case name.
+     * Constructor.
+     *
+     * @param arg0 test name
      */
-    public TestActionUseCaseDiagram(String arg0) {
-        super(arg0);
+    public TestUmlModel(String arg0) {
+	super(arg0, Model.getMetaTypes().getModel());
+	validateTestClassIsGeneric(this);
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
+     * Test the creation of a namespace.
      */
-    protected ActionAddDiagram getAction() {
-        return new ActionUseCaseDiagram();
+    public void testNamespace() {
+	Object o =
+	    Model.getUmlFactory().buildNode(Model.getMetaTypes().getModel());
+	assertNotNull("Didn't create object", o);
+	assertTrue("Should be a base", Model.getFacade().isABase(o));
+	assertTrue("Should be a model", Model.getFacade().isAModel(o));
+	runTruthTests(o);
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
+     * @see junit.framework.TestCase#setUp()
      */
-    protected Object getNamespace() {
-        return Model.getModelManagementFactory().createPackage();
+    protected void setUp() throws Exception {
+        super.setUp();
+        setTruth(Model.getMetaTypes().getModelElement(), true);
+        setTruth(Model.getMetaTypes().getGeneralizableElement(), true);
+        setTruth(Model.getMetaTypes().getNamespace(), true);
+        setTruth(Model.getMetaTypes().getPackage(), true);
+        setTruth(Model.getMetaTypes().getModel(), true);
     }
-
-    /**
-     * @see AbstractTestActionAddDiagram#getValidNamespaceClasses()
-     */
-    protected List getValidNamespaceClasses() {
-        List rl = new ArrayList();
-        rl.add(Model.getMetaTypes().getPackage());
-        /*
-         * This needs to be a concrete metatype, so we can't use
-         * the general, but abstract, Classifier.  Replace with its
-         * concrete subtypes.
-         */
-        rl.add(Model.getMetaTypes().getUMLClass());
-        rl.add(Model.getMetaTypes().getInterface());
-        rl.add(Model.getMetaTypes().getDataType());
-        rl.add(Model.getMetaTypes().getNode());
-        rl.add(Model.getMetaTypes().getComponent());
-        return rl;
-    }
-
 }

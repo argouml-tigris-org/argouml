@@ -54,7 +54,7 @@ public class TestActionClassDiagram extends AbstractTestActionAddDiagram {
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
     protected Object getNamespace() {
-    	//The nsuml test return a package.
+    	// Return a package to use as the Namespace.
 	return Model.getModelManagementFactory().createPackage();
     }
 

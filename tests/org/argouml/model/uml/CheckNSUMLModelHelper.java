@@ -28,14 +28,13 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
 
 
 /**
- * This class is the base class of tests that tests
+ * This class is the base class of tests that test
  * the model stuff.<p>
  *
  * This class is used for testing the NSUML model subsystem. It uses
@@ -58,16 +57,14 @@ public final class CheckNSUMLModelHelper {
      * This must be called with just one reference to the object or
      * else it will fail.
      *
-     * @param tc the test case where we run the assertions.
      * @param mo the model object that we try to delete, release and reclaim.
      */
-    public static void deleteAndRelease(TestCase tc,
-					Object mo) {
-	Class c = mo.getClass();
+    public static void deleteAndRelease(Object mo) {
+        Class c = mo.getClass();
 
 	// Call methods that exists for all objects and that always return
 	// something meaningfull.
-	Assert.assertTrue("toString() corrupt in " + c,
+	TestCase.assertTrue("toString() corrupt in " + c,
 		      	    mo.toString() != null);
 
 	Model.getUmlFactory().delete(mo);
@@ -75,7 +72,7 @@ public final class CheckNSUMLModelHelper {
 	WeakReference wo = new WeakReference(mo);
 	mo = null;
 	System.gc();
-        Assert.assertTrue("Could not reclaim " + c, wo.get() == null);
+        TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);
     }
 
     /**
@@ -85,23 +82,20 @@ public final class CheckNSUMLModelHelper {
      * This must be called with just one reference to the object or
      * else it will fail.
      *
-     * @param tc the test case where we run the assertions.
      * @param mo the model object that we try to delete, release and reclaim.
      * @param name the class name of the uml object
      */
-    private static void deleteAndRelease(TestCase tc,
-					 Object mo,
-					 String name) {
+    private static void deleteAndRelease(Object mo, String name) {
 	Class c = mo.getClass();
 
 	// Call methods that exists for all objects and that always return
 	// something meaningfull.
-        Assert.assertTrue("toString() corrupt in " + c,
+        TestCase.assertTrue("toString() corrupt in " + c,
 		      	    mo.toString() != null);
-        Assert.assertTrue("getUMLClassName() corrupt in " + c,
+        TestCase.assertTrue("getUMLClassName() corrupt in " + c,
 		      	    Model.getFacade().getUMLClassName(mo) != null);
 
-        Assert.assertTrue(
+        TestCase.assertTrue(
             "getUMLClassName() different from expected in " + c,
 	    name.equals(Model.getFacade().getUMLClassName(mo)));
 
@@ -111,7 +105,7 @@ public final class CheckNSUMLModelHelper {
 
 	mo = null;
 	System.gc();
-        Assert.assertTrue("Could not reclaim " + c, wo.get() == null);
+        TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);
     }
 
     /**
@@ -119,15 +113,13 @@ public final class CheckNSUMLModelHelper {
      * Then deletes it, looses the reference and then checks that
      * the object is reclaimed.
      *
-     * @param tc the testcase class
      * @param f the DataTypesFactory
      * @param names the UML elements to test
      * @param args the arguments of the UML elements
      */
-    public static void createAndRelease(TestCase tc,
-					Object f,
-					String [] names,
-					Object [] args) {
+    public static void createAndRelease(Object f,
+					String[] names,
+					Object[] args) {
 	Class [] classes = new Class[args.length];
 	for (int i = 0; i < args.length; i++) {
 	    classes[i] = args[i].getClass();
@@ -140,11 +132,10 @@ public final class CheckNSUMLModelHelper {
 	    Method m;
 	    try {
 		m =
-		    f.getClass().getDeclaredMethod(
-		            "create" + names[i],
-		            classes);
+		    f.getClass()
+                        .getDeclaredMethod("create" + names[i], classes);
 	    } catch (NoSuchMethodException e) {
-                Assert.fail("Method create" + names[i]
+                TestCase.fail("Method create" + names[i]
 			      + " does not exist in " + f);
 		return;
 	    }
@@ -153,17 +144,20 @@ public final class CheckNSUMLModelHelper {
 		// Extra careful now, not to keep any references to the
 		// second argument.
 		try {
-		    deleteAndRelease(tc, m.invoke(f, args), names[i]);
+		    deleteAndRelease(m.invoke(f, args), names[i]);
 		} catch (ClassCastException e) {
 		    // Here it is another object sent to the test.
-		    deleteAndRelease(tc, m.invoke(f, args));
+		    deleteAndRelease(m.invoke(f, args));
+		} catch (IllegalArgumentException e) {
+		    // Here it is another object sent to the test.
+		    deleteAndRelease(m.invoke(f, args));
 		}
 	    } catch (IllegalAccessException e) {
-                Assert.fail("Method create" + names[i]
+                TestCase.fail("Method create" + names[i]
 			      + " in " + f + " cannot be called");
 		return;
 	    } catch (InvocationTargetException e) {
-                Assert.fail("Method create" + names[i]
+                TestCase.fail("Method create" + names[i]
 			      + " in " + f + " throws an exception.");
 		return;
 	    }
@@ -171,35 +165,29 @@ public final class CheckNSUMLModelHelper {
     }
 
     /**
-     * @param tc the testcase class
      * @param f the DataTypesFactory
      * @param names the UML elements to test
      */
-    public static void createAndRelease(TestCase tc,
-					Object f,
-					String [] names) {
+    public static void createAndRelease(Object f, String[] names) {
 	Object[] noarguments = {
 	};
 
-	createAndRelease(tc, f, names, noarguments);
+	createAndRelease(f, names, noarguments);
     }
 
     /**
      * Test the presence of deletion functions for a list of modelelements.
      *
-     * @param tc the testcase class
      * @param f the model factory that provides the "delete" functions
      *          for the modelelements
      * @param names the names of the modelelements
      */
-    public static void deleteComplete(TestCase tc,
-				      Object f,
-				      String[] names) {
+    public static void deleteComplete(Object f, String[] names) {
         Method[] methods = null;
         try {
             methods = f.getClass().getDeclaredMethods();
         } catch (SecurityException se) {
-            Assert.fail(
+            TestCase.fail(
                     "SecurityException while retrieving all methods from "
                     + f.getClass().getName());
             return;
@@ -215,7 +203,7 @@ public final class CheckNSUMLModelHelper {
                 }
             }
             if (testFailed) {
-                Assert.fail("Method " + methodName + " not found in "
+                TestCase.fail("Method " + methodName + " not found in "
                         + f.getClass().getName());
             }
         }
@@ -224,12 +212,10 @@ public final class CheckNSUMLModelHelper {
     /**
      * Check if for every metamodel element name a create function exists.
      *
-     * @param tc the testcase class
      * @param f the modelfactory that should contain the creation function
      * @param names the metamodel class names
      */
-    public static void metaModelNameCorrect(TestCase tc,
-            Object f, String[] names) {
+    public static void metaModelNameCorrect(Object f, String[] names) {
         try {
             for (int i = 0; i < names.length; i++) {
                 try {
@@ -238,7 +224,7 @@ public final class CheckNSUMLModelHelper {
                         	.getMethod("create" + names[i], new Class[] {});
                     Object base = m.invoke(f, new Object[] {});
                     if (Model.getFacade().isAModelElement(base)) {
-                        Assert.assertTrue(
+                        TestCase.assertTrue(
                             "not a valid metaModelName " + names[i],
                             Model.getExtensionMechanismsHelper()
                                 .getMetaModelName(base)
@@ -248,7 +234,7 @@ public final class CheckNSUMLModelHelper {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            Assert.fail(
+            TestCase.fail(
                     "Exception during test metaModelnameCorrect. Message: "
                     + ex.getMessage());
         }
@@ -257,15 +243,11 @@ public final class CheckNSUMLModelHelper {
     /**
      * Try creating a stereotype for every modelelement type.
      *
-     * @param tc the testcase class
      * @param f the factory containing the creation function for
      *          all the given metamodel element names
      * @param names the metamodel element names
      */
-    public static void isValidStereoType(
-            TestCase tc,
-            Object f,
-            String[] names) {
+    public static void isValidStereoType(Object f, String[] names) {
         try {
             Object ns = Model.getModelManagementFactory().createPackage();
             Object clazz = Model.getCoreFactory().buildClass(ns);
@@ -281,12 +263,12 @@ public final class CheckNSUMLModelHelper {
                         Object stereo2 =
                             	Model.getExtensionMechanismsFactory()
                             		.buildStereotype(base, "test2", ns);
-                        Assert.assertTrue(
+                        TestCase.assertTrue(
                             "Unexpected invalid stereotype",
                             Model.getExtensionMechanismsHelper()
                                 .isValidStereoType(base, stereo2));
                         if (!(Model.getFacade().isAClass(base))) {
-                            Assert.assertTrue(
+                            TestCase.assertTrue(
                                 "Unexpected invalid stereotype",
                                 !Model.getExtensionMechanismsHelper()
                                     .isValidStereoType(base, stereo1));
@@ -299,7 +281,7 @@ public final class CheckNSUMLModelHelper {
                                 		        inter,
                                 		        "test3",
                                 		        ns);
-                            Assert.assertTrue(
+                            TestCase.assertTrue(
                                 "Unexpected invalid stereotype",
                                 !Model.getExtensionMechanismsHelper()
                                     .isValidStereoType(base, stereo3));
@@ -309,7 +291,7 @@ public final class CheckNSUMLModelHelper {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            Assert.fail(
+            TestCase.fail(
                     "Exception during test metaModelnameCorrect. Message: "
                     + ex.getMessage());
         }

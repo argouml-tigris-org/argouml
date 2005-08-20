@@ -24,100 +24,84 @@
 
 package org.argouml.model;
 
-import java.util.Collection;
-import java.util.Vector;
-
 import junit.framework.TestCase;
 
 
-/**
- * Test the CommonBehaviorFactory.
- */
-public class TestCommonBehaviorFactory extends TestCase {
 
+/**
+ * Test the UseCasesFactory class.
+ *
+ */
+public class TestUseCasesFactory extends TestCase {
     /**
-     * All the ModelElements that we will test.
+     * List of elements to test.
      */
-    private static String[] allModelElements =
-    {
-	"Action",
-	"ActionSequence",
-	"Argument",
-	"AttributeLink",
-	"CallAction",
-	"ComponentInstance",
-	"CreateAction",
-	"DataValue",
-	"DestroyAction",
-	"Exception",
-	"Instance",
-	"Link",
-	"LinkEnd",
-	"LinkObject",
-	"NodeInstance",
-	"Object",
-	"Reception",
-	"ReturnAction",
-	"SendAction",
-	"Signal",
-	"Stimulus",
-	"TerminateAction",
-	"UninterpretedAction",
+    private static String[] allModelElements = {
+        "Actor",
+        "Extend",
+        "ExtensionPoint",
+        "Include",
+        "UseCase",
+        "UseCaseInstance",
     };
 
     /**
      * The constructor.
      *
-     * @param n the name
+     * @param n the name of the test
      */
-    public TestCommonBehaviorFactory(String n) {
-	super(n);
+    public TestUseCasesFactory(String n) {
+        super(n);
     }
 
     /**
-     * @see junit.framework.TestCase#setUp()
+     * Test if the UseCasesFactory is really a singleton.
      */
-    public void setUp() {
-    		//This should instantiate a new model implementation
-        Model.getFacade();
+    public void testSingleton() {
+	Object o1 = Model.getUseCasesFactory();
+	Object o2 = Model.getUseCasesFactory();
+	assertTrue("Different singletons", o1 == o2);
     }
 
     /**
-     * Test for creation.
+     * Test creation.
      */
     public void testCreates() {
+	String [] objs = {
+	    "Actor",
+	    "Extend",
+	    "ExtensionPoint",
+	    "Include",
+	    "UseCase",
+	    "UseCaseInstance",
+	    null,
+	};
 
-	Collection objs = new Vector();
-	
-        // Action is abstract
-	objs.add("ActionSequence");
-	objs.add("Argument");
-	objs.add("AttributeLink");
-	objs.add("CallAction");
-	objs.add("ComponentInstance");
-	objs.add("CreateAction");
-	objs.add("DataValue");
-	objs.add("DestroyAction");
-	objs.add("Exception");
-        // Instance is abstract
-	objs.add("Link");
-	objs.add("LinkEnd");
-	objs.add("NodeInstance");
-	objs.add("Object");
-	objs.add("Reception");
-	objs.add("ReturnAction");
-	objs.add("SendAction");
-	objs.add("Signal");
-	objs.add("Stimulus");
-	objs.add("TerminateAction");
-	objs.add("UninterpretedAction");
-
-	CheckUMLModelHelper.createAndRelease(
-					     Model.getCommonBehaviorFactory(),
-					     // +1 in the size of the array because we also test the null value
-					     (String[]) objs.toArray(new String[objs.size()+1]));
-
+	CheckUMLModelHelper.createAndRelease(Model.getUseCasesFactory(),
+					     objs);
     }
+
+    /**
+     * Test building extensions.
+     */
+    public void testBuildExtend1() {
+        Object base = Model.getUseCasesFactory().createUseCase();
+        Object extension = Model.getUseCasesFactory().createUseCase();
+        Object point = Model.getUseCasesFactory()
+            	.buildExtensionPoint(base);
+        Object extend = Model.getUseCasesFactory()
+            	.buildExtend(base, extension, point);
+        assertTrue("extensionpoint not added to base",
+		   !Model.getFacade().getExtensionPoints(base).isEmpty());
+        assertTrue("extend not added to base", !Model.getUseCasesHelper().getExtendingUseCases(base).isEmpty());
+        assertTrue("extend not added to extension",
+		   !Model.getFacade().getExtends(extension).isEmpty());
+        assertTrue("extend not added to correct extensionpoint",
+		   (Model.getFacade().getExtensionPoints(extend).contains(point)
+		    && Model.getFacade().getExtensionPoints(extend).size() == 1));
+    }
+
+
 
     /**
      * @return Returns the allModelElements.
@@ -126,3 +110,4 @@ public class TestCommonBehaviorFactory extends TestCase {
         return allModelElements;
     }
 }
+

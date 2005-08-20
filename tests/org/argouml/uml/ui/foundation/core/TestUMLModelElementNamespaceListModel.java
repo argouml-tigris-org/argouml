@@ -69,7 +69,7 @@ public class TestUMLModelElementNamespaceListModel extends TestCase {
      * Test for setNameSpace.
      */
     public void testSetNamespace() {
-        Object ns = Model.getCoreFactory().createNamespace();
+        Object ns = Model.getModelManagementFactory().createPackage();
         Model.getCoreHelper().setNamespace(elem, ns);
         assertEquals(1, model.getSize());
         assertEquals(ns, model.getElementAt(0));
@@ -79,7 +79,7 @@ public class TestUMLModelElementNamespaceListModel extends TestCase {
      * Test removing a namespace.
      */
     public void testRemoveNamespace() {
-        Object ns = Model.getCoreFactory().createNamespace();
+        Object ns = Model.getModelManagementFactory().createPackage();
         Model.getCoreHelper().setNamespace(elem, ns);
         Model.getCoreHelper().setNamespace(elem, null);
         assertEquals(0, model.getSize());

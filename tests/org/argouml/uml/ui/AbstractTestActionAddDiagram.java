@@ -97,9 +97,8 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
     protected abstract Object getNamespace();
 
     /**
-     * Should return a list with classes that implement Namespace (or the JMI
-     * equivalent in the future) and that are valid to use at creating the
-     * diagram.
+     * Should return a list with classes that implement Namespace
+     * and that are valid to use at creating the diagram.
      * @return List
      */
     protected abstract List getValidNamespaceClasses();
@@ -166,7 +165,7 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      */
     public void testValidTestNamespace() {
 	assertTrue(
-		   "The namespace with this testis not valid for this diagram",
+		   "The namespace with this test is not valid for this diagram",
 		   action.isValidNamespace(ns));
     }
 
@@ -186,7 +185,7 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
 	    }
 	    assertTrue(
 		       objDesc
-		       + " is no valid namespace for the diagram",
+		       + " is not valid namespace for the diagram",
 		       action.isValidNamespace(o));
 	}
     }

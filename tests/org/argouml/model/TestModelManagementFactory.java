@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,60 +22,64 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.argouml.model.Model;
+import junit.framework.TestCase;
 
 /**
- * Test for {@link ActionUseCaseDiagram}.
- * @author jaap.branderhorst@xs4all.nl
- * @since Jan 9, 2003
+ * Test the ModelManagementFactory class.
+ *
  */
-public class TestActionUseCaseDiagram
-    extends AbstractTestActionAddDiagram {
+public class TestModelManagementFactory extends TestCase {
+    /**
+     * The model elements to test.
+     */
+    private static String[] allModelElements = {
+	"ElementImport", "Model", "Package", "Subsystem",
+    };
 
     /**
-     * Constructor
-     * @param arg0 test case name.
+     * The constructor.
+     *
+     * @param n the name
      */
-    public TestActionUseCaseDiagram(String arg0) {
-        super(arg0);
+    public TestModelManagementFactory(String n) {
+	super(n);
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
+     * Test if this class is really a singleton.
      */
-    protected ActionAddDiagram getAction() {
-        return new ActionUseCaseDiagram();
+    public void testSingleton() {
+
+	Object o1 = Model.getModelManagementFactory();
+
+	Object o2 = Model.getModelManagementFactory();
+
+	assertTrue("Different singletons", o1 == o2);
+
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
+     * Test creation.
      */
-    protected Object getNamespace() {
-        return Model.getModelManagementFactory().createPackage();
+    public void testCreates() {
+
+	String[] objs = {
+	    "ElementImport", "Model", "Package", "Subsystem",
+	    null,
+	};
+
+	CheckUMLModelHelper.createAndRelease(
+		     Model.getModelManagementFactory(),
+		     objs);
+
     }
 
     /**
-     * @see AbstractTestActionAddDiagram#getValidNamespaceClasses()
+     * @return Returns the allModelElements.
      */
-    protected List getValidNamespaceClasses() {
-        List rl = new ArrayList();
-        rl.add(Model.getMetaTypes().getPackage());
-        /*
-         * This needs to be a concrete metatype, so we can't use
-         * the general, but abstract, Classifier.  Replace with its
-         * concrete subtypes.
-         */
-        rl.add(Model.getMetaTypes().getUMLClass());
-        rl.add(Model.getMetaTypes().getInterface());
-        rl.add(Model.getMetaTypes().getDataType());
-        rl.add(Model.getMetaTypes().getNode());
-        rl.add(Model.getMetaTypes().getComponent());
-        return rl;
+    protected static String[] getAllModelElements() {
+        return allModelElements;
     }
-
 }

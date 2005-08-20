@@ -33,7 +33,7 @@ import junit.framework.TestCase;
 import org.argouml.model.Model;
 
 /**
- * This class is a helper class of tests that tests
+ * This class is a helper class of tests that test
  * the model stuff.<p>
  *
  * This class is used for testing the Model subsystem. It should not have any
@@ -44,7 +44,7 @@ import org.argouml.model.Model;
  */
 public final class CheckUMLModelHelper {
     /**
-     * Constructor.
+     * Constructor to forbid creation.
      */
     private CheckUMLModelHelper() {
     }
@@ -64,7 +64,7 @@ public final class CheckUMLModelHelper {
 	// Call methods that exists for all objects and that always return
 	// something meaningfull.
 	TestCase.assertTrue("toString() corrupt in " + c,
-		      mo.toString() instanceof String);
+		      mo.toString() != null);
 
 	Model.getUmlFactory().delete(mo);
 
@@ -80,11 +80,11 @@ public final class CheckUMLModelHelper {
      *
      * This must be called with just one reference to the object or
      * else it will fail.
+     *
      * @param mo the model object that we try to delete, release and reclaim.
      * @param name the class name of the uml object
      */
-    private static void deleteAndRelease(Object mo,
-					 String name) {
+    private static void deleteAndRelease(Object mo, String name) {
 	Class c = mo.getClass();
 
 	// Call methods that exists for all objects and that always return
@@ -117,8 +117,8 @@ public final class CheckUMLModelHelper {
      * @param args the arguments of the UML elements
      */
     public static void createAndRelease(Object f,
-					String [] names,
-					Object [] args) {
+					String[] names,
+					Object[] args) {
 	Class [] classes = new Class[args.length];
 	for (int i = 0; i < args.length; i++) {
 	    classes[i] = args[i].getClass();
@@ -130,7 +130,9 @@ public final class CheckUMLModelHelper {
 	    }
 	    Method m;
 	    try {
-		m = f.getClass().getMethod("create" + names[i], classes);
+		m =
+		    f.getClass().getDeclaredMethod("create" + names[i],
+						   classes);
 	    } catch (NoSuchMethodException e) {
 		TestCase.fail("Method create" + names[i]
 			      + " does not exist in " + f);
@@ -165,12 +167,45 @@ public final class CheckUMLModelHelper {
      * @param f the DataTypesFactory
      * @param names the UML elements to test
      */
-    public static void createAndRelease(Object f,
-					String [] names) {
+    public static void createAndRelease(Object f, String[] names) {
 	Object[] noarguments = {
 	};
 
 	createAndRelease(f, names, noarguments);
+    }
+
+    /**
+     * Test the presence of deletion methods for a list of modelelements.
+     *
+     * @param f the model factory that provides the "delete" methods
+     *          for the modelelements
+     * @param names the names of the modelelements
+     */
+    public static void hasDeleteMethod(Object f, String[] names) {
+        Method[] methods = null;
+        try {
+            methods = f.getClass().getDeclaredMethods();
+        } catch (SecurityException se) {
+            TestCase.fail(
+                    "SecurityException while retrieving all methods from "
+                    + f.getClass().getName());
+            return;
+        }
+        for (int i = 0; i < names.length; i++) {
+            String methodName = "delete" + names[i];
+            boolean testFailed = true;
+            for (int j = 0; j < methods.length; j++) {
+                Method method = methods[j];
+                if (method.getName().equals(methodName)) {
+                    testFailed = false;
+                    break;
+                }
+            }
+            if (testFailed) {
+                TestCase.fail("Method " + methodName + " not found in "
+                        + f.getClass().getName());
+            }
+        }
     }
 
     /**
@@ -213,11 +248,11 @@ public final class CheckUMLModelHelper {
      */
     public static void isValidStereoType(Object f, String[] names) {
         try {
-            Object ns = Model.getCoreFactory().createNamespace();
+            Object ns = Model.getModelManagementFactory().createPackage();
             Object clazz = Model.getCoreFactory().buildClass(ns);
             Object stereo1 =
-                Model.getExtensionMechanismsFactory()
-                	.buildStereotype(clazz, "test1", ns);
+		Model.getExtensionMechanismsFactory()
+                    .buildStereotype(clazz, "test1", ns);
             for (int i = 0; i < names.length; i++) {
                 try {
                     Method m =
@@ -239,10 +274,10 @@ public final class CheckUMLModelHelper {
                                     .isValidStereoType(base, stereo1));
                         } else {
                             Object inter =
-                                Model.getCoreFactory().createInterface();
+				Model.getCoreFactory().createInterface();
                             Object stereo3 =
-                                Model.getExtensionMechanismsFactory()
-                                	.buildStereotype(inter, "test3", ns);
+				Model.getExtensionMechanismsFactory()
+                                    .buildStereotype(inter, "test3", ns);
                             TestCase.assertTrue(
                                 "Unexpected invalid stereotype",
                                 !Model.getExtensionMechanismsHelper()

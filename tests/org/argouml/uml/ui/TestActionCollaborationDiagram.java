@@ -58,7 +58,7 @@ public class TestActionCollaborationDiagram
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
     protected Object getNamespace() {
-        //return new CollaborationImpl();
+        // Return a Class to use for the enclosing namespace
         Object c = Model.getCoreFactory().createClass();
         TargetManager.getInstance().setTarget(c);
         return c;

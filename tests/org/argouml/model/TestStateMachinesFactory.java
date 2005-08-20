@@ -24,99 +24,88 @@
 
 package org.argouml.model;
 
-import java.util.Collection;
-import java.util.Vector;
-
 import junit.framework.TestCase;
 
-
 /**
- * Test the CommonBehaviorFactory.
+ * Test the StateMachinesFactory class.
+ *
  */
-public class TestCommonBehaviorFactory extends TestCase {
-
+public class TestStateMachinesFactory extends TestCase {
     /**
-     * All the ModelElements that we will test.
+     * Model elements to test.
      */
     private static String[] allModelElements =
     {
-	"Action",
-	"ActionSequence",
-	"Argument",
-	"AttributeLink",
-	"CallAction",
-	"ComponentInstance",
-	"CreateAction",
-	"DataValue",
-	"DestroyAction",
-	"Exception",
-	"Instance",
-	"Link",
-	"LinkEnd",
-	"LinkObject",
-	"NodeInstance",
-	"Object",
-	"Reception",
-	"ReturnAction",
-	"SendAction",
-	"Signal",
-	"Stimulus",
-	"TerminateAction",
-	"UninterpretedAction",
+	"CallEvent",
+	"ChangeEvent",
+	"CompositeState",
+	"Event",
+	"FinalState",
+	"Guard",
+	"Pseudostate",
+	"SignalEvent",
+	"SimpleState",
+	"State",
+	"StateMachine",
+	"StateVertex",
+	"StubState",
+	"SubmachineState",
+	"SynchState",
+	"TimeEvent",
+	"Transition",
     };
 
     /**
      * The constructor.
      *
-     * @param n the name
+     * @param n the name of the test
      */
-    public TestCommonBehaviorFactory(String n) {
+    public TestStateMachinesFactory(String n) {
 	super(n);
     }
 
     /**
-     * @see junit.framework.TestCase#setUp()
+     * Test if this class is really a singleton.
      */
-    public void setUp() {
-    		//This should instantiate a new model implementation
-        Model.getFacade();
+    public void testSingleton() {
+
+	Object o1 = Model.getStateMachinesFactory();
+
+	Object o2 = Model.getStateMachinesFactory();
+
+	assertTrue("Different singletons", o1 == o2);
+
     }
 
     /**
-     * Test for creation.
+     * Test creation.
      */
     public void testCreates() {
-
-	Collection objs = new Vector();
-	
-        // Action is abstract
-	objs.add("ActionSequence");
-	objs.add("Argument");
-	objs.add("AttributeLink");
-	objs.add("CallAction");
-	objs.add("ComponentInstance");
-	objs.add("CreateAction");
-	objs.add("DataValue");
-	objs.add("DestroyAction");
-	objs.add("Exception");
-        // Instance is abstract
-	objs.add("Link");
-	objs.add("LinkEnd");
-	objs.add("NodeInstance");
-	objs.add("Object");
-	objs.add("Reception");
-	objs.add("ReturnAction");
-	objs.add("SendAction");
-	objs.add("Signal");
-	objs.add("Stimulus");
-	objs.add("TerminateAction");
-	objs.add("UninterpretedAction");
+	// Do not test State, Event or StateVertex. They are abstract.
+	String[] objs = {
+	    "CallEvent", 
+            "ChangeEvent", 
+            "CompositeState",
+	    // "Event",
+	    "FinalState",
+	    "Guard",
+	    "Pseudostate",
+	    "SignalEvent",
+	    "SimpleState",
+	    // "State",
+	    "StateMachine",
+	    // "StateVertex",
+	    "StubState",
+	    "SubmachineState",
+	    "SynchState",
+	    "TimeEvent",
+	    "Transition",
+	    null,
+	};
 
 	CheckUMLModelHelper.createAndRelease(
-					     Model.getCommonBehaviorFactory(),
-					     // +1 in the size of the array because we also test the null value
-					     (String[]) objs.toArray(new String[objs.size()+1]));
-
+					     Model.getStateMachinesFactory(),
+					     objs);
     }
 
     /**

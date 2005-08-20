@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies. This software program and
+// and this paragraph appear in all copies.  This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,34 +22,36 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.model.uml;
+package org.argouml.model;
+
+import org.argouml.model.uml.TestUmlModelEventPumpDeprecated;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
- * Run all tests in this package.
+ * @author Thierry Lach
  */
-public final class AllTests {
-    /**
-     * Constructor.
-     */
-    private AllTests() {
-    }
+public class UmlTestSuite {
 
-    /**
-     * Get the list.
+    /** Test suite for this package
      *
-     * @return a list of all test cases.
+     * @return the junit test suite
      */
     public static Test suite() {
-        TestSuite suite = new TestSuite("Test for org.argouml.model.uml");
-        //$JUnit-BEGIN$
-
+        TestSuite suite =
+	    new TestSuite("Tests for "
+			  + UmlTestSuite.class.getPackage().getName());
+        suite.addTestSuite(TestUml.class);
+        suite.addTestSuite(TestCopyHelper.class);
         suite.addTestSuite(TestUmlModelEventPumpDeprecated.class);
 
-        //$JUnit-END$
+	suite.addTest(new TestSuite(TestUmlModelElement.class));
+	suite.addTest(new TestSuite(TestUmlModel.class));
+	suite.addTest(new TestSuite(TestUmlUseCase.class));
+	suite.addTest(new TestSuite(TestUmlActor.class));
+
         return suite;
     }
-}
 
+}

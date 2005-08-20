@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,60 +22,46 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.argouml.model.Model;
+import junit.framework.TestCase;
 
 /**
- * Test for {@link ActionUseCaseDiagram}.
- * @author jaap.branderhorst@xs4all.nl
- * @since Jan 9, 2003
+ * @author Thierry
  */
-public class TestActionUseCaseDiagram
-    extends AbstractTestActionAddDiagram {
+public class TestUml extends TestCase
+{
 
     /**
-     * Constructor
-     * @param arg0 test case name.
+     * Constructor for Uml.
+     *
+     * @param arg0 is the name of the test case.
      */
-    public TestActionUseCaseDiagram(String arg0) {
+    public TestUml(String arg0)
+    {
         super(arg0);
     }
 
-    /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
-     */
-    protected ActionAddDiagram getAction() {
-        return new ActionUseCaseDiagram();
-    }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
+     * TODO: Rewrite this test using reflection against Uml class.
+     * 
+     * This code has been commented out since September 2003
      */
-    protected Object getNamespace() {
-        return Model.getModelManagementFactory().createPackage();
-    }
-
-    /**
-     * @see AbstractTestActionAddDiagram#getValidNamespaceClasses()
-     */
-    protected List getValidNamespaceClasses() {
-        List rl = new ArrayList();
-        rl.add(Model.getMetaTypes().getPackage());
-        /*
-         * This needs to be a concrete metatype, so we can't use
-         * the general, but abstract, Classifier.  Replace with its
-         * concrete subtypes.
-         */
-        rl.add(Model.getMetaTypes().getUMLClass());
-        rl.add(Model.getMetaTypes().getInterface());
-        rl.add(Model.getMetaTypes().getDataType());
-        rl.add(Model.getMetaTypes().getNode());
-        rl.add(Model.getMetaTypes().getComponent());
-        return rl;
+    public void testUmlClassList() {
+//        for (Iterator i = Uml.getUmlClassList().iterator(); i.hasNext();) {
+//            UmlModelEntity type = (UmlModelEntity) i.next();
+//            String typeName = type.getClass().getName().toUpperCase();
+//            String expected = type.getName().toUpperCase();
+//            // System.out.println(type.getClass().getName().toUpperCase());
+//            // System.out.println("ORG.ARGOUML.MODEL.UML.UML$TYPE"
+//            // + key.toString().toUpperCase());
+//            assertEquals(
+//                "Not the correct class",
+//                type.getClass().getName().toUpperCase(),
+//                "ORG.ARGOUML.MODEL.UML.UML$TYPE"
+//                    + type.getName().toUpperCase());
+//        }
     }
 
 }
