@@ -35,101 +35,101 @@ import java.util.*;
  * Run 'java Main <directory full of java files>'
  *
  * Contributing authors:
- *		John Mitchell		johnm@non.net
- *		Terence Parr		parrt@magelang.com
- *		John Lilley		jlilley@empathy.com
- *		Scott Stanchfield	thetick@magelang.com
- *		Markus Mohnen		mohnen@informatik.rwth-aachen.de
- *		Peter Williams		pete.williams@sun.com
- *		Allan Jacobs		Allan.Jacobs@eng.sun.com
- *		Steve Messick		messick@redhills.com
- *		John Pybus		john@pybus.org
+ *        John Mitchell        johnm@non.net
+ *        Terence Parr        parrt@magelang.com
+ *        John Lilley        jlilley@empathy.com
+ *        Scott Stanchfield    thetick@magelang.com
+ *        Markus Mohnen        mohnen@informatik.rwth-aachen.de
+ *        Peter Williams        pete.williams@sun.com
+ *        Allan Jacobs        Allan.Jacobs@eng.sun.com
+ *        Steve Messick        messick@redhills.com
+ *        John Pybus        john@pybus.org
  *
  * Version 1.00 December 9, 1997 -- initial release
  * Version 1.01 December 10, 1997
- *		fixed bug in octal def (0..7 not 0..8)
+ *        fixed bug in octal def (0..7 not 0..8)
  * Version 1.10 August 1998 (parrt)
- *		added tree construction
- *		fixed definition of WS,comments for mac,pc,unix newlines
- *		added unary plus
+ *        added tree construction
+ *        fixed definition of WS,comments for mac,pc,unix newlines
+ *        added unary plus
  * Version 1.11 (Nov 20, 1998)
- *		Added "shutup" option to turn off last ambig warning.
- *		Fixed inner class def to allow named class defs as statements
- *		synchronized requires compound not simple statement
- *		add [] after builtInType DOT class in primaryExpression
- *		"const" is reserved but not valid..removed from modifiers
+ *        Added "shutup" option to turn off last ambig warning.
+ *        Fixed inner class def to allow named class defs as statements
+ *        synchronized requires compound not simple statement
+ *        add [] after builtInType DOT class in primaryExpression
+ *        "const" is reserved but not valid..removed from modifiers
  * Version 1.12 (Feb 2, 1999)
- *		Changed LITERAL_xxx to xxx in tree grammar.
- *		Updated java.g to use tokens {...} now for 2.6.0 (new feature).
+ *        Changed LITERAL_xxx to xxx in tree grammar.
+ *        Updated java.g to use tokens {...} now for 2.6.0 (new feature).
  *
  * Version 1.13 (Apr 23, 1999)
- *		Didn't have (stat)? for else clause in tree parser.
- *		Didn't gen ASTs for interface extends.  Updated tree parser too.
- *		Updated to 2.6.0.
+ *        Didn't have (stat)? for else clause in tree parser.
+ *        Didn't gen ASTs for interface extends.  Updated tree parser too.
+ *        Updated to 2.6.0.
  * Version 1.14 (Jun 20, 1999)
- *		Allowed final/abstract on local classes.
- *		Removed local interfaces from methods
- *		Put instanceof precedence where it belongs...in relationalExpr
- *			It also had expr not type as arg; fixed it.
- *		Missing ! on SEMI in classBlock
- *		fixed: (expr) + "string" was parsed incorrectly (+ as unary plus).
- *		fixed: didn't like Object[].class in parser or tree parser
+ *        Allowed final/abstract on local classes.
+ *        Removed local interfaces from methods
+ *        Put instanceof precedence where it belongs...in relationalExpr
+ *            It also had expr not type as arg; fixed it.
+ *        Missing ! on SEMI in classBlock
+ *        fixed: (expr) + "string" was parsed incorrectly (+ as unary plus).
+ *        fixed: didn't like Object[].class in parser or tree parser
  * Version 1.15 (Jun 26, 1999)
- *		Screwed up rule with instanceof in it. :(  Fixed.
- *		Tree parser didn't like (expr).something; fixed.
- *		Allowed multiple inheritance in tree grammar. oops.
+ *        Screwed up rule with instanceof in it. :(  Fixed.
+ *        Tree parser didn't like (expr).something; fixed.
+ *        Allowed multiple inheritance in tree grammar. oops.
  * Version 1.16 (August 22, 1999)
- *		Extending an interface built a wacky tree: had extra EXTENDS.
- *		Tree grammar didn't allow multiple superinterfaces.
- *		Tree grammar didn't allow empty var initializer: {}
+ *        Extending an interface built a wacky tree: had extra EXTENDS.
+ *        Tree grammar didn't allow multiple superinterfaces.
+ *        Tree grammar didn't allow empty var initializer: {}
  * Version 1.17 (October 12, 1999)
- *		ESC lexer rule allowed 399 max not 377 max.
- *		java.tree.g didn't handle the expression of synchronized
- *		statements.
+ *        ESC lexer rule allowed 399 max not 377 max.
+ *        java.tree.g didn't handle the expression of synchronized
+ *        statements.
  * Version 1.18 (August 12, 2001)
- *	  	Terence updated to Java 2 Version 1.3 by
- *		observing/combining work of Allan Jacobs and Steve
- *		Messick.  Handles 1.3 src.  Summary:
- *		o  primary didn't include boolean.class kind of thing
- *	  	o  constructor calls parsed explicitly now:
- * 		   see explicitConstructorInvocation
- *		o  add strictfp modifier
- *	  	o  missing objBlock after new expression in tree grammar
- *		o  merged local class definition alternatives, moved after declaration
- *		o  fixed problem with ClassName.super.field
- *	  	o  reordered some alternatives to make things more efficient
- *		o  long and double constants were not differentiated from int/float
- *		o  whitespace rule was inefficient: matched only one char
- *		o  add an examples directory with some nasty 1.3 cases
- *		o  made Main.java use buffered IO and a Reader for Unicode support
- *		o  supports UNICODE?
- *		   Using Unicode charVocabulay makes code file big, but only
- *		   in the bitsets at the end. I need to make ANTLR generate
- *		   unicode bitsets more efficiently.
+ *          Terence updated to Java 2 Version 1.3 by
+ *        observing/combining work of Allan Jacobs and Steve
+ *        Messick.  Handles 1.3 src.  Summary:
+ *        o  primary didn't include boolean.class kind of thing
+ *        o  constructor calls parsed explicitly now:
+ *            see explicitConstructorInvocation
+ *        o  add strictfp modifier
+ *        o  missing objBlock after new expression in tree grammar
+ *        o  merged local class definition alternatives, moved after declaration
+ *        o  fixed problem with ClassName.super.field
+ *        o  reordered some alternatives to make things more efficient
+ *        o  long and double constants were not differentiated from int/float
+ *        o  whitespace rule was inefficient: matched only one char
+ *        o  add an examples directory with some nasty 1.3 cases
+ *        o  made Main.java use buffered IO and a Reader for Unicode support
+ *        o  supports UNICODE?
+ *           Using Unicode charVocabulay makes code file big, but only
+ *           in the bitsets at the end. I need to make ANTLR generate
+ *           unicode bitsets more efficiently.
  * Version 1.19 (April 25, 2002)
- *		Terence added in nice fixes by John Pybus concerning floating
- *		constants and problems with super() calls.  John did a nice
- *		reorg of the primary/postfix expression stuff to read better
- *		and makes f.g.super() parse properly (it was METHOD_CALL not
- *		a SUPER_CTOR_CALL).  Also:
+ *        Terence added in nice fixes by John Pybus concerning floating
+ *        constants and problems with super() calls.  John did a nice
+ *        reorg of the primary/postfix expression stuff to read better
+ *        and makes f.g.super() parse properly (it was METHOD_CALL not
+ *        a SUPER_CTOR_CALL).  Also:
  *
- *		o  "finally" clause was a root...made it a child of "try"
- *		o  Added stuff for asserts too for Java 1.4, but *commented out*
- *		   as it is not backward compatible.
+ *        o  "finally" clause was a root...made it a child of "try"
+ *        o  Added stuff for asserts too for Java 1.4, but *commented out*
+ *           as it is not backward compatible.
  *
  * Version 1.20 (October 27, 2002)
  *
- *	  Terence ended up reorging John Pybus' stuff to
- *	  remove some nondeterminisms and some syntactic predicates.
- *	  Note that the grammar is stricter now; e.g., this(...) must
- *	be the first statement.
+ *      Terence ended up reorging John Pybus' stuff to
+ *      remove some nondeterminisms and some syntactic predicates.
+ *      Note that the grammar is stricter now; e.g., this(...) must
+ *    be the first statement.
  *
- *	  Trinary ?: operator wasn't working as array name:
- *		  (isBig ? bigDigits : digits)[i];
+ *      Trinary ?: operator wasn't working as array name:
+ *          (isBig ? bigDigits : digits)[i];
  *
- *	  Checked parser/tree parser on source for
- *		  Resin-2.0.5, jive-2.1.1, jdk 1.3.1, Lucene, antlr 2.7.2a4,
- *		and the 110k-line jGuru server source.
+ *      Checked parser/tree parser on source for
+ *          Resin-2.0.5, jive-2.1.1, jdk 1.3.1, Lucene, antlr 2.7.2a4,
+ *        and the 110k-line jGuru server source.
  *
  * Version 1.21 (October 17, 2003)
  *  Fixed lots of problems including:
@@ -140,49 +140,49 @@ import java.util.*;
  *  TJP fixed CHAR_LITERAL analogously.
  *
  * Version 1.21.2 (March, 2003)
- *	  Changes by Matt Quail to support generics (as per JDK1.5/JSR14)
- *	  Notes:
- *	  o We only allow the "extends" keyword and not the "implements"
- *		keyword, since thats what JSR14 seems to imply.
- *	  o Thanks to Monty Zukowski for his help on the antlr-interest
- *		mail list.
- *	  o Thanks to Alan Eliasen for testing the grammar over his
- *		Fink source base
+ *      Changes by Matt Quail to support generics (as per JDK1.5/JSR14)
+ *      Notes:
+ *      o We only allow the "extends" keyword and not the "implements"
+ *        keyword, since thats what JSR14 seems to imply.
+ *      o Thanks to Monty Zukowski for his help on the antlr-interest
+ *        mail list.
+ *      o Thanks to Alan Eliasen for testing the grammar over his
+ *        Fink source base
  *
  * Version 1.22 (July, 2004)
- *	  Changes by Michael Studman to support Java 1.5 language extensions
- *	  Notes:
- *	  o Added support for annotations types
- *	  o Finished off Matt Quail's generics enhancements to support bound type arguments
- *	  o Added support for new for statement syntax
- *	  o Added support for static import syntax
- *	  o Added support for enum types
- *	  o Tested against JDK 1.5 source base and source base of jdigraph project
- *	  o Thanks to Matt Quail for doing the hard part by doing most of the generics work
+ *      Changes by Michael Studman to support Java 1.5 language extensions
+ *      Notes:
+ *      o Added support for annotations types
+ *      o Finished off Matt Quail's generics enhancements to support bound type arguments
+ *      o Added support for new for statement syntax
+ *      o Added support for static import syntax
+ *      o Added support for enum types
+ *      o Tested against JDK 1.5 source base and source base of jdigraph project
+ *      o Thanks to Matt Quail for doing the hard part by doing most of the generics work
  *
  * Version 1.22.1 (July 28, 2004)
- *	  Bug/omission fixes for Java 1.5 language support
- *	  o Fixed tree structure bug with classOrInterface - thanks to Pieter Vangorpto for
- *		spotting this
- *	  o Fixed bug where incorrect handling of SR and BSR tokens would cause type
- *		parameters to be recognised as type arguments.
- *	  o Enabled type parameters on constructors, annotations on enum constants
- *		and package definitions
- *	  o Fixed problems when parsing if ((char.class.equals(c))) {} - solution by Matt Quail at Cenqua
+ *      Bug/omission fixes for Java 1.5 language support
+ *      o Fixed tree structure bug with classOrInterface - thanks to Pieter Vangorpto for
+ *        spotting this
+ *      o Fixed bug where incorrect handling of SR and BSR tokens would cause type
+ *        parameters to be recognised as type arguments.
+ *      o Enabled type parameters on constructors, annotations on enum constants
+ *        and package definitions
+ *      o Fixed problems when parsing if ((char.class.equals(c))) {} - solution by Matt Quail at Cenqua
  *
  * Version 1.22.2 (July 28, 2004)
- *	  Slight refactoring of Java 1.5 language support
- *	  o Refactored for/"foreach" productions so that original literal "for" literal
- *	    is still used but the for sub-clauses vary by token type
- *	  o Fixed bug where type parameter was not included in generic constructor's branch of AST
+ *      Slight refactoring of Java 1.5 language support
+ *      o Refactored for/"foreach" productions so that original literal "for" literal
+ *        is still used but the for sub-clauses vary by token type
+ *      o Fixed bug where type parameter was not included in generic constructor's branch of AST
  *
  * Version 1.22.3 (August 26, 2004)
- *	  Bug fixes as identified by Michael Stahl; clean up of tabs/spaces
+ *      Bug fixes as identified by Michael Stahl; clean up of tabs/spaces
  *        and other refactorings
- *	  o Fixed typeParameters omission in identPrimary and newStatement
- *	  o Replaced GT reconcilliation code with simple semantic predicate
- *	  o Adapted enum/assert keyword checking support from Michael Stahl's java15 grammar
- *	  o Refactored typeDefinition production and field productions to reduce duplication
+ *      o Fixed typeParameters omission in identPrimary and newStatement
+ *      o Replaced GT reconcilliation code with simple semantic predicate
+ *      o Adapted enum/assert keyword checking support from Michael Stahl's java15 grammar
+ *      o Refactored typeDefinition production and field productions to reduce duplication
  *
  * Version 1.22.4 (October 21, 2004)
  *    Small bux fixes
@@ -213,40 +213,40 @@ import java.util.*;
 
 class JavaRecognizer extends Parser;
 options {
-	k = 2;							// two token lookahead
-	exportVocab=Java;				// Call its vocabulary "Java"
-	codeGenMakeSwitchThreshold = 2;	// Some optimizations
-	codeGenBitsetTestThreshold = 3;
-	defaultErrorHandler = false;	// Don't generate parser error handlers
-	buildAST = false;
+    k = 2;                            // two token lookahead
+    exportVocab=Java;                // Call its vocabulary "Java"
+    codeGenMakeSwitchThreshold = 2;    // Some optimizations
+    codeGenBitsetTestThreshold = 3;
+    defaultErrorHandler = false;    // Don't generate parser error handlers
+    buildAST = false;
 }
 
 tokens {
-	BLOCK; MODIFIERS; OBJBLOCK; SLIST; CTOR_DEF; METHOD_DEF; VARIABLE_DEF;
-	INSTANCE_INIT; STATIC_INIT; TYPE; CLASS_DEF; INTERFACE_DEF;
-	PACKAGE_DEF; ARRAY_DECLARATOR; EXTENDS_CLAUSE; IMPLEMENTS_CLAUSE;
-	PARAMETERS; PARAMETER_DEF; LABELED_STAT; TYPECAST; INDEX_OP;
-	POST_INC; POST_DEC; METHOD_CALL; EXPR; ARRAY_INIT;
-	IMPORT; UNARY_MINUS; UNARY_PLUS; CASE_GROUP; ELIST; FOR_INIT; FOR_CONDITION;
-	FOR_ITERATOR; EMPTY_STAT; FINAL="final"; ABSTRACT="abstract";
-	STRICTFP="strictfp"; SUPER_CTOR_CALL; CTOR_CALL; VARIABLE_PARAMETER_DEF;
-	STATIC_IMPORT; ENUM_DEF; ENUM_CONSTANT_DEF; FOR_EACH_CLAUSE; ANNOTATION_DEF; ANNOTATIONS;
-	ANNOTATION; ANNOTATION_MEMBER_VALUE_PAIR; ANNOTATION_FIELD_DEF; ANNOTATION_ARRAY_INIT;
-	TYPE_ARGUMENTS; TYPE_ARGUMENT; TYPE_PARAMETERS; TYPE_PARAMETER; WILDCARD_TYPE;
-	TYPE_UPPER_BOUNDS; TYPE_LOWER_BOUNDS;
+    BLOCK; MODIFIERS; OBJBLOCK; SLIST; CTOR_DEF; METHOD_DEF; VARIABLE_DEF;
+    INSTANCE_INIT; STATIC_INIT; TYPE; CLASS_DEF; INTERFACE_DEF;
+    PACKAGE_DEF; ARRAY_DECLARATOR; EXTENDS_CLAUSE; IMPLEMENTS_CLAUSE;
+    PARAMETERS; PARAMETER_DEF; LABELED_STAT; TYPECAST; INDEX_OP;
+    POST_INC; POST_DEC; METHOD_CALL; EXPR; ARRAY_INIT;
+    IMPORT; UNARY_MINUS; UNARY_PLUS; CASE_GROUP; ELIST; FOR_INIT; FOR_CONDITION;
+    FOR_ITERATOR; EMPTY_STAT; FINAL="final"; ABSTRACT="abstract";
+    STRICTFP="strictfp"; SUPER_CTOR_CALL; CTOR_CALL; VARIABLE_PARAMETER_DEF;
+    STATIC_IMPORT; ENUM_DEF; ENUM_CONSTANT_DEF; FOR_EACH_CLAUSE; ANNOTATION_DEF; ANNOTATIONS;
+    ANNOTATION; ANNOTATION_MEMBER_VALUE_PAIR; ANNOTATION_FIELD_DEF; ANNOTATION_ARRAY_INIT;
+    TYPE_ARGUMENTS; TYPE_ARGUMENT; TYPE_PARAMETERS; TYPE_PARAMETER; WILDCARD_TYPE;
+    TYPE_UPPER_BOUNDS; TYPE_LOWER_BOUNDS;
 }
 
 {
-	/**
-	 * Counts the number of LT seen in the typeArguments production.
-	 * It is used in semantic predicates to ensure we have seen
-	 * enough closing '>' characters; which actually may have been
-	 * either GT, SR or BSR tokens.
-	 */
-	private int ltCounter = 0;
+    /**
+     * Counts the number of LT seen in the typeArguments production.
+     * It is used in semantic predicates to ensure we have seen
+     * enough closing '>' characters; which actually may have been
+     * either GT, SR or BSR tokens.
+     */
+    private int ltCounter = 0;
 
-	// Constants for access modifiers according to the JVM specs chapter 4
-   	public static final short ACC_PUBLIC    = 0x0001;
+    // Constants for access modifiers according to the JVM specs chapter 4
+    public static final short ACC_PUBLIC    = 0x0001;
     public static final short ACC_PRIVATE   = 0x0002;
     public static final short ACC_PROTECTED = 0x0004;
     public static final short ACC_STATIC    = 0x0008;
@@ -273,153 +273,175 @@ tokens {
     /** The name of the variable to which a created object (new...) is assigned to */
     private String createdObjectVarName = null;
    
-	/** Import details level */
-	private int level = 2;
+    /** Import details level */
+    private int level = 2;
 
     /** Set the parser mode, to control which semantic expressions will be active */
     public void setParserMode(int mode) {
         parserMode = mode;
     }
-	
-	// This one is not(!) in the JVM specs, but required
-	public static final short ACC_SYNCHRONIZED  = 0x0800;
+    
+    // This one is not(!) in the JVM specs, but required
+    public static final short ACC_SYNCHRONIZED  = 0x0800;
 
-	/**
-         * To get direct access to the lexer (for the javadoc
-	 * comments), we store a reference to it.
-         */
-	private JavaLexer _lexer = null;
+    /**
+     * To get direct access to the lexer (for the javadoc
+     * comments), we store a reference to it.
+     */
+    private JavaLexer _lexer = null;
 
-	/**
-	 * Set the lexer for this parser.
-	 * 
-	 * @param lexer The lexer for this parser.
-	 */
-	private void setLexer(JavaLexer lexer) {
-	    _lexer = lexer;
-	}
-	
-	/**
-	 * Get the last parsed javadoc comment from the lexer.
-         */
-	private String getJavadocComment() {
-	    return _lexer.getJavadocComment();
-	}
-	
+    /**
+     * Set the lexer for this parser.
+     * 
+     * @param lexer The lexer for this parser.
+     */
+    private void setLexer(JavaLexer lexer) {
+        _lexer = lexer;
+    }
+    
+    /**
+     * Get the last parsed javadoc comment from the lexer.
+     */
+    private String getJavadocComment() {
+        return _lexer.getJavadocComment();
+    }
+    
         private Modeller _modeller;
 
-	public Modeller getModeller() {
-	    return _modeller;
-	}
+    public Modeller getModeller() {
+        return _modeller;
+    }
 
-	public void setModeller(Modeller modeller) {
-	    _modeller = modeller;
-	    Object lvl = modeller.getAttribute("level");
-	    if (lvl != null) {
-	      level = ((Integer)lvl).intValue();
-	    }
+    public void setModeller(Modeller modeller) {
+        _modeller = modeller;
+        Object lvl = modeller.getAttribute("level");
+        if (lvl != null) {
+          level = ((Integer)lvl).intValue();
         }
-	
+        }
+    
         // A reference to the last added MOperation (here: method)
         private Object _currentMethod = null;
 
-	/**
-	 * get reference to the last added MOperation (here: method)
-	 */
-	Object getMethod() {
-	    return _currentMethod;
-	}
+    /**
+     * get reference to the last added MOperation (here: method)
+     */
+    Object getMethod() {
+        return _currentMethod;
+    }
 
-	/**
-	 * set reference to the last added MOperation (here: method)
-	 */
-	void setMethod(Object method) {
-	    _currentMethod = method;
+    /**
+     * set reference to the last added MOperation (here: method)
+     */
+    void setMethod(Object method) {
+        _currentMethod = method;
+    }
+
+    // A method body
+    private String _methodBody = null;
+
+    /**
+     * get last method body
+     */
+    String getBody() {
+        return _methodBody;
+    }
+
+    /**
+     * set last method body
+     */
+    void setBody(String body) {
+        _methodBody = body + '\n';
+    }
+
+    // A flag to indicate if we track the tokens for a expression.
+    private boolean      _trackExpression  = false;    
+
+    // A flag to indicate if we are inside a compoundStatement
+    private boolean      _inCompoundStatement  = false;    
+
+    // A string buffer for the current expression.
+    private StringBuffer _expressionBuffer = new StringBuffer();   
+
+    /**
+     * set if we are inside a compoundStatement
+     */
+    void setIsInCompoundStatement(boolean flag) {
+        _inCompoundStatement = flag;
+    }
+
+    /**
+     * check if we are inside a compoundStatement
+     */
+    boolean isInCompoundStatement() {
+        return _inCompoundStatement;
+    }
+
+    /**
+     * Activate the tracking of expressions.
+     */
+    void activateExpressionTracking() {
+        _trackExpression = true;
+    }
+
+    /**
+     * Deactivate the tracking of expressions.
+     */
+    void deactivateExpressionTracking() {
+        _trackExpression = false;
+    }
+
+    /**
+     * Get a tracked expression.
+     *
+     * @return the tracked expression.
+     */
+    public String getExpression() {
+        String result = _expressionBuffer.toString();
+
+        _expressionBuffer = new StringBuffer();
+
+        return result;
+    }
+        
+    /**
+     * Add a call that appears after a dot.
+     */
+    private void addDotCall(String id, String thisOrSuper, boolean parenths) {
+        StringBuffer sb = new StringBuffer();
+        String prev = (String)getModeller().getMethodCalls().lastElement();
+        if (thisOrSuper != null) {
+            sb.append(thisOrSuper);
+        } else if (prev != null) {
+            if (parenths) {
+                sb.append('(');
+            }
+            sb.append(prev).append("()");
+            if (parenths) {
+                sb.append(')');
+            }
+            sb.append('.');
         }
+        sb.append(id);
+        getModeller().addCall(sb.toString());
+    }
 
-        // A method body
-        private String _methodBody = null;
+    /**
+     * Appends to a tracked expression. (used to restore it)
+     */
+    public void appendExpression(String expr) {
+        _expressionBuffer.append(expr);
+    }      
 
-	/**
-	 * get last method body
-	 */
-	String getBody() {
-	    return _methodBody;
-	}
+    public void match(int t) throws MismatchedTokenException, TokenStreamException {
+        String text = ((ArgoToken)LT(1)).getWhitespace() + LT(1).getText();
 
-	/**
-	 * set last method body
-	 */
-	void setBody(String body) {
-	    _methodBody = body + '\n';
-        }
+        super.match(t);
 
-	// A flag to indicate if we track the tokens for a expression.
-	private boolean      _trackExpression  = false;	
-
-	// A flag to indicate if we are inside a compoundStatement
-	private boolean      _inCompoundStatement  = false;	
-
-	// A string buffer for the current expression.
-    	private StringBuffer _expressionBuffer = new StringBuffer();   
-
-	/**
-	 * set if we are inside a compoundStatement
-	 */
-	void setIsInCompoundStatement(boolean flag) {
-	    _inCompoundStatement = flag;
-	}
-
-	/**
-	 * check if we are inside a compoundStatement
-	 */
-	boolean isInCompoundStatement() {
-	    return _inCompoundStatement;
-	}
-
-	/**
-	 * Activate the tracking of expressions.
-	 */
-	void activateExpressionTracking() {
-	    _trackExpression = true;
-	}
-
-	/**
-         * Deactivate the tracking of expressions.
-	 */
-	void deactivateExpressionTracking() {
-	    _trackExpression = false;
-        }
-
-	/**
-     	 * Get a tracked expression.
-     	 *
-     	 * @return the tracked expression.
-     	 */
-    	public String getExpression() {
-            String result = _expressionBuffer.toString();
-
-            _expressionBuffer = new StringBuffer();
-
-            return result;
-        }      
-
-	/**
-     	 * Appends to a tracked expression. (used to restore it)
-     	 */
-    	public void appendExpression(String expr) {
-            _expressionBuffer.append(expr);
-        }      
-
-	public void match(int t) throws MismatchedTokenException, TokenStreamException {
-            String text = ((ArgoToken)LT(1)).getWhitespace() + LT(1).getText();
-
-            super.match(t);
-
-            // '== 0' to avoid the following when backtracking
-            if(_trackExpression && inputState.guessing==0)
-                appendExpression(text);
-    	}     
+        // '== 0' to avoid the following when backtracking
+        if(_trackExpression && inputState.guessing==0)
+            appendExpression(text);
+    }     
 }
 
 // Compilation Unit: In Java, this is a single file. This is the start
@@ -432,185 +454,185 @@ compilationUnit[ Modeller modeller, JavaLexer lexer]
   }
 }
 
-	:	// A compilation unit starts with an optional package definition
-		(	(annotations "package")=> packageDefinition
-		|	/* nothing */
-		)
+    :    // A compilation unit starts with an optional package definition
+        (    (annotations "package")=> packageDefinition
+        |    /* nothing */
+        )
 
-		// Next we have a series of zero or more import statements
-		( importDefinition )*
+        // Next we have a series of zero or more import statements
+        ( importDefinition )*
 
-		// Wrapping things up with any number of class or interface
-		// definitions
-		( typeDefinition )*
+        // Wrapping things up with any number of class or interface
+        // definitions
+        ( typeDefinition )*
 
-		EOF
-	;
+        EOF
+    ;
 
 
 // Package statement: optional annotations followed by "package" then the package identifier.
 packageDefinition
-	options {defaultErrorHandler = true;} // let ANTLR handle errors
+    options {defaultErrorHandler = true;} // let ANTLR handle errors
 {String packageName = null;}
-	:	annotations "package" packageName=identifier SEMI
-		{getModeller().addPackage(packageName);}     	
-	;
+    :    annotations "package" packageName=identifier SEMI
+        {getModeller().addPackage(packageName);}         
+    ;
 
 
 // Import statement: import followed by a package or class name
 importDefinition
-	options {defaultErrorHandler = true;}
-	{ String name=null; }
-	:	"import" ( "static" )? name=identifierStar SEMI
- 		{getModeller().addImport(name);}
-	;
+    options {defaultErrorHandler = true;}
+    { String name=null; }
+    :    "import" ( "static" )? name=identifierStar SEMI
+         {getModeller().addImport(name);}
+    ;
 
 // A type definition is either a class, interface, enum or annotation with possible additional semis.
 typeDefinition
-	options {defaultErrorHandler = true;}
+    options {defaultErrorHandler = true;}
 {short m = 0;}
-	:	m=modifiers
-		typeDefinitionInternal[m]
-	|	SEMI
-	;
+    :    m=modifiers
+        typeDefinitionInternal[m]
+    |    SEMI
+    ;
 
 // Protected type definitions production for reuse in other productions
 protected typeDefinitionInternal[short mods]
-	:	classDefinition[getJavadocComment(), mods]	// inner class
-	|	interfaceDefinition[getJavadocComment(), mods]	// inner interface
-	|	enumDefinition[getJavadocComment(), mods]	// inner enum
-	|	annotationDefinition[getJavadocComment(), mods]	// inner annotation
-	;
+    :    classDefinition[getJavadocComment(), mods]    // inner class
+    |    interfaceDefinition[getJavadocComment(), mods]    // inner interface
+    |    enumDefinition[getJavadocComment(), mods]    // inner enum
+    |    annotationDefinition[getJavadocComment(), mods]    // inner annotation
+    ;
 
 // A declaration is the creation of a reference or primitive-type variable
 // Create a separate Type/Var tree for each var in the var list.
 declaration
 {short m = 0; String t=null;}
-	:	m=modifiers t=typeSpec variableDefinitions["", m, t]
-	;
+    :    m=modifiers t=typeSpec variableDefinitions["", m, t]
+    ;
 
 // A type specification is a type name with possible brackets afterwards
 // (which would make it an array type).
 typeSpec returns [String type=null]
-	{String c=null, b=null;}
-	:	c=classTypeSpec {type=c;}
-	|	b=builtInTypeSpec {type=b;}
-	;
+    {String c=null, b=null;}
+    :    c=classTypeSpec {type=c;}
+    |    b=builtInTypeSpec {type=b;}
+    ;
 
 // A class type specification is a class type with either:
 // - possible brackets afterwards
 //   (which would make it an array type).
 // - generic type arguments after
 classTypeSpec returns [String type=null]
-	:	type=classOrInterfaceType
-		(options{greedy=true;}: // match as many as possible
-			LBRACK RBRACK {type += "[]";}
-		)*
-	;
+    :    type=classOrInterfaceType
+        (options{greedy=true;}: // match as many as possible
+            LBRACK RBRACK {type += "[]";}
+        )*
+    ;
 
 // A non-built in type name, with possible type parameters
 classOrInterfaceType returns [String type=null]
-	{StringBuffer sb = new StringBuffer();}
-	:	t1:IDENT {sb.append(t1.getText());} (typeArguments)?
-		(options{greedy=true;}: // match as many as possible
-			DOT
-			t3:IDENT {sb.append('.').append(t3.getText());} (typeArguments)?
-		)*
-		{type = sb.toString();}
-	;
+    {StringBuffer sb = new StringBuffer();}
+    :    t1:IDENT {sb.append(t1.getText());} (typeArguments)?
+        (options{greedy=true;}: // match as many as possible
+            DOT
+            t3:IDENT {sb.append('.').append(t3.getText());} (typeArguments)?
+        )*
+        {type = sb.toString();}
+    ;
 
 // A specialised form of typeSpec where built in types must be arrays
 typeArgumentSpec
-	:	classTypeSpec
-	|	builtInTypeArraySpec
-	;
+    :    classTypeSpec
+    |    builtInTypeArraySpec
+    ;
 
 // A generic type argument is a class type, a possibly bounded wildcard type or a built-in type array
 typeArgument
-	:	(	typeArgumentSpec
-		|	wildcardType
-		)
-	;
+    :    (    typeArgumentSpec
+        |    wildcardType
+        )
+    ;
 
 // Wildcard type indicating all types (with possible constraint)
 wildcardType
-	:	QUESTION
-		(("extends" | "super")=> typeArgumentBounds)?
-	;
+    :    QUESTION
+        (("extends" | "super")=> typeArgumentBounds)?
+    ;
 
 // Type arguments to a class or interface type
 typeArguments
 {int currentLtLevel = 0;}
-	:
-		{currentLtLevel = ltCounter;}
-		LT {ltCounter++;}
-		typeArgument
-		(options{greedy=true;}: // match as many as possible
-			{inputState.guessing !=0 || ltCounter == currentLtLevel + 1}?
-			COMMA! typeArgument
-		)*
+    :
+        {currentLtLevel = ltCounter;}
+        LT {ltCounter++;}
+        typeArgument
+        (options{greedy=true;}: // match as many as possible
+            {inputState.guessing !=0 || ltCounter == currentLtLevel + 1}?
+            COMMA! typeArgument
+        )*
 
-		(	// turn warning off since Antlr generates the right code,
-			// plus we have our semantic predicate below
-			options{generateAmbigWarnings=false;}:
-			typeArgumentsOrParametersEnd
-		)?
+        (    // turn warning off since Antlr generates the right code,
+            // plus we have our semantic predicate below
+            options{generateAmbigWarnings=false;}:
+            typeArgumentsOrParametersEnd
+        )?
 
-		// make sure we have gobbled up enough '>' characters
-		// if we are at the "top level" of nested typeArgument productions
-		{(currentLtLevel != 0) || ltCounter == currentLtLevel}?
-	;
+        // make sure we have gobbled up enough '>' characters
+        // if we are at the "top level" of nested typeArgument productions
+        {(currentLtLevel != 0) || ltCounter == currentLtLevel}?
+    ;
 
 // this gobbles up *some* amount of '>' characters, and counts how many
 // it gobbled.
 protected typeArgumentsOrParametersEnd
-	:	GT! {ltCounter-=1;}
-	|	SR! {ltCounter-=2;}
-	|	BSR! {ltCounter-=3;}
-	;
+    :    GT! {ltCounter-=1;}
+    |    SR! {ltCounter-=2;}
+    |    BSR! {ltCounter-=3;}
+    ;
 
 // Restriction on wildcard types based on super class or derrived class
 typeArgumentBounds
-	:
-		( "extends" | "super" ) classOrInterfaceType
-	;
+    :
+        ( "extends" | "super" ) classOrInterfaceType
+    ;
 
 // A builtin type array specification is a builtin type with brackets afterwards
 builtInTypeArraySpec
-	:	builtInType
-		(options{greedy=true;}: // match as many as possible
-			LBRACK RBRACK
-		)+
-	;
+    :    builtInType
+        (options{greedy=true;}: // match as many as possible
+            LBRACK RBRACK
+        )+
+    ;
 
 // A builtin type specification is a builtin type with possible brackets
 // afterwards (which would make it an array type).
 builtInTypeSpec returns [String type=null]
-	:	type=builtInType
-		(options{greedy=true;}: // match as many as possible
-			LBRACK RBRACK {type += "[]";}
-		)*
-	;
+    :    type=builtInType
+        (options{greedy=true;}: // match as many as possible
+            LBRACK RBRACK {type += "[]";}
+        )*
+    ;
 
 // A type name. which is either a (possibly qualified and parameterized)
 // class name or a primitive (builtin) type
 type returns [String type=null]
-	:	type=classOrInterfaceType
-	|	type=builtInType
-	;
+    :    type=classOrInterfaceType
+    |    type=builtInType
+    ;
 
 // The primitive types.
 builtInType returns [String type=null]
-	:	"void"     {type="void";}
-	|	"boolean"  {type="boolean";}
-	|	"byte"     {type="byte";}
-	|	"char"	   {type="char";}
-	|	"short"	   {type="short";}
-	|	"int"      {type="int";}
-	|	"float"    {type="float";}
-	|	"long"     {type="long";}
-	|	"double"   {type="double";}
-	;
+    :    "void"     {type="void";}
+    |    "boolean"  {type="boolean";}
+    |    "byte"     {type="byte";}
+    |    "char"       {type="char";}
+    |    "short"       {type="short";}
+    |    "int"      {type="int";}
+    |    "float"    {type="float";}
+    |    "long"     {type="long";}
+    |    "double"   {type="double";}
+    ;
 
 // A (possibly-qualified) java identifier. We start with the first IDENT
 // and expand its name by adding dots and following IDENTS
@@ -620,10 +642,10 @@ identifier returns [String name=null]
         ;    
 
 identifierStar returns [String name=null]
-	:	t1:IDENT {name = t1.getText();}
-		( DOT t2:IDENT {name = name + "." + t2.getText();} )*
-		( DOT STAR {name = name + "." + "*";} )?
-	;
+    :    t1:IDENT {name = t1.getText();}
+        ( DOT t2:IDENT {name = name + "." + t2.getText();} )*
+        ( DOT STAR {name = name + "." + "*";} )?
+    ;
 
 // A list of zero or more modifiers. We could have used (modifier)* in
 // place of a call to modifiers, but I thought it was a good idea to keep
@@ -632,407 +654,407 @@ identifierStar returns [String name=null]
 modifiers returns [ short mod_flags]
 { mod_flags = 0;
   short cur_flag; }
-	:
-		(
-			//hush warnings since the semantic check for "@interface" solves the non-determinism
-			options{generateAmbigWarnings=false;}:
+    :
+        (
+            //hush warnings since the semantic check for "@interface" solves the non-determinism
+            options{generateAmbigWarnings=false;}:
 
-			cur_flag=modifier { mod_flags |= cur_flag; }
-			|
-			//Semantic check that we aren't matching @interface as this is not an annotation
-			//A nicer way to do this would be nice
-			{LA(1)==AT && !LT(2).getText().equals("interface")}? annotation
-		)*
-	;
+            cur_flag=modifier { mod_flags |= cur_flag; }
+            |
+            //Semantic check that we aren't matching @interface as this is not an annotation
+            //A nicer way to do this would be nice
+            {LA(1)==AT && !LT(2).getText().equals("interface")}? annotation
+        )*
+    ;
 
 // modifiers for Java classes, interfaces, class/instance vars and methods
 modifier returns [short mod_flag = 0]
-	:	"private"      { mod_flag = ACC_PRIVATE; }
-	|	"public"       { mod_flag = ACC_PUBLIC; }
-	|	"protected"    { mod_flag = ACC_PROTECTED; }
-	|	"static"       { mod_flag = ACC_STATIC; }
-	|	"transient"    { mod_flag = ACC_TRANSIENT; }
-	|	"final"        { mod_flag = ACC_FINAL; }
-	|	"abstract"     { mod_flag = ACC_ABSTRACT; }
-	|	"native"       { mod_flag = ACC_NATIVE; }
-	|	"threadsafe"
-	|	"synchronized" { mod_flag = ACC_SYNCHRONIZED; }
-//	|	"const"			// reserved word; leave out
-	|	"volatile"     { mod_flag = ACC_VOLATILE; }
-	|	"strictfp"
-	;
+    :    "private"      { mod_flag = ACC_PRIVATE; }
+    |    "public"       { mod_flag = ACC_PUBLIC; }
+    |    "protected"    { mod_flag = ACC_PROTECTED; }
+    |    "static"       { mod_flag = ACC_STATIC; }
+    |    "transient"    { mod_flag = ACC_TRANSIENT; }
+    |    "final"        { mod_flag = ACC_FINAL; }
+    |    "abstract"     { mod_flag = ACC_ABSTRACT; }
+    |    "native"       { mod_flag = ACC_NATIVE; }
+    |    "threadsafe"
+    |    "synchronized" { mod_flag = ACC_SYNCHRONIZED; }
+//    |    "const"            // reserved word; leave out
+    |    "volatile"     { mod_flag = ACC_VOLATILE; }
+    |    "strictfp"
+    ;
 
 annotation
-	:	AT identifier ( LPAREN ( annotationArguments )? RPAREN )?
-	;
+    :    AT identifier ( LPAREN ( annotationArguments )? RPAREN )?
+    ;
 
 annotations
     :   (annotation)*
     ;
 
 annotationArguments
-	:	annotationMemberValueInitializer | anntotationMemberValuePairs
-	;
+    :    annotationMemberValueInitializer | anntotationMemberValuePairs
+    ;
 
 anntotationMemberValuePairs
-	:	annotationMemberValuePair ( COMMA annotationMemberValuePair )*
-	;
+    :    annotationMemberValuePair ( COMMA annotationMemberValuePair )*
+    ;
 
 annotationMemberValuePair
-	:	IDENT ASSIGN annotationMemberValueInitializer
-	;
+    :    IDENT ASSIGN annotationMemberValueInitializer
+    ;
 
 annotationMemberValueInitializer
-	:
-		conditionalExpression | annotation | annotationMemberArrayInitializer
-	;
+    :
+        conditionalExpression | annotation | annotationMemberArrayInitializer
+    ;
 
 // This is an initializer used to set up an annotation member array.
 annotationMemberArrayInitializer
-	:	LCURLY
-			(	annotationMemberArrayValueInitializer
-				(
-					// CONFLICT: does a COMMA after an initializer start a new
-					// initializer or start the option ',' at end?
-					// ANTLR generates proper code by matching
-					// the comma as soon as possible.
-					options {
-						warnWhenFollowAmbig = false;
-					}
-				:
-					COMMA annotationMemberArrayValueInitializer
-				)*
-				(COMMA)?
-			)?
-		RCURLY
-	;
+    :    LCURLY
+            (    annotationMemberArrayValueInitializer
+                (
+                    // CONFLICT: does a COMMA after an initializer start a new
+                    // initializer or start the option ',' at end?
+                    // ANTLR generates proper code by matching
+                    // the comma as soon as possible.
+                    options {
+                        warnWhenFollowAmbig = false;
+                    }
+                :
+                    COMMA annotationMemberArrayValueInitializer
+                )*
+                (COMMA)?
+            )?
+        RCURLY
+    ;
 
 // The two things that can initialize an annotation array element are a conditional expression
 // and an annotation (nested annotation array initialisers are not valid)
 annotationMemberArrayValueInitializer
-	:	conditionalExpression
-	|	annotation
-	;
+    :    conditionalExpression
+    |    annotation
+    ;
 
 superClassClause returns [String superClassName = null]
-	:	( "extends" superClassName=classOrInterfaceType )?
-	;
+    :    ( "extends" superClassName=classOrInterfaceType )?
+    ;
 
 // Definition of a Java class
 classDefinition[String javadoc, short modifiers]
 {String superClassName = null; Vector ic = null;}
-	:	"class" className:IDENT
-		// it _might_ have type paramaters
-		(typeParameters)?
-		// it _might_ have a superclass...
-		superClassName=superClassClause
-		// it might implement some interfaces...
-		ic=implementsClause
-		{
-		if (!isInCompoundStatement()) {
-			getModeller().addClass(className.getText(), modifiers, superClassName, ic, javadoc);
-		}
-		}
-		// now parse the body of the class
-		classBlock
-		{
-		if (!isInCompoundStatement()) {
-		 	getModeller().popClassifier();
-		}
-		}
-	;
+    :    "class" className:IDENT
+        // it _might_ have type paramaters
+        (typeParameters)?
+        // it _might_ have a superclass...
+        superClassName=superClassClause
+        // it might implement some interfaces...
+        ic=implementsClause
+        {
+        if (!isInCompoundStatement()) {
+            getModeller().addClass(className.getText(), modifiers, superClassName, ic, javadoc);
+        }
+        }
+        // now parse the body of the class
+        classBlock
+        {
+        if (!isInCompoundStatement()) {
+             getModeller().popClassifier();
+        }
+        }
+    ;
 
 // Definition of a Java Interface
 interfaceDefinition[String javadoc, short modifiers]
 {Vector ie=null;}
-	:	"interface" interfaceName:IDENT
-		// it _might_ have type paramaters
-		(tp:typeParameters)?
-		// it might extend some other interfaces
-		ie=interfaceExtends
+    :    "interface" interfaceName:IDENT
+        // it _might_ have type paramaters
+        (tp:typeParameters)?
+        // it might extend some other interfaces
+        ie=interfaceExtends
                 {getModeller().addInterface(interfaceName.getText(), modifiers,
 ie, javadoc);}
-		// now parse the body of the interface (looks like a class...)
-		interfaceBlock
+        // now parse the body of the interface (looks like a class...)
+        interfaceBlock
                 {getModeller().popClassifier();}
-	;
+    ;
 
 enumDefinition[String javadoc, short modifiers]
-	:	"enum" IDENT
-		// it might implement some interfaces...
-		implementsClause
-		// now parse the body of the enum
-		enumBlock
-	;
+    :    "enum" IDENT
+        // it might implement some interfaces...
+        implementsClause
+        // now parse the body of the enum
+        enumBlock
+    ;
 
 annotationDefinition[String javadoc, short modifiers]
-	:	AT "interface" IDENT
-		// now parse the body of the annotation
-		annotationBlock
-	;
+    :    AT "interface" IDENT
+        // now parse the body of the annotation
+        annotationBlock
+    ;
 
 typeParameters
 {int currentLtLevel = 0;}
-	:
-		{currentLtLevel = ltCounter;}
-		LT {ltCounter++;}
-		typeParameter (COMMA typeParameter)*
-		(typeArgumentsOrParametersEnd)?
+    :
+        {currentLtLevel = ltCounter;}
+        LT {ltCounter++;}
+        typeParameter (COMMA typeParameter)*
+        (typeArgumentsOrParametersEnd)?
 
-		// make sure we have gobbled up enough '>' characters
-		// if we are at the "top level" of nested typeArgument productions
-		{(currentLtLevel != 0) || ltCounter == currentLtLevel}?
-	;
+        // make sure we have gobbled up enough '>' characters
+        // if we are at the "top level" of nested typeArgument productions
+        {(currentLtLevel != 0) || ltCounter == currentLtLevel}?
+    ;
 
 typeParameter
-	:
-		// I'm pretty sure Antlr generates the right thing here:
-		(IDENT) ( options{generateAmbigWarnings=false;}: typeParameterBounds )?
-	;
+    :
+        // I'm pretty sure Antlr generates the right thing here:
+        (IDENT) ( options{generateAmbigWarnings=false;}: typeParameterBounds )?
+    ;
 
 typeParameterBounds
-	:
-		"extends" classOrInterfaceType
-		(BAND classOrInterfaceType)*
-	;
+    :
+        "extends" classOrInterfaceType
+        (BAND classOrInterfaceType)*
+    ;
 
 // This is the body of a class. You can have classFields and extra semicolons.
 classBlock
-	:	LCURLY
-			( classField | SEMI )*
-		RCURLY
-	;
+    :    LCURLY
+            ( classField | SEMI )*
+        RCURLY
+    ;
 
 // This is the body of an interface. You can have interfaceField and extra semicolons.
 interfaceBlock
-	:	LCURLY
-			( interfaceField | SEMI )*
-		RCURLY
-	;
-	
+    :    LCURLY
+            ( interfaceField | SEMI )*
+        RCURLY
+    ;
+    
 // This is the body of an annotation. You can have annotation fields and extra semicolons,
 // That's about it (until you see what an annoation field is...)
 annotationBlock
-	:	LCURLY
-		( annotationField | SEMI )*
-		RCURLY
-	;
+    :    LCURLY
+        ( annotationField | SEMI )*
+        RCURLY
+    ;
 
 // This is the body of an enum. You can have zero or more enum constants
 // followed by any number of fields like a regular class
 enumBlock
-	:	LCURLY
-			( enumConstant ( options{greedy=true;}: COMMA enumConstant )* ( COMMA )? )?
-			( SEMI ( classField | SEMI )* )?
-		RCURLY
-	;
+    :    LCURLY
+            ( enumConstant ( options{greedy=true;}: COMMA enumConstant )* ( COMMA )? )?
+            ( SEMI ( classField | SEMI )* )?
+        RCURLY
+    ;
 
 // An annotation field
 annotationField
 {short mods=0; String t=null; Vector param=null; String a=null;
  boolean isOutestCompStat = !isInCompoundStatement();}
-	:	mods=modifiers
-		(	typeDefinitionInternal[mods]
-		|	t=typeSpec		// annotation field
-			(	name:IDENT				// the name of the field
+    :    mods=modifiers
+        (    typeDefinitionInternal[mods]
+        |    t=typeSpec        // annotation field
+            (    name:IDENT                // the name of the field
 
-				LPAREN RPAREN
+                LPAREN RPAREN
 
-				a=declaratorBrackets {t += a;}
+                a=declaratorBrackets {t += a;}
 
-				( "default" annotationMemberValueInitializer )?
+                ( "default" annotationMemberValueInitializer )?
 
-				SEMI
-			|	variableDefinitions[getJavadocComment(), mods, t] SEMI	// variable
-			)
-		)
-	;
+                SEMI
+            |    variableDefinitions[getJavadocComment(), mods, t] SEMI    // variable
+            )
+        )
+    ;
 
 //An enum constant may have optional parameters and may have a
 //a class body
 enumConstant
-	:	annotations
-		IDENT
-		(	LPAREN
-			argList
-			RPAREN
-		)?
-		( enumConstantBlock )?
-	;
+    :    annotations
+        IDENT
+        (    LPAREN
+            argList
+            RPAREN
+        )?
+        ( enumConstantBlock )?
+    ;
 
 //The class-like body of an enum constant
 enumConstantBlock
-	:	LCURLY
-		( enumConstantField | SEMI )*
-		RCURLY
-	;
+    :    LCURLY
+        ( enumConstantField | SEMI )*
+        RCURLY
+    ;
 
 //An enum constant field is just like a class field but without
 //the posibility of a constructor definition or a static initializer
 enumConstantField
 {short mods=0; String t=null; Vector param=null; String a=null;
  boolean isOutestCompStat = !isInCompoundStatement();}
-	:	mods=modifiers
-		(	typeDefinitionInternal[mods]
+    :    mods=modifiers
+        (    typeDefinitionInternal[mods]
 
-		|	// A generic method has the typeParameters before the return type.
-			// This is not allowed for variable definitions, but this production
-			// allows it, a semantic check could be used if you wanted.
-			(typeParameters)? t=typeSpec		// method or variable declaration(s)
-			(	IDENT									// the name of the method
+        |    // A generic method has the typeParameters before the return type.
+            // This is not allowed for variable definitions, but this production
+            // allows it, a semantic check could be used if you wanted.
+            (typeParameters)? t=typeSpec        // method or variable declaration(s)
+            (    IDENT                                    // the name of the method
 
-				// parse the formal parameter declarations.
-				LPAREN param=parameterDeclarationList RPAREN
+                // parse the formal parameter declarations.
+                LPAREN param=parameterDeclarationList RPAREN
 
-				a=declaratorBrackets {t += a;}
+                a=declaratorBrackets {t += a;}
 
-				// get the list of exceptions that this method is
-				// declared to throw
-				(throwsClause)?
+                // get the list of exceptions that this method is
+                // declared to throw
+                (throwsClause)?
 
-				( compoundStatement | SEMI )
-			|	variableDefinitions[getJavadocComment(), mods, t] SEMI
-			)
-		)
+                ( compoundStatement | SEMI )
+            |    variableDefinitions[getJavadocComment(), mods, t] SEMI
+            )
+        )
 
-	// "{ ... }" instance initializer
-	|	compoundStatement
-	;
+    // "{ ... }" instance initializer
+    |    compoundStatement
+    ;
 
 // An interface can extend several other interfaces...
 interfaceExtends returns [Vector names=new Vector()]
-	{String n=null;}
-	:	(
-		"extends"
-		n=classOrInterfaceType {names.addElement(n);}
-		( COMMA n=classOrInterfaceType {names.addElement(n);} )*
-		)?
-	;
+    {String n=null;}
+    :    (
+        "extends"
+        n=classOrInterfaceType {names.addElement(n);}
+        ( COMMA n=classOrInterfaceType {names.addElement(n);} )*
+        )?
+    ;
 
 // A class can implement several interfaces...
 implementsClause returns [Vector names=new Vector()]
-	{String n=null;}
-	:	(
-			"implements" n=classOrInterfaceType {names.addElement(n);}
-			( COMMA n=classOrInterfaceType {names.addElement(n);} )*
-		)?
-	;
+    {String n=null;}
+    :    (
+            "implements" n=classOrInterfaceType {names.addElement(n);}
+            ( COMMA n=classOrInterfaceType {names.addElement(n);} )*
+        )?
+    ;
 
 // Now the various things that can be defined inside a class
 classField
 {short mods=0; String t=null; Vector param=null; String a=null;
  boolean isOutestCompStat = !isInCompoundStatement();}
-	:	// method, constructor, or variable declaration
-		mods=modifiers
-		(	typeDefinitionInternal[mods]
+    :    // method, constructor, or variable declaration
+        mods=modifiers
+        (    typeDefinitionInternal[mods]
 
-		|	(typeParameters)?
-			(
-				ctorHead[mods] constructorBody // constructor
-				{if (isOutestCompStat && level > 0) {
-				   getModeller().addBodyToOperation(getMethod(), level>1?getBody():"");
-				   setMethod(null);
-				   setBody(null);
-				}}
+        |    (typeParameters)?
+            (
+                ctorHead[mods] constructorBody // constructor
+                {if (isOutestCompStat && level > 0) {
+                   getModeller().addBodyToOperation(getMethod(), level>1?getBody():"");
+                   setMethod(null);
+                   setBody(null);
+                }}
 
-				|	// A generic method/ctor has the typeParameters before the return type.
-					// This is not allowed for variable definitions, but this production
-					// allows it, a semantic check could be used if you wanted.
-					t=typeSpec		// method or variable declaration(s)
-					(	name:IDENT				// the name of the method
+                |    // A generic method/ctor has the typeParameters before the return type.
+                    // This is not allowed for variable definitions, but this production
+                    // allows it, a semantic check could be used if you wanted.
+                    t=typeSpec        // method or variable declaration(s)
+                    (    name:IDENT                // the name of the method
 
-						// parse the formal parameter declarations.
-						LPAREN param=parameterDeclarationList RPAREN
+                        // parse the formal parameter declarations.
+                        LPAREN param=parameterDeclarationList RPAREN
 
-						a=declaratorBrackets {t += a;}
+                        a=declaratorBrackets {t += a;}
 
-						// get the list of exceptions that this method is
-						// declared to throw
-						(throwsClause)?
+                        // get the list of exceptions that this method is
+                        // declared to throw
+                        (throwsClause)?
 
-						( compoundStatement | SEMI )
-						{if (isOutestCompStat && level > 0) {
-						     setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()));
-						     getModeller().addBodyToOperation(getMethod(), level>1?getBody():"");
-						     setMethod(null);
-						     setBody(null);
-						}}
-					|	variableDefinitions[getJavadocComment(), mods, t] SEMI
-					)
-			)
-		)
+                        ( compoundStatement | SEMI )
+                        {if (isOutestCompStat && level > 0) {
+                             setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()));
+                             getModeller().addBodyToOperation(getMethod(), level>1?getBody():"");
+                             setMethod(null);
+                             setBody(null);
+                        }}
+                    |    variableDefinitions[getJavadocComment(), mods, t] SEMI
+                    )
+            )
+        )
 
-	// "static { ... }" class initializer
-	|	"static" compoundStatement
+    // "static { ... }" class initializer
+    |    "static" compoundStatement
 
-	// "{ ... }" instance initializer
-	|	compoundStatement
-	;
+    // "{ ... }" instance initializer
+    |    compoundStatement
+    ;
 
 // Now the various things that can be defined inside a interface
 interfaceField
 {short mods=0; String t=null; Vector param=null; String a=null;
  boolean isOutestCompStat = !isInCompoundStatement();}
-	:	// method, constructor, or variable declaration
-		mods=modifiers
-		(	typeDefinitionInternal[mods]
+    :    // method, constructor, or variable declaration
+        mods=modifiers
+        (    typeDefinitionInternal[mods]
 
-		|	(typeParameters)?
-			// A generic method has the typeParameters before the return type.
-			// This is not allowed for variable definitions, but this production
-			// allows it, a semantic check could be used if you want a more strict
-			// grammar.
-			t=typeSpec		// method or variable declaration(s)
-			(	name:IDENT				// the name of the method
+        |    (typeParameters)?
+            // A generic method has the typeParameters before the return type.
+            // This is not allowed for variable definitions, but this production
+            // allows it, a semantic check could be used if you want a more strict
+            // grammar.
+            t=typeSpec        // method or variable declaration(s)
+            (    name:IDENT                // the name of the method
 
-				// parse the formal parameter declarations.
-				LPAREN param=parameterDeclarationList RPAREN
+                // parse the formal parameter declarations.
+                LPAREN param=parameterDeclarationList RPAREN
 
-				a=declaratorBrackets {t += a;}
+                a=declaratorBrackets {t += a;}
 
-				// get the list of exceptions that this method is
-				// declared to throw
-				(throwsClause)?
+                // get the list of exceptions that this method is
+                // declared to throw
+                (throwsClause)?
 
-				SEMI
-				{if (isOutestCompStat && level > 0) {
-				     setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()));
-				     setMethod(null);
-				}}
-			|	variableDefinitions[getJavadocComment(), mods, t] SEMI
-			)
-		)
-	;
+                SEMI
+                {if (isOutestCompStat && level > 0) {
+                     setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()));
+                     setMethod(null);
+                }}
+            |    variableDefinitions[getJavadocComment(), mods, t] SEMI
+            )
+        )
+    ;
 
 constructorBody
 {boolean isOutestCompStat = !isInCompoundStatement();}
-	:	LCURLY
-		{if (isOutestCompStat) {
-		   setIsInCompoundStatement(true);
-		   activateExpressionTracking();}}
-		( options { greedy=true; } : explicitConstructorInvocation)?
-		(statement)*
-		{if (isOutestCompStat) {
-		   setBody(getExpression());
-		   deactivateExpressionTracking();
-		   setIsInCompoundStatement(false);}}
-		RCURLY
-	;
+    :    LCURLY
+        {if (isOutestCompStat) {
+           setIsInCompoundStatement(true);
+           activateExpressionTracking();}}
+        ( options { greedy=true; } : explicitConstructorInvocation)?
+        (statement)*
+        {if (isOutestCompStat) {
+           setBody(getExpression());
+           deactivateExpressionTracking();
+           setIsInCompoundStatement(false);}}
+        RCURLY
+    ;
 
 /** Catch obvious constructor calls, but not the expr.super(...) calls */
 explicitConstructorInvocation
-	:	(typeArguments)?
-		(	"this" LPAREN argList RPAREN SEMI
-		|	"super" LPAREN argList RPAREN SEMI
-		)
-	;
+    :    (typeArguments)?
+        (    "this" LPAREN argList RPAREN SEMI
+        |    "super" LPAREN argList RPAREN SEMI
+        )
+    ;
 
 variableDefinitions[String javadoc, short modifiers, String returnType]
-	:	variableDeclarator[javadoc, modifiers, returnType] //dupList as this also copies siblings (like TYPE_ARGUMENTS)
-		(	COMMA
-			variableDeclarator[javadoc, modifiers, returnType] //dupList as this also copies siblings (like TYPE_ARGUMENTS)
-		)*
-	;
+    :    variableDeclarator[javadoc, modifiers, returnType] //dupList as this also copies siblings (like TYPE_ARGUMENTS)
+        (    COMMA
+            variableDeclarator[javadoc, modifiers, returnType] //dupList as this also copies siblings (like TYPE_ARGUMENTS)
+        )*
+    ;
 
 /** Declaration of a variable. This can be a class/instance variable,
  *  or a local variable in a method
@@ -1040,133 +1062,133 @@ variableDefinitions[String javadoc, short modifiers, String returnType]
  */
 variableDeclarator[String javadoc, short modifiers, String varType]
 {String initializer=null; String b=null;}
-	:	(id:IDENT b=declaratorBrackets initializer=varInitializer)
-		{
-		  if (!isInCompoundStatement() && level > 0) {
-		    getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc);
-		  }
-		  if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
-		    getModeller().addLocalVariableDeclaration(varType+b, id.getText());
-		  }
-		}
-	;
+    :    (id:IDENT b=declaratorBrackets initializer=varInitializer)
+        {
+          if (!isInCompoundStatement() && level > 0) {
+            getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc);
+          }
+          if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+            getModeller().addLocalVariableDeclaration(varType+b, id.getText());
+          }
+        }
+    ;
 
 declaratorBrackets returns [String b=""]
-	:	(LBRACK RBRACK {b += "[]";} )*
-	;
+    :    (LBRACK RBRACK {b += "[]";} )*
+    ;
 
 varInitializer returns [String expression=null]
 {String trackedSoFar = null;}
-	:	( { if ((parserMode & MODE_REVENG_SEQUENCE) != 0
-		        && "new".equals(LT(2).getText())) {
-		      createdObjectVarName = LT(0).getText();
-		    }
-		  }
-		  ASSIGN
-		  { trackedSoFar=getExpression();
-		    if (!isInCompoundStatement())
-		      activateExpressionTracking();
-		  }
-		  initializer
-		  { expression=getExpression();
-		    if (isInCompoundStatement()) {
-		      activateExpressionTracking();
-		      appendExpression(trackedSoFar);
-		      appendExpression(expression);
-		    } else {
-		      deactivateExpressionTracking();
-		    }
-		    createdObjectVarName = null;
-		  }
-		)?
-	;
+    :    ( { if ((parserMode & MODE_REVENG_SEQUENCE) != 0
+                && "new".equals(LT(2).getText())) {
+              createdObjectVarName = LT(0).getText();
+            }
+          }
+          ASSIGN
+          { trackedSoFar=getExpression();
+            if (!isInCompoundStatement())
+              activateExpressionTracking();
+          }
+          initializer
+          { expression=getExpression();
+            if (isInCompoundStatement()) {
+              activateExpressionTracking();
+              appendExpression(trackedSoFar);
+              appendExpression(expression);
+            } else {
+              deactivateExpressionTracking();
+            }
+            createdObjectVarName = null;
+          }
+        )?
+    ;
 
 // This is an initializer used to set up an array.
 arrayInitializer
-	:	LCURLY
-			(	initializer
-				(
-					// CONFLICT: does a COMMA after an initializer start a new
-					// initializer or start the option ',' at end?
-					// ANTLR generates proper code by matching
-					// the comma as soon as possible.
-					options {
-						warnWhenFollowAmbig = false;
-					}
-				:
-					COMMA initializer
-				)*
-				(COMMA)?
-			)?
-		RCURLY
-	;
+    :    LCURLY
+            (    initializer
+                (
+                    // CONFLICT: does a COMMA after an initializer start a new
+                    // initializer or start the option ',' at end?
+                    // ANTLR generates proper code by matching
+                    // the comma as soon as possible.
+                    options {
+                        warnWhenFollowAmbig = false;
+                    }
+                :
+                    COMMA initializer
+                )*
+                (COMMA)?
+            )?
+        RCURLY
+    ;
 
 // The two "things" that can initialize an array element are an expression
 // and another (nested) array initializer.
 initializer
-	:	expression
-	|	arrayInitializer
-	;
+    :    expression
+    |    arrayInitializer
+    ;
 
 // This is the header of a method. It includes the name and parameters
 // for the method.
 // This also watches for a list of exception classes in a "throws" clause.
 ctorHead[ short mods]
-	{Vector param = null;
-	 boolean isOutestCompStat = !isInCompoundStatement();}
-	:	name:IDENT // the name of the method
+    {Vector param = null;
+     boolean isOutestCompStat = !isInCompoundStatement();}
+    :    name:IDENT // the name of the method
 
-		// parse the formal parameter declarations.
-		LPAREN param=parameterDeclarationList RPAREN
+        // parse the formal parameter declarations.
+        LPAREN param=parameterDeclarationList RPAREN
 
-		{if (isOutestCompStat && level > 0) {
-		   setMethod(getModeller().addOperation(mods, null, 
-			name.getText(), param, getJavadocComment()));
-		 }}
-		// get the list of exceptions that this method is declared to throw
-		(throwsClause)?
-	;
+        {if (isOutestCompStat && level > 0) {
+           setMethod(getModeller().addOperation(mods, null, 
+            name.getText(), param, getJavadocComment()));
+         }}
+        // get the list of exceptions that this method is declared to throw
+        (throwsClause)?
+    ;
 
 // This is a list of exception classes that the method is declared to throw
 throwsClause
-	:	"throws" identifier ( COMMA identifier )*
-	;
+    :    "throws" identifier ( COMMA identifier )*
+    ;
 
 // A list of formal parameters
-//	 Zero or more parameters
-//	 If a parameter is variable length (e.g. String... myArg) it is the right-most parameter
+//     Zero or more parameters
+//     If a parameter is variable length (e.g. String... myArg) it is the right-most parameter
 parameterDeclarationList returns [Vector paramList=new Vector()]
 {Vector currentParameter=null;}
-	// The semantic check in ( .... )* block is flagged as superfluous, and seems superfluous but
-	// is the only way I could make this work. If my understanding is correct this is a known bug
-	:	(	( parameterDeclaration )=> currentParameter=parameterDeclaration { paramList.add(currentParameter); }
-			( options {warnWhenFollowAmbig=false;} : ( COMMA parameterDeclaration ) => COMMA currentParameter=parameterDeclaration { paramList.add(currentParameter); } )*
-			( COMMA variableLengthParameterDeclaration )?
-		|
-			variableLengthParameterDeclaration
-		)?
-	;
+    // The semantic check in ( .... )* block is flagged as superfluous, and seems superfluous but
+    // is the only way I could make this work. If my understanding is correct this is a known bug
+    :    (    ( parameterDeclaration )=> currentParameter=parameterDeclaration { paramList.add(currentParameter); }
+            ( options {warnWhenFollowAmbig=false;} : ( COMMA parameterDeclaration ) => COMMA currentParameter=parameterDeclaration { paramList.add(currentParameter); } )*
+            ( COMMA variableLengthParameterDeclaration )?
+        |
+            variableLengthParameterDeclaration
+        )?
+    ;
 
 // A formal parameter.
 parameterDeclaration returns [Vector pd=new Vector()]
 {short pm=0; String ts=null; String pdb=null;}
-	:	pm=parameterModifier ts=typeSpec id:IDENT
-		pdb=declaratorBrackets
-		{ pd.add(new Short(pm));
-		  pd.add(ts + pdb);
-		  pd.add(id.getText());}
-	;
+    :    pm=parameterModifier ts=typeSpec id:IDENT
+        pdb=declaratorBrackets
+        { pd.add(new Short(pm));
+          pd.add(ts + pdb);
+          pd.add(id.getText());}
+    ;
 
 variableLengthParameterDeclaration
-	:	parameterModifier typeSpec TRIPLE_DOT IDENT
-		declaratorBrackets
-	;
+    :    parameterModifier typeSpec TRIPLE_DOT IDENT
+        declaratorBrackets
+    ;
 
 parameterModifier returns [short mods=0;]
-	//final can appear amongst annotations in any order - greedily consume any preceding
-	//annotations to shut nond-eterminism warnings off
-	:	(options{greedy=true;} : annotation)* ("final" {mods |= ACC_FINAL;})? (annotation)*
-	;
+    //final can appear amongst annotations in any order - greedily consume any preceding
+    //annotations to shut nond-eterminism warnings off
+    :    (options{greedy=true;} : annotation)* ("final" {mods |= ACC_FINAL;})? (annotation)*
+    ;
 
 // Compound statement. This is used in many contexts:
 // Inside a class definition prefixed with "static":
@@ -1179,199 +1201,199 @@ parameterModifier returns [short mods=0;]
 
 compoundStatement
 {boolean isOutestCompStat = !isInCompoundStatement();}
-	:	LCURLY
-		{if (isOutestCompStat) {
-		   setIsInCompoundStatement(true);
-		   activateExpressionTracking();}}
-		// include the (possibly-empty) list of statements
-		(statement)*
-		{if (isOutestCompStat) {
-		   setBody(getExpression());
-		   deactivateExpressionTracking();
-		   setIsInCompoundStatement(false);}}
-		RCURLY
-	;
+    :    LCURLY
+        {if (isOutestCompStat) {
+           setIsInCompoundStatement(true);
+           activateExpressionTracking();}}
+        // include the (possibly-empty) list of statements
+        (statement)*
+        {if (isOutestCompStat) {
+           setBody(getExpression());
+           deactivateExpressionTracking();
+           setIsInCompoundStatement(false);}}
+        RCURLY
+    ;
 
 statement
 { short m; }
-	// A list of statements in curly braces -- start a new scope!
-	:	compoundStatement
+    // A list of statements in curly braces -- start a new scope!
+    :    compoundStatement
 
-	// declarations are ambiguous with "ID DOT" relative to expression
-	// statements. Must backtrack to be sure. Could use a semantic
-	// predicate to test symbol table to see what the type was coming
-	// up, but that's pretty hard without a symbol table ;)
-	|	(declaration)=> declaration SEMI
+    // declarations are ambiguous with "ID DOT" relative to expression
+    // statements. Must backtrack to be sure. Could use a semantic
+    // predicate to test symbol table to see what the type was coming
+    // up, but that's pretty hard without a symbol table ;)
+    |    (declaration)=> declaration SEMI
 
-	// An expression statement. This could be a method call,
-	// assignment statement, or any other expression evaluated for
-	// side-effects.
-	|	expression SEMI
+    // An expression statement. This could be a method call,
+    // assignment statement, or any other expression evaluated for
+    // side-effects.
+    |    expression SEMI
 
-	//TODO: what abour interfaces, enums and annotations
-	// class definition
-	|	m=modifiers classDefinition["", m]
+    //TODO: what abour interfaces, enums and annotations
+    // class definition
+    |    m=modifiers classDefinition["", m]
 
-	// Attach a label to the front of a statement
-	|	IDENT COLON statement
+    // Attach a label to the front of a statement
+    |    IDENT COLON statement
 
-	// If-else statement
-	|	"if" LPAREN expression RPAREN statement
-		(
-			// CONFLICT: the old "dangling-else" problem...
-			// ANTLR generates proper code matching
-			// as soon as possible. Hush warning.
-			options {
-				warnWhenFollowAmbig = false;
-			}
-		:
-			"else" statement
-		)?
+    // If-else statement
+    |    "if" LPAREN expression RPAREN statement
+        (
+            // CONFLICT: the old "dangling-else" problem...
+            // ANTLR generates proper code matching
+            // as soon as possible. Hush warning.
+            options {
+                warnWhenFollowAmbig = false;
+            }
+        :
+            "else" statement
+        )?
 
-	// For statement
-	|	forStatement
+    // For statement
+    |    forStatement
 
-	// While statement
-	|	"while" LPAREN expression RPAREN statement
+    // While statement
+    |    "while" LPAREN expression RPAREN statement
 
-	// do-while statement
-	|	"do" statement "while" LPAREN expression RPAREN SEMI
+    // do-while statement
+    |    "do" statement "while" LPAREN expression RPAREN SEMI
 
-	// get out of a loop (or switch)
-	|	"break" (IDENT)? SEMI
+    // get out of a loop (or switch)
+    |    "break" (IDENT)? SEMI
 
-	// do next iteration of a loop
-	|	"continue" (IDENT)? SEMI
+    // do next iteration of a loop
+    |    "continue" (IDENT)? SEMI
 
-	// Return an expression
-	|	"return" (expression)? SEMI
+    // Return an expression
+    |    "return" (expression)? SEMI
 
-	// switch/case statement
-	|	"switch" LPAREN expression RPAREN LCURLY
-			( casesGroup )*
-		RCURLY
+    // switch/case statement
+    |    "switch" LPAREN expression RPAREN LCURLY
+            ( casesGroup )*
+        RCURLY
 
-	// exception try-catch block
-	|	tryBlock
+    // exception try-catch block
+    |    tryBlock
 
-	// throw an exception
-	|	"throw" expression SEMI
+    // throw an exception
+    |    "throw" expression SEMI
 
-	// synchronize a statement
-	|	"synchronized" LPAREN expression RPAREN compoundStatement
+    // synchronize a statement
+    |    "synchronized" LPAREN expression RPAREN compoundStatement
 
-	// asserts (uncomment if you want 1.4 compatibility)
-	|	"assert" expression ( COLON expression )? SEMI
+    // asserts (uncomment if you want 1.4 compatibility)
+    |    "assert" expression ( COLON expression )? SEMI
 
-	// empty statement
-	|	SEMI
-	;
+    // empty statement
+    |    SEMI
+    ;
 
 forStatement
-	:	"for"
-		LPAREN
-			(	(forInit SEMI)=>traditionalForClause
-			|	forEachClause
-			)
-		RPAREN
-		statement					 // statement to loop over
-	;
+    :    "for"
+        LPAREN
+            (    (forInit SEMI)=>traditionalForClause
+            |    forEachClause
+            )
+        RPAREN
+        statement                     // statement to loop over
+    ;
 
 traditionalForClause
-	:
-		forInit SEMI	// initializer
-		forCond SEMI	// condition test
-		forIter			// updater
-	;
+    :
+        forInit SEMI    // initializer
+        forCond SEMI    // condition test
+        forIter            // updater
+    ;
 
 forEachClause
-	:
-		parameterDeclaration COLON expression
-	;
+    :
+        parameterDeclaration COLON expression
+    ;
 
 casesGroup
-	:	(	// CONFLICT: to which case group do the statements bind?
-			// ANTLR generates proper code: it groups the
-			// many "case"/"default" labels together then
-			// follows them with the statements
-			options {
-				greedy = true;
-			}
-			:
-			aCase
-		)+
-		caseSList
-	;
+    :    (    // CONFLICT: to which case group do the statements bind?
+            // ANTLR generates proper code: it groups the
+            // many "case"/"default" labels together then
+            // follows them with the statements
+            options {
+                greedy = true;
+            }
+            :
+            aCase
+        )+
+        caseSList
+    ;
 
 aCase
-	:	("case" expression | "default") COLON
-	;
+    :    ("case" expression | "default") COLON
+    ;
 
 caseSList
-	:	(statement)*
-	;
+    :    (statement)*
+    ;
 
 // The initializer for a for loop
 forInit
-		// if it looks like a declaration, it is
-	:	((declaration)=> declaration
-		// otherwise it could be an expression list...
-		|	expressionList
-		)?
-	;
+        // if it looks like a declaration, it is
+    :    ((declaration)=> declaration
+        // otherwise it could be an expression list...
+        |    expressionList
+        )?
+    ;
 
 forCond
-	:	(expression)?
-	;
+    :    (expression)?
+    ;
 
 forIter
-	:	(expressionList)?
-	;
+    :    (expressionList)?
+    ;
 
 // an exception handler try/catch block
 tryBlock
-	:	"try" compoundStatement
-		(handler)*
-		( finallyClause )?
-	;
+    :    "try" compoundStatement
+        (handler)*
+        ( finallyClause )?
+    ;
 
 finallyClause
-	:	"finally" compoundStatement
-	;
+    :    "finally" compoundStatement
+    ;
 
 // an exception handler
 handler
-	:	"catch" LPAREN parameterDeclaration RPAREN compoundStatement
-	;
+    :    "catch" LPAREN parameterDeclaration RPAREN compoundStatement
+    ;
 
 
 // expressions
 // Note that most of these expressions follow the pattern
 //   thisLevelExpression :
-//	   nextHigherPrecedenceExpression
-//		   (OPERATOR nextHigherPrecedenceExpression)*
+//       nextHigherPrecedenceExpression
+//           (OPERATOR nextHigherPrecedenceExpression)*
 // which is a standard recursive definition for a parsing an expression.
 // The operators in java have the following precedences:
-//	lowest  (13)  = *= /= %= += -= <<= >>= >>>= &= ^= |=
-//			(12)  ?:
-//			(11)  ||
-//			(10)  &&
-//			( 9)  |
-//			( 8)  ^
-//			( 7)  &
-//			( 6)  == !=
-//			( 5)  < <= > >=
-//			( 4)  << >>
-//			( 3)  +(binary) -(binary)
-//			( 2)  * / %
-//			( 1)  ++ -- +(unary) -(unary)  ~  !  (type)
-//				  []   () (method call)  . (dot -- identifier qualification)
-//				  new   ()  (explicit parenthesis)
+//    lowest  (13)  = *= /= %= += -= <<= >>= >>>= &= ^= |=
+//            (12)  ?:
+//            (11)  ||
+//            (10)  &&
+//            ( 9)  |
+//            ( 8)  ^
+//            ( 7)  &
+//            ( 6)  == !=
+//            ( 5)  < <= > >=
+//            ( 4)  << >>
+//            ( 3)  +(binary) -(binary)
+//            ( 2)  * / %
+//            ( 1)  ++ -- +(unary) -(unary)  ~  !  (type)
+//                  []   () (method call)  . (dot -- identifier qualification)
+//                  new   ()  (explicit parenthesis)
 //
 // the last two are not usually on a precedence chart; I put them in
 // to point out that new has a higher precedence than '.', so you
 // can validy use
-//	 new Frame().show()
+//     new Frame().show()
 //
 // Note that the above precedence levels map to the rules below...
 // Once you have a precedence chart, writing the appropriate rules as below
@@ -1381,243 +1403,230 @@ handler
 
 // the mother of all expressions
 expression
-	:	assignmentExpression
-	;
+    :    assignmentExpression
+    ;
 
 
 // This is a list of expressions.
 expressionList
-	:	expression (COMMA expression)*
-	;
+    :    expression (COMMA expression)*
+    ;
 
 
 // assignment expression (level 13)
 assignmentExpression
-	:	conditionalExpression
-		(	(	{ if ((parserMode & MODE_REVENG_SEQUENCE) != 0
-				      && "new".equals(LT(2).getText())) {
-				    createdObjectVarName = LT(0).getText();
-				  }
-				}
-				ASSIGN
-			|	PLUS_ASSIGN
-			|	MINUS_ASSIGN
-			|	STAR_ASSIGN
-			|	DIV_ASSIGN
-			|	MOD_ASSIGN
-			|	SR_ASSIGN
-			|	BSR_ASSIGN
-			|	SL_ASSIGN
-			|	BAND_ASSIGN
-			|	BXOR_ASSIGN
-			|	BOR_ASSIGN
-			)
-			assignmentExpression
-			{ createdObjectVarName = null; }
-		)?
-	;
+    :    conditionalExpression
+        (    (    { if ((parserMode & MODE_REVENG_SEQUENCE) != 0
+                      && "new".equals(LT(2).getText())) {
+                    createdObjectVarName = LT(0).getText();
+                  }
+                }
+                ASSIGN
+            |    PLUS_ASSIGN
+            |    MINUS_ASSIGN
+            |    STAR_ASSIGN
+            |    DIV_ASSIGN
+            |    MOD_ASSIGN
+            |    SR_ASSIGN
+            |    BSR_ASSIGN
+            |    SL_ASSIGN
+            |    BAND_ASSIGN
+            |    BXOR_ASSIGN
+            |    BOR_ASSIGN
+            )
+            assignmentExpression
+            { createdObjectVarName = null; }
+        )?
+    ;
 
 
 // conditional test (level 12)
 conditionalExpression
-	:	logicalOrExpression
-		( QUESTION assignmentExpression COLON conditionalExpression )?
-	;
+    :    logicalOrExpression
+        ( QUESTION assignmentExpression COLON conditionalExpression )?
+    ;
 
 
 // logical or (||) (level 11)
 logicalOrExpression
-	:	logicalAndExpression (LOR logicalAndExpression)*
-	;
+    :    logicalAndExpression (LOR logicalAndExpression)*
+    ;
 
 
 // logical and (&&) (level 10)
 logicalAndExpression
-	:	inclusiveOrExpression (LAND inclusiveOrExpression)*
-	;
+    :    inclusiveOrExpression (LAND inclusiveOrExpression)*
+    ;
 
 
 // bitwise or non-short-circuiting or (|) (level 9)
 inclusiveOrExpression
-	:	exclusiveOrExpression (BOR exclusiveOrExpression)*
-	;
+    :    exclusiveOrExpression (BOR exclusiveOrExpression)*
+    ;
 
 
 // exclusive or (^) (level 8)
 exclusiveOrExpression
-	:	andExpression (BXOR andExpression)*
-	;
+    :    andExpression (BXOR andExpression)*
+    ;
 
 
 // bitwise or non-short-circuiting and (&) (level 7)
 andExpression
-	:	equalityExpression (BAND equalityExpression)*
-	;
+    :    equalityExpression (BAND equalityExpression)*
+    ;
 
 
 // equality/inequality (==/!=) (level 6)
 equalityExpression
-	:	relationalExpression ((NOT_EQUAL | EQUAL) relationalExpression)*
-	;
+    :    relationalExpression ((NOT_EQUAL | EQUAL) relationalExpression)*
+    ;
 
 
 // boolean relational expressions (level 5)
 relationalExpression
-	:	shiftExpression
-		(	(	(	LT
-				|	GT
-				|	LE
-				|	GE
-				)
-				shiftExpression
-			)*
-		|	"instanceof" typeSpec
-		)
-	;
+    :    shiftExpression
+        (    (    (    LT
+                |    GT
+                |    LE
+                |    GE
+                )
+                shiftExpression
+            )*
+        |    "instanceof" typeSpec
+        )
+    ;
 
 
 // bit shift expressions (level 4)
 shiftExpression
-	:	additiveExpression ((SL | SR | BSR) additiveExpression)*
-	;
+    :    additiveExpression ((SL | SR | BSR) additiveExpression)*
+    ;
 
 
 // binary addition/subtraction (level 3)
 additiveExpression
-	:	multiplicativeExpression ((PLUS | MINUS) multiplicativeExpression)*
-	;
+    :    multiplicativeExpression ((PLUS | MINUS) multiplicativeExpression)*
+    ;
 
 
 // multiplication/division/modulo (level 2)
 multiplicativeExpression
-	:	unaryExpression ((STAR | DIV | MOD ) unaryExpression)*
-	;
+    :    unaryExpression ((STAR | DIV | MOD ) unaryExpression)*
+    ;
 
 unaryExpression
-	:	INC unaryExpression
-	|	DEC unaryExpression
-	|	MINUS unaryExpression
-	|	PLUS unaryExpression
-	|	unaryExpressionNotPlusMinus
-	;
+    :    INC unaryExpression
+    |    DEC unaryExpression
+    |    MINUS unaryExpression
+    |    PLUS unaryExpression
+    |    unaryExpressionNotPlusMinus
+    ;
 
 unaryExpressionNotPlusMinus
-	:	BNOT unaryExpression
-	|	LNOT unaryExpression
-	|	(	// subrule allows option to shut off warnings
-			options {
-				// "(int" ambig with postfixExpr due to lack of sequence
-				// info in linear approximate LL(k). It's ok. Shut up.
-				generateAmbigWarnings=false;
-			}
-		:	// If typecast is built in type, must be numeric operand
-			// Have to backtrack to see if operator follows
-		(LPAREN builtInTypeSpec RPAREN unaryExpression)=>
-		LPAREN builtInTypeSpec RPAREN
-		unaryExpression
+    :    BNOT unaryExpression
+    |    LNOT unaryExpression
+    |    (    // subrule allows option to shut off warnings
+            options {
+                // "(int" ambig with postfixExpr due to lack of sequence
+                // info in linear approximate LL(k). It's ok. Shut up.
+                generateAmbigWarnings=false;
+            }
+        :    // If typecast is built in type, must be numeric operand
+            // Have to backtrack to see if operator follows
+        (LPAREN builtInTypeSpec RPAREN unaryExpression)=>
+        LPAREN builtInTypeSpec RPAREN
+        unaryExpression
 
-		// Have to backtrack to see if operator follows. If no operator
-		// follows, it's a typecast. No semantic checking needed to parse.
-		// if it _looks_ like a cast, it _is_ a cast; else it's a "(expr)"
-	|	(LPAREN classTypeSpec RPAREN unaryExpressionNotPlusMinus)=>
-		LPAREN classTypeSpec RPAREN
-		unaryExpressionNotPlusMinus
+        // Have to backtrack to see if operator follows. If no operator
+        // follows, it's a typecast. No semantic checking needed to parse.
+        // if it _looks_ like a cast, it _is_ a cast; else it's a "(expr)"
+    |    (LPAREN classTypeSpec RPAREN unaryExpressionNotPlusMinus)=>
+        LPAREN classTypeSpec RPAREN
+        unaryExpressionNotPlusMinus
 
-	|	postfixExpression
-	)
-	;
+    |    postfixExpression
+    )
+    ;
 
 // qualified names, array expressions, method invocation, post inc/dec
 postfixExpression
-{ String thisOrSuper = null; }
-	:
-		primaryExpression
-		(
-			/*
-			options {
-				// the use of postfixExpression in SUPER_CTOR_CALL adds DOT
-				// to the lookahead set, and gives loads of false non-det
-				// warnings.
-				// shut them off.
-				generateAmbigWarnings=false;
-			}
-		:	*/
-			//type arguments are only appropriate for a parameterized method/ctor invocations
-			//semantic check may be needed here to ensure that this is the case
-			{ if ("this".equals(LT(0).getText())) {
-			    thisOrSuper = "this.";
-			  } else if ("super".equals(LT(0).getText())) {
-			    thisOrSuper = "super.";
-			  }
-			}
-			DOT (typeArguments)?
-				(	id:IDENT
-					(	LPAREN
-						argList
-						RPAREN
-						{ if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
-						    StringBuffer sb = new StringBuffer();
-						    String prev = (String)getModeller().getMethodCalls().lastElement();
-						    if (thisOrSuper != null) {
-						      sb.append(thisOrSuper);
-						    } else if (prev != null) {
-						      sb.append(prev).append("().");
-						    }
-						    sb.append(id.getText());
-						    getModeller().addCall(sb.toString());
-						  }
-						}
-					)?
-				|	"super"
-					(	// (new Outer()).super() (create enclosing instance)
-						LPAREN argList RPAREN
-					|	DOT (typeArguments)? IDENT
-						(	LPAREN
-							argList
-							RPAREN
-							{ if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
-							    StringBuffer sb = new StringBuffer();
-							    String prev = (String)getModeller().getMethodCalls().lastElement();
-							    if (thisOrSuper != null) {
-							      sb.append(thisOrSuper);
-							    } else if (prev != null) {
-							      sb.append(prev).append("().");
-							    }
-							    sb.append("super");
-							    getModeller().addCall(sb.toString());
-							  }
-							}
-						)?
-					)
-				)
-		|	DOT "this"
-		|	DOT newExpression
-		|	LBRACK expression RBRACK
-		)*
+{ String thisOrSuper = null;
+  boolean parenths = LA(1) == LPAREN; }
+    :
+        primaryExpression
+        (
+            /*
+            options {
+                // the use of postfixExpression in SUPER_CTOR_CALL adds DOT
+                // to the lookahead set, and gives loads of false non-det
+                // warnings.
+                // shut them off.
+                generateAmbigWarnings=false;
+            }
+        :    */
+            //type arguments are only appropriate for a parameterized method/ctor invocations
+            //semantic check may be needed here to ensure that this is the case
+            { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+                if ("this".equals(LT(0).getText())) {
+                  thisOrSuper = "this.";
+                } else if ("super".equals(LT(0).getText())) {
+                  thisOrSuper = "super.";
+                }
+              }
+            }
+            DOT (typeArguments)?
+                (    id:IDENT
+                    (    LPAREN
+                        argList
+                        RPAREN
+                        { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+                            addDotCall(id.getText(), thisOrSuper, parenths);
+                          }
+                        }
+                    )?
+                |    "super"
+                    (    // (new Outer()).super() (create enclosing instance)
+                        LPAREN argList RPAREN
+                    |    DOT (typeArguments)? IDENT
+                        (    LPAREN
+                            argList
+                            RPAREN
+                            { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+                                addDotCall(id.getText(), thisOrSuper, parenths);
+                              }
+                            }
+                        )?
+                    )
+                )
+        |    DOT "this"
+        |    DOT newExpression
+        |    LBRACK expression RBRACK
+        )*
 
-		(	// possibly add on a post-increment or post-decrement.
-			// allows INC/DEC on too much, but semantics can check
-			INC
-	 	|	DEC
-		)?
- 	;
+        (    // possibly add on a post-increment or post-decrement.
+            // allows INC/DEC on too much, but semantics can check
+            INC
+         |    DEC
+        )?
+     ;
 
 // the basic element of an expression
 primaryExpression
-	:	identPrimary ( options {greedy=true;} : DOT "class" )?
-	|	constant
-	|	"true"
-	|	"false"
-	|	"null"
-	|	newExpression
-	|	"this"
-	|	"super"
-	|	LPAREN assignmentExpression RPAREN
-		// look for int.class and int[].class
-	|	builtInType
-		( LBRACK RBRACK )*
-		DOT "class"
-	;
+    :    identPrimary ( options {greedy=true;} : DOT "class" )?
+    |    constant
+    |    "true"
+    |    "false"
+    |    "null"
+    |    newExpression
+    |    "this"
+    |    "super"
+    |    LPAREN assignmentExpression RPAREN
+        // look for int.class and int[].class
+    |    builtInType
+        ( LBRACK RBRACK )*
+        DOT "class"
+    ;
 
 /** Match a, a.b.c refs, a.b.c(...) refs, a.b.c[], a.b.c[].class,
  *  and a.b.c.class refs. Also this(...) and super(...). Match
@@ -1625,61 +1634,61 @@ primaryExpression
  */
 identPrimary
 { StringBuffer sb = null; }
-	:	(typeArguments)?
-		id:IDENT
-		{ if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
-		    sb = new StringBuffer(id.getText());
-		  }
-		}
-		// Syntax for method invocation with type arguments is
-		// <String>foo("blah")
-		(
-			options {
-				// .ident could match here or in postfixExpression.
-				// We do want to match here. Turn off warning.
-				greedy=true;
-				// This turns the ambiguity warning of the second alternative
-				// off. See below. (The "false" predicate makes it non-issue)
-				warnWhenFollowAmbig=false;
-			}
-			// we have a new nondeterminism because of
-			// typeArguments... only a syntactic predicate will help...
-			// The problem is that this loop here conflicts with
-			// DOT typeArguments "super" in postfixExpression (k=2)
-			// A proper solution would require a lot of refactoring...
-		:	(DOT (typeArguments)? IDENT) =>
-				DOT (typeArguments)? id2:IDENT
-				{ if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
-				    sb.append('.').append(id2.getText());
-				  }
-				}
-		|	{false}?	// FIXME: this is very ugly but it seems to work...
-						// this will also produce an ANTLR warning!
-				// Unfortunately a syntactic predicate can only select one of
-				// multiple alternatives on the same level, not break out of
-				// an enclosing loop, which is why this ugly hack (a fake
-				// empty alternative with always-false semantic predicate)
-				// is necessary.
-		)*
-		(
-			options {
-				// ARRAY_DECLARATOR here conflicts with INDEX_OP in
-				// postfixExpression on LBRACK RBRACK.
-				// We want to match [] here, so greedy. This overcomes
-				// limitation of linear approximate lookahead.
-				greedy=true;
-			}
-		:	(	LPAREN argList RPAREN
-		        { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
-		            getModeller().addCall(sb.toString());
-		          }
-		        }
-			)
-		|	( options {greedy=true;} :
-				LBRACK RBRACK
-			)+
-		)?
-	;
+    :    (typeArguments)?
+        id:IDENT
+        { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+            sb = new StringBuffer(id.getText());
+          }
+        }
+        // Syntax for method invocation with type arguments is
+        // <String>foo("blah")
+        (
+            options {
+                // .ident could match here or in postfixExpression.
+                // We do want to match here. Turn off warning.
+                greedy=true;
+                // This turns the ambiguity warning of the second alternative
+                // off. See below. (The "false" predicate makes it non-issue)
+                warnWhenFollowAmbig=false;
+            }
+            // we have a new nondeterminism because of
+            // typeArguments... only a syntactic predicate will help...
+            // The problem is that this loop here conflicts with
+            // DOT typeArguments "super" in postfixExpression (k=2)
+            // A proper solution would require a lot of refactoring...
+        :    (DOT (typeArguments)? IDENT) =>
+                DOT (typeArguments)? id2:IDENT
+                { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+                    sb.append('.').append(id2.getText());
+                  }
+                }
+        |    {false}?    // FIXME: this is very ugly but it seems to work...
+                        // this will also produce an ANTLR warning!
+                // Unfortunately a syntactic predicate can only select one of
+                // multiple alternatives on the same level, not break out of
+                // an enclosing loop, which is why this ugly hack (a fake
+                // empty alternative with always-false semantic predicate)
+                // is necessary.
+        )*
+        (
+            options {
+                // ARRAY_DECLARATOR here conflicts with INDEX_OP in
+                // postfixExpression on LBRACK RBRACK.
+                // We want to match [] here, so greedy. This overcomes
+                // limitation of linear approximate lookahead.
+                greedy=true;
+            }
+        :    (    LPAREN argList RPAREN
+                { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+                    getModeller().addCall(sb.toString());
+                  }
+                }
+            )
+        |    ( options {greedy=true;} :
+                LBRACK RBRACK
+            )+
+        )?
+    ;
 
 /** object instantiation.
  *  Trees are built as illustrated by the following input/tree pairs:
@@ -1689,8 +1698,8 @@ identPrimary
  *  new
  *   |
  *   T --  ELIST
- *		   |
- *		  arg1 -- arg2 -- .. -- argn
+ *           |
+ *          arg1 -- arg2 -- .. -- argn
  *
  *  new int[]
  *
@@ -1703,93 +1712,93 @@ identPrimary
  *  new
  *   |
  *  int -- ARRAY_DECLARATOR -- ARRAY_INIT
- *								  |
- *								EXPR -- EXPR
- *								  |	  |
- *								  1	  2
+ *                                  |
+ *                                EXPR -- EXPR
+ *                                  |      |
+ *                                  1      2
  *
  *  new int[3]
  *  new
  *   |
  *  int -- ARRAY_DECLARATOR
- *				|
- *			  EXPR
- *				|
- *				3
+ *                |
+ *              EXPR
+ *                |
+ *                3
  *
  *  new int[1][2]
  *
  *  new
  *   |
  *  int -- ARRAY_DECLARATOR
- *			   |
- *		 ARRAY_DECLARATOR -- EXPR
- *			   |			  |
- *			 EXPR			 1
- *			   |
- *			   2
+ *               |
+ *         ARRAY_DECLARATOR -- EXPR
+ *               |              |
+ *             EXPR             1
+ *               |
+ *               2
  *
  */
 newExpression
-	{String t = null;}
-	:	"new" (typeArguments)? t=type
-		(	LPAREN argList RPAREN
-		    { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
-		        StringBuffer sb = new StringBuffer();
-		        if (";".equals(LT(1).getText()) && createdObjectVarName != null) {
-		          sb.append(createdObjectVarName).append('=');
-		        }
-		        sb.append("new ").append(t);
-		        getModeller().addCall(sb.toString());
-		      }
-		    }
-			(	{ getModeller().addAnonymousClass(t); }
-				classBlock
-				{ getModeller().popClassifier(); }
-			)?
+    {String t = null;}
+    :    "new" (typeArguments)? t=type
+        (    LPAREN argList RPAREN
+            { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
+                StringBuffer sb = new StringBuffer();
+                if (";".equals(LT(1).getText()) && createdObjectVarName != null) {
+                  sb.append(createdObjectVarName).append('=');
+                }
+                sb.append("new ").append(t);
+                getModeller().addCall(sb.toString());
+              }
+            }
+            (    { getModeller().addAnonymousClass(t); }
+                classBlock
+                { getModeller().popClassifier(); }
+            )?
 
-			//java 1.1
-			// Note: This will allow bad constructs like
-			//	new int[4][][3] {exp,exp}.
-			//	There needs to be a semantic check here...
-			// to make sure:
-			//   a) [ expr ] and [ ] are not mixed
-			//   b) [ expr ] and an init are not used together
+            //java 1.1
+            // Note: This will allow bad constructs like
+            //    new int[4][][3] {exp,exp}.
+            //    There needs to be a semantic check here...
+            // to make sure:
+            //   a) [ expr ] and [ ] are not mixed
+            //   b) [ expr ] and an init are not used together
 
-		|	newArrayDeclarator (arrayInitializer)?
-		)
-	;
+        |    newArrayDeclarator (arrayInitializer)?
+        )
+    ;
 
 argList
-	:	(	expressionList
-		|	/*nothing*/
-		)
-	;
+    :    (    expressionList
+        |    /*nothing*/
+        )
+    ;
 
 newArrayDeclarator
-	:	(
-			// CONFLICT:
-			// newExpression is a primaryExpression which can be
-			// followed by an array index reference. This is ok,
-			// as the generated code will stay in this loop as
-			// long as it sees an LBRACK (proper behavior)
-			options {
-				warnWhenFollowAmbig = false;
-			}
-		:
-			LBRACK (expression)?
-			RBRACK
-		)+
-	;
+    :    (
+            // CONFLICT:
+            // newExpression is a primaryExpression which can be
+            // followed by an array index reference. This is ok,
+            // as the generated code will stay in this loop as
+            // long as it sees an LBRACK (proper behavior)
+            options {
+                warnWhenFollowAmbig = false;
+            }
+        :
+            LBRACK (expression)?
+            RBRACK
+        )+
+    ;
 
 constant
-	:	NUM_INT
-	|	CHAR_LITERAL
-	|	STRING_LITERAL
-	|	NUM_FLOAT
-	|	NUM_LONG
-	|	NUM_DOUBLE
-	;
+    :    NUM_INT
+    |    CHAR_LITERAL
+    |    STRING_LITERAL
+    |    NUM_FLOAT
+    |    NUM_LONG
+    |    NUM_DOUBLE
+    ;
 
 
 //----------------------------------------------------------------------------
@@ -1798,30 +1807,30 @@ constant
 class JavaLexer extends Lexer;
 
 options {
-	exportVocab=Java;		// call the vocabulary "Java"
-	testLiterals=false;		// don't automatically test for literals
-	k=4;					// four characters of lookahead
-	charVocabulary='\u0003'..'\uFFFF';
-	// without inlining some bitset tests, couldn't do unicode;
-	// I need to make ANTLR generate smaller bitsets; see
-	// bottom of JavaLexer.java
-	codeGenBitsetTestThreshold=20;
+    exportVocab=Java;        // call the vocabulary "Java"
+    testLiterals=false;        // don't automatically test for literals
+    k=4;                    // four characters of lookahead
+    charVocabulary='\u0003'..'\uFFFF';
+    // without inlining some bitset tests, couldn't do unicode;
+    // I need to make ANTLR generate smaller bitsets; see
+    // bottom of JavaLexer.java
+    codeGenBitsetTestThreshold=20;
 }
 
 {
-	/** flag for enabling the "assert" keyword */
-	private boolean assertEnabled = true;
-	/** flag for enabling the "enum" keyword */
-	private boolean enumEnabled = true;
+    /** flag for enabling the "assert" keyword */
+    private boolean assertEnabled = true;
+    /** flag for enabling the "enum" keyword */
+    private boolean enumEnabled = true;
 
-	/** Enable the "assert" keyword */
-	public void enableAssert(boolean shouldEnable) { assertEnabled = shouldEnable; }
-	/** Query the "assert" keyword state */
-	public boolean isAssertEnabled() { return assertEnabled; }
-	/** Enable the "enum" keyword */
-	public void enableEnum(boolean shouldEnable) { enumEnabled = shouldEnable; }
-	/** Query the "enum" keyword state */
-	public boolean isEnumEnabled() { return enumEnabled; }
+    /** Enable the "assert" keyword */
+    public void enableAssert(boolean shouldEnable) { assertEnabled = shouldEnable; }
+    /** Query the "assert" keyword state */
+    public boolean isAssertEnabled() { return assertEnabled; }
+    /** Enable the "enum" keyword */
+    public void enableEnum(boolean shouldEnable) { enumEnabled = shouldEnable; }
+    /** Query the "enum" keyword state */
+    public boolean isEnumEnabled() { return enumEnabled; }
 
     private StringBuffer whitespaceBuffer = new StringBuffer();
 
@@ -1870,7 +1879,7 @@ options {
      * @param comment The parsed javadoc comment.
      */
     protected void setJavadocComment(String comment) {
-	_javadocComment = comment;
+    _javadocComment = comment;
     }
 
     /**
@@ -1879,157 +1888,157 @@ options {
      * @return The last parsed javadoc comment.
      */
     protected String getJavadocComment() {
-	String result = _javadocComment;
+    String result = _javadocComment;
 
-	_javadocComment = null;  // Since we consume the comment, the buffer is reset.
+    _javadocComment = null;  // Since we consume the comment, the buffer is reset.
 
-	return result;
+    return result;
     }
 }
 
 // OPERATORS
-QUESTION		:	'?'		;
-LPAREN			:	'('		;
-RPAREN			:	')'		;
-LBRACK			:	'['		;
-RBRACK			:	']'		;
-LCURLY			:	'{'		;
-RCURLY			:	'}'		;
-COLON			:	':'		;
-COMMA			:	','		;
-//DOT			:	'.'		;
-ASSIGN			:	'='		;
-EQUAL			:	"=="	;
-LNOT			:	'!'		;
-BNOT			:	'~'		;
-NOT_EQUAL		:	"!="	;
-DIV				:	'/'		;
-DIV_ASSIGN		:	"/="	;
-PLUS			:	'+'		;
-PLUS_ASSIGN		:	"+="	;
-INC				:	"++"	;
-MINUS			:	'-'		;
-MINUS_ASSIGN	:	"-="	;
-DEC				:	"--"	;
-STAR			:	'*'		;
-STAR_ASSIGN		:	"*="	;
-MOD				:	'%'		;
-MOD_ASSIGN		:	"%="	;
-SR				:	">>"	;
-SR_ASSIGN		:	">>="	;
-BSR				:	">>>"	;
-BSR_ASSIGN		:	">>>="	;
-GE				:	">="	;
-GT				:	">"		;
-SL				:	"<<"	;
-SL_ASSIGN		:	"<<="	;
-LE				:	"<="	;
-LT				:	'<'		;
-BXOR			:	'^'		;
-BXOR_ASSIGN		:	"^="	;
-BOR				:	'|'		;
-BOR_ASSIGN		:	"|="	;
-LOR				:	"||"	;
-BAND			:	'&'		;
-BAND_ASSIGN		:	"&="	;
-LAND			:	"&&"	;
-SEMI			:	';'		;
+QUESTION        :    '?'        ;
+LPAREN            :    '('        ;
+RPAREN            :    ')'        ;
+LBRACK            :    '['        ;
+RBRACK            :    ']'        ;
+LCURLY            :    '{'        ;
+RCURLY            :    '}'        ;
+COLON            :    ':'        ;
+COMMA            :    ','        ;
+//DOT            :    '.'        ;
+ASSIGN            :    '='        ;
+EQUAL            :    "=="    ;
+LNOT            :    '!'        ;
+BNOT            :    '~'        ;
+NOT_EQUAL        :    "!="    ;
+DIV                :    '/'        ;
+DIV_ASSIGN        :    "/="    ;
+PLUS            :    '+'        ;
+PLUS_ASSIGN        :    "+="    ;
+INC                :    "++"    ;
+MINUS            :    '-'        ;
+MINUS_ASSIGN    :    "-="    ;
+DEC                :    "--"    ;
+STAR            :    '*'        ;
+STAR_ASSIGN        :    "*="    ;
+MOD                :    '%'        ;
+MOD_ASSIGN        :    "%="    ;
+SR                :    ">>"    ;
+SR_ASSIGN        :    ">>="    ;
+BSR                :    ">>>"    ;
+BSR_ASSIGN        :    ">>>="    ;
+GE                :    ">="    ;
+GT                :    ">"        ;
+SL                :    "<<"    ;
+SL_ASSIGN        :    "<<="    ;
+LE                :    "<="    ;
+LT                :    '<'        ;
+BXOR            :    '^'        ;
+BXOR_ASSIGN        :    "^="    ;
+BOR                :    '|'        ;
+BOR_ASSIGN        :    "|="    ;
+LOR                :    "||"    ;
+BAND            :    '&'        ;
+BAND_ASSIGN        :    "&="    ;
+LAND            :    "&&"    ;
+SEMI            :    ';'        ;
 
 
 // Whitespace -- ignored
-WS	:	(	' '
-		|	'\t'
-		|	'\f'
-			// handle newlines
-		|	(	options {generateAmbigWarnings=false;}
-			:	"\r\n"	// Evil DOS
-			|	'\r'	// Macintosh
-			|	'\n'	// Unix (the right way)
-			)
-			{ newline(); }
-		)+
-		{ addWhitespace($getText);
-		  _ttype = Token.SKIP; }
-	;
+WS    :    (    ' '
+        |    '\t'
+        |    '\f'
+            // handle newlines
+        |    (    options {generateAmbigWarnings=false;}
+            :    "\r\n"    // Evil DOS
+            |    '\r'    // Macintosh
+            |    '\n'    // Unix (the right way)
+            )
+            { newline(); }
+        )+
+        { addWhitespace($getText);
+          _ttype = Token.SKIP; }
+    ;
 
 // Single-line comments
 SL_COMMENT
-	:	"//"
-		(~('\n'|'\r'))* ('\n'|'\r'('\n')?)
-		{ addWhitespace($getText);
-		  $setType(Token.SKIP); newline(); }
-	;
+    :    "//"
+        (~('\n'|'\r'))* ('\n'|'\r'('\n')?)
+        { addWhitespace($getText);
+          $setType(Token.SKIP); newline(); }
+    ;
 
 // javadoc comments
 JAVADOC
-	:	"/**"
-		(	/*	'\r' '\n' can be matched in one alternative or by matching
-				'\r' in one iteration and '\n' in another.  I am trying to
-				handle any flavor of newline that comes in, but the language
-				that allows both "\r\n" and "\r" and "\n" to all be valid
-				newline is ambiguous.  Consequently, the resulting grammar
-				must be ambiguous.  I'm shutting this warning off.
-			 */
-			options {
-				generateAmbigWarnings=false;
-			}
-		:
-			{ LA(2)!='/' }? '*'
-		|	'\r' '\n'		{newline();}
-		|	'\r'			{newline();}
-		|	'\n'			{newline();}
-		|	~('*'|'\n'|'\r')
-		)*
-		"*/"
-		{ setJavadocComment($getText);
-		  $setType(Token.SKIP); }
-	;
+    :    "/**"
+        (    /*    '\r' '\n' can be matched in one alternative or by matching
+                '\r' in one iteration and '\n' in another.  I am trying to
+                handle any flavor of newline that comes in, but the language
+                that allows both "\r\n" and "\r" and "\n" to all be valid
+                newline is ambiguous.  Consequently, the resulting grammar
+                must be ambiguous.  I'm shutting this warning off.
+             */
+            options {
+                generateAmbigWarnings=false;
+            }
+        :
+            { LA(2)!='/' }? '*'
+        |    '\r' '\n'        {newline();}
+        |    '\r'            {newline();}
+        |    '\n'            {newline();}
+        |    ~('*'|'\n'|'\r')
+        )*
+        "*/"
+        { setJavadocComment($getText);
+          $setType(Token.SKIP); }
+    ;
 
 // multiple-line comments
 ML_COMMENT
-	:	"/*"
-		( /* Do not allow /** at start */
-			options {
-				generateAmbigWarnings=false;
-			}
-		:
-			'\r' '\n'		{newline();}
-		|	'\r'			{newline();}
-		|	'\n'			{newline();}
-		|	~('*'|'\n'|'\r')
-		)		
-		(	/*	'\r' '\n' can be matched in one alternative or by matching
-				'\r' in one iteration and '\n' in another. I am trying to
-				handle any flavor of newline that comes in, but the language
-				that allows both "\r\n" and "\r" and "\n" to all be valid
-				newline is ambiguous. Consequently, the resulting grammar
-				must be ambiguous. I'm shutting this warning off.
-			 */
-			options {
-				generateAmbigWarnings=false;
-			}
-		:
-			{ LA(2)!='/' }? '*'
-		|	'\r' '\n'		{newline();}
-		|	'\r'			{newline();}
-		|	'\n'			{newline();}
-		|	~('*'|'\n'|'\r')
-		)*
-		"*/"
-		{ addWhitespace($getText);
-		  $setType(Token.SKIP);}
-	;
+    :    "/*"
+        ( /* Do not allow /** at start */
+            options {
+                generateAmbigWarnings=false;
+            }
+        :
+            '\r' '\n'        {newline();}
+        |    '\r'            {newline();}
+        |    '\n'            {newline();}
+        |    ~('*'|'\n'|'\r')
+        )        
+        (    /*    '\r' '\n' can be matched in one alternative or by matching
+                '\r' in one iteration and '\n' in another. I am trying to
+                handle any flavor of newline that comes in, but the language
+                that allows both "\r\n" and "\r" and "\n" to all be valid
+                newline is ambiguous. Consequently, the resulting grammar
+                must be ambiguous. I'm shutting this warning off.
+             */
+            options {
+                generateAmbigWarnings=false;
+            }
+        :
+            { LA(2)!='/' }? '*'
+        |    '\r' '\n'        {newline();}
+        |    '\r'            {newline();}
+        |    '\n'            {newline();}
+        |    ~('*'|'\n'|'\r')
+        )*
+        "*/"
+        { addWhitespace($getText);
+          $setType(Token.SKIP);}
+    ;
 
 
 // character literals
 CHAR_LITERAL
-	:	'\'' ( ESC | ~('\''|'\n'|'\r'|'\\') ) '\''
-	;
+    :    '\'' ( ESC | ~('\''|'\n'|'\r'|'\\') ) '\''
+    ;
 
 // string literals
 STRING_LITERAL
-	:	'"' (ESC|~('"'|'\\'|'\n'|'\r'))* '"'
-	;
+    :    '"' (ESC|~('"'|'\\'|'\n'|'\r'))* '"'
+    ;
 
 
 // escape sequence -- note that this is protected; it can only be called
@@ -2042,148 +2051,148 @@ STRING_LITERAL
 // the FOLLOW ambig warnings.
 protected
 ESC
-	:	'\\'
-		(	'n'
-		|	'r'
-		|	't'
-		|	'b'
-		|	'f'
-		|	'"'
-		|	'\''
-		|	'\\'
-		|	('u')+ HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
-		|	'0'..'3'
-			(
-				options {
-					warnWhenFollowAmbig = false;
-				}
-			:	'0'..'7'
-				(
-					options {
-						warnWhenFollowAmbig = false;
-					}
-				:	'0'..'7'
-				)?
-			)?
-		|	'4'..'7'
-			(
-				options {
-					warnWhenFollowAmbig = false;
-				}
-			:	'0'..'7'
-			)?
-		)
-	;
+    :    '\\'
+        (    'n'
+        |    'r'
+        |    't'
+        |    'b'
+        |    'f'
+        |    '"'
+        |    '\''
+        |    '\\'
+        |    ('u')+ HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
+        |    '0'..'3'
+            (
+                options {
+                    warnWhenFollowAmbig = false;
+                }
+            :    '0'..'7'
+                (
+                    options {
+                        warnWhenFollowAmbig = false;
+                    }
+                :    '0'..'7'
+                )?
+            )?
+        |    '4'..'7'
+            (
+                options {
+                    warnWhenFollowAmbig = false;
+                }
+            :    '0'..'7'
+            )?
+        )
+    ;
 
 
 // hexadecimal digit (again, note it's protected!)
 protected
 HEX_DIGIT
-	:	('0'..'9'|'A'..'F'|'a'..'f')
-	;
+    :    ('0'..'9'|'A'..'F'|'a'..'f')
+    ;
 
 
 // a dummy rule to force vocabulary to be all characters (except special
 // ones that ANTLR uses internally (0 to 2)
 protected
 VOCAB
-	:	'\3'..'\377'
-	;
+    :    '\3'..'\377'
+    ;
 
 
 // an identifier. Note that testLiterals is set to true! This means
 // that after we match the rule, we look in the literals table to see
 // if it's a literal or really an identifer
 IDENT
-	options {testLiterals=true;}
-	:	('a'..'z'|'A'..'Z'|'_'|'$') ('a'..'z'|'A'..'Z'|'_'|'0'..'9'|'$')*
-		{
-			// check if "assert" keyword is enabled
-			if (assertEnabled && "assert".equals($getText)) {
-				$setType(LITERAL_assert); // set token type for the rule in the parser
-			}
-			// check if "enum" keyword is enabled
-			if (enumEnabled && "enum".equals($getText)) {
-				$setType(LITERAL_enum); // set token type for the rule in the parser
-			}
-		}
-	;
+    options {testLiterals=true;}
+    :    ('a'..'z'|'A'..'Z'|'_'|'$') ('a'..'z'|'A'..'Z'|'_'|'0'..'9'|'$')*
+        {
+            // check if "assert" keyword is enabled
+            if (assertEnabled && "assert".equals($getText)) {
+                $setType(LITERAL_assert); // set token type for the rule in the parser
+            }
+            // check if "enum" keyword is enabled
+            if (enumEnabled && "enum".equals($getText)) {
+                $setType(LITERAL_enum); // set token type for the rule in the parser
+            }
+        }
+    ;
 
 
 // a numeric literal
 NUM_INT
-	{boolean isDecimal=false; Token t=null;}
-	:	'.' {_ttype = DOT;}
-			(
-				(('0'..'9')+ (EXPONENT)? (f1:FLOAT_SUFFIX {t=f1;})?
-				{
-				if (t != null && t.getText().toUpperCase().indexOf('F')>=0) {
-					_ttype = NUM_FLOAT;
-				}
-				else {
-					_ttype = NUM_DOUBLE; // assume double
-				}
-				})
-				|
-				// JDK 1.5 token for variable length arguments
-				(".." {_ttype = TRIPLE_DOT;})
-			)?
+    {boolean isDecimal=false; Token t=null;}
+    :    '.' {_ttype = DOT;}
+            (
+                (('0'..'9')+ (EXPONENT)? (f1:FLOAT_SUFFIX {t=f1;})?
+                {
+                if (t != null && t.getText().toUpperCase().indexOf('F')>=0) {
+                    _ttype = NUM_FLOAT;
+                }
+                else {
+                    _ttype = NUM_DOUBLE; // assume double
+                }
+                })
+                |
+                // JDK 1.5 token for variable length arguments
+                (".." {_ttype = TRIPLE_DOT;})
+            )?
 
-	|	(	'0' {isDecimal = true;} // special case for just '0'
-			(	('x'|'X')
-				(											// hex
-					// the 'e'|'E' and float suffix stuff look
-					// like hex digits, hence the (...)+ doesn't
-					// know when to stop: ambig. ANTLR resolves
-					// it correctly by matching immediately. It
-					// is therefor ok to hush warning.
-					options {
-						warnWhenFollowAmbig=false;
-					}
-				:	HEX_DIGIT
-				)+
+    |    (    '0' {isDecimal = true;} // special case for just '0'
+            (    ('x'|'X')
+                (                                            // hex
+                    // the 'e'|'E' and float suffix stuff look
+                    // like hex digits, hence the (...)+ doesn't
+                    // know when to stop: ambig. ANTLR resolves
+                    // it correctly by matching immediately. It
+                    // is therefor ok to hush warning.
+                    options {
+                        warnWhenFollowAmbig=false;
+                    }
+                :    HEX_DIGIT
+                )+
 
-			|	//float or double with leading zero
-				(('0'..'9')+ ('.'|EXPONENT|FLOAT_SUFFIX)) => ('0'..'9')+
+            |    //float or double with leading zero
+                (('0'..'9')+ ('.'|EXPONENT|FLOAT_SUFFIX)) => ('0'..'9')+
 
-			|	('0'..'7')+									// octal
-			)?
-		|	('1'..'9') ('0'..'9')*  {isDecimal=true;}		// non-zero decimal
-		)
-		(	('l'|'L') { _ttype = NUM_LONG; }
+            |    ('0'..'7')+                                    // octal
+            )?
+        |    ('1'..'9') ('0'..'9')*  {isDecimal=true;}        // non-zero decimal
+        )
+        (    ('l'|'L') { _ttype = NUM_LONG; }
 
-		// only check to see if it's a float if looks like decimal so far
-		|	{isDecimal}?
-			(	'.' ('0'..'9')* (EXPONENT)? (f2:FLOAT_SUFFIX {t=f2;})?
-			|	EXPONENT (f3:FLOAT_SUFFIX {t=f3;})?
-			|	f4:FLOAT_SUFFIX {t=f4;}
-			)
-			{
-			if (t != null && t.getText().toUpperCase() .indexOf('F') >= 0) {
-				_ttype = NUM_FLOAT;
-			}
-			else {
-				_ttype = NUM_DOUBLE; // assume double
-			}
-			}
-		)?
-	;
+        // only check to see if it's a float if looks like decimal so far
+        |    {isDecimal}?
+            (    '.' ('0'..'9')* (EXPONENT)? (f2:FLOAT_SUFFIX {t=f2;})?
+            |    EXPONENT (f3:FLOAT_SUFFIX {t=f3;})?
+            |    f4:FLOAT_SUFFIX {t=f4;}
+            )
+            {
+            if (t != null && t.getText().toUpperCase() .indexOf('F') >= 0) {
+                _ttype = NUM_FLOAT;
+            }
+            else {
+                _ttype = NUM_DOUBLE; // assume double
+            }
+            }
+        )?
+    ;
 
 //--------------from-here-(thn)-------------------
 
 // JDK 1.5 token for annotations and their declarations
 AT
-	:	'@'
-	;
+    :    '@'
+    ;
 
 // a couple protected methods to assist in matching floating point numbers
 protected
 EXPONENT
-	:	('e'|'E') ('+'|'-')? ('0'..'9')+
-	;
+    :    ('e'|'E') ('+'|'-')? ('0'..'9')+
+    ;
 
 
 protected
 FLOAT_SUFFIX
-	:	'f'|'F'|'d'|'D'
-	;
+    :    'f'|'F'|'d'|'D'
+    ;
