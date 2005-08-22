@@ -31,6 +31,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,12 +43,12 @@ import java.util.StringTokenizer;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 
@@ -86,7 +88,7 @@ import org.tigris.gef.presentation.Fig;
  * TODO: i18n<br>
  * TODO: ...<br>
  */
-public class RESequenceDiagramDialog extends ArgoDialog implements ActionListener {
+public class RESequenceDiagramDialog extends ArgoDialog implements ActionListener, ItemListener {
 
     private final static int X_OFFSET = 100;
 
@@ -103,6 +105,7 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
              + (operation != null ? (' ' + Model.getFacade().getName(operation) + "()") : ""),
             ArgoDialog.OK_CANCEL_OPTION,
             true);
+		setResizable(false);
 
         _operation = operation;
         _model = ProjectManager.getManager().getCurrentProject().getModel();
@@ -115,11 +118,7 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         _classifierRole = getClassifierRole(_classifier, "obj");
         parseBody();
 
-        JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
-        JTabbedPane tabs = new JTabbedPane();
-        tabs.addTab("Manually", getManuallyTab());
-        tabs.addTab("Automatic", getAutomaticallyTab());
-        contentPanel.add(tabs, BorderLayout.CENTER);
+		JPanel contentPanel = getContentPanel();
         setContent(contentPanel);
     }
 
@@ -129,7 +128,7 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
 
-        if (e.getSource() == _processButton) {
+        if (e.getSource() == getOkButton()) {
             for (int i = 0; i < _callTable.getRowCount(); i++) {
                 if (Boolean.TRUE.equals((Boolean)_callTable.getValueAt(i, 1))) {
                     buildAction((String)_callTable.getValueAt(i, 0));
@@ -149,6 +148,21 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
                 TargetManager.getInstance().setTarget(newTarget);
             }
         }
+    }
+
+    /**
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
+    public void itemStateChanged(ItemEvent e) {
+		if (_modeChoice.getSelectedIndex() != 1) {
+			_changingPanel.remove(_autoPanel);
+			_changingPanel.add(_manuPanel, BorderLayout.CENTER);
+			pack();
+		} else {
+			_changingPanel.remove(_manuPanel);
+			_changingPanel.add(_autoPanel, BorderLayout.CENTER);
+			pack();
+		}
     }
 
     /**
@@ -184,6 +198,41 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
     }
 
     /**
+     * Gets the content panel, containing all the gui.
+     * @return the constructed panel
+     */
+    private JPanel getContentPanel() {
+		JPanel content = new JPanel();
+        content.setLayout(new GridBagLayout());
+
+        GridBagConstraints constraints = new GridBagConstraints();
+		constraints.anchor = GridBagConstraints.WEST;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+
+		constraints.insets = new Insets(2, 2, 2, 2);
+        content.add(new JLabel("Mode:"), constraints);
+
+		constraints.gridy = 1;
+		_modeChoice = new JComboBox();
+		_modeChoice.addItem("Manually select calls of this operation");
+		_modeChoice.addItem("Traverse calls automatically with a chosen depth");
+		_modeChoice.addItemListener(this);
+		content.add(_modeChoice, constraints);
+		
+		_manuPanel = getManuallyTab();
+		_autoPanel = getAutomaticallyTab();
+
+		constraints.gridy = 2;
+        _changingPanel = new JPanel(new BorderLayout(0, 0));
+		_changingPanel.add(_manuPanel, BorderLayout.CENTER);
+        content.add(_changingPanel, constraints);
+		
+		return content;
+    }
+
+    /**
      * Gets the panel of the automatically tab.
      * @return the constructed panel
      */
@@ -195,7 +244,7 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         labelConstraints.anchor = GridBagConstraints.WEST;
         labelConstraints.gridy = 0;
         labelConstraints.gridx = 0;
-        labelConstraints.insets = new Insets(10, 4, 2, 4);
+        labelConstraints.insets = new Insets(10, 2, 2, 2);
 
         GridBagConstraints fieldConstraints = new GridBagConstraints();
         fieldConstraints.anchor = GridBagConstraints.WEST;
@@ -203,7 +252,7 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         fieldConstraints.gridy = 0;
         fieldConstraints.gridx = 1;
         fieldConstraints.weightx = 1.0;
-        fieldConstraints.insets = new Insets(10, 4, 2, 4);
+        fieldConstraints.insets = new Insets(4, 2, 2, 2);
 
         JPanel depthPanel = new JPanel(new FlowLayout());
         JRadioButton unlimited = new JRadioButton("unlimited");
@@ -244,6 +293,17 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         fieldConstraints.weighty = 1.0;
         top.add(new JScrollPane(table), fieldConstraints);
 
+        fieldConstraints.insets = new Insets(0, 2, 0, 2);
+        JCheckBox checkbox1 = new JCheckBox("also process create calls", true);
+        fieldConstraints.gridy = 3;
+        top.add(checkbox1, fieldConstraints);
+        JCheckBox checkbox2 = new JCheckBox("also process local calls", true);
+        fieldConstraints.gridy = 4;
+        top.add(checkbox2, fieldConstraints);
+        JCheckBox checkbox3 = new JCheckBox("also process calls inside package", true);
+        fieldConstraints.gridy = 5;
+        top.add(checkbox3, fieldConstraints);
+
         return top;
     }
 
@@ -257,22 +317,19 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
 
         GridBagConstraints labelConstraints = new GridBagConstraints();
         labelConstraints.anchor = GridBagConstraints.WEST;
-        labelConstraints.gridy = 0;
         labelConstraints.gridx = 0;
-        labelConstraints.insets = new Insets(10, 4, 2, 4);
+        labelConstraints.gridy = 0;
+        labelConstraints.insets = new Insets(10, 2, 2, 2);
 
         GridBagConstraints fieldConstraints = new GridBagConstraints();
         fieldConstraints.anchor = GridBagConstraints.WEST;
         fieldConstraints.fill = GridBagConstraints.NONE;
-        fieldConstraints.gridy = 0;
         fieldConstraints.gridx = 1;
+        fieldConstraints.gridy = 0;
         fieldConstraints.weightx = 1.0;
-        fieldConstraints.insets = new Insets(10, 4, 2, 4);
+        fieldConstraints.insets = new Insets(4, 2, 2, 2);
 
-        _processButton = new JButton("Process");
-        _processButton.addActionListener(this);
         top.add(new JLabel("Method call table:"), labelConstraints);
-        top.add(_processButton, fieldConstraints);
 
         _callTable = new CheckboxTableModel(
             _calls.toArray(),
@@ -290,19 +347,19 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         fieldConstraints.weighty = 1.0;
         top.add(new JScrollPane(table), fieldConstraints);
 
-        fieldConstraints.insets = new Insets(2, 4, 2, 4);
-        JCheckBox checkbox1 = new JCheckBox("create calls", true);
+        fieldConstraints.insets = new Insets(0, 2, 0, 2);
+        JCheckBox checkbox1 = new JCheckBox("(un)check create calls", true);
         fieldConstraints.gridy = 2;
         top.add(checkbox1, fieldConstraints);
-        JCheckBox checkbox2 = new JCheckBox("local calls", true);
+        JCheckBox checkbox2 = new JCheckBox("(un)check local calls", true);
         fieldConstraints.gridy = 3;
         top.add(checkbox2, fieldConstraints);
-        JCheckBox checkbox3 = new JCheckBox("package calls", true);
+        JCheckBox checkbox3 = new JCheckBox("(un)check package calls", true);
         fieldConstraints.gridy = 4;
         top.add(checkbox3, fieldConstraints);
-        JCheckBox checkbox4 = new JCheckBox("far calls", true);
+        JCheckBox checkbox4 = new JCheckBox("(un)check far calls", true);
         fieldConstraints.gridy = 5;
-        top.add(checkbox3, fieldConstraints);
+        top.add(checkbox4, fieldConstraints);
 
         return top;
     }
@@ -644,7 +701,10 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
     private Object default_state_machine = null;
     private CheckboxTableModel _callTable = null;
     private CheckboxTableModel _assumptionTable = null;
-    private JButton _processButton = null;
+	private JComboBox _modeChoice = null;
+	private JPanel _changingPanel = null;
+	private JPanel _manuPanel = null;
+	private JPanel _autoPanel = null;
     private int _maxXPos = 0;
     private int _maxPort = 0;
     private int _anonCnt = 0;
