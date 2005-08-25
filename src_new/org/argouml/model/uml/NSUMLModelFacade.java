@@ -2472,7 +2472,7 @@ public class NSUMLModelFacade implements Facade {
      */
     public Collection getIncludes2(Object handle) {
         if (handle instanceof MUseCase) {
-            return ((MUseCase) handle).getIncludes();
+            return ((MUseCase) handle).getIncludes2();
         }
 	return illegalArgumentCollection(handle);
     }
