@@ -230,8 +230,7 @@ public class GeneratorDisplay extends Generator2 {
         } else {
             genStr.append("()");
         }
-        if ((propertySb != null)
-            && (propertySb.length() > 0)
+        if ((propertySb.length() > 0)
             && Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES)) {
             genStr.append(propertySb);
         }
@@ -330,7 +329,7 @@ public class GeneratorDisplay extends Generator2 {
     public String generateParameter(Object parameter) {
         StringBuffer s = new StringBuffer();
         s.append(generateKind(Model.getFacade().getKind(parameter)));
-        s.append(" ");
+        if (s.length() > 0) s.append(" ");
         s.append(generateName(Model.getFacade().getName(parameter)));
         String classRef = 
             generateClassifierRef(Model.getFacade().getType(parameter));
@@ -465,9 +464,9 @@ public class GeneratorDisplay extends Generator2 {
 
     private String generateKind(Object /*Parameter etc.*/ kind) {
         StringBuffer s = new StringBuffer();
-        if (kind == null
+        if (kind == null /* "in" is the default */
                 || kind == Model.getDirectionKind().getInParameter()) {
-            s.append("in");
+            s.append(/*"in"*/ ""); /* See issue 3421. */
         } else if (kind == Model.getDirectionKind().getInOutParameter()) {
             s.append("inout");
         } else if (kind == Model.getDirectionKind().getReturnParameter()) {
