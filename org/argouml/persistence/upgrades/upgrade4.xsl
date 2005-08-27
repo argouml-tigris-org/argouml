@@ -15,6 +15,16 @@ at the junction of the association edge and the dashed edge.
 		
 		<xsl:variable name="fig-id" select="@name"/>
 		
+		<group name="{@name}"
+			description="{@description}"
+			href="{@href}"
+			fill="{@fill}"
+			fillcolor="{@fillcolor}"
+			stroke="{@stroke}"
+			strokecolor="{@strokecolor}"
+		>
+			<xsl:copy-of select="./node()"/>
+		</group>
         <group name="tee.{$fig-id}"
              description="org.argouml.uml.diagram.ui.FigAssociationClassTee[185, 51, 10, 10]"
              href="{@href}"
@@ -37,16 +47,6 @@ at the junction of the association edge and the dashed edge.
             strokecolor="{@strokecolor}"
           />
         </group>		
-		<group name="{@name}"
-			description="{@description}"
-			href="{@href}"
-			fill="{@fill}"
-			fillcolor="{@fillcolor}"
-			stroke="{@stroke}"
-			strokecolor="{@strokecolor}"
-		>
-			<xsl:copy-of select="./node()"/>
-		</group>
 		
 			<xsl:apply-templates/>
 	</xsl:template>
