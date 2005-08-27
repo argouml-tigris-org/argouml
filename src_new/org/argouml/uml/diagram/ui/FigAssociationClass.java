@@ -83,7 +83,7 @@ public class FigAssociationClass
 
     private FigAssociationClassTee tee;
     private FigEdgeAssociationClass edge;
-    private FigClassAssociationClass fig;
+    private FigClassAssociationClass figNode;
     private int oldMin = -1;
     private int oldMax = -1;
     private boolean damageLock = false;
@@ -151,8 +151,8 @@ public class FigAssociationClass
                     Fig auxFig = (Fig) nodes.next();
                     if (auxFig.getOwner().equals(thisFig.getOwner())) {
                         if (auxFig instanceof FigClassAssociationClass) {
-                            fig = (FigClassAssociationClass) auxFig;
-                            fig.setMainFig(thisFig);
+                            figNode = (FigClassAssociationClass) auxFig;
+                            figNode.setMainFig(thisFig);
                         } else if (auxFig instanceof FigAssociationClassTee) {
                             tee = (FigAssociationClassTee) auxFig;
                             addPathItem(tee,
@@ -163,7 +163,7 @@ public class FigAssociationClass
                             // addPathItem(tee,
                             //         new PathConvPercent(thisFig, 50, 0));
                         }
-                        if (tee != null && fig != null && edge != null) {
+                        if (tee != null && figNode != null && edge != null) {
                             break;
                         }
                     }
@@ -180,28 +180,28 @@ public class FigAssociationClass
                 int x = tee.getX();
                 int y = tee.getY();
 
-                if (fig == null) {
-                    fig = new FigClassAssociationClass(thisFig);
-                    fig.setOwner(thisFig.getOwner());
+                if (figNode == null) {
+                    figNode = new FigClassAssociationClass(thisFig);
+                    figNode.setOwner(thisFig.getOwner());
                     y = y - DISTANCE;
                     if (y < 0) {
-                        y = tee.getY() + fig.getHeight() + DISTANCE;
+                        y = tee.getY() + figNode.getHeight() + DISTANCE;
                     }
-                    if (x + fig.getWidth() > drawingArea.getWidth()) {
+                    if (x + figNode.getWidth() > drawingArea.getWidth()) {
                         x = tee.getX() - DISTANCE;
                     }
-                    fig.setLocation(x, y);
-                    lay.add(fig);
+                    figNode.setLocation(x, y);
+                    lay.add(figNode);
                 }
 
                 if (edge == null) {
-                    edge = new FigEdgeAssociationClass(tee, fig, thisFig);
+                    edge = new FigEdgeAssociationClass(tee, figNode, thisFig);
                     edge.setOwner(thisFig.getOwner());
                     lay.add(edge);
                 }
 
                 edge.damage();
-                fig.damage();
+                figNode.damage();
             }
         }
     }
@@ -274,11 +274,11 @@ public class FigAssociationClass
             Layer lay = editor.getLayerManager().getActiveLayer();
             if (!lay.equals(null)
                     && lay instanceof LayerPerspective
-                    && fig != null && edge != null
-                    && lay.equals(fig.getLayer())
+                    && figNode != null && edge != null
+                    && lay.equals(figNode.getLayer())
                     && lay.equals(edge.getLayer())) {
                 LayerPerspective layP = (LayerPerspective) lay;
-                int classFigIndex = layP.indexOf(fig);
+                int classFigIndex = layP.indexOf(figNode);
                 int myIndex = layP.indexOf(this);
                 int edgeFigIndex = layP.indexOf(edge);
                 int minIndex =
@@ -287,7 +287,7 @@ public class FigAssociationClass
                     Math.max(Math.max(myIndex, classFigIndex), edgeFigIndex);
                 /* The figs have been just created */
                 if (oldMin == -1 && oldMax == -1) {
-                    layP.insertAt(fig, minIndex);
+                    layP.insertAt(figNode, minIndex);
                     oldMin = minIndex;
                     oldMax = minIndex + 2;
                 } else if (myIndex == -1
@@ -310,7 +310,8 @@ public class FigAssociationClass
                         layP.insertAt(edge, aux);
                     }
                     layP.insertAt(this, aux - 1);
-                    layP.insertAt(fig, aux - 2);
+                    layP.insertAt(tee, aux - 2);
+                    layP.insertAt(figNode, aux - 3);
                     oldMin = aux;
                     oldMax = aux + 2;
                 } else if (classFigIndex < myIndex
@@ -319,6 +320,7 @@ public class FigAssociationClass
                     /* Class has been moved down */
                     layP.insertAt(edge, classFigIndex + 1);
                     layP.insertAt(this, classFigIndex + 1);
+                    layP.insertAt(tee, classFigIndex + 1);
                     oldMin = classFigIndex;
                     oldMax = classFigIndex + 2;
                 } else if ((classFigIndex > myIndex
@@ -328,7 +330,8 @@ public class FigAssociationClass
                     /* They have changed their positions */
                     layP.insertAt(edge, minIndex);
                     layP.insertAt(this, minIndex);
-                    layP.insertAt(fig, minIndex);
+                    layP.insertAt(tee, minIndex);
+                    layP.insertAt(figNode, minIndex);
                 } else if ((classFigIndex > myIndex
                         || classFigIndex > edgeFigIndex)
                         && minIndex == oldMin
@@ -348,7 +351,8 @@ public class FigAssociationClass
                     /* Any edge has been moved deeper than the class */
                     layP.insertAt(edge, minIndex);
                     layP.insertAt(this, minIndex);
-                    layP.insertAt(fig, minIndex);
+                    layP.insertAt(tee, minIndex);
+                    layP.insertAt(figNode, minIndex);
                     oldMin = minIndex;
                     oldMax = minIndex + 2;
                 }
@@ -364,8 +368,8 @@ public class FigAssociationClass
         if (edge != null) {
             edge.removeThisFromDiagram();
         }
-        if (fig != null) {
-            fig.removeThisFromDiagram();
+        if (figNode != null) {
+            figNode.removeThisFromDiagram();
         }
         if (tee != null) {
             tee.removeFromDiagram();
