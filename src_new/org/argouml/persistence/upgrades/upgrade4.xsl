@@ -14,6 +14,10 @@ at the junction of the association edge and the dashed edge.
 	<xsl:template match='group[starts-with(./@description, "org.argouml.uml.diagram.ui.FigClassAssociationClass")]'>
 		
 		<xsl:variable name="fig-id" select="@name"/>
+		<xsl:variable name="href" select="@href"/>
+
+		<xsl:variable name="x" select='../group[./@description = "org.argouml.uml.diagram.ui.FigEdgeAssociationClass" and ./@href = $href]/path/moveto/@x'/>
+		<xsl:variable name="y" select='../group[./@description = "org.argouml.uml.diagram.ui.FigEdgeAssociationClass" and ./@href = $href]/path/moveto/@y'/>
 		
 		<group name="{@name}"
 			description="{@description}"
@@ -26,7 +30,7 @@ at the junction of the association edge and the dashed edge.
 			<xsl:copy-of select="./node()"/>
 		</group>
         <group name="tee.{$fig-id}"
-             description="org.argouml.uml.diagram.ui.FigAssociationClassTee[185, 51, 10, 10]"
+             description="org.argouml.uml.diagram.ui.FigAssociationClassTee[{$x - 9}, {$y - 3}, 10, 10]"
              href="{@href}"
              fill="{@fill}"
              fillcolor="{@fillcolor}"
@@ -37,8 +41,8 @@ at the junction of the association edge and the dashed edge.
           </private>
     
           <ellipse name="tee.{$fig-id}.0"
-            x="190"
-            y="56"
+            x="{$x}"
+            y="{$y}"
             rx="5"
             ry="5"
             fill="{@fill}"
