@@ -195,6 +195,8 @@ public class ActionSaveGraphics
 	}
 	FileOutputStream fo = new FileOutputStream(theFile);
 	cmd.setStream(fo);
+        cmd.setScale(Configuration.getInteger(
+                SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 1));
 	cmd.doIt();
 	fo.close();
         if (useUI) {
