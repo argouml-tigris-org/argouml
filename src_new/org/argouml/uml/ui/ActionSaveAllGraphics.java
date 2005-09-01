@@ -196,6 +196,8 @@ public class ActionSaveAllGraphics extends UMLAction {
 	try {
 	    fo = new FileOutputStream( theFile );
 	    cmd.setStream(fo);
+	    cmd.setScale(Configuration.getInteger(
+	            SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 1));
 	    cmd.doIt();
 	} finally {
 	    if (fo != null) {

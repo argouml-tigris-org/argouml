@@ -26,7 +26,9 @@ package org.argouml.ui;
 
 import java.awt.BorderLayout;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -40,6 +42,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
+import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.SaveGraphicsManager;
 import org.argouml.util.SuffixFilter;
 import org.tigris.swidgets.LabelledLayout;
@@ -63,6 +66,8 @@ public class SettingsTabEnvironment extends SettingsTabHelper
     private JTextField fieldUserDir;
     private JTextField fieldStartupDir;
     private JComboBox fieldGraphicsFormat;
+    private JComboBox fieldGraphicsResolution;
+    private Collection theResolutions;
 
     /**
      * The constructor.
@@ -75,13 +80,22 @@ public class SettingsTabEnvironment extends SettingsTabHelper
         JPanel top = new JPanel(new LabelledLayout(labelGap, componentGap));
 
         JLabel label = createLabel("label.default.graphics-format");
-        Collection c = SaveGraphicsManager.getInstance().getSettingsList();
-        fieldGraphicsFormat = new JComboBox(c.toArray());
+        fieldGraphicsFormat = new JComboBox();
         label.setLabelFor(fieldGraphicsFormat);
         top.add(label);
         top.add(fieldGraphicsFormat);
         
-	// This string is NOT to be translated! See issue 2381.
+        label = createLabel("label.default.graphics-resolution");
+        theResolutions = new ArrayList();
+        theResolutions.add(new GResolution(1, "combobox.item.resolution-1"));
+        theResolutions.add(new GResolution(2, "combobox.item.resolution-2"));
+        theResolutions.add(new GResolution(4, "combobox.item.resolution-4"));
+        fieldGraphicsResolution = new JComboBox(); //filled in later
+        label.setLabelFor(fieldGraphicsResolution);
+        top.add(label);
+        top.add(fieldGraphicsResolution);
+
+        // This string is NOT to be translated! See issue 2381.
 	label = new JLabel("${argo.root}");
 	fieldArgoRoot = createTextField();
 	fieldArgoRoot.setEnabled(false);
@@ -156,6 +170,20 @@ public class SettingsTabEnvironment extends SettingsTabHelper
         fieldGraphicsFormat.removeAllItems();
         Collection c = SaveGraphicsManager.getInstance().getSettingsList();
         fieldGraphicsFormat.setModel(new DefaultComboBoxModel(c.toArray()));
+        
+        fieldGraphicsResolution.removeAllItems();
+        fieldGraphicsResolution.setModel(new DefaultComboBoxModel(
+                theResolutions.toArray()));
+        int defaultResolution = Configuration.getInteger(
+                SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 1);
+        Iterator i = theResolutions.iterator();
+        while (i.hasNext()) {
+            GResolution gr = (GResolution) i.next();
+            if (defaultResolution == gr.getResolution()) {
+                fieldGraphicsResolution.setSelectedItem(gr);
+                break;
+            }
+        }
     }
 
     /**
@@ -163,6 +191,10 @@ public class SettingsTabEnvironment extends SettingsTabHelper
      */
     public void handleSettingsTabSave() {
         Configuration.setString(Argo.KEY_STARTUP_DIR, fieldUserDir.getText());
+        
+        GResolution r = (GResolution) fieldGraphicsResolution.getSelectedItem();
+        Configuration.setInteger(SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 
+                r.getResolution());
         
         SaveGraphicsManager.getInstance().setDefaultFilter( 
                 (SuffixFilter) fieldGraphicsFormat.getSelectedItem());
@@ -214,6 +246,25 @@ public class SettingsTabEnvironment extends SettingsTabHelper
      * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
      */
     public String getTabKey() { return "tab.environment"; }
+    
+}
 
+
+class GResolution {
+    private int resolution;
+    private String label;
+    
+    GResolution(int r, String name) {
+        resolution = r;
+        label = Translator.localize(name);
+    }
+    
+    int getResolution() {
+        return resolution;
+    }
+    
+    public String toString() {
+        return label;
+    }
 }
 

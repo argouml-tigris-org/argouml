@@ -84,6 +84,12 @@ public class SaveGraphicsManager {
         Configuration.makeKey("graphics", "save-all", "path");
     
     /**
+     * The configuration key for the export graphics resolution.
+     */
+    public static final ConfigurationKey KEY_GRAPHICS_RESOLUTION =
+        Configuration.makeKey("graphics", "export", "resolution");
+    
+    /**
      * the default file format
      */
     private SuffixFilter defaultFilter;
