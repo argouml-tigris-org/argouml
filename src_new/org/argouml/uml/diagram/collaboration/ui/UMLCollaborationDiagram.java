@@ -180,7 +180,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 	    {getActionAggregation(), getActionUniAggregation() },
 	    {getActionComposition(), getActionUniComposition() },
         };
-
+        manageDefault(actions, "diagram.collaboration.association");
         return actions;
     }
 

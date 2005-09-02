@@ -171,6 +171,7 @@ public class UMLClassDiagram extends UMLDiagram {
                 getActionModel(),
                 getActionSubsystem(),
         };
+        manageDefault(actions, "diagram.class.package");
         return actions;
     }
 
@@ -184,6 +185,7 @@ public class UMLClassDiagram extends UMLDiagram {
             getActionPermission(),
             getActionUsage()
         };
+        manageDefault(actions, "diagram.class.dependency");
         return actions;
     }
     
@@ -201,6 +203,7 @@ public class UMLClassDiagram extends UMLDiagram {
             getActionAssociation(),
             getActionUniAssociation()
          };
+        manageDefault(actions, "diagram.class.association");
         return actions;
     }
     
@@ -209,6 +212,7 @@ public class UMLClassDiagram extends UMLDiagram {
             getActionAggregation(),
             getActionUniAggregation()
         };
+        manageDefault(actions, "diagram.class.aggregation");
         return actions;
     }
     
@@ -217,6 +221,7 @@ public class UMLClassDiagram extends UMLDiagram {
             getActionComposition(),
             getActionUniComposition()
         };
+        manageDefault(actions, "diagram.class.composition");
         return actions;
     }
 

@@ -238,7 +238,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 	    {getActionAggregation(), getActionUniAggregation() },
 	    {getActionComposition(), getActionUniComposition() },
         };
-
+        manageDefault(actions, "diagram.usecase.association");
         return actions;
     }
 
