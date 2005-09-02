@@ -123,6 +123,8 @@ public class Import {
 
     private JCheckBox descend;
 
+    private JCheckBox changedOnly;
+
     private JCheckBox createDiagrams;
 
     private JCheckBox minimiseFigs;
@@ -164,12 +166,12 @@ public class Import {
         }
         if (modules.size() == 0)
             throw new RuntimeException("Internal error. "
-				       + "No import modules defined");
-	// "Java" is a default module
+                       + "No import modules defined");
+        // "Java" is a default module
         module = (PluggableImport) modules.get("Java");
         if (module == null)
-	    throw new RuntimeException("Internal error. "
-				       + "Default import module not found");
+        throw new RuntimeException("Internal error. "
+                       + "Default import module not found");
         JComponent chooser = module.getChooser(this);
         dialog =
             new JDialog(ProjectBrowser.getInstance(),
@@ -179,13 +181,13 @@ public class Import {
         dialog.getContentPane().add(getConfigPanel(this), BorderLayout.EAST);
         dialog.pack();
         int x =
-	    (ProjectBrowser.getInstance().getSize().width
-	     - dialog.getSize().width)
-	    / 2;
+            (ProjectBrowser.getInstance().getSize().width
+             - dialog.getSize().width)
+            / 2;
         int y =
-	    (ProjectBrowser.getInstance().getSize().height
-	     - dialog.getSize().height)
-	    / 2;
+            (ProjectBrowser.getInstance().getSize().height
+             - dialog.getSize().height)
+            / 2;
         dialog.setLocation(x > 0 ? x : 0, y > 0 ? y : 0);
         dialog.setVisible(true);
     }
@@ -210,7 +212,7 @@ public class Import {
      * @return the text of this textfield
      */
     public String getInputSourceEncoding() {
-	return inputSourceEncoding.getText();
+        return inputSourceEncoding.getText();
     }
 
     /**
@@ -219,7 +221,7 @@ public class Import {
      */
     public void disposeDialog() {
         Configuration.setString(Argo.KEY_INPUT_SOURCE_ENCODING,
-				getInputSourceEncoding());
+            getInputSourceEncoding());
         dialog.setVisible(false);
         dialog.dispose();
     }
@@ -238,7 +240,7 @@ public class Import {
         // build the configPanel:
         if (configPanel == null) {
             JPanel general = new JPanel();
-            general.setLayout(new GridLayout(12, 1));
+            general.setLayout(new GridLayout(13, 1));
 
             general.add(new JLabel("Select language for import:"));
 
@@ -249,96 +251,99 @@ public class Import {
             }
             JComboBox selectedLanguage = new JComboBox(languages);
             selectedLanguage.addActionListener(new ActionListener()
-	    {
-		public void actionPerformed(ActionEvent e) {
-		    JComboBox cb = (JComboBox) e.getSource();
-		    String selected = (String) cb.getSelectedItem();
-		    module = (PluggableImport) modules.get(selected);
-		    dialog.getContentPane().remove(0);
-		    JComponent chooser = module.getChooser(importInstance);
-		    if (chooser == null) {
-			chooser = new JPanel();
-		    }
-		    dialog.getContentPane().add(chooser, 0);
-		    JComponent config = module.getConfigPanel();
-		    if (config == null) {
-			config = new JPanel();
-		    }
-		    tab.remove(1);
-		    tab.add(config, selected, 1);
-		    tab.validate();
-		    dialog.validate();
-		}
-	    });
+        {
+        public void actionPerformed(ActionEvent e) {
+            JComboBox cb = (JComboBox) e.getSource();
+            String selected = (String) cb.getSelectedItem();
+            module = (PluggableImport) modules.get(selected);
+            dialog.getContentPane().remove(0);
+            JComponent chooser = module.getChooser(importInstance);
+            if (chooser == null) {
+            chooser = new JPanel();
+            }
+            dialog.getContentPane().add(chooser, 0);
+            JComponent config = module.getConfigPanel();
+            if (config == null) {
+            config = new JPanel();
+            }
+            tab.remove(1);
+            tab.add(config, selected, 1);
+            tab.validate();
+            dialog.validate();
+        }
+        });
             general.add(selectedLanguage);
 
             descend = new JCheckBox("Descend directories recursively.");
             descend.setSelected(true);
             general.add(descend);
 
+            changedOnly =
+                new JCheckBox("Changed/new files only", true);
+                    general.add(changedOnly);
 
             createDiagrams =
-		new JCheckBox("Create diagrams from imported code", true);
-            general.add(createDiagrams);
+                new JCheckBox("Create diagrams from imported code", true);
+                    general.add(createDiagrams);
 
             minimiseFigs =
-		new JCheckBox("Minimise Class icons in diagrams", true);
-            general.add(minimiseFigs);
+                new JCheckBox("Minimise Class icons in diagrams", true);
+                    general.add(minimiseFigs);
 
             layoutDiagrams =
-		new JCheckBox("Perform Automatic Diagram Layout", true);
-            general.add(layoutDiagrams);
+                new JCheckBox("Perform Automatic Diagram Layout", true);
+                    general.add(layoutDiagrams);
 
             // de-selects the fig minimising & layout
             // if we are not creating diagrams
             createDiagrams.addActionListener(new ActionListener()
-	    {
-		public void actionPerformed(ActionEvent actionEvent) {
-		    if (!createDiagrams.isSelected()) {
-			minimiseFigs.setSelected(false);
-			layoutDiagrams.setSelected(false);
-		    }
-		}
-	    });
+        {
+        public void actionPerformed(ActionEvent actionEvent) {
+            if (!createDiagrams.isSelected()) {
+            minimiseFigs.setSelected(false);
+            layoutDiagrams.setSelected(false);
+            }
+        }
+        });
 
             // select the level of import
             // 0 = classifiers only
             // 1 = classifiers plus feature specifications
             // 2 = full import, feature detail
 
-	    JLabel importDetailLabel = new JLabel("Level of import detail:");
+            JLabel importDetailLabel = new JLabel("Level of import detail:");
             ButtonGroup detailButtonGroup = new ButtonGroup();
 
-	    classOnly = new JRadioButton("Classfiers only");
-	    detailButtonGroup.add(classOnly);
+            classOnly = new JRadioButton("Classfiers only");
+            detailButtonGroup.add(classOnly);
 
-	    classAndFeatures =
-		new JRadioButton("Classifiers plus feature specifications");
-	    detailButtonGroup.add(classAndFeatures);
+            classAndFeatures =
+                new JRadioButton("Classifiers plus feature specifications");
+                    detailButtonGroup.add(classAndFeatures);
 
-	    fullImport = new JRadioButton("Full import");
-	    fullImport.setSelected(true);
-	    detailButtonGroup.add(fullImport);
+            fullImport = new JRadioButton("Full import");
+            fullImport.setSelected(true);
+            detailButtonGroup.add(fullImport);
 
             general.add(importDetailLabel);
             general.add(classOnly);
             general.add(classAndFeatures);
             general.add(fullImport);
 
-	    general.add(new JLabel("Input source file encoding:"));
-	    String enc =
-	        Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);
-	    if (enc == null || enc.trim().equals("")) {
-		inputSourceEncoding =
-		    new JTextField(System.getProperty("file.encoding"));
-	    } else {
-		inputSourceEncoding = new JTextField(enc);
-	    }
-	    general.add(inputSourceEncoding);
+            general.add(new JLabel("Input source file encoding:"));
+            String enc =
+                Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);
+            if (enc == null || enc.trim().equals("")) {
+                inputSourceEncoding =
+                    new JTextField(System.getProperty("file.encoding"));
+            } else {
+                inputSourceEncoding = new JTextField(enc);
+            }
+            general.add(inputSourceEncoding);
 
-	    tab.add(general, "General");
-	    tab.add(module.getConfigPanel(), module.getModuleName());
-	    configPanel = tab;
+            tab.add(general, "General");
+            tab.add(module.getConfigPanel(), module.getModuleName());
+            configPanel = tab;
         }
         return configPanel;
     }
@@ -361,6 +366,19 @@ public class Import {
 
         // determine how many files to process
         Vector files = module.getList(this);
+
+        if (changedOnly.isSelected()) {
+            // filter out all unchanged files
+            Object model = ProjectManager.getManager().getCurrentProject().getModel();
+            for (int i = files.size() - 1; i >= 0; i--) {
+                File f = (File)files.elementAt(i);
+                String fn = f.getAbsolutePath();
+                String lm = String.valueOf(f.lastModified());
+                if (lm.equals(Model.getFacade().getTaggedValueValue(model, fn))) {
+                    files.remove(i);
+                }
+            }
+        }
 
         if (!classOnly.isSelected()) {
             // 2 passes needed
@@ -391,8 +409,8 @@ public class Import {
         problems = new StringBuffer();
         iss = new ImportStatusScreen("Importing", "Splash");
         SwingUtilities.invokeLater(
-				   new ImportRun(files, b,
-						 layoutDiagrams.isSelected()));
+                   new ImportRun(files, b,
+                         layoutDiagrams.isSelected()));
         iss.setVisible(true);
     }
 
@@ -426,6 +444,12 @@ public class Import {
             ProjectBrowser.getInstance()
                 .showStatus("Parsing " + f.toString() + "...");
             module.parseFile(project, f, diagramInterface, this);
+            // set the lastModified value
+            String fn = ((File)f).getAbsolutePath();
+            String lm = String.valueOf(((File)f).lastModified());
+            if (lm != null) {
+                Model.getCoreHelper().setTaggedValue(project.getModel(), fn, lm);
+            }
         }
     }
 
@@ -486,7 +510,7 @@ public class Import {
     private DiagramInterface getCurrentDiagram() {
         DiagramInterface result = null;
         if (Globals.curEditor().getGraphModel()
-	    instanceof ClassDiagramGraphModel) {
+        instanceof ClassDiagramGraphModel) {
 
             result =  new DiagramInterface(Globals.curEditor());
 
@@ -528,11 +552,11 @@ public class Import {
         public ImportRun(Vector f, boolean critic, boolean layout) {
 
             iss.addCancelButtonListener(new ActionListener()
-	    {
-		public void actionPerformed(ActionEvent actionEvent) {
-		    cancel();
-		}
-	    });
+        {
+        public void actionPerformed(ActionEvent actionEvent) {
+            cancel();
+        }
+        });
 
             filesLeft = f;
             countFiles = filesLeft.size();
@@ -632,11 +656,11 @@ public class Import {
                 if (!isCancelled()) {
                     SwingUtilities.invokeLater(this);
                     return;
-		}
+        }
             }
 
             if (nextPassFiles.size() > 0
-		&& nextPassFiles.size() < countFilesThisPass) {
+                 && nextPassFiles.size() < countFilesThisPass) {
                 filesLeft = nextPassFiles;
                 nextPassFiles = new Vector();
                 countFilesThisPass = filesLeft.size();
@@ -744,7 +768,7 @@ public class Import {
 
             Dimension contentPaneSize = getContentPane().getPreferredSize();
             setLocation(scrSize.width / 2 - contentPaneSize.width / 2,
-			scrSize.height / 2 - contentPaneSize.height / 2);
+            scrSize.height / 2 - contentPaneSize.height / 2);
             pack();
             this.setResizable(false);
             this.setModal(true);        //MVW - Issue 2539.
@@ -768,8 +792,8 @@ public class Import {
             int fileNumber = (i != 1 && numberOfFiles != 0) ? ((i - 1) % (numberOfFiles / 2) + 1) : 1;
 
             progressLabel.setText("Parsing file "
-				  + fileNumber + " of " + numberOfFiles / 2
-				  + ", " + pass + ". ");
+                  + fileNumber + " of " + numberOfFiles / 2
+                  + ", " + pass + ". ");
             pack(); // MVW: Is this not time-consuming?
                     // Better make the window big enough at the start,
                     // and only refresh the label.
@@ -850,7 +874,7 @@ class ImportClasspathDialog extends JDialog {
 
     /** logger */
     private static final Logger LOG =
-	Logger.getLogger(ImportClasspathDialog.class);
+    Logger.getLogger(ImportClasspathDialog.class);
 
     private JList paths;
     private DefaultListModel pathsModel;
@@ -914,8 +938,8 @@ class ImportClasspathDialog extends JDialog {
     private void initList() {
 
         URL[] urls =
-	    ImportClassLoader.getURLs(
-	        Configuration.getString(Argo.KEY_USER_IMPORT_CLASSPATH, ""));
+        ImportClassLoader.getURLs(
+            Configuration.getString(Argo.KEY_USER_IMPORT_CLASSPATH, ""));
 
         for (int i = 0; i < urls.length; i++) {
             pathsModel.addElement(urls[i].getFile());
@@ -947,18 +971,18 @@ class ImportClasspathDialog extends JDialog {
                 try {
                     urls[i] = new File((String) pathsModel.get(i)).toURL();
                 } catch (Exception e1) {
-		    LOG.warn("could not do ok: could not make"
-			     + "url " + pathsModel.get(i) + ", " + e1,
-			     e1);
-		}
+            LOG.warn("could not do ok: could not make"
+                 + "url " + pathsModel.get(i) + ", " + e1,
+                 e1);
+        }
             }
 
             try {
                 ImportClassLoader.getInstance(urls);
                 ImportClassLoader.getInstance().saveUserPath();
             } catch (Exception e1) {
-		LOG.warn("could not do ok", e1);
-	    }
+        LOG.warn("could not do ok", e1);
+        }
             doFiles();
             dispose();
         }
@@ -993,31 +1017,31 @@ class ImportClasspathDialog extends JDialog {
     class AddListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
 
-	    String directory = Globals.getLastDirectory();
-	    JFileChooser ch = new JFileChooser(directory);
-	    if (ch == null) ch = new JFileChooser();
+        String directory = Globals.getLastDirectory();
+        JFileChooser ch = new JFileChooser(directory);
+        if (ch == null) ch = new JFileChooser();
 
-	    final JFileChooser chooser = ch;
+        final JFileChooser chooser = ch;
 
-	    chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
-	    chooser.addActionListener(new ActionListener()
-	    {
-		public void actionPerformed(ActionEvent e) {
-		    if (e.getActionCommand().equals(
-			    JFileChooser.APPROVE_SELECTION)) {
-			File theFile = chooser.getSelectedFile();
-			if (theFile != null) {
-			    pathsModel.addElement(theFile.toString());
-			}
-		    } else if (e.getActionCommand().equals(
-				   JFileChooser.CANCEL_SELECTION)) {
-			;// TODO: What shall we do here?
-		    }
-		}
-	    });
+        chooser.addActionListener(new ActionListener()
+        {
+        public void actionPerformed(ActionEvent e) {
+            if (e.getActionCommand().equals(
+                JFileChooser.APPROVE_SELECTION)) {
+            File theFile = chooser.getSelectedFile();
+            if (theFile != null) {
+                pathsModel.addElement(theFile.toString());
+            }
+            } else if (e.getActionCommand().equals(
+                   JFileChooser.CANCEL_SELECTION)) {
+            ;// TODO: What shall we do here?
+            }
+        }
+        });
 
-	    chooser.showOpenDialog(ProjectBrowser.getInstance());
+        chooser.showOpenDialog(ProjectBrowser.getInstance());
         }
     }
 }
