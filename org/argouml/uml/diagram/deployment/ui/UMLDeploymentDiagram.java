@@ -166,7 +166,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 	    {getActionAggregation(), getActionUniAggregation() },
 	    {getActionComposition(), getActionUniComposition() },
         };
-
+        manageDefault(actions, "diagram.deployment.association");
         return actions;
     }
 

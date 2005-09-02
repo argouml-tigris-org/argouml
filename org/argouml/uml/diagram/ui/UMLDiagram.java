@@ -35,6 +35,8 @@ import javax.swing.ButtonModel;
 import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Configuration;
+import org.argouml.application.api.ConfigurationKey;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
@@ -403,9 +405,64 @@ public abstract class UMLDiagram
             {actionSpline,    actionInk },
         };
 
+        manageDefault(actions, "diagram.shape");
         return actions;
     }
 
+    protected void manageDefault(Object[] actions, String key) {
+        Action defaultAction = null;
+        ConfigurationKey k = 
+            Configuration.makeKey("default", "popupactions", key);
+        String defaultName = Configuration.getString(k);
+        PopupActionsListener listener = new PopupActionsListener(k);
+        for (int i=0; i < actions.length; ++i) {
+            if (actions[i] instanceof Action) {
+                Action a = (Action)actions[i];
+                if (a.getValue(Action.NAME).equals(defaultName)) {
+                    defaultAction = a;
+                }
+                a.addPropertyChangeListener(listener);
+            } else if (actions[i] instanceof Object[]) {
+                Object[] actionRow = (Object[])actions[i];
+                for (int j=0; j < actionRow.length; ++j) {
+                    Action a = (Action)actionRow[j];
+                    if (a.getValue(Action.NAME).equals(defaultName)) {
+                        defaultAction = a;
+                    }
+                    a.addPropertyChangeListener(listener);
+                }
+            }
+        }
+        
+        if (defaultAction != null) {
+            defaultAction.putValue("isDefault", Boolean.valueOf(true));
+        }
+    }
+    
+    class PopupActionsListener implements PropertyChangeListener {
+        private boolean blockEvents = false;
+        private ConfigurationKey key;
+        
+        public PopupActionsListener(ConfigurationKey k) {
+            key = k;
+        }
+        
+        public void propertyChange(PropertyChangeEvent evt) {
+            if (evt.getSource() instanceof Action) {
+                Action a = (Action)evt.getSource(); 
+                if (!blockEvents && evt.getPropertyName().equals("popped")) {
+                    blockEvents = true;
+                    /* Switch the value back off, so that we will 
+                     * get notified again next time. */
+                    a.putValue("popped", Boolean.valueOf(false));
+                    blockEvents = false;
+                    Configuration.setString(key, 
+                            (String)a.getValue(Action.NAME));
+                }
+            }
+        }
+    }
+    
     /**
      * This diagram listens to events from its namespace ModelElement;
      * when the modelelement is removed, we also want to delete this
@@ -515,8 +572,7 @@ public abstract class UMLDiagram
     }
 
     /**
-     * Set all toolbar buttons to unselected other then the toolbar button
-     * with the supplied action.
+     * Unselect all the toolbar buttons.
      */
     public void deselectAllTools() {
         int toolCount = toolBar.getComponentCount();
