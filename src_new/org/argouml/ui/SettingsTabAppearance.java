@@ -39,6 +39,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
@@ -170,6 +171,8 @@ public class SettingsTabAppearance
         LookAndFeelMgr.getInstance().setCurrentLAFAndThemeByName(
                 (String) lookAndFeel.getSelectedItem(),
                 (String) metalTheme.getSelectedItem());
+        // Make the result inmediately visible in case of apply:
+        SwingUtilities.updateComponentTreeUI(SwingUtilities.getRootPane(this));
 
         Configuration.setBoolean(Argo.KEY_SMOOTH_EDGES,
             smoothEdges.isSelected());
