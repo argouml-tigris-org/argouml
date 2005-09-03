@@ -32,6 +32,7 @@ import java.util.ListIterator;
 
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -145,6 +146,7 @@ public class ActionSettings extends UMLAction
                                 	       minimumWidth),
                                       tabs.getPreferredSize().height));
 
+                tabs.setTabPlacement(SwingConstants.LEFT);
                 dialog.setContent(tabs);
             } catch (Exception exception) {
                 LOG.error("got an Exception in ActionSettings", exception);
