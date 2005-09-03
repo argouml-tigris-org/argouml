@@ -139,7 +139,7 @@ public class ActionSettings extends UMLAction
 
                 // Increase width to accommodate all tabs on one row.
                 // (temporary solution until tabs are replaced with tree)
-                final int minimumWidth = 465;
+                final int minimumWidth = 480;
                 tabs.setPreferredSize(
                         new Dimension(Math.max(tabs.getPreferredSize().width,
                                 	       minimumWidth),
