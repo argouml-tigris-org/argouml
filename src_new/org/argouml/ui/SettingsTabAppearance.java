@@ -172,8 +172,11 @@ public class SettingsTabAppearance
                 (String) lookAndFeel.getSelectedItem(),
                 (String) metalTheme.getSelectedItem());
         // Make the result inmediately visible in case of apply:
+        /* Disabled since it gives various problems: e.g. the toolbar icons
+         * get too wide. Also the default does not give the new java 5.0 looks.
         SwingUtilities.updateComponentTreeUI(SwingUtilities.getRootPane(this));
-
+        */
+        
         Configuration.setBoolean(Argo.KEY_SMOOTH_EDGES,
             smoothEdges.isSelected());
 
