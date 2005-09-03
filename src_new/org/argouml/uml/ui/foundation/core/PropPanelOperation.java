@@ -105,13 +105,21 @@ public class PropPanelOperation extends PropPanelFeature {
                new JScrollPane(new UMLLinkedList(
                new UMLOperationRaisedSignalsListModel())));
 
+        addField(Translator.localize("label.methods"),
+               new JScrollPane(new UMLLinkedList(
+               new UMLOperationMethodsListModel())));
+
         addButton(new PropPanelButton2(new ActionNavigateOwner()));
         addButton(new PropPanelButton2(new ActionAddOperation()));
         addButton(new PropPanelButton2(new ActionNewParameter()));
         addButton(new PropPanelButton2(new ActionNewRaisedSignal(),
                 lookupIcon("SignalSending")));
+        addButton(new PropPanelButton2(new ActionNewMethod(),
+                lookupIcon("Method")));
         addButton(new PropPanelButton2(new ActionAddDataType(),
                 lookupIcon("DataType")));
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
+                lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
@@ -138,6 +146,22 @@ public class PropPanelOperation extends PropPanelFeature {
         }
     }
 
+    /**
+     * @param index add a raised signal
+     */
+    public void addMethod(Integer index) {
+        Object target = getTarget();
+        if (Model.getFacade().isAOperation(target)) {
+            Object oper = /* (MOperation) */target;
+            String name = Model.getFacade().getName(oper);
+            Object newMethod = Model.getCoreFactory().buildMethod(name);
+            Model.getCoreHelper().addMethod(oper, newMethod);
+            Model.getCoreHelper().addFeature(Model.getFacade().getOwner(oper),
+                newMethod);
+            TargetManager.getInstance().setTarget(newMethod);
+        }
+    }
+
 
     private class ActionNewRaisedSignal extends AbstractActionNewModelElement {
 
@@ -157,6 +181,30 @@ public class PropPanelOperation extends PropPanelFeature {
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAOperation(target)) {
                 addRaisedSignal(new Integer(1));
+                super.actionPerformed(e);
+            }
+        }
+    }
+
+
+    private class ActionNewMethod extends AbstractActionNewModelElement {
+
+        /**
+         * The constructor.
+         */
+        public ActionNewMethod() {
+            super("button.new-method");
+            putValue(Action.NAME,
+                    Translator.localize("button.new-method"));
+        }
+
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            Object target = TargetManager.getInstance().getModelTarget();
+            if (Model.getFacade().isAOperation(target)) {
+                addMethod(new Integer(1));
                 super.actionPerformed(e);
             }
         }
