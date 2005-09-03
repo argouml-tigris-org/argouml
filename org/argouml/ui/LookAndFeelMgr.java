@@ -30,11 +30,9 @@
 
 package org.argouml.ui;
 
-import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.LookAndFeel;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.DefaultMetalTheme;
