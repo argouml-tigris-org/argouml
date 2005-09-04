@@ -213,6 +213,9 @@ public interface Facade {
      * Recognizer for bases. A base is an object that is some form of
      * an element in the model. MBase in Novosoft terms.
      *
+     * TODO: Does this have a real UML meaning? Isn't it
+     * the ModelElement that is the base? - Bob.
+     *
      * @param handle candidate
      * @return true if handle is a base.
      */
@@ -268,6 +271,10 @@ public interface Facade {
 
     /**
      * Recognizer for a Element that is Classifier and RelationShip.
+     *
+     * TODO: Does this really belong here? Is it commonly used? If it really
+     * belongs here it is not a recognizer so it should be renamed to
+     * isClassifierAndRelationship. (comment by Bob from MDR impl - tfm)
      *
      * @param handle candidate
      * @return true if handle is a Classifier and a Relationship
@@ -401,14 +408,6 @@ public interface Facade {
      * @return true if handle is an ElementImport
      */
     boolean isAElementImport(Object handle);
-
-    /**
-     * Recognizer for ElementListener.
-     *
-     * @param handle candidate
-     * @return true if handle is an ElementListener
-     */
-    boolean isAElementListener(Object handle);
 
     /**
      * Recognizer for ElementResidence.
@@ -612,6 +611,9 @@ public interface Facade {
 
     /**
      * Recognizer for N-ary Association.
+     *
+     * TODO: This is not a recognizer for some type. Rename to
+     * isNaryAssociation?
      *
      * @param handle candidate
      * @return true if handle is an Association
@@ -1436,7 +1438,7 @@ public interface Facade {
 
     /**
      * Returns all extends of a use case.
-     * 
+     *
      * @param handle is the use case
      * @return the extends
      */
@@ -1519,9 +1521,10 @@ public interface Facade {
     Object getImplementationLocation(Object handle);
 
     /**
-     * Returns the includers for some use case.
-     * <p><em>Note:</em> Changes from getIncludes in UML 1.3
-     * to getIncluders in UML 1.4 
+     * Returns the includers for some use case.<p>
+     *
+     * <em>Note:</em> Changes from getIncludes in UML 1.3
+     * to getIncluders in UML 1.4.
      *
      * @param handle is the use case
      * @return the includes as a Collection
@@ -1529,9 +1532,10 @@ public interface Facade {
     Collection getIncludes(Object handle);
 
     /**
-     * Returns the includes for some use case.
-     * <p><em>Note:</em>Changes from getIncludes2 in UML 1.3
-     * to getIncludes in UML 1.4 
+     * Returns the includes for some use case.<p>
+     *
+     * <em>Note:</em>Changes from getIncludes2 in UML 1.3
+     * to getIncludes in UML 1.4.
      *
      * @param handle is the use case
      * @return the includes as a Collection
@@ -1761,8 +1765,9 @@ public interface Facade {
 
     /**
      * Returns the CompositeState that is the container of
-     * the given StateVertex.
-     * <p>UML 1.4 adds support for ElementResidence
+     * the given StateVertex.<p>
+     *
+     * UML 1.4 adds support for ElementResidence
      *
      * @param handle the StateVertex
      * @return the CompositeState that is the container
@@ -1934,14 +1939,6 @@ public interface Facade {
     Collection getOperations(Object handle);
 
     /**
-     * Get the list of Operations of this classifier and all inherited.
-     *
-     * @param handle classifier to examine.
-     * @return Iterator with operations.
-     */
-    Iterator getOperationsInh(Object handle);
-
-    /**
      * Returns the opposite end of an association end.
      *
      * @param handle is the association end
@@ -1969,7 +1966,7 @@ public interface Facade {
      * Get the list of Associations Ends connected to this association end.
      *
      * @param handle association end to start from
-     * @return Iterator with all connected association ends.
+     * @return A Collection with all connected association ends.
      */
     Collection getOtherAssociationEnds(Object handle);
 
@@ -1977,7 +1974,7 @@ public interface Facade {
      * The list of owned elements of the the package.
      *
      * @param handle package to retrieve from.
-     * @return Iterator with operations
+     * @return A Collection with the owned elements.
      */
     Collection getOwnedElements(Object handle);
 
@@ -2051,7 +2048,7 @@ public interface Facade {
      * Classifier or Event.
      *
      * @param handle operation to retrieve from
-     * @return Iterator with operations.
+     * @return A Collection with the parameters.
      */
     Collection getParameters(Object handle);
 
@@ -2281,7 +2278,7 @@ public interface Facade {
      * The list of SupplierDependencies from a ModelElement.
      *
      * @param handle model element.
-     * @return Iterator with the supplier dependencies.
+     * @return A Collection with the supplier dependencies.
      */
     Collection getSupplierDependencies(Object handle);
 
@@ -2611,13 +2608,14 @@ public interface Facade {
      */
     String getUMLClassName(Object handle);
 
-    /** 
-     * Recognizer for Arguments
-     * @param modelElement
-     * @return
+    /**
+     * Recognizer for Arguments.
+     *
+     * @param modelElement candidate
+     * @return true if an argument.
      */
     boolean isAArgument(Object modelElement);
-    
+
     /**
      * Returns a tooltip that should be shown for the given model element.<p>
      *
@@ -2627,7 +2625,7 @@ public interface Facade {
     String getTipString(Object modelElement);
 
     /**
-     * @param the TimeEvent
+     * @param target The TimeEvent.
      * @return TimeExpression
      */
     Object getWhen(Object target);
@@ -2638,5 +2636,5 @@ public interface Facade {
      * @return true if handle is a TagDefinition
      */
     boolean isATagDefinition(Object handle);
-        
+
 }
