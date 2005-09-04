@@ -226,7 +226,8 @@ public class ModelManagementFactoryImpl
      * @param target The target package.
      */
     private void doCopyPackage(MPackage source, MPackage target) {
-	nsmodel.getCoreFactory().doCopyNamespace(source, target);
+	((CoreFactoryImpl) nsmodel.getCoreFactory())
+		.doCopyNamespace(source, target);
     }
 }
 
