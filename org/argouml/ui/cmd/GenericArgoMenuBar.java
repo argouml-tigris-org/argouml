@@ -431,6 +431,8 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(revertToSavedItem, "Revert To Saved");
         file.addSeparator();
 
+        file.add(new ActionImportXMI());
+        file.add(new ActionExportXMI());
         //_import = new JMenu(menuLocalize("action.import"));
         //JMenuItem importProjectAsItem =
         //_import.add(ActionImportFromSources.SINGLETON);
@@ -754,10 +756,7 @@ public class GenericArgoMenuBar extends JMenuBar
     private void initMenuTools() {
         tools = new JMenu(menuLocalize("Tools"));
         setMnemonic(tools, "Tools");
-        
-        tools.add(new ActionExportXMI());
-        tools.add(new ActionImportXMI());
-        
+
         appendPluggableMenus(tools, PluggableMenu.KEY_TOOLS);
         add(tools);
     }
