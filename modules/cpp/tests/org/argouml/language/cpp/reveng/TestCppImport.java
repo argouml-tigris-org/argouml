@@ -29,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -48,12 +49,16 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Test the CppImport class.
+ * Tests the {@link CppImport CppImport}class.
+ * 
+ * NOTE: this is more like a module test, since here we also test the
+ * {@link Modeler Modeler}implementation.
  * 
  * FIXME: duplicate code from TestCppFileGeneration and BaseTestGeneratorCpp.
  * 
  * @author Luis Sergio Oliveira (euluis)
  * @since 0.19.3
+ * @see CppImport
  */
 public class TestCppImport extends TestCase {
 
@@ -233,10 +238,8 @@ public class TestCppImport extends TestCase {
         Object dummyStruct = findModelElementWithName(classes, "Dummy");
         assertNotNull("The Dummy structure doesn't exist in the model!",
             dummyStruct);
-        Object structTV = Model.getFacade().getTaggedValue(dummyStruct,
-            ProfileCpp.TV_NAME_CLASS_SPECIFIER);
-        assertNotNull(structTV);
-        assertEquals("struct", Model.getFacade().getValueOfTag(structTV));
+        assertTaggedValueExistsAndValueIs(dummyStruct,
+            ProfileCpp.TV_NAME_CLASS_SPECIFIER, "struct");
 
         Collection attributes = Model.getCoreHelper().getAllAttributes(
             dummyStruct);
@@ -269,10 +272,10 @@ public class TestCppImport extends TestCase {
         Object baseFooOtherParam = findModelElementWithName(params, "other");
         assertNotNull(baseFooOtherParam);
         assertEquals(baseClass, Model.getFacade().getType(baseFooOtherParam));
-        Object refTV = Model.getFacade().getTaggedValue(baseFooOtherParam,
-            ProfileCpp.TV_NAME_REFERENCE);
-        assertNotNull(refTV);
-        assertEquals("true", Model.getFacade().getValueOfTag(refTV));
+        assertTaggedValueExistsAndValueIs(baseFooOtherParam,
+            ProfileCpp.TV_NAME_REFERENCE, "true");
+        assertEquals("inout", Model.getFacade().getName(
+            Model.getFacade().getKind(baseFooOtherParam)));
 
         attributes = Model.getCoreHelper().getAllAttributes(baseClass);
         Object baseUiAttr = findModelElementWithName(attributes, "ui");
@@ -309,12 +312,66 @@ public class TestCppImport extends TestCase {
             baseHelperMethodCstrParam);
         assertEquals("signed char", Model.getFacade().getName(
             Model.getFacade().getType(baseHelperMethodCstrParam)));
-        Object ptrTV = Model.getFacade().getTaggedValue(
-            baseHelperMethodCstrParam, "pointer");
-        assertNotNull(ptrTV);
-        assertEquals("true", Model.getFacade().getValueOfTag(ptrTV));
+        assertTaggedValueExistsAndValueIs(baseHelperMethodCstrParam,
+            ProfileCpp.TV_NAME_POINTER, "true");
+        assertEquals("inout", Model.getFacade().getName(
+            Model.getFacade().getKind(baseHelperMethodCstrParam)));
 
-        // TODO: much more!
+        // verify Derived reveng
+        Object derivedClass = findModelElementWithName(classes, "Derived");
+        assertNotNull("The Derived class doesn't exist in the model!",
+            derivedClass);
+        assertNull(Model.getFacade().getTaggedValue(derivedClass,
+            ProfileCpp.TV_NAME_CLASS_SPECIFIER));
+        // verify generatization relationship
+        Collection derivedGeneralizations = Model.getFacade()
+                .getGeneralizations(derivedClass);
+        assertEquals(1, derivedGeneralizations.size());
+        Object baseGeneralization = derivedGeneralizations.iterator().next();
+        assertNotNull("The Base generalization wasn't found!",
+            baseGeneralization);
+        assertEquals("Derived", Model.getFacade().getName(
+            Model.getFacade().getChild(baseGeneralization)));
+        assertEquals("Base", Model.getFacade().getName(
+            Model.getFacade().getParent(baseGeneralization)));
+        assertEquals("false", Model.getFacade().getTaggedValueValue(
+            baseGeneralization, ProfileCpp.TV_VIRTUAL_INHERITANCE));
+        assertTaggedValueExistsAndValueIs(baseGeneralization,
+            ProfileCpp.TV_INHERITANCE_VISIBILITY, "public");
+        // verify Derived constructor
+        Collection derivedOpers = Model.getCoreHelper().getBehavioralFeatures(
+            derivedClass);
+        Object derivedCtor = findModelElementWithName(derivedOpers, "Derived");
+        assertNotNull("The Derived constructor wasn't found!", derivedCtor);
+        Collection derivedCtorStereotypes = Model.getFacade().getStereotypes(
+            derivedCtor);
+        assertNotNull(findModelElementWithName(derivedCtorStereotypes, "create"));
+        // verify Derived destructor
+        Object derivedDtor = findModelElementWithName(derivedOpers, "~Derived");
+        assertNotNull("The Derived destructor wasn't found!", derivedDtor);
+        Collection derivedDtorStereotypes = Model.getFacade().getStereotypes(
+            derivedDtor);
+        assertNotNull(findModelElementWithName(derivedDtorStereotypes,
+            "destroy"));
+
+        // TODO: function bodies as UML Methods
+    }
+
+    /**
+     * Assert that a tagged value exists in a model element and that its value
+     * is equal to the given value.
+     * 
+     * @param me the model element to check
+     * @param tvName name of the tagged value
+     * @param tvValue value of the tagged value
+     */
+    private void assertTaggedValueExistsAndValueIs(Object me, String tvName,
+            String tvValue) {
+        Object tv = Model.getFacade().getTaggedValue(me, tvName);
+        assertNotNull("The tagged value " + tvName
+            + " doesn't exist for the model element " + me, tv);
+        assertEquals("The tagged value value is different from the expected!",
+            tvValue, Model.getFacade().getValueOfTag(tv));
     }
 
     /**
@@ -368,4 +425,50 @@ public class TestCppImport extends TestCase {
         return me;
     }
 
+    /**
+     * Test two passes - call twice the
+     * {@link CppImport#parseFile(Project, Object, DiagramInterface, Import) CppImport.parseFile(xxx)}
+     * method on the same translation unit. The model elements shouldn't get
+     * duplicated.
+     * 
+     * @throws Exception something went wrong
+     */
+    public void testCallParseFileTwiceCheckingNoDuplicationOfModelElements()
+            throws Exception {
+        genDir = setUpDirectory4Test("testParseFileSimpleClass");
+        File srcFile = setupSrcFile4Reverse("SimpleClass.cpp");
+
+        cppImp.parseFile(proj, srcFile, di, imp);
+        cppImp.parseFile(proj, srcFile, di, imp); // 2nd call on purpose!
+
+        Collection nss = Model.getModelManagementHelper().getAllNamespaces(
+            proj.getModel());
+        Object pack = getModelElementAndAssertNotDuplicated(nss, "pack");
+
+        Collection clss = Model.getCoreHelper().getAllClasses(pack);
+        Object simpleClass = getModelElementAndAssertNotDuplicated(clss,
+            "SimpleClass");
+
+        Collection opers = Model.getCoreHelper().getBehavioralFeatures(
+            simpleClass);
+        Object newOperation = getModelElementAndAssertNotDuplicated(opers,
+            "newOperation");
+
+        Collection attrs = Model.getCoreHelper().getAllAttributes(simpleClass);
+        getModelElementAndAssertNotDuplicated(attrs, "newAttr");
+    }
+
+    /**
+     * @param modelElements collection of model elements in which to look for
+     * @param modelElementName the model element name
+     * @return the model element with the given name
+     */
+    private Object getModelElementAndAssertNotDuplicated(
+            Collection modelElements, String modelElementName) {
+        Object pack = findModelElementWithName(modelElements, modelElementName);
+        Collection mes2 = new ArrayList(modelElements);
+        assertTrue(mes2.remove(pack));
+        assertNull(findModelElementWithName(mes2, modelElementName));
+        return pack;
+    }
 }

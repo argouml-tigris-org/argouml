@@ -966,13 +966,15 @@ base_clause
 	;
 
 base_specifier
-	{String qt="";}
+	{String qt=""; m.beginBaseSpecifier();}
 	:	// DW 13/08/03 Should check qualified_type for class-name?
-	(	"virtual" (	access_specifier)? qt = qualified_type 
-	|	 access_specifier ("virtual")? qt = qualified_type
-	|	qt = qualified_type 
-	)
-		;
+		(	"virtual" (	access_specifier)? qt = qualified_type {m.baseSpecifier(qt, true);}
+			|	 access_specifier "virtual" qt = qualified_type {m.baseSpecifier(qt, true);}
+			|	 access_specifier qt = qualified_type {m.baseSpecifier(qt, false);}
+			|	qt = qualified_type {m.baseSpecifier(qt, false);}
+		)
+		{m.endBaseSpecifier();}
+	;
 
 access_specifier 
 	:	"public" {m.accessSpecifier("public");}
@@ -1124,8 +1126,10 @@ function_direct_declarator
 
 ctor_definition 
 	:
+	{m.beginCtorDefinition();}
 	ctor_head
 	ctor_body
+	{m.endCtorDefinition();}
 	;
 
 ctor_head 
@@ -1134,15 +1138,21 @@ ctor_head
 	;
 
 ctor_decl_spec
+	{List declSpecs = new ArrayList();}
 	:
-	(("inline"|"_inline"|"__inline")|"explicit")*
+	(	("inline"|"_inline"|"__inline") {declSpecs.add("inline");}
+		|
+		"explicit" {declSpecs.add("explicit");}
+	)*
+	{m.declarationSpecifiers(declSpecs);}
 	;
 
 ctor_declarator
 	{	String q="";}
 	: 
-	// JEL 4/3/96 qualified_id too broad DW 10/06/03 ?
-	q = qualified_ctor_id  LPAREN (parameter_list)? RPAREN (exception_specification)?
+		// JEL 4/3/96 qualified_id too broad DW 10/06/03 ?
+		q = qualified_ctor_id  {m.qualifiedCtorId(q);}
+		LPAREN (parameter_list)? RPAREN (exception_specification)?
 	;
 
 // This matches a generic qualified identifier ::T::B::foo
@@ -1178,12 +1188,20 @@ superclass_init
 
 dtor_head
 	:
+	{m.beginDtorHead();}
 	dtor_decl_spec dtor_declarator
+	{m.endDtorHead();}
 	;
 
 dtor_decl_spec
+	{List declSpecs = new ArrayList();}
 	:
-	(("inline"|"_inline"|"__inline")|"virtual")*
+	(
+		("inline"|"_inline"|"__inline") {declSpecs.add("inline");}
+		|
+		"virtual" {declSpecs.add("virtual");}
+	)*
+	{m.declarationSpecifiers(declSpecs);}
 	;
 
 dtor_declarator
@@ -1191,7 +1209,9 @@ dtor_declarator
 	:	
 	s = scope_override 
 	
-	TILDE ID LPAREN RPAREN (exception_specification)?
+	TILDE id:ID
+	{m.dtorDeclarator(s+"~"+id.getText());}
+	LPAREN RPAREN (exception_specification)?
 	;
 
 dtor_body

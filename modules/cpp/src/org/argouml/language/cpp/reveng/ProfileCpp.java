@@ -56,8 +56,8 @@ public class ProfileCpp {
      * union, and struct. When this is ommited, class is used.
      * 
      * FIXME: Maybe we should have a more powerfull representation of the
-     * TaggedValues in the profile. I would like that restrictions, default and
-     * naming format to be enforced.
+     * TaggedValues in the profile. I would like that restrictions, default
+     * value, value range and naming format to be enforced.
      */
     public static final String TV_NAME_CLASS_SPECIFIER = "cpp_class_specifier";
 
@@ -66,6 +66,32 @@ public class ProfileCpp {
      * <code>GeneratorCpp</code>.
      */
     public static final String TV_NAME_REFERENCE = "reference";
+
+    /**
+     * Name of the C++ pointer tagged value which is also used in the
+     * <code>GeneratorCpp</code>.
+     */
+    public static final String TV_NAME_POINTER = "pointer";
+
+    /**
+     * Name of the virtual inheritance flag tagged value for a UML 
+     * generalization.
+     * 
+     * Default value (if the tagged value doesn't exist) is false. Type is
+     * obviously Boolean.
+     */
+    public static final String TV_VIRTUAL_INHERITANCE = 
+        "cpp_virtual_inheritance";
+
+    /**
+     * Name of the inheritance visibility tagged value. Applicable to a 
+     * generalization.
+     * 
+     * Default value is <code>public</code> and possible values are: 
+     * <code>private</code>, <code>protected</code> and <code>public</code>.
+     */
+    public static final String TV_INHERITANCE_VISIBILITY = 
+        "cpp_inheritance_visibility";
 
     /**
      * Set of built in types tokens.

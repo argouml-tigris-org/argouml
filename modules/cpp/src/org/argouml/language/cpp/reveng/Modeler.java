@@ -225,4 +225,56 @@ public interface Modeler {
      * may be removed.
      */
     void ptrToMember(String scopedItem, String star);
+
+    /**
+     * Signals the start of a class's base specification.
+     */
+    void beginBaseSpecifier();
+
+    /**
+     * Signals the end of a class's base specification.
+     */
+    void endBaseSpecifier();
+
+    /**
+     * The base specification.
+     * 
+     * @param identifier The name of the base class.
+     * @param isVirtual Is the inheritance virtual.
+     */
+    void baseSpecifier(String identifier, boolean isVirtual);
+
+    /**
+     * Signals the start of a constructor definition.
+     */
+    void beginCtorDefinition();
+
+    /**
+     * Signals the end of a constructor definition.
+     */
+    void endCtorDefinition();
+
+    /**
+     * The qualified constructor identifier.
+     * 
+     * @param identifier of the ctor
+     */
+    void qualifiedCtorId(String identifier);
+
+    /**
+     * Signals the start of a destructor head statement.
+     */
+    void beginDtorHead();
+
+    /**
+     * Signals the end of a destructor head statement.
+     */
+    void endDtorHead();
+
+    /**
+     * The destructor declarator.
+     * 
+     * @param identifier the destructor identifier
+     */
+    void dtorDeclarator(String identifier);
 }

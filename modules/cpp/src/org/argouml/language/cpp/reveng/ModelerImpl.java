@@ -44,7 +44,6 @@ import org.argouml.model.UUIDManager;
  * @since 0.19.3
  */
 public class ModelerImpl implements Modeler {
-
     /**
      * The context stack keeps track of the current parsing context in a stack
      * wise manner.
@@ -90,40 +89,68 @@ public class ModelerImpl implements Modeler {
      */
     public void enterNamespaceScope(String nsName) {
         if (!ignore()) {
-            Object ns = null;
-            if (!namespaceExists(nsName)) {
+            Object parentNs = getCurrentNamespace();
+            Object ns = findNamespace(nsName, parentNs);
+            if (ns == null) {
                 ns = Model.getModelManagementFactory().buildPackage(nsName,
                     UUIDManager.getInstance().getNewUUID());
-                Model.getCoreHelper().setNamespace(ns, getModel());
+                Model.getCoreHelper().setNamespace(ns, parentNs);
             }
             contextStack.push(ns);
         }
     }
 
     /**
-     * @return the model
+     * Get the current namespace from the {@link #contextStack contextStack}or
+     * the model.
+     * 
+     * @return the parent namespace
      */
-    private Object getModel() {
-        return ProjectManager.getManager().getCurrentProject().getModel();
+    private Object getCurrentNamespace() {
+        Object parentNs = null;
+        if (contextStack.isEmpty()) {
+            parentNs = getModel();
+        } else {
+            parentNs = contextStack.peek();
+            assert Model.getFacade().isANamespace(parentNs);
+        }
+        return parentNs;
     }
 
     /**
-     * Check if the provided namespace already exists.
+     * Find the namespace with the given name which parent is
+     * <code>parentNs</code>.
      * 
-     * @param ns
-     * @return true if the namespace already exists in the model
+     * @param nsName namespace name
+     * @param parentNs the parent namespace of the namespace to get
+     * @return the namespace if it exists, <code>null</code> otherwise.
      */
-    private boolean namespaceExists(String ns) {
+    private static Object findNamespace(String nsName, Object parentNs) {
         Collection nss = Model.getModelManagementHelper().getAllNamespaces(
             getModel());
         Iterator it = nss.iterator();
-        Object pack = null;
+        Object ns = null;
         while (it.hasNext()) {
-            if (ns.equals(Model.getFacade().getName(it.next()))) {
-                return true;
+            Object tmpNs = it.next();
+            if (nsName.equals(Model.getFacade().getName(tmpNs))) {
+                // NOTE: equality by reference may be deceiving if the
+                // implementation uses proxies - not likely that different
+                // proxies are used, so at least we should be comparing the
+                // references of the same proxy object!
+                if (Model.getFacade().getNamespace(tmpNs) == parentNs) {
+                    ns = tmpNs;
+                    break;
+                }
             }
         }
-        return false;
+        return ns;
+    }
+
+    /**
+     * @return the model
+     */
+    private static Object getModel() {
+        return ProjectManager.getManager().getCurrentProject().getModel();
     }
 
     /**
@@ -152,9 +179,16 @@ public class ModelerImpl implements Modeler {
      */
     public void beginClassDefinition(String oType, String identifier) {
         if (!ignore()) {
-            // a class is defined, so, create the class in the model...
-            Object cls = Model.getCoreFactory().buildClass(identifier,
-                contextStack.isEmpty() ? getModel() : contextStack.peek());
+            // a class is defined, so, check if it exists in the model or
+            // create it...
+            Object ns = getCurrentNamespace();
+            // FIXME: we're not checking for oType here! Is it needed? Is it
+            // possible to have struct X and class X in the same namespace in
+            // C++?
+            Object cls = findClass(identifier, ns);
+            if (cls == null) {
+                cls = Model.getCoreFactory().buildClass(identifier, ns);
+            }
             contextStack.push(cls);
             if (CPPvariables.OT_CLASS.equals(oType)) {
                 // the default visibility for a C++ class
@@ -166,10 +200,33 @@ public class ModelerImpl implements Modeler {
                             "struct");
                 Model.getCoreHelper().addTaggedValue(cls, classSpecifierTV);
             } else if (CPPvariables.OT_UNION.equals(oType)) {
-                // TODO: implement union specifics~
+                // TODO: implement union specifics.
                 ;
+            } else {
+                assert false 
+                : "Not expecting any other oType than class, struct and " 
+                    + "union!";
             }
         }
+    }
+
+    /**
+     * Find a class within the given namespace that has the given identifier.
+     * 
+     * @param identifier the class identifier
+     * @param ns namespace to look in
+     * @return the class if found, null otherwise
+     */
+    private static Object findClass(String identifier, Object ns) {
+        Collection classes = Model.getCoreHelper().getAllClasses(ns);
+        Iterator it = classes.iterator();
+        while (it.hasNext()) {
+            Object candidateClass = it.next();
+            if (Model.getFacade().getName(candidateClass).equals(identifier)) {
+                return candidateClass;
+            }
+        }
+        return null;
     }
 
     /**
@@ -250,7 +307,7 @@ public class ModelerImpl implements Modeler {
      * @param me the model element
      * @return property change listeners for me
      */
-    private Collection getPropertyChangeListeners(Object me) {
+    private static Collection getPropertyChangeListeners(Object me) {
         return ProjectManager.getManager().getCurrentProject()
                 .findFigsForMember(me);
     }
@@ -263,7 +320,45 @@ public class ModelerImpl implements Modeler {
             Object oper = contextStack.pop();
             assert Model.getFacade().isAOperation(oper) : ""
                 + "The poped context (\"" + oper + "\") isn't an operation!";
+            removeOperationIfDuplicate(oper);
         }
+    }
+
+    /**
+     * Check if the given operation is a duplicate of other already existing
+     * operation and if so remove it.
+     * 
+     * @param oper the operation to be checked
+     */
+    private void removeOperationIfDuplicate(Object oper) {
+        // in the current
+        Object parent = contextStack.peek();
+        Collection opers = Model.getFacade().getOperations(parent);
+
+        Iterator it = opers.iterator();
+        while (it.hasNext()) {
+            Object possibleDuplicateOper = it.next();
+            if (oper != possibleDuplicateOper
+                && Model.getFacade().getName(oper).equals(
+                    Model.getFacade().getName(possibleDuplicateOper))) {
+                if (equalParameters(oper, possibleDuplicateOper)) {
+                    Model.getCoreHelper().removeFeature(parent, oper);
+                }
+            }
+        }
+    }
+
+    /**
+     * Compare the parameters of two operations.
+     * 
+     * @param oper1 left hand side operation
+     * @param oper2 right hand side operation
+     * @return true if the parameters are equal - the same types given in the
+     *         same order
+     */
+    private boolean equalParameters(Object oper, Object oper2) {
+        // TODO: implementation.
+        return true;
     }
 
     /**
@@ -350,8 +445,37 @@ public class ModelerImpl implements Modeler {
     public void directDeclarator(String id) {
         if (!ignore()) {
             Model.getCoreHelper().setName(contextStack.peek(), id);
-            if (Model.getFacade().isAAttribute(contextStack.peek()))
-                contextStack.pop();
+            if (Model.getFacade().isAAttribute(contextStack.peek())) {
+                Object attr = contextStack.pop();
+                removeAttributeIfDuplicate(attr);
+            }
+        }
+    }
+
+    /**
+     * Check if the given attribute is a duplicate of other already existing
+     * attribute and if so remove it.
+     * 
+     * FIXME: this method is very similar to the
+     * {@link #removeOperationIfDuplicate(Object) removeOperationIfDuplicate}
+     * method. Both are related to the removal of a Feature from a Classifier if
+     * the Feature is duplicated in the Classifier. I think this may be
+     * refactored in the future...
+     * 
+     * @param attr the attribute to be checked and possibly removed
+     */
+    private void removeAttributeIfDuplicate(Object attr) {
+        Object parent = contextStack.peek();
+        Collection attrs = Model.getFacade().getAttributes(parent);
+
+        Iterator it = attrs.iterator();
+        while (it.hasNext()) {
+            Object possibleDuplicateAttr = it.next();
+            if (attr != possibleDuplicateAttr
+                && Model.getFacade().getName(attr).equals(
+                    Model.getFacade().getName(possibleDuplicateAttr))) {
+                Model.getCoreHelper().removeFeature(parent, attr);
+            }
         }
     }
 
@@ -360,7 +484,6 @@ public class ModelerImpl implements Modeler {
      */
     public void storageClassSpecifier(String storageClassSpec) {
         // TODO: Auto-generated method stub
-
     }
 
     /**
@@ -377,12 +500,7 @@ public class ModelerImpl implements Modeler {
     public void beginFunctionDefinition() {
         if (!ignore()) {
             if (isMemberDeclaration()) {
-                Object returnType = getVoid();
-                Object oper = buildOperation(contextStack.peek(), returnType);
-                if (contextAccessSpecifier != null)
-                    Model.getCoreHelper().setVisibility(oper,
-                        contextAccessSpecifier);
-                contextStack.push(oper);
+                beginFunctionDeclaration();
             } else {
                 // TODO: here we should set the method of the corresponding
                 // operation, if it exists, or create a global operation and
@@ -398,8 +516,7 @@ public class ModelerImpl implements Modeler {
     public void endFunctionDefinition() {
         if (!ignore()) {
             if (isMemberDeclaration()) {
-                Object oper = contextStack.pop();
-                assert Model.getFacade().isAOperation(oper);
+                endFunctionDeclaration();
             } else {
                 // TODO: here we should set the method of the corresponding
                 // operation, if it exists, or create a global operation and
@@ -461,6 +578,16 @@ public class ModelerImpl implements Modeler {
             Object param = contextStack.peek();
             if (Model.getFacade().isAParameter(param)) {
                 contextStack.pop();
+                // set the parameter kind according to the tagged value details
+                // FIXME: this won't work when we have const reference
+                // parameters!
+                if (Model.getFacade().getTaggedValueValue(param,
+                    ProfileCpp.TV_NAME_REFERENCE).equals("true")
+                    || Model.getFacade().getTaggedValueValue(param,
+                        ProfileCpp.TV_NAME_POINTER).equals("true")) {
+                    Model.getCoreHelper().setKind(param,
+                        Model.getDirectionKind().getInOutParameter());
+                }
             }
         }
     }
@@ -550,6 +677,7 @@ public class ModelerImpl implements Modeler {
                 Object refTV = Model.getExtensionMechanismsFactory()
                         .buildTaggedValue("reference", "true");
                 contextStack.push(refTV);
+
             } else if (ptrSymbol.equals("*")) {
                 // arrrg ditto!
                 Object discardedTV = contextStack.pop();
@@ -570,6 +698,280 @@ public class ModelerImpl implements Modeler {
      */
     public void ptrToMember(String scopedItem, String star) {
         // TODO: Auto-generated method stub
+    }
 
+    /**
+     * Modeler for the base_specifier rule.
+     */
+    private BaseSpecifierModeler baseSpecifierModeler;
+
+    /**
+     * @see org.argouml.language.cpp.reveng.Modeler#beginBaseSpecifier()
+     */
+    public void beginBaseSpecifier() {
+        if (!ignore())
+            baseSpecifierModeler = new BaseSpecifierModeler();
+    }
+
+    /**
+     * @see org.argouml.language.cpp.reveng.Modeler#endBaseSpecifier()
+     */
+    public void endBaseSpecifier() {
+        if (!ignore()) {
+            baseSpecifierModeler.finish();
+            baseSpecifierModeler = null;
+        }
+    }
+
+    /**
+     * @see org.argouml.language.cpp.reveng.Modeler#baseSpecifier(java.lang.String,
+     *      boolean)
+     */
+    public void baseSpecifier(String identifier, boolean isVirtual) {
+        if (!ignore())
+            baseSpecifierModeler.baseSpecifier(identifier, isVirtual);
+    }
+
+    /**
+     * A class that models the base_specifier rule, mapping it to a UML
+     * generalization.
+     */
+    private class BaseSpecifierModeler {
+        private Object previousAccessSpecifier;
+
+        private Object generalization;
+
+        /**
+         * The constructor of the BaseSpecifierModeler retrieves information
+         * about the current parsing context, storing it to enable context aware
+         * processing of the baseSpecifier call, and resetting the context to
+         * its previous state after processing.
+         */
+        BaseSpecifierModeler() {
+            previousAccessSpecifier = contextAccessSpecifier;
+            contextAccessSpecifier = null;
+        }
+
+        /**
+         * 
+         * @param identifier the base class identifier
+         * @param isVirtual flags virtual inheritance
+         */
+        void baseSpecifier(String identifier, boolean isVirtual) {
+            // create a generalization for the current class
+            Object parent = findOrCreateType(identifier);
+            generalization = findOrCreateGeneralization(parent, contextStack
+                    .peek());
+            Model.getCoreHelper().setTaggedValue(generalization,
+                ProfileCpp.TV_VIRTUAL_INHERITANCE, Boolean.toString(isVirtual));
+        }
+
+        /**
+         * Finish processing the base specifier rule.
+         */
+        void finish() {
+            // set the visibility of the generalization
+            if (contextAccessSpecifier == null) { // default is private
+                contextAccessSpecifier = Model.getVisibilityKind().getPrivate();
+            }
+            Model.getCoreHelper().setTaggedValue(generalization,
+                ProfileCpp.TV_INHERITANCE_VISIBILITY,
+                Model.getFacade().getName(contextAccessSpecifier));
+            // finish the base specifier by setting the context to the
+            // previous state
+            contextAccessSpecifier = previousAccessSpecifier;
+        }
+    }
+
+    /**
+     * Find or create a Generalization between the given parent and child
+     * Classifiers.
+     * 
+     * @param parent the parent Classifier
+     * @param child the child Classifier
+     * @return the found Generalization model element if found, otherwise a
+     *         newly created
+     */
+    private static Object findOrCreateGeneralization(Object parent, 
+            Object child) {
+        Object generalization = Model.getFacade().getGeneralization(child,
+            parent);
+        if (generalization == null)
+            generalization = Model.getCoreFactory().buildGeneralization(child,
+                parent);
+        return generalization;
+    }
+
+    /**
+     * Modeler for constructors.
+     */
+    private CtorModeler ctorModeler;
+
+    /**
+     * @see org.argouml.language.cpp.reveng.Modeler#beginCtorDefinition()
+     */
+    public void beginCtorDefinition() {
+        if (!ignore()) {
+            assert ctorModeler == null;
+            ctorModeler = new CtorModeler();
+        }
+    }
+
+    /**
+     * Helper method that gets a stereotype for the given model element with the
+     * given name.
+     * 
+     * TODO: this might be a performance bottleneck. If so, caching of
+     * stereotypes for model elements by their stereotypes names could fix it.
+     * 
+     * @param modelElement the model element for which to look for the
+     *            stereotype with the given name
+     * @return the stereotype model element or null if not found.
+     */
+    private Object getStereotype(Object modelElement, String stereotypeName) {
+        Object stereotype = null;
+        Collection stereotypes = Model
+                .getExtensionMechanismsHelper()
+                .getAllPossibleStereotypes(
+                    ProjectManager.getManager().getCurrentProject().getModels(),
+                    modelElement);
+        for (Iterator it = stereotypes.iterator(); it.hasNext();) {
+            Object candidateStereotype = it.next();
+            if (Model.getFacade().getName(candidateStereotype).equals(
+                stereotypeName)) {
+                stereotype = candidateStereotype;
+                break;
+            }
+        }
+        return stereotype;
+    }
+
+    /**
+     * @see org.argouml.language.cpp.reveng.Modeler#endCtorDefinition()
+     */
+    public void endCtorDefinition() {
+        if (!ignore())
+            ctorModeler.finish();
+    }
+
+    /**
+     * @see org.argouml.language.cpp.reveng.Modeler#qualifiedCtorId(java.lang.String)
+     */
+    public void qualifiedCtorId(String identifier) {
+        if (!ignore()) {
+            ctorModeler.qualifiedCtorId(identifier);
+        }
+    }
+
+    /**
+     * Base Modeler class for ctor and dtor modelers.
+     */
+    private abstract class XtorModeler {
+        private Object xtor;
+
+        /**
+         * Initializes the XtorModeler with the stereotypeName, creates the
+         * operation in the class and sets the stereotype with the given name.
+         * 
+         * @param stereotypeName "create" for ctors and "destroy" for dtors.
+         */
+        XtorModeler(String stereotypeName) {
+            // FIXME: this will fail when we try to process definitions made
+            // outside of the class definition!
+            assert Model.getFacade().isAClass(contextStack.peek());
+            xtor = buildOperation(contextStack.peek(), getVoid());
+            Model.getExtensionMechanismsHelper().setStereoType(xtor,
+                getStereotype(xtor, stereotypeName));
+            contextStack.push(xtor);
+        }
+
+        /**
+         * Checks if the given operation is the xtor (e.g. the modeled
+         * constructor or destructor).
+         * 
+         * @param oper the operation to check
+         * @return true if the oper is the modeled xtor
+         */
+        boolean isTheXtor(Object oper) {
+            return xtor == oper;
+        }
+
+        /**
+         * Pops the xtor from the <code>contextStack</code>.
+         */
+        void finish() {
+            Object poppedXtor = contextStack.pop();
+            assert isTheXtor(poppedXtor);
+            removeOperationIfDuplicate(xtor);
+        }
+    }
+
+    /**
+     * Modeler class for constructors.
+     */
+    private class CtorModeler extends XtorModeler {
+        /**
+         * Creates the ctor and puts it into the stack.
+         */
+        CtorModeler() {
+            super("create");
+        }
+
+        /**
+         * Sets the name of the ctor operation to the identifier.
+         * 
+         * @param identifier
+         */
+        void qualifiedCtorId(String identifier) {
+            assert isTheXtor(contextStack.peek());
+            Model.getCoreHelper().setName(contextStack.peek(), identifier);
+        }
+    }
+
+    private DtorModeler dtorModeler;
+
+    /**
+     * @see org.argouml.language.cpp.reveng.Modeler#beginDtorHead()
+     */
+    public void beginDtorHead() {
+        dtorModeler = new DtorModeler();
+    }
+
+    /**
+     * @see org.argouml.language.cpp.reveng.Modeler#endDtorHead()
+     */
+    public void endDtorHead() {
+        dtorModeler.finish();
+        dtorModeler = null;
+    }
+
+    /**
+     * @see org.argouml.language.cpp.reveng.Modeler#dtorDeclarator(java.lang.String)
+     */
+    public void dtorDeclarator(String qualifiedId) {
+        dtorModeler.declarator(qualifiedId);
+    }
+
+    /**
+     * Modeler for destructor.
+     */
+    private class DtorModeler extends XtorModeler {
+
+        /**
+         * Ctor for the DtorModeler class, responsible for creating the
+         * operation and setting up the <code>contextStack</code>
+         * appropriately.
+         */
+        DtorModeler() {
+            super("destroy");
+        }
+
+        /**
+         * @param qualifiedId
+         */
+        void declarator(String qualifiedId) {
+            assert isTheXtor(contextStack.peek());
+            Model.getCoreHelper().setName(contextStack.peek(), qualifiedId);
+        }
     }
 }
