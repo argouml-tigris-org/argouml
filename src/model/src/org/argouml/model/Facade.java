@@ -790,6 +790,14 @@ public interface Facade {
     boolean isASignalEvent(Object handle);
 
     /**
+     * Recognizer for SimpleState.
+     *
+     * @param handle candidate
+     * @return true if handle is a StateMachine
+     */
+    boolean isASimpleState(Object handle);
+
+    /**
      * Recognizer for StateMachine.
      *
      * @param handle candidate

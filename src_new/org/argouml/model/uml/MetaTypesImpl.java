@@ -58,6 +58,7 @@ import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MFinalState;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+import ru.novosoft.uml.behavior.state_machines.MSimpleState;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
@@ -580,6 +581,13 @@ public final class MetaTypesImpl implements MetaTypes {
      */
     public Object getSignal() {
         return MSignal.class;
+    }
+
+    /**
+     * @return Returns the SimpleState.
+     */
+    public Object getSimpleState() {
+        return MSimpleState.class;
     }
 
     /**

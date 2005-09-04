@@ -351,6 +351,11 @@ public interface MetaTypes {
     Object getSignal();
 
     /**
+     * @return Returns the SimpleState.
+     */
+    Object getSimpleState();
+
+    /**
      * @return Returns the State.
      */
     Object getState();
@@ -405,7 +410,7 @@ public interface MetaTypes {
      * @return Returns the TagDefinition, or null in UML 1.3
      */
     Object getTagDefinition();
-    
+
     /**
      * @return Returns the TerminateAction.
      */
@@ -430,10 +435,10 @@ public interface MetaTypes {
      * @return Returns the VisibilityKind.
      */
     Object getVisibilityKind();
-    
+
     /**
      * @return Returns the Interaction
      */
     Object getInteraction();
-    
+
 }

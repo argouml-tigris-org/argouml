@@ -83,6 +83,7 @@ import ru.novosoft.uml.behavior.state_machines.MFinalState;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.behavior.state_machines.MSignalEvent;
+import ru.novosoft.uml.behavior.state_machines.MSimpleState;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
@@ -1154,6 +1155,16 @@ public class NSUMLModelFacade implements Facade {
      */
     public boolean isASignalEvent(Object handle) {
         return handle instanceof MSignalEvent;
+    }
+
+    /**
+     * Recognizer for SimpleState.
+     *
+     * @param handle candidate
+     * @return true if handle is a SimpleState
+     */
+    public boolean isASimpleState(Object handle) {
+        return handle instanceof MSimpleState;
     }
 
     /**
