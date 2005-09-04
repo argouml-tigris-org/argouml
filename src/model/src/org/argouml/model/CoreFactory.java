@@ -534,68 +534,6 @@ public interface CoreFactory {
      */
     Object copyInterface(Object source, Object ns);
 
-    /**
-     * Used by the copy functions. Do not call this function directly.
-     *
-     * @param source the source class
-     * @param target the target class
-     */
-    void doCopyClass(Object source, Object target);
-
-    /**
-     * Used by the copy functions. Do not call this function directly.
-     * TODO: actions? instances? collaborations etc?
-     *
-     * @param source the source classifier
-     * @param target the target classifier
-     */
-    void doCopyClassifier(Object source, Object target);
-
-    /**
-     * Used by the copy functions. Do not call this function directly.
-     *
-     * @param source the source datatype
-     * @param target the target datatype
-     */
-    void doCopyDataType(Object source, Object target);
-
-    /**
-     * Used by the copy functions. Do not call this function directly.
-     * TODO: generalizations, specializations?
-     *
-     * @param source the source generalizable element
-     * @param target the target generalizable element
-     */
-    void doCopyGeneralizableElement(Object source, Object target);
-
-    /**
-     * Used by the copy functions. Do not call this function directly.
-     *
-     * @param source the source interface
-     * @param target the target interface
-     */
-    void doCopyInterface(Object source, Object target);
-
-    /**
-     * Used by the copy functions. Do not call this function directly.
-     * TODO: template parameters, default type
-     * TODO: constraining elements
-     * TODO: flows, dependencies, comments, bindings, contexts ???
-     * TODO: contents, residences ???
-     *
-     * @param source the source me
-     * @param target the target me
-     */
-    void doCopyModelElement(Object source, Object target);
-
-    /**
-     * Used by the copy functions. Do not call this function directly.
-     *
-     * @param source the source namespace
-     * @param target the target namespace
-     */
-    void doCopyNamespace(Object source, Object target);
-    
     //additional support for generalization
     
     Object createGeneralization();

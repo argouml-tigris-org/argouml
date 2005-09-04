@@ -260,7 +260,8 @@ public class ExtensionMechanismsFactoryImpl
      * @param target The object becoming a copy.
      */
     private void doCopyStereotype(MStereotype source, MStereotype target) {
-	nsmodel.getCoreFactory().doCopyGeneralizableElement(source, target);
+	((CoreFactoryImpl) nsmodel.getCoreFactory())
+		.doCopyGeneralizableElement(source, target);
 	target.setBaseClass(source.getBaseClass());
 	target.setIcon(source.getIcon());
 	// TODO: constraints
