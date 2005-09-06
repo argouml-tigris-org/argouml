@@ -501,9 +501,9 @@ class UseCasesHelperImpl implements UseCasesHelper {
     }
 
     /**
-     * Sets the extension points of some use cases.
+     * Sets the extension points of some use cases or extend relationships.
      *
-     * @param handle the use case
+     * @param handle the use case or extend relationship
      * @param extensionPoints is the extension points
      */
     public void setExtensionPoints(
@@ -511,6 +511,10 @@ class UseCasesHelperImpl implements UseCasesHelper {
             Collection extensionPoints) {
         if (handle instanceof MUseCase && extensionPoints instanceof List) {
             ((MUseCase) handle).setExtensionPoints(extensionPoints);
+            return;
+        }
+        if (handle instanceof MExtend && extensionPoints instanceof List) {
+            ((MExtend) handle).setExtensionPoints((List)extensionPoints);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
