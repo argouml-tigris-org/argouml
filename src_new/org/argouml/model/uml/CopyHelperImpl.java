@@ -24,6 +24,8 @@
 
 package org.argouml.model.uml;
 
+import org.argouml.model.CopyHelper;
+
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MDataType;
 import ru.novosoft.uml.foundation.core.MInterface;
@@ -38,7 +40,7 @@ import ru.novosoft.uml.model_management.MPackage;
  * @author Michael Stockman
  * @since 0.13.2
  */
-final class CopyHelper implements org.argouml.model.CopyHelper {
+final class CopyHelperImpl implements CopyHelper {
 
     /**
      * The model implementation.
@@ -50,7 +52,7 @@ final class CopyHelper implements org.argouml.model.CopyHelper {
      *
      * @param implementation To get other helpers and factories.
      */
-    CopyHelper(NSUMLModelImplementation implementation) {
+    CopyHelperImpl(NSUMLModelImplementation implementation) {
         nsmodel = implementation;
     }
 
@@ -79,9 +81,7 @@ final class CopyHelper implements org.argouml.model.CopyHelper {
         MNamespace ns = (MNamespace) ans;
 
         if (element instanceof MPackage) {
-            return
-            	nsmodel.getModelManagementFactory()
-            		.copyPackage((MPackage) element, ns);
+            return nsmodel.getModelManagementFactory().copyPackage(element, ns);
         }
         if (element instanceof MClass) {
             return nsmodel.getCoreFactory().copyClass(element, ns);
@@ -95,7 +95,7 @@ final class CopyHelper implements org.argouml.model.CopyHelper {
         if (element instanceof MStereotype) {
             return
             	nsmodel.getExtensionMechanismsFactory()
-            		.copyStereotype((MStereotype) element, ns);
+            		.copyStereotype(element, ns);
         }
         throw new IllegalArgumentException();
     }
