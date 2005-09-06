@@ -49,7 +49,7 @@ This is the build file for building the Model subsystem interfaces.
 
  	<!-- All file references in these imports are messed up
  	     because they assume that we are in src_new. -->
-    <property file="../src_new/default.properties"/>
+    <property file="../../src_new/default.properties"/>
 
  	<property name="argo.build.dir" value="../../build"/>
  	<property name="argo.lib.dir" value="../../lib"/>
