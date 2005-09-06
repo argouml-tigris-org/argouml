@@ -47,14 +47,14 @@ This is the build file for building the Model subsystem interfaces.
     <property file="${local.build.properties}"/>
     <property file="${user.build.properties}"/>
 
- 	<!-- All file references in these imports are messed up
- 	     because they assume that we are in src_new. -->
+    <property name="argo.build.dir" value="../../build"/>
+    <property name="argo.lib.dir" value="../../lib"/>
+    <property name="log4j.jar.path" value="${argo.lib.dir}/log4j-1.2.6.jar"/>
+ 	
+    <!-- All file references in these imports are messed up
+ 	 because they assume that we are in src_new. -->
     <property file="../../src_new/default.properties"/>
 
- 	<property name="argo.build.dir" value="../../build"/>
- 	<property name="argo.lib.dir" value="../../lib"/>
- 	<property name="log4j.jar.path" value="${argo.lib.dir}/log4j-1.2.6.jar"/>
- 	
     <property name="name" value="argouml-model"/>
   
     <path id="compile.classpath">
