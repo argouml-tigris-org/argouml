@@ -82,7 +82,8 @@ public class TestModelFacade3 extends TestCase {
                 return methodToTest.getName().equals("getClassNull")
                                 || methodToTest.getName().startsWith("isA")
                                 || methodToTest.getName().equals("create")
-                                || methodToTest.getName().equals("getTipString");
+                                || methodToTest.getName().equals("getTipString")
+                                || methodToTest.getName().equals("toString");
         }
 
         /**
