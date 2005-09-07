@@ -115,7 +115,7 @@ public class WizDescription extends WizStep {
 	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-model"),
                        new Object [] {
-			   target.toString(),
+			   Model.getFacade().toString(target),
 		       });
 	    description.setEditable(false);
 	    description.setText(message);
@@ -125,7 +125,7 @@ public class WizDescription extends WizStep {
 	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-decision"),
                        new Object [] {
-			   target.toString(),
+               Model.getFacade().toString(target),
 		       });
 	    description.setText(message);
 
@@ -134,7 +134,7 @@ public class WizDescription extends WizStep {
 	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-goal"),
                        new Object [] {
-			   target.toString(),
+               Model.getFacade().toString(target),
 		       });
 	    description.setText(message);
 
@@ -143,7 +143,7 @@ public class WizDescription extends WizStep {
 	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-knowledge"),
                        new Object [] {
-			   target.toString(),
+               Model.getFacade().toString(target),
 		       });
 	    description.setText(message);
 
