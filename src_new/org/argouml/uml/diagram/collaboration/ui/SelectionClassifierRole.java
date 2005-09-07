@@ -50,7 +50,9 @@ import org.tigris.gef.presentation.Handle;
  *
  */
 public class SelectionClassifierRole extends SelectionNodeClarifiers {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(SelectionClassifierRole.class);
 
@@ -119,10 +121,10 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
 	if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
 	    return;
 	}
-	int cx = _content.getX();
-	int cy = _content.getY();
-	int cw = _content.getWidth();
-	int ch = _content.getHeight();
+	int cx = getContent().getX();
+	int cy = getContent().getY();
+	int cw = getContent().getWidth();
+	int ch = getContent().getHeight();
 	int iw = assocrole.getIconWidth();
 	int ih = assocrole.getIconHeight();
 	if (showOutgoing && hitLeft(cx + cw, cy + ch / 2, iw, ih, r)) {
@@ -141,13 +143,13 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
     }
 
     /**
-     * @see SelectionWButtons#paintButtons(Graphics)
+     * @see org.tigris.gef.base.SelectionButtons#paintButtons(java.awt.Graphics)
      */
     public void paintButtons(Graphics g) {
-	int cx = _content.getX();
-	int cy = _content.getY();
-	int cw = _content.getWidth();
-	int ch = _content.getHeight();
+	int cx = getContent().getX();
+	int cy = getContent().getY();
+	int cw = getContent().getWidth();
+	int ch = getContent().getHeight();
 	if (showOutgoing) {
 	    paintButtonLeft(assocrole, g, cx + cw, cy + ch / 2, 12);
 	}
@@ -169,8 +171,8 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
 	    super.dragHandle(mX, mY, anX, anY, hand);
 	    return;
 	}
-	int cx = _content.getX(), cy = _content.getY();
-	int cw = _content.getWidth(), ch = _content.getHeight();
+	int cx = getContent().getX(), cy = getContent().getY();
+	int cw = getContent().getWidth(), ch = getContent().getHeight();
 	Object edgeType = null;
 	Object nodeType = Model.getMetaTypes().getClassifierRole();
 
@@ -205,7 +207,8 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
 	if (edgeType != null && nodeType != null) {
 	    ModeCreateEdgeAndNode m =
 		new ModeCreateEdgeAndNode(ce, edgeType, nodeType, false);
-	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
+	    m.setup((FigNode) getContent(), getContent().getOwner(),
+	            bx, by, reverse);
 	    ce.pushMode(m);
 	}
     }
@@ -213,58 +216,58 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
     /**
      * Create a new ClassifierRole object.
      *
-     * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
+     * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
 	return Model.getCollaborationsFactory().createClassifierRole();
     }
 
     /**
-     * @see SelectionWButtons#createEdgeAbove(
+     * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
-	return mgm.connect(newNode, _content.getOwner(),
+	return mgm.connect(newNode, getContent().getOwner(),
 			   (Class) Model.getMetaTypes().getAssociationRole());
     }
 
     /**
-     * @see SelectionWButtons#createEdgeLeft(
+     * @see org.tigris.gef.base.SelectionButtons#createEdgeLeft(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
-	return gm.connect(newNode, _content.getOwner(),
+	return gm.connect(newNode, getContent().getOwner(),
 			  (Class) Model.getMetaTypes().getAssociationRole());
     }
 
     /**
-     * @see SelectionWButtons#createEdgeRight(
+     * @see org.tigris.gef.base.SelectionButtons#createEdgeRight(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
-	return gm.connect(_content.getOwner(), newNode,
+	return gm.connect(getContent().getOwner(), newNode,
 			  (Class) Model.getMetaTypes().getAssociationRole());
     }
 
     /**
      * To enable this we need to add an icon.
      *
-     * @see SelectionWButtons#createEdgeToSelf(
+     * @see org.tigris.gef.base.SelectionButtons#createEdgeToSelf(
      *         org.tigris.gef.graph.MutableGraphModel)
      */
     protected Object createEdgeToSelf(MutableGraphModel gm) {
 	return gm.connect(
-			  _content.getOwner(),
-			  _content.getOwner(),
+			  getContent().getOwner(),
+			  getContent().getOwner(),
 			  (Class) Model.getMetaTypes().getAssociationRole());
     }
 
     /**
-     * @see SelectionWButtons#createEdgeUnder(
+     * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-	return gm.connect(_content.getOwner(), newNode,
+	return gm.connect(getContent().getOwner(), newNode,
 			  (Class) Model.getMetaTypes().getAssociationRole());
     }
 

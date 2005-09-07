@@ -56,7 +56,7 @@ public class SelectionMoveClarifiers extends SelectionMove {
      * @see org.tigris.gef.base.Selection#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
-        ((FigNodeModelElement) _content).paintClarifiers(g);
+        ((FigNodeModelElement) getContent()).paintClarifiers(g);
         super.paint(g);
     }
 

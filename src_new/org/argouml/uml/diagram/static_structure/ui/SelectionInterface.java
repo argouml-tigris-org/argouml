@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -33,10 +32,10 @@ import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.tigris.gef.base.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.ModeCreateEdgeAndNode;
 import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.base.ModeModify;
 import org.tigris.gef.base.SelectionManager;
@@ -49,7 +48,9 @@ import org.tigris.gef.presentation.Handle;
  * @author jrobbins@ics.uci.edu
  */
 public class SelectionInterface extends SelectionNodeClarifiers {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(SelectionInterface.class);
     ////////////////////////////////////////////////////////////////
@@ -100,17 +101,16 @@ public class SelectionInterface extends SelectionNodeClarifiers {
 	if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
 	    return;
 	}
-	int cx = _content.getX();
-	int cy = _content.getY();
-	int cw = _content.getWidth();
-	int ch = _content.getHeight();
+	int cx = getContent().getX();
+	int cy = getContent().getY();
+	int cw = getContent().getWidth();
+	int ch = getContent().getHeight();
 	int iw = realiz.getIconWidth();
 	int ih = realiz.getIconHeight();
 	if (hitBelow(cx + cw / 2, cy + ch, iw, ih, r)) {
 	    h.index = 11;
 	    h.instructions = "Add a realization";
-	}
-	else {
+	} else {
 	    h.index = -1;
 	    h.instructions = "Move object(s)";
 	}
@@ -118,13 +118,14 @@ public class SelectionInterface extends SelectionNodeClarifiers {
 
 
     /**
-     * @see SelectionWButtons#paintButtons(Graphics)
+     * @see org.tigris.gef.base.SelectionButtons#paintButtons(
+     *         java.awt.Graphics)
      */
     public void paintButtons(Graphics g) {
-	int cx = _content.getX();
-	int cy = _content.getY();
-	int cw = _content.getWidth();
-	int ch = _content.getHeight();
+	int cx = getContent().getX();
+	int cy = getContent().getY();
+	int cw = getContent().getWidth();
+	int ch = getContent().getHeight();
 	paintButtonBelow(realiz, g, cx + cw / 2, cy + ch, 11);
     }
 
@@ -139,11 +140,8 @@ public class SelectionInterface extends SelectionNodeClarifiers {
 	    super.dragHandle(mX, mY, anX, anY, hand);
 	    return;
 	}
-	int cx = _content.getX(), cy = _content.getY();
-	int cw = _content.getWidth(), ch = _content.getHeight();
-	int newX = cx, newY = cy, newW = cw, newH = ch;
-	Dimension minSize = _content.getMinimumSize();
-	int minWidth = minSize.width, minHeight = minSize.height;
+	int cx = getContent().getX(), cy = getContent().getY();
+	int cw = getContent().getWidth(), ch = getContent().getHeight();
 	Object edgeType = null;
 	Object nodeType = Model.getMetaTypes().getUMLClass();
 	int bx = mX, by = mY;
@@ -163,7 +161,8 @@ public class SelectionInterface extends SelectionNodeClarifiers {
 	    Editor ce = Globals.curEditor();
 	    ModeCreateEdgeAndNode m =
 	        new ModeCreateEdgeAndNode(ce, edgeType, nodeType, false);
-	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
+	    m.setup((FigNode) getContent(), getContent().getOwner(),
+	            bx, by, reverse);
 	    ce.pushMode(m);
 	}
 
@@ -191,16 +190,16 @@ public class SelectionInterface extends SelectionNodeClarifiers {
     }
 
     /**
-     * @see SelectionWButtons#createEdgeUnder(
+     * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, _content.getOwner(),
+        return gm.connect(newNode, getContent().getOwner(),
 			  (Class) Model.getMetaTypes().getAbstraction());
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
+     * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
         return Model.getCoreFactory().createClass();

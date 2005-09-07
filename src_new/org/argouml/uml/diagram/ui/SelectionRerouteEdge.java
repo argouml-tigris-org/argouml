@@ -106,16 +106,16 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
 
         // calculate the source and dest figs for to self assoc
         sourceFig =
-	    (FigNodeModelElement) ((FigEdge) _content).getSourceFigNode();
-        destFig = (FigNodeModelElement) ((FigEdge) _content).getDestFigNode();
+	    (FigNodeModelElement) ((FigEdge) getContent()).getSourceFigNode();
+        destFig = (FigNodeModelElement) ((FigEdge) getContent()).getDestFigNode();
 
         Rectangle mousePosition =
 	    new Rectangle(me.getX() - 5, me.getY() - 5, 10, 10);
         //reset the pointIndex
         pointIndex = -1;
-        int npoints = _content.getNumPoints();
-        int[] xs = _content.getXs();
-        int[] ys = _content.getYs();
+        int npoints = getContent().getNumPoints();
+        int[] xs = getContent().getXs();
+        int[] ys = getContent().getYs();
         for (int i = 0; i < npoints; ++i) {
             if (mousePosition.contains(xs[i], ys[i])) {
                 pointIndex = i;
@@ -208,16 +208,16 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
         // delegate the re-routing to graphmodels.
         if (mgm.canChangeConnectedNode(newFig.getOwner(),
 				       oldFig.getOwner(),
-				       this._content.getOwner())) {
+				       this.getContent().getOwner())) {
 	    mgm.changeConnectedNode(newFig.getOwner(),
 				    oldFig.getOwner(),
-				    this._content.getOwner(),
+				    this.getContent().getOwner(),
 				    isSource);
 	}
 
-        editor.getSelectionManager().deselect(_content);
+        editor.getSelectionManager().deselect(getContent());
         armed = false;
-        ((FigEdgeModelElement) _content).computeRoute();
+        ((FigEdgeModelElement) getContent()).computeRoute();
         super.mouseReleased(me);
         return;
     }

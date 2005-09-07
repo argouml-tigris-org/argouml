@@ -35,13 +35,13 @@ import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
 
 
-/** Class to display graphics for a UML SubactivityState in a diagram.
+/**
+ * Class to display graphics for a UML SubactivityState in a diagram.
  *
  * @author MVW
  */
@@ -49,7 +49,6 @@ public class FigSubactivityState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private static final int MARGIN = 2;
     private static final int PADDING = 8;
 
     private static final int X = 10;
@@ -66,7 +65,7 @@ public class FigSubactivityState extends FigStateVertex {
     // instance variables
 
     private FigRRect cover;
-    private FigGroup icon;
+    //private FigGroup icon;
 
     private FigRRect s1;
     private FigRRect s2;
@@ -76,14 +75,13 @@ public class FigSubactivityState extends FigStateVertex {
     // constructors
 
     /**
-     * Main Constructor (called from file loading)
+     * Main Constructor (called from file loading).
      */
     public FigSubactivityState() {
-        FigRRect bigPort = new FigRRect(X, Y, W, H,
-                Color.cyan, Color.cyan);
-        bigPort.setCornerRadius(bigPort.getHalfHeight());
+        FigRRect bigPort = new FigRRect(X, Y, W, H, Color.cyan, Color.cyan);
+        bigPort.setCornerRadius(bigPort.getHeight() / 2);
         cover = new FigRRect(X, Y, W, H, Color.black, Color.white);
-        cover.setCornerRadius(getHalfHeight());
+        cover.setCornerRadius(getHeight() / 2);
 
         bigPort.setLineWidth(0);
 
@@ -92,7 +90,7 @@ public class FigSubactivityState extends FigStateVertex {
         getNameFig().setLineWidth(0);
         getNameFig().setBounds(10 + PADDING, 10, 90 - PADDING * 2, 25);
         getNameFig().setFilled(false);
-        getNameFig().setMultiLine(true);
+        getNameFig().setReturnAction(FigText.INSERT);
 
         // add Figs to the FigNode in back-to-front order
         addFig(bigPort);
@@ -112,10 +110,8 @@ public class FigSubactivityState extends FigStateVertex {
      * @param y the y coordinate of the bottom corner
      */
     private void makeSubStatesIcon(int x, int y) {
-        s1 = new FigRRect(x - 22, y + 3, 8, 6,
-                Color.black, Color.white);
-        s2 = new FigRRect(x - 11, y + 9, 8, 6,
-                Color.black, Color.white);
+        s1 = new FigRRect(x - 22, y + 3, 8, 6, Color.black, Color.white);
+        s2 = new FigRRect(x - 11, y + 9, 8, 6, Color.black, Color.white);
         s1.setFilled(true);
         s2.setFilled(true);
         s1.setLineWidth(1);
@@ -131,7 +127,8 @@ public class FigSubactivityState extends FigStateVertex {
 
     /**
      * Constructor that hooks the Fig into
-     * an existing UML model element
+     * an existing UML model element.
+     *
      * @param gm ignored!
      * @param node owner, i.e. the UML element
      */
@@ -173,11 +170,14 @@ public class FigSubactivityState extends FigStateVertex {
     }
 
     /**
-     * Override setBounds to keep shapes looking right
-     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     * Override setBounds to keep shapes looking right.
+     *
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
-        if (getNameFig() == null) return;
+        if (getNameFig() == null) {
+            return;
+        }
         Rectangle oldBounds = getBounds();
 
         getNameFig().setBounds(x + PADDING, y, w - PADDING * 2, h - PADDING);
@@ -283,7 +283,9 @@ public class FigSubactivityState extends FigStateVertex {
     protected void updateNameText() {
         if (getOwner() != null) {
             String s = Notation.generate(this, getOwner());
-            if (s != null) getNameFig().setText(s);
+            if (s != null) {
+                getNameFig().setText(s);
+            }
         }
     }
 

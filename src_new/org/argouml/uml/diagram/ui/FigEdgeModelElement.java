@@ -161,10 +161,8 @@ public abstract class FigEdgeModelElement
         name.setFilled(false);
         name.setLineWidth(0);
         name.setExpandOnly(false);
-        name.setMultiLine(false);
-        name.setAllowsTab(false);
-//        name.setReturnAction(FigText.IGNORE);
-//        name.setTabAction(FigText.IGNORE);
+        name.setReturnAction(FigText.END_EDITING);
+        name.setTabAction(FigText.END_EDITING);
 
         stereo.setFont(LABEL_FONT);
         stereo.setTextColor(Color.black);
@@ -172,10 +170,8 @@ public abstract class FigEdgeModelElement
         stereo.setFilled(false);
         stereo.setLineWidth(0);
         stereo.setExpandOnly(false);
-        stereo.setMultiLine(false);
-        stereo.setAllowsTab(false);
-//        stereo.setReturnAction(FigText.IGNORE);
-//        stereo.setTabAction(FigText.IGNORE);
+        stereo.setReturnAction(FigText.END_EDITING);
+        stereo.setTabAction(FigText.END_EDITING);
 
         setBetweenNearestPoints(true);
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
@@ -183,7 +179,7 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * the constructor that hooks the Fig into the UML model element
+     * The constructor that hooks the Fig into the UML model element.
      *
      * @param edge the UML element
      */
@@ -904,7 +900,7 @@ public abstract class FigEdgeModelElement
         this.setBetweenNearestPoints(true);
         edgeShape.setLineColor(Color.black);
         edgeShape.setFilled(false);
-        edgeShape._isComplete = true;
+        edgeShape.setComplete(true);
         this.setFig(edgeShape);
     }
 

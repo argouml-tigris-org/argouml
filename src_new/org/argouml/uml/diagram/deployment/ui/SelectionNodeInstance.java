@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -33,10 +32,10 @@ import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.tigris.gef.base.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.ModeCreateEdgeAndNode;
 import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.base.ModeModify;
 import org.tigris.gef.base.SelectionManager;
@@ -90,10 +89,10 @@ public class SelectionNodeInstance extends SelectionNodeClarifiers {
 	if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
 	    return;
 	}
-	int cx = _content.getX();
-	int cy = _content.getY();
-	int cw = _content.getWidth();
-	int ch = _content.getHeight();
+	int cx = getContent().getX();
+	int cy = getContent().getY();
+	int cw = getContent().getWidth();
+	int ch = getContent().getHeight();
 	int aw = dep.getIconWidth();
 	int ah = dep.getIconHeight();
 	if (hitAbove(cx + cw / 2, cy, aw, ah, r)) {
@@ -119,10 +118,10 @@ public class SelectionNodeInstance extends SelectionNodeClarifiers {
      * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
      */
     public void paintButtons(Graphics g) {
-	int cx = _content.getX();
-	int cy = _content.getY();
-	int cw = _content.getWidth();
-	int ch = _content.getHeight();
+	int cx = getContent().getX();
+	int cy = getContent().getY();
+	int cw = getContent().getWidth();
+	int ch = getContent().getHeight();
 	paintButtonAbove(dep, g, cx + cw / 2, cy, 10);
 	paintButtonBelow(dep, g, cx + cw / 2, cy + ch, 11);
 	paintButtonLeft(dep, g, cx + cw, cy + ch / 2, 12);
@@ -140,11 +139,8 @@ public class SelectionNodeInstance extends SelectionNodeClarifiers {
 	    super.dragHandle(mX, mY, anX, anY, hand);
 	    return;
 	}
-	int cx = _content.getX(), cy = _content.getY();
-	int cw = _content.getWidth(), ch = _content.getHeight();
-	int newX = cx, newY = cy, newW = cw, newH = ch;
-	Dimension minSize = _content.getMinimumSize();
-	int minWidth = minSize.width, minHeight = minSize.height;
+	int cx = getContent().getX(), cy = getContent().getY();
+	int cw = getContent().getWidth(), ch = getContent().getHeight();
 	Object edgeType = null;
 	Object nodeType = Model.getMetaTypes().getNodeInstance();
 	int bx = mX, by = mY;
@@ -180,7 +176,8 @@ public class SelectionNodeInstance extends SelectionNodeClarifiers {
 	    Editor ce = Globals.curEditor();
 	    ModeCreateEdgeAndNode m =
 	        new ModeCreateEdgeAndNode(ce, edgeType, nodeType, false);
-	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
+	    m.setup((FigNode) getContent(), getContent().getOwner(),
+	            bx, by, reverse);
 	    ce.pushMode(m);
 	}
 
@@ -192,7 +189,7 @@ public class SelectionNodeInstance extends SelectionNodeClarifiers {
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
-        return gm.connect(_content.getOwner(), newNode,
+        return gm.connect(getContent().getOwner(), newNode,
 			  (Class) Model.getMetaTypes().getLink());
     }
 
@@ -201,7 +198,7 @@ public class SelectionNodeInstance extends SelectionNodeClarifiers {
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, _content.getOwner(),
+        return gm.connect(newNode, getContent().getOwner(),
 			  (Class) Model.getMetaTypes().getLink());
     }
 
@@ -210,7 +207,7 @@ public class SelectionNodeInstance extends SelectionNodeClarifiers {
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
-        return gm.connect(_content.getOwner(), newNode,
+        return gm.connect(getContent().getOwner(), newNode,
 			  (Class) Model.getMetaTypes().getLink());
     }
 
@@ -219,7 +216,7 @@ public class SelectionNodeInstance extends SelectionNodeClarifiers {
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, _content.getOwner(),
+        return gm.connect(newNode, getContent().getOwner(),
 			  (Class) Model.getMetaTypes().getLink());
     }
 

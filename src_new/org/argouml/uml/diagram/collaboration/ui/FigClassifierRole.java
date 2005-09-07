@@ -136,7 +136,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         Dimension nameMin = getNameFig().getMinimumSize();
 
         getNameFig().setLineWidth(0);
-        getNameFig().setMultiLine(true);
+        getNameFig().setReturnAction(FigText.INSERT);
         getNameFig().setFilled(false);
         getNameFig().setUnderline(true);
 
@@ -157,10 +157,10 @@ public class FigClassifierRole extends FigNodeModelElement {
 
 
     /**
-     * <p>Variant constructor that associates the classifier role with a
-     *   particular NSUML object.</p>
+     * Variant constructor that associates the classifier role with a
+     * particular NSUML object.<p>
      *
-     * <p>Classifier role is constructed with {@link #FigClassifierRole()}.</p>
+     * Classifier role is constructed with {@link #FigClassifierRole()}.<p>
      *
      * @param gm    The graph model to use. Ignored in this implementation.
      * @param lay   The layer
@@ -174,24 +174,22 @@ public class FigClassifierRole extends FigNodeModelElement {
 
 
     /**
-     * <p>Return the default name to use for this classifier role.</p>
+     * Return the default name to use for this classifier role.<p>
      *
-     * <p>Seems to be immediately overwritten by the empty string, but may be
-     *   useful in defining the default name size?</p>
+     * Seems to be immediately overwritten by the empty string, but may be
+     * useful in defining the default name size?<p>
      *
      * @return  The string to use ("new Classifier Role" in this case).
      */
-
     public String placeString() {
         return "new Classifier Role";
     }
 
-
     /**
-     * <p>Version of the clone to ensure all sub-figs are copied.</p>
+     * Version of the clone to ensure all sub-figs are copied.<p>
      *
-     * <p>Uses the generic superclass clone which gives a vector of all the
-     *   figs. Then initialize our instance variables from this vector.</p>
+     * Uses the generic superclass clone which gives a vector of all the
+     * figs. Then initialize our instance variables from this vector.<p>
      *
      * @return  A new copy of the the current fig.
      */
@@ -210,15 +208,14 @@ public class FigClassifierRole extends FigNodeModelElement {
 
 
     /**
-     * <p>Update the stereotype text.</p>
+     * Update the stereotype text.<p>
      *
-     * <p>If the stereotype text is non-existant, we must make sure it is
-     *   marked not displayed, and update the display accordingly.</p>
+     * If the stereotype text is non-existant, we must make sure it is
+     * marked not displayed, and update the display accordingly.<p>
      *
-     * <p>Similarly if there is text, we must make sure it is marked
-     *   displayed.</p>
+     * Similarly if there is text, we must make sure it is marked
+     * displayed.<p>
      */
-
     protected void updateStereotypeText() {
 
         // Can't do anything if we haven't got an owner to have a stereotype!
@@ -233,7 +230,8 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         Rectangle   bounds = getBounds();
 
-        Object stereo = CollectionUtil.getFirstItemOrNull(
+        Object stereo =
+            CollectionUtil.getFirstItemOrNull(
                 Model.getFacade().getStereotypes(me));
 
         // Where we now have no stereotype, mark as not displayed. Were we do
@@ -250,8 +248,7 @@ public class FigClassifierRole extends FigNodeModelElement {
                 bounds.height -= getStereotypeFig().getBounds().height;
                 getStereotypeFig().setVisible(false);
             }
-        }
-        else {
+        } else {
 
             int oldHeight = getStereotypeFig().getBounds().height;
 
@@ -328,11 +325,11 @@ public class FigClassifierRole extends FigNodeModelElement {
 
 
     /**
-     * <p>Work out the minimum size that this Fig can be.</p>
+     * Work out the minimum size that this Fig can be.<p>
      *
-     * <p>This should be the size of the stereotype + name + padding. However
-     *   we allow for the possible case that the cover or big port could be
-     *   bigger still.</p>
+     * This should be the size of the stereotype + name + padding. However
+     * we allow for the possible case that the cover or big port could be
+     * bigger still.<p>
      *
      * @return  The minimum size of this fig.
      */
@@ -355,26 +352,28 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         // Maximum should allow for bigPort and cover.
 
-        newMin.height = Math.max(bigPortMin.height,
-                                 Math.max(coverMin.height,
-                                          newMin.height + PADDING * 2));
+        newMin.height =
+            Math.max(bigPortMin.height,
+                    Math.max(coverMin.height,
+                            newMin.height + PADDING * 2));
 
-        newMin.width  = Math.max(bigPortMin.width,
-                                 Math.max(coverMin.width,
-                                          newMin.width + PADDING * 2));
+        newMin.width  =
+            Math.max(bigPortMin.width,
+                    Math.max(coverMin.width,
+                            newMin.width + PADDING * 2));
 
         return newMin;
     }
 
 
     /**
-     * <p>Override setBounds to keep shapes looking right.</p>
+     * Override setBounds to keep shapes looking right.<p>
      *
-     * <p>Set the bounds of all components of the Fig. The stereotype (if any)
-     *   and name are centred in the fig.</p>
+     * Set the bounds of all components of the Fig. The stereotype (if any)
+     * and name are centred in the fig.<p>
      *
-     * <p>We allow for the requested bounds being too small, and impose our
-     *   minimum size if necessary.</p>
+     * We allow for the requested bounds being too small, and impose our
+     * minimum size if necessary.<p>
      *
      * @param x  X coordinate of upper left corner
      *
@@ -417,8 +416,7 @@ public class FigClassifierRole extends FigNodeModelElement {
             getStereotypeFig().setBounds(x, y + extraEach, w, stereoMin.height);
             getNameFig().setBounds(x, y + stereoMin.height + extraEach, w,
 				   nameMin.height);
-        }
-        else {
+        } else {
             int extraEach = (h - nameMin.height) / 2;
 
             getNameFig().setBounds(x, y + extraEach, w, nameMin.height);
@@ -449,7 +447,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>Called after text has been edited directly on the screen.</p>
+     * Called after text has been edited directly on the screen.<p>
      *
      * @param ft  The text that was edited.
      * @throws PropertyVetoException by the parser
@@ -466,8 +464,10 @@ public class FigClassifierRole extends FigNodeModelElement {
 		ProjectBrowser.getInstance().getStatusBar().showStatus("");
 	    } catch (ParseException pe) {
                 String msg = "statusmsg.bar.error.parsing.classifierrole";
-                Object[] args = {pe.getLocalizedMessage(), 
-                    new Integer(pe.getErrorOffset())};
+                Object[] args = {
+                    pe.getLocalizedMessage(),
+                    new Integer(pe.getErrorOffset()),
+                };
                 ProjectBrowser.getInstance().getStatusBar().showStatus(
                         Translator.messageFormat(msg, args));
 	    }
@@ -475,16 +475,18 @@ public class FigClassifierRole extends FigNodeModelElement {
     }
 
     /**
-     * <p>Adjust the fig in the light of some change to the model.</p>
+     * Adjust the fig in the light of some change to the model.<p>
      *
-     * <p><em>Note</em>. The current implementation does not properly use
-     *   Notation.generate to generate the full name for a classifier role.</p>
+     * <em>Note</em>. The current implementation does not properly use
+     * Notation.generate to generate the full name for a classifier role.<p>
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
         Object own = getOwner();
-        if (own == null) return;
+        if (own == null) {
+            return;
+        }
         Object cr = /*(MClassifierRole)*/ own;
         // We only use the notation generator for the name itself. We ought to
         // do the whole thing.
@@ -500,18 +502,20 @@ public class FigClassifierRole extends FigNodeModelElement {
             Vector bases = new Vector(Model.getFacade().getBases(cr));
             baseString += Model.getFacade().getName(bases.elementAt(0));
 
-            for (int i = 1; i < bases.size(); i++)
-                baseString += 
+            for (int i = 1; i < bases.size(); i++) {
+                baseString +=
                     ", " + Model.getFacade().getName(bases.elementAt(i));
+            }
         }
 
         // Build the final string and set it as the name text.
 
         if (isReadyToEdit()) {
-            if (nameStr.length() == 0 && baseString.length() == 0)
+            if (nameStr.length() == 0 && baseString.length() == 0) {
                 getNameFig().setText("");
-            else
+            } else {
                 getNameFig().setText("/" + nameStr.trim() + " : " + baseString);
+            }
         }
         Rectangle rect = getBounds();
         setBounds(rect.x, rect.y, rect.width, rect.height);
@@ -528,8 +532,9 @@ public class FigClassifierRole extends FigNodeModelElement {
 	    || mee.getPropertyName().equals("base")
 	    && mee.getSource() == getOwner()) {
             updateNameText();
-        } else
+        } else {
             super.modelChanged(mee);
+        }
     }
 
     /**
