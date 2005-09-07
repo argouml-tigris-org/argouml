@@ -15,7 +15,7 @@
 briefly below.</P>
 
 <UL>
-  <LI><A HREF="#install">Click and Go! with JavaWebStart</A>
+  <LI><A HREF="#install">Click and Go! with Java Web Start</A>
   <LI><A HREF="#crossplatform">Platform Independent: Java 1.4+</A>
   <LI><A HREF="#Standard">Standard UML 1.3 Meta-Model</A>
   <LI><A HREF="#Diagrams">8 out of 9 Diagrams supported</A>
@@ -25,7 +25,7 @@ briefly below.</P>
   <LI><A HREF="#Editing">Advanced diagram editing and Zoom</A>
   <LI><A HREF="#OCL">OCL Support</A>
   <LI><A HREF="#codegen">Forward Engineering</A>
-  <LI><A HREF="#reveng">Reverse Engineering / Jar/classfile Import</A>
+  <LI><A HREF="#reveng">Reverse Engineering / Jar/class file Import</A>
   <LI>Cognitive Support
   <UL>
     <LI>Reflection-in-action
@@ -39,7 +39,7 @@ briefly below.</P>
     <LI>Opportunistic Design
     <UL>
       <LI><A HREF="#todolist">&quot;To Do&quot; List</A>
-      <!-- <LI><A HREF="#checklists">Checklists</A> -->
+      <LI><A HREF="#checklists">Checklists</A>
       <!-- <LI><A HREF="#wbs">Work Breakdown Structure (future)</A> -->
     </UL>
     <LI>Comprehension and Problem Solving
@@ -65,8 +65,8 @@ briefly below.</P>
 
 
 
-<h3><A NAME="install">Install with Java WebStart</A></h3>
-The ArgoUML website provides easy installation with Java Webstart.
+<h3><A NAME="install">Install with Java Web Start</A></h3>
+The ArgoUML website provides easy installation with Java Web Start.
 
 <h3><A NAME="crossplatform">Runs on any platform with Java1.4 or Java5</A></h3>
 ArgoUML is written entirely in Java and uses the Java Foundation 
@@ -77,7 +77,8 @@ ArgoUML is compliant with the <a href="http://www.omg.org">OMG</a>
 Standard for UML 1.3. 
       The code for the internal representation of an UML
       model is completely generated from the specification and, thus,
-      follows it very closely.  To achieve this, a special metamodel
+follows it very closely.
+To achieve this, a special meta-model
       library (<a href="http://nsuml.sourceforge.net">NSUML</a>) was
       developed by <a href="http://www.novosoft.ru">Novosoft</a> and
       made available under LGPL.
@@ -121,14 +122,14 @@ Diagrams can be saved as GIF, PostScript, Encapsulated PS, PGML and SVG.
 ArgoUML has been internationalized to American English, British English,
         French, German, Spanish and Russian.
 	Norwegian Bokmål and Chinese are underway.
-	Portugues and Catalan are considered.
+Portuguese and Catalan are considered.
 
 <h3><A NAME="Editing">Diagram Editing</A></h3>
 ArgoUML supports many diagram editing features that help you edit UML
 diagrams.
 
 <h3><A NAME="OCL">OCL Support</A></h3>
-ArgoUML provides constraint modelling support on UML Classes and
+ArgoUML provides constraint modeling support on UML Classes and
          Features.
          The <a
          href="http://dresden-ocl.sourceforge.net">Dresden OCL toolkit </a>
@@ -138,10 +139,12 @@ ArgoUML provides constraint modelling support on UML Classes and
          <!-- It also is able to generate Java-code from OCL-Constraints.
             [check this] -->
 
-<h3><A NAME="codegen">Forward Engineering</A></h3>
+<h3><A NAME="codegen">Code Generation</A></h3>
 
 ArgoUML provides a modular code generation framework. Currently Java is
-provided by default and there are modules for C++ and Php. The Java code
+provided by default and there are modules for C++, C# and PHP.
+
+The Java code
 generation works with the Java reverse engineering to provide basic round -
 trip.
 
@@ -150,7 +153,7 @@ trip.
 ArgoUML provides a modular reverse engineering framework.
 
 Currently Java source code is provided by default and there are
-modules for Java <b>Jar</b> and classfile import.
+modules for Java <b>Jar</b> and class file import.
 
 <h3><A NAME="critics">Design Critics</A></h3>
 
@@ -162,9 +165,9 @@ Design critics are simple agents that continuously execute in
         finishing, to style guidelines, to the advice of expert
         designers. Many critics offer to automatically improve the
         design. Critics are controlled so that their suggestions are
-        relavent and timely to the design task at hand, bsed on
+relevant and timely to the design task at hand, based on
         information in Argo's user model. Critics never interrupt the
-        designer, instead they post thier suggestions to the
+designer, instead they post their suggestions to the
         designer's &quot;to do&quot; list.
 
 <h3><A NAME="corrective">Corrective Automations (partially implemented)</A></h3>
@@ -266,11 +269,14 @@ Checklists are somewhat similar to critics (in fact, they
       problems are detected. The designer still makes the final
       decision about any design changes, but the critic can automate
       much of the analysis and work. In contrast, checklist items are
-      much more general and vauge, they serve to remind the designer,
+much more general and vague, they serve to remind the designer,
       but it is the designer who must do most of the analysis and
-      work. Checklists are easier to author (see <A
+work.
+
+<!-- Checklists are easier to author (see <A
       HREF="#checklisteditor">below</A>), and useful checklist items
       can be upgraded to critics if appropriate.
+-->
 
 <!--
 <h3><A NAME="wbs">Work Breakdown Structure (future)</A></h3>
@@ -280,7 +286,9 @@ This feature is not described yet.
 <h3><A NAME="navigation">Explorer Perspectives</A></h3>
 Argo, like most tools,
       provides a tree view to allow the designer to access the
-      various parts of their modelling project. Unlike other tools,
+various parts of their modeling project.
+
+Unlike other tools,
 Argo provides the
       designer with a much richer set of alternative tree views
       of the project
@@ -314,7 +322,8 @@ Table</A>
 Diagrams are the main way of presenting object-oriented
         designs. Argo can also provide tabular presentations of the
         design and textual presentations in the form of source code,
-        and (future) english language explanations. Argo allows
+and (future) English language explanations.
+Argo allows
         (future) editing in any of these presentations, and all of
         them are kept consistent.
 <!--
@@ -337,27 +346,39 @@ In the future, we will investigate issues of graph
         choose one that supports the task at hand, and then move on to
         another task and a new visualization.
 
+-->
+<!--
 <h3><A NAME="usermodeledit">Customizable User Model (partially implemented)</A></h3>
 Designers can add new items to each part of Argo's user model.
 
+-->
+<!--
 <h3><A NAME="processmodel">Customizable Process Model (partially implemented)</A></h3>
 Designers can add new tasks to Argo's process model.
 
+-->
+<!--
 <h3><A NAME="criticeditor">Critic Editor (future)</A></h3>
 Critics can be represented as a network of predicates and actions. An upcoming version
       of Argo will include a diagram editor for authoring critics.
 
+-->
+<!--
 <h3><A NAME="checklisteditor">Checklist Editor (future)</A><h3>
 Checklists are made up of short pieces of text that serve to
         remind the designer to address specific issues or common
-        problems. Additional program logic can be used to costumize
+problems.
+Additional program logic can be used to customize
         the item to the design element at hand. An upcoming version of
         Argo will support authoring checklist items that contain only
         text.
 
+-->
+<!--
 <h3><A NAME="autoeditor"></A><B>Corrective Automation Editor (future)</A></h3>
 Critics may offer corrective automations once a specific
-        problem has been detected.  In an upcoming version of Argp,
+problem has been detected.
+In an upcoming version of ArgoUML,
         designers will be able to author these corrective automations
         using the same graphical editor used to author critics.
 -->
