@@ -2625,6 +2625,16 @@ public interface Facade {
     String getTipString(Object modelElement);
 
     /**
+     * Returns a textual representation of the given model element.<p>
+     * All implementations should return the same value as would be expected
+     * from the toString() method of the NSUML class MModelElement.
+     *
+     * @param modelElement The model element for which to convert to text
+     * @return the textual representation of the model element
+     */
+    String toString(Object modelElement);
+    
+    /**
      * @param target The TimeEvent.
      * @return TimeExpression
      */

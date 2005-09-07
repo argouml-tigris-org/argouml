@@ -1055,7 +1055,7 @@ public class TestParserDisplay extends TestCase {
                     + " gave wrong multiplicity: "
                     + (Model.getFacade().getMultiplicity(attr) == null
                        ? "(null)"
-                       : Model.getFacade().getMultiplicity(attr).toString()),
+                       : Model.getFacade().toString(Model.getFacade().getMultiplicity(attr))),
                     Model.getFacade().getMultiplicity(attr) == null);
         } else {
             assertTrue(
@@ -1063,7 +1063,7 @@ public class TestParserDisplay extends TestCase {
                     + " gave wrong multiplicity: "
                     + (Model.getFacade().getMultiplicity(attr) == null
                        ? "(null)"
-                       : Model.getFacade().getMultiplicity(attr).toString()),
+                       : Model.getFacade().toString(Model.getFacade().getMultiplicity(attr))),
                     mult.equals(Model.getFacade().getMultiplicity(attr)));
         }
     }
