@@ -53,7 +53,7 @@ public class SelectionEdgeClarifiers extends SelectionReshape {
      * @see org.tigris.gef.base.Selection#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
-	((FigEdgeModelElement) _content).paintClarifiers(g);
+	((FigEdgeModelElement) getContent()).paintClarifiers(g);
 	super.paint(g);
     }
 

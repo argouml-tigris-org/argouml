@@ -81,7 +81,7 @@ public class FigMessage extends FigNodeModelElement {
     public FigMessage() {
         setShadowSize(0); // Issue 2714. 
 	getNameFig().setLineWidth(0);
-	getNameFig().setMultiLine(false);
+	getNameFig().setReturnAction(FigText.END_EDITING);
 	getNameFig().setFilled(false);
 	Dimension nameMin = getNameFig().getMinimumSize();
 	getNameFig().setBounds(10, 10, 90, nameMin.height);

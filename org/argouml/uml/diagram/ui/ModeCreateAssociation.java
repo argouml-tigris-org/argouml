@@ -200,7 +200,7 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
                     p.setSelfLoop(true);
                 }
                 editor.damageAll();
-                p._isComplete = true;
+                p.setComplete(true);
 
                 Object edgeType = getArg("edgeClass");
                 if (edgeType.equals(Model.getMetaTypes().getAssociation())

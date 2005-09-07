@@ -56,7 +56,7 @@ public class PathConvPercent2 extends PathConv {
     public void stuffPoint(Point res) {
         int figLength = _pathFigure.getPerimeterLength();
         if (figLength < 10) {
-            res.setLocation(_pathFigure.center());
+            res.setLocation(_pathFigure.getCenter());
             return;
         }
         int pointToGet = (figLength * percent) / 100;
@@ -97,20 +97,22 @@ public class PathConvPercent2 extends PathConv {
 
         res.x += Math.abs(dx);
         res.y -= Math.abs(dy);
-        
-        int width = itemFig.getHalfWidth();
-        
+
+        int width = itemFig.getWidth() / 2;
+
         if (recipnumerator != 0) {
-            double slope = (double)recipdenominator / (double)recipnumerator;
-            
+            double slope = (double) recipdenominator / (double) recipnumerator;
+
             double factor = tanh(slope);
             res.x += (Math.abs(factor) * width);
+        } else {
+            res.x += width;
         }
-        else res.x += width;
     }
-    
-    /** 
-     * calculate the tangens hyperbolicus
+
+    /**
+     * Calculate the tangens hyperbolicus.
+     *
      * @param x
      * @return tangens hyberbolicus
      */

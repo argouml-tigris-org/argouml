@@ -50,11 +50,11 @@ public abstract class FigState extends FigStateVertex {
     protected static final int SPACE_MIDDLE = 5;
     protected static final int DIVIDER_Y = 4;
     protected static final int SPACE_BOTTOM = 6;
- 
+
     protected static final int MARGIN = 2;
-    
+
     /**
-     * the text inside the state
+     * The text inside the state.
      */
     private FigText internal;
 
@@ -63,16 +63,17 @@ public abstract class FigState extends FigStateVertex {
      */
     public FigState() {
         super();
-        internal = new FigText(getInitialX() + 2, getInitialY() + 2 + 21 + 4,
-                getInitialWidth() - 4, getInitialHeight()
-                        - (getInitialY() + 2 + 21 + 4));
+        internal =
+            new FigText(getInitialX() + 2,
+                    getInitialY() + 2 + 21 + 4,
+                    getInitialWidth() - 4,
+                    getInitialHeight() - (getInitialY() + 2 + 21 + 4));
         internal.setFont(getLabelFont());
         internal.setTextColor(Color.black);
         internal.setLineWidth(0);
         internal.setFilled(false);
         internal.setExpandOnly(true);
-        internal.setMultiLine(true);
-//        internal.setReturnAction(FigText.INSERT);
+        internal.setReturnAction(FigText.INSERT);
         internal.setJustification(FigText.JUSTIFY_LEFT);
     }
 
@@ -147,8 +148,8 @@ public abstract class FigState extends FigStateVertex {
             // change that...) the owner is the oldOwner
             Object state = getOwner();
             if (state != null) {
-                Iterator it = Model.getFacade().getInternalTransitions(state)
-                        .iterator();
+                Iterator it =
+                    Model.getFacade().getInternalTransitions(state).iterator();
                 while (it.hasNext()) {
                     Model.getPump().removeModelEventListener(this,
                             it.next());
@@ -170,7 +171,7 @@ public abstract class FigState extends FigStateVertex {
         if (newOwner != null) {
             // register for events from all internal transitions
             Object state = newOwner;
-            Iterator it = 
+            Iterator it =
                 Model.getFacade().getInternalTransitions(state).iterator();
             while (it.hasNext()) {
                 Model.getPump().addModelEventListener(this,
@@ -189,15 +190,17 @@ public abstract class FigState extends FigStateVertex {
                 Model.getPump().addModelEventListener(this,
                         Model.getFacade().getExit(state));
             }
-        } 
+        }
     }
 
     /**
-     * Updates the text inside the state
+     * Updates the text inside the state.
      */
     protected void updateInternal() {
         Object state = getOwner();
-        if (state == null) return;
+        if (state == null) {
+            return;
+        }
         String newText = Notation.generateStateBody(this, state);
         internal.setText(newText);
 

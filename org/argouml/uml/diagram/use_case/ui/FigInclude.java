@@ -70,8 +70,8 @@ public class FigInclude extends FigEdgeModelElement {
         label.setFilled(false);
         label.setLineWidth(0);
         label.setExpandOnly(false);
-        label.setMultiLine(false);
-        label.setAllowsTab(false);
+        label.setReturnAction(FigText.END_EDITING);
+        label.setTabAction(FigText.END_EDITING);
         label.setText("<<include>>");
 
         addPathItem(label, new PathConvPercent(this, 50, 10));

@@ -64,7 +64,6 @@ public class FigSynchState extends FigStateVertex {
 
     /**
      * The constructor.
-     * 
      */
     public FigSynchState() {
 
@@ -77,8 +76,8 @@ public class FigSynchState extends FigStateVertex {
         bound.setLineWidth(0);
         bound.setFont(getLabelFont());
         bound.setTextColor(Color.black);
-        bound.setMultiLine(false);
-        bound.setAllowsTab(false);
+        bound.setReturnAction(FigText.END_EDITING);
+        bound.setTabAction(FigText.END_EDITING);
         bound.setJustificationByName("center");
         bound.setEditable(false);
         bound.setText("*");
@@ -93,7 +92,7 @@ public class FigSynchState extends FigStateVertex {
 
     /**
      * The constructor.
-     * 
+     *
      * @param gm the graphmodel (not used)
      * @param node the UML object
      */
@@ -190,14 +189,16 @@ public class FigSynchState extends FigStateVertex {
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if (mee.getPropertyName().equals("bound")) {
-            if (getOwner() == null)
+            if (getOwner() == null) {
                 return;
+            }
             int b = Model.getFacade().getBound(getOwner());
             String aux;
-            if (b <= 0)
+            if (b <= 0) {
                 aux = "*";
-            else
+            } else {
                 aux = String.valueOf(b);
+            }
             bound.setText(aux);
             updateBounds();
             damage();

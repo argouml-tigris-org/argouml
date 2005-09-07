@@ -51,9 +51,10 @@ import org.tigris.gef.presentation.FigText;
  *
  * The Fig of this modelelement may either contain the Classifier name, or
  * it contains the name of the ClassifierInState AND the name of its state.
- * In the examples in the UML standard, this is written like<br>
- *      PurchaseOrder  <br>
- *       [approved]    <br>
+ * In the examples in the UML standard, this is written like<pre>
+ *      PurchaseOrder
+ *       [approved]
+ * </pre>
  * i.e. in 2 lines. The first line is underlined,
  * to indicate that it is an instance (object).<p>
  *
@@ -79,19 +80,20 @@ public class FigObjectFlowState extends FigNodeModelElement {
     // constructors
 
     /**
-     * Main Constructor FigObjectFlowState (called from file loading)
+     * Main Constructor FigObjectFlowState (called from file loading).
      */
     public FigObjectFlowState() {
         setBigPort(new FigRect(OFFSET, OFFSET, WIDTH, HEIGHT,
                 Color.cyan, Color.cyan));
-        cover = new FigRect(OFFSET, OFFSET, WIDTH, HEIGHT,
-                Color.black, Color.white);
+        cover =
+            new FigRect(OFFSET, OFFSET, WIDTH, HEIGHT,
+                    Color.black, Color.white);
 
         classifier = new FigText(OFFSET, HEIGHT - OFFSET, WIDTH, 21);
         classifier.setFont(getLabelFont());
         classifier.setTextColor(Color.black);
-        classifier.setMultiLine(false);
-        classifier.setAllowsTab(false);
+        classifier.setReturnAction(FigText.END_EDITING);
+        classifier.setTabAction(FigText.END_EDITING);
         classifier.setLineWidth(0);
         classifier.setFilled(false);
         classifier.setUnderline(true);
@@ -99,8 +101,8 @@ public class FigObjectFlowState extends FigNodeModelElement {
         state = new FigText(OFFSET, OFFSET, WIDTH, 21);
         state.setFont(getLabelFont());
         state.setTextColor(Color.black);
-        state.setMultiLine(false);
-        state.setAllowsTab(false);
+        state.setReturnAction(FigText.END_EDITING);
+        state.setReturnAction(FigText.END_EDITING);
         state.setLineWidth(0);
         state.setFilled(false);
 
@@ -122,7 +124,8 @@ public class FigObjectFlowState extends FigNodeModelElement {
 
     /**
      * Constructor FigObjectFlowState that hooks the Fig into
-     * an existing UML model element
+     * an existing UML model element.
+     *
      * @param gm ignored!
      * @param node owner, i.e. the UML element
      */
@@ -187,7 +190,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
      * The Fig can only be shrinked to half its original size - so that
      * it is not reduceable to a few pixels only.
      *
-     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
         //if (getNameFig() == null) return;
@@ -229,8 +232,9 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     private void updateClassifierText() {
         if (isReadyToEdit()) {
-            if (getOwner() == null)
+            if (getOwner() == null) {
                 return;
+            }
             String theNewText =
                 Notation.generate(this, getOwner()); // the ObjectFlowState
             classifier.setText(theNewText);
@@ -242,8 +246,9 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     private void updateStateText() {
         if (isReadyToEdit()) {
-            if (getOwner() == null)
+            if (getOwner() == null) {
                 return;
+            }
             String theNewText = "";
             Object cis = Model.getFacade().getType(getOwner());
             if (Model.getFacade().isAClassifierInState(cis)) {
@@ -360,8 +365,10 @@ public class FigObjectFlowState extends FigNodeModelElement {
             ProjectBrowser.getInstance().getStatusBar().showStatus("");
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.objectflowstate";
-            Object[] args = {pe.getLocalizedMessage(), 
-                new Integer(pe.getErrorOffset())};
+            Object[] args = {
+                pe.getLocalizedMessage(),
+                new Integer(pe.getErrorOffset()),
+            };
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
             updateClassifierText();

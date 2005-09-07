@@ -65,7 +65,7 @@ public class FigInstance extends FigNodeModelElement {
 	attr.setFont(getLabelFont());
 	attr.setExpandOnly(true);
 	attr.setTextColor(Color.black);
-	attr.setAllowsTab(false);
+	attr.setTabAction(FigText.END_EDITING);
 
 	//_attr.setExpandOnly(true);
 	attr.setJustification(FigText.JUSTIFY_LEFT);

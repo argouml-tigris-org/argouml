@@ -92,8 +92,8 @@ public class FigExtend extends FigEdgeModelElement {
         label.setFilled(false);
         label.setLineWidth(0);
         label.setExpandOnly(false);
-        label.setMultiLine(false);
-        label.setAllowsTab(false);
+        label.setReturnAction(FigText.END_EDITING);
+        label.setTabAction(FigText.END_EDITING);
         label.setText("<<extend>>");
 
 
@@ -113,8 +113,8 @@ public class FigExtend extends FigEdgeModelElement {
         condition.setFilled(false);
         condition.setLineWidth(0);
         condition.setExpandOnly(false);
-        condition.setMultiLine(false);
-        condition.setAllowsTab(false);
+        condition.setReturnAction(FigText.END_EDITING);
+        condition.setTabAction(FigText.END_EDITING);
 
         // Join the two into a group
 

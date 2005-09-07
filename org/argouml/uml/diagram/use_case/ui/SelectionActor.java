@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -33,10 +32,10 @@ import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.tigris.gef.base.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.ModeCreateEdgeAndNode;
 import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.base.ModeModify;
 import org.tigris.gef.base.SelectionManager;
@@ -93,10 +92,10 @@ public class SelectionActor extends SelectionNodeClarifiers {
 	if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
 	    return;
 	}
-	int cx = _content.getX();
-	int cy = _content.getY();
-	int cw = _content.getWidth();
-	int ch = _content.getHeight();
+	int cx = getContent().getX();
+	int cy = getContent().getY();
+	int cw = getContent().getWidth();
+	int ch = getContent().getHeight();
 	int aw = assoc.getIconWidth();
 	int ah = assoc.getIconHeight();
 	if (hitLeft(cx + cw, cy + ch / 2, aw, ah, r)) {
@@ -116,10 +115,10 @@ public class SelectionActor extends SelectionNodeClarifiers {
      * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
      */
     public void paintButtons(Graphics g) {
-	int cx = _content.getX();
-	int cy = _content.getY();
-	int cw = _content.getWidth();
-	int ch = _content.getHeight();
+	int cx = getContent().getX();
+	int cy = getContent().getY();
+	int cw = getContent().getWidth();
+	int ch = getContent().getHeight();
 	paintButtonLeft(assoc, g, cx + cw, cy + ch / 2, 12);
 	paintButtonRight(assoc, g, cx, cy + ch / 2, 13);
     }
@@ -135,11 +134,8 @@ public class SelectionActor extends SelectionNodeClarifiers {
 	    super.dragHandle(mX, mY, anX, anY, hand);
 	    return;
 	}
-	int cx = _content.getX(), cy = _content.getY();
-	int cw = _content.getWidth(), ch = _content.getHeight();
-	int newX = cx, newY = cy, newW = cw, newH = ch;
-	Dimension minSize = _content.getMinimumSize();
-	int minWidth = minSize.width, minHeight = minSize.height;
+	int cx = getContent().getX(), cy = getContent().getY();
+	int cw = getContent().getWidth(), ch = getContent().getHeight();
 	Object edgeType = null;
 	Object nodeType = Model.getMetaTypes().getUseCase();
 	int bx = mX, by = mY;
@@ -162,9 +158,10 @@ public class SelectionActor extends SelectionNodeClarifiers {
 	}
 	if (edgeType != null && nodeType != null) {
 	    Editor ce = Globals.curEditor();
-	    ModeCreateEdgeAndNode m = new
-		ModeCreateEdgeAndNode(ce, edgeType, nodeType, false);
-	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
+	    ModeCreateEdgeAndNode m =
+	        new ModeCreateEdgeAndNode(ce, edgeType, nodeType, false);
+	    m.setup((FigNode) getContent(), getContent().getOwner(),
+	            bx, by, reverse);
 	    ce.pushMode(m);
 	}
 
@@ -186,7 +183,7 @@ public class SelectionActor extends SelectionNodeClarifiers {
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, _content.getOwner(),
+        return gm.connect(newNode, getContent().getOwner(),
             // TODO: Remove when GEF with this fixed and incorporated
             // http://gef.tigris.org/issues/show_bug.cgi?id=203
 		  (Class) Model.getMetaTypes().getAssociation());
@@ -197,7 +194,7 @@ public class SelectionActor extends SelectionNodeClarifiers {
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
-        return gm.connect(_content.getOwner(), newNode ,
+        return gm.connect(getContent().getOwner(), newNode ,
             // TODO: Remove when GEF with this fixed and incorporated
             // http://gef.tigris.org/issues/show_bug.cgi?id=203
 			  (Class) Model.getMetaTypes().getAssociation());

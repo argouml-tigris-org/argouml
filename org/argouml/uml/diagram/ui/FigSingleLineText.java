@@ -43,12 +43,12 @@ public class FigSingleLineText extends FigText {
      */
     public FigSingleLineText(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h, expandOnly);
-        
+
         setFont(FigNodeModelElement.getLabelFont());
         setTextColor(Color.black);
         setFilled(false);
-        setAllowsTab(false);
-        setMultiLine(false);
+        setTabAction(FigText.END_EDITING);
+        setReturnAction(FigText.END_EDITING);
         setLineWidth(0);
 //        name.setReturnAction(FigText.END_EDITING);
 //        name.setTabAction(FigText.END_EDITING);

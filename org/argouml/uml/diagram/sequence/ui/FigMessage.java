@@ -138,8 +138,8 @@ public abstract class FigMessage
         Fig sourceFig = getSourcePortFig();
         Fig destFig = getDestPortFig();
         if (sourceFig != null && destFig != null) {
-            Point startPoint = sourceFig.connectionPoint(destFig.center());
-            Point endPoint = destFig.connectionPoint(sourceFig.center());
+            Point startPoint = sourceFig.connectionPoint(destFig.getCenter());
+            Point endPoint = destFig.connectionPoint(sourceFig.getCenter());
             if (sourceFig instanceof FigMessagePort
 		&& destFig instanceof FigMessagePort) {
                 FigMessagePort srcMP = (FigMessagePort) sourceFig;
@@ -147,7 +147,7 @@ public abstract class FigMessage
                 // If it is a self-message
                 if (srcMP.getNode().getFigClassifierRole()
 		    == destMP.getNode().getFigClassifierRole()) {
-                    if (startPoint.x < sourceFig.center().x) {
+                    if (startPoint.x < sourceFig.getCenter().x) {
                         startPoint.x += sourceFig.getWidth();
 		    }
                     endPoint.x = startPoint.x;

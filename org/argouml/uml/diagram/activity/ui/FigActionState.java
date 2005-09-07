@@ -49,8 +49,6 @@ public class FigActionState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private static final int MARGIN = 2;
-
     private static final int PADDING = 8;
 
     ////////////////////////////////////////////////////////////////
@@ -62,20 +60,20 @@ public class FigActionState extends FigStateVertex {
     // constructors
 
     /**
-     * Constructor FigActionState
+     * Constructor FigActionState.
      */
     public FigActionState() {
         setBigPort(new FigRRect(10 + 1, 10 + 1, 90 - 2, 25 - 2, Color.cyan,
                 Color.cyan));
-        ((FigRRect) getBigPort()).setCornerRadius(getBigPort().getHalfHeight());
+        ((FigRRect) getBigPort()).setCornerRadius(getBigPort().getHeight() / 2);
         cover = new FigRRect(10, 10, 90, 25, Color.black, Color.white);
-        cover.setCornerRadius(getHalfHeight());
+        cover.setCornerRadius(getHeight() / 2);
 
         getBigPort().setLineWidth(0);
         getNameFig().setLineWidth(0);
         getNameFig().setBounds(10 + PADDING, 10, 90 - PADDING * 2, 25);
         getNameFig().setFilled(false);
-        getNameFig().setMultiLine(true);
+        getNameFig().setReturnAction(FigText.INSERT);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
@@ -88,7 +86,8 @@ public class FigActionState extends FigStateVertex {
     }
 
     /**
-     * Constructor FigActionState
+     * Constructor FigActionState.
+     *
      * @param gm ignored!
      * @param node owner
      */
@@ -130,11 +129,14 @@ public class FigActionState extends FigStateVertex {
     }
 
     /**
-     * Override setBounds to keep shapes looking right
-     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     *
+     * Override setBounds to keep shapes looking right.
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
-        if (getNameFig() == null) return;
+        if (getNameFig() == null) {
+            return;
+        }
         Rectangle oldBounds = getBounds();
 
         getNameFig().setBounds(x + PADDING, y, w - PADDING * 2, h - PADDING);
@@ -234,8 +236,9 @@ public class FigActionState extends FigStateVertex {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        if (getOwner() != null)
+        if (getOwner() != null) {
             getNameFig().setText(Notation.generate(this, getOwner()));
+        }
     }
 
 
@@ -246,7 +249,8 @@ public class FigActionState extends FigStateVertex {
         if (ft == getNameFig() && this.getOwner() != null) {
             ParserDisplay.SINGLETON.parseActionState(ft.getText(),
                     this.getOwner());
-        } else
+        } else {
             super.textEdited(ft);
+        }
     }
 } /* end class FigActionState */

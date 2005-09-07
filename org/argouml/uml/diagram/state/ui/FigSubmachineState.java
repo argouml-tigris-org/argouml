@@ -73,7 +73,8 @@ public class FigSubmachineState extends FigState {
         setBigPort(new FigRRect(getInitialX() + 1, getInitialY() + 1,
                 getInitialWidth() - 2, getInitialHeight() - 2,
                 Color.cyan, Color.cyan));
-        cover = new FigRRect(getInitialX(), getInitialY(),
+        cover =
+            new FigRRect(getInitialX(), getInitialY(),
                 getInitialWidth(), getInitialHeight(),
                 Color.black, Color.white);
 
@@ -93,10 +94,8 @@ public class FigSubmachineState extends FigState {
         include = new FigText(10, 10, 90, 21, true);
         include.setFont(getLabelFont());
         include.setTextColor(Color.black);
-        include.setAllowsTab(false);
-        include.setMultiLine(false);
-//        include.setReturnAction(FigText.END_EDITING);
-//        include.setTabAction(FigText.END_EDITING);
+        include.setReturnAction(FigText.END_EDITING);
+        include.setTabAction(FigText.END_EDITING);
         include.setText(placeString());
         include.setLineWidth(0);
         include.setBounds(getInitialX() + 2, getInitialY() + 2,
@@ -111,11 +110,13 @@ public class FigSubmachineState extends FigState {
                         getInitialY() + 2 + getNameFig().getBounds().height + 1,
                         Color.black);
 
-        circle1 = new FigRRect(getInitialX() + getInitialWidth() - 55,
+        circle1 =
+            new FigRRect(getInitialX() + getInitialWidth() - 55,
                 getInitialY() + getInitialHeight() - 15,
                 20, 10,
                 Color.black, Color.white);
-        circle2 = new FigRRect(getInitialX() + getInitialWidth() - 25,
+        circle2 =
+            new FigRRect(getInitialX() + getInitialWidth() - 25,
                 getInitialY() + getInitialHeight() - 15,
                 20, 10,
                 Color.black, Color.white);
@@ -145,7 +146,7 @@ public class FigSubmachineState extends FigState {
 
     /**
      * The constructor.
-     * 
+     *
      * @param gm (ignored)
      * @param node the owner UML object
      */
@@ -189,11 +190,13 @@ public class FigSubmachineState extends FigState {
         Dimension internalDim = getInternal().getMinimumSize();
         Dimension includeDim = include.getMinimumSize();
 
-        int h = SPACE_TOP + nameDim.height 
+        int h =
+            SPACE_TOP + nameDim.height
             + SPACE_MIDDLE + includeDim.height
-            + SPACE_MIDDLE + internalDim.height 
+            + SPACE_MIDDLE + internalDim.height
             + SPACE_BOTTOM;
-        int waux = Math.max(nameDim.width, 
+        int waux =
+            Math.max(nameDim.width,
                 internalDim.width) + 2 * MARGIN;
         int w = Math.max(waux, includeDim.width + 50);
         return new Dimension(w, h);
@@ -207,30 +210,31 @@ public class FigSubmachineState extends FigState {
     }
 
     /**
-     * Override setBounds to keep shapes looking right. 
-     * 
-     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     * Override setBounds to keep shapes looking right.
+     *
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
-        if (getNameFig() == null)
+        if (getNameFig() == null) {
             return;
+        }
 
         Rectangle oldBounds = getBounds();
         Dimension nameDim = getNameFig().getMinimumSize();
         Dimension includeDim = include.getMinimumSize();
 
-        getNameFig().setBounds(x + MARGIN, 
-                y + SPACE_TOP, 
-                w - 2 * MARGIN, 
+        getNameFig().setBounds(x + MARGIN,
+                y + SPACE_TOP,
+                w - 2 * MARGIN,
                 nameDim.height);
-        divider.setShape(x, 
+        divider.setShape(x,
                 y + DIVIDER_Y + nameDim.height,
-                x + w - 1, 
+                x + w - 1,
                 y + DIVIDER_Y + nameDim.height);
 
-        include.setBounds(x + MARGIN, 
+        include.setBounds(x + MARGIN,
                 y + SPACE_TOP + nameDim.height + SPACE_TOP,
-                w - 2 * MARGIN, 
+                w - 2 * MARGIN,
                 includeDim.height);
         divider2.setShape(x,
                 y + nameDim.height + DIVIDER_Y + includeDim.height + DIVIDER_Y,
@@ -239,11 +243,11 @@ public class FigSubmachineState extends FigState {
 
         getInternal().setBounds(
                 x + MARGIN,
-                y + SPACE_TOP + nameDim.height 
+                y + SPACE_TOP + nameDim.height
                     + SPACE_TOP + includeDim.height + SPACE_MIDDLE,
-                w - 2 * MARGIN, 
-                h - SPACE_TOP - nameDim.height 
-                    - SPACE_TOP - includeDim.height 
+                w - 2 * MARGIN,
+                h - SPACE_TOP - nameDim.height
+                    - SPACE_TOP - includeDim.height
                     - SPACE_MIDDLE - SPACE_BOTTOM);
 
         circle1.setBounds(x + w - 55,
@@ -335,14 +339,15 @@ public class FigSubmachineState extends FigState {
     // event processing
 
     /**
-     * Update the text labels and listeners
+     * Update the text labels and listeners.
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (getOwner() == null)
+        if (getOwner() == null) {
             return;
+        }
         if ((mee.getSource().equals(getOwner()))) {
             if ((mee.getPropertyName()).equals("submachine")) {
                 updateInclude();
@@ -351,7 +356,7 @@ public class FigSubmachineState extends FigState {
                 }
             }
         } else {
-            if (mee.getSource() 
+            if (mee.getSource()
                     == Model.getFacade().getSubmachine(getOwner())) {
                 // The Machine State has got a new name
                 if (mee.getPropertyName().equals("name")) {
@@ -372,22 +377,25 @@ public class FigSubmachineState extends FigState {
         super.updateListeners(newOwner);
         if (newOwner != null) {
             Object newSm = Model.getFacade().getSubmachine(newOwner);
-            if (newSm != null)
+            if (newSm != null) {
                 Model.getPump().addModelEventListener(this, newSm);
+            }
         } else {
             Object oldOwner = getOwner();
             if (oldOwner != null) {
                 Object oldSm = Model.getFacade().getSubmachine(oldOwner);
-                if (oldSm != null)
+                if (oldSm != null) {
                     Model.getPump().removeModelEventListener(this, oldSm);
+                }
             }
         }
     }
 
     private void updateListeners(Object newOwner, Object oldV) {
         this.updateListeners(newOwner);
-        if (oldV != null)
+        if (oldV != null) {
             Model.getPump().removeModelEventListener(this, oldV);
+        }
     }
 
     private void updateInclude() {
@@ -404,8 +412,9 @@ public class FigSubmachineState extends FigState {
         super.textEdited(ft);
         if (ft == getInternal()) {
             Object st = getOwner();
-            if (st == null)
+            if (st == null) {
                 return;
+            }
             String s = ft.getText();
             try {
                 ParserDisplay.SINGLETON.parseStateBody(st, s);

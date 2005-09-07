@@ -24,6 +24,11 @@
 
 package org.argouml.uml.diagram.state.ui;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
+import java.util.Iterator;
+
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.SelectionMoveClarifiers;
 import org.tigris.gef.base.Selection;
@@ -31,10 +36,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.util.Iterator;
 
 /**
  * Class to display graphics for a UML MStubState in a diagram.
@@ -47,7 +48,6 @@ public class FigStubState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private static final int MARGIN = 2;
     private int x = 0;
     private int y = 0;
     private int width = 45;
@@ -79,8 +79,8 @@ public class FigStubState extends FigStateVertex {
         referenceFig = new FigText(0, 0, width, height, true);
         referenceFig.setFont(getLabelFont());
         referenceFig.setTextColor(Color.black);
-        referenceFig.setMultiLine(false);
-        referenceFig.setAllowsTab(false);
+        referenceFig.setReturnAction(FigText.END_EDITING);
+        referenceFig.setTabAction(FigText.END_EDITING);
         referenceFig.setJustification(FigText.JUSTIFY_CENTER);
         referenceFig.setLineWidth(0);
         referenceFig.setBounds(x, y,
@@ -211,7 +211,7 @@ public class FigStubState extends FigStateVertex {
         Rectangle oldBounds = getBounds();
         theW = 60;
 
-        referenceFig.setBounds(theX, theY, theW, 
+        referenceFig.setBounds(theX, theY, theW,
                 referenceFig.getBounds().height);
         stubline.setShape(theX, theY,
                 theX + theW, theY);
@@ -227,14 +227,15 @@ public class FigStubState extends FigStateVertex {
     // event processing
 
     /**
-     * Update the text labels
+     * Update the text labels.
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (getOwner() == null)
+        if (getOwner() == null) {
             return;
+        }
         Object top = null;
         Object oldRef = null;
         Object container = Model.getFacade().getContainer(getOwner());
@@ -246,15 +247,18 @@ public class FigStubState extends FigStateVertex {
                 if (container != null
                         && Model.getFacade().isASubmachineState(container)
                         && Model.getFacade().getSubmachine(container) != null) {
-                    top = Model.getFacade()
+                    top =
+                        Model.getFacade()
                             .getTop(Model.getFacade().getSubmachine(container));
-                    oldRef = Model.getStateMachinesHelper()
+                    oldRef =
+                        Model.getStateMachinesHelper()
                             .getStatebyName((String) mee.getOldValue(), top);
                 }
-                if (oldRef != null)
+                if (oldRef != null) {
                     updateListeners(getOwner(), oldRef);
-                else
+                } else {
                     updateListeners(getOwner());
+                }
             } else if ((mee.getPropertyName().equals("container")
                     && Model.getFacade().isASubmachineState(container))) {
                 updateListeners(null);
@@ -279,9 +283,10 @@ public class FigStubState extends FigStateVertex {
                 if (mee.getPropertyName().equals("submachine")) {
                     if (mee.getOldValue() != null) {
                         top = Model.getFacade().getTop(mee.getOldValue());
-                        oldRef = Model.getStateMachinesHelper()
+                        oldRef =
+                            Model.getStateMachinesHelper()
                                 .getStatebyName(Model.getFacade()
-                                .getReferenceState(getOwner()), top);
+                                        .getReferenceState(getOwner()), top);
                     }
                     Model.getStateMachinesHelper()
                             .setReferenceState(getOwner(), null);
@@ -289,30 +294,30 @@ public class FigStubState extends FigStateVertex {
                     updateReference();
                 }
 
-            }
-            /*The event source is the stub state's referenced state or one of
-            the referenced state's path*/
-            else {
+            } else {
+                // The event source is the stub state's referenced state
+                // or one of the referenced state's path.
                 if (Model.getFacade().getSubmachine(container) != null) {
-                    top = Model
-                            .getFacade()
+                    top =
+                        Model.getFacade()
                             .getTop(Model.getFacade()
-                            .getSubmachine(container));
+                                    .getSubmachine(container));
                 }
-                String path = (String) Model.getFacade()
-                        .getReferenceState(getOwner());
-                Object refObject = Model.getStateMachinesHelper()
-                        .getStatebyName(path, top);
+                String path = Model.getFacade().getReferenceState(getOwner());
+                Object refObject =
+                    Model.getStateMachinesHelper().getStatebyName(path, top);
                 String ref;
-                if (refObject == null)
-                //The source was the referenced state that has got a new name.
-                    ref = Model.getStateMachinesHelper()
-                            .getPath(mee.getSource());
-                else
-                //The source was one of the referenced state's path which
-                // has got a new name.
-                    ref = Model.getStateMachinesHelper()
-                            .getPath(refObject);
+                if (refObject == null) {
+                    // The source was the referenced state that has got
+                    // a new name.
+                    ref =
+                        Model.getStateMachinesHelper().getPath(mee.getSource());
+                } else {
+                    //The source was one of the referenced state's path which
+                    // has got a new name.
+                    ref =
+                        Model.getStateMachinesHelper().getPath(refObject);
+                }
                 // The Referenced State or one of his path's states has got
                 // a new name
                 Model.getStateMachinesHelper()
@@ -331,10 +336,11 @@ public class FigStubState extends FigStateVertex {
             text = Model.getFacade().getReferenceState(getOwner());
         } catch (Exception e) {
         }
-        if (text != null)
+        if (text != null) {
             referenceFig.setText((String) text);
-        else
+        } else {
             referenceFig.setText("");
+        }
 
         calcBounds();
         setBounds(getBounds());
@@ -363,12 +369,14 @@ public class FigStubState extends FigStateVertex {
             if (container != null
                     && Model.getFacade().isASubmachineState(container)
                     && Model.getFacade().getSubmachine(container) != null) {
-                top = Model.getFacade().
+                top =
+                    Model.getFacade().
                         getTop(Model.getFacade()
-                        .getSubmachine(container));
-                reference = Model.getStateMachinesHelper()
+                                .getSubmachine(container));
+                reference =
+                    Model.getStateMachinesHelper()
                         .getStatebyName(Model.getFacade()
-                        .getReferenceState(newOwner), top);
+                                .getReferenceState(newOwner), top);
                 if (reference != null) {
                     Model.getPump()
                             .addModelEventListener(this, reference);
@@ -397,12 +405,14 @@ public class FigStubState extends FigStateVertex {
                         && Model.getFacade().isASubmachineState(container)
                         && Model.getFacade().getSubmachine(container) != null) {
 
-                    top = Model.getFacade().
+                    top =
+                        Model.getFacade().
                             getTop(Model.getFacade().
-                            getSubmachine(container));
-                    reference = Model.getStateMachinesHelper()
+                                    getSubmachine(container));
+                    reference =
+                        Model.getStateMachinesHelper()
                             .getStatebyName(Model.getFacade()
-                            .getReferenceState(oldOwner), top);
+                                    .getReferenceState(oldOwner), top);
                     if (reference != null) {
                         Model.getPump()
                                 .removeModelEventListener(this, reference);

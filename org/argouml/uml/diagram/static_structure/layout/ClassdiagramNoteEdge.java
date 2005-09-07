@@ -26,21 +26,21 @@ package org.argouml.uml.diagram.static_structure.layout;
 
 import java.awt.Point;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigPoly;
 
 /**
  * This class represents note edges to enable an appropriate positioning
- * of notes. 
+ * of notes.
  *
  * @author  David Gunkel
  */
 public class ClassdiagramNoteEdge
-    extends ClassdiagramEdge
-{
-    
+    extends ClassdiagramEdge {
     /**
      * The constructor.
-     * 
+     *
      * @param edge the fig edge
      */
     public ClassdiagramNoteEdge(FigEdge edge) {
@@ -67,17 +67,18 @@ public class ClassdiagramNoteEdge
     }
 
     /**
-     * Add points to the underlying FigPoly
+     * Add points to the underlying FigPoly.
+     *
      * @param fs - source Fig of this edge
      * @param fd - destination Fig of this edge
      */
     private void addPoints(Fig fs, Fig fd) {
         FigPoly fig = getUnderlyingFig();
         Point p = fs.getLocation();
-        p.translate(fs.getWidth(), fs.getHalfHeight());
+        p.translate(fs.getWidth(), fs.getHeight() / 2);
         fig.addPoint(p);
         p = fd.getLocation();
-        p.translate(0, fd.getHalfHeight());
+        p.translate(0, fd.getHeight() / 2);
         fig.addPoint(p);
     }
 }

@@ -66,7 +66,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         srcMult.setTextFilled(false);
         srcMult.setFilled(false);
         srcMult.setLineWidth(0);
-        srcMult.setMultiLine(false);
+        srcMult.setReturnAction(FigText.END_EDITING);
         srcMult.setJustification(FigText.JUSTIFY_CENTER);
 
         srcOrdering = new FigText(10, 10, 90, 20);
@@ -75,7 +75,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         srcOrdering.setTextFilled(false);
         srcOrdering.setFilled(false);
         srcOrdering.setLineWidth(0);
-        srcOrdering.setMultiLine(false);
+        srcOrdering.setReturnAction(FigText.END_EDITING);
         srcOrdering.setJustification(FigText.JUSTIFY_CENTER);
 
         srcRole = new FigText(10, 10, 90, 20);
@@ -84,7 +84,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         srcRole.setTextFilled(false);
         srcRole.setFilled(false);
         srcRole.setLineWidth(0);
-        srcRole.setMultiLine(false);
+        srcRole.setReturnAction(FigText.END_EDITING);
         srcRole.setJustification(FigText.JUSTIFY_CENTER);
 
         srcGroup.addFig(srcRole);
