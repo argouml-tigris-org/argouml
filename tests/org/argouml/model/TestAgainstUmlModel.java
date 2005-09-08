@@ -341,6 +341,8 @@ public class TestAgainstUmlModel extends TestCase {
     /**
      * Returns the refs.
      *
+     * TODO: Is this method used? Can it be removed? /Linus September 2005
+     *
      * @return Hashtable
      */
     public static Hashtable getRefs() {
