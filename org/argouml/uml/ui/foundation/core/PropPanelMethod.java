@@ -31,7 +31,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateOwner;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.UMLTextField2;
@@ -75,9 +74,8 @@ public class PropPanelMethod extends PropPanelFeature {
         JScrollPane pane = new JScrollPane(bodyArea);
         addField(Translator.localize("label.body"), pane);
 
-        addButton(new PropPanelButton2(new ActionNavigateOwner()));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));
+        addAction(new ActionNavigateOwner());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
     /**

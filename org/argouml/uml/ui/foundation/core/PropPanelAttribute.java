@@ -31,8 +31,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.ActionDeleteModelElements;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLInitialValueComboBox;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -92,14 +90,11 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         add(modifiersPanel);
 
 
-        addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionAddAttribute()));
-        addButton(new PropPanelButton2(new ActionAddDataType(),
-                lookupIcon("DataType")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(),
-                lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));;
+        addAction(new ActionNavigateContainerElement());
+        addAction(new ActionAddAttribute());
+        addAction(new ActionAddDataType());
+        addAction(new ActionNewStereotype());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
 

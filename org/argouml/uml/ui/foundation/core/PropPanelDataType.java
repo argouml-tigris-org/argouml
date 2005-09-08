@@ -39,8 +39,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.ActionDeleteModelElements;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.CollectionUtil;
@@ -96,17 +94,12 @@ public class PropPanelDataType extends PropPanelClassifier {
         addField(Translator.localize("label.literals"),
                 getAttributeScroll());
 
-        addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionAddDataType(),
-                lookupIcon("DataType")));
-        addButton(new PropPanelButton2(new ActionAddAttributeToDataType(),
-                lookupIcon("NewAttribute")));
-        addButton(new PropPanelButton2(new ActionAddQueryOperation(),
-                lookupIcon("NewOperation")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(),
-                lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));
+        addAction(new ActionNavigateContainerElement());
+        addAction(new ActionAddDataType());
+        addAction(new ActionAddAttributeToDataType());
+        addAction(new ActionAddQueryOperation());
+        addAction(new ActionNewStereotype());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
     private class ActionAddQueryOperation

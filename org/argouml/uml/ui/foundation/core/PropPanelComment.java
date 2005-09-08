@@ -30,7 +30,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextArea2;
@@ -70,11 +69,9 @@ public class PropPanelComment extends PropPanelModelElement {
         JScrollPane pane = new JScrollPane(text);
         addField(Translator.localize("label.comment.body"), pane);
 
-        addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionNewStereotype(),
-                lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));;
+        addAction(new ActionNavigateContainerElement());
+        addAction(new ActionNewStereotype());
+        addAction(new ActionDeleteSingleModelElement());
     }
 }
 

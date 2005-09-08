@@ -38,8 +38,6 @@ import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateOwner;
-import org.argouml.uml.ui.ActionDeleteModelElements;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -109,21 +107,15 @@ public class PropPanelOperation extends PropPanelFeature {
                new JScrollPane(new UMLLinkedList(
                new UMLOperationMethodsListModel())));
 
-        addButton(new PropPanelButton2(new ActionNavigateOwner()));
-        addButton(new PropPanelButton2(new ActionAddOperation()));
-        addButton(new PropPanelButton2(new ActionNewParameter()));
-        addButton(new PropPanelButton2(new ActionNewRaisedSignal(),
-                lookupIcon("SignalSending")));
-        addButton(new PropPanelButton2(new ActionNewMethod(),
-                lookupIcon("Method")));
-        addButton(new PropPanelButton2(new ActionAddDataType(),
-                lookupIcon("DataType")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(),
-                lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(),
-                lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));
+        addAction(new ActionNavigateOwner());
+        addAction(new ActionAddOperation());
+        addAction(new ActionNewParameter());
+        addAction(new ActionNewRaisedSignal());
+        addAction(new ActionNewMethod());
+        addAction(new ActionAddDataType());
+        addAction(new ActionNewStereotype());
+        addAction(new ActionNewStereotype());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
     /**

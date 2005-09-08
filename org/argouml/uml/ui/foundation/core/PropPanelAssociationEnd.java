@@ -24,8 +24,6 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.Collection;
-
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JList;
@@ -35,13 +33,11 @@ import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateAssociation;
 import org.argouml.uml.ui.ActionNavigateOppositeAssocEnd;
-import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -50,7 +46,6 @@ import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Orientation;
 
@@ -149,9 +144,6 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     private String associationLabel;
 
-    private PropPanelButton2 oppositeEndButton = 
-        new PropPanelButton2(new ActionNavigateOppositeAssocEnd(),
-            lookupIcon("AssociationEnd"));
 
     /**
      * Constructs the proppanel and places all scrollpanes etc. on the canvas.
@@ -242,13 +234,11 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         add(changeabilityRadioButtonpanel);
         add(visibilityRadioButtonPanel);
 
-        addButton(new PropPanelButton2(new ActionNavigateAssociation()));
-        addButton(oppositeEndButton);
-        addButton(qualifierButton);
-        addButton(new PropPanelButton2(new ActionNewStereotype(),
-                lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));;
+        addAction(new ActionNavigateAssociation());
+        addAction(new ActionNavigateOppositeAssocEnd());
+        addAction(new ActionAddAttribute());
+        addAction(new ActionNewStereotype());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
     /**
@@ -304,25 +294,6 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         return false;
     }
 
-    /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetSet(TargetEvent e) {
-        super.targetSet(e);
-        Object o = e.getNewTarget();
-        if (o instanceof Fig) {
-            o = ((Fig) o).getOwner();
-        }
-        if (o != null && Model.getFacade().isAAssociationEnd(o)) {
-            Collection ascEnds =
-                Model.getFacade().getConnections(
-                        Model.getFacade().getAssociation(o));
-            if (ascEnds.size() > 2) {
-                oppositeEndButton.setEnabled(false);
-            } else {
-                oppositeEndButton.setEnabled(true);
-            }
-        }
-    }
+   
 
 } /* end class PropPanelAssociationEnd */

@@ -33,7 +33,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLTextField2;
@@ -100,11 +99,9 @@ public class PropPanelGeneralization extends PropPanelModelElement {
                 new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(),
                         ActionSetGeneralizationPowertype.getInstance()));
 
-        addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionNewStereotype(),
-                lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));
+        addAction(new ActionNavigateContainerElement());
+        addAction(new ActionNewStereotype());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
     /**
