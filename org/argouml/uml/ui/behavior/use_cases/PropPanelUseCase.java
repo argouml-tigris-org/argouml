@@ -72,11 +72,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
 
         add(getModifiersPanel());
 
-	JList extensionPoints = new UMLMutableLinkedList(
-            new UMLUseCaseExtensionPointListModel(), null,
-            ActionNewUseCaseExtensionPoint.SINGLETON);
-	addField(Translator.localize("label.extension-points"),
-		 new JScrollPane(extensionPoints));
+	
 
 	addSeperator();
 
@@ -96,20 +92,21 @@ public class PropPanelUseCase extends PropPanelClassifier {
 
 	addSeperator();
 
+    JList extensionPoints = new UMLMutableLinkedList(
+            new UMLUseCaseExtensionPointListModel(), null,
+            ActionNewUseCaseExtensionPoint.SINGLETON);
+    addField(Translator.localize("label.extension-points"),
+         new JScrollPane(extensionPoints));
+    
         addField(Translator.localize("label.association-ends"),
             getAssociationEndScroll());
 
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(new ActionNewUseCase(),
-                lookupIcon("UseCase")));
-        addButton(new PropPanelButton2(new ActionNewExtensionPoint(),
-                lookupIcon("ExtensionPoint")));
-        addButton(new PropPanelButton2(getActionNewReception(),
-                lookupIcon("Reception")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(),
-                lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));
+        addButton(new PropPanelButton2(new ActionNewUseCase()));
+        addButton(new PropPanelButton2(new ActionNewExtensionPoint()));
+        addButton(new PropPanelButton2(getActionNewReception()));
+        addButton(new PropPanelButton2(new ActionNewStereotype()));
+        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement()));
     }
 
 
