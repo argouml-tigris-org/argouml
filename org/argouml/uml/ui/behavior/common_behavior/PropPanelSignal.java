@@ -31,8 +31,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.ActionDeleteModelElements;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -70,12 +68,10 @@ public class PropPanelSignal extends PropPanelModelElement {
         addField(Translator.localize("label.contexts"),
                 operationScroll);
 
-        addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(new ActionNewSignal(),
-                lookupIcon("SignalSending")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(),
-                lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement()));
+        addAction(new ActionNavigateNamespace());
+        addAction(new ActionNewSignal());
+        addAction(new ActionNewStereotype());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
 

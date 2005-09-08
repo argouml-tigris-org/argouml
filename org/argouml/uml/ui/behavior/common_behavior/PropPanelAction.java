@@ -33,7 +33,6 @@ import javax.swing.border.TitledBorder;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
@@ -140,13 +139,9 @@ public abstract class PropPanelAction extends PropPanelModelElement {
                 addField(Translator.localize("label.arguments"),
                                 argumentsScroll);
 
-                addButton(new PropPanelButton2(
-                                new ActionNavigateContainerElement()));
-                addButton(new PropPanelButton2(new ActionNewStereotype(),
-                                lookupIcon("Stereotype")));
-                addButton(new PropPanelButton2(
-                                new ActionDeleteSingleModelElement(),
-                                lookupIcon("Delete")));
+                addAction(new ActionNavigateContainerElement());
+                addAction(new ActionNewStereotype());
+                addAction(new ActionDeleteSingleModelElement());
 
         }
 

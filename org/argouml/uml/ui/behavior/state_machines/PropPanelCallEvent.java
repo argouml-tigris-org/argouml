@@ -31,11 +31,8 @@ import java.util.Iterator;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.ActionNewParameter;
@@ -68,11 +65,8 @@ public class PropPanelCallEvent extends PropPanelEvent {
                 new UMLCallEventOperationComboBoxModel());
         addField(Translator.localize("label.operations"), operationComboBox);
 
-        addButton(new PropPanelButton2(new ActionNewParameter(),
-                lookupIcon("Parameter")));
-
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));
+        addAction(new ActionNewParameter());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
 } /* end class PropPanelCallEvent */

@@ -30,8 +30,6 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.ActionDeleteModelElements;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMultiplicityComboBox2;
@@ -106,13 +104,10 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 	addField(Translator.localize("label.available-features"),
 		 new JScrollPane(availableFeaturesList));
 
-	addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-	addButton(new PropPanelButton2(getActionNewReception(),
-                lookupIcon("Reception")));
-	addButton(new PropPanelButton2(new ActionNewStereotype(),
-	        lookupIcon("Stereotype")));
-	addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));
+	addAction(new ActionNavigateContainerElement());
+	addAction(getActionNewReception());
+	addAction(new ActionNewStereotype());
+	addAction(new ActionDeleteSingleModelElement());
     }
 
     /**
