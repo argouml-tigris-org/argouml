@@ -114,12 +114,9 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         // Add the toolbar buttons:
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(new ActionNewExtensionPoint(),
-                lookupIcon("ExtensionPoint")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(),
-                lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));
+        addButton(new PropPanelButton2(new ActionNewExtensionPoint()));
+        addButton(new PropPanelButton2(new ActionNewStereotype()));
+        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement()));
     }
 
     /**
