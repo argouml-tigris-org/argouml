@@ -25,11 +25,11 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
-import org.tigris.swidgets.Orientation;
 import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLMultiplicityComboBox2;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
+import org.tigris.swidgets.Orientation;
 
 /**
  * @since Nov 6, 2002

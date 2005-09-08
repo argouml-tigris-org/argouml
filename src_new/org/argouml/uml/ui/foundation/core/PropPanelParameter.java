@@ -31,8 +31,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.ActionDeleteModelElements;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLInitialValueComboBox;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -87,15 +85,11 @@ public class PropPanelParameter extends PropPanelModelElement {
         add(new UMLParameterDirectionKindRadioButtonPanel(
                 Translator.localize("label.parameter.kind"), true));
 
-        addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionAddParameter(),
-                lookupIcon("Parameter")));
-        addButton(new PropPanelButton2(new ActionAddDataType(),
-                lookupIcon("DataType")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(),
-                lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));
+        addAction(new ActionNavigateContainerElement());
+        addAction(new ActionAddParameter());
+        addAction(new ActionAddDataType());
+        addAction(new ActionNewStereotype());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
     /**

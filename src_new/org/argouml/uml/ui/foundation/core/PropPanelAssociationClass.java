@@ -32,7 +32,6 @@ import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -111,17 +110,14 @@ public class PropPanelAssociationClass extends PropPanelClassifier {
         addField(Translator.localize("label.owned-elements"),
                 getOwnedElementsScroll());
 
-        addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(new ActionAddAttribute()));
-        addButton(new PropPanelButton2(new ActionAddOperation()));
-        addButton(new PropPanelButton2(getActionNewReception()));
-        addButton(new PropPanelButton2(new ActionNewInnerClass(),
-                lookupIcon("InnerClass")));
-        addButton(new PropPanelButton2(new ActionNewClass(),
-                lookupIcon("Class")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(),
-                lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement()));
+        addAction(new ActionNavigateNamespace());
+        addAction(new ActionAddAttribute());
+        addAction(new ActionAddOperation());
+        addAction(getActionNewReception());
+        addAction(new ActionNewInnerClass());
+        addAction(new ActionNewClass());
+        addAction(new ActionNewStereotype());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
     /**

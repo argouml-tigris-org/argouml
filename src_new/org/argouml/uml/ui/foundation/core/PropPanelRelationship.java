@@ -27,8 +27,8 @@ package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.ImageIcon;
 
-import org.tigris.swidgets.Orientation;
 import org.argouml.util.ConfigLoader;
+import org.tigris.swidgets.Orientation;
 
 /**
  * Added this class to give as much information to the user as possible

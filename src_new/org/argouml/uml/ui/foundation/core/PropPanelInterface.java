@@ -28,8 +28,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.ActionDeleteModelElements;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
@@ -68,17 +66,12 @@ public class PropPanelInterface extends PropPanelClassifier {
 	addField(Translator.localize("label.operations"),
             getFeatureScroll());
 
-	addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-	addButton(new PropPanelButton2(new ActionAddOperation(),
-	        lookupIcon("NewOperation")));
-	addButton(new PropPanelButton2(getActionNewReception(),
-	        lookupIcon("Reception")));
-	addButton(new PropPanelButton2(new ActionNewInterface(),
-                lookupIcon("Interface")));
-	addButton(new PropPanelButton2(new ActionNewStereotype(),
-	        lookupIcon("Stereotype")));
-	addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));
+	addAction(new ActionNavigateNamespace());
+	addAction(new ActionAddOperation());
+	addAction(getActionNewReception());
+	addAction(new ActionNewInterface());
+	addAction(new ActionNewStereotype());
+	addAction(new ActionDeleteSingleModelElement());
     }
 
 } /* end class PropPanelInterface */
