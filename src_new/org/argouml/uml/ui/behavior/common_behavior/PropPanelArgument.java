@@ -29,8 +29,6 @@ import javax.swing.ScrollPaneConstants;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateAction;
-import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionExpressionModel;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
@@ -62,8 +60,8 @@ public class PropPanelArgument extends PropPanelModelElement {
         addField(Translator.localize("label.language"),
                 new UMLExpressionLanguageField(expressionModel, true));
 
-        addButton(new PropPanelButton2(new ActionNavigateAction()));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement()));
+        addAction(new ActionNavigateAction());
+        addAction(new ActionDeleteSingleModelElement());
         
     }
 }

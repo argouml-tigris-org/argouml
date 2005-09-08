@@ -37,7 +37,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
 import org.argouml.util.ConfigLoader;
@@ -63,8 +62,7 @@ public class PropPanelSubsystem extends PropPanelPackage {
         addField(Translator.localize("label.available-features"),
                 getFeatureScroll());
 
-        addButton(new PropPanelButton2(new ActionNewOperation(),
-                lookupIcon("NewOperation")));
+        addAction(new ActionNewOperation());
     }
 
     /**

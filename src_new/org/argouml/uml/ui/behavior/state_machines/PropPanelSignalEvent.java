@@ -29,7 +29,6 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.foundation.core.ActionNewParameter;
 import org.argouml.util.ConfigLoader;
 
@@ -62,10 +61,8 @@ public class PropPanelSignalEvent extends PropPanelEvent {
         addField(Translator.localize("label.signal"),
                 new JScrollPane(signalList));
 
-        addButton(new PropPanelButton2(new ActionNewParameter(),
-                lookupIcon("Parameter")));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));
+        addAction(new ActionNewParameter());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
 }

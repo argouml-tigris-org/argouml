@@ -45,7 +45,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNavigate;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.PropPanel;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkMouseListener;
 import org.argouml.uml.ui.UMLLinkedListCellRenderer;
 import org.argouml.util.ConfigLoader;
@@ -70,8 +69,8 @@ public class PropPanelDiagram extends PropPanel {
         JList lst = new OneRowLinkedList(new UMLDiagramHomeModelListModel());
         addField(Translator.localize("label.home-model"), new JScrollPane(lst));
 
-        addButton(new PropPanelButton2(new ActionNavigateUpFromDiagram()));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement()));
+        addAction(new ActionNavigateUpFromDiagram());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
     /**

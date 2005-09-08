@@ -24,12 +24,12 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
+import javax.swing.JComboBox;
+
 import org.argouml.i18n.Translator;
-import org.argouml.util.ConfigLoader;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-
-import javax.swing.*;
+import org.argouml.util.ConfigLoader;
 
 /**
  * @since Dec 15, 2002

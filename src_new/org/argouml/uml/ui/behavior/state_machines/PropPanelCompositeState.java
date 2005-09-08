@@ -33,7 +33,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
@@ -101,8 +100,8 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex#addExtraButtons()
      */
     protected void addExtraButtons() {
-        addButton(new PropPanelButton2(
-                ActionAddConcurrentRegion.getSingleton()));
+        addAction(
+                ActionAddConcurrentRegion.getSingleton());
     }
 
     /**

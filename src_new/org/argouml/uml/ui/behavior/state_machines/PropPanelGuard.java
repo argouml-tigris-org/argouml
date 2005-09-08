@@ -31,8 +31,6 @@ import javax.swing.ScrollPaneConstants;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateTransition;
-import org.argouml.uml.ui.ActionDeleteModelElements;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionExpressionModel;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
@@ -82,12 +80,9 @@ public class PropPanelGuard extends PropPanelModelElement {
                 new UMLExpressionLanguageField(expressionModel, true));
 
 
-	addButton(new PropPanelButton2(new ActionNavigateTransition(),
-                lookupIcon("NavigateUp")));
-	addButton(new PropPanelButton2(new ActionNewStereotype(),
-	        lookupIcon("Stereotype")));
-	addButton(new PropPanelButton2(new ActionDeleteSingleModelElement(),
-                lookupIcon("Delete")));
+	addAction(new ActionNavigateTransition());
+	addAction(new ActionNewStereotype());
+	addAction(new ActionDeleteSingleModelElement());
     }
 
 } /* end class PropPanelGuard */

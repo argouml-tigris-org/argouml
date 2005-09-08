@@ -37,7 +37,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLConditionExpressionModel;
 import org.argouml.uml.ui.UMLExpressionBodyField;
@@ -113,10 +112,10 @@ public class PropPanelExtend extends PropPanelModelElement {
         addField("Condition:", conditionScroll);
 
         // Add the toolbar buttons:
-        addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(new ActionNewExtensionPoint()));
-        addButton(new PropPanelButton2(new ActionNewStereotype()));
-        addButton(new PropPanelButton2(new ActionDeleteSingleModelElement()));
+        addAction(new ActionNavigateNamespace());
+        addAction(new ActionNewExtensionPoint());
+        addAction(new ActionNewStereotype());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
     /**
