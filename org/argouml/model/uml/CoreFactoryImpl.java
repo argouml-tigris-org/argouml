@@ -894,8 +894,6 @@ public class CoreFactoryImpl
         attr.setVisibility(MVisibilityKind.PUBLIC);
         attr.setOwnerScope(MScopeKind.INSTANCE);
         attr.setChangeability(MChangeableKind.CHANGEABLE);
-        attr.setTaggedValue("transient", "false");
-        attr.setTaggedValue("volatile", "false");
         attr.setTargetScope(MScopeKind.INSTANCE);
 
         return attr;
