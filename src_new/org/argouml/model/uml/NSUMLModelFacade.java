@@ -3262,6 +3262,36 @@ public class NSUMLModelFacade implements Facade {
         // ...
 	return illegalArgumentCollection(handle);
     }
+    
+    /**
+     * Get the list of Link Ends connected to this link end.
+     *
+     * @param handle link end to start from
+     * @return Iterator with all connected link ends.
+     */
+    public Collection getOtherLinkEnds(Object handle) {
+        if (handle instanceof MLinkEnd) {
+            MLink link = ((MLinkEnd) handle).getLink();
+
+            if (link == null) {
+                return emptyCollection();
+            }
+
+            Collection allEnds = link.getConnections();
+            if (allEnds == null) {
+                return emptyCollection();
+            }
+
+            // TODO: An Iterator filter would be nice here instead of the
+            // mucking around with the Collection.
+            allEnds = new ArrayList(allEnds);
+            allEnds.remove(handle);
+            return allEnds;
+        }
+
+        // ...
+    return illegalArgumentCollection(handle);
+    }
 
     /**
      * The list of owned elements of the the package.

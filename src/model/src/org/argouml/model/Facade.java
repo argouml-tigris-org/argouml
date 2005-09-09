@@ -1971,6 +1971,14 @@ public interface Facade {
     Collection getOtherAssociationEnds(Object handle);
 
     /**
+     * Get the list of Link Ends connected to this link end.
+     *
+     * @param handle link end to start from
+     * @return A Collection with all connected link ends.
+     */
+    Collection getOtherLinkEnds(Object handle);
+    
+    /**
      * The list of owned elements of the the package.
      *
      * @param handle package to retrieve from.
