@@ -27,9 +27,11 @@ package org.argouml.uml.ui.behavior.collaborations;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -121,6 +123,8 @@ public class PropPanelMessage extends PropPanelModelElement {
         public ActionToolNewAction() {
             super("button.new-action");
             putValue(Action.NAME, Translator.localize("button.new-action"));
+            Icon icon = ResourceLoaderWrapper.lookupIcon("CallAction");
+            putValue(Action.SMALL_ICON, icon);         
         }
 
         /**
