@@ -513,12 +513,12 @@ class UseCasesHelperImpl implements UseCasesHelper {
             ((MUseCase) handle).setExtensionPoints(extensionPoints);
             return;
         }
-        if (handle instanceof MExtend && extensionPoints instanceof List) {
-            ((MExtend) handle).setExtensionPoints((List)extensionPoints);
+        if (handle instanceof MExtend && extensionPoints instanceof Collection) {
+            ((MExtend) handle).setExtensionPoints(new ArrayList(extensionPoints));
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
-                + " or extensionPoints: " + extensionPoints);
+                + " or extensionPoints: " + extensionPoints.getClass());
     }
 
     /**
