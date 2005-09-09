@@ -134,6 +134,19 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      */
     public String makeText(Object value) {
         String name = null;
+        if (Model.getFacade().isAParameter(value)) {
+            Object type = Model.getFacade().getType(value);
+            name = Model.getFacade().getName(value);
+            if (name == null || name.equals("")) {
+                name = "(anon " + makeTypeName(value) + ")";
+            }
+            String typeName = null;
+            if (type != null) typeName=Model.getFacade().getName(type);
+            if (typeName != null || "".equals(typeName)) {
+                name = name + ":" + typeName;
+            }
+            return name;
+        }
         if (Model.getFacade().isAModelElement(value)) {
             Object/* MModelElement */elem = value;
             name = Model.getFacade().getName(elem);
