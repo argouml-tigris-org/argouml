@@ -159,14 +159,36 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     /**
      * @param button
      *            the button to be added to the button panel
+     * @deprecated use addAction instead. Remove 0.20.0
      */
     protected void addButton(Component button) {
         button.setFocusable(false); // Buttons shall not go in the tabbing loop
         buttonPanel.add(button);
     }
     
+    /**
+     * Add a button to the toolbar of a property panel using the action to
+     * control the behavior of the action.
+     * 
+     * @param action
+     *            the action which will be used in the toolbar button.
+     */
     protected void addAction(Action action) {
+        addAction(action, null);
+    }
+    
+    /**
+     * Add a button to the toolbar of a property panel using the action to
+     * control the behavior of the action.
+     * 
+     * @param action
+     *            the action which will be used in the toolbar button.
+     * @param tooltip
+     *            the tooltip to set, or null to skip setting of a new tooltip.
+     */
+    protected void addAction(Action action, String tooltip) {
         JButton button = new JButton(action);
+        if (tooltip != null) button.setToolTipText(tooltip);
         button.setText("");
         button.setFocusable(false);
         buttonPanel.add(button);   
