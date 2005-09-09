@@ -25,12 +25,12 @@
 package org.argouml.uml.ui;
 
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.JButton;
 
 /**
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @deprecated used only in property panels, use addAction instead of addButton, remove in 0.20.0
  */
 public final class PropPanelButton2 extends JButton {
 
@@ -41,20 +41,5 @@ public final class PropPanelButton2 extends JButton {
     public PropPanelButton2(Action a) {
         super(a);
         setText(""); // just the icon and possibly a tooltip
-    }
-
-    /**
-     * The constructor.
-     * @deprecated by Bob Tarling. The Action class should define its own Icon
-     * then this constructor is no longer needed. Once this constructor
-     * is no longer used then this whole class is no longer needed.
-     * See issue 3260.
-     *
-     * @param a the action for this button
-     * @param i the icon to be shown
-     */
-    public PropPanelButton2(Action a, Icon i) {
-        this(a);
-        a.putValue(Action.SMALL_ICON, i);
     }
 }
