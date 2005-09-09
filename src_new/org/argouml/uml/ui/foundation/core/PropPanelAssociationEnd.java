@@ -32,13 +32,10 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateAssociation;
 import org.argouml.uml.ui.ActionNavigateOppositeAssocEnd;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMultiplicityComboBox2;
@@ -128,11 +125,6 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     private JScrollPane qualifiersScroll;
 
     /**
-     * Button to add qualified attributes to this association end
-     */
-    private PropPanelButton2 qualifierButton;
-
-    /**
      * Constructs the proppanel including initializing all scrollpanes, panels
      * etc. but excluding placing them on the proppanel itself.
      *
@@ -187,10 +179,6 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
                 null, null, true));
         qualifiersScroll = new JScrollPane(new UMLLinkedList(
                 new UMLAssociationEndQualifiersListModel()));
-        qualifierButton = new PropPanelButton2(new ActionAddAttribute());
-        qualifierButton.setToolTipText(
-                Translator.localize("button.new-qualifier"));
-
     }
 
     /**
@@ -236,7 +224,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
         addAction(new ActionNavigateAssociation());
         addAction(new ActionNavigateOppositeAssocEnd());
-        addAction(new ActionAddAttribute());
+        addAction(new ActionAddAttribute(),Translator.localize("button.new-qualifier"));
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());
     }
