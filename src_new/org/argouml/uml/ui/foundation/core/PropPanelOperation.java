@@ -27,10 +27,12 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -114,7 +116,6 @@ public class PropPanelOperation extends PropPanelFeature {
         addAction(new ActionNewMethod());
         addAction(new ActionAddDataType());
         addAction(new ActionNewStereotype());
-        addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());
     }
 
@@ -164,6 +165,8 @@ public class PropPanelOperation extends PropPanelFeature {
             super("button.new-raised-signal");
             putValue(Action.NAME,
                     Translator.localize("button.new-raised-signal"));
+            Icon icon = ResourceLoaderWrapper.lookupIcon("SignalSending");
+            putValue(Action.SMALL_ICON, icon);            
         }
 
         /**
@@ -188,6 +191,8 @@ public class PropPanelOperation extends PropPanelFeature {
             super("button.new-method");
             putValue(Action.NAME,
                     Translator.localize("button.new-method"));
+            Icon icon = ResourceLoaderWrapper.lookupIcon("Method");
+            putValue(Action.SMALL_ICON, icon);       
         }
 
         /**
