@@ -611,6 +611,19 @@ public class FigClass extends FigClassifierBox
     }
 
     /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEditStarted(FigText ft) {
+        super.textEditStarted(ft);
+        if (getAttributesFig().getFigs().contains(ft)) {
+            showHelp("parsing.help.attribute");
+        }
+        if (getOperationsFig().getFigs().contains(ft)) {
+            showHelp("parsing.help.operation");
+        }
+    }
+
+    /**
      * @param fgVec the FigGroup
      * @param ft    the Figtext
      * @param i     get the fig before fig i

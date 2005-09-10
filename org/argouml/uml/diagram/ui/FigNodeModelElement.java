@@ -908,8 +908,24 @@ public abstract class FigNodeModelElement
      * @param ft the FigText that will be edited and contains the start-text
      */
     protected void textEditStarted(FigText ft) {
+        if (ft == getNameFig()) {
+            showHelp("parsing.help.fig-nodemodelelement");
+        }
+    }
+    
+    /**
+     * Utility function to localize the given string with help text, 
+     * and show it in the status bar of the ArgoUML window.
+     * This function is used in favour of the inline call
+     * to enable later improvements; e.g. it would be possible to 
+     * show a help-balloon. TODO: Work this out.
+     * One matter to possibly improve: show multiple lines.
+     * 
+     * @param s the given string to be localized and shown
+     */
+    protected void showHelp(String s) {
         ProjectBrowser.getInstance().getStatusBar().showStatus(
-            Translator.localize("parsing.help.fig-nodemodelelement"));
+                Translator.localize(s));
     }
     
     /**

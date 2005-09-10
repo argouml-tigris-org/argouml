@@ -410,7 +410,14 @@ public class FigComment
             storeNote(ft.getText());
         }
     }
-
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEditStarted(FigText ft) {
+        showHelp("parsing.help.comment");
+    }
+    
     /**
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
