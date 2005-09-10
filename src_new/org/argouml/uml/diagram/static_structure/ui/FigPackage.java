@@ -816,6 +816,10 @@ public class FigPackage extends FigNodeModelElement
         
 //        String s = GeneratorDisplay.getInstance().generate(getOwner());
 //        ft.setText(s);
+
+        if (ft == getNameFig()) {
+            showHelp("parsing.help.fig-package");
+        }
     }
 
     /**

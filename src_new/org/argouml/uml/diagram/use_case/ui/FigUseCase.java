@@ -43,7 +43,6 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
@@ -1081,11 +1080,9 @@ public class FigUseCase extends FigNodeModelElement
      */
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
-                Translator.localize("parsing.help.fig-usecase"));
+            showHelp("parsing.help.fig-usecase");
         } else if (epVec.getFigs().contains(ft)) {
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
-                Translator.localize("parsing.help.fig-extensionpoint"));
+            showHelp("parsing.help.fig-extensionpoint");
         }
     }
 

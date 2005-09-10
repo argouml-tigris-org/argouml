@@ -550,7 +550,17 @@ public class FigInterface extends FigClassifierBox {
             return;
         }
     }
-
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEditStarted(FigText ft) {
+        super.textEditStarted(ft);
+        if (getOperationsFig().getFigs().contains(ft)) {
+            showHelp("parsing.help.operation");
+        }
+    }
+    
     /**
      * @param ft the figtext holding the feature
      * @param i the index (?)
