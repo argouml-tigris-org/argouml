@@ -366,7 +366,8 @@ public class FindDialog extends ArgoDialog
                 Model.getMetaTypes().getOperation()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getPseudostate()));
-        type.addItem(PredicateMType.create(Model.getMetaTypes().getState()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getSimpleState()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getStateVertex()));
         type.addItem(PredicateMType.create(
