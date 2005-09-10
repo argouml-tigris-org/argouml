@@ -479,6 +479,8 @@ class UmlFactoryImpl
             return getStateMachines().createSynchState();
         } else if (elementType == nsmodel.getMetaTypes().getState()) {
             throw new RuntimeException("Attempt to instantiate abstract type");
+        } else if (elementType == nsmodel.getMetaTypes().getSimpleState()) {
+            return getStateMachines().createSimpleState();
         } else if (elementType == nsmodel.getMetaTypes().getClassifierRole()) {
             return getCollaborations().createClassifierRole();
         } else if (elementType == nsmodel.getMetaTypes().getComponent()) {

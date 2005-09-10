@@ -158,7 +158,7 @@ public class SelectionState extends SelectionNodeClarifiers {
 	int cx = getContent().getX(), cy = getContent().getY();
 	int cw = getContent().getWidth(), ch = getContent().getHeight();
 	Object edgeType = null;
-	Object nodeType = Model.getMetaTypes().getState();
+	Object nodeType = Model.getMetaTypes().getSimpleState();
 
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
@@ -193,6 +193,12 @@ public class SelectionState extends SelectionNodeClarifiers {
 	}
     }
 
+    /**
+     * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
+     */
+    protected Object getNewNode(int buttonCode) {
+	return Model.getStateMachinesFactory().createSimpleState();
+    }
 
     /**
      * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
