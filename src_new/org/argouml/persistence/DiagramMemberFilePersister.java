@@ -25,7 +25,6 @@
 package org.argouml.persistence;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +33,6 @@ import java.io.Writer;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
-import org.argouml.model.Model;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ocl.ExpansionException;
