@@ -136,7 +136,7 @@ public class ModeChangeHeight extends FigModifyingModeImpl {
 
     private boolean isContract() {
         if (!contractSet) {
-            contract = getArg("name").equals("SequenceContract");
+            contract = getArg("name").equals("button.sequence-contract");
             contractSet = true;
         }
         return contract;
