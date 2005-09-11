@@ -242,4 +242,14 @@ public abstract class FigState extends FigStateVertex {
         return internal;
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEditStarted(FigText ft) {
+        super.textEditStarted(ft);
+        if (ft == internal) {
+            showHelp("parsing.help.fig-statebody");
+        }
+    }
+
 }
