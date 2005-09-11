@@ -253,4 +253,14 @@ public class FigActionState extends FigStateVertex {
             super.textEdited(ft);
         }
     }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEditStarted(FigText ft) {
+        if (ft == getNameFig()) {
+            showHelp("parsing.help.fig-actionstate");
+        }
+    }
+    
 } /* end class FigActionState */

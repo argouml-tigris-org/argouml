@@ -376,4 +376,16 @@ public class FigObjectFlowState extends FigNodeModelElement {
         }
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEditStarted(FigText ft) {
+        if (ft == classifier) {
+            showHelp("parsing.help.fig-objectflowstate1");
+        }
+        if (ft == state) {
+            showHelp("parsing.help.fig-objectflowstate2");
+        }
+    }
+
 } /* end class FigObjectFlowState */
