@@ -25,13 +25,16 @@
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 
 import java.beans.PropertyChangeEvent;
+import java.util.Vector;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
+import org.argouml.uml.ui.ActionRESequenceDiagram;
 
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathConvPercent;
@@ -70,6 +73,27 @@ public abstract class FigMessage
      */
     public FigMessage() {
         this(null);
+    }
+
+    /**
+     * Build a collection of menu items relevant for a right-click
+     * popup menu on a message.
+     *
+     * @param     me     a mouse event
+     * @return           a collection of menu items
+     *
+     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+     */
+    public Vector getPopUpActions(MouseEvent me) {
+        Vector popUpActions = super.getPopUpActions(me);
+
+		// the menu item for RE a sequence into the diagram is offered always,
+		// becauase some check (does a operation with a body exist) would be
+        // too expensive
+		popUpActions.insertElementAt(new ActionRESequenceDiagram(this),
+            popUpActions.size() - popupAddOffset);
+
+        return popUpActions;
     }
 
     /**

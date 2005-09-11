@@ -25,14 +25,13 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.Iterator;
 
-import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.sequence.ui.FigMessage;
 import org.argouml.uml.reveng.ui.RESequenceDiagramDialog;
+import org.argouml.ui.targetmanager.TargetManager;
 
 
 /**
@@ -44,10 +43,22 @@ public class ActionRESequenceDiagram extends UMLAction {
     // constructors
 
     /**
-     * The constructor.
+     * The constructor. If a figure is given, then it is invoked inside of a
+     * sequence diagram, so it will work with this diagram. If figure is null,
+     * then this causes the creation of a new sequence diagram.
+     *
+     * @param fig the figure the action is performed on
+     */
+    public ActionRESequenceDiagram(Object fig) {
+        super("action.reverse-engineer-sequence-diagram", false, NO_ICON);
+		_messageFig = fig;
+    }
+
+    /**
+     * The constructor. Invoked from the explorer, so no figure is available.
      */
     public ActionRESequenceDiagram() {
-        super("action.reverse-engineer-sequence-diagram", false, NO_ICON);
+        this(null);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -61,6 +72,46 @@ public class ActionRESequenceDiagram extends UMLAction {
         if (Model.getFacade().isAOperation(obj)) {
             RESequenceDiagramDialog dialog = new RESequenceDiagramDialog(obj);
             dialog.setVisible(true);
+        } else if (Model.getFacade().isAMessage(obj) && _messageFig != null) {
+            Object ac = Model.getFacade().getAction(obj);
+	        Object op = Model.getFacade().isACallAction(ac) ? Model.getFacade().getOperation(ac) : null;
+            if (op != null) {
+                // it is highly desirable that the message action already knows it's operation
+                RESequenceDiagramDialog dialog =
+                    new RESequenceDiagramDialog(op, (FigMessage)_messageFig);
+                dialog.setVisible(true);
+            } else {
+                // the hard way: try to determine the operation from the message name
+				Object receiver = Model.getFacade().getReceiver(obj);
+                Collection c = receiver != null ? Model.getFacade().getBases(receiver) : null;
+                Object cls = c != null && !c.isEmpty() ? c.iterator().next() : null;
+				if (cls != null && Model.getFacade().isAClassifier(cls)) {
+                    // too primitive (just gets the first method with matching name)
+					String opName = Model.getFacade().getName(obj);
+					int pos1 = opName.lastIndexOf(".");
+					int pos2 = opName.lastIndexOf("(");
+                    if (pos1 == -1) {
+                        pos1 = opName.lastIndexOf("new ");
+                        pos1 = pos1 != -1 ? pos1 + 4 : 0;
+                    } else {
+                        pos1++;
+                    }
+					pos2 = pos2 != -1 ? pos2 : opName.length();
+					opName = opName.substring(pos1, pos2);
+					c = Model.getCoreHelper().getOperationsInh(cls);
+					Iterator iter = c != null ? c.iterator() : null;
+					while (iter != null && iter.hasNext()) {
+						op = iter.next();
+						if (opName.equals(Model.getFacade().getName(op))) {
+				            RESequenceDiagramDialog dialog =
+                                new RESequenceDiagramDialog(op, (FigMessage)_messageFig);
+				            dialog.setVisible(true);
+                            break;
+						}
+					}
+				}
+			}
+			//Model.getCoreHelper().setName(((org.argouml.uml.diagram.ui.FigEdgeModelElement)_messageFig).getOwner(), "Hello World");
         }
     }
 
@@ -69,7 +120,8 @@ public class ActionRESequenceDiagram extends UMLAction {
      */
     public boolean shouldBeEnabled() {
         Object target = TargetManager.getInstance().getModelTarget();
-        return Model.getFacade().isAOperation(target);
+        return Model.getFacade().isAOperation(target) || Model.getFacade().isAMessage(target);
     }
 
+	private Object _messageFig = null;
 } /* end class ActionRESequenceDiagram */

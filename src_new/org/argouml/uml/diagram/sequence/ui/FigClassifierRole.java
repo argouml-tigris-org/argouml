@@ -1241,6 +1241,8 @@ public class FigClassifierRole extends FigNodeModelElement
     }
 
     /**
+     * Adds a node at the given position.
+     * 
      * @param position the position in which the node will be added
      * @param node the node to be added
      */
@@ -1263,6 +1265,25 @@ public class FigClassifierRole extends FigNodeModelElement
             }
         }
         calcBounds();
+    }
+
+    /**
+     * Gets a node that has the given position (creates new nodes if needed).
+     * 
+     * @param position the position of the resulting node
+     *
+     * @return the node with the given position
+     */
+    public MessageNode getNode(int position) {
+        if (position < linkPositions.size()) {
+            return (MessageNode)linkPositions.get(position);
+        }
+        MessageNode node = null;
+        for (int cnt = position - linkPositions.size(); cnt >= 0; cnt--) {
+            linkPositions.add(node = new MessageNode(this));
+        }
+        calcBounds();
+        return node;
     }
 
     /**
