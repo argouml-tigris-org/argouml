@@ -165,7 +165,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     /**
      * Return the node index at a certain y point.
      */
-    int getNodeIndex(int y) {
+    static public int getNodeIndex(int y) {
         y -= DIAGRAM_TOP_MARGE + FigClassifierRole.DEFAULT_HEIGHT;
         if (y < 0) {
             y = 0;

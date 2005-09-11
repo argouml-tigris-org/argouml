@@ -36,6 +36,7 @@ import java.awt.event.ItemListener;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -67,6 +68,7 @@ import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.sequence.ui.FigClassifierRole;
 import org.argouml.uml.diagram.sequence.ui.FigMessage;
+import org.argouml.uml.diagram.sequence.ui.SequenceDiagramLayout;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.reveng.java.JavaLexer;
@@ -82,7 +84,6 @@ import org.tigris.gef.presentation.Fig;
 /**
  * The dialog that starts the reverse engineering of operations.<br>
  * TODO: subsequent parsing of further operation bodies <br>
- * TODO: suppressing multiple creation of already created classifier roles<br>
  * TODO: suppressing multiple creation of already created messages<br>
  * TODO: processing of non-constructor-calls to other classifiers<br>
  * TODO: i18n<br>
@@ -90,36 +91,87 @@ import org.tigris.gef.presentation.Fig;
  */
 public class RESequenceDiagramDialog extends ArgoDialog implements ActionListener, ItemListener {
 
-    private final static int X_OFFSET = 100;
-
+    private final static int X_OFFSET = 10;
+	
     /**
      * Constructor.
      *
      * @param operation The operation that should be reverse engineered.
      */
     public RESequenceDiagramDialog(Object operation) {
+        this(operation, null);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param operation The operation that should be reverse engineered.
+     * @param figMessage the message figure where the result will be drawn to
+     */
+    public RESequenceDiagramDialog(Object operation, FigMessage figMessage) {
         super(
-            ProjectBrowser.getInstance(),
-            "NOT FUNCTIONAL!!! " +
-            Translator.localize("dialog.title.reverse-engineer-sequence-diagram")
-             + (operation != null ? (' ' + Model.getFacade().getName(operation) + "()") : ""),
-            ArgoDialog.OK_CANCEL_OPTION,
-            true);
-		setResizable(false);
+                ProjectBrowser.getInstance(),
+                "NOT FUNCTIONAL!!! " +
+                Translator.localize("dialog.title.reverse-engineer-sequence-diagram")
+                 + (operation != null ? (' ' + Model.getFacade().getName(operation) + "()") : ""),
+                ArgoDialog.OK_CANCEL_OPTION,
+                true);
+            setResizable(false);
 
-        _operation = operation;
-        _model = ProjectManager.getManager().getCurrentProject().getModel();
-        try {
-            _modeller = new Modeller(_model, null, null, true, true, null);
-        } catch (Exception ex) {}
+            _operation = operation;
+            _model = ProjectManager.getManager().getCurrentProject().getModel();
+            try {
+                _modeller = new Modeller(_model, null, null, true, true, null);
+            } catch (Exception ex) {}
 
-        _classifier = Model.getFacade().getOwner(_operation);
-        buildSequenceDiagram(_classifier);
-        _classifierRole = getClassifierRole(_classifier, "obj");
-        parseBody();
+            _classifier = Model.getFacade().getOwner(_operation);
+            if (figMessage != null) {
+                _isNewSequenceDiagram = false;
+                _graphModel = (SequenceDiagramGraphModel)Globals.curEditor().getGraphModel();
+                _collaboration = _graphModel.getCollaboration();
+                // maybe there is an easier way to find the current diagram than this:
+                Project p = ProjectManager.getManager().getCurrentProject();
+                Iterator iter = p.getDiagrams().iterator();
+                while (iter.hasNext()) {
+                    _diagram = (UMLDiagram)iter.next();
+                    if (_graphModel == _diagram.getGraphModel()) {
+                        break;
+                    }
+                }
+                _classifierRole = getClassifierRole(_classifier, "obj");
+                FigClassifierRole dest = figMessage.getDestFigClassifierRole();
+                _portCnt = SequenceDiagramLayout.getNodeIndex(
+                    figMessage.getDestMessagePort().getFigMessagePort().getY());
+                Enumeration enu = _diagram.elements();
+                while (enu.hasMoreElements()) {
+                    Object f = enu.nextElement();
+                    if (f instanceof FigClassifierRole) {
+                        int x = ((Fig)f).getX();
+                        if (_maxXPos < x) {
+                            _maxXPos = x;
+                        }
+                        if (Model.getFacade().getName(((Fig)f).getOwner()).startsWith("anon")) {
+                            _anonCnt++;
+                        }
+                    } else if (f instanceof FigMessage) {
+                        dest = ((FigMessage)f).getDestFigClassifierRole();
+                        int port = SequenceDiagramLayout.getNodeIndex(
+                            ((FigMessage)f).getDestMessagePort().getFigMessagePort().getY());
+                        if (_maxPort < port) {
+                            _maxPort = port;
+                        }
+                    }
+                }
+            } else {
+                _isNewSequenceDiagram = true;
+                buildSequenceDiagram(_classifier);
+                _classifierRole = getClassifierRole(_classifier, "obj");
+                _maxXPos = _classifierRole.getX();
+            }
+            parseBody();
 
-		JPanel contentPanel = getContentPanel();
-        setContent(contentPanel);
+            JPanel contentPanel = getContentPanel();
+            setContent(contentPanel);
     }
 
     /**
@@ -134,7 +186,7 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
                     buildAction((String)_callTable.getValueAt(i, 0));
                 }
             }
-        } else if (e.getSource() == getCancelButton()) {
+        } else if (e.getSource() == getCancelButton() && _isNewSequenceDiagram) {
             // remove SD and clean up everything
             Project p = ProjectManager.getManager().getCurrentProject();
             Object newTarget = null;
@@ -368,10 +420,9 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
      * Buiids the sequence diagram for a classifier.
      */
     private void buildSequenceDiagram(Object classifier) {
-        _namespace = Model.getFacade().getNamespace(classifier);
         _collaboration =
             Model.getCollaborationsFactory().buildCollaboration(
-                _namespace,
+                Model.getFacade().getNamespace(classifier),
                 classifier);
         _diagram =
             (UMLDiagram)DiagramFactory.getInstance().createDiagram(
@@ -421,12 +472,13 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
 
             // location must be set for correct automatic layouting (how funny)
             // otherwise, the new classifier role is not the rightmost
-            crFig.setLocation(_maxXPos, 0);
             _maxXPos += X_OFFSET;
+            crFig.setLocation(_maxXPos, 0);
 
             _diagram.add(crFig);
             _graphModel.addNode(node);
-            ExplorerEventAdaptor.getInstance().modelElementChanged(_namespace);
+            ExplorerEventAdaptor.getInstance().modelElementChanged(
+                Model.getFacade().getNamespace(_classifier));
         }
         return crFig;
     }
@@ -533,14 +585,15 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
      */
     private FigMessage buildEdge(String call, FigClassifierRole startFig, FigClassifierRole endFig, Object callType) {
         FigMessage figEdge = null;
-        _maxPort++;
-        MessageNode startPort = new MessageNode(startFig);
-        startFig.addNode(_maxPort, startPort);
-        if (startFig == endFig) {
-            _maxPort++;
+        SequenceDiagramLayout lay = (SequenceDiagramLayout)_diagram.getLayer();
+        int n = startFig == endFig ? 2 : 1;
+        if (_portCnt < _maxPort) {
+            lay.expandDiagram(_portCnt + 1, n);
         }
-        MessageNode foundPort = new MessageNode(endFig);
-        endFig.addNode(_maxPort, foundPort);
+        MessageNode startPort = startFig.getNode(_portCnt + 1);
+        MessageNode foundPort = endFig.getNode(_portCnt + n);
+        _portCnt += n;
+        _maxPort += n;
         Fig startPortFig = startFig.getPortFig(startPort);
         Fig destPortFig = endFig.getPortFig(foundPort);
         Object edgeType = Model.getMetaTypes().getMessage();
@@ -552,7 +605,7 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         Object newEdge = _graphModel.connect(startPort, foundPort, edgeType);
         if (null != newEdge) {
             Model.getCoreHelper().setName(newEdge, call);
-            figEdge = (FigMessage)_diagram.getLayer().presentationFor(newEdge);
+            figEdge = (FigMessage)lay.presentationFor(newEdge);
             figEdge.setSourcePortFig(startPortFig);
             figEdge.setSourceFigNode(startFig);
             figEdge.setDestPortFig(destPortFig);
@@ -686,7 +739,6 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
 
     private Object _model = null;
     private Modeller _modeller = null;
-    private Object _namespace = null;
     private Object _classifier = null;
     private Object _operation = null;
     private FigClassifierRole _classifierRole = null;
@@ -705,9 +757,11 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
 	private JPanel _changingPanel = null;
 	private JPanel _manuPanel = null;
 	private JPanel _autoPanel = null;
-    private int _maxXPos = 0;
+    private int _maxXPos = -X_OFFSET;
     private int _maxPort = 0;
+    private int _portCnt = 0;
     private int _anonCnt = 0;
+    private boolean _isNewSequenceDiagram = false;
 
     /**
      * Logger.
