@@ -80,7 +80,6 @@ public class Agency extends Observable { //implements java.io.Serialization
      * be active.
      */
     private ControlMech controlMech;
-    private static int numCriticsApplied = 0;
     private static Hashtable singletonCritics = new Hashtable(40);
 
     ////////////////////////////////////////////////////////////////
