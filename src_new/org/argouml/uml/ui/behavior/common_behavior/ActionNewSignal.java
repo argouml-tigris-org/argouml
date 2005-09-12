@@ -3,7 +3,9 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
+import javax.swing.Icon;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -20,6 +22,8 @@ public class ActionNewSignal extends AbstractActionNewModelElement {
     public ActionNewSignal() {
         super("button.new-signal");
         putValue(Action.NAME, Translator.localize("button.new-signal"));
+        Icon icon = ResourceLoaderWrapper.lookupIcon("SignalSending");
+        putValue(Action.SMALL_ICON, icon);       
     }
 
     /**
