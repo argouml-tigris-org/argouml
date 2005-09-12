@@ -50,11 +50,11 @@ import org.tigris.swidgets.Orientation;
 
 
 /**
- * PropPanelPackage defines the Property Panel for MPackage elements.
+ * PropPanelPackage defines the Property Panel for Package elements.
  */
 public class PropPanelPackage extends PropPanelNamespace  {
 
-    private JPanel modifiersPanel = new JPanel();
+    private JPanel modifiersPanel;
     private JScrollPane generalizationScroll;
     private JScrollPane specializationScroll;
 
