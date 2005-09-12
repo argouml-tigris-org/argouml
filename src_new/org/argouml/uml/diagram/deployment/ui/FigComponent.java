@@ -334,6 +334,15 @@ public class FigComponent extends FigNodeModelElement {
     }
 
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEditStarted(FigText ft) {
+        if (ft == getNameFig()) {
+            showHelp("parsing.help.fig-component");
+        }
+    }
+
 
     /**
      * @see org.tigris.gef.presentation.Fig#getHandleBox()

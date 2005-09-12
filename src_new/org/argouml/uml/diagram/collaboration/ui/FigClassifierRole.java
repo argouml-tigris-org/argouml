@@ -475,6 +475,15 @@ public class FigClassifierRole extends FigNodeModelElement {
     }
 
     /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEditStarted(FigText ft) {
+        if (ft == getNameFig()) {
+            showHelp("parsing.help.fig-classifierrole");
+        }
+    }
+
+    /**
      * Adjust the fig in the light of some change to the model.<p>
      *
      * <em>Note</em>. The current implementation does not properly use
