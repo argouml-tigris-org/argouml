@@ -35,9 +35,24 @@ import org.argouml.ui.targetmanager.TargetEvent;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
+    /**
+     * The number of elements to test.
+     */
+    private static final int NUM_ELEMS = 10;
 
+    /**
+     * The list of additions, kept for reference.
+     */
     private Object[] additions;
+
+    /**
+     * The model to test.
+     */
     private UMLIncludeAdditionComboBoxModel model;
+
+    /**
+     * The include element that contains it all.
+     */
     private Object elem;
 
     /**
@@ -61,11 +76,11 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
         model = new UMLIncludeAdditionComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
-        additions = new Object[10];
+        additions = new Object[NUM_ELEMS];
         Object m = Model.getModelManagementFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
         Model.getCoreHelper().setNamespace(elem, m);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < NUM_ELEMS; i++) {
             additions[i] = Model.getUseCasesFactory().createUseCase();
             Model.getCoreHelper().addOwnedElement(m, additions[i]);
         }
@@ -77,7 +92,7 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < NUM_ELEMS; i++) {
             Model.getUmlFactory().delete(additions[i]);
         }
         model = null;
@@ -87,38 +102,39 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
      * Test setup.
      */
     public void testSetUp() {
-        assertEquals(10, model.getSize());
-        assertTrue(model.contains(additions[5]));
+        assertEquals(NUM_ELEMS, model.getSize());
         assertTrue(model.contains(additions[0]));
-        assertTrue(model.contains(additions[9]));
+        assertTrue(model.contains(additions[NUM_ELEMS - 1]));
+
+        for (int i = 0; i < NUM_ELEMS; i++) {
+            assertTrue(model.contains(additions[i]));
+        }
     }
 
     /**
-     * Test setBase().
+     * Test {@link org.argouml.model.UseCasesHelper#setAddition(Object,
+     * Object)}.
      */
-    public void testSetBase() {
-        // NSUML has base and addition for includes mixed up. We mix it back.
-        // Issue 2034.
-        // The following line was:
-        // ((MInclude) elem).setBase((MUseCase) additions[0]);
+    public void testSetAddition() {
         Model.getUseCasesHelper().setAddition(elem, additions[0]);
         assertTrue(model.getSelectedItem() == additions[0]);
     }
 
     /**
-     * Test setAddition() with null argument.
+     * Test {@link org.argouml.model.UseCasesHelper#setAddition(Object,
+     * Object)} with <code>null</code> argument.
      */
-    public void testSetBaseToNull() {
+    public void testSetAdditionToNull() {
         Model.getUseCasesHelper().setAddition(elem, null);
         assertNull(model.getSelectedItem());
     }
 
     /**
-     * Test deletion.
+     * Test deletion of an addition.
      */
-    public void testRemoveBase() {
-        Model.getUmlFactory().delete(additions[9]);
-        assertEquals(9, model.getSize());
-        assertTrue(!model.contains(additions[9]));
+    public void testRemoveAddition() {
+        Model.getUmlFactory().delete(additions[NUM_ELEMS - 1]);
+        assertEquals(NUM_ELEMS - 1, model.getSize());
+        assertTrue(!model.contains(additions[NUM_ELEMS - 1]));
     }
 }
