@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.*;
 
@@ -356,6 +357,17 @@ public class FigComponentInstance extends FigNodeModelElement {
         }
     }
 
+    protected void modelChanged(PropertyChangeEvent mee) {
+        super.modelChanged(mee);
+        Object compInst =  getOwner();
+        if (compInst == null) return;
+        if ("classifier".equals(mee.getPropertyName())
+                && mee.getSource() == compInst) {
+            updateNameText();
+            damage();
+        }
+    }
+    
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
