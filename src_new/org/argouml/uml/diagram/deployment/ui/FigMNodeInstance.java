@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -305,6 +306,17 @@ public class FigMNodeInstance extends FigNodeModelElement {
     }
 
     static final long serialVersionUID = 8822005566372687713L;
+    
+    protected void modelChanged(PropertyChangeEvent mee) {
+        super.modelChanged(mee);
+        Object nodeInst =  getOwner();
+        if (nodeInst == null) return;
+        if ("classifier".equals(mee.getPropertyName())
+                && mee.getSource() == nodeInst) {
+            updateNameText();
+            damage();
+        }
+    }
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
