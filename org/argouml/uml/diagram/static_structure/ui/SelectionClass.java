@@ -260,7 +260,7 @@ public class SelectionClass extends SelectionNodeClarifiers {
      * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
-        return Model.getCoreFactory().createClass();
+        return Model.getCoreFactory().buildClass();
     }
 
     /**
