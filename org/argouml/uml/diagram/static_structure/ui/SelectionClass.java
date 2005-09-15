@@ -168,16 +168,16 @@ public class SelectionClass extends SelectionNodeClarifiers {
 
         if (!(gm instanceof DeploymentDiagramGraphModel)) {
             paintButtonAbove(inherit, g, cx + cw / 2, cy, 10);
-            paintButtonBelow(inherit, g, cx + cw / 2, cy + ch, 11);
+            paintButtonBelow(inherit, g, cx + cw / 2, cy + ch + 2, 11);
         }
         if (useComposite) {
-            paintButtonLeft(compos, g, cx + cw, cy + ch / 2, 12);
+            paintButtonLeft(compos, g, cx + cw +2, cy + ch / 2, 12);
             paintButtonRight(compos, g, cx, cy + ch / 2, 13);
-            paintButtonRight(selfassoc, g, cx, cy + ch - 10, 14);
+            paintButtonRight(selfassoc, g, cx, cy + ch, 14);
         } else {
-            paintButtonLeft(assoc, g, cx + cw, cy + ch / 2, 12);
+            paintButtonLeft(assoc, g, cx + cw + 2, cy + ch / 2, 12);
             paintButtonRight(assoc, g, cx, cy + ch / 2, 13);
-            paintButtonRight(selfassoc, g, cx, cy + ch - 10, 14);
+            paintButtonRight(selfassoc, g, cx, cy + ch, 14);
         }
     }
 
