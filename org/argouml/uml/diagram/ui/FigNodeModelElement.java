@@ -83,6 +83,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.generator.ParserDisplay;
+import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -148,7 +149,7 @@ public abstract class FigNodeModelElement
      * should be inserted by concrete figures.
      * See #getPopUpActions()
      */
-    protected static int popupAddOffset;
+    private static int popupAddOffset;
 
     // Fields used in paint() for painting shadows
     private BufferedImage           shadowImage = null;
@@ -434,6 +435,8 @@ public abstract class FigNodeModelElement
         if (removeFromDiagram) {
             popUpActions.addElement(
                     ProjectBrowser.getInstance().getRemoveFromDiagramAction());
+            popupAddOffset++;
+            popUpActions.addElement(new ActionDeleteModelElements());
             popupAddOffset++;
         }
 
@@ -1685,6 +1688,13 @@ public abstract class FigNodeModelElement
     
     public DiElement getDiElement() {
         return diElement;
+    }
+
+    /**
+     * @return Returns the popupAddOffset.
+     */
+    protected static int getPopupAddOffset() {
+        return popupAddOffset;
     }
     
 } /* end class FigNodeModelElement */

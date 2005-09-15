@@ -390,7 +390,7 @@ public class FigUseCase extends FigNodeModelElement
         addMenu.add(new ActionAddNote());
 
         popUpActions.insertElementAt(addMenu,
-            popUpActions.size() - popupAddOffset);
+            popUpActions.size() - getPopupAddOffset());
 
         // Show menu to display/hide the extension point compartment. 
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
@@ -399,13 +399,13 @@ public class FigUseCase extends FigNodeModelElement
             showMenu.add((Action) i.next());
         }
         popUpActions.insertElementAt(showMenu,
-            popUpActions.size() - popupAddOffset);
+            popUpActions.size() - getPopupAddOffset());
 
         // Modifier menu. Placed one before last, so the "Properties" entry is
         // always last.
         popUpActions.insertElementAt(
                 buildModifierPopUp(LEAF | ROOT),
-                popUpActions.size() - popupAddOffset);
+                popUpActions.size() - getPopupAddOffset());
 
         return popUpActions;
     }

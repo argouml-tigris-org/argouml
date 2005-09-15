@@ -239,7 +239,7 @@ public class FigInterface extends FigClassifierBox {
         addMenu.add(ActionEdgesDisplay.getShowEdges());
         addMenu.add(ActionEdgesDisplay.getHideEdges());
         popUpActions.insertElementAt(addMenu,
-                popUpActions.size() - popupAddOffset);
+                popUpActions.size() - getPopupAddOffset());
 
         // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
@@ -248,15 +248,15 @@ public class FigInterface extends FigClassifierBox {
             showMenu.add((Action) i.next());
         }
         popUpActions.insertElementAt(showMenu,
-                popUpActions.size() - popupAddOffset);
+                popUpActions.size() - getPopupAddOffset());
 
         // Modifier ...
         popUpActions.insertElementAt(buildModifierPopUp(ABSTRACT | LEAF | ROOT),
-                popUpActions.size() - popupAddOffset);
+                popUpActions.size() - getPopupAddOffset());
 
         // Visibility ...
         popUpActions.insertElementAt(buildVisibilityPopUp(),
-                popUpActions.size() - popupAddOffset);
+                popUpActions.size() - getPopupAddOffset());
 
         return popUpActions;
     }

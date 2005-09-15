@@ -444,7 +444,7 @@ public class FigAssociation extends FigEdgeModelElement {
             multMenu.add(ActionMultiplicity.getSrcMultOneToMany());
             multMenu.add(ActionMultiplicity.getSrcMultZeroToMany());
             popUpActions.insertElementAt(multMenu,
-                popUpActions.size() - popupAddOffset);
+                popUpActions.size() - getPopupAddOffset());
 
             ArgoJMenu aggMenu = new ArgoJMenu("menu.popup.aggregation");
 
@@ -453,7 +453,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	    aggMenu.add(ActionAggregation.getSrcAggComposite());
 	    popUpActions.insertElementAt(aggMenu,
 					 (popUpActions.size()
-					  - popupAddOffset));
+					  - getPopupAddOffset()));
 	} else if (destDeterminingFactor < rSquared) {
             ArgoJMenu multMenu =
 		new ArgoJMenu("menu.popup.multiplicity");
@@ -463,7 +463,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	    multMenu.add(ActionMultiplicity.getDestMultZeroToMany());
 	    popUpActions.insertElementAt(multMenu,
 					 (popUpActions.size()
-					  - popupAddOffset));
+					  - getPopupAddOffset()));
 
             ArgoJMenu aggMenu = new ArgoJMenu("menu.popup.aggregation");
 	    aggMenu.add(ActionAggregation.getDestAggNone());
@@ -471,7 +471,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	    aggMenu.add(ActionAggregation.getDestAggComposite());
 	    popUpActions.insertElementAt(aggMenu,
 					 (popUpActions.size()
-					  - popupAddOffset));
+					  - getPopupAddOffset()));
 	}
 	// else: No particular options for right click in middle of line
 
@@ -508,7 +508,7 @@ public class FigAssociation extends FigEdgeModelElement {
 
 		popUpActions.insertElementAt(navMenu,
 					     (popUpActions.size()
-					      - popupAddOffset));
+					      - getPopupAddOffset()));
 	    }
 	}
 
