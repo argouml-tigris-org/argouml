@@ -136,7 +136,7 @@ public class FigComponent extends FigNodeModelElement {
         // Modifiers ...
         popUpActions.insertElementAt(
                 buildModifierPopUp(ABSTRACT | LEAF | ROOT),
-                popUpActions.size() - popupAddOffset);
+                popUpActions.size() - getPopupAddOffset());
         return popUpActions;
     }
 

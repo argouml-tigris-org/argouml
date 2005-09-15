@@ -275,7 +275,7 @@ public class FigCompositeState extends FigState {
             popUpActions.insertElementAt(
                 ActionAddConcurrentRegion.getSingleton(),
                                          (popUpActions.size()
-                                          - popupAddOffset));
+                                          - getPopupAddOffset()));
         }
         return popUpActions;
     }

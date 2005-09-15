@@ -86,13 +86,13 @@ public abstract class FigMessage
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
-
-		// the menu item for RE a sequence into the diagram is offered always,
-		// becauase some check (does a operation with a body exist) would be
+        
+        // the menu item for RE a sequence into the diagram is offered always,
+        // becauase some check (does a operation with a body exist) would be
         // too expensive
-		popUpActions.insertElementAt(new ActionRESequenceDiagram(this),
-            popUpActions.size() - popupAddOffset);
-
+        popUpActions.insertElementAt(new ActionRESequenceDiagram(this),
+                popUpActions.size() - getPopupAddOffset());
+        
         return popUpActions;
     }
 
