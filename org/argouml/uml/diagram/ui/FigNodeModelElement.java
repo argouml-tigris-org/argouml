@@ -601,7 +601,7 @@ public abstract class FigNodeModelElement
     public void elementOrdering(Vector figures) {
         int size = figures.size();
         getLayer().bringToFront(this);
-        if (figures != null && (size > 0)) {
+        if (size > 0) {
             for (int i = 0; i < size; i++) {
                 Object o = figures.elementAt(i);
                 if (o instanceof FigNodeModelElement
