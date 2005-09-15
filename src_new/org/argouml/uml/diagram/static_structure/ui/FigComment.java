@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -125,6 +126,8 @@ public class FigComment
         urCorner.addPoint(x + width - 1 - dogear, y + dogear);
         urCorner.addPoint(x + width - 1 - dogear, y);
         urCorner.setFilled(true);
+        Color col = body.getFillColor();
+        urCorner.setFillColor(col.darker());
         urCorner.setLineWidth(1);
 
         getStereotypeFigText().setExpandOnly(true);
@@ -635,4 +638,9 @@ public class FigComment
         return p;
     }
 
+    public void paint(Graphics g) {
+        Color col = body.getFillColor();
+        urCorner.setFillColor(col.darker());
+        super.paint(g);
+    }
 } /* end class FigComment */
