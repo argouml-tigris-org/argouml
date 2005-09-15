@@ -1186,7 +1186,6 @@ public class FigClass extends FigClassifierBox
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);
-        damage();
     }
 
 //    /**
@@ -1288,7 +1287,6 @@ public class FigClass extends FigClassifierBox
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);
-        damage();
     }
 
     /**
