@@ -283,6 +283,23 @@ public class FigAssociation extends FigEdgeModelElement {
 	    }
 	}
     }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEditStarted(FigText ft) {
+        if (ft == getNameFig()) {
+            showHelp("parsing.help.fig-association-name");
+        } else if (ft == srcRole) {
+            showHelp("parsing.help.fig-association-source-role");
+        } else if (ft == destRole) {
+            showHelp("parsing.help.fig-association-destination-role");
+        } else if (ft == srcMult) {
+            showHelp("parsing.help.fig-association-source-multiplicity");
+        } else if (ft == destMult) {
+            showHelp("parsing.help.fig-association-destination-multiplicity");
+        }
+    }
 
     private void updateEnd(FigText multiToUpdate, FigText roleToUpdate,
 			   FigText orderingToUpdate,

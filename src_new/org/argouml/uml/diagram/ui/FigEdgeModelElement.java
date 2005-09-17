@@ -56,6 +56,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.ProjectManager;
@@ -466,6 +467,9 @@ public abstract class FigEdgeModelElement
             textEdited((FigText) src);
             calcBounds();
             endTrans();
+        } else if (pName.equals("editing")
+                && Boolean.TRUE.equals(pve.getNewValue())) {
+            textEditStarted((FigText) src);
         } else {
             super.propertyChange(pve);
         }
@@ -477,6 +481,38 @@ public abstract class FigEdgeModelElement
         }
         damage();  // TODO: (MVW) Is this required?
         // After all these events? I doubt it...
+    }
+
+    /**
+     * This method is called when the user doubleclicked on the text field, 
+     * and starts editing. Subclasses should overrule this field to e.g.
+     * supply help to the user about the used format. <p>
+     * 
+     * It is also possible to alter the text to be edited 
+     * already here, e.g. by adding the stereotype in front of the name,
+     * but that seems not user-friendly.
+     *  
+     * @param ft the FigText that will be edited and contains the start-text
+     */
+    protected void textEditStarted(FigText ft) {
+        if (ft == getNameFig()) {
+            showHelp("parsing.help.fig-edgemodelelement");
+        }
+    }
+    
+    /**
+     * Utility function to localize the given string with help text, 
+     * and show it in the status bar of the ArgoUML window.
+     * This function is used in favour of the inline call
+     * to enable later improvements; e.g. it would be possible to 
+     * show a help-balloon. TODO: Work this out.
+     * One matter to possibly improve: show multiple lines.
+     * 
+     * @param s the given string to be localized and shown
+     */
+    protected void showHelp(String s) {
+        ProjectBrowser.getInstance().getStatusBar().showStatus(
+                Translator.localize(s));
     }
 
     /**
