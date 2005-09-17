@@ -149,6 +149,15 @@ public class FigTransition extends FigEdgeModelElement {
     }
 
     /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEditStarted(FigText ft) {
+        if (ft == getNameFig()) {
+            showHelp("parsing.help.fig-transition");
+        }
+    }
+
+    /**
      * This is called after any part of the UML ModelElement has changed. This
      * method automatically updates the name FigText. Subclasses should override
      * and update other parts.
