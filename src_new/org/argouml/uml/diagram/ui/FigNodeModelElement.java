@@ -436,10 +436,10 @@ public abstract class FigNodeModelElement
             popUpActions.addElement(
                     ProjectBrowser.getInstance().getRemoveFromDiagramAction());
             popupAddOffset++;
-            popUpActions.addElement(new ActionDeleteModelElements());
-            popupAddOffset++;
         }
-
+        popUpActions.addElement(new ActionDeleteModelElements());
+        popupAddOffset++;
+        
         /* Check if multiple items are selected: */
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
         if (!ms) {
