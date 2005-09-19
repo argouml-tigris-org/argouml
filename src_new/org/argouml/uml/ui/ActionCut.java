@@ -86,8 +86,10 @@ public class ActionCut extends AbstractAction implements CaretListener {
      */
     public void actionPerformed(ActionEvent ae) {
         if (textSource == null) {
-            CmdCut cmd = new CmdCut();
-            cmd.doIt();
+            if (removeFromDiagramAllowed()) {
+                CmdCut cmd = new CmdCut();
+                cmd.doIt();
+            }
         } else {
             textSource.cut();
         }
@@ -98,6 +100,16 @@ public class ActionCut extends AbstractAction implements CaretListener {
         } else {
             ActionPaste.getInstance().setEnabled(true);
         }
+    }
+    
+    /**
+     * Disable cutting figs from a diagram to prevent issue 3480.
+     * See also ActionPaste, which is also disabled for similar reasons.
+     * 
+     * @return true if cut is allowed for the selected items
+     */
+    private boolean removeFromDiagramAllowed() {
+        return false;
     }
 
     /**
