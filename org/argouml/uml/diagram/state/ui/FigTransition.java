@@ -69,6 +69,7 @@ public class FigTransition extends FigEdgeModelElement {
         addPathItem(getNameFig(), new PathConvPercent2(this, getNameFig(), 50, 10));
         _fig.setLineColor(Color.black);
         setDestArrowHead(endArrow);
+        allowRemoveFromDiagram(false);
     }
 
     /**
