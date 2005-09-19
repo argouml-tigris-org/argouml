@@ -263,12 +263,13 @@ public class ZargoFilePersister extends UmlFilePersister {
             reader = new BufferedReader(new InputStreamReader(zis, encoding));
             // Keep reading till we hit the <argo> tag
             String rootLine;
-            while (!(rootLine = reader.readLine()).startsWith("<argo")) {
+            do {
+                rootLine = reader.readLine();
                 if (rootLine == null) {
                     throw new OpenException(
                             "Can't find an <argo> tag in the argo file");
                 }
-            }
+            } while(!rootLine.startsWith("<argo"));
             // Get the version from the tag.
             String version = getVersion(rootLine);
             writer.println("<uml version=\"" + version + "\">");
