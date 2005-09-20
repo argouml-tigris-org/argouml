@@ -235,13 +235,13 @@ public class TestCoreFactory extends TestCase {
         Object dep = Model.getCoreFactory().buildDependency(class1, class2);
         Object class3 = Model.getCoreFactory().buildClass(model);
         Model.getCoreHelper().addSupplier(dep, class3);
-        WeakReference class1wr = new WeakReference(class1);
+        WeakReference class2wr = new WeakReference(class2);
         WeakReference depwr = new WeakReference(dep);
-        Model.getUmlFactory().delete(class1);
-        class1 = null;
+        Model.getUmlFactory().delete(class2);
+        class2 = null;
         dep = null;
         System.gc();
-        assertNull("class not removed", class1wr.get());
+        assertNull("class not removed", class2wr.get());
         assertNotNull("dependency removed", depwr.get());
     }
 

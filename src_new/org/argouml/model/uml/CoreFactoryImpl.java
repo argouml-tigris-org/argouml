@@ -27,10 +27,8 @@ package org.argouml.model.uml;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
@@ -1812,22 +1810,29 @@ public class CoreFactoryImpl
             throw new IllegalArgumentException();
         }
 
-	Collection supplierDep =
-	    ((MModelElement) elem).getSupplierDependencies();
-	Collection clientDep =
-	    ((MModelElement) elem).getClientDependencies();
-	Set deps = new HashSet();
-	deps.addAll(supplierDep);
-	deps.addAll(clientDep);
-	Iterator it = deps.iterator();
-	while (it.hasNext()) {
-	    MDependency dep = (MDependency) it.next();
-	    Collection clients = dep.getClients();
-	    Collection suppliers = dep.getSuppliers();
-	    if ((clients.size() + suppliers.size()) == 2) {
-		nsmodel.getUmlFactory().delete(dep);
-	    }
-	}
+        // Delete dependencies where this is the only client
+        Collection deps = org.argouml.model.Model.getFacade()
+                .getClientDependencies(elem);
+        Iterator it = deps.iterator();
+        while (it.hasNext()) {
+            MDependency dep = (MDependency) it.next();
+            if (dep.getClients().size() < 2
+                    && dep.getClients().contains(elem)) {
+                nsmodel.getUmlFactory().delete(dep);
+            }
+        }
+
+        // Delete dependencies where this is the only supplier
+        deps = org.argouml.model.Model.getFacade()
+                .getSupplierDependencies(elem);
+        it = deps.iterator();
+        while (it.hasNext()) {
+            MDependency dep = (MDependency) it.next();
+            if (dep.getSuppliers().size() < 2
+                    && dep.getSuppliers().contains(elem)) {
+                nsmodel.getUmlFactory().delete(dep);
+            }
+        }
 
         List ownedBehaviors = new ArrayList();
         ownedBehaviors.addAll(((MModelElement) elem).getBehaviors());
