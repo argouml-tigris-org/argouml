@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.swidgets.Horizontal;
@@ -71,7 +72,7 @@ public class TestDetailsPane extends TestCase {
 		    o,
 		});
         pane.targetSet(e);
-        assertEquals(todoPane, pane.getTabs().getSelectedComponent());
+        assertEquals("1:", todoPane, pane.getTabs().getSelectedComponent());
         UMLDiagram diagram = new UMLClassDiagram();
         e = new TargetEvent(
 			    this,
@@ -83,8 +84,9 @@ public class TestDetailsPane extends TestCase {
 				diagram,
 			    });
         pane.getTabs().setSelectedComponent(todoPane);
+        TargetManager.getInstance().setTarget(diagram);
         pane.targetSet(e);
-        assertEquals(propertyPane, pane.getTabs().getSelectedComponent());
+        assertEquals("2:", propertyPane, pane.getTabs().getSelectedComponent());
         Object clazz = Model.getCoreFactory().createClass();
         e = new TargetEvent(this,
 			    TargetEvent.TARGET_SET,
@@ -95,10 +97,10 @@ public class TestDetailsPane extends TestCase {
 				clazz,
 			    });
         pane.targetSet(e);
-        assertEquals(propertyPane, pane.getTabs().getSelectedComponent());
+        assertEquals("3:", propertyPane, pane.getTabs().getSelectedComponent());
         pane.getTabs().setSelectedComponent(todoPane);
         pane.targetSet(e);
-        assertEquals(propertyPane, pane.getTabs().getSelectedComponent());
+        assertEquals("4:", propertyPane, pane.getTabs().getSelectedComponent());
         // TODO: at the moment setSelectedComponent doesn't take into account
         // the rather complex tab selection mechanism of DetailsPane. The tab
         // selection mechanism must be refactored.
