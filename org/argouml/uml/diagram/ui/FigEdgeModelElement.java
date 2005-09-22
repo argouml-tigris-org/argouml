@@ -76,6 +76,7 @@ import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdgePoly;
@@ -695,6 +696,20 @@ public abstract class FigEdgeModelElement
         modelChanged(null);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
+     */
+    public void setLayer(Layer lay) {
+        if (lay == null) {
+            throw new IllegalArgumentException(
+                    "Attempted to set the layer to null for "
+                    + Model.getFacade().getTipString(getOwner()));
+        }
+        LOG.info("Setting " + this + " to layer " + lay);
+        super.setLayer(lay);
+        getFig().setLayer(lay);
+    }
+    
     /**
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */

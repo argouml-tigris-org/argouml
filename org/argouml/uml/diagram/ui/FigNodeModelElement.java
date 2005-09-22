@@ -86,6 +86,7 @@ import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -1645,6 +1646,19 @@ public abstract class FigNodeModelElement
      */
     protected void setSuppressCalcBounds(boolean scb) {
         this.suppressCalcBounds = scb;
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
+     */
+    public void setLayer(Layer lay) {
+        if (lay == null) {
+            throw new IllegalArgumentException(
+                    "Attempted to set the layer to null for "
+                    + Model.getFacade().getTipString(getOwner()));
+        }
+        LOG.info("Setting " + this + " to layer " + lay);
+        super.setLayer(lay);
     }
 
     /**
