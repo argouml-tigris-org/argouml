@@ -36,7 +36,9 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
@@ -68,21 +70,56 @@ public class FigEdgeNote
      */
     public FigEdgeNote() {
         super();
-	setBetweenNearestPoints(true);
-	((FigPoly) _fig).setRectilinear(false);
-	setDashed(true);
-	allowRemoveFromDiagram(false);
+        setBetweenNearestPoints(true);
+        ((FigPoly) _fig).setRectilinear(false);
+        setDashed(true);
+        allowRemoveFromDiagram(false);
     }
 
     /**
      * Constructor that hooks the Fig to a CommentEdge
-     * @param theOwner the CommentEdge
+     * @param commentEdge the CommentEdge
      * @param theLayer the layer (ignored)
      */
-    public FigEdgeNote(Object theOwner, Layer theLayer) {
-        this(((CommentEdge) theOwner).getSource(),
-                ((CommentEdge) theOwner).getDestination());
-        setOwner(theOwner);
+    public FigEdgeNote(Object commentEdge, Layer theLayer) {
+        this();
+        
+        if (!(theLayer instanceof LayerPerspectiveMutable)) {
+            throw new IllegalArgumentException("The layer must be a mutable perspective. Got " + theLayer);
+        }
+        
+        if (!(commentEdge instanceof CommentEdge)) {
+            throw new IllegalArgumentException("The owner must be a CommentEdge. Got " + commentEdge);
+        }
+        
+        Object fromNode = ((CommentEdge) commentEdge).getSource();
+        if (!(Model.getFacade().isAModelElement(fromNode))) {
+            throw new IllegalArgumentException("The given comment edge must start at a model element. Got " + fromNode);
+        }
+        
+        Object toNode = ((CommentEdge) commentEdge).getDestination();
+        if (!(Model.getFacade().isAModelElement(toNode))) {
+            throw new IllegalArgumentException("The given comment edge must end at a model element. Got " + toNode);
+        }
+        
+        Fig destFig = theLayer.presentationFor(toNode);
+        if (!(destFig instanceof FigNodeModelElement)) {
+            throw new IllegalArgumentException("The given comment edge must end at a model element in the given layer.");
+        }
+        
+        Fig sourceFig = theLayer.presentationFor(fromNode);
+        if (!(destFig instanceof FigNodeModelElement)) {
+            throw new IllegalArgumentException("The given comment edge must start at a model element in the given layer.");
+        }
+        
+        setLayer(theLayer);
+        setDestFigNode((FigNode) destFig);
+        setDestPortFig(destFig);
+        setSourceFigNode((FigNode) sourceFig);
+        setSourcePortFig(sourceFig);
+        computeRoute();
+        
+        setOwner(commentEdge);
     }
 
     /**
@@ -93,22 +130,9 @@ public class FigEdgeNote
      * @param fromNode the source
      * @param toNode the destination
      */
-    public FigEdgeNote(Object fromNode, Object toNode) {
+    private FigEdgeNote(Object fromNode, Object toNode) {
         this();
-        Layer lay =
-	    ProjectManager.getManager().getCurrentProject()
-	        .getActiveDiagram().getLayer();
-        setLayer(lay);
-        Fig destFig = lay.presentationFor(toNode);
-        Fig sourceFig = lay.presentationFor(fromNode);
-        if (destFig == null || sourceFig == null)
-	    throw new IllegalStateException("No destfig or sourcefig while "
-					    + "creating FigEdgeNode");
-        setDestFigNode((FigNode) destFig);
-        setDestPortFig(destFig);
-        setSourceFigNode((FigNode) sourceFig);
-        setSourcePortFig(sourceFig);
-        computeRoute();
+        System.out.println("Creating FigEdgeNote from adjoining elements");
     }
 
     ////////////////////////////////////////////////////////////////
