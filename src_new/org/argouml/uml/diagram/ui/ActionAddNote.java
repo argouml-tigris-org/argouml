@@ -39,8 +39,12 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.LayerManager;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
 /**
@@ -79,10 +83,10 @@ public class ActionAddNote extends UMLAction {
         Collection targets = TargetManager.getInstance().getModelTargets();
         
         //Let's build the comment first, unlinked.
-        Diagram d = ProjectManager.getManager().getCurrentProject()
+        Diagram diagram = ProjectManager.getManager().getCurrentProject()
             .getActiveDiagram();
         Object comment = Model.getCoreFactory().buildComment(null, 
-                ((UMLDiagram) d).getNamespace());
+                ((UMLDiagram) diagram).getNamespace());
 
         //Now, we link it to the modelelements which are represented by FigNode
         Object firstTarget = null;
@@ -90,7 +94,7 @@ public class ActionAddNote extends UMLAction {
         while (i.hasNext()) {
             Object obj = i.next();
             if (Model.getFacade().isAModelElement(obj)
-                    && (d.presentationFor(obj) instanceof FigNode)
+                    && (diagram.presentationFor(obj) instanceof FigNode)
                     && (!(Model.getFacade().isAComment(obj)))) {
                 if (firstTarget == null) firstTarget = obj;
                 /* Prevent e.g. AssociationClasses from being added trice: */
@@ -102,22 +106,24 @@ public class ActionAddNote extends UMLAction {
         }
 
         //Create the Node Fig for the comment itself and draw it
-        ((MutableGraphModel) d.getGraphModel()).addNode(comment);
-        Fig fig = d.presentationFor(comment); // remember the fig for later
+        ((MutableGraphModel) diagram.getGraphModel()).addNode(comment);
+        Fig noteFig = diagram.presentationFor(comment); // remember the fig for later
         
         //Create the comment links and draw them
+        MutableGraphModel mgm =
+            (MutableGraphModel) Globals.curEditor().getGraphModel();
+
         i = Model.getFacade().getAnnotatedElements(comment).iterator();
         while (i.hasNext()) {
             Object obj = i.next();
-            ((MutableGraphModel) d.getGraphModel())
-                .addEdge(new CommentEdge(comment, obj));
+            mgm.connect(comment, obj, CommentEdge.class);
         }
 
         //Calculate the position of the comment, based on the 1st target only
         int x = 20;
         int y = 20;
         if (firstTarget != null) {
-            Fig elemFig = d.presentationFor(firstTarget);
+            Fig elemFig = diagram.presentationFor(firstTarget);
             if (elemFig == null)
                 return;
             if (elemFig instanceof FigNode) {
@@ -126,14 +132,14 @@ public class ActionAddNote extends UMLAction {
                 y = elemFig.getY();
                 Rectangle drawingArea =
                     ProjectBrowser.getInstance().getEditorPane().getBounds();
-                if (x + fig.getWidth() > drawingArea.getX()) {
-                    x = elemFig.getX() - fig.getWidth() - DISTANCE;
+                if (x + noteFig.getWidth() > drawingArea.getX()) {
+                    x = elemFig.getX() - noteFig.getWidth() - DISTANCE;
                     if (x < 0) {
                         x = elemFig.getX();
-                        y = elemFig.getY() - fig.getHeight() - DISTANCE;
+                        y = elemFig.getY() - noteFig.getHeight() - DISTANCE;
                         if (y < 0) {
                             y = elemFig.getY() + elemFig.getHeight() + DISTANCE;
-                            if (y + fig.getHeight() > drawingArea.getHeight()) {
+                            if (y + noteFig.getHeight() > drawingArea.getHeight()) {
                                 x = 0;
                                 y = 0;
                             }
@@ -152,10 +158,10 @@ public class ActionAddNote extends UMLAction {
         }
         
         //Place the comment Fig on the nicest spot on the diagram
-        fig.setLocation(x, y);
+        noteFig.setLocation(x, y);
 
         //Select the new comment as target
-        TargetManager.getInstance().setTarget(fig.getOwner());
+        TargetManager.getInstance().setTarget(noteFig.getOwner());
         super.actionPerformed(ae); //update all tools' enabled status
     }
 
