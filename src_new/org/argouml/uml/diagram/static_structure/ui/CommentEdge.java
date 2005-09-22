@@ -52,13 +52,20 @@ public class CommentEdge {
     /**
      * Constructor.
      *
-     * @param s the source
-     * @param d the destination
+     * @param source the source
+     * @param dest the destination
      */
-    public CommentEdge(Object s, Object d) {
-        LOG.debug("Creating a CommentEdge");
-        source = s;
-        dest = d;
+    public CommentEdge(Object source, Object dest) {
+        if (!(Model.getFacade().isAModelElement(source))) {
+            throw new IllegalArgumentException(
+                    "The source of the CommentEdge must be a model element");
+        }
+        if (!(Model.getFacade().isAModelElement(dest))) {
+            throw new IllegalArgumentException(
+                    "The destination of the CommentEdge must be a model element");
+        }
+        this.source = source;
+        this.dest = dest;
         uuid = UUIDManager.getInstance().getNewUUID();
     }
 
@@ -89,16 +96,25 @@ public class CommentEdge {
 
 
     /**
-     * @param d The destination to set.
+     * @param destination The destination to set.
      */
-    public void setDestination(Object d) {
-        dest = d;
+    public void setDestination(Object destination) {
+        if (!(Model.getFacade().isAModelElement(destination))) {
+            throw new IllegalArgumentException(
+                    "The source of the CommentEdge must be a model element");
+        }
+        dest = destination;
     }
+    
     /**
-     * @param s The source to set.
+     * @param source The source to set.
      */
-    public void setSource(Object s) {
-        source = s;
+    public void setSource(Object source) {
+        if (!(Model.getFacade().isAModelElement(source))) {
+            throw new IllegalArgumentException(
+                    "The destination of the CommentEdge must be a model element");
+        }
+        this.source = source;
     }
 
     /**
