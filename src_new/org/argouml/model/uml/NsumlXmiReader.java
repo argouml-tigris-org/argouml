@@ -166,16 +166,26 @@ class NsumlXmiReader extends ru.novosoft.uml.xmi.XMIReader {
 //                                                          parameterXMIUUID);
 //                        Object methodName =  fields[1].get(link);
 //                        if (methodName.equals("type")
-//                              && sourceObject instanceof
-//                              ru.novosoft.uml.foundation.core.MAssociationEnd
-//                              && !(objectParameter instanceof
-//                              ru.novosoft.uml.foundation.core.MModelElement))
-//                        {
-//                            System.out.println("Link data from XMI "
-//                                  + sourceObject + " " + methodName + " "
-//                                  + parameterXMIID + " " + parameterXMIUUID
-//                                  + " " + objectParameter);
-//                            //i.remove();
+//                            && !(objectParameter instanceof
+//                            ru.novosoft.uml.foundation.core.MModelElement)) {
+//                            if (sourceObject instanceof
+//                                ru.novosoft.uml.foundation.core.MAssociationEnd)
+//                            {
+//                                System.out.println("Link data from XMI "
+//                                    + sourceObject + " " + methodName + " "
+//                                    + parameterXMIID + " " + parameterXMIUUID
+//                                    + " " + objectParameter);
+//                                //i.remove();
+//                            }
+//                            if (sourceObject instanceof
+//                                ru.novosoft.uml.foundation.core.MStructuralFeature)
+//                            {
+//                                System.out.println("Link data from XMI "
+//                                    + sourceObject + " " + methodName + " "
+//                                    + parameterXMIID + " " + parameterXMIUUID
+//                                    + " " + objectParameter);
+//                                //i.remove();
+//                            }
 //                        }
 //                    } else {
 //                        String parameterXMIID =  (String)fields[3].get(link);
