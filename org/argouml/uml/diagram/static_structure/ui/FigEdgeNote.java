@@ -30,9 +30,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
 
+import org.apache.log4j.Logger;
+import org.argouml.application.Main;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedVChangeListener;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
@@ -61,6 +62,12 @@ public class FigEdgeNote
 	       MouseListener,
 	       KeyListener,
 	       PropertyChangeListener {
+    
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger.getLogger(FigEdgeNote.class);
+    
     private Object owner;
 
 
@@ -70,9 +77,9 @@ public class FigEdgeNote
      */
     public FigEdgeNote() {
         super();
+        LOG.info("Constructing a FigEdgeNote");
         setBetweenNearestPoints(true);
-        ((FigPoly) _fig).setRectilinear(false);
-        setDashed(true);
+        getFig().setDashed(true);
         allowRemoveFromDiagram(false);
     }
 
@@ -122,19 +129,6 @@ public class FigEdgeNote
         setOwner(commentEdge);
     }
 
-    /**
-     * Constructs a new figedgenote from some object to another
-     * object. The objects must have a representation on the given
-     * layer.<p>
-     *
-     * @param fromNode the source
-     * @param toNode the destination
-     */
-    private FigEdgeNote(Object fromNode, Object toNode) {
-        this();
-        System.out.println("Creating FigEdgeNote from adjoining elements");
-    }
-
     ////////////////////////////////////////////////////////////////
     // accessors
 
@@ -142,8 +136,10 @@ public class FigEdgeNote
      * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
      */
     public void setFig(Fig f) {
-	super.setFig(f);
-	_fig.setDashed(true);
+        LOG.info("Setting the internal fig to " + f);
+        super.setFig(f);
+        _fig.setDashed(true);
+        //throw new IllegalArgumentException();
     }
 
     /**
