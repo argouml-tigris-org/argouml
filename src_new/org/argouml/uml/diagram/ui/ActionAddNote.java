@@ -45,7 +45,9 @@ import org.tigris.gef.base.LayerManager;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigEdgePoly;
 import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigPoly;
 
 /**
  * Action to add a note aka comment. This action adds a Comment to 0..* 
@@ -116,7 +118,11 @@ public class ActionAddNote extends UMLAction {
         i = Model.getFacade().getAnnotatedElements(comment).iterator();
         while (i.hasNext()) {
             Object obj = i.next();
-            mgm.connect(comment, obj, CommentEdge.class);
+            CommentEdge commentEdge = new CommentEdge(comment, obj);
+            ((MutableGraphModel) diagram.getGraphModel()).addEdge(commentEdge);
+            FigEdge fe = (FigEdge) diagram.presentationFor(commentEdge);
+            FigPoly fp = (FigPoly) fe.getFig();
+            fp.setComplete(true);
         }
 
         //Calculate the position of the comment, based on the 1st target only
