@@ -22,111 +22,56 @@
   </module>
 
   <module name="TreeWalker">
+    <property name="severity" value="warning"/>
 
-    <module name="AnonInnerLength">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="ArrayTrailingComma">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="ArrayTypeStyle">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="AvoidInlineConditionals">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="AvoidNestedBlocks">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="AvoidStarImport">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="ConstantName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="CovariantEquals">
-      <property name="severity" value="warning"/>
-    </module>
+    <module name="AnonInnerLength"/>
+    <module name="ArrayTrailingComma"/>
+    <module name="ArrayTypeStyle"/>
+    <module name="AvoidInlineConditionals"/>
+    <module name="AvoidNestedBlocks"/>
+    <module name="AvoidStarImport"/>
+    <module name="ConstantName"/>
+    <module name="CovariantEquals"/>
 
     <module name="CyclomaticComplexity">
       <property name="max" value="15"/>
-      <property name="severity" value="warning"/>
     </module>
 
-    <module name="DoubleCheckedLocking">
-      <property name="severity" value="warning"/>
-    </module>
+    <module name="DoubleCheckedLocking"/>
 
     <module name="EmptyBlock">
       <!-- All except catch and for. -->
       <property name="tokens" value="LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_IF,LITERAL_TRY,LITERAL_WHILE,STATIC_INIT"/>
-      <property name="severity" value="warning"/>
     </module>
-
 
     <module name="EmptyBlock">
       <property name="tokens" value="LITERAL_CATCH"/>
       <property name="option" value="text"/>
-      <property name="severity" value="warning"/>
     </module>
 
 
-    <module name="EmptyForIteratorPad">
-      <property name="severity" value="warning"/>
-    </module>
-
-
-    <module name="EmptyStatement">
-      <property name="severity" value="warning"/>
-    </module>
-
-
-    <module name="EqualsHashCode">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="ExecutableStatementCount">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="ExplicitInitialization">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="FileLength">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="FinalClass">
-      <property name="severity" value="warning"/>
-    </module>
-
+    <module name="EmptyForIteratorPad"/>
+    <module name="EmptyStatement"/>
+    <module name="EqualsHashCode"/>
+    <module name="ExecutableStatementCount"/>
+    <module name="ExplicitInitialization"/>
+    <module name="FileLength"/>
+    <module name="FinalClass"/>
 
     <module name="GenericIllegalRegexp">
       <property name="format" value="@todo"/>
-      <property name="severity" value="warning"/>
     </module>
 
     <module name="GenericIllegalRegexp">
       <property name="format" value="TODO "/>
-      <property name="severity" value="warning"/>
     </module>
 
     <module name="GenericIllegalRegexp">
       <property name="format" value="[Nn]eeds?-?more-?work"/>
-      <property name="severity" value="warning"/>
     </module>
 
     <module name="GenericIllegalRegexp">
       <property name="format" value="non-Javadoc"/>
-      <property name="severity" value="warning"/>
     </module>
 
 
@@ -134,7 +79,6 @@
       <property 
             name="format"
             value="/\*\* (needs documenting|to be documented|\s*) \*/"/>
-      <property name="severity" value="warning"/>
     </module>
 
 
@@ -145,7 +89,6 @@
       <property
 	        name="message"
             value="The Logger shall be private in the ArgoUML project."/>
-      <property name="severity" value="warning"/>
     </module>
 
     <module name="GenericIllegalRegexp">
@@ -155,7 +98,6 @@
       <property
 	        name="message"
             value="The Logger shall be named LOG in the ArgoUML project."/>
-      <property name="severity" value="warning"/>
     </module>
 
 
@@ -163,7 +105,6 @@
       <property name="format" value="^//\s*File:"/>
       <property name="message"
 	            value="Remove line from old style header format. Get filename from your editor."/>
-      <property name="severity" value="warning"/>
     </module>
 
 
@@ -171,7 +112,6 @@
       <property name="format" value="^//\s*Class(es)?:"/>
       <property name="message"
 	            value="Remove line from old style header format. Get class list from your IDE."/>
-      <property name="severity" value="warning"/>
     </module>
 
 
@@ -179,14 +119,12 @@
       <property name="format" value="^//\s*(Original )?[Aa]uthor:"/>
       <property name="message"
 	            value="Remove line from old style header format. Use @author tag."/>
-      <property name="severity" value="warning"/>
     </module>
 
 
     <module name="GenericIllegalRegexp">
       <property name="format" value="\s+$"/>
       <property name="message" value="Line has trailing spaces."/>
-      <property name="severity" value="warning"/>
     </module>
 
     
@@ -194,7 +132,6 @@
     <module name="GenericIllegalRegexp">
       <property name="format" value="Copyright \(c\) ([12][98][0-9][0-9]-)([^2]|2[^0]|20[^0]|200[^5])"/>
       <property name="message" value="While changing a file the Copyright year shall be updated."/>
-      <property name="severity" value="warning"/>
     </module>
 
     
@@ -202,22 +139,12 @@
     <module name="GenericIllegalRegexp">
       <property name="format" value=" = [^;{]*$"/>
       <property name="message" value="Preferably split assignments immediatly."/>
-      <property name="severity" value="warning"/>
     </module>
 
     
-    <module name="HiddenField">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="HideUtilityClassConstructor">
-      <property name="severity" value="warning"/>
-    </module>
-
-
-    <module name="IllegalCatch">
-      <property name="severity" value="warning"/>
-    </module>
+    <module name="HiddenField"/>
+    <module name="HideUtilityClassConstructor"/>
+    <module name="IllegalCatch"/>
 
     <module name="IllegalImport">
       <property name="severity" value="error"/>
@@ -227,240 +154,101 @@
       <property name="severity" value="error"/>
     </module>
 
-    <module name="IllegalType">
-      <property name="severity" value="warning"/>
-    </module>
+    <module name="IllegalType"/>
 
     <module name="Indentation">
-        <property name="caseIndent" value="0"/>
-      <property name="severity" value="warning"/>
+      <property name="caseIndent" value="0"/>
     </module>
 
-    <module name="InterfaceIsType">
-      <property name="severity" value="warning"/>
-    </module>
-
-
-    <module name="InnerAssignment">
-      <property name="severity" value="warning"/>
-    </module>
+    <module name="InterfaceIsType"/>
+    <module name="InnerAssignment"/>
 
     <module name="JavadocType">
       <property name="scope" value="private"/>
-      <property name="severity" value="warning"/>
     </module>
 
     <module name="JavadocMethod">
       <property name="scope" value="private"/>
       <property name="allowUndeclaredRTE" value="true"/>
-      <property name="severity" value="warning"/>
     </module>
 
-    <module name="JavadocStyle">
-      <property name="severity" value="warning"/>
-    </module>
+    <module name="JavadocStyle"/>
 
     <module name="JavadocVariable">
       <property name="scope" value="private"/>
-      <property name="severity" value="warning"/>
     </module>
 
-
-    <module name="JUnitTestCase">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="LeftCurly">
-      <property name="severity" value="warning"/>
-    </module>
-
+    <module name="JUnitTestCase"/>
+    <module name="LeftCurly"/>
 
     <module name="LineLength">
       <property name="ignorePattern"
 	            value="^( *\* @see |import |// [$]Id:.*[$])[^ ]*$"/>
-      <property name="severity" value="warning"/>
     </module>
 
 
-    <module name="LocalFinalVariableName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="LocalVariableName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="MagicNumber">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="MemberName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="MethodLength">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="MethodName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="MissingSwitchDefault">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="ModifierOrder">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="MutableException">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="NeedBraces">
-      <property name="severity" value="warning"/>
-    </module>
+    <module name="LocalFinalVariableName"/>
+    <module name="LocalVariableName"/>
+    <module name="MagicNumber"/>
+    <module name="MemberName"/>
+    <module name="MethodLength"/>
+    <module name="MethodName"/>
+    <module name="MissingSwitchDefault"/>
+    <module name="ModifierOrder"/>
+    <module name="MutableException"/>
+    <module name="NeedBraces"/>
 
     <module name="NestedIfDepth">
       <property name="max" value="3"/>
-      <property name="severity" value="warning"/>
     </module>
 
-    <module name="NestedTryDepth">
-      <property name="severity" value="warning"/>
-    </module>
-
-    
-    <module name="NoWhitespaceAfter">
-      <property name="severity" value="warning"/>
-    </module>
-
-
-    <module name="NoWhitespaceBefore">
-      <property name="severity" value="warning"/>
-    </module>
+    <module name="NestedTryDepth"/>    
+    <module name="NoWhitespaceAfter"/>
+    <module name="NoWhitespaceBefore"/>
 
     <module name="NoWhitespaceBefore">
       <property name="tokens" value="DOT"/>
       <property name="allowLineBreaks" value="true"/>
-      <property name="severity" value="warning"/>
     </module>
 
-
-    <module name="OperatorWrap">
-      <property name="severity" value="warning"/>
-    </module>
-
-
-    <module name="PackageDeclaration">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="PackageName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="ParameterAssignment">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="ParameterName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="ParameterNumber">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="ParenPad">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="RedundantImport">
-      <property name="severity" value="warning"/>
-    </module>
-
-
-    <module name="RedundantModifier">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="RedundantThrows">
-      <property name="severity" value="warning"/>
-    </module>
-
+    <module name="OperatorWrap"/>
+    <module name="PackageDeclaration"/>
+    <module name="PackageName"/>
+    <module name="ParameterAssignment"/>
+    <module name="ParameterName"/>
+    <module name="ParameterNumber"/>
+    <module name="ParenPad"/>
+    <module name="RedundantImport"/>
+    <module name="RedundantModifier"/>
+    <module name="RedundantThrows"/>
 
     <module name="RegexpHeader">
       <property name="headerFile" value="${checkstyle.header.file}"/>
-      <property name="severity" value="warning"/>
     </module>
 
-
-    <module name="RightCurly">
-      <property name="severity" value="warning"/>
-    </module>
-
-
-    <module name="SimplifyBooleanExpression">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="SimplifyBooleanReturn">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="SuperClone">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="SuperFinalize">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="StaticVariableName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="StringLiteralEquality">
-      <property name="severity" value="warning"/>
-    </module>
+    <module name="RightCurly"/>
+    <module name="SimplifyBooleanExpression"/>
+    <module name="SimplifyBooleanReturn"/>
+    <module name="SuperClone"/>
+    <module name="SuperFinalize"/>
+    <module name="StaticVariableName"/>
+    <module name="StringLiteralEquality"/>
 
     <module name="ThrowsCount">
       <property name="max" value="2"/>
-      <property name="severity" value="warning"/>
     </module>
 
-    
-    <module name="TypecastParenPad">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="TypeName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="UnusedImports">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="UpperEll">
-      <property name="severity" value="warning"/>
-    </module>
+    <module name="TypecastParenPad"/>
+    <module name="TypeName"/>
+    <module name="UnusedImports"/>
+    <module name="UpperEll"/>
 
     <module name="VisibilityModifier">
       <property name="publicMemberPattern" value="^$"/>
-      <property name="severity" value="warning"/>
     </module>
 
-    <module name="WhitespaceAfter">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="WhitespaceAround">
-      <property name="severity" value="warning"/>
-    </module>
-
+    <module name="WhitespaceAfter"/>
+    <module name="WhitespaceAround"/>
 
     <!-- Formatting of Javadoc comments.
 		
@@ -472,24 +260,18 @@
     <module name="GenericIllegalRegexp">
       <property name="format" value="^\s*/\*\*.*\S"/>
       <property name="message" value="Javadoc first sentence on same line as opening comment."/>
-      <property name="severity" value="warning"/>
     </module>
-
 
     <module name="GenericIllegalRegexp">
       <property name="format" value="^\s*\*.*\*/"/>
       <property name="message" value="Javadoc end not on line by itself."/>
-      <property name="severity" value="warning"/>
     </module>
-
 
     <module name="GenericIllegalRegexp">
       <!-- Make sure <p> is last on a line. -->
       <property name="format" value="^\s*\*\s*&lt;p&gt;"/>            
       <property name="message" value="&lt;p&gt; should be at the end of a line to improve readability of the non-formatted comment."/>
-      <property name="severity" value="warning"/>
     </module>
-
 
     <module name="GenericIllegalRegexp">
       <!-- Allow: a, code, em, img, li, ol, p, pre, strong, ul -->
@@ -504,30 +286,18 @@
         -->
       <property name="format" value="^\s*\*.*&lt;([^aceilopsu/]|a[^ >]|c[^o]|co[^d]|cod[^e]|code[^>]|e[^m]|em[^>]|i[^m]|im[^g]|img|l[^i]|li[^>]|o[^l]|ol[^>]|p[^r>]|pr[^e]|pre[^>]|s[^t]|st[^r]|str[^o]|stro[^n]|stron[^g]|strong[^>]|u[^l]|ul[^>])"/>
       <property name="message" value="Strange HTML tag. There should be no reason to use this tag."/>
-      <property name="severity" value="warning"/>
     </module>
-
 
     <module name="GenericIllegalRegexp">
       <!-- Allow closing: a, code, em, ol, pre, strong, ul -->
       <property name="format" value="^\s*\*.*&lt;/([^aceiopsu]|a[^>]|c[^o]|co[^d]|cod[^e]|code[^>]|e[^m]|em[^>]|o[^l]|ol[^>]|p[^r]|pr[^e]|pre[^>]|s[^t]|st[^r]|str[^o]|stro[^n]|stron[^g]|strong[^>]|u[^l]|ul[^>])"/>
       <property name="message" value="End of strange HTML tag. There should be no reason to use this end tag."/>
-      <property name="severity" value="warning"/>
     </module>
-
-
 
 	<!-- Over the top also in the paranoid version:
 
-    <module name="DesignForExtension">
-      <property name="severity" value="warning"/>
-    </module>
-
-
-    <module name="FinalParameters">
-      <property name="severity" value="warning"/>
-    </module>
-
+    <module name="DesignForExtension"/>
+    <module name="FinalParameters"/>
 	-->
 
   </module>
