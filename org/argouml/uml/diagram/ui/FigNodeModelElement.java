@@ -1652,11 +1652,6 @@ public abstract class FigNodeModelElement
      * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
      */
     public void setLayer(Layer lay) {
-        if (lay == null) {
-            throw new IllegalArgumentException(
-                    "Attempted to set the layer to null for "
-                    + Model.getFacade().getTipString(getOwner()));
-        }
         LOG.info("Setting " + this + " to layer " + lay);
         super.setLayer(lay);
     }
