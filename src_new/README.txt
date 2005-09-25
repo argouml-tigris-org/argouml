@@ -28,13 +28,14 @@ dir as argouml.jar), with the following contents:
   java -jar argouml.jar
 which can then be started via a shortcut on the desktop.
 
+
 Detailed instructions in running ArgoUML from a command line console
 on Windows:
 
 Suppose that you have downloaded ArgoUML to the C: drive, so your
 directory looks like this:
   c:\ArgoUML
-Open your console (for M$ users this is the DOS prompt) and type
+Open your DOS command prompt and type
   cd \
 to set the current directory to the root. Then type:
   c\:>cd ArgoUML
@@ -44,9 +45,7 @@ Then type:
   dir 
 to see everything in the ArgoUML folder. You should have the
 argouml.jar file present in this folder. Note that you need all
-downloaded jar files together in this directory (except if you
-downloaded modules. There jar files should be in the ext
-subdirectory).
+downloaded jar files together in this directory.
 
 Then type
   java -jar argouml.jar
@@ -55,5 +54,28 @@ That's it, ArgoUML should start up now.
 If not, there is a problem with the downloading on your computer.
 Please have a look at http://argouml.tigris.org in the FAQ 
 and then consider posting an issue.
+
+
+Modules:
+
+If you downloaded the modules archive, which contains the support for 
+code generation of other languages then Java, then put their jar files 
+in a subdirectory named ext.
+
+
+Memory:
+
+If you have plenty of memory and wants ArgoUML to be able to handle
+large projects, try:
+java -Xms250M -Xmx500M -jar argouml.jar 
+
+
+Batch mode:
+
+The following is an example of how ArgoUML is run in batchmode:
+java -jar argouml.jar -batch -command "org.argouml.uml.ui.ActionOpenProject=test.zargo" -command org.argouml.ui.cmd.ActionGotoDiagram=A -command "org.argouml.uml.ui.ActionSaveGraphics=test.PNG"
+Instead of "test.zargo", it may be better to include the complete path, e.g.
+c:\Documents and Settings\YourNameHere\My Documents\test.zargo
+
 
 Have fun!
