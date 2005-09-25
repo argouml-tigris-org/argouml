@@ -31,7 +31,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.Main;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.Model;
@@ -42,7 +41,6 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.presentation.FigPoly;
 
 
 /**
@@ -163,16 +161,17 @@ public class FigEdgeNote
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object newOwner) {
-        // hack to avoid loading problems since we cannot store
-        // the whole model yet in XMI
         if (newOwner == null) {
-            newOwner = new CommentEdge(getSourceFigNode(), getDestFigNode());
+            // hack to avoid loading problems since we cannot store
+            // the whole model yet in XMI
+            Object sourceModelElement = getSourceFigNode().getOwner();
+            Object destModelElement = getDestFigNode().getOwner();
+            newOwner = new CommentEdge(sourceModelElement, destModelElement);
         }
         owner = newOwner;
         if (UUIDHelper.getUUID(newOwner) == null) {
-            Model.getCoreHelper().setUUID(newOwner,
-				UUIDHelper.getNewUUID());
-	}
+            Model.getCoreHelper().setUUID(newOwner, UUIDHelper.getNewUUID());
+        }
     }
 
     /**
