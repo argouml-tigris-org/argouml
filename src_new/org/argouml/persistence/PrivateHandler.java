@@ -55,7 +55,7 @@ import org.xml.sax.SAXException;
 public class PrivateHandler extends org.tigris.gef.persistence.pgml.PrivateHandler {
     private Container _container;
 
-    private static final Logger LOG = Logger.getLogger(PGMLParser.class);
+    private static final Logger LOG = Logger.getLogger(PrivateHandler.class);
 
     public PrivateHandler( PGMLStackParser parser, Container container)
     {

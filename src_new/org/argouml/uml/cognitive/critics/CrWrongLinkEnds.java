@@ -100,7 +100,7 @@ public class CrWrongLinkEnds extends CrUML {
      * @return the set of offenders
      */
     public ListSet computeOffenders(UMLDeploymentDiagram deploymentDiagram) {
-	Collection figs = deploymentDiagram.getLayer().getContents(null);
+	Collection figs = deploymentDiagram.getLayer().getContents();
 	ListSet offs = null;
         Iterator figIter = figs.iterator();
 	while (figIter.hasNext()) {

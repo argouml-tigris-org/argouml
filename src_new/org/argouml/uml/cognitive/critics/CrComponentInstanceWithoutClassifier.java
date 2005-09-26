@@ -105,7 +105,7 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
      */
     public ListSet computeOffenders(UMLDeploymentDiagram deploymentDiagram) {
 
-	Collection figs = deploymentDiagram.getLayer().getContents(null);
+	Collection figs = deploymentDiagram.getLayer().getContents();
         ListSet offs = null;
         Iterator figIter = figs.iterator();
 	while (figIter.hasNext()) {

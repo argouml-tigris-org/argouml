@@ -293,7 +293,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
      * @return the list with {@link FigMessage}s.
      */
     public List getFigMessages(int y) {
-        if (getContents(null).isEmpty()
+        if (getContents().isEmpty()
 	    || getContentsEdgesOnly().isEmpty()) {
             return Collections.EMPTY_LIST;
         }

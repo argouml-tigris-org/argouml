@@ -100,7 +100,7 @@ public class CrCompInstanceWithoutNode extends CrUML {
      */
     public ListSet computeOffenders(UMLDeploymentDiagram deploymentDiagram) {
 
-	Collection figs = deploymentDiagram.getLayer().getContents(null);
+	Collection figs = deploymentDiagram.getLayer().getContents();
 	ListSet offs = null;
 	boolean isNode = false;
         Iterator it = figs.iterator();

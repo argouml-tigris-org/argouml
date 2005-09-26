@@ -280,7 +280,7 @@ class ChildGenModelElements implements ChildGenerator {
         }
 
         if (o instanceof Diagram) {
-            Collection figs = ((Diagram) o).getLayer().getContents(null);
+            Collection figs = ((Diagram) o).getLayer().getContents();
             if (figs != null) {
                 return new Vector(figs).elements();
             }

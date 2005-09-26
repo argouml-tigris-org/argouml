@@ -320,7 +320,7 @@ public class ClassdiagramLayouter implements Layouter {
      */
     public ClassdiagramLayouter(UMLDiagram theDiagram) {
         diagram = theDiagram;
-        Iterator nodeIter = diagram.getLayer().getContents(null).iterator();
+        Iterator nodeIter = diagram.getLayer().getContents().iterator();
         while (nodeIter.hasNext()) {
             Fig fig = (Fig) nodeIter.next();
             if (fig.getEnclosingFig() == null) {

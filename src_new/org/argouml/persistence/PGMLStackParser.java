@@ -99,6 +99,7 @@ public class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackPa
         if (f instanceof FigGroup) {
             FigGroup group = (FigGroup) f;
             String clsNameBounds = attrList.getValue("description");
+            System.out.println(clsNameBounds);
             if (clsNameBounds != null) {
                 StringTokenizer st =
                     new StringTokenizer(clsNameBounds, ",;[] ");
