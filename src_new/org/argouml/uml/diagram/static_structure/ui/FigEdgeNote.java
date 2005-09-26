@@ -164,9 +164,7 @@ public class FigEdgeNote
         if (newOwner == null) {
             // hack to avoid loading problems since we cannot store
             // the whole model yet in XMI
-            Object sourceModelElement = getSourceFigNode().getOwner();
-            Object destModelElement = getDestFigNode().getOwner();
-            newOwner = new CommentEdge(sourceModelElement, destModelElement);
+            newOwner = new CommentEdge();
         }
         owner = newOwner;
         if (UUIDHelper.getUUID(newOwner) == null) {
