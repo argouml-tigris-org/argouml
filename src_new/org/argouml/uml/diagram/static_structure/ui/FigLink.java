@@ -43,7 +43,7 @@ public class FigLink extends FigEdgeModelElement {
      * Constructor.
      */
     public FigLink() {
-	_fig.setLineColor(Color.black);
+	getFig().setLineColor(Color.black);
 	setBetweenNearestPoints(true);
     }
 

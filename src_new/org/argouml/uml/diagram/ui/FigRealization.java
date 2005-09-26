@@ -78,7 +78,7 @@ public class FigRealization extends FigEdgeModelElement {
      */
     public void setFig(Fig f) {
         super.setFig(f);
-        _fig.setDashed(true);
+        getFig().setDashed(true);
     }
 
     /**

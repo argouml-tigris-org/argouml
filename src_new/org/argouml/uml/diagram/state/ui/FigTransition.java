@@ -67,7 +67,7 @@ public class FigTransition extends FigEdgeModelElement {
     public FigTransition() {
         super();
         addPathItem(getNameFig(), new PathConvPercent2(this, getNameFig(), 50, 10));
-        _fig.setLineColor(Color.black);
+        getFig().setLineColor(Color.black);
         setDestArrowHead(endArrow);
         allowRemoveFromDiagram(false);
     }
@@ -120,7 +120,7 @@ public class FigTransition extends FigEdgeModelElement {
      */
     public void setFig(Fig f) {
         super.setFig(f);
-        _fig.setDashed(dashed);
+        getFig().setDashed(dashed);
     }
 
     /**
@@ -234,7 +234,7 @@ public class FigTransition extends FigEdgeModelElement {
             dashed =
                 Model.getFacade().isAObjectFlowState(getSource())
                 || Model.getFacade().isAObjectFlowState(getDestination());
-            _fig.setDashed(dashed);
+            getFig().setDashed(dashed);
         }
     }
 

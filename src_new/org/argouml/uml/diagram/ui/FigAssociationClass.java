@@ -98,7 +98,7 @@ public class FigAssociationClass
     public FigAssociationClass() {
         super();
         setBetweenNearestPoints(true);
-        ((FigPoly) _fig).setRectilinear(false);
+        ((FigPoly) getFig()).setRectilinear(false);
         setDashed(false);
 
         SwingUtilities.invokeLater(new RunFigAssociation(this));
@@ -228,7 +228,7 @@ public class FigAssociationClass
      */
     public void setFig(Fig f) {
         super.setFig(f);
-        _fig.setDashed(false);
+        getFig().setDashed(false);
     }
 
     /**

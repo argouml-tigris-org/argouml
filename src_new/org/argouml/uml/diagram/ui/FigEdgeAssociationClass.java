@@ -65,7 +65,7 @@ public class FigEdgeAssociationClass
      */
     public FigEdgeAssociationClass() {
         setBetweenNearestPoints(true);
-        ((FigPoly) _fig).setRectilinear(false);
+        ((FigPoly) getFig()).setRectilinear(false);
         setDashed(true);
     }
 
@@ -99,7 +99,7 @@ public class FigEdgeAssociationClass
      */
     public void setFig(Fig f) {
         super.setFig(f);
-        _fig.setDashed(true);
+        getFig().setDashed(true);
     }
 
     /**

@@ -853,7 +853,7 @@ public abstract class FigEdgeModelElement
      */
     public void damage() {
         super.damage();
-        _fig.damage();
+        getFig().damage();
     }
 
     /**
