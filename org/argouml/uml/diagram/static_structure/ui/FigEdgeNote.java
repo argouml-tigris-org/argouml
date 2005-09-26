@@ -136,7 +136,7 @@ public class FigEdgeNote
     public void setFig(Fig f) {
         LOG.info("Setting the internal fig to " + f);
         super.setFig(f);
-        _fig.setDashed(true);
+        getFig().setDashed(true);
         //throw new IllegalArgumentException();
     }
 

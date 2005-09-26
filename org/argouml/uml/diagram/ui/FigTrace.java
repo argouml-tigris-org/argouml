@@ -39,7 +39,7 @@ public class FigTrace extends FigEdgeLine {
      * The constructor.
      */
     public FigTrace() {
-	_fig.setLineColor(Color.red);
+	getFig().setLineColor(Color.red);
 	ArrowHeadTriangle endArrow = new ArrowHeadTriangle();
 	endArrow.setFillColor(Color.red);
 	setDestArrowHead(endArrow);

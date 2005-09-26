@@ -130,7 +130,7 @@ public class FigDependency extends FigEdgeModelElement {
      */
     public void setFig(Fig f) {
         super.setFig(f);
-        _fig.setDashed(true);
+        getFig().setDashed(true);
         // computeRoute();
         // this recomputes the route if you reload the diagram.
     }
