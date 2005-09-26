@@ -48,6 +48,10 @@ public class CommentEdge {
 
     private static final Logger LOG =
         Logger.getLogger(UseCaseDiagramRenderer.class);
+
+    CommentEdge() {
+        uuid = UUIDManager.getInstance().getNewUUID();
+    }
     
     /**
      * Constructor.
@@ -62,7 +66,8 @@ public class CommentEdge {
         }
         if (!(Model.getFacade().isAModelElement(dest))) {
             throw new IllegalArgumentException(
-                    "The destination of the CommentEdge must be a model element");
+                    "The destination of the CommentEdge " +
+                    "must be a model element");
         }
         this.source = source;
         this.dest = dest;
