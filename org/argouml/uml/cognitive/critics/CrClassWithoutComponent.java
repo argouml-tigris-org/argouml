@@ -27,6 +27,7 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
@@ -99,7 +100,7 @@ public class CrClassWithoutComponent extends CrUML {
      * @return the set of effenders
      */
     public ListSet computeOffenders(UMLDeploymentDiagram dd) {
-	Collection figs = dd.getLayer().getContents(null);
+	List figs = dd.getLayer().getContents();
 	ListSet offs = null;
 	Iterator figIter = figs.iterator();
 	while (figIter.hasNext()) {

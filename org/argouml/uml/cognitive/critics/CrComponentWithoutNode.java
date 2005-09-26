@@ -101,7 +101,7 @@ public class CrComponentWithoutNode extends CrUML {
      */
     public ListSet computeOffenders(UMLDeploymentDiagram dd) {
 
-	Collection figs = dd.getLayer().getContents(null);
+	Collection figs = dd.getLayer().getContents();
 	ListSet offs = null;
 	Iterator figIter = figs.iterator();
 	boolean isNode = false;

@@ -380,7 +380,8 @@ public class TabDiagram
             if (targets[i] != null) {
                 Object theTarget = null;
                 if (targets[i] instanceof Fig
-		        && manager.getContents(null).contains(targets[i])) {
+		        && manager.getActiveLayer().getContents().contains(
+                        targets[i])) {
 		    theTarget = targets[i];
                 } else {
 		    theTarget = manager.presentationFor(targets[i]);

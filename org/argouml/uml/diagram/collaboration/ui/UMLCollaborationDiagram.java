@@ -109,7 +109,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     public int getNumMessages() {
         Layer lay = getLayer();
-        Collection figs = lay.getContents(null);
+        Collection figs = lay.getContents();
         int res = 0;
         Iterator it = figs.iterator();
         while (it.hasNext()) {

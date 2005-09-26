@@ -240,7 +240,7 @@ public class FigMNode extends FigNodeModelElement {
 
         if (getLayer() != null) {
             // elementOrdering(figures);
-            Collection contents = getLayer().getContents(null);
+            Collection contents = getLayer().getContents();
             Collection bringToFrontList = new ArrayList();
             Iterator it = contents.iterator();
             while (it.hasNext()) {

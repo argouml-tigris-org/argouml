@@ -99,7 +99,7 @@ public class CrInterfaceWithoutComponent extends CrUML {
      * @return the set of offenders
      */
     public ListSet computeOffenders(UMLDeploymentDiagram dd) {
-	Collection figs = dd.getLayer().getContents(null);
+	Collection figs = dd.getLayer().getContents();
 	ListSet offs = null;
         Iterator figIter = figs.iterator();
 	while (figIter.hasNext()) {

@@ -89,7 +89,7 @@ public class ActionLayout extends UMLAction {
         Collection nodes =
             ((UMLClassDiagram) ProjectManager.getManager().getCurrentProject()
 	             .getActiveDiagram())
-	        .getLayer().getContents(null);
+	        .getLayer().getContents();
         Iterator it = nodes.iterator();
         while (it.hasNext()) {
             sm.select((Fig) (it.next()));

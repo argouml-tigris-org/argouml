@@ -98,7 +98,7 @@ public class CrObjectWithoutClassifier extends CrUML {
      * @return the set of offenders
      */
     public ListSet computeOffenders(UMLDeploymentDiagram dd) {
-	Collection figs = dd.getLayer().getContents(null);
+	Collection figs = dd.getLayer().getContents();
         Iterator figIter = figs.iterator();
 	ListSet offs = null;
 	while (figIter.hasNext()) {

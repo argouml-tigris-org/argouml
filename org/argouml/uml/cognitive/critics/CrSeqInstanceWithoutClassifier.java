@@ -98,7 +98,7 @@ public class CrSeqInstanceWithoutClassifier extends CrUML {
      * @return the set of offenders
      */
     public ListSet computeOffenders(UMLSequenceDiagram sd) {
-	Collection figs = sd.getLayer().getContents(null);
+	Collection figs = sd.getLayer().getContents();
         Iterator figIter = figs.iterator();
 	ListSet offs = null;
 	while (figIter.hasNext()) {
