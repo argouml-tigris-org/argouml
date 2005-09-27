@@ -39,7 +39,6 @@
     <jar href="mof.jar"/>
     <jar href="nbmdr.jar"/>
     <jar href="openide-util.jar"/>
-    <jar href="uml14.jar"/>
 
     <property name="argouml.model.implementation"
               value="org.argouml.model.mdr.MDRModelImplementation"/>
