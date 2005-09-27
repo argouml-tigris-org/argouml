@@ -74,6 +74,7 @@ import org.argouml.uml.ui.behavior.collaborations.PropPanelClassifierRole;
 import org.argouml.uml.ui.behavior.collaborations.PropPanelCollaboration;
 import org.argouml.uml.ui.behavior.collaborations.PropPanelInteraction;
 import org.argouml.uml.ui.behavior.collaborations.PropPanelMessage;
+import org.argouml.uml.ui.behavior.common_behavior.PropPanelArgument;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelCallAction;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelComponentInstance;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelCreateAction;
@@ -426,6 +427,9 @@ public class TabProps
         }
         if (Model.getFacade().isAActor(modelElement)) { 
             return new PropPanelActor(); 
+        }
+        if (Model.getFacade().isAArgument(modelElement)) { 
+            return new PropPanelArgument(); 
         }
         if (Model.getFacade().isAAssociationClass(modelElement)) { 
             return new PropPanelAssociationClass(); 
