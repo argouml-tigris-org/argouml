@@ -24,6 +24,9 @@
 
 package org.argouml.model;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import junit.framework.TestCase;
 
 /**
@@ -111,4 +114,23 @@ public class TestCoreHelper extends TestCase {
 
 	assertTrue(Model.getCoreHelper().getChildren(ge).size() == 3);
     }
+    
+    /**
+     * Test if adding a client to a binary dependency
+     * actually increases the client count.
+     */
+    public void testAddClient() {
+        Object model = Model.getModelManagementFactory().createModel();
+        Object class1 = Model.getCoreFactory().buildClass(model);
+        Object class2 = Model.getCoreFactory().buildClass(model);
+        Object dep = Model.getCoreFactory().buildDependency(class1, class2);
+        Object class3 = Model.getCoreFactory().buildClass(model);
+        Model.getCoreHelper().addClient(dep, class3);
+        Collection clients = Model.getFacade().getClients(dep);
+        assertEquals(2, Model.getFacade().getClients(dep).size());
+        Iterator it = clients.iterator();
+        assertEquals(class1, it.next());
+        assertEquals(class3, it.next());
+    }
+
 }
