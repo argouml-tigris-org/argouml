@@ -42,7 +42,10 @@ import javax.swing.Action;
 
 import org.argouml.application.api.Notation;
 import org.argouml.i18n.Translator;
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -759,42 +762,45 @@ public class FigClass extends FigClassifierBox
         if (getOwner() == null) {
             return;
         }
+        
+        System.out.println("FigClass got an event " + mee);
+        Object source = null;
+        if (mee != null) {
+            source = mee.getSource();
+        }
 
         // attributes
         if (mee == null
-                || Model.getFacade().isAAttribute(mee.getSource())
-                || (mee.getSource() == getOwner()
-		&& mee.getPropertyName().equals("feature"))) {
+                || Model.getFacade().isAAttribute(source)
+                || (source == getOwner()
+                && mee.getPropertyName().equals("feature"))) {
             updateAttributes();
             damage();
         }
         // operations
         if (mee == null
-                || Model.getFacade().isAOperation(mee.getSource())
-                || Model.getFacade().isAParameter(mee.getSource())
-                || (mee.getSource() == getOwner()
+                || Model.getFacade().isAOperation(source)
+                || Model.getFacade().isAParameter(source)
+                || (source == getOwner()
                         && mee.getPropertyName().equals("feature"))) {
             updateOperations();
             damage();
         }
         if (mee != null && mee.getPropertyName().equals("parameter")
-                && Model.getFacade().isAOperation(mee.getSource())) {
-            /* Copy the lists, since we will alter them below. */
-            ArrayList oldP = new ArrayList((List) mee.getOldValue());
-            ArrayList newP = new ArrayList((List) mee.getNewValue());
-            if (oldP.size() != newP.size()) {
-                if (newP.containsAll(oldP)) {
-                    // the list grew bigger somehow... (parameter added)
-                    newP.removeAll(oldP);
-                    /* Ensure we will get an event for the name change of
-                     * the newly created attribute: */
-                    Model.getPump().addModelEventListener(this, newP.get(0),
-                        new String[] {"name", "kind", "type", "defaultValue"});
-                } else {
-                    // the list shrunk somehow... (parameter removed)
-                    oldP.removeAll(newP);
-                    Model.getPump().removeModelEventListener(this, oldP.get(0));
-                }
+                && Model.getFacade().isAOperation(source)) {
+            if (mee instanceof AddAssociationEvent) {
+                AddAssociationEvent aae = (AddAssociationEvent) mee;
+                /* Ensure we will get an event for the name change of
+                 * the newly created attribute: */
+                Model.getPump().addModelEventListener(this, aae.getChangedValue(),
+                    new String[] {"name", "kind", "type", "defaultValue"});
+                damage();
+                return;
+            } else if (mee instanceof RemoveAssociationEvent) {
+                RemoveAssociationEvent rae = (RemoveAssociationEvent) mee;
+                Model.getPump().removeModelEventListener(this, rae.getChangedValue());
+                damage();
+                return;
             }
         }
         if (mee == null || mee.getPropertyName().equals("isAbstract")) {
@@ -807,10 +813,12 @@ public class FigClass extends FigClassifierBox
             updateOperations();
             damage();
         }
-        if (mee != null && Model.getFacade().getStereotypes(getOwner())
-                                .contains(mee.getSource())) {
-            updateStereotypeText();
-            damage();
+        if (mee != null && Model.getFacade().isAStereotype(source)) {
+            if (Model.getFacade().getStereotypes(getOwner())
+                    .contains(source)) {
+                updateStereotypeText();
+                damage();
+            }
         }
         // name updating
         super.modelChanged(mee);
