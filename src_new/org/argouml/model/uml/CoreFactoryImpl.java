@@ -1727,7 +1727,7 @@ public class CoreFactoryImpl
         if (!(elem instanceof MFeature)) {
             throw new IllegalArgumentException();
         }
-        LOG.warn("deleteOperation called but it is not implemented");
+        LOG.warn("deleteFeature called but it is not implemented");
     }
 
     /**
