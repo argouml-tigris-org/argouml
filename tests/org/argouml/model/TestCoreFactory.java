@@ -206,7 +206,8 @@ public class TestCoreFactory extends TestCase {
     }
 
     /**
-     * Test if deleting a class also deletes its dependency.
+     * Test if deleting a client class on a 2(client) to
+     * 1(supplier) dependency leaves the dependency in place.
      */
     public void testDeleteModelelementDependencyClient() {
         Object model = Model.getModelManagementFactory().createModel();
