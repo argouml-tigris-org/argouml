@@ -762,8 +762,6 @@ public class FigClass extends FigClassifierBox
         if (getOwner() == null) {
             return;
         }
-        
-        System.out.println("FigClass got an event " + mee);
         Object source = null;
         if (mee != null) {
             source = mee.getSource();
