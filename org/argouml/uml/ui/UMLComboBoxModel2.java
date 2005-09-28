@@ -140,15 +140,18 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
+        
+        LOG.info("The event type is " + evt.getClass().getName());
+        
         if (evt instanceof AttributeChangeEvent) {
             if (evt.getPropertyName().equals(propertySetName)
                     && evt.getSource() == getTarget()
                 && (isClearable || getChangedElement(evt) != null)) {
                 Object elem = getChangedElement(evt);
                 if (!contains(elem)) {
-		    addElement(elem);
-		}
-		setSelectedItem(elem);
+                    addElement(elem);
+                }
+                setSelectedItem(elem);
             }
         } else if (evt instanceof DeleteInstanceEvent) {
             if (contains(getChangedElement(evt))) {
