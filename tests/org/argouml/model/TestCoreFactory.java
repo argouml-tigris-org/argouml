@@ -96,9 +96,8 @@ public class TestCoreFactory extends TestCase {
     /**
      * Test creation of metatypes.
      *
-     * TODO: we could add tests here to make sure that we can NOT
-     * create abstract types
-     */
+     * TODO: we could add tests here to make sure that
+     * we can NOT create abstract types     */
     public void testCreates() {
 	Collection objs = new Vector();
 	
@@ -150,7 +149,7 @@ public class TestCoreFactory extends TestCase {
     }
 
     /**
-     * Test if deleting a classifier does also delete its association.
+     * Test that deleting a classifier also deletes a binary association
      */
     public void testDeleteClassifier1() {
         Object model = Model.getModelManagementFactory().createModel();
@@ -168,7 +167,9 @@ public class TestCoreFactory extends TestCase {
     }
 
     /**
-     * Test if deleting a classifier does also delete its association.
+     * Test if deleting a classifier from a 3 way
+     * association results in a binary association
+     * remaining between the other classifiers
      */
     public void testDeleteClassifierAssociation() {
         Object model = Model.getModelManagementFactory().createModel();
@@ -178,13 +179,15 @@ public class TestCoreFactory extends TestCase {
         Model.getCoreHelper().addConnection(assoc,
                 Model.getCoreFactory().createAssociationEnd());
         WeakReference class1wr = new WeakReference(class1);
-        WeakReference assocwr = new WeakReference(assoc);
         Model.getUmlFactory().delete(class1);
         class1 = null;
-        assoc = null;
         System.gc();
         assertNull("class not removed", class1wr.get());
-        assertNotNull("association removed", assocwr.get());
+        // Check to see if association still exists
+        Collection ends = Model.getFacade().getAssociationEnds(class2);
+        assertEquals(1, ends.size());
+        Object assoc1 = Model.getFacade().getAssociation(ends.iterator().next());
+        assertEquals(2, Model.getFacade().getConnections(assoc1).size());
     }
 
     /**
@@ -195,19 +198,26 @@ public class TestCoreFactory extends TestCase {
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object class2 = Model.getCoreFactory().buildClass(model);
         Object dep = Model.getCoreFactory().buildDependency(class1, class2);
+        assertEquals("client dependency invalid", 
+                1, Model.getFacade().getClientDependencies(class1).size());
+        assertEquals("supplier dependency invalid", 
+                1, Model.getFacade().getSupplierDependencies(class2).size());
         WeakReference class1wr = new WeakReference(class1);
-        WeakReference depwr = new WeakReference(dep);
         Model.getUmlFactory().delete(class1);
         class1 = null;
         dep = null;
         System.gc();
         assertNull("class not removed", class1wr.get());
-        assertNull("binary dependency not removed", depwr.get());
-    }
+        assertEquals("invalid supplier dependency not removed", 
+                0, Model.getFacade().getSupplierDependencies(class2).size());
+        }
 
     /**
-     * Test if deleting a client class on a 2(client) to
-     * 1(supplier) dependency leaves the dependency in place.
+     * Test that deleting a class doesn't delete a valid dependency
+     * Build 2
+     *      / \
+     *     1   3
+     * delete 1 and confirm that dependency still exists
      */
     public void testDeleteModelelementDependencyClient() {
         Object model = Model.getModelManagementFactory().createModel();
@@ -216,6 +226,71 @@ public class TestCoreFactory extends TestCase {
         Object dep = Model.getCoreFactory().buildDependency(class1, class2);
         Object class3 = Model.getCoreFactory().buildClass(model);
         Model.getCoreHelper().addClient(dep, class3);
+        assertEquals(
+                "client dependency invalid", 
+                1,
+                Model.getFacade().getClientDependencies(class1).size());
+        assertEquals(
+                "client dependency invalid", 
+                1, 
+                Model.getFacade().getClientDependencies(class3).size());
+        assertEquals(
+                "supplier dependency invalid", 
+                1, 
+                Model.getFacade().getSupplierDependencies(class2).size());
+        WeakReference class1wr = new WeakReference(class1);
+        Model.getUmlFactory().delete(class1);
+        class1 = null;
+        dep = null;
+        System.gc();
+        assertNull("class not removed", class1wr.get());
+        assertEquals("valid client dependency removed", 
+                1, Model.getFacade().getClientDependencies(class3).size());
+        assertEquals("valid supplier dependency removed", 
+                1, Model.getFacade().getSupplierDependencies(class2).size());
+    }
+    
+    /**
+     * Test that deleting a class doesn't leave an invalid dependency
+     * Build 2
+     *      / \
+     *     1   3
+     * delete 2 and confirm that the dependency is deleted
+     */
+    public void testDeleteModelelementDependencyClient2() {
+        Object model = Model.getModelManagementFactory().createModel();
+        Object class1 = Model.getCoreFactory().buildClass(model);
+        Object class2 = Model.getCoreFactory().buildClass(model);
+        Object dep = Model.getCoreFactory().buildDependency(class1, class2);
+        Object class3 = Model.getCoreFactory().buildClass(model);
+        Model.getCoreHelper().addClient(dep, class3);
+        WeakReference class2wr = new WeakReference(class2);
+        Model.getUmlFactory().delete(class2);
+        class2 = null;
+        dep = null;
+        System.gc();
+        assertNull("class not removed", class2wr.get());
+        assertTrue("Invalid dependency not removed", 
+                Model.getFacade().getClientDependencies(class3).isEmpty());
+        assertTrue("Invalid dependency not removed", 
+                Model.getFacade().getClientDependencies(class1).isEmpty());
+    }
+    
+    /**
+     * Test if deleting a class with a dependency containing two suppliers
+     * also deletes the invalid dependency
+     * Build 2   3 
+     *        \ /
+     *         1
+     * Delete 1 and confirm that dependency gets deleted
+     */
+    public void testDeleteModelelementDependencySupplier() {
+        Object model = Model.getModelManagementFactory().createModel();
+        Object class1 = Model.getCoreFactory().buildClass(model);
+        Object class2 = Model.getCoreFactory().buildClass(model);
+        Object dep = Model.getCoreFactory().buildDependency(class1, class2);
+        Object class3 = Model.getCoreFactory().buildClass(model);
+        Model.getCoreHelper().addSupplier(dep, class3);
         WeakReference class1wr = new WeakReference(class1);
         WeakReference depwr = new WeakReference(dep);
         Model.getUmlFactory().delete(class1);
@@ -223,13 +298,25 @@ public class TestCoreFactory extends TestCase {
         dep = null;
         System.gc();
         assertNull("class not removed", class1wr.get());
-        assertNotNull("dependency removed", depwr.get());
+        assertEquals(
+                "Invalid dependency not removed", 
+                0,
+                Model.getFacade().getSupplierDependencies(class2).size());
+        assertEquals(
+                "Invalid dependency not removed", 
+                0,
+                Model.getFacade().getSupplierDependencies(class3).size());
     }
-
+    
     /**
-     * Test if deleting a class also deletes its dependency.
+     * Test if deleting a class which is one of two suppliers to a dependency
+     * leaves the dependency intact
+     * Build 2   3 
+     *        \ /
+     *         1
+     * Delete 2 and confirm that dependency remains
      */
-    public void testDeleteModelelementDependencySupplier() {
+    public void testDeleteModelelementDependencySupplier2() {
         Object model = Model.getModelManagementFactory().createModel();
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object class2 = Model.getCoreFactory().buildClass(model);
@@ -243,9 +330,16 @@ public class TestCoreFactory extends TestCase {
         dep = null;
         System.gc();
         assertNull("class not removed", class2wr.get());
-        assertNotNull("dependency removed", depwr.get());
+        assertEquals(
+                "Invalid dependency not removed", 
+                1, 
+                Model.getFacade().getClientDependencies(class1).size());
+        assertEquals(
+                "Invalid dependency not removed", 
+                1, 
+                Model.getFacade().getSupplierDependencies(class3).size());
     }
-
+    
     /**
      * Construct a class, with two self associations and delete the class.
      * Test if both associations were deleted in the process.
