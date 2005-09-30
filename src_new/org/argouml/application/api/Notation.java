@@ -202,7 +202,7 @@ public final class Notation implements PropertyChangeListener {
         // This is needed for the case when the default notation is
         // not loaded at this point.
         if (n == null) {
-            n = NotationNameImpl.findNotation("UML 1.3");
+            n = NotationNameImpl.findNotation("UML 1.4");
 	}
         LOG.debug("default notation is " + n.getConfigurationValue());
         return n;
