@@ -69,7 +69,7 @@ public class GeneratorDisplay extends Generator2 {
         super(
             Notation.makeNotation(
                 "UML",
-                "1.3",
+                "1.4",
                 Argo.lookupIconResource("UmlNotation")));
     }
 
