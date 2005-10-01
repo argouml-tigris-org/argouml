@@ -45,22 +45,12 @@ import org.argouml.uml.generator.ui.ClassGenerationDialog;
 public class ActionGenerateProjectCode extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
-    // static variables
-
-    /**
-     * The singleton.
-     */
-    private static final ActionGenerateProjectCode SINGLETON =
-	new ActionGenerateProjectCode();
-
-
-    ////////////////////////////////////////////////////////////////
     // constructors
 
     /**
      *  The constructor.
      */
-    protected ActionGenerateProjectCode() {
+    public ActionGenerateProjectCode() {
 	super("action.generate-code-for-project", true, NO_ICON);
     }
 
@@ -114,9 +104,16 @@ public class ActionGenerateProjectCode extends UMLAction {
 	return super.shouldBeEnabled() && (activeDiagram instanceof UMLDiagram);
     }
 
+    /**
+     * @param cls the classifier that is candidate for generation
+     * @return true if the candidate is sound
+     */
     private boolean isCodeRelevantClassifier(Object/*MClassifier*/ cls) {
-        if (cls == null
-            || (!Model.getFacade().isAClass(cls) && !Model.getFacade().isAInterface(cls))) {
+        if (cls == null) {
+            return false;
+        }
+        if (!Model.getFacade().isAClass(cls) 
+                && !Model.getFacade().isAInterface(cls)) {
             return false;
         }
         String path = Generator2.getCodePath(cls);
@@ -140,12 +137,5 @@ public class ActionGenerateProjectCode extends UMLAction {
         return false;
     }
 
-
-    /**
-     * @return Returns the SINGLETON.
-     */
-    public static ActionGenerateProjectCode getInstance() {
-        return SINGLETON;
-    }
 
 } /* end class ActionGenerateProjectCode */

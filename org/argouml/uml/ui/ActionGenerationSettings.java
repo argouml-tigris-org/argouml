@@ -29,18 +29,10 @@ import java.awt.event.ActionEvent;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-/** Action for viewing/editing source path settings of model elements
+/** 
+ * Action for viewing/editing source path settings of model elements.
  */
 public class ActionGenerationSettings extends UMLAction {
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    /**
-     * The singleton.
-     */
-    private static final ActionGenerationSettings SINGLETON =
-	new ActionGenerationSettings();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -48,7 +40,7 @@ public class ActionGenerationSettings extends UMLAction {
     /**
      *  The constructor.
      */
-    protected ActionGenerationSettings() {
+    public ActionGenerationSettings() {
 	super("action.settings-for-project-code-generation", true, NO_ICON);
     }
 
@@ -73,10 +65,4 @@ public class ActionGenerationSettings extends UMLAction {
 	    && (activeDiagram instanceof UMLDiagram);
     }
 
-    /**
-     * @return Returns the SINGLETON.
-     */
-    public static ActionGenerationSettings getInstance() {
-        return SINGLETON;
-    }
 } /* end class ActionGenerationSettings */
