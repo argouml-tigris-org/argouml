@@ -34,17 +34,13 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
 import org.tigris.gef.presentation.Fig;
 
-/** Action to trigger creation of one class to source.
- *  @stereotype singleton */
+/** 
+ * Action to trigger generation of source 
+ * for all selected classes and interfaces.
+ * 
+ * @stereotype singleton 
+ */
 public class ActionGenerateOne extends UMLAction {
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    /**
-     * The singleton.
-     */
-    private static final ActionGenerateOne SINGLETON = new ActionGenerateOne();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -52,7 +48,7 @@ public class ActionGenerateOne extends UMLAction {
     /**
      * The constructor.
      */
-    protected ActionGenerateOne() {
+    public ActionGenerateOne() {
         super("action.generate-selected-classes", true, NO_ICON);
     }
 
@@ -63,36 +59,7 @@ public class ActionGenerateOne extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-//        ProjectBrowser pb = ProjectBrowser.getInstance();
-        Vector classes = new Vector();
-        Collection targets = TargetManager.getInstance().getTargets();
-        Iterator it = targets.iterator();
-        while (it.hasNext()) {
-            Object target = it.next();
-            if (target instanceof Fig) {
-                target = ((Fig) target).getOwner();
-            }
-            if (Model.getFacade().isAClass(target)
-                || Model.getFacade().isAInterface(target)) {
-                classes.add(target);
-            }
-        }
-        /*
-        Editor ce = org.tigris.gef.base.Globals.curEditor();
-        Vector sels = ce.getSelectionManager().getFigs();
-        Enumeration figs = sels.elements();
-        Vector classes = new Vector();
-        while (figs.hasMoreElements()) {
-        Fig f = (Fig) figs.nextElement();
-        Object owner = f.getOwner();
-        if (!(owner instanceof MClass) && !(owner instanceof MInterface))
-        continue;
-        MClassifier cls = (MClassifier)owner;
-        String name = cls.getName();
-        if (name == null || name.length() == 0)
-        continue;
-        classes.addElement(cls);
-        }*/
+        Vector classes = getCandidates();
         // There is no need to test if classes is empty because
         // the shouldBeEnabled mechanism blanks out the possibility to
         // choose this alternative in this case.
@@ -106,7 +73,15 @@ public class ActionGenerateOne extends UMLAction {
     public boolean shouldBeEnabled() {
         if (!super.shouldBeEnabled())
             return false;
-        boolean foundOne = false;
+        Vector classes = getCandidates();
+        return classes.size() > 0;
+    }
+
+    /**
+     * @param classes
+     */
+    private Vector getCandidates() {
+        Vector classes = new Vector();
         Collection targets = TargetManager.getInstance().getTargets();
         Iterator it = targets.iterator();
         while (it.hasNext()) {
@@ -116,36 +91,10 @@ public class ActionGenerateOne extends UMLAction {
             }
             if (Model.getFacade().isAClass(target)
                 || Model.getFacade().isAInterface(target)) {
-                foundOne = true;
-                break;
+                classes.add(target);
             }
         }
-        return foundOne;
-        /*
-        Editor ce = org.tigris.gef.base.Globals.curEditor();
-        if(ce != null) {
-            Vector sels = ce.getSelectionManager().getFigs();
-            java.util.Enumeration figs = sels.elements();
-            while (figs.hasMoreElements()) {
-        	Fig f = (Fig) figs.nextElement();
-        	Object owner = f.getOwner();
-        	if (!(owner instanceof MClass)
-        	    && !(owner instanceof MInterface))
-        	    continue;
-        	MClassifier cls = (MClassifier) owner;
-        	String name = cls.getName();
-        	if (name == null || name.length() == 0) return false;
-        	foundOne = true;
-            }
-        }
-        return foundOne;
-        */
+        return classes;
     }
 
-    /**
-     * @return Returns the SINGLETON.
-     */
-    public static ActionGenerateOne getInstance() {
-        return SINGLETON;
-    }
 } /* end class ActionGenerateOne */
