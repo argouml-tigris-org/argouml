@@ -61,11 +61,11 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDialog;
-import org.argouml.ui.FileChooserFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
 import org.tigris.gef.util.Converter;
+import org.tigris.swidgets.Dialog;
 
 /**
  * The dialog that starts the generation of classes.
@@ -119,7 +119,7 @@ public class ClassGenerationDialog
         super(
             ProjectBrowser.getInstance(),
             Translator.localize("dialog.title.generate-classes"),
-            ArgoDialog.OK_CANCEL_OPTION,
+            Dialog.OK_CANCEL_OPTION,
             true);
         isPathInModel = inModel;
 
