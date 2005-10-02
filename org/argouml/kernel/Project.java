@@ -1136,6 +1136,8 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Returns the cgPrefs.
+     * 
+     * @deprecated use getGenerationPrefs() instead
      * @return GenerationPreferences
      */
     public GenerationPreferences getCgPrefs() {
@@ -1168,6 +1170,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Sets the cgPrefs.
+     * @deprecated use setGenerationPrefs() instead
      * @param theCgPrefs The cgPrefs to set
      */
     public void setCgPrefs(GenerationPreferences theCgPrefs) {
