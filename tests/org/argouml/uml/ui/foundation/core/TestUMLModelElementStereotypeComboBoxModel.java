@@ -28,6 +28,7 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -47,6 +48,9 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
     private Object[] stereotypes;
 
     private Object umlModel;
+
+    private static final Logger LOG = Logger.
+        getLogger(TestUMLModelElementStereotypeComboBoxModel.class);
 
     /**
      * Constructor for TestUMLAssociationRoleBaseComboBoxModel.
@@ -74,10 +78,24 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
                 .getModel();
         Collection models = ProjectManager.getManager().getCurrentProject()
                 .getModels();
+        
         for (int i = 0; i < 10; i++) {
+            // WARNING!!
+            // This has a different effect on NSUML and MDR
+            // NSUML it will create a stereotype and apply it to the model
+            // element removing any previously applied stereotype. Therefore
+            // the final result is that the last created stereotype is the only
+            // one applied
+            // MDR it will apply each stereotype in turn. The end result is
+            // that the model element has all stereotypes applied.
             stereotypes[i] = Model.getExtensionMechanismsFactory()
                     .buildStereotype(elem, "test" + i, theModel, models);
         }
+        
+        // This will remove all applied stereotypes working around the
+        // problem above.
+        Model.getCoreHelper().setStereotype(elem, null);
+        
         model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] { elem }));
     }
@@ -106,6 +124,8 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
     public void testSetBase() {
         Model.getCoreHelper().setStereotype(elem, stereotypes[0]);
         assertTrue(model.getSelectedItem() == stereotypes[0]);
+        Model.getCoreHelper().setStereotype(elem, stereotypes[1]);
+        assertTrue(model.getSelectedItem() == stereotypes[1]);
     }
 
     /**
