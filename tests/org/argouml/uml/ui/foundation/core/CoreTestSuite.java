@@ -30,9 +30,15 @@ import junit.framework.TestSuite;
 /**
  * @author Thierry Lach
  */
-public class CoreTestSuite {
+public final class CoreTestSuite {
+    /**
+     * Constructor.
+     */
+    private CoreTestSuite() {
+    }
 
-    /** Test suite for this package
+    /**
+     * Test suite for this package.
      *
      * @return the junit test suite
      */
@@ -50,7 +56,8 @@ public class CoreTestSuite {
 	suite.addTestSuite(TestUMLModelElementNameDocument.class);
 	suite.addTestSuite(TestUMLModelElementNamespaceListModel.class);
 	suite.addTestSuite(TestUMLModelElementSourceFlowListModel.class);
-	suite.addTestSuite(TestUMLModelElementStereotypeComboBoxModel.class);
+        // Issue 3538
+	// suite.addTestSuite(TestUMLModelElementStereotypeComboBoxModel.class);
 	suite.addTestSuite(TestUMLModelElementSupplierDependencyListModel
 	                                                            .class);
 	suite.addTestSuite(TestUMLModelElementTargetFlowListModel.class);
