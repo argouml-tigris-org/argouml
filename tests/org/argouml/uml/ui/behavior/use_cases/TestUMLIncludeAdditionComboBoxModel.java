@@ -125,6 +125,7 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
      * Object)} with <code>null</code> argument.
      */
     public void testSetAdditionToNull() {
+        Model.getUseCasesHelper().setAddition(elem, additions[0]);
         Model.getUseCasesHelper().setAddition(elem, null);
         assertNull(model.getSelectedItem());
     }

@@ -104,6 +104,7 @@ public class TestUMLFeatureOwnerComboBoxModel extends TestCase {
      * Test setOwner() with null argument.
      */
     public void testSetOwnerToNull() {
+        Model.getCoreHelper().setOwner(elem, types[0]);
         Model.getCoreHelper().setOwner(elem, null);
         assertNull(model.getSelectedItem());
     }

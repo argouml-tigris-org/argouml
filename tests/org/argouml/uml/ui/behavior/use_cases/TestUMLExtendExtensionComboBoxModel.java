@@ -104,6 +104,7 @@ public class TestUMLExtendExtensionComboBoxModel extends TestCase {
      * Test setExtension() with null argument.
      */
     public void testSetBaseToNull() {
+        Model.getUseCasesHelper().setExtension(elem, extensions[0]);
         Model.getUseCasesHelper().setExtension(elem, null);
         assertNull(model.getSelectedItem());
     }

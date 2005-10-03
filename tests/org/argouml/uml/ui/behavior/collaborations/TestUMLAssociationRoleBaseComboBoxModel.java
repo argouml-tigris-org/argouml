@@ -121,6 +121,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
      * Test setting the Base to null.
      */
     public void testSetBaseToNull() {
+        Model.getCollaborationsHelper().setBase(elem, bases[0]);
         Model.getCollaborationsHelper().setBase(elem, null);
         assertNull(model.getSelectedItem());
     }

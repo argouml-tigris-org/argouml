@@ -103,6 +103,7 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
      * Test setSignal() with null argument.
      */
     public void testSetSignalToNull() {
+        Model.getCommonBehaviorHelper().setSignal(elem, signals[0]);
         Model.getCommonBehaviorHelper().setSignal(elem, null);
         assertNull(model.getSelectedItem());
     }

@@ -122,6 +122,7 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
      * Test setPowertype() with null argument.
      */
     public void testSetPowertypeToNull() {
+        Model.getCoreHelper().setPowertype(elem, types[0]);
         Model.getCoreHelper().setPowertype(elem, null);
         assertNull(model.getSelectedItem());
     }

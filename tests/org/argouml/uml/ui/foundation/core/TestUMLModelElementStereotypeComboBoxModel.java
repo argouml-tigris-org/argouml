@@ -112,6 +112,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
      * Test setStereotype() with null argument.
      */
     public void testSetBaseToNull() {
+        Model.getCoreHelper().setStereotype(elem, stereotypes[0]);
         Model.getCoreHelper().setStereotype(elem, null);
         assertNull(model.getSelectedItem());
     }

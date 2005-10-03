@@ -110,6 +110,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      * a not null value.
      */
     public void testSetTypeToNull() {
+        Model.getCoreHelper().setType(elem, types[0]);
         Model.getCoreHelper().setType(elem, null);
         assertNotNull(model.getSelectedItem());
     }

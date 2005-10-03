@@ -105,6 +105,7 @@ public class TestUMLExtendBaseComboBoxModel extends TestCase {
      * Test setBase() with null argument.
      */
     public void testSetBaseToNull() {
+        Model.getUseCasesHelper().setBase(elem, bases[0]);
         Model.getUseCasesHelper().setBase(elem, null);
         assertNull(model.getSelectedItem());
     }
