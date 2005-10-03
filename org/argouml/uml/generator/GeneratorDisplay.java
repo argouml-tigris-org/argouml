@@ -150,7 +150,7 @@ public class GeneratorDisplay extends Generator2 {
         }
 
         StringBuffer parameterStr = new StringBuffer();
-	parameterStr.append("(").append(parameterListBuffer).append(")");
+        parameterStr.append("(").append(parameterListBuffer).append(")");
 
         // the returnparameters
         coll = Model.getCoreHelper().getReturnParameters(op);
@@ -215,7 +215,7 @@ public class GeneratorDisplay extends Generator2 {
         if ((visStr != null)
             && (visStr.length() > 0)
             && Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY)) {
-            genStr.append(visStr).append(" ");
+            genStr.append(visStr);
         }
         if ((nameStr != null) && (nameStr.length() > 0)) {
             genStr.append(nameStr);
@@ -252,7 +252,6 @@ public class GeneratorDisplay extends Generator2 {
         String visibility = generateVisibility(attr);
         String stereo = 
             generateStereotype(Model.getFacade().getStereotypes(attr));
-        //cat.debug("Stereotype: " + stereo);
         String name = Model.getFacade().getName(attr);
         String multiplicity =
 	    generateMultiplicity(Model.getFacade().getMultiplicity(attr));
@@ -282,13 +281,13 @@ public class GeneratorDisplay extends Generator2 {
         }
 
         StringBuffer sb = new StringBuffer(20);
+        if ((stereo != null) && (stereo.length() > 0)) {
+            sb.append(stereo).append(" ");
+        }
         if ((visibility != null)
             && (visibility.length() > 0)
             && Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY)) {
-            sb.append(visibility).append(" ");
-        }
-        if ((stereo != null) && (stereo.length() > 0)) {
-            sb.append(stereo).append(" ");
+            sb.append(visibility);
         }
         if ((name != null) && (name.length() > 0)) {
             sb.append(name).append(" ");
