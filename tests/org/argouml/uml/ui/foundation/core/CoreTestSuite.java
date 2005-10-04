@@ -56,8 +56,7 @@ public final class CoreTestSuite {
 	suite.addTestSuite(TestUMLModelElementNameDocument.class);
 	suite.addTestSuite(TestUMLModelElementNamespaceListModel.class);
 	suite.addTestSuite(TestUMLModelElementSourceFlowListModel.class);
-        // Issue 3538
-	// suite.addTestSuite(TestUMLModelElementStereotypeComboBoxModel.class);
+	suite.addTestSuite(TestUMLModelElementStereotypeComboBoxModel.class);
 	suite.addTestSuite(TestUMLModelElementSupplierDependencyListModel
 	                                                            .class);
 	suite.addTestSuite(TestUMLModelElementTargetFlowListModel.class);

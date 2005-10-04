@@ -80,21 +80,9 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
                 .getModels();
         
         for (int i = 0; i < 10; i++) {
-            // WARNING!!
-            // This has a different effect on NSUML and MDR
-            // NSUML it will create a stereotype and apply it to the model
-            // element removing any previously applied stereotype. Therefore
-            // the final result is that the last created stereotype is the only
-            // one applied
-            // MDR it will apply each stereotype in turn. The end result is
-            // that the model element has all stereotypes applied.
             stereotypes[i] = Model.getExtensionMechanismsFactory()
                     .buildStereotype(elem, "test" + i, theModel, models);
         }
-        
-        // This will remove all applied stereotypes working around the
-        // problem above.
-        Model.getCoreHelper().setStereotype(elem, null);
         
         model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] { elem }));
@@ -123,9 +111,9 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
      */
     public void testSetBase() {
         Model.getCoreHelper().setStereotype(elem, stereotypes[0]);
-        assertTrue(model.getSelectedItem() == stereotypes[0]);
+        assertEquals(stereotypes[0], model.getSelectedItem());
         Model.getCoreHelper().setStereotype(elem, stereotypes[1]);
-        assertTrue(model.getSelectedItem() == stereotypes[1]);
+        assertEquals(stereotypes[1], model.getSelectedItem());
     }
 
     /**
@@ -133,8 +121,10 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
      */
     public void testSetBaseToNull() {
         Model.getCoreHelper().setStereotype(elem, stereotypes[0]);
+        assertEquals(stereotypes[0], model.getSelectedItem());
         Model.getCoreHelper().setStereotype(elem, null);
-        assertNull(model.getSelectedItem());
+        assertEquals(0, Model.getFacade().getStereotypes(elem).size());
+        assertEquals(null, model.getSelectedItem());
     }
 
     /**
