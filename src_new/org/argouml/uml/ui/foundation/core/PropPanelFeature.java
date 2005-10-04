@@ -50,8 +50,6 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
 
     private static UMLFeatureOwnerListModel ownerListModel;
 
-    private static UMLFeatureOwnerComboBoxModel ownerComboBoxModel;
-
     private JPanel visibilityPanel;
 
     /**
@@ -73,22 +71,6 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
      */
     protected PropPanelFeature(String name, Orientation orientation) {
         super(name, orientation);
-    }
-
-    /**
-     * Returns the ownerComboBox.
-     *
-     * @return UMLComboBox2
-     */
-    public UMLComboBox2 getOwnerComboBox() {
-        if (ownerComboBox == null) {
-            if (ownerComboBoxModel == null) {
-                ownerComboBoxModel = new UMLFeatureOwnerComboBoxModel();
-            }
-            ownerComboBox = new UMLComboBox2(ownerComboBoxModel,
-                    ActionSetFeatureOwner.getInstance());
-        }
-        return ownerComboBox;
     }
 
     /**
