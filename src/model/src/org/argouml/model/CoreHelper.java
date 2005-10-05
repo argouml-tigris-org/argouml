@@ -1143,11 +1143,28 @@ public interface CoreHelper {
      * eg ModelManagementHelper.getCorrespondingElement(...). Or if that had
      * been used here. This function could possibly assert that the caller had
      * got it right.
+     * TODO: MULTIPLESTEREOTYPES remove this method when NSUML dropped.
      *
      * @param handle model element
      * @param stereo stereotype
      */
     void setStereotype(Object handle, Object stereo);
+    
+    /**
+     * Adds a stereotype to some modelelement.
+     *
+     * @param modelElement model element
+     * @param stereo stereotype
+     */
+    void addStereotype(Object modelElement, Object stereo);
+    
+    /**
+     * Removes a stereotype from some modelelement.
+     *
+     * @param modelElement model element
+     * @param stereo stereotype
+     */
+    void removeStereotype(Object handle, Object stereo);
 
     /**
      * Sets a tagged value of some modelelement.

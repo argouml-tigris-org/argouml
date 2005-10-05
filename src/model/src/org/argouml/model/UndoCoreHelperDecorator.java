@@ -416,5 +416,21 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
             }
         }, visibility, Model.getFacade().getVisibility(handle));
     }
+
+    /**
+     * @see org.argouml.model.CoreHelper#addStereotype(java.lang.Object,
+     * java.lang.Object)
+     */
+    public void addStereotype(Object modelElement, Object stereo) {
+        // Will never be implemented for NSUML
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#removeStereotype(java.lang.Object,
+     * java.lang.Object)
+     */
+    public void removeStereotype(Object handle, Object stereo) {
+        // Will never be implemented for NSUML
+    }
 }
 

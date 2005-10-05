@@ -3458,4 +3458,17 @@ class CoreHelperImpl implements CoreHelper {
                 + " or residence: " + residence);        
 	}
 
+    /**
+     * @see org.argouml.model.CoreHelper#addStereotype(java.lang.Object, java.lang.Object)
+     */
+    public void addStereotype(Object modelElement, Object stereo) {
+        // This will never be implemented in NSUML
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#removeStereotype(java.lang.Object, java.lang.Object)
+     */
+    public void removeStereotype(Object handle, Object stereo) {
+        // This will never be implemented in NSUML
+    }
 }
