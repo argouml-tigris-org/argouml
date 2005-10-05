@@ -121,13 +121,18 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
     }
 
     /**
-     * Test {@link org.argouml.model.UseCasesHelper#setAddition(Object,
-     * Object)} with <code>null</code> argument.
+     * Test to make sure we get an exception if trying to set
+     * to null.
      */
-    public void testSetAdditionToNull() {
+    public void testSetBaseToNull() {
         Model.getUseCasesHelper().setAddition(elem, additions[0]);
-        Model.getUseCasesHelper().setAddition(elem, null);
-        assertNull(model.getSelectedItem());
+        boolean exceptionCaught = false;
+        try {
+            Model.getUseCasesHelper().setAddition(elem, null);
+        } catch (IllegalArgumentException e) {
+            exceptionCaught = true;
+        }
+        assertTrue(exceptionCaught);
     }
 
     /**

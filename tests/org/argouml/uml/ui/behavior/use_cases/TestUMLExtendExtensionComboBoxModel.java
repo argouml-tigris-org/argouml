@@ -101,12 +101,18 @@ public class TestUMLExtendExtensionComboBoxModel extends TestCase {
     }
 
     /**
-     * Test setExtension() with null argument.
+     * Test to make sure we get an exception if trying to set
+     * to null.
      */
     public void testSetBaseToNull() {
         Model.getUseCasesHelper().setExtension(elem, extensions[0]);
-        Model.getUseCasesHelper().setExtension(elem, null);
-        assertNull(model.getSelectedItem());
+        boolean exceptionCaught = false;
+        try {
+            Model.getUseCasesHelper().setExtension(elem, null);
+        } catch (IllegalArgumentException e) {
+            exceptionCaught = true;
+        }
+        assertTrue(exceptionCaught);
     }
 
     /**

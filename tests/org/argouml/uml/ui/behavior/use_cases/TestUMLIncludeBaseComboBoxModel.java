@@ -102,13 +102,20 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
     }
 
     /**
-     * Test setBase() with null argument.
+     * Test to make sure we get an exception if trying to set
+     * to null.
      */
     public void testSetBaseToNull() {
         Model.getUseCasesHelper().setBase(elem, bases[0]);
-        Model.getUseCasesHelper().setBase(elem, null);
-        assertNull(model.getSelectedItem());
+        boolean exceptionCaught = false;
+        try {
+            Model.getUseCasesHelper().setBase(elem, null);
+        } catch (IllegalArgumentException e) {
+            exceptionCaught = true;
+        }
+        assertTrue(exceptionCaught);
     }
+
 
     /**
      * Test deletion.
