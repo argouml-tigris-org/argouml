@@ -457,7 +457,7 @@ class UseCasesHelperImpl implements UseCasesHelper {
                     + useCase + "]");
         }
 
-        if (handle instanceof MInclude) {
+        if (handle instanceof MInclude && useCase instanceof MUseCase) {
             ((MInclude) handle).setBase((MUseCase) useCase);
             return;
         }
