@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.NsumlEnabler;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
@@ -293,18 +294,10 @@ public class ProfileJava extends Profile {
         //
         String modelFileName = System.getProperty("argo.defaultModel");
         
-        // if we use the NSUML implementation use the file default.xmi
-        String nsumlImpl = "org.argouml.model.uml.NSUMLModelImplementation";
-        String mdrImpl = "org.argouml.model.mdr.MDRModelImplementation";
-        
         if (modelFileName == null) {
-            //TODO: Remove the ",nsumlImpl" when we will switch the 
-            //default metamodel to UML 1.4/MDR.
-            if (nsumlImpl.equals(System.getProperty(
-                    "argouml.model.implementation", nsumlImpl))) {
+            if (NsumlEnabler.isNsuml()) {
                 modelFileName = "/org/argouml/default.xmi";           		
-            } else if (mdrImpl.equals(System.getProperty(
-                "argouml.model.implementation"))) {
+            } else {
                 modelFileName = "/org/argouml/model/mdr/mof/default-uml14.xmi";
             }
         }
