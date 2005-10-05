@@ -42,6 +42,7 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.kernel.NsumlEnabler;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ContainerDispatcher;
 import org.argouml.model.Model;
@@ -205,13 +206,20 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * @return the label added
      */
     public JLabel addField(String label, Component component) {
-        JLabel jlabel = new JLabel(label);
-        jlabel.setFont(smallFont);
-        component.setFont(smallFont);
-        jlabel.setLabelFor(component);
-        add(jlabel);
-        add(component);
-        return jlabel;
+        // This test will prevent us placing a stereotype
+        // combo unless NSUML
+        if (NsumlEnabler.isNsuml() || component != null) {
+            JLabel jlabel = new JLabel(label);
+            jlabel.setFont(smallFont);
+            component.setFont(smallFont);
+            jlabel.setLabelFor(component);
+            add(jlabel);
+            add(component);
+            return jlabel;
+        } else {
+            return null;
+            
+        }
     }
 
     /**
