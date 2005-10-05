@@ -22,11 +22,13 @@ will generate a default constructor for the class
 
 Name: header_incl
 Value: filename
-will incllude given file into header (.h)
+will include given file into header (.h)
+TODO: what if the user wants more than one?! This problem is applicable 
+to many of the bellow values.
 
 Name: source_incl
 Value: filename
-will incllude given file into source (.cpp)
+will include given file into source (.cpp)
 
 Name: typedef_public
 Value: <source type> <type_name>
@@ -63,7 +65,7 @@ and "cpp_template" which are placed in top of the corresponding file
 the root directory for the code generation )
 
 Name: email
-Value: name@domain.counry
+Value: name@domain.country
 will replace the tag |EMAIL| of the template file.
 
 Name: author
@@ -94,7 +96,7 @@ variable ( fixed size ranges are transfered to: type name[size]).
 Name: set
 Value: private|protected|public
 will create a simple function to set the attribute by a function
-(call by reference is used for class-types, else call b value);
+(call by reference is used for class-types, else call by value);
 place the function in the given visibility area
 
 Name: get
