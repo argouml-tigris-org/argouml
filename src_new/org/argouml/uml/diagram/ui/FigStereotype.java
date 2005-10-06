@@ -24,14 +24,17 @@
 
 package org.argouml.uml.diagram.ui;
 
+import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
 
 /**
  * A specialist FigText for display stereotypes.
  * @author Bob Tarling
  */
-public class FigStereotype extends FigText {
+public class FigStereotype extends FigGroup {
 
+    private FigText singleStereotype;
+    
     /**
      * The constructor.
      *
@@ -42,7 +45,9 @@ public class FigStereotype extends FigText {
      * @param expandOnly true if the fig can only grow, not shrink
      */
     public FigStereotype(int x, int y, int w, int h, boolean expandOnly) {
-        super (x, y, w, h, expandOnly);
+        setBounds(x, y, w, h);
+        singleStereotype = new FigText(x, y, w, h, expandOnly);
+        addFig(singleStereotype);
     }
 
 
@@ -52,14 +57,22 @@ public class FigStereotype extends FigText {
     public void setLineWidth(int arg0) {
         super.setLineWidth(0);
     }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#isVisible()
-     */
-    public boolean isVisible() {
-        if (getText() == null || getText().trim().length() == 0) {
-            return false;
-        }
-        return super.isVisible();
+    
+    public void setText(String text) {
+        singleStereotype.setText(text);
     }
+    
+    public String getText() {
+        return singleStereotype.getText();
+    }
+
+//    /**
+//     * @see org.tigris.gef.presentation.Fig#isVisible()
+//     */
+//    public boolean isVisible() {
+//        if (getText() == null || getText().trim().length() == 0) {
+//            return false;
+//        }
+//        return super.isVisible();
+//    }
 }
