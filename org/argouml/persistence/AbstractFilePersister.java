@@ -166,6 +166,16 @@ public abstract class AbstractFilePersister extends FileFilter
         }
         return null;
     }
+    
+    /**
+     * Given the full filename this returns true if that filename contains the
+     * expected extension for the is persister.
+     * @param filename
+     * @return true if the filename is valid for this persister
+     */
+    public boolean isFileExtensionApplicable(String filename) {
+        return filename.toLowerCase().endsWith("." + getExtension());
+    }
 
     /**
      * @see javax.swing.filechooser.FileFilter#getDescription()
