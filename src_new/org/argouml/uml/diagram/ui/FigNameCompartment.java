@@ -52,20 +52,6 @@ public class FigNameCompartment extends FigCompartment {
     }
 
     /**
-     * @param s the stereotype name string
-     */
-    public void setStereotype(String s) {
-        this.stereotype.setText(s);
-    }
-
-    /**
-     * @return the stereotype name string
-     */
-    public String getStereotype() {
-        return stereotype.getText();
-    }
-
-    /**
      * @param n the name string
      */
     public void setName(String n) {

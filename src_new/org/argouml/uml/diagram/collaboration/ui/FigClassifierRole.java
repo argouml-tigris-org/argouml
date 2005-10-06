@@ -122,7 +122,6 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         getStereotypeFig().setLineWidth(0);
         getStereotypeFig().setFilled(false);
-        getStereotypeFigText().setJustificationByName("Center");
         getStereotypeFig().setVisible(false);
 
         getStereotypeFig().setBounds(10, 10, 90, stereoMin.height);
@@ -200,7 +199,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         figClone.setBigPort((FigRect) it.next());
         figClone.cover   = (FigRect) it.next();
-        figClone.setStereotypeFig((FigText) it.next());
+        it.next();
         figClone.setNameFig((FigText) it.next());
 
         return figClone;

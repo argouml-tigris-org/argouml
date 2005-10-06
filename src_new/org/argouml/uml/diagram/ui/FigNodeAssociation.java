@@ -81,7 +81,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
         getNameFig().setTabAction(FigText.END_EDITING);
         getNameFig().setJustificationByName("center");
 
-        setStereotypeFig(new FigText(X + 10, Y + 22, 0, 21, true));
+        getStereotypeFig().setBounds(X + 10, Y + 22, 0, 21);
         getStereotypeFig().setFilled(false);
         getStereotypeFig().setLineWidth(0);
 
@@ -117,7 +117,6 @@ public class FigNodeAssociation extends FigNodeModelElement {
         figClone.setBigPort((FigDiamond) it.next());
         figClone.head = (FigDiamond) it.next();
         figClone.setNameFig((FigText) it.next());
-        figClone.setStereotypeFig((FigText) it.next());
         return figClone;
     }
 

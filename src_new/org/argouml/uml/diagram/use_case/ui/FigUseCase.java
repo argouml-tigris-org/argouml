@@ -352,7 +352,7 @@ public class FigUseCase extends FigNodeModelElement
         figClone.bigPort = (FigMyCircle) it.next();
         figClone.cover = (FigMyCircle) it.next();
         figClone.setNameFig((FigText) it.next());
-        figClone.setStereotypeFig((FigText) it.next());
+        it.next();
         figClone.epSep = (FigLine) it.next();
         figClone.epVec = (FigGroup) it.next();
 
@@ -1421,7 +1421,7 @@ public class FigUseCase extends FigNodeModelElement
      */
     protected void updateStereotypeText() {
         super.updateStereotypeText();
-        if (!(getStereotype() == null || getStereotype().equals(""))) {
+        if (!Model.getFacade().getStereotypes(getOwner()).isEmpty()) {
             getStereotypeFig().setBounds((bigPort.getX()
 					  + bigPort.getWidth() / 2
 					  - getStereotypeFig().getWidth() / 2),
