@@ -39,6 +39,7 @@ import javax.swing.JRadioButton;
 import javax.swing.filechooser.FileSystemView;
 
 import org.argouml.application.api.PluggableImport;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -83,7 +84,7 @@ public abstract class FileImportSupport implements PluggableImport {
 	    configPanel = new JPanel();
 	    configPanel.setLayout(new GridBagLayout());
 
-	    JLabel attributeLabel = new JLabel("Attributes modelled as");
+	    JLabel attributeLabel = new JLabel(Translator.localize("action.import-java-attr-model"));
 	    configPanel.add(attributeLabel,
 			    new GridBagConstraints(GridBagConstraints.RELATIVE,
 						   GridBagConstraints.RELATIVE,
@@ -96,7 +97,7 @@ public abstract class FileImportSupport implements PluggableImport {
 						   0, 0));
 	    ButtonGroup group1 = new ButtonGroup();
 	    attribute =
-		new JRadioButton("UML attributes.");
+		new JRadioButton(Translator.localize("action.import-java-UML-attr"));
 	    attribute.setSelected(true);
 	    group1.add(attribute);
 	    configPanel.add(attribute,
@@ -110,7 +111,7 @@ public abstract class FileImportSupport implements PluggableImport {
 						   new Insets(0, 5, 0, 5),
 						   0, 0));
 	    JRadioButton association =
-		new JRadioButton("UML associations.");
+		new JRadioButton(Translator.localize("action.import-java-UML-assoc"));
 	    group1.add(association);
 	    configPanel.add(association,
 			    new GridBagConstraints(GridBagConstraints.RELATIVE,
@@ -125,7 +126,7 @@ public abstract class FileImportSupport implements PluggableImport {
 
 	    ButtonGroup group2 = new ButtonGroup();
 	    datatype =
-		new JRadioButton("Arrays modelled as datatypes.");
+		new JRadioButton(Translator.localize("action.import-java-array-model-datatype"));
 	    datatype.setSelected(true);
 	    group2.add(datatype);
 	    configPanel.add(datatype,
@@ -139,7 +140,7 @@ public abstract class FileImportSupport implements PluggableImport {
 						   new Insets(5, 5, 0, 5),
 						   0, 0));
 	    JRadioButton multi =
-		new JRadioButton("Arrays modelled with multiplicity 1..n.");
+		new JRadioButton(Translator.localize("action.import-java-array-model-multi"));
 	    group2.add(multi);
 	    configPanel.add(multi,
 			    new GridBagConstraints(GridBagConstraints.RELATIVE,

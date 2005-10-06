@@ -242,7 +242,7 @@ public class Import {
             JPanel general = new JPanel();
             general.setLayout(new GridLayout(13, 1));
 
-            general.add(new JLabel("Select language for import:"));
+            general.add(new JLabel(Translator.localize("action.import-select-lang")));
 
             Vector languages = new Vector();
 
@@ -274,24 +274,24 @@ public class Import {
         });
             general.add(selectedLanguage);
 
-            descend = new JCheckBox("Descend directories recursively.");
+            descend = new JCheckBox(Translator.localize("action.import-option-descend-dir-recur"));
             descend.setSelected(true);
             general.add(descend);
 
             changedOnly =
-                new JCheckBox("Changed/new files only", true);
+                new JCheckBox(Translator.localize("action.import-option-changed_new"), true);
                     general.add(changedOnly);
 
             createDiagrams =
-                new JCheckBox("Create diagrams from imported code", true);
+                new JCheckBox(Translator.localize("action.import-option-create-diagram"), true);
                     general.add(createDiagrams);
 
             minimiseFigs =
-                new JCheckBox("Minimise Class icons in diagrams", true);
+                new JCheckBox(Translator.localize("action.import-option-min-class-icon"), true);
                     general.add(minimiseFigs);
 
             layoutDiagrams =
-                new JCheckBox("Perform Automatic Diagram Layout", true);
+                new JCheckBox(Translator.localize("action.import-option-perform-auto-diagram-layout"), true);
                     general.add(layoutDiagrams);
 
             // de-selects the fig minimising & layout
@@ -311,17 +311,17 @@ public class Import {
             // 1 = classifiers plus feature specifications
             // 2 = full import, feature detail
 
-            JLabel importDetailLabel = new JLabel("Level of import detail:");
+            JLabel importDetailLabel = new JLabel(Translator.localize("action.import-level-of-import-detail"));
             ButtonGroup detailButtonGroup = new ButtonGroup();
 
-            classOnly = new JRadioButton("Classfiers only");
+            classOnly = new JRadioButton(Translator.localize("action.import-option-classfiers"));
             detailButtonGroup.add(classOnly);
 
             classAndFeatures =
-                new JRadioButton("Classifiers plus feature specifications");
+                new JRadioButton(Translator.localize("action.import-option-classifiers-plus-specs"));
                     detailButtonGroup.add(classAndFeatures);
 
-            fullImport = new JRadioButton("Full import");
+            fullImport = new JRadioButton(Translator.localize("action.import-option-full-import"));
             fullImport.setSelected(true);
             detailButtonGroup.add(fullImport);
 
@@ -330,7 +330,7 @@ public class Import {
             general.add(classAndFeatures);
             general.add(fullImport);
 
-            general.add(new JLabel("Input source file encoding:"));
+            general.add(new JLabel(Translator.localize("action.import-file-encoding")));
             String enc =
                 Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);
             if (enc == null || enc.trim().equals("")) {
@@ -341,7 +341,7 @@ public class Import {
             }
             general.add(inputSourceEncoding);
 
-            tab.add(general, "General");
+            tab.add(general, Translator.localize("action.import-general"));
             tab.add(module.getConfigPanel(), module.getModuleName());
             configPanel = tab;
         }
