@@ -58,6 +58,8 @@
 <!ENTITY tutreqs SYSTEM "tut_reqs.xml">
 <!ENTITY frontis SYSTEM "frontis.xml">
 <!ENTITY refcritics SYSTEM "ref_critics.xml">
+<!ENTITY appcppmod SYSTEM "app_cppmod.xml">
+<!ENTITY argouml "ArgoUML">
 <!ENTITY ooad "OOA&amp;D">
 <!ENTITY Button2 "Button&nbsp;2">
 <!ENTITY Button1 "Button&nbsp;1">
@@ -127,6 +129,7 @@ so this tab is grayed out.">
   &appcasestudy;
   &appumlres;
   &appumlcase;
+  &appcppmod;
   &apphardlimits;
   <!-- &appdocplan;  Moved to the cookbook! -->
   <!-- &appdocstand;  Moved to the cookbook! -->

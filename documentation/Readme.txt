@@ -15,7 +15,7 @@ This directory will be referred to as ARGODOCS_HOME in the remainder of this
 document.
 
 The ArgoUML directory structure, with explanation of the parts of the
-documenation sub-directory is shown diagramatically below:
+documentation sub-directory is shown diagramatically below:
 
 
 argouml                 <<-- ArgoUML root directory (aka ARGO_HOME)
@@ -77,14 +77,18 @@ If not, go get Java from sun.com
 
      ./build.sh  (on Unix/Linux)
 
-4. This should give you some more info about the targets define for the build
-   process. For instance:
+4. This executes the default target in the build file, which is:
 
     build defaulthtml	-- builds the documentation in HTML format chunked 
                            into mutiple pages for online usage.
 
-    build docs          -- builds chunked HTML, single file HTML and PDF
-	
+    NOTE: the first execution of the build will need to fetch from the internet 
+    a set of files needed for the processing of the docbook files. This is the 
+    target docbook-xsl-get. So, you must be online to be able to get this, at 
+    least for one time. If you must use a proxy to access the internet, then 
+    either you need to change the build file using Ant's setproxy task or get 
+    it manually (the URL is in the build file).
+
 The resulting documentation files is in the ARGO_HOME/build/documentation
 directory.
 
