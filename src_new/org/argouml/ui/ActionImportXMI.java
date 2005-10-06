@@ -91,7 +91,7 @@ public class ActionImportXMI extends AbstractAction {
             chooser.setDialogTitle(
                     Translator.localize("filechooser.import-xmi"));
 
-            chooser.setAcceptAllFileFilterUsed(false);
+            chooser.setAcceptAllFileFilterUsed(true);
 
             pm.setXmiFileChooserFilter(chooser);
             

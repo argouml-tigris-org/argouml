@@ -61,7 +61,7 @@ public final class ActionExportXMI extends AbstractAction
 				       "action.export-project-as-xmi"));
         chooser.setApproveButtonText(Translator.localize(
 					     "filechooser.export"));
-        chooser.setAcceptAllFileFilterUsed(false);
+        chooser.setAcceptAllFileFilterUsed(true);
         pm.setXmiFileChooserFilter(chooser);
 
         String fn = Configuration.getString(
