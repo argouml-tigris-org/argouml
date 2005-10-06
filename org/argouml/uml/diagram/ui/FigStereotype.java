@@ -24,6 +24,8 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Color;
+
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
 
@@ -33,8 +35,8 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigStereotype extends FigGroup {
 
-    private FigText singleStereotype;
-    
+    private FigSingleLineText singleStereotype;
+
     /**
      * The constructor.
      *
@@ -45,8 +47,15 @@ public class FigStereotype extends FigGroup {
      * @param expandOnly true if the fig can only grow, not shrink
      */
     public FigStereotype(int x, int y, int w, int h, boolean expandOnly) {
-        setBounds(x, y, w, h);
-        singleStereotype = new FigText(x, y, w, h, expandOnly);
+        super();
+        singleStereotype = new FigSingleLineText(x, y, w, h, true);
+        singleStereotype.setEditable(false);
+        singleStereotype.setJustification(FigText.JUSTIFY_CENTER);
+        singleStereotype.setLineWidth(0);
+        singleStereotype.setFilled(true);
+        singleStereotype.setVisible(true);
+        singleStereotype.setFont(FigNodeModelElement.getLabelFont());
+        singleStereotype.setTextColor(Color.black);
         addFig(singleStereotype);
     }
 
@@ -62,17 +71,23 @@ public class FigStereotype extends FigGroup {
         singleStereotype.setText(text);
     }
     
-    public String getText() {
-        return singleStereotype.getText();
+    public int getStereotypeCount() {
+        if (singleStereotype.getText() == null
+                || singleStereotype.getText().trim().length() == 0) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
-//    /**
-//     * @see org.tigris.gef.presentation.Fig#isVisible()
-//     */
-//    public boolean isVisible() {
-//        if (getText() == null || getText().trim().length() == 0) {
-//            return false;
-//        }
-//        return super.isVisible();
-//    }
+    /**
+     * @see org.tigris.gef.presentation.Fig#isVisible()
+     */
+    public boolean isVisible() {
+        if (singleStereotype.getText() == null
+                || singleStereotype.getText().trim().length() == 0) {
+            return false;
+        }
+        return super.isVisible();
+    }
 }

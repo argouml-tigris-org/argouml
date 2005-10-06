@@ -329,7 +329,7 @@ public class FigActor extends FigNodeModelElement {
      */
     protected void updateStereotypeText() {
         super.updateStereotypeText();
-        if (!(getStereotype() == null || getStereotype().equals(""))) {
+        if (!Model.getFacade().getStereotypes(getOwner()).isEmpty()) {
             getStereotypeFig().setBounds(
                 (getBigPort().getCenter().x 
                                      - getStereotypeFig().getWidth() / 2),

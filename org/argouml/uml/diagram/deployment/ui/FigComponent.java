@@ -112,7 +112,7 @@ public class FigComponent extends FigNodeModelElement {
         Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRect) it.next());
         figClone.cover = (FigRect) it.next();
-        figClone.setStereotypeFig((FigText) it.next());
+        it.next();
         figClone.setNameFig((FigText) it.next());
         figClone.upperRect = (FigRect) it.next();
         figClone.lowerRect = (FigRect) it.next();

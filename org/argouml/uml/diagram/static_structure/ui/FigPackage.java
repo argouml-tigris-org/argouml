@@ -132,10 +132,8 @@ public class FigPackage extends FigNodeModelElement
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
 
-        getStereotypeFigText().setExpandOnly(true);
         getStereotypeFig().setFilled(true);
         getStereotypeFig().setLineWidth(1);
-        getStereotypeFigText().setEditable(false);
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
         getStereotypeFig().setVisible(false);
 
@@ -197,7 +195,7 @@ public class FigPackage extends FigNodeModelElement
         FigPackage figClone = (FigPackage) super.clone();
         Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRect) it.next());
-        figClone.setStereotypeFig((FigText) it.next());
+        it.next();
         figClone.setNameFig((FigText) it.next());
         figClone.stereoLineBlinder = (FigRect) it.next();
         figClone.body = (FigText) it.next();

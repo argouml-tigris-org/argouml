@@ -73,10 +73,8 @@ abstract public class FigClassifierBox extends FigNodeModelElement
         // before, so it overlaps the name box, and the blanking takes out both
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
-        getStereotypeFigText().setExpandOnly(true);
         getStereotypeFig().setFilled(true);
         getStereotypeFig().setLineWidth(1);
-        getStereotypeFigText().setEditable(false);
         // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
         

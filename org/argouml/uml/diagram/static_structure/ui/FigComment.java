@@ -130,10 +130,6 @@ public class FigComment
         urCorner.setFillColor(col.darker());
         urCorner.setLineWidth(1);
 
-        getStereotypeFigText().setExpandOnly(true);
-        getStereotypeFig().setFilled(true);
-        getStereotypeFig().setLineWidth(0);
-        getStereotypeFigText().setEditable(false);
         getStereotypeFig().setHeight(STEREOHEIGHT);
         getStereotypeFig().setVisible(false);
         

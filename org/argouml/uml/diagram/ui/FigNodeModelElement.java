@@ -227,11 +227,8 @@ public abstract class FigNodeModelElement
      * getStereotypeFig() and setStereoTypeFig() to access the Figs.
      * Use getStereotype() and setStereotype() to change stereotype
      * text.
-     *
-     * MVW: Why are the getter/setter not returning a FigText, but a Fig?
-     * I created a new (real) getter: getStereotypeFigText()
      */
-    private FigText stereo;
+    private FigStereotype stereo;
 
     /**
      * EnclosedFigs are the Figs that are enclosed by this figure. Say that
@@ -291,8 +288,7 @@ public abstract class FigNodeModelElement
         name.setFilled(true);
         name.setText(placeString());
 
-        stereo = new FigSingleLineText(10, 10, 90, 15, true);
-        stereo.setEditable(false);
+        stereo = new FigStereotype(10, 10, 90, 15, true);
 
         readyToEdit = false;
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
@@ -344,7 +340,7 @@ public abstract class FigNodeModelElement
                 clone.name = (FigText) cloneFig;
             }
             if (thisFig == stereo) {
-                clone.stereo = (FigText) cloneFig;
+                clone.stereo = (FigStereotype) cloneFig;
             }
         }
         return clone;
@@ -1534,15 +1530,15 @@ public abstract class FigNodeModelElement
         }
     }
 
-    /**
-     * Set the Fig containing the stereotype.
-     *
-     * @param fig the stereotype Fig
-     */
-    protected void setStereotypeFig(Fig fig) {
-        stereo = (FigText) fig;
-    }
-
+//    /**
+//     * Set the Fig containing the stereotype.
+//     *
+//     * @param fig the stereotype Fig
+//     */
+//    protected void setStereotypeFig(Fig fig) {
+//        stereo = (FigStereotype)fig;
+//    }
+//
     /**
      * Get the Fig containing the stereotype.
      *
@@ -1553,30 +1549,12 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Get the FigText containing the stereotype.
-     *
-     * @return the stereotype FigText
-     */
-    protected FigText getStereotypeFigText() {
-        return stereo;
-    }
-
-    /**
      * Set the text describing the stereotype.
      *
      * @param stereotype the stereotype text
      */
     public void setStereotype(String stereotype) {
         stereo.setText(stereotype);
-    }
-
-    /**
-     * Get the text describing the stereotype.
-     *
-     * @return the stereotype text
-     */
-    public String getStereotype() {
-        return stereo.getText();
     }
 
     /**
