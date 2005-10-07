@@ -233,7 +233,7 @@ public abstract class FigNodeModelElement
      * Use getStereotype() and setStereotype() to change stereotype
      * text.
      */
-    private FigStereotype stereo;
+    private Fig stereo;
 
     /**
      * EnclosedFigs are the Figs that are enclosed by this figure. Say that
@@ -293,7 +293,7 @@ public abstract class FigNodeModelElement
         name.setFilled(true);
         name.setText(placeString());
 
-        stereo = new FigStereotype(10, 10, 90, 15, true);
+        stereo = new FigSingleLineText(10, 10, 90, 15, true);
 
         readyToEdit = false;
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);

@@ -29,10 +29,8 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.NsumlEnabler;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
-import org.argouml.util.CollectionUtil;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
 
@@ -68,6 +66,7 @@ public class FigStereotype extends FigGroup {
      */
     public FigStereotype(int x, int y, int w, int h, boolean expandOnly) {
         super();
+        addStereotypeText("stereo", x, y);
     }
 
     /**
@@ -106,19 +105,17 @@ public class FigStereotype extends FigGroup {
         
         FigSingleLineText singleStereotype;
         
-        if (pseudoStereotype != null) {
-            addStereotypeText(pseudoStereotype, xPosn, yPosn);
-            yPosn += STEREOHEIGHT;
-        }
-        
-        Iterator it = Model.getFacade().getStereotypes(getOwner()).iterator();
-        while (it.hasNext()) {
-            Object stereotype = it.next();
-            addStereotypeText(Model.getFacade().getName(stereotype), xPosn, yPosn);
-            yPosn += STEREOHEIGHT;
-        }
-        
-        setHeight(getY() + yPosn);
+//        if (pseudoStereotype != null) {
+//            addStereotypeText(pseudoStereotype, xPosn, yPosn);
+//            yPosn += STEREOHEIGHT;
+//        }
+//        
+//        Iterator it = Model.getFacade().getStereotypes(getOwner()).iterator();
+//        while (it.hasNext()) {
+//            Object stereotype = it.next();
+//            addStereotypeText(Model.getFacade().getName(stereotype), xPosn, yPosn);
+//            yPosn += STEREOHEIGHT;
+//        }
     }
     
     private void addStereotypeText(String text, int xPosn, int yPosn) {
@@ -131,6 +128,7 @@ public class FigStereotype extends FigGroup {
         singleStereotype.setFont(FigNodeModelElement.getLabelFont());
         singleStereotype.setTextColor(Color.black);
         singleStereotype.setText("<<" + (text == null ? "(anon)" : text) + ">>");
+        LOG.info("Adding " + singleStereotype.getText() + " to Fig");
         addFig(singleStereotype);
     }
 }
