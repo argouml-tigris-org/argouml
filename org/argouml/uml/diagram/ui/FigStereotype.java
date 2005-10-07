@@ -26,8 +26,10 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.NsumlEnabler;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.util.CollectionUtil;
@@ -48,7 +50,7 @@ public class FigStereotype extends FigGroup {
 
     protected static final int STEREOHEIGHT = 18;
 
-    private FigSingleLineText singleStereotype;
+    private String pseudoStereotype;
 
     /**
      * The constructor.
@@ -66,15 +68,6 @@ public class FigStereotype extends FigGroup {
      */
     public FigStereotype(int x, int y, int w, int h, boolean expandOnly) {
         super();
-        singleStereotype = new FigSingleLineText(x, y, w, h, true);
-        singleStereotype.setEditable(false);
-        singleStereotype.setJustification(FigText.JUSTIFY_CENTER);
-        singleStereotype.setLineWidth(0);
-        singleStereotype.setFilled(true);
-        singleStereotype.setVisible(true);
-        singleStereotype.setFont(FigNodeModelElement.getLabelFont());
-        singleStereotype.setTextColor(Color.black);
-        addFig(singleStereotype);
     }
 
     /**
@@ -84,46 +77,60 @@ public class FigStereotype extends FigGroup {
         super.setLineWidth(0);
     }
 
-    public int getStereotypeCount() {
-        if (singleStereotype.getText() == null
-                || singleStereotype.getText().trim().length() == 0) {
-            return 0;
-        } else {
-            return 1;
-        }
+    /**
+     * Allows a parent Fig to specify some stereotype text to display that is
+     * not actually contained by its owner.
+     * An example of this usage is to display <<interface>> as a stereotype
+     * on FigInterface.
+     * @param stereotype the text of the pseudo stereotype
+     */
+    public void setPseudoSereotype(String stereotype) {
+        pseudoStereotype = stereotype;
     }
 
     public void setOwner(Object modelElement) {
         super.setOwner(modelElement);
 
         if (modelElement == null) {
-            singleStereotype.setText("");
             setVisible(false);
             return;
         }
+        
+        setVisible(true);
+        
+        this.removeAll();
 
-        Rectangle rect = getBounds();
-        Object stereo = CollectionUtil.getFirstItemOrNull(Model.getFacade()
-                .getStereotypes(modelElement));
-
-        if ((stereo == null) || (Model.getFacade().getName(stereo) == null)
-                || (Model.getFacade().getName(stereo).length() == 0)) {
-
-            if (isVisible()) {
-                setVisible(false);
-                rect.y += STEREOHEIGHT;
-                rect.height -= STEREOHEIGHT;
-                setBounds(rect.x, rect.y, rect.width, rect.height);
-                calcBounds();
-            }
-        } else {
-            String text = "<<" + Model.getFacade().getName(stereo) + ">>";
-            LOG.info("Setting the stereotype text to " + text);
-            singleStereotype.setText(text);
-
-            if (!isVisible()) {
-                setVisible(true);
-            }
+        
+        int xPosn = getX();
+        int yPosn = getY();
+        
+        FigSingleLineText singleStereotype;
+        
+        if (pseudoStereotype != null) {
+            addStereotypeText(pseudoStereotype, xPosn, yPosn);
+            yPosn += STEREOHEIGHT;
         }
+        
+        Iterator it = Model.getFacade().getStereotypes(getOwner()).iterator();
+        while (it.hasNext()) {
+            Object stereotype = it.next();
+            addStereotypeText(Model.getFacade().getName(stereotype), xPosn, yPosn);
+            yPosn += STEREOHEIGHT;
+        }
+        
+        setHeight(getY() + yPosn);
+    }
+    
+    private void addStereotypeText(String text, int xPosn, int yPosn) {
+        FigSingleLineText singleStereotype = new FigSingleLineText(xPosn, yPosn, getWidth(), STEREOHEIGHT, true);
+        singleStereotype.setEditable(false);
+        singleStereotype.setJustification(FigText.JUSTIFY_CENTER);
+        singleStereotype.setLineWidth(0);
+        singleStereotype.setFilled(true);
+        singleStereotype.setVisible(true);
+        singleStereotype.setFont(FigNodeModelElement.getLabelFont());
+        singleStereotype.setTextColor(Color.black);
+        singleStereotype.setText("<<" + (text == null ? "(anon)" : text) + ">>");
+        addFig(singleStereotype);
     }
 }

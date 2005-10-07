@@ -30,6 +30,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -45,10 +46,13 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Stack;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
@@ -70,6 +74,7 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.NsumlEnabler;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
@@ -308,6 +313,7 @@ public abstract class FigNodeModelElement
         setOwner(node);
         name.setText(placeString());
         readyToEdit = false;
+        
         //ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
@@ -438,8 +444,7 @@ public abstract class FigNodeModelElement
         popupAddOffset++;
         
         /* Check if multiple items are selected: */
-        boolean ms = TargetManager.getInstance().getTargets().size() > 1;
-        if (!ms) {
+        if (TargetManager.getInstance().getTargets().size() == 1) {
             ToDoList list = Designer.theDesigner().getToDoList();
             Vector items = 
                     (Vector) list.elementsForOffender(getOwner()).clone();
@@ -459,6 +464,27 @@ public abstract class FigNodeModelElement
                 }
                 popUpActions.insertElementAt(new JSeparator(), 0);
                 popUpActions.insertElementAt(critiques, 0);
+            }
+
+            // Add stereotypes submenu
+            if (!NsumlEnabler.isNsuml()) {
+                Collection models =
+                    ProjectManager.getManager().getCurrentProject().getModels();
+                ArrayList availableStereotypes =
+                    new ArrayList(Model.getExtensionMechanismsHelper().
+                    getAllPossibleStereotypes(models, getOwner()));
+                
+                availableStereotypes.removeAll(Model.getFacade().getStereotypes(getOwner()));
+                
+                if (!availableStereotypes.isEmpty()) {
+                    ArgoJMenu stereotypes = new ArgoJMenu("menu.popup.addstereotypes");
+                    Iterator it = availableStereotypes.iterator();
+                    while (it.hasNext()) {
+                        stereotypes.add(new ActionAddStereotype(getOwner(), it.next()));
+                    }
+                    popUpActions.insertElementAt(new JSeparator(), 0);
+                    popUpActions.insertElementAt(stereotypes, 0);
+                }
             }
         }
 
@@ -1572,6 +1598,10 @@ public abstract class FigNodeModelElement
     protected boolean isCheckSize() {
         return checkSize;
     }
+    
+    public boolean isDragConnectable() {
+        return false;
+    }
 
     /**
      * @param e The _encloser to set.
@@ -1667,3 +1697,29 @@ public abstract class FigNodeModelElement
     
 } /* end class FigNodeModelElement */
 
+
+/**
+ * Action to add a stero type to the model element represented by this Fig.
+ * @author Bob Tarling
+ */
+class ActionAddStereotype extends AbstractAction {
+    
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(ActionAddStereotype.class);
+    
+    private Object modelElement;
+    private Object stereotype;
+    
+    public ActionAddStereotype(Object modelElement, Object stereotype) {
+        super("<<" + Model.getFacade().getName(stereotype) + ">>");
+        this.modelElement = modelElement;
+        this.stereotype = stereotype;
+    }
+    
+    public void actionPerformed(ActionEvent ae) {
+        Model.getCoreHelper().addStereotype(modelElement, stereotype);
+    }
+}
