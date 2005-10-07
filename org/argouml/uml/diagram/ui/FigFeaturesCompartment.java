@@ -25,10 +25,13 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.static_structure.ui.FigFeature;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigRect;
 
 /**
@@ -114,4 +117,56 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      * TODO: Check that this is correct?
      */
     public abstract void populate();
+    
+    /**
+     * Returns the new size of the FigGroup (either attributes or
+     * operations) after calculation new bounds for all sub-figs,
+     * considering their minimal sizes; FigGroup need not be
+     * displayed; no update event is fired.<p>
+     *
+     * This method has side effects that are sometimes used.
+     *
+     * @param fg the FigGroup to be updated
+     * @param x x
+     * @param y y
+     * @param w w
+     * @param h h
+     * @return the new dimension
+     */
+    public Dimension updateFigGroupSize(
+                       int x,
+                       int y,
+                       int w,
+                       int h,
+                       boolean checkSize,
+                       int rowHeight) {
+        int newW = w;
+        int n = getFigs().size() - 1;
+        int newH = checkSize ? Math.max(h, rowHeight * Math.max(1, n) + 2) : h;
+        int step = (n > 0) ? (newH - 1) / n : 0;
+        // width step between FigText objects int maxA =
+        //Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT).getMaxAscent();
+
+        //set new bounds for all included figs
+        Iterator figs = iterator();
+        Fig myBigPort = (Fig) figs.next();
+        Fig fi;
+        int fw, yy = y;
+        while (figs.hasNext()) {
+            fi = (Fig) figs.next();
+            fw = fi.getMinimumSize().width;
+            if (!checkSize && fw > newW - 2) {
+                fw = newW - 2;
+            }
+            fi.setBounds(x + 1, yy + 1, fw, Math.min(rowHeight, step) - 2);
+            if (checkSize && newW < fw + 2) {
+                newW = fw + 2;
+            }
+            yy += step;
+        }
+        myBigPort.setBounds(x, y, newW, newH);
+        // rectangle containing all following FigText objects
+        calcBounds();
+        return new Dimension(newW, newH);
+    }
 }
