@@ -842,8 +842,8 @@ public class FigClass extends FigClassifierBox
         setBounds(
                 rect.x,
                 rect.y, 
-                heightWithoutStereo + stereotypeHeight, 
-                rect.height);
+                rect.width,
+                heightWithoutStereo + stereotypeHeight);
         calcBounds();
         newlyCreated = false;
     }
