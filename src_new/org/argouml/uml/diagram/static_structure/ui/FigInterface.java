@@ -797,8 +797,13 @@ public class FigInterface extends FigClassifierBox {
         // Finally update the bounds of the operations box
 
         /*aSize =*/
-        updateFigGroupSize(operationsFig, x, currentY,
-                        newW, newH + y - currentY);
+        operationsFig.updateFigGroupSize(
+                x, 
+                currentY, 
+                newW, 
+                newH + y - currentY, 
+                isCheckSize(), 
+                ROWHEIGHT);
 
         // set bounds of big box
 
@@ -831,7 +836,7 @@ public class FigInterface extends FigClassifierBox {
         int ypos = operPort.getY();
 
         Rectangle rect = getBounds();
-        updateFigGroupSize(getOperationsFig(), xpos, ypos, 0, 0);
+        operationsCompartment.updateFigGroupSize(xpos, ypos, 0, 0, isCheckSize(), ROWHEIGHT);
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);

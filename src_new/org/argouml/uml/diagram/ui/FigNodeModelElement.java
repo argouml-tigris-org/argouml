@@ -1404,56 +1404,56 @@ public abstract class FigNodeModelElement
         checkSize = flag;
     }
 
-    /**
-     * Returns the new size of the FigGroup (either attributes or
-     * operations) after calculation new bounds for all sub-figs,
-     * considering their minimal sizes; FigGroup need not be
-     * displayed; no update event is fired.<p>
-     *
-     * This method has side effects that are sometimes used.
-     *
-     * @param fg the FigGroup to be updated
-     * @param x x
-     * @param y y
-     * @param w w
-     * @param h h
-     * @return the new dimension
-     */
-    protected Dimension updateFigGroupSize(
-				       FigGroup fg,
-				       int x,
-				       int y,
-				       int w,
-				       int h) {
-        int newW = w;
-        int n = fg.getFigs().size() - 1;
-        int newH = checkSize ? Math.max(h, ROWHEIGHT * Math.max(1, n) + 2) : h;
-        int step = (n > 0) ? (newH - 1) / n : 0;
-        // width step between FigText objects int maxA =
-        //Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT).getMaxAscent();
-
-        //set new bounds for all included figs
-        Iterator figs = fg.iterator();
-        Fig myBigPort = (Fig) figs.next();
-        Fig fi;
-        int fw, yy = y;
-        while (figs.hasNext()) {
-            fi = (Fig) figs.next();
-            fw = fi.getMinimumSize().width;
-            if (!checkSize && fw > newW - 2) {
-                fw = newW - 2;
-            }
-            fi.setBounds(x + 1, yy + 1, fw, Math.min(ROWHEIGHT, step) - 2);
-            if (checkSize && newW < fw + 2) {
-                newW = fw + 2;
-            }
-            yy += step;
-        }
-        myBigPort.setBounds(x, y, newW, newH);
-        // rectangle containing all following FigText objects
-        fg.calcBounds();
-        return new Dimension(newW, newH);
-    }
+//    /**
+//     * Returns the new size of the FigGroup (either attributes or
+//     * operations) after calculation new bounds for all sub-figs,
+//     * considering their minimal sizes; FigGroup need not be
+//     * displayed; no update event is fired.<p>
+//     *
+//     * This method has side effects that are sometimes used.
+//     *
+//     * @param fg the FigGroup to be updated
+//     * @param x x
+//     * @param y y
+//     * @param w w
+//     * @param h h
+//     * @return the new dimension
+//     */
+//    protected Dimension updateFigGroupSize(
+//				       FigGroup fg,
+//				       int x,
+//				       int y,
+//				       int w,
+//				       int h) {
+//        int newW = w;
+//        int n = fg.getFigs().size() - 1;
+//        int newH = checkSize ? Math.max(h, ROWHEIGHT * Math.max(1, n) + 2) : h;
+//        int step = (n > 0) ? (newH - 1) / n : 0;
+//        // width step between FigText objects int maxA =
+//        //Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT).getMaxAscent();
+//
+//        //set new bounds for all included figs
+//        Iterator figs = fg.iterator();
+//        Fig myBigPort = (Fig) figs.next();
+//        Fig fi;
+//        int fw, yy = y;
+//        while (figs.hasNext()) {
+//            fi = (Fig) figs.next();
+//            fw = fi.getMinimumSize().width;
+//            if (!checkSize && fw > newW - 2) {
+//                fw = newW - 2;
+//            }
+//            fi.setBounds(x + 1, yy + 1, fw, Math.min(ROWHEIGHT, step) - 2);
+//            if (checkSize && newW < fw + 2) {
+//                newW = fw + 2;
+//            }
+//            yy += step;
+//        }
+//        myBigPort.setBounds(x, y, newW, newH);
+//        // rectangle containing all following FigText objects
+//        fg.calcBounds();
+//        return new Dimension(newW, newH);
+//    }
 
     /**
      * @param size the new shadow size

@@ -1004,8 +1004,15 @@ public class FigClass extends FigClassifierBox
         } else {
             height = 1;
         }
-        aSize = updateFigGroupSize(getAttributesFig(), x, currentY,
-                newW, height);
+        
+        aSize = getAttributesFig().updateFigGroupSize(
+                x, 
+                currentY, 
+                newW, 
+                height, 
+                isCheckSize(), 
+                ROWHEIGHT);
+        
 
         if (getAttributesFig().isVisible()) {
             currentY += aSize.height - 1; // -1 for 1 pixel overlap
@@ -1013,9 +1020,13 @@ public class FigClass extends FigClassifierBox
 
         // Finally update the bounds of the operations box
 
-        aSize =
-	    updateFigGroupSize(getOperationsFig(), x, currentY,
-                newW, newH + y - currentY);
+        aSize = getOperationsFig().updateFigGroupSize(
+                x, 
+                currentY, 
+                newW, 
+                newH + y - currentY, 
+                isCheckSize(), 
+                ROWHEIGHT);
 
         // set bounds of big box
 
@@ -1165,7 +1176,15 @@ public class FigClass extends FigClassifierBox
         int ypos = attrPort.getY();
         
         Rectangle rect = getBounds();
-        updateFigGroupSize(getAttributesFig(), xpos, ypos, 0, 0);
+        getAttributesFig().updateFigGroupSize(
+                xpos, 
+                ypos, 
+                0, 
+                0, 
+                isCheckSize(), 
+                ROWHEIGHT);
+        
+        
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);
@@ -1264,7 +1283,13 @@ public class FigClass extends FigClassifierBox
         int ypos = operPort.getY();
 
         Rectangle rect = getBounds();
-        updateFigGroupSize(getOperationsFig(), xpos, ypos, 0, 0);
+        getAttributesFig().updateFigGroupSize(
+                xpos, 
+                ypos, 
+                0, 
+                0, 
+                isCheckSize(), 
+                ROWHEIGHT);
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);
