@@ -824,6 +824,7 @@ public class FigClass extends FigClassifierBox
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
+        
         Rectangle rect = getBounds();
         
         int stereotypeHeight = 0;

@@ -500,6 +500,14 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     }
 
     /**
+     * @see org.argouml.model.CoreHelper#removeStereotype(
+     *         java.lang.Object, java.lang.Object)
+     */
+    public void removeStereotype(Object modelElement, Object stereotype) {
+        impl.removeStereotype(modelElement, stereotype);
+    }
+
+    /**
      * @see org.argouml.model.CoreHelper#removeTaggedValue(
      *         java.lang.Object, java.lang.String)
      */
@@ -641,6 +649,14 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
      */
     public void addSourceFlow(Object handle, Object flow) {
         impl.addSourceFlow(handle, flow);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#addStereotype(
+     *         java.lang.Object, java.lang.Object)
+     */
+    public void addStereotype(Object modelElement, Object stereotype) {
+        impl.addStereotype(modelElement, stereotype);
     }
 
     /**
