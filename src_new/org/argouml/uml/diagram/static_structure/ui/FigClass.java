@@ -824,50 +824,27 @@ public class FigClass extends FigClassifierBox
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
-
-        Object me = /*(MModelElement)*/ getOwner();
-
-        if (me == null) {
-            return;
-        }
-
         Rectangle rect = getBounds();
-        Object stereo = CollectionUtil.getFirstItemOrNull(
-                Model.getFacade().getStereotypes(me));
-
-        if ((stereo == null)
-                || (Model.getFacade().getName(stereo) == null)
-                || (Model.getFacade().getName(stereo).length() == 0))	{
-
-            if (getStereotypeFig().isVisible()) {
-                getStereotypeFig().setVisible(false);
-                rect.y += STEREOHEIGHT;
-                rect.height -= STEREOHEIGHT;
-                setBounds(rect.x, rect.y, rect.width, rect.height);
-                calcBounds();
-            }
-        } else {
-            setStereotype(Notation.generateStereotype(this, stereo));
-
-            if (!getStereotypeFig().isVisible()) {
-                getStereotypeFig().setVisible(true);
-
-                // Only adjust the stereotype height if we are not newly
-                // created. This gets round the problem of loading classes with
-                // stereotypes defined, which have the height already including
-                // the stereotype.
-
-                if (!newlyCreated) {
-                    rect.y -= STEREOHEIGHT;
-                    rect.height += STEREOHEIGHT;
-                    setBounds(rect.x, rect.y, rect.width, rect.height);
-                    calcBounds();
-                }
-            }
+        
+        int stereotypeHeight = 0;
+        if (getStereotypeFig().isVisible()) {
+            stereotypeHeight = getStereotypeFig().getHeight();
         }
+        int heightWithoutStereo = getHeight() - stereotypeHeight;
+        
+        getStereotypeFig().setOwner(getOwner());
 
-        // Whatever happened we are no longer newly created, so clear the
-        // flag. Then set the bounds for the rectangle we have defined.
+        stereotypeHeight = 0;
+        if (getStereotypeFig().isVisible()) {
+            stereotypeHeight = getStereotypeFig().getHeight();
+        }
+        
+        setBounds(
+                rect.x,
+                rect.y, 
+                heightWithoutStereo + stereotypeHeight, 
+                rect.height);
+        calcBounds();
         newlyCreated = false;
     }
 

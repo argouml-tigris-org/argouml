@@ -25,26 +25,44 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
+import org.apache.log4j.Logger;
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.util.CollectionUtil;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
 
 /**
  * A specialist FigText for display stereotypes.
+ * 
  * @author Bob Tarling
  */
 public class FigStereotype extends FigGroup {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger.getLogger(FigComment.class);
+
+    protected static final int STEREOHEIGHT = 18;
 
     private FigSingleLineText singleStereotype;
 
     /**
      * The constructor.
-     *
-     * @param x x
-     * @param y y
-     * @param w width
-     * @param h height
-     * @param expandOnly true if the fig can only grow, not shrink
+     * 
+     * @param x
+     *            x
+     * @param y
+     *            y
+     * @param w
+     *            width
+     * @param h
+     *            height
+     * @param expandOnly
+     *            true if the fig can only grow, not shrink
      */
     public FigStereotype(int x, int y, int w, int h, boolean expandOnly) {
         super();
@@ -59,18 +77,13 @@ public class FigStereotype extends FigGroup {
         addFig(singleStereotype);
     }
 
-
     /**
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int arg0) {
         super.setLineWidth(0);
     }
-    
-    public void setText(String text) {
-        singleStereotype.setText(text);
-    }
-    
+
     public int getStereotypeCount() {
         if (singleStereotype.getText() == null
                 || singleStereotype.getText().trim().length() == 0) {
@@ -80,14 +93,37 @@ public class FigStereotype extends FigGroup {
         }
     }
 
-    /**
-     * @see org.tigris.gef.presentation.Fig#isVisible()
-     */
-    public boolean isVisible() {
-        if (singleStereotype.getText() == null
-                || singleStereotype.getText().trim().length() == 0) {
-            return false;
+    public void setOwner(Object modelElement) {
+        super.setOwner(modelElement);
+
+        if (modelElement == null) {
+            singleStereotype.setText("");
+            setVisible(false);
+            return;
         }
-        return super.isVisible();
+
+        Rectangle rect = getBounds();
+        Object stereo = CollectionUtil.getFirstItemOrNull(Model.getFacade()
+                .getStereotypes(modelElement));
+
+        if ((stereo == null) || (Model.getFacade().getName(stereo) == null)
+                || (Model.getFacade().getName(stereo).length() == 0)) {
+
+            if (isVisible()) {
+                setVisible(false);
+                rect.y += STEREOHEIGHT;
+                rect.height -= STEREOHEIGHT;
+                setBounds(rect.x, rect.y, rect.width, rect.height);
+                calcBounds();
+            }
+        } else {
+            String text = "<<" + Model.getFacade().getName(stereo) + ">>";
+            LOG.info("Setting the stereotype text to " + text);
+            singleStereotype.setText(text);
+
+            if (!isVisible()) {
+                setVisible(true);
+            }
+        }
     }
 }
