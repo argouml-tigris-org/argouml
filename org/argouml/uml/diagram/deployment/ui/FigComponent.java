@@ -316,21 +316,7 @@ public class FigComponent extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
-        Object me = /*(MModelElement)*/ getOwner();
-        if (me == null) return;
-        Object stereo = CollectionUtil.getFirstItemOrNull(
-                Model.getFacade().getStereotypes(me));
-        if (stereo == null
-                || Model.getFacade().getName(stereo) == null
-                || Model.getFacade().getName(stereo).length() == 0) {
-
-            setStereotype("");
-
-        } else {
-
-            setStereotype(Notation.generateStereotype(this, stereo));
-
-        }
+        getStereotypeFig().setOwner(getOwner());
     }
 
 

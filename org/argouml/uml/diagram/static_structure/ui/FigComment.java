@@ -593,7 +593,7 @@ public class FigComment
                 calcBounds();
             }
         } else {
-            setStereotype(Notation.generateStereotype(this, stereo));
+            getStereotypeFig().setOwner(getOwner());
 
             if (!getStereotypeFig().isVisible()) {
                 getStereotypeFig().setVisible(true);

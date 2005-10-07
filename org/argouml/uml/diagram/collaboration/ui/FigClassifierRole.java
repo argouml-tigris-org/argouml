@@ -261,7 +261,6 @@ public class FigClassifierRole extends FigNodeModelElement {
 
             // Set the text and recalculate its bounds
 
-            setStereotype(Notation.generateStereotype(this, stereo));
             getStereotypeFig().calcBounds();
 
             bounds.height += getStereotypeFig().getBounds().height - oldHeight;

@@ -1193,18 +1193,8 @@ public abstract class FigNodeModelElement
             LOG.warn("I return...");
             return;
         }
-        Object stereotype = CollectionUtil.getFirstItemOrNull(
-                Model.getFacade().getStereotypes(getOwner()));
-        if (stereotype == null) {
-            stereo.setText("");
-            return;
-        }
-        String stereoStr = Model.getFacade().getName(stereotype);
-        if (stereoStr == null || stereoStr.length() == 0) {
-            stereo.setText("");
-        } else {
-            stereo.setText(Notation.generate(this, stereotype));
-        }
+        
+        stereo.setOwner(getOwner());
     }
 
     /**
@@ -1546,15 +1536,6 @@ public abstract class FigNodeModelElement
      */
     protected Fig getStereotypeFig() {
         return stereo;
-    }
-
-    /**
-     * Set the text describing the stereotype.
-     *
-     * @param stereotype the stereotype text
-     */
-    public void setStereotype(String stereotype) {
-        stereo.setText(stereotype);
     }
 
     /**
