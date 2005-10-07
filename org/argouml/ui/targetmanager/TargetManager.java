@@ -441,6 +441,8 @@ public final class TargetManager {
 	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
 
         endTargetTransaction();
+        
+        debugTM();
     }
 
     private void internalOnSetTarget(String eventName, Object[] oldTargets) {
@@ -570,8 +572,6 @@ public final class TargetManager {
 	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
 
 	endTargetTransaction();
-        
-        debugTM();
     }
 
     /**
