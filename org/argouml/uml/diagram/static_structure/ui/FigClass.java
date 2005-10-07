@@ -81,10 +81,7 @@ public class FigClass extends FigClassifierBox
     ////////////////////////////////////////////////////////////////
     // constants
 
-    //These are the positions of child figs inside this fig (counting from 0)
-    //They must be added in the constructor in this order.
-    private static final int OPERATIONS_POSN = 3;
-    private static final int ATTRIBUTES_POSN = 4;
+    FigAttributesCompartment attributesFigCompartment;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -164,7 +161,7 @@ public class FigClass extends FigClassifierBox
         getNameFig().setFilled(true);
 
         // Attributes inside. First one is the attribute box itself.
-        FigCompartment attributesFigCompartment =
+        attributesFigCompartment =
             new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
 
         // this rectangle marks the operation section; all operations
@@ -176,11 +173,13 @@ public class FigClass extends FigClassifierBox
         // before, so it overlaps the name box, and the blanking takes out both
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
-        getStereotypeFig().setFilled(true);
-        getStereotypeFig().setLineWidth(1);
-        getStereotypeFig().setHeight(STEREOHEIGHT + 1);
-        // +1 to have 1 pixel overlap with getNameFig()
-        getStereotypeFig().setVisible(false);
+        if (getStereotypeFig() != null) {
+            getStereotypeFig().setFilled(true);
+            getStereotypeFig().setLineWidth(1);
+            getStereotypeFig().setHeight(STEREOHEIGHT + 1);
+            // +1 to have 1 pixel overlap with getNameFig()
+            getStereotypeFig().setVisible(false);
+        }
 
         FigEmptyRect bigPort = new FigEmptyRect(10, 10, 0, 0);
         bigPort.setLineWidth(1);
@@ -290,7 +289,7 @@ public class FigClass extends FigClassifierBox
      * @return The bounds of the attributes compartment.
      */
     public Rectangle getAttributesBounds() {
-        return ((FigGroup) getFigAt(ATTRIBUTES_POSN)).getBounds();
+        return attributesFigCompartment.getBounds();
     }
 
     /**
@@ -298,7 +297,7 @@ public class FigClass extends FigClassifierBox
      * First one is the rectangle for the entire operations box.
      */
     private FigAttributesCompartment getAttributesFig() {
-        return (FigAttributesCompartment) getFigAt(ATTRIBUTES_POSN);
+        return attributesFigCompartment;
     }
 
     /**
@@ -910,7 +909,9 @@ public class FigClass extends FigClassifierBox
         
         int stereotypeHeight = 0;
         if (getStereotypeFig().isVisible()) {
-            stereotypeHeight = STEREOHEIGHT;
+            stereotypeHeight =
+                Model.getFacade().getStereotypes(getOwner()).size()
+                * STEREOHEIGHT;
         }
         
         Rectangle oldBounds = getBounds();
@@ -1256,10 +1257,8 @@ public class FigClass extends FigClassifierBox
         if (!isOperationsVisible()) {
             return;
         }
-        FigOperationsCompartment operationsCompartment = 
-                ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN));
-        operationsCompartment.populate();
-        Fig operPort = operationsCompartment.getBigPort();
+        operationsFig.populate();
+        Fig operPort = operationsFig.getBigPort();
 
         int xpos = operPort.getX();
         int ypos = operPort.getY();
