@@ -52,6 +52,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.NsumlEnabler;
 import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.AbstractArgoJPanel;
@@ -202,6 +203,9 @@ public class TabTaggedValues extends AbstractArgoJPanel
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
+        if (!NsumlEnabler.isNsuml()) {
+            setTarget(e.getNewTarget());
+        }
     }
 
     /**
