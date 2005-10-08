@@ -42,6 +42,7 @@ import javax.swing.Action;
 
 import org.argouml.application.api.Notation;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.NsumlEnabler;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.Model;
@@ -61,6 +62,7 @@ import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
+import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Editor;
@@ -824,28 +826,77 @@ public class FigClass extends FigClassifierBox
      */
     protected void updateStereotypeText() {
         
-        Rectangle rect = getBounds();
-        
-        int stereotypeHeight = 0;
-        if (getStereotypeFig().isVisible()) {
-            stereotypeHeight = getStereotypeFig().getHeight();
-        }
-        int heightWithoutStereo = getHeight() - stereotypeHeight;
-        
-        getStereotypeFig().setOwner(getOwner());
+        if (NsumlEnabler.isNsuml()) {
+            Object me = /*(MModelElement)*/ getOwner();
 
-        stereotypeHeight = 0;
-        if (getStereotypeFig().isVisible()) {
-            stereotypeHeight = getStereotypeFig().getHeight();
+            if (me == null) {
+                return;
+            }
+
+            Rectangle rect = getBounds();
+            Object stereo = CollectionUtil.getFirstItemOrNull(
+                    Model.getFacade().getStereotypes(me));
+
+            if ((stereo == null)
+                    || (Model.getFacade().getName(stereo) == null)
+                    || (Model.getFacade().getName(stereo).length() == 0))   {
+
+                if (getStereotypeFig().isVisible()) {
+                    getStereotypeFig().setVisible(false);
+                    rect.y += STEREOHEIGHT;
+                    rect.height -= STEREOHEIGHT;
+                    setBounds(rect.x, rect.y, rect.width, rect.height);
+                    calcBounds();
+                }
+            } else {
+                FigText stereotypeFig = (FigText) getStereotypeFig();
+                stereotypeFig.setText(Notation.generateStereotype(this, stereo));
+
+                if (!getStereotypeFig().isVisible()) {
+                    getStereotypeFig().setVisible(true);
+
+                    // Only adjust the stereotype height if we are not newly
+                    // created. This gets round the problem of loading classes with
+                    // stereotypes defined, which have the height already including
+                    // the stereotype.
+
+                    if (!newlyCreated) {
+                        rect.y -= STEREOHEIGHT;
+                        rect.height += STEREOHEIGHT;
+                        setBounds(rect.x, rect.y, rect.width, rect.height);
+                        calcBounds();
+                    }
+                }
+            }
+
+            // Whatever happened we are no longer newly created, so clear the
+            // flag. Then set the bounds for the rectangle we have defined.
+            newlyCreated = false;
+        } else {
+            Rectangle rect = getBounds();
+            
+            int stereotypeHeight = 0;
+            if (getStereotypeFig().isVisible()) {
+                stereotypeHeight = getStereotypeFig().getHeight();
+            }
+            int heightWithoutStereo = getHeight() - stereotypeHeight;
+            
+            getStereotypeFig().setOwner(getOwner());
+            //((FigStereotypesCompartment)getStereotypeFig()).populate();
+
+            stereotypeHeight = 0;
+            if (getStereotypeFig().isVisible()) {
+                stereotypeHeight = getStereotypeFig().getHeight();
+            }
+            
+            setBounds(
+                    rect.x,
+                    rect.y, 
+                    rect.width,
+                    heightWithoutStereo + stereotypeHeight);
+            calcBounds();
+            newlyCreated = false;
         }
-        
-        setBounds(
-                rect.x,
-                rect.y, 
-                rect.width,
-                heightWithoutStereo + stereotypeHeight);
-        calcBounds();
-        newlyCreated = false;
     }
 
     /**
@@ -1189,83 +1240,6 @@ public class FigClass extends FigClassifierBox
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
-
-//    /**
-//     * Updates the operations box. Called from modelchanged if there is
-//     * a modelevent effecting the attributes and from renderingChanged in all
-//     * cases.
-//     */
-//    protected void updateOperations() {
-//        Object cls = /*(MClassifier)*/ getOwner();
-//        Fig operPort = ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN))
-//            .getBigPort();
-//
-//        int xpos = operPort.getX();
-//        int ypos = operPort.getY();
-//        int ocounter = 1;
-//        Collection behs = Model.getFacade().getOperations(cls);
-//        if (behs != null) {
-//            Iterator iter = behs.iterator();
-//            // TODO: in future version of GEF call getFigs returning array
-//            Vector figs = new Vector(getOperationsFig().getFigs());
-//            CompartmentFigText oper;
-//            while (iter.hasNext()) {
-//                Object bf = /*(MBehavioralFeature)*/ iter.next();
-//                // update the listeners
-//		// Model.getPump().removeModelEventListener(this, bf);
-//                // Model.getPump().addModelEventListener(this, bf);
-//                if (figs.size() <= ocounter) {
-//                    oper =
-//                        new FigFeature(xpos + 1,
-//                        ypos + 1 + (ocounter - 1) * ROWHEIGHT,
-//                        0,
-//                        ROWHEIGHT - 2,
-//                        operPort);
-//                    // bounds not relevant here
-//                    oper.setFilled(false);
-//                    oper.setLineWidth(0);
-//                    oper.setFont(getLabelFont());
-//                    oper.setTextColor(Color.black);
-//                    oper.setJustification(FigText.JUSTIFY_LEFT);
-//                    oper.setMultiLine(false);
-//                    getOperationsFig().addFig(oper);
-//                } else {
-//                    oper = (CompartmentFigText) figs.elementAt(ocounter);
-//                }
-//                oper.setText(Notation.generate(this, bf));
-//                oper.setOwner(bf); //TODO: update the model again here?
-//                /* This causes another event, and modelChanged() called,
-//                 * and updateOperations() called again...
-//                 */
-//
-//                // underline, if static
-//                oper.setUnderline(Model.getScopeKind().getClassifier()
-//				  .equals(Model.getFacade().getOwnerScope(bf)));
-//                // italics, if abstract
-//                //oper.setItalic(((MOperation)bf).isAbstract()); //
-//                //does not properly work (GEF bug?)
-//                if (Model.getFacade().isAbstract(bf)) {
-//                    oper.setFont(getItalicLabelFont());
-//                } else {
-//                    oper.setFont(getLabelFont());
-//                }
-//                oper.damage();
-//                ocounter++;
-//            }
-//            if (figs.size() > ocounter) {
-//                //cleanup of unused operation FigText's
-//                for (int i = figs.size() - 1; i >= ocounter; i--) {
-//                    getOperationsFig().removeFig((Fig) figs.elementAt(i));
-//                }
-//            }
-//        }
-//        Rectangle rect = getBounds();
-//        updateFigGroupSize(getOperationsFig(), xpos, ypos, 0, 0);
-//        // ouch ugly but that's for a next refactoring
-//        // TODO: make setBounds, calcBounds and updateBounds consistent
-//        setBounds(rect.x, rect.y, rect.width, rect.height);
-//        damage();
-//    }
 
     /**
      * Updates the operations box. Called from modelchanged if there is

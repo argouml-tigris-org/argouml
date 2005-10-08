@@ -233,7 +233,7 @@ public abstract class FigNodeModelElement
      * Use getStereotype() and setStereotype() to change stereotype
      * text.
      */
-    private Fig stereo;
+    private Fig stereotypeFig;
 
     /**
      * EnclosedFigs are the Figs that are enclosed by this figure. Say that
@@ -293,7 +293,11 @@ public abstract class FigNodeModelElement
         name.setFilled(true);
         name.setText(placeString());
 
-        stereo = new FigSingleLineText(10, 10, 90, 15, true);
+        if (NsumlEnabler.isNsuml()) {
+            stereotypeFig = new FigSingleLineText(10, 10, 90, 15, true);
+        } else {
+            stereotypeFig = new FigStereotypesCompartment(10, 10, 90, 15);
+        }
 
         readyToEdit = false;
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
@@ -345,8 +349,8 @@ public abstract class FigNodeModelElement
             if (thisFig == name) {
                 clone.name = (FigText) cloneFig;
             }
-            if (thisFig == stereo) {
-                clone.stereo = (FigStereotype) cloneFig;
+            if (thisFig == stereotypeFig) {
+                clone.stereotypeFig = (FigStereotype) cloneFig;
             }
         }
         return clone;
@@ -1220,7 +1224,7 @@ public abstract class FigNodeModelElement
             return;
         }
         
-        stereo.setOwner(getOwner());
+        stereotypeFig.setOwner(getOwner());
     }
 
     /**
@@ -1561,7 +1565,7 @@ public abstract class FigNodeModelElement
      * @return the stereotype Fig
      */
     protected Fig getStereotypeFig() {
-        return stereo;
+        return stereotypeFig;
     }
 
     /**
