@@ -87,8 +87,8 @@ public class FigClass extends FigClassifierBox
     FigAttributesCompartment attributesFigCompartment;
     
     Fig borderFig;
-    Fig attributesSeperator;
     Fig operationsSeperator;
+    Fig attributesSeperator;
     
     /**
      * Text highlighted by mouse actions on the diagram.<p>
@@ -187,9 +187,7 @@ public class FigClass extends FigClassifierBox
         borderFig.setLineColor(Color.black);
         
         operationsSeperator = new FigLine(10, 10, 11, 10);
-//        operationsSeperator.setLineColor(Color.red);
         attributesSeperator = new FigLine(10, 10, 11, 10);
-//        attributesSeperator.setLineColor(Color.green);
         
         if (SingleStereotypeEnabler.isEnabled()) {
             getStereotypeFig().setLineWidth(1);
@@ -968,7 +966,7 @@ public class FigClass extends FigClassifierBox
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
         if (SingleStereotypeEnabler.isEnabled()) {
-            setBoundsImplNsuml(x, y, w, h);
+            setBoundsImplSingleStereotype(x, y, w, h);
             return;
         }
         
@@ -1051,7 +1049,7 @@ public class FigClass extends FigClassifierBox
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    protected void setBoundsImplNsuml(int x, int y, int w, int h) {
+    protected void setBoundsImplSingleStereotype(int x, int y, int w, int h) {
 
         // Save our old boundaries (needed later), and get minimum size
         // info. "aSize will be used to maintain a running calculation of our
