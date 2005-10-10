@@ -24,64 +24,37 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLComboBoxModel2;
-
+import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- * @since Oct 5, 2002
+ * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
-
-
-
-
+public class UMLExtendExtensionListModel extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for UMLExtendBaseComboBoxModel.
+     * Constructor for UMLExtendExtensionComboBoxModel.
      */
-    public UMLExtendBaseComboBoxModel() {
-        super("base", false);
-        Model.getPump().addClassModelEventListener(this,
-                Model.getMetaTypes().getNamespace(), "ownedElement");
+    public UMLExtendExtensionListModel() {
+        super("extension");
+
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        Object extend = /*(MExtend)*/ getTarget();
-        if (extend == null) {
-            return;
-        }
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Object model = p.getRoot();
-        setElements(Model.getModelManagementHelper()
-                .getAllModelElementsOfKindWithModel(model,
-                        Model.getMetaTypes().getUseCase()));
-        if (Model.getFacade().getExtension(extend) != null) {
-            removeElement(Model.getFacade().getExtension(extend));
-        }
+        if (!isEmpty())
+            removeAllElements();
+        addElement(Model.getFacade().getExtension(getTarget()));
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
-     */
-    protected Object getSelectedModelElement() {
-        if (getTarget() != null) {
-            return Model.getFacade().getBase(getTarget());
-        }
-        return null;
-    }
-
+   
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAUseCase(element);
     }
-
 }

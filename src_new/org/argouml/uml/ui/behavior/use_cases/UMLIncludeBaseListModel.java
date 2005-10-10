@@ -25,57 +25,34 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- * @since Oct 7, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * 
+ * @author MarkusK
+ *
  */
-public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
+public class UMLIncludeBaseListModel extends UMLModelElementListModel2 {
 
-    /**
-     * Constructor for UMLIncludeAdditionComboBoxModel.
-     */
-    public UMLIncludeAdditionComboBoxModel() {
-//      there is a bug in NSUML so this model listens for base modelevents
-        super("base", false);
+    public UMLIncludeBaseListModel() {
+        // there is a bug in NSUML so this model
+        // listens for addition modelevents
+        super("addition");
         Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
-     */
+    
     protected void buildModelList() {
-        Object inc = /*(MInclude)*/ getTarget();
-        if (inc == null) {
-            return;
-        }
-        Object ns = Model.getFacade().getNamespace(inc);
-        addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(ns,
-                Model.getMetaTypes().getUseCase()));
-        if (contains(Model.getFacade().getAddition(inc))) {
-            removeElement(Model.getFacade().getAddition(inc));
-        }
+        if (!isEmpty())
+            removeAllElements();
+        addElement(Model.getFacade().getBase(getTarget()));
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
-     */
-    protected Object getSelectedModelElement() {
-        if (getTarget() != null) {
-            return Model.getFacade().getAddition(getTarget());
-        }
-        return null;
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
-     */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAUseCase(element)
-            && Model.getFacade().getNamespace(getTarget())
-                == Model.getFacade().getNamespace(element);
+            && Model.getFacade().getNamespace(element)
+                == Model.getFacade().getNamespace(getTarget());
     }
 
 }
