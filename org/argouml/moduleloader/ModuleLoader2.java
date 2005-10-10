@@ -24,27 +24,27 @@
 
 package org.argouml.moduleloader;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import org.apache.log4j.Logger;
-
 import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
 
@@ -331,21 +331,12 @@ public final class ModuleLoader2 {
 		}
 
 		if (!status.isEnabled() && status.isSelected()) {
-		    boolean result = false;
-		    try {
-		        result = module.enable();
-		    } catch (Exception e) {
-		        // An exception was thrown while enabling.
-		    }
-
-		    if (result) {
+		    if (module.enable()) {
 		        someModuleSucceeded = true;
 		        status.setEnabled();
 		    }
 		} else if (status.isEnabled() && !status.isSelected()) {
-		    boolean result = module.disable();
-
-		    if (result) {
+		    if (module.disable()) {
 		        someModuleSucceeded = true;
 		        status.setDisabled();
 		    }
@@ -604,25 +595,59 @@ public final class ModuleLoader2 {
      * @param classname The name.
      */
     private void addClass(ClassLoader classLoader, String classname) {
-	try {
-	    Class moduleClass = classLoader.loadClass(classname);
-	    Constructor c = moduleClass.getDeclaredConstructor(new Class[]{});
-	    if (!Modifier.isPublic(c.getModifiers())) {
-		return;
-	    }
-	    Object obj = c.newInstance(new Object[]{});
+        Class moduleClass;
+        try {
+            moduleClass = classLoader.loadClass(classname);
+        } catch (ClassNotFoundException e) {
+            LOG.debug("The class " + classname + " is not found.", e);
+            return;
+        }
 
-	    if (!(obj instanceof ModuleInterface)) {
-		LOG.debug("The class " + classname + " is not a module.");
-		return;
-	    }
-	    ModuleInterface mf = (ModuleInterface) obj;
+        Constructor c;
+        try {
+            c = moduleClass.getDeclaredConstructor(new Class[]{});
+        } catch (SecurityException e) {
+            LOG.debug("The constructor for class " + classname
+                      + " is not accessable.",
+                      e);
+            return;
+        } catch (NoSuchMethodException e) {
+            LOG.debug("The constructor for class " + classname
+                      + " is not found.", e);
+            return;
+        }
 
-	    addModule(mf);
-	} catch (Exception e) {
-	    LOG.error("Could not find class to allocated as module:", e);
-	    e.printStackTrace();
-	}
+        if (!Modifier.isPublic(c.getModifiers())) {
+            return;
+        }
+        Object obj;
+        try {
+            obj = c.newInstance(new Object[]{});
+        } catch (IllegalArgumentException e) {
+            LOG.debug("The constructor for class " + classname
+                    + " is called with incorrect argument.", e);
+            return;
+        } catch (InstantiationException e) {
+            LOG.debug("The constructor for class " + classname
+                    + " throws an exception.", e);
+            return;
+        } catch (IllegalAccessException e) {
+            LOG.debug("The constructor for class " + classname
+                    + " is not accessible.", e);
+            return;
+        } catch (InvocationTargetException e) {
+            LOG.debug("The constructor for class " + classname
+                    + " cannot be called.", e);
+            return;
+        }
+
+        if (!(obj instanceof ModuleInterface)) {
+            LOG.debug("The class " + classname + " is not a module.");
+            return;
+        }
+        ModuleInterface mf = (ModuleInterface) obj;
+
+        addModule(mf);
     }
 
     /**

@@ -36,16 +36,15 @@ public interface ModuleInterface {
      * Method to enable the module.<p>
      *
      * If it cannot enable the module because some other module is
-     * not enabled it can either return false or throw an exception.
+     * not enabled it can return <code>false</code>.
      * In that case the module loader will defer this attempt until
      * all other modules are loaded (or until some more of ArgoUML is loaded
      * if at startup). Eventually it is only this and some other modules
      * that is not loaded and they will then be listed as having problems.
      *
      * @return true if all went well
-     * @throws Exception if there is a problem
      */
-    boolean enable() throws Exception;
+    boolean enable();
 
     /**
      * Method to disable the module.<p>
