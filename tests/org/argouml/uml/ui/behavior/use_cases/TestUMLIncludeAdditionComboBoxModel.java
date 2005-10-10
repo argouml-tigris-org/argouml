@@ -48,7 +48,7 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
     /**
      * The model to test.
      */
-    private UMLIncludeAdditionComboBoxModel model;
+    private UMLIncludeAdditionListModel model;
 
     /**
      * The include element that contains it all.
@@ -73,7 +73,7 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
         Model.getCoreHelper().setName(mmodel, "untitledModel");
         Model.getModelManagementFactory().setRootModel(mmodel);
         elem = Model.getUseCasesFactory().createInclude();
-        model = new UMLIncludeAdditionComboBoxModel();
+        model = new UMLIncludeAdditionListModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
         additions = new Object[NUM_ELEMS];
@@ -111,14 +111,7 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
         }
     }
 
-    /**
-     * Test {@link org.argouml.model.UseCasesHelper#setAddition(Object,
-     * Object)}.
-     */
-    public void testSetAddition() {
-        Model.getUseCasesHelper().setAddition(elem, additions[0]);
-        assertTrue(model.getSelectedItem() == additions[0]);
-    }
+    
 
     /**
      * Test to make sure we get an exception if trying to set

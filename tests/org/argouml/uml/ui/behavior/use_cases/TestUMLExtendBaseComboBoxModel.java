@@ -37,7 +37,7 @@ import org.argouml.ui.targetmanager.TargetEvent;
 public class TestUMLExtendBaseComboBoxModel extends TestCase {
 
     private Object[] bases;
-    private UMLExtendBaseComboBoxModel model;
+    private UMLExtendBaseListModel model;
     private Object elem;
 
     /**
@@ -58,7 +58,7 @@ public class TestUMLExtendBaseComboBoxModel extends TestCase {
         Model.getCoreHelper().setName(mmodel, "untitledModel");
         Model.getModelManagementFactory().setRootModel(mmodel);
         elem = Model.getUseCasesFactory().createExtend();
-        model = new UMLExtendBaseComboBoxModel();
+        model = new UMLExtendBaseListModel();
         bases = new Object[10];
         Object m = Model.getModelManagementFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
@@ -93,13 +93,7 @@ public class TestUMLExtendBaseComboBoxModel extends TestCase {
         assertTrue(model.contains(bases[9]));
     }
 
-    /**
-     * Test setBase().
-     */
-    public void testSetBase() {
-        Model.getUseCasesHelper().setBase(elem, bases[0]);
-        assertTrue(model.getSelectedItem() == bases[0]);
-    }
+  
 
     /**
      * Test to make sure we get an exception if trying to set

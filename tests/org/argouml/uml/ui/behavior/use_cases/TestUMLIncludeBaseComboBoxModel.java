@@ -37,7 +37,7 @@ import org.argouml.ui.targetmanager.TargetEvent;
 public class TestUMLIncludeBaseComboBoxModel extends TestCase {
 
     private Object[] bases;
-    private UMLIncludeBaseComboBoxModel model;
+    private UMLIncludeBaseListModel model;
     private Object elem;
 
     /**
@@ -58,7 +58,7 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
         Model.getCoreHelper().setName(mmodel, "untitledModel");
         Model.getModelManagementFactory().setRootModel(mmodel);
         elem = Model.getUseCasesFactory().createInclude();
-        model = new UMLIncludeBaseComboBoxModel();
+        model = new UMLIncludeBaseListModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
         bases = new Object[10];
@@ -93,14 +93,7 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
         assertTrue(model.contains(bases[9]));
     }
 
-    /**
-     * Test setBase().
-     */
-    public void testSetBase() {
-        Model.getUseCasesHelper().setBase(elem, bases[0]);
-        assertTrue(model.getSelectedItem() == bases[0]);
-    }
-
+   
     /**
      * Test to make sure we get an exception if trying to set
      * to null.
