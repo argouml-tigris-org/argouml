@@ -71,8 +71,10 @@ public abstract class FigCompartment extends FigGroup {
     }
     
     /**
-     * The minimum width is the minimum width of the widest child
-     * The minium height is the total minimum height of all child figs.
+     * The minimum width is the minimum width of the child with the widest
+     * miniumum width.
+     * The minium height is the total minimum height of all child figs plus a
+     * 2 pixel padding.
      * @return the minimum width
      */
     public Dimension getMinimumSize() {
@@ -91,6 +93,8 @@ public abstract class FigCompartment extends FigGroup {
                 minHeight += fig.getMinimumSize().height;
             }
         }
+        
+        minHeight += 2; // 2 Pixel padding after compartment
         return new Dimension(minWidth, minHeight);
     }
     

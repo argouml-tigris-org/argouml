@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
 
+import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
@@ -113,7 +114,9 @@ abstract public class FigClassifierBox extends FigNodeModelElement
         int ypos = operPort.getY();
 
         Rectangle rect = getBounds();
-        operationsCompartment.updateFigGroupSize(xpos, ypos, 0, 0, isCheckSize(), ROWHEIGHT);
+        if (SingleStereotypeEnabler.isEnabled()) {
+            operationsCompartment.updateFigGroupSize(xpos, ypos, 0, 0, isCheckSize(), ROWHEIGHT);
+        }
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);
