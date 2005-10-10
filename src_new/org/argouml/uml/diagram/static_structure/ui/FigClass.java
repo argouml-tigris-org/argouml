@@ -220,15 +220,8 @@ public class FigClass extends FigClassifierBox
         addFig(operationsSeperator);       //4
         addFig(attributesSeperator);       //4
 
-        getStereotypeFig().setFillColor(Color.red);
-        getNameFig().setFillColor(Color.green);
-        operationsFig.setFillColor(Color.blue);
-        attributesFigCompartment.setFillColor(Color.magenta);
-        
         getStereotypeFig().setFilled(false);
         getNameFig().setFilled(false);
-        operationsFig.setFilled(false);
-        attributesFigCompartment.setFilled(false);
 
         setSuppressCalcBounds(false);
         // Set the bounds of the figure to the total of the above (hardcoded)

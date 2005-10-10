@@ -50,7 +50,7 @@ public abstract class FigCompartment extends FigGroup {
      */
     public FigCompartment(int x, int y, int w, int h) {
         bigPort = new FigRect(x, y, w, h, Color.black, Color.white);
-        bigPort.setFilled(true);
+        bigPort.setFilled(SingleStereotypeEnabler.isEnabled());
         setFilled(true);
         
         if (SingleStereotypeEnabler.isEnabled()) {
