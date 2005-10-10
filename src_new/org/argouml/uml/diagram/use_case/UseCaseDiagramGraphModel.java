@@ -204,7 +204,8 @@ public class UseCaseDiagramGraphModel
 	    return false;
 	}
         return Model.getFacade().isAActor(node) 
-            || Model.getFacade().isAUseCase(node);
+            || Model.getFacade().isAUseCase(node)
+            || Model.getFacade().isAPackage(node);
     }
 
 
