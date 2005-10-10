@@ -37,7 +37,7 @@ import org.tigris.gef.presentation.Fig;
 /**
  * @author Bob Tarling
  */
-public class FigStereotypesCompartment extends FigFeaturesCompartment {
+public class FigStereotypesCompartment extends FigCompartment {
     /**
      * The constructor.
      *
@@ -54,9 +54,6 @@ public class FigStereotypesCompartment extends FigFeaturesCompartment {
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#populate()
      */
     public void populate() {
-        if (!isVisible()) {
-            return;
-        }
         Object modelElement = getGroup().getOwner();
         Fig bigPort = this.getBigPort();
         int xpos = bigPort.getX();

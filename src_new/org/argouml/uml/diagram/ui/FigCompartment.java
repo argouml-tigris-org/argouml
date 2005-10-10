@@ -24,11 +24,101 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.util.Iterator;
+
+import org.argouml.kernel.SingleStereotypeEnabler;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigRect;
 
 /**
  * @author Bob Tarling
  */
 public abstract class FigCompartment extends FigGroup {
+    
+    private Fig bigPort;
 
+    /**
+     * The constructor.
+     *
+     * @param x x
+     * @param y y
+     * @param w width
+     * @param h height
+     */
+    public FigCompartment(int x, int y, int w, int h) {
+        bigPort = new FigRect(x, y, w, h, Color.black, Color.white);
+        bigPort.setFilled(true);
+        setFilled(true);
+        
+        if (SingleStereotypeEnabler.isEnabled()) {
+            bigPort.setLineWidth(1);
+            setLineWidth(1);
+        } else {
+            bigPort.setLineWidth(0);
+            setLineWidth(0);
+        }
+        addFig(bigPort);
+    }
+
+    /**
+     * @return the bigport
+     */
+    public Fig getBigPort() {
+        return bigPort;
+    }
+    
+    /**
+     * The minimum width is the minimum width of the widest child
+     * The minium height is the total minimum height of all child figs.
+     * @return the minimum width
+     */
+    public Dimension getMinimumSize() {
+        int minWidth = 0;
+        int minHeight = 0;
+        //set new bounds for all included figs
+        Iterator figs = iterator();
+        Fig fig;
+        while (figs.hasNext()) {
+            fig = (Fig) figs.next();
+            if (fig.isVisible() && fig != getBigPort()) {
+                int fw = fig.getMinimumSize().width;
+                if (fw > minWidth) {
+                    minWidth = fw;
+                }
+                minHeight += fig.getMinimumSize().height;
+            }
+        }
+        return new Dimension(minWidth, minHeight);
+    }
+    
+    protected void setBoundsImpl(int x, int y, int w, int h) {
+        if (SingleStereotypeEnabler.isEnabled()) {
+            super.setBoundsImpl(x, y, w, h);
+        } else {
+            int newW = w;
+            int n = getFigs().size() - 1;
+            int newH = h;
+            
+            Iterator figs = iterator();
+            Fig fig;
+            int fw;
+            int yy = y;
+            while (figs.hasNext()) {
+                fig = (Fig) figs.next();
+                if (fig != getBigPort()) {
+                    fw = fig.getMinimumSize().width;
+                    fig.setBounds(x + 1, yy + 1, fw, fig.getMinimumSize().height);
+                    if (newW < fw + 2) {
+                        newW = fw + 2;
+                    }
+                    yy += fig.getMinimumSize().height;
+                }
+            }
+            getBigPort().setBounds(x, y, newW, newH);
+            calcBounds();
+        }
+    }
 }

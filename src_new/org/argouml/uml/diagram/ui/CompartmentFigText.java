@@ -115,20 +115,8 @@ public class CompartmentFigText extends FigSingleLineText {
      * @return  Current fill status&mdash;always <code>true</code>.
      */
     public boolean getFilled() {
-        return true;
+        return false;
     }
-
-
-    /**
-     * Override for correct graphical behaviour.<p>
-     *
-     * @return  Current fill colour&mdash;always the fill colour of the
-     *          associated compartment fig.
-     */
-    public Color getFillColor() {
-        return refFig.getFillColor();
-    }
-
 
     /**
      * Override for correct graphical behaviour.<p>

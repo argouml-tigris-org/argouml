@@ -41,7 +41,7 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.NsumlEnabler;
+import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
@@ -141,7 +141,7 @@ public class FigInterface extends FigClassifierBox {
         // before, so it overlaps the name box, and the blanking takes out both
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
-        if (NsumlEnabler.isNsuml()) {
+        if (SingleStereotypeEnabler.isEnabled()) {
             FigText stereotypeFig = (FigText)getStereotypeFig();
             stereotypeFig.setText(NotationHelper.getLeftGuillemot()
                     + "Interface" + NotationHelper.getRightGuillemot());

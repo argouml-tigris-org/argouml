@@ -50,7 +50,5 @@ public class FigSingleLineText extends FigText {
         setTabAction(FigText.END_EDITING);
         setReturnAction(FigText.END_EDITING);
         setLineWidth(0);
-//        name.setReturnAction(FigText.END_EDITING);
-//        name.setTabAction(FigText.END_EDITING);
     }
 }

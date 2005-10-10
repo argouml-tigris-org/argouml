@@ -37,7 +37,7 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.NsumlEnabler;
+import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
@@ -274,7 +274,7 @@ public abstract class PropPanelModelElement extends PropPanel {
      * @return the stereotype selecter
      */
     protected JComponent getStereotypeSelector() {
-        if (stereotypeSelector == null && NsumlEnabler.isNsuml()) {
+        if (stereotypeSelector == null && SingleStereotypeEnabler.isEnabled()) {
             stereotypeSelector = new Box(BoxLayout.X_AXIS);
             stereotypeSelector.add(new UMLComboBoxNavigator(this,
                     Translator.localize("label.stereotype.navigate.tooltip"),
