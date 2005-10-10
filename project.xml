@@ -8,7 +8,7 @@
   <pomVersion>3</pomVersion>
   <id>argouml</id>
   <name>ArgoUML</name>
-  <currentVersion>PRE-0.19.6</currentVersion>
+  <currentVersion>PRE-0.19.6-MAVENBUILT</currentVersion>
   <organization>
     <name>Tigris</name>
     <url>http://www.tigris.org/</url>
