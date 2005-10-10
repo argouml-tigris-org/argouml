@@ -351,7 +351,7 @@ public abstract class FigNodeModelElement
                 clone.name = (FigText) cloneFig;
             }
             if (thisFig == stereotypeFig) {
-                clone.stereotypeFig = (FigStereotype) cloneFig;
+                clone.stereotypeFig = (Fig) cloneFig;
             }
         }
         return clone;
