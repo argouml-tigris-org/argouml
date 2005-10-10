@@ -40,7 +40,7 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  *
  * @author Michiel
  */
-class ActionNewActor extends AbstractActionNewModelElement {
+public class ActionNewActor extends AbstractActionNewModelElement {
 
     /**
      * The constructor.
