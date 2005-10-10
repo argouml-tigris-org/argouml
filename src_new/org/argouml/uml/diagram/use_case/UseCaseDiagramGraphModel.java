@@ -226,12 +226,9 @@ public class UseCaseDiagramGraphModel
      *              this graph, <code>false</code> otherwise.
      */
     public boolean canAddEdge(Object edge)  {
-        if (super.canAddEdge(edge)) {
-            return true;
+        if (edge == null) {
+            return false;
         }
-
-        // Give up if we are already on the graph
-        if (edge == null) return false;
         if (containsEdge(edge)) {
             return false;
         }
