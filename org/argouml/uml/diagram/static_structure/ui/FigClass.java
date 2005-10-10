@@ -37,6 +37,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.Action;
+import javax.swing.SingleSelectionModel;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
@@ -447,6 +448,11 @@ public class FigClass extends FigClassifierBox
         // name compartment and build up.
 
         Dimension aSize = getNameFig().getMinimumSize();
+        
+        // +2 padding before and after name
+        
+        aSize.height += 4;
+        
         if (aSize.height < 21) {
             aSize.height = 21;
         }
@@ -989,10 +995,15 @@ public class FigClass extends FigClassifierBox
                     stereotypeHeight);
             currentHeight = stereotypeHeight;
         }
+
+        currentHeight += 2; // Give an extra couple of pixels before the name.
         
         int nameHeight = getNameFig().getMinimumSize().height;
         getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
         currentHeight += nameHeight;
+        
+        currentHeight += 2; // Give an extra couple of pixels after the name.
+
         
         if (getAttributesFig().isVisible()) {
             attributesSeperator.setBounds(
@@ -1151,14 +1162,16 @@ public class FigClass extends FigClassifierBox
         } else {
             height = 1;
         }
-        
-        aSize = getAttributesFig().updateFigGroupSize(
-                x, 
-                currentY, 
-                newW, 
-                height, 
-                isCheckSize(), 
-                ROWHEIGHT);
+
+        if (SingleStereotypeEnabler.isEnabled()) {
+            aSize = getAttributesFig().updateFigGroupSize(
+                    x, 
+                    currentY, 
+                    newW, 
+                    height, 
+                    isCheckSize(), 
+                    ROWHEIGHT);
+        }
         
 
         if (getAttributesFig().isVisible()) {
@@ -1167,13 +1180,15 @@ public class FigClass extends FigClassifierBox
 
         // Finally update the bounds of the operations box
 
-        aSize = getOperationsFig().updateFigGroupSize(
-                x, 
-                currentY, 
-                newW, 
-                newH + y - currentY, 
-                isCheckSize(), 
-                ROWHEIGHT);
+        if (SingleStereotypeEnabler.isEnabled()) {
+            aSize = getOperationsFig().updateFigGroupSize(
+                    x, 
+                    currentY, 
+                    newW, 
+                    newH + y - currentY, 
+                    isCheckSize(), 
+                    ROWHEIGHT);
+        }
 
         // set bounds of big box
 
@@ -1322,14 +1337,15 @@ public class FigClass extends FigClassifierBox
         int ypos = attrPort.getY();
         
         Rectangle rect = getBounds();
-        getAttributesFig().updateFigGroupSize(
-                xpos, 
-                ypos, 
-                0, 
-                0, 
-                isCheckSize(), 
-                ROWHEIGHT);
-        
+        if (SingleStereotypeEnabler.isEnabled()) {
+            getAttributesFig().updateFigGroupSize(
+                    xpos, 
+                    ypos, 
+                    0, 
+                    0, 
+                    isCheckSize(), 
+                    ROWHEIGHT);
+        }
         
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
@@ -1352,13 +1368,15 @@ public class FigClass extends FigClassifierBox
         int ypos = operPort.getY();
 
         Rectangle rect = getBounds();
-        getAttributesFig().updateFigGroupSize(
-                xpos, 
-                ypos, 
-                0, 
-                0, 
-                isCheckSize(), 
-                ROWHEIGHT);
+        if (SingleStereotypeEnabler.isEnabled()) {
+            getAttributesFig().updateFigGroupSize(
+                    xpos, 
+                    ypos, 
+                    0, 
+                    0, 
+                    isCheckSize(), 
+                    ROWHEIGHT);
+        }
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);

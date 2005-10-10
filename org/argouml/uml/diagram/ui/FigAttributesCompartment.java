@@ -68,7 +68,7 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
             List figs = getFigs();
             CompartmentFigText attr;
             while (iter.hasNext()) {
-                Object sf = /*(MStructuralFeature)*/ iter.next();
+                Object structuralFeature = iter.next();
                 // update the listeners
                 // Model.getPump().removeModelEventListener(this, sf);
                 // Model.getPump().addModelEventListener(this, sf); //??
@@ -88,15 +88,17 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
                     attr = (CompartmentFigText) figs.get(acounter);
                 }
                 attr.setText(Notation.generate((NotationContext) getGroup(),
-                                               sf));
-                attr.setOwner(sf); //TODO: update the model again here?
+                        structuralFeature));
+                attr.setOwner(structuralFeature); //TODO: update the model again here?
                 /* This causes another event, and modelChanged() called,
                  * and updateAttributes() called again...
                  */
 
                 // underline, if static
-                attr.setUnderline(Model.getScopeKind().getClassifier()
-                        .equals(Model.getFacade().getOwnerScope(sf)));
+                attr.setUnderline(
+                        Model.getScopeKind().
+                        getClassifier().equals(Model.getFacade().
+                                getOwnerScope(structuralFeature)));
                 acounter++;
             }
             if (figs.size() > acounter) {

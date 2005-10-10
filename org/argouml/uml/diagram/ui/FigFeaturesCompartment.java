@@ -161,32 +161,6 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
     }
     
     
-    protected void setBoundsImpl(int x, int y, int w, int h) {
-        if (SingleStereotypeEnabler.isEnabled()) {
-            super.setBoundsImpl(x, y, w, h);
-        } else {
-            int newW = w;
-            int n = getFigs().size() - 1;
-            int newH = h;
-            
-            Iterator figs = iterator();
-            Fig fi;
-            int fw, yy = y;
-            while (figs.hasNext()) {
-                fi = (Fig) figs.next();
-                if (fi != getBigPort()) {
-                    fw = fi.getMinimumSize().width;
-                    fi.setBounds(x + 1, yy + 1, fw, fi.getHeight());
-                    if (newW < fw + 2) {
-                        newW = fw + 2;
-                    }
-                    yy += fi.getHeight();
-                }
-            }
-            getBigPort().setBounds(x, y, newW, newH);
-            calcBounds();
-        }
-    }
     /**
      * The minimum width is the minimum width of the widest child
      * The minium height is the total minimum height of all child figs.

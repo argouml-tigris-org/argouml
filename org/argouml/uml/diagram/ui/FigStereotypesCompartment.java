@@ -33,6 +33,7 @@ import org.argouml.application.api.NotationContext;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigFeature;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
 
 /**
  * @author Bob Tarling
@@ -77,6 +78,7 @@ public class FigStereotypesCompartment extends FigCompartment {
                                 FigNodeModelElement.ROWHEIGHT - 2,
                                 bigPort);
                     // bounds not relevant here
+                    stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
                     addFig(stereotypeTextFig);
                 } else {
                     stereotypeTextFig =
