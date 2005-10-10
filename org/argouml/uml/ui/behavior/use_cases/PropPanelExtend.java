@@ -37,10 +37,10 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLConditionExpressionModel;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionModel2;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -81,15 +81,14 @@ public class PropPanelExtend extends PropPanelModelElement {
         addSeperator();
 
 
-        // Link to the two ends. This is done as a drop down. First for the
-        // base use case.
+        // Link to the two ends. 
         addField(Translator.localize("label.usecase-base"),
-		 new UMLComboBox2(new UMLExtendBaseComboBoxModel(),
-				  ActionSetExtendBase.getInstance()));
+                getSingleRowScroll(new UMLLinkedList(
+                        new UMLExtendBaseListModel())));
 
         addField(Translator.localize("label.extension"),
-		 new UMLComboBox2(new UMLExtendExtensionComboBoxModel(),
-				  ActionSetExtendExtension.getInstance()));
+                getSingleRowScroll(new UMLLinkedList(
+                        new UMLExtendExtensionListModel())));
 
         JList extensionPointList =
 	    new UMLMutableLinkedList(new UMLExtendExtensionPointListModel(),
@@ -117,14 +116,26 @@ public class PropPanelExtend extends PropPanelModelElement {
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());
     }
+    
+    /**
+     * @return a scrollpane with a single row
+     */
+    protected JScrollPane getSingleRowScroll(JList list) {
+        list.setVisibleRowCount(1);
+        JScrollPane scroll = new JScrollPane(list);
+
+        return scroll;
+    }
+
 
     /**
      * Invoked by the "New Extension Point" toolbar button to create a new
-     *   extension point for this extend relationship in the same namespace as
-     *   the current extend relationship.<p>
-     *
-     * This code uses getFactory and adds the extension point to
-     *   the current extend relationship.<p>
+     * extension point for this extend relationship in the same namespace as the
+     * current extend relationship.
+     * <p>
+     * This code uses getFactory and adds the extension point to the current
+     * extend relationship.
+     * <p>
      */
     private class ActionNewExtensionPoint
         extends AbstractActionNewModelElement {
