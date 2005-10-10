@@ -52,8 +52,10 @@ import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
+import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
+import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Editor;
@@ -62,6 +64,7 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
@@ -73,13 +76,6 @@ public class FigInterface extends FigClassifierBox {
     private static final Logger LOG = Logger.getLogger(FigInterface.class);
 
     ////////////////////////////////////////////////////////////////
-    // constants
-
-    //These are the positions of child figs inside this fig
-    //They mst be added in the constructor in this order.
-    private static final int OPERATIONS_POSN = 4;
-
-    ////////////////////////////////////////////////////////////////
     // instance variables
 
     /**
@@ -88,6 +84,9 @@ public class FigInterface extends FigClassifierBox {
      */
     private FigRect stereoLineBlinder;
 
+    Fig borderFig;
+    Fig operationsSeperator;
+    
     /**
      * Manages residency of an interface within a component on a deployment
      * diagram. Not clear why it is an instance
@@ -145,12 +144,25 @@ public class FigInterface extends FigClassifierBox {
             FigText stereotypeFig = (FigText)getStereotypeFig();
             stereotypeFig.setText(NotationHelper.getLeftGuillemot()
                     + "Interface" + NotationHelper.getRightGuillemot());
+            getStereotypeFig().setLineWidth(1);
+        } else {
+            ((FigStereotypesCompartment)getStereotypeFig())
+            .setPseudoSereotype("Interface");
+            
+            borderFig = new FigEmptyRect(10, 10, 0, 0);
+            borderFig.setLineWidth(1);
+            borderFig.setLineColor(Color.black);
+            
+            operationsSeperator = new FigLine(10, 10, 11, 10);
+            
+            getStereotypeFig().setLineWidth(0);
         }
+        
         getStereotypeFig().setFilled(true);
-        getStereotypeFig().setLineWidth(1);
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
         // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setVisible(true);
+        
 
         // A thin rectangle to overlap the boundary line between stereotype
         // and name. This is just 2 pixels high, and we rely on the line
@@ -169,8 +181,14 @@ public class FigInterface extends FigClassifierBox {
         addFig(getBigPort());
         addFig(getStereotypeFig());
         addFig(getNameFig());
-        addFig(stereoLineBlinder);
+        if (SingleStereotypeEnabler.isEnabled()) {
+            addFig(stereoLineBlinder);
+        }
         addFig(operationsFig);
+        if (!SingleStereotypeEnabler.isEnabled()) {
+            addFig(borderFig);       //4
+            addFig(operationsSeperator);       //4
+        }
         
         setSuppressCalcBounds(false);
 
@@ -719,6 +737,73 @@ public class FigInterface extends FigClassifierBox {
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
 
+        if (SingleStereotypeEnabler.isEnabled()) {
+            setBoundsImplSingleStereotype(x, y, w, h);
+            return;
+        }
+        Rectangle oldBounds = getBounds();
+        // Save our old boundaries (needed later), and get minimum size
+        // info. "aSize will be used to maintain a running calculation of our
+        // size at various points.
+
+        // "extra_each" is the extra height per displayed fig if requested
+        // height is greater than minimal. "height_correction" is the height
+        // correction due to rounded division result, will be added to the name
+        // compartment
+
+        getNameFig().setLineWidth(0);
+        getNameFig().setLineColor(Color.red);
+        int currentHeight = 0;
+        
+        if (getStereotypeFig().isVisible()) {
+            int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
+            getStereotypeFig().setBounds(
+                    x, 
+                    y, 
+                    w, 
+                    stereotypeHeight);
+            currentHeight = stereotypeHeight;
+        }
+
+        currentHeight += 2; // Give an extra couple of pixels before the name.
+        
+        int nameHeight = getNameFig().getMinimumSize().height;
+        getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
+        currentHeight += nameHeight;
+        
+        currentHeight += 2; // Give an extra couple of pixels after the name.
+
+        
+        if (getOperationsFig().isVisible()) {
+            operationsSeperator.setBounds(
+                    x, 
+                    y + currentHeight, 
+                    w, 
+                    0);
+            currentHeight++;
+            int operationsHeight = getOperationsFig().getMinimumSize().height;
+            getOperationsFig().setBounds(
+                    x, 
+                    y + currentHeight, 
+                    w, 
+                    operationsHeight);
+            currentHeight += operationsHeight;
+        }
+
+        // set bounds of big box
+        getBigPort().setBounds(x, y, w, h);
+        borderFig.setBounds(x, y, w, h);
+
+        // Now force calculation of the bounds of the figure, update the edges
+        // and trigger anyone who's listening to see if the "bounds" property
+        // has changed.
+
+        calcBounds();
+        updateEdges();
+        firePropChange("bounds", oldBounds, getBounds());
+    }
+    
+    private void setBoundsImplSingleStereotype(int x, int y, int w, int h) {
         // Save our old boundaries (needed later), and get minimum size
         // info. "aSize will be used to maintain a running calculation of our
         // size at various points.
@@ -833,8 +918,7 @@ public class FigInterface extends FigClassifierBox {
         if (!isOperationsVisible()) {
             return;
         }
-        FigOperationsCompartment operationsCompartment = 
-                ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN));
+        FigOperationsCompartment operationsCompartment = getOperationsFig();
         operationsCompartment.populate();
         Fig operPort = operationsCompartment.getBigPort();
 
