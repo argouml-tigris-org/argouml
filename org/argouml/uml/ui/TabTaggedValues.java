@@ -52,7 +52,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
-import org.argouml.kernel.NsumlEnabler;
+import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.AbstractArgoJPanel;

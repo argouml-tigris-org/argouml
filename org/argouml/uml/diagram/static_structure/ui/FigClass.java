@@ -33,20 +33,19 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Action;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.NsumlEnabler;
+import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.AddAssociationEvent;
-import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.persistence.ZargoFilePersister;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -58,10 +57,8 @@ import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
-import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.diagram.ui.FigOperationsCompartment;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.util.CollectionUtil;
@@ -71,6 +68,7 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -79,15 +77,18 @@ import org.tigris.gef.presentation.FigText;
 public class FigClass extends FigClassifierBox
         implements AttributesCompartmentContainer {
 
-
-    ////////////////////////////////////////////////////////////////
-    // constants
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(FigClass.class);
 
     FigAttributesCompartment attributesFigCompartment;
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
+    
+    Fig borderFig;
+    Fig attributesSeperator;
+    Fig operationsSeperator;
+    
     /**
      * Text highlighted by mouse actions on the diagram.<p>
      */
@@ -157,36 +158,45 @@ public class FigClass extends FigClassifierBox
      */
     public FigClass() {
 
+        getBigPort().setLineWidth(0);
+        getBigPort().setFillColor(Color.white);
+        
         // Set name box. Note the upper line will be blanked out if there is
         // eventually a stereotype above.
         getNameFig().setLineWidth(1);
-        getNameFig().setFilled(true);
+        getNameFig().setFilled(false);
 
         // Attributes inside. First one is the attribute box itself.
         attributesFigCompartment =
             new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
 
-        // this rectangle marks the operation section; all operations
-        // are inside it
-//        FigCompartment operationsFigCompartment =
-//            new FigOperationsCompartment(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
+        // The operations compartment is built in the ancestor FigClassifierBox
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
-        if (getStereotypeFig() != null) {
-            getStereotypeFig().setFilled(true);
+        getStereotypeFig().setFilled(false);
+        getStereotypeFig().setHeight(STEREOHEIGHT + 1);
+        // +1 to have 1 pixel overlap with getNameFig()
+        getStereotypeFig().setVisible(!SingleStereotypeEnabler.isEnabled());
+        
+        borderFig = new FigEmptyRect(10, 10, 0, 0);
+        borderFig.setLineWidth(1);
+        borderFig.setLineColor(Color.black);
+        
+        operationsSeperator = new FigLine(10, 10, 11, 10);
+//        operationsSeperator.setLineColor(Color.red);
+        attributesSeperator = new FigLine(10, 10, 11, 10);
+//        attributesSeperator.setLineColor(Color.green);
+        
+        if (SingleStereotypeEnabler.isEnabled()) {
             getStereotypeFig().setLineWidth(1);
-            getStereotypeFig().setHeight(STEREOHEIGHT + 1);
-            // +1 to have 1 pixel overlap with getNameFig()
-            getStereotypeFig().setVisible(false);
+            operationsSeperator.setVisible(false);
+            attributesSeperator.setVisible(false);
+        } else {
+            getStereotypeFig().setLineWidth(0);
         }
-
-        FigEmptyRect bigPort = new FigEmptyRect(10, 10, 0, 0);
-        bigPort.setLineWidth(1);
-        bigPort.setLineColor(Color.black);
-        setBigPort(bigPort);
 
         // Mark this as newly created. This is to get round the problem with
         // creating figs for loaded classes that had stereotypes. They are
@@ -201,11 +211,24 @@ public class FigClass extends FigClassifierBox
         // we're all done for efficiency.
         enableSizeChecking(false);
         setSuppressCalcBounds(true);
-        addFig(getStereotypeFig());             //0
-        addFig(getNameFig());                   //1
-        addFig(bigPort);                        //2
+        addFig(getBigPort());                        //0
+        addFig(getStereotypeFig());             //1
+        addFig(getNameFig());                   //2
         addFig(operationsFig);       //3
         addFig(attributesFigCompartment);       //4
+        addFig(borderFig);       //4
+        addFig(operationsSeperator);       //4
+        addFig(attributesSeperator);       //4
+
+        getStereotypeFig().setFillColor(Color.red);
+        getNameFig().setFillColor(Color.green);
+        operationsFig.setFillColor(Color.blue);
+        attributesFigCompartment.setFillColor(Color.magenta);
+        
+        getStereotypeFig().setFilled(false);
+        getNameFig().setFilled(false);
+        operationsFig.setFilled(false);
+        attributesFigCompartment.setFilled(false);
 
         setSuppressCalcBounds(false);
         // Set the bounds of the figure to the total of the above (hardcoded)
@@ -826,7 +849,7 @@ public class FigClass extends FigClassifierBox
      */
     protected void updateStereotypeText() {
         
-        if (NsumlEnabler.isNsuml()) {
+        if (SingleStereotypeEnabler.isEnabled()) {
             Object me = /*(MModelElement)*/ getOwner();
 
             if (me == null) {
@@ -882,7 +905,7 @@ public class FigClass extends FigClassifierBox
             int heightWithoutStereo = getHeight() - stereotypeHeight;
             
             getStereotypeFig().setOwner(getOwner());
-            //((FigStereotypesCompartment)getStereotypeFig()).populate();
+            ((FigStereotypesCompartment)getStereotypeFig()).populate();
 
             stereotypeHeight = 0;
             if (getStereotypeFig().isVisible()) {
@@ -945,6 +968,86 @@ public class FigClass extends FigClassifierBox
      * @param h  Desired height of the FigClass
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
+        if (SingleStereotypeEnabler.isEnabled()) {
+            setBoundsImplNsuml(x, y, w, h);
+            return;
+        }
+        
+        Rectangle oldBounds = getBounds();
+        // Save our old boundaries (needed later), and get minimum size
+        // info. "aSize will be used to maintain a running calculation of our
+        // size at various points.
+
+        // "extra_each" is the extra height per displayed fig if requested
+        // height is greater than minimal. "height_correction" is the height
+        // correction due to rounded division result, will be added to the name
+        // compartment
+
+        getNameFig().setLineWidth(0);
+        getNameFig().setLineColor(Color.red);
+        int currentHeight = 0;
+        
+        if (getStereotypeFig().isVisible()) {
+            int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
+            getStereotypeFig().setBounds(
+                    x, 
+                    y, 
+                    w, 
+                    stereotypeHeight);
+            currentHeight = stereotypeHeight;
+        }
+        
+        int nameHeight = getNameFig().getMinimumSize().height;
+        getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
+        currentHeight += nameHeight;
+        
+        if (getAttributesFig().isVisible()) {
+            attributesSeperator.setBounds(
+                    x, 
+                    y + currentHeight, 
+                    w, 
+                    0);
+            currentHeight++;
+
+            int attributesHeight = getAttributesFig().getMinimumSize().height;
+            getAttributesFig().setBounds(
+                    x, 
+                    y + currentHeight, 
+                    w, 
+                    attributesHeight);
+            currentHeight += attributesHeight;
+        }
+
+        if (getOperationsFig().isVisible()) {
+            operationsSeperator.setBounds(
+                    x, 
+                    y + currentHeight, 
+                    w, 
+                    0);
+            currentHeight++;
+            int operationsHeight = getOperationsFig().getMinimumSize().height;
+            getOperationsFig().setBounds(
+                    x, 
+                    y + currentHeight, 
+                    w, 
+                    operationsHeight);
+            currentHeight += operationsHeight;
+        }
+
+        // set bounds of big box
+        getBigPort().setBounds(x, y, w, h);
+        borderFig.setBounds(x, y, w, h);
+
+        // Now force calculation of the bounds of the figure, update the edges
+        // and trigger anyone who's listening to see if the "bounds" property
+        // has changed.
+
+        calcBounds();
+        updateEdges();
+        firePropChange("bounds", oldBounds, getBounds());
+    }
+
+    protected void setBoundsImplNsuml(int x, int y, int w, int h) {
 
         // Save our old boundaries (needed later), and get minimum size
         // info. "aSize will be used to maintain a running calculation of our
@@ -959,7 +1062,7 @@ public class FigClass extends FigClassifierBox
         getNameFig().setLineColor(Color.red);
         
         int stereotypeHeight = 0;
-        if (getStereotypeFig().isVisible()) {
+        if (getOwner() != null && getStereotypeFig().isVisible()) {
             stereotypeHeight =
                 Model.getFacade().getStereotypes(getOwner()).size()
                 * STEREOHEIGHT;
@@ -1042,11 +1145,11 @@ public class FigClass extends FigClassifierBox
         currentY += height - 1; // -1 for 1 pixel overlap
 
         int attributeCount = (isAttributesVisible())
-    	    ? Math.max(1, getAttributesFig().getFigs().size() - 1)
-    	    : 0;
+            ? Math.max(1, getAttributesFig().getFigs().size() - 1)
+            : 0;
         int operationCount = (isOperationsVisible())
-    	    ? Math.max(1, getOperationsFig().getFigs().size() - 1)
-    	    : 0;
+            ? Math.max(1, getOperationsFig().getFigs().size() - 1)
+            : 0;
         if (isCheckSize()) {
             height = ROWHEIGHT * attributeCount + 2 + extraEach;
         } else if (newH > currentY - y && attributeCount + operationCount > 0) {
@@ -1082,6 +1185,7 @@ public class FigClass extends FigClassifierBox
         // set bounds of big box
 
         getBigPort().setBounds(x, y, newW, newH);
+        borderFig.setBounds(x, y, newW, newH);
 
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property
@@ -1091,8 +1195,6 @@ public class FigClass extends FigClassifierBox
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
     }
-
-
 
     /**
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
