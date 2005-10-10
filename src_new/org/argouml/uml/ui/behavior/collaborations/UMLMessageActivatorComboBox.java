@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLListCellRenderer2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 /**
  * The combobox for activators on the message proppanel. The only reason this
@@ -48,6 +49,7 @@ public class UMLMessageActivatorComboBox extends UMLComboBox2 {
         UMLComboBoxModel2 arg0) {
         // TODO: This super constructor has been deprecated
         super(arg0);
+        setRenderer(new UMLListCellRenderer2(true));
     }
 
     /**
