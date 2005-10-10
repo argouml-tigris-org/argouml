@@ -40,7 +40,6 @@ public class UseCasesTestSuite {
         TestSuite suite =
 	    new TestSuite("Tests for "
 			  + UseCasesTestSuite.class.getPackage().getName());
-	suite.addTestSuite(TestUMLExtendBaseComboBoxModel.class);
 	suite.addTestSuite(TestUMLExtendExtensionPointListModel.class);
 	suite.addTestSuite(TestUMLExtensionPointExtendListModel.class);
 	suite.addTestSuite(TestUMLExtensionPointLocationDocument.class);
