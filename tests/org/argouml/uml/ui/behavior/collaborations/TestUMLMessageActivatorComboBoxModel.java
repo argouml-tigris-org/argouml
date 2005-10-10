@@ -102,15 +102,6 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
     }
 
     /**
-     * Test setActivator() with null argument.
-     */
-    public void testSetActivatorToNull() {
-        Model.getCollaborationsHelper().setActivator(elem, activators[0]);
-        Model.getCollaborationsHelper().setActivator(elem, null);
-        assertNull(model.getSelectedItem());
-    }
-
-    /**
      * Test removing.
      */
     public void testRemoveBase() {
