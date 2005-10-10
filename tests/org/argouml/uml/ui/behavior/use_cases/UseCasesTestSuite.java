@@ -41,13 +41,10 @@ public class UseCasesTestSuite {
 	    new TestSuite("Tests for "
 			  + UseCasesTestSuite.class.getPackage().getName());
 	suite.addTestSuite(TestUMLExtendBaseComboBoxModel.class);
-	suite.addTestSuite(TestUMLExtendExtensionComboBoxModel.class);
 	suite.addTestSuite(TestUMLExtendExtensionPointListModel.class);
 	suite.addTestSuite(TestUMLExtensionPointExtendListModel.class);
 	suite.addTestSuite(TestUMLExtensionPointLocationDocument.class);
 	suite.addTestSuite(TestUMLExtensionPointUseCaseListModel.class);
-	suite.addTestSuite(TestUMLIncludeAdditionComboBoxModel.class);
-	suite.addTestSuite(TestUMLIncludeBaseComboBoxModel.class);
 	suite.addTestSuite(TestUMLUseCaseExtendListModel.class);
 	suite.addTestSuite(TestUMLUseCaseExtensionPointListModel.class);
 	suite.addTestSuite(TestUMLUseCaseIncludeListModel.class);
