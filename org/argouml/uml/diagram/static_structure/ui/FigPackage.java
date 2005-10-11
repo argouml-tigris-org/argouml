@@ -550,8 +550,6 @@ public class FigPackage extends FigNodeModelElement
             }
         }
 
-        getNameFig().setBounds(xa, currentY, newW - indentX, minHeight);
-        
         if (SingleStereotypeEnabler.isEnabled()) {
             getStereotypeFig().setBounds(xa, ya, newW - indentX, STEREOHEIGHT + 1);
             stereoLineBlinder.setBounds(
@@ -559,14 +557,22 @@ public class FigPackage extends FigNodeModelElement
                      ya + STEREOHEIGHT,
                      newW - 2 - indentX,
                      2);
+            getNameFig().setBounds(xa, currentY, newW - indentX, minHeight);
         } else {
             getStereotypeFig().setBounds(xa, ya, newW - indentX, stereoMin.height + 1);
+            int nameWidth = newW - indentX;
+            if (nameWidth < stereoMin.width + 1) {
+                nameWidth = stereoMin.width + 2;
+            }
             stereoLineBlinder.setBounds(
-                     xa + 1,
-                     ya + stereoMin.height,
-                     newW - 2 - indentX,
-                     2);
+                    xa + 1,
+                    ya + stereoMin.height,
+                    nameWidth - 2,
+                    2);
+            getNameFig().setBounds(xa, currentY, nameWidth + 1, minHeight);
         }
+        
+        
 
         // Advance currentY to where the start of the body box is,
         // remembering that it overlaps the next box by 1 pixel. Calculate the
