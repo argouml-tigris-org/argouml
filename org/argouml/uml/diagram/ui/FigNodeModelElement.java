@@ -348,10 +348,10 @@ public abstract class FigNodeModelElement
                 clone.setBigPort(cloneFig);
             }
             if (thisFig == name) {
-                clone.name = (FigText) cloneFig;
+                clone.name = (FigText) thisFig;
             }
             if (thisFig == stereotypeFig) {
-                clone.stereotypeFig = (Fig) cloneFig;
+                clone.stereotypeFig = (Fig) thisFig;
             }
         }
         return clone;
