@@ -2494,7 +2494,7 @@ public interface Facade {
      * @return classifier
      */
     Object getOwner(Object handle);
-
+    
     /**
      * Return the tag of a tagged value.
      *
@@ -2647,6 +2647,7 @@ public interface Facade {
      * @return TimeExpression
      */
     Object getWhen(Object target);
+
     /**
      * Recognizer for TagDefinition. Implemented only in UML 1.4+ metamodels.
      *
@@ -2655,4 +2656,17 @@ public interface Facade {
      */
     boolean isATagDefinition(Object handle);
 
+    /**
+     * Return the TagDefinitions for a StereoType
+     * @param handle
+     * @return
+     */
+    Collection getTagDefinitions(Object handle);
+
+    /**
+     * Return the TagDefinition for a TaggedValue
+     * @param handle
+     * @return
+     */
+    Object getTagDefinition(Object handle);
 }
