@@ -354,11 +354,13 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-package", "Package");
         images.put("button.new-parameter", "New Parameter");
         images.put("button.new-permission", "Permission");
+        images.put("button.new-raised-signal", "New Raised Signal");
         images.put("button.new-reception", "New Reception");
         images.put("button.new-realization", "Realization");
         images.put("button.new-returnaction", "ReturnAction");
         images.put("button.new-sendaction", "SendAction");
         images.put("button.new-shallowhistory", "ShallowHistory");
+        images.put("button.new-signal", "New Signal");
         images.put("button.new-state", "State");
         images.put("button.new-stereotype", "Stereotype");
         images.put("button.new-stubstate", "StubState");
