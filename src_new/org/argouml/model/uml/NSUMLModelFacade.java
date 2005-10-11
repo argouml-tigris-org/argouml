@@ -4750,5 +4750,19 @@ public class NSUMLModelFacade implements Facade {
 	public boolean isAEnumeration(Object handle) {
 		return false;
 	}
+
+    /**
+     * @see org.argouml.model.Facade#getTagDefinition(java.lang.Object)
+     */
+    public Object getTagDefinition(Object handle) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    /**
+     * @see org.argouml.model.Facade#getTagDefinitions(java.lang.Object)
+     */
+    public Collection getTagDefinitions(Object handle) {
+        throw new RuntimeException("Not implemented");
+    }
 	
 }
