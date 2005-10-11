@@ -143,11 +143,11 @@ public class FigInterface extends FigClassifierBox {
         if (SingleStereotypeEnabler.isEnabled()) {
             FigText stereotypeFig = (FigText)getStereotypeFig();
             stereotypeFig.setText(NotationHelper.getLeftGuillemot()
-                    + "Interface" + NotationHelper.getRightGuillemot());
+                    + "interface" + NotationHelper.getRightGuillemot());
             getStereotypeFig().setLineWidth(1);
         } else {
             ((FigStereotypesCompartment)getStereotypeFig())
-            .setPseudoSereotype("Interface");
+            .setPseudoSereotype("interface");
             
             borderFig = new FigEmptyRect(10, 10, 0, 0);
             borderFig.setLineWidth(1);
