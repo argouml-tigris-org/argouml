@@ -4752,17 +4752,19 @@ public class NSUMLModelFacade implements Facade {
 	}
 
     /**
+     * Not implemented in the UML 1.3 metamodel.
      * @see org.argouml.model.Facade#getTagDefinition(java.lang.Object)
      */
     public Object getTagDefinition(Object handle) {
-        throw new RuntimeException("Not implemented");
+        return null;
     }
 
     /**
+     * Not implemented in the UML 1.3 metamodel.
      * @see org.argouml.model.Facade#getTagDefinitions(java.lang.Object)
      */
     public Collection getTagDefinitions(Object handle) {
-        throw new RuntimeException("Not implemented");
+        return null;
     }
 	
 }
