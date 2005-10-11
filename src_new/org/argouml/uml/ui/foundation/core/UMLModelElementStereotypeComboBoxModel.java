@@ -73,9 +73,14 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            Object stereo = CollectionUtil.getFirstItemOrNull(
-                    Model.getFacade().getStereotypes(getTarget()));
-            return stereo;
+            Object stereo = null;
+            if (Model.getFacade().isATagDefinition(getTarget())) {
+                stereo = Model.getFacade().getOwner(getTarget());
+            } else {
+                stereo = CollectionUtil.getFirstItemOrNull(
+                        Model.getFacade().getStereotypes(getTarget()));
+            }
+            return stereo;                
         }
         return null;
     }
