@@ -482,7 +482,7 @@ public abstract class FigNodeModelElement
                 availableStereotypes.removeAll(Model.getFacade().getStereotypes(getOwner()));
                 
                 if (!availableStereotypes.isEmpty()) {
-                    ArgoJMenu stereotypes = new ArgoJMenu("menu.popup.addstereotypes");
+                    ArgoJMenu stereotypes = new ArgoJMenu("menu.popup.add-stereotype");
                     Iterator it = availableStereotypes.iterator();
                     while (it.hasNext()) {
                         stereotypes.add(new ActionAddStereotype(getOwner(), it.next()));
