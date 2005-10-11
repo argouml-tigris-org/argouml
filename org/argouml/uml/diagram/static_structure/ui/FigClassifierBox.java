@@ -40,6 +40,7 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigRect;
 
 /**
  * Class to display graphics for a UML Class in a diagram.<p>
@@ -74,22 +75,40 @@ abstract public class FigClassifierBox extends FigNodeModelElement
         // before, so it overlaps the name box, and the blanking takes out both
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
-        if (getStereotypeFig() != null) {
-            getStereotypeFig().setFilled(true);
-            getStereotypeFig().setLineWidth(1);
-            // +1 to have 1 pixel overlap with getNameFig()
-            getStereotypeFig().setHeight(STEREOHEIGHT + 1);
-        }
+        getStereotypeFig().setFilled(true);
+        getStereotypeFig().setLineWidth(1);
+        // +1 to have 1 pixel overlap with getNameFig()
+        getStereotypeFig().setHeight(STEREOHEIGHT + 1);
         
     }
     
-    void addFigsNoCalcBounds() {
+    /**
+     * @see java.lang.Object#clone()
+     */
+    public Object clone() {
+        FigClass figClone = (FigClass) super.clone();
+        Iterator thisIter = this.getFigs().iterator();
+        Iterator cloneIter = figClone.getFigs().iterator();
+        while (thisIter.hasNext()) {
+            Fig thisFig = (Fig) thisIter.next();
+            Fig cloneFig = (Fig) cloneIter.next();
+            if (thisFig == operationsFig) {
+                figClone.operationsFig = (FigOperationsCompartment) thisFig;
+                return figClone;
+            }
+        }
+        return figClone;
+    }
+
+
+    
+    private void addFigsNoCalcBounds() {
         setSuppressCalcBounds(true);
         addFigs();
         setSuppressCalcBounds(false);
     }
     
-    void addFigs() {
+    private void addFigs() {
         addFig(getStereotypeFig());  //0
         addFig(getNameFig());        //1
         addFig(getBigPort());        //2
@@ -105,17 +124,15 @@ abstract public class FigClassifierBox extends FigNodeModelElement
         if (!isOperationsVisible()) {
             return;
         }
-        FigOperationsCompartment operationsCompartment =
-            (FigOperationsCompartment)getOperationsFig();
-        operationsCompartment.populate();
-        Fig operPort = operationsCompartment.getBigPort();
+        operationsFig.populate();
+        Fig operPort = operationsFig.getBigPort();
 
         int xpos = operPort.getX();
         int ypos = operPort.getY();
 
         Rectangle rect = getBounds();
         if (SingleStereotypeEnabler.isEnabled()) {
-            operationsCompartment.updateFigGroupSize(xpos, ypos, 0, 0, isCheckSize(), ROWHEIGHT);
+            operationsFig.updateFigGroupSize(xpos, ypos, 0, 0, isCheckSize(), ROWHEIGHT);
         }
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
