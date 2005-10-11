@@ -191,12 +191,11 @@ public class FigClass extends FigClassifierBox
         attributesSeperator = new FigLine(10, 10, 11, 10);
         
         if (SingleStereotypeEnabler.isEnabled()) {
-            getStereotypeFig().setLineWidth(1);
             operationsSeperator.setVisible(false);
             attributesSeperator.setVisible(false);
-        } else {
-            getStereotypeFig().setLineWidth(0);
         }
+        
+        getStereotypeFig().setLineWidth(0);
 
         // Mark this as newly created. This is to get round the problem with
         // creating figs for loaded classes that had stereotypes. They are
