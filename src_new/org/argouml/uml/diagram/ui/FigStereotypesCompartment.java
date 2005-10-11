@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationContext;
+import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigFeature;
 import org.tigris.gef.presentation.Fig;
@@ -40,7 +41,7 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigStereotypesCompartment extends FigCompartment {
     
-    String pseudoStereotype;
+    String keyword;
     
     /**
      * The constructor.
@@ -68,7 +69,7 @@ public class FigStereotypesCompartment extends FigCompartment {
         List figs = getFigs();
         CompartmentFigText stereotypeTextFig;
         
-        if (pseudoStereotype != null) {
+        if (keyword != null) {
             if (figs.size() <= acounter) {
                 stereotypeTextFig =
                     new FigFeature(
@@ -87,8 +88,9 @@ public class FigStereotypesCompartment extends FigCompartment {
                     (CompartmentFigText) figs.get(acounter);
             }
             stereotypeTextFig.setText(
-                    Notation.generate((NotationContext) getGroup(),
-                            pseudoStereotype));
+                    NotationHelper.getLeftGuillemot() +
+                    keyword +
+                    NotationHelper.getRightGuillemot());
             acounter++;
         }
         
@@ -134,13 +136,12 @@ public class FigStereotypesCompartment extends FigCompartment {
     }
     
     /**
-     * Allows a parent Fig to specify some stereotype text to display that is
-     * not actually contained by its owner.
-     * An example of this usage is to display <<interface>> as a stereotype
-     * on FigInterface.
-     * @param stereotype the text of the pseudo stereotype
+     * Allows a parent Fig to specify some keyword text to display amongst the
+     * stereotypes.
+     * An example of this usage is to display <<interface>> on FigInterface.
+     * @param keyword the text of the pseudo stereotype
      */
-    public void setPseudoSereotype(String stereotype) {
-        pseudoStereotype = stereotype;
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 }

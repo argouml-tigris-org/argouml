@@ -127,14 +127,14 @@ public class FigInterface extends FigClassifierBox {
      * a project. In this case, the parsed size must be maintained.<p>
      */
     public FigInterface() {
+        
+        getBigPort().setLineWidth(0);
+        getBigPort().setFillColor(Color.white);
 
         // Set name box. Note the upper line will be blanked out if there is
         // eventually a stereotype above.
         getNameFig().setLineWidth(1);
         getNameFig().setFilled(true);
-
-        operationsFig = new FigOperationsCompartment(
-                10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
@@ -145,9 +145,11 @@ public class FigInterface extends FigClassifierBox {
             stereotypeFig.setText(NotationHelper.getLeftGuillemot()
                     + "interface" + NotationHelper.getRightGuillemot());
             getStereotypeFig().setLineWidth(1);
+            getStereotypeFig().setFilled(true);
         } else {
-            ((FigStereotypesCompartment)getStereotypeFig())
-            .setPseudoSereotype("interface");
+            FigStereotypesCompartment fsc =
+                (FigStereotypesCompartment)getStereotypeFig();
+            fsc.setKeyword("interface");
             
             borderFig = new FigEmptyRect(10, 10, 0, 0);
             borderFig.setLineWidth(1);
@@ -158,7 +160,6 @@ public class FigInterface extends FigClassifierBox {
             getStereotypeFig().setLineWidth(0);
         }
         
-        getStereotypeFig().setFilled(true);
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
         // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setVisible(true);
@@ -223,12 +224,21 @@ public class FigInterface extends FigClassifierBox {
      */
     public Object clone() {
         FigInterface figClone = (FigInterface) super.clone();
-        Iterator it = figClone.getFigs().iterator();
-        figClone.setBigPort((FigRect) it.next());
-        it.next();
-        figClone.setNameFig((FigText) it.next());
-        figClone.stereoLineBlinder = (FigRect) it.next();
-        figClone.operationsFig = (FigOperationsCompartment) it.next();
+        Iterator thisIter = this.getFigs().iterator();
+        Iterator cloneIter = figClone.getFigs().iterator();
+        while (thisIter.hasNext()) {
+            Fig thisFig = (Fig) thisIter.next();
+            Fig cloneFig = (Fig) cloneIter.next();
+            if (thisFig == stereoLineBlinder) {
+                figClone.stereoLineBlinder = (FigRect) thisFig;
+            }
+            if (thisFig == borderFig) {
+                figClone.borderFig = (FigRect) thisFig;
+            }
+            if (thisFig == operationsSeperator) {
+                figClone.operationsSeperator = (FigRect) thisFig;
+            }
+        }
         return figClone;
     }
 
@@ -324,11 +334,70 @@ public class FigInterface extends FigClassifierBox {
      * @return  the size of the minimum bounding box.
      */
     public Dimension getMinimumSize() {
+        if (SingleStereotypeEnabler.isEnabled()) {
+            return getMinimumSizeSingleStereotype();
+        }
 
         // Use "aSize" to build up the minimum size. Start with the size of the
         // name compartment and build up.
 
         Dimension aSize = getNameFig().getMinimumSize();
+        
+        // +2 padding before and after name
+        
+        aSize.height += 4;
+                
+        if (aSize.height < 21) {
+            aSize.height = 21;
+        }
+
+        // If we have a stereotype displayed, then allow some space for that
+        // (width and height)
+
+        if (getStereotypeFig().isVisible()) {
+            Dimension stereoMin = getStereotypeFig().getMinimumSize();
+            aSize.width = Math.max(aSize.width, stereoMin.width);
+            aSize.height += stereoMin.height;
+        }
+
+        // Allow space for each of the operations we have
+
+        if (operationsFig.isVisible()) {
+
+            // Loop through all the operations, to find the widest (remember
+            // the first fig is the box for the whole lot, so ignore it).
+
+            Iterator it = operationsFig.getFigs().iterator();
+            it.next(); // ignore
+
+            while (it.hasNext()) {
+                int elemWidth =
+                        ((FigText) it.next()).getMinimumSize().width + 2;
+                aSize.width = Math.max(aSize.width, elemWidth);
+            }
+            aSize.height +=
+                ROWHEIGHT * Math.max(1, operationsFig.getFigs().size() - 1) + 1;
+        }
+
+        // we want to maintain a minimum width for Interfaces
+        aSize.width = Math.max(60, aSize.width);
+
+        // And now aSize has the answer
+
+        return aSize;
+    }
+
+    public Dimension getMinimumSizeSingleStereotype() {
+
+        // Use "aSize" to build up the minimum size. Start with the size of the
+        // name compartment and build up.
+
+        Dimension aSize = getNameFig().getMinimumSize();
+        
+        // +2 padding before and after name
+        
+        aSize.height += 4;
+                
         if (aSize.height < 21) {
             aSize.height = 21;
         }
@@ -369,7 +438,7 @@ public class FigInterface extends FigClassifierBox {
 
         return aSize;
     }
-
+    
     /**
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
@@ -926,7 +995,9 @@ public class FigInterface extends FigClassifierBox {
         int ypos = operPort.getY();
 
         Rectangle rect = getBounds();
-        operationsCompartment.updateFigGroupSize(xpos, ypos, 0, 0, isCheckSize(), ROWHEIGHT);
+        if (SingleStereotypeEnabler.isEnabled()) {
+            operationsCompartment.updateFigGroupSize(xpos, ypos, 0, 0, isCheckSize(), ROWHEIGHT);
+        }
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);
@@ -938,9 +1009,34 @@ public class FigInterface extends FigClassifierBox {
      * org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
-        Rectangle rect = getBounds();
-        getStereotypeFig().setOwner(getOwner());
-        setBounds(rect.x, rect.y, rect.width, rect.height);
+        if (SingleStereotypeEnabler.isEnabled()) {
+            Rectangle rect = getBounds();
+            getStereotypeFig().setOwner(getOwner());
+            setBounds(rect.x, rect.y, rect.width, rect.height);
+        } else {
+            Rectangle rect = getBounds();
+            
+            int stereotypeHeight = 0;
+            if (getStereotypeFig().isVisible()) {
+                stereotypeHeight = getStereotypeFig().getHeight();
+            }
+            int heightWithoutStereo = getHeight() - stereotypeHeight;
+            
+            getStereotypeFig().setOwner(getOwner());
+            ((FigStereotypesCompartment)getStereotypeFig()).populate();
+
+            stereotypeHeight = 0;
+            if (getStereotypeFig().isVisible()) {
+                stereotypeHeight = getStereotypeFig().getHeight();
+            }
+            
+            setBounds(
+                    rect.x,
+                    rect.y, 
+                    rect.width,
+                    heightWithoutStereo + stereotypeHeight);
+            calcBounds();
+        }
     }
 
 } /* end class FigInterface */
