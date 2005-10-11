@@ -38,6 +38,7 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
  * The combobox model for the type belonging to some attribute.
+ * 
  * @since Nov 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -48,39 +49,39 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLStructuralFeatureTypeComboBoxModel() {
         super("type", false);
-        Model.getPump().addClassModelEventListener(
-            this,
-            Model.getMetaTypes().getNamespace(),
-            "ownedElement");
+        Model.getPump().addClassModelEventListener(this,
+                Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return Model.getFacade().isAClassifier(element);
+        return Model.getFacade().isAClass(element)
+                || Model.getFacade().isAInterface(element)
+                || Model.getFacade().isADataType(element);
     }
 
     /**
-     * Helper method for buildModelList.<p>
-     *
-     * Adds those elements from source that do not have the same path as
-     * any path in paths to elements, and its path to paths. Thus elements
-     * will never contain two objects with the same path, unless they are
-     * added by other means.
+     * Helper method for buildModelList.
+     * <p>
+     * Adds those elements from source that do not have the same path as any
+     * path in paths to elements, and its path to paths. Thus elements will
+     * never contain two objects with the same path, unless they are added by
+     * other means.
      */
     private static void addAllUniqueModelElementsFrom(Set elements, Set paths,
-						      Collection source) {
+            Collection source) {
         Iterator it2 = source.iterator();
 
-	while (it2.hasNext()) {
-	    Object obj = it2.next();
-	    Object path = Model.getModelManagementHelper().getPath(obj);
-	    if (!paths.contains(path)) {
-	        paths.add(path);
-	        elements.add(obj);
-	    }
-	}
+        while (it2.hasNext()) {
+            Object obj = it2.next();
+            Object path = Model.getModelManagementHelper().getPath(obj);
+            if (!paths.contains(path)) {
+                paths.add(path);
+                elements.add(obj);
+            }
+        }
     }
 
     /**
@@ -101,27 +102,28 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
                     throw new ClassCastException(e.getMessage());
                 }
             }
-	});
+        });
         Project p = ProjectManager.getManager().getCurrentProject();
         Iterator it = p.getUserDefinedModels().iterator();
 
         while (it.hasNext()) {
-            Object model = /*(MModel)*/ it.next();
+            Object model = /* (MModel) */it.next();
 
-	    addAllUniqueModelElementsFrom(
-		elements,
-		paths,
-		Model.getModelManagementHelper().getAllModelElementsOfKind(
-			model,
-			Model.getMetaTypes().getClassifier()));
+            addAllUniqueModelElementsFrom(elements, paths, Model
+                    .getModelManagementHelper().getAllModelElementsOfKind(
+                            model, Model.getMetaTypes().getClass()));
+            addAllUniqueModelElementsFrom(elements, paths, Model
+                    .getModelManagementHelper().getAllModelElementsOfKind(
+                            model, Model.getMetaTypes().getInterface()));
+            addAllUniqueModelElementsFrom(elements, paths, Model
+                    .getModelManagementHelper().getAllModelElementsOfKind(
+                            model, Model.getMetaTypes().getDataType()));
         }
 
-	addAllUniqueModelElementsFrom(
-	    elements,
-	    paths,
-	    Model.getModelManagementHelper().getAllModelElementsOfKind(
-		    p.getDefaultModel(),
-		    Model.getMetaTypes().getClassifier()));
+        addAllUniqueModelElementsFrom(elements, paths, Model
+                .getModelManagementHelper().getAllModelElementsOfKind(
+                        p.getDefaultModel(),
+                        Model.getMetaTypes().getClassifier()));
 
         setElements(elements);
     }
