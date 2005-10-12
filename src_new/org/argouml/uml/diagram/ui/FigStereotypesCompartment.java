@@ -177,27 +177,19 @@ public class FigStereotypesCompartment extends FigCompartment {
     }
     
     protected void setBoundsImpl(int x, int y, int w, int h) {
-        if (SingleStereotypeEnabler.isEnabled()) {
-            super.setBoundsImpl(x, y, w, h);
-        } else {
-            int n = getFigs().size() - 1;
-            int newH = h;
-            
-            Iterator figs = iterator();
-            Fig fig;
-            int fw;
-            int yy = y;
-            while (figs.hasNext()) {
-                fig = (Fig) figs.next();
-                if (fig != getBigPort()) {
-                    fw = w - 2;
-                    fig.setBounds(x + 1, yy + 1, fw, fig.getMinimumSize().height);
-                    yy += fig.getMinimumSize().height;
-                }
+        int n = getFigs().size() - 1;
+        Fig fig;
+        int yy = y;
+        Iterator figs = iterator();
+        while (figs.hasNext()) {
+            fig = (Fig) figs.next();
+            if (fig != getBigPort()) {
+                fig.setBounds(x + 1, yy + 1, w - 2, fig.getMinimumSize().height);
+                yy += fig.getMinimumSize().height;
             }
-            getBigPort().setBounds(x, y, w, newH);
-            calcBounds();
         }
+        getBigPort().setBounds(x, y, w, h);
+        calcBounds();
     }
     
     /**
