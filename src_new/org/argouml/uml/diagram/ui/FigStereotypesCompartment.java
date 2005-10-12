@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationContext;
 import org.argouml.language.helpers.NotationHelper;
@@ -37,10 +38,32 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
 /**
+ * A Fig designed to be the child of some FigNode or FigEdge to display the
+ * stereotypes of the model element represented by the parent Fig.
+ * Currently display of multiple stereotypes are stacked one on top of the
+ * each enclosed by guillemots.<p>
+ * The minimum width of this fig is the largest minimum width of its child
+ * figs.<p>
+ * The minimum height of this fig is the total minimum height of its child
+ * figs.<p>
+ * TODO: Allow for UML2 style display where all stereotypes are displayed in
+ * the same guillemot pair and are delimited by commas. The style should be
+ * changable by calling getOrientation(Orientation). The swidget Orientation
+ * class can be used for this.
  * @author Bob Tarling
  */
 public class FigStereotypesCompartment extends FigCompartment {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(ActionAddStereotype.class);
     
+    /**
+     * One UML keyword is allowed. These are not strictly stereotypes but are
+     * displayed as such. e.g. <<interface>>
+     */
     String keyword;
     
     /**
@@ -60,6 +83,10 @@ public class FigStereotypesCompartment extends FigCompartment {
      */
     public void populate() {
         
+        if (getGroup() == null) {
+            LOG.warn("Cannot populate the stereotype compartment unless it has a parent.");
+            return;
+        }
         int acounter = 1;
         Object modelElement = getGroup().getOwner();
         Fig bigPort = this.getBigPort();

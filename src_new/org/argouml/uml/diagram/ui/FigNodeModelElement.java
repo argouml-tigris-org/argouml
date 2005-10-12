@@ -1213,9 +1213,6 @@ public abstract class FigNodeModelElement
     /**
      * Updates the text of the sterotype FigText. Override in subclasses to get
      * wanted behaviour.
-     *
-     * TODO: remove all 'misuses' of the stereotype figtexts (like in
-     * FigInterface)
      */
     protected void updateStereotypeText() {
         if (getOwner() == null) {
@@ -1225,7 +1222,12 @@ public abstract class FigNodeModelElement
             return;
         }
         
-        stereotypeFig.setOwner(getOwner());
+        Object modelElement = getOwner();
+        stereotypeFig.setOwner(modelElement);
+        if (!SingleStereotypeEnabler.isEnabled() && modelElement != null) {
+            ((FigStereotypesCompartment)stereotypeFig).populate();
+        }
+        
     }
 
     /**
