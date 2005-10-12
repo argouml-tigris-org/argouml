@@ -454,6 +454,20 @@ public class FigInterface extends FigClassifierBox {
         super.setLineColor(lColor);
         stereoLineBlinder.setLineColor(stereoLineBlinder.getFillColor());
     }
+    
+    public void setLineWidth(int w) {
+        borderFig.setLineWidth(w);
+        if (SingleStereotypeEnabler.isEnabled()) {
+            getOperationsFig().setLineWidth(w);
+        } else {
+            operationsSeperator.setLineWidth(w);
+        }
+    }
+    
+    public int getLineWidth() {
+        return borderFig.getLineWidth();
+    }
+
 
     /**
      * @see org.tigris.gef.presentation.Fig#translate(int, int)

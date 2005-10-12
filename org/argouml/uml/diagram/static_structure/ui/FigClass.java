@@ -444,6 +444,21 @@ public class FigClass extends FigClassifierBox
             }
         }
     }
+    
+    public void setLineWidth(int w) {
+        borderFig.setLineWidth(w);
+        if (SingleStereotypeEnabler.isEnabled()) {
+            getOperationsFig().setLineWidth(w);
+            getAttributesFig().setLineWidth(w);
+        } else {
+            attributesSeperator.setLineWidth(w);
+            operationsSeperator.setLineWidth(w);
+        }
+    }
+    
+    public int getLineWidth() {
+        return borderFig.getLineWidth();
+    }
 
     /**
      * USED BY PGML.tee.
