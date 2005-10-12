@@ -35,7 +35,7 @@ public class SingleStereotypeEnabler {
      * To see work in progress for multiple stereotypes on MDR change this flag
      * to false.
      */
-    private static boolean enabled = true;
+    private static boolean enabled = false;
     
     private SingleStereotypeEnabler() {
     }
