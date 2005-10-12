@@ -135,7 +135,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
     }
 
     /**
-     * Returns the specializationScroll.
+     * Returns the tagDefinitionScroll.
      *
      * @return JScrollPane
      */
