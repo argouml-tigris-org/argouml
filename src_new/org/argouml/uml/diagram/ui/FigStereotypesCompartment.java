@@ -77,6 +77,15 @@ public class FigStereotypesCompartment extends FigCompartment {
     public FigStereotypesCompartment(int x, int y, int w, int h) {
         super(x, y, w, h);
     }
+    
+    
+
+    public void setOwner(Object own) {
+        super.setOwner(own);
+        populate();
+    }
+
+
 
     /**
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#populate()
@@ -87,8 +96,12 @@ public class FigStereotypesCompartment extends FigCompartment {
             LOG.warn("Cannot populate the stereotype compartment unless it has a parent.");
             return;
         }
-        int acounter = 1;
         Object modelElement = getGroup().getOwner();
+        if (modelElement == null) {
+            LOG.warn("Cannot populate the stereotype compartment unless the parent has an owner.");
+            return;
+        }
+        int acounter = 1;
         Fig bigPort = this.getBigPort();
         int xpos = bigPort.getX();
         int ypos = bigPort.getY();

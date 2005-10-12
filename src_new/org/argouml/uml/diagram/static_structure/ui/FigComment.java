@@ -46,6 +46,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -130,8 +131,10 @@ public class FigComment
         urCorner.setFillColor(col.darker());
         urCorner.setLineWidth(1);
 
-        getStereotypeFig().setHeight(STEREOHEIGHT);
-        getStereotypeFig().setVisible(false);
+        if (SingleStereotypeEnabler.isEnabled()) {
+            getStereotypeFig().setHeight(STEREOHEIGHT);
+            getStereotypeFig().setVisible(false);
+        }
         
         setBigPort(new FigRect(x, y, width, height, null, null));
         getBigPort().setFilled(false);
@@ -470,10 +473,15 @@ public class FigComment
         // (width and height)
 
         if (getStereotypeFig().isVisible()) {
+            Dimension stereoMin = getStereotypeFig().getMinimumSize();
             aSize.width =
                 Math.max(aSize.width,
-                         getStereotypeFig().getMinimumSize().width);
-            aSize.height += STEREOHEIGHT;
+                         stereoMin.width);
+            if (SingleStereotypeEnabler.isEnabled()) {
+                aSize.height += STEREOHEIGHT;
+            } else {
+                aSize.height += stereoMin.height;
+            }
         }
         
         // And add the gaps around the textfield to get the minimum
@@ -490,9 +498,15 @@ public class FigComment
             return;
         }
         
+        Dimension stereoMin = getStereotypeFig().getMinimumSize();
+        
         int stereotypeHeight = 0;
         if (getStereotypeFig().isVisible()) {
-            stereotypeHeight = STEREOHEIGHT;
+            if (SingleStereotypeEnabler.isEnabled()) {
+                stereotypeHeight = STEREOHEIGHT;
+            } else {
+                stereotypeHeight = stereoMin.height;
+            }
         }
         
         Rectangle oldBounds = getBounds();
@@ -501,8 +515,13 @@ public class FigComment
         text.setBounds(px + 2, py + 2 + stereotypeHeight, 
                 w - 4 - dogear, h - 4 - stereotypeHeight);
 
-        getStereotypeFig().setBounds(px + 2, py + 2,
-                w - 4 - dogear, STEREOHEIGHT);
+        if (SingleStereotypeEnabler.isEnabled()) {
+            getStereotypeFig().setBounds(px + 2, py + 2,
+                    w - 4 - dogear, STEREOHEIGHT);
+        } else {
+            getStereotypeFig().setBounds(px + 2, py + 2,
+                    w - 4 - dogear, stereoMin.height);
+        }
         
         // Resize the big port around the figure
         getBigPort().setBounds(px, py, w, h);
@@ -571,6 +590,55 @@ public class FigComment
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
+        if (SingleStereotypeEnabler.isEnabled()) {
+            updateStereotypeTextSingleStereotype();
+            return;
+        }
+        Object me = /*(MModelElement)*/ getOwner();
+
+        if (me == null) {
+            return;
+        }
+
+        Rectangle rect = getBounds();
+
+        Dimension stereoMin = getStereotypeFig().getMinimumSize();
+        
+        if (Model.getFacade().getStereotypes(me).isEmpty()) {
+
+            if (getStereotypeFig().isVisible()) {
+                getStereotypeFig().setVisible(false);
+                rect.y += stereoMin.height;
+                rect.height -= stereoMin.height;
+                setBounds(rect.x, rect.y, rect.width, rect.height);
+                calcBounds();
+            }
+        } else {
+            getStereotypeFig().setOwner(getOwner());
+
+            if (!getStereotypeFig().isVisible()) {
+                getStereotypeFig().setVisible(true);
+
+                // Only adjust the stereotype height if we are not newly
+                // created. This gets round the problem of loading classes with
+                // stereotypes defined, which have the height already including
+                // the stereotype.
+
+                if (!newlyCreated) {
+                    rect.y -= stereoMin.height;
+                    rect.height += stereoMin.height;
+                    rect.width = 
+                        Math.max(getMinimumSize().width, rect.width);
+                    setBounds(rect.x, rect.y, rect.width, rect.height);
+                    calcBounds();
+                }
+            }
+        }
+        // Whatever happened we are no longer newly created, so clear the
+        // flag. Then set the bounds for the rectangle we have defined.
+        newlyCreated = false;
+    }
+    protected void updateStereotypeTextSingleStereotype() {
         Object me = /*(MModelElement)*/ getOwner();
 
         if (me == null) {
