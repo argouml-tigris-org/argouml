@@ -456,16 +456,20 @@ public class FigInterface extends FigClassifierBox {
     }
     
     public void setLineWidth(int w) {
-        borderFig.setLineWidth(w);
         if (SingleStereotypeEnabler.isEnabled()) {
             getOperationsFig().setLineWidth(w);
         } else {
+            borderFig.setLineWidth(w);
             operationsSeperator.setLineWidth(w);
         }
     }
     
     public int getLineWidth() {
-        return borderFig.getLineWidth();
+        if (SingleStereotypeEnabler.isEnabled()) {
+            return getOperationsFig().getLineWidth();
+        } else {
+            return borderFig.getLineWidth();
+        }
     }
 
 
