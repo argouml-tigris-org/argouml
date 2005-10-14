@@ -1709,26 +1709,3 @@ public abstract class FigNodeModelElement
  * Action to add a stero type to the model element represented by this Fig.
  * @author Bob Tarling
  */
-class ActionAddStereotype extends AbstractAction {
-    
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(ActionAddStereotype.class);
-    
-    private Object modelElement;
-    private Object stereotype;
-    
-    public ActionAddStereotype(Object modelElement, Object stereotype) {
-        super(NotationHelper.getLeftGuillemot() + 
-                Model.getFacade().getName(stereotype) + 
-                NotationHelper.getRightGuillemot());
-        this.modelElement = modelElement;
-        this.stereotype = stereotype;
-    }
-    
-    public void actionPerformed(ActionEvent ae) {
-        Model.getCoreHelper().addStereotype(modelElement, stereotype);
-    }
-}

@@ -29,9 +29,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
 
+import org.argouml.kernel.SingleStereotypeEnabler;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
 
 /**
  * This class represents a Fig for a Realization.
@@ -56,7 +58,9 @@ public class FigRealization extends FigEdgeModelElement {
         endArrow.setFillColor(Color.white);
         setDestArrowHead(endArrow);
         setBetweenNearestPoints(true);
-        getStereotypeFig().setText("");
+        if (SingleStereotypeEnabler.isEnabled()) {
+            ((FigText)getStereotypeFig()).setText("");
+        }
         getFig().setDashed(true);
     }
 

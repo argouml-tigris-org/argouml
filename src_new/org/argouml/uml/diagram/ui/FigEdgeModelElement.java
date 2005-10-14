@@ -36,6 +36,8 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -60,6 +62,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
 import org.argouml.model.Model;
@@ -136,11 +139,12 @@ public abstract class FigEdgeModelElement
      * Use getNameFig(), no setter should be required.
      */
     private FigText name;
+    
     /**
      * The Fig that displays the stereotype of this model element.
      * Use getStereotypeFig(), no setter should be required.
      */
-    private FigText stereo = new FigText(10, 30, 90, 20);
+    private Fig stereotypeFig;
 
     private ItemUID itemUid;
 
@@ -167,14 +171,20 @@ public abstract class FigEdgeModelElement
         name.setReturnAction(FigText.END_EDITING);
         name.setTabAction(FigText.END_EDITING);
 
-        stereo.setFont(LABEL_FONT);
-        stereo.setTextColor(Color.black);
-        stereo.setTextFilled(false);
-        stereo.setFilled(false);
-        stereo.setLineWidth(0);
-        stereo.setExpandOnly(false);
-        stereo.setReturnAction(FigText.END_EDITING);
-        stereo.setTabAction(FigText.END_EDITING);
+        if (SingleStereotypeEnabler.isEnabled()) {
+            FigText stereo = new FigText(10, 30, 90, 20);
+            stereo.setFont(LABEL_FONT);
+            stereo.setTextColor(Color.black);
+            stereo.setTextFilled(false);
+            stereo.setFilled(false);
+            stereo.setLineWidth(0);
+            stereo.setExpandOnly(false);
+            stereo.setReturnAction(FigText.END_EDITING);
+            stereo.setTabAction(FigText.END_EDITING);
+            stereotypeFig = stereo;
+        } else {
+            stereotypeFig = new FigStereotypesCompartment(10, 10, 90, 15);
+        }
 
         setBetweenNearestPoints(true);
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
@@ -278,6 +288,26 @@ public abstract class FigEdgeModelElement
                 }
                 popUpActions.insertElementAt(new JSeparator(), 0);
                 popUpActions.insertElementAt(critiques, 0);
+            }
+        }
+        // Add stereotypes submenu
+        if (!SingleStereotypeEnabler.isEnabled()) {
+            Collection models =
+                ProjectManager.getManager().getCurrentProject().getModels();
+            ArrayList availableStereotypes =
+                new ArrayList(Model.getExtensionMechanismsHelper().
+                getAllPossibleStereotypes(models, getOwner()));
+            
+            availableStereotypes.removeAll(Model.getFacade().getStereotypes(getOwner()));
+            
+            if (!availableStereotypes.isEmpty()) {
+                ArgoJMenu stereotypes = new ArgoJMenu("menu.popup.add-stereotype");
+                Iterator it = availableStereotypes.iterator();
+                while (it.hasNext()) {
+                    stereotypes.add(new ActionAddStereotype(getOwner(), it.next()));
+                }
+                popUpActions.insertElementAt(new JSeparator(), 0);
+                popUpActions.insertElementAt(stereotypes, 0);
             }
         }
         return popUpActions;
@@ -424,8 +454,8 @@ public abstract class FigEdgeModelElement
      * Getter for stereo, the stereotype Fig
      * @return the stereo Fig
      */
-    public FigText getStereotypeFig() {
-        return stereo;
+    public Fig getStereotypeFig() {
+        return stereotypeFig;
     }
 
     /**
@@ -655,20 +685,33 @@ public abstract class FigEdgeModelElement
      * generate the notation for the stereotype and stuff it into the text Fig
      */
     protected void updateStereotypeText() {
+        if (SingleStereotypeEnabler.isEnabled()) {
+            updateStereotypeTextSingleStereotype();
+            return;
+        }
+        if ((getOwner() == null) || (getOwner() instanceof CommentEdge)) {
+            return;
+        }
+        Object modelElement = getOwner();
+        stereotypeFig.setOwner(modelElement);
+        ((FigStereotypesCompartment)stereotypeFig).populate();
+    }
+    
+    protected void updateStereotypeTextSingleStereotype() {
         if ((getOwner() == null) || (getOwner() instanceof CommentEdge)) {
             return;
         }
         Object stereotype = CollectionUtil.getFirstItemOrNull(
                 Model.getFacade().getStereotypes(getOwner()));
         if (stereotype == null) {
-            stereo.setText("");
+            ((FigText)stereotypeFig).setText("");
             return;
         }
         String stereoStr = Model.getFacade().getName(stereotype);
         if (stereoStr == null || stereoStr.length() == 0)
-            stereo.setText("");
+            ((FigText)stereotypeFig).setText("");
         else {
-            stereo.setText(Notation.generateStereotype(this, stereotype));
+            ((FigText)stereotypeFig).setText(Notation.generateStereotype(this, stereotype));
         }
     }
 

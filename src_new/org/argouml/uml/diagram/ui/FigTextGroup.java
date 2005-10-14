@@ -29,6 +29,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Iterator;
 
+import org.argouml.kernel.SingleStereotypeEnabler;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
@@ -62,21 +63,34 @@ public class FigTextGroup extends FigGroup implements MouseListener {
      * added (via addFig) is shown at the bottom of the FigTextGroup.
      */
     protected void updateFigTexts() {
-        Iterator it = getFigs().iterator();
-        int height = 0;
-        while (it.hasNext()) {
-            FigText fig = (FigText) it.next();
-            int figHeight;
-            if (fig.getText().equals("")) {
-                figHeight = 0;
-            } else {
-                figHeight = ROWHEIGHT;
+        if (SingleStereotypeEnabler.isEnabled()) {
+            Iterator it = getFigs().iterator();
+            int height = 0;
+            while (it.hasNext()) {
+                FigText fig = (FigText) it.next();
+                int figHeight;
+                if (fig.getText().equals("")) {
+                    figHeight = 0;
+                } else {
+                    figHeight = ROWHEIGHT;
+                }
+                fig.setBounds(getX(), getY() + height, fig.getWidth(), figHeight);
+                fig.endTrans();
+                height += fig.getHeight();
             }
-            fig.setBounds(getX(), getY() + height, fig.getWidth(), figHeight);
-            fig.endTrans();
-            height += fig.getHeight();
+            // calcBounds();
+        } else {
+            Iterator it = getFigs().iterator();
+            int height = 0;
+            while (it.hasNext()) {
+                Fig fig = (Fig) it.next();
+                int figHeight = fig.getMinimumSize().height;
+                fig.setBounds(getX(), getY() + height, fig.getWidth(), figHeight);
+                fig.endTrans();
+                height += fig.getHeight();
+            }
+            // calcBounds();
         }
-        // calcBounds();
     }
 
 
@@ -84,31 +98,50 @@ public class FigTextGroup extends FigGroup implements MouseListener {
      * @see org.tigris.gef.presentation.Fig#calcBounds()
      */
     public void calcBounds() {
-	updateFigTexts();
+    	updateFigTexts();
         if (!supressCalcBounds) {
-	    super.calcBounds();
-            // get the widest of all textfigs
-            // calculate the total height
-            int maxWidth = 0;
-            int height = 0;
-            Iterator it = getFigs().iterator();
-            while (it.hasNext()) {
-                FigText fig = (FigText) it.next();
-                if (fig.getText().equals("")) {
-                    fig.setBounds(fig.getX(), fig.getY(), fig.getWidth(), 0);
+            if (SingleStereotypeEnabler.isEnabled()) {
+                super.calcBounds();
+                // get the widest of all textfigs
+                // calculate the total height
+                int maxWidth = 0;
+                int height = 0;
+                Iterator it = getFigs().iterator();
+                while (it.hasNext()) {
+                    FigText fig = (FigText) it.next();
+                    if (fig.getText().equals("")) {
+                        fig.setBounds(fig.getX(), fig.getY(), fig.getWidth(), 0);
+                    }
+                    else {
+                        if (fig.getWidth() > maxWidth) {
+                            maxWidth = fig.getWidth();
+                        }
+                        if (!fig.getText().equals("")) {
+                            fig.setHeight(ROWHEIGHT);
+                        }
+                        height += fig.getHeight();
+                    }
                 }
-                else {
+                _w = maxWidth;
+                _h = height;
+            } else {
+                super.calcBounds();
+                // get the widest of all textfigs
+                // calculate the total height
+                int maxWidth = 0;
+                int height = 0;
+                Iterator it = getFigs().iterator();
+                while (it.hasNext()) {
+                    Fig fig = (Fig) it.next();
                     if (fig.getWidth() > maxWidth) {
                         maxWidth = fig.getWidth();
                     }
-                    if (!fig.getText().equals("")) {
-                        fig.setHeight(ROWHEIGHT);
-                    }
+                    fig.setHeight(fig.getMinimumSize().height);
                     height += fig.getHeight();
                 }
+                _w = maxWidth;
+                _h = height;
             }
-            _w = maxWidth;
-            _h = height;
         }
     }
 
