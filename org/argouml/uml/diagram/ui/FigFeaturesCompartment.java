@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.uml.diagram.static_structure.ui.FigFeature;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 
 /**
@@ -48,6 +49,8 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      */
     private static final Logger LOG = Logger.getLogger(FigCompartment.class);
 
+    private FigSeperator compartmentSeperator;
+    
     /**
      * The constructor.
      *
@@ -58,6 +61,14 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      */
     public FigFeaturesCompartment(int x, int y, int w, int h) {
         super(x, y, w, h);
+        if (!SingleStereotypeEnabler.isEnabled()) {
+            compartmentSeperator = new FigSeperator(10, 10, 11);
+            addFig(compartmentSeperator);
+        }
+    }
+    
+    protected FigSeperator getSeperatorFig() {
+        return compartmentSeperator;
     }
 
     /**
@@ -77,9 +88,11 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
         if (visible) {
             populate();
         } else {
-            while (getFigs().size() > 1) {
-                Fig f = getFigAt(1);
-                removeFig(f);
+            for (int i = getFigs().size() - 1; i >= 0; --i) {
+                Fig f = getFigAt(i);
+                if (f instanceof FigFeature) {
+                    removeFig(f);
+                }
             }
         }
     }
@@ -88,7 +101,9 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      * @see org.tigris.gef.presentation.FigGroup#addFig(org.tigris.gef.presentation.Fig)
      */
     public void addFig(Fig fig) {
-        if (fig != getBigPort() && !(fig instanceof FigFeature)) {
+        if (fig != getBigPort() && 
+                !(fig instanceof FigFeature) && 
+                !(fig instanceof FigSeperator)) {
             LOG.error("Illegal Fig added to a FigFeature");
             throw new IllegalArgumentException(
                     "A FigFeaturesCompartment can only contain FigFeatures, "
@@ -171,5 +186,58 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
             return super.getMinimumSize();
         }
         return new Dimension(0, 20);
+    }
+    
+    protected void setBoundsImpl(int x, int y, int w, int h) {
+        if (SingleStereotypeEnabler.isEnabled()) {
+            super.setBoundsImpl(x, y, w, h);
+        } else {
+            int newW = w;
+            int n = getFigs().size() - 1;
+            int newH = h;
+            
+            Iterator figs = iterator();
+            Fig fig;
+            int fw;
+            int yy = y;
+            while (figs.hasNext()) {
+                fig = (Fig) figs.next();
+                if (fig.isVisible() && fig != getBigPort()) {
+                    if (fig instanceof FigSeperator) {
+                        fw = w;
+                    } else {
+                        fw = fig.getMinimumSize().width;
+                    }
+                    fig.setBounds(x + 1, yy + 1, fw, fig.getMinimumSize().height);
+                    if (newW < fw + 2) {
+                        newW = fw + 2;
+                    }
+                    yy += fig.getMinimumSize().height;
+                }
+            }
+            getBigPort().setBounds(x, y, newW, newH);
+            calcBounds();
+        }
+    }
+    
+    protected class FigSeperator extends FigLine {
+        FigSeperator(int x, int y, int len) {
+            super(x, y, (x + len) - 1, y);
+        }
+        
+        public Dimension getSize() {
+            return new Dimension((_x2 - _x1) +1, getLineWidth());
+        }
+        
+        public Dimension getMinimumSize() {
+            return new Dimension((_x2 - _x1) +1, getLineWidth());
+        }
+        
+        public void setBoundsImpl(int x, int y, int w, int h) {
+            setX1(x);
+            setY1(y);
+            setX2((x + w) - 1);
+            setY2((y + h) - 1);
+        }
     }
 }

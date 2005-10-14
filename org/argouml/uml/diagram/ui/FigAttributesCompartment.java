@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationContext;
+import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigFeature;
 import org.tigris.gef.presentation.Fig;
@@ -61,7 +62,13 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
         Fig attrPort = this.getBigPort();
         int xpos = attrPort.getX();
         int ypos = attrPort.getY();
-        int acounter = 1;
+        int acounter;
+        if (SingleStereotypeEnabler.isEnabled()) {
+            acounter = 1; // Skip background port
+        } else {
+            acounter = 2; // Skip background port and seperator
+        }
+        
         Collection strs = Model.getFacade().getStructuralFeatures(cls);
         if (strs != null) {
             Iterator iter = strs.iterator();
@@ -69,9 +76,6 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
             CompartmentFigText attr;
             while (iter.hasNext()) {
                 Object structuralFeature = iter.next();
-                // update the listeners
-                // Model.getPump().removeModelEventListener(this, sf);
-                // Model.getPump().addModelEventListener(this, sf); //??
                 if (figs.size() <= acounter) {
                     attr =
                         new FigFeature(

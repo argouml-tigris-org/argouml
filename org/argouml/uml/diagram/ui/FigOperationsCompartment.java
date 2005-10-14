@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationContext;
+import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigFeature;
 import org.tigris.gef.presentation.Fig;
@@ -63,17 +64,20 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
 
         int xpos = operPort.getX();
         int ypos = operPort.getY();
-        int ocounter = 1;
+        int ocounter;
+        if (SingleStereotypeEnabler.isEnabled()) {
+            ocounter = 1; // Skip background port
+        } else {
+            ocounter = 2; // Skip background port and seperator
+        }
+        
         Collection behs = Model.getFacade().getOperations(cls);
         if (behs != null) {
             Iterator iter = behs.iterator();
             List figs = getFigs();
             CompartmentFigText oper;
             while (iter.hasNext()) {
-                Object bf = /*(MBehavioralFeature)*/ iter.next();
-                // update the listeners
-        // Model.getPump().removeModelEventListener(this, bf);
-                // Model.getPump().addModelEventListener(this, bf);
+                Object behaviouralFeature = iter.next();
                 if (figs.size() <= ocounter) {
                     oper =
                         new FigFeature(
@@ -90,19 +94,17 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
                     oper = (CompartmentFigText) figs.get(ocounter);
                 }
                 oper.setText(Notation.generate((NotationContext) getGroup(),
-                                               bf));
-                oper.setOwner(bf); //TODO: update the model again here?
-                /* This causes another event, and modelChanged() called,
-                 * and updateOperations() called again...
-                 */
-
-                // underline, if static
-                oper.setUnderline(Model.getScopeKind().getClassifier()
-                        .equals(Model.getFacade().getOwnerScope(bf)));
+                        behaviouralFeature));
+                oper.setOwner(behaviouralFeature);
+                oper.setUnderline(
+                        Model.getScopeKind().
+                        getClassifier().equals(
+                                Model.getFacade().
+                                getOwnerScope(behaviouralFeature)));
                 // italics, if abstract
                 //oper.setItalic(((MOperation)bf).isAbstract()); //
                 //does not properly work (GEF bug?)
-                if (Model.getFacade().isAbstract(bf)) {
+                if (Model.getFacade().isAbstract(behaviouralFeature)) {
                     oper.setFont(FigNodeModelElement.getItalicLabelFont());
                 } else {
                     oper.setFont(FigNodeModelElement.getLabelFont());
