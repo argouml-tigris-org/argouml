@@ -85,7 +85,6 @@ public class FigInterface extends FigClassifierBox {
     private FigRect stereoLineBlinder;
 
     Fig borderFig;
-    Fig operationsSeperator;
     
     /**
      * Manages residency of an interface within a component on a deployment
@@ -155,8 +154,6 @@ public class FigInterface extends FigClassifierBox {
             borderFig.setLineWidth(1);
             borderFig.setLineColor(Color.black);
             
-            operationsSeperator = new FigLine(10, 10, 11, 10);
-            
             getStereotypeFig().setLineWidth(0);
         }
         
@@ -187,8 +184,7 @@ public class FigInterface extends FigClassifierBox {
         }
         addFig(operationsFig);
         if (!SingleStereotypeEnabler.isEnabled()) {
-            addFig(borderFig);       //4
-            addFig(operationsSeperator);       //4
+            addFig(borderFig);
         }
         
         setSuppressCalcBounds(false);
@@ -234,9 +230,6 @@ public class FigInterface extends FigClassifierBox {
             }
             if (thisFig == borderFig) {
                 figClone.borderFig = (FigRect) thisFig;
-            }
-            if (thisFig == operationsSeperator) {
-                figClone.operationsSeperator = (FigRect) thisFig;
             }
         }
         return figClone;
@@ -460,7 +453,6 @@ public class FigInterface extends FigClassifierBox {
             getOperationsFig().setLineWidth(w);
         } else {
             borderFig.setLineWidth(w);
-            operationsSeperator.setLineWidth(w);
         }
     }
     
@@ -862,12 +854,6 @@ public class FigInterface extends FigClassifierBox {
 
         
         if (getOperationsFig().isVisible()) {
-            operationsSeperator.setBounds(
-                    x, 
-                    y + currentHeight, 
-                    w, 
-                    0);
-            currentHeight++;
             int operationsHeight = getOperationsFig().getMinimumSize().height;
             getOperationsFig().setBounds(
                     x, 

@@ -88,8 +88,6 @@ public class FigClass extends FigClassifierBox
     FigAttributesCompartment attributesFigCompartment;
     
     Fig borderFig;
-    Fig operationsSeperator;
-    Fig attributesSeperator;
     
     /**
      * Text highlighted by mouse actions on the diagram.<p>
@@ -187,14 +185,6 @@ public class FigClass extends FigClassifierBox
         borderFig.setLineWidth(1);
         borderFig.setLineColor(Color.black);
         
-        operationsSeperator = new FigLine(10, 10, 11, 10);
-        attributesSeperator = new FigLine(10, 10, 11, 10);
-        
-        if (SingleStereotypeEnabler.isEnabled()) {
-            operationsSeperator.setVisible(false);
-            attributesSeperator.setVisible(false);
-        }
-        
         getStereotypeFig().setLineWidth(0);
 
         // Mark this as newly created. This is to get round the problem with
@@ -210,14 +200,12 @@ public class FigClass extends FigClassifierBox
         // we're all done for efficiency.
         enableSizeChecking(false);
         setSuppressCalcBounds(true);
-        addFig(getBigPort());                        //0
-        addFig(getStereotypeFig());             //1
-        addFig(getNameFig());                   //2
-        addFig(operationsFig);       //3
-        addFig(attributesFigCompartment);       //4
-        addFig(borderFig);       //4
-        addFig(operationsSeperator);       //4
-        addFig(attributesSeperator);       //4
+        addFig(getBigPort());
+        addFig(getStereotypeFig());
+        addFig(getNameFig());
+        addFig(operationsFig);
+        addFig(attributesFigCompartment);
+        addFig(borderFig);
 
         getStereotypeFig().setFilled(false);
         getNameFig().setFilled(false);
@@ -254,12 +242,6 @@ public class FigClass extends FigClassifierBox
             Fig cloneFig = (Fig) cloneIter.next();
             if (thisFig == borderFig) {
                 figClone.borderFig = (FigRect) thisFig;
-            }
-            if (thisFig == operationsSeperator) {
-                figClone.operationsSeperator = (FigRect) thisFig;
-            }
-            if (thisFig == attributesSeperator) {
-                figClone.attributesSeperator = (FigRect) thisFig;
             }
         }
         return figClone;
@@ -450,9 +432,6 @@ public class FigClass extends FigClassifierBox
         if (SingleStereotypeEnabler.isEnabled()) {
             getOperationsFig().setLineWidth(w);
             getAttributesFig().setLineWidth(w);
-        } else {
-            attributesSeperator.setLineWidth(w);
-            operationsSeperator.setLineWidth(w);
         }
     }
     
@@ -509,46 +488,17 @@ public class FigClass extends FigClassifierBox
         // Allow space for each of the attributes we have
 
         if (getAttributesFig().isVisible()) {
-
-            // Loop through all the attributes, to find the widest (remember
-            // the first fig is the box for the whole lot, so ignore it).
-
-            Iterator it = getAttributesFig().getFigs().iterator();
-            it.next(); // Ignore first element
-
-            while (it.hasNext()) {
-                int elemWidth =
-		    ((FigText) it.next()).getMinimumSize().width + 2;
-                aSize.width = Math.max(aSize.width, elemWidth);
-            }
-
-            // Height allows one row for each attribute (remember to ignore the
-            // first element.
-
-            aSize.height +=
-		ROWHEIGHT * Math.max(1,
-		        getAttributesFig().getFigs().size() - 1) + 1;
+            Dimension attrMin = getAttributesFig().getMinimumSize();
+            aSize.width = Math.max(aSize.width, attrMin.width);
+            aSize.height += attrMin.height;
         }
 
         // Allow space for each of the operations we have
 
         if (isOperationsVisible()) {
-
-            // Loop through all the operations, to find the widest (remember
-            // the first fig is the box for the whole lot, so ignore it).
-
-            Iterator it = getOperationsFig().getFigs().iterator();
-            it.next(); // ignore
-
-            while (it.hasNext()) {
-                int elemWidth =
-		    ((FigText) it.next()).getMinimumSize().width + 2;
-                aSize.width = Math.max(aSize.width, elemWidth);
-            }
-
-            aSize.height +=
-		ROWHEIGHT * Math.max(1,
-		        getOperationsFig().getFigs().size() - 1) + 1;
+            Dimension operMin = getOperationsFig().getMinimumSize();
+            aSize.width = Math.max(aSize.width, operMin.width);
+            aSize.height += operMin.height;
         }
 
         // we want to maintain a minimum width for the class
@@ -872,25 +822,27 @@ public class FigClass extends FigClassifierBox
      */
     protected CompartmentFigText unhighlight() {
         CompartmentFigText ft;
-        // TODO: in future version of GEF call getFigs returning array
         Vector v = new Vector(getAttributesFig().getFigs());
         int i;
         for (i = 1; i < v.size(); i++) {
-            ft = (CompartmentFigText) v.elementAt(i);
-            if (ft.isHighlighted()) {
-                ft.setHighlighted(false);
-                highlightedFigText = null;
-                return ft;
+            if (v.elementAt(i) instanceof CompartmentFigText) {
+                ft = (CompartmentFigText) v.elementAt(i);
+                if (ft.isHighlighted()) {
+                    ft.setHighlighted(false);
+                    highlightedFigText = null;
+                    return ft;
+                }
             }
         }
-        // TODO: in future version of GEF call getFigs returning array
         v = new Vector(getOperationsFig().getFigs());
         for (i = 1; i < v.size(); i++) {
-            ft = (CompartmentFigText) v.elementAt(i);
-            if (ft.isHighlighted()) {
-                ft.setHighlighted(false);
-                highlightedFigText = null;
-                return ft;
+            if (v.elementAt(i) instanceof CompartmentFigText) {
+                ft = (CompartmentFigText) v.elementAt(i);
+                if (ft.isHighlighted()) {
+                    ft.setHighlighted(false);
+                    highlightedFigText = null;
+                    return ft;
+                }
             }
         }
         return null;
@@ -1130,13 +1082,6 @@ public class FigClass extends FigClassifierBox
 
         
         if (getAttributesFig().isVisible()) {
-            attributesSeperator.setBounds(
-                    x, 
-                    y + currentHeight, 
-                    w, 
-                    0);
-            currentHeight++;
-
             int attributesHeight = getAttributesFig().getMinimumSize().height;
             getAttributesFig().setBounds(
                     x, 
@@ -1147,12 +1092,6 @@ public class FigClass extends FigClassifierBox
         }
 
         if (getOperationsFig().isVisible()) {
-            operationsSeperator.setBounds(
-                    x, 
-                    y + currentHeight, 
-                    w, 
-                    0);
-            currentHeight++;
             int operationsHeight = getOperationsFig().getMinimumSize().height;
             getOperationsFig().setBounds(
                     x, 
