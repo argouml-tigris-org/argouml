@@ -3,14 +3,14 @@
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -24,62 +24,38 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.beans.PropertyChangeEvent;
+import java.awt.event.ActionEvent;
 
-import org.argouml.kernel.SingleStereotypeEnabler;
+import javax.swing.AbstractAction;
+
+import org.apache.log4j.Logger;
 import org.argouml.language.helpers.NotationHelper;
-import org.tigris.gef.base.Layer;
-import org.tigris.gef.presentation.FigText;
+import org.argouml.model.Model;
 
 /**
- * This class represents a Fig for a Usage.
- *
- * @author Markus Klink
+ * Action to add a sterotype to a model element.
+ * @author Bob Tarling
  */
-public class FigUsage extends FigDependency {
-
+class ActionAddStereotype extends AbstractAction {
+    
     /**
-     * The constructor.
-     *
+     * Logger.
      */
-    public FigUsage() {
-        super();
+    private static final Logger LOG =
+        Logger.getLogger(ActionAddStereotype.class);
+    
+    private Object modelElement;
+    private Object stereotype;
+    
+    public ActionAddStereotype(Object modelElement, Object stereotype) {
+        super(NotationHelper.getLeftGuillemot() + 
+                Model.getFacade().getName(stereotype) + 
+                NotationHelper.getRightGuillemot());
+        this.modelElement = modelElement;
+        this.stereotype = stereotype;
     }
-
-    /**
-     * The constructor.
-     *
-     * @param edge the owning UML element
-     */
-    public FigUsage(Object edge) {
-        super(edge);
+    
+    public void actionPerformed(ActionEvent ae) {
+        Model.getCoreHelper().addStereotype(modelElement, stereotype);
     }
-
-    /**
-     * The constructor.
-     *
-     * @param edge the owning UML element
-     * @param lay the layer
-     */
-    public FigUsage(Object edge, Layer lay) {
-        super(edge, lay);
-    }
-
-    /**
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    protected void modelChanged(PropertyChangeEvent e) {
-        super.modelChanged(e);
-        
-        if (SingleStereotypeEnabler.isEnabled()) {
-            String stereoTypeStr = ((FigText)getStereotypeFig()).getText();
-            if (stereoTypeStr == null || "".equals(stereoTypeStr)) {
-                ((FigText)getStereotypeFig()).setText(
-                    NotationHelper.getLeftGuillemot() + "use"
-                    + NotationHelper.getRightGuillemot());
-            }
-        }
-    }
-
-} /* end class FigUsage */
-
+}
