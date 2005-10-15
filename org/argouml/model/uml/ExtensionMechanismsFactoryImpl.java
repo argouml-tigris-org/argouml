@@ -267,5 +267,21 @@ public class ExtensionMechanismsFactoryImpl
 	// TODO: constraints
 	// TODO: required tags
     }
+
+    /**
+     * Unimplemented in NSUML / UML 1.3.
+     * @see org.argouml.model.ExtensionMechanismsFactory#buildTagDefinition(java.lang.String, java.lang.Object, java.lang.Object)
+     */
+    public Object buildTagDefinition(String text, Object stereotype, Object ns) {
+        return null;
+    }
+
+    /**
+     * Unimplemented in NSUML / UML 1.3.
+     * @see org.argouml.model.ExtensionMechanismsFactory#createTagDefinition()
+     */
+    public Object createTagDefinition() {
+        return null;
+    }
 }
 
