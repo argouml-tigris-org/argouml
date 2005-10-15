@@ -26,6 +26,7 @@ package org.argouml.model;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Facade object for the Model subsystem in ArgoUML.<p>
@@ -417,6 +418,14 @@ public interface Facade {
      */
     boolean isAElementResidence(Object handle);
 
+    /**
+     * Recognizer for UML Enumeration.
+     * 
+     * @param handle candidate
+     * @return true if handle is an UML Enumeration
+     */
+    boolean isAEnumeration(Object handle);
+    
     /**
      * Recognizer for Event.
      *
@@ -1412,6 +1421,14 @@ public interface Facade {
      */
     Object getEntry(Object handle);
 
+    /**
+     * Returns the enumeration literals of a UML Enumeration.
+     * 
+     * @param handle is the Enumeration
+     * @return Collection the Enumeration literals.
+     */
+    List getEnumerationLiterals(Object handle);
+    
     /**
      * Returns the exit action to a state.
      *
