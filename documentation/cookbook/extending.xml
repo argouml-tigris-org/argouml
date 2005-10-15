@@ -78,6 +78,45 @@
     
     <sect2>
       <title>Requirements on modules</title>
+
+      <para>
+An external module requires:
+<orderedlist>
+          <listitem>
+            <para>
+The module main class implements org.argouml.moduleloader.ModuleInterface
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Archive the main class into a jar, with an entry "Name" in MANIFEST.MF
+specifying the name of the main class. For example, Name: 
+<programlisting>
+Name: your/own/domain/your/package/your.class
+</programlisting>
+The class in question must implement
+<classname>org.argouml.moduleloader.ModuleInterface</classname>.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Put the jar file into a directory called "ext" under the home directory of
+ArgoUML
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Run ArgoUML and check if the module appears in Edit -> Settings -> Modules
+</para>
+          </listitem>
+        </orderedlist>
+</para>
+
+      
+
       <para> New modules that are added to ArgoUML shall reside in whole new
         packages. Either you put your module classes in
         <classname><replaceable>your.own.domain</replaceable>
