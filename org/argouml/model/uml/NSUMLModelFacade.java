@@ -4766,5 +4766,13 @@ public class NSUMLModelFacade implements Facade {
     public Collection getTagDefinitions(Object handle) {
         return null;
     }
+
+    /**
+     * Not implemented in the UML 1.3 metamodel.
+     * @see org.argouml.model.Facade#getEnumerationLiterals(java.lang.Object)
+     */
+    public List getEnumerationLiterals(Object handle) {
+        return null;
+    }
 	
 }
