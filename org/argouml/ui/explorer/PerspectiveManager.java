@@ -87,6 +87,7 @@ import org.argouml.ui.explorer.rules.GoStateToIncomingTrans;
 import org.argouml.ui.explorer.rules.GoStateToInternalTrans;
 import org.argouml.ui.explorer.rules.GoStateToOutgoingTrans;
 import org.argouml.ui.explorer.rules.GoStatemachineToDiagram;
+import org.argouml.ui.explorer.rules.GoStereotypeToTagDefinition;
 import org.argouml.ui.explorer.rules.GoStimulusToAction;
 import org.argouml.ui.explorer.rules.GoSubmachineStateToStateMachine;
 import org.argouml.ui.explorer.rules.GoSummaryToAssociation;
@@ -362,6 +363,7 @@ public class PerspectiveManager {
         packagePerspective.addRule(new GoStateToIncomingTrans());
         packagePerspective.addRule(new GoStateToOutgoingTrans());
         packagePerspective.addRule(new GoSubmachineStateToStateMachine());
+        packagePerspective.addRule(new GoStereotypeToTagDefinition());
 
         ExplorerPerspective diagramPerspective = new ExplorerPerspective(
                 "combobox.item.diagram-centric");
@@ -470,7 +472,8 @@ public class PerspectiveManager {
             new GoStateMachineToTransition(), new GoStateToDoActivity(),
             new GoStateToDownstream(), new GoStateToEntry(),
             new GoStateToExit(), new GoStateToIncomingTrans(),
-            new GoStateToInternalTrans(), new GoStateToOutgoingTrans(),
+            new GoStateToInternalTrans(), new GoStateToOutgoingTrans(), 
+            new GoStereotypeToTagDefinition(),
             new GoStimulusToAction(), new GoSummaryToAssociation(),
             new GoSummaryToAttribute(),
             new GoSummaryToIncomingDependency(),
