@@ -367,6 +367,7 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-subactivitystate", "SubactivityState");
         images.put("button.new-submachinestate", "SubmachineState");
         images.put("button.new-synchstate", "SynchState");
+        images.put("button.new-tagdefinition", "TagDefinition");
         images.put("button.new-transition", "Transition");
         images.put("button.new-uniaggregation", "UniAggregation");
         images.put("button.new-uniassociation", "UniAssociation");
