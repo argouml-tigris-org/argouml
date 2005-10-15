@@ -1052,11 +1052,8 @@ public class FigClass extends FigClassifierBox
         // Save our old boundaries (needed later), and get minimum size
         // info. "aSize will be used to maintain a running calculation of our
         // size at various points.
-
-        // "extra_each" is the extra height per displayed fig if requested
-        // height is greater than minimal. "height_correction" is the height
-        // correction due to rounded division result, will be added to the name
-        // compartment
+        
+        int whitespace = h - getMinimumSize().height;
 
         getNameFig().setLineWidth(0);
         getNameFig().setLineColor(Color.red);
@@ -1081,7 +1078,7 @@ public class FigClass extends FigClassifierBox
         currentHeight += 2; // Give an extra couple of pixels after the name.
 
         
-        if (getAttributesFig().isVisible()) {
+        if (isAttributesVisible()) {
             int attributesHeight = getAttributesFig().getMinimumSize().height;
             getAttributesFig().setBounds(
                     x, 
@@ -1091,7 +1088,10 @@ public class FigClass extends FigClassifierBox
             currentHeight += attributesHeight;
         }
 
-        if (getOperationsFig().isVisible()) {
+        if (isOperationsVisible()) {
+            if (isAttributesVisible()) {
+                currentHeight += whitespace / 2;
+            }
             int operationsHeight = getOperationsFig().getMinimumSize().height;
             getOperationsFig().setBounds(
                     x, 
