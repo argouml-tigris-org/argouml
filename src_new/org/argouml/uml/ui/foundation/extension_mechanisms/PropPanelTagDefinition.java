@@ -33,8 +33,9 @@ import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLMultiplicityComboBox2;
+import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
-import org.argouml.uml.ui.foundation.core.UMLModelElementStereotypeComboBoxModel;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -44,9 +45,20 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
 
     private JComponent stereotypeSelector;
 
-    private static UMLModelElementStereotypeComboBoxModel
-    stereotypeComboBoxModel = new UMLModelElementStereotypeComboBoxModel();	
+    private static UMLTagDefinitionStereotypeComboBoxModel
+    stereotypeComboBoxModel = new UMLTagDefinitionStereotypeComboBoxModel();	
 
+
+    /**
+     * The combobox for the multiplicity of this type.
+     */
+    private UMLComboBox2 multiplicityComboBox;
+
+    /**
+     * Model for the MultiplicityComboBox
+     */
+    private static UMLMultiplicityComboBoxModel multiplicityComboBoxModel;
+    
     ////////////////////////////////////////////////////////////////
     // contructors
     /**
@@ -63,12 +75,14 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
                 getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
+        addField(Translator.localize("label.multiplicity"),
+                getMultiplicityComboBox());
         add(getNamespaceVisibilityPanel());
-
+        
         addSeperator();
 
         addAction(new ActionNavigateNamespace());
-        addAction(new ActionNewStereotype());
+        addAction(new ActionNewTagDefinition());
         addAction(new ActionDeleteSingleModelElement());
     }
 
@@ -88,5 +102,25 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
         }
         return stereotypeSelector;
     }
+
+    /**
+     * Returns the multiplicityComboBox.
+     *
+     * @return UMLMultiplicityComboBox2
+     */
+    protected UMLComboBox2 getMultiplicityComboBox() {
+        if (multiplicityComboBox == null) {
+            if (multiplicityComboBoxModel == null) {
+                multiplicityComboBoxModel =
+                    new UMLTagDefinitionMultiplicityComboBoxModel();
+            }
+            multiplicityComboBox = new UMLMultiplicityComboBox2(
+                    multiplicityComboBoxModel,
+                    new ActionSetTagDefinitionMultiplicity());
+            multiplicityComboBox.setEditable(true);
+        }
+        return multiplicityComboBox;
+    }
+    
     
 } /* end class PropPanelClass */
