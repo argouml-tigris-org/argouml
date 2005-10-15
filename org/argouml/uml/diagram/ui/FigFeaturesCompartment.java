@@ -230,7 +230,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
         }
         
         public Dimension getMinimumSize() {
-            return new Dimension((_x2 - _x1) +1, getLineWidth());
+            return new Dimension(0, getLineWidth());
         }
         
         public void setBoundsImpl(int x, int y, int w, int h) {
