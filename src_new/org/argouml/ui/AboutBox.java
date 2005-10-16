@@ -130,24 +130,6 @@ public class AboutBox extends JDialog {
 		    scrSize.height / 2 - imgHeight / 2);
 	getContentPane().setLayout(new BorderLayout(0, 0));
 
-	StringBuffer versionBuf = new StringBuffer();
-	versionBuf.append(localize("aboutbox.generated-version-header"));
-	versionBuf.append(Tools.getVersionInfo());
-	versionBuf.append(localize("aboutbox.used-tools-header"));
-	// Not localized:
-	versionBuf.append("* GEF (gef.tigris.org)\n");
-	versionBuf.append("* Xerces-J 2.6.2\n");
-	versionBuf.append("* NSUML (nsuml.sourceforge.net)\n");
-	versionBuf.append("* TU-Dresden OCL-Compiler "
-	        	  + "(dresden-ocl.sourceforge.net)\n");
-	versionBuf.append("* ANTLR 2.7.2 (www.antlr.org)\n");
-	// Library maintainers! Add and update information here above!
-
-	versionBuf.append("\n\n");
-
-	versionBuf.append(localize("aboutbox.thanks"));
-	versionBuf.append("\n");
-
         /* MVW: Added the inset JPanel, so that the image width is also
         applied to the "ArgoUML Vx.xx.x" part */
         JPanel myInsetPanel = new JPanel();
@@ -162,122 +144,8 @@ public class AboutBox extends JDialog {
         myInsetPanel.add(splashPanel);
         tabs.addTab("Splash", myInsetPanel);
 
-	tabs.addTab("Version", createPane(versionBuf.toString()));
-
-	StringBuffer creditsBuf = new StringBuffer();
-	creditsBuf.append(localize("aboutbox.developed-by"));
-	creditsBuf.append("\n\n");
-	creditsBuf.append(localize("aboutbox.project-leader"));
-	creditsBuf.append("Linus Tolke (linus@tigris.org)");
-	creditsBuf.append("\n\n");
-	creditsBuf.append(localize("aboutbox.module-owners"));
-	creditsBuf.append(":\n");
-
-	creditsBuf.append("+ Diagrams, GUI, Persistence: Bob Tarling\n");
-	creditsBuf.append("+ Sequence Diagrams: Michael A. MacDonald\n");
-	creditsBuf.append("+ C++: Luis Sergio Oliveira\n");
-	creditsBuf.append("+ Csharp: Jan Magne Andersen\n");
-	creditsBuf.append("+ PHP 4/5: Kai Schroeder\n");
-	creditsBuf.append("+ Cognitive support: Markus Klink\n");
-	creditsBuf.append("+ User Manual: Michiel van der Wulp (mvw@tigris.org)\n");
-	creditsBuf.append("+ Localization French: Jean-Hugues de Raigniac\n");
-	creditsBuf.append("+ Localization Russian: Alexey Aphanasyev\n");
-	creditsBuf.append("+ Localization German: Harald Braun\n");
-	creditsBuf.append("+ Localization Spanish: Stewart Munoz\n");
-	creditsBuf.append("+ Localization British English: Alex Bagehot\n");
-	creditsBuf.append("+ Localization Norwegian (bokmål): Hans Fredrik Nordhaug\n");
-	creditsBuf.append("+ Localization Chinese: Jeff Liu\n\n");
-
-	creditsBuf.append(Translator.messageFormat(
-	        "aboutbox.contrib-developers-for-release",
-	        new Object[] {
-	            "0.20",
-		}));
-	creditsBuf.append("\n");
-
-	final String cpbi =
-	    	", Polytechnic of Bandung Indonesia"
-	    	+ ", Computer Engineering Departement";
-	// Alphabetic order!
-	creditsBuf.append("+ Bob Tarling\n");
-	creditsBuf.append("+ Decki" + cpbi + "\n");
-	creditsBuf.append("+ Endi" + cpbi + "\n");
-	creditsBuf.append("+ Hans Fredrik Nordhaug\n");
-	creditsBuf.append("+ Jan Magne Andersen\n");
-	creditsBuf.append("+ Jeff Liu\n");
-	creditsBuf.append("+ Kai Schroeder\n");
-	creditsBuf.append("+ Linus Tolke\n");
-	creditsBuf.append("+ Luis Sergio Oliveira\n");
-	creditsBuf.append("+ Ludovic Maitre\n");
-	creditsBuf.append("+ Michael A. MacDonald\n");
-	creditsBuf.append("+ Markus Klink\n");
-	creditsBuf.append("+ Michiel van der Wulp\n");
-	creditsBuf.append("+ Thomas Neustupny\n");
-	creditsBuf.append("+ Tom Morris\n");
-	creditsBuf.append("+ Yayan" + cpbi + "\n\n");
-
-	creditsBuf.append(Translator.messageFormat(
-	        "aboutbox.contrib-developers-for-release",
-	        new Object[] {
-	            "0.18",
-	        }));
-
-	creditsBuf.append("\n");
-
-	// Alphabetic order!
-	creditsBuf.append("+ Harald Braun\n");
-	creditsBuf.append("+ Michael Stockman\n");
-	creditsBuf.append("+ Jaap Branderhorst\n");
-	creditsBuf.append("+ Stewart Munoz\n\n");
-
-	creditsBuf.append(localize("aboutbox.past-developers"));
-	creditsBuf.append("\n");
-
-	// Alphabetic order!
-	creditsBuf.append("+ Adam Gauthier\n");
-	creditsBuf.append("+ Adam Bonner\n");
-	creditsBuf.append("+ Alex Bagehot\n");
-	creditsBuf.append("+ Alexander Lepekhine\n");
-	creditsBuf.append("+ Alexey Aphanasyev\n");
-	creditsBuf.append("+ Andreas Rueckert (a_rueckert@gmx.net) (Java RE)\n");
-	creditsBuf.append("+ Clemens Eichler\n");
-	creditsBuf.append("+ Curt Arnold\n");
-	creditsBuf.append("+ David Glaser\n");
-	creditsBuf.append("+ David Hilbert\n");
-	creditsBuf.append("+ David Redmiles\n");
-	creditsBuf.append("+ Dennis Daniels (denny_d@hotmail.com)\n");
-	creditsBuf.append("+ Donat Wullschleger\n");
-	creditsBuf.append("+ Edwin Park\n");
-	creditsBuf.append("+ Eric Lefevre\n");
-	creditsBuf.append("+ Eugenio Alvarez\n");
-	creditsBuf.append("+ Frank Finger\n");
-	creditsBuf.append("+ Frank Wienberg\n");
-	creditsBuf.append("+ Grzegorz Prokopski\n");
-	creditsBuf.append("+ Jason Robbins (Project founder, researcher)\n");
-	creditsBuf.append("+ Jean-Hugues de Raigniac\n");
-	creditsBuf.append("+ Jeremy Jones\n");
-	creditsBuf.append("+ Jim Holt\n");
-	creditsBuf.append("+ Luc Maisonobe\n");
-	creditsBuf.append("+ Marcus Andersson\n");
-	creditsBuf.append("+ Marko Boger (GentleWare) (UML Diagrams)\n");
-	creditsBuf.append("+ Nick Santucci\n");
-	creditsBuf.append("+ Phil Sager\n");
-	creditsBuf.append("+ Philippe Vanpeperstraete (User Manual)\n");
-	creditsBuf.append("+ Piotr Kaminski\n");
-	creditsBuf.append("+ Scott Guyer\n");
-	creditsBuf.append("+ Sean Chen\n");
-	creditsBuf.append("+ Steffen Zschaler\n");
-	creditsBuf.append("+ Steve Poole\n");
-	creditsBuf.append("+ Stuart Zakon\n");
-	creditsBuf.append("+ Thierry Lach\n");
-	creditsBuf.append("+ Thomas Schaumburg\n");
-	creditsBuf.append("+ Thorsten Sturm (thorsten.sturm@gentleware.de) (GEF)\n");
-	creditsBuf.append("+ Toby Baier (UML Metamodel, XMI, Project leader)\n");
-	creditsBuf.append("+ Will Howery\n");
-	creditsBuf.append("+ ICS 125 team Spring 1996\n");
-	creditsBuf.append("+ ICS 125 teams Spring 1998\n");
-
-	tabs.addTab("Credits", createPane(creditsBuf.toString()));
+	tabs.addTab("Version", createPane(getVersion()));
+	tabs.addTab("Credits", createPane(getCredits()));
 
 	tabs.addTab("Contact Info",
 		     createPane(localize("aboutbox.contacts")));
@@ -305,4 +173,158 @@ public class AboutBox extends JDialog {
 	//pack();
     }
 
+    /**
+     * Get the contents of the version tab.<p>
+     *
+     * This should include all libraries used by ArgoUML.<p>
+     *
+     * <em>Library maintainers! Add and update information here!</em>
+     *
+     * @return The contents.
+     */
+    private String getVersion() {
+        StringBuffer buf = new StringBuffer();
+        buf.append(localize("aboutbox.generated-version-header"));
+        buf.append(Tools.getVersionInfo());
+        buf.append(localize("aboutbox.used-tools-header"));
+        // Not localized:
+        buf.append("* GEF (gef.tigris.org)\n");
+        buf.append("* Xerces-J 2.6.2\n");
+        buf.append("* NSUML (nsuml.sourceforge.net)\n");
+        buf.append("* TU-Dresden OCL-Compiler "
+                	  + "(dresden-ocl.sourceforge.net)\n");
+        buf.append("* ANTLR 2.7.2 (www.antlr.org)\n");
+
+        buf.append("\n\n");
+
+        buf.append(localize("aboutbox.thanks"));
+        buf.append("\n");
+        return buf.toString();
+    }
+
+    /**
+     * Get the contents of the Credits tab.<p>
+     *
+     * This should include a list of all persons that have ever contributed
+     * to ArgoUML.<p>
+     *
+     * <em>Commiters, add your contributor here.</em>
+     *
+     * @return The contents.
+     */
+    private String getCredits() {
+        StringBuffer buf = new StringBuffer();
+        buf.append(localize("aboutbox.developed-by"));
+        buf.append("\n\n");
+        buf.append(localize("aboutbox.project-leader"));
+        buf.append("Linus Tolke (linus@tigris.org)");
+        buf.append("\n\n");
+        buf.append(localize("aboutbox.module-owners"));
+        buf.append(":\n");
+
+        buf.append("+ Diagrams, GUI, Persistence: Bob Tarling\n");
+        buf.append("+ Sequence Diagrams: Michael A. MacDonald\n");
+        buf.append("+ C++: Luis Sergio Oliveira\n");
+        buf.append("+ Csharp: Jan Magne Andersen\n");
+        buf.append("+ PHP 4/5: Kai Schroeder\n");
+        buf.append("+ Cognitive support: Markus Klink\n");
+        buf.append("+ User Manual: Michiel van der Wulp (mvw@tigris.org)\n");
+        buf.append("+ Localization French: Jean-Hugues de Raigniac\n");
+        buf.append("+ Localization Russian: Alexey Aphanasyev\n");
+        buf.append("+ Localization German: Harald Braun\n");
+        buf.append("+ Localization Spanish: Stewart Munoz\n");
+        buf.append("+ Localization British English: Alex Bagehot\n");
+        buf.append("+ Localization Norwegian (bokmål): Hans Fredrik Nordhaug\n");
+        buf.append("+ Localization Chinese: Jeff Liu\n\n");
+
+        buf.append(Translator.messageFormat(
+                "aboutbox.contrib-developers-for-release",
+                new Object[] {
+                    "0.20",
+        	}));
+        buf.append("\n");
+
+        final String cpbi =
+            	", Polytechnic of Bandung Indonesia"
+            	+ ", Computer Engineering Departement";
+        // Alphabetic order!
+        buf.append("+ Bob Tarling\n");
+        buf.append("+ Decki" + cpbi + "\n");
+        buf.append("+ Endi" + cpbi + "\n");
+        buf.append("+ Hans Fredrik Nordhaug\n");
+        buf.append("+ Jan Magne Andersen\n");
+        buf.append("+ Jeff Liu\n");
+        buf.append("+ Kai Schroeder\n");
+        buf.append("+ Linus Tolke\n");
+        buf.append("+ Luis Sergio Oliveira\n");
+        buf.append("+ Ludovic Maitre\n");
+        buf.append("+ Michael A. MacDonald\n");
+        buf.append("+ Markus Klink\n");
+        buf.append("+ Michiel van der Wulp\n");
+        buf.append("+ Thomas Neustupny\n");
+        buf.append("+ Tom Morris\n");
+        buf.append("+ Yayan" + cpbi + "\n\n");
+
+        buf.append(Translator.messageFormat(
+                "aboutbox.contrib-developers-for-release",
+                new Object[] {
+                    "0.18",
+                }));
+
+        buf.append("\n");
+
+        // Alphabetic order!
+        buf.append("+ Harald Braun\n");
+        buf.append("+ Michael Stockman\n");
+        buf.append("+ Jaap Branderhorst\n");
+        buf.append("+ Stewart Munoz\n\n");
+
+        buf.append(localize("aboutbox.past-developers"));
+        buf.append("\n");
+
+        // Alphabetic order!
+        buf.append("+ Adam Gauthier\n");
+        buf.append("+ Adam Bonner\n");
+        buf.append("+ Alex Bagehot\n");
+        buf.append("+ Alexander Lepekhine\n");
+        buf.append("+ Alexey Aphanasyev\n");
+        buf.append("+ Andreas Rueckert (a_rueckert@gmx.net) (Java RE)\n");
+        buf.append("+ Clemens Eichler\n");
+        buf.append("+ Curt Arnold\n");
+        buf.append("+ David Glaser\n");
+        buf.append("+ David Hilbert\n");
+        buf.append("+ David Redmiles\n");
+        buf.append("+ Dennis Daniels (denny_d@hotmail.com)\n");
+        buf.append("+ Donat Wullschleger\n");
+        buf.append("+ Edwin Park\n");
+        buf.append("+ Eric Lefevre\n");
+        buf.append("+ Eugenio Alvarez\n");
+        buf.append("+ Frank Finger\n");
+        buf.append("+ Frank Wienberg\n");
+        buf.append("+ Grzegorz Prokopski\n");
+        buf.append("+ Jason Robbins (Project founder, researcher)\n");
+        buf.append("+ Jean-Hugues de Raigniac\n");
+        buf.append("+ Jeremy Jones\n");
+        buf.append("+ Jim Holt\n");
+        buf.append("+ Luc Maisonobe\n");
+        buf.append("+ Marcus Andersson\n");
+        buf.append("+ Marko Boger (GentleWare) (UML Diagrams)\n");
+        buf.append("+ Nick Santucci\n");
+        buf.append("+ Phil Sager\n");
+        buf.append("+ Philippe Vanpeperstraete (User Manual)\n");
+        buf.append("+ Piotr Kaminski\n");
+        buf.append("+ Scott Guyer\n");
+        buf.append("+ Sean Chen\n");
+        buf.append("+ Steffen Zschaler\n");
+        buf.append("+ Steve Poole\n");
+        buf.append("+ Stuart Zakon\n");
+        buf.append("+ Thierry Lach\n");
+        buf.append("+ Thomas Schaumburg\n");
+        buf.append("+ Thorsten Sturm (thorsten.sturm@gentleware.de) (GEF)\n");
+        buf.append("+ Toby Baier (UML Metamodel, XMI, Project leader)\n");
+        buf.append("+ Will Howery\n");
+        buf.append("+ ICS 125 team Spring 1996\n");
+        buf.append("+ ICS 125 teams Spring 1998\n");
+        return buf.toString();
+    }
 } /* end class AboutBox */
