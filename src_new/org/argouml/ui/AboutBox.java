@@ -24,14 +24,19 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.ListIterator;
+
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import org.argouml.application.api.AboutTabPanel;
@@ -40,12 +45,15 @@ import org.argouml.application.api.PluggableAboutTab;
 import org.argouml.i18n.Translator;
 import org.argouml.util.Tools;
 
-/** This is what you see after you activate the "Help->About ArgoUML" menu-item.
+/**
+ * This is what you see after you activate the "Help->About ArgoUML" menu-item.
  *
  */
 public class AboutBox extends JDialog {
 
-    /** Insets in pixels  */
+    /**
+     * Insets in pixels.
+     */
     private static final int INSET_PX = 3;
 
     ////////////////////////////////////////////////////////////////
@@ -53,17 +61,22 @@ public class AboutBox extends JDialog {
 
     private JTabbedPane tabs = new JTabbedPane();
 
-    /** Shared splash panel */
-    private SplashPanel splashPanel = null;
+    /**
+     * Shared splash panel.
+     */
+    private SplashPanel splashPanel;
 
     ////////////////////////////////////////////////////////////////
     // constructor
-    /** Class constructor. */
+    /**
+     * Class constructor.
+     */
     public AboutBox() {
 	this((Frame) null, false);
     }
 
-    /** Class constructor.
+    /**
+     * Class constructor.
      *
      * @param owner     the frame from which the dialog is displayed
      */
@@ -71,11 +84,18 @@ public class AboutBox extends JDialog {
 	this(owner, false);
     }
 
-    private final String localize(String str) {
+    /**
+     * @see Translator#localize(String)
+     *
+     * @param str The key to localize.
+     * @return The localized String.
+     */
+    private String localize(String str) {
 	return Translator.localize(str);
     }
 
-    /** Creates a JScrollPane from the text
+    /**
+     * Creates a JScrollPane from the text.
      *
      * @return          the JScrollPane
      * @param text      the text to represent
@@ -143,8 +163,122 @@ public class AboutBox extends JDialog {
         tabs.addTab("Splash", myInsetPanel);
 
 	tabs.addTab("Version", createPane(versionBuf.toString()));
-	tabs.addTab("Credits",
-		     createPane(localize("aboutbox.credits")));
+
+	StringBuffer creditsBuf = new StringBuffer();
+	creditsBuf.append(localize("aboutbox.developed-by"));
+	creditsBuf.append("\n\n");
+	creditsBuf.append(localize("aboutbox.project-leader"));
+	creditsBuf.append("Linus Tolke (linus@tigris.org)");
+	creditsBuf.append("\n\n");
+	creditsBuf.append(localize("aboutbox.module-owners"));
+	creditsBuf.append(":\n");
+
+	creditsBuf.append("+ Diagrams, GUI, Persistence: Bob Tarling\n");
+	creditsBuf.append("+ Sequence Diagrams: Michael A. MacDonald\n");
+	creditsBuf.append("+ C++: Luis Sergio Oliveira\n");
+	creditsBuf.append("+ Csharp: Jan Magne Andersen\n");
+	creditsBuf.append("+ PHP 4/5: Kai Schroeder\n");
+	creditsBuf.append("+ Cognitive support: Markus Klink\n");
+	creditsBuf.append("+ User Manual: Michiel van der Wulp (mvw@tigris.org)\n");
+	creditsBuf.append("+ Localization French: Jean-Hugues de Raigniac\n");
+	creditsBuf.append("+ Localization Russian: Alexey Aphanasyev\n");
+	creditsBuf.append("+ Localization German: Harald Braun\n");
+	creditsBuf.append("+ Localization Spanish: Stewart Munoz\n");
+	creditsBuf.append("+ Localization British English: Alex Bagehot\n");
+	creditsBuf.append("+ Localization Norwegian (bokmål): Hans Fredrik Nordhaug\n");
+	creditsBuf.append("+ Localization Chinese: Jeff Liu\n\n");
+
+	creditsBuf.append(Translator.messageFormat(
+	        "aboutbox.contrib-developers-for-release",
+	        new Object[] {
+	            "0.20",
+		}));
+	creditsBuf.append("\n");
+
+	final String cpbi =
+	    	", Polytechnic of Bandung Indonesia"
+	    	+ ", Computer Engineering Departement";
+	// Alphabetic order!
+	creditsBuf.append("+ Bob Tarling\n");
+	creditsBuf.append("+ Decki" + cpbi + "\n");
+	creditsBuf.append("+ Endi" + cpbi + "\n");
+	creditsBuf.append("+ Hans Fredrik Nordhaug\n");
+	creditsBuf.append("+ Jan Magne Andersen\n");
+	creditsBuf.append("+ Jeff Liu\n");
+	creditsBuf.append("+ Kai Schroeder\n");
+	creditsBuf.append("+ Linus Tolke\n");
+	creditsBuf.append("+ Luis Sergio Oliveira\n");
+	creditsBuf.append("+ Ludovic Maitre\n");
+	creditsBuf.append("+ Michael A. MacDonald\n");
+	creditsBuf.append("+ Markus Klink\n");
+	creditsBuf.append("+ Michiel van der Wulp\n");
+	creditsBuf.append("+ Thomas Neustupny\n");
+	creditsBuf.append("+ Tom Morris\n");
+	creditsBuf.append("+ Yayan" + cpbi + "\n\n");
+
+	creditsBuf.append(Translator.messageFormat(
+	        "aboutbox.contrib-developers-for-release",
+	        new Object[] {
+	            "0.18",
+	        }));
+
+	creditsBuf.append("\n");
+
+	// Alphabetic order!
+	creditsBuf.append("+ Harald Braun\n");
+	creditsBuf.append("+ Michael Stockman\n");
+	creditsBuf.append("+ Jaap Branderhorst\n");
+	creditsBuf.append("+ Stewart Munoz\n\n");
+
+	creditsBuf.append(localize("aboutbox.past-developers"));
+	creditsBuf.append("\n");
+
+	// Alphabetic order!
+	creditsBuf.append("+ Adam Gauthier\n");
+	creditsBuf.append("+ Adam Bonner\n");
+	creditsBuf.append("+ Alex Bagehot\n");
+	creditsBuf.append("+ Alexander Lepekhine\n");
+	creditsBuf.append("+ Alexey Aphanasyev\n");
+	creditsBuf.append("+ Andreas Rueckert (a_rueckert@gmx.net) (Java RE)\n");
+	creditsBuf.append("+ Clemens Eichler\n");
+	creditsBuf.append("+ Curt Arnold\n");
+	creditsBuf.append("+ David Glaser\n");
+	creditsBuf.append("+ David Hilbert\n");
+	creditsBuf.append("+ David Redmiles\n");
+	creditsBuf.append("+ Dennis Daniels (denny_d@hotmail.com)\n");
+	creditsBuf.append("+ Donat Wullschleger\n");
+	creditsBuf.append("+ Edwin Park\n");
+	creditsBuf.append("+ Eric Lefevre\n");
+	creditsBuf.append("+ Eugenio Alvarez\n");
+	creditsBuf.append("+ Frank Finger\n");
+	creditsBuf.append("+ Frank Wienberg\n");
+	creditsBuf.append("+ Grzegorz Prokopski\n");
+	creditsBuf.append("+ Jason Robbins (Project founder, researcher)\n");
+	creditsBuf.append("+ Jean-Hugues de Raigniac\n");
+	creditsBuf.append("+ Jeremy Jones\n");
+	creditsBuf.append("+ Jim Holt\n");
+	creditsBuf.append("+ Luc Maisonobe\n");
+	creditsBuf.append("+ Marcus Andersson\n");
+	creditsBuf.append("+ Marko Boger (GentleWare) (UML Diagrams)\n");
+	creditsBuf.append("+ Nick Santucci\n");
+	creditsBuf.append("+ Phil Sager\n");
+	creditsBuf.append("+ Philippe Vanpeperstraete (User Manual)\n");
+	creditsBuf.append("+ Piotr Kaminski\n");
+	creditsBuf.append("+ Scott Guyer\n");
+	creditsBuf.append("+ Sean Chen\n");
+	creditsBuf.append("+ Steffen Zschaler\n");
+	creditsBuf.append("+ Steve Poole\n");
+	creditsBuf.append("+ Stuart Zakon\n");
+	creditsBuf.append("+ Thierry Lach\n");
+	creditsBuf.append("+ Thomas Schaumburg\n");
+	creditsBuf.append("+ Thorsten Sturm (thorsten.sturm@gentleware.de) (GEF)\n");
+	creditsBuf.append("+ Toby Baier (UML Metamodel, XMI, Project leader)\n");
+	creditsBuf.append("+ Will Howery\n");
+	creditsBuf.append("+ ICS 125 team Spring 1996\n");
+	creditsBuf.append("+ ICS 125 teams Spring 1998\n");
+
+	tabs.addTab("Credits", createPane(creditsBuf.toString()));
+
 	tabs.addTab("Contact Info",
 		     createPane(localize("aboutbox.contacts")));
 	tabs.addTab("Report bugs",
