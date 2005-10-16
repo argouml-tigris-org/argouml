@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.Iterator;
 
@@ -213,7 +214,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
                     yy += fig.getMinimumSize().height;
                 }
             }
-            getBigPort().setBounds(x, y, newW, newH);
+            getBigPort().setBounds(x + 1, y + 1, newW - 3, newH - 1);
             calcBounds();
         }
     }
