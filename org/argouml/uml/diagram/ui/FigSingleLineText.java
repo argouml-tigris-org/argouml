@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.util.StringTokenizer;
 
 import org.tigris.gef.presentation.FigText;
 
