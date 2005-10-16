@@ -25,6 +25,7 @@
 package org.argouml.model;
 
 import java.util.Collection;
+import java.util.List;
 
 
 
@@ -254,7 +255,7 @@ public interface CoreHelper {
      * @return Collection
      */
     Collection getRealizedInterfaces(Object cls);
-
+    
     /**
      * Returns all classes some generalizable element extends.
      *
@@ -1244,5 +1245,12 @@ public interface CoreHelper {
      * @param residence
      */
     void removeElementResidence(Object handle, Object residence);
+    
+    /**
+     * Set the (ordered) list of literals of an enumeration.
+     * @param enumeration
+     * @param literals A list of Literals.
+     */
+    void setEnumerationLiterals(Object enumeration, List literals);
     
 }

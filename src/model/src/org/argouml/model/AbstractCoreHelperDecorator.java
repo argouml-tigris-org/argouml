@@ -25,6 +25,7 @@
 package org.argouml.model;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * An abstract Decorator for the {@link CoreHelper}.
@@ -1119,5 +1120,12 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
      */
     public void removeElementResidence(Object handle, Object residence) {
         impl.removeElementResidence(handle, residence);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setEnumerationLiterals(java.lang.Object, java.util.List)
+     */
+    public void setEnumerationLiterals(Object enumeration, List literals) {
+        impl.setEnumerationLiterals(enumeration, literals);
     }
 }
