@@ -3471,4 +3471,12 @@ class CoreHelperImpl implements CoreHelper {
     public void removeStereotype(Object handle, Object stereo) {
         // This will never be implemented in NSUML
     }
+
+    /**
+     * Unimplemented in UML 1.3
+     * @see org.argouml.model.CoreHelper#setEnumerationLiterals(java.lang.Object, java.util.List)
+     */
+    public void setEnumerationLiterals(Object enumeration, List literals) {
+        // ILB
+    }
 }
