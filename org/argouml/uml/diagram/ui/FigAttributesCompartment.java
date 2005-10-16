@@ -113,4 +113,11 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
             }
         }
     }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#createFeature()
+     */
+    public void createFeature() {
+        (new ActionAddAttribute()).actionPerformed(null);
+    }
 }

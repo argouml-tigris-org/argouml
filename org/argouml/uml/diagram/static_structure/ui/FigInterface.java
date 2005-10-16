@@ -53,6 +53,7 @@ import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
+import org.argouml.uml.diagram.ui.FigFeaturesCompartment;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
@@ -466,49 +467,6 @@ public class FigInterface extends FigClassifierBox {
     // user interaction methods
 
     /**
-     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-     */
-    public void mouseClicked(MouseEvent me) {
-        super.mouseClicked(me);
-        if (me.isShiftDown()
-                && TargetManager.getInstance().getTargets().size() > 0) {
-            return;
-        }
-
-        int i = 0;
-        Editor ce = Globals.curEditor();
-        Selection sel = ce.getSelectionManager().findSelectionFor(this);
-        if (sel instanceof SelectionClass) {
-            ((SelectionClass) sel).hideButtons();
-        }
-        unhighlight();
-        //display op properties if necessary:
-        Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
-        Fig f = hitFig(r);
-        if (f == operationsFig && operationsFig.getHeight() > 0) {
-            List v = operationsFig.getFigs();
-            i = (v.size() - 1)
-                    * (me.getY() - f.getY() - 3)
-                    / operationsFig.getHeight();
-            if (i >= 0 && i < v.size() - 1) {
-                me.consume();
-                f = (Fig) v.get(i + 1);
-                ((CompartmentFigText) f).setHighlighted(true);
-                highlightedFigText = (CompartmentFigText) f;
-                TargetManager.getInstance().setTarget(f);
-            }
-        }
-    }
-
-    /**
-     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-     */
-    public void mouseExited(MouseEvent me) {
-        super.mouseExited(me);
-        unhighlight();
-    }
-
-    /**
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {
@@ -710,45 +668,6 @@ public class FigInterface extends FigClassifierBox {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#createFeatureIn(
-     * org.tigris.gef.presentation.FigGroup, java.awt.event.InputEvent)
-     */
-    protected void createFeatureIn(FigGroup fg, InputEvent ie) {
-        Object cls = /*(MClassifier)*/ getOwner();
-        if (cls == null) {
-            return;
-        }
-        new ActionAddOperation().actionPerformed(null);
-        List figList = fg.getFigs();
-        CompartmentFigText ft =
-                (CompartmentFigText) figList.get(figList.size() - 1);
-        if (ft != null) {
-            ft.startTextEditor(ie);
-            ft.setHighlighted(true);
-            highlightedFigText = ft;
-        }
-        ie.consume();
-    }
-
-    /**
-     * @return the FigText for the compartment
-     */
-    protected CompartmentFigText unhighlight() {
-        CompartmentFigText ft;
-        List v = operationsFig.getFigs();
-        int i;
-        for (i = 1; i < v.size(); i++) {
-            ft = (CompartmentFigText) v.get(i);
-            if (ft.isHighlighted()) {
-                ft.setHighlighted(false);
-                highlightedFigText = null;
-                return ft;
-            }
-        }
-        return null;
-    }
-
-    /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
@@ -774,9 +693,7 @@ public class FigInterface extends FigClassifierBox {
      */
     public void renderingChanged() {
         super.renderingChanged();
-
         updateOperations();
-
     }
 
     /**

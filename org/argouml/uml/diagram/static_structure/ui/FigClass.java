@@ -34,6 +34,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -59,6 +60,7 @@ import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
+import org.argouml.uml.diagram.ui.FigFeaturesCompartment;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.generator.ParserDisplay;
@@ -610,14 +612,6 @@ public class FigClass extends FigClassifierBox
     // user interaction methods
 
     /**
-     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-     */
-    public void mouseExited(MouseEvent me) {
-        super.mouseExited(me);
-        unhighlight();
-    }
-
-    /**
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {
@@ -793,59 +787,14 @@ public class FigClass extends FigClassifierBox
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#createFeatureIn(
-     * org.tigris.gef.presentation.FigGroup, java.awt.event.InputEvent)
-     */
-    protected void createFeatureIn(FigGroup fg, InputEvent ie) {
-        CompartmentFigText ft = null;
-        Object cls = /*(MClassifier)*/ getOwner();
-        if (cls == null) {
-            return;
-        }
-        if (fg == getAttributesFig()) {
-            (new ActionAddAttribute()).actionPerformed(null);
-        } else {
-            (new ActionAddOperation()).actionPerformed(null);
-        }
-        // TODO: When available use getFigs() returning array
-        ft = (CompartmentFigText) new Vector(fg.getFigs()).lastElement();
-        if (ft != null) {
-            ft.startTextEditor(ie);
-            ft.setHighlighted(true);
-            highlightedFigText = ft;
-        }
-        ie.consume();
-    }
-
-    /**
      * @return the compartment
      */
     protected CompartmentFigText unhighlight() {
-        CompartmentFigText ft;
-        Vector v = new Vector(getAttributesFig().getFigs());
-        int i;
-        for (i = 1; i < v.size(); i++) {
-            if (v.elementAt(i) instanceof CompartmentFigText) {
-                ft = (CompartmentFigText) v.elementAt(i);
-                if (ft.isHighlighted()) {
-                    ft.setHighlighted(false);
-                    highlightedFigText = null;
-                    return ft;
-                }
-            }
+        CompartmentFigText fc = super.unhighlight();
+        if (fc == null) {
+            fc = unhighlight(getAttributesFig());
         }
-        v = new Vector(getOperationsFig().getFigs());
-        for (i = 1; i < v.size(); i++) {
-            if (v.elementAt(i) instanceof CompartmentFigText) {
-                ft = (CompartmentFigText) v.elementAt(i);
-                if (ft.isHighlighted()) {
-                    ft.setHighlighted(false);
-                    highlightedFigText = null;
-                    return ft;
-                }
-            }
-        }
-        return null;
+        return fc;
     }
 
     /**
@@ -1270,58 +1219,6 @@ public class FigClass extends FigClassifierBox
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    /**
-     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-     */
-    public void mouseClicked(MouseEvent me) {
-
-        if (me.isConsumed()) {
-            return;
-        }
-        super.mouseClicked(me);
-	if (me.isShiftDown()
-                && TargetManager.getInstance().getTargets().size() > 0) {
-	    return;
-        }
-
-        int i = 0;
-        Editor ce = Globals.curEditor();
-        Selection sel = ce.getSelectionManager().findSelectionFor(this);
-        if (sel instanceof SelectionClass) {
-	    ((SelectionClass) sel).hideButtons();
-        }
-        unhighlight();
-        //display attr/op properties if necessary:
-        Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
-        Fig f = hitFig(r);
-        if (f == getAttributesFig()
-                && getAttributesFig().getHeight() > 0) {
-            // TODO: in future version of GEF call getFigs returning array
-            Vector v = new Vector(getAttributesFig().getFigs());
-            i = (v.size() - 1) * (me.getY() - f.getY() - 3)
-                / getAttributesFig().getHeight();
-            if (i >= 0 && i < v.size() - 1 &&
-                    v.elementAt(i + 1) instanceof CompartmentFigText) {
-                f = (Fig) v.elementAt(i + 1);
-                ((CompartmentFigText) f).setHighlighted(true);
-                highlightedFigText = (CompartmentFigText) f;
-                TargetManager.getInstance().setTarget(f);
-            }
-        } else if (f == getOperationsFig()
-                     && getOperationsFig().getHeight() > 0) {
-            // TODO: in future version of GEF call getFigs returning array
-            Vector v = new Vector(getOperationsFig().getFigs());
-            i = (v.size() - 1) * (me.getY() - f.getY() - 3)
-                / getOperationsFig().getHeight();
-            if (i >= 0 && i < v.size() - 1 &&
-                    v.elementAt(i + 1) instanceof CompartmentFigText) {
-                f = (Fig) v.elementAt(i + 1);
-                ((CompartmentFigText) f).setHighlighted(true);
-                highlightedFigText = (CompartmentFigText) f;
-                TargetManager.getInstance().setTarget(f);
-            }
-        }
-    }
 //    /**
 //     * Updates the attributes in the fig. Called from modelchanged if there is
 //     * a modelevent effecting the attributes and from renderingChanged in all

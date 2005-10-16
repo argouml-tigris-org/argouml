@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.util.Iterator;
 
@@ -33,7 +32,6 @@ import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.uml.diagram.static_structure.ui.FigFeature;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
-import org.tigris.gef.presentation.FigRect;
 
 /**
  * Presentation logic which is common to both an operations
@@ -219,6 +217,11 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
             calcBounds();
         }
     }
+    
+    /**
+     * Create a new feature
+     */
+    abstract public void createFeature();
     
     protected class FigSeperator extends FigLine {
         FigSeperator(int x, int y, int len) {
