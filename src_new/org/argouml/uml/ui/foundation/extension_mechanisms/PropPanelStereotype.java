@@ -104,6 +104,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
                 getTagDefinitionScroll());
         addAction(new ActionNavigateNamespace());
         addAction(new ActionNewStereotype());
+        addAction(new ActionNewTagDefinition());
         addAction(new ActionDeleteSingleModelElement());
     }
 
