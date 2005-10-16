@@ -29,9 +29,12 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import org.argouml.kernel.SingleStereotypeEnabler;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
+import org.argouml.uml.diagram.ui.FigFeaturesCompartment;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
@@ -180,6 +183,45 @@ abstract public class FigClassifierBox extends FigNodeModelElement
     }
 
     /**
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
+    public void mouseClicked(MouseEvent mouseEvent) {
+
+        if (mouseEvent.isConsumed()) {
+            return;
+        }
+        super.mouseClicked(mouseEvent);
+        if (mouseEvent.isShiftDown()
+                && TargetManager.getInstance().getTargets().size() > 0) {
+            return;
+        }
+
+        Editor ce = Globals.curEditor();
+        Selection sel = ce.getSelectionManager().findSelectionFor(this);
+        if (sel instanceof SelectionClass) {
+            ((SelectionClass) sel).hideButtons();
+        }
+        unhighlight();
+        
+        Rectangle r = new Rectangle(
+                mouseEvent.getX() - 1, 
+                mouseEvent.getY() - 1, 
+                2, 
+                2);
+        
+        Fig f = hitFig(r);
+        if (f instanceof FigFeaturesCompartment) {
+            FigFeaturesCompartment figCompartment = (FigFeaturesCompartment) f;
+            f = figCompartment.hitFig(r);
+            if (f instanceof CompartmentFigText) {
+                ((CompartmentFigText) f).setHighlighted(true);
+                highlightedFigText = (CompartmentFigText) f;
+                TargetManager.getInstance().setTarget(f);
+            }
+        }
+    }
+
+    /**
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
     public void mouseExited(MouseEvent me) {
@@ -188,34 +230,40 @@ abstract public class FigClassifierBox extends FigNodeModelElement
     }
 
     /**
-     * Remove the hidhlight from the currently highlit FigText
+     * Remove the highlight from the currently highlit FigText
      * @return the FigText that had highlight removed
      */
     protected CompartmentFigText unhighlight() {
-        CompartmentFigText ft;
-        List figs = operationsFig.getFigs();
-        for (int i = 1; i < figs.size(); i++) {
-            ft = (CompartmentFigText) figs.get(i);
-            if (ft.isHighlighted()) {
-                ft.setHighlighted(false);
+        return unhighlight(operationsFig);
+    }
+    
+    final protected CompartmentFigText unhighlight(FigFeaturesCompartment fc) {
+        Fig ft;
+        for (int i = 1; i < fc.getFigs().size(); i++) {
+            ft = fc.getFigAt(i);
+            if (ft instanceof CompartmentFigText && ((CompartmentFigText)ft).isHighlighted()) {
+                ((CompartmentFigText)ft).setHighlighted(false);
                 highlightedFigText = null;
-                return ft;
+                return ((CompartmentFigText)ft);
             }
         }
         return null;
     }
 
-    /**
-     * Create a new "feature" in the owner fig.
-     *
-     * must be overridden to make sense
-     * (I didn't want to make it abstract because it might not be required)
-     *
-     * @param fg The fig group to which this applies
-     * @param me The input event that triggered us. In the current
-     *            implementation a mouse double click.
-     */
-    abstract protected void createFeatureIn(FigGroup fg, InputEvent me);
-
-
+    protected void createFeatureIn(FigFeaturesCompartment fg, InputEvent ie) {
+        Object classifier = getOwner();
+        if (classifier == null) {
+            return;
+        }
+        fg.createFeature();
+        List figList = fg.getFigs();
+        CompartmentFigText ft =
+            (CompartmentFigText) figList.get(figList.size() - 1);
+        if (ft != null) {
+            ft.startTextEditor(ie);
+            ft.setHighlighted(true);
+            highlightedFigText = ft;
+        }
+        ie.consume();
+    }
 } /* end class FigClass */

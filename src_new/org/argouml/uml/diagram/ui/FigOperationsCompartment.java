@@ -120,4 +120,11 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
             }
         }
     }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#createFeature()
+     */
+    public void createFeature() {
+        (new ActionAddOperation()).actionPerformed(null);
+    }
 }
