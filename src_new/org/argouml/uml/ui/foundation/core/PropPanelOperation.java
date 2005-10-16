@@ -59,15 +59,6 @@ public class PropPanelOperation extends PropPanelFeature {
         super("Operation", lookupIcon("Operation"), ConfigLoader
                 .getTabPropsOrientation());
 
-        /* This will cause the components on this page to be notified
-         * anytime a stereotype, namespace or classifier
-         * has its name, ownedElement or baseClass changed
-         * anywhere in the model. */
-//        Object[] namesToWatch = {Model.getFacade().STEREOTYPE,
-//            Model.getFacade().NAMESPACE, Model.getFacade().CLASSIFIER,
-//            Model.getFacade().PARAMETER};
-//        setNameEventListening(namesToWatch);
-
         addField(Translator.localize("label.name"),
                 getNameTextField());
 
@@ -76,8 +67,6 @@ public class PropPanelOperation extends PropPanelFeature {
 
         addField(Translator.localize("label.owner"),
                 getOwnerScroll());
-
-        addSeperator();
 
         add(getVisibilityPanel());
 
@@ -92,14 +81,16 @@ public class PropPanelOperation extends PropPanelFeature {
         modifiersPanel.add(new UMLFeatureOwnerScopeCheckBox());
         add(modifiersPanel);
 
+        addSeperator();
+
         add(new UMLOperationConcurrencyRadioButtonPanel(
                 Translator.localize("label.concurrency"), true));
-
-        addSeperator();
 
         addField(Translator.localize("label.parameters"),
                 new JScrollPane(new UMLLinkedList(
                 new UMLClassifierParameterListModel())));
+
+        addSeperator();
 
         addField(Translator.localize("label.raisedsignals"),
                new JScrollPane(new UMLLinkedList(
