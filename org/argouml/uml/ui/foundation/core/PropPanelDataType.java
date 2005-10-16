@@ -51,10 +51,16 @@ public class PropPanelDataType extends PropPanelClassifier {
 
     private JScrollPane attributeScroll;
 
+    private JScrollPane literalsScroll;
+    
     private JScrollPane operationScroll;
 
+    
     private static UMLClassAttributeListModel attributeListModel =
         new UMLClassAttributeListModel();
+    
+    private static UMLEnumerationLiteralsListModel literalsListModel =
+        new UMLEnumerationLiteralsListModel();
 
     private static UMLClassOperationListModel operationListModel =
         new UMLClassOperationListModel();
@@ -91,8 +97,11 @@ public class PropPanelDataType extends PropPanelClassifier {
         addField(Translator.localize("label.operations"),
                 getOperationScroll());
 
-        addField(Translator.localize("label.literals"),
+        addField(Translator.localize("label.attributes"),
                 getAttributeScroll());
+
+        addField(Translator.localize("label.literals"),
+                getLiteralsScroll());
 
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionAddDataType());
@@ -243,4 +252,17 @@ public class PropPanelDataType extends PropPanelClassifier {
         return attributeScroll;
     }
 
+    /**
+     * Returns the attributeScroll.
+     *
+     * @return JScrollPane
+     */
+    public JScrollPane getLiteralsScroll() {
+        if (literalsScroll == null) {
+            JList list = new UMLLinkedList(literalsListModel);
+            literalsScroll = new JScrollPane(list);
+        }
+        return literalsScroll;
+    }
+    
 } /* end class PropPanelDataType */
