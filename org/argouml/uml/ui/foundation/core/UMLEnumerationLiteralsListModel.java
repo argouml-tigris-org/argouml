@@ -49,8 +49,7 @@ public class UMLEnumerationLiteralsListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (getTarget() != null ) {
-
+        if (Model.getFacade().isAEnumeration(getTarget())) {
             setAllElements(Model.getFacade().getEnumerationLiterals(getTarget()));
         }
     }
@@ -58,8 +57,12 @@ public class UMLEnumerationLiteralsListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
-        return (Model.getFacade().getEnumerationLiterals(getTarget()).contains(element));
+    protected boolean isValidElement(Object element) {
+        if (Model.getFacade().isAEnumeration(getTarget())) {
+            List literals = Model.getFacade().getEnumerationLiterals(getTarget());
+            return literals.contains(element);
+        }
+        return false;
     }
 
     /**
