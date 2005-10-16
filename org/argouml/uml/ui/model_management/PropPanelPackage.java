@@ -44,6 +44,7 @@ import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationListModel;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
 import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Orientation;
@@ -129,6 +130,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
         addAction(new ActionAddPackage());
         addAction(new ActionAddDataType());
         addAction(new ActionNewStereotype());
+        addAction(new ActionNewTagDefinition());
         addAction(new ActionDeleteSingleModelElement());
     }
 
