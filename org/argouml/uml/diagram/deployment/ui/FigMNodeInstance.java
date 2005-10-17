@@ -35,12 +35,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
-import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;

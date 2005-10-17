@@ -138,10 +138,10 @@ public class EmailExpertDialog extends ArgoDialog {
     public void actionPerformed(ActionEvent e) {
 	super.actionPerformed(e);
 	if (e.getSource() == getOkButton()) {
-	    String to = emailTo.getText();
-	    String cc = emailCc.getText();
-	    String subject = emailSubject.getText();
-	    LOG.debug("sending email!");
+//	    String to = emailTo.getText();
+//	    String cc = emailCc.getText();
+//	    String subject = emailSubject.getText();
+	    LOG.warn("sending email is not implemented!");
 	} else {
 	    if (e.getSource() == getCancelButton()) {
 	        LOG.debug("cancel");

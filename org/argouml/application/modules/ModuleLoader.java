@@ -614,7 +614,6 @@ public class ModuleLoader {
     public static boolean requestNewSingleton(Class modClass,
 					      ArgoSingletonModule
 					              moduleInstance) {
-	boolean rc = moduleInstance.canActivateSingleton();
 	ArgoSingletonModule currentSingleton;
 	if (!moduleInstance.canActivateSingleton()) {
 	    return false;

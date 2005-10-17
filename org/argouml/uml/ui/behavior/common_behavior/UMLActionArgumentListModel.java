@@ -1,7 +1,5 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.util.Collection;
-
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 

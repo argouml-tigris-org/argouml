@@ -25,14 +25,10 @@
 package org.argouml.uml.ui.behavior.activity_graphs;
 
 import javax.swing.ImageIcon;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.tigris.swidgets.Orientation;
-import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState;
-import org.argouml.uml.ui.behavior.state_machines.UMLTransitionStatemachineListModel;
 import org.argouml.util.ConfigLoader;
 
 /**

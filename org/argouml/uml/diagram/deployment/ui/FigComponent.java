@@ -30,11 +30,9 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.*;
 
-import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;

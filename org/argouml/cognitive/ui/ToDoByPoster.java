@@ -140,7 +140,6 @@ public class ToDoByPoster extends ToDoPerspective
     public void toDoItemsRemoved(ToDoListEvent tde) {
 	LOG.debug("toDoItemRemoved");
 	ToDoList list = Designer.theDesigner().getToDoList(); //source?
-	Vector items = tde.getToDoItems();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 

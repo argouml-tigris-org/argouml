@@ -26,14 +26,12 @@ package org.argouml.moduleloader;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -193,8 +191,6 @@ public class SettingsTabModules extends SettingsTabHelper {
 	}
 
 	notYetLoadedPanel = new JPanel();
-	LayoutManager layout =
-	    new BoxLayout(notYetLoadedPanel, BoxLayout.Y_AXIS);
 
 	Iterator iter =
 	    ModuleLoader2.notYetLoadedModules().entrySet().iterator();
@@ -208,7 +204,6 @@ public class SettingsTabModules extends SettingsTabHelper {
 	    button.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent event) {
 		    try {
-			Class moduleClass =
 			    getClass().getClassLoader().loadClass(classname);
 		    } catch (ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(

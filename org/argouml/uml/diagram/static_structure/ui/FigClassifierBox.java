@@ -29,7 +29,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -42,8 +41,6 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
-import org.tigris.gef.presentation.FigRect;
 
 /**
  * Class to display graphics for a UML Class in a diagram.<p>

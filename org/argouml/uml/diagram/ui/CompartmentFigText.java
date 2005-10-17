@@ -29,7 +29,6 @@ import java.awt.Color;
 import org.apache.log4j.Logger;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigText;
 
 /**
  * A FigText class extension for FigClass/FigInterface/FigUseCase
