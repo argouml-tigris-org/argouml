@@ -66,7 +66,7 @@ import org.argouml.uml.generator.Generator2;
  * tries to generate 1265 files in parallel and guesses why it doesn't work :-)
  */
 public class GeneratorCpp extends Generator2
-    implements PluggableNotation, FileGenerator {
+    implements FileGenerator {
 
     /**
      * The logger.

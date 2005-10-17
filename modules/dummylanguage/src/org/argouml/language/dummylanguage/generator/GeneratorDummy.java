@@ -25,7 +25,6 @@
 package org.argouml.language.dummylanguage.generator;
 
 import org.argouml.application.api.Notation;
-import org.argouml.application.api.PluggableNotation;
 import org.argouml.model.Model;
 import org.argouml.uml.generator.Generator2;
 
@@ -40,8 +39,7 @@ import org.argouml.uml.generator.Generator2;
  * @stereotype singleton
  */
 public final class GeneratorDummy
-	extends Generator2
-	implements PluggableNotation {
+	extends Generator2 {
     /**
      * The singleton.
      */

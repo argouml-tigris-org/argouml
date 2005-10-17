@@ -41,7 +41,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Notation;
-import org.argouml.application.api.PluggableNotation;
 import org.argouml.language.php.PHPDocumentor;
 import org.argouml.model.Model;
 import org.argouml.uml.UUIDHelper;
@@ -56,7 +55,7 @@ import org.argouml.uml.generator.Generator2;
  */
 public class GeneratorPHP4
     extends Generator2
-    implements PluggableNotation, FileGenerator {
+    implements FileGenerator {
 
     /**
      * Sets the indentation level to four spaces
