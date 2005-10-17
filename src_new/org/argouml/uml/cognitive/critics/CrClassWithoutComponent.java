@@ -25,7 +25,6 @@
 // $Id$
 package org.argouml.uml.cognitive.critics;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 

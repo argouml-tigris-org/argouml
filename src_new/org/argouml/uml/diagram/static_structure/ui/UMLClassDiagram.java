@@ -31,17 +31,13 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ClassDiagram;
-import org.argouml.model.DiDiagram;
 import org.argouml.model.Model;
-import org.argouml.ui.GraphChangeAdapter;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
-import org.tigris.gef.graph.GraphModel;
 
 /**
  * @author jrobbins@ics.uci.edy

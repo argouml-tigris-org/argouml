@@ -457,8 +457,6 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             boolean closeStream) throws SAXException {
         
         try {
-            String errmsg = "Exception in readDiagram";
-    
             //initialise parsing attributes:
             _figRegistry = new HashMap();
             InputSource source = new InputSource(is);
@@ -862,7 +860,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 if (f instanceof FigGroup) {
                     FigGroup fg = (FigGroup) f;
                     int i = Integer.parseInt(subIndex);
-                    f = (Fig) fg.getFigAt(i);
+                    f = fg.getFigAt(i);
                 }
             }
         }

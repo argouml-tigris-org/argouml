@@ -30,7 +30,6 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
  * @since Nov 3, 2002

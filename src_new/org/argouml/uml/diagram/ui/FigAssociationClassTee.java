@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.tigris.gef.presentation.Fig;

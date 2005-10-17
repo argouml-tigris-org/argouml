@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -142,9 +141,6 @@ public class SelectionNode extends SelectionNodeClarifiers {
 	}
 	int cx = getContent().getX(), cy = getContent().getY();
 	int cw = getContent().getWidth(), ch = getContent().getHeight();
-	int newX = cx, newY = cy, newW = cw, newH = ch;
-	Dimension minSize = getContent().getMinimumSize();
-	int minWidth = minSize.width, minHeight = minSize.height;
 	Object edgeType = null;
 	Object nodeType = Model.getMetaTypes().getNode();
 	int bx = mX, by = mY;

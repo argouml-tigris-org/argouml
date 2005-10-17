@@ -25,11 +25,8 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
-import java.awt.Rectangle;
-import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;

@@ -25,11 +25,8 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import java.util.StringTokenizer;
 
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;

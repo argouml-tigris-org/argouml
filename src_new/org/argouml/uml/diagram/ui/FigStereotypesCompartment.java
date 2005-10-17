@@ -29,9 +29,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Notation;
-import org.argouml.application.api.NotationContext;
-import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigFeature;
@@ -173,7 +170,6 @@ public class FigStereotypesCompartment extends FigCompartment {
     }
     
     protected void setBoundsImpl(int x, int y, int w, int h) {
-        int n = getFigs().size() - 1;
         Fig fig;
         int yy = y;
         Iterator figs = iterator();

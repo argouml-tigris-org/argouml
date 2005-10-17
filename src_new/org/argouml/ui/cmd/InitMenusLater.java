@@ -87,44 +87,44 @@ class InitMenusLater implements Runnable {
         KeyStroke ctrlR = KeyStroke.getKeyStroke(KeyEvent.VK_R, menuShortcut);
         KeyStroke ctrlL = KeyStroke.getKeyStroke(KeyEvent.VK_L, menuShortcut);
 
-        KeyStroke f1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
-        KeyStroke f2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
-        KeyStroke f3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
-        KeyStroke f4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0);
-        KeyStroke f5 = KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0);
-        KeyStroke f6 = KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0);
-        KeyStroke f7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
-        KeyStroke f8 = KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0);
-        KeyStroke f9 = KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0);
-        KeyStroke f10 = KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0);
-
-        KeyStroke alt1 =
-	    KeyStroke.getKeyStroke(KeyEvent.VK_1, KeyEvent.ALT_MASK);
-        KeyStroke alt2 =
-	    KeyStroke.getKeyStroke(KeyEvent.VK_2, KeyEvent.ALT_MASK);
-        KeyStroke alt3 =
-	    KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.ALT_MASK);
-        KeyStroke alt4 =
-	    KeyStroke.getKeyStroke(KeyEvent.VK_4, KeyEvent.ALT_MASK);
-        KeyStroke alt5 =
-	    KeyStroke.getKeyStroke(KeyEvent.VK_5, KeyEvent.ALT_MASK);
-        KeyStroke alt6 =
-	    KeyStroke.getKeyStroke(KeyEvent.VK_6, KeyEvent.ALT_MASK);
-        KeyStroke alt7 =
-	    KeyStroke.getKeyStroke(KeyEvent.VK_7, KeyEvent.ALT_MASK);
-        KeyStroke alt8 =
-	    KeyStroke.getKeyStroke(KeyEvent.VK_8, KeyEvent.ALT_MASK);
-        KeyStroke alt9 =
-	    KeyStroke.getKeyStroke(KeyEvent.VK_9, KeyEvent.ALT_MASK);
-        KeyStroke alt0 =
-	    KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.ALT_MASK);
-
-        KeyStroke altshift1 = KeyStroke.getKeyStroke(KeyEvent.VK_1,
-				   KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
-        KeyStroke altshift2 = KeyStroke.getKeyStroke(KeyEvent.VK_2,
-				   KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
-        KeyStroke altshift3 = KeyStroke.getKeyStroke(KeyEvent.VK_3,
-				   KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
+//        KeyStroke f1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
+//        KeyStroke f2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
+//        KeyStroke f3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
+//        KeyStroke f4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0);
+//        KeyStroke f5 = KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0);
+//        KeyStroke f6 = KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0);
+//        KeyStroke f7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
+//        KeyStroke f8 = KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0);
+//        KeyStroke f9 = KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0);
+//        KeyStroke f10 = KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0);
+//
+//        KeyStroke alt1 =
+//	    KeyStroke.getKeyStroke(KeyEvent.VK_1, KeyEvent.ALT_MASK);
+//        KeyStroke alt2 =
+//	    KeyStroke.getKeyStroke(KeyEvent.VK_2, KeyEvent.ALT_MASK);
+//        KeyStroke alt3 =
+//	    KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.ALT_MASK);
+//        KeyStroke alt4 =
+//	    KeyStroke.getKeyStroke(KeyEvent.VK_4, KeyEvent.ALT_MASK);
+//        KeyStroke alt5 =
+//	    KeyStroke.getKeyStroke(KeyEvent.VK_5, KeyEvent.ALT_MASK);
+//        KeyStroke alt6 =
+//	    KeyStroke.getKeyStroke(KeyEvent.VK_6, KeyEvent.ALT_MASK);
+//        KeyStroke alt7 =
+//	    KeyStroke.getKeyStroke(KeyEvent.VK_7, KeyEvent.ALT_MASK);
+//        KeyStroke alt8 =
+//	    KeyStroke.getKeyStroke(KeyEvent.VK_8, KeyEvent.ALT_MASK);
+//        KeyStroke alt9 =
+//	    KeyStroke.getKeyStroke(KeyEvent.VK_9, KeyEvent.ALT_MASK);
+//        KeyStroke alt0 =
+//	    KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.ALT_MASK);
+//
+//        KeyStroke altshift1 = KeyStroke.getKeyStroke(KeyEvent.VK_1,
+//				   KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
+//        KeyStroke altshift2 = KeyStroke.getKeyStroke(KeyEvent.VK_2,
+//				   KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
+//        KeyStroke altshift3 = KeyStroke.getKeyStroke(KeyEvent.VK_3,
+//				   KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
 
 	// ---------------------------------------------- Arrange Menu
         JMenuItem alignTops = 

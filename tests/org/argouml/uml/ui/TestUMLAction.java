@@ -69,8 +69,6 @@ public class TestUMLAction extends TestCase {
      * sure that the static interface has not changed.
      */
     private void compileTestStatics() {
-	boolean t1 = UMLAction.HAS_ICON;
-	boolean t2 = UMLAction.NO_ICON;
 	UMLAction.getMnemonic(new String());
     }
 

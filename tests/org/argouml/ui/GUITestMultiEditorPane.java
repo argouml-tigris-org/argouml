@@ -24,16 +24,7 @@
 
 package org.argouml.ui;
 
-import java.awt.Component;
-
-import javax.swing.JTabbedPane;
-
 import junit.framework.TestCase;
-
-import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.tigris.gef.presentation.FigText;
 
 /**
  * @author jaap.branderhorst@xs4all.nl
