@@ -86,12 +86,10 @@ abstract public class FigClassifierBox extends FigNodeModelElement
      * @see java.lang.Object#clone()
      */
     public Object clone() {
-        FigClass figClone = (FigClass) super.clone();
+        FigClassifierBox figClone = (FigClassifierBox) super.clone();
         Iterator thisIter = this.getFigs().iterator();
-        Iterator cloneIter = figClone.getFigs().iterator();
         while (thisIter.hasNext()) {
             Fig thisFig = (Fig) thisIter.next();
-            Fig cloneFig = (Fig) cloneIter.next();
             if (thisFig == operationsFig) {
                 figClone.operationsFig = (FigOperationsCompartment) thisFig;
                 return figClone;
