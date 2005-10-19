@@ -579,4 +579,12 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
 
     }
 
+    protected boolean isClearable() {
+        return isClearable;
+    }
+
+    protected String getPropertySetName() {
+        return propertySetName;
+    }
+
 }
