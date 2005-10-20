@@ -1138,7 +1138,6 @@ public class ProjectBrowser
                 p = oldProject;
             } catch (OutOfMemoryError ex) {
                 p = oldProject;
-                System.gc();
                 LOG.error("Out of memory while loading project", ex);
                 success = false;
                 reportError(
@@ -1204,7 +1203,6 @@ public class ProjectBrowser
                 Designer.enableCritiquing();
             }
         }
-        System.gc();
         return success;
     }
 
