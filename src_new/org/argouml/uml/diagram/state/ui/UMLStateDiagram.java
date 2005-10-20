@@ -395,7 +395,7 @@ public class UMLStateDiagram extends UMLDiagram {
             actionState =
                 new RadioAction(
                         new CmdCreateNode(Model.getMetaTypes().getSimpleState(),
-                                	  "button.new-state"));
+                                	  "button.new-simplestate"));
         }
         return actionState;
     }

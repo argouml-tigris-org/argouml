@@ -460,6 +460,8 @@ class UmlFactoryImpl
             return getActivityGraphs().createCallState();
         } else if (elementType == nsmodel.getMetaTypes().getFinalState()) {
             return getStateMachines().createFinalState();
+        } else if (elementType == nsmodel.getMetaTypes().getSimpleState()) {
+            return getStateMachines().createSimpleState();
         } else if (elementType == nsmodel.getMetaTypes().getPseudostate()) {
             return getStateMachines().createPseudostate();
         } else if (elementType == nsmodel.getMetaTypes().getObjectFlowState()) {
