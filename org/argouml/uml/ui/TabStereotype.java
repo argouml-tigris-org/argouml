@@ -24,10 +24,16 @@
 
 package org.argouml.uml.ui;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+
 import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.foundation.core.ActionSetModelElementStereotype;
+import org.argouml.uml.ui.foundation.core.UMLModelElementStereotypeComboBoxModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Vertical;
@@ -40,6 +46,12 @@ public class TabStereotype extends PropPanel {
 
     private static String orientation = Configuration.getString(Configuration
             .makeKey("layout", "tabstereotype"));
+    
+    private JComponent stereotypeSelector;
+
+    private static UMLModelElementStereotypeComboBoxModel 
+        stereotypeComboBoxModel =
+        new UMLModelElementStereotypeComboBoxModel();
 
     /**
      * Construct new documentation tab
@@ -48,6 +60,17 @@ public class TabStereotype extends PropPanel {
         super(Translator.localize("tab.stereotype"), (orientation
                 .equals("West") || orientation.equals("East")) ? Vertical
                 .getInstance() : Horizontal.getInstance());
+                
+        // TODO: Temporary single stereotype implementation - add new UI here
+        
+        stereotypeSelector = new Box(BoxLayout.X_AXIS);
+        stereotypeSelector.add(new UMLComboBoxNavigator(this,
+                Translator.localize("label.stereotype.navigate.tooltip"),
+                new UMLComboBox2(stereotypeComboBoxModel,
+                        ActionSetModelElementStereotype.getInstance())
+                
+                ));
+        add(stereotypeSelector);
     }
 
     /**
