@@ -2205,7 +2205,6 @@ public interface Facade {
      *
      * @param handle GeneralizableElement to retrieve from.
      * @return Collection of Specializations.
-     * @deprecated UML 1.3 only
      */
     Collection getSpecializations(Object handle);
 
