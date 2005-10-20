@@ -67,13 +67,6 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         super("Generalization", 
             lookupIcon("Generalization"), 
             ConfigLoader.getTabPropsOrientation());
-        Object[] namesToWatch = {
-            Model.getMetaTypes().getStereotype(),
-            Model.getMetaTypes().getNamespace(),
-            Model.getMetaTypes().getClassifier(),
-        };
-
-        getContainerDispatcher().setNameEventListening(namesToWatch);
 
         addField(Translator.localize("label.name"),
                 getNameTextField());

@@ -55,14 +55,6 @@ public class PropPanelParameter extends PropPanelModelElement {
 	      "Parameter",
 	      lookupIcon("Parameter"),
 	      ConfigLoader.getTabPropsOrientation());
-        Object[] namesToWatch = {
-	    Model.getMetaTypes().getStereotype(),
-	    Model.getMetaTypes().getOperation(),
-	    Model.getMetaTypes().getParameter(),
-	    Model.getMetaTypes().getClassifier(),
-	};
-
-        getContainerDispatcher().setNameEventListening(namesToWatch);
 
         addField(Translator.localize("label.name"),
                 getNameTextField());

@@ -44,7 +44,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ContainerDispatcher;
 import org.argouml.model.Model;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.LookAndFeelMgr;
@@ -91,10 +90,6 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     private Font smallFont = LookAndFeelMgr.getInstance().getSmallFont();
 
-    // TODO: This should request a ComponentDispatcher from the model component
-    ContainerDispatcher componentDispatcher = Model
-            .createContainerDispatcher(this);
-
     /**
      * Construct new PropPanel using LabelledLayout.
      * <p>
@@ -137,15 +132,6 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public PropPanel(String title, Orientation orientation) {
         this(title, null, orientation);
-    }
-
-    /**
-     * Get the ComponentDispatcher for thie prop panel.
-     * 
-     * @return the ComponentDispatcher
-     */
-    public ContainerDispatcher getContainerDispatcher() {
-        return componentDispatcher;
     }
 
     /**
@@ -365,7 +351,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
                                 .getTargettableModel());
             }
             if (components[i] instanceof Container) {
-                EventListenerList list2 = registrateTargetListeners((Container) components[i]);
+                EventListenerList list2 = registrateTargetListeners(
+                                                (Container) components[i]);
                 Object[] objects = list2.getListenerList();
                 for (int j = 1; j < objects.length; j += 2) {
                     list.add(TargetListener.class, (TargetListener) objects[j]);
