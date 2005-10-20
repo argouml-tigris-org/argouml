@@ -55,7 +55,10 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         buildElement();
-        // TODO: is this commented out for a reason?  Remove? - tfm
+        // TODO: Tests are all coded to assume immediate event delivery
+        // This has been made the default for MDR implementation, but 
+        // this requirement should be removed in the future.
+        //
         //oldEventPolicy = MFactoryImpl.getEventPolicy();
         //MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         buildModel();
@@ -82,7 +85,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
-        // TODO: review - tfm
+        // restore original event policy - not supported by MDR
         //MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
