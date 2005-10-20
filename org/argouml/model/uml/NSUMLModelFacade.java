@@ -4758,7 +4758,6 @@ public class NSUMLModelFacade implements Facade {
      */
     public Object getTagDefinition(Object handle) {
         throw new IllegalArgumentException("Unimplemented in UML 1.3");
-        //return null;
     }
 
     /**
@@ -4766,8 +4765,12 @@ public class NSUMLModelFacade implements Facade {
      * @see org.argouml.model.Facade#getTagDefinitions(java.lang.Object)
      */
     public Collection getTagDefinitions(Object handle) {
-        //throw new IllegalArgumentException("Unimplemented in UML 1.3");
-        return new ArrayList();
+        if (isAStereotype(handle)) {
+            LOG.warn("Unimplemented for UML 1.3 - getTagDefinitions");
+            return new ArrayList();
+        } else {
+            return illegalArgumentCollection(handle);
+        }
     }
 
     /**
@@ -4775,8 +4778,12 @@ public class NSUMLModelFacade implements Facade {
      * @see org.argouml.model.Facade#getEnumerationLiterals(java.lang.Object)
      */
     public List getEnumerationLiterals(Object handle) {
-        //throw new IllegalArgumentException("Unimplemented in UML 1.3");
-        return new ArrayList();
+        if (isAEnumeration(handle)) {
+            LOG.warn("Unimplemented for UML 1.3 - getEnumerationLiterals");
+            return new ArrayList();
+        } else {
+            return illegalArgumentList(handle);
+        }
     }
 	
 }
