@@ -296,8 +296,11 @@ public interface CollaborationsHelper {
     void setContext(Object handle, Object col);
 
     /**
+     * Set the successors of a message
+     * (named messsage3 in UML 1.3 & successor in UML 1.4)
+     * 
      * @param handle Message
-     * @param messages Collection of predecessor messages
+     * @param messages Collection of successor messages
      */
     void setMessages3(Object handle, Collection messages);
 
