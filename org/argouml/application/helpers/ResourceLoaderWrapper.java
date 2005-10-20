@@ -361,7 +361,7 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-sendaction", "SendAction");
         images.put("button.new-shallowhistory", "ShallowHistory");
         images.put("button.new-signal", "New Signal");
-        images.put("button.new-state", "State");
+        images.put("button.new-simplestate", "SimpleState");
         images.put("button.new-stereotype", "Stereotype");
         images.put("button.new-stubstate", "StubState");
         images.put("button.new-subactivitystate", "SubactivityState");
