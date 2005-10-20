@@ -90,9 +90,8 @@ public class TestUmlFactoryBuildNode extends TestCase {
                 Model.getMetaTypes().getCompositeState()));
         assertNotNull(Model.getUmlFactory().buildNode(
                 Model.getMetaTypes().getFinalState()));
-        // SimpleState not currently supported
-//        assertNotNull(Model.getUmlFactory().buildNode(
-//                Model.getMetaTypes().getSimpleState()));
+        assertNotNull(Model.getUmlFactory().buildNode(
+                Model.getMetaTypes().getSimpleState()));
 
         /*
          * State is concrete in UML 1.3, but becomes abstract in UML 1.4, so we
