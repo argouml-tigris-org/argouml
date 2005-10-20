@@ -56,11 +56,6 @@ public class PropPanelStimulus extends PropPanelModelElement {
         super("Stimulus Properties", lookupIcon("Stimulus"),
                 ConfigLoader.getTabPropsOrientation());
 
-        Object[] namesToWatch = {
-	    Model.getMetaTypes().getAction(),
-	};
-        getContainerDispatcher().setNameEventListening(namesToWatch);
-
         addField(Translator.localize("label.name"),
                 getNameTextField());
         addField("Action:", new UMLStimulusActionTextField(this,

@@ -56,22 +56,11 @@ public class PropPanelMessage extends PropPanelModelElement {
     public PropPanelMessage() {
         super("Message", ConfigLoader.getTabPropsOrientation());
         
-        Object[] namesToWatch = {
-            Model.getMetaTypes().getStereotype(),
-            Model.getMetaTypes().getClassifierRole(),
-            Model.getMetaTypes().getAction(),
-        };
-        
-        getContainerDispatcher().setNameEventListening(namesToWatch);
-        
         addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.stereotype"),
                 getStereotypeSelector());
-        // a message does not have a namespace. removed therefore
-        // addField(Translator.localize("label.namespace"),
-        // getNamespaceScroll());
-        JList interactionList =
+       JList interactionList =
             new UMLLinkedList(new UMLMessageInteractionListModel());
         interactionList.setVisibleRowCount(1);
         addField(Translator.localize("label.interaction"),

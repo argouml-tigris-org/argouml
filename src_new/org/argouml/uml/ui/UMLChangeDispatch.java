@@ -108,29 +108,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     public void run() {
         if (target != null) {
             synchronizedDispatch(container);
-        } else
+        } else {
 	    dispatch(container);
-        //
-        //   now that we have finished all the UI updating
-        //
-        //   if we were doing an object change then
-        //      add a listener to our new target
-        //
-        if (eventType == -1 && container instanceof PropPanel
-                && !((container instanceof PropPanelObject)
-                 || (container instanceof PropPanelNodeInstance)
-                 || (container instanceof PropPanelComponentInstance))) {
-            PropPanel propPanel = (PropPanel) container;
-            Object t = propPanel.getTarget();
-
-            if (Model.getFacade().isABase(t)) {
-
-            	// 2002-07-15
-            	// Jaap Branderhorst
-            	// added next statement to prevent PropPanel getting
-            	// added again and again to the target's listeners
-                Model.getPump().addModelEventListener(propPanel.getContainerDispatcher(), t);
-            }
         }
     }
 

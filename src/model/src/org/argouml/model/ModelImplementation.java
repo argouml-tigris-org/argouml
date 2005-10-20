@@ -296,14 +296,6 @@ public interface ModelImplementation {
     XmiWriter getXmiWriter(Object model, Writer writer) throws UmlException;
 
     /**
-     * Factory for new ContainerDispatchers.
-     *
-     * @param container The container to register with the ContainerDispatcher.
-     * @return a new instance of a ContainerDispatcher.
-     */
-    ContainerDispatcher createContainerDispatcher(Container container);
-
-    /**
      * Allows an external system to register itself to recieve mementos created
      * by the model subsystem.
      *

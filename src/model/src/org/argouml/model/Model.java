@@ -24,7 +24,6 @@
 
 package org.argouml.model;
 
-import java.awt.Container;
 import java.io.Writer;
 
 import org.apache.log4j.Logger;
@@ -502,18 +501,6 @@ public final class Model {
      */
     public static boolean isInitiated() {
         return impl != null;
-    }
-
-
-    /**
-     * Create a new ComponentDispatcher for a Component.
-     *
-     * @param container The Component the dispatcher should be registered to.
-     * @return A newly created Container Dispatcher.
-     */
-    public static ContainerDispatcher createContainerDispatcher(
-            Container container) {
-        return impl.createContainerDispatcher(container);
     }
 
     /**

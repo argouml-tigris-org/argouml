@@ -50,13 +50,6 @@ public class PropPanelComponentInstance extends PropPanelInstance {
         super("Component Instance", lookupIcon("ComponentInstance"),
                 ConfigLoader.getTabPropsOrientation());
 
-        Object[] namesToWatch = {Model.getMetaTypes().getStereotype(),
-            Model.getMetaTypes().getNamespace(),
-            Model.getMetaTypes().getClassifier(),
-	};
-
-        getContainerDispatcher().setNameEventListening(namesToWatch);
-
         addField(Translator.localize("label.name"), getNameTextField());
 
         addField(Translator.localize("label.stereotype"), 
