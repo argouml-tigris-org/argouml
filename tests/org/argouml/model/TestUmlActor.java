@@ -24,9 +24,6 @@
 
 package org.argouml.model;
 
-import org.argouml.model.Model;
-
-
 /**
  * @author Thierry Lach
  */

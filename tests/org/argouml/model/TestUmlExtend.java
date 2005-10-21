@@ -50,13 +50,18 @@ public class TestUmlExtend extends GenericUmlObjectTestFixture {
 	validateTestClassIsGeneric(this);
     }
 
-    
+    /**
+     * Check that Usecases have Extends
+     */
     public void testUsecasesHaveExtend() {
         Object myextend = helper.getExtends(uc1, uc2);
         assertNotNull(myextend);
         assertSame(extend, myextend);
     }
     
+    /**
+     * Check that the Extends are correct
+     */
     public void testExtendIsCorrect() {
         Object base = 
             Model.getFacade().getBase(extend);
@@ -66,6 +71,9 @@ public class TestUmlExtend extends GenericUmlObjectTestFixture {
         assertSame(uc2, included);
     }
     
+    /**
+     * Test that ExtensionPoints got created correctly during setup
+     */
     public void testUsecaseHasExtensionPoints() {
         Collection eps = Model.getFacade().getExtensionPoints(uc1);
         assertTrue(eps.size() == 3);
@@ -76,6 +84,9 @@ public class TestUmlExtend extends GenericUmlObjectTestFixture {
         assertTrue(eps2.size() == 0);
     }
     
+    /**
+     * Test setting ExtensionPoints
+     */
     public void testSetExtensionPoints() {
         Collection eps = Model.getFacade().getExtensionPoints(uc1);
         helper.setExtensionPoints(extend, eps);

@@ -86,33 +86,33 @@ public class TestCoreHelper extends TestCase {
      * Test getting children.
      */
     public void testGetChildren() {
-    		CoreFactory coreFactory = Model.getCoreFactory();
-    		// Create a generalizable element with an element without children.
-    		Object ge = coreFactory.createClass();
-
-    		assertTrue(Model.getCoreHelper().getChildren(ge).size() == 0);
-
-	// Add one child.
-    		Object g1 = coreFactory.createGeneralization();
-	Model.getCoreHelper().setParent(g1,ge);
-	Model.getCoreHelper().setChild(g1,coreFactory.createClass());
-
-	assertTrue(Model.getCoreHelper().getChildren(ge).size() == 1);
-
-	// Add another child.
-	Object g2 = coreFactory.createGeneralization();
-	Model.getCoreHelper().setParent(g2,ge);
-	Object ge2 = coreFactory.createClass();
-	Model.getCoreHelper().setChild(g2,ge2);
-
-	assertTrue(Model.getCoreHelper().getChildren(ge).size() == 2);
-
-	// Add grandchild.
-	Object g3 = coreFactory.createGeneralization();
-	Model.getCoreHelper().setParent(g3,ge2);
-	Model.getCoreHelper().setChild(g3,coreFactory.createClass());
-
-	assertTrue(Model.getCoreHelper().getChildren(ge).size() == 3);
+        CoreFactory coreFactory = Model.getCoreFactory();
+        // Create a generalizable element with an element without children.
+        Object ge = coreFactory.createClass();
+        
+        assertTrue(Model.getCoreHelper().getChildren(ge).size() == 0);
+        
+        // Add one child.
+        Object g1 = coreFactory.createGeneralization();
+        Model.getCoreHelper().setParent(g1, ge);
+        Model.getCoreHelper().setChild(g1, coreFactory.createClass());
+        
+        assertTrue(Model.getCoreHelper().getChildren(ge).size() == 1);
+        
+        // Add another child.
+        Object g2 = coreFactory.createGeneralization();
+        Model.getCoreHelper().setParent(g2, ge);
+        Object ge2 = coreFactory.createClass();
+        Model.getCoreHelper().setChild(g2, ge2);
+        
+        assertTrue(Model.getCoreHelper().getChildren(ge).size() == 2);
+        
+        // Add grandchild.
+        Object g3 = coreFactory.createGeneralization();
+        Model.getCoreHelper().setParent(g3, ge2);
+        Model.getCoreHelper().setChild(g3, coreFactory.createClass());
+        
+        assertTrue(Model.getCoreHelper().getChildren(ge).size() == 3);
     }
     
     /**

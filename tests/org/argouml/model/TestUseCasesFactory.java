@@ -93,12 +93,14 @@ public class TestUseCasesFactory extends TestCase {
             	.buildExtend(base, extension, point);
         assertTrue("extensionpoint not added to base",
 		   !Model.getFacade().getExtensionPoints(base).isEmpty());
-        assertTrue("extend not added to base", !Model.getUseCasesHelper().getExtendingUseCases(base).isEmpty());
+        assertTrue("extend not added to base", 
+                !Model.getUseCasesHelper()
+                .getExtendingUseCases(base).isEmpty());
         assertTrue("extend not added to extension",
 		   !Model.getFacade().getExtends(extension).isEmpty());
         assertTrue("extend not added to correct extensionpoint",
 		   (Model.getFacade().getExtensionPoints(extend).contains(point)
-		    && Model.getFacade().getExtensionPoints(extend).size() == 1));
+		 && Model.getFacade().getExtensionPoints(extend).size() == 1));
     }
 
 

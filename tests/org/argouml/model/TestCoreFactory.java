@@ -97,7 +97,8 @@ public class TestCoreFactory extends TestCase {
      * Test creation of metatypes.
      *
      * TODO: we could add tests here to make sure that
-     * we can NOT create abstract types     */
+     * we can NOT create abstract types
+     */
     public void testCreates() {
 	Collection objs = new Vector();
 	
@@ -108,6 +109,7 @@ public class TestCoreFactory extends TestCase {
     	// Event.
         // UML 1.4 changes Instance and State to be abstract also.
 
+        // TODO: createAbstraction is not part of Model interface
 	objs.add("Abstraction");
 	//Association are abstract metaclass but we return an UmlAssociation 
 	//from the createAssociation method of the CoreFactory interface
@@ -186,7 +188,8 @@ public class TestCoreFactory extends TestCase {
         // Check to see if association still exists
         Collection ends = Model.getFacade().getAssociationEnds(class2);
         assertEquals(1, ends.size());
-        Object assoc1 = Model.getFacade().getAssociation(ends.iterator().next());
+        Object assoc1 = Model.getFacade()
+                .getAssociation(ends.iterator().next());
         assertEquals(2, Model.getFacade().getConnections(assoc1).size());
     }
 
@@ -205,12 +208,11 @@ public class TestCoreFactory extends TestCase {
         WeakReference class1wr = new WeakReference(class1);
         Model.getUmlFactory().delete(class1);
         class1 = null;
-        dep = null;
         System.gc();
         assertNull("class not removed", class1wr.get());
         assertEquals("invalid supplier dependency not removed", 
                 0, Model.getFacade().getSupplierDependencies(class2).size());
-        }
+    }
 
     /**
      * Test that deleting a class doesn't delete a valid dependency
@@ -275,7 +277,7 @@ public class TestCoreFactory extends TestCase {
         assertTrue("Invalid dependency not removed", 
                 Model.getFacade().getClientDependencies(class1).isEmpty());
     }
-    
+
     /**
      * Test if deleting a class with a dependency containing two suppliers
      * also deletes the invalid dependency
@@ -292,7 +294,6 @@ public class TestCoreFactory extends TestCase {
         Object class3 = Model.getCoreFactory().buildClass(model);
         Model.getCoreHelper().addSupplier(dep, class3);
         WeakReference class1wr = new WeakReference(class1);
-        WeakReference depwr = new WeakReference(dep);
         Model.getUmlFactory().delete(class1);
         class1 = null;
         dep = null;
@@ -324,7 +325,6 @@ public class TestCoreFactory extends TestCase {
         Object class3 = Model.getCoreFactory().buildClass(model);
         Model.getCoreHelper().addSupplier(dep, class3);
         WeakReference class2wr = new WeakReference(class2);
-        WeakReference depwr = new WeakReference(dep);
         Model.getUmlFactory().delete(class2);
         class2 = null;
         dep = null;
@@ -374,14 +374,18 @@ public class TestCoreFactory extends TestCase {
 	}
 	Object elem = Model.getModelManagementFactory().createModel();
 	Object con = Model.getCoreFactory().buildConstraint(elem);
-	assertNull("Namespace is unexpectly set", Model.getFacade().getNamespace(con));
+	assertNull("Namespace is unexpectly set", Model.getFacade()
+                .getNamespace(con));
 	assertTrue(
 		   "Constrained element is not set",
 		   !Model.getFacade().getConstrainedElements(con).isEmpty());
-	assertTrue("Constraint is not set", !Model.getFacade().getConstraints(elem).isEmpty());
-	Model.getCoreHelper().setNamespace(elem, Model.getModelManagementFactory().createPackage());
+	assertTrue("Constraint is not set", !Model.getFacade().getConstraints(
+                elem).isEmpty());
+        Model.getCoreHelper().setNamespace(elem,
+                Model.getModelManagementFactory().createPackage());
 	con = Model.getCoreFactory().buildConstraint(elem);
-	assertNotNull("Namespace is not set", Model.getFacade().getNamespace(con));
+	assertNotNull("Namespace is not set", Model.getFacade().getNamespace(
+                con));
     }
 
     /**
