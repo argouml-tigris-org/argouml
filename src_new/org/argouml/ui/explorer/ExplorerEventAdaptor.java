@@ -28,6 +28,7 @@ import java.beans.PropertyChangeListener;
 
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
+import org.argouml.kernel.NsumlEnabler;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -37,7 +38,7 @@ import org.argouml.model.RemoveAssociationEvent;
 /**
  * All events going to the Explorer must pass through here first!<p>
  *
- * Most will come from the uml model via ExplorerNSUMLEventAdaptor.<p>
+ * Most will come from the uml model via the EventAdapter interface.<p>
  *
  * TODO: In some cases (test cases) this object is created without setting
  * the treeModel. I (Linus) will add tests for this now. It would be better
@@ -173,40 +174,29 @@ public final class ExplorerEventAdaptor
         }
 
         // uml model events
-//        - No longer fired from ExplorerNSUMLEventAdapter
-//        if (pce.getPropertyName() 
-//                .equals("umlModelStructureChanged")) {
-//            treeModel.structureChanged();
-//        }
-
-//        if (pce.getPropertyName()
-//                .equals("modelElementRemoved")) {
-//            treeModel.modelElementRemoved(pce.getNewValue());
-//        }
         if (pce instanceof RemoveAssociationEvent) {
-            treeModel.modelElementRemoved(
-                    ((RemoveAssociationEvent) pce).getChangedValue());
+            // TODO: This should really be coded the other way round,
+            // to only act on properties that are recognized, rather
+            // than exclude one or more, but I don't know what they
+            // all are - tfm
+            if (NsumlEnabler.isNsuml()
+                    || !("namespace".equals(pce.getPropertyName()))) {
+                treeModel.modelElementRemoved(((RemoveAssociationEvent) pce)
+                        .getChangedValue());
+            }
         }
         
-
-//        if (pce.getPropertyName()
-//                .equals("modelElementAdded")) {
-//            treeModel.modelElementAdded(pce.getNewValue());
-//        }
         if (pce instanceof AddAssociationEvent) {
-            treeModel.modelElementAdded(
-                    ((AddAssociationEvent) pce).getSource());
+            if (NsumlEnabler.isNsuml()
+                    || !("namespace".equals(pce.getPropertyName()))) {
+                treeModel.modelElementAdded(
+                        ((AddAssociationEvent) pce).getSource());
+            }
         }
         
-
-//        if (pce.getPropertyName()
-//                .equals("modelElementChanged")) {
-//            treeModel.modelElementChanged(pce.getNewValue());
-//        }
         if (pce instanceof AttributeChangeEvent) {
             treeModel.modelElementChanged(pce.getSource());
         }
-        
-        
+
     }
 }
