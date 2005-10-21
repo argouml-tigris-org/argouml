@@ -180,27 +180,6 @@ public class TestAgainstUmlModel extends TestCase {
         refs = new Hashtable(127);
     }
 
-    //UML 1.4 support
-    /**
-     * Indicate if we are in a UML 1.4 implementation.
-     */
-    static boolean UML_14;
-
-    static {
-        /*
-         * Check for UML metamodel version.
-         * 
-         * We currently only test the UML 1.3 subset even in UML 1.4
-         * implementations, so this is always false.
-         */
-        UML_14 = false;
-
-//        String nsumlImpl = "org.argouml.model.uml.NSUMLModelImplementation";
-//        
-//        UML_14 = !nsumlImpl.equals(System.getProperty(
-//                "argouml.model.implementation",nsumlImpl));
-    }
-    
     static {
         refs.put("Multiplicity",          new CannotTestFactoryMethod());
         refs.put("MultiplicityRange",     new CannotTestFactoryMethod());
@@ -257,8 +236,7 @@ public class TestAgainstUmlModel extends TestCase {
         		new CannotTestFactoryMethod());
         refs.put("TaggedValue",
 		 Model.getExtensionMechanismsFactory());
-        // Instance is not abstract in UML 1.3, but we don't use it, so don't test
-        // It was changed to abstract in UML 1.4
+        // Instance changed from concrete to abstract between UML 1.3 & 1.4
         refs.put("Instance",              new CannotTestClassIsAbstract());
         refs.put("Signal",                Model.getCommonBehaviorFactory());
         refs.put("Action",                new CannotTestClassIsAbstract());
@@ -300,8 +278,7 @@ public class TestAgainstUmlModel extends TestCase {
         refs.put("StateMachine",          Model.getStateMachinesFactory());
         refs.put("Event",                 new CannotTestClassIsAbstract());
         refs.put("StateVertex",           new CannotTestClassIsAbstract());
-        // State is not abstract in UML 1.3, but we don't use it, so don't test
-        // It was changed to abstract in UML 1.4
+        // State changed from concrete to abstract between UML 1.3 & 1.4
     	refs.put("State",                 new CannotTestClassIsAbstract());
         refs.put("TimeEvent",             Model.getStateMachinesFactory());
         refs.put("CallEvent",             Model.getStateMachinesFactory());

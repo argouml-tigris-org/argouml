@@ -113,9 +113,9 @@ public class TestCommonBehaviorFactory extends TestCase {
 	objs.add("UninterpretedAction");
 
 	CheckUMLModelHelper.createAndRelease(
-					     Model.getCommonBehaviorFactory(),
-					     // +1 in the size of the array because we also test the null value
-					     (String[]) objs.toArray(new String[objs.size()+1]));
+	        Model.getCommonBehaviorFactory(),
+	        // +1 in array size because we also test the null value
+	        (String[]) objs.toArray(new String[objs.size()+1]));
 
     }
 
