@@ -45,7 +45,7 @@ public class TestCopyHelper extends TestCase {
      * Testing the existance of public static members.
      */
     public void compileTestPublicStaticMembers() {
-    		Model.getCopyHelper();
+        Model.getCopyHelper();
     }
 
     /**
@@ -73,12 +73,11 @@ public class TestCopyHelper extends TestCase {
 	Object st;
 
 	k = Model.getCoreFactory().createClass();
-	Model.getCoreHelper().addOwnedElement(m1,k);
+	Model.getCoreHelper().addOwnedElement(m1, k);
 
-	st = Model.getExtensionMechanismsFactory()
-	        .buildStereotype("clsStT", k);
-	Model.getExtensionMechanismsHelper().setBaseClass(st,"Class");
-	Model.getCoreHelper().addOwnedElement(m1,st);
+        st = Model.getExtensionMechanismsFactory().buildStereotype("clsStT", k);
+        Model.getExtensionMechanismsHelper().setBaseClass(st, "Class");
+        Model.getCoreHelper().addOwnedElement(m1, st);
 
 	// See if we can copy a class right off
 	o = helper.copy(k, m2);
@@ -89,30 +88,30 @@ public class TestCopyHelper extends TestCase {
 	checkClassCopy(k, c);
 
 	// Change things
-	Model.getCoreHelper().setName(k,"TestClass");
-	Model.getCoreHelper().setVisibility(k, 
+	Model.getCoreHelper().setName(k, "TestClass");
+        Model.getCoreHelper().setVisibility(k,
                 Model.getVisibilityKind().getPublic());
-	Model.getCoreHelper().setSpecification(k,true);
-	Model.getCoreHelper().setTaggedValue(k,"TVKey", "TVValue");
-	Model.getCoreHelper().setActive(k,false);
+        Model.getCoreHelper().setSpecification(k, true);
+        Model.getCoreHelper().setTaggedValue(k, "TVKey", "TVValue");
+        Model.getCoreHelper().setActive(k, false);
 	c = helper.copy(k, m2);
 	checkClassCopy(k, c);
 
 	// Assert that the copy isn't modified when the source changes
-	Model.getCoreHelper().setName(k,"TestClass2");
-	Model.getCoreHelper().setVisibility(k, 
+	Model.getCoreHelper().setName(k, "TestClass2");
+        Model.getCoreHelper().setVisibility(k,
                 Model.getVisibilityKind().getProtected());
-	Model.getCoreHelper().setSpecification(k,false);
-	Model.getCoreHelper().setTaggedValue(k,"TVKey", "TVNewValue");	
-	Model.getCoreHelper().setActive(k,true);
-	Model.getExtensionMechanismsHelper().setStereoType(k,st);		
+        Model.getCoreHelper().setSpecification(k, false);
+        Model.getCoreHelper().setTaggedValue(k, "TVKey", "TVNewValue");
+        Model.getCoreHelper().setActive(k, true);
+        Model.getExtensionMechanismsHelper().setStereoType(k, st);		
 	assertEquals("TestClass", Model.getFacade().getName(c));
 	assertTrue(Model.getFacade().getVisibility(c) 
                 == Model.getVisibilityKind().getPublic());
 	assertTrue(Model.getFacade().isSpecification(c));
 	assertTrue(!Model.getFacade().isActive(c));
 	assertEquals("TVValue", Model.getFacade().getValueOfTag(
-			Model.getFacade().getTaggedValue(c,"TVKey")));
+                Model.getFacade().getTaggedValue(c, "TVKey")));
 
 	// See if the other copy was just a lucky shot
 	c = helper.copy(k, m2);
@@ -138,12 +137,11 @@ public class TestCopyHelper extends TestCase {
 	Object st;
 
 	d = Model.getCoreFactory().createDataType();
-	Model.getCoreHelper().addOwnedElement(m1,d);
+        Model.getCoreHelper().addOwnedElement(m1, d);
 
-	st = Model.getExtensionMechanismsFactory()
-	        .buildStereotype("dttStT", d);
-	Model.getExtensionMechanismsHelper().setBaseClass(st,"DataType");
-	Model.getCoreHelper().addOwnedElement(m1,st);
+        st = Model.getExtensionMechanismsFactory().buildStereotype("dttStT", d);
+        Model.getExtensionMechanismsHelper().setBaseClass(st, "DataType");
+        Model.getCoreHelper().addOwnedElement(m1, st);
 
 	// See if we can copy a datatype right off
 	o = helper.copy(d, m2);
@@ -154,28 +152,27 @@ public class TestCopyHelper extends TestCase {
 	checkDataTypeCopy(d, c);
 
 	// Change things
-	Model.getCoreHelper().setName(d,"TestDataType");
-	Model.getCoreHelper().setVisibility(d, 
+	Model.getCoreHelper().setName(d, "TestDataType");
+        Model.getCoreHelper().setVisibility(d,
                 Model.getVisibilityKind().getPublic());
-	Model.getCoreHelper().setSpecification(d,true);
-	Model.getCoreHelper().setTaggedValue(d,"TVKey","TVValue");	
+        Model.getCoreHelper().setSpecification(d, true);
+        Model.getCoreHelper().setTaggedValue(d, "TVKey", "TVValue");	
 	c = helper.copy(d, m2);
 	checkDataTypeCopy(d, c);
 
 	// Assert that the copy isn't modified when the source changes
-	Model.getCoreHelper().setName(d,"TestDataType2");
-	Model.getCoreHelper().setVisibility(d, 
+	Model.getCoreHelper().setName(d, "TestDataType2");
+        Model.getCoreHelper().setVisibility(d,
                 Model.getVisibilityKind().getProtected());
-	Model.getCoreHelper().setSpecification(d,false);
-	Model.getCoreHelper().setTaggedValue(d,"TVKey","TVNewValue");
-	Model.getExtensionMechanismsHelper().setStereoType(d,st);	
+        Model.getCoreHelper().setSpecification(d, false);
+        Model.getCoreHelper().setTaggedValue(d, "TVKey", "TVNewValue");
+        Model.getExtensionMechanismsHelper().setStereoType(d, st);	
 	assertEquals("TestDataType", Model.getFacade().getName(c));
 	assertTrue(Model.getFacade().getVisibility(c) 
                 == Model.getVisibilityKind().getPublic());
 	assertTrue(Model.getFacade().isSpecification(c));
 	assertEquals("TVValue", Model.getFacade().getValueOfTag(
-			Model.getFacade().getTaggedValue(c,"TVKey"))
-			);
+                Model.getFacade().getTaggedValue(c, "TVKey")));
 
 	// See if the other copy was just a lucky shot
 	c = helper.copy(d, m2);
@@ -201,12 +198,11 @@ public class TestCopyHelper extends TestCase {
 	Object st;
 
 	i = Model.getCoreFactory().createInterface();
-	Model.getCoreHelper().addOwnedElement(m1,i);
+        Model.getCoreHelper().addOwnedElement(m1, i);
 
-	st = Model.getExtensionMechanismsFactory()
-	        .buildStereotype("intStT", i);
-	Model.getExtensionMechanismsHelper().setBaseClass(st,"Interface");	
-	Model.getCoreHelper().addOwnedElement(m1,st);
+        st = Model.getExtensionMechanismsFactory().buildStereotype("intStT", i);
+        Model.getExtensionMechanismsHelper().setBaseClass(st, "Interface");
+        Model.getCoreHelper().addOwnedElement(m1, st);
 
 	// See if we can copy an interface right off
 	o = helper.copy(i, m2);
@@ -217,27 +213,27 @@ public class TestCopyHelper extends TestCase {
 	checkInterfaceCopy(i, c);
 
 	// Change things
-	Model.getCoreHelper().setName(i,"TestInterface");
-	Model.getCoreHelper().setVisibility(i, 
+        Model.getCoreHelper().setName(i, "TestInterface");
+        Model.getCoreHelper().setVisibility(i,
                 Model.getVisibilityKind().getPublic());
-	Model.getCoreHelper().setSpecification(i,true);
-	Model.getCoreHelper().setTaggedValue(i,"TVKey","TVValue");	
-	c = helper.copy(i, m2);
-	checkInterfaceCopy(i, c);
+        Model.getCoreHelper().setSpecification(i, true);
+        Model.getCoreHelper().setTaggedValue(i, "TVKey", "TVValue");
+        c = helper.copy(i, m2);
+        checkInterfaceCopy(i, c);
 
 	// Assert that the copy isn't modified when the source changes
-	Model.getCoreHelper().setName(i,"TestInterface2");
-	Model.getCoreHelper().setVisibility(i,
+        Model.getCoreHelper().setName(i, "TestInterface2");
+        Model.getCoreHelper().setVisibility(i,
                 Model.getVisibilityKind().getProtected());
-	Model.getCoreHelper().setSpecification(i,false);
-	Model.getCoreHelper().setTaggedValue(i,"TVKey","TVNewValue");
-	Model.getExtensionMechanismsHelper().setStereoType(i,st);	
+        Model.getCoreHelper().setSpecification(i, false);
+        Model.getCoreHelper().setTaggedValue(i, "TVKey", "TVNewValue");
+        Model.getExtensionMechanismsHelper().setStereoType(i, st);	
 	assertEquals("TestInterface", Model.getFacade().getName(c));
 	assertTrue(Model.getFacade().getVisibility(c) 
                 == Model.getVisibilityKind().getPublic());
 	assertTrue(Model.getFacade().isSpecification(c));
 	assertEquals("TVValue", Model.getFacade().getValueOfTag(
-			Model.getFacade().getTaggedValue(c,"TVKey")));
+                Model.getFacade().getTaggedValue(c, "TVKey")));
 
 	// See if the other copy was just a lucky shot
 	c = helper.copy(i, m2);
@@ -263,12 +259,11 @@ public class TestCopyHelper extends TestCase {
 	Object st;
 
 	p = Model.getModelManagementFactory().createPackage();
-	Model.getCoreHelper().addOwnedElement(m1,p);
+        Model.getCoreHelper().addOwnedElement(m1, p);
 
-	st = Model.getExtensionMechanismsFactory()
-	        .buildStereotype("pkgStT", p);
-	Model.getExtensionMechanismsHelper().setBaseClass(st,"Package");
-	Model.getCoreHelper().addOwnedElement(m1,st);
+        st = Model.getExtensionMechanismsFactory().buildStereotype("pkgStT", p);
+        Model.getExtensionMechanismsHelper().setBaseClass(st, "Package");
+        Model.getCoreHelper().addOwnedElement(m1, st);
 
 	// See if we can copy a package right off
 	o = helper.copy(p, m2);
@@ -279,27 +274,27 @@ public class TestCopyHelper extends TestCase {
 	checkPackageCopy(p, c);
 
 	// Change things
-	Model.getCoreHelper().setName(p,"TestPackage");
-	Model.getCoreHelper().setVisibility(p,
+	Model.getCoreHelper().setName(p, "TestPackage");
+        Model.getCoreHelper().setVisibility(p,
                 Model.getVisibilityKind().getPublic());
-	Model.getCoreHelper().setSpecification(p,true);
-	Model.getCoreHelper().setTaggedValue(p,"TVKey","TVValue");	
-	c = helper.copy(p, m2);
+        Model.getCoreHelper().setSpecification(p, true);
+        Model.getCoreHelper().setTaggedValue(p, "TVKey", "TVValue");
+        c = helper.copy(p, m2);
 	checkPackageCopy(p, c);
 
 	// Assert that the copy isn't modified when the source changes
-	Model.getCoreHelper().setName(p,"TestPackage2");
-	Model.getCoreHelper().setVisibility(p,
+        Model.getCoreHelper().setName(p, "TestPackage2");
+        Model.getCoreHelper().setVisibility(p,
                 Model.getVisibilityKind().getProtected());
-	Model.getCoreHelper().setSpecification(p,false);
-	Model.getCoreHelper().setTaggedValue(p,"TVKey","TVNewValue");	
-	Model.getExtensionMechanismsHelper().setStereoType(p,st);	
+        Model.getCoreHelper().setSpecification(p, false);
+        Model.getCoreHelper().setTaggedValue(p, "TVKey", "TVNewValue");
+        Model.getExtensionMechanismsHelper().setStereoType(p, st);	
 	assertEquals("TestPackage", Model.getFacade().getName(c));
 	assertTrue(Model.getFacade().getVisibility(c)  
                 == Model.getVisibilityKind().getPublic());
 	assertTrue(Model.getFacade().isSpecification(c));
 	assertEquals("TVValue", Model.getFacade().getValueOfTag(
-			Model.getFacade().getTaggedValue(c,"TVKey")));
+                Model.getFacade().getTaggedValue(c, "TVKey")));
 
 	// See if the other copy was just a lucky shot
 	c = helper.copy(p, m2);
@@ -324,14 +319,13 @@ public class TestCopyHelper extends TestCase {
 	Object s;
 	Object st;
 
-	s = Model.getExtensionMechanismsFactory()
-	        .buildStereotype(null, m1);
-	Model.getCoreHelper().addOwnedElement(m1,s);
+	s = Model.getExtensionMechanismsFactory().buildStereotype(null, m1);
+        Model.getCoreHelper().addOwnedElement(m1, s);
 
-	st = Model.getExtensionMechanismsFactory()
-	        .buildStereotype("sttStT", m1);
-	Model.getExtensionMechanismsHelper().setBaseClass(st,"Stereotype");
-	Model.getCoreHelper().addOwnedElement(m1,st);
+        st = Model.getExtensionMechanismsFactory()
+                .buildStereotype("sttStT", m1);
+        Model.getExtensionMechanismsHelper().setBaseClass(st, "Stereotype");
+        Model.getCoreHelper().addOwnedElement(m1, st);
 
 	// See if we can copy a stereotype right off
 	o = helper.copy(s, m2);
@@ -342,32 +336,33 @@ public class TestCopyHelper extends TestCase {
 	checkStereotypeCopy(s, c);
 
 	// Change things
-	Model.getCoreHelper().setName(s,"TestStereotype");
-	Model.getCoreHelper().setVisibility(s,
+        Model.getCoreHelper().setName(s, "TestStereotype");
+        Model.getCoreHelper().setVisibility(s,
                 Model.getVisibilityKind().getPublic());
-	Model.getCoreHelper().setSpecification(s,true);
-	Model.getCoreHelper().setTaggedValue(s,"TVKey","TVValue");	
-	Model.getExtensionMechanismsHelper().setBaseClass(s,"ModelElement");	
-	Model.getExtensionMechanismsHelper().setIcon(s,"Icon1");
+        Model.getCoreHelper().setSpecification(s, true);
+        Model.getCoreHelper().setTaggedValue(s, "TVKey", "TVValue");
+        Model.getExtensionMechanismsHelper().setBaseClass(s, "ModelElement");
+        Model.getExtensionMechanismsHelper().setIcon(s, "Icon1");
 	c = helper.copy(s, m2);
 	checkStereotypeCopy(s, c);
 
 	// Assert that the copy isn't modified when the source changes
-	Model.getCoreHelper().setName(s,"TestStereotype2");
-	Model.getCoreHelper().setVisibility(s,Model.getVisibilityKind().getProtected());
-	Model.getCoreHelper().setSpecification(s,false);
-	Model.getCoreHelper().setTaggedValue(s,"TVKey","TVNewValue");	
-	Model.getExtensionMechanismsHelper().setStereoType(s,st);		
-	Model.getExtensionMechanismsHelper().setBaseClass(st,"ClassifierRole");	
-	Model.getExtensionMechanismsHelper().setIcon(s,"Icon2");
-	assertEquals("TestStereotype", Model.getFacade().getName(c));
-	assertTrue(Model.getFacade().getVisibility(c)  == Model.getVisibilityKind().getPublic());
-	assertTrue(Model.getFacade().isSpecification(c));
-	assertEquals("ModelElement", Model.getFacade().getBaseClass(c));
-	assertEquals("Icon1", Model.getFacade().getIcon(c));
-	assertEquals("TVValue", Model.getFacade().getValueOfTag(
-			Model.getFacade().getTaggedValue(c,"TVKey"))
-			);
+        Model.getCoreHelper().setName(s, "TestStereotype2");
+        Model.getCoreHelper().setVisibility(s,
+                Model.getVisibilityKind().getProtected());
+        Model.getCoreHelper().setSpecification(s, false);
+        Model.getCoreHelper().setTaggedValue(s, "TVKey", "TVNewValue");
+        Model.getExtensionMechanismsHelper().setStereoType(s, st);
+        Model.getExtensionMechanismsHelper().setBaseClass(st, "ClassifierRole");
+        Model.getExtensionMechanismsHelper().setIcon(s, "Icon2");
+        assertEquals("TestStereotype", Model.getFacade().getName(c));
+        assertTrue(Model.getFacade().getVisibility(c) == Model
+                .getVisibilityKind().getPublic());
+        assertTrue(Model.getFacade().isSpecification(c));
+        assertEquals("ModelElement", Model.getFacade().getBaseClass(c));
+        assertEquals("Icon1", Model.getFacade().getIcon(c));
+        assertEquals("TVValue", Model.getFacade().getValueOfTag(
+                Model.getFacade().getTaggedValue(c, "TVKey")));
 
 	// See if the other copy was just a lucky shot
 	c = helper.copy(s, m2);
@@ -378,13 +373,13 @@ public class TestCopyHelper extends TestCase {
 	checkStereotypeCopy(c, c2);
     }
 
-    private void checkBaseCopy(Object b1,Object b2) {
+    private void checkBaseCopy(Object b1, Object b2) {
     }
 
     private void checkClassCopy(Object c1, Object c2) {
-	checkClassifierCopy(c1, c2);
-
-	assertTrue(Model.getFacade().isActive(c1) == Model.getFacade().isActive(c2));
+        checkClassifierCopy(c1, c2);
+        assertTrue(Model.getFacade().isActive(c1) == Model.getFacade()
+                .isActive(c2));
     }
 
     private void checkClassifierCopy(Object c1, Object c2) {
@@ -405,9 +400,10 @@ public class TestCopyHelper extends TestCase {
     		Object e2) {
 	checkModelElementCopy(e1, e2);
 
-	assertTrue(Model.getFacade().isAbstract(e1) == Model.getFacade().isAbstract(e2));
-	assertTrue(Model.getFacade().isLeaf(e1) == Model.getFacade().isLeaf(e2));
-	assertTrue(Model.getFacade().isRoot(e1) == Model.getFacade().isRoot(e2));
+	assertTrue(Model.getFacade().isAbstract(e1) == Model.getFacade()
+                .isAbstract(e2));
+        assertTrue(Model.getFacade().isLeaf(e1) == Model.getFacade().isLeaf(e2));
+        assertTrue(Model.getFacade().isRoot(e1) == Model.getFacade().isRoot(e2));
     }
 
     private void checkInterfaceCopy(Object i1, Object i2) {
@@ -417,20 +413,25 @@ public class TestCopyHelper extends TestCase {
     private void checkModelElementCopy(Object e1, Object e2) {
 	checkElementCopy(e1, e2);
 	if (Model.getFacade().getName(e1) == null) {
-	    assertNull(Model.getFacade().getName(e2));
-	} else {
-	    assertEquals(Model.getFacade().getName(e1), Model.getFacade().getName(e2));
-	}
-	assertTrue(Model.getFacade().getVisibility(e1) == Model.getFacade().getVisibility(e2));
-	assertTrue(Model.getFacade().isSpecification(e1) == Model.getFacade().isSpecification(e2));
+            assertNull(Model.getFacade().getName(e2));
+        } else {
+            assertEquals(Model.getFacade().getName(e1), Model.getFacade()
+                    .getName(e2));
+        }
+        assertTrue(Model.getFacade().getVisibility(e1) == Model.getFacade()
+                .getVisibility(e2));
+        assertTrue(Model.getFacade().isSpecification(e1) == Model.getFacade()
+                .isSpecification(e2));
 
-	assertTrue(Model.getFacade().getTaggedValuesCollection(e1).size() == Model.getFacade().getTaggedValuesCollection(e2).size());
+        assertTrue(Model.getFacade().getTaggedValuesCollection(e1).size() 
+                == Model.getFacade().getTaggedValuesCollection(e2).size());
 	Iterator it = Model.getFacade().getTaggedValues(e1);
 	while (it.hasNext()) {
 	    Object tv = it.next();
 	    //TODO: not sure if we must use getTag here
-	    Object e2Tv = Model.getFacade().getTaggedValue(e2,Model.getFacade().getTag(tv));
-	    if (Model.getFacade().getValueOfTag(tv)==null) {
+	    Object e2Tv = Model.getFacade().getTaggedValue(e2,
+                    Model.getFacade().getTag(tv));
+            if (Model.getFacade().getValueOfTag(tv) == null) {
 	        assertNull(Model.getFacade().getValueOfTag(e2Tv));
 	    } else {
 	        assertEquals(Model.getFacade().getValueOfTag(tv), 
@@ -438,14 +439,16 @@ public class TestCopyHelper extends TestCase {
 	    }
 	}
 
-	if (Model.getFacade().getStereotypes(e1)==null) {
+	if (Model.getFacade().getStereotypes(e1) == null) {
 	    assertNull(Model.getFacade().getStereotypes(e2));
 	} else if (Model.getFacade().getStereotypes(e1).isEmpty()) {
 	    assertTrue(Model.getFacade().getStereotypes(e2).isEmpty());
 	} else {
 	    assertTrue(!Model.getFacade().getStereotypes(e2).isEmpty());
-	    Object firstStereoOfe1 = Model.getFacade().getStereotypes(e1).iterator().next();
-	    Object firstStereoOfe2 = Model.getFacade().getStereotypes(e2).iterator().next();
+	    Object firstStereoOfe1 = Model.getFacade().getStereotypes(e1)
+                    .iterator().next();
+            Object firstStereoOfe2 = Model.getFacade().getStereotypes(e2)
+                    .iterator().next();
 	    assertNotNull(Model.getFacade().getName(firstStereoOfe2));
 	    assertEquals(Model.getFacade().getName(firstStereoOfe1),
 	    		Model.getFacade().getName(firstStereoOfe2));
@@ -465,14 +468,16 @@ public class TestCopyHelper extends TestCase {
 	if (Model.getFacade().getBaseClass(s1) == null) {
 	    assertNull(Model.getFacade().getBaseClass(s2));
 	} else {
-	    assertEquals(Model.getFacade().getBaseClass(s1), Model.getFacade().getBaseClass(s2));
-	}
+            assertEquals(Model.getFacade().getBaseClass(s1), Model.getFacade()
+                    .getBaseClass(s2));
+        }
 
 	if (Model.getFacade().getIcon(s1) == null) {
 	    assertNull(Model.getFacade().getIcon(s2));
 	} else {
-	    assertEquals(Model.getFacade().getIcon(s1), Model.getFacade().getIcon(s2));
-	}
+            assertEquals(Model.getFacade().getIcon(s1), Model.getFacade()
+                    .getIcon(s2));
+        }
 
 	// TODO: constraints
 	// TODO: required tags
