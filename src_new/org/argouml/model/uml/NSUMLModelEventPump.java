@@ -44,7 +44,6 @@ import org.argouml.model.RemoveAssociationEvent;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 /**
@@ -105,14 +104,15 @@ class NSUMLModelEventPump
                   + modelelement + ", "
                   + propertyNames + ")");
 
-        register(modelEventListeners,
-                 new NSUMLModelEventListener(listener,
-                         (MModelElement)modelelement, propertyNames, this));
+        register(modelEventListeners, new NSUMLModelEventListener(listener,
+                modelelement, propertyNames, this));
     }
 
     /**
-     * @param listeners The listeners.
-     * @param relay The NSUMLEventListener.
+     * @param listeners
+     *            The listeners.
+     * @param relay
+     *            The NSUMLEventListener.
      */
     private void register(Map listeners, NSUMLEventListener relay) {
         PropertyChangeListener listener = relay.getListener();
@@ -134,7 +134,7 @@ class NSUMLModelEventPump
                   + listener + ", "
                   + modelelement + ")");
         register(modelEventListeners,
-                 new NSUMLModelEventListener(listener, (MModelElement)modelelement, this));
+                 new NSUMLModelEventListener(listener, modelelement, this));
     }
 
     /**
@@ -234,8 +234,8 @@ class NSUMLModelEventPump
                   + modelClass + ", "
                   + propertyNames + ")");
         register(classEventListeners,
-                 new NSUMLClassEventListener(listener, modelClass, propertyNames,
-                         		     this));
+                 new NSUMLClassEventListener(listener, modelClass, 
+                                             propertyNames, this));
     }
 
     /**
@@ -273,9 +273,15 @@ class NSUMLModelEventPump
     }
     
     /**
-     * @see org.argouml.model.ModelEventPump#stopPumpingEvents()
+     * @see org.argouml.model.ModelEventPump#flushModelEvents()
      */
     public void flushModelEvents() {
+    }
+    
+    /**
+     * @see org.argouml.model.ModelEventPump#reallyFlushModelEvents()
+     */
+    public void reallyFlushModelEvents() {
         UmlModelEventPump.getPump().flushModelEvents();
     }
 }

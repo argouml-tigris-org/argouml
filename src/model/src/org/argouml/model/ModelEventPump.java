@@ -217,6 +217,16 @@ public interface ModelEventPump {
 
     /**
      * Flush events from the ModelEventPump.
+     * This is the old version called after every set()
+     * The intention is for it to go away after a brief testing period.
      */
     void flushModelEvents();
+    
+    /**
+     * Flush events from the ModelEventPump.
+     * New version to be used in places that have
+     * unusual synchronization requirements (like tests)
+     * It will be renamed to flushModelEvents after transition.
+     */
+    void reallyFlushModelEvents();
 }
