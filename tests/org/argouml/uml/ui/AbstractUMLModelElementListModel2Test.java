@@ -36,7 +36,7 @@ import org.argouml.model.Model;
  */
 public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
 
-    private int oldEventPolicy;
+    //private int oldEventPolicy;
     private Object elem;
     private UMLModelElementListModel2 model;
 
@@ -63,6 +63,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
         //MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         buildModel();
         model.setTarget(elem);
+        Model.getPump().reallyFlushModelEvents();
     }
 
     /**
@@ -95,6 +96,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
      */
     public void testAddMultiple() {
         Object[] elements = fillModel();
+        Model.getPump().reallyFlushModelEvents();
         assertEquals(10, model.getSize());
         assertEquals(model.getElementAt(5), elements[5]);
         assertEquals(model.getElementAt(0), elements[0]);
@@ -115,7 +117,9 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
      */
     public void testRemoveMultiple() {
         Object[] elements = fillModel();
+        Model.getPump().reallyFlushModelEvents();
         removeHalfModel(elements);
+        Model.getPump().reallyFlushModelEvents();
         assertEquals(5, model.getSize());
         assertEquals(elements[5], model.getElementAt(0));
     }

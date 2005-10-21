@@ -54,6 +54,7 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
 
 	box = new UMLFeatureOwnerScopeCheckBox();
         box.setTarget(elem);
+        Model.getPump().reallyFlushModelEvents();
     }
 
     /**
@@ -98,6 +99,7 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
             Model.getCoreHelper().setOwnerScope(elem,
                     Model.getScopeKind().getClassifier());
         }
+        Model.getPump().reallyFlushModelEvents();
         assertEquals(!selected, box.isSelected());
     }
 

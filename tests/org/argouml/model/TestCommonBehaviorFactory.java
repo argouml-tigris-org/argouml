@@ -115,7 +115,7 @@ public class TestCommonBehaviorFactory extends TestCase {
 	CheckUMLModelHelper.createAndRelease(
 	        Model.getCommonBehaviorFactory(),
 	        // +1 in array size because we also test the null value
-	        (String[]) objs.toArray(new String[objs.size()+1]));
+	        (String[]) objs.toArray(new String[objs.size() + 1]));
 
     }
 

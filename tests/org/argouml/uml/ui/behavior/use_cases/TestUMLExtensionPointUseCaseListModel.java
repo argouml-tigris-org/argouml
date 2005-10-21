@@ -53,6 +53,7 @@ public class TestUMLExtensionPointUseCaseListModel extends TestCase {
         elem = Model.getUseCasesFactory().createExtensionPoint();
         model = new UMLExtensionPointUseCaseListModel();
         model.setTarget(elem);
+        Model.getPump().reallyFlushModelEvents();
     }
 
     /**
@@ -70,6 +71,7 @@ public class TestUMLExtensionPointUseCaseListModel extends TestCase {
     public void testSetUseCase() {
         Object usecase = Model.getUseCasesFactory().createUseCase();
         Model.getUseCasesHelper().setUseCase(elem, usecase);
+        Model.getPump().reallyFlushModelEvents();
         assertEquals(1, model.getSize());
         assertEquals(usecase, model.getElementAt(0));
     }
@@ -81,6 +83,7 @@ public class TestUMLExtensionPointUseCaseListModel extends TestCase {
         Object usecase = Model.getUseCasesFactory().createUseCase();
         Model.getUseCasesHelper().setUseCase(elem, usecase);
         Model.getUseCasesHelper().setUseCase(elem, null);
+        Model.getPump().reallyFlushModelEvents();
         assertEquals(0, model.getSize());
     }
 

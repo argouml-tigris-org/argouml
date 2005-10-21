@@ -55,6 +55,7 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
         elem = Model.getCoreFactory().buildClass(ns);
         model = new UMLModelElementClientDependencyListModel();
         model.setTarget(elem);
+        Model.getPump().reallyFlushModelEvents();
     }
 
     /**
@@ -78,6 +79,7 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
             dependencies[i] =
                 Model.getCoreFactory().buildDependency(elem, suppliers[i]);
         }
+        Model.getPump().reallyFlushModelEvents();
         assertEquals(10, model.getSize());
         assertEquals(model.getElementAt(5), dependencies[5]);
         assertEquals(model.getElementAt(0), dependencies[0]);
@@ -98,6 +100,7 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
         for (int i = 0; i < 5; i++) {
             Model.getCoreHelper().removeClientDependency(elem, dependencies[i]);
         }
+        Model.getPump().reallyFlushModelEvents();
         assertEquals(5, model.getSize());
         assertEquals(dependencies[5], model.getElementAt(0));
     }

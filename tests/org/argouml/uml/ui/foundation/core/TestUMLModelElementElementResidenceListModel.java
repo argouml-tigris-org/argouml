@@ -58,6 +58,7 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
         list = new UMLModelElementElementResidenceListModel();
         list.setTarget(elem);
         Model.getPump().addModelEventListener(list, elem);
+        Model.getPump().reallyFlushModelEvents();
     }
 
     /**
@@ -76,6 +77,7 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
     public void testElementAdded() {
         Object res = Model.getCoreFactory().createElementResidence();
         helper.addElementResidence(elem, res);
+        Model.getPump().reallyFlushModelEvents();
         assertTrue(list.getSize() == 1);
         assertTrue(list.getElementAt(0) == res);
     }
@@ -86,9 +88,11 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
     public void testElementRemoved() {
         Object res = Model.getCoreFactory().createElementResidence();
         helper.addElementResidence(elem, res);
+        Model.getPump().reallyFlushModelEvents();
         assertTrue(list.getSize() == 1);
         assertTrue(list.getElementAt(0) == res);
         helper.removeElementResidence(elem, res);
+        Model.getPump().reallyFlushModelEvents();
         assertTrue(list.getSize() == 0);
     }
 
@@ -96,6 +100,7 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
      * Test getting an element when there is none.
      */
     public void testNoElements() {
+        Model.getPump().reallyFlushModelEvents();
         try {
             list.getElementAt(0);
             fail();

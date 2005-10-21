@@ -95,6 +95,7 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
 
         model = new UMLAssociationEndRoleBaseListModel();
         model.setTarget(elem);
+        Model.getPump().reallyFlushModelEvents();
     }
 
     /**
@@ -123,6 +124,7 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
      */
     public void testAdd() {
         Model.getCollaborationsHelper().setBase(elem, baseEnd);
+        Model.getPump().reallyFlushModelEvents();
         assertEquals(1, model.getSize());
         assertEquals(baseEnd, model.getElementAt(0));
     }
@@ -145,9 +147,8 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
      */
     public void testRemove() {
         Model.getCollaborationsHelper().setBase(elem, baseEnd);
-
         Model.getCollaborationsHelper().setBase(elem, null);
-
+        Model.getPump().reallyFlushModelEvents();
         assertEquals(0, model.getSize());
     }
 

@@ -111,10 +111,12 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      * </ul>
      */
     public void testCreateDiagram() {
+        Model.getPump().reallyFlushModelEvents();
 	assertTrue("The test case has a non-valid namespace",
 		   action.isValidNamespace(ns));
 
 	UMLDiagram diagram = action.createDiagram(ns);
+        Model.getPump().reallyFlushModelEvents();
 	assertNotNull(
 		      "The diagram has no namespace",
 		      diagram.getNamespace());
@@ -154,6 +156,7 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
         // there are no duplicates.
 	ProjectManager.getManager().getCurrentProject().addMember(diagram1);
         UMLDiagram diagram2 = action.createDiagram(ns);
+        Model.getPump().reallyFlushModelEvents();
 	assertTrue(
 		   "The created diagrams have the same name",
 		   !(diagram1.getName().equals(diagram2.getName())));

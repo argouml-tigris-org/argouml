@@ -86,6 +86,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
 					new Object[] {
 					    elem,
 					}));
+        Model.getPump().reallyFlushModelEvents();
     }
 
     /**
@@ -114,6 +115,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
      */
     public void testSetBase() {
         Model.getCollaborationsHelper().setBase(elem, bases[0]);
+        Model.getPump().reallyFlushModelEvents();
         assertTrue(model.getSelectedItem() == bases[0]);
     }
 
@@ -123,6 +125,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
     public void testSetBaseToNull() {
         Model.getCollaborationsHelper().setBase(elem, bases[0]);
         Model.getCollaborationsHelper().setBase(elem, null);
+        Model.getPump().reallyFlushModelEvents();
         assertNull(model.getSelectedItem());
     }
 
@@ -132,6 +135,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
     public void testRemoveBase() {
         Model.getUmlFactory().delete(bases[9]);
         // there is one extra element since removal of the base is allowed.
+        Model.getPump().reallyFlushModelEvents();
         assertEquals(9 + 1, model.getSize());
         assertTrue(!model.contains(bases[9]));
     }

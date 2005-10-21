@@ -54,6 +54,7 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
         elem = Model.getCollaborationsFactory().createInteraction();
         model = new UMLInteractionContextListModel();
         model.setTarget(elem);
+        Model.getPump().reallyFlushModelEvents();
     }
 
     /**
@@ -72,6 +73,7 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
         Object col =
 	    Model.getCollaborationsFactory().createCollaboration();
         Model.getCollaborationsHelper().setContext(elem, col);
+        Model.getPump().reallyFlushModelEvents();
         assertEquals(1, model.getSize());
         assertEquals(col, model.getElementAt(0));
     }
@@ -84,6 +86,7 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
 	    Model.getCollaborationsFactory().createCollaboration();
         Model.getCollaborationsHelper().setContext(elem, col);
         Model.getCollaborationsHelper().setContext(elem, null);
+        Model.getPump().reallyFlushModelEvents();
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
     }

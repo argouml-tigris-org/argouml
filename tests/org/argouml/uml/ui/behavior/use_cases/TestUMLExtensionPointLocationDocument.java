@@ -56,6 +56,7 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
         elem = Model.getUseCasesFactory().createExtensionPoint();
         model = new UMLExtensionPointLocationDocument();
         model.setTarget(elem);
+        Model.getPump().reallyFlushModelEvents();
     }
 
     /**
@@ -76,6 +77,7 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
     public void testSetName()
 	throws BadLocationException {
         Model.getUseCasesHelper().setLocation(elem, "test");
+        Model.getPump().reallyFlushModelEvents();
 	assertEquals("test", model.getText(0, model.getLength()));
     }
 
@@ -88,6 +90,7 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
 	throws BadLocationException {
         Model.getUseCasesHelper().setLocation(elem, "test");
         Model.getUseCasesHelper().setLocation(elem, null);
+        Model.getPump().reallyFlushModelEvents();
 	assertEquals("", model.getText(0, model.getLength()));
     }
 
@@ -98,7 +101,9 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
      */
     public void testInsertString()
 	throws BadLocationException {
+        Model.getPump().reallyFlushModelEvents();
 	model.insertString(0, "test", null);
+        Model.getPump().reallyFlushModelEvents();
         assertEquals("test", Model.getFacade().getLocation(elem));
     }
 
@@ -110,7 +115,9 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
     public void testRemoveString()
 	throws BadLocationException {
 	model.insertString(0, "test", null);
+        Model.getPump().reallyFlushModelEvents();
 	model.remove(0, model.getLength());
+        Model.getPump().reallyFlushModelEvents();
         assertEquals("", Model.getFacade().getLocation(elem));
     }
 
@@ -122,7 +129,9 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
     public void testAppendString()
 	throws BadLocationException {
         Model.getUseCasesHelper().setLocation(elem, "test");
+        Model.getPump().reallyFlushModelEvents();
 	model.insertString(model.getLength(), "test", null);
+        Model.getPump().reallyFlushModelEvents();
         assertEquals("testtest", Model.getFacade().getLocation(elem));
     }
 
@@ -134,7 +143,9 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
     public void testInsertStringHalfway()
 	throws BadLocationException {
         Model.getUseCasesHelper().setLocation(elem, "test");
+        Model.getPump().reallyFlushModelEvents();
 	model.insertString(1, "test", null);
+        Model.getPump().reallyFlushModelEvents();
         assertEquals("ttestest", Model.getFacade().getLocation(elem));
     }
 
@@ -146,7 +157,9 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
     public void testRemoveStringHalfway()
 	throws BadLocationException {
         Model.getUseCasesHelper().setLocation(elem, "test");
+        Model.getPump().reallyFlushModelEvents();
 	model.remove(1, model.getLength() - 2);
+        Model.getPump().reallyFlushModelEvents();
         assertEquals("tt", Model.getFacade().getLocation(elem));
     }
 

@@ -55,6 +55,7 @@ public class TestUMLCollaborationRepresentedOperationListModel
         elem = Model.getCollaborationsFactory().createCollaboration();
         model = new UMLCollaborationRepresentedOperationListModel();
         model.setTarget(elem);
+        Model.getPump().reallyFlushModelEvents();
     }
 
     /**
@@ -72,6 +73,7 @@ public class TestUMLCollaborationRepresentedOperationListModel
     public void testSetRepresentedOperation() {
         Object oper = Model.getCoreFactory().createOperation();
         Model.getCollaborationsHelper().setRepresentedOperation(elem, oper);
+        Model.getPump().reallyFlushModelEvents();
         assertEquals(1, model.getSize());
         assertEquals(oper, model.getElementAt(0));
     }
@@ -83,6 +85,7 @@ public class TestUMLCollaborationRepresentedOperationListModel
         Object oper = Model.getCoreFactory().createOperation();
         Model.getCollaborationsHelper().setRepresentedOperation(elem, oper);
         Model.getCollaborationsHelper().setRepresentedOperation(elem, null);
+        Model.getPump().reallyFlushModelEvents();
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
     }

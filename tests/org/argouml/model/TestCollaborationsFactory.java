@@ -98,7 +98,12 @@ public class TestCollaborationsFactory extends TestCase {
     /**
      * Test to check whether elements which are attached to a ClassifierRole get
      * deleted upon deletion of the ClassifierRole. These elements are
-     * Interaction, Message, AssociationRole.
+     * Message and AssociationRole.
+     * 
+     * Interaction should not be removed when removing ClassifierRole... maybe
+     * if the last message is removed from the interaction but even then it's
+     * doubtfull since it will probably lead to backward compatibility problems
+     * in save formats.
      */
     public void testDeleteClassifierRole() {
         Object model = Model.getModelManagementFactory().createModel();
@@ -119,6 +124,7 @@ public class TestCollaborationsFactory extends TestCase {
         WeakReference meswr = new WeakReference(mes);
 
         Model.getUmlFactory().delete(cr1);
+        Model.getPump().reallyFlushModelEvents();
         cr1 = null;
         role = null;
         inter = null;
@@ -126,14 +132,8 @@ public class TestCollaborationsFactory extends TestCase {
         System.gc();
         assertNull("ClassifierRole not removed", cr1wr.get());
         assertNull("AssociationRole not removed", rolewr.get());
-        // Interaction should not be removed when removing
-        // classifierrole...  maybe if the last message is removed
-        // from the interaction but even then it's doubtfull since it
-        // will probably lead to backward compatibility problems in
-        // save formats.
-        // assertNull("Interaction not removed", interwr.get());
         assertNull("Message not removed", meswr.get());
-
+        assertNotNull("Interaction removed", interwr.get());
     }
 
     /**
