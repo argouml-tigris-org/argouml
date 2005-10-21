@@ -49,6 +49,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.NsumlEnabler;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.swingext.SpacerPanel;
@@ -600,10 +601,10 @@ public class FindDialog extends ArgoDialog
 
 
 /**
- * PredicateMType is a small helper class which removes a trailing
- * M from the string representation of the Type, as all the types
- * are MThings. Thus they are more human readable when displayed
- * in the Find dialog
+ * PredicateMType is a small helper class which converts the
+ * string representation of the Type from internal form.
+ * Now that Type names aren't prefixed with NSUML's "M" the
+ * name of the class is somewhat of a misnomer.
  */
 class PredicateMType extends PredicateType {
     protected PredicateMType(Class[] pats) {
@@ -645,9 +646,19 @@ class PredicateMType extends PredicateType {
      */
     public String toString() {
         String result = super.toString();
-        if (result.startsWith("M")) {
-            result = result.substring(1);
+        // TODO: This shouldn't know the internal form of type names,
+        // but I'm not sure what GEF's PredicateType does, so I'm fixing it
+        // here - tfm
+        if (NsumlEnabler.isNsuml()) {
+            if (result.startsWith("M")) {
+                result = result.substring(1);
+            }            
+        } else {
+            if (result.startsWith("Uml")) {
+                result = result.substring(3);
+            }
         }
+
         return result;
     }
-}
+} /* end class PredicateMType */
