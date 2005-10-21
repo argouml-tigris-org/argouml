@@ -78,7 +78,7 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
 	}
         box.doClick();
         assertEquals(
-        		Model.getScopeKind().getClassifier(),
+                Model.getScopeKind().getClassifier(), 
                 Model.getFacade().getOwnerScope(elem));
     }
 
@@ -92,9 +92,11 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
 	}
         boolean selected = box.isSelected();
         if (selected) {
-            Model.getCoreHelper().setOwnerScope(elem, Model.getScopeKind().getInstance());
+            Model.getCoreHelper().setOwnerScope(elem,
+                    Model.getScopeKind().getInstance());
         } else {
-            Model.getCoreHelper().setOwnerScope(elem, Model.getScopeKind().getClassifier());
+            Model.getCoreHelper().setOwnerScope(elem,
+                    Model.getScopeKind().getClassifier());
         }
         assertEquals(!selected, box.isSelected());
     }

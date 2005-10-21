@@ -74,7 +74,8 @@ public class TestUMLCollaborationInteractionListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-        		Model.getCollaborationsHelper().removeInteraction(getElem(),elements[i]);
+            Model.getCollaborationsHelper().removeInteraction(getElem(),
+                    elements[i]);
         }
     }
 
