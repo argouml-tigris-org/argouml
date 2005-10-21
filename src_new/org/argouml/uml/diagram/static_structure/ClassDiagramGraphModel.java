@@ -261,12 +261,14 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         if (Model.getFacade().isAAssociation(edge)) {
             Collection conns = Model.getFacade().getConnections(edge);
             if (conns.size() < 2) {
+                LOG.error("Association rejected. Must have at least 2 ends");
                 return false;
             }
             Iterator iter = conns.iterator();
             Object associationEnd0 = iter.next();
             Object associationEnd1 = iter.next();
             if (associationEnd0 == null || associationEnd1 == null) {
+                LOG.error("Association rejected. Both ends are null");
                 return false;
             }
             end0 = Model.getFacade().getType(associationEnd0);
@@ -309,13 +311,18 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         }
         
         if (end0 == null || end1 == null) {
+            LOG.error("Edge rejected. Its ends are not attached to anything");
             return false;
         }
         
         if (!containsNode(end0)) {
+            LOG.error("Edge rejected. " + 
+                    "Its source end is not attached to a node on the diagram");
             return false;
         }
         if (!containsNode(end1)) {
+            LOG.error("Edge rejected. " + 
+            "Its destination end is not attached to a node on the diagram");
             return false;
         }
         
