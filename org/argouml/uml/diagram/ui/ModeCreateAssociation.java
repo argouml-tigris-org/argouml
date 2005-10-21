@@ -140,18 +140,18 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
             return;
         }
         int x = me.getX(), y = me.getY();
-        Fig f = editor.hit(x, y);
-        if (f == null) {
-            f = editor.hit(x - 16, y - 16, 32, 32);
+        Fig destFig = editor.hit(x, y);
+        if (destFig == null) {
+            destFig = editor.hit(x - 16, y - 16, 32, 32);
         }
         GraphModel graphModel = editor.getGraphModel();
         if (!(graphModel instanceof MutableGraphModel)) {
-            f = null;
+            destFig = null;
         }
         MutableGraphModel mutableGraphModel = (MutableGraphModel) graphModel;
         // TODO: potential class cast exception
-        if (f instanceof FigAssociation)  {
-            Object assoc = f.getOwner();
+        if (destFig instanceof FigAssociation)  {
+            Object assoc = destFig.getOwner();
             Object edgeType = getArg("edgeClass");
             if (Model.getMetaTypes().getAssociation().equals(edgeType)) {
                 boolean isValid =
@@ -164,8 +164,8 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
                     GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
                     Layer lay = editor.getLayerManager().getActiveLayer();
                     mutableGraphModel.removeEdge(assoc);
-                    f.setOwner(null);
-                    f.removeFromDiagram();
+                    destFig.setOwner(null);
+                    destFig.removeFromDiagram();
                     mutableGraphModel.addNode(assoc);
                     FigNode figNode = (FigNode) lay.presentationFor(assoc);
                     figNode.setLocation(
@@ -176,13 +176,13 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
                     Iterator it = associationEnds.iterator();
                     mutableGraphModel.addEdge(it.next());
                     mutableGraphModel.addEdge(it.next());
-                    f = figNode;
+                    destFig = figNode;
                 }
             }
         }
 
-        if (f instanceof FigNode) {
-            FigNode destFigNode = (FigNode) f;
+        if (destFig instanceof FigNode) {
+            FigNode destFigNode = (FigNode) destFig;
             // If its a FigNode, then check within the
             // FigNode to see if a port exists
             Object foundPort = destFigNode.deepHitPort(x, y);
