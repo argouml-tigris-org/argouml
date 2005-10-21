@@ -78,10 +78,12 @@ public interface ModelManagementHelper {
 
     /**
      * helper method for {@link #getAllModelElementsOfKind(Object, Object)}.
-     *
-     * @param nsa namespace.
-     * @param kind name of class to find, this implementation will add the "M"
-     *             for NSUML.
+     * 
+     * @param nsa
+     *            namespace.
+     * @param kind
+     *            name of class to find (without implementation-specific
+     *            additions)
      * @return a Collection.
      */
     Collection getAllModelElementsOfKind(Object nsa, String kind);
