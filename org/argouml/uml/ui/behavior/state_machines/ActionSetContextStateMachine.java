@@ -59,7 +59,7 @@ public class ActionSetContextStateMachine extends UMLAction {
             UMLComboBox2 source = (UMLComboBox2) e.getSource();
             Object target = source.getTarget();
             if (Model.getFacade().getContext(target)!=source.getSelectedItem()) {
-                Model.getCollaborationsHelper().setContext(
+                Model.getStateMachinesHelper().setContext(
                         target, source.getSelectedItem());
             }
         }
