@@ -42,6 +42,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.Icon;
+import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
@@ -298,13 +299,11 @@ public abstract class FigEdgeModelElement
                 new ArrayList(Model.getExtensionMechanismsHelper().
                 getAllPossibleStereotypes(models, getOwner()));
             
-            availableStereotypes.removeAll(Model.getFacade().getStereotypes(getOwner()));
-            
             if (!availableStereotypes.isEmpty()) {
                 ArgoJMenu stereotypes = new ArgoJMenu("menu.popup.add-stereotype");
                 Iterator it = availableStereotypes.iterator();
                 while (it.hasNext()) {
-                    stereotypes.add(new ActionAddStereotype(getOwner(), it.next()));
+                    stereotypes.addCheckItem(new ActionAddStereotype(getOwner(), it.next()));
                 }
                 popUpActions.insertElementAt(new JSeparator(), 0);
                 popUpActions.insertElementAt(stereotypes, 0);

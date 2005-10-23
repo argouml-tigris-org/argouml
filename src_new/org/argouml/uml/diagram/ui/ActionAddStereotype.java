@@ -26,17 +26,18 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.notation.NotationHelper;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.UMLAction;
 
 /**
  * Action to add a sterotype to a model element.
  * @author Bob Tarling
  */
-class ActionAddStereotype extends AbstractAction {
+class ActionAddStereotype extends UMLAction {
     
     /**
      * Logger.
@@ -50,12 +51,26 @@ class ActionAddStereotype extends AbstractAction {
     public ActionAddStereotype(Object modelElement, Object stereotype) {
         super(NotationHelper.getLeftGuillemot() + 
                 Model.getFacade().getName(stereotype) + 
-                NotationHelper.getRightGuillemot());
+                NotationHelper.getRightGuillemot(), NO_ICON);
         this.modelElement = modelElement;
         this.stereotype = stereotype;
     }
     
     public void actionPerformed(ActionEvent ae) {
-        Model.getCoreHelper().addStereotype(modelElement, stereotype);
+        if (Model.getFacade().getStereotypes(modelElement).contains(stereotype)) {
+            Model.getCoreHelper().removeStereotype(modelElement, stereotype);            
+        } else {
+            Model.getCoreHelper().addStereotype(modelElement, stereotype);
+        }
+    }
+    
+    public Object getValue(String key) {
+        if ("SELECTED".equals(key)) {
+            if (Model.getFacade().getStereotypes(modelElement).contains(stereotype))
+                return Boolean.TRUE;
+            else
+                return Boolean.FALSE;
+        }
+        return super.getValue(key);
     }
 }
