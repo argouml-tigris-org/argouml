@@ -365,6 +365,7 @@ public class PerspectiveManager {
         packagePerspective.addRule(new GoStateToOutgoingTrans());
         packagePerspective.addRule(new GoSubmachineStateToStateMachine());
         packagePerspective.addRule(new GoStereotypeToTagDefinition());
+        packagePerspective.addRule(new GoClassifierToStateMachine());
         
         ExplorerPerspective diagramPerspective = new ExplorerPerspective(
                 "combobox.item.diagram-centric");
