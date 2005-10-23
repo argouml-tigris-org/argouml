@@ -47,8 +47,12 @@ import java.beans.VetoableChangeListener;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.swing.Icon;
@@ -469,11 +473,26 @@ public abstract class FigNodeModelElement
 
             // Add stereotypes submenu
             if (!SingleStereotypeEnabler.isEnabled()) {
+                Set paths = new HashSet();
+                Set availableStereotypes = new TreeSet(new Comparator() {
+                    public int compare(Object o1, Object o2) {
+                        try {
+                            String name1 = Model.getFacade().getName(o1);
+                            String name2 = Model.getFacade().getName(o2);
+                            name1 = (name1 != null ? name1 : "");
+                            name2 = (name2 != null ? name2 : "");
+
+                            return name1.compareTo(name2);
+                        } catch (Exception e) {
+                            throw new ClassCastException(e.getMessage());
+                        }
+                    }
+                });            
                 Collection models =
                     ProjectManager.getManager().getCurrentProject().getModels();
-                ArrayList availableStereotypes =
-                    new ArrayList(Model.getExtensionMechanismsHelper().
-                    getAllPossibleStereotypes(models, getOwner()));
+                    
+                    addAllUniqueModelElementsFrom(availableStereotypes, paths, Model.getExtensionMechanismsHelper().
+                    getAllPossibleStereotypes(models, getOwner()));                
                 
                 if (!availableStereotypes.isEmpty()) {
                     ArgoJMenu stereotypes = new ArgoJMenu("menu.popup.add-stereotype");
@@ -491,6 +510,28 @@ public abstract class FigNodeModelElement
         return popUpActions;
     }
 
+    /**
+     * Helper method for buildModelList.
+     * <p>
+     * Adds those elements from source that do not have the same path as any
+     * path in paths to elements, and its path to paths. Thus elements will
+     * never contain two objects with the same path, unless they are added by
+     * other means.
+     */
+    private static void addAllUniqueModelElementsFrom(Set elements, Set paths,
+            Collection source) {
+        Iterator it2 = source.iterator();
+
+        while (it2.hasNext()) {
+            Object obj = it2.next();
+            Object path = Model.getModelManagementHelper().getPath(obj);
+            if (!paths.contains(path)) {
+                paths.add(path);
+                elements.add(obj);
+            }
+        }
+    }
+    
     /**
      * @return the pop-up menu item for Visibility
      */
