@@ -687,6 +687,8 @@ public abstract class FigEdgeModelElement
      * @param e the event
      */
     protected void modelChanged(PropertyChangeEvent e) {
+        if (getOwner()!=null&&Model.getUmlFactory().isRemoved(getOwner()))
+            return;
         if (e == null
             || (e.getSource() == getOwner()
                     && "name".equals(e.getPropertyName()))) {
