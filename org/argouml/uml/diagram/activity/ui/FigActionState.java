@@ -32,7 +32,10 @@ import java.beans.PropertyVetoException;
 import java.util.Iterator;
 
 import org.argouml.application.notation.Notation;
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
@@ -211,24 +214,29 @@ public class FigActionState extends FigStateVertex {
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (mee.getSource() == getOwner()
+        if (mee instanceof AddAssociationEvent||mee instanceof AttributeChangeEvent) {
+            if (mee.getSource() == getOwner()
                 && mee.getPropertyName().equals("entry")) {
-            if (mee.getNewValue() != null) {
-                Model.getPump().addModelEventListener(this,
+                if (mee.getNewValue() != null) {
+                    Model.getPump().addModelEventListener(this,
                                             mee.getNewValue(), "script");
-            } else
-                if (mee.getOldValue() != null) {
-                    Model.getPump().removeModelEventListener(this,
-                                            mee.getOldValue(), "script");
                 }
-            updateNameText();
-            damage();
-        } else
-            if (Model.getFacade().getEntry(getOwner()) == mee.getSource()) {
                 updateNameText();
                 damage();
+            } else {
+                if (Model.getFacade().getEntry(getOwner()) == mee.getSource()) {
+                    updateNameText();
+                    damage();
+                }
             }
-
+        } else if (mee instanceof RemoveAssociationEvent) {
+            if (mee.getOldValue() != null&& mee.getPropertyName().equals("entry")) {
+                Model.getPump().removeModelEventListener(this,
+                        mee.getOldValue(), "script");
+                updateNameText();
+                damage();            
+            }
+        }
     }
 
 
