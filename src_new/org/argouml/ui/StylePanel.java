@@ -92,7 +92,8 @@ public class StylePanel extends AbstractArgoJPanel implements TabFigTarget,
 		Project p = ProjectManager.getManager()
 		    .getCurrentProject();
                 ArgoDiagram diagram = p.getActiveDiagram();
-                t = diagram.presentationFor(t);
+                if (diagram!=null)
+                    t = diagram.presentationFor(t);
 		if (!(t instanceof Fig)) {
 		    return;
 		}
