@@ -726,4 +726,44 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
         }
         return enclosing;
     }
+    
+    /**
+     * @see org.argouml.model.StateMachinesHelper#addDeferrableEvent(java.lang.Object, java.lang.Object)
+     */
+    public void addDeferrableEvent(Object state, Object deferrableEvent) {
+        if (state instanceof MState
+                && deferrableEvent instanceof MEvent) {
+            ((MState)state).addDeferrableEvent((MEvent)deferrableEvent);
+            return;            
+        }
+        throw new IllegalArgumentException("handle: " + state + " or evt: "
+                + deferrableEvent);    
+    }
+
+    /**
+     * @see org.argouml.model.StateMachinesHelper#removeDeferrableEvent(java.lang.Object, java.lang.Object)
+     */
+    public void removeDeferrableEvent(Object state, Object deferrableEvent) {
+        if (state instanceof MState
+                && deferrableEvent instanceof MEvent) {
+            ((MState)state).addDeferrableEvent((MEvent)deferrableEvent);
+            return;            
+        }
+        throw new IllegalArgumentException("handle: " + state + " or evt: "
+                + deferrableEvent);    
+    }
+
+    /**
+     * @see org.argouml.model.StateMachinesHelper#setContext(java.lang.Object, java.lang.Object)
+     */
+    public void setContext(Object statemachine, Object modelElement) {
+        if (statemachine instanceof MStateMachine
+                && modelElement instanceof MModelElement) {
+            ((MStateMachine)statemachine).setContext((MModelElement)modelElement);
+            return;            
+        }
+        throw new IllegalArgumentException("handle: " + statemachine + " or me: "
+                + modelElement);
+    }
+    
 }
