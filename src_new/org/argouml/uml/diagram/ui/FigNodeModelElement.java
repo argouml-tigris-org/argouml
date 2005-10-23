@@ -1130,7 +1130,8 @@ public abstract class FigNodeModelElement
             throw new IllegalArgumentException("event may never be null "
                            + "with modelchanged");
         }
-        if (getOwner() == null) {
+        if (getOwner() == null 
+                || Model.getUmlFactory().isRemoved(getOwner())) {
             return;
         }
         if ("name".equals(mee.getPropertyName())
@@ -1531,8 +1532,9 @@ public abstract class FigNodeModelElement
         if (this instanceof ArgoEventListener) {
             ArgoEventPump.removeListener(this);
         }
-        Object own = getOwner();
-        if (Model.getFacade().isAClassifier(own)) {
+        Object own = getOwner();       
+        if (Model.getFacade().isAClassifier(own)
+                &&!Model.getUmlFactory().isRemoved(own)) {
             Iterator it = Model.getFacade().getFeatures(own).iterator();
             while (it.hasNext()) {
                 Object feature = it.next();
