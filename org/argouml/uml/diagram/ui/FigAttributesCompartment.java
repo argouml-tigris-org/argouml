@@ -28,8 +28,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.application.api.Notation;
-import org.argouml.application.api.NotationContext;
+import org.argouml.application.notation.Notation;
+import org.argouml.application.notation.NotationContext;
 import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigFeature;

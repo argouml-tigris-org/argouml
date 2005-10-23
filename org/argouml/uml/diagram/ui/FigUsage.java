@@ -26,8 +26,8 @@ package org.argouml.uml.diagram.ui;
 
 import java.beans.PropertyChangeEvent;
 
+import org.argouml.application.notation.NotationHelper;
 import org.argouml.kernel.SingleStereotypeEnabler;
-import org.argouml.language.helpers.NotationHelper;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.FigText;
 

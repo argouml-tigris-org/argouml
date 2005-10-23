@@ -32,7 +32,7 @@ import java.beans.PropertyVetoException;
 import java.text.ParseException;
 import java.util.Iterator;
 
-import org.argouml.application.api.Notation;
+import org.argouml.application.notation.Notation;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.ParserDisplay;

@@ -28,7 +28,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
 
-import org.argouml.application.api.Notation;
+import org.argouml.application.notation.Notation;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.PathConvPercent;

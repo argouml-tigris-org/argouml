@@ -22,19 +22,19 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.language.ui;
+package org.argouml.application.notation.ui;
 import java.awt.Dimension;
 import java.util.ListIterator;
 
 import javax.swing.JComboBox;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Notation;
-import org.argouml.application.api.NotationName;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
+import org.argouml.application.notation.Notation;
+import org.argouml.application.notation.NotationName;
 
 /**
  *   This class provides a self-updating notation combo box.

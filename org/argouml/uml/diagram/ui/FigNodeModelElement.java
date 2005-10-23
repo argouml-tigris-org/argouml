@@ -58,13 +58,13 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.ArgoEventListener;
 import org.argouml.application.api.Configuration;
-import org.argouml.application.api.Notation;
-import org.argouml.application.api.NotationContext;
-import org.argouml.application.api.NotationName;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
+import org.argouml.application.notation.Notation;
+import org.argouml.application.notation.NotationContext;
+import org.argouml.application.notation.NotationName;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.cognitive.ToDoItem;
@@ -1322,14 +1322,14 @@ public abstract class FigNodeModelElement
     /**
      * Returns the notation name for this fig. First start to
      * implement notations on a per fig basis.
-     * @see org.argouml.application.api.NotationContext#getContextNotation()
+     * @see org.argouml.application.notation.NotationContext#getContextNotation()
      */
     public NotationName getContextNotation() {
         return currentNotationName;
     }
 
     /**
-     * @see org.argouml.application.api.NotationContext#setContextNotation(org.argouml.application.api.NotationName)
+     * @see org.argouml.application.notation.NotationContext#setContextNotation(org.argouml.application.notation.NotationName)
      */
     public void setContextNotation(NotationName nn) {
         currentNotationName = nn;

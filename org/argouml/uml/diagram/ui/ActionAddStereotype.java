@@ -29,7 +29,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import org.apache.log4j.Logger;
-import org.argouml.language.helpers.NotationHelper;
+import org.argouml.application.notation.NotationHelper;
 import org.argouml.model.Model;
 
 /**

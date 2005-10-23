@@ -28,7 +28,7 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
 
-import org.argouml.application.api.Notation;
+import org.argouml.application.notation.Notation;
 import org.argouml.model.Model;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;

@@ -30,9 +30,6 @@ import java.util.ListIterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
-import org.argouml.application.api.Notation;
-import org.argouml.application.api.NotationName;
-import org.argouml.application.api.NotationProvider2;
 import org.argouml.application.api.PluggableNotation;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;

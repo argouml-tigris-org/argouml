@@ -27,7 +27,7 @@ package org.argouml.ui.explorer;
 import java.beans.PropertyChangeListener;
 
 import org.argouml.application.api.Configuration;
-import org.argouml.application.api.Notation;
+import org.argouml.application.notation.Notation;
 import org.argouml.kernel.NsumlEnabler;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;

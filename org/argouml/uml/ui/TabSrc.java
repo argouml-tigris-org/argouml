@@ -28,10 +28,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Notation;
-import org.argouml.application.api.NotationContext;
-import org.argouml.application.api.NotationName;
-import org.argouml.language.ui.NotationComboBox;
+import org.argouml.application.notation.Notation;
+import org.argouml.application.notation.NotationContext;
+import org.argouml.application.notation.NotationName;
+import org.argouml.application.notation.ui.NotationComboBox;
 import org.argouml.model.Model;
 import org.argouml.ui.TabText;
 import org.tigris.gef.presentation.Fig;
@@ -152,14 +152,14 @@ public class TabSrc
     }
 
     /**
-     * @see org.argouml.application.api.NotationContext#getContextNotation()
+     * @see org.argouml.application.notation.NotationContext#getContextNotation()
      */
     public NotationName getContextNotation() {
         return notationName;
     }
 
     /**
-     * @see org.argouml.application.api.NotationContext#setContextNotation(org.argouml.application.api.NotationName)
+     * @see org.argouml.application.notation.NotationContext#setContextNotation(org.argouml.application.notation.NotationName)
      */
     public void setContextNotation(NotationName nn) {
         notationName = nn;
