@@ -326,7 +326,7 @@ class TableModelTaggedValues extends AbstractTableModel
      * @see javax.swing.table.TableModel#getRowCount()
      */
     public int getRowCount() {
-	if (target == null) {
+	if (target == null || Model.getUmlFactory().isRemoved(target)) {
 	    return 0;
 	}
 	Collection tvs = Model.getFacade().getTaggedValuesCollection(target);
