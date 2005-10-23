@@ -25,8 +25,11 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.ImageIcon;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
@@ -68,7 +71,9 @@ public class PropPanelState extends AbstractPropPanelState {
                 getExitScroll());
         addField(Translator.localize("label.do-activity"),
                 getDoScroll());
-
+        addField(Translator.localize("label.deferrable"),
+                getDeferrableEventsScroll());
+        
         addSeperator();
 
         addField(Translator.localize("label.incoming"),

@@ -58,6 +58,11 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
          */
         public static final  String TRIGGER = "trigger";
 
+        /**
+         * The deferrable event key
+         */
+        public static final String DEFERRABLE_EVENT = "deferrable-event";
+        
     }
     /**
      * Constructor for ActionNewEvent.
@@ -82,17 +87,20 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        Object trans = getTarget();
+        Object target = getTarget();
         Object model = 
         	ProjectManager.getManager().getCurrentProject().getModel();
         Object ns = Model.getStateMachinesHelper()
-        		.findNamespaceForEvent(trans, model);
+        		.findNamespaceForEvent(target, model);
         Object event = createEvent(ns);
         if (getValue(ROLE).equals(Roles.TRIGGER)) {
             Model.getStateMachinesHelper()
-                        .setEventAsTrigger(trans, event);
+                        .setEventAsTrigger(target, event);
         }
-        
+        if (getValue(ROLE).equals(Roles.DEFERRABLE_EVENT)) {
+            Model.getStateMachinesHelper()
+                        .addDeferrableEvent(target, event);
+        }
         TargetManager.getInstance().setTarget(event);
     }
 
