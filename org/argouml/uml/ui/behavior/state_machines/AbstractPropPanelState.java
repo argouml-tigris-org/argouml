@@ -28,7 +28,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.tigris.swidgets.Orientation;
 
@@ -60,9 +59,11 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
     {
         super(name, icon, orientation);
 
-        JList deferrableList = new UMLLinkedList(
+        JList deferrableList = new UMLStateDeferrableEventList(
                 new UMLStateDeferrableEventListModel());
+        
         deferrableEventsScroll = new JScrollPane(deferrableList);
+                
         entryList = new UMLStateEntryList(new UMLStateEntryListModel());
         entryList.setVisibleRowCount(1);
         entryScroll = new JScrollPane(entryList);
