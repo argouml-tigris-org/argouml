@@ -32,7 +32,10 @@ import java.text.ParseException;
 import org.argouml.application.notation.Notation;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.PathConvPercent2;
@@ -170,71 +173,102 @@ public class FigTransition extends FigEdgeModelElement {
         if (e == null) {
             return;
         }
-
-        // register the guard condition
-        if (Model.getFacade().isATransition(e.getSource())
-                && (e.getSource() == getOwner()
-                        && e.getPropertyName().equals("guard"))) {
-            Model.getPump().addModelEventListener(this,
-                    e.getNewValue(), "expression");
-            updateNameText();
-            damage();
-        } else if (Model.getFacade().isATransition(e.getSource())
-                && e.getSource() == getOwner()
-                && e.getPropertyName().equals("trigger")) {
-            // register the event (or trigger)
-            Model.getPump().addModelEventListener(this,
-                    e.getNewValue(), new String[] {
-                    	"parameter", "name",
-                        //TODO: How to listen to time/change expression?
-            	    });
-            updateNameText();
-            damage();
-        } else if (Model.getFacade().isATransition(e.getSource())
-                && e.getSource() == getOwner()
-                && e.getPropertyName().equals("effect")) {
-            // register the action
-            Model.getPump().addModelEventListener(this,
-                    e.getNewValue(), "script");
-            updateNameText();
-            damage();
-        } else if (Model.getFacade().isAEvent(e.getSource())
-                && Model.getFacade().getTransitions(e.getSource()).contains(
-                        getOwner())) {
-            // handle events send by the event
-//            if (e.getPropertyName().equals("parameter")) {
-//                // TODO: When does this ever get used? How to replace?
-//                if (e.getAddedValue() != null) {
-//                    Model.getPump().addModelEventListener(
-//                            this,
-//                            e.getAddedValue());
-//                } else if (e.getRemovedValue() != null) {
-//                    Model.getPump().removeModelEventListener(
-//                            this,
-//                            e.getRemovedValue());
+        if (e instanceof AddAssociationEvent
+                || e instanceof AttributeChangeEvent) {
+            // register the guard condition
+            if (Model.getFacade().isATransition(e.getSource())
+                    && (e.getSource() == getOwner()
+                            && e.getPropertyName().equals("guard"))) {
+                Model.getPump().addModelEventListener(this,
+                        e.getNewValue(), "expression");
+                updateNameText();
+                damage();
+            } else if (Model.getFacade().isATransition(e.getSource())
+                    && e.getSource() == getOwner()
+                    && e.getPropertyName().equals("trigger")) {
+                // register the event (or trigger)
+                Model.getPump().addModelEventListener(this,
+                        e.getNewValue(), new String[] {
+                            "parameter", "name",
+                            //TODO: How to listen to time/change expression?
+                        });
+                updateNameText();
+                damage();
+            } else if (Model.getFacade().isATransition(e.getSource())
+                    && e.getSource() == getOwner()
+                    && e.getPropertyName().equals("effect")) {
+                // register the action
+                Model.getPump().addModelEventListener(this,
+                        e.getNewValue(), "script");
+                updateNameText();
+                damage();
+            } else if (Model.getFacade().isAEvent(e.getSource())
+                    && Model.getFacade().getTransitions(e.getSource()).contains(
+                            getOwner())) {
+                // handle events send by the event
+//                if (e.getPropertyName().equals("parameter")) {
+//                    // TODO: When does this ever get used? How to replace?
+//                    if (e.getAddedValue() != null) {
+//                        Model.getPump().addModelEventListener(
+//                                this,
+//                                e.getAddedValue());
+//                    } else if (e.getRemovedValue() != null) {
+//                        Model.getPump().removeModelEventListener(
+//                                this,
+//                                e.getRemovedValue());
+//                    }
 //                }
-//            }
-            updateNameText();
-            damage();
-        } else if (Model.getFacade().isAGuard(e.getSource())) {
-            // handle events send by the guard
-            updateNameText();
-            damage();
-        } else if (Model.getFacade().isAAction(e.getSource())) {
-            // handle events send by the action-effect
-            updateNameText();
-            damage();
-        } else if (Model.getFacade().isAParameter(e.getSource())) {
-            // handle events send by the parameters of the event
-            updateNameText();
-            damage();
-        } else if ((e.getSource() == getOwner())
-                && (e.getPropertyName().equals("source")
-                        || (e.getPropertyName().equals("target")))) {
-            dashed =
-                Model.getFacade().isAObjectFlowState(getSource())
-                || Model.getFacade().isAObjectFlowState(getDestination());
-            getFig().setDashed(dashed);
+                updateNameText();
+                damage();
+            } else if (Model.getFacade().isAGuard(e.getSource())) {
+                // handle events send by the guard
+                updateNameText();
+                damage();
+            } else if (Model.getFacade().isAAction(e.getSource())) {
+                // handle events send by the action-effect
+                updateNameText();
+                damage();
+            } else if (Model.getFacade().isAParameter(e.getSource())) {
+                // handle events send by the parameters of the event
+                updateNameText();
+                damage();
+            } else if ((e.getSource() == getOwner())
+                    && (e.getPropertyName().equals("source")
+                            || (e.getPropertyName().equals("target")))) {
+                dashed =
+                    Model.getFacade().isAObjectFlowState(getSource())
+                    || Model.getFacade().isAObjectFlowState(getDestination());
+                getFig().setDashed(dashed);
+            }            
+        } else if (e instanceof RemoveAssociationEvent) {
+            // unregister the guard condition
+            if (Model.getFacade().isATransition(e.getSource())
+                    && (e.getSource() == getOwner()
+                            && e.getPropertyName().equals("guard"))) {
+                Model.getPump().removeModelEventListener(this,
+                        e.getOldValue(), "expression");
+                updateNameText();
+                damage();
+            } else if (Model.getFacade().isATransition(e.getSource())
+                    && e.getSource() == getOwner()
+                    && e.getPropertyName().equals("trigger")) {
+                // unregister the event (or trigger)
+                Model.getPump().removeModelEventListener(this,
+                        e.getOldValue(), new String[] {
+                            "parameter", "name",
+                            //TODO: How to listen to time/change expression?
+                        });
+                updateNameText();
+                damage();
+            } else if (Model.getFacade().isATransition(e.getSource())
+                    && e.getSource() == getOwner()
+                    && e.getPropertyName().equals("effect")) {
+                // unregister the action
+                Model.getPump().removeModelEventListener(this,
+                        e.getNewValue(), "script");
+                updateNameText();
+                damage();
+            }
         }
     }
 
