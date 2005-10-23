@@ -23,16 +23,25 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Iterator;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.NsumlEnabler;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
+import org.argouml.persistence.PersistenceManager;
+import org.argouml.persistence.ProjectFilePersister;
 import org.xml.sax.InputSource;
 
 /**
@@ -310,7 +319,23 @@ public class ProfileJava extends Profile {
             //  try to find a file with that name
             //
             try {
-                is = new FileInputStream(modelFileName);
+                File modelFile = new File(modelFileName);
+                if (modelFileName.endsWith("zip")) {
+                    String fileName = modelFile.getName();
+                    String extension = fileName.substring(fileName.indexOf('.'),fileName.lastIndexOf('.'));
+                    String path = modelFile.getParent();
+                    // Add the path of the model to the search path, so we can read
+                    // dependent models
+                    System.setProperty("org.argouml.model.modules_search_path",path);
+                    try {
+                        is = openZipStreamAt(modelFile.toURL(),extension);
+                    } catch (MalformedURLException e) {
+                        throw new ProfileException(e);
+                    } catch (IOException e) {
+                        throw new ProfileException(e);
+                    }
+                } else
+                    is = new FileInputStream(modelFile);
             } catch (FileNotFoundException ex) {
                 //
                 // No file found, try looking in the resources
@@ -323,6 +348,7 @@ public class ProfileJava extends Profile {
                         modelFileName);
             }
             if (is != null) {
+                LOG.info("Loading profile '"+modelFileName+"'");
                 try {
                     XmiReader xmiReader = Model.getXmiReader();
                     InputSource inputSource = new InputSource(is);
@@ -337,5 +363,26 @@ public class ProfileJava extends Profile {
         }
         return Model.getModelManagementFactory().createModel();
     }
-    
+
+    /**
+     * Open a ZipInputStream to the first file found with a given extension.
+     * TODO: Remove since this is a duplicate of ZipFilePersister method. When we
+     * have refactorized the Persister subsystem.
+     * @param url
+     *            The URL of the zip file.
+     * @param ext
+     *            The required extension.
+     * @return the zip stream positioned at the required location.
+     * @throws IOException
+     *             if there is a problem opening the file.
+     */
+    private ZipInputStream openZipStreamAt(URL url, String ext)
+        throws IOException {
+        ZipInputStream zis = new ZipInputStream(url.openStream());
+        ZipEntry entry = zis.getNextEntry();
+        while (entry != null && !entry.getName().endsWith(ext)) {
+            entry = zis.getNextEntry();
+        }
+        return zis;
+    }    
 }
