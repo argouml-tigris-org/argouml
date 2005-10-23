@@ -53,8 +53,8 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Notation;
-import org.argouml.application.api.NotationName;
+import org.argouml.application.notation.Notation;
+import org.argouml.application.notation.NotationName;
 import org.argouml.application.notation.NotationProviderFactory;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;

@@ -33,9 +33,9 @@ import java.beans.PropertyVetoException;
 import java.text.ParseException;
 import java.util.Iterator;
 
-import org.argouml.application.api.Notation;
 import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.notation.Notation;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;

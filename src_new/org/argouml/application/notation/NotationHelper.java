@@ -22,26 +22,35 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.application.api;
+package org.argouml.application.notation;
+
+import org.argouml.application.api.Configuration;
 
 /**
- * Any class which can request notation must implement this interface
- * so that the proper notation generator or parser will be used.
- *
- * @author Thierry Lach
- * @since 0.9.4
+ * A helper for notation related functions. Currently, it only contains 
+ * 2 functions to obtain the guillemet characters or 
+ * their double bracket alternative, 
+ * based on the choice made by the user in the Settings menu.
  */
-public interface NotationContext {
+public class NotationHelper {
+
     /**
-     * The context must return a NotationName indicating the notation
-     * (and version if applicable) that it is using.
-     *
-     * @return null if the context does not wish to name a specific notation
+     * @return the left pointing guillemot, i.e. << or the one-character symbol
      */
-    NotationName getContextNotation();
-    
+    public static String getLeftGuillemot() {
+	return (Configuration.getBoolean(Notation.KEY_USE_GUILLEMOTS, false))
+	    ? "\u00ab"
+	    : "<<";
+
+    }
+
     /**
-     * @param nn the new notationName
+     * @return the right pointing guillemot, i.e. >> or the one-character symbol
      */
-    void setContextNotation(NotationName nn);
-}
+    public static String getRightGuillemot() {
+	return (Configuration.getBoolean(Notation.KEY_USE_GUILLEMOTS, false))
+	    ? "\u00bb"
+	    : ">>";
+    }
+
+} /* end class NotationHelper */

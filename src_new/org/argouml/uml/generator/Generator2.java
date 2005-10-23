@@ -30,10 +30,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
-import org.argouml.application.api.NotationName;
-import org.argouml.application.api.NotationProvider2;
 import org.argouml.application.api.PluggableNotation;
-import org.argouml.language.helpers.NotationHelper;
+import org.argouml.application.notation.NotationHelper;
+import org.argouml.application.notation.NotationName;
+import org.argouml.application.notation.NotationProvider2;
 import org.argouml.model.Model;
 
 /**

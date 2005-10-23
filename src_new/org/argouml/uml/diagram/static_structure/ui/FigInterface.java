@@ -39,9 +39,9 @@ import java.util.Vector;
 import javax.swing.Action;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.notation.NotationHelper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.SingleStereotypeEnabler;
-import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;

@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
-import org.argouml.application.api.Notation;
+import org.argouml.application.notation.Notation;
 import org.argouml.application.api.PluggableNotation;
 import org.argouml.model.Model;
 import org.argouml.uml.DocumentationManager;

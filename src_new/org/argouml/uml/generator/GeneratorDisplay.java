@@ -31,7 +31,7 @@ import java.util.Iterator;
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
-import org.argouml.application.api.Notation;
+import org.argouml.application.notation.Notation;
 import org.argouml.model.Model;
 
 /**
@@ -120,7 +120,7 @@ public class GeneratorDisplay extends Generator2 {
      *  properties are shown/not shown.
      *
      *  @author jaap.branderhorst@xs4all.nl
-     *  @see org.argouml.application.api.NotationProvider2#generateOperation(
+     *  @see org.argouml.application.notation.NotationProvider2#generateOperation(
      *          Object, boolean)
      */
     public String generateOperation(Object op, boolean documented) {
@@ -245,7 +245,7 @@ public class GeneratorDisplay extends Generator2 {
      * Depending on settings in Notation, visibility, multiplicity,
      * type-expression, initial value and properties are shown/not shown.
      *
-     * @see org.argouml.application.api.NotationProvider2#generateAttribute(
+     * @see org.argouml.application.notation.NotationProvider2#generateAttribute(
      *          Object, boolean)
      */
     public String generateAttribute(Object attr, boolean documented) {
@@ -323,7 +323,7 @@ public class GeneratorDisplay extends Generator2 {
      *
      * kind name : type-expression = default-value
      *
-     * @see org.argouml.application.api.NotationProvider2#generateParameter(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateParameter(java.lang.Object)
      */
     public String generateParameter(Object parameter) {
         StringBuffer s = new StringBuffer();
@@ -346,7 +346,7 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generatePackage(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generatePackage(java.lang.Object)
      */
     public String generatePackage(Object p) {
         String s = generateStereotype( Model.getFacade().getStereotypes(p));
@@ -357,7 +357,7 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateClassifier(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateClassifier(java.lang.Object)
      */
     public String generateClassifier(Object cls) {
         String generatedName = generateName(Model.getFacade().getName(cls));
@@ -433,7 +433,7 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateTaggedValue(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateTaggedValue(java.lang.Object)
      */
     public String generateTaggedValue(Object tv) {
         if (tv == null) {
@@ -687,7 +687,7 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateAssociation(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateAssociation(java.lang.Object)
      */
     public String generateAssociation(Object a) {
         String s = "";
@@ -705,7 +705,7 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateAssociationEnd(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateAssociationEnd(java.lang.Object)
      */
     public String generateAssociationEnd(Object ae) {
         if (!Model.getFacade().isNavigable(ae)) {
@@ -782,7 +782,7 @@ public class GeneratorDisplay extends Generator2 {
      * @param assocRole the given associationrole
      * @return the generated name
      *
-     * @see org.argouml.application.api.NotationProvider2#generateAssociationRole(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateAssociationRole(java.lang.Object)
      */
     public String generateAssociationRole(Object assocRole) {
         //get the associationRole name
@@ -850,7 +850,7 @@ public class GeneratorDisplay extends Generator2 {
     /**
      * Returns a visibility String eihter for a MVisibilityKind (according to
      * the definition in NotationProvider2), but also for a model element.
-     * @see org.argouml.application.api.NotationProvider2#generateVisibility(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateVisibility(java.lang.Object)
      */
     public String generateVisibility(Object o) {
         if (o == null) {
@@ -913,7 +913,7 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateMultiplicity(
+     * @see org.argouml.application.notation.NotationProvider2#generateMultiplicity(
      *          Object)
      */
     public String generateMultiplicity(Object m) {
@@ -979,14 +979,14 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateState(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateState(java.lang.Object)
      */
     public String generateState(Object m) {
         return Model.getFacade().getName(m);
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateSubmachine(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateSubmachine(java.lang.Object)
      */
     public String generateSubmachine(Object m) {
         Object c = Model.getFacade().getSubmachine(m);
@@ -1003,7 +1003,7 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateObjectFlowState(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateObjectFlowState(java.lang.Object)
      */
     public String generateObjectFlowState(Object m) {
         Object c = Model.getFacade().getType(m);
@@ -1014,7 +1014,7 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateStateBody(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateStateBody(java.lang.Object)
      */
     public String generateStateBody(Object m) {
         StringBuffer s = new StringBuffer();
@@ -1056,7 +1056,7 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateTransition(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateTransition(java.lang.Object)
      */
     public String generateTransition(Object m) {
         String t = generate(Model.getFacade().getTrigger(m));
@@ -1072,7 +1072,7 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateAction(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateAction(java.lang.Object)
      */
     public String generateAction(Object m) {
         Collection c;
@@ -1124,7 +1124,7 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateGuard(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateGuard(java.lang.Object)
      */
     public String generateGuard(Object m) {
         if (Model.getFacade().getExpression(m) != null) {
@@ -1139,7 +1139,7 @@ public class GeneratorDisplay extends Generator2 {
      * @param m Object of any MEvent kind
      * @return the string representing the event
      *
-     * @see org.argouml.application.api.NotationProvider2#generateEvent(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateEvent(java.lang.Object)
      */
     public String generateEvent(Object m) {
         StringBuffer event = new StringBuffer();
@@ -1196,7 +1196,7 @@ public class GeneratorDisplay extends Generator2 {
 
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateActionState(java.lang.Object)
      */
     public String generateActionState(Object actionState) {
         String ret = "";

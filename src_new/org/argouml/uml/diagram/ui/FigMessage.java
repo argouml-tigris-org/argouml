@@ -34,7 +34,7 @@ import java.text.ParseException;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.argouml.application.api.Notation;
+import org.argouml.application.notation.Notation;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;

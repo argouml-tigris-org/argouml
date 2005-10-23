@@ -24,7 +24,7 @@
 
 package org.argouml.language.dummylanguage.generator;
 
-import org.argouml.application.api.Notation;
+import org.argouml.application.notation.Notation;
 import org.argouml.model.Model;
 import org.argouml.uml.generator.Generator2;
 
@@ -76,7 +76,7 @@ public final class GeneratorDummy
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateOperation(
+     * @see org.argouml.application.notation.NotationProvider2#generateOperation(
      *          java.lang.Object, boolean)
      */
     public String generateOperation(Object handle, boolean documented) {
@@ -84,7 +84,7 @@ public final class GeneratorDummy
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateAttribute(
+     * @see org.argouml.application.notation.NotationProvider2#generateAttribute(
      *          java.lang.Object, boolean)
      */
     public String generateAttribute(Object handle, boolean documented) {
@@ -92,63 +92,63 @@ public final class GeneratorDummy
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateParameter(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateParameter(java.lang.Object)
      */
     public String generateParameter(Object handle) {
 	return "Parameter(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generatePackage(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generatePackage(java.lang.Object)
      */
     public String generatePackage(Object handle) {
 	return "Package(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateClassifier(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateClassifier(java.lang.Object)
      */
     public String generateClassifier(Object handle) {
 	return "Classifier(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateTaggedValue(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateTaggedValue(java.lang.Object)
      */
     public String generateTaggedValue(Object handle) {
 	return "TaggedValue(" + Model.getFacade().getTag(handle) + ")";
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateAssociation(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateAssociation(java.lang.Object)
      */
     public String generateAssociation(Object handle) {
 	return "Association(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateAssociationEnd(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateAssociationEnd(java.lang.Object)
      */
     public String generateAssociationEnd(Object handle) {
 	return "AssociationEnd(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateAssociationRole(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateAssociationRole(java.lang.Object)
      */
     public String generateAssociationRole(Object handle) {
 	return "AssociationRole(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateMultiplicity(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateMultiplicity(java.lang.Object)
      */
     public String generateMultiplicity(Object handle) {
 	return "Multiplicity(" + handle.toString() + ")";
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateVisibility(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateVisibility(java.lang.Object)
      */
     public String generateVisibility(Object handle) {
         if (Model.getFacade().isAVisibilityKind(handle)) {
@@ -158,28 +158,28 @@ public final class GeneratorDummy
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateState(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateState(java.lang.Object)
      */
     public String generateState(Object handle) {
 	return "State(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateStateBody(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateStateBody(java.lang.Object)
      */
     public String generateStateBody(Object handle) {
 	return "StateBody(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateTransition(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateTransition(java.lang.Object)
      */
     public String generateTransition(Object handle) {
 	return "Transition(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateAction(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateAction(java.lang.Object)
      */
     public String generateAction(Object handle) {
 	if (Model.getFacade().isAAction(handle)) {
@@ -189,21 +189,21 @@ public final class GeneratorDummy
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateGuard(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateGuard(java.lang.Object)
      */
     public String generateGuard(Object handle) {
 	return "Guard(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateMessage(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateMessage(java.lang.Object)
      */
     public String generateMessage(Object handle) {
 	return "Message(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateSubmachine(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateSubmachine(java.lang.Object)
      */
     public String generateSubmachine(Object m) {
         Object c = Model.getFacade().getSubmachine(m);
@@ -220,7 +220,7 @@ public final class GeneratorDummy
     }
     
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateObjectFlowState(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateObjectFlowState(java.lang.Object)
      */
     public String generateObjectFlowState(Object m) {
         Object c = Model.getFacade().getType(m);
@@ -238,7 +238,7 @@ public final class GeneratorDummy
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
+     * @see org.argouml.application.notation.NotationProvider2#generateActionState(java.lang.Object)
      */
     public String generateActionState(Object actionState) {
         String ret = "";
