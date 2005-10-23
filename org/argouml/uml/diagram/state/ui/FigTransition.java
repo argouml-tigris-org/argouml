@@ -265,7 +265,7 @@ public class FigTransition extends FigEdgeModelElement {
                     && e.getPropertyName().equals("effect")) {
                 // unregister the action
                 Model.getPump().removeModelEventListener(this,
-                        e.getNewValue(), "script");
+                        e.getOldValue(), "script");
                 updateNameText();
                 damage();
             }
