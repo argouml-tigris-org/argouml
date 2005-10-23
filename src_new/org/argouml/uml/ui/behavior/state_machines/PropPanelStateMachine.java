@@ -30,7 +30,10 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -75,11 +78,13 @@ public class PropPanelStateMachine extends PropPanelModelElement {
                 getNamespaceScroll());
 
         // the context in which the statemachine resides
-        JList contextList = new UMLLinkedList(
-                new UMLStateMachineContextListModel());
+        UMLComboBoxModel2 contextComboBoxModel = new UMLStateMachineContextComboBoxModel();
+        UMLComboBox2 contextComboBox =
+            new UMLComboBox2(
+                     contextComboBoxModel,
+                     ActionSetContextStateMachine.getInstance());
         addField(Translator.localize("label.represented-modelelement"),
-                new JScrollPane(contextList));
-
+                contextComboBox);
         // the top state
         JList topList = new UMLLinkedList(new UMLStateMachineTopListModel());
         addField(Translator.localize("label.top-state"),
