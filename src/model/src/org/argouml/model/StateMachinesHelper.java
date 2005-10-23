@@ -347,4 +347,26 @@ public interface StateMachinesHelper {
      * @return the enclosing namespace for the event
      */
     Object findNamespaceForEvent(Object trans, Object model);
+    
+    /**
+     * Set the Context of a statemachine
+     * @param statemachine
+     * @param modelElement
+     */
+    void setContext(Object statemachine, Object modelElement);
+    
+    /**
+     * Add a deferrable event to a state
+     * @param state
+     * @param deferrableEvent
+     */
+    void addDeferrableEvent(Object state, Object deferrableEvent);
+    
+    /**
+     * Remove a deferrable event from a state
+     * @param state
+     * @param deferrableEvent
+     */
+    void removeDeferrableEvent(Object state, Object deferrableEvent);
+    
 }

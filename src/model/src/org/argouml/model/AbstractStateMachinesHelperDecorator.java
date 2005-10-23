@@ -357,4 +357,25 @@ public abstract class AbstractStateMachinesHelperDecorator
         return impl.findNamespaceForEvent(trans, model);
     }
 
+    /**
+     * @see org.argouml.model.StateMachinesHelper#addDeferrableEvent(java.lang.Object, java.lang.Object)
+     */
+    public void addDeferrableEvent(Object state, Object deferrableEvent) {
+        impl.addDeferrableEvent(state, deferrableEvent);
+    }
+
+    /**
+     * @see org.argouml.model.StateMachinesHelper#removeDeferrableEvent(java.lang.Object, java.lang.Object)
+     */
+    public void removeDeferrableEvent(Object state, Object deferrableEvent) {
+        impl.removeDeferrableEvent(state, deferrableEvent);
+    }
+
+    /**
+     * @see org.argouml.model.StateMachinesHelper#setContext(java.lang.Object, java.lang.Object)
+     */
+    public void setContext(Object statemachine, Object modelElement) {
+        impl.setContext(statemachine, modelElement);
+    }
+
 }
