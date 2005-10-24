@@ -41,6 +41,7 @@ import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
+import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -242,7 +243,7 @@ public abstract class PropPanelModelElement extends PropPanel {
     /**
      * @return a scrollpane for the namespace
      */
-    protected JScrollPane getNamespaceScroll() {
+    protected JComponent getNamespaceScroll() {
         if (namespaceScroll == null) {
             JList namespaceList = new UMLLinkedList(namespaceListModel);
             namespaceList.setVisibleRowCount(1);
@@ -289,11 +290,10 @@ public abstract class PropPanelModelElement extends PropPanel {
     /**
      * @return a scrollpane for supplier dependency
      */
-    protected JScrollPane getSupplierDependencyScroll() {
+    protected JComponent getSupplierDependencyScroll() {
         if (supplierDependencyScroll == null) {
-            JList supplierDependencyList = new UMLLinkedList(
+            supplierDependencyScroll = new ScrollList(
                     new UMLModelElementSupplierDependencyListModel());
-            supplierDependencyScroll = new JScrollPane(supplierDependencyList);
         }
         return supplierDependencyScroll;
     }
@@ -301,11 +301,9 @@ public abstract class PropPanelModelElement extends PropPanel {
     /**
      * @return a scrollpane for client dependency
      */
-    protected JScrollPane getClientDependencyScroll() {
+    protected JComponent getClientDependencyScroll() {
         if (clientDependencyScroll == null) {
-            JList clientDependencyList = new UMLLinkedList(
-                    clientDependencyListModel);
-            clientDependencyScroll = new JScrollPane(clientDependencyList);
+            clientDependencyScroll = new ScrollList(clientDependencyListModel);
         }
         return clientDependencyScroll;
     }
@@ -313,10 +311,9 @@ public abstract class PropPanelModelElement extends PropPanel {
     /**
      * @return a scrollpane for target flow
      */
-    protected JScrollPane getTargetFlowScroll() {
+    protected JComponent getTargetFlowScroll() {
         if (targetFlowScroll == null) {
-            JList targetFlowList = new UMLLinkedList(targetFlowListModel);
-            targetFlowScroll = new JScrollPane(targetFlowList);
+            targetFlowScroll = new ScrollList(targetFlowListModel);
         }
         return targetFlowScroll;
     }
@@ -324,10 +321,9 @@ public abstract class PropPanelModelElement extends PropPanel {
     /**
      * @return a scrollpane for source flow
      */
-    protected JScrollPane getSourceFlowScroll() {
+    protected JComponent getSourceFlowScroll() {
         if (sourceFlowScroll == null) {
-            JList sourceFlowList = new UMLLinkedList(sourceFlowListModel);
-            sourceFlowScroll = new JScrollPane(sourceFlowList);
+            sourceFlowScroll = new ScrollList(sourceFlowListModel);
         }
         return sourceFlowScroll;
     }
@@ -335,7 +331,7 @@ public abstract class PropPanelModelElement extends PropPanel {
     /**
      * @return a scrollpane for constraints
      */
-    protected JScrollPane getConstraintScroll() {
+    protected JComponent getConstraintScroll() {
         if (constraintScroll == null) {
             JList constraintList = new UMLMutableLinkedList(
                     constraintListModel, null,
@@ -348,7 +344,7 @@ public abstract class PropPanelModelElement extends PropPanel {
     /**
      * @return a panel for the visibility
      */
-    protected JPanel getNamespaceVisibilityPanel() {
+    protected JComponent getNamespaceVisibilityPanel() {
         if (namespaceVisibilityPanel == null) {
             namespaceVisibilityPanel =
 		new UMLModelElementVisibilityRadioButtonPanel(
@@ -360,11 +356,9 @@ public abstract class PropPanelModelElement extends PropPanel {
     /**
      * @return a scrollpane for residence
      */
-    protected JScrollPane getElementResidenceScroll() {
+    protected JComponent getElementResidenceScroll() {
         if (elementResidenceScroll == null) {
-            JList elementResidenceList = new UMLLinkedList(
-                    elementResidenceListModel);
-            elementResidenceScroll = new JScrollPane(elementResidenceList);
+            elementResidenceScroll = new ScrollList(elementResidenceListModel);
         }
         return elementResidenceScroll;
     }
@@ -372,7 +366,7 @@ public abstract class PropPanelModelElement extends PropPanel {
     /**
      * @return a textfield for the name
      */
-    protected JTextField getNameTextField() {
+    protected JComponent getNameTextField() {
         if (nameTextField == null) {
             nameTextField = new UMLTextField2(nameDocument);
         }

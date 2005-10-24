@@ -27,13 +27,10 @@ package org.argouml.uml.ui.foundation.core;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
-import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import org.argouml.model.Model;
-import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.ui.StereotypeUtility;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
@@ -67,7 +64,7 @@ public class UMLModelElementStereotypeListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return Model.getFacade().getStereotypes(getTarget()) == element;
+        return Model.getFacade().isAStereotype(element);
     }
 
     public boolean buildPopup(JPopupMenu popup, int index) {
@@ -85,6 +82,8 @@ public class UMLModelElementStereotypeListModel
     /**
      * Creates a new checkbox menu item attached to the specified
      * action object and appends it to the end of this menu.
+     * TODO: This is almost a duplicate of ArgoJMenu.addCheckItem must find a
+     * way to merge. 
      *
      * @param     a     the Action for the checkbox menu item to be added
      * @return          the new checkbox menu item
@@ -92,16 +91,11 @@ public class UMLModelElementStereotypeListModel
     private static JCheckBoxMenuItem getCheckItem(Action a) {
         String name = (String) a.getValue(Action.NAME);
         Icon icon = (Icon) a.getValue(Action.SMALL_ICON);
-        // Block added by BobTarling 8-Jan-2002 Set the checkbox on or
-        // off according to the SELECTED value of the action.  If no
-        // SELECTED value is found then this defaults to true in order
-        // to remain compatible with previous versions of this code.
         Boolean selected = (Boolean) a.getValue("SELECTED");
         JCheckBoxMenuItem mi =
             new JCheckBoxMenuItem(name, icon,
                       (selected == null
                        || selected.booleanValue()));
-        // End of block
         mi.setHorizontalTextPosition(SwingConstants.RIGHT);
         mi.setVerticalTextPosition(SwingConstants.CENTER);
         mi.setEnabled(a.isEnabled());

@@ -24,23 +24,10 @@
 
 package org.argouml.uml.ui;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListModel;
-import javax.swing.table.TableCellEditor;
-
 import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.uml.ui.foundation.core.ActionSetModelElementStereotype;
-import org.argouml.uml.ui.foundation.core.UMLAssociationConnectionListModel;
-import org.argouml.uml.ui.foundation.core.UMLModelElementStereotypeComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementStereotypeListModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.Horizontal;
@@ -55,13 +42,9 @@ public class TabStereotype extends PropPanel {
     private static String orientation = Configuration.getString(Configuration
             .makeKey("layout", "tabstereotype"));
     
-    private UMLModelElementStereotypeListModel stereoListModel;
-    
     private Object target;
 
-    private static UMLModelElementStereotypeComboBoxModel 
-        stereotypeComboBoxModel =
-        new UMLModelElementStereotypeComboBoxModel();
+    private UMLModelElementStereotypeListModel stereoListModel;
 
     /**
      * Construct new documentation tab
@@ -70,11 +53,9 @@ public class TabStereotype extends PropPanel {
         super(Translator.localize("tab.stereotype"), (orientation
                 .equals("West") || orientation.equals("East")) ? Vertical
                 .getInstance() : Horizontal.getInstance());
-        
+
         stereoListModel = new UMLModelElementStereotypeListModel();
-        JList stereotypeList = new UMLLinkedList(stereoListModel);
-        JScrollPane stereotypeScroll = new JScrollPane(stereotypeList);
-        add(stereotypeScroll);
+        add(new ScrollList(stereoListModel));
     }
 
     /**
@@ -110,6 +91,4 @@ public class TabStereotype extends PropPanel {
 
         validate();
     }
-
-   
 }
