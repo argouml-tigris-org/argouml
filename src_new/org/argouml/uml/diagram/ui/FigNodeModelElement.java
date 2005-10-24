@@ -55,7 +55,9 @@ import java.util.Stack;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.JMenu;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
@@ -472,38 +474,15 @@ public abstract class FigNodeModelElement
             }
 
             // Add stereotypes submenu
-            if (!SingleStereotypeEnabler.isEnabled()) {
-                Set paths = new HashSet();
-                Set availableStereotypes = new TreeSet(new Comparator() {
-                    public int compare(Object o1, Object o2) {
-                        try {
-                            String name1 = Model.getFacade().getName(o1);
-                            String name2 = Model.getFacade().getName(o2);
-                            name1 = (name1 != null ? name1 : "");
-                            name2 = (name2 != null ? name2 : "");
-
-                            return name1.compareTo(name2);
-                        } catch (Exception e) {
-                            throw new ClassCastException(e.getMessage());
-                        }
-                    }
-                });            
-                Collection models =
-                    ProjectManager.getManager().getCurrentProject().getModels();
-                    
-                    addAllUniqueModelElementsFrom(availableStereotypes, paths, Model.getExtensionMechanismsHelper().
-                    getAllPossibleStereotypes(models, getOwner()));                
-                
-                if (!availableStereotypes.isEmpty()) {
-                    ArgoJMenu stereotypes = new ArgoJMenu("menu.popup.apply-stereotypes");
-                    Iterator it = availableStereotypes.iterator();
-                    while (it.hasNext()) {
-                        stereotypes.addCheckItem(new ActionAddStereotype(getOwner(), it.next()));
-                    }
-                    popUpActions.insertElementAt(new JSeparator(), 0);
-                    popUpActions.insertElementAt(stereotypes, 0);
+            Action[] stereoActions =
+                StereotypeUtility.getApplyStereotypeActions(getOwner());
+            if (stereoActions != null) {
+                popUpActions.insertElementAt(new JSeparator(), 0);
+                ArgoJMenu stereotypes = new ArgoJMenu("menu.popup.apply-stereotypes");
+                for (int i = 0; i < stereoActions.length; ++i) {
+                    stereotypes.addCheckItem(stereoActions[i]);
                 }
-                
+                popUpActions.insertElementAt(stereotypes, 0);
             }
         }
 

@@ -27,13 +27,21 @@ package org.argouml.uml.ui;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListModel;
+import javax.swing.table.TableCellEditor;
 
 import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.foundation.core.ActionSetModelElementStereotype;
+import org.argouml.uml.ui.foundation.core.UMLAssociationConnectionListModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementStereotypeComboBoxModel;
+import org.argouml.uml.ui.foundation.core.UMLModelElementStereotypeListModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Vertical;
@@ -47,7 +55,9 @@ public class TabStereotype extends PropPanel {
     private static String orientation = Configuration.getString(Configuration
             .makeKey("layout", "tabstereotype"));
     
-    private JComponent stereotypeSelector;
+    private UMLModelElementStereotypeListModel stereoListModel;
+    
+    private Object target;
 
     private static UMLModelElementStereotypeComboBoxModel 
         stereotypeComboBoxModel =
@@ -60,17 +70,11 @@ public class TabStereotype extends PropPanel {
         super(Translator.localize("tab.stereotype"), (orientation
                 .equals("West") || orientation.equals("East")) ? Vertical
                 .getInstance() : Horizontal.getInstance());
-                
-        // TODO: Temporary single stereotype implementation - add new UI here
         
-        stereotypeSelector = new Box(BoxLayout.X_AXIS);
-        stereotypeSelector.add(new UMLComboBoxNavigator(this,
-                Translator.localize("label.stereotype.navigate.tooltip"),
-                new UMLComboBox2(stereotypeComboBoxModel,
-                        ActionSetModelElementStereotype.getInstance())
-                
-                ));
-        add(stereotypeSelector);
+        stereoListModel = new UMLModelElementStereotypeListModel();
+        JList stereotypeList = new UMLLinkedList(stereoListModel);
+        JScrollPane stereotypeScroll = new JScrollPane(stereotypeList);
+        add(stereotypeScroll);
     }
 
     /**
@@ -88,4 +92,24 @@ public class TabStereotype extends PropPanel {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
         return Model.getFacade().isAModelElement(target);
     }
+
+    /**
+     * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
+     */
+    public void setTarget(Object theTarget) {
+
+        Object t = (theTarget instanceof Fig)
+                    ? ((Fig) theTarget).getOwner() : theTarget;
+        if (!(Model.getFacade().isAModelElement(t))) {
+            target = null;
+            return;
+        }
+        target = t;
+        
+        stereoListModel.setTarget(t);
+
+        validate();
+    }
+
+   
 }
