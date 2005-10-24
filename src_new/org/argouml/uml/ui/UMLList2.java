@@ -25,7 +25,6 @@
 package org.argouml.uml.ui;
 
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -60,13 +59,12 @@ public abstract class UMLList2
      * @param dataModel the data model
      * @param renderer the renderer
      */
-    protected UMLList2(
-            ListModel dataModel,
-            ListCellRenderer renderer) {
+    protected UMLList2(ListModel dataModel, ListCellRenderer renderer) {
         super(dataModel);
         setDoubleBuffered(true);
-        if (renderer != null)
+        if (renderer != null) {
             setCellRenderer(renderer);
+        }
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
         addMouseListener(this);
     }
@@ -130,18 +128,10 @@ public abstract class UMLList2
     private final void showPopup(MouseEvent event) {
         Point point = event.getPoint();
         int index = locationToIndex(point);
-        /* JList returns -1 if list is empty */
-        if (index != -1) {
-            Rectangle rect = this.getCellBounds(index, index);
-            /* The user might right click on an area
-             * that has no list item, such as when the JList is not full. */
-            if (rect.contains(point)) {
-                JPopupMenu popup = new JPopupMenu();
-                if (((UMLModelElementListModel2) getModel())
-                        .buildPopup(popup, index)) {
-                    popup.show(this, point.x, point.y);
-                }
-            }
+        JPopupMenu popup = new JPopupMenu();
+        if (((UMLModelElementListModel2) getModel())
+                .buildPopup(popup, index)) {
+            popup.show(this, point.x, point.y);
         }
     }
 }
