@@ -317,7 +317,7 @@ public abstract class FigEdgeModelElement
                 getAllPossibleStereotypes(models, getOwner()));
             
             if (!availableStereotypes.isEmpty()) {
-                ArgoJMenu stereotypes = new ArgoJMenu("menu.popup.add-stereotype");
+                ArgoJMenu stereotypes = new ArgoJMenu("menu.popup.apply-stereotypes");
                 Iterator it = availableStereotypes.iterator();
                 while (it.hasNext()) {
                     stereotypes.addCheckItem(new ActionAddStereotype(getOwner(), it.next()));
