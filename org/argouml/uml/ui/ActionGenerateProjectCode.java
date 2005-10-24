@@ -33,7 +33,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.generator.Generator2;
+import org.argouml.uml.generator.GeneratorManager;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
 
 /**
@@ -108,7 +108,7 @@ public class ActionGenerateProjectCode extends UMLAction {
      * @param cls the classifier that is candidate for generation
      * @return true if the candidate is sound
      */
-    private boolean isCodeRelevantClassifier(Object/*MClassifier*/ cls) {
+    private boolean isCodeRelevantClassifier(Object cls) {
         if (cls == null) {
             return false;
         }
@@ -116,7 +116,7 @@ public class ActionGenerateProjectCode extends UMLAction {
                 && !Model.getFacade().isAInterface(cls)) {
             return false;
         }
-        String path = Generator2.getCodePath(cls);
+        String path = GeneratorManager.getCodePath(cls);
         String name = Model.getFacade().getName(cls);
         if (name == null
             || name.length() == 0
@@ -126,9 +126,9 @@ public class ActionGenerateProjectCode extends UMLAction {
         if (path != null) {
             return (path.length() > 0);
         }
-        Object/*MNamespace*/ parent = Model.getFacade().getNamespace(cls);
+        Object parent = Model.getFacade().getNamespace(cls);
         while (parent != null) {
-            path = Generator2.getCodePath(parent);
+            path = GeneratorManager.getCodePath(parent);
             if (path != null) {
         	    return (path.length() > 0);
             }

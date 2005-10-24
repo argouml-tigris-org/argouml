@@ -26,14 +26,28 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.swing.JComboBox;
 
 import org.apache.log4j.Logger;
+
+import org.argouml.application.notation.Notation;
+import org.argouml.application.notation.NotationContext;
+import org.argouml.language.ui.LanguageComboBox;
+
 import org.argouml.application.notation.Notation;
 import org.argouml.application.notation.NotationContext;
 import org.argouml.application.notation.NotationName;
 import org.argouml.application.notation.ui.NotationComboBox;
+
 import org.argouml.model.Model;
 import org.argouml.ui.TabText;
+import org.argouml.uml.generator.GeneratorHelper;
+import org.argouml.uml.generator.Language;
+import org.argouml.uml.generator.SourceUnit;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
@@ -44,11 +58,17 @@ import org.tigris.gef.presentation.FigNode;
  */
 public class TabSrc
     extends TabText
-    implements NotationContext, ItemListener {
+    implements ItemListener {
     
     private static final Logger LOG = Logger.getLogger(TabSrc.class);
-    private NotationName notationName = null;
-
+    
+    private Language langName = null;
+    private String fileName = null;
+    private SourceUnit[] files = null;
+    
+    private LanguageComboBox cbLang = new LanguageComboBox();
+    private JComboBox cbFiles = new JComboBox();
+    
     ////////////////////////////////////////////////////////////////
     // constructor
     
@@ -58,17 +78,21 @@ public class TabSrc
      */
     public TabSrc() {
         super("tab.source", true);
-        notationName = null;
-        getToolbar().add(NotationComboBox.getInstance());
-        NotationComboBox.getInstance().addItemListener(this);
+        langName = null;
+        fileName = null;
+        getToolbar().add(cbLang);
         getToolbar().addSeparator();
+        cbLang.addItemListener(this);
+        getToolbar().add(cbFiles);
+        getToolbar().addSeparator();
+        cbFiles.addItemListener(this);
     }
 
     /**
      * @see java.lang.Object#finalize()
      */
     protected void finalize() {
-        NotationComboBox.getInstance().removeItemListener(this);
+        cbLang.removeItemListener(this);
     }
     
     ////////////////////////////////////////////////////////////////
@@ -78,13 +102,10 @@ public class TabSrc
      * @see org.argouml.ui.TabText#genText(java.lang.Object)
      */
     protected String genText(Object modelObject) {
-        modelObject = (modelObject instanceof Fig)
-            ? ((Fig) modelObject).getOwner() : modelObject;
-        if (!Model.getFacade().isAElement(modelObject))
-            return null;
-
-        LOG.debug("TabSrc getting src for " + modelObject);
-        return Notation.generate(this, modelObject, true);
+        if (modelObject != getTarget()) {
+            setTarget(modelObject); // shouldn't happen
+        }
+        return files[cbFiles.getSelectedIndex()].getContent();
     }
 
     /**
@@ -111,7 +132,24 @@ public class TabSrc
      */
     public void setTarget(Object t) {
         Object modelTarget = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        setShouldBeEnabled(Model.getFacade().isAModelElement(modelTarget));
+        setShouldBeEnabled(Model.getFacade().isAClassifier(modelTarget));
+        if (shouldBeEnabled()) {
+            LOG.debug("TabSrc getting src for " + modelTarget);
+            Collection code =
+                GeneratorHelper.generate(langName, modelTarget, false);
+            if (!code.isEmpty()) {
+                files = new SourceUnit[code.size()];
+                files = (SourceUnit[]) code.toArray(files);
+                cbFiles.removeAllItems();
+                for (int i = 0; i < files.length; i++) {
+                    String title = files[i].getName();
+                    if (files[i].getBasePath().length() > 0) {
+                        title += " ( " + files[i].getFullName() + ")";
+                    }
+                    cbFiles.addItem(title);
+                }
+            }
+        }
         super.setTarget(t);
     }
 
@@ -126,7 +164,7 @@ public class TabSrc
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
 
         setShouldBeEnabled(false);
-        if (Model.getFacade().isAModelElement(target)) {
+        if (Model.getFacade().isAClassifier(target)) {
             setShouldBeEnabled(true);
         }
 
@@ -137,10 +175,17 @@ public class TabSrc
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent event) {
-        if (event.getStateChange() == ItemEvent.SELECTED) {
-            notationName = (NotationName) NotationComboBox.getInstance()
-                .getSelectedItem();
-            refresh();
+        if (event.getSource() == cbLang) {
+            if (event.getStateChange() == ItemEvent.SELECTED) {
+                langName = (Language) cbLang.getSelectedItem();
+                refresh();
+            }
+        } else if (event.getSource() == cbFiles) {
+            if (event.getStateChange() == ItemEvent.SELECTED) {
+                fileName = (String) cbFiles.getSelectedItem();
+                super.setTarget(getTarget());
+            }
+            
         }
     }
 
@@ -151,18 +196,5 @@ public class TabSrc
         setTarget(getTarget());
     }
 
-    /**
-     * @see org.argouml.application.notation.NotationContext#getContextNotation()
-     */
-    public NotationName getContextNotation() {
-        return notationName;
-    }
-
-    /**
-     * @see org.argouml.application.notation.NotationContext#setContextNotation(org.argouml.application.notation.NotationName)
-     */
-    public void setContextNotation(NotationName nn) {
-        notationName = nn;
-    }
 
 } /* end class TabSrc */
