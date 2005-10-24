@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.api.PluggableNotation;
 import org.argouml.application.notation.NotationHelper;
 import org.argouml.application.notation.NotationName;
@@ -46,10 +47,14 @@ import org.argouml.model.Model;
  * pattern</a> in "Design Patterns", and the <a href=
  * "http://www.ccs.neu.edu/research/demeter/">Demeter project</a>.<p>
  *
+ * @deprecated This class is deprecated in favour of GeneratorManager and
+ * the CodeGenerator interface.
  * @since 0.15.6
  */
 public abstract class Generator2
     implements NotationProvider2, PluggableNotation {
+
+    private static final Logger LOG = Logger.getLogger(Generator2.class);
 
     private NotationName notationName = null;
 
@@ -67,17 +72,33 @@ public abstract class Generator2
      * @return a generator (or <tt>null</tt> if not found).
      */
     public static Generator2 getGenerator(NotationName n) {
-        return (Generator2) generators.get(n);
+        //return (Generator2) generators.get(n);
+        CodeGenerator fg = GeneratorManager.getInstance()
+                .getGenerator(n.getConfigurationValue());
+        try {
+            return (Generator2) fg;
+        } catch (ClassCastException cce) {
+            return null;
+        }
     }
 
     /**
      * Constructor that sets the name of this notation.
      *
-     * @param name The name.
+     * @param nn The NotationName object.
      */
-    public Generator2(NotationName name) {
-        notationName = name;
-        generators.put(notationName, this);
+    public Generator2(NotationName nn) {
+        notationName = nn;
+        String cv = nn.getConfigurationValue();
+        Language lang =
+            GeneratorHelper.makeLanguage(cv, nn.getTitle(), nn.getIcon());
+        try {
+            CodeGenerator wrapper =
+                new FileGeneratorAdapter((FileGenerator) this);
+            GeneratorManager.getInstance().addGenerator(lang, wrapper);
+        } catch (ClassCastException cce) {
+            LOG.warn("Class " + getClass() + " should implement FileGenerator");
+        }
     }
 
     /**

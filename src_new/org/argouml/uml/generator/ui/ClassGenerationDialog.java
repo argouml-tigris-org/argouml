@@ -30,11 +30,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
@@ -54,16 +55,15 @@ import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.notation.Notation;
-import org.argouml.application.notation.NotationName;
-import org.argouml.application.notation.NotationProviderFactory;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.generator.FileGenerator;
-import org.argouml.uml.generator.Generator2;
+import org.argouml.uml.generator.CodeGenerator;
+import org.argouml.uml.generator.GeneratorManager;
+import org.argouml.uml.generator.Language;
 import org.tigris.gef.util.Converter;
 import org.tigris.swidgets.Dialog;
 
@@ -266,16 +266,8 @@ public class ClassGenerationDialog
     }
 
     private void buildLanguages() {
-        List ll = Notation.getAvailableNotations();
-        languages = new ArrayList();
-        for (int l = 0; l < ll.size(); l++) {
-            if (NotationProviderFactory
-                .getInstance()
-                .getProvider((NotationName) ll.get(l))
-                instanceof FileGenerator) {
-                languages.add(ll.get(l));
-            }
-        }
+        Map ll = GeneratorManager.getInstance().getGenerators();
+        languages = new Vector(ll.keySet());
     }
 
     private static Collection getClasspathEntries() {
@@ -305,42 +297,56 @@ public class ClassGenerationDialog
 
         // Generate Button --------------------------------------
         if (e.getSource() == getOkButton()) {
-            String path =
-                ((String) outputDirectoryComboBox.getModel().getSelectedItem())
-		    .trim();
+            String path = ((String) outputDirectoryComboBox.getModel()
+                    .getSelectedItem()).trim();
             Project p = ProjectManager.getManager().getCurrentProject();
             p.getGenerationPrefs().setOutputDir(path);
             List[] fileNames = new Vector[languages.size()];
             for (int i = 0; i < languages.size(); i++) {
                 fileNames[i] = new Vector();
-                NotationName language = (NotationName) languages.get(i);
-                FileGenerator generator =
-                    (FileGenerator) Generator2.getGenerator(language);
+                Language language = (Language) languages.get(i);
+                GeneratorManager genMan = GeneratorManager.getInstance();
+                CodeGenerator generator = genMan.getGenerator(language);
                 Set nodes = classTableModel.getChecked(language);
-                for (Iterator iter = nodes.iterator(); iter.hasNext();) {
-                    Object node = iter.next();
-                    if (Model.getFacade().isAClassifier(node)) {
-                        if (isPathInModel) {
-                            path = Generator2.getCodePath(node);
-                            if (path == null) {
-                                Object parent =
-                                    Model.getFacade().getNamespace(node);
-                                while (parent != null) {
-                                    path = Generator2.getCodePath(parent);
-                                    if (path != null) {
-                                        break;
-                                    }
-                                    parent =
-                                        Model.getFacade().getNamespace(parent);
+
+                if (!isPathInModel) {
+                    Collection files =
+                        generator.generateFiles(nodes, path, false);
+                    for (Iterator fit = files.iterator(); fit.hasNext();) { 
+                        fileNames[i].add(path + CodeGenerator.FILE_SEPARATOR
+                                + fit.next());
+                    }
+                } else {
+                    // classify nodes by base path
+                    Map nodesPerPath = new HashMap();
+                    for (Iterator iter = nodes.iterator(); iter.hasNext();) {
+                        Object node = iter.next();
+                        if (!Model.getFacade().isAClassifier(node)) continue;
+                        path = GeneratorManager.getCodePath(node);
+                        if (path == null) {
+                            Object parent =
+                                Model.getFacade().getNamespace(node);
+                            while (parent != null) {
+                                path = GeneratorManager.getCodePath(parent);
+                                if (path != null) {
+                                    break;
                                 }
+                                parent =
+                                    Model.getFacade().getNamespace(parent);
                             }
                         }
-                        // TODO:
-                        // This will only work for languages that have each node
-                        // in a separate files (one or more).
                         if (path != null) {
-                            String fn = generator.generateFile2(node, path);
-                            fileNames[i].add(fn);
+                            final String fileSep = CodeGenerator.FILE_SEPARATOR;
+                            if (path.endsWith(fileSep)) { // remove trailing /
+                                path = path.substring(0, path.length()
+                                        - fileSep.length());
+                            }
+                            Set np = (Set) nodesPerPath.get(path);
+                            if (np == null) {
+                                np = new HashSet();
+                                nodesPerPath.put(path, np);
+                            }
+                            np.add(node);
                             // save the selected language in the model
                             // TODO: no support of multiple checked
                             // languages
@@ -349,24 +355,37 @@ public class ClassGenerationDialog
                                         node, "src_lang");
                             String savedLang = null;
                             if (taggedValue != null) {
-                                savedLang =
-				    Model.getFacade().getValueOfTag(
-					    taggedValue);
+                                savedLang = Model.getFacade().getValueOfTag(
+                                        taggedValue);
                             }
-                            if (taggedValue == null || !language
-                                .getConfigurationValue()
-                                .equals(savedLang)) {
-                                Model.getCoreHelper().setTaggedValue(
-                                    node,
-                                    "src_lang",
-                                    language.getConfigurationValue());
-                                ProjectManager.getManager()
-                                    .setNeedsSave(true);
+                            if (taggedValue == null || !language.getName()
+                                    .equals(savedLang)) {
+                                Model.getCoreHelper().setTaggedValue(node,
+                                        "src_lang", language.getName());
+                                ProjectManager.getManager().setNeedsSave(true);
                             }
                         }
+                    } // end for (all nodes)
+                    
+                    // generate the files
+                    Iterator nit = nodesPerPath.keySet().iterator();
+                    while (nit.hasNext()) {
+                        String basepath = (String) nit.next();
+                        Set nodeColl = (Set) nodesPerPath.get(basepath);
+                        // TODO: the last argument (recursive flag) should be a
+                        // selectable option
+                        Collection files =
+                            generator.generateFiles(nodeColl, basepath, false);
+                        for (Iterator fit = files.iterator(); fit.hasNext();) { 
+                            fileNames[i].add(basepath
+                                    + CodeGenerator.FILE_SEPARATOR
+                                    + fit.next());
+                        }
                     }
-                }
-            }
+                } // end if (!isPathInModel) .. else
+            } // end for (all languages)
+            // TODO: do something with the generated list fileNames,
+            // for example, show it to the user in a dialog box.
         }
     }
 
@@ -437,12 +456,11 @@ public class ClassGenerationDialog
 
                 for (int j = 0; j < getLanguagesCount(); j++) {
                     if (isSupposedToBeGeneratedAsLanguage(
-			    (NotationName) languages.get(j),
-			    cls)) {
+                            (Language) languages.get(j), cls)) {
                         checked[j].add(cls);
-		    } else if (
-                        ((NotationName) languages.get(j)).sameNotationAs(
-                            Notation.getConfigueredNotation())) {
+                    } else if (((Language) languages.get(j)).getName().equals(
+                            Notation.getConfigueredNotation()
+                                    .getConfigurationValue())) {
                         checked[j].add(cls);
                     }
                 }
@@ -454,7 +472,7 @@ public class ClassGenerationDialog
         }
 
         private boolean isSupposedToBeGeneratedAsLanguage(
-            NotationName lang,
+            Language lang,
             Object cls) {
             if (lang == null) {
                 return false;
@@ -469,7 +487,7 @@ public class ClassGenerationDialog
                 return false;
             }
             String savedLang = Model.getFacade().getValueOfTag(taggedValue);
-            return (lang.getConfigurationValue().equals(savedLang));
+            return (lang.getName().equals(savedLang));
         }
 
         private int getLanguagesCount() {
@@ -479,8 +497,8 @@ public class ClassGenerationDialog
             return languages.size();
         }
 
-        public Set getChecked(NotationName nn) {
-            int index = languages.indexOf(nn);
+        public Set getChecked(Language lang) {
+            int index = languages.indexOf(lang);
             if (index == -1) {
                 return new HashSet();
             }
@@ -514,8 +532,7 @@ public class ClassGenerationDialog
          */
         public String getColumnName(int c) {
             if (c >= 0 && c < getLanguagesCount()) {
-                return ((NotationName) languages.get(c))
-		    .getConfigurationValue();
+                return ((Language) languages.get(c)).getName();
             } else if (c == getLanguagesCount()) {
                 return "Class Name";
             }
@@ -616,9 +633,9 @@ public class ClassGenerationDialog
         }
 
         /**
-	 * Sets or clears all checkmarks for the (next) language for
-	 * all classes.
-	 *
+         * Sets or clears all checkmarks for the (next) language for
+         * all classes.
+         *
          * @param value If false then all checkmarks are cleared for all
          * languages.
          * If true then all are cleared, except for one language column,
