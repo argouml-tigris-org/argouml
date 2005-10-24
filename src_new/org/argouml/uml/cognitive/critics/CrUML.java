@@ -107,11 +107,13 @@ public class CrUML extends Critic {
      */
     public boolean predicate(Object dm, Designer dsgr) {
 	Project p = ProjectManager.getManager().getCurrentProject();
-	if (p.isInTrash(dm)||Model.getUmlFactory().isRemoved(dm)) {
-	    return NO_PROBLEM;
-	} else {
-	    return predicate2(dm, dsgr);
-	}
+        if (p.isInTrash(dm) ||
+                (Model.getFacade().isAModelElement(dm) &&
+                        Model.getUmlFactory().isRemoved(dm))) {
+            return NO_PROBLEM;
+        } else {
+            return predicate2(dm, dsgr);
+        }
     }
 
     /**
