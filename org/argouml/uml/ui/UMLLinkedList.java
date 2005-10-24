@@ -27,6 +27,7 @@ package org.argouml.uml.ui;
 
 import java.awt.Color;
 
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
 /**
@@ -49,7 +50,7 @@ public class UMLLinkedList extends UMLList2 {
      * @param dataModel the data model
      * @param showIcon true if an icon should be shown
      */
-    public UMLLinkedList(UMLModelElementListModel2 dataModel,
+    public UMLLinkedList(ListModel dataModel,
             boolean showIcon) {
         super(dataModel, new UMLLinkedListCellRenderer(showIcon));
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -64,7 +65,7 @@ public class UMLLinkedList extends UMLList2 {
      *
      * @param dataModel the data model
      */
-    public UMLLinkedList(UMLModelElementListModel2 dataModel) {
+    public UMLLinkedList(ListModel dataModel) {
         this(dataModel, true);
     }
 

@@ -32,6 +32,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JList;
 import javax.swing.JPopupMenu;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
 
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -60,7 +61,7 @@ public abstract class UMLList2
      * @param renderer the renderer
      */
     protected UMLList2(
-            UMLModelElementListModel2 dataModel,
+            ListModel dataModel,
             ListCellRenderer renderer) {
         super(dataModel);
         setDoubleBuffered(true);
