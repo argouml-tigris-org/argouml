@@ -27,22 +27,11 @@ package org.argouml.uml.ui;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
 
 import javax.swing.JComboBox;
 
 import org.apache.log4j.Logger;
-
-import org.argouml.application.notation.Notation;
-import org.argouml.application.notation.NotationContext;
 import org.argouml.language.ui.LanguageComboBox;
-
-import org.argouml.application.notation.Notation;
-import org.argouml.application.notation.NotationContext;
-import org.argouml.application.notation.NotationName;
-import org.argouml.application.notation.ui.NotationComboBox;
-
 import org.argouml.model.Model;
 import org.argouml.ui.TabText;
 import org.argouml.uml.generator.GeneratorHelper;
@@ -105,7 +94,9 @@ public class TabSrc
         if (modelObject != getTarget()) {
             setTarget(modelObject); // shouldn't happen
         }
-        return files[cbFiles.getSelectedIndex()].getContent();
+        if (cbFiles!=null && files!=null && files[cbFiles.getSelectedIndex()]!=null)
+            return files[cbFiles.getSelectedIndex()].getContent();
+        return null;
     }
 
     /**
