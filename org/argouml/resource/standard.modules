@@ -8,7 +8,7 @@
 module.settings.preferences=org.argouml.ui.SettingsTabPreferences
 module.settings.environment=org.argouml.ui.SettingsTabEnvironment
 module.settings.user=org.argouml.ui.SettingsTabUser
-module.settings.notation=org.argouml.language.ui.SettingsTabNotation
+module.settings.notation=org.argouml.application.notation.ui.SettingsTabNotation
 module.settings.appearance=org.argouml.ui.SettingsTabAppearance
 module.settings.modules=org.argouml.moduleloader.SettingsTabModules
 #module.settings.layout=org.argouml.ui.SettingsTabLayout
