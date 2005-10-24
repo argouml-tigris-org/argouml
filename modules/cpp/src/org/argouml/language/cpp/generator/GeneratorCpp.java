@@ -483,13 +483,15 @@ public class GeneratorCpp extends Generator2
 		pathname = generateDirectoriesPathname(o, path);
 		//String pathname = path + filename;
 		// TODO: package, project basepath, tagged values to configure
-		File f = new File(pathname);
-		if (f.exists()) {
-		    LOG.info("Generating (updated) " + f.getPath());
-		    sect.read(pathname);
-		} else {
-		    LOG.info("Generating (new) " + f.getPath());
-		}
+        if (pathname!=null) {
+            File f = new File(pathname);
+            if (f.exists()) {
+                LOG.info("Generating (updated) " + f.getPath());
+                sect.read(pathname);
+            } else {
+                LOG.info("Generating (new) " + f.getPath());
+            }            
+        }
 	    }
 	}
 
@@ -502,7 +504,7 @@ public class GeneratorCpp extends Generator2
              generatorPass++) {
 	    pathname = generateDirectoriesPathname(o, path);
 	    String fileContent = generateFileAsString(o, pathname);
-	    if (fileContent.length() == 0) continue;
+	    if (fileContent.length() == 0 || pathname == null) continue;
             BufferedWriter fos = null;
 	    //String pathname = path + filename;
 	    // TODO: package, project basepath, tagged values to configure
