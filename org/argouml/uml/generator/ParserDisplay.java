@@ -1207,6 +1207,10 @@ public final class ParserDisplay extends Parser {
             }
         }
 
+        // TODO: Modifying the collection that we're iterating over
+        // is poor form.  The MDR Model implementation returns a
+        // copy of the live collection now, but this behavior shouldn't
+        // be relied upon.
         while (it.hasNext()) {
             Object p = it.next();
             if (!Model.getFacade().isReturn(p)) {
@@ -1347,6 +1351,7 @@ public final class ParserDisplay extends Parser {
                     if (hasEq) {
                         value += token;
                     } else {
+                        // TODO: MULTIPLESTEREOTYPES
                         if (stereotype != null) {
                             throw new ParseException(
                                     "Attribute cannot have two"
@@ -1717,7 +1722,7 @@ public final class ParserDisplay extends Parser {
      * TODO: Should create the stereotype under root if it isn't found.
      *
      * @param obj
-     *            A MModelElements to find a suitable stereotype for.
+     *            A ModelElement to find a suitable stereotype for.
      * @param name
      *            The name of the stereotype to search for.
      * @return A stereotype named name, or possibly null.
