@@ -4578,6 +4578,9 @@ public class NSUMLModelFacade implements Facade {
     public String getUMLClassName(Object handle) {
         if (handle instanceof MBase) {
             return ((MBase) handle).getUMLClassName();
+        } else if (handle instanceof MExpression
+                || handle instanceof MMultiplicity) {
+            return nsmodel.getMetaTypes().getName(handle);
         }
 	return illegalArgumentString(handle);
     }
