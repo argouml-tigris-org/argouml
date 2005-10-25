@@ -26,6 +26,8 @@ package org.argouml.model;
 
 import java.lang.ref.WeakReference;
 
+import org.argouml.kernel.NsumlEnabler;
+
 import junit.framework.TestCase;
 
 
@@ -100,10 +102,7 @@ public class TestCollaborationsFactory extends TestCase {
      * deleted upon deletion of the ClassifierRole. These elements are
      * Message and AssociationRole.
      * 
-     * Interaction should not be removed when removing ClassifierRole... maybe
-     * if the last message is removed from the interaction but even then it's
-     * doubtfull since it will probably lead to backward compatibility problems
-     * in save formats.
+
      */
     public void testDeleteClassifierRole() {
         Object model = Model.getModelManagementFactory().createModel();
@@ -133,7 +132,23 @@ public class TestCollaborationsFactory extends TestCase {
         assertNull("ClassifierRole not removed", cr1wr.get());
         assertNull("AssociationRole not removed", rolewr.get());
         assertNull("Message not removed", meswr.get());
-        assertNotNull("Interaction removed", interwr.get());
+        /*
+         * This comment was included in a previous version (before 1/2005)
+         * of the test which had this assertion commented out:
+         * ------
+         * Interaction should not be removed when removing ClassifierRole...
+         * maybe if the last message is removed from the interaction but even
+         * then it's doubtfull since it will probably lead to backward
+         * compatibility problems in save formats.
+         * ------
+         * but my reading of the UML 1.4 specification is that an Interaction
+         * without at least one message is definitely illegal, so MDR is
+         * doing the right thing by removing it in this case where we only
+         * have a single message, which then gets deleted. - tfm
+         */
+        if (!NsumlEnabler.isNsuml()) {
+            assertNull("Interaction not removed", interwr.get());
+        }
     }
 
     /**
