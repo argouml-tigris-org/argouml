@@ -94,9 +94,9 @@ public class TabSrc
         if (modelObject != getTarget()) {
             setTarget(modelObject); // shouldn't happen
         }
-        if (cbFiles!=null && files!=null && files[cbFiles.getSelectedIndex()]!=null)
+        if (files != null && files.length > cbFiles.getSelectedIndex())
             return files[cbFiles.getSelectedIndex()].getContent();
-        return null;
+        return "N/A"; // never return null here!
     }
 
     /**
@@ -124,6 +124,8 @@ public class TabSrc
     public void setTarget(Object t) {
         Object modelTarget = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
         setShouldBeEnabled(Model.getFacade().isAClassifier(modelTarget));
+        cbFiles.removeAllItems();
+        files = null;        
         if (shouldBeEnabled()) {
             LOG.debug("TabSrc getting src for " + modelTarget);
             Collection code =
@@ -131,7 +133,6 @@ public class TabSrc
             if (!code.isEmpty()) {
                 files = new SourceUnit[code.size()];
                 files = (SourceUnit[]) code.toArray(files);
-                cbFiles.removeAllItems();
                 for (int i = 0; i < files.length; i++) {
                     String title = files[i].getName();
                     if (files[i].getBasePath().length() > 0) {
