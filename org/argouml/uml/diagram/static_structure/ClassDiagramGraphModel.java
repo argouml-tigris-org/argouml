@@ -217,32 +217,37 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         if (super.canAddNode(node) && !containsNode(node)) {
             return true;
         }
-	if (containsNode(node)) {
-	    return false;
-	}
+    	if (containsNode(node)) {
+            LOG.error("Addition of node of type " +
+                    node.getClass().getName() + 
+                    " rejected because its already in the graph model");
+    	    return false;
+    	}
         if (Model.getFacade().isAAssociation(node)) {
+            // N.B. A node which is an Association is either a n-ary association
+            // or the Class part of an AssociationClass
             Collection ends = Model.getFacade().getConnections(node);
-            /* This only applies to N-ary associations (i.e. N > 2): */
-            if (ends.size() < 3) return false;
             Iterator iter = ends.iterator();
-            boolean canAdd = true;
             while (iter.hasNext()) {
                 Object classifier = 
                     Model.getFacade().getClassifier(iter.next());
                 if (!containsNode(classifier)) {
-                    canAdd = false;
-                    break;
+                    LOG.error("Addition of node of type " + 
+                            node.getClass().getName() + 
+                            " rejected because it is connected to a " +
+                            "classifier that is not in the diagram");
+                    return false;
                 }
             }
-            return canAdd;
+            return true;
         }
 
         // TODO: This logic may well be worth moving into the model component.
         // Provide a similar grid to the connectionsGrid
-	return Model.getFacade().isAClass(node)
-		|| Model.getFacade().isAInterface(node)
-		|| Model.getFacade().isAModel(node)
-		|| Model.getFacade().isAPackage(node);
+        return Model.getFacade().isAClass(node)
+            || Model.getFacade().isAInterface(node)
+            || Model.getFacade().isAModel(node)
+            || Model.getFacade().isAPackage(node);
     }
 
     /**
@@ -257,7 +262,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         if (containsEdge(edge)) {
             return false;
         }
-        Object end0 = null, end1 = null;
+        Object sourceModelElement = null;
+        Object destModelElement = null;
         if (Model.getFacade().isAAssociation(edge)) {
             Collection conns = Model.getFacade().getConnections(edge);
             if (conns.size() < 2) {
@@ -271,27 +277,27 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
                 LOG.error("Association rejected. Both ends are null");
                 return false;
             }
-            end0 = Model.getFacade().getType(associationEnd0);
-            end1 = Model.getFacade().getType(associationEnd1);
+            sourceModelElement = Model.getFacade().getType(associationEnd0);
+            destModelElement = Model.getFacade().getType(associationEnd1);
         } else if (Model.getFacade().isAAssociationEnd(edge)) {
-            end0 = Model.getFacade().getAssociation(edge);
-            end1 = Model.getFacade().getType(edge);
+            sourceModelElement = Model.getFacade().getAssociation(edge);
+            destModelElement = Model.getFacade().getType(edge);
         
-            return (end0 != null
-                    && end1 != null
-                    && (containsEdge(end0) || containsNode(end0))
-                    && containsNode(end1));
+            return (sourceModelElement != null
+                    && destModelElement != null
+                    && (containsEdge(sourceModelElement) || containsNode(sourceModelElement))
+                    && containsNode(destModelElement));
         } else if (Model.getFacade().isAGeneralization(edge)) {
-            end0 = Model.getFacade().getChild(edge);
-            end1 = Model.getFacade().getParent(edge);
+            sourceModelElement = Model.getFacade().getChild(edge);
+            destModelElement = Model.getFacade().getParent(edge);
         } else if (Model.getFacade().isADependency(edge)) {
             Collection clients = Model.getFacade().getClients(edge);
             Collection suppliers = Model.getFacade().getSuppliers(edge);
             if (clients == null || suppliers == null) {
                 return false;
             }
-            end0 = clients.iterator().next();
-            end1 = suppliers.iterator().next();
+            sourceModelElement = clients.iterator().next();
+            destModelElement = suppliers.iterator().next();
         } else if (Model.getFacade().isALink(edge)) {
             Collection roles = Model.getFacade().getConnections(edge);
             if (roles.size() < 2) {
@@ -303,26 +309,28 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             if (linkEnd0 == null || linkEnd1 == null) {
                 return false;
             }
-            end0 = Model.getFacade().getInstance(linkEnd0);
-            end1 = Model.getFacade().getInstance(linkEnd1);
+            sourceModelElement = Model.getFacade().getInstance(linkEnd0);
+            destModelElement = Model.getFacade().getInstance(linkEnd1);
         } else if (edge instanceof CommentEdge) {
-            end0 = ((CommentEdge) edge).getSource();
-            end1 = ((CommentEdge) edge).getDestination();
+            sourceModelElement = ((CommentEdge) edge).getSource();
+            destModelElement = ((CommentEdge) edge).getDestination();
         }
         
-        if (end0 == null || end1 == null) {
+        if (sourceModelElement == null || destModelElement == null) {
             LOG.error("Edge rejected. Its ends are not attached to anything");
             return false;
         }
         
-        if (!containsNode(end0)) {
-            LOG.error("Edge rejected. " + 
-                    "Its source end is not attached to a node on the diagram");
+        if (!containsNode(sourceModelElement)) {
+            LOG.error("Edge rejected. Its source end is attached to " +
+                    sourceModelElement + 
+                    " but this is not in the graph model");
             return false;
         }
-        if (!containsNode(end1)) {
-            LOG.error("Edge rejected. " + 
-            "Its destination end is not attached to a node on the diagram");
+        if (!containsNode(destModelElement)) {
+            LOG.error("Edge rejected. Its destination end is attached to " +
+                    destModelElement + 
+                    " but this is not in the graph model");
             return false;
         }
         
@@ -336,7 +344,6 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Add the given node to the graph, if valid.
      */
     public void addNode(Object node) {
-	LOG.debug("adding class node!!");
 	if (!canAddNode(node)) {
 	    return;
 	}
@@ -347,7 +354,6 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	}
 
 	fireNodeAdded(node);
-	LOG.debug("adding " + node + " OK");
     }
 
     /**
