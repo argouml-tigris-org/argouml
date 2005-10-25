@@ -42,6 +42,12 @@ import org.apache.log4j.Logger;
  */
 public final class Model {
     /**
+     * The default implementation to start.
+     */
+    private static final String DEFAULT_MODEL_IMPLEMENTATION =
+        "org.argouml.model.uml.NSUMLModelImplementation";
+
+    /**
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(Model.class);
@@ -90,7 +96,7 @@ public final class Model {
      * The decorated helper.
      */
     private static UseCasesHelper useCasesHelper;
-    
+
     /**
      * Constructor to prohibit creation.
      */
@@ -106,7 +112,7 @@ public final class Model {
         String className =
             System.getProperty(
                     "argouml.model.implementation",
-            	    "org.argouml.model.uml.DefaultModelImplementation");
+            	    DEFAULT_MODEL_IMPLEMENTATION);
 
         try {
             Class implType = Class.forName(className);
@@ -378,7 +384,7 @@ public final class Model {
      * @return the helper
      */
     public static UseCasesHelper getUseCasesHelper() {
-        return impl.getUseCasesHelper();
+        return useCasesHelper;
     }
 
     /**
@@ -534,8 +540,13 @@ public final class Model {
             mco.mementoCreated(memento);
         }
     }
-    
+
+    /**
+     * Getter for CopyHelper.
+     *
+     * @return the helper
+     */
     public static CopyHelper getCopyHelper() {
-    		return impl.getCopyHelper();
+	return impl.getCopyHelper();
     }
 }
