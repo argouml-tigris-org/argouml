@@ -28,7 +28,7 @@
   http://argouml.tigris.org/servlets/ReadMsg?list=dev&msgNo=16309</a>
   and the attachment from Michael.</p>
   <p>The latest .zargo of this proposal is 
-  <a href="notation-mvw-4.zargo">here</a>.</P>
+  <a href="notation-mvw-6.zargo">here</a>.</P>
 
 <H2>The old way / dev list proposal</H2>
 
@@ -51,8 +51,9 @@
   StateBodyNotation, ModelElementNameNotation. 
   A state will show the latter 2.</p>
 <p>This notation object would keep track of which UML objects it 
-  represents, generate and parse, provide a help text, and listen to model 
-  element changes. 
+  represents, generate and parse and provide a help text.</p>
+<p>Remark:
+  Maybe, in the future, this notation object could listen to model changes, instead of the Fig. 
   Putting the latter task into this new Notation class (instead of the Fig) 
   has the advantage that the knowledge 
   to which uml objects to listen is centralised 
@@ -67,9 +68,9 @@
   So, we will have: TransitionNotationUML, TransitionNotationJava, ... etc.
 </p>  
 
-<H3>The NotationProviderFactory</H3>
+<H3>The NotationProviderFactory2</H3>
 <p><img src="fig2.png"></img></p>
-<p>The NotationProviderFactory is a singleton, 
+<p>The NotationProviderFactory2 is a singleton, 
   since it is the accesspoint for all Figs 
   to access the textual representation of modelobjects, 
   and since plugin modules can add extra languages.</p>
@@ -78,7 +79,7 @@
   are identical as in the past. 
   The Figs call the NotationProviderFactory as follows at creationtime:
 <pre>
-  NotationProviderFactory factory = NotationProviderFactory.getInstance();
+  NotationProviderFactory2 factory = NotationProviderFactory2.getInstance();
   NotationProvider4 notationProvider 
       = factory.getNotationProvider(factory.typeStateBody, this);
 </pre>
