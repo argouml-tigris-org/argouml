@@ -1074,7 +1074,8 @@ public final class ParserDisplay extends Parser {
         throws ParseException {
         MyTokenizer st =
             new MyTokenizer(param, " ,\t,:,=,\\,", parameterCustomSep);
-        Collection origParam = Model.getFacade().getParameters(op);
+        // Copy returned parameters because it will be a live collection for MDR
+        Collection origParam = new ArrayList(Model.getFacade().getParameters(op));
         Object ns = Model.getFacade().getModel(op);
         if (Model.getFacade().isAOperation(op)) {
             Object ow = Model.getFacade().getOwner(op);
@@ -1207,10 +1208,6 @@ public final class ParserDisplay extends Parser {
             }
         }
 
-        // TODO: Modifying the collection that we're iterating over
-        // is poor form.  The MDR Model implementation returns a
-        // copy of the live collection now, but this behavior shouldn't
-        // be relied upon.
         while (it.hasNext()) {
             Object p = it.next();
             if (!Model.getFacade().isReturn(p)) {
@@ -2169,7 +2166,7 @@ public final class ParserDisplay extends Parser {
             } // else the empty s will do
 
         /*
-         * We can distinct between 4 cases:
+         * We can distinguish between 4 cases:
          * 1. A trigger is given. None exists yet.
          * 2. The name of the trigger was present, but is (the same or)
          * altered.
@@ -2246,7 +2243,7 @@ public final class ParserDisplay extends Parser {
         } else {
             // case 3 and 4
             if (evt == null) {
-                ;// case 3
+                // case 3
             } else {
                 // case 4
                 delete(evt); // erase it
@@ -2317,7 +2314,7 @@ public final class ParserDisplay extends Parser {
             }
         } else {
             if (g == null) {
-                ;// case 3
+                // case 3
             } else {
                 // case 4
                 delete(g); // erase it
@@ -2415,7 +2412,7 @@ public final class ParserDisplay extends Parser {
             while (st.hasMoreTokens()) {
                 token = st.nextToken();
                 if (" ".equals(token) || "\t".equals(token)) {
-                    ;// Do nothing
+                    // Do nothing
                 } else if ("/".equals(token)) {
                     hasSlash = true;
                     hasColon = false;
@@ -2493,7 +2490,9 @@ public final class ParserDisplay extends Parser {
 
         if (bases != null) {
             // Remove bases that aren't there anymore
-            Collection b = Model.getFacade().getBases(cls);
+            
+            // copy - can't iterate modify live collection while iterating it
+            Collection b = new ArrayList(Model.getFacade().getBases(cls));
             Iterator it = b.iterator();
             Object c;
             Object ns = Model.getFacade().getNamespace(cls);
@@ -3002,9 +3001,9 @@ public final class ParserDisplay extends Parser {
         }
 
         if (args != null) {
-            Collection c =
+            Collection c = new ArrayList(
                 Model.getFacade().getActualArguments(
-                        Model.getFacade().getAction(mes));
+                        Model.getFacade().getAction(mes)));
             Iterator it = c.iterator();
             for (i = 0; i < args.size(); i++) {
                 Object arg = (it.hasNext() ? /* (MArgument) */it.next() : null);
@@ -3120,8 +3119,11 @@ public final class ParserDisplay extends Parser {
                         + "message that is an activator", 0);
             } else {
                 // Disconnect the message from the call graph
-                Collection c = Model.getFacade().getPredecessors(mes);
-                Collection c2 = Model.getFacade().getMessages3(mes);
+                // Make copies of returned live collections since we're modifying
+                Collection c = new ArrayList(
+                        Model.getFacade().getPredecessors(mes));
+                Collection c2 = new ArrayList(
+                        Model.getFacade().getMessages3(mes));
                 Iterator it;
 
                 it = c2.iterator();
@@ -3437,7 +3439,7 @@ public final class ParserDisplay extends Parser {
     private Collection findCandidateRoots(Collection c, Object a,
             Object veto) {
         Iterator it = c.iterator();
-        Vector v = new Vector();
+        ArrayList v = new ArrayList();
         while (it.hasNext()) {
             Object m = /* (MMessage) */it.next();
             if (m == veto) {
@@ -3466,7 +3468,7 @@ public final class ParserDisplay extends Parser {
      */
     private Collection filterWithActivator(Collection c, Object/*MMessage*/a) {
         Iterator it = c.iterator();
-        Vector v = new Vector();
+        ArrayList v = new ArrayList();
         while (it.hasNext()) {
             Object m = /* (MMessage) */it.next();
             if (Model.getFacade().getActivator(m) == a) {
