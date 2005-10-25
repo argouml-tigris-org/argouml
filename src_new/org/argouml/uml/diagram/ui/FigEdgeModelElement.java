@@ -741,7 +741,6 @@ public abstract class FigEdgeModelElement
      * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
      */
     public void setLayer(Layer lay) {
-        LOG.info("Setting " + this + " to layer " + lay);
         super.setLayer(lay);
         getFig().setLayer(lay);
     }
