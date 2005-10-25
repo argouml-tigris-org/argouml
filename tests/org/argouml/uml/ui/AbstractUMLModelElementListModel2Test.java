@@ -35,8 +35,6 @@ import org.argouml.model.Model;
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
-
-    //private int oldEventPolicy;
     private Object elem;
     private UMLModelElementListModel2 model;
 
@@ -55,10 +53,8 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         buildElement();
-        // TODO: Tests are all coded to assume immediate event delivery
-        // This has been made the default for MDR implementation, but 
-        // this requirement should be removed in the future.
-        //
+        // Tests used to be coded to assume immediate event delivery.
+        // They've been modified to use flush() where needed.
         //oldEventPolicy = MFactoryImpl.getEventPolicy();
         //MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         buildModel();
