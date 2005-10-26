@@ -45,7 +45,7 @@ public final class Model {
      * The default implementation to start.
      */
     private static final String DEFAULT_MODEL_IMPLEMENTATION =
-        "org.argouml.model.uml.NSUMLModelImplementation";
+        "org.argouml.model.mdr.MDRModelImplementation";
 
     /**
      * Logger.
