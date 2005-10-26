@@ -66,7 +66,7 @@ import org.tigris.gef.presentation.FigPoly;
  *
  * @author pepargouml@yahoo.es
  */
-public class ModeCreateAssociation extends ModeCreatePolyEdge {
+public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
     private FigNode newFigNodeAssociation;
     private FigEdge oldFigAssociation;
     private Object association;

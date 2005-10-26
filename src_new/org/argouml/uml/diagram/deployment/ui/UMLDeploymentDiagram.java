@@ -35,7 +35,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
-import org.argouml.uml.diagram.ui.ActionAddAssociation;
+import org.argouml.uml.diagram.ui.ActionSetAddAssociationMode;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.LayerPerspective;
@@ -203,7 +203,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionAggregation == null) {
             actionAggregation =
                 new RadioAction(
-                    new ActionAddAssociation(
+                    new ActionSetAddAssociationMode(
                         Model.getAggregationKind().getAggregate(),
                         false,
                         "button.new-aggregation"));
@@ -218,7 +218,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionAssociation == null) {
             actionAssociation =
                 new RadioAction(
-                    new ActionAddAssociation(
+                    new ActionSetAddAssociationMode(
                         Model.getAggregationKind().getNone(),
                         false,
                         "button.new-association"));
@@ -233,7 +233,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionComposition == null) {
             actionComposition =
                 new RadioAction(
-                    new ActionAddAssociation(
+                    new ActionSetAddAssociationMode(
                         Model.getAggregationKind().getComposite(),
                         false,
                         "button.new-composition"));
@@ -416,7 +416,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionUniAggregation == null) {
             actionUniAggregation =
                 new RadioAction(
-                    new ActionAddAssociation(
+                    new ActionSetAddAssociationMode(
                         Model.getAggregationKind().getAggregate(),
                         true, "button.new-uniaggregation"));
         }
@@ -430,7 +430,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionUniAssociation == null) {
             actionUniAssociation =
                 new RadioAction(
-                    new ActionAddAssociation(
+                    new ActionSetAddAssociationMode(
                         Model.getAggregationKind().getNone(),
                         true, "button.new-uniassociation"));
         }
@@ -444,7 +444,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionUniComposition == null) {
             actionUniComposition =
                 new RadioAction(
-                    new ActionAddAssociation(
+                    new ActionSetAddAssociationMode(
                         Model.getAggregationKind().getComposite(),
                         true, "button.new-unicomposition"));
         }
