@@ -637,7 +637,19 @@ public abstract class UMLDiagram
             String descr) {
 
         return new RadioAction(
-            new ActionAddAssociation(aggregationKind, unidirectional, descr));
+            new ActionSetAddAssociationMode(aggregationKind, unidirectional, descr));
+    }
+
+    /**
+     * Factory method to build an Action for creating an association end edge
+     * in the diagram.
+     *
+     * @param descr the description to give this action.
+     * @return The action to create a new association.
+     */
+    protected Action makeCreateAssociationEndAction(String descr) {
+
+        return new RadioAction(new ActionSetAddAssociationEndMode(descr));
     }
 
     /**

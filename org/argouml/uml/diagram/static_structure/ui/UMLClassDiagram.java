@@ -62,6 +62,7 @@ public class UMLClassDiagram extends UMLDiagram {
     private Action actionModel;
     private Action actionSubsystem;
     private Action actionAssociation;
+    private Action actionAssociationEnd;
     private Action actionAggregation;
     private Action actionComposition;
     private Action actionUniAssociation;
@@ -264,6 +265,17 @@ public class UMLClassDiagram extends UMLDiagram {
         }
         return actionAssociation;
     }
+    
+    /**
+     * @return Returns the actionAssociation.
+     */
+    protected Action getActionAssociationEnd() {
+        if (actionAssociationEnd == null) {
+            actionAssociationEnd = makeCreateAssociationEndAction("button.new-association-end");
+        }
+        return actionAssociationEnd;
+    }
+    
     /**
      * @return Returns the actionClass.
      */

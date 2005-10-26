@@ -40,7 +40,7 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
  * @author Bob Tarling
  */
 
-public class ActionAddAssociation extends CmdSetMode {
+public class ActionSetAddAssociationMode extends CmdSetMode {
 
     /**
      * Construct a new ActionAddAssociation.<p>
@@ -50,7 +50,7 @@ public class ActionAddAssociation extends CmdSetMode {
      *        association
      * @param name the action description
      */
-    public ActionAddAssociation(Object aggregationKind, boolean unidirectional,
+    public ActionSetAddAssociationMode(Object aggregationKind, boolean unidirectional,
 				String name) {
         //super(ModeCreateAssociation.class, "edgeClass",
         super(ModeCreatePolyEdge.class, "edgeClass",

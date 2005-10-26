@@ -34,7 +34,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
-import org.argouml.uml.diagram.ui.ActionAddAssociation;
+import org.argouml.uml.diagram.ui.ActionSetAddAssociationMode;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -277,7 +277,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Action getActionAggregation() {
         if (actionAggregation == null) {
             actionAggregation = new RadioAction(
-                    new ActionAddAssociation(
+                    new ActionSetAddAssociationMode(
                         Model.getAggregationKind().getAggregate(),
                         false,
                         "button.new-aggregation"));
@@ -290,7 +290,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Action getActionAssociation() {
         if (actionAssociation == null) {
             actionAssociation = new RadioAction(
-                    new ActionAddAssociation(
+                    new ActionSetAddAssociationMode(
                         Model.getAggregationKind().getNone(),
                         false,
                         "button.new-association"));
@@ -303,7 +303,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Action getActionComposition() {
         if (actionComposition == null) {
             actionComposition = new RadioAction(
-                    new ActionAddAssociation(
+                    new ActionSetAddAssociationMode(
                         Model.getAggregationKind().getComposite(),
                         false,
                         "button.new-composition"));
@@ -372,7 +372,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Action getActionUniAggregation() {
         if (actionUniAggregation == null) {
             actionUniAggregation  = new RadioAction(
-                    new ActionAddAssociation(
+                    new ActionSetAddAssociationMode(
                             Model.getAggregationKind().getAggregate(),
                             true,
                             "button.new-uniaggregation"));
@@ -385,7 +385,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Action getActionUniAssociation() {
         if (actionUniAssociation == null) {
             actionUniAssociation  = new RadioAction(
-                    new ActionAddAssociation(
+                    new ActionSetAddAssociationMode(
                             Model.getAggregationKind().getNone(),
                             true,
                             "button.new-uniassociation"));
@@ -398,7 +398,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Action getActionUniComposition() {
         if (actionUniComposition == null) {
             actionUniComposition  = new RadioAction(
-                    new ActionAddAssociation(
+                    new ActionSetAddAssociationMode(
                             Model.getAggregationKind().getComposite(),
                             true,
                             "button.new-unicomposition"));
