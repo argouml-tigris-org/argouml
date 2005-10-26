@@ -30,8 +30,6 @@ import java.lang.reflect.Method;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.Model;
-
 /**
  * This class is a helper class of tests that test
  * the model stuff.<p>
@@ -59,7 +57,19 @@ public final class CheckUMLModelHelper {
      * @param mo the model object that we try to delete, release and reclaim.
      */
     public static void deleteAndRelease(Object mo) {
-        deleteAndRelease(mo, null);
+	Class c = mo.getClass();
+
+	// Call methods that exists for all objects and that always return
+	// something meaningfull.
+	TestCase.assertTrue("toString() corrupt in " + c,
+		      mo.toString() != null);
+
+	Model.getUmlFactory().delete(mo);
+        Model.getPump().reallyFlushModelEvents();
+	WeakReference wo = new WeakReference(mo);
+	mo = null;
+	System.gc();
+	TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);
     }
 
     /**
@@ -79,16 +89,16 @@ public final class CheckUMLModelHelper {
 	// something meaningfull.
 	TestCase.assertTrue("toString() corrupt in " + c,
 		      	    mo.toString() != null);
-        if (name != null) {
-            TestCase.assertTrue("getUMLClassName() corrupt in " + c,
-                    Model.getFacade().getUMLClassName(mo) != null);
-            TestCase.assertTrue(
-                    "getUMLClassName() different from expected in " + c,
-                    name.equals(Model.getFacade().getUMLClassName(mo)));
-        }
+	TestCase.assertTrue("getUMLClassName() corrupt in " + c,
+	        Model.getFacade().getUMLClassName(mo) != null);
+	TestCase.assertTrue(
+	        "getUMLClassName() different from expected in " + c,
+	        name.equals(Model.getFacade().getUMLClassName(mo)));
+
+	Model.getUmlFactory().delete(mo);
 
         WeakReference wo = new WeakReference(mo);
-	Model.getUmlFactory().delete(mo);
+
         Model.getPump().reallyFlushModelEvents();
 	mo = null;
 	System.gc();
