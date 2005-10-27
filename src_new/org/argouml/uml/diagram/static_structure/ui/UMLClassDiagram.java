@@ -143,6 +143,7 @@ public class UMLClassDiagram extends UMLDiagram {
             getAssociationActions(),
             getAggregationActions(),
             getCompositionActions(),
+            getActionAssociationEnd(),
             getActionGeneralization(),
             null,
             getActionInterface(),

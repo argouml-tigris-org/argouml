@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -87,38 +88,34 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
             me.consume();
             return;
         }
-        if (underMouse instanceof FigAssociation  && _npoints == 0) {
-            oldFigAssociation = (FigEdge) underMouse;
-            association = oldFigAssociation.getOwner();
-            associationEnds = Model.getFacade().getConnections(association);
-            oldFigAssociation.setOwner(null);
-            newFigNodeAssociation = placeTempNode(me);
-            underMouse = newFigNodeAssociation;
-            setSourceFigNode(newFigNodeAssociation);
-            setStartPort(newFigNodeAssociation.getOwner());
-            setStartPortFig(newFigNodeAssociation);
-            setArg("edgeClass", Model.getMetaTypes().getAssociationEnd());
-        } else {
-            if (!(underMouse instanceof FigNode) && _npoints == 0) {
-                done();
-                me.consume();
-                return;
-            }
-            if (underMouse instanceof FigNodeAssociation) {
-                setArg("edgeClass", Model.getMetaTypes().getAssociationEnd());
+        
+        if (_npoints == 0) {
+            if (underMouse instanceof FigAssociation) {
+                oldFigAssociation = (FigEdge) underMouse;
+                association = oldFigAssociation.getOwner();
+                associationEnds = Model.getFacade().getConnections(association);
+                oldFigAssociation.setOwner(null);
+                newFigNodeAssociation = placeTempNode(me);
+                underMouse = newFigNodeAssociation;
+                setSourceFigNode(newFigNodeAssociation);
+                setStartPort(newFigNodeAssociation.getOwner());
+                setStartPortFig(newFigNodeAssociation);
+            } else if (underMouse instanceof FigNodeAssociation || underMouse instanceof FigClass) {
+                if (getSourceFigNode() == null) {
+                    setSourceFigNode((FigNode) underMouse);
+                    setStartPort(getSourceFigNode().deepHitPort(x, y));
+                }
+                if (getStartPort() == null) {
+                    done();
+                    me.consume();
+                    return;
+                }
+                setStartPortFig(getSourceFigNode().getPortFig(getStartPort()));
             } else {
-                setArg("edgeClass", Model.getMetaTypes().getAssociation());
-            }
-            if (getSourceFigNode() == null) { //_npoints == 0) {
-                setSourceFigNode((FigNode) underMouse);
-                setStartPort(getSourceFigNode().deepHitPort(x, y));
-            }
-            if (getStartPort() == null) {
                 done();
                 me.consume();
                 return;
             }
-            setStartPortFig(getSourceFigNode().getPortFig(getStartPort()));
         }
 
         if (_npoints == 0) {
@@ -151,33 +148,31 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
         MutableGraphModel mutableGraphModel = (MutableGraphModel) graphModel;
         // TODO: potential class cast exception
         if (destFig instanceof FigAssociation)  {
-            Object assoc = destFig.getOwner();
-            Object edgeType = getArg("edgeClass");
-            if (Model.getMetaTypes().getAssociation().equals(edgeType)) {
-                boolean isValid =
-                    Model.getUmlFactory().isConnectionValid(
-                        Model.getMetaTypes().getAssociationEnd(),
-                        getStartPort(),
-                        assoc);
-                if (isValid) {
-                    GraphModel gm = editor.getGraphModel();
-                    GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
-                    Layer lay = editor.getLayerManager().getActiveLayer();
-                    mutableGraphModel.removeEdge(assoc);
-                    destFig.setOwner(null);
-                    destFig.removeFromDiagram();
-                    mutableGraphModel.addNode(assoc);
-                    FigNode figNode = (FigNode) lay.presentationFor(assoc);
-                    figNode.setLocation(
-                            x - figNode.getWidth() / 2,
-                            y - figNode.getHeight() / 2);
-                    editor.add(figNode);
-                    associationEnds = Model.getFacade().getConnections(assoc);
-                    Iterator it = associationEnds.iterator();
-                    mutableGraphModel.addEdge(it.next());
-                    mutableGraphModel.addEdge(it.next());
-                    destFig = figNode;
-                }
+            Object association = destFig.getOwner();
+            boolean isValid =
+                Model.getUmlFactory().isConnectionValid(
+                    Model.getMetaTypes().getAssociationEnd(),
+                    getStartPort(),
+                    association);
+            if (isValid) {
+                GraphModel gm = editor.getGraphModel();
+                GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
+                Layer lay = editor.getLayerManager().getActiveLayer();
+                mutableGraphModel.removeEdge(association);
+                destFig.setOwner(null);
+                destFig.removeFromDiagram();
+                mutableGraphModel.addNode(association);
+                FigNode figNode = (FigNode) lay.presentationFor(association);
+                figNode.setLocation(
+                        x - figNode.getWidth() / 2,
+                        y - figNode.getHeight() / 2);
+                editor.add(figNode);
+                associationEnds = 
+                    Model.getFacade().getConnections(association);
+                Iterator it = associationEnds.iterator();
+                mutableGraphModel.addEdge(it.next());
+                mutableGraphModel.addEdge(it.next());
+                destFig = figNode;
             }
         }
 
@@ -203,17 +198,8 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
                 p.setComplete(true);
 
                 Object edgeType = getArg("edgeClass");
-                if (edgeType.equals(Model.getMetaTypes().getAssociation())
-                        && Model.getFacade().isAAssociation(foundPort)) {
-                    edgeType = Model.getMetaTypes().getAssociationEnd();
-                }
-                if (edgeType != null) {
-                    setNewEdge(mutableGraphModel.connect(
-                           getStartPort(), foundPort, (Class) edgeType));
-                } else {
-                    setNewEdge(mutableGraphModel.connect(
-                           getStartPort(), foundPort));
-                }
+                setNewEdge(mutableGraphModel.connect(
+                       getStartPort(), foundPort, (Class) edgeType));
 
                 // Calling connect() will add the edge to the GraphModel and
                 // any LayerPersectives on that GraphModel will get a
