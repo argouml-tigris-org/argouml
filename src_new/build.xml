@@ -945,7 +945,7 @@ Property files to be searched:
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="java.awt.headless" value="true"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
-    <sysproperty key="argouml.model.implementation" 
+        <sysproperty key="argouml.model.implementation" 
                  value="org.argouml.model.uml.NSUMLModelImplementation"/>
         <classpath>
             <pathelement location="${argo.build.classes}"/>
@@ -1035,6 +1035,8 @@ Property files to be searched:
     <junit errorproperty="junit.failure" fork="yes" haltonfailure="false" maxmemory="48M" printsummary="true">
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
+        <sysproperty key="argouml.model.implementation" 
+                 value="org.argouml.model.uml.NSUMLModelImplementation"/>
         <classpath>
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
