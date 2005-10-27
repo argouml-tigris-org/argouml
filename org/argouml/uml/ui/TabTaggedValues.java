@@ -32,12 +32,15 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
@@ -50,6 +53,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.uml.ui.SourcePathDialog.SelectionListener;
 import org.argouml.uml.ui.foundation.extension_mechanisms.UMLTagDefinitionComboBoxModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBar;
@@ -58,7 +62,7 @@ import org.tigris.toolbar.ToolBar;
  * Table view of a Model Element's Tagged Values.
  */
 public class TabTaggedValues extends AbstractArgoJPanel
-    implements TabModelTarget {
+    implements TabModelTarget, ListSelectionListener {
 
     private Logger LOG = Logger.getLogger(TabTaggedValues.class);
     
@@ -93,17 +97,16 @@ public class TabTaggedValues extends AbstractArgoJPanel
         table.setModel(tableModel);
         table.setRowSelectionAllowed(false);
         if (Model.getMetaTypes().getTagDefinition()!=null) {
-            LOG.info("In UML 1.4 mode");
             tagDefinitionsComboBoxModel = new UMLTagDefinitionComboBoxModel();
             tagDefinitionsComboBox = new UMLComboBox2(tagDefinitionsComboBoxModel);
+            //tagDefinitionsComboBox.setDoubleBuffered(true);
             //tagDefinitionsComboBox.setEditable(true);
             tagDefinitionsComboBox.setRenderer(new UMLListCellRenderer2(false));
             table.setDefaultEditor((Class)Model.getMetaTypes().getTagDefinition(), 
                 new DefaultCellEditor(tagDefinitionsComboBox));
             table.setDefaultRenderer((Class)Model.getMetaTypes().getTagDefinition(),
                     new UMLTableCellRenderer());
-        } else {
-            LOG.info("Not in UML 1.4 mode");
+            table.getSelectionModel().addListSelectionListener(this);
         }
         JScrollPane sp = new JScrollPane(table);
         Font labelFont = LookAndFeelMgr.getInstance().getSmallFont();
@@ -253,6 +256,22 @@ public class TabTaggedValues extends AbstractArgoJPanel
     protected JTable getTable() {
         return table;
     }
+
+    /**
+     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+     */
+    public void valueChanged(ListSelectionEvent e) {
+        if (!e.getValueIsAdjusting()&&e.getFirstIndex()!=e.getLastIndex()) {
+            DefaultListSelectionModel sel = (DefaultListSelectionModel) e.getSource();
+            //LOG.info("Firing go to "+sel.getLeadSelectionIndex());
+            ArrayList tvs = new ArrayList(Model.getFacade().getTaggedValuesCollection(target));
+            if (sel.getLeadSelectionIndex()<tvs.size()) {
+                Object tagDef = Model.getFacade().getTagDefinition(tvs.get(sel.getLeadSelectionIndex()));
+                tagDefinitionsComboBoxModel.setSelectedItem(tagDef);
+            }
+        }
+    }
+
 } /* end class TabTaggedValues */
 
 class ActionRemoveTaggedValue extends AbstractAction {
