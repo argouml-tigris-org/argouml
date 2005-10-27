@@ -83,24 +83,34 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
         if (underMouse == null) {
             underMouse = editor.hit(x - 16, y - 16, 32, 32);
         }
+        
         if (underMouse == null && _npoints == 0) {
             done();
             me.consume();
             return;
         }
+
+        if (_npoints > 0) {
+            me.consume();
+            return;
+        }
         
-        if (_npoints == 0) {
+        Object modelElement = underMouse.getOwner();
+        
+        if (!Model.getFacade().isAAssociationClass(modelElement)) {
             if (underMouse instanceof FigAssociation) {
                 oldFigAssociation = (FigEdge) underMouse;
                 association = oldFigAssociation.getOwner();
-                associationEnds = Model.getFacade().getConnections(association);
+                associationEnds =
+                    Model.getFacade().getConnections(association);
                 oldFigAssociation.setOwner(null);
                 newFigNodeAssociation = placeTempNode(me);
                 underMouse = newFigNodeAssociation;
                 setSourceFigNode(newFigNodeAssociation);
                 setStartPort(newFigNodeAssociation.getOwner());
                 setStartPortFig(newFigNodeAssociation);
-            } else if (underMouse instanceof FigNodeAssociation || underMouse instanceof FigClass) {
+            } else if (underMouse instanceof FigNodeAssociation ||
+                    underMouse instanceof FigClass) {
                 if (getSourceFigNode() == null) {
                     setSourceFigNode((FigNode) underMouse);
                     setStartPort(getSourceFigNode().deepHitPort(x, y));
@@ -110,7 +120,8 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
                     me.consume();
                     return;
                 }
-                setStartPortFig(getSourceFigNode().getPortFig(getStartPort()));
+                setStartPortFig(
+                        getSourceFigNode().getPortFig(getStartPort()));
             } else {
                 done();
                 me.consume();
@@ -118,9 +129,7 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
             }
         }
 
-        if (_npoints == 0) {
-            createFig(me);
-        }
+        createFig(me);
         me.consume();
     }
 
