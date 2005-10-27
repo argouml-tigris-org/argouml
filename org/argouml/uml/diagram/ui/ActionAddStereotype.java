@@ -60,7 +60,10 @@ class ActionAddStereotype extends UMLAction {
         if (Model.getFacade().getStereotypes(modelElement).contains(stereotype)) {
             Model.getCoreHelper().removeStereotype(modelElement, stereotype);            
         } else {
-            Model.getCoreHelper().addStereotype(modelElement, stereotype);
+            Object stereo = Model.getModelManagementHelper().
+                getCorrespondingElement(stereotype, 
+                        Model.getFacade().getModel(modelElement), true);
+            Model.getCoreHelper().addStereotype(modelElement, stereo);
         }
     }
     
