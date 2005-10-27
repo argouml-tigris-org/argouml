@@ -94,7 +94,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
     public Class getColumnClass(int c) {
-        if (!TabTaggedValues.UML_14)
+        if (Model.getMetaTypes().getTagDefinition()==null)
             return String.class;
         if (c == 0)
             return (Class) Model.getMetaTypes().getTagDefinition();
@@ -134,7 +134,8 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         }
         Object tv = tvs.elementAt(row);
         if (col == 0) {
-            Object n = tab.UML_14?Model.getFacade().getTagDefinition(tv):Model.getFacade().getTagOfTag(tv);
+            Object n = (Model.getMetaTypes().getTagDefinition()!=null)?
+                    Model.getFacade().getTagDefinition(tv):Model.getFacade().getTagOfTag(tv);
             if (n == null) {
                 return "";
             }
