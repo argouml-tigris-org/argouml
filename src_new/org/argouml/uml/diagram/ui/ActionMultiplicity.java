@@ -80,8 +80,8 @@ public class ActionMultiplicity extends UMLAction {
      * @param s "src" or "dest". Anything else is interpreted as "dest".
      */
     protected ActionMultiplicity(Object/*MMultiplicity*/ m, String s) {
-	//super(m.getLower() + ".." + m.getUpper(), NO_ICON);
-	super(m.toString(), true, NO_ICON);
+	super(Model.getDataTypesHelper().multiplicityToString(m), 
+                true, NO_ICON);
 	str = s;
 	mult = m;
     }
