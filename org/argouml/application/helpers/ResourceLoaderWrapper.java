@@ -314,6 +314,7 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-aggregation", "Aggregation");
         images.put("button.new-association", "Association");
         images.put("button.new-associationclass", "AssociationClass");
+        images.put("button.new-association-end", "AssociationEnd");
         images.put("button.new-associationrole", "AssociationRole");
         images.put("button.new-attribute", "New Attribute");
         images.put("button.new-callaction", "CallAction");
