@@ -33,6 +33,7 @@ import java.util.Iterator;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -46,24 +47,13 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 
 /**
- * A Mode to interpret user input while creating an association,
- * transforming a binary association into a N-ary association and
- * a N-ary association in a binary one as well.  Basically mouse down
- * starts creating an edge from a source port Fig or from a binary association.
- * If it is a binary association, it creates the proper figNode (a rhomb)
- * to transform the binary association into a N-ary association. Mouse
- * motion paints a rubberband line, mouse up finds the destination port
- * and finishes creating the edge if it is a binary association or several
- * edges if several association ends must be created.
- * So if the connection is successful, it deletes the previous simple edge
- * and connect association ends' edges to the recently created node.
- * If it fails, everything must be undone.
- *
- * The argument "edgeClass" determines the type if edge to suggest
- * that the Editor's GraphModel construct, normally an association or
- * an association end.  The GraphModel is responsible for acutally
- * making edges in the underlying model and connecting it to other
- * model elements.
+ * A Mode to interpret user input while creating an association end.
+ * The association end can connect an existing association to an existing
+ * classifier.
+ * If the association is an n-ary association (diamond shape node) then
+ * the edge is simply added.
+ * If the association is a binary association edge then that edge is
+ * transformed into a n-ary association.
  *
  * @author pepargouml@yahoo.es
  */
@@ -110,7 +100,7 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
                 setStartPort(newFigNodeAssociation.getOwner());
                 setStartPortFig(newFigNodeAssociation);
             } else if (underMouse instanceof FigNodeAssociation ||
-                    underMouse instanceof FigClass) {
+                    underMouse instanceof FigClassifierBox) {
                 if (getSourceFigNode() == null) {
                     setSourceFigNode((FigNode) underMouse);
                     setStartPort(getSourceFigNode().deepHitPort(x, y));
