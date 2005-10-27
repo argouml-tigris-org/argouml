@@ -122,5 +122,13 @@ public interface ExtensionMechanismsFactory {
      * @return a TagDefinition
      */
     Object createTagDefinition();
+
+    /**
+     * Copy a TagDefinition into the given namespace or stereotype
+     * @param aTd The TagDefinition to copy
+     * @param aNs A Namespace or a stereotype into which place the copy
+     * @return A copy of the tagdefinition
+     */
+    Object copyTagDefinition(Object aTd, Object aNs);
     
 }
