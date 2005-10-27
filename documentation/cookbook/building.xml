@@ -505,17 +505,17 @@ There is one of those in every separate build directory
 	<para>
 For your convenience the ant tool of the correct version is present in the
 CVS repository of ArgoUML in the file
-<filename class="libraryfile">argouml/tools/ant-1.4.1/lib/ant.jar</filename>.
+<filename class="libraryfile">argouml/tools/ant-1.6.2/lib/ant.jar</filename>.
 </para>
 	<para>
 Normally ant is started with the command
-<command>../tools/ant-1.4.1/bin/ant <replaceable>arg</replaceable></command>
+<command>../tools/ant-1.6.2/bin/ant <replaceable>arg</replaceable></command>
 and in the modules
 <command>
-../../tools/ant-1.4.1/bin/ant <replaceable>arg</replaceable>
+../../tools/ant-1.6.2/bin/ant <replaceable>arg</replaceable>
 </command>.
 On windows the command
-<command>..\tools\ant-1.4.1\bin\ant <replaceable>arg</replaceable></command>
+<command>..\tools\ant-1.6.2\bin\ant <replaceable>arg</replaceable></command>
 runs the program <filename>ant.bat</filename>.
 </para>
 	<para>
