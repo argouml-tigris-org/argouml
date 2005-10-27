@@ -283,5 +283,14 @@ public class ExtensionMechanismsFactoryImpl
     public Object createTagDefinition() {
         return null;
     }
+ 
+    /**
+     * Unimplemented in NSUML / UML 1.3.
+     * @see org.argouml.model.ExtensionMechanismsFactory#createTagDefinition()
+     */
+    public Object copyTagDefinition(Object anElement, Object aNs) {
+        return null;
+    }
+    
 }
 
