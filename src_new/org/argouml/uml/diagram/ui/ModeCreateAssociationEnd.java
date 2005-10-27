@@ -154,9 +154,12 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
         if (!(graphModel instanceof MutableGraphModel)) {
             destFig = null;
         }
+        
+        
         MutableGraphModel mutableGraphModel = (MutableGraphModel) graphModel;
         // TODO: potential class cast exception
-        if (destFig instanceof FigAssociation)  {
+        if (destFig instanceof FigAssociation && 
+                !(destFig instanceof FigAssociationClass)) {
             Object association = destFig.getOwner();
             boolean isValid =
                 Model.getUmlFactory().isConnectionValid(
@@ -185,7 +188,9 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
             }
         }
 
-        if (destFig instanceof FigNode) {
+        if (destFig instanceof FigNode &&
+                !(destFig instanceof FigClassAssociationClass) &&
+                !Model.getFacade().isANaryAssociation(destFig.getOwner())) {
             FigNode destFigNode = (FigNode) destFig;
             // If its a FigNode, then check within the
             // FigNode to see if a port exists
