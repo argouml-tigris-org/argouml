@@ -173,6 +173,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         if (tvs.size() <= rowIndex) {
             Object tv = Model.getExtensionMechanismsFactory()
                     .createTaggedValue();
+            Model.getCoreHelper().setModelElementContainer(tv,target);
             if (columnIndex == 0) {
                 Model.getExtensionMechanismsHelper().setTag(tv, aValue);
             }
