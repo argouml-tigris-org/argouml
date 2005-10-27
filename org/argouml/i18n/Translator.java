@@ -219,6 +219,16 @@ public final class Translator {
 
 
     /**
+     * Synonym for messageFormat to encourage developers to convert
+     * existing uses of localize() + string concatentation to use
+     * this method instead.
+     * @see org.argouml.i18n.Translator#messageFormat(String, Object[])
+     */
+    public static String localize(String key, Object[] args) {
+        return messageFormat(key,args);
+    }
+    
+    /**
      * The main function of this class that localizes strings.
      *
      * @param key The key to localize.
