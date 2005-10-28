@@ -69,11 +69,7 @@ public class DataTypesFactoryImpl
     }
 
     /**
-     * Create an empty but initialized instance of a UML ActionExpression.
-     *
-     * @param language the language for the expression
-     * @param body the body for the expression
-     * @return an initialized UML ActionExpression instance.
+     * @see org.argouml.model.DataTypesFactory#createActionExpression(java.lang.String, java.lang.String)
      */
     public Object createActionExpression(String language,
 							      String body) {
@@ -83,11 +79,7 @@ public class DataTypesFactoryImpl
     }
 
     /**
-     * Create an empty but initialized instance of a UML ArgListsExpression.
-     *
-     * @param language the language for the expression
-     * @param body the body for the expression
-     * @return an initialized UML ArgListsExpression instance.
+     * @see org.argouml.model.DataTypesFactory#createArgListsExpression(java.lang.String, java.lang.String)
      */
     public Object createArgListsExpression(String language,
             				   String body) {
@@ -98,11 +90,7 @@ public class DataTypesFactoryImpl
     }
 
     /**
-     * Create an empty but initialized instance of a UML BooleanExpression.
-     *
-     * @param language the language for the expression
-     * @param body the body for the expression
-     * @return an initialized UML BooleanExpression instance.
+     * @see org.argouml.model.DataTypesFactory#createBooleanExpression(java.lang.String, java.lang.String)
      */
     public Object createBooleanExpression(String language,
 					  String body) {
@@ -111,12 +99,9 @@ public class DataTypesFactoryImpl
 	return expression;
     }
 
+
     /**
-     * Create an empty but initialized instance of a UML Expression.
-     *
-     * @param language the language for the expression
-     * @param body the body for the expression
-     * @return an initialized UML Expression instance.
+     * @see org.argouml.model.DataTypesFactory#createExpression(java.lang.String, java.lang.String)
      */
     public Object createExpression(String language, String body) {
         MExpression expression = new MExpression(language, body);
@@ -125,11 +110,7 @@ public class DataTypesFactoryImpl
     }
 
     /**
-     * Create an empty but initialized instance of a UML IterationExpression.
-     *
-     * @param language the language for the expression
-     * @param body the body for the expression
-     * @return an initialized UML IterationExpression instance.
+     * @see org.argouml.model.DataTypesFactory#createIterationExpression(java.lang.String, java.lang.String)
      */
     public Object createIterationExpression(String language,
 					    String body) {
@@ -140,11 +121,7 @@ public class DataTypesFactoryImpl
     }
 
     /**
-     * Create an empty but initialized instance of a UML MappingExpression.
-     *
-     * @param language the language for the expression
-     * @param body the body for the expression
-     * @return an initialized UML MappingExpression instance.
+     * @see org.argouml.model.DataTypesFactory#createMappingExpression(java.lang.String, java.lang.String)
      */
     public Object createMappingExpression(String language,
 						      String body) {
@@ -154,11 +131,7 @@ public class DataTypesFactoryImpl
     }
 
     /**
-     * Create an empty but initialized instance of a UML ObjectSetExpression.
-     *
-     * @param language the language for the expression
-     * @param body the body for the expression
-     * @return an initialized UML ObjectSetExpression instance.
+     * @see org.argouml.model.DataTypesFactory#createObjectSetExpression(java.lang.String, java.lang.String)
      */
     public Object createObjectSetExpression(String language,
 							  String body) {
@@ -169,11 +142,7 @@ public class DataTypesFactoryImpl
     }
 
     /**
-     * Create an empty but initialized instance of a UML ProcedureExpression.
-     *
-     * @param language the language for the expression
-     * @param body the body for the expression
-     * @return an initialized UML ProcedureExpression instance.
+     * @see org.argouml.model.DataTypesFactory#createProcedureExpression(java.lang.String, java.lang.String)
      */
     public Object createProcedureExpression(String language,
 							  String body) {
@@ -184,11 +153,7 @@ public class DataTypesFactoryImpl
     }
 
     /**
-     * Create an empty but initialized instance of a UML TimeExpression.
-     *
-     * @param language the language for the expression
-     * @param body the body for the expression
-     * @return an initialized UML TimeExpression instance.
+     * @see org.argouml.model.DataTypesFactory#createTimeExpression(java.lang.String, java.lang.String)
      */
     public Object createTimeExpression(String language, String body) {
         MTimeExpression expression = new MTimeExpression(language, body);
@@ -196,12 +161,9 @@ public class DataTypesFactoryImpl
 	return expression;
     }
 
+
     /**
-     * Create an empty but initialized instance of a UML TypeExpression.
-     *
-     * @param language the language for the expression
-     * @param body the body for the expression
-     * @return an initialized UML TypeExpression instance.
+     * @see org.argouml.model.DataTypesFactory#createTypeExpression(java.lang.String, java.lang.String)
      */
     public Object createTypeExpression(String language, String body) {
         MTypeExpression expression = new MTypeExpression(language, body);
@@ -209,22 +171,9 @@ public class DataTypesFactoryImpl
 	return expression;
     }
 
+
     /**
-     * Create an empty but initialized instance of a UML Multiplicity.
-     * Quote from the standard:
-     * "In the metamodel a MultiplicityRange defines a range of integers.
-     * The upper bound of the range cannot be below the lower bound.
-     * The lower bound must be a nonnegative integer. The upper bound
-     * must be a nonnegative integer or the special value unlimited,
-     * which indicates there is no upper bound on the range."
-     *
-     * @param lower the lower bound of the range
-     * @param upper the upper bound of the range
-     *        TODO: UnlimitedInteger - which number represents "unlimited?".
-     *        Quote from standard: "In the metamodel UnlimitedInteger defines
-     *        a data type whose range is the nonnegative integers augmented
-     *        by the special value 'unlimited'."
-     * @return an initialized UML Multiplicity instance.
+     * @see org.argouml.model.DataTypesFactory#createMultiplicity(int, int)
      */
     public Object createMultiplicity(int lower, int upper) {
         MMultiplicity multiplicity = new MMultiplicity(lower, upper);
@@ -232,11 +181,9 @@ public class DataTypesFactoryImpl
 	return multiplicity;
     }
 
+
     /**
-     * Create an empty but initialized instance of a UML Multiplicity.
-     *
-     * @param range a List containing the range
-     * @return an initialized UML Multiplicity instance.
+     * @see org.argouml.model.DataTypesFactory#createMultiplicity(java.util.List)
      */
     public Object createMultiplicity(List range) {
         MMultiplicity multiplicity = new MMultiplicity(range);
@@ -244,11 +191,9 @@ public class DataTypesFactoryImpl
 	return multiplicity;
     }
 
+
     /**
-     * Create an empty but initialized instance of a UML Multiplicity.
-     *
-     * @param str a String representing the multiplicity
-     * @return an initialized UML Multiplicity instance.
+     * @see org.argouml.model.DataTypesFactory#createMultiplicity(java.lang.String)
      */
     public Object createMultiplicity(String str) {
         MMultiplicity multiplicity = new MMultiplicity(str);
