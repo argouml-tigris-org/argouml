@@ -39,11 +39,15 @@ import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * A new model for a textproperty. This model does not use reflection to reach
- * its goal and will perform better therefore. Furthermore, it only reacts to
- * events that are meant for this model which improves maintainability and
- * performance.
- *
+ * Model for a text property on a model element. It listens to 
+ * property change events for the given property name so that
+ * changes made to the underlying UML model are reflected here.
+ * <p>
+ * NOTE: If you override the insertString() or remove() methods
+ * be sure to preserve the flushEvents() calls to keep things
+ * synchronized.  Events caused by updates are delivered
+ * asynchronously to the actual update calls.
+ * <p> 
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -114,8 +118,6 @@ public abstract class UMLPlainTextDocument
 						   getEventName());
             }
             panelTarget = target;
-            // UmlModelEventPump.getPump().removeModelEventListener(this,
-            // (MBase)_target, getEventName());
             eventPump.addModelEventListener(this, panelTarget, getEventName());
             handleEvent();
         }
@@ -131,6 +133,7 @@ public abstract class UMLPlainTextDocument
         if (isFiring()) {
             setFiring(false);
             setProperty(getText(0, getLength()));
+            Model.getPump().reallyFlushModelEvents();
             setFiring(true);
         }
 
@@ -144,6 +147,7 @@ public abstract class UMLPlainTextDocument
         if (isFiring()) {
             setFiring(false);
             setProperty(getText(0, getLength()));
+            Model.getPump().reallyFlushModelEvents();
             setFiring(true);
         }
     }
