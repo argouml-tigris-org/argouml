@@ -31,6 +31,18 @@
     <jar href="toolbar.jar"/>
     <jar href="commons-logging.jar"/>
 
+    <jar href="ext/argouml-i18n-nb.jar"/>
+    <jar href="ext/argouml-i18n-zh.jar"/>
+
+    <jar href="argouml-mdr.jar"/>
+    <jar href="java-interfaces.jar"/>
+    <jar href="jmi.jar"/>
+    <jar href="jmiutils.jar"/>
+    <jar href="mdrapi.jar"/>
+    <jar href="mof.jar"/>
+    <jar href="nbmdr.jar"/>
+    <jar href="openide-util.jar"/>
+
   </resources>
   <application-desc main-class="org.argouml.application.Main"/>
 </jnlp>
