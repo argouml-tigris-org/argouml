@@ -587,4 +587,18 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         return propertySetName;
     }
 
+    /**
+     * @return Returns the fireListEvents.
+     */
+    protected boolean isFireListEvents() {
+        return fireListEvents;
+    }
+
+    /**
+     * @param fireListEvents The fireListEvents to set.
+     */
+    protected void setFireListEvents(boolean fireListEvents) {
+        this.fireListEvents = fireListEvents;
+    }
+
 }
