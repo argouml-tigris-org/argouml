@@ -76,12 +76,13 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      */
     public Component getListCellRendererComponent(JList list, Object value,
             int index, boolean isSelected, boolean cellHasFocus) {
-        LOG.debug("determine rendering for: " + value);
-        LOG.debug("show icon: " + showIcon);
+        // Leave logging commented out by default for efficiency
+//        LOG.debug("determine rendering for: " + value);
+//        LOG.debug("show icon: " + showIcon);
         if (Model.getFacade().isABase(value)
                 || Model.getFacade().isAMultiplicity(value)) {
 
-            LOG.debug("is a MBase or MMultiplicity");
+//            LOG.debug("is a Base or Multiplicity");
             String text = makeText(value);
             setText(text);
 
@@ -106,7 +107,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
                 setIcon(ResourceLoaderWrapper.getInstance()
                         .lookupIcon(value));
             } else {
-                // hack to make sure that the right hight is
+                // hack to make sure that the right height is
                 // applied when no icon is used.
                 return super.getListCellRendererComponent(list, text, index,
                         isSelected, cellHasFocus);
@@ -141,7 +142,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
                 name = "(anon " + makeTypeName(value) + ")";
             }
             String typeName = null;
-            if (type != null) typeName=Model.getFacade().getName(type);
+            if (type != null) typeName = Model.getFacade().getName(type);
             if (typeName != null || "".equals(typeName)) {
                 name = name + ":" + typeName;
             }
