@@ -416,17 +416,17 @@ public abstract class UMLDiagram
             Configuration.makeKey("default", "popupactions", key);
         String defaultName = Configuration.getString(k);
         PopupActionsListener listener = new PopupActionsListener(k);
-        for (int i=0; i < actions.length; ++i) {
+        for (int i = 0; i < actions.length; ++i) {
             if (actions[i] instanceof Action) {
-                Action a = (Action)actions[i];
+                Action a = (Action) actions[i];
                 if (a.getValue(Action.NAME).equals(defaultName)) {
                     defaultAction = a;
                 }
                 a.addPropertyChangeListener(listener);
             } else if (actions[i] instanceof Object[]) {
-                Object[] actionRow = (Object[])actions[i];
-                for (int j=0; j < actionRow.length; ++j) {
-                    Action a = (Action)actionRow[j];
+                Object[] actionRow = (Object[]) actions[i];
+                for (int j = 0; j < actionRow.length; ++j) {
+                    Action a = (Action) actionRow[j];
                     if (a.getValue(Action.NAME).equals(defaultName)) {
                         defaultAction = a;
                     }
@@ -450,7 +450,7 @@ public abstract class UMLDiagram
         
         public void propertyChange(PropertyChangeEvent evt) {
             if (evt.getSource() instanceof Action) {
-                Action a = (Action)evt.getSource(); 
+                Action a = (Action) evt.getSource(); 
                 if (!blockEvents && evt.getPropertyName().equals("popped")) {
                     blockEvents = true;
                     /* Switch the value back off, so that we will 
@@ -458,7 +458,7 @@ public abstract class UMLDiagram
                     a.putValue("popped", Boolean.valueOf(false));
                     blockEvents = false;
                     Configuration.setString(key, 
-                            (String)a.getValue(Action.NAME));
+                            (String) a.getValue(Action.NAME));
                 }
             }
         }
@@ -479,7 +479,7 @@ public abstract class UMLDiagram
         if ((evt.getSource() == namespace) && ProjectManager.getManager()
                 .getCurrentProject().isInTrash(namespace)) {
 
-            Model.getPump().removeModelEventListener(this, namespace, "remove");
+            Model.getPump().removeModelEventListener(this, namespace);
             ProjectManager.getManager().getCurrentProject().moveToTrash(this);
 
             Object newTarget =
@@ -637,7 +637,8 @@ public abstract class UMLDiagram
             String descr) {
 
         return new RadioAction(
-            new ActionSetAddAssociationMode(aggregationKind, unidirectional, descr));
+            new ActionSetAddAssociationMode(aggregationKind,
+                unidirectional, descr));
     }
 
     /**
@@ -685,8 +686,10 @@ public abstract class UMLDiagram
      * @return true if the diagram needs to be removed
      */
     public boolean needsToBeRemoved() {
-        return Model.getUmlFactory().isRemoved(namespace)
-        	|| Model.getUmlFactory().isRemoved(getOwner());
+        return namespace == null 
+                || Model.getUmlFactory().isRemoved(namespace)
+                || getOwner() == null
+                || Model.getUmlFactory().isRemoved(getOwner());
     }
 
     /**
