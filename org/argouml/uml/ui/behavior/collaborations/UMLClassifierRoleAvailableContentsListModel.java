@@ -61,11 +61,10 @@ public class UMLClassifierRoleAvailableContentsListModel
 
     public void propertyChange(PropertyChangeEvent e) {
         if (e instanceof AddAssociationEvent) {
-            if (e.getPropertyName().equals("base") && e.getSource() == getTarget()) {
+            if (e.getPropertyName().equals("base")
+                    && e.getSource() == getTarget()) {
                 Object clazz = /*(MClassifier)*/ getChangedElement(e);
                 addAll(Model.getFacade().getOwnedElements(clazz));
-                // UmlModelEventPump.getPump().removeModelEventListener(this,
-                // clazz, "ownedElement");
                 Model.getPump().addModelEventListener(
                                       this,
                                       clazz,
@@ -77,20 +76,21 @@ public class UMLClassifierRoleAvailableContentsListModel
                 addElement(getChangedElement(e));
             }
         } else if (e instanceof RemoveAssociationEvent) {
-            if (e.getPropertyName().equals("base") && e.getSource() == getTarget()) {
+            if (e.getPropertyName().equals("base")
+                    && e.getSource() == getTarget()) {
                 Object clazz = /*(MClassifier)*/ getChangedElement(e);
                 Model.getPump().removeModelEventListener(
                         this,
                         clazz,
                     "ownedElement");
             } else if (
-               e.getPropertyName().equals("ownedElement")
-               && Model.getFacade().getBases(getTarget()).contains(
+                e.getPropertyName().equals("ownedElement")
+                && Model.getFacade().getBases(getTarget()).contains(
                        e.getSource())) {
                 removeElement(getChangedElement(e));
             }
         } else {
-            super.propertyChange(e);
+                super.propertyChange(e);
         }
     }
     
