@@ -53,7 +53,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.uml.ui.SourcePathDialog.SelectionListener;
 import org.argouml.uml.ui.foundation.extension_mechanisms.UMLTagDefinitionComboBoxModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBar;
@@ -79,6 +78,8 @@ public class TabTaggedValues extends AbstractArgoJPanel
  
     private UMLComboBoxModel2 tagDefinitionsComboBoxModel;
     
+    private Class tagDefinitionClass = (Class)Model.getMetaTypes().getTagDefinition();
+    
     /**
      * The constructor.
      */
@@ -96,15 +97,15 @@ public class TabTaggedValues extends AbstractArgoJPanel
         tableModel = new TabTaggedValuesModel(this);
         table.setModel(tableModel);
         table.setRowSelectionAllowed(false);
-        if (Model.getMetaTypes().getTagDefinition()!=null) {
+        if (tagDefinitionClass!=null) {
             tagDefinitionsComboBoxModel = new UMLTagDefinitionComboBoxModel();
             tagDefinitionsComboBox = new UMLComboBox2(tagDefinitionsComboBoxModel);
             //tagDefinitionsComboBox.setDoubleBuffered(true);
             //tagDefinitionsComboBox.setEditable(true);
             tagDefinitionsComboBox.setRenderer(new UMLListCellRenderer2(false));
-            table.setDefaultEditor((Class)Model.getMetaTypes().getTagDefinition(), 
+            table.setDefaultEditor(tagDefinitionClass, 
                 new DefaultCellEditor(tagDefinitionsComboBox));
-            table.setDefaultRenderer((Class)Model.getMetaTypes().getTagDefinition(),
+            table.setDefaultRenderer(tagDefinitionClass,
                     new UMLTableCellRenderer());
             table.getSelectionModel().addListSelectionListener(this);
         }
@@ -174,7 +175,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
         //valCol.setWidth(550);
         //valCol.setPreferredWidth(550);
 
-        if (Model.getMetaTypes().getTagDefinition()!=null)
+        if (tagDefinitionClass!=null)
             tagDefinitionsComboBoxModel.setTarget(t);
         
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -263,7 +264,6 @@ public class TabTaggedValues extends AbstractArgoJPanel
     public void valueChanged(ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()&&e.getFirstIndex()!=e.getLastIndex()) {
             DefaultListSelectionModel sel = (DefaultListSelectionModel) e.getSource();
-            //LOG.info("Firing go to "+sel.getLeadSelectionIndex());
             ArrayList tvs = new ArrayList(Model.getFacade().getTaggedValuesCollection(target));
             if (sel.getLeadSelectionIndex()<tvs.size()) {
                 Object tagDef = Model.getFacade().getTagDefinition(tvs.get(sel.getLeadSelectionIndex()));
