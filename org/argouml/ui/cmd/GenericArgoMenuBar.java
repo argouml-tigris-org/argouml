@@ -524,20 +524,19 @@ public class GenericArgoMenuBar extends JMenuBar
 
         edit.addSeparator();
 
-        JMenuItem cutItem = edit.add(ActionCut.getInstance());
-        setMnemonic(cutItem, "Cut");
-        setAccelerator(cutItem, ctrlX);
-
-        JMenuItem copyItem = edit.add(ActionCopy.getInstance());
-        setMnemonic(copyItem, "Copy");
-        setAccelerator(copyItem, ctrlC);
-
-        JMenuItem pasteItem = edit.add(ActionPaste.getInstance());
-        setMnemonic(pasteItem, "Paste");
-        setAccelerator(pasteItem, ctrlV);
-
-        edit.addSeparator();
-
+//        JMenuItem cutItem = edit.add(ActionCut.getInstance());
+//        setMnemonic(cutItem, "Cut");
+//        setAccelerator(cutItem, ctrlX);
+//
+//        JMenuItem copyItem = edit.add(ActionCopy.getInstance());
+//        setMnemonic(copyItem, "Copy");
+//        setAccelerator(copyItem, ctrlC);
+//
+//        JMenuItem pasteItem = edit.add(ActionPaste.getInstance());
+//        setMnemonic(pasteItem, "Paste");
+//        setAccelerator(pasteItem, ctrlV);
+//
+//        edit.addSeparator();
         
         Action removeFromDiagram = 
             ProjectBrowser.getInstance().getRemoveFromDiagramAction();
@@ -801,9 +800,9 @@ public class GenericArgoMenuBar extends JMenuBar
             editToolbar = new ToolBar("Edit Toolbar");
             editToolbar.putClientProperty("JToolBar.isRollover",
 					   Boolean.TRUE);
-            editToolbar.add(ActionCut.getInstance());
-            editToolbar.add(ActionCopy.getInstance());
-            editToolbar.add(ActionPaste.getInstance());
+//            editToolbar.add(ActionCut.getInstance());
+//            editToolbar.add(ActionCopy.getInstance());
+//            editToolbar.add(ActionPaste.getInstance());
             editToolbar.addFocusListener(ActionPaste.getInstance());
             editToolbar.add(
                     ProjectBrowser.getInstance().getRemoveFromDiagramAction());
