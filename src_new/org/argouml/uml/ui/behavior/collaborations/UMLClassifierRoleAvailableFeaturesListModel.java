@@ -58,7 +58,8 @@ public class UMLClassifierRoleAvailableFeaturesListModel
     
     public void propertyChange(PropertyChangeEvent e) {
         if (e instanceof AddAssociationEvent) {
-            if (e.getPropertyName().equals("base") && e.getSource() == getTarget()) {
+            if (e.getPropertyName().equals("base")
+                    && e.getSource() == getTarget()) {
                 Object clazz = /*(MClassifier)*/ getChangedElement(e);
                 addAll(Model.getFacade().getFeatures(clazz));
                 Model.getPump().addModelEventListener(
@@ -66,26 +67,27 @@ public class UMLClassifierRoleAvailableFeaturesListModel
                                       clazz,
                                       "feature");
             } else if (
-               e.getPropertyName().equals("feature")
-               && Model.getFacade().getBases(getTarget()).contains(
-                  e.getSource())) {
+                e.getPropertyName().equals("feature")
+                && Model.getFacade().getBases(getTarget()).contains(
+                    e.getSource())) {
                 addElement(getChangedElement(e));
             }
         } else if (e instanceof RemoveAssociationEvent) {
-            if (e.getPropertyName().equals("base") && e.getSource() == getTarget()) {
+            if (e.getPropertyName().equals("base")
+                    && e.getSource() == getTarget()) {
                 Object clazz = /*(MClassifier)*/ getChangedElement(e);
                 Model.getPump().removeModelEventListener(
                                      this,
                                      clazz,
                                      "feature");
             } else if (
-               e.getPropertyName().equals("feature")
-               && Model.getFacade().getBases(getTarget()).contains(
+                e.getPropertyName().equals("feature")
+                && Model.getFacade().getBases(getTarget()).contains(
                        e.getSource())) {
                 removeElement(getChangedElement(e));
             }
         } else {
-            super.propertyChange(e);
+                super.propertyChange(e);
         }
     }
     
