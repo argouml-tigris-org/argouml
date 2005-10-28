@@ -81,34 +81,4 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         }
         return null;
     }
-    
-    /**
-     * If the property that this comboboxmodel depicts is changed in the UML
-     * model, this method will make sure that it is changed in the comboboxmodel
-     * too.
-     *
-     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-     */
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (NsumlEnabler.isNsuml()) {
-            super.propertyChange(evt);
-            return;
-        }
-        if (evt instanceof DeleteInstanceEvent) {
-            if (contains(getChangedElement(evt))) {
-                Object o = getChangedElement(evt);
-                if (o instanceof Collection) {
-                    removeAll((Collection) o);
-                } else {
-                    removeElement(o);
-                }
-            }
-        } else if (evt instanceof AddAssociationEvent &&
-                evt.getPropertyName().equals(getPropertySetName()) &&
-                evt.getSource() == getTarget() &&
-                (isClearable() || getChangedElement(evt) != null)) {
-            Object elem = getChangedElement(evt);
-            setSelectedItem(elem);
-        }
-    }
 }
