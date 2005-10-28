@@ -125,20 +125,21 @@ public interface DataTypesFactory {
     Object createTypeExpression(String language, String body);
 
     /**
-     * Create an empty but initialized instance of a UML Multiplicity.
-     * Quote from the standard:
-     * "In the metamodel a MultiplicityRange defines a range of integers.
-     * The upper bound of the range cannot be below the lower bound.
-     * The lower bound must be a nonnegative integer. The upper bound
-     * must be a nonnegative integer or the special value unlimited,
-     * which indicates there is no upper bound on the range."
-     *
-     * @param lower the lower bound of the range
-     * @param upper the upper bound of the range
-     *        TODO: UnlimitedInteger - which number represents "unlimited?".
-     *        Quote from standard: "In the metamodel UnlimitedInteger defines
-     *        a data type whose range is the nonnegative integers augmented
-     *        by the special value 'unlimited'."
+     * Create an empty but initialized instance of a UML Multiplicity. Quote
+     * from the standard: "In the metamodel a MultiplicityRange defines a range
+     * of integers. The upper bound of the range cannot be below the lower
+     * bound. The lower bound must be a nonnegative integer. The upper bound
+     * must be a nonnegative integer or the special value unlimited, which
+     * indicates there is no upper bound on the range."
+     * <p>
+     * Although the UML specification doesn't say so, the special 
+     * value 'unlimited' is encoded as -1 by convention.
+     * 
+     * @param lower
+     *            the lower bound of the range
+     * @param upper
+     *            the upper bound of the range. The integer value -1 represents
+     *            the special UML value 'unlimited'
      * @return an initialized UML Multiplicity instance.
      */
     Object createMultiplicity(int lower, int upper);
