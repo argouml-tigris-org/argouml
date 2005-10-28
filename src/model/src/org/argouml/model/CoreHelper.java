@@ -255,7 +255,7 @@ public interface CoreHelper {
      * @return Collection
      */
     Collection getRealizedInterfaces(Object cls);
-    
+
     /**
      * Returns all classes some generalizable element extends.
      *
@@ -1150,7 +1150,7 @@ public interface CoreHelper {
      * @param stereo stereotype
      */
     void setStereotype(Object handle, Object stereo);
-    
+
     /**
      * Adds a stereotype to some modelelement.
      *
@@ -1162,7 +1162,7 @@ public interface CoreHelper {
     /**
      * Removes a stereotype from some modelelement.
      *
-     * @param modelElement model element
+     * @param handle model element
      * @param stereo stereotype
      */
     void removeStereotype(Object handle, Object stereo);
@@ -1217,39 +1217,42 @@ public interface CoreHelper {
     void setVisibility(Object handle, Object visibility);
 
     /**
-     * @param handle Component
-     * @param node Node
+     * Remove a deployment location.
+     * 
+     * @param handle Component from which to remove deploymentLocation
+     * @param node Node to be removed
      */
     void removeDeploymentLocation(Object handle, Object node);
-
-    //additional support for Connection [IIRC, perhaps it was already here]    
+ 
     /**
+     * Remove a connection between an Association & AssociationEnd
+     * or between a Link & LinkEnd
      * 
-     * @param handle
-     * @param connection
+     * @param handle Association or Link
+     * @param connection AssociationEnd or LinkEnd
      */
     void removeConnection(Object handle, Object connection);
     
-    //additional support for ElementResidence
-    
     /**
+     * Add an ElementResidence.
      * 
-     * @param handle
-     * @param residence
+     * @param handle ModelElement
+     * @param residence ElementResidence to add
      */
     void addElementResidence(Object handle, Object residence);
 
     /**
+     * Remove an ElementResidence.
      * 
-     * @param handle
-     * @param residence
+     * @param handle ModelElement
+     * @param residence ElementResidence to remove
      */
     void removeElementResidence(Object handle, Object residence);
     
     /**
-     * Set the (ordered) list of literals of an enumeration.
-     * @param enumeration
-     * @param literals A list of Literals.
+     * Set the (ordered) list of literals of an Enumeration.
+     * @param enumeration Enumeration to add EnumerationLiterals too
+     * @param literals A list of EnumerationLiterals
      */
     void setEnumerationLiterals(Object enumeration, List literals);
     
