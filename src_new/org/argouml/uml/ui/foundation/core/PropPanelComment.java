@@ -81,7 +81,7 @@ class UMLCommentBodyDocument extends UMLPlainTextDocument {
          * Constructor for UMLModelElementNameDocument.
          */
         public UMLCommentBodyDocument() {
-            super("name"); // this may have to change to "body" for UML 1.4
+            super("name"); // TODO: this may have to change to "body" for UML 1.4
             /*
              * TODO: This is probably not the right location 
              * for switching off the "filterNewlines". 
