@@ -108,23 +108,5 @@ public class TestDataTypesFactory extends TestCase {
 	// VisibilityKind
 	//
     }
-    /* TODO: What is the purpose of this list?
-      public void testRemoves() {
-      String [] objs = {
-      "ActionExpression",
-      "ArgListsExpression",
-      "BooleanExpression",
-      "Expression",
-      "IterationExpression",
-      "MappingExpression",
-      "ObjectSetExpression",
-      "ProcedureExpression",
-      "TimeExpression",
-      "TypeExpression"
-      };
 
-      CheckUMLModelHelper.testRemove(this,
-      DataTypesFactory.getFactory(), objs);
-      }
-    */
 }
