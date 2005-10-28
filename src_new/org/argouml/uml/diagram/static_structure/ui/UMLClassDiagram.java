@@ -266,7 +266,6 @@ public class UMLClassDiagram extends UMLDiagram {
         }
         return actionAssociation;
     }
-    
     /**
      * @return Returns the actionAssociation.
      */
@@ -374,19 +373,7 @@ public class UMLClassDiagram extends UMLDiagram {
 
         return actionModel;
     }
-    /**
-     * @return Returns the actionObject.
-     */
-    protected Action getActionObject() {
-        if (actionObject == null) {
-            actionObject =
-                makeCreateNodeAction(
-                        Model.getMetaTypes().getInstance(),
-                        "Instance");
-        }
 
-        return actionObject;
-    }
     /**
      * @return Returns the actionPackage.
      */
