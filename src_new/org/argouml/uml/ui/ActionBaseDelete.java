@@ -45,6 +45,7 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigTextEditor;
 
 /**
  * Action for removing (moving to trash) objects from the model. Objects can be:
@@ -119,6 +120,11 @@ public abstract class ActionBaseDelete extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+        if (FigTextEditor.getInstance().isVisible()) {
+            //Don't accept the delete if the FigTextEditor is displaying
+            return;
+        }
+        
         Project p = ProjectManager.getManager().getCurrentProject();
         Object[] targets = getTargets();
         Object target = null;
