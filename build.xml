@@ -182,6 +182,14 @@ Property files to be searched:
     <path id="argo.runtime.classpath">
       <!-- Currently same as the compile path. -->
       <path refid="argo.compile.classpath"/>
+      <pathelement location="${argo.build.dir}/java-interfaces.jar"/>
+      <pathelement location="${argo.build.dir}/argouml-mdr.jar"/>
+      <pathelement location="${argo.build.dir}/mof.jar"/>
+      <pathelement location="${argo.build.dir}/jmi.jar"/>
+      <pathelement location="${argo.build.dir}/mdrapi.jar"/>
+      <pathelement location="${argo.build.dir}/nbmdr.jar"/>
+      <pathelement location="${argo.build.dir}/jmiutils.jar"/>
+      <pathelement location="${argo.build.dir}/openide-util.jar"/>
     </path>
 
     <path id="argouml-mdr.runtime.classpath">
@@ -526,8 +534,19 @@ Property files to be searched:
     <!-- create directories -->
     <mkdir dir="${argo.build.classes}"/>
   	
-  	<!-- compile Model subsystem -->
-    <ant dir="../src/model" inheritAll="false" target="install"/>  	
+    <!-- compile Model subsystem -->
+    <ant dir="../src/model" inheritAll="false" target="install"/>
+
+    <!-- Things needed by other projects: -->
+    <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
+
+    <!-- Compile other projects: -->
+    <!-- compile the MDR ModelImplementation -->
+    <!-- This should work, shouldn't it? Well, it doesn't for me.
+         I think ant messes up something for MDR. (Linus, Oct 2005)
+    <ant dir="../../argouml-mdr" inheritAll="false" target="install"/>
+     -->
+
 
     <!-- remove obsolete classes before compiling -->
     <delete file="${argo.build.classes}/org/argouml/model/uml/ModelListener.class"/>
