@@ -243,7 +243,7 @@ public abstract class FigEdgeModelElement
         if (item != null
             && Globals.curEditor().getSelectionManager().containsFig(this)) {
             tip = item.getHeadline();
-        } else if (getOwner() != null) {
+        } else if (getOwner() != null && Model.getFacade().isABase(getOwner())) {
             tip = Model.getFacade().getTipString(getOwner());
         } else {
             tip = toString();
