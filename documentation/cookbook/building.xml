@@ -51,12 +51,16 @@ your particular shell will do work.
 <programlisting>
 C:\Work&gt;set CVSROOT=:pserver:guest@cvs.tigris.org:/cvs
 C:\Work&gt;cvs login   (use guest as password)
-C:\Work&gt;cvs checkout argouml/src argouml/src_new argouml/tools argouml/lib
+C:\Work&gt;cvs checkout argouml/src argouml/src_new argouml/tools argouml/lib argouml-mdr
 C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
 C:\Work&gt;cd argouml\src_new
+C:\Work\argouml\src_new&gt;build package
+C:\Work\argouml\src_new&gt;cd ..\..\argouml-mdr
+C:\Work\argouml-mdr&gt;build install
+C:\Work\argouml-mdr&gt;cd ..\argouml\src_new
 C:\Work\argouml\src_new&gt;build run
 </programlisting>
-After a couple of minutes the newly compiled ArgoUML will open in a new window.
+A newly compiled ArgoUML will open in a new window.
 </para>
   <para>Notes:
           <tip>
@@ -210,6 +214,13 @@ get when you check out from CVS.
 Ant, the tool to manage compiling and packaging.
 </para>
 	  </listitem>
+
+	<listitem>
+	  <para>
+mdrant, the integration allowing to run mdr from ant.
+</para>
+	</listitem>
+
 	  <listitem>
 	    <para>
 	    <indexterm>
@@ -218,6 +229,7 @@ Ant, the tool to manage compiling and packaging.
 ANTLR, for regenerating the built-in parser.
 </para>
 	  </listitem>
+
 	  <listitem>
 	    <para>
 	    <indexterm>
@@ -336,8 +348,21 @@ antlrall, the run-time part of the ANTLR tool.
 </para>
 	  </listitem>
 
-	</itemizedlist>
-      </sect2>
+
+
+	<listitem>
+	  <para>
+MDR, 
+the Netbeans Meta Data Repository.
+</para>
+	  <para>
+This is included in the files
+jmi.jar, jmiutils.jar, mdrapi.jar, mof.jar, nbmdr.jar, openide-util.jar
+from the argouml-mdr subproject.
+</para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
 
   </sect1>
     <sect1 id="cvs_checkout">
@@ -430,23 +455,26 @@ The CVS repository directories you need to check out to work with ArgoUML are
 <filename class="directory">argouml/tools</filename>,
 <filename class="directory">argouml/src_new</filename>,
 <filename class="directory">argouml/src</filename>,
+<filename class="directory">argouml-mdr</filename>,
 and
 <filename class="directory">argouml/tests</filename>.
 </para>
       <para>
-If you want to build the documentation you check out the directories
+If you just want to build the documentation you check out the directories
 <filename class="directory">argouml/lib</filename>
 <filename class="directory">argouml/tools</filename>
 and
 <filename class="directory">argouml/documentation</filename>.
 </para>
       <para>
-If you want to work with the web site you check out the directory
-<parameter>argouml/www</parameter>.
+If you want to work with any of the web sites you check out 
+the corresponding directory
+<parameter>argouml/www</parameter>, or
+<parameter>argouml-mdr/www</parameter>.
 </para>
       <para>
 If you give the argument
-<parameter>argouml</parameter> all of ArgoUML is checked out.
+<parameter>argouml</parameter> the whole top project is checked out.
 That is no problem except for the extra use of bandwidth and disk space
 but if you have plenty of both, get it all, and eventually you will
 see how everything is used for a purpose in the project.
@@ -490,10 +518,11 @@ in what jar-file.
       <para>
 The rule file is named <filename>build.xml</filename>.
 There is one of those in every separate build directory
-(<filename class="directory">src_new</filename>,
-<filename class="directory">src/<replaceable>whatever</replaceable></filename>,
-<filename class="directory">documentation</filename>, and
-<filename class="directory">modules/<replaceable>whatever</replaceable></filename>).
+(<filename class="directory">argouml/src_new</filename>,
+<filename class="directory">argouml/src/<replaceable>whatever</replaceable></filename>,
+<filename class="directory">argouml-mdr</filename>,
+<filename class="directory">argouml/documentation</filename>, and
+<filename class="directory">argouml/modules/<replaceable>whatever</replaceable></filename>).
 </para>
 
       <sect2>
@@ -539,6 +568,37 @@ Also, you must execute
 rather than
 <command>build <replaceable>target</replaceable></command>.
 </para>
+
+      <para>
+ArgoUML is currently spread over two projects,
+the argouml project and
+the argouml-mdr project.
+They depend on each other in that the argouml-mdr project requires log4j and 
+argouml-model.jar from the argouml project to build and
+the argouml project needs the argouml-mdr project to run using the default
+settings (targets run, info, debug, tests-using-mdr).
+There are also the java interfaces in the argouml-mdr project that
+doesn't depend on anything from the argouml project.
+</para>
+      <para>
+To get this set up you need to
+<itemizedlist>
+	  <listitem>
+	    <para>
+build the package target in the argouml project (argouml/src_new)
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+build the install target in the argouml-mdr project
+</para>
+	    <para>
+This copies all needed libraries to the argouml/build directory.
+</para>
+	  </listitem>
+	</itemizedlist>
+</para>
+
 	<sect3>
 	  <title>Compiling for Unix</title>
 	  <indexterm>
@@ -576,6 +636,38 @@ Change the current directory to the directory you are building
           with descriptions</para>
           <para> <command>./build.sh</command></para>
 	    </listitem>
+
+	  <listitem>
+	    <para>
+Compile, create jar files, and copy them so that argouml-mdr can be compiled
+using 
+<command>./build.sh package</command>.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Change to the <filename>argouml-mdr</filename> directory using
+<command>cd ../../argouml-mdr</command>.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Compile, create jar files, and copy them so that they are available in the
+argouml project using
+<command>./build.sh install</command>.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Change back to the <filename>argouml/src_new</filename> directory using
+<command>cd ../argouml/src_new</command>.
+</para>
+	  </listitem>
+
+
 	    <listitem>
       	      <para>
               <indexterm>
@@ -585,15 +677,29 @@ Change the current directory to the directory you are building
               <indexterm>
                 <primary>run ant target</primary>
               </indexterm>
-Compile and run ArgoUML using <command>./build.sh run</command>
-</para>
-	      <para>
-You can do this over and over again when you have modified something
-or want to compile and run again.
+Run ArgoUML using <command>./build.sh run</command>
 </para>
 	    </listitem>
 	  </orderedlist>
+	<para>
+If you change something, running the run target again will
+build
+and run.
+</para>
+
+	<para>
+If something is changed in the argouml project
+that affects the argouml-mdr project
+or if something is change in the argouml-mdr project
+you need to go through this again,
+possibly using the clean target in 
+either the <filename>argouml/src_new</filename>-directory
+or the <filename>argouml-mdr</filename>-directory
+or both directories
+since we have not set up dependencies correctly.
+</para>
 	</sect3>
+
 	<sect3>
 	  <title>Compiling for Windows</title>
 	  <indexterm>
@@ -623,16 +729,11 @@ Change the current directory to the directory you are building
           with descriptions</para>
 	      <para><command>build</command></para>
 	    </listitem>
-	    <listitem>
-	      <para>
-Compile and run ArgoUML using <command>build run</command>
-</para>
-	      <para>
-You can do this over and over again when you have modified something
-or want to compile and run again.
-</para>
-	    </listitem>
 	  </orderedlist>
+
+	<para>
+Then the targets and considerations are just like for Unix.
+</para>
 
 	  <indexterm>
 	    <primary>Compiling</primary>
@@ -2382,7 +2483,7 @@ with target milestone ---
 to that of the current release.
 </para>
 	      <para>
-This is probably some developer that has fixed an issue by forgot to
+This is probably some developer that has fixed an issue but forgotten to
 set the target milestone correctly.
 </para>
 	    </listitem>

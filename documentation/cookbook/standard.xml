@@ -800,7 +800,7 @@ want to include in your Eclipse.
 </para>
     <para>
 If any of these instructions don't work or could be improved in some way,
-please help in making them better.
+please help in making them better by contacting the editor of the Cookbook.
 </para>
     <sect2 id="eclipse-checkout">
       <title>Checking out through Eclipse</title>
@@ -864,6 +864,19 @@ unfold the newly created repository
 :pserver:<replaceable>your user name</replaceable>@cvs.tigris.org:/cvs)
 and within it, HEAD.
 </para>
+
+	  <para>
+Select the argouml-mdr project, right-click on it, and to Check Out As.
+Check out as a project configured using the New Project Wizard.
+Press the button Finish.
+Select Java Project, and press Next.
+Type the new project name: argouml-mdr, and press Next.
+Ignore the build path settings. We will come back to them later.
+Press Finish, which starts the checking out process.
+You are probably directed to the Java Perspective with a question if
+you want or not. At this point it doesn't matter. Just press Yes or No!
+</para>
+
 	  <para>
 Select the argouml project, right-click on it, and do Check Out As.
 Check out as a project configured using the New Project Wizard.
@@ -907,16 +920,29 @@ Select compile (default target in the Targets tab),
 deselect all other targets
 and finally press Run.
 </para>
+	  <para>
+Browse to <filename>argouml-mdr/build.xml</filename>,
+select the <filename>build.xml</filename>-file,
+right-click on it, and do Run Ant...
+This pops up the External Tools... pop up
+with the Targets tab already selected.
+Select <command>generate</command>,
+deselect all other targets
+and finally press Run.
+</para>
 	    <para>
 There are some files that are built using rules in the
-<filename>build.xml</filename> file.
-This is the antlr files and the file containing a version.
+<filename>build.xml</filename> files.
+This is
+the antlr-generated files,
+the file containing a version, and
+the java interfaces generated from the mof description.
 </para>
 	</listitem>
 
 	<listitem>
 	  <para>
-Refresh the project.
+Refresh the projects.
 </para>
 	  <para>
 This must be done after having built using ant to find the newly created
@@ -931,7 +957,7 @@ right click and select <command>Refresh</command>.
 
 	<listitem>
 	  <para>
-Set build path.
+Set build path for the argouml project.
 </para>
 
 	  <para>
@@ -969,6 +995,13 @@ removing the old ones, and
 adding the new ones.
 </para>
 	  <para>
+Under Order and Export:
+Check that argouml/src/model/src is checked.
+Check junit and log4j.
+(If you also plan to work with the ArgoPrint subproject,
+check gef and commons-logging.)
+</para>
+	  <para>
       Set the Default output folder to 
 <filename class="directory">argouml/bin</filename>.
 This will not confuse it with any of the ant-built things.
@@ -977,10 +1010,11 @@ This will not confuse it with any of the ant-built things.
 Press OK.
 You will be asked to accept that all resources previously built can
 be removed. Press Yes.
-Eclipse shall rebuild.
+Eclipse will rebuild.
     </para>
 	  <para>
-Verify that there are no errors, just warnings left among the problems.
+Verify that there are no errors in the argouml project,
+just warnings left among the problems.
 If there are errors in some of the modules you will be able to 
 continue your work in spite of that but it is better if you stop here and
 investigate the problem.
@@ -995,7 +1029,70 @@ modules and then reload the source trees.
 
 	<listitem>
 	  <para>
-Select the class with the main method.
+Set build path for the argouml-mdr project.
+</para>
+
+	  <para>
+      In the Java perspective, select the project argouml-mdr, 
+      i.e. the icon at the top of the Package Explorer.
+      Then, in the menu, select Project => Properties).
+    </para>
+	  <para>
+Enter Java Build Path
+</para>
+
+	  <para>
+Under Source:
+Remove everything.
+Add <filename class="directory">argouml-mdr/src</filename> and
+<filename class="directory">argouml-mdr/tests</filename>
+(simply add a check mark in front of these folders).
+</para>
+	  <para>
+Under Libraries:
+Press the Add JARs... button and add
+all files in <filename class="directory">argouml-mdr/lib</filename>.
+Press the Add JARs... button and add
+the file <filename>argouml-mdr/build/java-interfaces.jar</filename>.
+</para>
+	  <para>
+Under Project:
+Press the Add... button and add
+the argouml project.
+</para>
+	  <para>
+Under Order and Export:
+Check 
+<filename>java-interfaces.jar</filename>,
+<filename>jmi.jar</filename>,
+<filename>jmiutils.jar</filename>,
+<filename>mdrapi.jar</filename>,
+<filename>mof.jar</filename>,
+<filename>nbmdr.jar</filename>, and
+<filename>openide-util.jar</filename>,
+(i.e. everything except the argouml project).
+</para>
+	  <para>
+      Set the Default output folder to 
+<filename class="directory">argouml-mdr/bin</filename>.
+This will not confuse it with any of the ant-built things.
+    </para>
+	  <para>
+Press OK.
+You will be asked to accept that all resources previously built can
+be removed. Press Yes.
+Eclipse will rebuild.
+    </para>
+	  <para>
+Verify that there are no errors
+just warnings left among the problems.
+</para>
+	</listitem>
+
+
+	<listitem>
+	  <para>
+Create a Run Configuration
 </para>
 	  <para>
       In the Java perspective, select the project argouml, 
@@ -1006,14 +1103,23 @@ Select the class with the main method.
     </para>
 	  <para>
       Select Java Application on the left and press the New button. 
-      Name the configuration "Run ArgoUML", 
-      and press the Search... button in the Main class box.
+      Name the configuration "Run ArgoUML".
+In the Main tab press the Search... button in the Main class box.
       In the new dialog that appears (Choose Main Type), simply press OK.
     </para>
 	  <para>
       This sets the Main class to: 
       <filename>org.argouml.application.Main</filename>.
     </para>
+	  <para>
+In the Classpath tab
+select User Entries,
+press Add Projects, and add the argouml-mdr project
+with "Add exported entries of selected projects." checked and
+"Add required projects of selected projects." not checked.
+(The same needs to be done for all other configurations created
+i.e. when running test cases from within Eclipse).
+</para>
 	  <para>
       Press the Run button.
       This will start ArgoUML. 
