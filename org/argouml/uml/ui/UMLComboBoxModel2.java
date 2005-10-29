@@ -80,10 +80,11 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     private Object selectedObject = null;
 
     /**
-     * Flag to indicate if the user may select "" as value in the combobox. If
-     * true the attribute that is shown by this combobox may be set to null.
-     * Makes sure that there is allways a "" in the list with objects so the
-     * user has the oportunity to select this to clear the attribute.
+     * Flag to indicate if the user may select the empty string ("") as value in
+     * the combobox. If true the attribute that is shown by this combobox may be
+     * set to null. Makes sure that there is always a "" in the list with
+     * objects so the user has the oportunity to select this to clear the
+     * attribute.
      */
     private boolean isClearable = false;
 
@@ -112,21 +113,21 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @param name The name of the NSUML event that must be
      * fired to set the selected item programmatically (via setting
      * the NSUML model)
-     * @throws IllegalArgumentException if one of the arguments is null
      * @param clearable Flag to indicate if the user may select ""
      * as value in the combobox. If true the attribute that is shown
      * by this combobox may be set to null.
      * Makes sure that there is allways a "" in the list with objects so the
      * user has the oportunity to select this to clear the attribute.
+     * @throws IllegalArgumentException if one of the arguments is null
      */
     public UMLComboBoxModel2(String name, boolean clearable) {
         super();
         if (name == null || name.equals("")) {
             throw new IllegalArgumentException("one of the arguments is null");
 	}
-        // it would be better that we don't need the container to get
-        // the target this constructor can be without parameters as
-        // soon as we improve targetChanged
+        // It would be better if we didn't need the container to get
+        // the target. This constructor can have zero parameters as
+        // soon as we improve targetChanged.
         isClearable = clearable;
         propertySetName = name;
     }
@@ -145,7 +146,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         if (evt instanceof AttributeChangeEvent) {
             if (evt.getPropertyName().equals(propertySetName)) {
                 if (evt.getSource() == getTarget()
-                && (isClearable || getChangedElement(evt) != null)) {
+                        && (isClearable || getChangedElement(evt) != null)) {
                     Object elem = getChangedElement(evt);
                     if (elem != null && !contains(elem)) {
                         addElement(elem);
@@ -172,6 +173,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
 			     + "is probably not selected...");
                     Iterator it = ((Collection) o).iterator();
                     while (it.hasNext()) {
+                        // TODO: This can't be right, can it?
+                        // We're only adding every other element
                         Object o2 = it.next();
                         addElement(it.next());
                     }
@@ -253,7 +256,6 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         Iterator it = col.iterator();
         int lower = -1;
         int index = -1;
-        int lastindex = -1;
         fireListEvents = false;
         while (it.hasNext()) {
             Object o = it.next();
@@ -326,9 +328,6 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
 
             if (Model.getFacade().isABase(target)) {
                 comboBoxTarget = target;
-                // UmlModelEventPump.getPump()
-                // .removeModelEventListener(this, (MBase)_target,
-                // _propertySetName);
                 eventPump.addModelEventListener(this, comboBoxTarget,
 						propertySetName);
             } else {
@@ -579,10 +578,17 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
 
     }
 
+    /**
+     * Return boolean indicating whether combo allows empty string.
+     * @return state of isClearable flag
+     */
     protected boolean isClearable() {
         return isClearable;
     }
-
+    
+    /**
+     * @return name of property registered with event listener
+     */
     protected String getPropertySetName() {
         return propertySetName;
     }
@@ -592,8 +598,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      */
     protected boolean isFireListEvents() {
         return fireListEvents;
-    }
-
+}
     /**
      * @param fireListEvents The fireListEvents to set.
      */
