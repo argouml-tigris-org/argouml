@@ -36,20 +36,11 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.JMenu;
-import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
@@ -88,7 +79,6 @@ import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.PathConv;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
@@ -156,10 +146,7 @@ public abstract class FigEdgeModelElement
      */
     private Fig stereotypeFig;
 
-    /**
-     * A Collection of tee nodes to allow other edges to connect to this edge.
-     */
-    private List teeConnectors;
+    private FigCommentPort commentPort;
     
     private ItemUID itemUid;
 
@@ -225,18 +212,16 @@ public abstract class FigEdgeModelElement
         ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
     
-    /**
-     * Add a tee node to this edge. A tee node allow edges to connect to other
-     * edges.
-     * @param tee The new Tee node
-     */
-    public void addTeeFig(FigTee tee) {
-        if (teeConnectors == null) {
-            teeConnectors = new ArrayList();
+    public FigCommentPort getCommentPort() {
+        if (commentPort == null) {
+            commentPort = new FigCommentPort();
+            commentPort.setOwner(getOwner());
+            commentPort.setVisible(false);
+            addPathItem(commentPort,
+                    new PathConvPercent(this, 50, 0));
         }
-        teeConnectors.add(tee);
-        addPathItem(tee,
-                new PathConvPercent(this, 50, 0));
+        
+        return commentPort;
     }
 
     ////////////////////////////////////////////////////////////////

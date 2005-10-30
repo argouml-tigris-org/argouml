@@ -28,17 +28,10 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Collection;
-import java.util.Iterator;
 
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -57,11 +50,7 @@ import org.tigris.gef.presentation.FigPoly;
  */
 public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
     
-    private FigNode newFigNodeAssociation;
-    private FigEdgeModelElement sourceEdge;
     private Object sourceModelElement;
-    private Collection associationEnds;
-
 
     /**
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
@@ -84,22 +73,18 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
             return;
         }
         
-        Object modelElement = underMouse.getOwner();
+        sourceModelElement = underMouse.getOwner();
         
         if (underMouse instanceof FigEdgeModelElement) {
             // If we're drawing from an edge
             
-            sourceEdge = (FigEdgeModelElement) underMouse;
-            sourceModelElement = sourceEdge.getOwner();
+            FigEdgeModelElement sourceEdge = (FigEdgeModelElement) underMouse;
+            FigCommentPort commentPort = sourceEdge.getCommentPort();
             
-            FigTee tee = new FigTee();
-            tee.setOwner(sourceModelElement);
-            sourceEdge.addTeeFig(tee);
-            
-            underMouse = tee;
-            setSourceFigNode(tee);
+            underMouse = commentPort;
+            setSourceFigNode(commentPort);
             setStartPort(sourceModelElement);
-            setStartPortFig(tee);
+            setStartPortFig(commentPort);
         } else if (underMouse instanceof FigNodeModelElement) {
             if (getSourceFigNode() == null) {
                 setSourceFigNode((FigNode) underMouse);
@@ -139,51 +124,18 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
         if (destFig == null) {
             destFig = editor.hit(x - 16, y - 16, 32, 32);
         }
-        GraphModel graphModel = editor.getGraphModel();
-        if (!(graphModel instanceof MutableGraphModel)) {
-            destFig = null;
-        }
+        MutableGraphModel graphModel =
+            (MutableGraphModel)editor.getGraphModel();
         
-        
-        MutableGraphModel mutableGraphModel = (MutableGraphModel) graphModel;
-        // TODO: potential class cast exception
-        if (destFig instanceof FigAssociation && 
-                !(destFig instanceof FigAssociationClass)) {
-            Object association = destFig.getOwner();
-            boolean isValid =
-                Model.getUmlFactory().isConnectionValid(
-                    Model.getMetaTypes().getAssociationEnd(),
-                    getStartPort(),
-                    association);
-            if (isValid) {
-                GraphModel gm = editor.getGraphModel();
-                GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
-                Layer lay = editor.getLayerManager().getActiveLayer();
-                mutableGraphModel.removeEdge(association);
-                destFig.setOwner(null);
-                destFig.removeFromDiagram();
-                mutableGraphModel.addNode(association);
-                FigNode figNode = (FigNode) lay.presentationFor(association);
-                figNode.setLocation(
-                        x - figNode.getWidth() / 2,
-                        y - figNode.getHeight() / 2);
-                editor.add(figNode);
-                associationEnds = 
-                    Model.getFacade().getConnections(association);
-                Iterator it = associationEnds.iterator();
-                mutableGraphModel.addEdge(it.next());
-                mutableGraphModel.addEdge(it.next());
-                destFig = figNode;
-            }
+        if (destFig instanceof FigEdgeModelElement
+                && Model.getFacade().isAComment(sourceModelElement)) {
+            FigEdgeModelElement destEdge = (FigEdgeModelElement) destFig;
+            destFig = destEdge.getCommentPort();
         }
 
-        if (destFig instanceof FigNode &&
-                !(destFig instanceof FigClassAssociationClass) &&
-                !Model.getFacade().isANaryAssociation(destFig.getOwner())) {
+        if (destFig instanceof FigNodeModelElement) {
             FigNode destFigNode = (FigNode) destFig;
-            // If its a FigNode, then check within the
-            // FigNode to see if a port exists
-            Object foundPort = destFigNode.deepHitPort(x, y);
+            Object foundPort = destFigNode.getOwner();
 
             if (foundPort == getStartPort() && _npoints < 4) {
                 // user made a false start
@@ -201,7 +153,7 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
                 p.setComplete(true);
 
                 Object edgeType = getArg("edgeClass");
-                setNewEdge(mutableGraphModel.connect(
+                setNewEdge(graphModel.connect(
                        getStartPort(), foundPort, (Class) edgeType));
 
                 // Calling connect() will add the edge to the GraphModel and
@@ -257,63 +209,5 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
         _lastX = x;
         _lastY = y;
         me.consume();
-
-        /* If a FigNodeAssociation has been created and placed but
-         * the connection fails, it must be undone.
-         */
-        if (getNewEdge() == null
-                && newFigNodeAssociation != null
-                && newFigNodeAssociation instanceof FigNodeAssociation) {
-            Editor editor = Globals.curEditor();
-            editor.remove(newFigNodeAssociation);
-            newFigNodeAssociation.removeFromDiagram();
-            sourceEdge.setOwner(sourceModelElement);
-        }
     }
-
-    /**
-     * This will be called when the edge is successfully connected.
-     * What we do in this class is to determine if we are creating
-     * an n-ary association. If so then FigNode representing the n-ary
-     * association is made visible. The FigEdge representing the old
-     * binary association is removed and replaced with edges representing
-     * the 2 association ends of that original fig.
-     */
-    protected void endAttached() {
-        if (newFigNodeAssociation != null) {
-            newFigNodeAssociation.setVisible(true);
-
-            Editor editor = Globals.curEditor();
-
-            GraphModel gm = editor.getGraphModel();
-            if (gm instanceof MutableGraphModel) {
-                MutableGraphModel mutableGraphModel = (MutableGraphModel) gm;
-                Iterator it = associationEnds.iterator();
-                mutableGraphModel.addEdge(it.next());
-                mutableGraphModel.addEdge(it.next());
-                editor.getSelectionManager().deselectAll();
-                mutableGraphModel.addNode(sourceModelElement);
-            }
-        }
-        super.endAttached();
-    }
-
-    private FigNode placeTempNode(MouseEvent me) {
-        Editor editor = Globals.curEditor();
-        FigNode figNode = null;
-        GraphModel gm = editor.getGraphModel();
-
-        GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
-        Layer lay = editor.getLayerManager().getActiveLayer();
-        figNode = renderer.getFigNodeFor(gm, lay, sourceModelElement, null);
-        figNode.setLocation(
-                me.getX() - figNode.getWidth() / 2,
-                me.getY() - figNode.getHeight() / 2);
-        figNode.setVisible(false);
-        editor.add(figNode);
-        editor.getSelectionManager().deselectAll();
-
-        return figNode;
-    }
-
 } /* end class ModeCreateAssociation */

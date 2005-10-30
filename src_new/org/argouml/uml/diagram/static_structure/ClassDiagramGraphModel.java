@@ -321,13 +321,15 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             return false;
         }
         
-        if (!containsNode(sourceModelElement)) {
+        if (!containsNode(sourceModelElement)
+                && !containsEdge(sourceModelElement)) {
             LOG.error("Edge rejected. Its source end is attached to " +
                     sourceModelElement + 
                     " but this is not in the graph model");
             return false;
         }
-        if (!containsNode(destModelElement)) {
+        if (!containsNode(destModelElement)
+                && !containsEdge(destModelElement)) {
             LOG.error("Edge rejected. Its destination end is attached to " +
                     destModelElement + 
                     " but this is not in the graph model");
