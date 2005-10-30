@@ -36,9 +36,9 @@ import org.tigris.gef.presentation.FigCircle;
  * @author Bob Tarling
  */
 
-public class FigTee extends FigNodeModelElement {
+public class FigCommentPort extends FigNodeModelElement {
     private FigCircle bigPort;
-    public FigTee() {
+    public FigCommentPort() {
         bigPort = new FigCircle(0, 0, 10, 10, Color.black, Color.white);
         addFig(bigPort);
     }
@@ -47,9 +47,9 @@ public class FigTee extends FigNodeModelElement {
         return false;
     }
     
-    public Object deepHitPort(int x, int y) {
-        return null;
-    }
+//    public Object deepHitPort(int x, int y) {
+//        return null;
+//    }
     
     public Object hitPort(int x, int y) {
         return null;
@@ -61,6 +61,10 @@ public class FigTee extends FigNodeModelElement {
     
     public boolean isSelectable() {
         return false;
+    }
+    
+    public Fig getPortFig(Object port) {
+        return bigPort;
     }
     
 }

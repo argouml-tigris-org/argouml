@@ -108,12 +108,18 @@ public class FigEdgeNote
         }
         
         Fig destFig = theLayer.presentationFor(toNode);
+        if (destFig instanceof FigEdgeModelElement) {
+            destFig = ((FigEdgeModelElement)destFig).getCommentPort();
+        }
         if (!(destFig instanceof FigNodeModelElement)) {
             throw new IllegalArgumentException("The given comment edge must end at a model element in the given layer.");
         }
         
         Fig sourceFig = theLayer.presentationFor(fromNode);
-        if (!(destFig instanceof FigNodeModelElement)) {
+        if (sourceFig instanceof FigEdgeModelElement) {
+            sourceFig = ((FigEdgeModelElement)sourceFig).getCommentPort();
+        }
+        if (!(sourceFig instanceof FigNodeModelElement)) {
             throw new IllegalArgumentException("The given comment edge must start at a model element in the given layer.");
         }
         
