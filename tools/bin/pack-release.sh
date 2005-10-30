@@ -4,7 +4,7 @@
 BUILD=PACKRELEASE:
 
 echo $BUILD The purpose of this shellscript is to take the contents
-echo $BUILD of the DIST directory, tar/zip/whatever it and upload it.
+echo $BUILD of the build directory, tar/zip/whatever it and upload it.
 
 # Check that JAVA_HOME is set.
 if test ! -x $JAVA_HOME/bin/javac
@@ -56,6 +56,40 @@ mkdir DIST
 ( cd DIST && gzip -v *.tar )
 cp argouml/build/*.pdf DIST
 
+# Create the Appbund for MacOS
+(
+  cd argouml/build;
+  mkdir ArgoUML.app
+  mkdir ArgoUML.app/Contents
+  mkdir ArgoUML.app/Contents/Resources
+  mkdir ArgoUML.app/Contents/Resources/Java
+  mkdir ArgoUML.app/Contents/MacOS
+
+  # Copy the specific things
+  (
+    cd ../src_new/bin/appbund/
+    cp PkgInfo ../../../build/ArgoUML.app/Contents
+    cp GenericJavaApp.icns ../../../build/ArgoUML.app/Contents/Resources
+    cp JavaApplicationStub ../../../build/ArgoUML.app/Contents/MacOS
+  )
+  # Format the Info.plist file
+  ls *.jar > ArgoUML.app/temp.list
+  cat < ../src_new/bin/appbund/Info.plist |
+    sed 's/@VERSION_NUMBER@/'$releasename'/' |
+    awk '$0 == "@FILE_LIST@" {
+            while ((getline line < "ArgoUML.app/temp.list" > 0))
+                printf "<string>$JAVAROOT/%s</string>\n", line
+            next
+         }
+         { print }' |
+    cat > ArgoUML.app/Contents/Info.plist
+  rm ArgoUML.app/temp.list
+
+  cp *.jar ArgoUML.app/Contents/Resources/Java
+  tar cvf - ArgoUML.app |
+  gzip > ../../DIST/ArgoUML-$releasename.app.tgz
+)
+    
 # Copy the Java Web Start stuff
 mkdir DIST/jws
 cp argouml/build/*.jar DIST/jws
