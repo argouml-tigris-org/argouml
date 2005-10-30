@@ -3,7 +3,7 @@
 <plist version="0.9">
 <dict>
 	<key>CFBundleName</key>
-	<string>@BUNDLE_NAME@</string>
+	<string>ArgoUML</string>
 	<key>CFBundleVersion</key>
 	<string>@VERSION_NUMBER@</string>
 	<key>CFBundleAllowMixedLocalizations</key>
@@ -32,17 +32,7 @@
 		<string>1.4+</string>
 		<key>ClassPath</key>
 			<array>
-			<string>$JAVAROOT/antlrall.jar</string>
-			<string>$JAVAROOT/argouml.jar</string>
-			<string>$JAVAROOT/argouml-model.jar</string>
-			<string>$JAVAROOT/gef.jar</string>
-			<string>$JAVAROOT/i18n.jar</string>
-			<string>$JAVAROOT/jh.jar</string>
-			<string>$JAVAROOT/log4j.jar</string>
-			<string>$JAVAROOT/nsuml.jar</string>
-			<string>$JAVAROOT/ocl-argo.jar</string>
-			<string>$JAVAROOT/xercesImpl.jar</string>
-			<string>$JAVAROOT/xml-apis.jar</string>
+@FILE_LIST@
 			</array>
 		<key>Properties</key>
 		<dict>
