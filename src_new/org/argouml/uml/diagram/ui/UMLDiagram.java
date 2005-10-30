@@ -117,7 +117,6 @@ public abstract class UMLDiagram
      * Tool to add a comment node.
      */
     private static Action actionComment =
-//	new RadioAction(new CmdCreateNode(Model.getFacade().COMMENT, "Note"));
         new RadioAction(new ActionAddNote());
 
     /**
@@ -125,12 +124,7 @@ public abstract class UMLDiagram
      * using a polyedge.<p>
      */
     private static Action actionCommentLink =
-        new RadioAction(
-	        new CmdSetMode(
-	            ModeCreatePolyEdge.class,
-	            "edgeClass",
-	            CommentEdge.class,
-	            "button.new-commentlink"));
+        new RadioAction(new ActionSetAddCommentLinkMode());
 
 
     private static Action actionSelect =
