@@ -69,10 +69,13 @@ A newly compiled ArgoUML will open in a new window.
           <tip>
           On Windows, the directory path for the JDK installation directory
 must not contain any spaces.
+<!-- MVW: This is not required, 
+at least the statements above work with spaces in the path. -->
           </tip>
 That was the compact version for Windows + JDK.
 (Note: JDK cannot be installed in a directory that contains space in its
-name.)  Modifying these steps slightly as appropriate for your shell should
+name. <!-- MVW: idem -->)  
+Modifying these steps slightly as appropriate for your shell should
 work on Unix/Linux systems as well. 
 </para>
   <para>
@@ -461,7 +464,7 @@ and
 </para>
       <para>
 If you just want to build the documentation you check out the directories
-<filename class="directory">argouml/lib</filename>
+<filename class="directory">argouml/lib</filename>,
 <filename class="directory">argouml/tools</filename>
 and
 <filename class="directory">argouml/documentation</filename>.
@@ -478,6 +481,9 @@ If you give the argument
 That is no problem except for the extra use of bandwidth and disk space
 but if you have plenty of both, get it all, and eventually you will
 see how everything is used for a purpose in the project.
+<!-- TODO: MVW: Instead of the details above, it is better to advise 
+to check out "argouml" and "argouml-mdr" completely. 
+Describe the details as: "If you want to limit the download size,..." -->
 </para>
       <para>
 If you don't want to acquire a Tigris login to do this you can use the
@@ -537,7 +543,7 @@ CVS repository of ArgoUML in the file
 <filename class="libraryfile">argouml/tools/ant-1.6.2/lib/ant.jar</filename>.
 </para>
 	<para>
-Normally ant is started with the command
+It is possible to start ant with the command
 <command>../tools/ant-1.6.2/bin/ant <replaceable>arg</replaceable></command>
 and in the modules
 <command>
@@ -578,7 +584,7 @@ argouml-model.jar from the argouml project to build and
 the argouml project needs the argouml-mdr project to run using the default
 settings (targets run, info, debug, tests-using-mdr).
 There are also the java interfaces in the argouml-mdr project that
-doesn't depend on anything from the argouml project.
+don't depend on anything from the argouml project.
 </para>
       <para>
 To get this set up you need to
@@ -710,32 +716,8 @@ since we have not set up dependencies correctly.
 	    <primary>Windows</primary>
 	    <secondary>Compilation</secondary>
 	  </indexterm>
-	  <orderedlist>
-	    <listitem>
-	      <para>
-<command>set JAVA_HOME=<replaceable>\where\you\have\installed\jdk</replaceable></command>
-</para>
-	    </listitem>
-	    <listitem>
-	      <para>
-Change the current directory to the directory you are building
-</para>
-	      <para>
-<command>chdir <replaceable>\your\checked\out\copy\of\argouml\src_new</replaceable></command>
-</para>
-	    </listitem>
-	    <listitem>
-	      <para>Start Ant with no parameters to get a list of build targets 
-          with descriptions</para>
-	      <para><command>build</command></para>
-	    </listitem>
-	  </orderedlist>
 
-	<para>
-Then the targets and considerations are just like for Unix.
-</para>
-
-	  <indexterm>
+  	  <indexterm>
 	    <primary>Compiling</primary>
 	    <secondary>Cygwin</secondary>
 	  </indexterm>
@@ -745,6 +727,68 @@ Then the targets and considerations are just like for Unix.
 	  <para>
 If you do this from Cygwin you work just like for Unix.
 </para>
+
+	  <orderedlist>
+	    <listitem>
+	      <para>
+<command>set JAVA_HOME=<replaceable>\where\you\have\installed\jdk</replaceable></command>
+<!-- TODO: MVW: My setting includes a "\" at the end, and works. 
+Does it matter? -->
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Change the current directory to the directory you are building
+</para>
+	      <para>
+<command>cd <replaceable>\your\checked\out\copy\of\argouml\src_new</replaceable></command>
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>Start Ant with "-p" parameter to get a list of build targets 
+          with descriptions</para>
+	      <para><command>build -p</command></para>
+	    </listitem>
+
+	  <listitem>
+	    <para>
+Compile, create jar files, and copy them so that argouml-mdr can be compiled
+using 
+<command>build package</command>.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Change to the <filename>argouml-mdr</filename> directory using
+<command>cd ..\..\argouml-mdr</command>.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Compile, create jar files, and copy them so that they are available in the
+argouml project using
+<command>build install</command>.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Change back to the <filename>argouml\src_new</filename> directory using
+<command>cd ..\argouml\src_new</command>.
+</para>
+	  </listitem>
+
+
+	    <listitem>
+      	      <para>
+Run ArgoUML using <command>build run</command>
+</para>
+	    </listitem>
+	  </orderedlist>
+
+
 
 	</sect3>
 	<sect3>
