@@ -26,16 +26,20 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -44,10 +48,10 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 5, 2003
  */
-public class UMLTagDefinitionComboBoxModel extends UMLComboBoxModel2 {
+public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
 
     private Logger LOG = Logger.getLogger(UMLTagDefinitionComboBoxModel.class);
-
+    
     /**
      * 
      * Constructor for UMLTagDefinitionComboBoxModel.
@@ -55,9 +59,10 @@ public class UMLTagDefinitionComboBoxModel extends UMLComboBoxModel2 {
      * @param propertySetName the name of the property set
      */
     public UMLTagDefinitionComboBoxModel() {
-        super("tagdefinition", false);
+        super("tagdefinition",false);
     }
 
+    
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
@@ -69,6 +74,16 @@ public class UMLTagDefinitionComboBoxModel extends UMLComboBoxModel2 {
     }
 
     /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#setSelectedItem(java.lang.Object)
+     */
+    public void setSelectedItem(Object o) {
+        setFireListEvents(false);
+        super.setSelectedItem(o);
+        setFireListEvents(true);
+    }
+
+
+    /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -76,7 +91,14 @@ public class UMLTagDefinitionComboBoxModel extends UMLComboBoxModel2 {
         Object t = getTarget();
         addAll(getApplicableTagDefinitions(t));
     }
-    
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        return getSelectedItem();
+    }
+
     private Collection getApplicableTagDefinitions(Object t) {
         Set paths = new HashSet();
         Set availableTagDefs = new TreeSet(new Comparator() {        
@@ -138,14 +160,6 @@ public class UMLTagDefinitionComboBoxModel extends UMLComboBoxModel2 {
                 elements.add(obj);
             }
         }
-    }
-
-    
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
-     */
-    protected Object getSelectedModelElement() {
-        return getSelectedItem();
     }
 
 }
