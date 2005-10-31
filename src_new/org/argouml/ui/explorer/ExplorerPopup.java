@@ -33,6 +33,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -121,6 +122,8 @@ public class ExplorerPopup extends JPopupMenu {
                 Model.getFacade().isALink(selectedItem);
             final boolean transitionSelected =
                 Model.getFacade().isATransition(selectedItem);
+            final boolean activityDiagramActive =
+                activeDiagram instanceof UMLActivityDiagram;
             final boolean sequenceDiagramActive =
                 activeDiagram instanceof UMLSequenceDiagram;
             final boolean stateDiagramActive =
@@ -134,17 +137,23 @@ public class ExplorerPopup extends JPopupMenu {
                 = (stateDiagramActive)
                     ? ((UMLStateDiagram) activeDiagram).getStateMachine()
                     : null;
-
+            final Object diagramActivity
+                 = (activityDiagramActive)
+                        ? ((UMLActivityDiagram) activeDiagram).getStateMachine()
+                        : null;            
             if (!ms) {
                 if ((classifierSelected && !dataTypeSelected
                     && !classifierAndRelationShipSelected)
                         || (packageSelected && selectedItem != projectModel)
+                        || (stateVertexSelected && activityDiagramActive
+                            && diagramActivity == selectedStateMachine)
                         || (stateVertexSelected && stateDiagramActive
                             && diagramStateMachine == selectedStateMachine)
                         || (instanceSelected && !dataValueSelected
                             && !sequenceDiagramActive)
                         || nAryAssociationSelected
-                        || commentSelected) {
+                        || commentSelected
+            ) {
                     UMLAction action =
                         new ActionAddExistingNode(
                             menuLocalize("menu.popup.add-to-diagram"),
