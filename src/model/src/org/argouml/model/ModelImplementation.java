@@ -24,7 +24,6 @@
 
 package org.argouml.model;
 
-import java.awt.Container;
 import java.io.Writer;
 
 
@@ -253,13 +252,6 @@ public interface ModelImplementation {
      * @return The object implementing the interface.
      */
     DirectionKind getDirectionKind();
-
-    /**
-     * Getter for the Multiplicities object.
-     *
-     * @return The object implementing the interface.
-     */
-    Multiplicities getMultiplicities();
 
     /**
      * Getter for the OrderingKind object.

@@ -453,15 +453,6 @@ public final class Model {
     }
 
     /**
-     * Getter for the Multiplicities object.
-     *
-     * @return The object implementing the interface.
-     */
-    public static Multiplicities getMultiplicities() {
-        return impl.getMultiplicities();
-    }
-
-    /**
      * Getter for the OrderingKind object.
      *
      * @return The object implementing the interface.

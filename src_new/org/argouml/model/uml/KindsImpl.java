@@ -28,7 +28,6 @@ import org.argouml.model.AggregationKind;
 import org.argouml.model.ChangeableKind;
 import org.argouml.model.ConcurrencyKind;
 import org.argouml.model.DirectionKind;
-import org.argouml.model.Multiplicities;
 import org.argouml.model.OrderingKind;
 import org.argouml.model.PseudostateKind;
 import org.argouml.model.ScopeKind;
@@ -49,7 +48,7 @@ import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
  */
 public class KindsImpl
 	implements ChangeableKind, AggregationKind, PseudostateKind,
-	ScopeKind, ConcurrencyKind, DirectionKind, Multiplicities,
+	ScopeKind, ConcurrencyKind, DirectionKind, 
 	OrderingKind, VisibilityKind {
 
     /**
