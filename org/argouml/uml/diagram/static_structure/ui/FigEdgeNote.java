@@ -29,6 +29,7 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
@@ -39,6 +40,7 @@ import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 
@@ -108,6 +110,14 @@ public class FigEdgeNote
         }
         
         Fig destFig = theLayer.presentationFor(toNode);
+        //TODO: Should we restrict this or also do the following for the sourceFig ?
+        if (destFig==null) {
+            GraphNodeRenderer figNodeRenderer
+            = ((LayerPerspectiveMutable)theLayer).getGraphNodeRenderer();
+            destFig = figNodeRenderer.getFigNodeFor(toNode, new HashMap());
+            destFig.setOwner(toNode);
+            theLayer.add(destFig);
+         }
         if (destFig instanceof FigEdgeModelElement) {
             destFig = ((FigEdgeModelElement)destFig).getCommentPort();
         }
