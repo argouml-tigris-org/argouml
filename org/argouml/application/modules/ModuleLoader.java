@@ -381,12 +381,12 @@ public class ModuleLoader {
 	return false;
     }
 
-    private void loadClassFromLoader(ClassLoader classloader,
+    public void loadClassFromLoader(ClassLoader classloader,
                                      String key,
 				     String classname,
 				     boolean secure) {
 
-	LOG.debug("Load key:" + key + " class:" + classname);
+	LOG.info("Load key:" + key + " class:" + classname);
 	if (keyAlreadyLoaded(key)) {
 	    return;
 	}
