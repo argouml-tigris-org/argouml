@@ -52,11 +52,20 @@ public class ActionSetTagDefinitionMultiplicity extends ActionSetMultiplicity {
         if (target != null
                 && Model.getFacade().isATagDefinition(target)) {
             if (Model.getFacade().isAMultiplicity(item)) {
-                Model.getCoreHelper().setMultiplicity(target, item);
+                if (!Model.getFacade().getMultiplicity(target).equals(item)) {
+                    Model.getCoreHelper().setMultiplicity(target, item);
+                }
+            } else if (item instanceof String) {
+                if (!item.equals(Model.getFacade().toString(
+                        Model.getFacade().getMultiplicity(target)))) {
+                    Model.getCoreHelper().setMultiplicity(
+                            target,
+                            Model.getDataTypesFactory().createMultiplicity(
+                                    (String) item));
+                }
             } else {
                 Model.getCoreHelper().setMultiplicity(target, null);
             }
-
         }
 
     }

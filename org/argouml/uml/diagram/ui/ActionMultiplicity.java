@@ -49,25 +49,27 @@ public class ActionMultiplicity extends UMLAction {
     // static variables
 
     // multiplicity
-    private static UMLAction srcMultOne =
-	new ActionMultiplicity(Model.getMultiplicities().get11(), "src");
-    private static UMLAction destMultOne =
-	new ActionMultiplicity(Model.getMultiplicities().get11(), "dest");
+    private static UMLAction srcMultOne = new ActionMultiplicity("1", "src");
 
-    private static UMLAction srcMultZeroToOne =
-	new ActionMultiplicity(Model.getMultiplicities().get01(), "src");
-    private static UMLAction destMultZeroToOne =
-	new ActionMultiplicity(Model.getMultiplicities().get01(), "dest");
+    private static UMLAction destMultOne = new ActionMultiplicity("1", "dest");
 
-    private static UMLAction srcMultZeroToMany =
-	new ActionMultiplicity(Model.getMultiplicities().get0N(), "src");
-    private static UMLAction destMultZeroToMany =
-	new ActionMultiplicity(Model.getMultiplicities().get0N(), "dest");
+    private static UMLAction srcMultZeroToOne = new ActionMultiplicity("0..1",
+            "src");
 
-    private static UMLAction srcMultOneToMany =
-	new ActionMultiplicity(Model.getMultiplicities().get1N(), "src");
-    private static UMLAction destMultOneToMany =
-	new ActionMultiplicity(Model.getMultiplicities().get1N(), "dest");
+    private static UMLAction destMultZeroToOne = new ActionMultiplicity("0..1",
+            "dest");
+
+    private static UMLAction srcMultZeroToMany = new ActionMultiplicity("0..*",
+            "src");
+
+    private static UMLAction destMultZeroToMany = new ActionMultiplicity(
+            "0..*", "dest");
+
+    private static UMLAction srcMultOneToMany = new ActionMultiplicity("1..*",
+            "src");
+
+    private static UMLAction destMultOneToMany = new ActionMultiplicity("1..*",
+            "dest");
 
 
     ////////////////////////////////////////////////////////////////
@@ -79,9 +81,8 @@ public class ActionMultiplicity extends UMLAction {
      * @param m the multiplicity
      * @param s "src" or "dest". Anything else is interpreted as "dest".
      */
-    protected ActionMultiplicity(Object/*MMultiplicity*/ m, String s) {
-	super(Model.getDataTypesHelper().multiplicityToString(m), 
-                true, NO_ICON);
+    protected ActionMultiplicity(String m, String s) {
+	super(m, true, NO_ICON);
 	str = s;
 	mult = m;
     }
@@ -109,7 +110,15 @@ public class ActionMultiplicity extends UMLAction {
                     ascEnd = iter.next();
                 }
             }
-	    Model.getCoreHelper().setMultiplicity(ascEnd, mult);
+
+            if (!mult.equals(Model.getFacade().toString(
+                    Model.getFacade().getMultiplicity(ascEnd)))) {
+                Model.getCoreHelper().setMultiplicity(
+                        ascEnd,
+                        Model.getDataTypesFactory().createMultiplicity(
+                                (String) mult));
+            }
+
 	}
     }
 

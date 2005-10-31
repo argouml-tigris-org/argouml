@@ -48,7 +48,8 @@ public class UMLTagDefinitionMultiplicityComboBoxModel extends
     protected Object getSelectedModelElement() {
         if (getTarget() != null
                 && (Model.getFacade().isATagDefinition(getTarget()))) {
-            return Model.getFacade().getMultiplicity(getTarget());
+            return Model.getFacade().toString(
+                    Model.getFacade().getMultiplicity(getTarget()));
         }
         return null;
     }

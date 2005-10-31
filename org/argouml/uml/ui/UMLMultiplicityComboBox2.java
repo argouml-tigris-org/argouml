@@ -62,7 +62,7 @@ public class UMLMultiplicityComboBox2 extends UMLSearchableComboBox {
                 	.createMultiplicity(text); //new MMultiplicity(text);
         } catch (IllegalArgumentException e) {
             Object o = search(text);
-            if (o != null && Model.getFacade().isAMultiplicity(o)) {
+            if (o != null ) {
                 multi = o;
             }
         }

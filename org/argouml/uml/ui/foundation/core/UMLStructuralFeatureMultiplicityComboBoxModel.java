@@ -49,7 +49,8 @@ public class UMLStructuralFeatureMultiplicityComboBoxModel
     protected Object getSelectedModelElement() {
         if (getTarget() != null
                 && (Model.getFacade().isAStructuralFeature(getTarget()))) {
-            return Model.getFacade().getMultiplicity(getTarget());
+            return Model.getFacade().toString(
+                    Model.getFacade().getMultiplicity(getTarget()));
         }
         return null;
     }
