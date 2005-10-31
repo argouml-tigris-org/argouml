@@ -647,7 +647,7 @@ public class GeneratorPHP4
     }
 
     /**
-     * Genarates multiplicity
+     * Generates multiplicity
      *
      * @param modelElement Model element to generate notation for.
      *
@@ -655,14 +655,14 @@ public class GeneratorPHP4
      */
     public String generateMultiplicity(Object modelElement) {
         // TODO: Auto-generated method stub
-        LOG.debug("generateMultiplicity(MMultiplicity modelElement)");
+        LOG.debug("generateMultiplicity(Multiplicity modelElement)");
 
         if (!Model.getFacade().isAMultiplicity(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Multiplicity required");
         }
 
-        return "generateMultiplicity(MMultiplicity modelElement)";
+        return "generateMultiplicity(Multiplicity modelElement)";
     }
 
     /**

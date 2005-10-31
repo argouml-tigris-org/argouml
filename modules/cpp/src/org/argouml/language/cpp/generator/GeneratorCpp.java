@@ -87,8 +87,6 @@ public class GeneratorCpp extends Generator2
         Configuration.makeKey("cpp", "verbose-comments");
     private static final ConfigurationKey KEY_CPP_SECT =
         Configuration.makeKey("cpp", "sections");
-    
-    private static final String ANY_RANGE = "0..*";
 
     private static Section sect;
 
@@ -2421,9 +2419,7 @@ public class GeneratorCpp extends Generator2
         // list tagged values for documentation
         String s = generateTaggedValues (me, DOC_COMMENT_TAGS);
 
-        Object multiplicity = Model.getFacade().getMultiplicity(ae);
-        if (!(Model.getMultiplicities().get11().equals(multiplicity)
-                || Model.getMultiplicities().get01().equals (multiplicity))) {
+        if (Model.getFacade().getUpper(ae) != 1) {
             // Multiplicity greater 1, that means we will generate some sort of
             // collection, so we need to specify the element type tag
             StringBuffer sDocComment = new StringBuffer(80);
@@ -2762,21 +2758,12 @@ public class GeneratorCpp extends Generator2
      * @see org.argouml.application.api.NotationProvider2#generateMultiplicity(java.lang.Object)
      */
     public String generateMultiplicity(Object multiplicity) {
-        if (multiplicity == null) {
+        if (multiplicity == null
+                || "1".equals(Model.getFacade().toString(multiplicity))) {
             return "";
+        } else {
+            return Model.getFacade().toString(multiplicity);
         }
-        if (Model.getMultiplicities().get0N().equals(multiplicity)) {
-            return ANY_RANGE;
-        }
-        String s = "";
-
-        Iterator rangeEnum = Model.getFacade().getRanges(multiplicity);
-        while (rangeEnum.hasNext()) {
-            Object multiplicityRange = rangeEnum.next();
-            s += generateMultiplicityRange(multiplicityRange);
-            if (rangeEnum.hasNext()) s += ",";
-        }
-        return s;
     }
 
     private String generateMultiplicity(Object item, String name,
@@ -2875,24 +2862,6 @@ public class GeneratorCpp extends Generator2
             }
         }
         return sb.toString();
-    }
-
-    private String generateMultiplicityRange(Object mr) {
-        Integer lower = new Integer(Model.getFacade().getLower(mr));
-        Integer upper = new Integer(Model.getFacade().getUpper(mr));
-        if (lower == null && upper == null) {
-            return ANY_RANGE;
-        }
-        if (lower == null) {
-            return "*.." + upper.toString();
-        }
-        if (upper == null) {
-            return lower.toString() + "..*";
-        }
-        if (lower.intValue() == upper.intValue()) {
-            return lower.toString();
-        }
-        return lower.toString() + ".." + upper.toString();
     }
 
     /* TODO: The following methods (generateState/StateBody/Transition/
