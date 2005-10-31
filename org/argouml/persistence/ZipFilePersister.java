@@ -211,6 +211,7 @@ public class ZipFilePersister extends XmiFilePersister {
             p.addMember(new ProjectMemberTodoList("", p));
             p.setRoot(p.getModel());
             p.setUrl(file.toURL());
+            super.registerDiagrams(p,p.getModel());
             ProjectManager.getManager().setNeedsSave(false);
             return p;
         } catch (IOException e) {
