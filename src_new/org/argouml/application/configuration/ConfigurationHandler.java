@@ -570,6 +570,12 @@ public abstract class ConfigurationHandler {
      * @param value the value to set the key to.
      */
     abstract void setValue(String key, String value);
+    
+    /**
+     * Remove the property and the assotiated value
+     * @param key
+     */
+    public abstract void remove(String key);
 }
 
 

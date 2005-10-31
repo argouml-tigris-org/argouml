@@ -206,5 +206,12 @@ class ConfigurationProperties extends ConfigurationHandler {
 	LOG.debug("key '" + key + "' set to '" + value + "'");
 	propertyBundle.setProperty(key, value);
     }
+
+    /**
+     * Remove a property
+     */
+    public void remove(String key) {
+        propertyBundle.remove(key);
+    }
 }
 
