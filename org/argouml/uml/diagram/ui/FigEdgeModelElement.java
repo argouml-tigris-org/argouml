@@ -212,7 +212,7 @@ public abstract class FigEdgeModelElement
         ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
     
-    public FigCommentPort getCommentPort() {
+    public void makeCommentPort() {
         if (commentPort == null) {
             commentPort = new FigCommentPort();
             commentPort.setOwner(getOwner());
@@ -220,7 +220,9 @@ public abstract class FigEdgeModelElement
             addPathItem(commentPort,
                     new PathConvPercent(this, 50, 0));
         }
-        
+    }
+
+    public FigCommentPort getCommentPort() {
         return commentPort;
     }
 

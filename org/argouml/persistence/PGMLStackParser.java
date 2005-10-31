@@ -73,22 +73,24 @@ public class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackPa
                                              String localname,
                                              String qname,
                                              Attributes attributes)
-        throws SAXException {
-        // Ignore non-private elements within groups
+            throws SAXException {
+        
+        // Ignore non-private elements within FigNode groups
         if (container instanceof FigGroupHandler) {
             FigGroup group = ((FigGroupHandler) container).getFigGroup();
             if (group instanceof FigNode && !qname.equals("private")) {
                 return null;
             }
         }
+        
         // Handle ItemUID in container contents
-        if ( qname.equals("private") && ( container instanceof Container))
+        if ( qname.equals("private") && ( container instanceof Container)) {
         	return new PrivateHandler( this, (Container)container);
-        DefaultHandler result =
+        }
+        
+        return
             super.getHandler(stack, container, uri, localname, qname,
                     attributes);
-
-        return result;
     }
 
     /**
