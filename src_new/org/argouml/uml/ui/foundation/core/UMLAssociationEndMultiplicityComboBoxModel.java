@@ -48,7 +48,8 @@ public class UMLAssociationEndMultiplicityComboBoxModel extends
     protected Object getSelectedModelElement() {
         if (getTarget() != null
                 && (Model.getFacade().isAAssociationEnd(getTarget()))) {
-            return Model.getFacade().getMultiplicity(getTarget());
+            return Model.getFacade().toString(
+                    Model.getFacade().getMultiplicity(getTarget()));
         }
         return null;
     }

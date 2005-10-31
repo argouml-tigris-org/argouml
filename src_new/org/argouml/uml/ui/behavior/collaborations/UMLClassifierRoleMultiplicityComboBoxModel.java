@@ -50,7 +50,8 @@ public class UMLClassifierRoleMultiplicityComboBoxModel extends
     protected Object getSelectedModelElement() {
         if (getTarget() != null
                 && (Model.getFacade().isAClassifierRole(getTarget()))) {
-            return Model.getFacade().getMultiplicity(getTarget());
+            return Model.getFacade().toString(
+                    Model.getFacade().getMultiplicity(getTarget()));
         }
         return null;
     }

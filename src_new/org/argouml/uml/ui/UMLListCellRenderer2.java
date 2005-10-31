@@ -134,6 +134,9 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      * @return String the text to be shown
      */
     public String makeText(Object value) {
+        if (value instanceof String) {
+            return (String) value;
+        }
         String name = null;
         if (Model.getFacade().isAParameter(value)) {
             Object type = Model.getFacade().getType(value);
