@@ -110,14 +110,6 @@ public class FigEdgeNote
         }
         
         Fig destFig = theLayer.presentationFor(toNode);
-        //TODO: Should we restrict this or also do the following for the sourceFig ?
-        if (destFig==null) {
-            GraphNodeRenderer figNodeRenderer
-            = ((LayerPerspectiveMutable)theLayer).getGraphNodeRenderer();
-            destFig = figNodeRenderer.getFigNodeFor(toNode, new HashMap());
-            destFig.setOwner(toNode);
-            theLayer.add(destFig);
-         }
         if (destFig instanceof FigEdgeModelElement) {
             destFig = ((FigEdgeModelElement)destFig).getCommentPort();
         }
