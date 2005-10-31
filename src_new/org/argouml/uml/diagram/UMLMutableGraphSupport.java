@@ -526,6 +526,12 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             Object edgeType,
             Object fromElement,
             Object toElement) {
+        
+        if (!nodes.contains(fromElement) || !nodes.contains(toElement)) {
+            // The connection is not valid unless both nodes are in this graph model.
+            return false;
+        }
+        
         if (edgeType.equals(CommentEdge.class)) {
             return ((Model.getFacade().isAComment(fromElement)
                    && Model.getFacade().isAModelElement(toElement))

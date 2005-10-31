@@ -163,6 +163,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
      */
     public boolean canAddEdge(Object edge) {
+        if (super.canAddEdge(edge)) {
+            return true;
+        }
         if (edge == null) {
             return false;
         }
