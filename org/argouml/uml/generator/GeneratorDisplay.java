@@ -721,9 +721,7 @@ public class GeneratorDisplay extends Generator2 {
         //     !String.UNSPEC.equals(n)) s += generateName(n) + " ";
         //     if (Model.getFacade().isNavigable(ae)) s += "navigable "; if
         //     (ae.getIsOrdered()) s += "ordered ";
-        Object m = Model.getFacade().getMultiplicity(ae);
-        if (Model.getMultiplicities().get11().equals(m)
-	        || Model.getMultiplicities().get01().equals(m)) {
+        if (Model.getFacade().getUpper(ae) != 1 ) {
             s += generateClassifierRef(Model.getFacade().getType(ae));
 	} else {
             s += "Vector "; //generateMultiplicity(m) + " ";
@@ -917,65 +915,11 @@ public class GeneratorDisplay extends Generator2 {
      *          Object)
      */
     public String generateMultiplicity(Object m) {
-        if (m == null) {
+        if (m == null || "1".equals(Model.getFacade().toString(m))) {
             return "";
+        } else {
+            return Model.getFacade().toString(m);
         }
-        if (Model.getMultiplicities().get0N().equals(m)) {
-            return ANY_RANGE;
-        }
-        String s = "";
-        Iterator rangeIter = Model.getFacade().getRanges(m);
-        if (rangeIter == null) {
-            return s;
-        }
-        boolean first = true;
-        while (rangeIter.hasNext()) {
-            Object mr = rangeIter.next();
-            if (!(Model.getFacade().getLower(mr) == 1
-		  && Model.getFacade().getUpper(mr) == 1
-		  && first
-		  && !rangeIter.hasNext())) {
-                s += generateMultiplicityRange(mr);
-                s += ",";
-            }
-            first = false;
-        }
-        if (s.length() > 0 && s.lastIndexOf(',') == s.length() - 1) {
-            s = s.substring(0, s.length() - 1);
-        }
-        return s;
-    }
-
-    /**
-     * <code>ANY_RANGE</code> stands for "0..*".
-     */
-    public static final String ANY_RANGE = "0..*";
-
-    /**
-     * Generates a multiplicity range. The standard getLower and
-     * getUpper defined on MMultiplicityRange give a -1 if the
-     * multiplicity is n or *. This method circumvents that behaviour.
-     * @param mr the given MultiplicityRange object
-     * @return String
-     */
-    //public static final String ANY_RANGE = "*";
-    // TODO: user preference between "*" and "0..*"
-
-    protected String generateMultiplicityRange(Object mr) {
-        int lower = Model.getFacade().getLower(mr);
-        String lowerStr = "" + lower;
-        int upper = Model.getFacade().getUpper(mr);
-        String upperStr = "" + upper;
-        if (lower == -1) {
-            lowerStr = "*";
-        }
-        if (upper == -1) {
-            upperStr = "*";
-        }
-        if (lower == upper) {
-            return lowerStr;
-        }
-        return lowerStr + ".." + upperStr;
     }
 
     /**
