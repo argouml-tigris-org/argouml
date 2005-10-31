@@ -353,6 +353,10 @@ public class Configuration {
 	config.removeListener(key, pcl);
     }
 
+    public static final void removeKey(ConfigurationKey key) {
+        config.remove(key.getKey());
+    }
+    
     /**
      * Create a single component configuration key.
      *
