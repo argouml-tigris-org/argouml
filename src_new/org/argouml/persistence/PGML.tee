@@ -478,6 +478,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 
   <ocl>self.fig</ocl>
+  <ocl ignoreNull>self.commentPort</ocl>
 
 </group>
 
