@@ -52,7 +52,6 @@ import org.argouml.model.ModelEventPump;
 import org.argouml.model.ModelImplementation;
 import org.argouml.model.ModelManagementFactory;
 import org.argouml.model.ModelManagementHelper;
-import org.argouml.model.Multiplicities;
 import org.argouml.model.OrderingKind;
 import org.argouml.model.PseudostateKind;
 import org.argouml.model.ScopeKind;
@@ -343,13 +342,6 @@ public class NSUMLModelImplementation implements ModelImplementation {
      * @see org.argouml.model.ModelImplementation#getDirectionKind()
      */
     public DirectionKind getDirectionKind() {
-        return theKindsObject;
-    }
-
-    /**
-     * @see org.argouml.model.ModelImplementation#getMultiplicities()
-     */
-    public Multiplicities getMultiplicities() {
         return theKindsObject;
     }
 
