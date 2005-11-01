@@ -51,7 +51,8 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
      *            the target modelelement
      */
     public void setTarget(Object t) {
-        LOG.info("Set target to "+t);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Set target to "+t);
         if (!Model.getFacade().isAModelElement(t)) {
             throw new IllegalArgumentException();
         }
