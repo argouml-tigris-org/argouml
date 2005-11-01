@@ -1374,7 +1374,8 @@ public class FigClass extends FigClassifierBox
      */
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
-        if (oldOwner != null && oldOwner != newOwner) {
+        if (oldOwner != null && oldOwner != newOwner 
+                && !Model.getUmlFactory().isRemoved(oldOwner)) {
 	    // remove the listeners if the owner is changed
             Object cl = /*(MClass)*/ oldOwner;
             Iterator it = Model.getFacade().getFeatures(cl).iterator();
