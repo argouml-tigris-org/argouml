@@ -328,7 +328,7 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-compositestate", "CompositeState");
         images.put("button.new-composition", "Composition");
         images.put("button.new-createaction", "CreateAction");
-        images.put("button.new-datatype", "Datatype");
+        images.put("button.new-datatype", "DataType");
         images.put("button.new-deephistory", "DeepHistory");
         images.put("button.new-dependency", "Dependency");
         images.put("button.new-destroyaction", "DestroyAction");
