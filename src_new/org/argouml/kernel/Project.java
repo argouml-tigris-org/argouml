@@ -673,7 +673,10 @@ public class Project implements java.io.Serializable, TargetListener {
     public Object findTypeInModel(String s, Object ns) {
 
         if (!Model.getFacade().isANamespace(ns)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "Looking for the classifier " + s + 
+                    " in a non-namespace object of " + ns +
+                    ". A namespace was expected.");
     	}
 
         Collection allClassifiers =
