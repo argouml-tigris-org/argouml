@@ -30,6 +30,7 @@ import org.argouml.application.api.Configuration;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation.Notation;
@@ -193,6 +194,11 @@ public final class ExplorerEventAdaptor
         
         if (pce instanceof AttributeChangeEvent) {
             treeModel.modelElementChanged(pce.getSource());
+        }
+        
+        if (pce instanceof DeleteInstanceEvent) {
+            treeModel.modelElementRemoved(((DeleteInstanceEvent) pce)
+                    .getSource());
         }
 
     }
