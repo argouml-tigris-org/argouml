@@ -45,19 +45,14 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Stack;
-import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.JMenu;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
@@ -478,7 +473,8 @@ public abstract class FigNodeModelElement
                 StereotypeUtility.getApplyStereotypeActions(getOwner());
             if (stereoActions != null) {
                 popUpActions.insertElementAt(new JSeparator(), 0);
-                ArgoJMenu stereotypes = new ArgoJMenu("menu.popup.apply-stereotypes");
+                ArgoJMenu stereotypes = new ArgoJMenu(
+                        "menu.popup.apply-stereotypes");
                 for (int i = 0; i < stereoActions.length; ++i) {
                     stereotypes.addCheckItem(stereoActions[i]);
                 }
@@ -1121,9 +1117,6 @@ public abstract class FigNodeModelElement
         if ((mee.getSource() == getOwner()
                 && mee.getPropertyName().equals("stereotype"))) {
             if (mee.getOldValue() != null) {
-                /* TODO: MVW: No idea what to replace getRemovedValue() with...
-                 * I try getOldValue() for now. To be checked!
-                 */
                 Model.getPump().removeModelEventListener(this,
                         mee.getOldValue(), "name");
             }
@@ -1241,7 +1234,7 @@ public abstract class FigNodeModelElement
         Object modelElement = getOwner();
         stereotypeFig.setOwner(modelElement);
         if (!SingleStereotypeEnabler.isEnabled() && modelElement != null) {
-            ((FigStereotypesCompartment)stereotypeFig).populate();
+            ((FigStereotypesCompartment) stereotypeFig).populate();
         }
         
     }
@@ -1623,6 +1616,9 @@ public abstract class FigNodeModelElement
         return checkSize;
     }
     
+    /**
+     * @see org.tigris.gef.presentation.FigNode#isDragConnectable()
+     */
     public boolean isDragConnectable() {
         return false;
     }
