@@ -24,8 +24,6 @@
 
 package org.argouml.model;
 
-import org.argouml.model.uml.TestUmlModelEventPumpDeprecated;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -44,7 +42,6 @@ public class UmlTestSuite {
 			  + UmlTestSuite.class.getPackage().getName());
         suite.addTestSuite(TestUml.class);
         suite.addTestSuite(TestCopyHelper.class);
-        suite.addTestSuite(TestUmlModelEventPumpDeprecated.class);
 
 	suite.addTest(new TestSuite(TestUmlModelElement.class));
 	suite.addTest(new TestSuite(TestUmlModel.class));

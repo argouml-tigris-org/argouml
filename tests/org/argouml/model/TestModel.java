@@ -27,8 +27,6 @@ package org.argouml.model;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import org.argouml.kernel.NsumlEnabler;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -157,13 +155,8 @@ public class TestModel extends TestCase {
      */
     private static final String UML_PATH_PREFIX;
 
-    // TODO: No idea if this is right, but it was definitely wrong before - tfm
     static {
-        if (NsumlEnabler.isNsuml()) {
-            UML_PATH_PREFIX = "ru.novosoft.uml.";
-        } else {
-            UML_PATH_PREFIX = "org.omg.uml.";
-        }
+        UML_PATH_PREFIX = "org.omg.uml.";
     }
 
     /**

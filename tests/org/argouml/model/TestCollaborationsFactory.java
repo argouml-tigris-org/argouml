@@ -26,8 +26,6 @@ package org.argouml.model;
 
 import java.lang.ref.WeakReference;
 
-import org.argouml.kernel.NsumlEnabler;
-
 import junit.framework.TestCase;
 
 
@@ -146,9 +144,7 @@ public class TestCollaborationsFactory extends TestCase {
          * doing the right thing by removing it in this case where we only
          * have a single message, which then gets deleted. - tfm
          */
-        if (!NsumlEnabler.isNsuml()) {
-            assertNull("Interaction not removed", interwr.get());
-        }
+        assertNull("Interaction not removed", interwr.get());
     }
 
     /**
