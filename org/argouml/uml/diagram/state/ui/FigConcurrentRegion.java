@@ -32,8 +32,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.text.ParseException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
@@ -41,12 +39,10 @@ import java.util.Vector;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
-import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -442,30 +438,6 @@ public class FigConcurrentRegion extends FigState
 
     ////////////////////////////////////////////////////////////////
     // event processing
-
-    /** 
-     * Update the text labels.
-     * 
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
-     */
-    public void textEdited(FigText ft) throws PropertyVetoException {
-        super.textEdited(ft);
-        if (ft == getInternal()) {
-            Object st = getOwner();
-            if (st == null)
-                return;
-            String s = ft.getText();
-            try {
-                ParserDisplay.SINGLETON.parseStateBody(st, s);
-            } catch (ParseException pe) {
-                String msg = "statusmsg.bar.error.parsing.region";
-                Object[] args = {pe.getLocalizedMessage(), 
-                    new Integer(pe.getErrorOffset())};
-                ProjectBrowser.getInstance().getStatusBar().showStatus(
-                        Translator.messageFormat(msg, args));
-            }
-        }
-    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#makeSelection()

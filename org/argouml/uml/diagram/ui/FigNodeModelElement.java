@@ -44,11 +44,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
-import java.text.ParseException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.Stack;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -66,6 +64,8 @@ import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.application.notation.Notation;
 import org.argouml.application.notation.NotationContext;
 import org.argouml.application.notation.NotationName;
+import org.argouml.application.notation.NotationProvider4;
+import org.argouml.application.notation.NotationProviderFactory2;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.cognitive.ToDoItem;
@@ -73,9 +73,9 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
-import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
 import org.argouml.model.Model;
@@ -86,7 +86,6 @@ import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.UUIDHelper;
-import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -131,6 +130,8 @@ public abstract class FigNodeModelElement
     private NotationName currentNotationName;
     private static final Font LABEL_FONT;
     private static final Font ITALIC_LABEL_FONT;
+    
+    protected NotationProvider4 notationProviderName;
 
     /**
      * min. 17, used to calculate y pos of FigText items in a compartment
@@ -951,7 +952,7 @@ public abstract class FigNodeModelElement
      */
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
-            showHelp("parsing.help.fig-nodemodelelement");
+            showHelp(notationProviderName.getParsingHelp());
         }
     }
     
@@ -986,26 +987,7 @@ public abstract class FigNodeModelElement
             if (getOwner() == null) {
                 return;
             }
-            try {
-                ParserDisplay.SINGLETON.parseModelElement(getOwner(),
-							  ft.getText().trim());
-                ProjectBrowser.getInstance().getStatusBar().showStatus("");
-                updateNameText();
-            } catch (ParseException pe) {
-                String msg = "statusmsg.bar.error.parsing.node-modelelement";
-                Object[] args = {pe.getLocalizedMessage(), 
-                                 new Integer(pe.getErrorOffset())};
-                ProjectBrowser.getInstance().getStatusBar().showStatus(
-                    Translator.messageFormat(msg, args));
-                // if there was a problem parsing,
-                // then reset the text in the fig - because the model was not
-                // updated.
-                if (Model.getFacade().getName(getOwner()) != null) {
-                    ft.setText(Model.getFacade().getName(getOwner()));
-                } else {
-                    ft.setText("");
-                }
-            }
+            ft.setText(notationProviderName.parse(ft.getText()));
         }
     }
 
@@ -1207,6 +1189,7 @@ public abstract class FigNodeModelElement
     public void setOwner(Object own) {
         updateListeners(own);
         super.setOwner(own);
+        initNotationProviders(own);
         if (Model.getFacade().isAModelElement(own)
                 && UUIDHelper.getUUID(own) == null) {
             Model.getCoreHelper().setUUID(own, UUIDHelper.getNewUUID());
@@ -1217,6 +1200,18 @@ public abstract class FigNodeModelElement
         }
         updateBounds();
         bindPort(own, bigPort);
+    }
+
+    /**
+     * @param own the current owner
+     */
+    protected void initNotationProviders(Object own) {
+        if (Model.getFacade().isAModelElement(own)) {
+            notationProviderName = 
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        NotationProviderFactory2.TYPE_NAME, this, own);
+            notationProviderName.putValue("pathVisible", new Boolean(isPathVisible()));
+        }
     }
 
     /**
@@ -1247,42 +1242,12 @@ public abstract class FigNodeModelElement
             if (getOwner() == null) {
                 return;
             }
-            String packName =
-                Notation.generate(Notation.getConfigueredNotation(), 
-                                Model.getFacade().getName(getOwner()));
-            packName = generatePath() + packName;
-            name.setText(packName);
+            if(notationProviderName != null) {
+                name.setText(notationProviderName.toString());
+            }
             updateBounds();
         }
     }
-    
-    /**
-     * TODO: this should move in some generic notation generation class, 
-     * supporting other languages.
-     * 
-     * @return a string which represents the path
-     */
-    protected String generatePath() {
-        String s = "";
-        if (pathVisible) {
-            Object p = getOwner();
-            Stack stack = new Stack();
-            Object ns = Model.getFacade().getNamespace(p);
-            while (ns != null && !Model.getFacade().isAModel(ns)) {
-                stack.push(Model.getFacade().getName(ns));
-                ns = Model.getFacade().getNamespace(ns);
-            }
-            while (!stack.isEmpty()) {
-                s += (String) stack.pop() + "::";
-            }
-            
-            if (s.length() > 0 && !s.endsWith(":")) {
-                s += "::";
-            }
-        }
-        return s;
-    }
-    
 
     /**
      * @see org.argouml.uml.diagram.ui.PathContainer#isPathVisible()
@@ -1296,6 +1261,8 @@ public abstract class FigNodeModelElement
      */
     public void setPathVisible(boolean visible) {
         pathVisible = visible;
+        if (notationProviderName != null)
+            notationProviderName.putValue("pathVisible", new Boolean(visible));
         if (readyToEdit) {
             renderingChanged();
             damage();
@@ -1362,6 +1329,7 @@ public abstract class FigNodeModelElement
             setContextNotation(
                 Notation.findNotation((String) changeEvent.getNewValue()));
         }
+        initNotationProviders(getOwner());
         renderingChanged();
     }
 

@@ -29,17 +29,12 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.text.ParseException;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
-import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
@@ -355,28 +350,6 @@ public class FigCompositeState extends FigState {
             updateInternal();
         }
 
-    }
-
-    /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
-     */
-    public void textEdited(FigText ft) throws PropertyVetoException {
-        super.textEdited(ft);
-        if (ft == getInternal()) {
-            Object st = /*(MState)*/ getOwner();
-            if (st == null)
-                return;
-            String s = ft.getText();
-            try {
-                ParserDisplay.SINGLETON.parseStateBody(st, s);
-            } catch (ParseException pe) {
-                String msg = "statusmsg.bar.error.parsing.compositestate";
-                Object[] args = {pe.getLocalizedMessage(), 
-                    new Integer(pe.getErrorOffset())};
-                ProjectBrowser.getInstance().getStatusBar().showStatus(
-                        Translator.messageFormat(msg, args));
-            }
-        }
     }
 
     /**

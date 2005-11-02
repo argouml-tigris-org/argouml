@@ -149,6 +149,9 @@ class PropertySpecialString {
  * diagrams.
  *
  * @stereotype singleton
+ * @deprecated since V0.19.8 by mvw. Replaced by a new notation architecture: 
+ * see http://argouml.tigris.org/proposals/notation/index.html. 
+
  */
 public final class ParserDisplay extends Parser {
     /**

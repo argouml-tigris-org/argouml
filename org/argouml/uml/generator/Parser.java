@@ -30,6 +30,9 @@ import java.text.ParseException;
  * Parent of ParserDisplay.
  * TODO: Explain the purpose of this class!
  * TODO: Why do these functions return the object they receive?
+ * 
+ * @deprecated since V0.19.8 by mvw. Replaced by a new notation architecture: 
+ * see http://argouml.tigris.org/proposals/notation/index.html. 
  */
 public abstract class Parser {
 
