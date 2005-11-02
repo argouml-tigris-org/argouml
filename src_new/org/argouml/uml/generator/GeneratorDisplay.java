@@ -43,10 +43,12 @@ import org.argouml.model.Model;
  * to generate for the "Display". Similarely to the GeneratorJava class,
  * this class would better have been named GeneratorUML. 
  *
- * TODO: always check for null!!!
- *
  * @stereotype singleton
  * @author jrobbins@ics.uci.edu
+ * @deprecated since V0.19.8 by mvw. Replaced by a split architecture: 
+ * see for the notation part 
+ * http://argouml.tigris.org/proposals/notation/index.html, 
+ * and for the code part issue 3546. 
  */
 public class GeneratorDisplay extends Generator2 {
 

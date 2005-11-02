@@ -26,9 +26,11 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
 import java.util.Iterator;
 
-import org.argouml.application.notation.Notation;
+import org.argouml.application.notation.NotationProvider4;
+import org.argouml.application.notation.NotationProviderFactory2;
 import org.argouml.model.Model;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;
@@ -53,6 +55,8 @@ public abstract class FigState extends FigStateVertex {
 
     protected static final int MARGIN = 2;
 
+    protected NotationProvider4 notationProviderBody;
+    
     /**
      * The text inside the state.
      */
@@ -91,8 +95,14 @@ public abstract class FigState extends FigStateVertex {
     /**
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
-    public void setOwner(Object node) {
-        super.setOwner(node);
+    public void setOwner(Object newOwner) {
+        super.setOwner(newOwner);
+        if (Model.getFacade().isAState(newOwner)) {
+            notationProviderBody = 
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        NotationProviderFactory2.TYPE_STATEBODY, this, newOwner);
+            
+	}
         updateInternal();
     }
 
@@ -201,9 +211,8 @@ public abstract class FigState extends FigStateVertex {
         if (state == null) {
             return;
         }
-        String newText = Notation.generateStateBody(this, state);
-        internal.setText(newText);
-
+        if(notationProviderBody != null)
+            internal.setText(notationProviderBody.toString());
         calcBounds();
         setBounds(getBounds());
     }
@@ -248,7 +257,21 @@ public abstract class FigState extends FigStateVertex {
     protected void textEditStarted(FigText ft) {
         super.textEditStarted(ft);
         if (ft == internal) {
-            showHelp("parsing.help.fig-statebody");
+            showHelp(notationProviderBody.getParsingHelp());
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
+     */
+    public void textEdited(FigText ft) throws PropertyVetoException {
+        super.textEdited(ft);
+        if (ft == getInternal()) {
+            Object st = getOwner();
+            if (st == null) {
+                return;
+            }
+            ft.setText(notationProviderBody.parse(ft.getText()));
         }
     }
 

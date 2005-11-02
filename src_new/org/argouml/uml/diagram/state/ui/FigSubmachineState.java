@@ -28,14 +28,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.text.ParseException;
 import java.util.Iterator;
 
 import org.argouml.application.notation.Notation;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
@@ -403,29 +399,6 @@ public class FigSubmachineState extends FigState {
         calcBounds();
         setBounds(getBounds());
         damage();
-    }
-
-    /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
-     */
-    public void textEdited(FigText ft) throws PropertyVetoException {
-        super.textEdited(ft);
-        if (ft == getInternal()) {
-            Object st = getOwner();
-            if (st == null) {
-                return;
-            }
-            String s = ft.getText();
-            try {
-                ParserDisplay.SINGLETON.parseStateBody(st, s);
-            } catch (ParseException pe) {
-                ProjectBrowser.getInstance()
-                        .getStatusBar()
-                        .showStatus(
-                                "Error: " + pe + " at " + pe.getErrorOffset());
-                // TODO: i18n
-            }
-        }
     }
 
     /**

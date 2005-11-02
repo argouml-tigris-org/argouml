@@ -27,13 +27,8 @@ package org.argouml.uml.diagram.state.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.beans.PropertyVetoException;
-import java.text.ParseException;
 import java.util.Iterator;
 
-import org.argouml.i18n.Translator;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
@@ -234,28 +229,6 @@ public class FigSimpleState extends FigState {
 
     ////////////////////////////////////////////////////////////////
     // event processing
-
-    /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
-     */
-    public void textEdited(FigText ft) throws PropertyVetoException {
-	super.textEdited(ft);
-	if (ft == getInternal()) {
-	    Object state = getOwner();
-	    if (state == null) return;
-	    String s = ft.getText();
-	    try {
-	        ParserDisplay.SINGLETON.parseStateBody(state, s);
-	    } catch (ParseException pe) {
-                String msg = "statusmsg.bar.error.parsing.state";
-                Object[] args = {pe.getLocalizedMessage(), 
-                    new Integer(pe.getErrorOffset())};
-                ProjectBrowser.getInstance().getStatusBar().showStatus(
-                        Translator.messageFormat(msg, args));
-	    }
-	}
-    }
-
 
     /**
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialHeight()
