@@ -24,8 +24,16 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.beans.PropertyChangeEvent;
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -39,7 +47,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * Constructor for UMLModelElementNamespaceComboBoxModel.
      */
     public UMLModelElementNamespaceComboBoxModel() {
-        super("namespace", false);
+        super("namespace", true);
         Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getNamespace(), "ownedElement");
     }
@@ -71,5 +79,23 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
             return Model.getFacade().getNamespace(getTarget());
         }
         return null;
+    }
+    
+    /**
+    * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+    */
+    public void propertyChange(PropertyChangeEvent evt) {
+        /*
+         * Although we've registered for notification of ownedElement changes, a
+         * removed association doesn't necessarily mean that this is no longer
+         * available as a legal namespace. 
+         * 
+         * Rebuild the list from scratch to be sure it's right.
+         */
+        if (evt instanceof RemoveAssociationEvent) {
+            buildModelList();
+        } else {
+            super.propertyChange(evt);
+        }
     }
 }
