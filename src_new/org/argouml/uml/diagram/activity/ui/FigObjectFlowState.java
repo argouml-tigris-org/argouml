@@ -35,9 +35,9 @@ import java.util.Iterator;
 
 import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
-import org.argouml.application.notation.Notation;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;

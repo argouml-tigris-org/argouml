@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.application.notation.ui;
+package org.argouml.notation.ui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -38,7 +38,7 @@ import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.argouml.application.helpers.SettingsTabHelper;
-import org.argouml.application.notation.Notation;
+import org.argouml.notation.Notation;
 import org.argouml.ui.ShadowComboBox;
 
 /**

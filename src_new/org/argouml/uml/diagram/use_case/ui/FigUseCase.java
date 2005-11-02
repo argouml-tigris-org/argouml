@@ -42,8 +42,8 @@ import java.util.Vector;
 import javax.swing.Action;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.notation.Notation;
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;

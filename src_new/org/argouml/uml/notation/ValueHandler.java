@@ -28,7 +28,7 @@ import java.util.HashMap;
 
 import javax.swing.Action;
 
-import org.argouml.application.notation.NotationProvider4;
+import org.argouml.notation.NotationProvider4;
 
 /**
  * @author mvw@tigris.org
@@ -38,7 +38,7 @@ public abstract class ValueHandler implements NotationProvider4{
     protected HashMap keyTable;
     
     /**
-     * @see org.argouml.application.notation.NotationProvider4#putValue(java.lang.String, java.lang.Object)
+     * @see org.argouml.notation.NotationProvider4#putValue(java.lang.String, java.lang.Object)
      */
     public void putValue(String key, Object newValue) {
         if (keyTable == null) {

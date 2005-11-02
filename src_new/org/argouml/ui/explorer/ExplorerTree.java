@@ -45,9 +45,9 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.argouml.application.api.Configuration;
-import org.argouml.application.notation.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
 import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;

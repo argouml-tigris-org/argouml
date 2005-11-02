@@ -47,7 +47,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
     }
 
     /**
-     * @see org.argouml.application.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
      */
     public String parse(String text) {
         try {
@@ -64,7 +64,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
     }
 
     /**
-     * @see org.argouml.application.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-nodemodelelement";

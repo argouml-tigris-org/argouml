@@ -29,9 +29,9 @@ import java.beans.PropertyChangeEvent;
 
 import javax.swing.SwingUtilities;
 
-import org.argouml.application.notation.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
 import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;

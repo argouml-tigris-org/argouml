@@ -29,8 +29,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.notation.NotationHelper;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationHelper;
 import org.argouml.uml.ui.UMLAction;
 
 /**

@@ -32,10 +32,10 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.PluggableNotation;
-import org.argouml.application.notation.NotationHelper;
-import org.argouml.application.notation.NotationName;
-import org.argouml.application.notation.NotationProvider2;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationHelper;
+import org.argouml.notation.NotationName;
+import org.argouml.notation.NotationProvider2;
 
 /**
  * This class is the abstract super class that defines a code
