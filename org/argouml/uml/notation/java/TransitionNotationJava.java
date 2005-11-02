@@ -41,7 +41,7 @@ public class TransitionNotationJava extends TransitionNotation {
     }
 
     /**
-     * @see org.argouml.application.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
      */
     public String parse(String text) {
         ProjectBrowser.getInstance().getStatusBar().showStatus(
@@ -50,7 +50,7 @@ public class TransitionNotationJava extends TransitionNotation {
     }
 
     /**
-     * @see org.argouml.application.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
      */
     public String getParsingHelp() {
         return "Parsing in Java not yet supported";

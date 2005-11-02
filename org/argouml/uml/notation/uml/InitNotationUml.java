@@ -25,9 +25,9 @@
 package org.argouml.uml.notation.uml;
 
 import org.argouml.application.api.Argo;
-import org.argouml.application.notation.Notation;
-import org.argouml.application.notation.NotationName;
-import org.argouml.application.notation.NotationProviderFactory2;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
+import org.argouml.notation.NotationProviderFactory2;
 
 /**
  * This class is the only one that has the knowledge of the complete list of 

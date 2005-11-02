@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.application.notation;
+package org.argouml.notation;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
@@ -105,7 +105,7 @@ public class NotationNameImpl
     /**
      * Accessor for the language name.
      *
-     * @see org.argouml.application.notation.NotationName#getName()
+     * @see org.argouml.notation.NotationName#getName()
      */
     public String getName() {
         return name;
@@ -114,7 +114,7 @@ public class NotationNameImpl
     /**
      * Accessor for the language version.
      *
-     * @see org.argouml.application.notation.NotationName#getVersion()
+     * @see org.argouml.notation.NotationName#getVersion()
      */
     public String getVersion() {
         return version;
@@ -124,7 +124,7 @@ public class NotationNameImpl
      * Gets a textual title for the notation suitable for use
      * in a combo box or other such visual location.
      *
-     * @see org.argouml.application.notation.NotationName#getTitle()
+     * @see org.argouml.notation.NotationName#getTitle()
      */
     public String getTitle() {
         String myName = name;
@@ -141,14 +141,14 @@ public class NotationNameImpl
     /**
      * Returns an icon for the notation, or null if no icon is available.
      *
-     * @see org.argouml.application.notation.NotationName#getIcon()
+     * @see org.argouml.notation.NotationName#getIcon()
      */
     public Icon getIcon() {
         return icon;
     }
 
     /**
-     * @see org.argouml.application.notation.NotationName#getConfigurationValue()
+     * @see org.argouml.notation.NotationName#getConfigurationValue()
      */
     public String getConfigurationValue() {
         return getNotationNameString(name, version);
@@ -233,7 +233,7 @@ public class NotationNameImpl
     }
 
     /**
-     * @see org.argouml.application.notation.NotationName#sameNotationAs(org.argouml.application.notation.NotationName)
+     * @see org.argouml.notation.NotationName#sameNotationAs(org.argouml.notation.NotationName)
      */
     public boolean sameNotationAs(NotationName nn) {
         return this.getConfigurationValue().equals(nn.getConfigurationValue());

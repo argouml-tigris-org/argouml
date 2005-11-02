@@ -30,8 +30,8 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
 
-import org.argouml.application.notation.Notation;
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;

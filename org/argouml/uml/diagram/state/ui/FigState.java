@@ -29,9 +29,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.Iterator;
 
-import org.argouml.application.notation.NotationProvider4;
-import org.argouml.application.notation.NotationProviderFactory2;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationProvider4;
+import org.argouml.notation.NotationProviderFactory2;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;
 
