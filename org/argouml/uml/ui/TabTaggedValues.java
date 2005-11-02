@@ -48,7 +48,6 @@ import javax.swing.table.TableColumn;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.NsumlEnabler;
 import org.argouml.model.Model;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.LookAndFeelMgr;
@@ -78,7 +77,8 @@ public class TabTaggedValues extends AbstractArgoJPanel
  
     private UMLComboBoxModel2 tagDefinitionsComboBoxModel;
     
-    private Class tagDefinitionClass = (Class)Model.getMetaTypes().getTagDefinition();
+    private Class tagDefinitionClass = (Class) Model.getMetaTypes()
+            .getTagDefinition();
     
     /**
      * The constructor.
@@ -97,7 +97,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
         tableModel = new TabTaggedValuesModel(this);
         table.setModel(tableModel);
         table.setRowSelectionAllowed(false);
-        if (tagDefinitionClass!=null) {
+        if (tagDefinitionClass != null) {
             tagDefinitionsComboBoxModel = new UMLTagDefinitionComboBoxModel();
             tagDefinitionsComboBox = new UMLComboBox2(tagDefinitionsComboBoxModel);
             //tagDefinitionsComboBox.setDoubleBuffered(true);
@@ -175,8 +175,9 @@ public class TabTaggedValues extends AbstractArgoJPanel
         //valCol.setWidth(550);
         //valCol.setPreferredWidth(550);
 
-        if (tagDefinitionClass!=null)
+        if (tagDefinitionClass != null) {
             tagDefinitionsComboBoxModel.setTarget(t);
+        }
         
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         
@@ -223,9 +224,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        if (!NsumlEnabler.isNsuml()) {
-            setTarget(e.getNewTarget());
-        }
+        setTarget(e.getNewTarget());
     }
 
     /**
@@ -262,11 +261,14 @@ public class TabTaggedValues extends AbstractArgoJPanel
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
     public void valueChanged(ListSelectionEvent e) {
-        if (!e.getValueIsAdjusting()&&e.getFirstIndex()!=e.getLastIndex()) {
-            DefaultListSelectionModel sel = (DefaultListSelectionModel) e.getSource();
-            ArrayList tvs = new ArrayList(Model.getFacade().getTaggedValuesCollection(target));
-            if (sel.getLeadSelectionIndex()<tvs.size()) {
-                Object tagDef = Model.getFacade().getTagDefinition(tvs.get(sel.getLeadSelectionIndex()));
+        if (!e.getValueIsAdjusting() && e.getFirstIndex() != e.getLastIndex()) {
+            DefaultListSelectionModel sel = (DefaultListSelectionModel) e
+                    .getSource();
+            ArrayList tvs = new ArrayList(Model.getFacade()
+                    .getTaggedValuesCollection(target));
+            if (sel.getLeadSelectionIndex() < tvs.size()) {
+                Object tagDef = Model.getFacade().getTagDefinition(
+                        tvs.get(sel.getLeadSelectionIndex()));
                 tagDefinitionsComboBoxModel.setSelectedItem(tagDef);
             }
         }

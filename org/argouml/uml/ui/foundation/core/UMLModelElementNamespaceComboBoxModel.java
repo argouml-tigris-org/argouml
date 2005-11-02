@@ -24,17 +24,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.beans.PropertyChangeEvent;
-import java.util.Collection;
-import java.util.Iterator;
-
-import org.argouml.kernel.NsumlEnabler;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.AddAssociationEvent;
-import org.argouml.model.AttributeChangeEvent;
-import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
-import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**

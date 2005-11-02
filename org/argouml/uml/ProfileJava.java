@@ -35,13 +35,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.NsumlEnabler;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
-import org.argouml.persistence.PersistenceManager;
-import org.argouml.persistence.ProjectFilePersister;
 import org.xml.sax.InputSource;
 
 /**
@@ -304,11 +300,7 @@ public class ProfileJava extends Profile {
         String modelFileName = System.getProperty("argo.defaultModel");
         
         if (modelFileName == null) {
-            if (NsumlEnabler.isNsuml()) {
-                modelFileName = "/org/argouml/default.xmi";           		
-            } else {
-                modelFileName = "/org/argouml/model/mdr/mof/default-uml14.xmi";
-            }
+            modelFileName = "/org/argouml/model/mdr/mof/default-uml14.xmi";
         }
         //
         //   if there is a default model
@@ -322,13 +314,15 @@ public class ProfileJava extends Profile {
                 File modelFile = new File(modelFileName);
                 if (modelFileName.endsWith("zip")) {
                     String fileName = modelFile.getName();
-                    String extension = fileName.substring(fileName.indexOf('.'),fileName.lastIndexOf('.'));
+                    String extension = fileName.substring(
+                            fileName.indexOf('.'), fileName.lastIndexOf('.'));
                     String path = modelFile.getParent();
-                    // Add the path of the model to the search path, so we can read
-                    // dependent models
-                    System.setProperty("org.argouml.model.modules_search_path",path);
+                    // Add the path of the model to the search path, so we can
+                    // read dependent models
+                    System.setProperty("org.argouml.model.modules_search_path",
+                            path);
                     try {
-                        is = openZipStreamAt(modelFile.toURL(),extension);
+                        is = openZipStreamAt(modelFile.toURL(), extension);
                     } catch (MalformedURLException e) {
                         throw new ProfileException(e);
                     } catch (IOException e) {
@@ -348,7 +342,7 @@ public class ProfileJava extends Profile {
                         modelFileName);
             }
             if (is != null) {
-                LOG.info("Loading profile '"+modelFileName+"'");
+                LOG.info("Loading profile '" + modelFileName + "'");
                 try {
                     XmiReader xmiReader = Model.getXmiReader();
                     InputSource inputSource = new InputSource(is);
@@ -366,8 +360,10 @@ public class ProfileJava extends Profile {
 
     /**
      * Open a ZipInputStream to the first file found with a given extension.
-     * TODO: Remove since this is a duplicate of ZipFilePersister method. When we
-     * have refactorized the Persister subsystem.
+     * 
+     * TODO: Remove since this is a duplicate of ZipFilePersister method 
+     * when we have refactored the Persister subsystem.
+     * 
      * @param url
      *            The URL of the zip file.
      * @param ext

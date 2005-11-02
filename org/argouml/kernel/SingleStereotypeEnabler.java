@@ -41,6 +41,6 @@ public class SingleStereotypeEnabler {
     }
     
     public static boolean isEnabled() {
-        return enabled || NsumlEnabler.isNsuml();
+        return enabled;
     }
 }
