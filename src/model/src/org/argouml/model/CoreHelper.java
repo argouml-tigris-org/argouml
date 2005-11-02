@@ -1001,9 +1001,15 @@ public interface CoreHelper {
 
     /**
      * Sets the body of a comment.
-     *
-     * @param handle the comment
-     * @param body the string
+     * <p>
+     * <b>NOTE:</b> For UML 1.3, this actually set Comment.name, but for UML
+     * 1.4 it sets Comment.body.  <b>This is a behavior change in the API.</b>
+     * <p>
+     * 
+     * @param handle
+     *            the Comment element
+     * @param body
+     *            the string
      */
     void setBody(Object handle, String body);
 
