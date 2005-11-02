@@ -919,9 +919,8 @@ public class GeneratorDisplay extends Generator2 {
     public String generateMultiplicity(Object m) {
         if (m == null || "1".equals(Model.getFacade().toString(m))) {
             return "";
-        } else {
-            return Model.getFacade().toString(m);
-        }
+        } 
+        return Model.getFacade().toString(m);
     }
 
     /**
