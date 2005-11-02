@@ -47,7 +47,7 @@ Compilation instructions for ArgoUML
 ====================================
 If you want to compile ArgoUML, you need to have following:
 - JAVA_HOME correctly set to where Java2 jdk is installed
-- the additional libraries (nsuml.jar, ocl-argo.jar, log4j.jar,
+- the additional libraries (ocl-argo.jar, log4j.jar,
   gef.jar, antlrall.jar, toolbar.jar, swidgets.jar) in argouml/lib
   when these are right the command
      build compile
@@ -155,19 +155,6 @@ Property files to be searched:
     </path>
 
     <path id="argo.compile.classpath">
-      <pathelement location="${nsuml.jar.path}"/>
-      <pathelement location="${jmi.jar.path}"/>
-      <pathelement location="${ocl-argo.jar.path}"/>
-      <pathelement location="${gef.jar.path}"/>
-      <pathelement location="${log4j.jar.path}"/>
-      <pathelement location="${swidgets.jar.path}"/>
-      <pathelement location="${toolbar.jar.path}"/>
-      <pathelement location="${commons-logging.jar.path}"/>      
-      <path refid="antlr.runtime.classpath"/>
-      <pathelement location="${argo.build.dir}/argouml-model.jar"/>
-    </path>
-
-    <path id="argo.compile.classpath.without.nsuml">
       <pathelement location="${jmi.jar.path}"/>
       <pathelement location="${ocl-argo.jar.path}"/>
       <pathelement location="${gef.jar.path}"/>
@@ -534,8 +521,8 @@ Property files to be searched:
     <!-- create directories -->
     <mkdir dir="${argo.build.classes}"/>
   	
-    <!-- compile Model subsystem -->
-    <ant dir="../src/model" inheritAll="false" target="install"/>
+  	<!-- compile Model subsystem -->
+    <ant dir="../src/model" inheritAll="false" target="install"/>  	
 
     <!-- Things needed by other projects: -->
     <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
@@ -544,9 +531,12 @@ Property files to be searched:
     <!-- compile the MDR ModelImplementation -->
     <!-- This should work, shouldn't it? Well, it doesn't for me.
          I think ant messes up something for MDR. (Linus, Oct 2005)
-    <ant dir="../../argouml-mdr" inheritAll="false" target="install"/>
-     -->
 
+    <ant dir="../../argouml-mdr" inheritAll="false" target="install">
+        <property file="../../argouml-mdr/default.properties"/>
+    </ant>
+    
+    -->
 
     <!-- remove obsolete classes before compiling -->
     <delete file="${argo.build.classes}/org/argouml/model/uml/ModelListener.class"/>
@@ -556,6 +546,7 @@ Property files to be searched:
     	   deprecation="${deprecation}"
     	   destdir="${argo.build.classes}"
     	   includes="org/argouml/**/*.java"
+           excludes="org/argouml/model/uml/**"
     	   optimize="${optimize}"
     	   srcdir="${argo.src.dir}"
     	   source="1.4"
@@ -587,12 +578,11 @@ Property files to be searched:
   <!-- =================================================================== -->
   <target name="package" depends="jar"
           description="Prepare all jar files, both built and just delivered.">
-    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar jmi.jar swidgets.jar commons-logging.jar argouml-model.jar"/>
+    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar log4j.jar ocl-argo.jar toolbar.jar jmi.jar swidgets.jar commons-logging.jar argouml-model.jar"/>
     <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar"/>
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar"/>
     <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
     <copy file="${commons-logging.jar.path}" tofile="${argo.build.dir}/commons-logging.jar"/>
-    <copy file="${nsuml.jar.path}" tofile="${argo.build.dir}/nsuml.jar"/>
     <copy file="${jmi.jar.path}" tofile="${argo.build.dir}/jmi.jar"/>
     <copy file="${swidgets.jar.path}" tofile="${argo.build.dir}/swidgets.jar"/>
     <copy file="${toolbar.jar.path}" tofile="${argo.build.dir}/toolbar.jar"/>
@@ -601,7 +591,7 @@ Property files to be searched:
 
     <copy file="${argo.src.dir}/README.txt" tofile="${argo.build.dir}/README.txt"/>
     <!--
-  	<copy file="${argo.src.dir}/bin/argouml.sh" todir="${argo.build.dir}"/>
+    <copy file="${argo.src.dir}/bin/argouml.sh" todir="${argo.build.dir}"/>
   	-->
   </target>
 
@@ -749,7 +739,7 @@ Property files to be searched:
   <!-- Run ArgoUML from compiled sources                                   -->
   <!-- =================================================================== -->
   <target name="run" depends="compile"
-          description="Compile and run the newly compiled ArgoUML.">
+          description="Run the newly compiled ArgoUML.">
     <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
           classpath="${argo.build.classes};${classpath}"
@@ -766,7 +756,7 @@ Property files to be searched:
   </target>
 
   <target name="debug" depends="compile"
-          description="Compile and run the newly compiled ArgoUML with debug level logging.">
+          description="Run ArgoUML with debug level logging.">
     <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
           classpath="${argo.build.classes};${classpath}"
@@ -783,7 +773,7 @@ Property files to be searched:
   </target>
 
   <target name="info" depends="compile"
-          description="Compile and run the newly compiled ArgoUML with debug level logging.">
+          description="Run ArgoUML with info level logging.">
     <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
           classpath="${argo.build.classes};${classpath}"
@@ -814,6 +804,11 @@ Property files to be searched:
 
      <available file="${011202.xml}" property="011202.xml.available"/>
      <available file="${991015.dtd}" property="991015.dtd.available"/>
+     
+     <!-- UML 1.4 files (no DTD availble?) -->
+     <property name="010215.xml" value="tests/testmodels/01-02-15.xml"/>
+     <available file="${01-02-15.xml}" property="010215.xml.available"/>
+      
   </target>
 
   <!-- =================================================================== -->
@@ -849,14 +844,34 @@ Property files to be searched:
      <available file="${011202.xml}" property="011202.xml.available"/>
   </target>
 
+
+    <!-- =================================================================== -->
+    <!-- Get the uml 1.4 model if necessary                                  -->
+    <!-- =================================================================== -->
+    <target name="junit-get-010215-xml"
+            depends="junit-fetch-init"
+            unless="010215.xml.available">
+
+      <get dest="${010215.xml}"
+           ignoreerrors="true"
+           src="http://www.omg.org/cgi-bin/apps/doc?ad/01-12-02.xml"
+           usetimestamp="true"
+           verbose="false"/>
+
+       <!-- Check availability again - if the get worked, it will be there. -->
+       <available file="${010215.xml}" property="010215.xml.available"/>
+    </target>
+
   <!-- =================================================================== -->
-  <!-- Get the uml 1.3 model and dtd if necessary                          -->
+  <!-- Get the UML model and dtd if necessary                          -->
   <!-- =================================================================== -->
   <target name="junit-get-model"
-          depends="junit-get-011202-xml,junit-get-991015-dtd"
+          depends="junit-get-010215-xml"
           description="Gets the model and dtd for testing."/>
-
-
+    <!-- UML 1.3 dependencies
+    depends="junit-get-011202-xml,junit-get-991015-dtd"
+    -->
+    
   <!-- =================================================================== -->
   <!-- Compiles the tests                                                  -->
   <!-- =================================================================== -->
@@ -876,6 +891,7 @@ Property files to be searched:
            optimize="false"
            destdir="${argo.tests.classes}" 
            includes="**/GUITestProjectBrowser.java,**/MockUMLUserInterfaceContainer,**/*Deprecated.java"
+           excludes="org/argouml/model/uml/**"
            srcdir="${argo.tests.src}"
     	   source="1.4"
   	       target="1.4">
@@ -891,7 +907,8 @@ Property files to be searched:
            deprecation="${deprecation}"
            optimize="false" 
            destdir="${argo.tests.classes}"
-           srcdir="${argo.tests.src}">
+           srcdir="${argo.tests.src}"
+           excludes="org/argouml/model/uml/**">
       <classpath>
         <pathelement location="${argo.build.classes}"/>
         <pathelement location="${junit.jar.path}"/>
@@ -946,9 +963,12 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Run the junit tests.                                                -->
   <!-- =================================================================== -->
-  <target name="tests"
+  <target name="tests-obsolete">
+      <!--
           depends="compile,junit-fetch-init,junit-setup,junit-report-clean,ant.optional.init"
-          description="Run all tests that doesn't require any GUI components in headleass mode.">
+          description="Obsolete NSUML tests.">
+       -->
+
     <!-- ant 1.4 uses printsummary="true"                          -->
     <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
     <!-- This should never be committed as "withOutAndErr", but    -->
@@ -964,7 +984,7 @@ Property files to be searched:
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="java.awt.headless" value="true"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
-        <sysproperty key="argouml.model.implementation" 
+    <sysproperty key="argouml.model.implementation" 
                  value="org.argouml.model.uml.NSUMLModelImplementation"/>
         <classpath>
             <pathelement location="${argo.build.classes}"/>
@@ -985,12 +1005,12 @@ Property files to be searched:
 
   </target>
 
-  <target name="tests-using-mdr"
+  <target name="tests"
+          depends="compile,junit-fetch-init,junit-setup,junit-report-clean,ant.optional.init"
           description="Run all tests that doesn't require any GUI components in headleass mode using the mdr model implementation.">
     <available file="../../argouml-mdr/build/argouml-mdr.jar"
                property="mdr-available"/>
     <antcall target="internal-tests-using-mdr"/>
-
   </target>
 
   <target name="internal-tests-using-mdr"
@@ -1008,7 +1028,8 @@ Property files to be searched:
 
     <junit errorproperty="junit.failure" fork="yes" haltonfailure="false"
            maxmemory="48M" printsummary="true">
-	<sysproperty key="test.model.uml13" value="${011202.xml}"/>
+        <!-- TODO: this property name should be made generic -->
+	<sysproperty key="test.model.uml13" value="${010215.xml}"/>
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="java.awt.headless" value="true"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
@@ -1055,7 +1076,7 @@ Property files to be searched:
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
         <sysproperty key="argouml.model.implementation" 
-                 value="org.argouml.model.uml.NSUMLModelImplementation"/>
+                 value="org.argouml.model.uml.MDRModelImplementation"/>
         <classpath>
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
@@ -1197,22 +1218,23 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <!-- =================================================================== -->
   <!-- Runs checkstyle to find style problems in ArgoUML.                  -->
   <!-- =================================================================== -->
-  <target name="checkstyle-main">
-    <echo>
-Running checkstyle on ${source.dir}.
-</echo>
-    <java classname="com.puppycrawl.tools.checkstyle.Main" failonerror="false" fork="true" maxmemory="32M">
-      <sysproperty key="checkstyle.header.file" value="${argo.tools.dir}/checkstyle/java.header"/>
-      <classpath>
-        <pathelement location="${checkstyle.jar.path}"/>
-      </classpath>
-      <arg value="-c"/>
-      <arg value="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml"/>
-      <arg value="-r"/>
-      <arg value="${source.dir}"/>
-    </java>
-  </target>
-
+    <target name="checkstyle-main">
+      <echo>
+  Running checkstyle on ${source.dir}.
+  </echo>
+      <java classname="com.puppycrawl.tools.checkstyle.Main" failonerror="false" fork="true" maxmemory="32M">
+        <sysproperty key="checkstyle.header.file" value="${argo.tools.dir}/checkstyle/java.header"/>
+        <classpath>
+          <pathelement location="${checkstyle.jar.path}"/>
+        </classpath>
+        <arg value="-p"/>
+        <arg value="${argo.tools.dir}/checkstyle/checkstyle.properties"/>
+        <arg value="-c"/>
+        <arg value="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml"/>
+        <arg value="-r"/>
+        <arg value="${source.dir}"/>
+      </java>
+    </target>
   <target name="checkstyle-cond">
     <available file="${source.dir}" type="dir" property="directory.exists"/>
     <antcall target="checkstyle-cond2">
@@ -1282,65 +1304,6 @@ you will have to resurrect them using cvs update.
   <!-- ################################################################### -->
   <!-- Section with temporary targets and experiments.                     -->
   <!-- ################################################################### -->
-
-  <!-- =================================================================== -->
-  <!-- Compiles without nsuml.                                             -->
-  <!-- This can be used to find references to NS-UML in the code.          -->
-  <!-- =================================================================== -->
-
-  <target name="compile-without-nsuml"
-          depends="prepare,prerequisites,update-version"
-          description="Compiles without nsuml.">
-
-    <!-- create directories -->
-    <mkdir dir="${argo.build.classes}"/>
-
-    <!-- build the model component -->
-    <javac debug="${debug}"
-           deprecation="off"
-           destdir="${argo.build.classes}"
-           includes="org/argouml/model/**/*.java"
-           optimize="${optimize}"
-           srcdir="${argo.src.dir}">
-       <classpath>
-	  <path refid="argo.compile.classpath"/>
-       </classpath>
-    </javac>
-
-    <echo>
-If this target was run with a clean build/classes directory (after clean),
-the deleted files here are the files that the model depend on, directly or
-indirectly. 
-These dependencies need to be removed before it is possible to move 
-the model component to a separate directory.
-(If this was run without a previous clean this list contains all classes
-except those in the model component and doesn't give any valuable information.)
-    </echo>
-    <delete verbose="yes">
-      <fileset dir="${argo.build.dir}/classes"
-               includes="**/*.class"
-               excludes="org/argouml/model/**"/>
-    </delete>
-
-    <echo>
-We build the rest of ArgoUML without nsuml. This means that all references
-to nsuml classes will generate a compilation error.
-These compilation errors need to be removed before it is possible to move
-ArgoUML to JMI.
-    </echo>
-    <javac debug="${debug}"
-           deprecation="off"
-           destdir="${argo.build.classes}"
-           includes="org/argouml/**/*.java"
-           optimize="${optimize}"
-           srcdir="${argo.src.dir}">
-       <classpath>
-	  <path refid="argo.compile.classpath.without.nsuml"/>
-       </classpath>
-    </javac>
-
-  </target>
-
 
   <!-- =================================================================== -->
   <!-- Finds undeclared tags in the code.                                  -->
