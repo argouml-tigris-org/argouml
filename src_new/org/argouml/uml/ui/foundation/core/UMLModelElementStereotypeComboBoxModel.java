@@ -32,6 +32,9 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.util.CollectionUtil;
 
 /**
+ * This combo box only supports selection of a single stereotype.
+ * It isn't really useful after UML 1.3 and will probably go away.
+ * tfm - 2 Nov 2005
  * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
