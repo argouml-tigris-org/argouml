@@ -34,6 +34,7 @@ import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.ui.PathContainer;
 import org.argouml.uml.diagram.ui.StereotypeContainer;
 import org.tigris.gef.persistence.pgml.Container;
+import org.tigris.gef.persistence.pgml.FigEdgeHandler;
 import org.tigris.gef.persistence.pgml.FigGroupHandler;
 import org.tigris.gef.persistence.pgml.HandlerStack;
 import org.tigris.gef.presentation.Fig;
@@ -88,9 +89,17 @@ public class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackPa
         	return new PrivateHandler( this, (Container)container);
         }
         
-        return
+        DefaultHandler handler = 
             super.getHandler(stack, container, uri, localname, qname,
                     attributes);
+        
+        if (handler instanceof FigEdgeHandler) {
+            return new org.argouml.persistence.FigEdgeHandler(
+                    this, ((FigEdgeHandler)handler).getFigEdge());
+        }
+        
+        return handler;
+
     }
 
     /**
@@ -101,7 +110,6 @@ public class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackPa
         if (f instanceof FigGroup) {
             FigGroup group = (FigGroup) f;
             String clsNameBounds = attrList.getValue("description");
-            System.out.println(clsNameBounds);
             if (clsNameBounds != null) {
                 StringTokenizer st =
                     new StringTokenizer(clsNameBounds, ",;[] ");

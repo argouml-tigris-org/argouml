@@ -242,9 +242,22 @@ public class FigClassifierRole extends FigNodeModelElement
         fmp.setOwner(owner);
         addFig(fmp);
         updateNodeStates();
+        
         return fmp;
     }
 
+    public String getTipString(MouseEvent me) {
+        int count = 0;
+        Iterator it = getFigs().iterator();
+        while (it.hasNext()) {
+            if (it.next() instanceof FigMessagePort) {
+                count++;
+            }
+        }
+        // TODO Auto-generated method stub
+        return "" + count;
+    }
+    
     /**
      * Connect a FigMessagePort with a MessageNode by position.
      */

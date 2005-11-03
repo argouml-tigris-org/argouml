@@ -47,9 +47,13 @@ public class FigCommentPort extends FigNodeModelElement {
         return false;
     }
     
-//    public Object deepHitPort(int x, int y) {
-//        return null;
-//    }
+    /**
+     * @deprecated in 0.11.1 use org.tigris.gef.persistence.pgml.PgmlUtility.getClassNameAndBounds(Fig)
+     */
+    // USED BY PGML.tee
+    public String classNameAndBounds() {
+        return getClass().getName() + "[" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + "]";
+    }
     
     public Object hitPort(int x, int y) {
         return null;
