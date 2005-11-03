@@ -30,13 +30,16 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation.Notation;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
@@ -191,25 +194,11 @@ public class FigAssociation extends FigEdgeModelElement {
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object newOwner) {
-        Object oldOwner = getOwner();
-        if (newOwner != oldOwner
-                && (oldOwner == null || !Model.getUmlFactory().isRemoved(
-                        oldOwner))) {
-            if (Model.getFacade().isAAssociation(oldOwner)) {
-                Collection oldConns = 
-                    Model.getFacade().getConnections(oldOwner);
-                for (int i = 0; i < oldConns.size(); i++) {
-                    Object assEnd = (oldConns.toArray())[i];
-                    Model.getPump().removeModelEventListener(this, assEnd);
-                }
-            }
+        if (newOwner != getOwner()) {
             if (Model.getFacade().isAAssociation(newOwner)) {
-                Collection newConns = 
-                    Model.getFacade().getConnections(newOwner);
-                for (int i = 0; i < newConns.size(); i++) {
-                    Object assEnd = (newConns.toArray())[i];
-                    Model.getPump().addModelEventListener(this, assEnd);
-                }
+                updateListeners(newOwner);
+                Collection newConns = Model.getFacade()
+                        .getConnections(newOwner);
                 Object assEnd1 = (newConns.toArray())[0];
                 Object assEnd2 = (newConns.toArray())[1];
                 FigNode destNode =
@@ -230,8 +219,51 @@ public class FigAssociation extends FigEdgeModelElement {
         }
 	super.setOwner(newOwner);
     }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
+     */
+    public void updateListeners(Object newOwner) {
+        Object oldOwner = getOwner();
+        if (oldOwner != null) {
+            Model.getPump().removeModelEventListener(this, oldOwner);
+            if (!Model.getUmlFactory().isRemoved(oldOwner)
+                    && Model.getFacade().isAAssociation(oldOwner)) {
+                Collection oldConns = associatedElements(oldOwner);
+                for (Iterator i = oldConns.iterator(); i.hasNext();) {
+                    Model.getPump().removeModelEventListener(this, i.next());
+                }
+            }
+        }
+        if (Model.getFacade().isAAssociation(newOwner)) {
+            Model.getPump().addModelEventListener(this, newOwner);
+            Collection newConns = associatedElements(newOwner);
+            for (Iterator i = newConns.iterator(); i.hasNext();) {
+                Model.getPump().addModelEventListener(this, i.next());
+            }
+        }
+    }
+    
+    /**
+     * Get all model elements associated with this assocation
+     * include stereotypes, association ends, and stereotypes
+     * on association ends.
+     * 
+     * @param element association to get all associated elements for
+     * @return collection of associated elements
+     */
+    private Collection associatedElements(Object element) {
+        ArrayList connections = new ArrayList();
+        connections.addAll(Model.getFacade().getStereotypes(element));
+        Collection ends = Model.getFacade().getConnections(element);
+        connections.addAll(ends);
+        for (Iterator i = ends.iterator(); i.hasNext();) {
+            connections.addAll(Model.getFacade().getStereotypes(i.next()));
+        }
+        return connections;
+    }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // event handlers
 
     /**
@@ -323,9 +355,10 @@ public class FigAssociation extends FigEdgeModelElement {
 	    visi = 
 	        Notation.generate(this, Model.getFacade().getVisibility(end));
         }
+        Collection stereos = Model.getFacade().getStereotypes(end);
         // TODO: MULTIPLESTEREOTYPES
-        Object stereo = CollectionUtil.getFirstItemOrNull(
-                Model.getFacade().getStereotypes(end));
+        Object stereo = CollectionUtil.getFirstItemOrNull(stereos);
+
 
 	multiToUpdate.setText(Notation.generate(this, multi));
 	orderingToUpdate.setText(getOrderingName(order));
@@ -339,6 +372,20 @@ public class FigAssociation extends FigEdgeModelElement {
 	}
     }
 
+    /**
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent e) {
+        if ("stereotype".equals(e.getPropertyName()) && middleGroup != null) {
+            if (e instanceof AddAssociationEvent) {
+                Model.getPump().addModelEventListener(this, e.getNewValue());
+            } else if (e instanceof RemoveAssociationEvent) {
+                Model.getPump().removeModelEventListener(this, e.getOldValue());
+            }
+        }
+        super.propertyChange(e);
+    }
+    
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */

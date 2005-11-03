@@ -76,7 +76,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.ui.ActionDeleteModelElements;
-import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
@@ -312,7 +311,8 @@ public abstract class FigEdgeModelElement
             StereotypeUtility.getApplyStereotypeActions(getOwner());
         if (stereoActions != null) {
             popUpActions.insertElementAt(new JSeparator(), 0);
-            ArgoJMenu stereotypes = new ArgoJMenu("menu.popup.apply-stereotypes");
+            ArgoJMenu stereotypes = new ArgoJMenu(
+                    "menu.popup.apply-stereotypes");
             for (int i = 0; i < stereoActions.length; ++i) {
                 stereotypes.addCheckItem(stereoActions[i]);
             }
@@ -657,7 +657,7 @@ public abstract class FigEdgeModelElement
      * @param e the event
      */
     protected void modelChanged(PropertyChangeEvent e) {
-        if (getOwner()!=null&&Model.getUmlFactory().isRemoved(getOwner()))
+        if (getOwner() != null && Model.getUmlFactory().isRemoved(getOwner()))
             return;
         if (e == null
             || (e.getSource() == getOwner()
@@ -694,60 +694,44 @@ public abstract class FigEdgeModelElement
      * generate the notation for the stereotype and stuff it into the text Fig
      */
     protected void updateStereotypeText() {
-        if (SingleStereotypeEnabler.isEnabled()) {
-            updateStereotypeTextSingleStereotype();
-            return;
-        }
         if ((getOwner() == null) || (getOwner() instanceof CommentEdge)) {
             return;
         }
         Object modelElement = getOwner();
         stereotypeFig.setOwner(modelElement);
-        ((FigStereotypesCompartment)stereotypeFig).populate();
-    }
-    
-    protected void updateStereotypeTextSingleStereotype() {
-        if ((getOwner() == null) || (getOwner() instanceof CommentEdge)) {
-            return;
-        }
-        Object stereotype = CollectionUtil.getFirstItemOrNull(
-                Model.getFacade().getStereotypes(getOwner()));
-        if (stereotype == null) {
-            ((FigText)stereotypeFig).setText("");
-            return;
-        }
-        String stereoStr = Model.getFacade().getName(stereotype);
-        if (stereoStr == null || stereoStr.length() == 0)
-            ((FigText)stereotypeFig).setText("");
-        else {
-            ((FigText)stereotypeFig).setText(Notation.generateStereotype(this, stereotype));
-        }
+        ((FigStereotypesCompartment) stereotypeFig).populate();
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object newOwner) {
-        Object oldOwner = getOwner();
         super.setOwner(newOwner);
-        if (oldOwner != null) {
-            if (Model.getFacade().isAModelElement(oldOwner)) {
-                Model.getPump().removeModelEventListener(this, oldOwner);
-            }
-        }
-        if (newOwner != null) {
-            if (Model.getFacade().isAModelElement(newOwner)) {
-                Model.getPump().addModelEventListener(this, newOwner);
-                
-                if (UUIDHelper.getUUID(newOwner) == null) {
-                    Model.getCoreHelper().setUUID(newOwner,
-                            UUIDHelper.getNewUUID());
-                }
-            }
+        updateListeners(newOwner);
+        if (newOwner != null && UUIDHelper.getUUID(newOwner) == null) {
+            Model.getCoreHelper().setUUID(newOwner, UUIDHelper.getNewUUID());
         }
         modelChanged(null);
     }
 
+    /**
+     * Implementations of this method should register/unregister the fig for all
+     * (model)events. For FigEdgeModelElement only the fig itself is registered
+     * as listening to events fired by the owner itself. But for, for example,
+     * FigAssociation the fig must also register for events fired by the 
+     * stereotypes of the owner.
+     * @param newOwner the new owner for the listeners
+     */
+    protected void updateListeners(Object newOwner) {
+        Object oldOwner = getOwner();
+        if (oldOwner != null) {
+            Model.getPump().removeModelEventListener(this, oldOwner);
+        }
+        if (newOwner != null) {
+            Model.getPump().addModelEventListener(this, newOwner);
+        }
+    }
+  
     /**
      * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
      */
@@ -1043,10 +1027,8 @@ public abstract class FigEdgeModelElement
      */
     public void postLoad() {
         super.postLoad();
-        if (this instanceof ArgoEventListener) {
-            ArgoEventPump.removeListener(this);
-            ArgoEventPump.addListener(this);
-        }
+        ArgoEventPump.removeListener(this);
+        ArgoEventPump.addListener(this);
     }
 
     /**
@@ -1084,5 +1066,5 @@ public abstract class FigEdgeModelElement
     protected static int getPopupAddOffset() {
         return popupAddOffset;
     }
-    
+  
 } /* end class FigEdgeModelElement */
