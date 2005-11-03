@@ -177,9 +177,9 @@ class ArgoAny implements Any, Type2 {
 		    && (Model.getFacade().getUpper(multiplicity) > 1
 			|| Model.getFacade().getUpper(multiplicity)
                            == -1)) {
-            
-            Object stereotype = CollectionUtil.getFirstItemOrNull(
-                    Model.getFacade().getStereotypes(ae));
+		    // TODO: MULTIPLESTEREOTYPES
+		    Object stereotype = CollectionUtil.getFirstItemOrNull(
+                            Model.getFacade().getStereotypes(ae));
 		    // to do: think about the condition of this if-statement
 		    // ordered association end -> Sequence; otherwise -> Set
 		    if (stereotype != null

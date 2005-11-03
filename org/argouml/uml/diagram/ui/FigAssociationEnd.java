@@ -177,6 +177,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
             visi = 
                 Notation.generate(this, Model.getFacade().getVisibility(owner));
         }
+        // TODO: MULTIPLESTEREOTYPES
         Object stereo = CollectionUtil.getFirstItemOrNull(
                 Model.getFacade().getStereotypes(owner));
 

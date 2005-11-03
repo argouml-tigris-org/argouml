@@ -731,7 +731,6 @@ public class FigComment
         }
 
         Rectangle rect = getBounds();
-        // TODO: MULTIPLESTEREOTYPES - this only shows the first stereotype
         Object stereo = CollectionUtil.getFirstItemOrNull(
                 Model.getFacade().getStereotypes(me));
 

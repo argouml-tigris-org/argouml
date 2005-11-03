@@ -195,6 +195,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         } else if (Model.getFacade().isAAbstraction(edge)) {
             newEdge = new FigRealization(edge);
         } else if (Model.getFacade().isADependency(edge)) {
+            // TODO: MULTIPLESTEREOTYPES
             Object stereotype = CollectionUtil.getFirstItemOrNull(
                     Model.getFacade().getStereotypes(edge));
             if (stereotype != null

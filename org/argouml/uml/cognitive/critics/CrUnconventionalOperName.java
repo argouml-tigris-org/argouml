@@ -67,6 +67,7 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
             return NO_PROBLEM;
         }
         char initalChar = nameStr.charAt(0);
+        // TODO: MULTIPLESTEREOTYPES
         Object stereo = CollectionUtil.getFirstItemOrNull(
                 Model.getFacade().getStereotypes(oper));
         if ((stereo != null)
