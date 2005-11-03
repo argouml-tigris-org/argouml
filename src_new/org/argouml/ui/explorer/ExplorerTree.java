@@ -254,6 +254,7 @@ public class ExplorerTree
 
             // Look for stereotype
             if (showStereotype) {
+                // TODO: MULTIPLESTEREOTYPES
                 Object stereo = CollectionUtil.getFirstItemOrNull(
                         Model.getFacade().getStereotypes(value));
                 if (stereo != null) {

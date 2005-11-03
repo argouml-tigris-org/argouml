@@ -1143,6 +1143,9 @@ public class TestParserDisplay extends TestCase {
     private void checkStereotype(Object feature, String text, String val)
         throws ParseException {
 
+        // TODO: MULTIPLESTEREOTYPES
+        // This needs to be generalized to test multiple stereotypes
+        
         if (Model.getFacade().isAAttribute(feature)) {
             ParserDisplay.SINGLETON.parseAttribute(text, feature);
             Object stereo = CollectionUtil.getFirstItemOrNull(

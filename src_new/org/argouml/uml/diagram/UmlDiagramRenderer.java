@@ -258,6 +258,7 @@ public abstract class UmlDiagramRenderer
         } else if (Model.getFacade().isAUsage(edge)) {
             newEdge = new FigUsage();
         } else if (Model.getFacade().isADependency(edge)) {
+            // TODO: MULTIPLESTEREOTYPES
             Object stereotype = CollectionUtil.getFirstItemOrNull(
                     Model.getFacade().getStereotypes(edge));
             if (Model.getExtensionMechanismsHelper().isStereotypeInh(

@@ -229,6 +229,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         Rectangle   bounds = getBounds();
 
+        // TODO: MULTIPLESTEREOTYPES
         Object stereo =
             CollectionUtil.getFirstItemOrNull(
                 Model.getFacade().getStereotypes(me));

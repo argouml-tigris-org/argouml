@@ -252,6 +252,7 @@ public class GeneratorDisplay extends Generator2 {
      */
     public String generateAttribute(Object attr, boolean documented) {
         String visibility = generateVisibility(attr);
+        // generateStereotype accepts a collection, despite its name
         String stereo = 
             generateStereotype(Model.getFacade().getStereotypes(attr));
         String name = Model.getFacade().getName(attr);

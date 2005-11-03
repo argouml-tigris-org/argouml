@@ -447,6 +447,7 @@ public class GeneratorJava
         StringBuffer sb = new StringBuffer(80);
         String nameStr = null;
         boolean constructor = false;
+        // TODO: MULTIPLESTEREOTYPES
         Object stereo = CollectionUtil.getFirstItemOrNull(
                 Model.getFacade().getStereotypes(op));
         if (stereo != null

@@ -199,6 +199,7 @@ public class WizOperName extends WizMEName {
                 Object oper = getModelElement();
 
                 if (!oldStereotypeIsSet) {
+                    // TODO: MULTIPLESTEREOTYPES
                     oldStereotype = CollectionUtil.getFirstItemOrNull(
                             Model.getFacade().getStereotypes(oper));
                     oldStereotypeIsSet = true;

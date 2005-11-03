@@ -202,6 +202,7 @@ public class UMLComboBoxEntry implements Comparable {
                 Model.getCoreHelper().setName(
                         clone,
                         Model.getFacade().getName(element));
+                // TODO: MULTIPLESTEREOTYPES
                 Object stereo = CollectionUtil.getFirstItemOrNull(
                         Model.getFacade().getStereotypes(element));
                 Model.getCoreHelper().setStereotype(clone, stereo);

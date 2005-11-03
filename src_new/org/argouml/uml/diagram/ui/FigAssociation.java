@@ -100,7 +100,8 @@ public class FigAssociation extends FigEdgeModelElement {
         // the association
         middleGroup.addFig(getNameFig());
         middleGroup.addFig(getStereotypeFig());
-        addPathItem(middleGroup, new PathConvPercent2(this, middleGroup, 50, 25));
+        addPathItem(middleGroup,
+                new PathConvPercent2(this, middleGroup, 50, 25));
 
         srcMult = new FigText(10, 10, 90, 20);
         srcMult.setFont(getLabelFont());
@@ -191,8 +192,9 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     public void setOwner(Object newOwner) {
         Object oldOwner = getOwner();
-        if (newOwner != oldOwner 
-                && (oldOwner==null||!Model.getUmlFactory().isRemoved(oldOwner))) {
+        if (newOwner != oldOwner
+                && (oldOwner == null || !Model.getUmlFactory().isRemoved(
+                        oldOwner))) {
             if (Model.getFacade().isAAssociation(oldOwner)) {
                 Collection oldConns = 
                     Model.getFacade().getConnections(oldOwner);
@@ -321,6 +323,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	    visi = 
 	        Notation.generate(this, Model.getFacade().getVisibility(end));
         }
+        // TODO: MULTIPLESTEREOTYPES
         Object stereo = CollectionUtil.getFirstItemOrNull(
                 Model.getFacade().getStereotypes(end));
 
