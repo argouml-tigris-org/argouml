@@ -47,10 +47,7 @@ public class ActionSetAddCommentLinkMode extends CmdSetMode {
      */
     public ActionSetAddCommentLinkMode() {
         super(
-                //TODO: Uncomment this line to see work in progress
-                // on commenting edges.
-//                ModeCreateCommentEdge.class,
-                ModeCreatePolyEdge.class,
+                ModeCreateCommentEdge.class,
                 "edgeClass",
                 CommentEdge.class,
                 "button.new-commentlink");
