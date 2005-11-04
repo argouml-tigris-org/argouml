@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationContext;
@@ -64,12 +63,7 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
 
         int xpos = operPort.getX();
         int ypos = operPort.getY();
-        int ocounter;
-        if (SingleStereotypeEnabler.isEnabled()) {
-            ocounter = 1; // Skip background port
-        } else {
-            ocounter = 2; // Skip background port and seperator
-        }
+        int ocounter = 2; // Skip background port and seperator
         
         Collection behs = Model.getFacade().getOperations(cls);
         if (behs != null) {

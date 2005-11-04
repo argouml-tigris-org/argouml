@@ -33,10 +33,8 @@ import java.util.TreeSet;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
-import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
  * Listmodel for the context of a statemachine.

@@ -42,7 +42,6 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.AbstractArgoJPanel;
@@ -192,9 +191,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * @return the label added
      */
     public JLabel addField(String label, Component component) {
-        // This test will prevent us placing a stereotype
-        // combo unless NSUML
-        if (SingleStereotypeEnabler.isEnabled() || component != null) {
+        // This test will prevent us placing the stereotype
+        // combo still left over from NSUML
+        if (component != null) {
             JLabel jlabel = new JLabel(label);
             jlabel.setFont(smallFont);
             component.setFont(smallFont);

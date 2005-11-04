@@ -28,7 +28,6 @@ import java.awt.Dimension;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.uml.diagram.static_structure.ui.FigFeature;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
@@ -59,10 +58,8 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      */
     public FigFeaturesCompartment(int x, int y, int w, int h) {
         super(x, y, w, h);
-        if (!SingleStereotypeEnabler.isEnabled()) {
-            compartmentSeperator = new FigSeperator(10, 10, 11);
-            addFig(compartmentSeperator);
-        }
+        compartmentSeperator = new FigSeperator(10, 10, 11);
+        addFig(compartmentSeperator);
     }
     
     protected FigSeperator getSeperatorFig() {
@@ -139,40 +136,8 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
                        int h,
                        boolean checkSize,
                        int rowHeight) {
-        if (!SingleStereotypeEnabler.isEnabled()) {
-            return getMinimumSize();
-        }
-        int newW = w;
-        int n = getFigs().size() - 1;
-        int newH = checkSize ? Math.max(h, rowHeight * Math.max(1, n) + 2) : h;
-        int step = (n > 0) ? (newH - 1) / n : 0;
-        // width step between FigText objects int maxA =
-        //Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT).getMaxAscent();
-
-        //set new bounds for all included figs
-        Iterator figs = iterator();
-        Fig fi;
-        int fw, yy = y;
-        while (figs.hasNext()) {
-            fi = (Fig) figs.next();
-            if (fi != getBigPort()) {
-                fw = fi.getMinimumSize().width;
-                if (!checkSize && fw > newW - 2) {
-                    fw = newW - 2;
-                }
-                fi.setBounds(x + 1, yy + 1, fw, Math.min(rowHeight, step) - 2);
-                if (checkSize && newW < fw + 2) {
-                    newW = fw + 2;
-                }
-                yy += step;
-            }
-        }
-        getBigPort().setBounds(x, y, newW, newH);
-        // rectangle containing all following FigText objects
-        calcBounds();
-        return new Dimension(newW, newH);
+        return getMinimumSize();
     }
-    
     
     /**
      * The minimum width is the minimum width of the widest child feature.
@@ -189,35 +154,31 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
     }
     
     protected void setBoundsImpl(int x, int y, int w, int h) {
-        if (SingleStereotypeEnabler.isEnabled()) {
-            super.setBoundsImpl(x, y, w, h);
-        } else {
-            int newW = w;
-            int n = getFigs().size() - 1;
-            int newH = h;
-            
-            Iterator figs = iterator();
-            Fig fig;
-            int fw;
-            int yy = y;
-            while (figs.hasNext()) {
-                fig = (Fig) figs.next();
-                if (fig.isVisible() && fig != getBigPort()) {
-                    if (fig instanceof FigSeperator) {
-                        fw = w;
-                    } else {
-                        fw = fig.getMinimumSize().width;
-                    }
-                    fig.setBounds(x + 1, yy + 1, fw, fig.getMinimumSize().height);
-                    if (newW < fw + 2) {
-                        newW = fw + 2;
-                    }
-                    yy += fig.getMinimumSize().height;
+        int newW = w;
+        int n = getFigs().size() - 1;
+        int newH = h;
+        
+        Iterator figs = iterator();
+        Fig fig;
+        int fw;
+        int yy = y;
+        while (figs.hasNext()) {
+            fig = (Fig) figs.next();
+            if (fig.isVisible() && fig != getBigPort()) {
+                if (fig instanceof FigSeperator) {
+                    fw = w;
+                } else {
+                    fw = fig.getMinimumSize().width;
                 }
+                fig.setBounds(x + 1, yy + 1, fw, fig.getMinimumSize().height);
+                if (newW < fw + 2) {
+                    newW = fw + 2;
+                }
+                yy += fig.getMinimumSize().height;
             }
-            getBigPort().setBounds(x + 1, y + 1, newW - 3, newH - 1);
-            calcBounds();
         }
+        getBigPort().setBounds(x + 1, y + 1, newW - 3, newH - 1);
+        calcBounds();
     }
     
     /**

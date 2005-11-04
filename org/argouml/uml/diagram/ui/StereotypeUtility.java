@@ -34,7 +34,6 @@ import java.util.TreeSet;
 import javax.swing.Action;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.Model;
 
 /**
@@ -52,9 +51,6 @@ public class StereotypeUtility {
     }
 
     public static Action[] getApplyStereotypeActions(Object modelElement) {
-        if (SingleStereotypeEnabler.isEnabled()) {
-            return null;
-        }
         Set paths = new HashSet();
         Set availableStereotypes = new TreeSet(new Comparator() {
             public int compare(Object o1, Object o2) {
