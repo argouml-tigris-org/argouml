@@ -224,7 +224,7 @@ public abstract class FigNodeModelElement
      * use getNameFig() and setNameFig() to access the Figs.
      * Use getName() and setName() to just change the text.
      */
-    private FigText name;
+    private FigText nameFig;
 
     /**
      * use getter/setter
@@ -287,10 +287,10 @@ public abstract class FigNodeModelElement
         // is inside it:
         bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
 
-        name = new FigSingleLineText(10, 10, 90, 21, true);
-        name.setLineWidth(1);
-        name.setFilled(true);
-        name.setText(placeString());
+        nameFig = new FigSingleLineText(10, 10, 90, 21, true);
+        nameFig.setLineWidth(1);
+        nameFig.setFilled(true);
+        nameFig.setText(placeString());
 
         if (SingleStereotypeEnabler.isEnabled()) {
             stereotypeFig = new FigSingleLineText(10, 10, 90, 15, true);
@@ -314,7 +314,7 @@ public abstract class FigNodeModelElement
     public FigNodeModelElement(GraphModel gm, Object node) {
         this();
         setOwner(node);
-        name.setText(placeString());
+        nameFig.setText(placeString());
         readyToEdit = false;
         
         //ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
@@ -345,8 +345,8 @@ public abstract class FigNodeModelElement
             if (thisFig == getBigPort()) {
                 clone.setBigPort(cloneFig);
             }
-            if (thisFig == name) {
-                clone.name = (FigText) thisFig;
+            if (thisFig == nameFig) {
+                clone.nameFig = (FigText) thisFig;
             }
             if (thisFig == stereotypeFig) {
                 clone.stereotypeFig = (Fig) thisFig;
@@ -399,7 +399,7 @@ public abstract class FigNodeModelElement
      * @return the name Fig
      */
     public FigText getNameFig() {
-        return name;
+        return nameFig;
     }
 
     /**
@@ -408,7 +408,7 @@ public abstract class FigNodeModelElement
      * @param fig the name Fig
      */
     protected void setNameFig(FigText fig) {
-        name = fig;
+        nameFig = fig;
     }
 
     /**
@@ -417,7 +417,7 @@ public abstract class FigNodeModelElement
      * @return the name of the model element
      */
     public String getName() {
-        return name.getText();
+        return nameFig.getText();
     }
 
     /**
@@ -426,7 +426,7 @@ public abstract class FigNodeModelElement
      * @param n the name of the model element
      */
     public void setName(String n) {
-        name.setText(n);
+        nameFig.setText(n);
     }
 
     /**
@@ -983,7 +983,7 @@ public abstract class FigNodeModelElement
      * an unacceptable value
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-        if (ft == name) {
+        if (ft == nameFig) {
             if (getOwner() == null) {
                 return;
             }
@@ -1053,7 +1053,7 @@ public abstract class FigNodeModelElement
         if (ke.isConsumed() || getOwner() == null) {
             return;
         }
-        name.keyPressed(ke);
+        nameFig.keyPressed(ke);
     }
 
     /**
@@ -1243,7 +1243,7 @@ public abstract class FigNodeModelElement
                 return;
             }
             if(notationProviderName != null) {
-                name.setText(notationProviderName.toString());
+                nameFig.setText(notationProviderName.toString());
             }
             updateBounds();
         }
