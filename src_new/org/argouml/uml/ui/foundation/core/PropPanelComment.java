@@ -52,30 +52,25 @@ public class PropPanelComment extends PropPanelModelElement {
      */
     public PropPanelComment() {
         super("Comment", ConfigLoader.getTabPropsOrientation());
-        UMLPlainTextDocument uptd = new UMLCommentBodyDocument();
 
+        addField(Translator.localize("label.name"),
+                getNameTextField());
+        
         addField(Translator.localize("label.stereotype"),
                 getStereotypeSelector());
 
-        UMLTextArea2 nameText = 
-            new UMLTextArea2(new UMLModelElementNameDocument());
-        nameText.setLineWrap(true);
-        nameText.setRows(2);
-        JScrollPane namePane = new JScrollPane(nameText);
-        addField(Translator.localize("label.name"), namePane);
-        
-        UMLTextArea2 bodyText = new UMLTextArea2(uptd);
-        bodyText.setLineWrap(true);
-        bodyText.setRows(4);
-        JScrollPane bodyPane = new JScrollPane(bodyText);
-        addField(Translator.localize("label.comment.body"), bodyPane);
+        addField(Translator.localize("label.annotated-elements"),
+            new JScrollPane(new UMLLinkedList(
+                    new UMLCommentAnnotatedElementListModel())));
 
         addSeperator();
 
-        addField(Translator.localize("label.annotated-elements"),
-                new JScrollPane(new UMLLinkedList(
-                        new UMLCommentAnnotatedElementListModel())));
-        
+        UMLTextArea2 text = new UMLTextArea2(new UMLCommentBodyDocument());
+        text.setLineWrap(true);
+        text.setRows(5);
+        JScrollPane pane = new JScrollPane(text);
+        addField(Translator.localize("label.comment.body"), pane);
+
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());
@@ -88,7 +83,7 @@ class UMLCommentBodyDocument extends UMLPlainTextDocument {
          * Constructor for UMLModelElementNameDocument.
          */
         public UMLCommentBodyDocument() {
-            super("body");
+            super("name"); // TODO: this may have to change to "body" for UML 1.4
             /*
              * TODO: This is probably not the right location 
              * for switching off the "filterNewlines". 

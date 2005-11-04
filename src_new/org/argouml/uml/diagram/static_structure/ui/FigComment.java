@@ -46,22 +46,21 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.SingleStereotypeEnabler;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display a UML comment in a diagram.
- * 
+ *
  * @author Andreas Rueckert
  */
 public class FigComment
@@ -90,12 +89,10 @@ public class FigComment
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    // The figures that holds the text of the note.
-    private FigText nameText;
-    private FigText bodyText;
-    private FigLine seperator;
-    
-    private FigPoly body;
+    // The figure that holds the text of the note.
+    private FigText bodyTextFig;
+
+    private FigPoly outlineFig;
     private FigPoly urCorner; // the upper right corner
     
     /**
@@ -113,15 +110,15 @@ public class FigComment
      */
     public FigComment() {
 
-        body = new FigPoly(Color.black, Color.white);
-        body.addPoint(x, y);
-        body.addPoint(x + width - 1 - dogear, y);
-        body.addPoint(x + width - 1, y + dogear);
-        body.addPoint(x + width - 1, y + height - 1);
-        body.addPoint(x, y + height - 1);
-        body.addPoint(x, y);
-        body.setFilled(true);
-        body.setLineWidth(1);
+        outlineFig = new FigPoly(Color.black, Color.white);
+        outlineFig.addPoint(x, y);
+        outlineFig.addPoint(x + width - 1 - dogear, y);
+        outlineFig.addPoint(x + width - 1, y + dogear);
+        outlineFig.addPoint(x + width - 1, y + height - 1);
+        outlineFig.addPoint(x, y + height - 1);
+        outlineFig.addPoint(x, y);
+        outlineFig.setFilled(true);
+        outlineFig.setLineWidth(1);
 
         urCorner = new FigPoly(Color.black, Color.white);
         urCorner.addPoint(x + width - 1 - dogear, y);
@@ -129,7 +126,7 @@ public class FigComment
         urCorner.addPoint(x + width - 1 - dogear, y + dogear);
         urCorner.addPoint(x + width - 1 - dogear, y);
         urCorner.setFilled(true);
-        Color col = body.getFillColor();
+        Color col = outlineFig.getFillColor();
         urCorner.setFillColor(col.darker());
         urCorner.setLineWidth(1);
 
@@ -142,25 +139,15 @@ public class FigComment
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
 
-        nameText = new FigMultiLineText(x + 2, y + 2, width - 2 - dogear,
-                (height - 4) / 2, true);
-
-        seperator = new FigLine();
-        seperator.setDashed(true);
-        
-        bodyText = new FigMultiLineText(x + 2, y + 2, width - 2 - dogear,
-                (height - 4) / 2, true);
-
+        bodyTextFig = new FigMultiLineText(x + 2, y + 2, width - 2 - dogear, height - 4, true);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
-        addFig(body);
+        addFig(outlineFig);
         addFig(urCorner);
         addFig(getStereotypeFig());
-        addFig(nameText);
-        addFig(seperator);
-        addFig(bodyText);
-        
+        addFig(bodyTextFig);
+
         setBlinkPorts(false); //make port invisble unless mouse enters
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
@@ -194,7 +181,7 @@ public class FigComment
      * @return The default text for this figure.
      */
     public String placeString() {
-        String placeString = retrieveName();
+        String placeString = retrieveNote();
         if (placeString == null) {
             placeString = "new note";
         }
@@ -211,17 +198,14 @@ public class FigComment
         Iterator thisIter = this.getFigs().iterator();
         while (thisIter.hasNext()) {
             Object thisFig = thisIter.next();
-            if (thisFig == body) {
-                figClone.body = (FigPoly) thisFig;
+            if (thisFig == outlineFig) {
+                figClone.outlineFig = (FigPoly) thisFig;
             }
             if (thisFig == urCorner) {
                 figClone.urCorner = (FigPoly) thisFig;
             }
-            if (thisFig == nameText) {
-                figClone.nameText = (FigText) thisFig;
-            }
-            if (thisFig == bodyText) {
-                figClone.bodyText = (FigText) thisFig;
+            if (thisFig == bodyTextFig) {
+                figClone.bodyTextFig = (FigText) thisFig;
             }
         }
         return figClone;
@@ -288,7 +272,7 @@ public class FigComment
     public void delayedVetoableChange(PropertyChangeEvent pce) {
         // update any text, colors, fonts, etc.
         renderingChanged();
-        // update the relative sizes and positions of internal Figs
+        // update the relative sizes and positions of internel Figs
         endTrans();
     }
 
@@ -300,13 +284,14 @@ public class FigComment
         String pName = pve.getPropertyName();
         if (pName.equals("editing")
 	    && Boolean.FALSE.equals(pve.getNewValue())) {
-            // store the text that was edited
+            //parse the text that was edited
             textEdited((FigText) src);
-            updateBounds();
-            endTrans();
-        } else if (pName.equals("body")) {
-            bodyText.setText((String) pve.getNewValue());
-            updateBounds();
+            // resize the FigNode to accomodate the new text
+            Rectangle bbox = getBounds();
+            Dimension minSize = getMinimumSize();
+            bbox.width = Math.max(bbox.width, minSize.width);
+            bbox.height = Math.max(bbox.height, minSize.height);
+            setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
             endTrans();
         } else {
             super.propertyChange(pve);
@@ -319,7 +304,7 @@ public class FigComment
     public void keyPressed(KeyEvent ke) {
         if (!readyToEdit) {
             if (Model.getFacade().isAModelElement(getOwner())) {
-                storeName("");
+                storeNote("");
                 readyToEdit = true;
             } else {
                 LOG.debug("not ready to edit note");
@@ -332,7 +317,7 @@ public class FigComment
         if (getOwner() == null) {
             return;
         }
-        nameText.keyPressed(ke);
+        bodyTextFig.keyPressed(ke);
     }
 
     /**
@@ -364,7 +349,7 @@ public class FigComment
      */
     public void setLineColor(Color col) {
         // The _text element has no border, so the line color doesn't matter.
-        body.setLineColor(col);
+        outlineFig.setLineColor(col);
         urCorner.setLineColor(col);
     }
 
@@ -372,14 +357,14 @@ public class FigComment
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
-        return body.getLineColor();
+        return outlineFig.getLineColor();
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
-        body.setFillColor(col);
+        outlineFig.setFillColor(col);
         urCorner.setFillColor(col);
     }
 
@@ -387,18 +372,15 @@ public class FigComment
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
-        return body.getFillColor();
+        return outlineFig.getFillColor();
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
-        // The text is always opaque.
-        nameText.setFilled(false); 
-        bodyText.setFilled(false);
-        
-        body.setFilled(f);
+        bodyTextFig.setFilled(false); // The text is always opaque.
+        outlineFig.setFilled(f);
         urCorner.setFilled(f);
     }
 
@@ -406,18 +388,16 @@ public class FigComment
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
-        return body.getFilled();
+        return outlineFig.getFilled();
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
-        // Make text box edges invisible in edit mode
-        nameText.setLineWidth(0); 
-        bodyText.setLineWidth(0); 
-        
-        body.setLineWidth(w);
+        bodyTextFig.setLineWidth(0); // Make a seamless integration of the text
+        // in the note figure.
+        outlineFig.setLineWidth(w);
         urCorner.setLineWidth(w);
     }
 
@@ -425,7 +405,7 @@ public class FigComment
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
-        return body.getLineWidth();
+        return outlineFig.getLineWidth();
     }
 
     ////////////////////////////////////////////////////////////////
@@ -435,11 +415,8 @@ public class FigComment
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) {
-        if (ft == nameText) {
-            storeName(ft.getText());
-        }
-        if (ft == bodyText) {
-            storeBody(ft.getText());
+        if (ft == bodyTextFig) {
+            storeNote(ft.getText());
         }
     }
     
@@ -461,49 +438,27 @@ public class FigComment
     // accessor methods
 
     /**
-     * Store the name in the associated model element.
+     * Store a note in the associated model element.
      *
      * @param note The note to store.
      */
-    public final void storeName(String note) {
-        if (getOwner() != null) {
-            Model.getCoreHelper().setName(getOwner(), note);
-        }
-    }
-
-    /**
-     * Retrieve the name from the associated model element.
-     *
-     * @return The note from the associated model element.
-     */
-    public final String retrieveName() {
-        return (getOwner() != null)
-	    ? (String) Model.getFacade().getName(getOwner())
-	    : null;
-    }
-
-    /**
-     * Store the body in the associated model element.
-     *
-     * @param note The text to store.
-     */
-    public final void storeBody(String note) {
+    public final void storeNote(String note) {
         if (getOwner() != null) {
             Model.getCoreHelper().setBody(getOwner(), note);
         }
     }
 
     /**
-     * Retrieve the body text from the associated model element.
+     * Retrieve the note from the associated model element.
      *
-     * @return The body text from the associated model element.
+     * @return The note from the associated model element.
      */
-    public final String retrieveBody() {
+    private String retrieveNote() {
         return (getOwner() != null)
             ? (String) Model.getFacade().getBody(getOwner())
             : null;
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
@@ -518,14 +473,9 @@ public class FigComment
      */
     public Dimension getMinimumSize() {
 
-        // Get the size of the name text field.
-        Dimension aSize = nameText.getMinimumSize();
-        
-        // Add size of the body text field & separator height
-        Dimension bSize = bodyText.getMinimumSize();
-        aSize.width = Math.max(aSize.width, bSize.width);
-        aSize.height += bSize.height + 5;
-            
+        // Get the size of the text field.
+        Dimension aSize = bodyTextFig.getMinimumSize();
+
         // If we have a stereotype displayed, then allow some space for that
         // (width and height)
 
@@ -548,10 +498,10 @@ public class FigComment
     }
 
     /**
-     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     protected void setBoundsImpl(int px, int py, int w, int h) {
-        if (nameText == null && bodyText == null) {
+        if (bodyTextFig == null) {
             return;
         }
         
@@ -568,25 +518,10 @@ public class FigComment
         
         Rectangle oldBounds = getBounds();
 
-        // Resize the name text figure
-        Dimension nameTextMin = nameText.getMinimumSize();
-        int textFigHeight = nameTextMin.height;
-        if (nameText != null) {
-            nameText.setBounds(px + 2, py + 2 + stereotypeHeight, 
-                    w - 4 - dogear, textFigHeight);
-        }
+        // Resize the text figure
+        bodyTextFig.setBounds(px + 2, py + 2 + stereotypeHeight, 
+                w - 4 - dogear, h - 4 - stereotypeHeight);
 
-        seperator.setX1(px);
-        seperator.setX2(px + w);
-        seperator.setY1(py + 2 + stereotypeHeight + textFigHeight + 3);
-        seperator.setY2(py + 2 + stereotypeHeight + textFigHeight + 3);
-        
-        // Resize the body text figure
-        if (bodyText != null) {
-            bodyText.setBounds(px + 2, seperator.getY1() + 3, w - 4 - dogear,
-                    bodyText.getMinimumSize().height + 2);
-        }
-        
         if (SingleStereotypeEnabler.isEnabled()) {
             getStereotypeFig().setBounds(px + 2, py + 2,
                     w - 4 - dogear, STEREOHEIGHT);
@@ -606,7 +541,7 @@ public class FigComment
         newPoly.addPoint(px + w - 1, py + h - 1);
         newPoly.addPoint(px, py + h - 1);
         newPoly.addPoint(px, py);
-        body.setPolygon(newPoly);
+        outlineFig.setPolygon(newPoly);
 
         // Just move the corner to it's new position.
         urCorner.setBounds(px + w - 1 - dogear, py, dogear, dogear);
@@ -638,46 +573,34 @@ public class FigComment
     protected final void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
 
-        String nameStr = retrieveName();
-        if (nameStr != null) {
-            nameText.setText(nameStr);
-        }
-        
-        String bodyStr = retrieveBody();
-        if (bodyStr != null) {
-            bodyText.setText(bodyStr);
+        if (mee instanceof AttributeChangeEvent
+                && mee.getPropertyName().equals("body")) {
+            
+            bodyTextFig.setText(mee.getNewValue().toString());
+            calcBounds();
+            setBounds(getBounds());
+            damage();
         }
     }
 
-    /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
-     */
-    protected void updateNameText() {
-        if (getOwner() != null) {
-            String t = Model.getFacade().getName(getOwner());
-            if (t != null) {
-                nameText.setText(t);
-                calcBounds();
-                setBounds(getBounds());
-            }
-            
-            t = (String) Model.getFacade().getBody(getOwner());
-            if (t != null) {
-                bodyText.setText(t);
-                calcBounds();
-                setBounds(getBounds());
-            }
-        }
-    }
+//    /**
+//     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
+//     */
+//    protected void updateNameText() {
+//        if (getOwner() != null) {
+//            String t = Model.getFacade().getName(getOwner());
+//            if (t != null) {
+//                bodyTextFig.setText(t);
+//                calcBounds();
+//                setBounds(getBounds());
+//            }
+//        }
+//    }
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
-        if (SingleStereotypeEnabler.isEnabled()) {
-            updateStereotypeTextSingleStereotype();
-            return;
-        }
         Object me = /*(MModelElement)*/ getOwner();
 
         if (me == null) {
@@ -722,54 +645,6 @@ public class FigComment
         // flag. Then set the bounds for the rectangle we have defined.
         newlyCreated = false;
     }
-    
-    protected void updateStereotypeTextSingleStereotype() {
-        Object me = /*(MModelElement)*/ getOwner();
-
-        if (me == null) {
-            return;
-        }
-
-        Rectangle rect = getBounds();
-        Object stereo = CollectionUtil.getFirstItemOrNull(
-                Model.getFacade().getStereotypes(me));
-
-        if ((stereo == null)
-                || (Model.getFacade().getName(stereo) == null)
-                || (Model.getFacade().getName(stereo).length() == 0))   {
-
-            if (getStereotypeFig().isVisible()) {
-                getStereotypeFig().setVisible(false);
-                rect.y += STEREOHEIGHT;
-                rect.height -= STEREOHEIGHT;
-                setBounds(rect.x, rect.y, rect.width, rect.height);
-                calcBounds();
-            }
-        } else {
-            getStereotypeFig().setOwner(getOwner());
-
-            if (!getStereotypeFig().isVisible()) {
-                getStereotypeFig().setVisible(true);
-
-                // Only adjust the stereotype height if we are not newly
-                // created. This gets round the problem of loading classes with
-                // stereotypes defined, which have the height already including
-                // the stereotype.
-
-                if (!newlyCreated) {
-                    rect.y -= STEREOHEIGHT;
-                    rect.height += STEREOHEIGHT;
-                    rect.width = 
-                        Math.max(getMinimumSize().width, rect.width);
-                    setBounds(rect.x, rect.y, rect.width, rect.height);
-                    calcBounds();
-                }
-            }
-        }
-        // Whatever happened we are no longer newly created, so clear the
-        // flag. Then set the bounds for the rectangle we have defined.
-        newlyCreated = false;
-    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
@@ -787,14 +662,8 @@ public class FigComment
         return p;
     }
 
-    /**
-     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
-     */
     public void paint(Graphics g) {
-        // TODO: There's got to be a lower performance impact place
-        // to put this.  It fires a PropertyChange event on every
-        // repaint.
-        Color col = body.getFillColor();
+        Color col = outlineFig.getFillColor();
         urCorner.setFillColor(col.darker());
         super.paint(g);
     }
