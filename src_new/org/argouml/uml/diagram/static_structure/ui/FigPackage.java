@@ -43,7 +43,6 @@ import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.ui.ArgoDiagram;
@@ -57,7 +56,6 @@ import org.argouml.uml.diagram.ui.StereotypeContainer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.VisibilityContainer;
 import org.argouml.uml.ui.UMLAction;
-import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Globals;
@@ -308,11 +306,6 @@ public class FigPackage extends FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
-        if (SingleStereotypeEnabler.isEnabled()) {
-            updateStereotypeTextSingleStereotype();
-            return;
-        }
-        
         Object modelElement = getOwner();
 
         if (modelElement == null) {
@@ -331,46 +324,6 @@ public class FigPackage extends FigNodeModelElement
             /* we got stereotype */
             getStereotypeFig().setOwner(getOwner());
             ((FigStereotypesCompartment) getStereotypeFig()).populate();
-            if (!stereotypeVisible) {
-                stereoLineBlinder.setVisible(false);
-                getStereotypeFig().setVisible(false);
-            } else if (!getStereotypeFig().isVisible()) {
-                if (stereotypeVisible) {
-                    stereoLineBlinder.setVisible(true);
-                    getStereotypeFig().setVisible(true);
-                }
-            }
-        }
-
-        forceRepaintShadow();
-        setBounds(rect.x, rect.y, rect.width, rect.height);
-    }
-    
-    private void updateStereotypeTextSingleStereotype() {
-        Object modelElement = getOwner();
-
-        if (modelElement == null) {
-            return;
-        }
-
-        Rectangle rect = getBounds();
-
-        Object stereo = CollectionUtil.getFirstItemOrNull(
-                Model.getFacade().getStereotypes(modelElement));
-
-        /* check if stereotype is defined */
-        if ((stereo == null)
-                || (Model.getFacade().getName(stereo) == null)
-                || (Model.getFacade().getName(stereo).length() == 0)) {
-            if (getStereotypeFig().isVisible()) {
-                stereoLineBlinder.setVisible(false);
-                getStereotypeFig().setVisible(false);
-            }
-        } else {
-            /* we got stereotype */
-            getStereotypeFig().setOwner(getOwner());
-            ((FigText)getStereotypeFig()).setText(
-                    Notation.generateStereotype(this, stereo));
             if (!stereotypeVisible) {
                 stereoLineBlinder.setVisible(false);
                 getStereotypeFig().setVisible(false);
@@ -525,39 +478,21 @@ public class FigPackage extends FigNodeModelElement
         int currentY = ya;
 
         Dimension stereoMin = getStereotypeFig().getMinimumSize();
-        if (SingleStereotypeEnabler.isEnabled()) {
-            if (getStereotypeFig().isVisible()) {
-                currentY += STEREOHEIGHT;
-            }
-        } else {
-            if (getStereotypeFig().isVisible()) {
-                currentY += stereoMin.height;
-            }
+        if (getStereotypeFig().isVisible()) {
+            currentY += stereoMin.height;
         }
 
-        if (SingleStereotypeEnabler.isEnabled()) {
-            getStereotypeFig().setBounds(xa, ya, newW - indentX, STEREOHEIGHT + 1);
-            stereoLineBlinder.setBounds(
-                     xa + 1,
-                     ya + STEREOHEIGHT,
-                     newW - 2 - indentX,
-                     2);
-            getNameFig().setBounds(xa, currentY, newW - indentX, minHeight);
-        } else {
-            getStereotypeFig().setBounds(xa, ya, newW - indentX, stereoMin.height + 1);
-            int nameWidth = newW - indentX;
-            if (nameWidth < stereoMin.width + 1) {
-                nameWidth = stereoMin.width + 2;
-            }
-            stereoLineBlinder.setBounds(
-                    xa + 1,
-                    ya + stereoMin.height,
-                    nameWidth - 2,
-                    2);
-            getNameFig().setBounds(xa, currentY, nameWidth + 1, minHeight);
+        getStereotypeFig().setBounds(xa, ya, newW - indentX, stereoMin.height + 1);
+        int nameWidth = newW - indentX;
+        if (nameWidth < stereoMin.width + 1) {
+            nameWidth = stereoMin.width + 2;
         }
-        
-        
+        stereoLineBlinder.setBounds(
+                xa + 1,
+                ya + stereoMin.height,
+                nameWidth - 2,
+                2);
+        getNameFig().setBounds(xa, currentY, nameWidth + 1, minHeight);
 
         // Advance currentY to where the start of the body box is,
         // remembering that it overlaps the next box by 1 pixel. Calculate the

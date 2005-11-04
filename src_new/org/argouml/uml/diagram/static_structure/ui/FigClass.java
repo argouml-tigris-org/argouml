@@ -39,7 +39,6 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.SingleStereotypeEnabler;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
@@ -173,7 +172,7 @@ public class FigClass extends FigClassifierBox
         getStereotypeFig().setFilled(false);
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
         // +1 to have 1 pixel overlap with getNameFig()
-        getStereotypeFig().setVisible(!SingleStereotypeEnabler.isEnabled());
+        getStereotypeFig().setVisible(false);
         
         borderFig = new FigEmptyRect(10, 10, 0, 0);
         borderFig.setLineWidth(1);
@@ -413,10 +412,6 @@ public class FigClass extends FigClassifierBox
     
     public void setLineWidth(int w) {
         borderFig.setLineWidth(w);
-        if (SingleStereotypeEnabler.isEnabled()) {
-            getOperationsFig().setLineWidth(w);
-            getAttributesFig().setLineWidth(w);
-        }
     }
     
     public int getLineWidth() {
@@ -443,10 +438,6 @@ public class FigClass extends FigClassifierBox
      * @return  the size of the minimum bounding box.
      */
     public Dimension getMinimumSize() {
-        if (SingleStereotypeEnabler.isEnabled()) {
-            return getMinimumSizeSingleStereotype();
-        }
-
         // Use "aSize" to build up the minimum size. Start with the size of the
         // name compartment and build up.
 
@@ -858,77 +849,29 @@ public class FigClass extends FigClassifierBox
      */
     protected void updateStereotypeText() {
         
-        if (SingleStereotypeEnabler.isEnabled()) {
-            Object me = /*(MModelElement)*/ getOwner();
-
-            if (me == null) {
-                return;
-            }
-
-            Rectangle rect = getBounds();
-            Object stereo = CollectionUtil.getFirstItemOrNull(
-                    Model.getFacade().getStereotypes(me));
-
-            if ((stereo == null)
-                    || (Model.getFacade().getName(stereo) == null)
-                    || (Model.getFacade().getName(stereo).length() == 0))   {
-
-                if (getStereotypeFig().isVisible()) {
-                    getStereotypeFig().setVisible(false);
-                    rect.y += STEREOHEIGHT;
-                    rect.height -= STEREOHEIGHT;
-                    setBounds(rect.x, rect.y, rect.width, rect.height);
-                    calcBounds();
-                }
-            } else {
-                FigText stereotypeFig = (FigText) getStereotypeFig();
-                stereotypeFig.setText(Notation.generateStereotype(this, stereo));
-
-                if (!getStereotypeFig().isVisible()) {
-                    getStereotypeFig().setVisible(true);
-
-                    // Only adjust the stereotype height if we are not newly
-                    // created. This gets round the problem of loading classes with
-                    // stereotypes defined, which have the height already including
-                    // the stereotype.
-
-                    if (!newlyCreated) {
-                        rect.y -= STEREOHEIGHT;
-                        rect.height += STEREOHEIGHT;
-                        setBounds(rect.x, rect.y, rect.width, rect.height);
-                        calcBounds();
-                    }
-                }
-            }
-
-            // Whatever happened we are no longer newly created, so clear the
-            // flag. Then set the bounds for the rectangle we have defined.
-            newlyCreated = false;
-        } else {
-            Rectangle rect = getBounds();
-            
-            int stereotypeHeight = 0;
-            if (getStereotypeFig().isVisible()) {
-                stereotypeHeight = getStereotypeFig().getHeight();
-            }
-            int heightWithoutStereo = getHeight() - stereotypeHeight;
-            
-            getStereotypeFig().setOwner(getOwner());
-            ((FigStereotypesCompartment)getStereotypeFig()).populate();
-
-            stereotypeHeight = 0;
-            if (getStereotypeFig().isVisible()) {
-                stereotypeHeight = getStereotypeFig().getHeight();
-            }
-            
-            setBounds(
-                    rect.x,
-                    rect.y, 
-                    rect.width,
-                    heightWithoutStereo + stereotypeHeight);
-            calcBounds();
-            newlyCreated = false;
+        Rectangle rect = getBounds();
+        
+        int stereotypeHeight = 0;
+        if (getStereotypeFig().isVisible()) {
+            stereotypeHeight = getStereotypeFig().getHeight();
         }
+        int heightWithoutStereo = getHeight() - stereotypeHeight;
+        
+        getStereotypeFig().setOwner(getOwner());
+        ((FigStereotypesCompartment)getStereotypeFig()).populate();
+
+        stereotypeHeight = 0;
+        if (getStereotypeFig().isVisible()) {
+            stereotypeHeight = getStereotypeFig().getHeight();
+        }
+        
+        setBounds(
+                rect.x,
+                rect.y, 
+                rect.width,
+                heightWithoutStereo + stereotypeHeight);
+        calcBounds();
+        newlyCreated = false;
     }
 
     /**
@@ -977,11 +920,6 @@ public class FigClass extends FigClassifierBox
      * @param h  Desired height of the FigClass
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
-        if (SingleStereotypeEnabler.isEnabled()) {
-            setBoundsImplSingleStereotype(x, y, w, h);
-            return;
-        }
-        
         Rectangle oldBounds = getBounds();
         // Save our old boundaries (needed later), and get minimum size
         // info. "aSize will be used to maintain a running calculation of our
@@ -1048,226 +986,6 @@ public class FigClass extends FigClassifierBox
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    protected void setBoundsImplSingleStereotype(int x, int y, int w, int h) {
-
-        // Save our old boundaries (needed later), and get minimum size
-        // info. "aSize will be used to maintain a running calculation of our
-        // size at various points.
-
-        // "extra_each" is the extra height per displayed fig if requested
-        // height is greater than minimal. "height_correction" is the height
-        // correction due to rounded division result, will be added to the name
-        // compartment
-
-        getNameFig().setLineWidth(0);
-        getNameFig().setLineColor(Color.red);
-        
-        int stereotypeHeight = 0;
-        if (getOwner() != null && getStereotypeFig().isVisible()) {
-            stereotypeHeight =
-                Model.getFacade().getStereotypes(getOwner()).size()
-                * STEREOHEIGHT;
-        }
-        
-        Rectangle oldBounds = getBounds();
-        Dimension aSize =
-            isCheckSize() ? getMinimumSize() : new Dimension(w, h);
-
-        int newW = Math.max(w, aSize.width);
-        int newH = h;
-
-        int extraEach = 0;
-        int heightCorrection = 0;
-
-        // First compute all nessessary height data. Easy if we want less than
-        // the minimum
-
-        int displayedFigs = 1; //this is for getNameFig()
-
-        if (getAttributesFig().isVisible()) {
-            displayedFigs++;
-        }
-
-        if (isOperationsVisible()) {
-            displayedFigs++;
-        }
-
-        if (newH <= aSize.height) {
-
-            // Just use the mimimum
-
-            newH = aSize.height;
-
-        } else {
-            // Calculate how much each, plus a correction to put in the name
-            // comparment if the result is rounded
-            extraEach = (newH - aSize.height) / displayedFigs;
-            heightCorrection =
-                (newH - aSize.height) - (extraEach * displayedFigs);
-        }
-
-        // Now resize all sub-figs, including not displayed figs. Start by the
-        // name. We override the getMinimumSize if it is less than our view (21
-        // pixels hardcoded!). Add in the shared extra, plus in this case the
-        // correction.
-
-        int height = getNameFig().getMinimumSize().height;
-
-        if (height < 21) {
-            height = 21;
-        }
-
-        height += extraEach + heightCorrection;
-
-        // Now sort out the stereotype display. If the stereotype is displayed,
-        // move the upper boundary of the name compartment up and set new
-        // bounds for the name and the stereotype compatments and the
-        // stereoLineBlinder that blanks out the line between the two
-
-        int currentY = y;
-
-        currentY += stereotypeHeight;
-
-        getStereotypeFig().setBounds(x, y, newW + 1, STEREOHEIGHT + 2);
-
-        if (displayedFigs == 1) {
-            height = newH;
-            getNameFig().setBounds(x, y + stereotypeHeight,
-                                   newW, height - stereotypeHeight);
-        } else {
-            getNameFig().setBounds(x, y + stereotypeHeight, newW, height);
-        }
-
-        // Advance currentY to where the start of the attribute box is,
-        // remembering that it overlaps the next box by 1 pixel. Calculate the
-        // size of the attribute box, and update the Y pointer past it if it is
-        // displayed.
-
-        currentY += height - 1; // -1 for 1 pixel overlap
-
-        int attributeCount = (isAttributesVisible())
-            ? Math.max(1, getAttributesFig().getFigs().size() - 1)
-            : 0;
-        int operationCount = (isOperationsVisible())
-            ? Math.max(1, getOperationsFig().getFigs().size() - 1)
-            : 0;
-        if (isCheckSize()) {
-            height = ROWHEIGHT * attributeCount + 2 + extraEach;
-        } else if (newH > currentY - y && attributeCount + operationCount > 0) {
-            height = (newH + y - currentY) * attributeCount
-                        / (attributeCount + operationCount) + 1;
-        } else {
-            height = 1;
-        }
-
-        if (SingleStereotypeEnabler.isEnabled()) {
-            aSize = getAttributesFig().updateFigGroupSize(
-                    x, 
-                    currentY, 
-                    newW, 
-                    height, 
-                    isCheckSize(), 
-                    ROWHEIGHT);
-        }
-        
-
-        if (getAttributesFig().isVisible()) {
-            currentY += aSize.height - 1; // -1 for 1 pixel overlap
-        }
-
-        // Finally update the bounds of the operations box
-
-        if (SingleStereotypeEnabler.isEnabled()) {
-            aSize = getOperationsFig().updateFigGroupSize(
-                    x, 
-                    currentY, 
-                    newW, 
-                    newH + y - currentY, 
-                    isCheckSize(), 
-                    ROWHEIGHT);
-        }
-
-        // set bounds of big box
-
-        getBigPort().setBounds(x, y, newW, newH);
-        borderFig.setBounds(x, y, newW, newH);
-
-        // Now force calculation of the bounds of the figure, update the edges
-        // and trigger anyone who's listening to see if the "bounds" property
-        // has changed.
-
-        calcBounds();
-        updateEdges();
-        firePropChange("bounds", oldBounds, getBounds());
-    }
-
-//    /**
-//     * Updates the attributes in the fig. Called from modelchanged if there is
-//     * a modelevent effecting the attributes and from renderingChanged in all
-//     * cases.
-//     */
-//    protected void updateAttributes() {
-//        Object cls = /*(MClassifier)*/ getOwner();
-//        Fig attrPort = ((FigAttributesCompartment) getFigAt(ATTRIBUTES_POSN))
-//            .getBigPort();
-//        int xpos = attrPort.getX();
-//        int ypos = attrPort.getY();
-//        int acounter = 1;
-//        Collection strs = Model.getFacade().getStructuralFeatures(cls);
-//        if (strs != null) {
-//            Iterator iter = strs.iterator();
-//            // TODO: in future version of GEF call getFigs returning array
-//            Vector figs = new Vector(getAttributesFig().getFigs());
-//            CompartmentFigText attr;
-//            while (iter.hasNext()) {
-//                Object sf = /*(MStructuralFeature)*/ iter.next();
-//                // update the listeners
-//		// Model.getPump().removeModelEventListener(this, sf);
-//                // Model.getPump().addModelEventListener(this, sf); //??
-//                if (figs.size() <= acounter) {
-//                    attr =
-//			new FigFeature(xpos + 1,
-//				       ypos + 1 + (acounter - 1) * ROWHEIGHT,
-//				       0,
-//				       ROWHEIGHT - 2,
-//				       attrPort);
-//                    // bounds not relevant here
-//                    attr.setFilled(false);
-//                    attr.setLineWidth(0);
-//                    attr.setFont(getLabelFont());
-//                    attr.setTextColor(Color.black);
-//                    attr.setJustification(FigText.JUSTIFY_LEFT);
-//                    attr.setMultiLine(false);
-//                    getAttributesFig().addFig(attr);
-//                } else {
-//                    attr = (CompartmentFigText) figs.elementAt(acounter);
-//                }
-//                attr.setText(Notation.generate(this, sf));
-//                attr.setOwner(sf); //TODO: update the model again here?
-//                /* This causes another event, and modelChanged() called,
-//                 * and updateAttributes() called again...
-//                 */
-//
-//                // underline, if static
-//                attr.setUnderline(Model.getScopeKind().getClassifier()
-//				  .equals(Model.getFacade().getOwnerScope(sf)));
-//                acounter++;
-//            }
-//            if (figs.size() > acounter) {
-//                //cleanup of unused attribute FigText's
-//                for (int i = figs.size() - 1; i >= acounter; i--) {
-//                    getAttributesFig().removeFig((Fig) figs.elementAt(i));
-//                }
-//            }
-//        }
-//        Rectangle rect = getBounds();
-//        updateFigGroupSize(getAttributesFig(), xpos, ypos, 0, 0);
-//        // ouch ugly but that's for a next refactoring
-//        // TODO: make setBounds, calcBounds and updateBounds consistent
-//        setBounds(rect.x, rect.y, rect.width, rect.height);
-//        damage();
-//    }
-
     /**
      * Updates the attributes in the fig. Called from modelchanged if there is
      * a modelevent effecting the attributes and from renderingChanged in all
@@ -1285,15 +1003,6 @@ public class FigClass extends FigClassifierBox
         int ypos = attrPort.getY();
         
         Rectangle rect = getBounds();
-        if (SingleStereotypeEnabler.isEnabled()) {
-            getAttributesFig().updateFigGroupSize(
-                    xpos, 
-                    ypos, 
-                    0, 
-                    0, 
-                    isCheckSize(), 
-                    ROWHEIGHT);
-        }
         
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
@@ -1316,15 +1025,6 @@ public class FigClass extends FigClassifierBox
         int ypos = operPort.getY();
 
         Rectangle rect = getBounds();
-        if (SingleStereotypeEnabler.isEnabled()) {
-            getAttributesFig().updateFigGroupSize(
-                    xpos, 
-                    ypos, 
-                    0, 
-                    0, 
-                    isCheckSize(), 
-                    ROWHEIGHT);
-        }
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);
