@@ -49,7 +49,7 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
 
     /**
      * The constructor.
-     * 
+     *
      * @param testName the name of the test
      */
     public TestGeneratorCpp(java.lang.String testName) {
@@ -101,7 +101,7 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
         setUpNamespaces("AModel");
         setUpARealization(getAClass(), aInterface);
         setUpAGeneralization(aExtended, getAClass());
-        otherClass = getFactory().buildClass("OtherClass");
+	otherClass = getFactory().buildClass("OtherClass");
     }
 
     /**
@@ -225,7 +225,6 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
         tvs.addElement(tv);
         Model.getCoreHelper().setTaggedValues(o, tvs);
     }
-
     /**
      * Test that default inheritance is public for classes and "virtual public"
      * for interfaces. Test also if the tag "visibility" is used, overriding any
@@ -235,7 +234,7 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
         String code;
         String re;
         code = getGenerator().generateH(getAClass());
-        re = "(?m)(?s).*class\\s+AClass\\s*:\\s*virtual\\s*public"
+        re = "(?m)(?s).*class\\s+AClass\\s*:\\s*virtual\\s*public" 
             + "\\s*AInterface.*";
         assertTrue(code.matches(re));
 
@@ -253,7 +252,7 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
 
         code = getGenerator().generate(aExtended);
         re = "(?m)(?s).*class\\s+AExtended\\s*:\\s*private\\s*AClass.*";
-        assertTrue(code.matches(re));
+        assertTrue(code.matches(re));   
     }
 
     private Object createAttrWithMultiplicity(String name, String mult) {
@@ -264,9 +263,9 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
             Model.getDataTypesFactory().createMultiplicity(mult));
         return attr;
     }
-
+    
     private Object createAttrWithMultiplicity(String name, String mult,
-            String multType) {
+                String multType) {
         Object attr = createAttrWithMultiplicity(name, mult);
         setTaggedValue(attr, "MultiplicityType", multType);
         return attr;
@@ -279,20 +278,14 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
     public void testAttributeMultiplicity0NAnd1N() {
         String re = "(?m)(?s)\\s*std\\s*::\\s*vector\\s*"
             + "<\\s*int\\s*>\\s+myAttr\\s*;";
-        //        String code = getGenerator()
-        //            .generate(createAttrWithMultiplicity(
-        //                    "myAttr", Model.getMultiplicities().get0N()));
         String code = getGenerator().generate(
             createAttrWithMultiplicity("myAttr", "0..n"));
         assertTrue(code.matches(re));
-        //        code = getGenerator()
-        //            .generate(createAttrWithMultiplicity(
-        //                    "myAttr", Model.getMultiplicities().get0N()));
         code = getGenerator().generate(
             createAttrWithMultiplicity("myAttr", "0..n"));
         assertTrue(code.matches(re));
     }
-
+    
     /**
      * Test if the multiplicity of an attribute is generated correctly. This
      * tests multiplicity 0..* and 1..* (MultiplicityType list)
@@ -300,17 +293,11 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
     public void testAttributeMultiplicity0NAnd1NList() {
         String re = "(?m)(?s)\\s*std\\s*::\\s*list\\s*"
             + "<\\s*int\\s*>\\s+myAttr\\s*;";
-        //        String code = getGenerator()
-        //            .generate(createAttrWithMultiplicity(
-        //                    "myAttr", Model.getMultiplicities().get0N(), "list"));
         String code = getGenerator().generate(
             createAttrWithMultiplicity("myAttr", "0..n", "list"));
         assertTrue(code.matches(re));
         code = getGenerator().generate(
             createAttrWithMultiplicity("myAttr", "1..n", "list"));
-        //        code = getGenerator()
-        //        .generate(createAttrWithMultiplicity(
-        //                "myAttr", Model.getMultiplicities().get1N(), "list"));
         assertTrue(code.matches(re));
     }
 
@@ -321,9 +308,6 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
     public void testAttributeMultiplicity0NAnd1NStringMap() {
         String re = "(?m)(?s)\\s*std\\s*::\\s*map\\s*"
             + "<\\s*std\\s*::\\s*string\\s*,\\s*int\\s*>\\s+myAttr\\s*;";
-        //        String code = getGenerator()
-        //            .generate(createAttrWithMultiplicity(
-        //                    "myAttr", Model.getMultiplicities().get0N(), "stringmap"));
         String code = getGenerator().generate(
             createAttrWithMultiplicity("myAttr", "0..n", "stringmap"));
         assertTrue(code.matches(re));
@@ -335,16 +319,14 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
      */
     public void testAttributeMultiplicity01() {
         String re = "(?m)(?s)\\s*int\\s*\\*\\s*myAttr\\s*;";
-        //        String code = getGenerator()
-        //            .generate(createAttrWithMultiplicity(
-        //                    "myAttr", Model.getMultiplicities().get01()));
         String code = getGenerator().generate(
             createAttrWithMultiplicity("myAttr", "0..1"));
         assertTrue(code.matches(re));
     }
 
+
     private Object buildConstructor(Object cls) {
-        String name = Model.getFacade().getName(cls);
+	String name = Model.getFacade().getName(cls);
         Object voidType = ProjectManager.getManager().getCurrentProject()
                 .findType("void");
         Collection propertyChangeListeners = getPropertyChangeListeners(cls);
@@ -374,17 +356,17 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
         Object voidType = ProjectManager.getManager().getCurrentProject()
                 .findType("void");
         buildOperation(otherClass, voidType, "foo");
-        return otherClass;
+	return otherClass;
     }
 
     /**
      * Test if inner classes are generated correctly.
      */
     public void testGenerateInnerClassesHeader() {
-        Object inner = setUpInner();
+	Object inner = setUpInner();
         String code = getGenerator().generateH(getAClass());
-        String re = "(?m)(?s).*\\sclass\\s+AClass\\s*(:\\s*.*)?\\{.*"
-            + "class\\s+OtherClass\\s*\\{.*\\};.*\\};.*";
+	String re = "(?m)(?s).*\\sclass\\s+AClass\\s*(:\\s*.*)?\\{.*"
+	    + "class\\s+OtherClass\\s*\\{.*\\};.*\\};.*";
         assertTrue(code.matches(re));
     }
 
@@ -392,14 +374,14 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
      * Test if inner classes operations are generated correctly.
      */
     public void testGenerateInnerClassesCpp() {
-        Object inner = setUpInner();
+	Object inner = setUpInner();
         String code = getGenerator().generateCpp(getAClass());
-        String re = "(?m)(?s).*void\\s+AClass\\s*::\\s*OtherClass"
-            + "\\s*::\\s*foo\\s*\\(\\s*\\).*\\{.*\\}.*";
-        if (!code.matches(re)) {
-            LOG.debug("Code for inner class (.cpp):");
-            LOG.debug(code);
-        }
+	String re = "(?m)(?s).*void\\s+AClass\\s*::\\s*OtherClass"
+	    + "\\s*::\\s*foo\\s*\\(\\s*\\).*\\{.*\\}.*";
+	if (!code.matches(re)) {
+	    LOG.debug("Code for inner class (.cpp):");
+	    LOG.debug(code);
+	}
         assertTrue(code.matches(re));
     }
 }
