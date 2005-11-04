@@ -1271,10 +1271,10 @@ public class GeneratorCpp extends Generator2
             return "*";
         } else if (def.length() == 0) {
             if (Model.getFacade().isAParameter(attr)
-                    && (Model.getDirectionKind().getOutParameter().equals(
-                            Model.getFacade().getKind(attr)))
+                && (Model.getDirectionKind().getOutParameter().equals(
+                        Model.getFacade().getKind(attr))
                     || Model.getDirectionKind().getInOutParameter().equals(
-                            Model.getFacade().getKind(attr))) {
+                        Model.getFacade().getKind(attr)))) {
                 // out or inout parameters are defaulted to reference if
                 // not specified else
                 return "&";
