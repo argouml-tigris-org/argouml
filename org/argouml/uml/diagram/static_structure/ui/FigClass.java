@@ -629,8 +629,8 @@ public class FigClass extends FigClassifierBox
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
-        Object cls = /*(MClassifier)*/ getOwner();
-        if (cls == null) {
+        Object classifier = getOwner();
+        if (classifier == null) {
             return;
         }
         int i = new Vector(getAttributesFig().getFigs()).indexOf(ft);
@@ -638,11 +638,11 @@ public class FigClass extends FigClassifierBox
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
             try {
-                ParserDisplay.SINGLETON
-		    .parseAttributeFig(cls,
-				       /*(MAttribute)*/
-				       highlightedFigText.getOwner(),
-				       highlightedFigText.getText().trim());
+                Object attribute = highlightedFigText.getOwner();
+                ParserDisplay.SINGLETON.parseAttributeFig(
+                        classifier,
+                        attribute,
+                        highlightedFigText.getText().trim());
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
             } catch (ParseException pe) {
                 String msg = "statusmsg.bar.error.parsing.attribute";
@@ -658,11 +658,11 @@ public class FigClass extends FigClassifierBox
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
             try {
-                ParserDisplay.SINGLETON
-		    .parseOperationFig(cls,
-				       /*(MOperation)*/
-				       highlightedFigText.getOwner(),
-				       highlightedFigText.getText().trim());
+                Object operation = highlightedFigText.getOwner();
+                ParserDisplay.SINGLETON.parseOperationFig(
+                    classifier,
+                    operation,
+                    highlightedFigText.getText().trim());
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
             } catch (ParseException pe) {
                 String msg = "statusmsg.bar.error.parsing.operation";
