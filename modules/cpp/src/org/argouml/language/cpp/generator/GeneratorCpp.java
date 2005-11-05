@@ -35,6 +35,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -50,8 +51,13 @@ import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.UUIDHelper;
+import org.argouml.uml.generator.CodeGenerator;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
+import org.argouml.uml.generator.GeneratorHelper;
+import org.argouml.uml.generator.GeneratorManager;
+import org.argouml.uml.generator.Language;
+import org.argouml.uml.generator.SourceUnit;
 
 /**
  * Generator2 subclass to generate C++ source code that is used in ArgoUML GUI
@@ -65,7 +71,7 @@ import org.argouml.uml.generator.Generator2;
  * tries to generate 1265 files in parallel and guesses why it doesn't work :-)
  */
 public class GeneratorCpp extends Generator2
-    implements FileGenerator {
+    implements CodeGenerator {
 
     /**
      * The logger.
@@ -221,6 +227,9 @@ public class GeneratorCpp extends Generator2
         super (Notation.makeNotation("Cpp", null,
                                      Argo.lookupIconResource ("CppNotation")));
         singleton = this;
+        Language cppLang = GeneratorHelper.makeLanguage("cpp", "C++",
+                Argo.lookupIconResource ("CppNotation"));
+        GeneratorManager.getInstance().addGenerator(cppLang, this);
         loadConfig();
     }
 
@@ -305,7 +314,6 @@ public class GeneratorCpp extends Generator2
             result.append("#endif");
             result.append(LINE_SEPARATOR);
         }
-        cleanupGenerator();
         return result.toString();
     }
 
@@ -321,6 +329,7 @@ public class GeneratorCpp extends Generator2
         if (name.length() > 0) name += "/";
         name += Model.getFacade().getName(o) + ".cpp";
         String ret = generateFileAsString(o, name);
+        cleanupGenerator();
         generatorPass = NONE_PASS;
         return ret;
     }
@@ -337,6 +346,7 @@ public class GeneratorCpp extends Generator2
         if (name.length() > 0) name += "/";
         name += Model.getFacade().getName(o) + ".h";
         String ret = generateFileAsString(o, name);
+        cleanupGenerator();
         generatorPass = NONE_PASS;
         return ret;
     }
@@ -386,17 +396,29 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * create the needed directories for the derived appropriate pathname
-     * @return full pathname
+     * Generates the relative path for the specified classifier.
+     * @param cls The classifier. 
+     * @return Returns relative path of cls (without filename).
      */
-    private String generateDirectoriesPathname(Object cls, String path) {
+    private String generatePath(Object cls) {
+        String packagePath =
+            generateRelativePackage(cls, null, CodeGenerator.FILE_SEPARATOR);
+        packagePath = packagePath.substring(1);
+        return packagePath;
+    }
+
+    /**
+     * create the needed directories for the derived appropriate pathname
+     * @return Returns the filename with full path of cls.
+     */
+    private String createDirectoriesPathname(Object cls, String path) {
         String name = Model.getFacade().getName(cls);
         if (name == null || name.length() == 0) {
             return "";
         }
 
-        if (!path.endsWith (FILE_SEPARATOR)) {
-            path += FILE_SEPARATOR;
+        if (!path.endsWith (CodeGenerator.FILE_SEPARATOR)) {
+            path += CodeGenerator.FILE_SEPARATOR;
         }
 
         String packagePath = generateRelativePackage(cls, null, ".");
@@ -423,12 +445,12 @@ public class GeneratorCpp extends Generator2
             }
 
             path += packagePath.substring(lastIndex + 1, index)
-                + FILE_SEPARATOR;
+                + CodeGenerator.FILE_SEPARATOR;
             lastIndex = index;
         } while (true);
 
         String pathname = path + filename;
-        //cat.info("-----" + pathname + "-----");
+        //LOG.info("-----" + pathname + "-----");
         return pathname;
     }
 
@@ -438,120 +460,6 @@ public class GeneratorCpp extends Generator2
     private static boolean isAInnerClass(Object cls) {
         Object parent = Model.getFacade().getNamespace(cls);
         return parent != null && !Model.getFacade().isAPackage(parent);
-    }
-
-    /**
-     * Generates a file for the classifier.
-     * This method could have been static if it where not for the need to
-     * call it through the Generatorinterface.<p>
-     * It works only for classes and interfaces, everything else is ignored.
-     *
-     * Param node is the node.
-     * Param path is the base path for the source.
-     * Returns the full path name of the the generated file, or null if 'o'
-     * is not a class or a interface.
-     *
-     * @see org.argouml.uml.generator.FileGenerator#generateFile2(
-     * java.lang.Object, java.lang.String)
-     */
-    public String generateFile2(Object o, String path) {
-        if (!Model.getFacade().isAClass(o)
-               && !Model.getFacade().isAInterface(o)) {
-            // TODO: is returning null a correct behaviour here?
-            return null;
-        }
-        if (isAInnerClass(o)) {
-            return null;
-        }
-
-        String pathname = null;
-
-        // use unique section for both passes -> allow move of
-        // normal function body to inline and vice versa
-        if (Section.getUseSect() != Section.SECT_NONE) {
-            sect = new Section();
-
-            /*
-             * 2002-11-28 Achim Spangler
-             * first read header and source file into global/unique section
-             */
-            for (generatorPass = HEADER_PASS;
-                 generatorPass <= SOURCE_PASS;
-                 generatorPass++) {
-                pathname = generateDirectoriesPathname(o, path);
-                //String pathname = path + filename;
-                // TODO: package, project basepath, tagged values to configure
-                File f = new File(pathname);
-                if (f.exists()) {
-                    LOG.info("Generating (updated) " + f.getPath());
-                    sect.read(pathname);
-                } else {
-                    LOG.info("Generating (new) " + f.getPath());
-                }
-            }
-        }
-
-        /**
-         * 2002-11-28 Achim Spangler
-         * run basic generation function two times for header and implementation
-         */
-        for (generatorPass = HEADER_PASS;
-             generatorPass <= SOURCE_PASS;
-             generatorPass++) {
-            pathname = generateDirectoriesPathname(o, path);
-            String fileContent = generateFileAsString(o, pathname);
-            if (fileContent.length() == 0) continue;
-            BufferedWriter fos = null;
-            //String pathname = path + filename;
-            // TODO: package, project basepath, tagged values to configure
-            File f = new File(pathname);
-            try {
-                fos = new BufferedWriter (new FileWriter (f));
-                writeTemplate(o, path, fos);
-                fos.write(fileContent);
-            }
-            catch (IOException exp) { }
-            finally {
-                try {
-                    if (fos != null) fos.close();
-                }
-                catch (IOException exp) {
-                    LOG.error("FAILED: " + f.getPath());
-                }
-            }
-
-            if (Section.getUseSect() != Section.SECT_NONE) {
-                // output lost sections only in the second path
-                // -> sections which are moved from header(inline) to source
-                // file are prevented to be outputted in header pass
-                if (generatorPass == HEADER_PASS)   {
-                    sect.write(pathname, indent, false);
-                } else {
-                    sect.write(pathname, indent, true);
-                }
-
-                LOG.info("written: " + pathname);
-
-                File f1 = new File(pathname + ".bak");
-                if (f1.exists()) {
-                    f1.delete();
-                }
-
-                File f2 = new File(pathname);
-                if (f2.exists()) {
-                    f2.renameTo(new File(pathname + ".bak"));
-                }
-
-                File f3 = new File(pathname + ".out");
-                if (f3.exists()) {
-                    f3.renameTo(new File(pathname));
-                }
-            }
-            LOG.info("----- end updating -----");
-        }
-        // reset generator pass to NONE for the notation to be correct
-        generatorPass = NONE_PASS;
-        return pathname;
     }
 
     /** 2002-12-07 Achim Spangler
@@ -1271,7 +1179,7 @@ public class GeneratorCpp extends Generator2
             return "*";
         } else if (def.length() == 0) {
             if (Model.getFacade().isAParameter(attr)
-                && (Model.getDirectionKind().getOutParameter().equals(
+                    && (Model.getDirectionKind().getOutParameter().equals(
                         Model.getFacade().getKind(attr))
                     || Model.getDirectionKind().getInOutParameter().equals(
                         Model.getFacade().getKind(attr)))) {
@@ -3084,5 +2992,222 @@ public class GeneratorCpp extends Generator2
     public void setUseSect(int use) {
         Section.setUseSect(use);
         Configuration.setInteger(KEY_CPP_SECT, use);
+    }
+
+    /*
+     * Set of already-generated classifiers.
+     */
+    private Set generatedFiles = null;
+    /*
+     * Number of calls to startGenerateFile non closed.
+     */
+    private int generateRecur = 0;
+
+    /* implementation of CodeGenerator */
+    
+    /*
+     *  Start generating files. Needed to track dependencies.
+     */
+    private void startFileGeneration() {
+        if (generateRecur++ == 0) {
+            generatedFiles = new HashSet();
+        }
+    }
+    
+    /*
+     * End generating files. Needed to track dependencies.
+     */
+    private void endFileGeneration() {
+        if (--generateRecur == 0) {
+            generatedFiles = null;
+        }
+    }
+    
+    /**
+     * Generate files for element 'o' (and dependencies, eventually).
+     * Return the collection of files (as Strings).
+     * Do nothing (and return an empty collection) it 'o' is in generatedFiles.
+     */
+    private Collection generateFilesForElem(Object o,
+                                            String path, boolean deps) {
+        Vector ret = new Vector();
+        if (generatedFiles.contains(o)) {
+            return ret; // generated already
+        }
+        if (!Model.getFacade().isAClass(o)
+                && !Model.getFacade().isAInterface(o)) {
+            return ret; // not a class or interface
+        }
+        while (isAInnerClass(o)) {
+            o = Model.getFacade().getNamespace(o);
+        }
+        String pathname = null;
+
+        // use unique section for both passes -> allow move of
+        // normal function body to inline and vice versa
+        if (Section.getUseSect() != Section.SECT_NONE) {
+            sect = new Section();
+
+            /*
+             * 2002-11-28 Achim Spangler
+             * first read header and source file into global/unique section
+             */
+            for (generatorPass = HEADER_PASS;
+                 generatorPass <= SOURCE_PASS;
+                 generatorPass++) {
+                pathname = createDirectoriesPathname(o, path);
+                //String pathname = path + filename;
+                // TODO: package, project basepath, tagged values to configure
+                File f = new File(pathname);
+                if (f.exists()) {
+                    LOG.info("Generating (updated) " + f.getPath());
+                    sect.read(pathname);
+                    File bakFile = new File(pathname + ".bak");
+                    if (bakFile.exists()) {
+                        bakFile.delete();
+                    }
+                    f.renameTo(bakFile);
+                } else {
+                    LOG.info("Generating (new) " + f.getPath());
+                }
+            }
+        }
+
+        Set dependencies = null;
+        if (deps) dependencies = new TreeSet();
+        /**
+         * 2002-11-28 Achim Spangler
+         * run basic generation function two times for header and implementation
+         */
+        for (generatorPass = HEADER_PASS;
+             generatorPass <= SOURCE_PASS;
+             generatorPass++) {
+            pathname = createDirectoriesPathname(o, path);
+            String fileContent = generateFileAsString(o, pathname);
+            if (fileContent.length() == 0) continue;
+            BufferedWriter fos = null;
+            //String pathname = path + filename;
+            // TODO: package, project basepath, tagged values to configure
+            File f = new File(pathname);
+            try {
+                fos = new BufferedWriter (new FileWriter (f));
+                writeTemplate(o, path, fos);
+                fos.write(fileContent);
+            }
+            catch (IOException exp) { }
+            finally {
+                try {
+                    if (fos != null) fos.close();
+                }
+                catch (IOException exp) {
+                    LOG.error("FAILED: " + f.getPath());
+                }
+            }
+
+            LOG.info("written: " + pathname);
+
+            if (Section.getUseSect() != Section.SECT_NONE) {
+                // output lost sections only in the second path
+                // -> sections which are moved from header(inline) to source
+                // file are prevented to be outputted in header pass
+                File outFile = new File(pathname + ".out");
+                if (outFile.exists()) {
+                    outFile.delete(); // remove junk
+                }
+                if (generatorPass == HEADER_PASS)   {
+                    sect.write(pathname, indent, false);
+                } else {
+                    sect.write(pathname, indent, true);
+                }
+
+                if (outFile.exists()) {
+                    assert f.exists();
+                    f.delete();
+                    outFile.renameTo(f);
+                    LOG.info("added sections to: " + pathname);
+                }
+            }
+            LOG.info("----- end updating " + pathname + "-----");
+            ret.add(pathname);
+            if (deps) {
+                dependencies.add(includeCls);
+                dependencies.add(predeclCls);
+            }
+        }
+        cleanupGenerator();
+        // reset generator pass to NONE for the notation to be correct
+        generatorPass = NONE_PASS;
+        generatedFiles.add(o);
+        if (deps) {
+            Iterator it = dependencies.iterator();
+            while (it.hasNext()) {
+                ret.add(generateFilesForElem(it.next(), path, deps));
+            }
+        }
+        
+        return ret;
+    }
+    
+    /**
+     * @see org.argouml.uml.generator.CodeGenerator#generate(java.util.Collection, boolean)
+     */
+    public Collection generate(Collection elements, boolean deps) {
+        Vector ret = new Vector();
+        startFileGeneration();
+        for (Iterator it = elements.iterator(); it.hasNext(); ) {
+            Object elem = it.next();
+            String path = generatePath(elem);
+            Set dependencies = null;
+            if (deps) dependencies = new TreeSet();
+
+            for (generatorPass = HEADER_PASS;
+                 generatorPass <= SOURCE_PASS;
+                 generatorPass++)
+            {
+                String name =
+                    Model.getFacade().getName(elem) + getFileExtension();
+                String content = generateFileAsString(elem, path + name);
+                SourceUnit su = new SourceUnit(name, path, content);
+                ret.add(su);
+            }
+            generatorPass = NONE_PASS;
+            generatedFiles.add(elem);
+            if (deps) {
+                ret.add(generate(dependencies, deps));
+            }
+        }
+        endFileGeneration();
+        return ret;
+    }
+
+    /**
+     * @see org.argouml.uml.generator.CodeGenerator#generateFiles(java.util.Collection, java.lang.String, boolean)
+     */
+    public Collection generateFiles(Collection elements, 
+                                    String path, boolean deps) {
+        Vector ret = new Vector();
+        startFileGeneration();
+        for (Iterator it = elements.iterator(); it.hasNext(); ) {
+            Object elem = it.next();
+            ret.add(generateFilesForElem(elem, path, deps));
+        }
+        endFileGeneration();
+        return ret;
+    }
+
+    /**
+     * @see org.argouml.uml.generator.CodeGenerator#generateFileList(java.util.Collection, boolean)
+     */
+    public Collection generateFileList(Collection elements, boolean deps) {
+        Vector ret = new Vector();
+        startFileGeneration();
+        for (Iterator it = elements.iterator(); it.hasNext(); ) {
+            Object elem = it.next();
+            // FIXME: check for interfaces, inner classes, deps, etc. 
+            ret.add(Model.getFacade().getName(elem) + ".cpp");
+            ret.add(Model.getFacade().getName(elem) + ".h");
+        }
+        endFileGeneration();
+        return null;
     }
 } /* end class GeneratorCpp */
