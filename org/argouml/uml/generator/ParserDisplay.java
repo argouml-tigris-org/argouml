@@ -554,14 +554,17 @@ public final class ParserDisplay extends Parser {
      * case that a String or char contains a ';' (e.g. in an initializer) is
      * handled, but not other occurences of ';'.
      *
-     * @param cls  Classifier The classifier the operation(s) belong to
-     * @param op   Operation The operation on which the editing happened
+     * @param classifier  Classifier The classifier the operation(s) belong to
+     * @param operation   Operation The operation on which the editing happened
      * @param text The string to parse
      * @throws ParseException for invalid input
      */
-    public void parseOperationFig(Object cls, Object op, String text)
-        throws ParseException {
-        if (cls == null || op == null) {
+    public void parseOperationFig(
+            Object classifier, 
+            Object operation, 
+            String text) throws ParseException {
+        
+        if (classifier == null || operation == null) {
             return;
         }
         ParseException pex = null;
@@ -571,19 +574,20 @@ public final class ParserDisplay extends Parser {
             ProjectManager.getManager().getCurrentProject();
         if (end == -1) {
             //no text? remove op!
-            currentProject.moveToTrash(op);
-            TargetManager.getInstance().setTarget(cls);
+            currentProject.moveToTrash(operation);
+            TargetManager.getInstance().setTarget(classifier);
             return;
         }
         String s = text.substring(start, end).trim();
         if (s == null || s.length() == 0) {
             //no non-whitechars in text? remove op!
-            currentProject.moveToTrash(op);
-            TargetManager.getInstance().setTarget(cls);
+            currentProject.moveToTrash(operation);
+            TargetManager.getInstance().setTarget(classifier);
             return;
         }
-        parseOperation(s, op);
-        int i = new ArrayList(Model.getFacade().getFeatures(cls)).indexOf(op);
+        parseOperation(s, operation);
+        int i = new ArrayList(
+                Model.getFacade().getFeatures(classifier)).indexOf(operation);
         // check for more operations (';' separated):
         start = end + 1;
         end = indexOfNextCheckedSemicolon(text, start);
@@ -592,12 +596,12 @@ public final class ParserDisplay extends Parser {
             if (s != null && s.length() > 0) {
                 // yes, there are more:
                 Collection propertyChangeListeners =
-                    currentProject.findFigsForMember(cls);
+                    currentProject.findFigsForMember(classifier);
                 Object model = currentProject.getModel();
                 Object voidType = currentProject.findType("void");
                 Object newOp =
                     Model.getCoreFactory()
-                    	.buildOperation(cls, model, voidType,
+                    	.buildOperation(classifier, model, voidType,
                     	        propertyChangeListeners);
                 if (newOp != null) {
                     try {
@@ -605,9 +609,9 @@ public final class ParserDisplay extends Parser {
                         //newOp.setOwnerScope(op.getOwnerScope()); //
                         //not needed in case of operation
                         if (i != -1) {
-                            Model.getCoreHelper().addFeature(cls, ++i, newOp);
+                            Model.getCoreHelper().addFeature(classifier, ++i, newOp);
                         } else {
-                            Model.getCoreHelper().addFeature(cls, newOp);
+                            Model.getCoreHelper().addFeature(classifier, newOp);
                         }
                     } catch (ParseException ex) {
                         if (pex == null) {
@@ -629,34 +633,40 @@ public final class ParserDisplay extends Parser {
      * case that a String or char contains a ';' (e.g. in an initializer) is
      * handled, but not other occurences of ';'.
      *
-     * @param cls  Classifier The classifier the attribute(s) belong to
-     * @param at   Attribute The attribute on which the editing happened
+     * @param classifier  Classifier The classifier the attribute(s) belong to
+     * @param attribute   Attribute The attribute on which the editing happened
      * @param text The string to parse
      * @throws ParseException for invalid input
      */
-    public void parseAttributeFig(Object cls, Object at, String text)
-        throws ParseException {
-        if (cls == null || at == null) {
+    public void parseAttributeFig(
+            Object classifier, 
+            Object attribute, 
+            String text) throws ParseException {
+        
+        if (classifier == null || attribute == null) {
             return;
         }
+        
+        Project project = ProjectManager.getManager().getCurrentProject();
+        
         ParseException pex = null;
         int start = 0;
         int end = indexOfNextCheckedSemicolon(text, start);
         if (end == -1) {
             //no text? remove attr!
-            ProjectManager.getManager().getCurrentProject().moveToTrash(at);
-            TargetManager.getInstance().setTarget(cls);
+            project.moveToTrash(attribute);
+            TargetManager.getInstance().setTarget(classifier);
             return;
         }
         String s = text.substring(start, end).trim();
         if (s == null || s.length() == 0) {
             //no non-whitechars in text? remove attr!
-            ProjectManager.getManager().getCurrentProject().moveToTrash(at);
-            TargetManager.getInstance().setTarget(cls);
+            project.moveToTrash(attribute);
+            TargetManager.getInstance().setTarget(classifier);
             return;
         }
-        parseAttribute(s, at);
-        int i = new ArrayList(Model.getFacade().getFeatures(cls)).indexOf(at);
+        parseAttribute(s, attribute);
+        int i = new ArrayList(Model.getFacade().getFeatures(classifier)).indexOf(attribute);
         // check for more attributes (';' separated):
         start = end + 1;
         end = indexOfNextCheckedSemicolon(text, start);
@@ -664,23 +674,22 @@ public final class ParserDisplay extends Parser {
             s = text.substring(start, end).trim();
             if (s != null && s.length() > 0) {
                 // yes, there are more:
-                Object model =
-                    ProjectManager.getManager().getCurrentProject()
-                    	.getModel();
-                Object intType =
-                    ProjectManager.getManager().getCurrentProject()
-                    	.findType("int");
-                Object newAt =
+                Object model = project.getModel();
+                Object intType = project.findType("int");
+                Object newAttribute =
                     Model.getCoreFactory().buildAttribute(model, intType);
-                if (newAt != null) {
+                if (newAttribute != null) {
                     try {
-                        parseAttribute(s, newAt);
-                        Model.getCoreHelper().setOwnerScope(newAt,
-                                Model.getFacade().getOwnerScope(at));
+                        parseAttribute(s, newAttribute);
+                        Model.getCoreHelper().setOwnerScope(
+                                newAttribute,
+                                Model.getFacade().getOwnerScope(attribute));
                         if (i != -1) {
-                            Model.getCoreHelper().addFeature(cls, ++i, newAt);
+                            Model.getCoreHelper().addFeature(
+                                    classifier, ++i, newAttribute);
                         } else {
-                            Model.getCoreHelper().addFeature(cls, newAt);
+                            Model.getCoreHelper().addFeature(
+                                    classifier, newAttribute);
                         }
                     } catch (ParseException ex) {
                         if (pex == null) {
@@ -1308,8 +1317,8 @@ public final class ParserDisplay extends Parser {
      * initial-value {property-string} ) (2nd formerly: [visibility] [keywords]
      * type name [= init] [;] )
      *
-     * @param s    The String to parse.
-     * @param attr The attribute to modify to comply with the instructions in s.
+     * @param text    The String to parse.
+     * @param attribute The attribute to modify to comply with the instructions in s.
      * @throws ParseException
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
@@ -1317,7 +1326,9 @@ public final class ParserDisplay extends Parser {
      * @see org.argouml.uml.generator.Parser#parseAttribute(java.lang.String,
      * java.lang.Object)
      */
-    public void parseAttribute(String s, Object attr) throws ParseException {
+    public void parseAttribute(
+            String text,
+            Object attribute) throws ParseException {
         String multiplicity = null;
         String name = null;
         Vector properties = null;
@@ -1331,14 +1342,14 @@ public final class ParserDisplay extends Parser {
         int multindex = -1;
         MyTokenizer st;
 
-        s = s.trim();
-        if (s.length() > 0 && VISIBILITYCHARS.indexOf(s.charAt(0)) >= 0) {
-            visibility = s.substring(0, 1);
-            s = s.substring(1);
+        text = text.trim();
+        if (text.length() > 0 && VISIBILITYCHARS.indexOf(text.charAt(0)) >= 0) {
+            visibility = text.substring(0, 1);
+            text = text.substring(1);
         }
 
         try {
-            st = new MyTokenizer(s, " ,\t,<<,>>,[,],:,=,{,},\\,",
+            st = new MyTokenizer(text, " ,\t,<<,>>,[,],:,=,{,},\\,",
                     attributeCustomSep);
             while (st.hasMoreTokens()) {
                 token = st.nextToken();
@@ -1493,7 +1504,8 @@ public final class ParserDisplay extends Parser {
                 }
             }
         } catch (NoSuchElementException nsee) {
-            throw new ParseException("Unexpected end of attribute", s.length());
+            throw new ParseException(
+                    "Unexpected end of attribute", text.length());
         } catch (ParseException pre) {
             throw pre;
         }
@@ -1510,37 +1522,38 @@ public final class ParserDisplay extends Parser {
         }
 
         if (visibility != null) {
-            Model.getCoreHelper().setVisibility(attr,
+            Model.getCoreHelper().setVisibility(attribute,
                     getVisibility(visibility.trim()));
         }
 
         if (name != null) {
-            Model.getCoreHelper().setName(attr, name.trim());
-        } else if (Model.getFacade().getName(attr) == null
-                || "".equals(Model.getFacade().getName(attr))) {
-            Model.getCoreHelper().setName(attr, "anonymous");
+            Model.getCoreHelper().setName(attribute, name.trim());
+        } else if (Model.getFacade().getName(attribute) == null
+                || "".equals(Model.getFacade().getName(attribute))) {
+            Model.getCoreHelper().setName(attribute, "anonymous");
         }
 
         if (type != null) {
-            Object ow = Model.getFacade().getOwner(attr);
+            Object ow = Model.getFacade().getOwner(attribute);
             Object ns = null;
             if (ow != null && Model.getFacade().getNamespace(ow) != null) {
                 ns = Model.getFacade().getNamespace(ow);
             } else {
-                ns = Model.getFacade().getModel(attr);
+                ns = Model.getFacade().getModel(attribute);
             }
-            Model.getCoreHelper().setType(attr, getType(type.trim(), ns));
+            Model.getCoreHelper().setType(attribute, getType(type.trim(), ns));
         }
 
         if (value != null) {
             Object initExpr = Model.getDataTypesFactory().createExpression(
                 Notation.getConfigueredNotation().toString(), value.trim());
-            Model.getCoreHelper().setInitialValue(attr, initExpr);
+            Model.getCoreHelper().setInitialValue(attribute, initExpr);
         }
 
         if (multiplicity != null) {
             try {
-                Model.getCoreHelper().setMultiplicity(attr,
+                Model.getCoreHelper().setMultiplicity(
+                        attribute,
                         Model.getDataTypesFactory()
                         	.createMultiplicity(multiplicity.trim()));
             } catch (IllegalArgumentException iae) {
@@ -1550,16 +1563,16 @@ public final class ParserDisplay extends Parser {
         }
 
         if (properties != null) {
-            setProperties(attr, properties, attributeSpecialStrings);
+            setProperties(attribute, properties, attributeSpecialStrings);
         }
 
         if (stereotype != null) {
             stereotype = stereotype.trim();
-            Object stereo = getStereotype(attr, stereotype);
+            Object stereo = getStereotype(attribute, stereotype);
             if (stereo != null) {
-                Model.getCoreHelper().setStereotype(attr, stereo);
+                Model.getCoreHelper().setStereotype(attribute, stereo);
             } else if ("".equals(stereotype)) {
-                Model.getCoreHelper().setStereotype(attr, null);
+                Model.getCoreHelper().setStereotype(attribute, null);
             }
         }
     }
