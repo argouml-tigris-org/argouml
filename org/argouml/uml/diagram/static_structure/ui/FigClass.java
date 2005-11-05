@@ -919,13 +919,18 @@ public class FigClass extends FigClassifierBox
      *
      * @param h  Desired height of the FigClass
      */
-    protected void setBoundsImpl(int x, int y, int w, int h) {
+    protected void setBoundsImpl(final int x, final int y, final int w, final int h) {
         Rectangle oldBounds = getBounds();
+        
+        // set bounds of big box
+        getBigPort().setBounds(x, y, w, h);
+        borderFig.setBounds(x, y, w, h);
+
         // Save our old boundaries (needed later), and get minimum size
         // info. "aSize will be used to maintain a running calculation of our
         // size at various points.
         
-        int whitespace = h - getMinimumSize().height;
+        final int whitespace = h - getMinimumSize().height;
 
         getNameFig().setLineWidth(0);
         getNameFig().setLineColor(Color.red);
@@ -952,6 +957,9 @@ public class FigClass extends FigClassifierBox
         
         if (isAttributesVisible()) {
             int attributesHeight = getAttributesFig().getMinimumSize().height;
+            if (isOperationsVisible()) {
+                attributesHeight += whitespace / 2;
+            }
             getAttributesFig().setBounds(
                     x, 
                     y + currentHeight, 
@@ -961,21 +969,14 @@ public class FigClass extends FigClassifierBox
         }
 
         if (isOperationsVisible()) {
-            if (isAttributesVisible()) {
-                currentHeight += whitespace / 2;
-            }
-            int operationsHeight = getOperationsFig().getMinimumSize().height;
+            int operationsY = y + currentHeight;
+            int operationsHeight = (h + y) - operationsY - 1;
             getOperationsFig().setBounds(
                     x, 
-                    y + currentHeight, 
+                    operationsY, 
                     w, 
                     operationsHeight);
-            currentHeight += operationsHeight;
         }
-
-        // set bounds of big box
-        getBigPort().setBounds(x, y, w, h);
-        borderFig.setBounds(x, y, w, h);
 
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property
