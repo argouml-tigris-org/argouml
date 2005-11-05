@@ -74,6 +74,7 @@ public class FigStereotypesCompartment extends FigCompartment {
      */
     public FigStereotypesCompartment(int x, int y, int w, int h) {
         super(x, y, w, h);
+        setFilled(false);
     }
     
     
