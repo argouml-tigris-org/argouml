@@ -142,7 +142,6 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      */
     public void propertyChange(PropertyChangeEvent evt) {
         
-        
         if (evt instanceof AttributeChangeEvent) {
             if (evt.getPropertyName().equals(propertySetName)) {
                 if (evt.getSource() == getTarget()
@@ -157,39 +156,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         } else if (evt instanceof DeleteInstanceEvent) {
             if (contains(getChangedElement(evt))) {
                 Object o = getChangedElement(evt);
-                if (o instanceof Collection) {
-                    removeAll((Collection) o);
-                } else {
-                    removeElement(o);
-                }
-            }
-        } else if (evt instanceof AddAssociationEvent) {
-            if (getTarget() != null && isValidEvent(evt)) {
-                Object o = getChangedElement(evt);
-                if (o instanceof Collection) { // this should not happen but
-                    // you never know with NSUML
-                    LOG.warn("Collection added via roleAdded! "
-			     + "The correct element "
-			     + "is probably not selected...");
-                    Iterator it = ((Collection) o).iterator();
-                    while (it.hasNext()) {
-                        // TODO: This can't be right, can it?
-                        // We're only adding every other element
-                        Object o2 = it.next();
-                        addElement(it.next());
-                    }
-                } else {
-                    addElement(o);
-                }
-            }
-        } else if (evt instanceof RemoveAssociationEvent) {
-            Object o = getChangedElement(evt);
-            if (contains(o)) {
-                if (o instanceof Collection) {
-                    removeAll((Collection) o);
-                } else {
-                    removeElement(o);
-                }
+                removeElement(o);
             }
         }
     }
