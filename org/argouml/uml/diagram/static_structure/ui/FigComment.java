@@ -432,22 +432,22 @@ public class FigComment
     // accessor methods
 
     /**
-     * Store a note in the associated model element.
+     * Stores the body text in the associated model element.
      *
-     * @param note The note to store.
+     * @param note The body text to store.
      */
-    public final void storeNote(String note) {
+    public final void storeBody(String body) {
         if (getOwner() != null) {
-            Model.getCoreHelper().setBody(getOwner(), note);
+            Model.getCoreHelper().setBody(getOwner(), body);
         }
     }
 
     /**
-     * Retrieve the note from the associated model element.
+     * Retrieve the body text from the associated model element.
      *
-     * @return The note from the associated model element.
+     * @return The body from the associated model element.
      */
-    private String retrieveNote() {
+    private String retrieveBody() {
         return (getOwner() != null)
             ? (String) Model.getFacade().getBody(getOwner())
             : null;
