@@ -40,6 +40,7 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
 
 /**
  * Class to display graphics for a UML Class in a diagram.<p>
@@ -241,12 +242,11 @@ abstract public class FigClassifierBox extends FigNodeModelElement
         return null;
     }
 
-    protected void createFeatureIn(FigFeaturesCompartment fg, InputEvent ie) {
-        Object classifier = getOwner();
-        if (classifier == null) {
+    protected void createFeatureIn(FigGroup fg, InputEvent ie) {
+        if (!(fg instanceof FigFeaturesCompartment)) {
             return;
         }
-        fg.createFeature();
+        ((FigFeaturesCompartment)fg).createFeature();
         List figList = fg.getFigs();
         CompartmentFigText ft =
             (CompartmentFigText) figList.get(figList.size() - 1);

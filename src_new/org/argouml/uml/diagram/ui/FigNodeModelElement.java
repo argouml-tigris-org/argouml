@@ -1009,22 +1009,21 @@ public abstract class FigNodeModelElement
         if (me.isConsumed()) {
             return;
         }
-        if (me.getClickCount() >= 2
-                && !(me.isPopupTrigger()
-		|| me.getModifiers() == InputEvent.BUTTON3_MASK)) {
+        if (me.getClickCount() >= 2 &&
+                !(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK)) {
             if (getOwner() == null) {
                 return;
             }
             Rectangle r = new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4);
             Fig f = hitFig(r);
             if (f instanceof MouseListener && f.isVisible()) {
-		((MouseListener) f).mouseClicked(me);
+                ((MouseListener) f).mouseClicked(me);
             } else if (f instanceof FigGroup && f.isVisible()) {
                 //this enables direct text editing for sub figs of a
                 //FigGroup object:
                 Fig f2 = ((FigGroup) f).hitFig(r);
                 if (f2 instanceof MouseListener) {
-		    ((MouseListener) f2).mouseClicked(me);
+                    ((MouseListener) f2).mouseClicked(me);
                 } else {
                     createFeatureIn((FigGroup) f, me);
                 }

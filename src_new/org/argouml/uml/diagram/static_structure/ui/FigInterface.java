@@ -631,7 +631,7 @@ public class FigInterface extends FigClassifierBox {
      *
      * @param h  Desired height of the FigInterface
      */
-    protected void setBoundsImpl(int x, int y, int w, int h) {
+    protected void setBoundsImpl(final int x, final int y, final int w, final int h) {
 
         Rectangle oldBounds = getBounds();
         // Save our old boundaries (needed later), and get minimum size
@@ -642,6 +642,10 @@ public class FigInterface extends FigClassifierBox {
         // height is greater than minimal. "height_correction" is the height
         // correction due to rounded division result, will be added to the name
         // compartment
+        
+        // set bounds of big box
+        getBigPort().setBounds(x, y, w, h);
+        borderFig.setBounds(x, y, w, h);
 
         getNameFig().setLineWidth(0);
         getNameFig().setLineColor(Color.red);
@@ -665,20 +669,15 @@ public class FigInterface extends FigClassifierBox {
         
         currentHeight += 2; // Give an extra couple of pixels after the name.
 
-        
         if (getOperationsFig().isVisible()) {
-            int operationsHeight = getOperationsFig().getMinimumSize().height;
+            int operationsY = y + currentHeight;
+            int operationsHeight = (h + y) - operationsY - 1;
             getOperationsFig().setBounds(
                     x, 
-                    y + currentHeight, 
+                    operationsY, 
                     w, 
                     operationsHeight);
-            currentHeight += operationsHeight;
         }
-
-        // set bounds of big box
-        getBigPort().setBounds(x, y, w, h);
-        borderFig.setBounds(x, y, w, h);
 
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property

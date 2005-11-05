@@ -49,7 +49,7 @@ public abstract class FigCompartment extends FigGroup {
      */
     public FigCompartment(int x, int y, int w, int h) {
         bigPort = new FigRect(x, y, w, h, Color.black, Color.white);
-        bigPort.setFilled(false);
+        bigPort.setFilled(true);
         setFilled(true);
         
         bigPort.setLineWidth(0);
