@@ -47,6 +47,7 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Geometry;
@@ -203,6 +204,19 @@ public class FigComment
             }
         }
         return figClone;
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
+    public void setOwner(Object own) {
+        super.setOwner(own);
+        if (own != null) {
+            String body = (String)Model.getFacade().getBody(getOwner());
+            if (body != null) {
+                bodyTextFig.setText(body);
+            }
+        }
     }
 
     ////////////////////////////////////////////////////////////////
