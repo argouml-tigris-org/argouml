@@ -26,8 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.util.Vector;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JList;
@@ -41,8 +39,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.ScrollList;
-import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLPlainTextDocument;
@@ -84,10 +80,6 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     private UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel =
 	new UMLModelElementNamespaceComboBoxModel();
-
-    private static UMLModelElementStereotypeComboBoxModel
-        stereotypeComboBoxModel =
-	new UMLModelElementStereotypeComboBoxModel();
 
     private static UMLModelElementNamespaceListModel namespaceListModel =
 	new UMLModelElementNamespaceListModel();
