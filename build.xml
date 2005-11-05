@@ -751,6 +751,7 @@ Property files to be searched:
         <classpath>
 	  <pathelement location="${argo.build.classes}"/>
 	  <path refid="argo.runtime.classpath"/>
+            <path refid="argouml-mdr.runtime.classpath"/>
         </classpath>
     </java>
   </target>
@@ -785,6 +786,7 @@ Property files to be searched:
         <classpath>
 	  <pathelement location="${argo.build.classes}"/>
 	  <path refid="argo.runtime.classpath"/>
+            <path refid="argouml-mdr.runtime.classpath"/>
         </classpath>
     </java>
   </target>
