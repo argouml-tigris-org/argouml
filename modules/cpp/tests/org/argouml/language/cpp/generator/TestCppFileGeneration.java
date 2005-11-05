@@ -27,6 +27,9 @@ package org.argouml.language.cpp.generator;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -136,6 +139,27 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
         generationDir.mkdirs();
         return generationDir;
     }
+    
+    /*
+     * Get a file generated for the single modelelement elem, with
+     * extension 'ext' (either ".cpp" or ".h").
+     */
+    private File generateFile(Object elem, String ext) {
+        Vector v = new Vector();
+        v.add(elem);
+        Collection files =
+            getGenerator().generateFiles(v, genDir.getPath(), false);
+        assertFalse(files.isEmpty());
+        File genFile = null;
+        for (Iterator it = files.iterator(); it.hasNext();) {
+            String fn = (String) it.next();
+            if (fn.endsWith(ext)) {
+                genFile = new File(fn);
+                break;
+            }
+        }
+        return genFile;
+    }
 
     /**
      * Test for file generation of a classifier, checking if in the second time
@@ -146,14 +170,10 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
      */
     public void testGenerateAfterModifyAndIssue2828() throws IOException {
         genDir = setUpDirectory4Test("testIssue2828");
-	// enable sections, in case they were disabled
-	getGenerator().setUseSect(Section.SECT_NORMAL);
+        // enable sections, in case they were disabled
+        getGenerator().setUseSect(Section.SECT_NORMAL);
         // generate the classifier for the first time in temp dir
-        String filePath = getGenerator().generateFile2(
-                getAClass(), genDir.getPath());
-        assertNotNull(filePath);
-        File genFile = new File(filePath);
-
+        File genFile = generateFile(getAClass(), ".cpp");
         // create some content in the foo method implementation
         String encoding = getEncoding(genFile);
         String originalGenerated = FileUtils.readFileToString(
@@ -174,8 +194,8 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
         FileUtils.writeStringToFile(genFile, modified.toString(), encoding);
 
         // generate the classifier for the second time
-        assertEquals(filePath,
-            getGenerator().generateFile2(getAClass(), genDir.getPath()));
+        File newFile = generateFile(getAClass(), ".cpp");
+        assertEquals(genFile, newFile);
         // check if the file generated in the second time is equal to the
         // modified file
         String secondGenerated = FileUtils.readFileToString(genFile, encoding);
@@ -243,13 +263,9 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
     private String generateAClassFile(String testName, boolean header)
         throws IOException {
         genDir = setUpDirectory4Test(testName);
-        String filePath = getGenerator().generateFile2(
-                getAClass(), genDir.getPath());
-        assertNotNull(filePath);
-        if (header)
-            filePath = 
-                filePath.substring(0, filePath.lastIndexOf(".cpp")) + ".h";
-        File genFile = new File(filePath);
+        File genFile = generateFile(getAClass(), header ? ".h" : ".cpp");
+        assertNotNull(genFile);
+        assertTrue(genFile.exists());
 
         String encoding = getEncoding(genFile);
         String generated = FileUtils.readFileToString(

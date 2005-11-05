@@ -3189,7 +3189,7 @@ public class GeneratorCpp extends Generator2
         startFileGeneration();
         for (Iterator it = elements.iterator(); it.hasNext(); ) {
             Object elem = it.next();
-            ret.add(generateFilesForElem(elem, path, deps));
+            ret.addAll(generateFilesForElem(elem, path, deps));
         }
         endFileGeneration();
         return ret;
