@@ -1,12 +1,13 @@
-Please send comments and suggestions to: Achim.Spangler@web.de
+C++ generator and reverse engineering module
+Reverse engineering is still a work in progress.
 
 Install:
 
- run ./build.sh install as GeneratorCpp.java and Section.java can be installed 
- as module
+ run ./build.sh install to generate the argo_cpp.jar file and copy it
+ in the argouml/build/ext directory.
 
 It should be integrated into the existing system so that the user will be able 
-to choose between Java and CPP.
+to choose between Java, C++ and others.
 
 Operations are generated as "const" if they are marked as "query".
 Operations which are NOT marked as "leaf", "root", "static", "abstract" are 
@@ -138,7 +139,7 @@ Preserved Sections:
 
 with each code generation, special comments will be generated like this:
 
-  function Testclass::Testclass()
+  Testclass::Testclass()
   // section -64--88-0-40-76f2e8:ec37965ae0:-7fff begin
 	{
 	}
