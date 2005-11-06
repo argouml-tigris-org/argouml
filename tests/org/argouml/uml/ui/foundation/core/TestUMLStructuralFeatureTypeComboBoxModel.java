@@ -72,7 +72,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
             Model.getCoreHelper().addOwnedElement(m, types[i]);
         }
         Model.getCoreHelper().setType(elem, types[0]);
-        model.buildModelList();
+        //model.buildModelList();
         Model.getPump().reallyFlushModelEvents();
     }
 
