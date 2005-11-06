@@ -141,20 +141,9 @@ public class FigMessagePort extends FigGroup {
         node = n;
     }
 
-    public int getX1() {
-	return getMyLine().getX1();
-    }
-
+    // TODO: Question - how does this differ to getY?
     public int getY1() {
 	return getMyLine().getY1();
-    }
-
-    public int getX2() {
-	return getMyLine().getX2();
-    }
-
-    public int getY2() {
-	return getMyLine().getY2();
     }
 
     private FigLine getMyLine() {
