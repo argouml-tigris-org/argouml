@@ -166,22 +166,19 @@ Property files to be searched:
       <pathelement location="${argo.build.dir}/argouml-model.jar"/>
     </path>
 
+    <!-- This runtime classpath is used for tests and other things started
+         from this file.
+      -->
     <path id="argo.runtime.classpath">
-      <!-- Currently same as the compile path. -->
       <path refid="argo.compile.classpath"/>
-      <pathelement location="${argo.build.dir}/java-interfaces.jar"/>
-      <pathelement location="${argo.build.dir}/argouml-mdr.jar"/>
-      <pathelement location="${argo.build.dir}/mof.jar"/>
-      <pathelement location="${argo.build.dir}/jmi.jar"/>
-      <pathelement location="${argo.build.dir}/mdrapi.jar"/>
-      <pathelement location="${argo.build.dir}/nbmdr.jar"/>
-      <pathelement location="${argo.build.dir}/jmiutils.jar"/>
-      <pathelement location="${argo.build.dir}/openide-util.jar"/>
-    </path>
-
-    <path id="argouml-mdr.runtime.classpath">
-      <fileset dir="../../argouml-mdr/build" includes="*.jar"/>
-      <fileset dir="../../argouml-mdr/lib" includes="*.jar"/>
+      <pathelement location="../../argouml-mdr/build/java-interfaces.jar"/>
+      <pathelement location="../../argouml-mdr/build/argouml-mdr.jar"/>
+      <pathelement location="../../argouml-mdr/lib/mof.jar"/>
+      <pathelement location="../../argouml-mdr/lib/jmi.jar"/>
+      <pathelement location="../../argouml-mdr/lib/mdrapi.jar"/>
+      <pathelement location="../../argouml-mdr/lib/nbmdr.jar"/>
+      <pathelement location="../../argouml-mdr/lib/jmiutils.jar"/>
+      <pathelement location="../../argouml-mdr/lib/openide-util.jar"/>
     </path>
 
     <!-- In order to use ant optional tasks which use jars that are not -->
@@ -751,7 +748,6 @@ Property files to be searched:
         <classpath>
 	  <pathelement location="${argo.build.classes}"/>
 	  <path refid="argo.runtime.classpath"/>
-            <path refid="argouml-mdr.runtime.classpath"/>
         </classpath>
     </java>
   </target>
@@ -786,7 +782,6 @@ Property files to be searched:
         <classpath>
 	  <pathelement location="${argo.build.classes}"/>
 	  <path refid="argo.runtime.classpath"/>
-            <path refid="argouml-mdr.runtime.classpath"/>
         </classpath>
     </java>
   </target>
@@ -1013,6 +1008,20 @@ Property files to be searched:
     <available file="../../argouml-mdr/build/argouml-mdr.jar"
                property="mdr-available"/>
     <antcall target="internal-tests-using-mdr"/>
+    <antcall target="internal-tests-using-mdr-error"/>
+  </target>
+
+  <target name="internal-tests-using-mdr-error"
+          unless="mdr-available">
+    <echo>
+You need to have mdr compiled to run the tests.
+
+Do:
+checkout argouml-mdr
+cd ../../argouml-mdr
+./build.sh generate jar
+cd ../argouml/src_new
+</echo>
   </target>
 
   <target name="internal-tests-using-mdr"
@@ -1041,10 +1050,9 @@ Property files to be searched:
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
             <path refid="argo.runtime.classpath"/>
-            <path refid="argouml-mdr.runtime.classpath"/>
         </classpath>
         <formatter type="xml"/>
-      <batchtest todir="${argo.tests.reports}/junit/output/mdr">
+      <batchtest todir="${argo.tests.reports}/junit/output">
         <fileset dir="${argo.tests.src}">
           <include name="org/argouml/**/Test*.java"/>
         	<!-- this is the only test specific to MDR -->
@@ -1077,8 +1085,6 @@ Property files to be searched:
     <junit errorproperty="junit.failure" fork="yes" haltonfailure="false" maxmemory="48M" printsummary="true">
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
-        <sysproperty key="argouml.model.implementation" 
-                 value="org.argouml.model.uml.MDRModelImplementation"/>
         <classpath>
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
