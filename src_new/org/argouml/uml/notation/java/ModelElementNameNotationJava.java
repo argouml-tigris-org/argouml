@@ -56,6 +56,9 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
      * @see org.argouml.notation.NotationProvider4#getParsingHelp()
      */
     public String getParsingHelp() {
+        if (Model.getFacade().isAStateVertex(myModelElement)) {
+            return "parsing.help.fig-statename";
+        }
         return "parsing.help.fig-nodemodelelement";
     }
 
