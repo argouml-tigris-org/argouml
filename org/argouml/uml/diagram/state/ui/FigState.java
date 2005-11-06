@@ -97,13 +97,19 @@ public abstract class FigState extends FigStateVertex {
      */
     public void setOwner(Object newOwner) {
         super.setOwner(newOwner);
-        if (Model.getFacade().isAState(newOwner)) {
+        updateInternal();
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
+     */
+    protected void initNotationProviders(Object own) {
+        super.initNotationProviders(own);
+        if (Model.getFacade().isAState(own)) {
             notationProviderBody = 
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_STATEBODY, this, newOwner);
-            
-	}
-        updateInternal();
+                        NotationProviderFactory2.TYPE_STATEBODY, this, own);
+        }
     }
 
     /**
