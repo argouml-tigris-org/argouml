@@ -247,15 +247,14 @@ public class FigClassifierRole extends FigNodeModelElement
     }
 
     public String getTipString(MouseEvent me) {
-        int count = 0;
+        int portCount = 0;
         Iterator it = getFigs().iterator();
         while (it.hasNext()) {
             if (it.next() instanceof FigMessagePort) {
-                count++;
+                portCount++;
             }
         }
-        // TODO Auto-generated method stub
-        return "" + count;
+        return linkPositions.size() + ":" + portCount;
     }
     
     /**
@@ -1063,9 +1062,7 @@ public class FigClassifierRole extends FigNodeModelElement
         Rectangle rect = new Rectangle(getX(), y - 16, getWidth(), 32);
         MessageNode foundNode = null;
         if (lifeLine.intersects(rect)) {
-            for (int i = 0;
-                i < linkPositions.size();
-                i++) {
+            for (int i = 0; i < linkPositions.size(); i++) {
                 MessageNode node = (MessageNode) linkPositions.get(i);
                 int position = getYCoordinate(i);
                 if (i < linkPositions.size() - 1) {
@@ -1291,7 +1288,7 @@ public class FigClassifierRole extends FigNodeModelElement
     public Selection makeSelection() {
         return new SelectionClassifierRole(this);
     }
-
+    
     static class TempFig extends FigLine {
         TempFig(Object owner, int x, int y, int x2) {
             super(x, y, x2, y);

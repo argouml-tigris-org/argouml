@@ -127,7 +127,7 @@ public abstract class FigMessage
         if (result instanceof FigClassifierRole.TempFig
 	    && getOwner() != null) {
 	    result =
-		getSrcFigClassifierRole().createFigMessagePort(getOwner(),
+		getSourceFigClassifierRole().createFigMessagePort(getOwner(),
 							       result);
             setSourcePortFig(result);
         }
@@ -204,11 +204,11 @@ public abstract class FigMessage
         }
     }
 
-    public MessageNode getSrcMessagePort() {
+    public MessageNode getSourceMessageNode() {
         return ((FigMessagePort) getSourcePortFig()).getNode();
     }
 
-    public MessageNode getDestMessagePort() {
+    public MessageNode getDestMessageNode() {
         return ((FigMessagePort) getDestPortFig()).getNode();
     }
 
@@ -270,7 +270,7 @@ public abstract class FigMessage
     /**
      * @return the source figobject
      */
-    public FigClassifierRole getSrcFigClassifierRole() {
+    public FigClassifierRole getSourceFigClassifierRole() {
         return (FigClassifierRole) getSourceFigNode();
     }
 

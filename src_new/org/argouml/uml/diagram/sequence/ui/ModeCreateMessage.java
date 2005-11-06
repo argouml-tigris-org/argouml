@@ -67,12 +67,12 @@ public class ModeCreateMessage extends ModeCreate {
     /**
      * The FigNode on the NetNode that owns the start port.
      */
-    private FigNode sourceFigNode;
+    private FigClassifierRole sourceFigClassifierRole;
 
     /**
-     * The new NetEdge that is being created.
+     * The new message that is being created.
      */
-    private Object newEdge;
+    private Object message;
 
     /**
      * The constructor.
@@ -121,7 +121,7 @@ public class ModeCreateMessage extends ModeCreate {
     public void mousePressed(MouseEvent me) {
         if (me.isConsumed()) {
             return;
-	}
+        }
         int x = me.getX(), y = me.getY();
         Editor ce = Globals.curEditor();
         Fig underMouse = ce.hit(x, y);
@@ -133,19 +133,19 @@ public class ModeCreateMessage extends ModeCreate {
             me.consume();
             return;
         }
-        if (!(underMouse instanceof FigNode)) {
+        if (!(underMouse instanceof FigClassifierRole)) {
             done();
             me.consume();
             return;
         }
-        sourceFigNode = (FigNode) underMouse;
-        startPort = sourceFigNode.deepHitPort(x, y);
+        sourceFigClassifierRole = (FigClassifierRole) underMouse;
+        startPort = sourceFigClassifierRole.deepHitPort(x, y);
         if (startPort == null) {
             done();
             me.consume();
             return;
         }
-        startPortFig = sourceFigNode.getPortFig(startPort);
+        startPortFig = sourceFigClassifierRole.getPortFig(startPort);
         start();
         Point snapPt = new Point();
         synchronized (snapPt) {
@@ -173,8 +173,8 @@ public class ModeCreateMessage extends ModeCreate {
     public void mouseReleased(MouseEvent me) {
         if (me.isConsumed()) {
             return;
-	}
-        if (sourceFigNode == null) {
+        }
+        if (sourceFigClassifierRole == null) {
             done();
             me.consume();
             return;
@@ -192,26 +192,26 @@ public class ModeCreateMessage extends ModeCreate {
             f = null;
 	}
         MutableGraphModel mgm = (MutableGraphModel) gm;
-        if (f instanceof FigNode) {
-            FigNode destFigNode = (FigNode) f;
+        if (f instanceof FigClassifierRole) {
+            FigClassifierRole destFigClassifierRole = (FigClassifierRole) f;
             // If its a FigNode, then check within the
             // FigNode to see if a port exists
             Object foundPort = null;
-            if (destFigNode != sourceFigNode) {
+            if (destFigClassifierRole != sourceFigClassifierRole) {
                 y = startPortFig.getY();
-                foundPort = destFigNode.deepHitPort(x, y);
+                foundPort = destFigClassifierRole.deepHitPort(x, y);
             } else {
-                foundPort = destFigNode.deepHitPort(x, y);
+                foundPort = destFigClassifierRole.deepHitPort(x, y);
             }
 
             if (foundPort != null && foundPort != startPort) {
-                Fig destPortFig = destFigNode.getPortFig(foundPort);
+                Fig destPortFig = destFigClassifierRole.getPortFig(foundPort);
                 Object edgeType = getArg("edgeClass");
                 if (edgeType != null) {
-                    newEdge =
+                    message =
                         mgm.connect(startPort, foundPort, edgeType);
                 } else {
-                    newEdge = mgm.connect(startPort, foundPort);
+                    message = mgm.connect(startPort, foundPort);
                 }
 
                 // Calling connect() will add the edge to the GraphModel and
@@ -219,38 +219,38 @@ public class ModeCreateMessage extends ModeCreate {
                 // edgeAdded event and will add an appropriate FigEdge
                 // (determined by the GraphEdgeRenderer).
 
-                if (null != newEdge) {
+                if (null != message) {
                     LayerManager lm = ce.getLayerManager();
                     ce.damaged(_newItem);
-                    sourceFigNode.damage();
-                    destFigNode.damage();
+                    sourceFigClassifierRole.damage();
+                    destFigClassifierRole.damage();
                     _newItem = null;
                     FigMessage fe =
                         (FigMessage) ce.getLayerManager()
-                            .getActiveLayer().presentationFor(newEdge);
+                            .getActiveLayer().presentationFor(message);
                     fe.setSourcePortFig(startPortFig);
-                    fe.setSourceFigNode(sourceFigNode);
+                    fe.setSourceFigNode(sourceFigClassifierRole);
                     fe.setDestPortFig(destPortFig);
-                    fe.setDestFigNode(destFigNode);
-				// set the new edge in place
-                    if (sourceFigNode != null) {
-                        sourceFigNode.updateEdges();
-		    }
-                    if (destFigNode != null) {
-                        destFigNode.updateEdges();
-		    }
+                    fe.setDestFigNode(destFigClassifierRole);
+                    // set the new edge in place
+                    if (sourceFigClassifierRole != null) {
+                        sourceFigClassifierRole.updateEdges();
+                    }
+                    if (destFigClassifierRole != null) {
+                        destFigClassifierRole.updateEdges();
+                    }
                     if (fe != null) {
                         ce.getSelectionManager().select(fe);
-		    }
+                    }
                     done();
                     me.consume();
                     return;
                 } else {
                     LOG.debug("connection return null");
-		}
+                }
             }
         }
-        sourceFigNode.damage();
+        sourceFigClassifierRole.damage();
         ce.damaged(_newItem);
         _newItem = null;
         done();

@@ -141,7 +141,7 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
                 _classifierRole = getClassifierRole(_classifier, "obj");
                 FigClassifierRole dest = figMessage.getDestFigClassifierRole();
                 _portCnt = SequenceDiagramLayout.getNodeIndex(
-                    figMessage.getDestMessagePort().getFigMessagePort().getY());
+                    figMessage.getDestMessageNode().getFigMessagePort().getY());
                 Enumeration enu = _diagram.elements();
                 while (enu.hasMoreElements()) {
                     Object f = enu.nextElement();
@@ -156,7 +156,7 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
                     } else if (f instanceof FigMessage) {
                         dest = ((FigMessage)f).getDestFigClassifierRole();
                         int port = SequenceDiagramLayout.getNodeIndex(
-                            ((FigMessage)f).getDestMessagePort().getFigMessagePort().getY());
+                            ((FigMessage)f).getDestMessageNode().getFigMessagePort().getY());
                         if (_maxPort < port) {
                             _maxPort = port;
                         }
