@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.ModelEventPump;
 import org.argouml.uml.diagram.sequence.MessageNode;
@@ -68,6 +69,13 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class FigClassifierRole extends FigNodeModelElement
     implements MouseListener, HandlerFactory {
+    
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(FigClassifierRole.class);
+    
     /**
      * The width of an activation box.
      */
@@ -279,16 +287,16 @@ public class FigClassifierRole extends FigNodeModelElement
     /**
      * Set the node's fig to a FigMessagePort if one is available.
      */
-    private void setMatchingFig(MessageNode node) {
-        if (node.getFigMessagePort() == null) {
-            int y = getYCoordinate(node);
+    private void setMatchingFig(MessageNode messageNode) {
+        if (messageNode.getFigMessagePort() == null) {
+            int y = getYCoordinate(messageNode);
             for (Iterator it = getFigs().iterator(); it.hasNext();) {
                 Fig fig = (Fig) it.next();
                 if (fig instanceof FigMessagePort) {
-                    FigMessagePort fmp = (FigMessagePort) fig;
-                    if (fmp.getY1() == y) {
-                        node.setFigMessagePort(fmp);
-                        fmp.setNode(node);
+                    FigMessagePort messagePortFig = (FigMessagePort) fig;
+                    if (messagePortFig.getY1() == y) {
+                        messageNode.setFigMessagePort(messagePortFig);
+                        messagePortFig.setNode(messageNode);
                         updateNodeStates();
                     }
                 }
@@ -1182,33 +1190,34 @@ public class FigClassifierRole extends FigNodeModelElement
         }
 	return null;
     }
-
     /**
      * @see org.tigris.gef.presentation.FigNode#getPortFig(java.lang.Object)
      */
-    public Fig getPortFig(Object np) {
-        if (np == null) {
+    public Fig getPortFig(Object messageNode) {
+        if (messageNode == null) {
             return null;
-	}
-        if (np instanceof MessageNode) {
-            setMatchingFig((MessageNode) np);
         }
-        if ((np instanceof MessageNode)
-	    && ((MessageNode) np).getFigMessagePort() != null) {
-            return ((MessageNode) np).getFigMessagePort();
-        } else if (Model.getFacade().isAMessage(np)) {
-            for (Iterator it = getFigs().iterator(); it.hasNext();) {
-                Fig fig = (Fig) it.next();
-                if (fig.getOwner() == np) {
-                    return fig;
-		}
-            }
-        } else if (np instanceof MessageNode) {
-            return new TempFig(np, lifeLine.getX() - WIDTH / 2,
-                               getYCoordinate((MessageNode) np),
-                               lifeLine.getX() + WIDTH / 2);
+        
+        if (Model.getFacade().isAClassifierRole(messageNode)) {
+            LOG.warn("Got a ClassifierRole - only legal on load");
+            return null;
         }
-        return null;
+        
+        if (!(messageNode instanceof MessageNode)) {
+            throw new IllegalArgumentException(
+                    "Expecting a MessageNode but got a "
+                    + messageNode.getClass().getName());
+        }
+  
+        setMatchingFig((MessageNode) messageNode);
+         
+        if (((MessageNode) messageNode).getFigMessagePort() != null) {
+            return ((MessageNode) messageNode).getFigMessagePort();
+        }
+        return new TempFig(
+                messageNode, lifeLine.getX() - WIDTH / 2,
+                getYCoordinate((MessageNode) messageNode),
+                lifeLine.getX() + WIDTH / 2);
     }
 
     /**
