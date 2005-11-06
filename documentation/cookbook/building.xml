@@ -1111,8 +1111,9 @@ The result is in <filename>build/classes</filename>.
 	    <listitem>
 	      <para>generate - optional</para>
 	      <para>
-This is a step that, if it exists, must be run before compile.
-The result of this is some files that is a prerequisite for compile.
+This is a step that, if it exists, can be run before compile.
+The result of this is some files that is a prerequisite for compile
+so the compile target runs this automatically.
 </para>
 	    </listitem>
 	    <listitem>
