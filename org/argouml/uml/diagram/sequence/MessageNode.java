@@ -62,6 +62,7 @@ public class MessageNode extends Object {
     /** Implicitly returned from being created */
     public static final int IMPLICIT_CREATED = 8;
 
+    // TODO: Need to replace this with FigMessage
     private FigMessagePort figMessagePort;
     private FigClassifierRole ownerObject;
     private int state;
@@ -79,6 +80,7 @@ public class MessageNode extends Object {
     }
 
     /**
+     * TODO: Need to replace this with getFigMessage
      * @return the figMessagePort
      */
     public FigMessagePort getFigMessagePort() {
