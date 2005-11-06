@@ -32,7 +32,6 @@ import org.argouml.model.Model;
  * Subclass this for all languages.
  * 
  * @author mvw@tigris.org
- *
  */
 public abstract class ModelElementNameNotation extends ValueHandler {
 
@@ -41,7 +40,6 @@ public abstract class ModelElementNameNotation extends ValueHandler {
     
     /**
      * The constructor.
-     * 
      */
     public ModelElementNameNotation(Object modelElement) {
         if (!Model.getFacade().isAModelElement(modelElement)) {
