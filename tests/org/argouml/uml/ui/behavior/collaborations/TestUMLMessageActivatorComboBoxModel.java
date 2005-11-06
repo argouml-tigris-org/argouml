@@ -102,15 +102,4 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
         Model.getPump().reallyFlushModelEvents();
         assertTrue(model.getSelectedItem() == activators[0]);
     }
-
-    /**
-     * Test removing.
-     */
-    public void testRemoveBase() {
-        Model.getUmlFactory().delete(activators[9]);
-        Model.getPump().reallyFlushModelEvents();
-        assertEquals(9, model.getSize());
-        assertTrue(!model.contains(activators[9]));
-    }
-
 }
