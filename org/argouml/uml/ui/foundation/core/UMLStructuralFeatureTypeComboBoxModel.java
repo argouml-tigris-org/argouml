@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -33,7 +34,9 @@ import java.util.TreeSet;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -140,6 +143,29 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
             o = " ";
         }
         return o;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt instanceof AddAssociationEvent) {
+            if (getTarget() != null && isValidEvent(evt)) {
+                Object o = getChangedElement(evt);
+                setFireListEvents(false);
+                addElement(o);
+                setFireListEvents(true);
+            }
+        } else if (evt instanceof RemoveAssociationEvent) {
+            Object o = getChangedElement(evt);
+            if (contains(o)) {
+                setFireListEvents(false);
+                removeElement(o);
+                setFireListEvents(true);
+            }
+        } else {
+            super.propertyChange(evt);
+        }
     }
 
 }
