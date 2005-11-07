@@ -22,42 +22,31 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.notation.uml;
+package org.argouml.uml.notation;
 
-import org.argouml.application.api.Argo;
-import org.argouml.notation.Notation;
-import org.argouml.notation.NotationName;
-import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.model.Model;
 
 /**
- * This class is the only one that has the knowledge of the complete list of 
- * NotationProvider4 implementations for UML.
+ * This abstract class forms the basis of all Notation providers 
+ * for the text shown in the operation compartment of a Class. 
+ * Subclass this for all languages.
  * 
  * @author mvw@tigris.org
  */
-public class InitNotationUml {
-    
+public abstract class OperationNotation extends ValueHandler {
+
+    protected Object myOperation;
+    protected Object myClass;
+
     /**
-     * static initializer, register all appropriate critics.
+     * The constructor.
      */
-    public static void init() {
-        NotationProviderFactory2 npf = NotationProviderFactory2.getInstance();
-        NotationName name = 
-            Notation.makeNotation(
-                    "UML",
-                    "1.4",
-                    Argo.lookupIconResource("UmlNotation"));
-        
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_TRANSITION, 
-                name, TransitionNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_STATEBODY, 
-                name, StateBodyNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_NAME, 
-                name, ModelElementNameNotationUml.class);        
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_ACTIONSTATE, 
-                name, ActionStateNotationUml.class);        
-        
-        NotationProviderFactory2.getInstance().setDefaultNotation(name);
+    public OperationNotation(Object operation) {
+        if (!Model.getFacade().isAOperation(operation)) {
+            throw new IllegalArgumentException();
+        }
+        myOperation = operation;
+        myClass = Model.getFacade().getOwner(operation);
     }
 
 }

@@ -24,40 +24,47 @@
 
 package org.argouml.uml.notation.uml;
 
-import org.argouml.application.api.Argo;
-import org.argouml.notation.Notation;
-import org.argouml.notation.NotationName;
-import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.generator.GeneratorDisplay;
+import org.argouml.uml.generator.ParserDisplay;
+import org.argouml.uml.notation.ActionStateNotation;
+
 
 /**
- * This class is the only one that has the knowledge of the complete list of 
- * NotationProvider4 implementations for UML.
- * 
  * @author mvw@tigris.org
  */
-public class InitNotationUml {
-    
+public class ActionStateNotationUml extends ActionStateNotation {
+
     /**
-     * static initializer, register all appropriate critics.
+     * The constructor.
+     * 
+     * @param actionState
      */
-    public static void init() {
-        NotationProviderFactory2 npf = NotationProviderFactory2.getInstance();
-        NotationName name = 
-            Notation.makeNotation(
-                    "UML",
-                    "1.4",
-                    Argo.lookupIconResource("UmlNotation"));
-        
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_TRANSITION, 
-                name, TransitionNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_STATEBODY, 
-                name, StateBodyNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_NAME, 
-                name, ModelElementNameNotationUml.class);        
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_ACTIONSTATE, 
-                name, ActionStateNotationUml.class);        
-        
-        NotationProviderFactory2.getInstance().setDefaultNotation(name);
+    public ActionStateNotationUml(Object actionState) {
+        super(actionState);
+    }
+
+    /**
+     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     */
+    public String parse(String text) {
+        //TODO: Make the next call inline - replace ParserDisplay
+        ParserDisplay.SINGLETON.parseActionState(text, myActionState);
+        return toString();
+    }
+
+    /**
+     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     */
+    public String getParsingHelp() {
+        return "parsing.help.fig-actionstate";
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        /* TODO: copy this here inline! Replace GeneratorDisplay. */
+        return GeneratorDisplay.getInstance().generateActionState(myActionState);
     }
 
 }

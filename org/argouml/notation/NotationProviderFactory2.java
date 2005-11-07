@@ -29,9 +29,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.argouml.uml.notation.java.InitNotationJava;
-import org.argouml.uml.notation.uml.InitNotationUml;
-
 /**
  * @author mvw@tigris.org
  */
@@ -51,16 +48,21 @@ public class NotationProviderFactory2 {
      * TYPE_STATEBODY the multiline text shown inside the state body
      */
     public static final int TYPE_STATEBODY = 3;
-    
+
+    /**
+     * TYPE_ACTIONSTATE the text shown in an actionstate
+     */
+    public static final int TYPE_ACTIONSTATE = 4;
+
     /**
      * TYPE_ATTRIBUTE the text shown in a attribute compartment (1 attrib only)
      */
-    public static final int TYPE_ATTRIBUTE = 4;
+    public static final int TYPE_ATTRIBUTE = 5;
     
     /**
      * TYPE_OPERATION the text shown in a operation compartment (1 oper only)
      */
-    public static final int TYPE_OPERATION = 5;
+    public static final int TYPE_OPERATION = 6;
 
 
     /**
@@ -94,8 +96,6 @@ public class NotationProviderFactory2 {
     public static NotationProviderFactory2 getInstance() {
         if (instance == null) {
             instance = new NotationProviderFactory2();
-            InitNotationUml.init();
-            InitNotationJava.init();
         }
         return instance;
     }
