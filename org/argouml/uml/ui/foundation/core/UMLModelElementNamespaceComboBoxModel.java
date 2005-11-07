@@ -87,15 +87,16 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
     public void propertyChange(PropertyChangeEvent evt) {
         /*
          * Although we've registered for notification of ownedElement changes, a
-         * removed association doesn't necessarily mean that this is no longer
+         * added/removed association doesn't necessarily mean that this is no longer
          * available as a legal namespace. 
          * 
          * Rebuild the list from scratch to be sure it's right.
          */
-        if (evt instanceof RemoveAssociationEvent) {
-            buildModelList();
+        if (evt instanceof RemoveAssociationEvent 
+                || evt instanceof AddAssociationEvent) {
+                buildModelList();
         } else {
-            super.propertyChange(evt);
-        }
+        super.propertyChange(evt);
     }
+}
 }
