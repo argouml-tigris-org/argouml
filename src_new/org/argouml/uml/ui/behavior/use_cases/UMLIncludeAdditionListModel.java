@@ -38,12 +38,14 @@ public class UMLIncludeAdditionListModel extends UMLModelElementListModel2 {
      * Constructor for UMLIncludeAdditionComboBoxModel.
      */
     public UMLIncludeAdditionListModel() {
-//      there is a bug in NSUML so this model listens for base modelevents
-        super("base");
+        super("addition");
         Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
     protected void buildModelList() {
         if (!isEmpty())
             removeAllElements();
@@ -51,8 +53,9 @@ public class UMLIncludeAdditionListModel extends UMLModelElementListModel2 {
     }
 
 
+
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAUseCase(element)
