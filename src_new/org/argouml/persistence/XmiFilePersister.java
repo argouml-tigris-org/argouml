@@ -30,20 +30,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.Collection;
-import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
-import org.argouml.model.Facade;
 import org.argouml.model.Model;
-import org.argouml.model.ModelManagementHelper;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
-import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
-import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
  * To persist to and from XMI file storage.
@@ -185,7 +178,6 @@ public class XmiFilePersister extends AbstractFilePersister {
             p.addMember(new ProjectMemberTodoList("", p));
             p.addMember(model);
             p.setRoot(model);
-            registerDiagrams(p,model);
             ProjectManager.getManager().setNeedsSave(false);
             return p;
         } catch (IOException e) {
@@ -193,23 +185,4 @@ public class XmiFilePersister extends AbstractFilePersister {
         }
     }
     
-    protected void registerDiagrams(Project p, Object model) {
-        Facade facade = Model.getFacade();
-        ModelManagementHelper mdlMgmt = Model.getModelManagementHelper();
-        Collection graphs = mdlMgmt.getAllModelElementsOfKind(model,Model.getMetaTypes().getStateMachine());
-        Iterator it = graphs.iterator();
-        while (it.hasNext()) {
-            Object graph = it.next();
-            UMLDiagram diagram = null;
-            if (facade.isAActivityGraph(graph)) {
-                LOG.info("Creating activity diagram for "+facade.getUMLClassName(graph)+"<<"+facade.getName(graph)+">>");              
-                diagram = new UMLActivityDiagram(facade.getNamespace(graph),graph);
-            } else {
-                LOG.info("Creating state diagram for "+facade.getUMLClassName(graph)+"<<"+facade.getName(graph)+">>");                
-                diagram = new UMLStateDiagram(facade.getNamespace(graph),graph);
-            }
-            if (diagram!=null)
-                p.addDiagram(diagram);
-        }
-    }
 }
