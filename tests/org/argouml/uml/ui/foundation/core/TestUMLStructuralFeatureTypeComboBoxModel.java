@@ -53,12 +53,10 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        //ProjectManager.getManager().getCurrentProject();
         Object mmodel =
             Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().setName(mmodel, "untitledModel");
         Model.getModelManagementFactory().setRootModel(mmodel);
-        //
         elem = Model.getCoreFactory().createAttribute();
         model = new UMLStructuralFeatureTypeComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],
@@ -69,10 +67,11 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
         Model.getCoreHelper().setNamespace(elem, m);
         for (int i = 0; i < 10; i++) {
             types[i] = Model.getCoreFactory().createClass();
+            // give them unique names so they don't get merged
+            Model.getCoreHelper().setName(types[i], "type" + i);
             Model.getCoreHelper().addOwnedElement(m, types[i]);
         }
         Model.getCoreHelper().setType(elem, types[0]);
-        //model.buildModelList();
         Model.getPump().reallyFlushModelEvents();
     }
 
