@@ -35,9 +35,9 @@ import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
-import org.argouml.notation.Notation;
+import org.argouml.notation.NotationProvider4;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
-import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
@@ -58,6 +58,8 @@ public class FigActionState extends FigStateVertex {
     // instance variables
 
     private FigRRect cover;
+    
+    private NotationProvider4 notationProvider;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -97,6 +99,18 @@ public class FigActionState extends FigStateVertex {
     public FigActionState(GraphModel gm, Object node) {
         this();
         setOwner(node);
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
+     */
+    protected void initNotationProviders(Object own) {
+        super.initNotationProviders(own);
+        if (Model.getFacade().isAActionState(own)) {
+            notationProvider = 
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                    NotationProviderFactory2.TYPE_ACTIONSTATE, this, own);
+        }
     }
 
     /**
@@ -244,8 +258,8 @@ public class FigActionState extends FigStateVertex {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        if (getOwner() != null) {
-            getNameFig().setText(Notation.generate(this, getOwner()));
+        if(notationProvider != null) { 
+            getNameFig().setText(notationProvider.toString());
         }
     }
 
@@ -254,12 +268,7 @@ public class FigActionState extends FigStateVertex {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-        if (ft == getNameFig() && this.getOwner() != null) {
-            ParserDisplay.SINGLETON.parseActionState(ft.getText(),
-                    this.getOwner());
-        } else {
-            super.textEdited(ft);
-        }
+        ft.setText(notationProvider.parse(ft.getText()));
     }
     
     /**
@@ -267,7 +276,7 @@ public class FigActionState extends FigStateVertex {
      */
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
-            showHelp("parsing.help.fig-actionstate");
+            showHelp(notationProvider.getParsingHelp());
         }
     }
     

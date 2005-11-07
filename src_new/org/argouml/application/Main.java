@@ -63,6 +63,8 @@ import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
 import org.argouml.ui.cmd.ActionExit;
+import org.argouml.uml.notation.java.InitNotationJava;
+import org.argouml.uml.notation.uml.InitNotationUml;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
 
@@ -303,6 +305,9 @@ public class Main {
         if (splash != null) {
             splash.getStatusBar().showProgress(75);
         }
+        
+        InitNotationUml.init();
+        InitNotationJava.init();
 
         // Initialize the module loader.
         st.mark("modules");
