@@ -35,20 +35,23 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 public class UMLIncludeBaseListModel extends UMLModelElementListModel2 {
 
     public UMLIncludeBaseListModel() {
-        // there is a bug in NSUML so this model
-        // listens for addition modelevents
-        super("addition");
+        super("base");
         Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
-    
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
     protected void buildModelList() {
         if (!isEmpty())
             removeAllElements();
         addElement(Model.getFacade().getBase(getTarget()));
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
+     */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAUseCase(element)
             && Model.getFacade().getNamespace(element)
