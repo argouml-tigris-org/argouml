@@ -16,17 +16,17 @@ Building instructions
 =====================
 First, make sure your current working directory is where this very
 file is located. Then just type
-	build 
+	build -p
 if on a MS Windows system, or
-	./build.sh
-if on a *nix system, to create the settings for an environment to suit
-Ant.
+	./build.sh -p
+if on a *nix system, to get a list of available build targets
+and the name of the default target which will be used if none
+is specified (currently 'compile').
 
-After the above command you should see a help screen describing the
-usage of the Ant facility if everything is set up properly.
-
-Executing build.bat/build.sh will use the bundled ant distribution,
-which is version 1.4.1.
+Executing build.bat/build.sh will use the version of Ant from
+the ArgoUML CVS repository.  You can use 
+        build -version
+to find out what the current version is.
 
 Property Settings
 =================
@@ -51,7 +51,7 @@ If you want to compile ArgoUML, you need to have following:
   gef.jar, antlrall.jar, toolbar.jar, swidgets.jar) in argouml/lib
   when these are right the command
      build compile
-will do the job.
+  will do the job.
   -->
 
 <project basedir="." default="compile" name="argouml">
@@ -529,9 +529,7 @@ Property files to be searched:
     <!-- This should work, shouldn't it? Well, it doesn't for me.
          I think ant messes up something for MDR. (Linus, Oct 2005)
 
-    <ant dir="../../argouml-mdr" inheritAll="false" target="install">
-        <property file="../../argouml-mdr/default.properties"/>
-    </ant>
+    <ant dir="../../argouml-mdr" inheritAll="false" target="install"/>
     
     -->
 
@@ -739,7 +737,6 @@ Property files to be searched:
           description="Run the newly compiled ArgoUML.">
     <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
-          classpath="${argo.build.classes};${classpath}"
           fork="yes"
           taskname="argouml"
     	  maxmemory="500M">
@@ -756,7 +753,6 @@ Property files to be searched:
           description="Run ArgoUML with debug level logging.">
     <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
-          classpath="${argo.build.classes};${classpath}"
           fork="yes"
           taskname="argouml"
     	  maxmemory="500M">
@@ -773,7 +769,6 @@ Property files to be searched:
           description="Run ArgoUML with info level logging.">
     <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
-          classpath="${argo.build.classes};${classpath}"
           fork="yes"
           taskname="argouml"
     	  maxmemory="500M">
@@ -960,47 +955,6 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Run the junit tests.                                                -->
   <!-- =================================================================== -->
-  <target name="tests-obsolete">
-      <!--
-          depends="compile,junit-fetch-init,junit-setup,junit-report-clean,ant.optional.init"
-          description="Obsolete NSUML tests.">
-       -->
-
-    <!-- ant 1.4 uses printsummary="true"                          -->
-    <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
-    <!-- This should never be committed as "withOutAndErr", but    -->
-    <!-- this comment is in case it gets committed by accident.    -->
-
-    <!-- TODO:  This should be contained in default.properties     -->
-    <!--        and overridable in build.properties so that        -->
-    <!--        individual users can set as wanted.                -->
-    <!--        That is part of issue 579.                         -->
-
-    <junit errorproperty="junit.failure" fork="yes" haltonfailure="false" maxmemory="48M" printsummary="true">
-	<sysproperty key="test.model.uml13" value="${011202.xml}"/>
-	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
-	<sysproperty key="java.awt.headless" value="true"/>
-	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
-    <sysproperty key="argouml.model.implementation" 
-                 value="org.argouml.model.uml.NSUMLModelImplementation"/>
-        <classpath>
-            <pathelement location="${argo.build.classes}"/>
-            <pathelement location="${argo.tests.classes}"/>
-            <path refid="argo.runtime.classpath"/>
-        </classpath>
-        <formatter type="xml"/>
-      <batchtest todir="${argo.tests.reports}/junit/output">
-        <fileset dir="${argo.tests.src}">
-          <include name="org/argouml/**/Test*.java"/>
-        </fileset>
-      </batchtest>
-    </junit>
-
-    <antcall target="junit-report-create"/>
-
-    <antcall target="tests-using-mdr"/>
-
-  </target>
 
   <target name="tests"
           depends="compile,junit-fetch-init,junit-setup,junit-report-clean,ant.optional.init"
@@ -1112,7 +1066,6 @@ cd ../argouml/src_new
 
     <!-- Don't do anything. -->
     <java classname="org.argouml.application.Main" 
-          classpath="${argo.build.classes};${classpath}"
           fork="yes">
         <classpath>
 	  <pathelement location="${argo.build.classes}"/>
@@ -1123,7 +1076,6 @@ cd ../argouml/src_new
 
     <!-- Exit. -->
     <java classname="org.argouml.application.Main" 
-          classpath="${argo.build.classes};${classpath}"
           fork="yes">
         <classpath>
 	  <pathelement location="${argo.build.classes}"/>
