@@ -102,7 +102,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 	// check whether constant, constants are often weird and thus not a
 	// problem
 	Object/*MChangeableKind*/ ck = Model.getFacade().getChangeability(attr);
-	if (Model.getFacade().isFrozen(ck)) {
+	if (ck!=null&&Model.getFacade().isFrozen(ck)) {
 	    return NO_PROBLEM;
 	}
 
