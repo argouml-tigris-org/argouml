@@ -25,13 +25,9 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.beans.PropertyChangeEvent;
-import java.util.Collection;
-import java.util.Iterator;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
-import org.argouml.model.AttributeChangeEvent;
-import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -87,16 +83,16 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
     public void propertyChange(PropertyChangeEvent evt) {
         /*
          * Although we've registered for notification of ownedElement changes, a
-         * added/removed association doesn't necessarily mean that this is no longer
-         * available as a legal namespace. 
+         * added/removed association doesn't necessarily mean that this is no
+         * longer available as a legal namespace.
          * 
-         * Rebuild the list from scratch to be sure it's right.
+         * Rebuild the list from scratch to be sure it's correct.
          */
         if (evt instanceof RemoveAssociationEvent 
                 || evt instanceof AddAssociationEvent) {
-                buildModelList();
+            buildModelList();
         } else {
-        super.propertyChange(evt);
+            super.propertyChange(evt);
+        }
     }
-}
 }
