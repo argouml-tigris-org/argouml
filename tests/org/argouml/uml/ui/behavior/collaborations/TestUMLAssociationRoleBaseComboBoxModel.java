@@ -128,4 +128,16 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         Model.getPump().reallyFlushModelEvents();
         assertNull(model.getSelectedItem());
     }
+
+    /**
+     * Test removing the Base.
+     */
+    public void testRemoveBase() {
+        Model.getUmlFactory().delete(bases[9]);
+        // there is one extra element since removal of the base is allowed.
+        Model.getPump().reallyFlushModelEvents();
+        assertEquals(9 + 1, model.getSize());
+        assertTrue(!model.contains(bases[9]));
+    }
+
 }

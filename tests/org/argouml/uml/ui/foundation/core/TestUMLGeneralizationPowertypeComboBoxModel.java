@@ -81,7 +81,6 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
             types[i] = Model.getCoreFactory().createClass();
             Model.getCoreHelper().addOwnedElement(m, types[i]);
         }
-        model.buildModelList();
         Model.getPump().reallyFlushModelEvents();
     }
 
@@ -130,4 +129,14 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
         Model.getPump().reallyFlushModelEvents();
         assertNull(model.getSelectedItem());
     }
+
+    /**
+     * Test deletion.
+     */
+    public void testRemovePowertype() {
+        Model.getUmlFactory().delete(types[9]);
+        Model.getPump().reallyFlushModelEvents();
+        assertTrue(!model.contains(types[9]));
+    }
+
 }
