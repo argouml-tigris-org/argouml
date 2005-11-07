@@ -153,7 +153,7 @@ class PropertySpecialString {
  * see http://argouml.tigris.org/proposals/notation/index.html. 
 
  */
-public final class ParserDisplay extends Parser {
+public final class ParserDisplay {
     /**
      * The one and only ParserDisplay.
      */
@@ -727,8 +727,6 @@ public final class ParserDisplay extends Parser {
      *         <code>null</code> if we are given <code>null</code> or a
      *         blank string. <em>Note</em>. The string ":" can be used to set
      *         both name and location to null.
-     *
-     * @see org.argouml.uml.generator.Parser#parseExtensionPoint(java.lang.String)
      */
     public Object parseExtensionPoint(String text) {
 
@@ -837,9 +835,6 @@ public final class ParserDisplay extends Parser {
      * @throws ParseException
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
-     *
-     * @see org.argouml.uml.generator.Parser#parseOperation(java.lang.String,
-     * java.lang.Object)
      */
     public void parseOperation(String s, Object op) throws ParseException {
         MyTokenizer st;
@@ -1322,9 +1317,6 @@ public final class ParserDisplay extends Parser {
      * @throws ParseException
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
-     *
-     * @see org.argouml.uml.generator.Parser#parseAttribute(java.lang.String,
-     * java.lang.Object)
      */
     public void parseAttribute(
             String text,
@@ -2088,8 +2080,6 @@ public final class ParserDisplay extends Parser {
      * @param s     the string to be parsed
      * @return      the transition object
      * @throws ParseException when no matching [] are found
-     * @see org.argouml.uml.generator.Parser#parseTransition(java.lang.Object,
-     *      java.lang.String)
      */
     public Object parseTransition(Object trans, String s)
         throws ParseException {
@@ -3983,9 +3973,6 @@ public final class ParserDisplay extends Parser {
     /**
      * An action state figure shows the action expression of the entry
      * action according to the UML spec.
-     *
-     * @see org.argouml.uml.generator.Parser#parseActionState(
-     *         java.lang.String, java.lang.Object)
      */
     public Object parseActionState(String s, Object actionState) {
         Object entry = Model.getFacade().getEntry(actionState);
