@@ -29,6 +29,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.argouml.uml.notation.java.InitNotationJava;
+import org.argouml.uml.notation.uml.InitNotationUml;
+
 /**
  * @author mvw@tigris.org
  */
@@ -96,6 +99,8 @@ public class NotationProviderFactory2 {
     public static NotationProviderFactory2 getInstance() {
         if (instance == null) {
             instance = new NotationProviderFactory2();
+            InitNotationUml.init();
+            InitNotationJava.init();
         }
         return instance;
     }
