@@ -24,6 +24,7 @@
 
 package org.argouml.model;
 
+import java.util.Collection;
 import java.util.Map;
 
 import org.xml.sax.InputSource;
@@ -46,8 +47,19 @@ public interface XmiReader {
      * @param pIs the input source for parsing
      * @return MModel the UML model
      * @throws UmlException on any error
+     * @deprecated A Model file can have several top levels objects, including Activity Diagrams,
+     * so one should handle collection.
      */
     Object parseToModel(InputSource pIs) throws UmlException;
+
+    /**
+     * Parses a given inputsource to a model. Does not override the novosoft
+     * parse method since that does not have the right signature.
+     * @param pIs the input source for parsing
+     * @return MModel the UML model
+     * @throws UmlException on any error
+     */
+    Collection parse(InputSource pIs) throws UmlException;
 
     /**
      * @return the map
