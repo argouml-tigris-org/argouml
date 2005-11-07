@@ -25,14 +25,19 @@
 package org.argouml.persistence;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
+import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.model.XmiReader;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.xml.sax.InputSource;
 
 /**
@@ -116,34 +121,64 @@ public class XMIParser {
             XmiReader reader = Model.getXmiReader();
             InputSource source = new InputSource(url.openStream());
             source.setSystemId(url.toString());
-            curModel = reader.parseToModel(source);
+            Collection elements = reader.parse(source);
+            registerModelAndDiagrams(elements);
             uUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
         } catch (Exception ex) {
             throw new OpenException(ex);
         }
         LOG.info("=======================================");
 
-        proj.addModel(curModel);
 
-        Collection ownedElements = Model.getFacade().getOwnedElements(curModel);
-        Iterator oeIterator = ownedElements.iterator();
-
-        while (oeIterator.hasNext()) {
-            Object me = /*(MModelElement)*/ oeIterator.next();
-            if (Model.getFacade().getName(me) == null)
-                Model.getCoreHelper().setName(me, "");
-	    /*
-	      if (me instanceof MClass) {
-	      // _proj.defineType((MClass) me);
-	      }
-	      else
-	      if (me instanceof MDataType) {
-	      _proj.defineType((MDataType) me);
-	      }
-	    */
-        }
     }
 
+    protected void registerModelAndDiagrams(Collection elements) {
+        Facade facade = Model.getFacade();
+        Collection diagramsElement = new ArrayList();
+        Iterator it = elements.iterator();
+        while (it.hasNext()) {
+            Object element = it.next();
+            if (facade.isAModel(element)) {
+                proj.addModel(element);
+                curModel = element;
+                diagramsElement.addAll(Model.getModelManagementHelper().
+                        getAllModelElementsOfKind(element,
+                                Model.getMetaTypes().getStateMachine()));
+                Collection ownedElements = Model.getFacade().getOwnedElements(element);
+                Iterator oeIterator = ownedElements.iterator();
+                while (oeIterator.hasNext()) {
+                    Object me = oeIterator.next();
+                    if (Model.getFacade().getName(me) == null)
+                        Model.getCoreHelper().setName(me, "");
+                }
+            } else if (facade.isAStateMachine(element)) {
+                diagramsElement.add(element);
+            }
+        }
+        //
+        it = diagramsElement.iterator();
+        while (it.hasNext()) {
+            Object element = it.next();
+            Object namespace = null;
+            if (facade.getNamespace(element) == null) {
+                namespace = facade.getContext(element);
+                Model.getCoreHelper().setNamespace(element,namespace);
+            } else {
+                namespace = facade.getNamespace(element);
+            }
+            ArgoDiagram diagram = null;
+            if (facade.isAActivityGraph(element)){
+                LOG.info("Creating activity diagram for "+facade.getUMLClassName(element)+"<<"+facade.getName(element)+">>");
+                diagram = new UMLActivityDiagram( namespace , element );
+            } else {
+                LOG.info("Creating state diagram for "+facade.getUMLClassName(element)+"<<"+facade.getName(element)+">>");                
+                diagram = new UMLStateDiagram( namespace , element );
+            }                    
+            if (diagram!=null)
+                proj.addMember(diagram);
+        }
+    }
+    
     /**
      * @return Returns the singleton.
      */
