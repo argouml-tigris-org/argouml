@@ -172,7 +172,7 @@ public class FigClass extends FigClassifierBox
         getStereotypeFig().setFilled(false);
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
         // +1 to have 1 pixel overlap with getNameFig()
-        getStereotypeFig().setVisible(false);
+        getStereotypeFig().setVisible(true);
         
         borderFig = new FigEmptyRect(10, 10, 0, 0);
         borderFig.setLineWidth(1);
