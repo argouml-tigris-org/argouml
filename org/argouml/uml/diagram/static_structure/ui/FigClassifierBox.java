@@ -30,6 +30,8 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
 
+import org.argouml.model.Model;
+import org.argouml.model.ModelEventPump;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigFeaturesCompartment;
@@ -247,6 +249,11 @@ abstract public class FigClassifierBox extends FigNodeModelElement
             return;
         }
         ((FigFeaturesCompartment)fg).createFeature();
+        
+        // Flushing the events here guarantees that the new feature
+        // exists in the Fig before we try to edit it.
+        Model.getPump().reallyFlushModelEvents();
+        
         List figList = fg.getFigs();
         CompartmentFigText ft =
             (CompartmentFigText) figList.get(figList.size() - 1);
