@@ -142,26 +142,17 @@ round-trip engineering for C++ projects.
     <property name="argo.root.dir" value="${argo.root}"/>
     <property file="${argo.src.dir}/default.properties"/>
     <property name="module.version" value="${argo.core.version}-${DSTAMP}-${TSTAMP}"/>
-    <property name="argo-mdr.dir" value="../../../argouml-mdr"/>
-    <property name="argo-mdr.build.dir" value="${argo-mdr.dir}/build"/>
-    <property name="argo-mdr.lib.dir" value="${argo-mdr.dir}/lib"/>
 
     <path id="module.compile.classpath">
       <fileset dir="${argo.build.dir}">
-        <include name="argouml.jar" />
-        <include name="argouml-model.jar" />
-        <include name="nsuml.jar" />
-        <include name="ocl-argo.jar" />
-        <include name="antlrall.jar" />
-        <include name="log4j.jar" />
-        <include name="gef.jar" />
+          <include name="argouml.jar" />
+          <include name="argouml-model.jar" />
+          <include name="nsuml.jar" />
+          <include name="ocl-argo.jar" />
+          <include name="antlrall.jar" />
+          <include name="log4j.jar" />
+          <include name="gef.jar" />
       </fileset>
-      <fileset dir="${argo-mdr.build.dir}">
-        <include name="*.jar"/>
-      </fileset> 
-      <fileset dir="${argo-mdr.lib.dir}">
-        <include name="*.jar"/>
-      </fileset> 
     </path>
       
     <path id="module.compile-tests.classpath">
