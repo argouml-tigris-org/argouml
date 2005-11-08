@@ -106,16 +106,14 @@ C++ Module.
 
           <listitem>
             <para>Name of the file to include in the header.</para>
-             <warning>
-              <para>This limits the number of possible included headers to one! 
-                It is a severe limitation in most common uses and an issue will 
-                be created (2005-09-16) for its removal.</para>
-              <para>Other tagged values used for C++ modeling 
-                are affected by this problem. 
-                This warning won't be repeated in those cases.</para>
-              <para>TODO: create an issue for this and include here a link to 
-                it.</para>
-            </warning>
+             <note>
+               <para>If we desire to have multiple headers included this way, 
+                 just use multiple tagged values with 
+                 <literal>header_incl</literal> as the tag.</para>
+               <para>Other tagged values used for C++ modeling may also be used 
+                 this way.
+                 This note won't be repeated in those cases.</para>
+             </note>
           </listitem>
         </varlistentry>
        
@@ -331,7 +329,9 @@ C++ Module.
           <para>Note that UML allows multiple return values. 
             This is possible to support in C++ as out parameters, but, 
             currently the generator doesn't supports it.</para>
-          <para>TODO: create an issue for this.</para>
+          <para>This problem is being handled in 
+            <ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=3553">issue 
+              #3553 &ndash; handle multiple return parameters</ulink>.</para>
         </warning>
       </sect3>
 
