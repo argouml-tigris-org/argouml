@@ -25,7 +25,6 @@
     <jar href="antlrall.jar"/>
     <jar href="gef.jar"/>
     <jar href="ocl-argo.jar"/>
-    <jar href="nsuml.jar"/>
     <jar href="log4j.jar"/>
     <jar href="swidgets.jar"/>
     <jar href="toolbar.jar"/>
