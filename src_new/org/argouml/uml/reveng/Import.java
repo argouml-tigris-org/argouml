@@ -400,17 +400,11 @@ public class Import {
         ProjectBrowser.getInstance().setCursor(
                 Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        //turn off critiquing for reverse engineering
-        boolean b = Designer.theDesigner().getAutoCritique();
-        if (b)  Designer.theDesigner().setAutoCritique(false);
-        Model.getPump().stopPumpingEvents();
-
         // now start importing (with an empty problem list)
         problems = new StringBuffer();
         iss = new ImportStatusScreen("Importing", "Splash");
         SwingUtilities.invokeLater(
-                   new ImportRun(files, b,
-                         layoutDiagrams.isSelected()));
+                   new ImportRun(files, layoutDiagrams.isSelected()));
         iss.setVisible(true);
     }
 
@@ -546,10 +540,9 @@ public class Import {
          * The constructor.
          *
          * @param f the files left to parse/import
-         * @param critic true if the critics thread was on
          * @param layout do a autolayout afterwards
          */
-        public ImportRun(Vector f, boolean critic, boolean layout) {
+        public ImportRun(Vector f,  boolean layout) {
 
             iss.addCancelButtonListener(new ActionListener()
         {
@@ -565,7 +558,10 @@ public class Import {
             st = new SimpleTimer("ImportRun");
             st.mark("start");
             cancelled = false;
-            criticThreadWasOn = critic;
+            criticThreadWasOn = Designer.theDesigner().getAutoCritique();
+            if (criticThreadWasOn) {
+                Designer.theDesigner().setAutoCritique(false);
+            }
             this.doLayout = layout;
         }
 
@@ -576,151 +572,148 @@ public class Import {
          * {@link SwingUtilities#invokeLater(Runnable)} method.<p>
          */
         public void run() {
-
-            if (filesLeft.size() > 0) {
-
-                // if there ae 2 passes:
-                if (importLevel > 0) {
-                    if (filesLeft.size() <= countFiles / 2) {
-
-                        if (importLevel == 1)
-                            setAttribute("level", new Integer(1));
-                        else
-                            setAttribute("level", new Integer(2));
+            // We shouldn't really turn off events, but as long
+            // as we are, wrap in try block to make sure they get 
+            // turned back on.
+            Model.getPump().stopPumpingEvents();
+            try {
+                if (filesLeft.size() > 0) {
+                    
+                    // if there ae 2 passes:
+                    if (importLevel > 0) {
+                        if (filesLeft.size() <= countFiles / 2) {
+                            
+                            if (importLevel == 1)
+                                setAttribute("level", new Integer(1));
+                            else
+                                setAttribute("level", new Integer(2));
+                        }
                     }
-                }
-
-                Object curFile = filesLeft.elementAt(0);
-                filesLeft.removeElementAt(0);
-
-                try {
-                    st.mark(curFile.toString());
-                    ProjectBrowser.getInstance()
+                    
+                    Object curFile = filesLeft.elementAt(0);
+                    filesLeft.removeElementAt(0);
+                    
+                    try {
+                        st.mark(curFile.toString());
+                        ProjectBrowser.getInstance()
                         .showStatus("Importing " + curFile.toString());
-                    parseFile(ProjectManager.getManager().getCurrentProject(),
-                        curFile); // Try to parse this file.
-
-                    int tot = countFiles;
-                    if (diagramInterface != null) {
-                        tot +=
-                            diagramInterface.getModifiedDiagrams().size() / 10;
-                    }
-                    iss.setMaximum(tot);
-                    int act =
-                        countFiles
-                        - filesLeft.size()
-                        - nextPassFiles.size();
-                    iss.setValue(act);
-                    ProjectBrowser.getInstance()
+                        parseFile(ProjectManager.getManager().getCurrentProject(),
+                                curFile); // Try to parse this file.
+                        
+                        int tot = countFiles;
+                        if (diagramInterface != null) {
+                            tot +=
+                                diagramInterface.getModifiedDiagrams().size() / 10;
+                        }
+                        iss.setMaximum(tot);
+                        int act =
+                            countFiles
+                            - filesLeft.size()
+                            - nextPassFiles.size();
+                        iss.setValue(act);
+                        ProjectBrowser.getInstance()
                         .getStatusBar().showProgress(100 * act / tot);
-
-                    // flush model events after every 50 classes
-                    // to avoid too many events in the event queue
-                    // after a long r.e. run
-                    if (act % 50 == 0) {
-                        Model.getPump().flushModelEvents();
-                        Model.getPump().stopPumpingEvents();
+                    }
+                    catch (Exception e1) {
+                        
+                        nextPassFiles.addElement(curFile);
+                        StringBuffer sb = new StringBuffer(80);
+                        // RuntimeExceptions should be reported here!
+                        if (e1 instanceof RuntimeException) {
+                            sb.append("Program bug encountered while parsing ");
+                            sb.append(curFile.toString());
+                            sb.append(", so some elements are not"
+                                    + " created in the model\n");
+                            StringWriter sw = new StringWriter();
+                            PrintWriter pw = new java.io.PrintWriter(sw);
+                            e1.printStackTrace(pw);
+                            sb.append(sw.getBuffer());
+                            LOG.error(sb.toString(), e1);
+                        }
+                        else {
+                            sb.append("Uncaught exception encountered"
+                                    + " while parsing ");
+                            sb.append(curFile.toString());
+                            sb.append(", so some elements are not "
+                                    + "created in the model\n");
+                            StringWriter sw = new StringWriter();
+                            PrintWriter pw = new java.io.PrintWriter(sw);
+                            e1.printStackTrace(pw);
+                            sb.append(sw.getBuffer());
+                            LOG.warn(sb.toString(), e1);
+                        }
+                        problems.append(sb);
+                    }
+                    
+                    if (!isCancelled()) {
+                        SwingUtilities.invokeLater(this);
+                        return;
                     }
                 }
-                catch (Exception e1) {
-
-                    nextPassFiles.addElement(curFile);
-                    StringBuffer sb = new StringBuffer(80);
-                    // RuntimeExceptions should be reported here!
-                    if (e1 instanceof RuntimeException) {
-                        sb.append("Program bug encountered while parsing ");
-                        sb.append(curFile.toString());
-                        sb.append(", so some elements are not"
-                                + " created in the model\n");
-                        StringWriter sw = new StringWriter();
-                        PrintWriter pw = new java.io.PrintWriter(sw);
-                        e1.printStackTrace(pw);
-                        sb.append(sw.getBuffer());
-                        LOG.error(sb.toString(), e1);
-                    }
-                    else {
-                        sb.append("Uncaught exception encountered"
-                                + " while parsing ");
-                        sb.append(curFile.toString());
-                        sb.append(", so some elements are not "
-                                + "created in the model\n");
-                        StringWriter sw = new StringWriter();
-                        PrintWriter pw = new java.io.PrintWriter(sw);
-                        e1.printStackTrace(pw);
-                        sb.append(sw.getBuffer());
-                        LOG.warn(sb.toString(), e1);
-                    }
-                    problems.append(sb);
-                }
-
-                if (!isCancelled()) {
+                
+                if (nextPassFiles.size() > 0
+                        && nextPassFiles.size() < countFilesThisPass) {
+                    filesLeft = nextPassFiles;
+                    nextPassFiles = new Vector();
+                    countFilesThisPass = filesLeft.size();
                     SwingUtilities.invokeLater(this);
                     return;
-        }
-            }
-
-            if (nextPassFiles.size() > 0
-                 && nextPassFiles.size() < countFilesThisPass) {
-                filesLeft = nextPassFiles;
-                nextPassFiles = new Vector();
-                countFilesThisPass = filesLeft.size();
-
-                SwingUtilities.invokeLater(this);
-                return;
-            }
-
-            // Do post load processings.
-            st.mark("postprocessings");
-
-            // Check if any diagrams where modified and the project
-            // should be saved before exiting.
-            if (diagramInterface != null && needsSave()) {
-                ProjectManager.getManager().setNeedsSave(true);
-            }
-
-            ProjectBrowser.getInstance().showStatus("Import done");
-
-            // Layout the modified diagrams.
-            if (doLayout) {
-                st.mark("layout");
-                if (diagramInterface != null) {
-                    for (int i = 0;
-                         i < diagramInterface.getModifiedDiagrams().size();
-                         i++) {
-                        UMLDiagram diagram =
-                            (UMLDiagram) diagramInterface.getModifiedDiagrams()
+                }
+                
+                // Do post load processings.
+                st.mark("postprocessings");
+                
+                // Check if any diagrams where modified and the project
+                // should be saved before exiting.
+                if (diagramInterface != null && needsSave()) {
+                    ProjectManager.getManager().setNeedsSave(true);
+                }
+                
+                ProjectBrowser.getInstance().showStatus("Import done");
+                
+                // Layout the modified diagrams.
+                if (doLayout) {
+                    st.mark("layout");
+                    if (diagramInterface != null) {
+                        for (int i = 0;
+                        i < diagramInterface.getModifiedDiagrams().size();
+                        i++) {
+                            UMLDiagram diagram =
+                                (UMLDiagram) diagramInterface.getModifiedDiagrams()
                                 .elementAt(i);
-                        ClassdiagramLayouter layouter =
-                            module.getLayout(diagram);
-
-                        layouter.layout();
-
-                        // Resize the diagram???
-                        iss.setValue(countFiles + (i + 1) / 10);
+                            ClassdiagramLayouter layouter =
+                                module.getLayout(diagram);
+                            
+                            layouter.layout();
+                            
+                            // Resize the diagram???
+                            iss.setValue(countFiles + (i + 1) / 10);
+                        }
                     }
                 }
-            }
-
-            iss.done();
-            ProjectBrowser.getInstance()
+                
+                iss.done();
+                ProjectBrowser.getInstance()
                 .setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-
-            // if errors occured, display the collected messages here
-            if (problems != null && problems.length() > 0) {
-                ProblemsDialog pd = new ProblemsDialog();
-                pd.setVisible(true);
+                
+                // if errors occured, display the collected messages here
+                if (problems != null && problems.length() > 0) {
+                    ProblemsDialog pd = new ProblemsDialog();
+                    pd.setVisible(true);
+                }
+                
+                // turn criticing on again
+                if (criticThreadWasOn) Designer.theDesigner().setAutoCritique(true);
+                
+                ExplorerEventAdaptor.getInstance().structureChanged();
+                
+                LOG.info(st);
+                ProjectBrowser.getInstance().getStatusBar().showProgress(0);
+            } finally {
+                // Be sure event pump gets turned back on again.
+                // Note: this doesn't deal with the critics
+                Model.getPump().startPumpingEvents();
             }
-
-            // turn criticing on again
-            if (criticThreadWasOn) Designer.theDesigner().setAutoCritique(true);
-
-            Model.getPump().startPumpingEvents();
-
-            ExplorerEventAdaptor.getInstance().structureChanged();
-
-            LOG.info(st);
-            ProjectBrowser.getInstance().getStatusBar().showProgress(0);
-
         }
 
         private void cancel() { cancelled = true; }
