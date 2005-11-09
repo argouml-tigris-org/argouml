@@ -921,14 +921,8 @@ Property files to be searched:
   <target name="junit-report-clean">
     <mkdir dir="${argo.tests.reports}/junit/output"/>
     <mkdir dir="${argo.tests.reports}/junit/output/html"/>
-    <mkdir dir="${argo.tests.reports}/junit/output/mdr"/>
-    <mkdir dir="${argo.tests.reports}/junit/output/html/mdr"/>
     <delete>
         <fileset dir="${argo.tests.reports}/junit/output">
-           <include name="TEST-*.xml"/>
-           <include name="TEST-*.txt"/>
-        </fileset>
-        <fileset dir="${argo.tests.reports}/junit/output/mdr">
            <include name="TEST-*.xml"/>
            <include name="TEST-*.txt"/>
         </fileset>
@@ -943,12 +937,6 @@ Property files to be searched:
       <report format="frames" todir="${argo.tests.reports}/junit/output/html"/>
     </junitreport>
 
-    <junitreport todir="${argo.tests.reports}/junit/output/mdr">
-      <fileset dir="${argo.tests.reports}/junit/output/mdr">
-        <include name="TEST-*.xml"/>
-      </fileset>
-      <report format="frames" todir="${argo.tests.reports}/junit/output/html/mdr"/>
-    </junitreport>
   </target>
 
 
@@ -958,7 +946,7 @@ Property files to be searched:
 
   <target name="tests"
           depends="compile,junit-fetch-init,junit-setup,junit-report-clean,ant.optional.init"
-          description="Run all tests that doesn't require any GUI components in headleass mode using the mdr model implementation.">
+          description="Run all tests that don't require any GUI components in headleass mode.">
     <available file="../../argouml-mdr/build/argouml-mdr.jar"
                property="mdr-available"/>
     <antcall target="internal-tests-using-mdr"/>
