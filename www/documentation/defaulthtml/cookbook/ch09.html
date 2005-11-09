@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="prev" href="ch08s04.html" title="8.4.&nbsp;CVS repository contents"><link rel="next" href="ch09s02.html" title="9.2.&nbsp;Rules for the building process"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch09s02.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="standards"></a>Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="sect1"><a href="ch09.html#d0e8952">9.1. Rules for writing Java code</a></span></dt><dt><span class="sect1"><a href="ch09s02.html">9.2. Rules for the building process</a></span></dt><dt><span class="sect1"><a href="ch09s03.html">9.3. Checklist for using subproducts</a></span></dt><dt><span class="sect1"><a href="ch09s04.html">9.4. Settings for Eclipse 2</a></span></dt><dt><span class="sect1"><a href="ch09s05.html">9.5. Settings for NetBeans</a></span></dt><dt><span class="sect1"><a href="ch09s06.html">9.6. Settings for Emacs</a></span></dt><dt><span class="sect1"><a href="ch09s07.html">9.7. How to work with Eclipse 3</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch09s07.html#d0e9401">9.7.1. Checking out through Eclipse</a></span></dt><dt><span class="sect2"><a href="ch09s07.html#d0e9533">9.7.2. Eclipse to help with the ArgoUML coding style</a></span></dt><dt><span class="sect2"><a href="ch09s07.html#d0e9562">9.7.3. Eclipse to automatically find problems in the code</a></span></dt><dt><span class="sect2"><a href="ch09s07.html#checkclipse">9.7.4. Settings for checkclipse</a></span></dt><dt><span class="sect2"><a href="ch09s07.html#d0e9665">9.7.5. Run the JUnit tests</a></span></dt></dl></dd></dl></div><a class="indexterm" name="d0e8944"></a><a class="indexterm" name="d0e8947"></a><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e8952"></a>9.1.&nbsp;Rules for writing Java code</h2></div></div></div><p>
+   <title>Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="prev" href="ch08s04.html" title="8.4.&nbsp;CVS repository contents"><link rel="next" href="ch09s02.html" title="9.2.&nbsp;Rules for the building process"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch09s02.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="standards"></a>Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="sect1"><a href="ch09.html#d0e9642">9.1. Rules for writing Java code</a></span></dt><dt><span class="sect1"><a href="ch09s02.html">9.2. Rules for the building process</a></span></dt><dt><span class="sect1"><a href="ch09s03.html">9.3. Checklist for using sub-products</a></span></dt><dt><span class="sect1"><a href="ch09s04.html">9.4. Settings for Eclipse 2</a></span></dt><dt><span class="sect1"><a href="ch09s05.html">9.5. Settings for NetBeans</a></span></dt><dt><span class="sect1"><a href="ch09s06.html">9.6. Settings for Emacs</a></span></dt><dt><span class="sect1"><a href="ch09s07.html">9.7. How to work with Eclipse 3</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch09s07.html#eclipse-checkout">9.7.1. Checking out through Eclipse</a></span></dt><dt><span class="sect2"><a href="ch09s07.html#d0e10298">9.7.2. Eclipse to help with the ArgoUML coding style</a></span></dt><dt><span class="sect2"><a href="ch09s07.html#d0e10334">9.7.3. Eclipse to automatically find problems in the code</a></span></dt><dt><span class="sect2"><a href="ch09s07.html#checkclipse">9.7.4. Settings for checkclipse</a></span></dt><dt><span class="sect2"><a href="ch09s07.html#d0e10437">9.7.5. Run the JUnit tests</a></span></dt></dl></dd></dl></div><a class="indexterm" name="d0e9634"></a><a class="indexterm" name="d0e9637"></a><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e9642"></a>9.1.&nbsp;Rules for writing Java code</h2></div></div></div><p>
 The coding style for ArgoUML is the following
 </p><div class="itemizedlist"><ul type="disc"><li><p>
 Each file starts with some header info: 
@@ -37,22 +37,22 @@ package <i class="replaceable"><tt>whatever</tt></i>;
 <i class="replaceable"><tt>...</tt></i>
 </pre><p>
 </p><p>
-The file and version is maintained by cvs using keyword substitution.
+The file and version is maintained by CVS using keyword substitution.
 The year in the copyright notice is maintained manually.
 </p><p>
 This differs from the Sun Code Conventions that 
-requires the initial comment to be a c-style comment.
+requires the initial comment to be a C-style comment.
 </p><p>
-This is checked by checkstyle.
+This is checked by Checkstyle.
 </p></li><li><p>
 All instance variables are private.
 </p><p>
 This is not required by the Sun Code Conventions but
 an additional requirement for ArgoUML.
 </p><p>
-This is checked by checkstyle.
+This is checked by Checkstyle.
 </p></li><li><p>
-Use javadoc for each class, instance variable, and method. 
+Use Javadoc for each class, instance variable, and method. 
 In general do not put comments in the body of a method. 
 If you are doing something complex enough to need a comment, consider
 breaking it out into its own private commented method.
@@ -60,8 +60,8 @@ breaking it out into its own private commented method.
 This is not required by the Sun Code Conventions but
 an additional requirement for ArgoUML.
 </p><p>
-This is partly checked by checkstyle.
-Checkstyle does currently only warn if a javadoc comment is omitted for
+This is partly checked by Checkstyle.
+Checkstyle does currently only warn if a Javadoc comment is omitted for
 a public, protected or default visibility variable or method.
 </p></li><li><p>
 Indicate places of future modifications with 
@@ -78,20 +78,20 @@ Tabs must be set exactly every 8 spaces (not 4) and represent 2 indents.
 This is exactly as it is stated in the Sun Code Conventions.
 It is here just for the emphasis.
 </p><p>
-This is checked by checkstyle.
+This is checked by Checkstyle.
 </p></li><li><p>
 If possible use lines shorter than 80 characters wide.
 </p><p>
 This is exactly as it is stated in the Sun Code Conventions.
 It is here just for the emphasis.
 </p><p>
-This is checked by checkstyle.
+This is checked by Checkstyle.
 Checkstyle ignores three kinds of lines in this check because of the
 historical use of long class names and package names.
 These are lines that contain
-"// $Id$",
+"//&nbsp;$Id$",
 import statements, and
-javadoc comments with @see tags.
+Javadoc comments with @see-tags.
 </p></li><li><p>
 Open brace on same line (at end).
 Both for if/while/for and for class and functions definitions.
@@ -129,7 +129,7 @@ Write deprecation statements like this:
      *             <i class="replaceable"><tt>a complete explanation on what to do instead</tt></i>
 </pre><p>
 </p><p>
-This is not checked by checkstyle.
+This is not checked by Checkstyle.
 </p><p>
 Rationale:
 This is part of the "Do Simple Things"-development approach that we
@@ -139,9 +139,9 @@ exactly how it works.
 Deprecation shows the intent between decision to remove a method and
 the point where it is actually removed 
 and this without breaking anything of the old code.
-There are also modules or plugins that we might know nothing about that
+There are also modules or plug ins that we might know nothing about that
 could be loaded by some user to run within ArgoUML to add functionality.
-It is for the modules and plugins that we always save 
+It is for the modules and plug ins that we always save 
 deprecated methods to the next stable release.
 It makes it possible for the module developers to do work during the 
 unstable releases and release at the same time as ArgoUML releases its
@@ -159,7 +159,7 @@ is for this reason not allowed.
 Rationale 2:
 If you feel like you really want to use a method that is deprecated instead
 of the replacement you should first convince the person responsible
-for doing the deprecation that he has made a misstake and upgrade ArgoUML
+for doing the deprecation that he has made a mistake and upgrade ArgoUML
 to a version of that library without that method or class deprecated.
 If it is within ArgoUML discuss it with the person who actually did 
 the deprecation or in the development team.
@@ -170,9 +170,9 @@ the calls to deprecated methods and classes that
 has been deprecated after used in ArgoUML.
 This is a normal part of improving ArgoUML.
 If this work is too slow it makes it impossible to upgrade to new
-versions of different subtools. 
-This problem is seen by "the person responsible for sourceing of the subtool"
-when actually trying to upgrade the subtool.
+versions of different sub-tools. 
+This problem is seen by "the person responsible for sourcing of the sub-tool"
+when actually trying to upgrade the sub-tool.
 (See <a href="ch12s08.html" title="12.8.&nbsp;How to relate issues to problems in subproducts">Section&nbsp;12.8, &#8220;How to relate issues to problems in subproducts&#8221;</a>.)
 </p></li><li><p>
 Don't use very long package and class names.
@@ -184,13 +184,13 @@ have at most four levels of packages.
 Historically in the ArgoUML design,
 a deep package structure has been used.
 There are several places in the code where the package structure is
-mimicing the UML hierarchy of objects resulting in impossibly long
+mimicking the UML hierarchy of objects resulting in impossibly long
 package names like
-<tt class="classname">org.argouml.model.uml.behavioralelements.collaborations.<i class="replaceable"><tt>classname</tt></i></tt>, and
-<tt class="classname">org.argouml.uml.ui.behavior.common_behavior.<i class="replaceable"><tt>classname</tt></i></tt>.
+<tt class="classname">org.argouml.model.uml.behavioralelements.collaborations.<i class="replaceable"><tt>class name</tt></i></tt>, and
+<tt class="classname">org.argouml.uml.ui.behavior.common_behavior.<i class="replaceable"><tt>class name</tt></i></tt>.
 </p><p>
 While establishing the subsystems we use a two-level approach much
-like the rest of the java world.
+like the rest of the Java world.
 For the subsystem API we always use:
 <tt class="classname">org.argouml.<i class="replaceable"><tt>subsystem package name</tt></i></tt>
 i.e. the classes are in the subsystem's directory and all subsystems have
@@ -211,13 +211,13 @@ Code Conventions for the Java Programming Language
 (called Sun Code Conventions)!
 </p></li></ul></div><p>
 Some of these rules are marked with a comment that they are 
-checked by a checkstyle.
+checked by a Checkstyle.
 Checkstyle is a tool available with the ArgoUML development environment
 preconfigured for these rules.
 The current configuration can be found in
 <tt class="filename">argouml/tools/checkstyle/checkstyle_argouml.xml</tt>.
 </p><p>
-To run checkstyle run the command
+To run Checkstyle run the command
 <span><b class="command">build checkstyle</b></span> from the
 <tt class="filename">argouml/src_new</tt>
 directory.
@@ -226,12 +226,12 @@ This requires you to have checked out the directories
 <tt class="filename">argouml/tests</tt>, and
 <tt class="filename">argouml/src_new</tt>.
 </p><p>
-The last couple of checkstyle result are also available in 
+The last couple of Checkstyle result are also available in 
 the Xenofarm result.
 </p><p>
 Checkstyle will also check some of the rules from the
 Sun Code Conventions that are not stated here.
-Furthermore checkstyle nags about when the order of modifiers does
+Furthermore Checkstyle nags about when the order of modifiers does
 not conform to the suggestions in the
 Java Language Specification, Section 8.1.1, 8.3.1, 8.4.3.
 </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch08s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch09s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">8.4.&nbsp;CVS repository contents&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;9.2.&nbsp;Rules for the building process</td></tr></table></div></body></html>

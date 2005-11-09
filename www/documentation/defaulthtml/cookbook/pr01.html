@@ -1,6 +1,55 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>Change Log</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="prev" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="next" href="ch01.html" title="Chapter&nbsp;1.&nbsp;Introduction"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Change Log</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="index.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch01.html">Next</a></td></tr></table><hr></div><div class="preface" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="changelog"></a>Change Log</h2></div></div></div><div class="table"><a name="d0e36"></a><p class="title"><b>Table&nbsp;1.&nbsp;Changes done</b></p><table summary="Changes done" border="1"><colgroup><col><col><col></colgroup><thead><tr><th>When</th><th>What</th><th>Who</th></tr></thead><tbody valign="top"><tr><td>2005-03-10</td><td>
+   <title>Change Log</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="prev" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="next" href="ch01.html" title="Chapter&nbsp;1.&nbsp;Introduction"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Change Log</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="index.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch01.html">Next</a></td></tr></table><hr></div><div class="preface" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="changelog"></a>Change Log</h2></div></div></div><p>
+This will also be a log of major design decisions.
+A major design decision is a decision that changes
+responsibilities or functions of the subsystems.
+</p><div class="table"><a name="d0e39"></a><p class="title"><b>Table&nbsp;1.&nbsp;Changes done</b></p><table summary="Changes done" border="1"><colgroup><col><col><col></colgroup><thead><tr><th>When</th><th>What</th><th>Who</th></tr></thead><tbody valign="top"><tr><td>2005-10-29</td><td>
+Change to the instructions on how to build ArgoUML to describe
+how it works with the argouml-mdr project.
+(See <a href="ch02.html" title="Chapter&nbsp;2.&nbsp;Building from source">Chapter&nbsp;2, <i>Building from source</i></a> and
+<a href="ch09s07.html#eclipse-checkout" title="9.7.1.&nbsp;Checking out through Eclipse">Section&nbsp;9.7.1, &#8220;Checking out through Eclipse&#8221;</a>).
+</td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-07-22</td><td>
+Removed the /modules/junit.
+(See <a href="ch02s08.html" title="2.8.&nbsp;Making a release">Section&nbsp;2.8, &#8220;Making a release&#8221;</a>).
+</td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-07-19</td><td>
+Change to the descriptions of the Model, Diagrams, and Persistence subsystems
+(See <a href="ch05.html#model" title="5.1.&nbsp;Model">Section&nbsp;5.1, &#8220;Model&#8221;</a>,
+<a href="ch05s03.html" title="5.3.&nbsp;Diagrams">Section&nbsp;5.3, &#8220;Diagrams&#8221;</a>, and
+<a href="ch05s05.html" title="5.5.&nbsp;Persistence">Section&nbsp;5.5, &#8220;Persistence&#8221;</a>).
+
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note: Design decision - Bob Tarling 2005-07-14"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Design decision - Bob Tarling 2005-07-14</th></tr><tr><td colspan="2" align="left" valign="top"><p>
+The Diagrams subsystem does not store any data.
+All data it works on is stored in the Model subsystem.
+</p></td></tr></table></div>
+</td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-07-18</td><td>
+Change to the short list of subsystems and responsibilities.
+(See <a href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the subsystems">Chapter&nbsp;5, <i>Inside the subsystems</i></a>).
+</td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-06-18</td><td> Restructured: all main chapters are now in seperate files. No
+            content changes.
+          </td><td>Michiel van der Wulp</td></tr></tbody><tbody valign="top"><tr><td>2005-06-15</td><td>
+Change to how internationalization is done. Subprojects.
+(See <a href="ch05s13.html" title="5.13.&nbsp;Internationalization">Section&nbsp;5.13, &#8220;Internationalization&#8221;</a>).
+</td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-06-12</td><td>
+Change to the description on how to set up an Eclipse environment.
+(See <a href="ch09s07.html#eclipse-checkout" title="9.7.1.&nbsp;Checking out through Eclipse">Section&nbsp;9.7.1, &#8220;Checking out through Eclipse&#8221;</a>).
+</td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-06-11</td><td>
+Change to how to make an announcement.
+(See <a href="ch02s08.html" title="2.8.&nbsp;Making a release">Section&nbsp;2.8, &#8220;Making a release&#8221;</a>).
+</td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-05-23</td><td>
+Change to release building description.
+(See <a href="ch02s08.html" title="2.8.&nbsp;Making a release">Section&nbsp;2.8, &#8220;Making a release&#8221;</a>).
+</td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-05-06</td><td>
+Added instructions on how we work with sub-projects.
+(See <a href="ch02s04.html#working-with-subproject" title="2.4.2.2.&nbsp;Working in a subproject">Section&nbsp;2.4.2.2, &#8220;Working in a subproject&#8221;</a> and
+<a href="ch08.html" title="Chapter&nbsp;8.&nbsp;CVS in the ArgoUML project">Chapter&nbsp;8, <i>CVS in the ArgoUML project</i></a>).
+</td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-05-01</td><td>
+Change to the tools for releases.
+(See <a href="ch02s08.html" title="2.8.&nbsp;Making a release">Section&nbsp;2.8, &#8220;Making a release&#8221;</a>).
+</td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-04-29</td><td>
+Added a diagram explaining Explorer.
+(See <a href="ch05s17.html#explorer-implementation-details" title="5.17.3.&nbsp;Details of the Explorer Implementation">Section&nbsp;5.17.3, &#8220;Details of the Explorer Implementation&#8221;</a>).
+</td><td>Michiel van der Wulp</td></tr></tbody><tbody valign="top"><tr><td>2005-03-10</td><td>
 Change to process for verifying issues.
 Any release after the one where the issue is fixed
 can be used for verifications.
@@ -11,7 +60,7 @@ Change to description of how to build.
 (See <a href="ch02.html" title="Chapter&nbsp;2.&nbsp;Building from source">Chapter&nbsp;2, <i>Building from source</i></a>).
 </td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-03-01</td><td>
 Removed the modules component.
-(See <a href="ch02s06.html#issuezilla_release_maintenance">7</a>).
+(See <a href="ch02s08.html#issuezilla_release_maintenance">10</a>).
 </td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-02-01</td><td>
 Change to Model subsystem.
 (See <a href="ch05.html#comp-model-purpose">Section&nbsp;5.1, &#8220;Model&#8221;</a>,
@@ -21,7 +70,7 @@ Added the Persistence subsystem. More work is needed.
 </td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-01-30</td><td>
 Change to the description on how to use the Model subsystem,
 the ModelFacade does not exist anymore.
-(See <a href="ch05.html#working-with-the-model" title="5.1.4.&nbsp;How to work against the model">Section&nbsp;5.1.4, &#8220;How to work against the model&#8221;</a>).
+(See <a href="ch05.html#working-with-the-model" title="5.1.5.&nbsp;How to work against the model">Section&nbsp;5.1.5, &#8220;How to work against the model&#8221;</a>).
 </td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-01-29</td><td>
 Change to Model subsystem chapter.
 Removed references to UmlEventPump and clearified how to remove
@@ -29,7 +78,7 @@ elements using the UmlFactory.
 (See <a href="ch05.html#pump-register-listener-for-type" title="5.1.3.2.1.&nbsp;&#xA;How do I register a listener for a certain type event&#xA;">Section&nbsp;5.1.3.2.1, &#8220;
 How do I register a listener for a certain type event
 &#8221;</a>
-and <a href="ch05.html#working-with-the-model" title="5.1.4.&nbsp;How to work against the model">Section&nbsp;5.1.4, &#8220;How to work against the model&#8221;</a>).
+and <a href="ch05.html#working-with-the-model" title="5.1.5.&nbsp;How to work against the model">Section&nbsp;5.1.5, &#8220;How to work against the model&#8221;</a>).
 </td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2005-01-26</td><td>
 Change to requirement of JDK version support.
 (See <a href="ch03s03.html#REQ7" title="3.3.1.&nbsp;Choice of JRE:&#xA;ArgoUML will support any JRE compatible with a &#xA;Sun specification of any JRE from Sun that has not begun the Sun End of Life&#xA;(EOL) process.&#xA;">Section&nbsp;3.3.1, &#8220;Choice of JRE:
@@ -46,11 +95,11 @@ Yes, I am a little early.
 </td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2004-11-01</td><td>
 Change to the way we generate documentation.
 The FILENAME.id files are no longer used.
-(See <a href="ch02s03.html#generating_documentation" title="2.3.2.&nbsp;Generating documentation">Section&nbsp;2.3.2, &#8220;Generating documentation&#8221;</a>).
+(See <a href="ch02s07.html" title="2.7.&nbsp;Generating documentation">Section&nbsp;2.7, &#8220;Generating documentation&#8221;</a>).
 </td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2004-10-29</td><td>
 Change to the description on how to generate documentation.
 Better explanation of how it works.
-(See <a href="ch02s03.html#generating_documentation" title="2.3.2.&nbsp;Generating documentation">Section&nbsp;2.3.2, &#8220;Generating documentation&#8221;</a>).
+(See <a href="ch02s07.html" title="2.7.&nbsp;Generating documentation">Section&nbsp;2.7, &#8220;Generating documentation&#8221;</a>).
 </td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2004-10-19</td><td>
 Change to How to Contribute.
 Changed some spelling errors in cookbook.in while at it.
@@ -65,10 +114,10 @@ Now module loader described.
 </td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2004-09-16</td><td>
 Changed the meaning of RESOLVED/LATER.
 (See 
-<a href="ch02s06.html#issuezilla_release_maintenance">7</a> 
-<a href="ch02s06.html#reopen_remind_and_later">f</a> and
-<a href="ch02s06.html#check_for_later">g</a> in
-<a href="ch02s06.html" title="2.6.&nbsp;Making a release">Section&nbsp;2.6, &#8220;Making a release&#8221;</a>, and
+<a href="ch02s08.html#issuezilla_release_maintenance">10</a> 
+<a href="ch02s08.html#reopen_remind_and_later">f</a> and
+<a href="ch02s08.html#check_for_later">g</a> in
+<a href="ch02s08.html" title="2.8.&nbsp;Making a release">Section&nbsp;2.8, &#8220;Making a release&#8221;</a>, and
 <a href="ch12s02.html#issuezilla_resolutions" title="12.2.2.&nbsp;Resolutions">Section&nbsp;12.2.2, &#8220;Resolutions&#8221;</a>).
 </td><td>Linus Tolke</td></tr></tbody><tbody valign="top"><tr><td>2004-09-15</td><td>
 Change to design of new module loader.

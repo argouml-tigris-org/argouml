@@ -9,8 +9,8 @@ separately depending on how much of the ArgoUML knowledge you would
 want to include in your Eclipse.
 </p><p>
 If any of these instructions don't work or could be improved in some way,
-please help in making them better.
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e9401"></a>9.7.1.&nbsp;Checking out through Eclipse</h3></div></div></div><p>
+please help in making them better by contacting the editor of the Cookbook.
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="eclipse-checkout"></a>9.7.1.&nbsp;Checking out through Eclipse</h3></div></div></div><p>
 This instruction is if you want to use Eclipse to download the source
 and it takes you up to where you can start ArgoUML from the source.
 </p><div class="orderedlist"><ol type="1"><li><p>
@@ -24,7 +24,7 @@ cvs.tigris.org
 </p></li><li><p>Repository path:
 /cvs
 </p></li><li><p>User:
-<i class="replaceable"><tt>Your Tigris username.</tt></i>
+<i class="replaceable"><tt>Your Tigris user name.</tt></i>
 </p></li><li><p>Password:
 <i class="replaceable"><tt>Your Tigris password.</tt></i>
 </p></li><li><p>Connection type:
@@ -36,8 +36,18 @@ Check out.
 In the CVS Repository Exploring perspective,
 unfold the newly created repository 
 (called something like
-:pserver:<i class="replaceable"><tt>yourname</tt></i>@cvs.tigris.org:/cvs)
+:pserver:<i class="replaceable"><tt>your user name</tt></i>@cvs.tigris.org:/cvs)
 and within it, HEAD.
+</p><p>
+Select the argouml-mdr project, right-click on it, and to Check Out As.
+Check out as a project configured using the New Project Wizard.
+Press the button Finish.
+Select Java Project, and press Next.
+Type the new project name: argouml-mdr, and press Next.
+Ignore the build path settings. We will come back to them later.
+Press Finish, which starts the checking out process.
+You are probably directed to the Java Perspective with a question if
+you want or not. At this point it doesn't matter. Just press Yes or No!
 </p><p>
 Select the argouml project, right-click on it, and do Check Out As.
 Check out as a project configured using the New Project Wizard.
@@ -73,26 +83,33 @@ with the Targets tab already selected.
 Select compile (default target in the Targets tab),
 deselect all other targets
 and finally press Run.
-</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>
-Remark from MVW: This did not work for me, 
-I first had to set the Java Build path as described below. 
-Please confirm or deny this statement, 
-so that I can adapt this explanation!
-</p></td></tr></table></div><p>
+</p><p>
+Browse to <tt class="filename">argouml-mdr/build.xml</tt>,
+select the <tt class="filename">build.xml</tt>-file,
+right-click on it, and do Run Ant...
+This pops up the External Tools... pop up
+with the Targets tab already selected.
+Select <span><b class="command">generate</b></span>,
+deselect all other targets
+and finally press Run.
+</p><p>
 There are some files that are built using rules in the
-<tt class="filename">build.xml</tt> file.
-This is the antlr files and the file containing a version.
+<tt class="filename">build.xml</tt> files.
+This is
+the antlr-generated files,
+the file containing a version, and
+the java interfaces generated from the mof description.
 </p></li><li><p>
-Refresh the project.
+Refresh the projects.
 </p><p>
 This must be done after having built using ant to find the newly created
-java files.
+Java files.
 </p><p>
 Select the top resource of the argouml project
 in the Navigator (on the left),
 right click and select <span><b class="command">Refresh</b></span>.
 </p></li><li><p>
-Set build path.
+Set build path for the argouml project.
 </p><p>
       In the Java perspective, select the project argouml, 
       i.e. the icon at the top of the Package Explorer.
@@ -102,27 +119,32 @@ Enter Java Build Path
 </p><p>
 Under Source:
 Remove everything.
-Add <tt class="filename">argouml/src_new</tt>
-(simply add a checkmark in front of the src_new folder icon).
+Add <tt class="filename">argouml/src_new</tt> and
+<tt class="filename">argouml/src/model/src</tt>
+(simply add a check mark in front of these folders).
 Also add
 <tt class="filename">argouml/tests</tt>,
-<tt class="filename">argouml/modules/junit/src</tt>,
+<tt class="filename">argouml/modules/classfile/src</tt>,
 and the src directories of all other modules.
 The purpose of this is to have Eclipse recompile these and
 find compilation errors
 as soon as your changes to any API has affected them.
-Currently (July 2004) some of the modules don't compile.
 </p><p>
 Under Libraries:
 Press the Add JARs... button and add
 all files in <tt class="filename">argouml/lib</tt>.
 Press the Add JARs... button and add
-the file <tt class="filename">argouml/tools/ant-1.4.1/lib/xerces-1.2.3.jar</tt>.
-Press the Add JARs... button and add
 the file <tt class="filename">argouml/tools/junit-3.7/junit.jar</tt>.
 Every time any of these jars is updated in the project you will have to 
-update this in your environment by entering this dialog and
+update this in your environment by entering this dialog,
+removing the old ones, and
 adding the new ones.
+</p><p>
+Under Order and Export:
+Check that argouml/src/model/src is checked.
+Check junit and log4j.
+(If you also plan to work with the ArgoPrint subproject,
+check gef and commons-logging.)
 </p><p>
       Set the Default output folder to 
 <tt class="filename">argouml/bin</tt>.
@@ -131,13 +153,67 @@ This will not confuse it with any of the ant-built things.
 Press OK.
 You will be asked to accept that all resources previously built can
 be removed. Press Yes.
-Eclipse shall rebuild.
-Verify that there are no errors, just warnings left among the problems.
+Eclipse will rebuild.
+    </p><p>
+Verify that there are no errors in the argouml project,
+just warnings left among the problems.
 If there are errors in some of the modules you will be able to 
-continue your work in spite of that but it is then perhaps best to
-remove those modules again from the Source list in the Java Build Path.
+continue your work in spite of that but it is better if you stop here and
+investigate the problem.
+</p><p>
+Some of the modules (cpp, idl, classfile, ???), contain ANTLR-generated code.
+The rules to build these are in the ant files for each module.
+Run the ant targets "generate" or "generateparser" in each of these
+modules and then reload the source trees.
 </p></li><li><p>
-Select the class with the main method.
+Set build path for the argouml-mdr project.
+</p><p>
+      In the Java perspective, select the project argouml-mdr, 
+      i.e. the icon at the top of the Package Explorer.
+      Then, in the menu, select Project =&gt; Properties).
+    </p><p>
+Enter Java Build Path
+</p><p>
+Under Source:
+Remove everything.
+Add <tt class="filename">argouml-mdr/src</tt> and
+<tt class="filename">argouml-mdr/tests</tt>
+(simply add a check mark in front of these folders).
+</p><p>
+Under Libraries:
+Press the Add JARs... button and add
+all files in <tt class="filename">argouml-mdr/lib</tt>.
+Press the Add JARs... button and add
+the file <tt class="filename">argouml-mdr/build/java-interfaces.jar</tt>.
+</p><p>
+Under Project:
+Press the Add... button and add
+the argouml project.
+</p><p>
+Under Order and Export:
+Check 
+<tt class="filename">java-interfaces.jar</tt>,
+<tt class="filename">jmi.jar</tt>,
+<tt class="filename">jmiutils.jar</tt>,
+<tt class="filename">mdrapi.jar</tt>,
+<tt class="filename">mof.jar</tt>,
+<tt class="filename">nbmdr.jar</tt>, and
+<tt class="filename">openide-util.jar</tt>,
+(i.e. everything except the argouml project).
+</p><p>
+      Set the Default output folder to 
+<tt class="filename">argouml-mdr/bin</tt>.
+This will not confuse it with any of the ant-built things.
+    </p><p>
+Press OK.
+You will be asked to accept that all resources previously built can
+be removed. Press Yes.
+Eclipse will rebuild.
+    </p><p>
+Verify that there are no errors
+just warnings left among the problems.
+</p></li><li><p>
+Create a Run Configuration
 </p><p>
       In the Java perspective, select the project argouml, 
       i.e. the icon at the top of the Package Explorer.
@@ -146,13 +222,21 @@ Select the class with the main method.
       and running Run Configurations.
     </p><p>
       Select Java Application on the left and press the New button. 
-      Name the configuration "Run ArgoUML", 
-      and press the Search... button in the Main class box.
+      Name the configuration "Run ArgoUML".
+In the Main tab press the Search... button in the Main class box.
       In the new dialog that appears (Choose Main Type), simply press OK.
     </p><p>
       This sets the Main class to: 
       <tt class="filename">org.argouml.application.Main</tt>.
     </p><p>
+In the Classpath tab
+select User Entries,
+press Add Projects, and add the argouml-mdr project
+with "Add exported entries of selected projects." checked and
+"Add required projects of selected projects." not checked.
+(The same needs to be done for all other configurations created
+i.e. when running test cases from within Eclipse).
+</p><p>
       Press the Run button.
       This will start ArgoUML. 
       From now on, you can start ArgoUML 
@@ -160,7 +244,7 @@ Select the class with the main method.
     </p></li><li><p>
 Verify that you can start ArgoUML from the debugger within Eclipse. 
 You can do this by clicking on the Debug icon in the toolbar.
-</p></li></ol></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e9533"></a>9.7.2.&nbsp;Eclipse to help with the ArgoUML coding style</h3></div></div></div><p>
+</p></li></ol></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e10298"></a>9.7.2.&nbsp;Eclipse to help with the ArgoUML coding style</h3></div></div></div><p>
 This instruction is to set up Eclipse to work according to
 the ArgoUML Coding standards.
 If this is not done correctly you will most likely find that you will have to
@@ -180,10 +264,26 @@ Set the Code Formatter to "Java conventions [built-in]".
 </p></li><li><p>
 TAB character width is 8.
 </p><p>
+Solution for Eclipse 3.0:
 See in the menu Window =&gt; Preferences.
 Then select
 Java =&gt; Editor. Then select the tab Appearance.
 Set the Displayed tab width to 8.
+</p><p>
+Solution for Eclipse 3.1:
+In Eclipse 3.1 the Tab size is part of the profile that the 
+Code Formatter uses.
+Alas, the "Java conventions [built-in]"-profile contains a bug at this point
+(<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=104765" target="_top">https://bugs.eclipse.org/bugs/show_bug.cgi?id=104765</a>)
+so the best solution is to create and use a new profile with the fix.
+In Window =&gt; Preferences =&gt; Java =&gt; Code Style =&gt; Code Formatter,
+set the Code Formatter to "Java conventions [built-in]" (as above),
+press "Show",
+select the "Indentation"-tab,
+change "Tab size" to 8,
+press "Apply", and
+give the name 
+<i class="replaceable"><tt>Fixed Java conventions</tt></i>.
 </p></li><li><p>
 New file templates.
 </p><p>
@@ -231,7 +331,7 @@ ${package_declaration}
 ${typecomment}
 ${type_declaration}
 </pre><p>
-</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e9562"></a>9.7.3.&nbsp;Eclipse to automatically find problems in the code</h3></div></div></div><p>
+</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e10334"></a>9.7.3.&nbsp;Eclipse to automatically find problems in the code</h3></div></div></div><p>
 This instruction is to set up Eclipse to automatically find 
 what, in the ArgoUML project, could be considered problems in the code.
 </p><p>
@@ -258,9 +358,9 @@ Sun specification of any JRE from Sun that has not begun the Sun End of Life
 &#8221;</a>).
 This setting enables Eclipse to tell you where some
 JDK 1.5
-features has creaped in.
+features have crept in.
 </p></li><li><p>
-Find forgotten and incorrect javadoc comments.
+Find forgotten and incorrect Javadoc comments.
 </p><p>
 In the menu select Window =&gt; Preferences.
 Then select
@@ -312,13 +412,13 @@ Unused code =&gt; Unnecessary cast or 'instanceof' operation: Warning.
 </p></li><li><p>
 Unused code =&gt; Unnecessary declaration of thrown checked exception: Warning.
 </p></li></ul></div></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="checkclipse"></a>9.7.4.&nbsp;Settings for checkclipse</h3></div></div></div><p>
-      Checkclipse is a plugin for Eclipse wich needs to be installed seperately.
+      Checkclipse is a plug in for Eclipse which needs to be installed separately.
       It enables style checking according the rules set for the ArgoUML project.
     </p><p>
       In the Java perspective, select the project argouml, 
       i.e. the icon at the top of the Package Explorer.
       Then, in the menu, select Project =&gt; Properties,
-select Checkclipse (appears only if checkclipse is correctly installed)
+select Checkclipse (appears only if Checkclipse is correctly installed)
 and then fill the fields like this:
 </p><div class="itemizedlist"><ul type="disc"><li><p>Enable Checkstyle
 Checked.
@@ -330,7 +430,7 @@ Checked.
 <tt class="filename">/argouml/tools/checkstyle/checkclipse.filefilters</tt>
 </p></li></ul></div><p>
 Leave the two other fields empty.
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e9665"></a>9.7.5.&nbsp;Run the JUnit tests</h3></div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e10437"></a>9.7.5.&nbsp;Run the JUnit tests</h3></div></div></div><p>
 There is perhaps some fancy way of doing this but while we figure that out
 this "revert to ant"-way can be used to run the tests:
 </p><div class="orderedlist"><ol type="1"><li><p>

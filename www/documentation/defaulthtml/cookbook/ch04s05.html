@@ -1,55 +1,27 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
    <title>4.5.&nbsp;View and Control subsystems</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch04.html" title="Chapter&nbsp;4.&nbsp;ArgoUML Design, The Big Picture"><link rel="prev" href="ch04s04.html" title="4.4.&nbsp;Model subsystems"><link rel="next" href="ch04s06.html" title="4.6.&nbsp;Loadable subsystems"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.5.&nbsp;View and Control subsystems</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;4.&nbsp;ArgoUML Design, The Big Picture</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch04s06.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="view_control_subsystems"></a>4.5.&nbsp;View and Control subsystems</h2></div></div></div><p>
-These subsystems rely on model subsystems in order to do their
-work.
+These subsystems rely on the information in the model subsystems
+in order to do their work.
 </p><p>
-        </p><div class="itemizedlist"><ul type="disc"><li><p>Diagrams</p><a class="indexterm" name="d0e2883"></a><a class="indexterm" name="d0e2886"></a><p>
-This is the diagram view of the model.
-The notation is a property that belongs in the Diagrams
-so the different language register their provided notation 
-in the Diagrams subsystem.
+All these subsystems are all started and initiated from the Application
+subsystem.
 </p><p>
-The Diagrams Subsystem is described in detail in 
-<a href="ch05s03.html" title="5.3.&nbsp;Diagrams">Section&nbsp;5.3, &#8220;Diagrams&#8221;</a>.
-</p></li><li><p>Property panels</p><a class="indexterm" name="d0e2898"></a><p>
-This is the property panel view of the model.
-</p><p>
-The Property Panels Subsystem is described in detail in 
-<a href="ch05s04.html" title="5.4.&nbsp;Property panels">Section&nbsp;5.4, &#8220;Property panels&#8221;</a>.
-</p></li><li><p>Explorer</p><a class="indexterm" name="d0e2910"></a><a class="indexterm" name="d0e2913"></a><a class="indexterm" name="d0e2916"></a><p>
-This is the tree view of the model.
-</p><p>
-The Explorer Subsystem is described in detail in 
-<a href="ch05s17.html" title="5.17.&nbsp;Explorer">Section&nbsp;5.17, &#8220;Explorer&#8221;</a>.
-</p></li><li><p>Code Generation</p><a class="indexterm" name="d0e2928"></a><p>
-This is the common code for 
-and the point where each language 
-with Code Generation possibility registers.
-</p><p>
-The Code Generation Subsystem is described in detail in 
-<a href="ch05s07.html" title="5.7.&nbsp;Code Generation Subsystem">Section&nbsp;5.7, &#8220;Code Generation Subsystem&#8221;</a>.
-</p></li><li><p>Reverse Engineering</p><a class="indexterm" name="d0e2940"></a><p>
-This is the common code for 
-and the point where each language 
-with Reverse Engineering possibility registers.
-</p><p>
-The Reverse Engineering Subsystem is described in detail in 
-<a href="ch05s06.html" title="5.6.&nbsp;Reverse Engineering Subsystem">Section&nbsp;5.6, &#8220;Reverse Engineering Subsystem&#8221;</a>.
-</p></li><li><p>Module loader</p><a class="indexterm" name="d0e2952"></a><a class="indexterm" name="d0e2955"></a><p>
-This is the load mechanism for loading all loadable subsystems and
-other modules into ArgoUML.
-</p><p>
-The Module Loader Subsystem is described in detail in 
-<a href="ch05s18.html" title="5.18.&nbsp;Module loader">Section&nbsp;5.18, &#8220;Module loader&#8221;</a>.
+      </p><div class="itemizedlist"><ul type="disc"><li><p>Application -
+see <a href="ch05s11.html" title="5.11.&nbsp;Application">Section&nbsp;5.11, &#8220;Application&#8221;</a>.
+</p></li><li><p>Diagrams -
+see <a href="ch05s03.html" title="5.3.&nbsp;Diagrams">Section&nbsp;5.3, &#8220;Diagrams&#8221;</a>.
+</p></li><li><p>Property panels -
+see <a href="ch05s04.html" title="5.4.&nbsp;Property panels">Section&nbsp;5.4, &#8220;Property panels&#8221;</a>.
+</p></li><li><p>Explorer -
+see <a href="ch05s17.html" title="5.17.&nbsp;Explorer">Section&nbsp;5.17, &#8220;Explorer&#8221;</a>.
+</p></li><li><p>Code Generation -
+see <a href="ch05s07.html" title="5.7.&nbsp;Code Generation Subsystem">Section&nbsp;5.7, &#8220;Code Generation Subsystem&#8221;</a>.
+</p></li><li><p>Reverse Engineering - 
+see <a href="ch05s06.html" title="5.6.&nbsp;Reverse Engineering Subsystem">Section&nbsp;5.6, &#8220;Reverse Engineering Subsystem&#8221;</a>.
+</p></li><li><p>Module loader -
+see <a href="ch05s18.html" title="5.18.&nbsp;Module loader">Section&nbsp;5.18, &#8220;Module loader&#8221;</a>.
 </p></li></ul></div><p>
 </p><p>
-        </p><div class="mediaobject"><img src="images/cookbook/Layer2.gif"></div><p>
-</p><p>
-The subsystems are all started and initiated from the Application subsystem.
-The Application subsystem starts the ball rolling.
-The Application subsystem is  described in detail in
-<a href="ch05s11.html" title="5.11.&nbsp;Application">Section&nbsp;5.11, &#8220;Application&#8221;</a>.
-</p><p>
-        </p><div class="mediaobject"><img src="images/cookbook/Application.gif"></div><p>
-</p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch04s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">4.4.&nbsp;Model subsystems&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;4.6.&nbsp;Loadable subsystems</td></tr></table></div></body></html>
+      </p><div class="mediaobject"><img src="images/cookbook/Layer2.gif"></div><p> </p><p>
+      </p><div class="mediaobject"><img src="images/cookbook/Application.gif"></div><p> </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch04s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">4.4.&nbsp;Model subsystems&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;4.6.&nbsp;Loadable subsystems</td></tr></table></div></body></html>

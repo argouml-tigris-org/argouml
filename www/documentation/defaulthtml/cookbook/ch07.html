@@ -1,9 +1,9 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>Chapter&nbsp;7.&nbsp;Organization of ArgoUML documentation</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><meta name="description" content="&#xA;This chapter contains written down ideas on what goes into what&#xA;part of the documentation. These ideas are formulated by Linus Tolke.&#xA;"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="prev" href="ch06s03.html" title="6.3.&nbsp;How are modules organized in the java code"><link rel="next" href="ch07s02.html" title="7.2.&nbsp;User Manual Plans"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;7.&nbsp;Organization of ArgoUML documentation</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch07s02.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="documentation_what_goes_where"></a>Chapter&nbsp;7.&nbsp;Organization of ArgoUML documentation</h2></div><div><div class="authorgroup"><div class="author"><h3 class="author"><span class="firstname">Linus</span> <span class="surname">Tolke</span></h3></div></div></div><div><div class="abstract"><p class="title"><b>Abstract</b></p><p>
-This chapter contains written down ideas on what goes into what
+   <title>Chapter&nbsp;7.&nbsp;Organization of ArgoUML documentation</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><meta name="description" content="&#xA;This chapter describes what goes into which&#xA;part of the documentation. These ideas are formulated by Linus Tolke.&#xA;"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="prev" href="ch06s03.html" title="6.3.&nbsp;How are modules organized in the java code"><link rel="next" href="ch07s02.html" title="7.2.&nbsp;User Manual Plans"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;7.&nbsp;Organization of ArgoUML documentation</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch07s02.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="documentation_what_goes_where"></a>Chapter&nbsp;7.&nbsp;Organization of ArgoUML documentation</h2></div><div><div class="authorgroup"><div class="author"><h3 class="author"><span class="firstname">Linus</span> <span class="surname">Tolke</span></h3></div></div></div><div><div class="abstract"><p class="title"><b>Abstract</b></p><p>
+This chapter describes what goes into which
 part of the documentation. These ideas are formulated by Linus Tolke.
-</p></div></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="ch07.html#d0e7946">7.1. Overview</a></span></dt><dt><span class="section"><a href="ch07s02.html">7.2. User Manual Plans</a></span></dt><dd><dl><dt><span class="section"><a href="ch07s02.html#d0e8104">7.2.1. Target Audiences for the User Manual</a></span></dt><dt><span class="section"><a href="ch07s02.html#d0e8126">7.2.2. Goals for the User Manual</a></span></dt><dt><span class="section"><a href="ch07s02.html#d0e8162">7.2.3. Suggested Manual Structure</a></span></dt><dt><span class="section"><a href="ch07s02.html#d0e8275">7.2.4. Actions, Priorities and Questions</a></span></dt></dl></dd></dl></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e7946"></a>7.1.&nbsp;Overview</h2></div></div></div><p>
+</p></div></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="ch07.html#d0e8558">7.1. Overview</a></span></dt><dt><span class="section"><a href="ch07s02.html">7.2. User Manual Plans</a></span></dt><dd><dl><dt><span class="section"><a href="ch07s02.html#d0e8720">7.2.1. Target Audiences for the User Manual</a></span></dt><dt><span class="section"><a href="ch07s02.html#d0e8742">7.2.2. Goals for the User Manual</a></span></dt><dt><span class="section"><a href="ch07s02.html#d0e8778">7.2.3. Suggested Manual Structure</a></span></dt><dt><span class="section"><a href="ch07s02.html#d0e8891">7.2.4. Actions, Priorities and Questions</a></span></dt></dl></dd></dl></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e8558"></a>7.1.&nbsp;Overview</h2></div></div></div><p>
 There are seven significantly different bits of documentation in the
 ArgoUML project.
 By documentation I mean some information of the product that is
@@ -11,7 +11,7 @@ developed alongside the product and that has a persistent value.
 </p><div class="orderedlist"><ol type="1"><li><p>The code, variable names, class names</p></li><li><p>The javadoc</p></li><li><p>The cookbook</p></li><li><p>The web site in CVS</p></li><li><p>The manual and quick-guide</p></li><li><p>Help texts within the running ArgoUML</p></li><li><p>The FAQ</p></li></ol></div><p>
 These different bits have all different purpose and audience and
 the purpose of this chapter is to try to define that.
-</p><div class="table"><a name="d0e7975"></a><p class="title"><b>Table&nbsp;7.1.&nbsp;Bits of documentation</b></p><table summary="Bits of documentation" border="1"><colgroup><col><col><col><col></colgroup><thead><tr><th>Bit</th><th>Audience</th><th>Main purpose</th><th>Contains</th></tr></thead><tbody valign="top"><tr><td>The code</td><td>
+</p><div class="table"><a name="d0e8587"></a><p class="title"><b>Table&nbsp;7.1.&nbsp;Bits of documentation</b></p><table summary="Bits of documentation" border="1"><colgroup><col><col><col><col></colgroup><thead><tr><th>Bit</th><th>Audience</th><th>Main purpose</th><th>Contains</th></tr></thead><tbody valign="top"><tr><td>Source Code</td><td>
 <div class="orderedlist"><ol type="1"><li><p>
 Other developers that will maintain and improve on the code.
 </p></li><li><p>
@@ -21,7 +21,7 @@ The compiler.
 Implement ArgoUML in a maintainable and understandable way.
 </td><td>
 See <a href="ch09.html" title="Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML">Chapter&nbsp;9, <i>Standards for coding in ArgoUML</i></a> for details on how to write the code.
-</td></tr><tr><td>The javadoc</td><td>
+</td></tr><tr><td>Javadoc</td><td>
 Developers writing code that communicates or in other ways interact
 with this class.
 </td><td>
@@ -30,7 +30,7 @@ to use them.
 </td><td>
 Description of the functions of all classes,
 all public and protected methods, variables, and constants.
-</td></tr><tr><td>The cookbook</td><td>
+</td></tr><tr><td>Cookbook</td><td>
 Developers writing code, maintaining the documentation or the web site.
 </td><td>
 Make it easy to learn how ArgoUML works and how to extend it.
@@ -48,7 +48,7 @@ build the documentation part of the release,
 test ArgoUML, test the documentation, ...).
 Agreed project rules like what level of quality is aimed for and
 description of processes that achieves that level.
-</td></tr><tr><td>The web site in CVS</td><td>
+</td></tr><tr><td>Web site in CVS</td><td>
 Everyone, i.e. developers in the project, users of the product,
 people searching for UML tools for the purpose of trying, testing,
 evaluating, and using the tools.
@@ -66,7 +66,7 @@ Some illustrations that do not work well in the other
 parts of the documentation. 
 This is done as a complement to the other parts. 
 Examples, tours.
-</td></tr><tr><td>The manual and quick-guide</td><td>
+</td></tr><tr><td>Manual and quick-guide</td><td>
 Users of ArgoUML.
 Persons that want to evaluate ArgoUML for the purpose of starting to use it.
 Persons that are training to use UML and ArgoUML.
@@ -77,14 +77,14 @@ Describe how UML is used with ArgoUML.
 Complete installation instructions for all supported installation schemes.
 Complete description on how to use ArgoUML in your project.
 Complete reference on how to use ArgoUML.
-</td></tr><tr><td>Help texts within the running ArgoUML</td><td>
+</td></tr><tr><td>Help text in ArgoUML</td><td>
 Users of ArgoUML.
 </td><td>
 Give a quick help with a specific feature or button.
 Give short explanations of all commands and actions.
 </td><td>
 A complete set of quick help and explanations.
-</td></tr><tr><td>The FAQ</td><td>
+</td></tr><tr><td>FAQ</td><td>
 Users of ArgoUML.
 Members of the users mailing list.
 </td><td>
