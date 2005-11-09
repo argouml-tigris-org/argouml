@@ -254,7 +254,7 @@ public class FigComponent extends FigNodeModelElement {
 
             if (getLayer() != null) {
                 // elementOrdering(figures);
-                List contents = getLayer().getContents();
+                List contents = new ArrayList(getLayer().getContents());
                 Iterator it = contents.iterator();
                 while (it.hasNext()) {
                     Object o = it.next();
