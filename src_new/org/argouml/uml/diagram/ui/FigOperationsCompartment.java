@@ -25,13 +25,17 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationContext;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.FigFeature;
 import org.tigris.gef.presentation.Fig;
 
@@ -119,6 +123,29 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#createFeature()
      */
     public void createFeature() {
-        (new ActionAddOperation()).actionPerformed(null);
+        Object classifier = getGroup().getOwner();
+        Project project = ProjectManager.getManager().getCurrentProject();
+
+        Collection propertyChangeListeners =
+            project.findFigsForMember(classifier);
+        Object model = project.getModel();
+        Object voidType = project.findType("void");
+        Object oper =
+            Model.getCoreFactory()
+                .buildOperation(classifier, model, voidType, propertyChangeListeners);
+        populate();
+        TargetManager.getInstance().setTarget(oper);
+        
+        // TODO: None of the following should be needed. Fig such as FigClass and
+        // FigInterface should be listening for add/remove events and know when
+        // an operation has been added and add a listener to the operation to themselves
+        // See similar in ActionAddOperation
+        Iterator it = project.findAllPresentationsFor(classifier).iterator();
+        while (it.hasNext()) {
+            PropertyChangeListener listener =
+                (PropertyChangeListener) it.next();
+            Model.getPump().removeModelEventListener(listener, oper);
+            Model.getPump().addModelEventListener(listener, oper);
+        }
     }
 }
