@@ -42,12 +42,11 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
-import org.argouml.notation.Notation;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.diagram.ui.ActionAddAttribute;
+import org.argouml.ui.targetmanager.ActionAddOperation;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddNote;
-import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
@@ -272,8 +271,8 @@ public class FigClass extends FigClassifierBox
 
         // Add...
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
-        addMenu.add(new ActionAddAttribute());
-        addMenu.add(new ActionAddOperation());
+        addMenu.add(TargetManager.getInstance().getAddAttributeAction());
+        addMenu.add(TargetManager.getInstance().getAddOperationAction());
         addMenu.add(new ActionAddNote());
         addMenu.add(ActionEdgesDisplay.getShowEdges());
         addMenu.add(ActionEdgesDisplay.getHideEdges());

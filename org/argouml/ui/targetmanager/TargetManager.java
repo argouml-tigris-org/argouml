@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
@@ -390,6 +391,10 @@ public final class TargetManager {
      */
     private boolean inTransaction = false;
 
+    private Action addAttributeAction = new ActionAddAttribute();
+    
+    private Action addOperationAction = new ActionAddOperation();
+    
     /**
      * Singleton retrieval method.
      * @return the targetmanager
@@ -398,6 +403,12 @@ public final class TargetManager {
         return instance;
     }
 
+    /**
+     * Singleton constructor should remain private
+     */
+    private TargetManager() {
+    }
+    
     /**
      * Only for debugging.
      */
@@ -793,9 +804,61 @@ public final class TargetManager {
     }
 
     private void endTargetTransaction() {
+        
+        boolean addAttributeEnabled;
+        if (targets.size() == 1) {
+            Object target = determineModelTarget(targets.get(0));
+            if ((Model.getFacade().isAClass(target)
+                    || (Model.getFacade().isAFeature(target)
+                    && Model.getFacade().isAClass(
+                    Model.getFacade().getOwner(target)))
+                    || Model.getFacade().isAAssociationEnd(target))) {
+                addAttributeEnabled = true;
+            } else {
+                addAttributeEnabled = false;
+            }
+        } else {
+            addAttributeEnabled = false;
+        }
+        
+        boolean addOperationEnabled;
+        if (targets.size() == 1) {
+            Object target = determineModelTarget(targets.get(0));
+            if ((Model.getFacade().isAClassifier(target)
+                    || Model.getFacade().isAFeature(target))
+                    && !Model.getFacade().isASignal(target)) {
+                addOperationEnabled = true;
+            } else {
+                addOperationEnabled = false;
+            }
+        } else {
+            addOperationEnabled = false;
+        }
+        
+        addAttributeAction.setEnabled(addAttributeEnabled);
+        addOperationAction.setEnabled(addOperationEnabled);
+        
         inTransaction = false;
     }
 
+    /**
+     * Get the Action class for creating and adding a new attribute
+     * to the single selected target (or its owner).
+     * @return the action
+     */
+    public Action getAddAttributeAction() {
+        return addAttributeAction;
+    }
+    
+    /**
+     * Get the Action class for creating and adding a new operation
+     * to the single selected target (or its owner).
+     * @return the action
+     */
+    public Action getAddOperationAction() {
+        return addOperationAction;
+    }
+    
     /**
      * Convenience method to return the target as fig. If the current
      * target (retrieved by getTarget) is either a fig itself or the

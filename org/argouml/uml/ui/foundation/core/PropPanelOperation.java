@@ -35,8 +35,8 @@ import javax.swing.border.TitledBorder;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.ActionAddOperation;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateOwner;
@@ -101,7 +101,7 @@ public class PropPanelOperation extends PropPanelFeature {
                new UMLOperationMethodsListModel())));
 
         addAction(new ActionNavigateOwner());
-        addAction(new ActionAddOperation());
+        addAction(TargetManager.getInstance().getAddOperationAction());
         addAction(new ActionNewParameter());
         addAction(new ActionNewRaisedSignal());
         addAction(new ActionNewMethod());
