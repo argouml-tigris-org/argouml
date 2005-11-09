@@ -42,8 +42,7 @@ import org.xml.sax.InputSource;
 public interface XmiReader {
 
     /**
-     * Parses a given inputsource to a model. Does not override the novosoft
-     * parse method since that does not have the right signature.
+     * Parses a given inputsource to a model. 
      * @param pIs the input source for parsing
      * @return MModel the UML model
      * @throws UmlException on any error
@@ -53,8 +52,7 @@ public interface XmiReader {
     Object parseToModel(InputSource pIs) throws UmlException;
 
     /**
-     * Parses a given inputsource to a model. Does not override the novosoft
-     * parse method since that does not have the right signature.
+     * Parses a given inputsource to a model. 
      * @param pIs the input source for parsing
      * @return MModel the UML model
      * @throws UmlException on any error
