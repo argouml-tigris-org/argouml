@@ -75,7 +75,7 @@ public class TestUMLAssociationRoleAssociationEndRoleListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-        		Model.getCoreHelper().removeConnection(getElem(),elements[i]);
+            Model.getCoreHelper().removeConnection(getElem(), elements[i]);
         }
     }
 

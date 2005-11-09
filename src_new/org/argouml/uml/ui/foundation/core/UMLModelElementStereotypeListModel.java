@@ -67,6 +67,9 @@ public class UMLModelElementStereotypeListModel
         return Model.getFacade().isAStereotype(element);
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildPopup(javax.swing.JPopupMenu, int)
+     */
     public boolean buildPopup(JPopupMenu popup, int index) {
         // Add stereotypes submenu
         Action[] stereoActions =
