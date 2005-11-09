@@ -29,12 +29,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
-import org.tigris.gef.presentation.Fig;
 
 
 /**
@@ -57,21 +54,16 @@ public class ActionNewTagDefinition extends AbstractActionNewModelElement {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        Object t = TargetManager.getInstance().getTarget();
-        if (t instanceof Fig) t = ((Fig) t).getOwner();
+        Object t = TargetManager.getInstance().getModelTarget();
         Object owner = null;
         Object namespace = null;
         if (Model.getFacade().isAStereotype(t)) {
             owner = t;
             namespace = Model.getFacade().getNamespace(owner);
+        } else if (Model.getFacade().isAPackage(t)) {
+            namespace = t;
         } else {
-            if (Model.getFacade().isAPackage(t))
-                namespace = t;
-            else {
-                Project p = ProjectManager.getManager().getCurrentProject();
-                Object model = p.getModel();
-                namespace = model;
-            }            
+            namespace = Model.getFacade().getModel(t);
         }
         Object newTagDefinition = Model.getExtensionMechanismsFactory()
             .buildTagDefinition(
@@ -79,6 +71,8 @@ public class ActionNewTagDefinition extends AbstractActionNewModelElement {
                     owner,
                     namespace
             );
+        Object multiplicity = Model.getDataTypesFactory().createMultiplicity(0,1);
+        Model.getCoreHelper().setMultiplicity(newTagDefinition,multiplicity);
         TargetManager.getInstance().setTarget(newTagDefinition);
         super.actionPerformed(e);
     }
