@@ -46,7 +46,7 @@ public class Tools {
 
     private static final String[] PACKAGELIST =
 	new String[]{
-	    "org.argouml.application", "ru.novosoft.uml",
+	    "org.argouml.application", "org.netbeans.mdr",
             "org.tigris.gef.base", "org.xml.sax",
             "java.lang", "org.apache.log4j",
 	};
@@ -94,7 +94,8 @@ public class Tools {
             Class cls = Class.forName("org.tigris.gef.base.Editor");
             cls = Class.forName("org.xml.sax.AttributeList");
             cls = Class.forName("org.apache.log4j.Logger");
-
+            cls = Class.forName("org.netbeans.api.mdr.MDRManager");
+            
             StringBuffer sb = new StringBuffer();
 
             String saxFactory =
