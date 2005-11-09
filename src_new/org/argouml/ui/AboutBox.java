@@ -260,7 +260,7 @@ public class AboutBox extends JDialog {
         buf.append("+ Markus Klink\n");
         buf.append("+ Michiel van der Wulp\n");
         buf.append("+ Thomas Neustupny\n");
-        buf.append("+ Tom Morris (tfmorris@gmail.com\n");
+        buf.append("+ Tom Morris (tfmorris@gmail.com)\n");
         buf.append("+ Yayan" + cpbi + "\n\n");
 
         buf.append(Translator.messageFormat(
