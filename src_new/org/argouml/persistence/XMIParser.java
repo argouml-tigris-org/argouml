@@ -41,15 +41,11 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.xml.sax.InputSource;
 
 /**
- * XMI is an XML based exchange format between UML tools.
- * ArgoUML uses this as standard saving mechanism so that easy interchange
- * with other tools and compliance with open standards are secured.
- * XMI version 1.0 for UML 1.3 is used. To convert older models in XMI
- * (Argo 0.7 used XMI 1.0 for UML1.1) to the latest version,
- * Meta Integration provides a free key to their Model Bridge.
- * This also permits you to convert Rational Rose models to ArgoUML!
- * This currently only includes model information, but no graphical
- * information (like layout of diagrams).
+ * Read an XMI file.
+ * <p>
+ * Despite the name, no actual parsing is done here.  This
+ * manages the overall reading process, but all actual XMI
+ * deserialization is the responsibility of the Model subsystem.
  *
  */
 public class XMIParser {
@@ -144,7 +140,8 @@ public class XMIParser {
                 diagramsElement.addAll(Model.getModelManagementHelper().
                         getAllModelElementsOfKind(element,
                                 Model.getMetaTypes().getStateMachine()));
-                Collection ownedElements = Model.getFacade().getOwnedElements(element);
+                Collection ownedElements = Model.getFacade().getOwnedElements(
+                        element);
                 Iterator oeIterator = ownedElements.iterator();
                 while (oeIterator.hasNext()) {
                     Object me = oeIterator.next();
@@ -162,19 +159,23 @@ public class XMIParser {
             Object namespace = null;
             if (facade.getNamespace(element) == null) {
                 namespace = facade.getContext(element);
-                Model.getCoreHelper().setNamespace(element,namespace);
+                Model.getCoreHelper().setNamespace(element, namespace);
             } else {
                 namespace = facade.getNamespace(element);
             }
             ArgoDiagram diagram = null;
-            if (facade.isAActivityGraph(element)){
-                LOG.info("Creating activity diagram for "+facade.getUMLClassName(element)+"<<"+facade.getName(element)+">>");
+            if (facade.isAActivityGraph(element)) {
+                LOG.info("Creating activity diagram for "
+                        + facade.getUMLClassName(element) 
+                        + "<<" + facade.getName(element) + ">>");
                 diagram = new UMLActivityDiagram( namespace , element );
             } else {
-                LOG.info("Creating state diagram for "+facade.getUMLClassName(element)+"<<"+facade.getName(element)+">>");                
+                LOG.info("Creating state diagram for "
+                        + facade.getUMLClassName(element) 
+                        + "<<" + facade.getName(element) + ">>");                
                 diagram = new UMLStateDiagram( namespace , element );
             }                    
-            if (diagram!=null)
+            if (diagram != null)
                 proj.addMember(diagram);
         }
     }
