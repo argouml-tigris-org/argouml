@@ -26,20 +26,16 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -53,13 +49,10 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
     private Logger LOG = Logger.getLogger(UMLTagDefinitionComboBoxModel.class);
     
     /**
-     * 
      * Constructor for UMLTagDefinitionComboBoxModel.
-     *
-     * @param propertySetName the name of the property set
      */
     public UMLTagDefinitionComboBoxModel() {
-        super("tagdefinition",false);
+        super("tagdefinition", false);
     }
 
     
@@ -69,8 +62,8 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
     protected boolean isValidElement(Object element) {
         Object owner = Model.getFacade().getOwner(element);
         return (Model.getFacade().isATagDefinition(element) 
-                && (owner==null || Model.getFacade().getStereotypes(getTarget()).
-                        contains(owner)));
+                && (owner == null || Model
+                .getFacade().getStereotypes(getTarget()).contains(owner)));
     }
 
     /**
@@ -116,13 +109,13 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
             }
         });
         Collection stereotypes = Model.getFacade().getStereotypes(t);
-        Project project =ProjectManager.getManager().getCurrentProject();
+        Project project = ProjectManager.getManager().getCurrentProject();
         Collection models = project.getModels();
         Iterator it = models.iterator();
         while (it.hasNext()) {
             addAllUniqueModelElementsFrom(availableTagDefs, paths, 
                     Model.getModelManagementHelper().getAllModelElementsOfKind(
-                            it.next(), Model.getMetaTypes().getTagDefinition()));            
+                            it.next(), Model.getMetaTypes().getTagDefinition()));         
         }
         addAllUniqueModelElementsFrom(availableTagDefs, paths, 
                 Model.getModelManagementHelper().getAllModelElementsOfKind(
@@ -133,7 +126,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
         while (it.hasNext()) {
             Object tagDef = it.next();
             Object owner = Model.getFacade().getOwner(tagDef);
-            if (owner!=null&&!stereotypes.contains(owner))
+            if (owner != null && !stereotypes.contains(owner))
                 notValids.add(tagDef);
         }
         availableTagDefs.removeAll(notValids);
