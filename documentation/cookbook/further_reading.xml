@@ -25,7 +25,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 
-<chapter id="further_reading">
+<appendix id="further_reading">
   <title>Further Reading</title>
   <sect1 id="robbins">
     <title>Jason Robbins Dissertation</title> <indexterm>
@@ -104,7 +104,7 @@
         Martin Skinners dissertation</ulink> </para>
     </sect2>
   </sect1>
-</chapter>
+</appendix>
 
 <!-- Local stuff for Emacs - please do not delete
 

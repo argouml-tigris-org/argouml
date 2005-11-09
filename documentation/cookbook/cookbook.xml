@@ -125,10 +125,11 @@
   &cvs;
   &standards;
   &documentationstandards;
-  &further_reading;
   &processes;
   
   <index/>
+
+  &further_reading;
   
 </book>
 
