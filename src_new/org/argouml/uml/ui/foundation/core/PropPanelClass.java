@@ -28,8 +28,8 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.diagram.ui.ActionAddAttribute;
-import org.argouml.uml.diagram.ui.ActionAddOperation;
+import org.argouml.ui.targetmanager.ActionAddOperation;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -94,8 +94,8 @@ public class PropPanelClass extends PropPanelClassifier {
                 getOwnedElementsScroll());
 
         addAction(new ActionNavigateNamespace());
-        addAction(new ActionAddAttribute());
-        addAction(new ActionAddOperation());
+        addAction(TargetManager.getInstance().getAddAttributeAction());
+        addAction(TargetManager.getInstance().getAddOperationAction());
         addAction(getActionNewReception());
         addAction(new ActionNewInnerClass());
         addAction(new ActionNewClass());

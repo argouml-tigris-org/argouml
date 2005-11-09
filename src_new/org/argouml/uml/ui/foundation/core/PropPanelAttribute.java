@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.diagram.ui.ActionAddAttribute;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -91,7 +91,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 
 
         addAction(new ActionNavigateContainerElement());
-        addAction(new ActionAddAttribute());
+        addAction(TargetManager.getInstance().getAddAttributeAction());
         addAction(new ActionAddDataType());
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());

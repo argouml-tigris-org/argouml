@@ -22,33 +22,34 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.ui.targetmanager;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.swing.AbstractAction;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLAction;
 
 /**
  * Action to add an operation to a classifier.
- *
- * @stereotype singleton
  */
-public class ActionAddOperation extends UMLAction {
+public class ActionAddOperation extends AbstractAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
     /**
      * The constructor.
      */
-    public ActionAddOperation() {
-        super("button.new-operation", true, HAS_ICON);
+    ActionAddOperation() {
+        super(Translator.localize("button.new-operation"),
+                ResourceLoaderWrapper.lookupIcon("button.new-operation"));
     }
 
     ////////////////////////////////////////////////////////////////
@@ -89,23 +90,5 @@ public class ActionAddOperation extends UMLAction {
             Model.getPump().removeModelEventListener(listener, oper);
             Model.getPump().addModelEventListener(listener, oper);
         }
-
-        super.actionPerformed(ae);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() {
-        /* Check if multiple items are selected: */
-        if (TargetManager.getInstance().getTargets().size() > 1) {
-            return false;
-        }
-
-	Object target = TargetManager.getInstance().getModelTarget();
-	return super.shouldBeEnabled()
-	    && (Model.getFacade().isAClassifier(target)
-		|| Model.getFacade().isAFeature(target))
-	    && !Model.getFacade().isASignal(target);
     }
 } /* end class ActionAddOperation */

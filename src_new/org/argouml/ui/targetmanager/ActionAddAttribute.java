@@ -22,30 +22,33 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.ui.targetmanager;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 
+import javax.swing.AbstractAction;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLAction;
 
 /**
  * Action to add an attribute to a classifier.<p>
  *
  * @stereotype singleton
  */
-public class ActionAddAttribute extends UMLAction {
+public class ActionAddAttribute extends AbstractAction {
     /**
      * The constructor for this class.
      */
-    public ActionAddAttribute() {
-        super("button.new-attribute", true, HAS_ICON);
+    ActionAddAttribute() {
+        super(Translator.localize("button.new-attribute"),
+                ResourceLoaderWrapper.lookupIcon("button.new-attribute"));
     }
-
+    
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -56,9 +59,7 @@ public class ActionAddAttribute extends UMLAction {
         if (Model.getFacade().isAClassifier(target)
                 || Model.getFacade().isAAssociationEnd(target)) {
             classifier = target;
-        } else if (Model.getFacade().isAFeature(target)
-        	 && Model.getFacade().isAClass(
-                                     Model.getFacade().getOwner(target))) {
+        } else if (Model.getFacade().isAAttribute(target)) {
             classifier = Model.getFacade().getOwner(target);
         } else {
             return;
@@ -76,24 +77,5 @@ public class ActionAddAttribute extends UMLAction {
                 intType,
                 propertyChangeListeners);
         TargetManager.getInstance().setTarget(attr);
-        super.actionPerformed(ae);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() {
-        /* Check if multiple items are selected: */
-        if (TargetManager.getInstance().getTargets().size() > 1) {
-            return false;
-        }
-
-	Object target =  TargetManager.getInstance().getModelTarget();
-	return super.shouldBeEnabled()
-	       && (Model.getFacade().isAClass(target)
-		   || (Model.getFacade().isAFeature(target)
-		       && Model.getFacade().isAClass(
-                                       Model.getFacade().getOwner(target)))
-           || Model.getFacade().isAAssociationEnd(target));
     }
 } /* end class ActionAddAttribute */
