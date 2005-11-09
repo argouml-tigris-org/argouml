@@ -58,33 +58,31 @@ public class ActionAddOperation extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	Project p = ProjectManager.getManager().getCurrentProject();
-	Object target =  TargetManager.getInstance().getModelTarget();
-	Object/*MClassifier*/ cls = null;
-
-	if (Model.getFacade().isAClassifier(target)) {
-	    cls = target;
-	} else if (Model.getFacade().isAFeature(target)) {
-	    cls = Model.getFacade().getOwner(target);
-	} else {
-	    return;
-	}
-
-	Collection propertyChangeListeners =
-	    ProjectManager.getManager()
-	    	.getCurrentProject().findFigsForMember(cls);
-	Object model =
-	    ProjectManager.getManager()
-	    	.getCurrentProject().getModel();
-	Object voidType =
-	    ProjectManager.getManager()
-	    	.getCurrentProject().findType("void");
-	Object oper =
-	    Model.getCoreFactory()
-	    	.buildOperation(cls, model, voidType, propertyChangeListeners);
+        Project project = ProjectManager.getManager().getCurrentProject();
+        Object target =  TargetManager.getInstance().getModelTarget();
+        Object classifier = null;
+        
+        if (Model.getFacade().isAClassifier(target)) {
+            classifier = target;
+        } else if (Model.getFacade().isAFeature(target)) {
+            classifier = Model.getFacade().getOwner(target);
+        } else {
+            return;
+        }
+        
+        Collection propertyChangeListeners =
+            project.findFigsForMember(classifier);
+        Object model = project.getModel();
+        Object voidType = project.findType("void");
+        Object oper = Model.getCoreFactory().buildOperation(
+                classifier, model, voidType, propertyChangeListeners);
         TargetManager.getInstance().setTarget(oper);
 
-        Iterator it = p.findAllPresentationsFor(cls).iterator();
+        // TODO: None of the following should be needed. Fig such as FigClass and
+        // FigInterface should be listening for add/remove events and know when
+        // an operation has been added and add a listener to the operation to themselves
+        // See similar in FigOperationsCompartment
+        Iterator it = project.findAllPresentationsFor(classifier).iterator();
         while (it.hasNext()) {
             PropertyChangeListener listener =
                 (PropertyChangeListener) it.next();
@@ -92,7 +90,7 @@ public class ActionAddOperation extends UMLAction {
             Model.getPump().addModelEventListener(listener, oper);
         }
 
-	super.actionPerformed(ae);
+        super.actionPerformed(ae);
     }
 
     /**
