@@ -40,11 +40,15 @@
     <title>About the project</title>
     <para> ArgoUML is an open source project, so it depends on people that
       volunteer to work on it. Especially in the area of development there is still
-      so much to do! This Cookbook is dedicated to everyone interested in taking
+so much to do!
+</para>
+    <para>
+This Cookbook is dedicated to everyone interested in taking
       part in the ArgoUML project as such and should help to transfer the knowledge
-      from the old experts to them. Please feel free to send more questions and/or
-      answers to the <ulink url="mailto:dev@argouml.tigris.org">dev mailing
-      list</ulink>! </para>
+from the old experts to them.
+Please feel free to discuss the ArgoUML project and this Cookbook on
+<ulink url="mailto:dev@argouml.tigris.org">dev mailing list</ulink>!
+</para>
   </sect1>
   
   <sect1 id="contributing">
@@ -229,13 +233,30 @@
       project for whatever purpose that may be. </para>
     <sect2>
       <title>In this Cookbook, you will find...</title>
-      <para> Information on how to compile ArgoUML. </para>
-      <para> Information on how different features of ArgoUML are implemented.
-        </para>
-      <para> Information on how you should add modules and Plug-ins to ArgoUML.
-        </para>
-      <para> Information that you, as a developer of ArgoUML, need to know about
-        how the project is organized and how to contribute. </para>
+      <para>
+Information on how to compile ArgoUML.
+(<xref linkend="buildingandtools"/>)
+</para>
+
+      <para>
+Information on how different features of ArgoUML are implemented and
+how they are to be used.
+(<xref linkend="subsystems"/> and
+<xref linkend="inside_subsystems"/>)
+</para>
+
+      <para>
+Information on how you should write extensions to ArgoUML.
+(<xref linkend="extending"/>)
+</para>
+
+      <para>
+Information that you, as a developer of ArgoUML,
+need to know about how to contribute.
+(<xref linkend="standards"/>,
+<xref linkend="app.docstand"/> and
+<xref linkend="processes"/>)
+</para>
       
     </sect2>
     <sect2>
