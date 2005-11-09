@@ -29,6 +29,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -83,7 +84,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
 
         addAction(new ActionNavigateNamespace());
         addAction(new ActionNewTagDefinition());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(new ActionDeleteSingleModelElement());  
     }
 
     /**
