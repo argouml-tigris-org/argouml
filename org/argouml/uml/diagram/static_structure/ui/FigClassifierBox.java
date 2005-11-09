@@ -249,11 +249,6 @@ abstract public class FigClassifierBox extends FigNodeModelElement
             return;
         }
         ((FigFeaturesCompartment)fg).createFeature();
-        
-        // Flushing the events here guarantees that the new feature
-        // exists in the Fig before we try to edit it.
-        Model.getPump().reallyFlushModelEvents();
-        
         List figList = fg.getFigs();
         CompartmentFigText ft =
             (CompartmentFigText) figList.get(figList.size() - 1);
