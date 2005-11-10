@@ -27,20 +27,19 @@ package org.argouml.ui.targetmanager;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 
-import javax.swing.AbstractAction;
-
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Action to add an attribute to a classifier.<p>
  *
  * @stereotype singleton
  */
-class ActionAddAttribute extends AbstractAction {
+class ActionAddAttribute extends UndoableAction {
     /**
      * The constructor for this class.
      */
@@ -53,6 +52,9 @@ class ActionAddAttribute extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+        
+        super.actionPerformed(ae);
+        
         Object target = TargetManager.getInstance().getModelTarget();
         Object classifier = null;
         
