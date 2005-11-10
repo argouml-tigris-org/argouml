@@ -597,7 +597,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * operation, the containing figclass is returned).
      *
      * @param member The member we are looking for.
-     *               This can be a NSUML object but also another object.
+     *              This can be a model element object but also another object.
      * @return Collection The collection with the figs.
      */
     public Collection findFigsForMember(Object member) {

@@ -52,7 +52,7 @@ public class CrNoTransitions extends CrUML {
     /**
      * This is the decision routine for the critic.
      *
-     * @param dm is the UML entity (an NSUML object) that is being checked.
+     * @param dm is the UML entity that is being checked.
      * @param dsgr is for future development and can be ignored.
      *
      * @return boolean problem found

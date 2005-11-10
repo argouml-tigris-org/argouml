@@ -77,7 +77,7 @@ public class CrCircularComposition extends CrUML {
     }
 
     /**
-     * @param dm is the UML entity (an NSUML object) that is being checked
+     * @param dm is the UML entity that is being checked
      * @return the list of offenders
      */
     protected ListSet computeOffenders(Object dm) {

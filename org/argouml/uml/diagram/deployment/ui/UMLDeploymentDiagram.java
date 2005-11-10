@@ -113,7 +113,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * in <em>LayerManager</em>(GEF) to control the adding, changing and
      * deleting layers on the diagram...<p>
      *
-     * @param handle MNamespace from the model in NSUML...
+     * @param handle Namespace from the model 
      * @author psager@tigris.org Jan. 24, 2002
      */
     public void setNamespace(Object handle) {

@@ -89,8 +89,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     private boolean isClearable = false;
 
     /**
-     * The name of the event with which NSUML sets the attribute that is shown
-     * in this comboboxmodel.
+     * The name of the property that we will use to listen for change events
+     * associated with this model element.
      */
     private String propertySetName;
 
@@ -110,9 +110,9 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * combobox. If clearable is true, the user can select null in the
      * combobox and thereby clear the attribute in the model.
      *
-     * @param name The name of the NSUML event that must be
-     * fired to set the selected item programmatically (via setting
-     * the NSUML model)
+     * @param name The name of the property change event that must be
+     * fired to set the selected item programmatically (via changing
+     * the model)
      * @param clearable Flag to indicate if the user may select ""
      * as value in the combobox. If true the attribute that is shown
      * by this combobox may be set to null.
@@ -328,7 +328,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     }
 
     /**
-     * Gets the modelelement that is selected in the NSUML model. For
+     * Gets the modelelement that is selected in the UML model. For
      * example, say that this ComboBoxmodel contains all namespaces
      * (as in UMLNamespaceComboBoxmodel) , this method should return
      * the namespace that owns the target then.
