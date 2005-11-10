@@ -46,6 +46,7 @@
   &subsystemdiagrams;
   &subsystempropertypanels;
   &subsystempersistence;
+  &subsystemnotation;
   
   <sect1 id="reverseengineering">
     <title>Reverse Engineering Subsystem</title> <indexterm>

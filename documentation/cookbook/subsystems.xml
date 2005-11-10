@@ -331,7 +331,13 @@ see <xref linkend="propertypanels"></xref>.
 see <xref linkend="explorer"></xref>.
 </para>
         </listitem>
-        
+
+        <listitem>
+          <para>Notation -
+see <xref linkend="notation"></xref>.
+</para>
+        </listitem>
+
         <listitem>
           <para>Code Generation -
 see <xref linkend="codegeneration"></xref>.
