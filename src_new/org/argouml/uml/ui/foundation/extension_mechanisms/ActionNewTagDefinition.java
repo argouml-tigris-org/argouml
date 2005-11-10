@@ -64,7 +64,7 @@ public class ActionNewTagDefinition extends AbstractActionNewModelElement {
             namespace = t;
         } else {
             namespace = Model.getFacade().getModel(t);
-        }
+            }            
         Object newTagDefinition = Model.getExtensionMechanismsFactory()
             .buildTagDefinition(
                     (String) null,
