@@ -373,8 +373,7 @@ Property files to be searched:
     <copy file="${argo.src.dir}/org/argouml/argo.ini" tofile="${argo.build.classes}/org/argouml/argo.ini"/>
     <copy file="${argo.src.dir}/org/argouml/default.xmi" tofile="${argo.build.classes}/org/argouml/default.xmi"/>
     <copy file="${argo.src.dir}/org/argouml/registry.xml" tofile="${argo.build.classes}/org/argouml/registry.xml"/>
-    <copy file="${argo.src.dir}/org/argouml/eventtree.xml" tofile="${argo.build.classes}/org/argouml/eventtree.xml"/>
-  	
+ 	
   	<!-- copy test files -->
     <copy todir="${argo.tests.classes}/testmodels">
       <fileset dir="${argo.tests.src}/testmodels" excludes="CVS/**" includes="**/**"/>
