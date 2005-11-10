@@ -241,7 +241,8 @@ public class Modeller {
         ownerPackageName = getPackageName(currentName);
 	while (!"".equals(ownerPackageName)) {
 	    if (getDiagram() != null
-		&& importSession != null && importSession.isCreateDiagramsChecked()
+		&& importSession != null 
+                && importSession.isCreateDiagramsChecked()
 		&& getDiagram().isDiagramInProject(ownerPackageName)) {
 
                 getDiagram().selectClassDiagram(getPackage(ownerPackageName),
@@ -260,7 +261,7 @@ public class Modeller {
 				       importSession.getSrcPath());
 	}
 
-	// Find or create a MPackage NSUML object for this package.
+	// Find or create a Package model element for this package.
 	mPackage = getPackage(name);
         currentPackageName = name;
 
@@ -630,12 +631,18 @@ public class Modeller {
             // if no existing residency was found.
             if (residentDep == null) {
 
+                // TODO: Fix this old NSUML workaround! - tfm - 20050911
+                
                 // this doesn't work because of a bug in NSUML (the
                 // ElementResidence association class is never saved
                 // to the xmi).
+                
                 // //UmlHelper.getHelper().getCore()
                 // .setResident(parseState.getComponent(),mClassifier);
-
+                
+                // next line contains current equivalent of above - tfm
+                //Model.getCoreHelper().setResident(parseState.getComponent(), mClassifier);
+                
                 // therefore temporarily use a non-standard hack:
                 //if (parseState.getComponent() == null) addComponent();
                 residentDep = Model.getCoreFactory()
@@ -837,9 +844,8 @@ public class Modeller {
                         mOperation, mdl, voidType, propertyChangeListeners);
 		Model.getCoreHelper().setName(mParameter,
 				    (String) parameter.elementAt(2));
-		Model.getCoreHelper().setKind(
-                mParameter,
-                Model.getDirectionKind().getInParameter());
+		Model.getCoreHelper().setKind(mParameter,
+                        Model.getDirectionKind().getInParameter());
                 if (Model.getFacade().isAClassifier(mClassifier)) {
                     Model.getCoreHelper().setType(mParameter, mClassifier);
                 } else {
