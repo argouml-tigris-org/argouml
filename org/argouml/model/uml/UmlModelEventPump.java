@@ -1418,7 +1418,7 @@ class ClassListenerHashMap {
 class EventTreeDefinition {
     private static final Logger LOG =
         Logger.getLogger(EventTreeDefinition.class);
-    private static final String FILE_NAME = "org/argouml/eventtree.xml";
+    private static final String FILE_NAME = "org/argouml/model/uml/eventtree.xml";
     private Map definition = new HashMap();
 
     /**
