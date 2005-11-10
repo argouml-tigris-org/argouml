@@ -40,7 +40,7 @@ import org.argouml.model.Model;
 /**
  * Action to add an operation to a classifier.
  */
-public class ActionAddOperation extends AbstractAction {
+class ActionAddOperation extends AbstractAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 

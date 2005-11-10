@@ -22,13 +22,14 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.ui.targetmanager;
 
 import junit.framework.TestCase;
 
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.ui.targetmanager.ActionAddAttribute;
 
 
 /**
