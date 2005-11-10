@@ -89,9 +89,9 @@ public interface ActivityGraphsFactory {
     Object buildActivityGraph(Object theContext);
 
     /**
-     * Builds an objectflowstate. The objectflowstate will be a subvertix of
+     * Builds an objectflowstate. The objectflowstate will be a subvertex of
      * the given compositestate. The parameter compositeState is of
-     * type Object to decouple the factory and NSUML as much as
+     * type Object to decouple the factory and model implementation as much as
      * possible from the rest of ArgoUML.
      *
      * @author MVW

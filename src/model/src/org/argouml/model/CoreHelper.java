@@ -1150,7 +1150,7 @@ public interface CoreHelper {
      * eg ModelManagementHelper.getCorrespondingElement(...). Or if that had
      * been used here. This function could possibly assert that the caller had
      * got it right.
-     * TODO: MULTIPLESTEREOTYPES remove this method when NSUML dropped.
+     * TODO: MULTIPLESTEREOTYPES remove this method 
      *
      * @param handle model element
      * @param stereo stereotype

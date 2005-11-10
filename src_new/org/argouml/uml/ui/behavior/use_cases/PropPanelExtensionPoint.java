@@ -73,8 +73,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         addField(Translator.localize("label.stereotype"),
                 getStereotypeSelector());
 
-        // Our location (a String). We can pass in the get and set methods from
-        // NSUML associated with the NSUML type. Allow the location label to
+        // Our location (a String).  Allow the location label to
         // expand vertically so we all float to the top.
 
         JTextField locationField = new UMLTextField2(

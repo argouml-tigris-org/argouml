@@ -115,11 +115,7 @@ public interface UseCasesFactory {
      * Set the namespace to the base (preferred) or else extension's
      * namespace. We don't do any checking on base and extension. They
      * should be different, but that is someone else's problem.<p>
-     *
-     * <em>Note</em>. There is a bug in NSUML that gets the base and
-     * addition associations back to front. We reverse the use of
-     * their accessors in the code to correct this.<p>
-     *
+     * 
      * @param abase      The base use case for the relationship
      *
      * @param anaddition The extension use case for the relationship
@@ -131,8 +127,7 @@ public interface UseCasesFactory {
 
     /**
      * Builds an actor in the same namespace of the given actor. If
-     * object is no actor nothing is build. Did not give MActor as an
-     * argument but object to seperate argouml better from NSUML.<p>
+     * object is no actor nothing is build.<p>
      *
      * @param model The namespace.
      * @param actor the given actor

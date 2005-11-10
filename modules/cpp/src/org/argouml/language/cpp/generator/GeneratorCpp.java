@@ -1860,7 +1860,7 @@ public class GeneratorCpp extends Generator2
                 if (mustGenBody && (Model.getFacade().isAClass(cls))
                         && (Model.getFacade().isAOperation(bf))
                         && (!Model.getFacade().isAbstract(bf))) {
-                    // there is no ReturnType in behavioral feature (nsuml)
+                    // there is no ReturnType in behavioral feature (uml)
                     tb.append(LINE_SEPARATOR).append(generateMethodBody(bf));
                 } else {
                     tb.append(";").append(LINE_SEPARATOR);

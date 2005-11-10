@@ -688,7 +688,7 @@ public class GeneratorJava
         }
 
         // add implemented interfaces, if needed
-        // nsuml: realizations!
+        // UML: realizations!
         if (Model.getFacade().isAClass(cls)) {
             String interfaces = generateSpecification(cls);
 	    LOG.debug("Specification: " + interfaces);
@@ -907,7 +907,7 @@ public class GeneratorJava
                             sb.append(LINE_SEPARATOR).append(INDENT).append(tv);
                         }
 
-                        // there is no ReturnType in behavioral feature (nsuml)
+                        // there is no ReturnType in behavioral feature (UML)
                         sb.append(LINE_SEPARATOR);
 			sb.append(generateMethodBody(behavioralFeature));
 			sb.append(INDENT);

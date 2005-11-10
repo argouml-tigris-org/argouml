@@ -80,16 +80,15 @@ public class TestProject extends TestCase {
         TargetManager.getInstance().setTarget(cls2);
         p.moveToTrash(package1);
         //TODO: We should also test that the object have been removed from their namespace.
-        //This is done in the MDR implementation (CoreFactory.deleteModelElement) but i don't 
-        //know for the NSUML implementation, and even if this is coded the new test code
-        //doesn't test this.
         //Collection c = Model.getFacade().getOwnedElements(p.getRoot());
         assertTrue("Package not in trash", p.isInTrash(package1));
-        assertTrue("Package not deleted", Model.getUmlFactory().isRemoved(package1));
+        assertTrue("Package not deleted", 
+                Model.getUmlFactory().isRemoved(package1));
         assertTrue("Class 1 not deleted", Model.getUmlFactory().isRemoved(cls1));
         assertTrue("Class 2 not deleted", Model.getUmlFactory().isRemoved(cls2));
         assertTrue("Class 3 not deleted", Model.getUmlFactory().isRemoved(cls3));
-        assertTrue("Class 4 has been deleted", !Model.getUmlFactory().isRemoved(cls4));
+        assertTrue("Class 4 has been deleted", 
+                !Model.getUmlFactory().isRemoved(cls4));
     }
 
     /**

@@ -155,8 +155,9 @@ public abstract class UMLRadioButtonPanel
         }
     }
 
+
     /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent e) {
         if (e.getPropertyName().equals(propertySetName)) {

@@ -387,7 +387,7 @@ public class GeneratorDisplay extends Generator2 {
             s += "extends " + baseClass + " ";
         }
 
-        //nsuml: realizations!  String interfaces =
+        //UML: realizations!  String interfaces =
         //generateRealization(cls.getRealizations(), true); if
         //(!interfaces.equals("")) s += "implements " + interfaces + "
         //";

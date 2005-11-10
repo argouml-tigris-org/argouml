@@ -36,9 +36,6 @@ public interface UseCasesHelper {
     /**
      * This method returns all extension points of a given use case.<p>
      *
-     * Here for completeness, but actually just a wrapper for the NSUML
-     * function.<p>
-     *
      * @param useCase  The use case for which we want the extension points.
      *
      * @return         A collection of the extension points.
@@ -170,7 +167,6 @@ public interface UseCasesHelper {
 
     /**
      * Sets the addition to an include.
-     * There is a bug in NSUML that reverses additions and bases for includes.
      *
      * @param handle Include
      * @param useCase UseCase

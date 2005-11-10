@@ -84,7 +84,7 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
     }
 
     /**
-     * Tests wether a change in the NSUML modelelement is reflected in the
+     * Tests whether a change in the modelelement is reflected in the
      * checkbox.
      */
     public void testPropertySet() {

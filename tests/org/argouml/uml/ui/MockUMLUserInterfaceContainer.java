@@ -66,7 +66,7 @@ public class MockUMLUserInterfaceContainer
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatElement(ru.novosoft.uml.foundation.core.ModelElement)
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatElement(java.lang.Object)
      */
     public String formatElement(/*ModelElement*/Object element) {
         return null;
@@ -80,7 +80,7 @@ public class MockUMLUserInterfaceContainer
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatNamespace(ru.novosoft.uml.foundation.core.Namespace)
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatNamespace(java.lang.Object)
      */
     public String formatNamespace(/*Namespace*/Object ns) {
         return null;

@@ -190,8 +190,8 @@ public interface CollaborationsHelper {
 
     /**
      * Returns true if a collaboration may be added to the given context. To
-     * decouple ArgoUML as much as possible from the NSUML model, the parameter
-     * of the method is of type Object.<p>
+     * decouple ArgoUML as much as possible from the model implementation,
+     * the parameter of the method is of type Object.<p>
      *
      * @param context the given context
      * @return boolean true if a collaboration may be added

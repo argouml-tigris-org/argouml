@@ -51,10 +51,8 @@ public class TestXmiFilePersister extends TestCase {
     }
 
     /**
-     * This is a regression test for issue 1504. Unfortunately this test does
-     * not work since ArgoUML crashes on a classcastexception that is catched by
-     * our dear friends of NSUML. However you can use it to test things quite
-     * easily :)
+     * This is a regression test for issue 1504. 
+     * Test basic serialization to XMI file.
      */
     public void testSave() {
 
@@ -87,10 +85,8 @@ public class TestXmiFilePersister extends TestCase {
     }
 
     /**
-     * This is a regression test for issue 1504. Unfortunately this test does
-     * not work since ArgoUML crashes on a classcastexception that is catched by
-     * our dear friends of NSUML. However you can use it to test things quite
-     * easily :)
+     * This is a regression test for issue 1504. 
+     * Test loading from minimal XMI file.
      */
     public void testLoadProject() {
 

@@ -32,7 +32,8 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Test that the Model class returns only NSUML-free interfaces.
+ * Test that the Model class returns only 
+ * model implementation independent interfaces.
  */
 public class TestModel extends TestCase {
     /**
@@ -83,7 +84,7 @@ public class TestModel extends TestCase {
 
     /**
      * Test each of the interfaces returned so that they don't contain any
-     * NSUML in any of their signatures.
+     * model implementation artifacts in any of their signatures.
      */
     public void testInterfaces() {
     }
@@ -151,7 +152,9 @@ public class TestModel extends TestCase {
     }
 
     /**
-     * What we compare against to determine if it is an NSUML class or not.
+     * Prefix identified as an implementation specific class.
+     * TODO: This should be generalized so it doesn't have to be changed
+     * each time a new implementation is created - tfm 20051109
      */
     private static final String UML_PATH_PREFIX;
 

@@ -107,9 +107,9 @@ public class CrUML extends Critic {
      */
     public boolean predicate(Object dm, Designer dsgr) {
 	Project p = ProjectManager.getManager().getCurrentProject();
-        if (p.isInTrash(dm) ||
-                (Model.getFacade().isAModelElement(dm) &&
-                        Model.getUmlFactory().isRemoved(dm))) {
+        if (p.isInTrash(dm)
+                || (Model.getFacade().isAModelElement(dm) 
+                && Model.getUmlFactory().isRemoved(dm))) {
             return NO_PROBLEM;
         } else {
             return predicate2(dm, dsgr);
@@ -119,7 +119,7 @@ public class CrUML extends Critic {
     /**
      * This is the decision routine for the critic.
      *
-     * @param dm is the UML entity (an NSUML object) that is being checked.
+     * @param dm is the UML entity that is being checked.
      * @param dsgr is for future development and can be ignored.
      *
      * @return boolean problem found

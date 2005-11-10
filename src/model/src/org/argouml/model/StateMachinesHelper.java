@@ -56,7 +56,7 @@ public interface StateMachinesHelper {
      * Gets the statemachine that contains the given Object
      * Traverses the state hierarchy of the statemachine
      * untill the statemachine is reached.  To decouple ArgoUML as
-     * much as possible from the NSUML model, the parameter of the
+     * much as possible from the model implementation, the parameter of the
      * method is of type Object, and the result, too.<p>
      *
      * @param handle The state for which we want to know the
@@ -68,8 +68,8 @@ public interface StateMachinesHelper {
 
     /**
      * Couples a given event to the given transition as being trigger
-     * event. To decouple ArgoUML as much as possible from the NSUML
-     * model, the parameters of the method are of type Object.<p>
+     * event. To decouple ArgoUML as much as possible from the model
+     * implementation, the parameters of the method are of type Object.<p>
      *
      * @param transition the given transition
      * @param event the given event
@@ -78,8 +78,8 @@ public interface StateMachinesHelper {
 
     /**
      * Returns true if a statemachine may be added to the given
-     * context. To decouple ArgoUML as much as possible from the NSUML
-     * model, the parameter of the method is of type Object.<p>
+     * context. To decouple ArgoUML as much as possible from the model
+     * implementation, the parameter of the method is of type Object.<p>
      *
      * @param context the given context
      * @return boolean true if a statemachine may be added
@@ -98,7 +98,7 @@ public interface StateMachinesHelper {
     /**
      * Returns all statemachines that can be the statemachine the given
      * submachinestate represents. To decouple ArgoUML as much as possible from
-     * the NSUML model, the parameter of the method is of type Object.
+     * the model implementation, the parameter of the method is of type Object.
      * @param model the model
      * @param oSubmachineState The submachinestate we are searching the
      * statemachines for.
@@ -118,8 +118,8 @@ public interface StateMachinesHelper {
     /**
      * Connects a given statemachine to a submachinestate as being the
      * statemachine the submachinestate represents. To decouple ArgoUML as much
-     * as possible from the NSUML model, the parameters of the method are of
-     * type Object.
+     * as possible from the model implementation, the parameters of the method
+     * are of type Object.
      * @param oSubmachineState The submachinestate for which we want to set the
      * property submachine
      * @param oStatemachine The statemachine

@@ -164,8 +164,8 @@ public interface StateMachinesFactory {
      * Builds a pseudostate initialized as a choice pseudostate. The
      * pseudostate will be a subvertix of the given
      * compositestate. The parameter compositeState is of type Object
-     * to decouple the factory and NSUML as much as possible from the
-     * rest of ArgoUML.<p>
+     * to decouple the factory and model implementation as much as 
+     * possible from the rest of ArgoUML.<p>
      *
      * @param compositeState the parent
      * @return MPseudostate
@@ -176,7 +176,7 @@ public interface StateMachinesFactory {
      * Builds a synchstate initalized with bound 0. The synchstate
      * will be a subvertix of the given compositestate. The parameter
      * compositeState is of type Object to decouple the factory and
-     * NSUML as much as possible from the rest of ArgoUML.
+     * model implementation as much as possible from the rest of ArgoUML.
      *
      * @param compositeState the given compositestate
      * @return MSynchState the newly created SynchState
@@ -187,8 +187,8 @@ public interface StateMachinesFactory {
      * Builds a stubstate initalized with an empty referenced
      * state. The stubstate will be a subvertix of the given
      * compositestate. The parameter compositeState is of type Object
-     * to decouple the factory and NSUML as much as possible from the
-     * rest of ArgoUML.
+     * to decouple the factory and model implementation as much as
+     * possible from the rest of ArgoUML.
      *
      * @param compositeState the given composite state
      * @return MSynchState the newly build stubstate
@@ -218,8 +218,8 @@ public interface StateMachinesFactory {
     /**
      * Builds a finalstate. The finalstate will be a subvertix of the
      * given compositestate. The parameter compositeState is of type
-     * Object to decouple the factory and NSUML as much as possible.
-     * from the rest of ArgoUML.
+     * Object to decouple the factory and model implementation as much
+     * as possible from the rest of ArgoUML.
      *
      * @param compositeState the given compositestate
      * @return MFinalState the given compositestate
@@ -230,7 +230,7 @@ public interface StateMachinesFactory {
      * Builds a submachinestate. The submachinestate will be a
      * subvertix of the given compositestate. The parameter
      * compositeState is of type Object to decouple the factory and
-     * NSUML as much as possible.  from the rest of ArgoUML.
+     * model implementation as much as possible.  from the rest of ArgoUML.
      *
      * @param compositeState the given compositestate
      * @return MSubmachineState the given submachinestate
@@ -239,7 +239,8 @@ public interface StateMachinesFactory {
 
     /**
      * Builds an internal transition for a given state. The parameter state is
-     * of type Object to decouple the factory and NSUML as much as possible.
+     * of type Object to decouple the factory and model implementation as 
+     * much as possible.
      *
      * @param state The state the internal transition should belong to
      * @return MTransition The internal transition constructed
@@ -248,8 +249,8 @@ public interface StateMachinesFactory {
 
     /**
      * Build a transition between a source state and a target state. The
-     * parameters are of type Object to decouple the factory and NSUML as much
-     * as possible.
+     * parameters are of type Object to decouple the factory and model
+     * implementation as much as possible.
      * This should not be used for internal transitions!
      * @param source The source state
      * @param target The target state
@@ -333,7 +334,7 @@ public interface StateMachinesFactory {
     /**
      * Builds a guard condition with a given transition. The guard condition is
      * empty by default. The parameter is of type Object to decouple the factory
-     * and NSUML as much as possible.
+     * and model implementation as much as possible.
      *
      * @param transition The transition that owns the resulting guard condition
      * @return MGuard The resulting guard condition

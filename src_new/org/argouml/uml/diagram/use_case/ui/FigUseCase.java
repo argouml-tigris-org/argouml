@@ -304,7 +304,7 @@ public class FigUseCase extends FigNodeModelElement
 
     /**
      * A version of the constructor used to associated the Fig with a
-     * particular NSUML object.<p>
+     * particular model element object.<p>
      *
      * Used at creation time of a UseCase.
      * And also when Add to Diagram is activated.
@@ -314,7 +314,7 @@ public class FigUseCase extends FigNodeModelElement
      * @param gm    The graph model to associate with this Fig. Ignored in this
      *              implementation.
      *
-     * @param node  The NSUML object to associate with this Fig.
+     * @param node  The model element object to associate with this Fig.
      */
     public FigUseCase(GraphModel gm, Object node) {
         this();
@@ -739,7 +739,8 @@ public class FigUseCase extends FigNodeModelElement
             int h) {
         int newW = w;
         int n = fg.getFigs().size() - 1;
-        int newH = isCheckSize() ? Math.max(h, ROWHEIGHT * Math.max(1, n) + 2) : h;
+        int newH = isCheckSize() ? Math.max(h, ROWHEIGHT * Math.max(1, n) + 2)
+                : h;
         int step = (n > 0) ? (newH - 1) / n : 0;
         // width step between FigText objects int maxA =
         // Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT).getMaxAscent();
@@ -1309,7 +1310,7 @@ public class FigUseCase extends FigNodeModelElement
      * Adjust the fig in the light of some change to the model.<p>
      *
      * Called both when there has been a change to notation, and when there
-     * has been an NSUML event.
+     * has been an event indicating model change.
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */

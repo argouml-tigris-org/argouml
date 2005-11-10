@@ -27,15 +27,10 @@ package org.argouml.uml.ui;
 import java.awt.Component;
 import java.awt.Container;
 
-import org.argouml.model.Model;
-import org.argouml.uml.ui.behavior.common_behavior.PropPanelComponentInstance;
-import org.argouml.uml.ui.behavior.common_behavior.PropPanelNodeInstance;
-import org.argouml.uml.ui.behavior.common_behavior.PropPanelObject;
-
 /**
- * This class is used to dispatch a NSUML change event (which may
+ * This class is used to dispatch a UML model change event (which may
  * occur on a non-UI) thread) to user interface components.  The class
- * is created in response to a NSUML change event being captures by a
+ * is created in response to a UML Model change event being captured by a
  * UMLUserInterfaceContainer and then is passed as an argument to
  * InvokeLater to be run on the user interface thread.<p>
  *
@@ -65,8 +60,6 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
      * Dispatch a target reasserted event.
      */
     public static final int TARGET_REASSERTED = 7;
-
-
 
     /**
      * Creates a UMLChangeDispatch.  eventType is overriden if a call to
@@ -125,7 +118,6 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
 
         int count = theAWTContainer.getComponentCount();
         Component component;
-        UMLUserInterfaceComponent uiComp;
         for (int i = 0; i < count; i++) {
             component = theAWTContainer.getComponent(i);
             if (component instanceof Container)
@@ -134,14 +126,14 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
                     && component.isVisible()) {
                 
                 switch(eventType) {
-                    case -1:
-                    case 0:
-                        ((UMLUserInterfaceComponent) component).targetChanged();
-                        break;
-
-                    case 7:
-                        ((UMLUserInterfaceComponent) component).targetReasserted();
-                        break;
+                case -1:
+                case 0:
+                    ((UMLUserInterfaceComponent) component).targetChanged();
+                    break;
+                    
+                case 7:
+                    ((UMLUserInterfaceComponent) component).targetReasserted();
+                    break;
                 }
             }
         }

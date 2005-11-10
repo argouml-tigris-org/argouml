@@ -157,13 +157,13 @@ public class FigClassifierRole extends FigNodeModelElement {
 
     /**
      * Variant constructor that associates the classifier role with a
-     * particular NSUML object.<p>
+     * particular model element.<p>
      *
      * Classifier role is constructed with {@link #FigClassifierRole()}.<p>
      *
      * @param gm    The graph model to use. Ignored in this implementation.
      * @param lay   The layer
-     * @param node  The NSUML object to associate with this Fig.
+     * @param node  The model element object to associate with this Fig.
      */
     public FigClassifierRole(GraphModel gm, Layer lay, Object node) {
         this();
