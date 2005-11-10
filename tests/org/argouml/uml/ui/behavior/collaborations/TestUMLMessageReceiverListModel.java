@@ -57,7 +57,7 @@ public class TestUMLMessageReceiverListModel extends TestCase {
         cont.setTarget(elem);
         model = new UMLMessageReceiverListModel();
         model.setTarget(elem);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
     }
 
     /**
@@ -76,7 +76,7 @@ public class TestUMLMessageReceiverListModel extends TestCase {
         Object role =
             Model.getCollaborationsFactory().createClassifierRole();
         Model.getCommonBehaviorHelper().setReceiver(elem, role);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals(1, model.getSize());
         assertEquals(role, model.getElementAt(0));
     }
@@ -89,7 +89,7 @@ public class TestUMLMessageReceiverListModel extends TestCase {
             Model.getCollaborationsFactory().createClassifierRole();
         Model.getCommonBehaviorHelper().setReceiver(elem, role);
         Model.getCommonBehaviorHelper().setReceiver(elem, null);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
     }

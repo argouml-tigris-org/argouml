@@ -71,7 +71,7 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
         model = new UMLReceptionSignalComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
     }
 
     /**
@@ -101,7 +101,7 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
      */
     public void testSetSignal() {
         Model.getCommonBehaviorHelper().setSignal(elem, signals[0]);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertTrue(model.getSelectedItem() == signals[0]);
     }
 
@@ -110,7 +110,7 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
      */
     public void testRemoveSignal() {
         Model.getUmlFactory().delete(signals[9]);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals(9, model.getSize());
         assertTrue(!model.contains(signals[9]));
     }

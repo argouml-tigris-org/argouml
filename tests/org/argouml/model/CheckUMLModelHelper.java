@@ -65,7 +65,7 @@ public final class CheckUMLModelHelper {
 		      mo.toString() != null);
 
 	Model.getUmlFactory().delete(mo);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
 	WeakReference wo = new WeakReference(mo);
 	mo = null;
 	System.gc();
@@ -99,7 +99,7 @@ public final class CheckUMLModelHelper {
 
         WeakReference wo = new WeakReference(mo);
 
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
 	mo = null;
 	System.gc();
 	TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);

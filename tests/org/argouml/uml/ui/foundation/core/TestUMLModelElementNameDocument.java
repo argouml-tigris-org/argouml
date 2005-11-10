@@ -61,7 +61,7 @@ public class TestUMLModelElementNameDocument extends TestCase {
         //cont.setTarget(elem);
         model = new UMLModelElementNameDocument();
         model.setTarget(elem);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
     }
 
     /**
@@ -83,7 +83,7 @@ public class TestUMLModelElementNameDocument extends TestCase {
      */
     public void testSetName() throws BadLocationException {
         Model.getCoreHelper().setName(elem, "test");
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals("test", model.getText(0, model.getLength()));
     }
 
@@ -95,7 +95,7 @@ public class TestUMLModelElementNameDocument extends TestCase {
     public void testRemoveName() throws BadLocationException {
         Model.getCoreHelper().setName(elem, "test");
         Model.getCoreHelper().setName(elem, "");
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals("", model.getText(0, model.getLength()));
     }
 
@@ -107,9 +107,9 @@ public class TestUMLModelElementNameDocument extends TestCase {
     public void testInsertString()
 	throws BadLocationException {
         Model.getCoreHelper().setName(elem, "");
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
     	model.insertString(0, "test", null);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals("test", Model.getFacade().getName(elem));
     }
 
@@ -121,9 +121,9 @@ public class TestUMLModelElementNameDocument extends TestCase {
     public void testRemoveString()
 	throws BadLocationException {
 	model.insertString(0, "test", null);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
 	model.remove(0, model.getLength());
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals("", Model.getFacade().getName(elem));
     }
 
@@ -135,9 +135,9 @@ public class TestUMLModelElementNameDocument extends TestCase {
     public void testAppendString()
 	throws BadLocationException {
         Model.getCoreHelper().setName(elem, "test");
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
     	model.insertString(model.getLength(), "test", null);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals("testtest", Model.getFacade().getName(elem));
     }
 
@@ -149,9 +149,9 @@ public class TestUMLModelElementNameDocument extends TestCase {
     public void testInsertStringHalfway()
 	throws BadLocationException {
         Model.getCoreHelper().setName(elem, "test");
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
     	model.insertString(1, "test", null);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals("ttestest", Model.getFacade().getName(elem));
     }
 
@@ -163,9 +163,9 @@ public class TestUMLModelElementNameDocument extends TestCase {
     public void testRemoveStringHalfway()
 	throws BadLocationException {
         Model.getCoreHelper().setName(elem, "test");
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
     	model.remove(1, model.getLength() - 2);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals("tt", Model.getFacade().getName(elem));
     }
 }

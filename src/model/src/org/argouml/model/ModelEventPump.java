@@ -33,7 +33,7 @@ import javax.swing.Action;
  * the model component.<p>
  *
  * Neither the registration or unregistration, nor the events themselves
- * contain any reference to the model implementation (NSUML).  Instead they
+ * contain any reference to the model implementation.  Instead they
  * use the {@link java.beans.PropertyChangeListener},
  * {@link java.beans.PropertyChangeEvent} to
  * deliver events.<p>
@@ -44,12 +44,14 @@ import javax.swing.Action;
  * will have to keep a reference to your listener while it is active.
  * Since the garbage collecting mechanism is not really deterministic
  * a forgotten about listener might still receive events. Unless it can
- * handle them in a harmless way, this approach should not be used.<p>
+ * handle them in a harmless way, this approach should not be used.
+ * (Is this still true or does it refer to the NSUML 
+ * implementation? - tfm 20051109) <p>
  *
  * TODO: What event names?
  * The event names generated are {@link String}s and their values and
- * meanings are not really well documented. For a full list you will have
- * to dig down in the NSUML implementation and eventtree.xml.<p>
+ * meanings are not really well documented. In general they are the
+ * name of an an association end or attribute in the UML metamodel.<p>
  *
  * Here are some highlights:<ul>
  * <li>"remove" - event sent when the element is removed.
@@ -217,16 +219,7 @@ public interface ModelEventPump {
 
     /**
      * Flush events from the ModelEventPump.
-     * This is the old version called after every set()
-     * The intention is for it to go away after a brief testing period.
+     * Blocks until all events have been delivered.
      */
     void flushModelEvents();
-    
-    /**
-     * Flush events from the ModelEventPump.
-     * New version to be used in places that have
-     * unusual synchronization requirements (like tests)
-     * It will be renamed to flushModelEvents after transition.
-     */
-    void reallyFlushModelEvents();
 }

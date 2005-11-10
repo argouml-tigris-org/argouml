@@ -160,7 +160,7 @@ public class TestCoreFactory extends TestCase {
         WeakReference class1wr = new WeakReference(class1);
         WeakReference assocwr = new WeakReference(assoc);
         Model.getUmlFactory().delete(class1);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         class1 = null;
         assoc = null;
         System.gc();
@@ -182,7 +182,7 @@ public class TestCoreFactory extends TestCase {
                 Model.getCoreFactory().createAssociationEnd());
         WeakReference class1wr = new WeakReference(class1);
         Model.getUmlFactory().delete(class1);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         class1 = null;
         System.gc();
         assertNull("class not removed", class1wr.get());
@@ -208,7 +208,7 @@ public class TestCoreFactory extends TestCase {
                 1, Model.getFacade().getSupplierDependencies(class2).size());
         WeakReference class1wr = new WeakReference(class1);
         Model.getUmlFactory().delete(class1);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         class1 = null;
         System.gc();
         assertNull("class not removed", class1wr.get());
@@ -230,7 +230,7 @@ public class TestCoreFactory extends TestCase {
         Object dep = Model.getCoreFactory().buildDependency(class1, class2);
         Object class3 = Model.getCoreFactory().buildClass(model);
         Model.getCoreHelper().addClient(dep, class3);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals(
                 "client dependency invalid", 
                 1,
@@ -245,7 +245,7 @@ public class TestCoreFactory extends TestCase {
                 Model.getFacade().getSupplierDependencies(class2).size());
         WeakReference class1wr = new WeakReference(class1);
         Model.getUmlFactory().delete(class1);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         class1 = null;
         dep = null;
         System.gc();
@@ -272,7 +272,7 @@ public class TestCoreFactory extends TestCase {
         Model.getCoreHelper().addClient(dep, class3);
         WeakReference class2wr = new WeakReference(class2);
         Model.getUmlFactory().delete(class2);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         class2 = null;
         dep = null;
         System.gc();
@@ -300,7 +300,7 @@ public class TestCoreFactory extends TestCase {
         Model.getCoreHelper().addSupplier(dep, class3);
         WeakReference class1wr = new WeakReference(class1);
         Model.getUmlFactory().delete(class1);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         class1 = null;
         dep = null;
         System.gc();
@@ -332,7 +332,7 @@ public class TestCoreFactory extends TestCase {
         Model.getCoreHelper().addSupplier(dep, class3);
         WeakReference class2wr = new WeakReference(class2);
         Model.getUmlFactory().delete(class2);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         class2 = null;
         dep = null;
         System.gc();
@@ -360,7 +360,7 @@ public class TestCoreFactory extends TestCase {
         WeakReference assoc1wr = new WeakReference(assoc1);
         WeakReference assoc2wr = new WeakReference(assoc2);
         Model.getUmlFactory().delete(class1);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         class1 = null;
         assoc1 = null;
         assoc2 = null;
@@ -382,7 +382,7 @@ public class TestCoreFactory extends TestCase {
 	}
 	Object elem = Model.getModelManagementFactory().createModel();
 	Object con = Model.getCoreFactory().buildConstraint(elem);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
 	assertNull("Namespace is unexpectly set", Model.getFacade()
                 .getNamespace(con));
 	assertTrue(
@@ -393,7 +393,7 @@ public class TestCoreFactory extends TestCase {
         Model.getCoreHelper().setNamespace(elem,
                 Model.getModelManagementFactory().createPackage());
 	con = Model.getCoreFactory().buildConstraint(elem);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
 	assertNotNull("Namespace is not set", Model.getFacade().getNamespace(
                 con));
     }

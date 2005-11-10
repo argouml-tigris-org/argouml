@@ -133,7 +133,7 @@ public abstract class UMLPlainTextDocument
         if (isFiring()) {
             setFiring(false);
             setProperty(getText(0, getLength()));
-            Model.getPump().reallyFlushModelEvents();
+            Model.getPump().flushModelEvents();
             setFiring(true);
         }
 
@@ -147,7 +147,7 @@ public abstract class UMLPlainTextDocument
         if (isFiring()) {
             setFiring(false);
             setProperty(getText(0, getLength()));
-            Model.getPump().reallyFlushModelEvents();
+            Model.getPump().flushModelEvents();
             setFiring(true);
         }
     }

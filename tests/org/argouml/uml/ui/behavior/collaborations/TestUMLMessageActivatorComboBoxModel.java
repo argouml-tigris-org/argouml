@@ -69,7 +69,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
         model = new UMLMessageActivatorComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
     }
 
     /**
@@ -99,7 +99,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
      */
     public void testSetActivator() {
         Model.getCollaborationsHelper().setActivator(elem, activators[0]);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertTrue(model.getSelectedItem() == activators[0]);
     }
 
@@ -108,7 +108,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
      */
     public void testRemoveBase() {
         Model.getUmlFactory().delete(activators[9]);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals(9, model.getSize());
         assertTrue(!model.contains(activators[9]));
     }

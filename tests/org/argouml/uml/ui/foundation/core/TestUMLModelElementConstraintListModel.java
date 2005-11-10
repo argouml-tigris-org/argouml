@@ -55,7 +55,7 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
         elem = Model.getCoreFactory().buildClass(ns);
         model = new UMLModelElementConstraintListModel();
         model.setTarget(elem);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
     }
 
     /**
@@ -77,7 +77,7 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
             constraints[i] = Model.getCoreFactory().createConstraint();
             Model.getCoreHelper().addConstraint(elem, constraints[i]);
         }
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals(10, model.getSize());
         assertEquals(model.getElementAt(5), constraints[5]);
         assertEquals(model.getElementAt(0), constraints[0]);
@@ -96,7 +96,7 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
         for (int i = 0; i < 5; i++) {
             Model.getCoreHelper().removeConstraint(elem, constraints[i]);
         }
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals(5, model.getSize());
         assertEquals(constraints[5], model.getElementAt(0));
     }

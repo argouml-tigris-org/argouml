@@ -72,7 +72,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
             Model.getCoreHelper().addOwnedElement(m, types[i]);
         }
         Model.getCoreHelper().setType(elem, types[0]);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
     }
 
     /**
@@ -91,7 +91,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      * Test the test set up.
      */
     public void testSetUp() {
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertTrue(model.contains(types[5]));
         assertTrue(model.contains(types[0]));
         assertTrue(model.contains(types[9]));
@@ -102,7 +102,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      */
     public void testSetType() {
         Model.getCoreHelper().setType(elem, types[0]);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertTrue(model.getSelectedItem() == types[0]);
     }
 
@@ -115,7 +115,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
     public void testSetTypeToNull() {
         Model.getCoreHelper().setType(elem, types[0]);
         Model.getCoreHelper().setType(elem, null);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertNotNull(model.getSelectedItem());
     }
 
@@ -124,7 +124,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      */
     public void testRemoveType() {
         Model.getUmlFactory().delete(types[9]);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertTrue(!model.contains(types[9]));
     }
 

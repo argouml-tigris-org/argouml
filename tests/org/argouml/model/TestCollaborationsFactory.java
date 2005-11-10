@@ -121,7 +121,7 @@ public class TestCollaborationsFactory extends TestCase {
         WeakReference meswr = new WeakReference(mes);
 
         Model.getUmlFactory().delete(cr1);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         cr1 = null;
         role = null;
         inter = null;

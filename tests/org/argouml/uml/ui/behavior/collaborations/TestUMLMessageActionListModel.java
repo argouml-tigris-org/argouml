@@ -55,7 +55,7 @@ public class TestUMLMessageActionListModel
         elem = Model.getCollaborationsFactory().createMessage();
         model = new UMLMessageActionListModel();
         model.setTarget(elem);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
     }
 
     /**
@@ -74,7 +74,7 @@ public class TestUMLMessageActionListModel
         Object action =
 	    Model.getCommonBehaviorFactory().createUninterpretedAction();
         Model.getCollaborationsHelper().setAction(elem, action);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals(1, model.getSize());
         assertEquals(action, model.getElementAt(0));
     }
@@ -87,7 +87,7 @@ public class TestUMLMessageActionListModel
 	    Model.getCommonBehaviorFactory().createUninterpretedAction();
         Model.getCollaborationsHelper().setAction(elem, action);
         Model.getCollaborationsHelper().setAction(elem, null);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
     }

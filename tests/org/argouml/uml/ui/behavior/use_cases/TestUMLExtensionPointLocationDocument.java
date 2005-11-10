@@ -56,7 +56,7 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
         elem = Model.getUseCasesFactory().createExtensionPoint();
         model = new UMLExtensionPointLocationDocument();
         model.setTarget(elem);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
     }
 
     /**
@@ -77,7 +77,7 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
     public void testSetName()
 	throws BadLocationException {
         Model.getUseCasesHelper().setLocation(elem, "test");
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
 	assertEquals("test", model.getText(0, model.getLength()));
     }
 
@@ -90,7 +90,7 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
 	throws BadLocationException {
         Model.getUseCasesHelper().setLocation(elem, "test");
         Model.getUseCasesHelper().setLocation(elem, null);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
 	assertEquals("", model.getText(0, model.getLength()));
     }
 
@@ -101,9 +101,9 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
      */
     public void testInsertString()
 	throws BadLocationException {
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
 	model.insertString(0, "test", null);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals("test", Model.getFacade().getLocation(elem));
     }
 
@@ -115,9 +115,9 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
     public void testRemoveString()
 	throws BadLocationException {
 	model.insertString(0, "test", null);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
 	model.remove(0, model.getLength());
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals("", Model.getFacade().getLocation(elem));
     }
 
@@ -129,9 +129,9 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
     public void testAppendString()
 	throws BadLocationException {
         Model.getUseCasesHelper().setLocation(elem, "test");
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
 	model.insertString(model.getLength(), "test", null);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals("testtest", Model.getFacade().getLocation(elem));
     }
 
@@ -143,9 +143,9 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
     public void testInsertStringHalfway()
 	throws BadLocationException {
         Model.getUseCasesHelper().setLocation(elem, "test");
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
 	model.insertString(1, "test", null);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals("ttestest", Model.getFacade().getLocation(elem));
     }
 
@@ -157,9 +157,9 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
     public void testRemoveStringHalfway()
 	throws BadLocationException {
         Model.getUseCasesHelper().setLocation(elem, "test");
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
 	model.remove(1, model.getLength() - 2);
-        Model.getPump().reallyFlushModelEvents();
+        Model.getPump().flushModelEvents();
         assertEquals("tt", Model.getFacade().getLocation(elem));
     }
 
