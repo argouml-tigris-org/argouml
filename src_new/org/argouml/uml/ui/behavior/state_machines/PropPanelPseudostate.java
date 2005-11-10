@@ -84,7 +84,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
                     Translator.localize("label.pseudostate.join"));
             }
             if (Model.getFacade().equalsPseudostateKind(kind,
-                Model.getPseudostateKind().getBranch())) {
+                Model.getPseudostateKind().getChoice())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.choice"));
             }

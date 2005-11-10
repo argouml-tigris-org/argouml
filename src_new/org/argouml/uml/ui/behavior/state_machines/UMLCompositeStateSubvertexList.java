@@ -50,7 +50,7 @@ public class UMLCompositeStateSubvertexList extends UMLMutableLinkedList {
             JMenu pMenu = new JMenu();
             pMenu.setText(Translator.localize("button.new-pseudostate"));
             pMenu.add(new ActionNewPseudoState(
-                    Model.getPseudostateKind().getBranch(),
+                    Model.getPseudostateKind().getChoice(),
                     "label.pseudostate.choice"));
             pMenu.add(new ActionNewPseudoState(
                     Model.getPseudostateKind().getInitial(),

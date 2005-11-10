@@ -99,12 +99,9 @@ import org.tigris.gef.presentation.FigNode;
  */
 public abstract class UmlDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer {
+
     /**
-     * Return a Fig that can be used to represent the given node.
-     *
-     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
-     * java.lang.Object, Map)
+     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(java.lang.Object, java.util.Map)
      */
     public FigNode getFigNodeFor(Object node, Map styleAttributes) {
         if (node == null) {
@@ -179,7 +176,7 @@ public abstract class UmlDiagramRenderer
             Object kind = Model.getFacade().getKind(pState);
             if (Model.getPseudostateKind().getInitial().equals(kind)) {
                 figNode = new FigInitialState();
-            } else if (Model.getPseudostateKind().getBranch()
+            } else if (Model.getPseudostateKind().getChoice()
                     .equals(kind)) {
                 figNode = new FigBranchState();
             } else if (Model.getPseudostateKind().getJunction()
@@ -232,11 +229,7 @@ public abstract class UmlDiagramRenderer
 
 
     /**
-     * Return a Fig that can be used to represent the given edge.
-     *
-     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel,
-     * org.tigris.gef.base.Layer, java.lang.Object, java.util.Map)
+     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(java.lang.Object, java.util.Map)
      */
     public FigEdge getFigEdgeFor(Object edge, Map styleAttributes) {
         if (edge == null) {

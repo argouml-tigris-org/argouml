@@ -284,15 +284,24 @@ public class UMLStateDiagram extends UMLDiagram {
 
     /**
      * @return Returns the actionBranchPseudoState.
+     * @deprecated use getActionChoicePseudoState
      */
     protected Action getActionBranchPseudoState() {
+        return getActionChoicePseudoState();
+    }
+    
+    /**
+     * @return Returns the actionChoicePseudoState.
+     */
+    protected Action getActionChoicePseudoState() {
         if (actionBranchPseudoState == null) {
             actionBranchPseudoState = new RadioAction(
-                    new ActionCreatePseudostate(
-                        Model.getPseudostateKind().getBranch(), "button.new-choice"));
+                    new ActionCreatePseudostate(Model.getPseudostateKind()
+                            .getChoice(), "button.new-choice"));
         }
         return actionBranchPseudoState;
     }
+    
     /**
      * @return Returns the actionCompositeState.
      */
@@ -337,7 +346,8 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionForkPseudoState == null) {
             actionForkPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                            Model.getPseudostateKind().getFork(), "button.new-fork"));
+                            Model.getPseudostateKind()
+                            .getFork(), "button.new-fork"));
         }
         return actionForkPseudoState;
     }
@@ -486,17 +496,17 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     public boolean isRelocationAllowed(Object base)  {
     	return false; 
-		/* TODO: We may return the following when the 
-		 * relocate() has been implemented. */
+    	/* TODO: We may return the following when the 
+    	 * relocate() has been implemented. */
 //    	Model.getStateMachinesHelper()
 //        	.isAddingStatemachineAllowed(base);
     }
 
-	/**
-	 * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
-	 */
-	public boolean relocate(Object base) {
-		return false;
-	}
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
+     */
+    public boolean relocate(Object base) {
+        return false;
+    }
     
 } /* end class UMLStateDiagram */

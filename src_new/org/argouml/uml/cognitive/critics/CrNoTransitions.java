@@ -74,7 +74,7 @@ public class CrNoTransitions extends CrUML {
 	boolean needsIncoming = incoming == null || incoming.size() == 0;
 	if (Model.getFacade().isAPseudostate(sv)) {
 	    Object k = Model.getFacade().getPseudostateKind(sv);
-	    if (k.equals(Model.getPseudostateKind().getBranch())) {
+	    if (k.equals(Model.getPseudostateKind().getChoice())) {
 	        return NO_PROBLEM;
 	    }
 	    if (k.equals(Model.getPseudostateKind().getJunction())) {

@@ -224,7 +224,7 @@ public final class ResourceLoaderWrapper {
             if (helper.equalsJOINKind(kind)) {
                 icon = joinIcon;
             }
-            if (helper.equalsBRANCHKind(kind)) {
+            if (helper.equalsCHOICEKind(kind)) {
                 icon = branchIcon;
             }
             if (helper.equalsJUNCTIONKind(kind)) {
