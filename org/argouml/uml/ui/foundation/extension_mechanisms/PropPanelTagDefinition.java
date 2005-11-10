@@ -84,7 +84,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
 
         addAction(new ActionNavigateNamespace());
         addAction(new ActionNewTagDefinition());
-        addAction(new ActionDeleteSingleModelElement());  
+        addAction(new ActionDeleteSingleModelElement());
     }
 
     /**
