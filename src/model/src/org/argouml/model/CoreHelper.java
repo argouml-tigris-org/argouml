@@ -962,24 +962,20 @@ public interface CoreHelper {
     void setKindToReturn(Object handle);
 
     /**
-     * Sets the container that owns the handle. This must be set
-     * correctly so every modelelement except the root model does have
-     * an owner. Otherwise the saving/loading will fail.<p>
-     *
-     * <em>Warning: when changing the implementation of this method
-     * be warned that the sequence of the if then else tree DOES
-     * matter.</em> Most notabely, do not move the setNamespace method
-     * any level up in the tree.<p>
-     *
-     * <em>Warning: the implementation does not support setting the
-     * owner of actions.</em> Use setState1 etc. on action for that
-     * goal<p>
-     *
-     * @param handle The modelelement that must be added to the container
-     * @param container The owning modelelement
-     * @exception IllegalArgumentException when the handle or
-     * container is null or if the handle cannot be added to the
-     * container.
+     * Sets the container that owns the handle.
+     * <p>
+     * <em>Warning: the implementation does not support setting the owner
+     * of actions.</em>
+     * Use setState1 etc. on action for that goal
+     * <p>
+     * 
+     * @param handle
+     *            The modelelement that must be added to the container
+     * @param container
+     *            The owning modelelement
+     * @exception IllegalArgumentException
+     *                when the handle or container is null or if the handle
+     *                cannot be added to the container.
      */
     void setModelElementContainer(Object handle, Object container);
 
