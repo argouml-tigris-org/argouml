@@ -650,20 +650,11 @@ public class TabProps
         LOG.info("Trying to locate panel for: " + targetClassName);
         int lastDot = targetClassName.lastIndexOf(".");
 
-        if (targetClassName.startsWith("ru.novosoft.uml.")) {
-            //remove "ru.novosoft.uml."
-            if (lastDot > 0) {
-                base = targetClassName.substring(16, lastDot + 1);
-            } else {
-                base = targetClassName.substring(16);
-            }
+        //remove "org.omg.uml."
+        if (lastDot > 0) {
+            base = targetClassName.substring(12, lastDot + 1);
         } else {
-            //remove "org.omg.uml."
-            if (lastDot > 0) {
-                base = targetClassName.substring(12, lastDot + 1);
-            } else {
-                base = targetClassName.substring(12);
-            }
+            base = targetClassName.substring(12);
         }
         
         targetClassName = Model.getMetaTypes().getName(targetClass);
