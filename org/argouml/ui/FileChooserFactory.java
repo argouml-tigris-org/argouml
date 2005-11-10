@@ -30,7 +30,7 @@ import javax.swing.JFileChooser;
  * Factory class to return a JFileChooser configured
  * according to JRE requirements.
  *
- * @deprecated this class is no longer required now we no loner support UML 1.3
+ * @deprecated this class is no longer required now we no longer support Java 1.3
  *
  * @author Bob Tarling
  */
@@ -39,10 +39,9 @@ public class FileChooserFactory {
     /**
      * Return a proper FileChooser. This replaces the normal FileChooser with a
      * system-dependent one, but solely in case of Sun Java 1.3.1 on Windows.
-     * @deprecated 
-     *
+     * 
      * @return <code>JFileChooser</code>
-     * @deprecated now we are JRE1.4+ we can just call new JFileChooser()
+     * @deprecated use JRE1.4+ class JFileChooser()
      * directly.
      */
     public static JFileChooser getFileChooser() {
