@@ -40,7 +40,7 @@ import org.argouml.model.Model;
  *
  * @stereotype singleton
  */
-public class ActionAddAttribute extends AbstractAction {
+class ActionAddAttribute extends AbstractAction {
     /**
      * The constructor for this class.
      */
