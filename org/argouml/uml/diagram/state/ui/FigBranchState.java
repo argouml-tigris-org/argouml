@@ -35,6 +35,9 @@ import org.tigris.gef.presentation.FigCircle;
 
 /**
  * Class to display graphics for a UML Choice State in a diagram - the circle.
+ * 
+ * TODO: This should really be renamed FigChoiceState.  It's the
+ * last vestige the UML 1.3 name.
  *
  * @author pepargouml
  */

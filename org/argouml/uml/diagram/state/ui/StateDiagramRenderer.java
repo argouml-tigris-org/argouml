@@ -105,7 +105,7 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
             if (kind.equals(Model.getPseudostateKind().getInitial())) {
                 return new FigInitialState(gm, node);
             } else if (kind.equals(
-                    Model.getPseudostateKind().getBranch())) {
+                    Model.getPseudostateKind().getChoice())) {
                 return new FigBranchState(gm, node);
             } else if (kind.equals(
                     Model.getPseudostateKind().getJunction())) {

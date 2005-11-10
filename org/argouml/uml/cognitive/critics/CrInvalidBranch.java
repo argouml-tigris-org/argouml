@@ -73,7 +73,7 @@ public class CrInvalidBranch extends CrUML {
 	}
 	Object k = Model.getFacade().getPseudostateKind(dm);
 	if ((!Model.getFacade().equalsPseudostateKind(k,
-	        Model.getPseudostateKind().getBranch()))
+	        Model.getPseudostateKind().getChoice()))
             && (!Model.getFacade().equalsPseudostateKind(k,
                     Model.getPseudostateKind().getJunction()))) {
 	    return NO_PROBLEM;

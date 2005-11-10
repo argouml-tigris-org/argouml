@@ -62,7 +62,7 @@ public class CrNoGuard extends CrUML {
 	}
 	if (!Model.getFacade().equalsPseudostateKind(
 	        Model.getFacade().getPseudostateKind(sv),
-	        Model.getPseudostateKind().getBranch())) {
+	        Model.getPseudostateKind().getChoice())) {
 	    return NO_PROBLEM;
 	}
 	Object g = /*(MGuard)*/ Model.getFacade().getGuard(dm);
