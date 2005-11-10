@@ -30,8 +30,6 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.model.Model;
-import org.argouml.model.ModelEventPump;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigFeaturesCompartment;
