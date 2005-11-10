@@ -44,7 +44,6 @@ import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.targetmanager.ActionAddOperation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
@@ -55,7 +54,6 @@ import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.generator.ParserDisplay;
-import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -282,7 +280,7 @@ public class FigClass extends FigClassifierBox
         // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
         Iterator i = ActionCompartmentDisplay.getActions().iterator();
-        while(i.hasNext()) {
+        while (i.hasNext()) {
             showMenu.add((Action) i.next());
         }
         popUpActions.insertElementAt(showMenu,
@@ -409,10 +407,16 @@ public class FigClass extends FigClassifierBox
         }
     }
     
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
     public void setLineWidth(int w) {
         borderFig.setLineWidth(w);
     }
     
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
     public int getLineWidth() {
         return borderFig.getLineWidth();
     }
@@ -784,8 +788,8 @@ public class FigClass extends FigClassifierBox
         if (mee != null) {
             source = mee.getSource();
         } else {
-            LOG.warn("ModelChanged called with no event. " + 
-                    "Please javadoc the situation in which this can happen");
+            LOG.warn("ModelChanged called with no event. "
+                    + "Please javadoc the situation in which this can happen");
         }
 
         // attributes
@@ -817,7 +821,8 @@ public class FigClass extends FigClassifierBox
                 return;
             } else if (mee instanceof RemoveAssociationEvent) {
                 RemoveAssociationEvent rae = (RemoveAssociationEvent) mee;
-                Model.getPump().removeModelEventListener(this, rae.getChangedValue());
+                Model.getPump().removeModelEventListener(this,
+                        rae.getChangedValue());
                 damage();
                 return;
             }
@@ -857,7 +862,7 @@ public class FigClass extends FigClassifierBox
         int heightWithoutStereo = getHeight() - stereotypeHeight;
         
         getStereotypeFig().setOwner(getOwner());
-        ((FigStereotypesCompartment)getStereotypeFig()).populate();
+        ((FigStereotypesCompartment) getStereotypeFig()).populate();
 
         stereotypeHeight = 0;
         if (getStereotypeFig().isVisible()) {
@@ -889,10 +894,10 @@ public class FigClass extends FigClassifierBox
             Object component = /*(MComponent)*/ encloser.getOwner();
             Object in = /*(MInterface)*/ getOwner();
             Model.getCoreHelper()
-                    .setImplementationLocation(resident, component);
+                    .setModelElementContainer(resident, component);
             Model.getCoreHelper().setResident(resident, in);
         } else {
-            Model.getCoreHelper().setImplementationLocation(resident, null);
+            Model.getCoreHelper().setModelElementContainer(resident, null);
             Model.getCoreHelper().setResident(resident, null);
         }
 
@@ -995,13 +1000,9 @@ public class FigClass extends FigClassifierBox
         if (!isAttributesVisible()) {
             return;
         }
-        FigAttributesCompartment attributesCompartment = 
-                (FigAttributesCompartment) getAttributesFig();
+        FigAttributesCompartment attributesCompartment = getAttributesFig();
         attributesCompartment.populate();
-        Fig attrPort = attributesCompartment.getBigPort();
-        int xpos = attrPort.getX();
-        int ypos = attrPort.getY();
-        
+
         Rectangle rect = getBounds();
         
         // ouch ugly but that's for a next refactoring
@@ -1019,10 +1020,6 @@ public class FigClass extends FigClassifierBox
             return;
         }
         operationsFig.populate();
-        Fig operPort = operationsFig.getBigPort();
-
-        int xpos = operPort.getX();
-        int ypos = operPort.getY();
 
         Rectangle rect = getBounds();
         // ouch ugly but that's for a next refactoring
@@ -1069,8 +1066,9 @@ public class FigClass extends FigClassifierBox
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
+
     /**
-     * @see FigNodeModelElement#updateListeners(Object)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();

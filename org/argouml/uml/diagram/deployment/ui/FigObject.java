@@ -252,8 +252,7 @@ public class FigObject extends FigNodeModelElement {
 
                 mcomp = /*(MComponent)*/ encloser.getOwner();
                 Object obj = /*(MObject)*/ getOwner();
-                Model.getCoreHelper()
-                        .setImplementationLocation(resident, mcomp);
+                Model.getCoreHelper().setModelElementContainer(resident, mcomp);
                 Model.getCoreHelper().setResident(resident, obj);
                 super.setEnclosingFig(encloser);
             } else if (encloser != null
@@ -261,9 +260,9 @@ public class FigObject extends FigNodeModelElement {
                 super.setEnclosingFig(encloser);
             } else {
                 if (Model.getFacade()
-                        .getImplementationLocation(resident) != null) {
+                        .getModelElementContainer(resident) != null) {
                     Model.getCoreHelper()
-                            .setImplementationLocation(resident, null);
+                            .setModelElementContainer(resident, null);
                     Model.getCoreHelper().setResident(resident, null);
                     super.setEnclosingFig(null);
                 }

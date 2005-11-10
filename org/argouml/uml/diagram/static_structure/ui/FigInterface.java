@@ -43,7 +43,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.targetmanager.ActionAddOperation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
@@ -134,7 +133,7 @@ public class FigInterface extends FigClassifierBox {
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
         FigStereotypesCompartment fsc =
-            (FigStereotypesCompartment)getStereotypeFig();
+            (FigStereotypesCompartment) getStereotypeFig();
         fsc.setKeyword("interface");
         
         borderFig = new FigEmptyRect(10, 10, 0, 0);
@@ -248,7 +247,7 @@ public class FigInterface extends FigClassifierBox {
         // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
         Iterator i = ActionCompartmentDisplay.getActions().iterator();
-        while(i.hasNext()) {
+        while (i.hasNext()) {
             showMenu.add((Action) i.next());
         }
         popUpActions.insertElementAt(showMenu,
@@ -271,11 +270,9 @@ public class FigInterface extends FigClassifierBox {
     public void setOperationsVisible(boolean isVisible) {
         Rectangle rect = getBounds();
         int h =
-                isCheckSize()
-                ? ((ROWHEIGHT * Math.max(1, operationsFig.getFigs().size() - 1) + 2)
-                * rect.height
-                / getMinimumSize().height)
-                : 0;
+                isCheckSize() ? ((ROWHEIGHT
+                * Math.max(1, operationsFig.getFigs().size() - 1) + 2)
+                * rect.height / getMinimumSize().height) : 0;
         if (operationsFig.isVisible()) {
             if (!isVisible) {
                 damage();
@@ -358,10 +355,16 @@ public class FigInterface extends FigClassifierBox {
         stereoLineBlinder.setLineColor(stereoLineBlinder.getFillColor());
     }
     
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
     public void setLineWidth(int w) {
         borderFig.setLineWidth(w);
     }
     
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
     public int getLineWidth() {
         return borderFig.getLineWidth();
     }
@@ -465,11 +468,11 @@ public class FigInterface extends FigClassifierBox {
                 && (Model.getFacade().isAComponent(encloser.getOwner()))) {
             Object component = /*(MComponent)*/ encloser.getOwner();
             Object in = /*(MInterface)*/ getOwner();
-            Model.getCoreHelper().setImplementationLocation(resident,
+            Model.getCoreHelper().setModelElementContainer(resident,
                     component);
             Model.getCoreHelper().setResident(resident, in);
         } else {
-            Model.getCoreHelper().setImplementationLocation(resident, null);
+            Model.getCoreHelper().setModelElementContainer(resident, null);
             Model.getCoreHelper().setResident(resident, null);
         }
     }
@@ -631,7 +634,8 @@ public class FigInterface extends FigClassifierBox {
      *
      * @param h  Desired height of the FigInterface
      */
-    protected void setBoundsImpl(final int x, final int y, final int w, final int h) {
+    protected void setBoundsImpl(final int x, final int y, final int w,
+            final int h) {
 
         Rectangle oldBounds = getBounds();
         // Save our old boundaries (needed later), and get minimum size
