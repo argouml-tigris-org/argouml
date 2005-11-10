@@ -4,25 +4,19 @@
     "http://www.puppycrawl.com/dtds/configuration_1_1.dtd">
 
 <module name="Checker">
-  <module name="NewlineAtEndOfFile">
-    <property name="severity" value="warning"/>
-  </module>
+  <property name="severity" value="warning"/>
 
-  <module name="PackageHtml">
-    <property name="severity" value="warning"/>
-  </module>
+  <module name="NewlineAtEndOfFile"/>
+
+  <module name="PackageHtml"/>
 
   <module name="StrictDuplicateCode">
     <property name="min" value="30"/> <!-- Raised to avoid the Copyright -->
-    <property name="severity" value="warning"/>
   </module>
 
-  <module name="Translation">
-    <property name="severity" value="warning"/>
-  </module>
+  <module name="Translation"/>
 
   <module name="TreeWalker">
-    <property name="severity" value="warning"/>
 
     <module name="AnonInnerLength"/>
     <module name="ArrayTrailingComma"/>
@@ -182,8 +176,9 @@
     <module name="LeftCurly"/>
 
     <module name="LineLength">
+      <!-- ignore Javadoc refs, imports, & CVS Id tagline -->
       <property name="ignorePattern"
-	            value="^( *\* @see |import |// [$]Id:.*[$])[^ ]*$"/>
+	      value="^( *\* @see |import |// \$Id:)"/>
     </module>
 
 

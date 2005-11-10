@@ -4,268 +4,156 @@
     "http://www.puppycrawl.com/dtds/configuration_1_1.dtd">
 
 <module name="Checker">
+  <property name="severity" value="warning"/>
 
-  <module name="PackageHtml">
-    <property name="severity" value="warning"/>
-  </module>
+  <module name="PackageHtml"/>
 
-  <module name="Translation">
-    <property name="severity" value="warning"/>
-  </module>
+  <module name="Translation"/>
 
   <module name="TreeWalker">
 
-    <module name="ConstantName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="DoubleCheckedLocking">
-      <property name="severity" value="warning"/>
-    </module>
-
+    <module name="ConstantName"/>
+    <module name="DoubleCheckedLocking"/>
     <module name="EmptyBlock">
       <!-- All except catch and for. -->
       <property name="tokens" value="LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_IF,LITERAL_TRY,LITERAL_WHILE,STATIC_INIT"/>
-      <property name="severity" value="warning"/>
     </module>
 
-    <module name="EqualsHashCode">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="FileLength">
-      <property name="severity" value="warning"/>
-    </module>
-
+    <module name="EqualsHashCode"/>
+    <module name="FileLength"/>
     <module name="GenericIllegalRegexp">
       <property name="format" value="@todo"/>
-      <property name="severity" value="warning"/>
     </module>
-
     <module name="GenericIllegalRegexp">
       <property name="format" value="TODO "/>
-      <property name="severity" value="warning"/>
     </module>
-
     <module name="GenericIllegalRegexp">
       <property name="format" value="needs?-?more-?work"/>
-      <property name="severity" value="warning"/>
     </module>
-
     <module name="GenericIllegalRegexp">
       <property name="format" value="non-Javadoc"/>
-      <property name="severity" value="warning"/>
     </module>
 
     <module name="GenericIllegalRegexp">
       <property 
-		name="format"
-            value="/\*\* (needs documenting|to be documented|\s*) \*/"/>
-      <property name="severity" value="warning"/>
+        name="format"
+                value="/\*\* (needs documenting|to be documented|\s*) \*/"/>
     </module>
 
     <module name="GenericIllegalRegexp">
       <property 
-		name="format"
+        name="format"
             value="(public|protected).*Logger"/>
       <property
-	        name="message"
+	    name="message"
             value="The Logger shall be private in the ArgoUML project."/>
-      <property name="severity" value="warning"/>
     </module>
-
     <module name="GenericIllegalRegexp">
       <property 
-		name="format"
+	    name="format"
             value="^[^/*]*Logger[ \t][ \t]*([^L]|L[^O]|LO[^G]|LOG[^ \t])"/>
       <property
-	        name="message"
+	    name="message"
             value="The Logger shall be named LOG in the ArgoUML project."/>
-      <property name="severity" value="warning"/>
     </module>
 
-    <module name="HiddenField">
-      <property name="severity" value="warning"/>
-    </module>
+    <module name="HiddenField"/>
 
     <module name="IllegalImport">
       <property name="severity" value="error"/>
-    </module>
+	</module>
 
     <module name="IllegalInstantiation">
       <property name="severity" value="error"/>
     </module>
-
 	<module name="Indentation">
-      <property name="caseIndent" value="0"/>
-      <property name="severity" value="warning"/>
+       <property name="caseIndent" value="0"/>
     </module>
 
-    <module name="InnerAssignment">
-      <property name="severity" value="warning"/>
-    </module>
-
+    <module name="InnerAssignment"/>
     <module name="JavadocType">
-      <property name="scope" value="protected"/>
-      <property name="severity" value="warning"/>
+        <property name="scope" value="protected"/>
     </module>
-
     <module name="JavadocMethod">
       <property name="scope" value="protected"/>
       <property name="allowUndeclaredRTE" value="true"/>
-      <property name="severity" value="warning"/>
     </module>
-
     <module name="JavadocVariable">
       <property name="scope" value="protected"/>
-      <property name="severity" value="warning"/>
     </module>
 
     <module name="LineLength">
+      <!-- ignore Javadoc refs, imports, & CVS Id tagline -->
       <property name="ignorePattern"
-	            value="^( *\* @see |import |// [$]Id:.*[$])[^ ]*$"/>
-      <property name="severity" value="warning"/>
+	      value="^( *\* @see |import |// \$Id:)"/>
     </module>
 
-    <module name="LocalFinalVariableName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="LocalVariableName">
-      <property name="severity" value="warning"/>
-    </module>
-
+    <module name="LocalFinalVariableName"/>
+    <module name="LocalVariableName"/>
     <module name="MemberName">
-      <property name="severity" value="warning"/>
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$|^LOG$"/>
     </module>
+    <module name="MethodLength"/>
+    <module name="MethodName"/>
+    <module name="ModifierOrder"/>
+    <module name="NoWhitespaceAfter"/>
 
-    <module name="MethodLength">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="MethodName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="ModifierOrder">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="NoWhitespaceAfter">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="NoWhitespaceBefore">
-      <property name="severity" value="warning"/>
-    </module>
-
+    <module name="NoWhitespaceBefore"/>
     <module name="NoWhitespaceBefore">
       <property name="tokens" value="DOT"/>
       <property name="allowLineBreaks" value="true"/>
-      <property name="severity" value="warning"/>
     </module>
 
-    <module name="OperatorWrap">
-      <property name="severity" value="warning"/>
-    </module>
+    <module name="OperatorWrap"/>
 
-    <module name="PackageName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="ParameterName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="ParameterNumber">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="RedundantImport">
-      <property name="severity" value="warning"/>
-    </module>
+    <module name="PackageName"/>
+    <module name="ParameterName"/>
+    <module name="ParameterNumber"/>
+    <module name="RedundantImport"/>
 
     <module name="RegexpHeader">
       <property name="headerFile" value="${checkstyle.header.file}"/>
-      <property name="severity" value="warning"/>
     </module>
 
-    <module name="SimplifyBooleanExpression">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="SimplifyBooleanReturn">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="StaticVariableName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="TypeName">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="UnusedImports">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="UpperEll">
-      <property name="severity" value="warning"/>
-    </module>
-
+    <module name="SimplifyBooleanExpression"/>
+    <module name="SimplifyBooleanReturn"/>
+    <module name="StaticVariableName"/>
+    <module name="TypeName"/>
+    <module name="UnusedImports"/>
+    <module name="UpperEll"/>
     <module name="VisibilityModifier">
       <property name="publicMemberPattern" value="^$"/>
-      <property name="severity" value="warning"/>
     </module>
+    <module name="WhitespaceAfter"/>
+    <module name="WhitespaceAround"/>
 
-    <module name="WhitespaceAfter">
-      <property name="severity" value="warning"/>
-    </module>
-
-    <module name="WhitespaceAround">
-      <property name="severity" value="warning"/>
-    </module>
-
-<!-- To enable later:
+    <!-- To enable later:
 
     <module name="EmptyBlock">
       <property name="tokens" value="LITERAL_CATCH"/>
       <property name="option" value="text"/>
-      <property name="severity" value="warning"/>
     </module>
 
     <module name="LeftCurly">
       <property name="option" value="nl"/>
       <property name="tokens" value="CLASS_DEF,INTERFACE_DEF"/>
-      <property name="severity" value="warning"/>
     </module>
-
     <module name="LeftCurly">
       <property name="option" value="nlow"/>
       <property name="tokens" value="METHOD_DEF,CTOR_DEF,LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_SWITCH,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE"/>
-      <property name="severity" value="warning"/>
     </module>
 
-    <module name="RedundantModifier">
-      <property name="severity" value="warning"/>
-    </module>
-
+    <module name="RedundantModifier"/>
     <module name="RightCurly">
       <property name="option" value="alone"/>
       <property name="tokens" value="LITERAL_ELSE"/>
-      <property name="severity" value="warning"/>
     </module>
-
     <module name="RightCurly">
       <property name="option" value="same"/>
       <property name="tokens" value="LITERAL_CATCH,LITERAL_TRY"/>
-      <property name="severity" value="warning"/>
     </module>
 
-    <module name="TodoComment">
-      <property name="severity" value="warning"/>
-    </module>
--->
+    <module name="TodoComment"/>
+    -->
   </module>
 </module>

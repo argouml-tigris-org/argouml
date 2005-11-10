@@ -9,7 +9,8 @@ Noted problems with the current version of checkstyle (Linus 2003-06-30):
   real thing. Bugs found sofar:
 	static blocks has 8 indents for some statements and 4 for others.
         inline classes (whatever they are called), checkstyle does not agree
-	with emacs. More investigation needed on what is write and what is 
+	with emacs. More investigation needed on what is right and what is 
 	wrong.
-* LineLength: I have tried to have several ignoreLine patterns but it 
-  doesn't seem to work. Hopefully one works.
+  (Is this still true?  Checkstyle 3.3 appears to agree with Eclipse 3.1
+  on the correct indentation.  tfm 20051108)
+
