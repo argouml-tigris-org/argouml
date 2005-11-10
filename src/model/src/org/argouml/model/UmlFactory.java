@@ -128,9 +128,6 @@ public interface UmlFactory {
      * Adds all interested (and centralized) listeners to the given
      * modelelement handle.
      *
-     * TODO: Why is this method needed? Isn't this implementation creaping out?
-     *       It is currently not used.
-     *
      * @deprecated by Linus Tolke as of 0.19.3. This is not used and poor
      *       design so strive to remove it.
      * @param handle the modelelement the listeners are interested in
