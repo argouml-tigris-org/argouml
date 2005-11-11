@@ -214,17 +214,28 @@ Options include:
   -locale <arg>   set the locale (e.g. 'en_GB')
 
 You can also set java settings which influence the behaviour of ArgoUML:
-  -Dforce.nativelaf  [force ArgoUML to use the native look and feel. UNSUPPORTED]
-    ]]>
+  -Xms250M -Xmx500M  [makes ArgoUML reserve more memory for large projects]]]>
     </programlisting>
 	
 	<para> A common problem is that the User Interface is shown in the wrong language. 
 	  Below is an easy way to switch back to the English UI. 
-	  Please be carefull: the language is in lowercase, 
-	  the country in uppercase!
+	  Please beware: the language is in lowercase.
 	</para>
  
     <para><command>java -jar argouml.jar -locale en</command>
+    </para>
+
+	<para> ArgoUML may be run without UI, in batch mode. 
+	  Currently the possibilities are very limited. 
+	  Below is an example (everything on 1 line!): 
+	  It reads a "test.zargo" from my working directory, 
+	  gets the diagram named "A", 
+	  and writes a PNG graphical file for this diagram. 
+	  Without the "-batch", 
+	  ArgoUML would start up the UI after executing the commands. 
+	</para>
+ 
+    <para><command>java -jar argouml.jar -batch -command "org.argouml.uml.ui.ActionOpenProject=c:\Documents and Settings\Michiel\My Documents\test.zargo" -command org.argouml.ui.cmd.ActionGotoDiagram=A -command "org.argouml.uml.ui.ActionSaveGraphics=c:\Documents and Settings\Michiel\My Documents\test.PNG"</command>
     </para>
 
   </sect1>

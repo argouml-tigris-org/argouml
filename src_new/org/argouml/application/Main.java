@@ -403,8 +403,8 @@ public class Main {
         System.err.println("");
         System.err.println("You can also set java settings which influence "
 			   + "the behaviour of ArgoUML:");
-        System.err.println("  -Dforce.nativelaf  [force ArgoUML to use "
-			   + "the native look and feel. [UNSUPPORTED]");
+        System.err.println("  -Xms250M -Xmx500M  [makes ArgoUML reserve "
+			   + "more memory for large projects]");
         System.err.println("\n\n");
     }
 
