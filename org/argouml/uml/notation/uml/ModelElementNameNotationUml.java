@@ -25,16 +25,25 @@
 package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
+import java.util.NoSuchElementException;
 import java.util.Stack;
+import java.util.Vector;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.GeneratorDisplay;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.notation.ModelElementNameNotation;
+import org.argouml.util.MyTokenizer;
 
 /**
+ * Handles the notation of the name of a modelelement in UML, 
+ * ie a string on the format:<pre>
+ *     [ &lt;&lt; stereotype &gt;&gt;] [+|-|#] [name]
+ * </pre>
+ * 
  * @author mvw@tigris.org
  */
 public class ModelElementNameNotationUml extends ModelElementNameNotation {
@@ -47,12 +56,15 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
     }
 
     /**
+     * Parses a model element, ie reads a string that contains
+     * the stereotype, visibility and name,
+     * and assigns the properties to the passed MModelElement.
+     *  
      * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
      */
     public String parse(String text) {
         try {
-            //TODO: Make the next call inline - replace ParserDisplay
-            ParserDisplay.SINGLETON.parseModelElement(myModelElement, text);
+            parseModelElement(myModelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.node-modelelement";
             Object[] args = {pe.getLocalizedMessage(), 
@@ -126,4 +138,137 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
         }
         return s;
     }
+
+
+    /**
+     * @param me   The ModelElement <em>text</em> describes.
+     * @param text A String on the above format.
+     * @throws ParseException
+     *             when it detects an error in the attribute string. See also
+     *             ParseError.getErrorOffset().
+     */
+    protected void parseModelElement(Object me, String text)
+        throws ParseException {
+        MyTokenizer st;
+
+        Vector path = null;
+        String name = null;
+        String stereotype = null;
+        String token;
+
+        try {
+            st = new MyTokenizer(text, "<<,«,»,>>,::");
+            while (st.hasMoreTokens()) {
+                token = st.nextToken();
+
+                if ("<<".equals(token) || "«".equals(token)) {
+                    if (stereotype != null) {
+                        throw new ParseException("Element cannot have "
+                                + "two stereotypes", st.getTokenIndex());
+                    }
+
+                    stereotype = "";
+                    while (true) {
+                        token = st.nextToken();
+                        if (">>".equals(token) || "»".equals(token)) {
+                            break;
+                        }
+                        stereotype += token;
+                    }
+                } else if ("::".equals(token)) {
+                    if (name != null) {
+                        name = name.trim();
+                    }
+
+                    if (path != null && (name == null || "".equals(name))) {
+                        throw new ParseException("Element cannot have "
+                                + "anonymous qualifiers", st.getTokenIndex());
+                    }
+
+                    if (path == null) {
+                        path = new Vector();
+                    }
+                    if (name != null) {
+                        path.add(name);
+                    }
+                    name = null;
+                } else {
+                    if (name != null) {
+                        throw new ParseException("Element cannot have "
+                                + "two word names or qualifiers", st
+                                .getTokenIndex());
+                    }
+
+                    name = token;
+                }
+            }
+        } catch (NoSuchElementException nsee) {
+            throw new ParseException("Unexpected end of element",
+                    text.length());
+        } catch (ParseException pre) {
+            throw pre;
+        }
+
+        if (name != null) {
+            name = name.trim();
+        }
+
+        if (path != null && (name == null || "".equals(name))) {
+            throw new ParseException("Qualified names must end with a name", 0);
+        }
+
+        if (name != null && name.startsWith("+")) {
+            name = name.substring(1).trim();
+            Model.getCoreHelper().setVisibility(me, 
+                            Model.getVisibilityKind().getPublic());
+        }
+        if (name != null && name.startsWith("-")) {
+            name = name.substring(1).trim();
+            Model.getCoreHelper().setVisibility(me, 
+                            Model.getVisibilityKind().getPrivate());
+        }
+        if (name != null && name.startsWith("#")) {
+            name = name.substring(1).trim();
+            Model.getCoreHelper().setVisibility(me, 
+                            Model.getVisibilityKind().getProtected());
+        }
+        
+        if (name != null) {
+            Model.getCoreHelper().setName(me, name);
+        }
+
+        if (stereotype != null) {
+            stereotype = stereotype.trim();
+            
+            //TODO: Make this here inline. Replace ParserDisplay!
+            Object stereo = 
+                ParserDisplay.SINGLETON.getStereotype(me, stereotype);
+
+            if (stereo != null) {
+                Model.getCoreHelper().setStereotype(me, stereo);
+            } else if ("".equals(stereotype)) {
+                Model.getCoreHelper().setStereotype(me, null);
+            }
+        }
+
+        if (path != null) {
+            Object nspe =
+                Model.getModelManagementHelper().getElement(
+                        path,
+                        Model.getFacade().getModel(me));
+
+            if (nspe == null || !(Model.getFacade().isANamespace(nspe))) {
+                throw new ParseException("Unable to resolve namespace", 0);
+            }
+            Object model =
+                ProjectManager.getManager().getCurrentProject().getRoot();
+            if (!Model.getCoreHelper().getAllPossibleNamespaces(me, model)
+                        .contains(nspe)) {
+                throw new ParseException("Invalid namespace for element", 0);
+            }
+
+            Model.getCoreHelper().addOwnedElement(nspe, me);
+        }
+    }
+
 }

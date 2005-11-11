@@ -29,7 +29,6 @@ import java.util.Vector;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.notation.ObjectNotation;
 
 /**
