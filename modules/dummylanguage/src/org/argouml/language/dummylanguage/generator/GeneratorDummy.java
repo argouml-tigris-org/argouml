@@ -144,7 +144,7 @@ public final class GeneratorDummy
      * @see org.argouml.notation.NotationProvider2#generateMultiplicity(java.lang.Object)
      */
     public String generateMultiplicity(Object handle) {
-	return "Multiplicity(" + handle.toString() + ")";
+	return "Multiplicity(" + Model.getFacade().toString(handle) + ")";
     }
 
     /**
