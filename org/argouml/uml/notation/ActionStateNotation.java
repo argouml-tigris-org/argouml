@@ -39,7 +39,6 @@ public abstract class ActionStateNotation extends ValueHandler {
     
     /**
      * The constructor.
-     * 
      */
     public ActionStateNotation(Object actionState) {
         if (!Model.getFacade().isAActionState(actionState)) {
