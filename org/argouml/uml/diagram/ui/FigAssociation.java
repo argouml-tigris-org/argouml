@@ -300,8 +300,8 @@ public class FigAssociation extends FigEdgeModelElement {
 	        Object[] args = {e.getLocalizedMessage()};
 	        ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
-	        srcMult.setText(
-                    Model.getFacade().getMultiplicity(srcAE).toString());
+	        srcMult.setText(Model.getFacade().toString(
+                        Model.getFacade().getMultiplicity(srcAE)));
 	    }
 	} else if (ft == destMult) {
 	    Object destAE = (conn.toArray())[1];
@@ -313,8 +313,8 @@ public class FigAssociation extends FigEdgeModelElement {
 	        Object[] args = {e.getLocalizedMessage()};
 	        ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
-	        srcMult.setText(
-                    Model.getFacade().getMultiplicity(destAE).toString());
+                srcMult.setText(Model.getFacade().toString(
+                        Model.getFacade().getMultiplicity(destAE)));
 	    }
 	}
     }
