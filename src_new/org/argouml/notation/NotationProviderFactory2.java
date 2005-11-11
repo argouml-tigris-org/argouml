@@ -66,6 +66,11 @@ public class NotationProviderFactory2 {
      * TYPE_OPERATION the text shown in a operation compartment (1 oper only)
      */
     public static final int TYPE_OPERATION = 6;
+    
+    /**
+     * TYPE_OBJECT the text shown on an object
+     */
+    public static final int TYPE_OBJECT = 7;
 
 
     /**

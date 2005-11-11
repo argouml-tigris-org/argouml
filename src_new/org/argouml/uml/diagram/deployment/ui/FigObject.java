@@ -29,11 +29,11 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.model.Model;
+import org.argouml.notation.NotationProvider4;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -54,6 +54,7 @@ public class FigObject extends FigNodeModelElement {
     private Object resident =
             Model.getCoreFactory().createElementResidence();
 
+    private NotationProvider4 notationProvider;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -88,6 +89,18 @@ public class FigObject extends FigNodeModelElement {
     public FigObject(GraphModel gm, Object node) {
         this();
         setOwner(node);
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
+     */
+    protected void initNotationProviders(Object own) {
+        super.initNotationProviders(own);
+        if (Model.getFacade().isAObject(own)) {
+            notationProvider = 
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                    NotationProviderFactory2.TYPE_OBJECT, this, own);
+        }
     }
 
     /**
@@ -203,13 +216,8 @@ public class FigObject extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-        Object obj = /*(MObject)*/ getOwner();
         if (ft == getNameFig()) {
-            String s = ft.getText().trim();
-            if (s.length() > 0 && (s.endsWith(":"))) {
-                s = s.substring(0, (s.length() - 1));
-            }
-            ParserDisplay.SINGLETON.parseObject(obj, s);
+            ft.setText(notationProvider.parse(ft.getText()));
         }
     }
 
@@ -218,7 +226,7 @@ public class FigObject extends FigNodeModelElement {
      */
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
-            showHelp("parsing.help.fig-object");
+            showHelp(notationProvider.getParsingHelp());
         }
     }
 
@@ -277,35 +285,8 @@ public class FigObject extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        Object obj = /*(MObject)*/ getOwner();
-        if (obj == null) {
-            return;
-        }
-        String nameStr = "";
-        if (Model.getFacade().getName(obj) != null) {
-            nameStr = Model.getFacade().getName(obj).trim();
-        }
-
-        Vector bases = new Vector(Model.getFacade().getClassifiers(obj));
-
-        String baseString = "";
-
-        if (Model.getFacade().getClassifiers(obj) != null
-                && Model.getFacade().getClassifiers(obj).size() > 0) {
-
-            baseString += Model.getFacade().getName(bases.elementAt(0));
-            for (int i = 1; i < bases.size(); i++) {
-                baseString +=
-                        ", "  + Model.getFacade().getName(bases.elementAt(i));
-            }
-        }
-
         if (isReadyToEdit()) {
-            if ((nameStr.length() == 0) && (baseString.length() == 0)) {
-                getNameFig().setText("");
-            } else {
-                getNameFig().setText(nameStr.trim() + " : " + baseString);
-            }
+            getNameFig().setText(notationProvider.toString());
         }
         Dimension nameMin = getNameFig().getMinimumSize();
         Rectangle r = getBounds();
