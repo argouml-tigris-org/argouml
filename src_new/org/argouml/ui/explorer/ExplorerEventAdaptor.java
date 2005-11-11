@@ -180,7 +180,7 @@ public final class ExplorerEventAdaptor
             // than exclude one or more, but I don't know what they
             // all are - tfm
             if (!("namespace".equals(pce.getPropertyName()))) {
-                treeModel.modelElementRemoved(((RemoveAssociationEvent) pce)
+                treeModel.modelElementChanged(((RemoveAssociationEvent) pce)
                         .getChangedValue());
             }
         }
