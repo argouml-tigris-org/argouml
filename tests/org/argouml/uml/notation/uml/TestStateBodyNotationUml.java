@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.generator;
+package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
 import java.util.Collection;
@@ -34,13 +34,12 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 
 /**
- * Test ParserDisplay: parsing state body.
+ * Test StateBodyNotationUml (formerly ParserDisplay): parsing state body.
  *
  * @author Michiel
  */
-public class TestParseStateBody extends TestCase {
+public class TestStateBodyNotationUml extends TestCase {
     private Object aClass;
-    private Object aOper;
     private Object aStateMachine;
     private Object aState;
 
@@ -49,7 +48,7 @@ public class TestParseStateBody extends TestCase {
      *
      * @param str the name
      */
-    public TestParseStateBody(String str) {
+    public TestStateBodyNotationUml(String str) {
         super(str);
     }
 
@@ -64,7 +63,7 @@ public class TestParseStateBody extends TestCase {
         Collection propertyChangeListeners = p.findFigsForMember(aClass);
         Object mdl = p.getModel();
         Object voidType = p.findType("void");
-        aOper = Model.getCoreFactory().buildOperation(aClass, mdl,
+        Model.getCoreFactory().buildOperation(aClass, mdl,
                 voidType, "myOper", propertyChangeListeners);
         aStateMachine = Model.getStateMachinesFactory()
             .buildStateMachine(aClass);
@@ -205,7 +204,9 @@ public class TestParseStateBody extends TestCase {
             boolean entryAction, boolean exitAction,
             boolean doAction, int internals, boolean exception) {
         try {
-            ParserDisplay.SINGLETON.parseStateBody(sst, text);
+//          ParserDisplay.SINGLETON.parseStateBody(sst, text);
+            StateBodyNotationUml sbn = new StateBodyNotationUml(sst);
+            sbn.parseStateBody(sst, text);
         } catch (ParseException e) {
             assertTrue("Unexpected exception for " + text, exception);
         }
