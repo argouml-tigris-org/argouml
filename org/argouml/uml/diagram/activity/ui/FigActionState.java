@@ -238,7 +238,10 @@ public class FigActionState extends FigStateVertex {
                 updateNameText();
                 damage();
             } else {
-                if (Model.getFacade().getEntry(getOwner()) == mee.getSource()) {
+                if (getOwner() != null
+                        && !Model.getUmlFactory().isRemoved(getOwner())
+                        && Model.getFacade().getEntry(getOwner()) == mee
+                                .getSource()) {
                     updateNameText();
                     damage();
                 }

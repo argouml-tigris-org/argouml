@@ -218,6 +218,9 @@ public class ExplorerTree
 
         // do model elements first
         if (Model.getFacade().isAModelElement(value)) {
+            if (Model.getUmlFactory().isRemoved(value)) {
+                return null;
+            }
 
             String name = null;
 
