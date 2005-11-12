@@ -534,8 +534,11 @@ public interface CoreFactory {
      */
     Object copyInterface(Object source, Object ns);
 
-    //additional support for generalization
-    
+    /**
+     * Additional support for generalization.
+     *
+     * @return A generalization.
+     */
     Object createGeneralization();
-    
+
 }

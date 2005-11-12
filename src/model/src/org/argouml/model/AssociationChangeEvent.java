@@ -35,7 +35,6 @@ import java.util.EventObject;
  * @author Bob Tarling
  */
 public class AssociationChangeEvent extends UmlChangeEvent {
-
     /**
      * The value that was changed.
      */
@@ -67,4 +66,9 @@ public class AssociationChangeEvent extends UmlChangeEvent {
     public Object getChangedValue() {
         return changedValue;
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 6586460366990334839L;
 }

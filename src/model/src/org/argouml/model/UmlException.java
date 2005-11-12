@@ -36,7 +36,6 @@ package org.argouml.model;
  * @author Bob Tarling
  */
 public class UmlException extends Exception {
-
     /**
      * Constructor the exception with a message.
      *
@@ -64,4 +63,9 @@ public class UmlException extends Exception {
     public UmlException(Throwable c) {
         super(c);
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1029321716390822627L;
 }

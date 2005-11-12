@@ -42,7 +42,8 @@ import org.xml.sax.InputSource;
 public interface XmiReader {
 
     /**
-     * Parses a given inputsource to a model. 
+     * Parses a given inputsource to a model.
+     *
      * @param pIs the input source for parsing
      * @return MModel the UML model
      * @throws UmlException on any error
@@ -51,7 +52,8 @@ public interface XmiReader {
     Object parseToModel(InputSource pIs) throws UmlException;
 
     /**
-     * Parses a given inputsource to a collection of top level elements. 
+     * Parses a given inputsource to a collection of top level elements.
+     *
      * @param pIs the input source for parsing
      * @return a collection of top level elements
      * @throws UmlException on any error

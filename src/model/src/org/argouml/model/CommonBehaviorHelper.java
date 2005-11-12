@@ -34,22 +34,22 @@ import java.util.Vector;
  * Created from the old CommonBehaviorHelper.
  */
 public interface CommonBehaviorHelper {
- 
+
     /**
      * Returns the instance which the create action creates.
-     * 
+     *
      * @param createaction the create action
      * @return the instantiation of the create action
      */
     Object getInstantiation(Object createaction);
-    
+
     /**
      * Set the instantiation for a create action.
      * @param createaction the action
      * @param instantiation the classifier
      */
     void setInstantiation(Object createaction, Object instantiation);
-    
+
     /**
      * Returns the source of a link. The source of a binary link is defined as
      * the instance where the first linkend is pointing to via the association
@@ -267,10 +267,10 @@ public interface CommonBehaviorHelper {
 
     /**
      * Return the owner of an action.
-     * 
+     *
      * @param handle the action
      * @return owning element of this action
      */
     Object getActionOwner(Object handle);
-    
+
 }

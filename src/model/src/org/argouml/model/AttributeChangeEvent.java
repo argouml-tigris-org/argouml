@@ -33,7 +33,6 @@ import java.util.EventObject;
  * @author Bob Tarling
  */
 public class AttributeChangeEvent extends UmlChangeEvent {
-
     /**
      * Constructor.
      *
@@ -50,4 +49,8 @@ public class AttributeChangeEvent extends UmlChangeEvent {
         super(source, propertyName, oldValue, newValue, originalEvent);
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 1573202490278617016L;
 }

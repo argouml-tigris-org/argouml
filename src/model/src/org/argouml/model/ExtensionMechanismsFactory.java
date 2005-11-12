@@ -107,7 +107,7 @@ public interface ExtensionMechanismsFactory {
      * @return a newly created stereotype
      */
     Object copyStereotype(Object source, Object ns);
- 
+
     /**
      * Build an initialized instance of a TagDefinition.
      * @param text is the name of the TagDeginition
@@ -116,19 +116,21 @@ public interface ExtensionMechanismsFactory {
      * @return a newly created TagDefinition.
      */
     Object buildTagDefinition(String text, Object stereotype, Object ns);
-    
+
     /**
-     * Create a TagDefinition
+     * Create a TagDefinition.
+     *
      * @return a TagDefinition
      */
     Object createTagDefinition();
 
     /**
-     * Copy a TagDefinition into the given namespace or stereotype
+     * Copy a TagDefinition into the given namespace or stereotype.
+     *
      * @param aTd The TagDefinition to copy
      * @param aNs A Namespace or a stereotype into which place the copy
      * @return A copy of the tagdefinition
      */
     Object copyTagDefinition(Object aTd, Object aNs);
-    
+
 }

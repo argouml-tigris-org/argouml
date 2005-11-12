@@ -212,15 +212,15 @@ public interface Facade {
 
     /**
      * Recognizer for an object that is some form of
-     * an element in the model. MBase was the Novosoft term.
-     * <p>
+     * an element in the model. MBase was the Novosoft term.<p>
+     *
      * In UML terms, the root of the type hierarchy is the
      * type Element which is abstract and has subtypes
-     * ModelElement and PresentationElement.
-     * <p>
+     * ModelElement and PresentationElement.<p>
+     *
      * TODO: This method could be renamed to be more
-     * relevant to current UML standards.
-     * <p>
+     * relevant to current UML standards.<p>
+     *
      * @param handle candidate
      * @return true if handle is a base.
      */
@@ -424,12 +424,12 @@ public interface Facade {
 
     /**
      * Recognizer for UML Enumeration.
-     * 
+     *
      * @param handle candidate
      * @return true if handle is an UML Enumeration
      */
     boolean isAEnumeration(Object handle);
-    
+
     /**
      * Recognizer for Event.
      *
@@ -1421,12 +1421,12 @@ public interface Facade {
 
     /**
      * Returns the enumeration literals of a UML Enumeration.
-     * 
+     *
      * @param handle is the Enumeration
      * @return Collection the Enumeration literals.
      */
     List getEnumerationLiterals(Object handle);
-    
+
     /**
      * Returns the exit action to a state.
      *
@@ -1992,7 +1992,7 @@ public interface Facade {
      * @return A Collection with all connected link ends.
      */
     Collection getOtherLinkEnds(Object handle);
-    
+
     /**
      * The list of owned elements of the the package.
      *
@@ -2364,7 +2364,7 @@ public interface Facade {
 
     /**
      * Returns the upper bound of the multiplicity of the given element
-     * (AssociationEnd, Multiplicity or MultiplicityRange)
+     * (AssociationEnd, Multiplicity or MultiplicityRange).
      *
      * @param handle is the model element
      * @return int
@@ -2381,7 +2381,7 @@ public interface Facade {
 
     /**
      * Returns the lower bound of the multiplicity of the given element
-     * (AssociationEnd, Multiplicity or MultiplicityRange)
+     * (AssociationEnd, Multiplicity or MultiplicityRange).
      *
      * @param handle is the model element
      * @return int
@@ -2505,7 +2505,7 @@ public interface Facade {
      * @return classifier
      */
     Object getOwner(Object handle);
-    
+
     /**
      * Return the tag of a tagged value.
      *
@@ -2652,7 +2652,7 @@ public interface Facade {
      * @return the textual representation of the model element
      */
     String toString(Object modelElement);
-    
+
     /**
      * @param target The TimeEvent.
      * @return TimeExpression
@@ -2668,14 +2668,16 @@ public interface Facade {
     boolean isATagDefinition(Object handle);
 
     /**
-     * Return the TagDefinitions for a StereoType
+     * Return the TagDefinitions for a StereoType.
+     *
      * @param handle Stereotype to fetch TagDefinitions for
      * @return collection of TagDefinitions
      */
     Collection getTagDefinitions(Object handle);
 
     /**
-     * Return the TagDefinition for a TaggedValue
+     * Return the TagDefinition for a TaggedValue.
+     *
      * @param handle TaggedValue to return TagDefinition for
      * @return TagDefinition for given element
      */

@@ -130,11 +130,11 @@ public interface DataTypesFactory {
      * of integers. The upper bound of the range cannot be below the lower
      * bound. The lower bound must be a nonnegative integer. The upper bound
      * must be a nonnegative integer or the special value unlimited, which
-     * indicates there is no upper bound on the range."
-     * <p>
-     * Although the UML specification doesn't say so, the special 
+     * indicates there is no upper bound on the range."<p>
+     *
+     * Although the UML specification doesn't say so, the special
      * value 'unlimited' is encoded as -1 by convention.
-     * 
+     *
      * @param lower
      *            the lower bound of the range
      * @param upper

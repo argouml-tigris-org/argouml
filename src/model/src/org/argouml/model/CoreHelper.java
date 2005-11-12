@@ -962,13 +962,12 @@ public interface CoreHelper {
     void setKindToReturn(Object handle);
 
     /**
-     * Sets the container that owns the handle.
-     * <p>
+     * Sets the container that owns the handle.<p>
+     *
      * <em>Warning: the implementation does not support setting the owner
      * of actions.</em>
-     * Use setState1 etc. on action for that goal
-     * <p>
-     * 
+     * Use setState1 etc. on action for that goal.<p>
+     *
      * @param handle
      *            The modelelement that must be added to the container
      * @param container
@@ -996,12 +995,12 @@ public interface CoreHelper {
     void setName(Object handle, String name);
 
     /**
-     * Sets the body of a comment.
-     * <p>
-     * <b>NOTE:</b> For UML 1.3, this actually set Comment.name, but for UML
-     * 1.4 it sets Comment.body.  <b>This is a behavior change in the API.</b>
-     * <p>
-     * 
+     * Sets the body of a comment.<p>
+     *
+     * <em>NOTE:</em> For UML 1.3, this actually set Comment.name, but for UML
+     * 1.4 it sets Comment.body.
+     * <em>This is a behavior change in the API.</em><p>
+     *
      * @param handle
      *            the Comment element
      * @param body
@@ -1145,8 +1144,9 @@ public interface CoreHelper {
      * stereotype being in the right model and been adviced of
      * eg ModelManagementHelper.getCorrespondingElement(...). Or if that had
      * been used here. This function could possibly assert that the caller had
-     * got it right.
-     * TODO: MULTIPLESTEREOTYPES remove this method 
+     * got it right.<p>
+     *
+     * TODO: MULTIPLESTEREOTYPES remove this method
      *
      * @param handle model element
      * @param stereo stereotype
@@ -1160,7 +1160,7 @@ public interface CoreHelper {
      * @param stereo stereotype
      */
     void addStereotype(Object modelElement, Object stereo);
-    
+
     /**
      * Removes a stereotype from some modelelement.
      *
@@ -1220,24 +1220,24 @@ public interface CoreHelper {
 
     /**
      * Remove a deployment location.
-     * 
+     *
      * @param handle Component from which to remove deploymentLocation
      * @param node Node to be removed
      */
     void removeDeploymentLocation(Object handle, Object node);
- 
+
     /**
      * Remove a connection between an Association & AssociationEnd
-     * or between a Link & LinkEnd
-     * 
+     * or between a Link & LinkEnd.
+     *
      * @param handle Association or Link
      * @param connection AssociationEnd or LinkEnd
      */
     void removeConnection(Object handle, Object connection);
-    
+
     /**
      * Add an ElementResidence.
-     * 
+     *
      * @param handle ModelElement
      * @param residence ElementResidence to add
      */
@@ -1245,17 +1245,17 @@ public interface CoreHelper {
 
     /**
      * Remove an ElementResidence.
-     * 
+     *
      * @param handle ModelElement
      * @param residence ElementResidence to remove
      */
     void removeElementResidence(Object handle, Object residence);
-    
+
     /**
      * Set the (ordered) list of literals of an Enumeration.
      * @param enumeration Enumeration to add EnumerationLiterals too
      * @param literals A list of EnumerationLiterals
      */
     void setEnumerationLiterals(Object enumeration, List literals);
-    
+
 }

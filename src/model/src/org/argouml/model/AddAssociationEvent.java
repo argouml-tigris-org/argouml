@@ -34,7 +34,6 @@ import java.util.EventObject;
  * @author Bob Tarling
  */
 public class AddAssociationEvent extends AssociationChangeEvent {
-
     /**
      * Constructor.
      *
@@ -53,4 +52,9 @@ public class AddAssociationEvent extends AssociationChangeEvent {
         super(source, propertyName, oldValue, newValue, changedValue,
                 originalEvent);
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 1672552190650651905L;
 }

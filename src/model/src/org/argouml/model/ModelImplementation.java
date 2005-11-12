@@ -245,7 +245,7 @@ public interface ModelImplementation {
      * @return The object implementing the interface.
      */
     ConcurrencyKind getConcurrencyKind();
-    
+
     /**
      * Getter for the DirectionKind object.
      *
@@ -300,11 +300,11 @@ public interface ModelImplementation {
      * @return the MementoCreationObserver
      */
     MementoCreationObserver getMementoCreationObserver();
-    
+
     /**
      * Get the copy helper.
      * @return the CopyHelper
      */
     CopyHelper getCopyHelper();
-    
+
 }

@@ -115,7 +115,7 @@ public interface UseCasesFactory {
      * Set the namespace to the base (preferred) or else extension's
      * namespace. We don't do any checking on base and extension. They
      * should be different, but that is someone else's problem.<p>
-     * 
+     *
      * @param abase      The base use case for the relationship
      *
      * @param anaddition The extension use case for the relationship

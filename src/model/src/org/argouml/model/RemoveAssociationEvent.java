@@ -52,4 +52,9 @@ public class RemoveAssociationEvent extends AssociationChangeEvent {
         super(source, propertyName, oldValue, newValue, changedValue,
                 originalEvent);
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1657123224250248465L;
 }

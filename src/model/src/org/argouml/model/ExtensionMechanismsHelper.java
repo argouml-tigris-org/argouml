@@ -182,13 +182,31 @@ public interface ExtensionMechanismsHelper {
      * @param value is the value
      */
     void setValueOfTag(Object handle, String value);
-    
+
     //additional support for tagged values
-    
+
+    /**
+     * Add a tagged value.
+     *
+     * @param handle The model element to add to.
+     * @param taggedValue The tagged value to add.
+     */
     void addTaggedValue(Object handle, Object taggedValue);
-    
+
+    /**
+     * Remove a tagged value.
+     *
+     * @param handle The model element to remove from.
+     * @param taggedValue The tagged value to remove.
+     */
     void removeTaggedValue(Object handle, Object taggedValue);
-    
+
+    /**
+     * Se the list of tagged values for a model element.
+     *
+     * @param handle The model element to set for.
+     * @param taggedValues A Collection of tagged values.
+     */
     void setTaggedValue(Object handle, Collection taggedValues);
-    
+
 }

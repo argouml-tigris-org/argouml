@@ -297,8 +297,8 @@ public interface CollaborationsHelper {
 
     /**
      * Set the successors of a message
-     * (named messsage3 in UML 1.3 & successor in UML 1.4)
-     * 
+     * (named messsage3 in UML 1.3 & successor in UML 1.4).
+     *
      * @param handle Message
      * @param messages Collection of successor messages
      */
@@ -335,7 +335,12 @@ public interface CollaborationsHelper {
      * @param sender the sender
      */
     void setSender(Object handle, Object sender);
-    
-    //additionnal support for interactions
+
+    /**
+     * Additionnal support for interactions.
+     *
+     * @param collab The collaboration.
+     * @param interaction The interaction.
+     */
     void removeInteraction(Object collab, Object interaction);
 }

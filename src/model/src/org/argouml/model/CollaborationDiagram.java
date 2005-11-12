@@ -25,7 +25,8 @@
 package org.argouml.model;
 
 /**
- * An interface to act as an enumerated type for a di collaboration diagram
+ * An interface to act as an enumerated type for a di collaboration diagram.
+ *
  * @author Bob Tarling
  */
 public interface CollaborationDiagram extends DiDiagram {

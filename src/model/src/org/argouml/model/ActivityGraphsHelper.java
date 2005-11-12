@@ -60,8 +60,8 @@ public interface ActivityGraphsHelper {
 
     /**
      * Returns true if an activitygraph may be added to the given
-     * context. To decouple ArgoUML as much as possible from the 
-     * model implementation, the parameter of the method is of 
+     * context. To decouple ArgoUML as much as possible from the
+     * model implementation, the parameter of the method is of
      * type Object.<p>
      *
      * An ActivityGraph specifies the dynamics of<ol>

@@ -78,7 +78,7 @@ public interface ModelManagementHelper {
 
     /**
      * helper method for {@link #getAllModelElementsOfKind(Object, Object)}.
-     * 
+     *
      * @param nsa
      *            namespace.
      * @param kind

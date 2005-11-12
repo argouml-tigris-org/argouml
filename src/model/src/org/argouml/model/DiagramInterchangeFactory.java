@@ -43,82 +43,30 @@ public interface DiagramInterchangeFactory {
      */
     Object getDiagramElementOwner(Object diagram);
 
-    /**
-     *
-     * @return
-     */
     Object createDiagram();
 
-    /**
-     *
-     * @return
-     */
     Object createDiagramLink();
 
-    /**
-     * 
-     * @return
-     */
     Object createEllipse();
 
-    /**
-     * 
-     * @return
-     */
     Object createGraphConnector();
 
-    /**
-     *
-     * @return
-     */
     Object createGraphEdge();
 
-    /**
-     *
-     * @return
-     */
     Object createGraphNode();
 
-    /**
-     * 
-     * @return
-     */
     Object createImage();
 
-    /**
-     * 
-     * @return
-     */
     Object createPolyline();
 
-    /**
-     * 
-     * @return
-     */
     Object createProperty();
 
-    /**
-     * 
-     * @return
-     */
     Object createReference();
 
-    /**
-     * 
-     * @return
-     */
     Object createSimpleSemanticModelElement();
 
-    /**
-     * 
-     * @return
-     */
     Object createTextElement();
 
-    /**
-     * 
-     * @return
-     */
     Object createUml1SemanticModelBridge();
 
     /**

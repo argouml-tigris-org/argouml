@@ -32,7 +32,6 @@ import java.util.EventObject;
  * @author Bob Tarling
  */
 public class DeleteInstanceEvent extends UmlChangeEvent {
-
     /**
      * Constructor.
      *
@@ -48,4 +47,9 @@ public class DeleteInstanceEvent extends UmlChangeEvent {
             Object oldValue, Object newValue, EventObject originalEvent) {
         super(source, propertyName, oldValue, newValue, originalEvent);
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 650590690953566827L;
 }

@@ -164,7 +164,7 @@ public interface StateMachinesFactory {
      * Builds a pseudostate initialized as a choice pseudostate. The
      * pseudostate will be a subvertix of the given
      * compositestate. The parameter compositeState is of type Object
-     * to decouple the factory and model implementation as much as 
+     * to decouple the factory and model implementation as much as
      * possible from the rest of ArgoUML.<p>
      *
      * @param compositeState the parent
@@ -239,7 +239,7 @@ public interface StateMachinesFactory {
 
     /**
      * Builds an internal transition for a given state. The parameter state is
-     * of type Object to decouple the factory and model implementation as 
+     * of type Object to decouple the factory and model implementation as
      * much as possible.
      *
      * @param state The state the internal transition should belong to
