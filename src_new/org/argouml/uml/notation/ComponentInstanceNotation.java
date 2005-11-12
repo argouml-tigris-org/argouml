@@ -22,46 +22,32 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.notation.uml;
+package org.argouml.uml.notation;
 
-import org.argouml.application.api.Argo;
-import org.argouml.notation.Notation;
-import org.argouml.notation.NotationName;
-import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.model.Model;
 
 /**
- * This class is the only one that has the knowledge of the complete list of 
- * NotationProvider4 implementations for UML.
+ * This abstract class forms the basis of all Notation providers 
+ * for the text shown in the Fig that represents a componentInstance. 
+ * Subclass this for all languages.
  * 
  * @author mvw@tigris.org
  */
-public class InitNotationUml {
+public abstract class ComponentInstanceNotation extends ValueHandler {
+
+    protected Object myComponentInstance;
     
     /**
-     * static initializer, register all appropriate critics.
+     * The constructor.
+     * 
+     * @param componentInstance the componentInstance of which 
+     *                          we handle the text
      */
-    public static void init() {
-        NotationProviderFactory2 npf = NotationProviderFactory2.getInstance();
-        NotationName name = 
-            Notation.makeNotation(
-                    "UML",
-                    "1.4",
-                    Argo.lookupIconResource("UmlNotation"));
-        
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_TRANSITION, 
-                name, TransitionNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_STATEBODY, 
-                name, StateBodyNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_NAME, 
-                name, ModelElementNameNotationUml.class);        
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_ACTIONSTATE, 
-                name, ActionStateNotationUml.class);        
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_OBJECT, 
-                name, ObjectNotationUml.class); 
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_COMPONENTINSTANCE, 
-                name, ComponentInstanceNotationUml.class); 
-        
-        NotationProviderFactory2.getInstance().setDefaultNotation(name);
+    public ComponentInstanceNotation(Object componentInstance) {
+        if (!Model.getFacade().isAComponentInstance(componentInstance)) {
+            throw new IllegalArgumentException();
+        }
+        myComponentInstance = componentInstance;
     }
 
 }

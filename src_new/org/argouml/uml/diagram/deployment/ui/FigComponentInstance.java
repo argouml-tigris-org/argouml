@@ -30,12 +30,14 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
 
 import org.argouml.model.Model;
+import org.argouml.notation.NotationProvider4;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -60,6 +62,8 @@ public class FigComponentInstance extends FigNodeModelElement {
     private FigRect cover;
     private FigRect upperRect;
     private FigRect lowerRect;
+    
+    private NotationProvider4 notationProvider;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -97,6 +101,18 @@ public class FigComponentInstance extends FigNodeModelElement {
             getNameFig().setText(Model.getFacade().getName(node));
         }
         updateBounds();
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
+     */
+    protected void initNotationProviders(Object own) {
+        super.initNotationProviders(own);
+        if (Model.getFacade().isAComponentInstance(own)) {
+            notationProvider = 
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                    NotationProviderFactory2.TYPE_COMPONENTINSTANCE, this, own);
+        }
     }
 
     /**
@@ -235,19 +251,17 @@ public class FigComponentInstance extends FigNodeModelElement {
                                 .setNodeInstance(comp, nodeOrComp);
                         super.setEnclosingFig(encloser);
                     }
-                }
-                else if (Model.getFacade().isAComponentInstance(nodeOrComp)) {
+                } else if (Model.getFacade().isAComponentInstance(nodeOrComp)) {
                     if (Model.getFacade()
                             .getComponentInstance(comp) != nodeOrComp) {
                         Model.getCommonBehaviorHelper()
                                 .setComponentInstance(comp, nodeOrComp);
                         super.setEnclosingFig(encloser);
                     }
-                }
-                else if (Model.getFacade().isANode(nodeOrComp)) {
+                } else if (Model.getFacade().isANode(nodeOrComp)) {
                     super.setEnclosingFig(encloser);
                 }
-                
+
                 if (getLayer() != null) {
                     // elementOrdering(figures);
                     List contents = getLayer().getContents();
@@ -281,22 +295,22 @@ public class FigComponentInstance extends FigNodeModelElement {
         }
     }
 
-    /**
-     * TODO: This is not used anywhere. Can we remove it?
-     * @param figures ?
-     */
-    public void setNode(Vector figures) {
-        int size = figures.size();
-        if (figures != null && (size > 0)) {
-            for (int i = 0; i < size; i++) {
-                Object o = figures.elementAt(i);
-                if (o instanceof FigComponentInstance) {
-                    FigComponentInstance figcomp = (FigComponentInstance) o;
-                    figcomp.setEnclosingFig(this);
-                }
-            }
-        }
-    }
+//    /**
+//     * TODO: This is not used anywhere. Can we remove it?
+//     * @param figures ?
+//     */
+//    public void setNode(Vector figures) {
+//        int size = figures.size();
+//        if (size > 0) {
+//            for (int i = 0; i < size; i++) {
+//                Object o = figures.elementAt(i);
+//                if (o instanceof FigComponentInstance) {
+//                    FigComponentInstance figcomp = (FigComponentInstance) o;
+//                    figcomp.setEnclosingFig(this);
+//                }
+//            }
+//        }
+//    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
@@ -312,15 +326,8 @@ public class FigComponentInstance extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-        //super.textEdited(ft);
-        Object coi = /*(MComponentInstance)*/ getOwner();
         if (ft == getNameFig()) {
-            String s = ft.getText().trim();
-            //why this???
-            //       if (s.length()>0) {
-            //         s = s.substring(0, (s.length() - 1));
-            //       }
-            ParserDisplay.SINGLETON.parseComponentInstance(coi, s);
+            ft.setText(notationProvider.parse(ft.getText()));
         }
     }
 
@@ -329,7 +336,7 @@ public class FigComponentInstance extends FigNodeModelElement {
      */
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
-            showHelp("parsing.help.fig-componentinstance");
+            showHelp(notationProvider.getParsingHelp());
         }
     }
     
@@ -355,29 +362,8 @@ public class FigComponentInstance extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        Object coi = /*(MComponentInstance)*/ getOwner();
-        if (coi == null)
-            return;
-        String nameStr = "";
-        if (Model.getFacade().getName(coi) != null) {
-            nameStr = Model.getFacade().getName(coi).trim();
-        }
-
-        // construct bases string (comma separated)
-        String baseStr = "";
-        Collection col = Model.getFacade().getClassifiers(coi);
-        if (col != null && col.size() > 0) {
-            Iterator it = col.iterator();
-            baseStr = Model.getFacade().getName(it.next());
-            while (it.hasNext()) {
-                baseStr += ", " + Model.getFacade().getName(it.next());
-            }
-        }
         if (isReadyToEdit()) {
-            if ((nameStr.length() == 0) && (baseStr.length() == 0))
-                getNameFig().setText("");
-            else
-                getNameFig().setText(nameStr.trim() + " : " + baseStr);
+            getNameFig().setText(notationProvider.toString());
         }
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);

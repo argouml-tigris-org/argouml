@@ -72,6 +72,11 @@ public class NotationProviderFactory2 {
      */
     public static final int TYPE_OBJECT = 7;
 
+    /**
+     * TYPE_COMPONENTINSTANCE the text shown on a componentInstance.
+     */
+    public static final int TYPE_COMPONENTINSTANCE = 8;
+
 
     /**
      * defaultLanguage the Notation language used by default, i.e. UML
@@ -79,7 +84,7 @@ public class NotationProviderFactory2 {
     private NotationName defaultLanguage;
 
     /**
-     * allLanguages is a HashMap with as key the notationName, 
+     * allLanguages is a HashMap with as key the notationName,
      * and as value a second HashMap. This latter HashMap has as key the "type"
      * converted to Integer, and as value the provider (NotationProvider4).
      */
@@ -89,7 +94,7 @@ public class NotationProviderFactory2 {
      * The instance is the singleton.
      */
     private static NotationProviderFactory2 instance = null;
-    
+
     /**
      * The constructor.
      */
@@ -97,7 +102,7 @@ public class NotationProviderFactory2 {
         super();
         allLanguages = new HashMap();
     }
-        
+
     /**
      * @return returns the singleton instance
      */
