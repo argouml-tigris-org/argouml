@@ -527,7 +527,7 @@ public final class ParserDisplay {
             return;
         }
         String s = text.substring(start, end).trim();
-        if (s == null || s.length() == 0) {
+        if (s.length() == 0) {
             //no non-whitechars in text? remove attr!
             project.moveToTrash(attribute);
             TargetManager.getInstance().setTarget(classifier);
@@ -540,7 +540,7 @@ public final class ParserDisplay {
         end = indexOfNextCheckedSemicolon(text, start);
         while (end > start && end <= text.length()) {
             s = text.substring(start, end).trim();
-            if (s != null && s.length() > 0) {
+            if (s.length() > 0) {
                 // yes, there are more:
                 Object model = project.getModel();
                 Object intType = project.findType("int");
@@ -3453,54 +3453,6 @@ public final class ParserDisplay {
 
         Model.getCommonBehaviorHelper().setClassifiers(noi, v);
         Model.getCoreHelper().setName(noi, name);
-
-    }
-
-    /**
-     * Parse a line of the form: "name : base-component".
-     *
-     * @param coi
-     *            the component instance on which the string applies.
-     * @param s
-     *            the string to parse.
-     */
-    public void parseComponentInstance(Object coi, String s) {
-        // strip any trailing semi-colons
-        s = s.trim();
-        if (s.length() == 0) {
-            return;
-        }
-        if (s.charAt(s.length() - 1) == ';') {
-            s = s.substring(0, s.length() - 2);
-        }
-
-        String name = "";
-        String bases = "";
-        StringTokenizer tokenizer = null;
-
-        if (s.indexOf(":", 0) > -1) {
-            name = s.substring(0, s.indexOf(":")).trim();
-            bases = s.substring(s.indexOf(":") + 1).trim();
-        } else {
-            name = s;
-        }
-
-        tokenizer = new StringTokenizer(bases, ",");
-
-        Vector v = new Vector();
-        Object ns = Model.getFacade().getNamespace(coi);
-        if (ns != null) {
-            while (tokenizer.hasMoreElements()) {
-                String newBase = tokenizer.nextToken();
-                Object cls = Model.getFacade().lookupIn(ns, newBase.trim());
-                if (cls != null) {
-                    v.add(cls);
-                }
-            }
-        }
-
-        Model.getCommonBehaviorHelper().setClassifiers(coi, v);
-        Model.getCoreHelper().setName(coi, name);
 
     }
 
