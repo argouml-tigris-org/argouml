@@ -210,7 +210,7 @@ public class NotationNameImpl
     }
 
     /**
-     * Finds a NotationName matching the string matching 
+     * Finds a NotationName matching the string matching
      * the name of the notation. Returns null if no match.
      *
      * @param s the name string

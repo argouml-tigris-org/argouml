@@ -27,12 +27,17 @@ package org.argouml.notation;
 import org.argouml.application.api.Configuration;
 
 /**
- * A helper for notation related functions. Currently, it only contains 
- * 2 functions to obtain the guillemet characters or 
- * their double bracket alternative, 
+ * A helper for notation related functions. Currently, it only contains
+ * 2 functions to obtain the guillemet characters or
+ * their double bracket alternative,
  * based on the choice made by the user in the Settings menu.
  */
-public class NotationHelper {
+public final class NotationHelper {
+    /**
+     * The constructor.
+     */
+    private NotationHelper() {
+    }
 
     /**
      * @return the left pointing guillemot, i.e. << or the one-character symbol
