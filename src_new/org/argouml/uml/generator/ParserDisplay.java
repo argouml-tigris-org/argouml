@@ -3313,54 +3313,6 @@ public final class ParserDisplay {
     }
 
     /**
-     * Parse a line of the form: "name: action".
-     *
-     * @param sti
-     *            the stimulus object to which the string applies
-     * @param s
-     *            the string to be parsed.
-     */
-    public void parseStimulus(Object sti, String s) {
-        // strip any trailing semi-colons
-        s = s.trim();
-        if (s.length() == 0) {
-            return;
-        }
-        if (s.charAt(s.length() - 1) == ';') {
-            s = s.substring(0, s.length() - 2);
-        }
-
-        //cut trailing string "new Action"
-        s = s.trim();
-        if (s.length() == 0) {
-            return;
-        }
-        if (s.endsWith("new Action")) {
-            s = s.substring(0, s.length() - 10);
-        }
-
-        String name = "";
-        String action = "";
-        String actionfirst = "";
-        if (s.indexOf(":", 0) > -1) {
-            name = s.substring(0, s.indexOf(":")).trim();
-            actionfirst = s.substring(s.indexOf(":") + 1).trim();
-            if (actionfirst.indexOf(":", 0) > 1) {
-                action =
-                    actionfirst.substring(0, actionfirst.indexOf(":")).trim();
-            } else {
-                action = actionfirst;
-            }
-        } else {
-            name = s;
-        }
-
-        Object act = Model.getFacade().getDispatchAction(sti);
-        Model.getCoreHelper().setName(act, action);
-        Model.getCoreHelper().setName(sti, name);
-    }
-
-    /**
      * This deletes modelelements, and swallows null without barking.
      *
      * @author mvw@tigris.org
