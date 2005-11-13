@@ -225,9 +225,9 @@ public final class Translator {
      * @see org.argouml.i18n.Translator#messageFormat(String, Object[])
      */
     public static String localize(String key, Object[] args) {
-        return messageFormat(key,args);
+        return messageFormat(key, args);
     }
-    
+
     /**
      * The main function of this class that localizes strings.
      *
