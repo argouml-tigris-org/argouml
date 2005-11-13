@@ -43,7 +43,7 @@ public abstract class ModelElementNameNotation extends ValueHandler {
      */
     public ModelElementNameNotation(Object modelElement) {
         if (!Model.getFacade().isAModelElement(modelElement)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("This is not a ModelElement.");
         }
         myModelElement = modelElement;
     }

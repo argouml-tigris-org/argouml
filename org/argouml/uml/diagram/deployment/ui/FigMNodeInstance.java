@@ -31,14 +31,14 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.Model;
+import org.argouml.notation.NotationProvider4;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -64,6 +64,9 @@ public class FigMNodeInstance extends FigNodeModelElement {
     private int y = 10;
     private int width = 200;
     private int height = 180;
+    
+    private NotationProvider4 notationProvider;
+    
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -101,6 +104,18 @@ public class FigMNodeInstance extends FigNodeModelElement {
         if (Model.getFacade().isAClassifier(node)
                 && (Model.getFacade().getName(node) != null)) {
             getNameFig().setText(Model.getFacade().getName(node));
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
+     */
+    protected void initNotationProviders(Object own) {
+        super.initNotationProviders(own);
+        if (Model.getFacade().isANodeInstance(own)) {
+            notationProvider = 
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                    NotationProviderFactory2.TYPE_NODEINSTANCE, this, own);
         }
     }
 
@@ -264,15 +279,8 @@ public class FigMNodeInstance extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-        // super.textEdited(ft);
-        Object noi = /*(MNodeInstance)*/ getOwner();
         if (ft == getNameFig()) {
-            String s = ft.getText().trim();
-            // why ever...
-            //       if (s.length()>0) {
-            //         s = s.substring(0, (s.length() - 1));
-            //      }
-            ParserDisplay.SINGLETON.parseNodeInstance(noi, s);
+            ft.setText(notationProvider.parse(ft.getText()));
         }
     }
 
@@ -281,7 +289,7 @@ public class FigMNodeInstance extends FigNodeModelElement {
      */
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
-            showHelp("parsing.help.fig-nodeinstance");
+            showHelp(notationProvider.getParsingHelp());
         }
     }
 
@@ -317,31 +325,8 @@ public class FigMNodeInstance extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        Object noi = /*(MNodeInstance)*/ getOwner();
-        if (noi == null) {
-            return;
-        }
-        String nameStr = "";
-        if (Model.getFacade().getName(noi) != null) {
-            nameStr = Model.getFacade().getName(noi).trim();
-        }
-        // construct bases string (comma separated)
-        String baseStr = "";
-        Collection col = Model.getFacade().getClassifiers(noi);
-        if (col != null && col.size() > 0) {
-            Iterator it = col.iterator();
-            baseStr = Model.getFacade().getName(it.next());
-            while (it.hasNext()) {
-                baseStr += ", " + Model.getFacade().getName(it.next());
-            }
-        }
-
         if (isReadyToEdit()) {
-            if ((nameStr.length() == 0) && (baseStr.length() == 0)) {
-                getNameFig().setText("");
-            } else {
-                getNameFig().setText(nameStr.trim() + " : " + baseStr);
-            }
+            getNameFig().setText(notationProvider.toString());
         }
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
