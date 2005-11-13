@@ -52,6 +52,7 @@ import org.argouml.application.api.ArgoModule;
 import org.argouml.application.api.ArgoSingletonModule;
 import org.argouml.application.api.Pluggable;
 import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.i18n.Translator;
 
@@ -77,7 +78,6 @@ public class ModuleLoader {
     private static ModuleLoader singleton = null;
 
     private ArrayList moduleClasses = null;
-    private Vector menuActionList = null;
     private static Hashtable singletons = null;
     private static String argoRoot = null;
     private static String argoHome = null;
@@ -88,7 +88,6 @@ public class ModuleLoader {
     private ModuleLoader() {
         singletons = new Hashtable();
         moduleClasses = new ArrayList();
-        menuActionList = new Vector();
 
 	// Use a little trick to find out where Argo is being loaded from.
         String extForm =
@@ -413,7 +412,7 @@ public class ModuleLoader {
                 if (aModule.initializeModule()) {
                     LOG.info("Loaded Module: " + aModule.getModuleName());
                     moduleClasses.add(aModule);
-		    fireEvent(ArgoModuleEvent.MODULE_LOADED, aModule);
+		    fireEvent(ArgoEventTypes.MODULE_LOADED, aModule);
 		    if (aModule instanceof ArgoSingletonModule) {
 			ArgoSingletonModule sModule =
 			    (ArgoSingletonModule) aModule;
@@ -677,10 +676,9 @@ public class ModuleLoader {
 		// if (pluggable.isModuleType(pluginType))
 		if (context == null) {
 		    return pluggable;
-		} else {
-		    if (pluggable.inContext(context)) {
-			return pluggable;
-		    }
+		} 
+		if (pluggable.inContext(context)) {
+		    return pluggable;
 		}
 	    }
 	}
@@ -735,10 +733,9 @@ public class ModuleLoader {
 		Pluggable module = (Pluggable) element;
 		if (context == null) {
 		    return true;
-		} else {
-		    if (module.inContext(context)) {
-			return true;
-		    }
+		}
+		if (module.inContext(context)) {
+		    return true;
 		}
 	    }
 	}

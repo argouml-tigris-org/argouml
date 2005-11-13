@@ -96,10 +96,10 @@ public class CompositeCodePiece extends CodePiece {
      * @see org.argouml.language.java.generator.CodePiece#getStartPosition()
      */
     public int getStartPosition() {
-	if (codePieces.size() > 0)
+	if (codePieces.size() > 0) {
 	    return ((CodePiece) codePieces.firstElement()).getStartPosition();
-	else
-	    return 0;
+        }
+        return 0;
     }
 
     /**
@@ -108,10 +108,10 @@ public class CompositeCodePiece extends CodePiece {
      * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
      */
     public int getEndPosition() {
-	if (codePieces.size() > 0)
+	if (codePieces.size() > 0) {
 	    return ((CodePiece) codePieces.lastElement()).getEndPosition();
-	else
-	    return 0;
+        }
+	return 0;
     }
 
     /**
@@ -120,10 +120,10 @@ public class CompositeCodePiece extends CodePiece {
      * @see org.argouml.language.java.generator.CodePiece#getStartLine()
      */
     public int getStartLine() {
-	if (codePieces.size() > 0)
+	if (codePieces.size() > 0) {
 	    return ((CodePiece) codePieces.firstElement()).getStartLine();
-	else
-	    return 0;
+        }
+        return 0;
     }
 
     /**
@@ -132,9 +132,9 @@ public class CompositeCodePiece extends CodePiece {
      * @see org.argouml.language.java.generator.CodePiece#getEndLine()
      */
     public int getEndLine() {
-	if (codePieces.size() > 0)
+	if (codePieces.size() > 0) {
 	    return ((CodePiece) codePieces.lastElement()).getEndLine();
-	else
-	    return 0;
+        }
+        return 0;
     }
 }

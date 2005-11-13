@@ -47,6 +47,7 @@ import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.UnresolvableException;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
+import org.tigris.swidgets.Dialog;
 
 /**
  * The dialog to dismiss todo items.
@@ -79,7 +80,7 @@ public class DismissToDoItemDialog extends ArgoDialog {
         super(
             owner,
             Translator.localize("dialog.title.dismiss-todo-item"),
-            ArgoDialog.OK_CANCEL_OPTION,
+            Dialog.OK_CANCEL_OPTION,
             true);
 
         JLabel instrLabel =

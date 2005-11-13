@@ -62,9 +62,8 @@ public class CrMultipleInheritance extends CrUML {
 	Collection gen = Model.getFacade().getGeneralizations(cls);
 	if (gen != null && gen.size() > 1) {
 	    return PROBLEM_FOUND;
-	} else {
-	    return NO_PROBLEM;
 	}
+        return NO_PROBLEM;
     }
 
     /**

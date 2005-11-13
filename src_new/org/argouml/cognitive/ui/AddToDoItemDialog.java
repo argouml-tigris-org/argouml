@@ -38,13 +38,14 @@ import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
-import org.argouml.cognitive.ListSet;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.cognitive.UMLToDoItem;
+import org.tigris.swidgets.Dialog;
 import org.tigris.swidgets.LabelledLayout;
 
 /**
@@ -81,7 +82,7 @@ public class AddToDoItemDialog extends ArgoDialog {
     public AddToDoItemDialog(ListCellRenderer renderer) {
         super(ProjectBrowser.getInstance(),
 	      Translator.localize("dialog.title.add-todo-item"),
-	      ArgoDialog.OK_CANCEL_OPTION, true);
+	      Dialog.OK_CANCEL_OPTION, true);
 
         headLineTextField = new JTextField(TEXT_COLUMNS);
         priorityComboBox = new JComboBox(PRIORITIES);
