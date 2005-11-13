@@ -41,7 +41,7 @@ public abstract class TransitionNotation extends ValueHandler {
      */
     public TransitionNotation(Object transition) {
         if (!Model.getFacade().isATransition(transition)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("This is not a Transition.");
         }
         myTransition = transition;
     }

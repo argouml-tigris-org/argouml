@@ -41,7 +41,7 @@ public abstract class StateBodyNotation extends ValueHandler {
      */
     public StateBodyNotation(Object state) {
         if (!Model.getFacade().isAState(state)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("This is not a State.");
         }
         myState = state;
     }

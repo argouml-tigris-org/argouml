@@ -45,7 +45,8 @@ public abstract class ComponentInstanceNotation extends ValueHandler {
      */
     public ComponentInstanceNotation(Object componentInstance) {
         if (!Model.getFacade().isAComponentInstance(componentInstance)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "This is not a ComponentInstance.");
         }
         myComponentInstance = componentInstance;
     }

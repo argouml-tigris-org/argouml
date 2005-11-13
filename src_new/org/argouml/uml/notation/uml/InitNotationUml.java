@@ -60,6 +60,9 @@ public class InitNotationUml {
                 name, ObjectNotationUml.class);
         npf.addNotationProvider(NotationProviderFactory2.TYPE_COMPONENTINSTANCE,
                 name, ComponentInstanceNotationUml.class);
+        npf.addNotationProvider(NotationProviderFactory2.TYPE_NODEINSTANCE,
+                name, NodeInstanceNotationUml.class);
+
 
         NotationProviderFactory2.getInstance().setDefaultNotation(name);
     }

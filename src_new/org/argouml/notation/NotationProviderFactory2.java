@@ -77,7 +77,11 @@ public final class NotationProviderFactory2 {
      */
     public static final int TYPE_COMPONENTINSTANCE = 8;
 
-
+    /**
+     * TYPE_NODEINSTANCE the text shown on a componentInstance.
+     */
+    public static final int TYPE_NODEINSTANCE = 9;
+    
     /**
      * defaultLanguage the Notation language used by default, i.e. UML
      */

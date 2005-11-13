@@ -42,7 +42,7 @@ public abstract class ActionStateNotation extends ValueHandler {
      */
     public ActionStateNotation(Object actionState) {
         if (!Model.getFacade().isAActionState(actionState)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("This is not an ActionState.");
         }
         myActionState = actionState;
     }

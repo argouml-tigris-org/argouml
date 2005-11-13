@@ -43,7 +43,7 @@ public abstract class OperationNotation extends ValueHandler {
      */
     public OperationNotation(Object operation) {
         if (!Model.getFacade().isAOperation(operation)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("This is not an Operation.");
         }
         myOperation = operation;
         myClass = Model.getFacade().getOwner(operation);

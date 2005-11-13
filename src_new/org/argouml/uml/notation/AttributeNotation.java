@@ -43,7 +43,7 @@ public abstract class AttributeNotation extends ValueHandler {
      */
     public AttributeNotation(Object attribute) {
         if (!Model.getFacade().isAAttribute(attribute)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("This is not an Attribute.");
         }
         myAttribute = attribute;
         myClass = Model.getFacade().getOwner(attribute);
