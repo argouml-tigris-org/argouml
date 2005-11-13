@@ -58,8 +58,8 @@ public class PropPanelUseCase extends PropPanelClassifier {
     public PropPanelUseCase() {
         // Invoke the Classifier constructor, but passing in our name and
         // representation and requesting 3 columns
-        super("UseCase", 
-            lookupIcon("UseCase"), 
+        super("UseCase",
+            lookupIcon("UseCase"),
             ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
@@ -71,7 +71,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
 
         add(getModifiersPanel());
 
-	
+
 
 	addSeperator();
 
@@ -96,7 +96,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
             ActionNewUseCaseExtensionPoint.SINGLETON);
     addField(Translator.localize("label.extension-points"),
          new JScrollPane(extensionPoints));
-    
+
         addField(Translator.localize("label.association-ends"),
             getAssociationEndScroll());
 

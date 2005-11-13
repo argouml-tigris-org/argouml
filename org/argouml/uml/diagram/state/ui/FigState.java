@@ -56,7 +56,7 @@ public abstract class FigState extends FigStateVertex {
     protected static final int MARGIN = 2;
 
     protected NotationProvider4 notationProviderBody;
-    
+
     /**
      * The text inside the state.
      */
@@ -106,7 +106,7 @@ public abstract class FigState extends FigStateVertex {
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isAState(own)) {
-            notationProviderBody = 
+            notationProviderBody =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_STATEBODY, this, own);
         }

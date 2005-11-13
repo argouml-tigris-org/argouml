@@ -184,18 +184,18 @@ public final class ExplorerEventAdaptor
                         .getChangedValue());
             }
         }
-        
+
         if (pce instanceof AddAssociationEvent) {
             if (!("namespace".equals(pce.getPropertyName()))) {
                 treeModel.modelElementAdded(
                         ((AddAssociationEvent) pce).getSource());
             }
         }
-        
+
         if (pce instanceof AttributeChangeEvent) {
             treeModel.modelElementChanged(pce.getSource());
         }
-        
+
         if (pce instanceof DeleteInstanceEvent) {
             treeModel.modelElementRemoved(((DeleteInstanceEvent) pce)
                     .getSource());

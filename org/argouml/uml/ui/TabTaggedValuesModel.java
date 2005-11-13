@@ -24,7 +24,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         VetoableChangeListener, DelayedVChangeListener, PropertyChangeListener {
 
     private Logger LOG = Logger.getLogger(TabTaggedValuesModel.class);
-    
+
     // //////////////
     // instance varables
     private Object target;
@@ -36,7 +36,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
     // constructor
     /**
      * The constructor.
-     * 
+     *
      * @param t
      *            the tab
      */
@@ -58,7 +58,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         }
         if (target != t) {
             if (target != null)
-                Model.getPump().removeModelEventListener(this, target);            
+                Model.getPump().removeModelEventListener(this, target);
             target = t;
             if (t != null)
                 Model.getPump().addModelEventListener(this, t);
@@ -161,7 +161,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         if (columnIndex != 0 && columnIndex != 1) {
             return;
         }
-        
+
         //if (!(aValue instanceof String)) {
         //    return;
         //}

@@ -112,7 +112,7 @@ public class ActionGenerateProjectCode extends UMLAction {
         if (cls == null) {
             return false;
         }
-        if (!Model.getFacade().isAClass(cls) 
+        if (!Model.getFacade().isAClass(cls)
                 && !Model.getFacade().isAInterface(cls)) {
             return false;
         }

@@ -41,7 +41,7 @@ import org.argouml.application.configuration.ConfigurationKeyImpl;
  * @author Thierry Lach
  * @since  0.9.4
  */
-public class Configuration {
+public final class Configuration {
 
     ////////////////////////////////////////////////////////////////
     // Instance variables
@@ -97,7 +97,7 @@ public class Configuration {
      *
      * @return the configuration factory
      */
-    public static final ConfigurationFactory getFactory() {
+    public static ConfigurationFactory getFactory() {
 	return ConfigurationFactory.getInstance();
     }
 
@@ -117,7 +117,7 @@ public class Configuration {
      *
      * @return true if the load is successful, otherwise false
      */
-    public static final boolean load() {
+    public static boolean load() {
 	return config.loadDefault();
     }
 
@@ -128,7 +128,7 @@ public class Configuration {
      *
      * @return true if the load is successful, otherwise false
      */
-    public static final boolean load(File file) {
+    public static boolean load(File file) {
 	return config.load(file);
     }
 
@@ -139,7 +139,7 @@ public class Configuration {
      *
      * @return true if the load is successful, otherwise false
      */
-    public static final boolean load(URL url) {
+    public static boolean load(URL url) {
 	return config.load(url);
     }
 
@@ -152,7 +152,7 @@ public class Configuration {
      *
      * @return true if the save is successful, otherwise false
      */
-    public static final boolean save() {
+    public static boolean save() {
 	return Configuration.save(false);
     }
 
@@ -168,7 +168,7 @@ public class Configuration {
      *
      * @return true if the save is successful, otherwise false
      */
-    public static final boolean save(boolean force) {
+    public static boolean save(boolean force) {
 	return config.saveDefault(force);
     }
 
@@ -193,8 +193,8 @@ public class Configuration {
      * @return the string value of the parameter if it exists, otherwise the
      *   default value
      */
-    public static final String getString(ConfigurationKey key,
-					 String defaultValue) {
+    public static String getString(ConfigurationKey key,
+                                   String defaultValue) {
 	return config.getString(key, defaultValue);
     }
 
@@ -205,7 +205,7 @@ public class Configuration {
      *
      * @return the string value of the parameter if it exists, otherwise zero
      */
-    public static final int getInteger(ConfigurationKey key) {
+    public static int getInteger(ConfigurationKey key) {
 	return getInteger(key, 0);
     }
 
@@ -218,8 +218,8 @@ public class Configuration {
      * @return the string value of the parameter if it exists,
      *         otherwise the default value
      */
-    public static final double getDouble(ConfigurationKey key,
-					 double defaultValue) {
+    public static double getDouble(ConfigurationKey key,
+                                   double defaultValue) {
 	return config.getDouble(key, defaultValue);
     }
 
@@ -230,7 +230,7 @@ public class Configuration {
      *
      * @return the string value of the parameter if it exists, otherwise zero
      */
-    public static final double getDouble(ConfigurationKey key) {
+    public static double getDouble(ConfigurationKey key) {
 	return getDouble(key, 0);
     }
 
@@ -243,7 +243,7 @@ public class Configuration {
      * @return the numeric value of the parameter if it exists, otherwise
      *  the default value
      */
-    public static final int getInteger(ConfigurationKey key, int defaultValue) {
+    public static int getInteger(ConfigurationKey key, int defaultValue) {
 	return config.getInteger(key, defaultValue);
     }
 
@@ -254,7 +254,7 @@ public class Configuration {
      *
      * @return the boolean value of the parameter if it exists, otherwise false
      */
-    public static final boolean getBoolean(ConfigurationKey key) {
+    public static boolean getBoolean(ConfigurationKey key) {
 	return getBoolean(key, false);
     }
 
@@ -267,8 +267,8 @@ public class Configuration {
      * @return the boolean value of the parameter if it exists, otherwise
      *  the default value
      */
-    public static final boolean getBoolean(ConfigurationKey key,
-					   boolean defaultValue) {
+    public static boolean getBoolean(ConfigurationKey key,
+                                     boolean defaultValue) {
 	return config.getBoolean(key, defaultValue);
     }
 
@@ -278,7 +278,7 @@ public class Configuration {
      * @param key the key to set
      * @param newValue the value to set the key to.
      */
-    public static final void setString(ConfigurationKey key, String newValue) {
+    public static void setString(ConfigurationKey key, String newValue) {
 	config.setString(key, newValue);
     }
 
@@ -288,7 +288,7 @@ public class Configuration {
      * @param key the key to set
      * @param newValue the value to set the key to.
      */
-    public static final void setInteger(ConfigurationKey key, int newValue) {
+    public static void setInteger(ConfigurationKey key, int newValue) {
 	config.setInteger(key, newValue);
     }
 
@@ -298,7 +298,7 @@ public class Configuration {
      * @param key the key to set
      * @param newValue the value to set the key to.
      */
-    public static final void setDouble(ConfigurationKey key, double newValue) {
+    public static void setDouble(ConfigurationKey key, double newValue) {
 	config.setDouble(key, newValue);
     }
 
@@ -308,8 +308,8 @@ public class Configuration {
      * @param key the key to set
      * @param newValue the value to set the key to.
      */
-    public static final void setBoolean(ConfigurationKey key,
-					boolean newValue) {
+    public static void setBoolean(ConfigurationKey key,
+                                  boolean newValue) {
 	config.setBoolean(key, newValue);
     }
 
@@ -318,7 +318,7 @@ public class Configuration {
      *
      * @param pcl The property change listener to add
      */
-    public static final void addListener(PropertyChangeListener pcl) {
+    public static void addListener(PropertyChangeListener pcl) {
 	config.addListener(pcl);
     }
 
@@ -327,7 +327,7 @@ public class Configuration {
      *
      * @param pcl The property change listener to remove
      */
-    public static final void removeListener(PropertyChangeListener pcl) {
+    public static void removeListener(PropertyChangeListener pcl) {
 	config.removeListener(pcl);
     }
 
@@ -337,8 +337,8 @@ public class Configuration {
      * @param key The key to listen for changes of
      * @param pcl The property change listener to add
      */
-    public static final void addListener(ConfigurationKey key,
-					 PropertyChangeListener pcl) {
+    public static void addListener(ConfigurationKey key,
+                                   PropertyChangeListener pcl) {
 	config.addListener(key, pcl);
     }
 
@@ -348,15 +348,18 @@ public class Configuration {
      * @param key The key to listen for changes of
      * @param pcl The property change listener to remove
      */
-    public static final void removeListener(ConfigurationKey key,
-					    PropertyChangeListener pcl) {
+    public static void removeListener(ConfigurationKey key,
+                                      PropertyChangeListener pcl) {
 	config.removeListener(key, pcl);
     }
 
-    public static final void removeKey(ConfigurationKey key) {
+    /**
+     * @param key The key to remove.
+     */
+    public static void removeKey(ConfigurationKey key) {
         config.remove(key.getKey());
     }
-    
+
     /**
      * Create a single component configuration key.
      *

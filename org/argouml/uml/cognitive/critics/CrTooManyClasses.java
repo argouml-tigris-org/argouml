@@ -28,13 +28,17 @@ import org.argouml.cognitive.Designer;
 import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 
-/** 
+/**
  * A critic to detect when a classdiagram has too many classes. <p>
- * 
+ *
  * TODO: currently it checks for nodes (classes, interfaces, comments).
  * This critic should be rewritten to work with namespaces.
  */
 public class CrTooManyClasses extends AbstractCrTooMany {
+    /**
+     * Threshold.
+     */
+    private static final int CLASS_THRESHOLD = 20;
 
     /**
      * The constructor.
@@ -44,7 +48,7 @@ public class CrTooManyClasses extends AbstractCrTooMany {
 	// TODO: <ocl>self.name</ocl> is not expanded for diagram objects
         setupHeadAndDesc();
 	addSupportedDecision(UMLDecision.CLASS_SELECTION);
-	setThreshold(20);
+	setThreshold(CLASS_THRESHOLD);
     }
 
     /**
@@ -52,13 +56,21 @@ public class CrTooManyClasses extends AbstractCrTooMany {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof UMLClassDiagram)) return NO_PROBLEM;
+	if (!(dm instanceof UMLClassDiagram)) {
+            return NO_PROBLEM;
+        }
 	UMLClassDiagram d = (UMLClassDiagram) dm;
 
-	int threshold = getThreshold();
-	if (d.getGraphModel().getNodes().size() <= threshold) return NO_PROBLEM;
+	if (d.getGraphModel().getNodes().size() <= getThreshold()) {
+            return NO_PROBLEM;
+        }
 	return PROBLEM_FOUND;
     }
 
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -3270186791825482658L;
 } /* end class CrTooManyClasses */
 

@@ -118,7 +118,7 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
             if (state instanceof MState
 		&& ((MState) state).getStateMachine() != null) {
                 return ((MState) state).getStateMachine();
-            } 
+            }
             return getStateMachine(state.getContainer());
         }
         if (handle instanceof MTransition) {
@@ -210,9 +210,9 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
 
     /**
      * Returns all states that can be recursively contained by the given State.
-     * 
+     *
      * @param oState the Composite state we are searching the states for
-     * 
+     *
      * @return Collection the collection with found states
      */
     public Collection getAllPossibleSubvertices(Object oState) {
@@ -710,7 +710,7 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
      * state diagrams for classes that have visibility
      * inside the package. An event is not local to
      * a single class."
-     * 
+     *
      * @param trans the transition of which the event is a trigger
      * @param model the default namespace is the root-model
      * @return the enclosing namespace for the event
@@ -726,7 +726,7 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
         }
         return enclosing;
     }
-    
+
     /**
      * @see org.argouml.model.StateMachinesHelper#addDeferrableEvent(java.lang.Object, java.lang.Object)
      */
@@ -734,10 +734,10 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
         if (state instanceof MState
                 && deferrableEvent instanceof MEvent) {
             ((MState)state).addDeferrableEvent((MEvent)deferrableEvent);
-            return;            
+            return;
         }
         throw new IllegalArgumentException("handle: " + state + " or evt: "
-                + deferrableEvent);    
+                + deferrableEvent);
     }
 
     /**
@@ -747,10 +747,10 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
         if (state instanceof MState
                 && deferrableEvent instanceof MEvent) {
             ((MState)state).addDeferrableEvent((MEvent)deferrableEvent);
-            return;            
+            return;
         }
         throw new IllegalArgumentException("handle: " + state + " or evt: "
-                + deferrableEvent);    
+                + deferrableEvent);
     }
 
     /**
@@ -760,10 +760,10 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
         if (statemachine instanceof MStateMachine
                 && modelElement instanceof MModelElement) {
             ((MStateMachine)statemachine).setContext((MModelElement)modelElement);
-            return;            
+            return;
         }
         throw new IllegalArgumentException("handle: " + statemachine + " or me: "
                 + modelElement);
     }
-    
+
 }

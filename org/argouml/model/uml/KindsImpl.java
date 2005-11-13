@@ -48,7 +48,7 @@ import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
  */
 public class KindsImpl
 	implements ChangeableKind, AggregationKind, PseudostateKind,
-	ScopeKind, ConcurrencyKind, DirectionKind, 
+	ScopeKind, ConcurrencyKind, DirectionKind,
 	OrderingKind, VisibilityKind {
 
     /**

@@ -32,10 +32,15 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.model.Model;
-/** A non-modal wizard to help the user change navigability
- *  of an association. */
 
+/**
+ * A non-modal wizard to help the user change navigability
+ * of an association.
+ */
 public class WizNavigable extends UMLWizard {
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(WizNavigable.class);
 
     private String instructions =
@@ -58,9 +63,11 @@ public class WizNavigable extends UMLWizard {
     public Vector getOptions() {
 	Vector res = new Vector();
 	Object asc = /*(MAssociation)*/ getModelElement();
-	Object ae0 = /*(MAssociationEnd)*/
+	Object ae0 =
+            /*(MAssociationEnd)*/
 	    new ArrayList(Model.getFacade().getConnections(asc)).get(0);
-	Object ae1 = /*(MAssociationEnd)*/
+	Object ae1 =
+            /*(MAssociationEnd)*/
 	    new ArrayList(Model.getFacade().getConnections(asc)).get(1);
 	Object cls0 = Model.getFacade().getType(ae0);
 	Object cls1 = Model.getFacade().getType(ae1);
@@ -115,22 +122,25 @@ public class WizNavigable extends UMLWizard {
 	switch (oldStep) {
 	case 1:
 	    int choice = -1;
-	    if (step1 != null) choice = step1.getSelectedIndex();
+	    if (step1 != null) {
+                choice = step1.getSelectedIndex();
+            }
 	    if (choice == -1) {
 		throw new Error("nothing selected, should not get here");
 	    }
 	    try {
 		Object asc = /*(MAssociation)*/ getModelElement();
-		Object ae0 = /*(MAssociationEnd)*/
+		Object ae0 =
+                    /*(MAssociationEnd)*/
 		    new ArrayList(Model.getFacade().getConnections(asc)).get(0);
-		Object ae1 = /*(MAssociationEnd)*/
+		Object ae1 =
+                    /*(MAssociationEnd)*/
 		    new ArrayList(Model.getFacade().getConnections(asc)).get(1);
-		Model.getCoreHelper().setNavigable(ae0, 
+		Model.getCoreHelper().setNavigable(ae0,
 		        choice == 0 || choice == 2);
-		Model.getCoreHelper().setNavigable(ae1, 
+		Model.getCoreHelper().setNavigable(ae1,
 		        choice == 1 || choice == 2);
-	    }
-	    catch (Exception pve) {
+	    } catch (Exception pve) {
 		LOG.error("could not set navigablity", pve);
 	    }
 	}
@@ -140,11 +150,20 @@ public class WizNavigable extends UMLWizard {
      * @see org.argouml.cognitive.ui.Wizard#canFinish()
      */
     public boolean canFinish() {
-	if (!super.canFinish()) return false;
-	if (getStep() == 0) return true;
-	if (getStep() == 1 && step1 != null && step1.getSelectedIndex() != -1)
-	    return true;
+	if (!super.canFinish()) {
+            return false;
+        }
+	if (getStep() == 0) {
+            return true;
+        }
+	if (getStep() == 1 && step1 != null && step1.getSelectedIndex() != -1) {
+            return true;
+        }
 	return false;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2571165058454693999L;
 } /* end class WizNavigable */

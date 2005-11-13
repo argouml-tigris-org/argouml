@@ -45,7 +45,7 @@ public class ActivityDiagramGraphModel extends StateDiagramGraphModel {
         }
         if (Model.getFacade().isAPartition(node)) {
             return true;
-        } 
+        }
         return super.canAddNode(node);
     }
 
@@ -56,4 +56,9 @@ public class ActivityDiagramGraphModel extends StateDiagramGraphModel {
         boolean canAdd = super.canAddEdge(edge);
         return canAdd;
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 5047684232283453072L;
 }

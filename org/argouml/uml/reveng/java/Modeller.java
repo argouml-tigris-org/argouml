@@ -241,7 +241,7 @@ public class Modeller {
         ownerPackageName = getPackageName(currentName);
 	while (!"".equals(ownerPackageName)) {
 	    if (getDiagram() != null
-		&& importSession != null 
+		&& importSession != null
                 && importSession.isCreateDiagramsChecked()
 		&& getDiagram().isDiagramInProject(ownerPackageName)) {
 
@@ -460,7 +460,7 @@ public class Modeller {
 			    .getInterface(getClassifierName(interfaceName));
 		    Object mAbstraction =
 			getAbstraction(mInterface, mClass);
-		    if (Model.getFacade().getSuppliers(mAbstraction).size() 
+		    if (Model.getFacade().getSuppliers(mAbstraction).size()
 		            == 0) {
 			Model.getCoreHelper().addSupplier(
 			        mAbstraction,
@@ -578,7 +578,7 @@ public class Modeller {
                                  String javadoc) {
         Object mClassifier;
         Object mNamespace;
-        
+
         if (parseState.getClassifier() != null) {
             // the new classifier is a java inner class
             mClassifier =
@@ -590,8 +590,8 @@ public class Modeller {
             mClassifier = Model.getFacade().lookupIn(currentPackage, name);
             mNamespace = currentPackage;
         }
-        
-        
+
+
         if (mClassifier == null) {
             // if the classifier could not be could in the model
             if (LOG.isInfoEnabled()) {
@@ -607,7 +607,7 @@ public class Modeller {
             }
             cleanModelElement(mClassifier);
         }
-        
+
         parseState.innerClassifier(mClassifier);
 
         // set up the component residency (only for top level classes)
@@ -632,17 +632,17 @@ public class Modeller {
             if (residentDep == null) {
 
                 // TODO: Fix this old NSUML workaround! - tfm - 20050911
-                
+
                 // this doesn't work because of a bug in NSUML (the
                 // ElementResidence association class is never saved
                 // to the xmi).
-                
+
                 // //UmlHelper.getHelper().getCore()
                 // .setResident(parseState.getComponent(),mClassifier);
-                
+
                 // next line contains current equivalent of above - tfm
                 //Model.getCoreHelper().setResident(parseState.getComponent(), mClassifier);
-                
+
                 // therefore temporarily use a non-standard hack:
                 //if (parseState.getComponent() == null) addComponent();
                 residentDep = Model.getCoreFactory()
@@ -664,7 +664,7 @@ public class Modeller {
         parseState = new ParseState(parseState, mClassifier, currentPackage);
 
         setVisibility(mClassifier, modifiers);
-        
+
         /*
          * Changed 2001-10-05 STEFFEN ZSCHALER
          *
@@ -678,8 +678,8 @@ public class Modeller {
          */
 
         addDocumentationTag (mClassifier, javadoc);
-        
-        
+
+
         return mClassifier;
     }
 
@@ -779,7 +779,7 @@ public class Modeller {
 	            Model.getConcurrencyKind().getSequential());
 	}
 
-	for (Iterator i = 
+	for (Iterator i =
 	        Model.getFacade().getParameters(mOperation).iterator();
 	     i.hasNext();) {
 	    Model.getCoreHelper().removeParameter(mOperation, i.next());
@@ -917,7 +917,7 @@ public class Modeller {
 
         // Add this method as a feature to the classifier that owns
         // the operation.
-        Model.getCoreHelper().addFeature(Model.getFacade().getOwner(op), 
+        Model.getCoreHelper().addFeature(Model.getFacade().getOwner(op),
                 method);
     }
 
@@ -1059,7 +1059,7 @@ public class Modeller {
     private Object getGeneralization(Object mPackage,
                                      Object parent,
                                      Object child) {
-        String name = Model.getFacade().getName(child) + " -> " 
+        String name = Model.getFacade().getName(child) + " -> "
             + Model.getFacade().getName(parent);
         Object mGeneralization = null;
         mGeneralization = Model.getFacade().getGeneralization(child, parent);
@@ -1084,10 +1084,10 @@ public class Modeller {
      */
     private Object getAbstraction(Object parent,
                                   Object child) {
-        String name = Model.getFacade().getName(child) + " -> " 
+        String name = Model.getFacade().getName(child) + " -> "
             + Model.getFacade().getName(parent);
         Object mAbstraction = null;
-        for (Iterator i = 
+        for (Iterator i =
                 Model.getFacade().getClientDependencies(child).iterator();
 	     i.hasNext();) {
             mAbstraction = i.next();
@@ -1153,7 +1153,7 @@ public class Modeller {
     private Object searchPackageInModel(String name) {
 	if ("".equals(getPackageName(name))) {
 	    return Model.getFacade().lookupIn(model, name);
-	} 
+	}
         Object owner = searchPackageInModel(getPackageName(name));
         return owner == null
             ? null
@@ -1318,7 +1318,7 @@ public class Modeller {
                 Model.getExtensionMechanismsFactory()
                     .buildStereotype(name, model);
         }
-        
+
         if (!Model.getFacade().isAStereotype(stereotype)) {
             // and so this piece of code may create an existing stereotype
             // in error.
@@ -1327,7 +1327,7 @@ public class Modeller {
                 Model.getExtensionMechanismsFactory()
                     .buildStereotype(name, model);
         }
-        
+
         LOG.info("Found it");
         return stereotype;
     }
@@ -1411,7 +1411,7 @@ public class Modeller {
 	int lastDot = name.lastIndexOf('.');
 	if (lastDot == -1) {
 	    return "";
-	} 
+	}
         return name.substring(0, lastDot);
     }
 
@@ -1762,15 +1762,15 @@ public class Modeller {
     public void clearMethodCalls() {
         methodCalls.clear();
     }
-    
+
     public void addLocalVariableDeclaration(String type, String name) {
         localVariables.put(name, type);
     }
-    
+
     public Hashtable getLocalVariableDeclarations() {
         return localVariables;
     }
-    
+
     public void clearLocalVariableDeclarations() {
         localVariables.clear();
     }

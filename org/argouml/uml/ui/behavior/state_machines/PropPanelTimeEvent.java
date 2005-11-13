@@ -39,7 +39,7 @@ import org.tigris.swidgets.GridLayout2;
 
 /**
  * The properties panel for a TimeEvent.
- * 
+ *
  * @author oliver.heyden
  */
 public class PropPanelTimeEvent extends PropPanelEvent {

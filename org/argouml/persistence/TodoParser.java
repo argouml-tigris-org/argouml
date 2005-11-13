@@ -43,23 +43,36 @@ import org.xml.sax.SAXException;
  * @author	Michael Stockman
  */
 public class TodoParser extends SAXParserBase {
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(TodoParser.class);
 
     private TodoTokenTable tokens = new TodoTokenTable();
 
-    /** The headline of the ToDoItem currently being read. */
+    /**
+     * The headline of the ToDoItem currently being read.
+     */
     private String headline;
 
-    /** The priority of the ToDoItem currently being read. */
+    /**
+     * The priority of the ToDoItem currently being read.
+     */
     private int    priority;
 
-    /** The moreInfoURL of the ToDoItem currently being read. */
+    /**
+     * The moreInfoURL of the ToDoItem currently being read.
+     */
     private String moreinfourl;
 
-    /** The description of the ToDoItem currently being read. */
+    /**
+     * The description of the ToDoItem currently being read.
+     */
     private String description;
 
-    /** The critic String of the ResolvedCritic currently being read. */
+    /**
+     * The critic String of the ResolvedCritic currently being read.
+     */
     private String critic;
 
     /**
@@ -134,8 +147,7 @@ public class TodoParser extends SAXParserBase {
 		LOG.warn("WARNING: unknown tag:" + e.getName());
 		break;
 	    }
-	}
-	catch (Exception ex) {
+	} catch (Exception ex) {
 	    LOG.error("Exception in startelement", ex);
 	}
     }
@@ -250,8 +262,9 @@ public class TodoParser extends SAXParserBase {
         /* This is expected to be safe, don't add a try block here */
 
         dsgr = Designer.theDesigner();
-        item = new ToDoItem(dsgr, headline, priority, description, moreinfourl,
-                            new ListSet());
+        item =
+            new ToDoItem(dsgr, headline, priority, description, moreinfourl,
+                         new ListSet());
         dsgr.getToDoList().addElement(item);
         //cat.debug("Added ToDoItem: " + _headline);
     }
@@ -276,16 +289,16 @@ public class TodoParser extends SAXParserBase {
 
         try {
             np = Integer.parseInt(prio);
-        }
-        catch (NumberFormatException nfe) {
+        } catch (NumberFormatException nfe) {
             np = ToDoItem.HIGH_PRIORITY;
 
-            if (TodoTokenTable.STRING_PRIO_HIGH.equalsIgnoreCase(prio))
-        	np = ToDoItem.HIGH_PRIORITY;
-            else if (TodoTokenTable.STRING_PRIO_MED.equalsIgnoreCase(prio))
-        	np = ToDoItem.MED_PRIORITY;
-            else if (TodoTokenTable.STRING_PRIO_LOW.equalsIgnoreCase(prio))
-        	np = ToDoItem.LOW_PRIORITY;
+            if (TodoTokenTable.STRING_PRIO_HIGH.equalsIgnoreCase(prio)) {
+                np = ToDoItem.HIGH_PRIORITY;
+            } else if (TodoTokenTable.STRING_PRIO_MED.equalsIgnoreCase(prio)) {
+                np = ToDoItem.MED_PRIORITY;
+            } else if (TodoTokenTable.STRING_PRIO_LOW.equalsIgnoreCase(prio)) {
+                np = ToDoItem.LOW_PRIORITY;
+            }
         }
 
         priority = np;
@@ -327,10 +340,11 @@ public class TodoParser extends SAXParserBase {
     protected void handleIssueEnd(XMLElement e) {
         Designer dsgr;
         ResolvedCritic item;
-        
-        if (critic == null)
+
+        if (critic == null) {
             return;
-        
+        }
+
         item = new ResolvedCritic(critic, offenders);
         dsgr = Designer.theDesigner();
         dsgr.getToDoList().addResolvedCritic(item);
@@ -398,8 +412,7 @@ public class TodoParser extends SAXParserBase {
                     } else {
                         try {
                             sb.append((char) Integer.parseInt(ent));
-                        }
-                        catch (NumberFormatException nfe) {
+                        } catch (NumberFormatException nfe) {
                         }
                     }
                 }
@@ -425,29 +438,32 @@ public class TodoParser extends SAXParserBase {
 	int i1, i2;
 	char c;
 
-	if (str == null)
-	    return null;
+	if (str == null) {
+            return null;
+        }
 	sb = new StringBuffer();
 	for (i1 = 0, i2 = 0; i2 < str.length(); i2++) {
 	    c = str.charAt(i2);
 	    if (c == '%') {
-		if (i2 > i1)
-		    sb.append(str.substring(i1, i2));
+		if (i2 > i1) {
+                    sb.append(str.substring(i1, i2));
+                }
 		sb.append("%proc;");
 		i1 = i2 + 1;
-	    }
-	    else if (c < 0x28
+	    } else if (c < 0x28
                 ||  (c >= 0x3C && c <= 0x40 && c != 0x3D && c != 0x3F)
                 ||  (c >= 0x5E && c <= 0x60 && c != 0x5F)
                 ||   c >= 0x7B) {
-		if (i2 > i1)
-		    sb.append(str.substring(i1, i2));
+		if (i2 > i1) {
+                    sb.append(str.substring(i1, i2));
+                }
 		sb.append("%" + Integer.toString(c) + ";");
 		i1 = i2 + 1;
 	    }
 	}
-	if (i2 > i1)
-	    sb.append(str.substring(i1, i2));
+	if (i2 > i1) {
+            sb.append(str.substring(i1, i2));
+        }
 
 	//cat.debug("encode:\n" + str + "\n -> " + sb.toString());
 	return sb.toString();

@@ -31,11 +31,11 @@ import org.tigris.gef.presentation.*;
  * @author  mkl
  */
 public class ClassdiagramRealizationEdge extends ClassdiagramInheritanceEdge {
-    
-    
+
+
     /**
      * The constructor.
-     * 
+     *
      * @param edge the fig edge
      */
     public ClassdiagramRealizationEdge(FigEdge edge) {

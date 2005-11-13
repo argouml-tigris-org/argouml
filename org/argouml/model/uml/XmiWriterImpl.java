@@ -39,7 +39,7 @@ import ru.novosoft.uml.xmi.XMIWriter;
 /**
  * A wrapper around the genuine XmiReader that provides public access with no
  * knowledge of actual UML implementation.
- * 
+ *
  * @author Bob Tarling
  */
 public class XmiWriterImpl implements XmiWriter {
@@ -49,7 +49,7 @@ public class XmiWriterImpl implements XmiWriter {
 
     /**
      * Constructor for XMIReader.
-     * 
+     *
      * @throws UmlException
      *             when there is a problem
      * @param model
@@ -67,7 +67,7 @@ public class XmiWriterImpl implements XmiWriter {
 
     /**
      * Write XMI to registered writer
-     * 
+     *
      * @throws UmlException
      *             if it goes wrong
      */

@@ -56,7 +56,7 @@ public class UMLExtendBaseListModel extends UMLModelElementListModel2 {
         addElement(Model.getFacade().getBase(getTarget()));
     }
 
-   
+
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */

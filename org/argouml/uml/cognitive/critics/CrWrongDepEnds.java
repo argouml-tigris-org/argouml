@@ -39,7 +39,7 @@ import org.argouml.uml.diagram.ui.FigDependency;
 /**
  * A critic to detect when in a deployment-diagram the supplier or the
  * client of a dependency is a mobject and inside a figComponent and
- * the other end is a mobject and inside a figComponentInstance
+ * the other end is a mobject and inside a figComponentInstance.
  *
  * @author 5eichler
  */
@@ -58,10 +58,14 @@ public class CrWrongDepEnds extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
+	if (!(dm instanceof UMLDeploymentDiagram)) {
+            return NO_PROBLEM;
+        }
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
 	ListSet offs = computeOffenders(dd);
-	if (offs == null) return NO_PROBLEM;
+	if (offs == null) {
+            return NO_PROBLEM;
+        }
 	return PROBLEM_FOUND;
     }
 
@@ -80,7 +84,9 @@ public class CrWrongDepEnds extends CrUML {
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-	if (!isActive()) return false;
+	if (!isActive()) {
+            return false;
+        }
 	ListSet offs = i.getOffenders();
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.firstElement();
 	//if (!predicate(dm, dsgr)) return false;
@@ -102,7 +108,6 @@ public class CrWrongDepEnds extends CrUML {
     public ListSet computeOffenders(UMLDeploymentDiagram dd) {
 	Collection figs = dd.getLayer().getContents();
 	ListSet offs = null;
-	int size = figs.size();
         Iterator figIter = figs.iterator();
 	while (figIter.hasNext()) {
 	    Object obj = figIter.next();
@@ -122,13 +127,13 @@ public class CrWrongDepEnds extends CrUML {
 		    Object moe = /*(MModelElement)*/ it.next();
 		    if (Model.getFacade().isAObject(moe)) {
 			Object objSup = /*(MObject)*/ moe;
-			if (Model.getFacade().getElementResidences(objSup) 
+			if (Model.getFacade().getElementResidences(objSup)
 			        != null
 			    && (Model.getFacade().getElementResidences(objSup)
 			            .size() > 0)) {
 			    count += 2;
                         }
-			if (Model.getFacade().getComponentInstance(objSup) 
+			if (Model.getFacade().getComponentInstance(objSup)
 			        != null) {
 			    count++;
                         }
@@ -142,13 +147,13 @@ public class CrWrongDepEnds extends CrUML {
 		    Object moe = /*(MModelElement)*/ it.next();
 		    if (Model.getFacade().isAObject(moe)) {
 			Object objCli = /*(MObject)*/ moe;
-			if (Model.getFacade().getElementResidences(objCli) 
+			if (Model.getFacade().getElementResidences(objCli)
 			        != null
 			    && (Model.getFacade().getElementResidences(objCli)
 			            .size() > 0)) {
 			    count += 2;
                         }
-			if (Model.getFacade().getComponentInstance(objCli) 
+			if (Model.getFacade().getComponentInstance(objCli)
 			        != null) {
 			    count++;
                         }
@@ -168,4 +173,8 @@ public class CrWrongDepEnds extends CrUML {
 	return offs;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -6587198606342935144L;
 } /* end class CrWrongDepEnds.java */

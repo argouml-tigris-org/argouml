@@ -27,20 +27,20 @@ package org.argouml.uml.notation;
 import org.argouml.model.Model;
 
 /**
- * This abstract class forms the basis of all Notation providers 
- * for the text shown in the Fig that represents a componentInstance. 
+ * This abstract class forms the basis of all Notation providers
+ * for the text shown in the Fig that represents a componentInstance.
  * Subclass this for all languages.
- * 
+ *
  * @author mvw@tigris.org
  */
 public abstract class ComponentInstanceNotation extends ValueHandler {
 
     protected Object myComponentInstance;
-    
+
     /**
      * The constructor.
-     * 
-     * @param componentInstance the componentInstance of which 
+     *
+     * @param componentInstance the componentInstance of which
      *                          we handle the text
      */
     public ComponentInstanceNotation(Object componentInstance) {

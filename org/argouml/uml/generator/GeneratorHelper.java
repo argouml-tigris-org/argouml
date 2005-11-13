@@ -26,18 +26,22 @@ package org.argouml.uml.generator;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import java.util.List;
 
 import javax.swing.Icon;
 
 /**
  * Provides some utility methods for code generation.
- * 
+ *
  * @author Daniele Tamino
  */
-public class GeneratorHelper {
-    
+public final class GeneratorHelper {
+    /**
+     * The constructor.
+     */
+    private GeneratorHelper() {
+    }
+
     /**
      * Generate code for one or more elements in a given language.
      * @param lang The language to use.
@@ -47,8 +51,7 @@ public class GeneratorHelper {
      * if no file is generated.
      */
     public static Collection generate(
-            Language lang, Collection elements, boolean deps)
-    {
+            Language lang, Collection elements, boolean deps) {
         CodeGenerator gen =
             GeneratorManager.getInstance().getGenerator(lang);
         if (gen != null) {
@@ -56,7 +59,7 @@ public class GeneratorHelper {
         }
         return new ArrayList(); // empty list
     }
-    
+
     /**
      * Generate code for a single element.
      * @param lang The language to use.
@@ -66,13 +69,12 @@ public class GeneratorHelper {
      * if no file is generated.
      */
     public static Collection generate(
-            Language lang, Object elem, boolean deps)
-    {
+            Language lang, Object elem, boolean deps) {
         List list = new ArrayList();
         list.add(elem);
         return generate(lang, list, deps);
     }
-    
+
     /**
      * Creates a new Language only if one with the same name doesn't already
      * exist in GeneratorManager, in which case that one is returned.
@@ -82,8 +84,7 @@ public class GeneratorHelper {
      * @return The Language object found or created.
      */
     public static Language makeLanguage(String theName, String theTitle,
-            Icon theIcon) 
-    {
+            Icon theIcon) {
         Language lang;
         lang = GeneratorManager.getInstance().findLanguage(theName);
         if (lang == null) {
@@ -94,7 +95,7 @@ public class GeneratorHelper {
 
     /**
      * Creates a language with no icon.
-     * @see #makeLanguage(String, String, Icon)  
+     * @see #makeLanguage(String, String, Icon)
      * @param theName The name of the language.
      * @param theTitle A string representing the language for display.
      * @return The Language object found or created.
@@ -104,8 +105,8 @@ public class GeneratorHelper {
     }
 
     /**
-     * Creates a language with title equal to the name.  
-     * @see #makeLanguage(String, String, Icon)  
+     * Creates a language with title equal to the name.
+     * @see #makeLanguage(String, String, Icon)
      * @param theName The name of the language.
      * @param theIcon An icon for the language.
      * @return The Language object found or created.
@@ -113,10 +114,10 @@ public class GeneratorHelper {
     public static Language makeLanguage(String theName, Icon theIcon) {
         return makeLanguage(theName, theName, theIcon);
     }
-    
+
     /**
      * Creates a language with title equal to the name and no icon.
-     * @see #makeLanguage(String, String, Icon)  
+     * @see #makeLanguage(String, String, Icon)
      * @param theName The name of the language.
      * @return The Language object found or created.
      */

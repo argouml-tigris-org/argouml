@@ -30,13 +30,13 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
-/** 
+/**
  * Create new arguments for actions
  * @author MarkusK
  *
  */
 public class ActionNewArgument extends AbstractActionNewModelElement {
- 
+
     /**
      * Constructor for ActionNewArgument.
      */

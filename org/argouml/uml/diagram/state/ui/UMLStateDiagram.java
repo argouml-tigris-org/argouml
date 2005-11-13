@@ -289,7 +289,7 @@ public class UMLStateDiagram extends UMLDiagram {
     protected Action getActionBranchPseudoState() {
         return getActionChoicePseudoState();
     }
-    
+
     /**
      * @return Returns the actionChoicePseudoState.
      */
@@ -301,7 +301,7 @@ public class UMLStateDiagram extends UMLDiagram {
         }
         return actionBranchPseudoState;
     }
-    
+
     /**
      * @return Returns the actionCompositeState.
      */
@@ -476,7 +476,7 @@ public class UMLStateDiagram extends UMLDiagram {
         }
         if (Model.getUmlFactory().isRemoved(getNamespace())) {
             return true;
-        }            	
+        }
         Object context = Model.getFacade().getContext(theStateMachine);
         if (context == null) {
             return true;
@@ -495,8 +495,8 @@ public class UMLStateDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base)  {
-    	return false; 
-    	/* TODO: We may return the following when the 
+    	return false;
+    	/* TODO: We may return the following when the
     	 * relocate() has been implemented. */
 //    	Model.getStateMachinesHelper()
 //        	.isAddingStatemachineAllowed(base);
@@ -508,5 +508,5 @@ public class UMLStateDiagram extends UMLDiagram {
     public boolean relocate(Object base) {
         return false;
     }
-    
+
 } /* end class UMLStateDiagram */

@@ -32,7 +32,7 @@ import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
- * 
+ *
  * @author MarkusK
  *
  */

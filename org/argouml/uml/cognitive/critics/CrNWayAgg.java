@@ -134,7 +134,7 @@ public class CrNWayAgg extends CrUML {
         Iterator assocEnds = conns.iterator();
         while (assocEnds.hasNext()) {
             Object ae = /*(MAssociationEnd)*/ assocEnds.next();
-            if (Model.getFacade().isAggregate(ae) 
+            if (Model.getFacade().isAggregate(ae)
                     || Model.getFacade().isComposite(ae)) {
                 return PROBLEM_FOUND;
             }
@@ -145,4 +145,8 @@ public class CrNWayAgg extends CrUML {
         return NO_PROBLEM;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 5318978944855930303L;
 } /* end class CrNWayAgg.java */

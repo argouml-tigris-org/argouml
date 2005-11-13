@@ -93,7 +93,7 @@ public class UMLClassifierRoleAvailableContentsListModel
                 super.propertyChange(e);
         }
     }
-    
+
     /**
      * TODO: Why this function that the other models do not need?
      *

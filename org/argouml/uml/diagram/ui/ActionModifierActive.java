@@ -36,14 +36,14 @@ class ActionModifierActive extends AbstractActionCheckBoxMenuItem {
         super("checkbox.active-uc", NO_ICON);
         putValue("SELECTED", new Boolean(valueOfTarget(o)));
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement.AbstractActionCheckBoxMenuItem#toggleValueOfTarget(java.lang.Object)
      */
     void toggleValueOfTarget(Object t) {
-        Model.getCoreHelper().setActive(t, !Model.getFacade().isActive(t)); 
+        Model.getCoreHelper().setActive(t, !Model.getFacade().isActive(t));
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement.AbstractActionCheckBoxMenuItem#valueOfTarget(java.lang.Object)
      */

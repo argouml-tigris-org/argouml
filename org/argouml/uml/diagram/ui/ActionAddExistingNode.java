@@ -43,7 +43,7 @@ public class ActionAddExistingNode extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    
+
     /**
      * The UML object to be added to the diagram.
      */

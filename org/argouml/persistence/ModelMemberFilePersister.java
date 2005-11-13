@@ -123,7 +123,7 @@ public class ModelMemberFilePersister extends MemberFilePersister {
         if (w == null) {
             throw new IllegalArgumentException("No Writer specified!");
         }
-        
+
         try {
             ProjectMemberModel pmm = (ProjectMemberModel) member;
             Object model = pmm.getModel();
@@ -131,18 +131,21 @@ public class ModelMemberFilePersister extends MemberFilePersister {
             File tempFile = null;
             Writer writer = null;
             if (indent != null) {
-                // If we have an indent then we are adding this file to a superfile.
+                // If we have an indent then we are adding this file
+                // to a superfile.
                 // That is most likely inserting the XMI into the .uml file
                 tempFile = File.createTempFile("xmi", null);
                 tempFile.deleteOnExit();
-                
-                writer = new BufferedWriter(
+
+                writer =
+                    new BufferedWriter(
                         new OutputStreamWriter(
                                 new FileOutputStream(tempFile), "UTF-8"));
                 //writer = new FileWriter(tempFile);
                 XmiWriter xmiWriter = Model.getXmiWriter(model, writer);
                 xmiWriter.write();
-                addXmlFileToWriter((PrintWriter) w, tempFile, indent.intValue());
+                addXmlFileToWriter((PrintWriter) w, tempFile,
+                                   indent.intValue());
             } else {
                 // Othewise we are writing into a zip writer.
                 XmiWriter xmiWriter = Model.getXmiWriter(model, w);

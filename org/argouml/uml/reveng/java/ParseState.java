@@ -38,12 +38,12 @@ import org.argouml.model.Model;
  * @author Marcus Andersson
  */
 class ParseState {
-    
+
     /**
      * Logger.<p>
      */
     private static final Logger LOG = Logger.getLogger(ParseState.class);
-    
+
     /**
      * When the classifier parse is finished, these features will be
      * removed from the model.
@@ -106,9 +106,9 @@ class ParseState {
     public ParseState(ParseState previousState,
                       Object mClassifier,
                       Object currentPackage) {
-        
+
         LOG.info("Parsing the state of " + mClassifier);
-        
+
         classnamePrefix =
             previousState.classnamePrefix
             + Model.getFacade().getName(mClassifier)

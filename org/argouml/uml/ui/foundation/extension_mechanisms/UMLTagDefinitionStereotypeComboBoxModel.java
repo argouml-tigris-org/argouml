@@ -38,7 +38,7 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 public class UMLTagDefinitionStereotypeComboBoxModel extends UMLComboBoxModel2 {
 
     private Logger LOG = Logger.getLogger(UMLTagDefinitionStereotypeComboBoxModel.class);
-    
+
     /**
      * Constructor for UMLModelElementStereotypeComboBoxModel.
      */

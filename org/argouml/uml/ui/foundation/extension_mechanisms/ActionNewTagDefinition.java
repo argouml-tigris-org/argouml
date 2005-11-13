@@ -35,7 +35,7 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 
 /**
- * This action creates a new TagDefinition in the current Model or Stereotype or 
+ * This action creates a new TagDefinition in the current Model or Stereotype or
  * Package.
  *
  * @author rastaman@tigris.org
@@ -64,7 +64,7 @@ public class ActionNewTagDefinition extends AbstractActionNewModelElement {
             namespace = t;
         } else {
             namespace = Model.getFacade().getModel(t);
-            }            
+            }
         Object newTagDefinition = Model.getExtensionMechanismsFactory()
             .buildTagDefinition(
                     (String) null,
@@ -76,5 +76,5 @@ public class ActionNewTagDefinition extends AbstractActionNewModelElement {
         TargetManager.getInstance().setTarget(newTagDefinition);
         super.actionPerformed(e);
     }
-    
+
 }

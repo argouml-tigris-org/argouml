@@ -51,7 +51,7 @@ import org.argouml.application.modules.ModuleLoader;
  * </ul>
  *
  */
-public class Argo {
+public final class Argo {
 
     /**
      * Key for argo resource directory.
@@ -202,19 +202,19 @@ public class Argo {
         Configuration.makeKey("screen", "diagram-antialiasing");
 
     /**
-     * Key for user email address
+     * Key for user email address.
      */
     public static final ConfigurationKey KEY_USER_EMAIL =
 	Configuration.makeKey("user", "email");
 
     /**
-     * Key for user full name
+     * Key for user full name.
      */
     public static final ConfigurationKey KEY_USER_FULLNAME =
 	Configuration.makeKey("user", "fullname");
 
     /**
-     * Key for user java reverse engineering classpath
+     * Key for user java reverse engineering classpath.
      */
     public static final ConfigurationKey KEY_USER_IMPORT_CLASSPATH =
 	Configuration.makeKey("import", "clazzpath");
@@ -237,7 +237,7 @@ public class Argo {
 	Configuration.makeKey("explorer", "perspectives");
 
     /**
-     * Key for selecting the locale. 
+     * Key for selecting the locale.
      */
     public static final ConfigurationKey KEY_LOCALE =
         Configuration.makeKey("locale");
@@ -300,8 +300,8 @@ public class Argo {
      * @param context plugin-specific query parameters
      * @return a vector of plugins or null
      */
-    public static final ArrayList getPlugins(Class pluginType,
-					     Object[] context) {
+    public static ArrayList getPlugins(Class pluginType,
+                                       Object[] context) {
 	return ModuleLoader.getInstance().getPlugins(pluginType, context);
     }
 
@@ -313,19 +313,19 @@ public class Argo {
      * @param pluginType class of the plugin to search for
      * @return a vector of plugins or null
      */
-    public static final ArrayList getPlugins(Class pluginType) {
+    public static ArrayList getPlugins(Class pluginType) {
 	return ModuleLoader.getInstance().getPlugins(pluginType, null);
     }
 
     /**
      * Initializes the module loader.  Multiple calls are ignored.
      */
-    public static final void initializeModules() {
+    public static void initializeModules() {
 	ModuleLoader.getInstance().initialize();
     }
 
     /**
-     * Convenience helper to access the argo home directory
+     * Convenience helper to access the argo home directory.
      *
      * @return the argo home directory
      */
@@ -334,7 +334,7 @@ public class Argo {
     }
 
     /**
-     * Convenience helper to access the argo root directory
+     * Convenience helper to access the argo root directory.
      *
      * @return the argo root directory
      */

@@ -58,7 +58,7 @@ public class CrNavFromInterface extends CrUML {
      */
     public CrNavFromInterface() {
         setupHeadAndDesc();
-        
+
         // Specify design issue category and knowledge type
 
         addSupportedDecision(UMLDecision.RELATIONSHIPS);
@@ -148,5 +148,9 @@ public class CrNavFromInterface extends CrUML {
         return NO_PROBLEM;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2660051106458704056L;
 } /* end class CrNavFromInterface */
 

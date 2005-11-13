@@ -40,9 +40,9 @@ import org.argouml.model.Model;
 
 
 /**
- * This class represents the first step of the wizard. 
+ * This class represents the first step of the wizard.
  * It contains the description of the
- * wizard in case the selected target is a todo item. 
+ * wizard in case the selected target is a todo item.
  * An appropriate message is shown in case nothing is selected, or
  * in case the user selected one of the branches (folders) in the
  * tree in the todo panel.
@@ -92,59 +92,65 @@ public class WizDescription extends WizStep {
 	    description.setText(tdi.getDescription());
 	    description.setCaretPosition(0);
 	} else if (target instanceof PriorityNode) {
-	    message = MessageFormat.
-                format(Translator.localize("message.item.branch-priority"),
-                       new Object [] {
-			   target.toString(),
-		       });
+	    message =
+                MessageFormat.format(
+                        Translator.localize("message.item.branch-priority"),
+                        new Object [] {
+                            target.toString(),
+                        });
 	    description.setEditable(false);
 	    description.setText(message);
 
 	    return;
 	} else if (target instanceof Critic) {
-	    message = MessageFormat.
-                format(Translator.localize("message.item.branch-critic"),
-                       new Object [] {
-			   target.toString(),
-		       });
+	    message =
+                MessageFormat.format(
+                        Translator.localize("message.item.branch-critic"),
+                        new Object [] {
+                            target.toString(),
+                        });
 	    description.setEditable(false);
 	    description.setText(message);
 
 	    return;
 	} else if (Model.getFacade().isAModelElement(target)) {
-	    message = MessageFormat.
-                format(Translator.localize("message.item.branch-model"),
-                       new Object [] {
-			   Model.getFacade().toString(target),
-		       });
+	    message =
+                MessageFormat.format(
+                        Translator.localize("message.item.branch-model"),
+                        new Object [] {
+                            Model.getFacade().toString(target),
+                        });
 	    description.setEditable(false);
 	    description.setText(message);
 
 	    return;
 	} else if (target instanceof Decision) {
-	    message = MessageFormat.
-                format(Translator.localize("message.item.branch-decision"),
-                       new Object [] {
-               Model.getFacade().toString(target),
-		       });
+	    message =
+                MessageFormat.format(
+                        Translator.localize("message.item.branch-decision"),
+                        new Object [] {
+                            Model.getFacade().toString(target),
+                        });
 	    description.setText(message);
 
 	    return;
 	} else if (target instanceof Goal) {
-	    message = MessageFormat.
-                format(Translator.localize("message.item.branch-goal"),
-                       new Object [] {
-               Model.getFacade().toString(target),
-		       });
+	    message =
+                MessageFormat.format(
+                        Translator.localize("message.item.branch-goal"),
+                        new Object [] {
+                            Model.getFacade().toString(target),
+                        });
 	    description.setText(message);
 
 	    return;
 	} else if (target instanceof KnowledgeTypeNode) {
-	    message = MessageFormat.
-                format(Translator.localize("message.item.branch-knowledge"),
-                       new Object [] {
-               Model.getFacade().toString(target),
-		       });
+	    message =
+                MessageFormat.format(
+                        Translator.localize("message.item.branch-knowledge"),
+                        new Object [] {
+                            Model.getFacade().toString(target),
+                        });
 	    description.setText(message);
 
 	    return;
@@ -153,4 +159,9 @@ public class WizDescription extends WizStep {
 	    return;
 	}
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2545592446694112088L;
 } /* end class WizDescription */

@@ -74,7 +74,7 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
                 getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceScroll());
-        
+
         addSeperator();
         addField(Translator.localize("label.parameters"),
                 getParameterScroll());

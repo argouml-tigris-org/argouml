@@ -63,7 +63,9 @@ import org.argouml.ui.explorer.rules.PerspectiveRule;
  */
 public class ExplorerTreeModel extends DefaultTreeModel
 		implements TreeModelUMLEventListener, ItemListener {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
 	Logger.getLogger(ExplorerTreeModel.class);
 
@@ -95,7 +97,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * currently pending nodes.
      */
     private ExplorerUpdater nodeUpdater = new ExplorerUpdater();
-    
+
     private ExplorerTree tree;
 
     /**
@@ -113,15 +115,18 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	 */
 	private boolean hot;
 
-	/** The maximum number of nodes to update in one chunk */
+	/**
+         * The maximum number of nodes to update in one chunk.
+         */
 	public static final int MAX_UPDATES_PER_RUN = 100;
 
 	/**
 	 * Schedule this object to run on AWT-EventQueue-0 at some later time.
 	 */
 	private synchronized void schedule() {
-	    if (hot)
-		return;
+	    if (hot) {
+                return;
+            }
 	    hot = true;
 	    EventQueue.invokeLater(this);
 	}
@@ -134,8 +139,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	 * @throws NullPointerException If node is null.
 	 */
 	public synchronized void schedule(ExplorerTreeNode node) {
-	    if (node.getPending())
-		return;
+	    if (node.getPending()) {
+                return;
+            }
 
 	    pendingUpdates.add(node);
 	    node.setPending(true);
@@ -180,7 +186,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
     /**
      * The constructor of ExplorerTreeModel.
-     * 
+     *
      * @param root an object to place at the root
      * @param myTree the tree
      */
@@ -257,8 +263,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
      */
     public void structureChanged() {
 	// remove references for gc
-	if (getRoot() instanceof ExplorerTreeNode)
-	    ((ExplorerTreeNode) getRoot()).remove();
+	if (getRoot() instanceof ExplorerTreeNode) {
+            ((ExplorerTreeNode) getRoot()).remove();
+        }
 
 	// This should only be helpful for old garbage collectors.
 	Collection values = modelElementMap.values();
@@ -342,24 +349,25 @@ public class ExplorerTreeModel extends DefaultTreeModel
 		Object obj = ((DefaultMutableTreeNode) child).getUserObject();
 		if (lastObj != null && order.compare(lastObj, obj) > 0) {
 		    /*
-		     * If a node to be moved is currently selected, 
+		     * If a node to be moved is currently selected,
 		     * move its predecessors instead so don't lose selection.
 		     * This fixes issue 3249.
-		     * NOTE: this does not deal with the case where 
-                     * multiple nodes are selected and they are out 
-                     * of order with respect to each other, but I 
+		     * NOTE: this does not deal with the case where
+                     * multiple nodes are selected and they are out
+                     * of order with respect to each other, but I
                      * don't think more than one node is ever reordered
 		     * at a time - tfm
 		     */
 		    if (!tree.isPathSelected(new TreePath(
                             getPathToRoot((DefaultMutableTreeNode) child)))) {
-			reordered.add(child);			
+			reordered.add(child);
 		    } else {
-			DefaultMutableTreeNode prev = 
+			DefaultMutableTreeNode prev =
                                 ((DefaultMutableTreeNode) child)
                                         .getPreviousSibling();
-			while ( prev != null 
-                            && order.compare(prev.getUserObject(), obj) >= 0 ) {
+			while (prev != null
+                                && (order.compare(prev.getUserObject(), obj)
+                                        >= 0)) {
 			    reordered.add(prev);
 			    children.removeElementAt(children.size() - 1);
 			    prev = prev.getPreviousSibling();
@@ -435,9 +443,11 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	// Collect the current set of objects that should be children to
 	// this node
         for (int x = 0; x < rules.length; x++) {
-            Collection c = ((PerspectiveRule) rules[x])
+            Collection c =
+                ((PerspectiveRule) rules[x])
 		    .getChildren(modelElement);
-            Set c2 = ((PerspectiveRule) rules[x])
+            Set c2 =
+                ((PerspectiveRule) rules[x])
 		    .getDependencies(modelElement);
 
 	    if (c != null) {
@@ -634,7 +644,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	super.removeNodeFromParent(node);
     }
 
-    /** Map all nodes in the subtree rooted at node */
+    /**
+     * Map all nodes in the subtree rooted at node.
+     */
     private void addNodesToMap(TreeNode node) {
 	Enumeration children = node.children();
 	while (children.hasMoreElements()) {
@@ -648,7 +660,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	}
     }
 
-    /** Unmap all nodes in the subtree rooted at node */
+    /**
+     * Unmap all nodes in the subtree rooted at node.
+     */
     private void removeNodesFromMap(TreeNode node) {
 	Enumeration children = node.children();
 	while (children.hasMoreElements()) {
@@ -688,8 +702,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	if (value != null) {
 	    Set nodeset = (Set) value;
 	    nodeset.remove(node);
-	    if (nodeset.isEmpty())
-		modelElementMap.remove(modelElement);
+	    if (nodeset.isEmpty()) {
+                modelElementMap.remove(modelElement);
+            }
 	}
     }
 
@@ -725,5 +740,10 @@ public class ExplorerTreeModel extends DefaultTreeModel
     ExplorerUpdater getNodeUpdater() {
         return nodeUpdater;
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 3132732494386565870L;
 }
 

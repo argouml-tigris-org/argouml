@@ -64,8 +64,8 @@ public class PropPanelGeneralization extends PropPanelModelElement {
      *
      */
     public PropPanelGeneralization() {
-        super("Generalization", 
-            lookupIcon("Generalization"), 
+        super("Generalization",
+            lookupIcon("Generalization"),
             ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),

@@ -29,7 +29,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
- * 
+ *
  * @author MarkusK
  *
  */

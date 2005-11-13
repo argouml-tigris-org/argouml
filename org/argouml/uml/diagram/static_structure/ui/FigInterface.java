@@ -78,7 +78,7 @@ public class FigInterface extends FigClassifierBox {
     private FigRect stereoLineBlinder;
 
     Fig borderFig;
-    
+
     /**
      * Manages residency of an interface within a component on a deployment
      * diagram. Not clear why it is an instance
@@ -119,7 +119,7 @@ public class FigInterface extends FigClassifierBox {
      * a project. In this case, the parsed size must be maintained.<p>
      */
     public FigInterface() {
-        
+
         getBigPort().setLineWidth(0);
         getBigPort().setFillColor(Color.white);
 
@@ -135,17 +135,17 @@ public class FigInterface extends FigClassifierBox {
         FigStereotypesCompartment fsc =
             (FigStereotypesCompartment) getStereotypeFig();
         fsc.setKeyword("interface");
-        
+
         borderFig = new FigEmptyRect(10, 10, 0, 0);
         borderFig.setLineWidth(1);
         borderFig.setLineColor(Color.black);
-        
+
         getStereotypeFig().setLineWidth(0);
-        
+
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
         // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setVisible(true);
-        
+
 
         // A thin rectangle to overlap the boundary line between stereotype
         // and name. This is just 2 pixels high, and we rely on the line
@@ -166,7 +166,7 @@ public class FigInterface extends FigClassifierBox {
         addFig(getNameFig());
         addFig(operationsFig);
         addFig(borderFig);
-        
+
         setSuppressCalcBounds(false);
 
         // Set the bounds of the figure to the total of the above (hardcoded)
@@ -309,11 +309,11 @@ public class FigInterface extends FigClassifierBox {
         // name compartment and build up.
 
         Dimension aSize = getNameFig().getMinimumSize();
-        
+
         // +2 padding before and after name
-        
+
         aSize.height += 4;
-                
+
         if (aSize.height < 21) {
             aSize.height = 21;
         }
@@ -354,14 +354,14 @@ public class FigInterface extends FigClassifierBox {
         super.setLineColor(lColor);
         stereoLineBlinder.setLineColor(stereoLineBlinder.getFillColor());
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         borderFig.setLineWidth(w);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
@@ -434,7 +434,7 @@ public class FigInterface extends FigClassifierBox {
         /* If this fig is not visible, do not adapt the UML model!
         * This is used for deleting. See issue 3042. */
         if  (!isVisible())
-            return; 
+            return;
         Object me = /*(MModelElement)*/ getOwner();
         Object m = null;
 
@@ -510,7 +510,7 @@ public class FigInterface extends FigClassifierBox {
             return;
         }
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
@@ -520,7 +520,7 @@ public class FigInterface extends FigClassifierBox {
             showHelp("parsing.help.operation");
         }
     }
-    
+
     /**
      * @param ft the figtext holding the feature
      * @param i the index (?)
@@ -646,7 +646,7 @@ public class FigInterface extends FigClassifierBox {
         // height is greater than minimal. "height_correction" is the height
         // correction due to rounded division result, will be added to the name
         // compartment
-        
+
         // set bounds of big box
         getBigPort().setBounds(x, y, w, h);
         borderFig.setBounds(x, y, w, h);
@@ -654,32 +654,32 @@ public class FigInterface extends FigClassifierBox {
         getNameFig().setLineWidth(0);
         getNameFig().setLineColor(Color.red);
         int currentHeight = 0;
-        
+
         if (getStereotypeFig().isVisible()) {
             int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
             getStereotypeFig().setBounds(
-                    x, 
-                    y, 
-                    w, 
+                    x,
+                    y,
+                    w,
                     stereotypeHeight);
             currentHeight = stereotypeHeight;
         }
 
         currentHeight += 2; // Give an extra couple of pixels before the name.
-        
+
         int nameHeight = getNameFig().getMinimumSize().height;
         getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
         currentHeight += nameHeight;
-        
+
         currentHeight += 2; // Give an extra couple of pixels after the name.
 
         if (getOperationsFig().isVisible()) {
             int operationsY = y + currentHeight;
             int operationsHeight = (h + y) - operationsY - 1;
             getOperationsFig().setBounds(
-                    x, 
-                    operationsY, 
-                    w, 
+                    x,
+                    operationsY,
+                    w,
                     operationsHeight);
         }
 
@@ -709,7 +709,7 @@ public class FigInterface extends FigClassifierBox {
         int ypos = operPort.getY();
 
         Rectangle rect = getBounds();
-        
+
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);
@@ -722,13 +722,13 @@ public class FigInterface extends FigClassifierBox {
      */
     protected void updateStereotypeText() {
         Rectangle rect = getBounds();
-        
+
         int stereotypeHeight = 0;
         if (getStereotypeFig().isVisible()) {
             stereotypeHeight = getStereotypeFig().getHeight();
         }
         int heightWithoutStereo = getHeight() - stereotypeHeight;
-        
+
         getStereotypeFig().setOwner(getOwner());
         ((FigStereotypesCompartment)getStereotypeFig()).populate();
 
@@ -736,10 +736,10 @@ public class FigInterface extends FigClassifierBox {
         if (getStereotypeFig().isVisible()) {
             stereotypeHeight = getStereotypeFig().getHeight();
         }
-        
+
         setBounds(
                 rect.x,
-                rect.y, 
+                rect.y,
                 rect.width,
                 heightWithoutStereo + stereotypeHeight);
         calcBounds();

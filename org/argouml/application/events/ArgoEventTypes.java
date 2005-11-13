@@ -128,7 +128,7 @@ public interface ArgoEventTypes {
      */
     int LAST_GENERATOR_EVENT       =  1399;
 
-    
+
     /**
      * Id marker for the last Argo event.
      */

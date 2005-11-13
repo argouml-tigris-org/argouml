@@ -64,7 +64,7 @@ public class ActionSetSourcePath extends UMLAction {
 	if (f != null) {
 	    Object obj = TargetManager.getInstance().getTarget();
 	    if (Model.getFacade().isAModelElement(obj)) {
-		Model.getCoreHelper().setTaggedValue(obj, "src_path", 
+		Model.getCoreHelper().setTaggedValue(obj, "src_path",
 		        f.getPath());
 	    }
 	}
@@ -118,7 +118,7 @@ public class ActionSetSourcePath extends UMLAction {
 	chooser.setDialogTitle(sChooserTitle);
 	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-	int retval = chooser.showDialog(ProjectBrowser.getInstance(), 
+	int retval = chooser.showDialog(ProjectBrowser.getInstance(),
             Translator.localize("dialog.button.ok"));
 	if (retval == JFileChooser.APPROVE_OPTION) {
 	    return chooser.getSelectedFile();

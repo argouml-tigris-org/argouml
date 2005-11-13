@@ -56,23 +56,30 @@ public class CrMissingStateName extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!Model.getFacade().isAStateVertex(dm))
-	    return NO_PROBLEM;
-        if (Model.getFacade().isACompositeState(dm) 
-                && Model.getFacade().isTop(dm))
+	if (!Model.getFacade().isAStateVertex(dm)) {
             return NO_PROBLEM;
-        if (Model.getFacade().isAFinalState(dm))
+        }
+        if (Model.getFacade().isACompositeState(dm)
+                && Model.getFacade().isTop(dm)) {
             return NO_PROBLEM;
-        if (Model.getFacade().isAPseudostate(dm))
+        }
+        if (Model.getFacade().isAFinalState(dm)) {
             return NO_PROBLEM;
-        if (Model.getFacade().isAActionState(dm))
+        }
+        if (Model.getFacade().isAPseudostate(dm)) {
             return NO_PROBLEM;
-        if (Model.getFacade().isAObjectFlowState(dm))
+        }
+        if (Model.getFacade().isAActionState(dm)) {
             return NO_PROBLEM;
+        }
+        if (Model.getFacade().isAObjectFlowState(dm)) {
+            return NO_PROBLEM;
+        }
 
 	String myName = Model.getFacade().getName(dm);
-	if (myName == null || myName.equals("") || myName.length() == 0)
-	    return PROBLEM_FOUND;
+	if (myName == null || myName.equals("") || myName.length() == 0) {
+            return PROBLEM_FOUND;
+        }
 	return NO_PROBLEM;
     }
 
@@ -96,10 +103,11 @@ public class CrMissingStateName extends CrUML {
 	    if (Model.getFacade().isAStateVertex(me)) {
 		Object sv = /*(MStateVertex)*/ me;
 		int count = 1;
-		if (Model.getFacade().getContainer(sv) != null)
+		if (Model.getFacade().getContainer(sv) != null) {
 		    count =
 		        Model.getFacade().getSubvertices(
 		                Model.getFacade().getContainer(sv)).size();
+                }
 		sug = "S" + (count + 1);
 	    }
 	    ((WizMEName) w).setInstructions(ins);
@@ -112,4 +120,8 @@ public class CrMissingStateName extends CrUML {
      */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 1181623952639408440L;
 } /* end class CrMissingStateName.java */

@@ -57,13 +57,13 @@ public class FigStereotypesCompartment extends FigCompartment {
      */
     private static final Logger LOG =
         Logger.getLogger(ActionAddStereotype.class);
-    
+
     /**
      * One UML keyword is allowed. These are not strictly stereotypes but are
      * displayed as such. e.g. <<interface>>
      */
     String keyword;
-    
+
     /**
      * The constructor.
      *
@@ -76,8 +76,8 @@ public class FigStereotypesCompartment extends FigCompartment {
         super(x, y, w, h);
         setFilled(false);
     }
-    
-    
+
+
 
     public void setOwner(Object own) {
         super.setOwner(own);
@@ -90,7 +90,7 @@ public class FigStereotypesCompartment extends FigCompartment {
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#populate()
      */
     public void populate() {
-        
+
         Object modelElement = getOwner();
         if (modelElement == null) {
             LOG.warn("Cannot populate the stereotype compartment unless the parent has an owner.");
@@ -103,7 +103,7 @@ public class FigStereotypesCompartment extends FigCompartment {
 
         List figs = getFigs();
         CompartmentFigText stereotypeTextFig;
-        
+
         if (keyword != null) {
             if (figs.size() <= acounter) {
                 stereotypeTextFig =
@@ -128,7 +128,7 @@ public class FigStereotypesCompartment extends FigCompartment {
                     NotationHelper.getRightGuillemot());
             acounter++;
         }
-        
+
         Collection stereos = Model.getFacade().getStereotypes(modelElement);
         if (stereos != null) {
             Iterator iter = stereos.iterator();
@@ -169,7 +169,7 @@ public class FigStereotypesCompartment extends FigCompartment {
             }
         }
     }
-    
+
     protected void setBoundsImpl(int x, int y, int w, int h) {
         Fig fig;
         int yy = y;
@@ -184,7 +184,7 @@ public class FigStereotypesCompartment extends FigCompartment {
         getBigPort().setBounds(x, y, w, h);
         calcBounds();
     }
-    
+
     /**
      * Allows a parent Fig to specify some keyword text to display amongst the
      * stereotypes.

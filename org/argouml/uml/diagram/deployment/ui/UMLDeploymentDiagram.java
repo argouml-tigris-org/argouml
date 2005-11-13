@@ -52,7 +52,9 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
  * @author Clemens Eichler
  */
 public class UMLDeploymentDiagram extends UMLDiagram {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(UMLDeploymentDiagram.class);
 
@@ -113,7 +115,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * in <em>LayerManager</em>(GEF) to control the adding, changing and
      * deleting layers on the diagram...<p>
      *
-     * @param handle Namespace from the model 
+     * @param handle Namespace from the model
      * @author psager@tigris.org Jan. 24, 2002
      */
     public void setNamespace(Object handle) {
@@ -170,6 +172,9 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         return actions;
     }
 
+    /**
+     * The UID.
+     */
     static final long serialVersionUID = -375918274062198744L;
 
     /**
@@ -450,14 +455,15 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionUniComposition;
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base)  {
-    	return false; 
-		/* TODO: We may return the following when the 
-		 * relocate() has been implemented. */
+    	return false;
+		/* TODO: We may return the following when the
+		 * relocate() has been implemented.
+                 */
 //    	base == ProjectManager.getManager().getCurrentProject().getModel();
     }
 

@@ -36,17 +36,17 @@ import org.argouml.cognitive.Designer;
  * <li>NotSnoozedCM
  * <li>DesignGoalsCM
  * <li>CurDecisionCM
- * <ul>
- * 
+ * </ul>
+ *
  * implying that a critic is relevant if and if only it is enabled, not snoozed,
  * applicable to the current goals and relevant decisions to be supported.
- *  
+ *
  */
 public class StandardCM extends AndCM {
 
     /**
      * The constructor.
-     *  
+     *
      */
     public StandardCM() {
         addMech(new EnabledCM());
@@ -58,18 +58,27 @@ public class StandardCM extends AndCM {
 
 
 class EnabledCM implements ControlMech {
+    /**
+     * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
+     */
     public boolean isRelevant(Critic c, Designer d) {
-    return c.isEnabled();
+        return c.isEnabled();
     }
 } // end class EnabledCM
 
 class NotSnoozedCM implements ControlMech {
+    /**
+     * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
+     */
     public boolean isRelevant(Critic c, Designer d) {
         return !c.snoozeOrder().getSnoozed();
     }
 } // end class NotSnoozedCM
 
 class DesignGoalsCM implements ControlMech {
+    /**
+     * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
+     */
     public boolean isRelevant(Critic c, Designer d) {
         return c.isRelevantToGoals(d);
     }
@@ -81,6 +90,9 @@ class DesignGoalsCM implements ControlMech {
 // componentization?
 
 class CurDecisionCM implements ControlMech {
+    /**
+     * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
+     */
     public boolean isRelevant(Critic c, Designer d) {
         return c.isRelevantToDecisions(d);
     }
@@ -106,24 +118,32 @@ abstract class CompositeCM implements ControlMech {
 } // end class CompositeCM
 
 class AndCM extends CompositeCM {
+    /**
+     * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
+     */
     public boolean isRelevant(Critic c, Designer d) {
         Enumeration cur = getMechs().elements();
         while (cur.hasMoreElements()) {
             ControlMech cm = (ControlMech) cur.nextElement();
-            if (!cm.isRelevant(c, d))
+            if (!cm.isRelevant(c, d)) {
                 return false;
+            }
         }
         return true;
     }
 } // end class AndCM
 
 class OrCM extends CompositeCM {
+    /**
+     * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
+     */
     public boolean isRelevant(Critic c, Designer d) {
         Enumeration cur = getMechs().elements();
         while (cur.hasMoreElements()) {
             ControlMech cm = (ControlMech) cur.nextElement();
-            if (cm.isRelevant(c, d))
+            if (cm.isRelevant(c, d)) {
                 return true;
+            }
         }
         return false;
     }

@@ -32,7 +32,7 @@ import org.argouml.model.Model;
 
 /**
  * Rule for Node -> Resident Component.
- * 
+ *
  * @author mvw@tigris.org
  *
  */

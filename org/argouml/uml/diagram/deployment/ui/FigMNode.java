@@ -51,13 +51,13 @@ import org.tigris.gef.presentation.FigText;
  * @author 5eichler
  */
 public class FigMNode extends FigNodeModelElement {
-    
+
     private int d = 20;
     ////////////////////////////////////////////////////////////////
     // instance variables
 
     private FigCube cover;
-    
+
     private int x = 10;
     private int y = 10;
     private int width = 200;
@@ -70,10 +70,10 @@ public class FigMNode extends FigNodeModelElement {
      */
     public FigMNode() {
         setBigPort(new CubePortFigRect(x, y - d, width + d, height + d, d));
-            getBigPort().setFilled(false);
-            getBigPort().setLineWidth(0);
+        getBigPort().setFilled(false);
+        getBigPort().setLineWidth(0);
         cover = new FigCube(x, y, width, height, Color.black, Color.white);
-    
+
         d = 20;
         //d = cover.getDepth();
 
@@ -88,7 +88,8 @@ public class FigMNode extends FigNodeModelElement {
     }
 
     /**
-     * Constructor which hooks the new Fig into an existing UML element
+     * Constructor which hooks the new Fig into an existing UML element.
+     *
      * @param gm ignored
      * @param node the UML element
      */
@@ -146,21 +147,21 @@ public class FigMNode extends FigNodeModelElement {
     public void setLineColor(Color c) {
 	cover.setLineColor(c);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         cover.setLineWidth(w);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return cover.getFilled();
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
@@ -199,16 +200,17 @@ public class FigMNode extends FigNodeModelElement {
 	Rectangle oldBounds = getBounds();
 	getBigPort().setBounds(x, y, w, h);
         cover.setBounds(x, y + d, w - d, h - d);
-        
+
 	Dimension stereoDim = getStereotypeFig().getMinimumSize();
 	Dimension nameDim = getNameFig().getMinimumSize();
-	getNameFig().setBounds(x + 4, y + d + stereoDim.height + 1,
+	getNameFig().setBounds(
+                x + 4, y + d + stereoDim.height + 1,
 	        w - d - 8, nameDim.height);
-	getStereotypeFig().setBounds(x + 1, y + d + 1, 
+	getStereotypeFig().setBounds(x + 1, y + d + 1,
                 w - d - 2, stereoDim.height);
-	_x = x; 
-        _y = y; 
-        _w = w; 
+	_x = x;
+        _y = y;
+        _w = w;
         _h = h;
 	firePropChange("bounds", oldBounds, getBounds());
 	updateEdges();
@@ -277,49 +279,54 @@ public class FigMNode extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
     public boolean getUseTrapRect() { return true; }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
-        int xs[] = {r.x,     
-                    r.x + d, 
-                    r.x + r.width, 
-                    r.x + r.width,
-                    r.x + r.width - d,  
-                    r.x,            
-                    r.x};
-        int ys[] = {r.y + d, 
-                    r.y,
-                    r.y, 
-                    r.y + r.height - d,
-                    r.y + r.height, 
-                    r.y + r.height,
-                    r.y + d};
-        Point p = Geometry.ptClosestTo(
-                xs, 
-                ys,
-                7 , anotherPt);
+        int[] xs = {
+            r.x,
+            r.x + d,
+            r.x + r.width,
+            r.x + r.width,
+            r.x + r.width - d,
+            r.x,
+            r.x,
+        };
+        int[] ys = {
+            r.y + d,
+            r.y,
+            r.y,
+            r.y + r.height - d,
+            r.y + r.height,
+            r.y + r.height,
+            r.y + d,
+        };
+        Point p = Geometry.ptClosestTo(xs, ys, 7, anotherPt);
         return p;
     }
 
+    /**
+     * The UID.
+     */
     static final long serialVersionUID = 8822005566372687713L;
 
 } /* end class FigMNode */
 
 
 /**
- * The bigport needs to overrule the getClosestPoint, 
+ * The bigport needs to overrule the getClosestPoint,
  * because it is the port of this FigNode.
- * 
+ *
  * @author mvw@tigris.org
  */
 class CubePortFigRect extends FigRect {
     private int d;
+
     /**
      * The constructor.
-     * 
+     *
      * @param x the x
      * @param y the y
      * @param w the width
@@ -329,31 +336,36 @@ class CubePortFigRect extends FigRect {
         super(x, y, w, h);
         this.d = depth;
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
-        int xs[] = {r.x,     
-                r.x + d, 
-                r.x + r.width, 
-                r.x + r.width,
-                r.x + r.width - d,  
-                r.x,            
-                r.x};
-        int ys[] = {r.y + d, 
-                r.y,
-                r.y, 
-                r.y + r.height - d,
-                r.y + r.height, 
-                r.y + r.height,
-                r.y + d};
-        Point p = Geometry.ptClosestTo(
-                xs, 
-                ys,
-                7 , anotherPt);
+        int[] xs = {
+            r.x,
+            r.x + d,
+            r.x + r.width,
+            r.x + r.width,
+            r.x + r.width - d,
+            r.x,
+            r.x,
+        };
+        int[] ys = {
+            r.y + d,
+            r.y,
+            r.y,
+            r.y + r.height - d,
+            r.y + r.height,
+            r.y + r.height,
+            r.y + d,
+        };
+        Point p = Geometry.ptClosestTo(xs, ys, 7, anotherPt);
         return p;
     }
-    
-}    
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -136360467045533658L;
+}

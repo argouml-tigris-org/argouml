@@ -32,7 +32,7 @@ import org.tigris.gef.presentation.FigText;
 
 /**
  * A MultiLine FigText to provide consistency across Figs displaying multiple
- * lines of text. 
+ * lines of text.
  * <li>The display area is transparent</li>
  * <li>Text is center justified</li>
  * <li>There is no line border</li>
@@ -53,14 +53,14 @@ public class FigSingleLineText extends FigText {
         setReturnAction(FigText.END_EDITING);
         setLineWidth(0);
     }
-    
-    
-    
+
+
+
     public Dimension getMinimumSize() {
         Dimension d = new Dimension();
-        
+
         Font font = getFont();
-        
+
         if (font == null) {
             return d;
         }

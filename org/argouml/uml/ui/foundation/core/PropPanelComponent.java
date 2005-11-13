@@ -49,7 +49,7 @@ public class PropPanelComponent extends PropPanelClassifier {
      *
      */
     public PropPanelComponent() {
-        super("Component", 
+        super("Component",
             lookupIcon("Component"),
             ConfigLoader.getTabPropsOrientation());
         addField(Translator.localize("label.name"),

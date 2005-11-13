@@ -40,9 +40,9 @@ import org.tigris.gef.presentation.Fig;
  */
 
 public class PathConvPercent2 extends PathConv {
-    
+
     private Fig itemFig;
-    
+
     private int percent = 0;
 
     private int offset = 0;
@@ -52,7 +52,7 @@ public class PathConvPercent2 extends PathConv {
         this.itemFig = itemFig;
         setPercentOffset(newPercent, newOffset);
     }
-    
+
     public void stuffPoint(Point res) {
         int figLength = _pathFigure.getPerimeterLength();
         if (figLength < 10) {
@@ -85,8 +85,8 @@ public class PathConvPercent2 extends PathConv {
 
         if (recipdenominator == 0 && recipnumerator == 0)
             return;
-        
-        
+
+
         // find the point offset on the line that gives a
         // correct offset
 

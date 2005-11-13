@@ -41,7 +41,9 @@ import org.argouml.i18n.Translator;
  */
 public class Tools {
 
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(Tools.class);
 
     private static final String[] PACKAGELIST =
@@ -58,8 +60,7 @@ public class Tools {
         Package pkg = Package.getPackage(pn);
         if (pkg == null) {
             sb.append(Translator.localize("label.no-version"));
-        }
-        else {
+        } else {
             String in = pkg.getImplementationTitle();
             if (in != null) {
                 sb.append(Translator.localize("label.component"));
@@ -95,7 +96,7 @@ public class Tools {
             cls = Class.forName("org.xml.sax.AttributeList");
             cls = Class.forName("org.apache.log4j.Logger");
             cls = Class.forName("org.netbeans.api.mdr.MDRManager");
-            
+
             StringBuffer sb = new StringBuffer();
 
             String saxFactory =
@@ -117,8 +118,7 @@ public class Tools {
                 sb.append(Translator.messageFormat("label.sax-factory2",
                                                    msgArgs));
                 sb.append("\n");
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 sb.append(Translator.localize("label.error-sax-factory"));
             }
 
@@ -169,23 +169,28 @@ public class Tools {
         try {
             while (true) {
                 String s = r.readLine();
-                if (s == null) break;
+                if (s == null) {
+                    break;
+                }
                 LOG.info(s);
             }
-        }
-        catch (IOException ioe) { }
+        } catch (IOException ioe) { }
     }
 
-    /** getFileExtension returns the file extension of a file.
-     *  @param file the File to examine
-     *  @return extension including the dot, or null
+    /**
+     * Gets the file extension of a file.
+     *
+     * @param file the File to examine
+     * @return extension including the dot, or null
      */
     public static String getFileExtension(File file) {
         String ext = null;
         String s = file.getName();
         int i = s.lastIndexOf('.');
 
-        if (i > 0) ext = s.substring(i).toLowerCase();
+        if (i > 0) {
+            ext = s.substring(i).toLowerCase();
+        }
         return ext;
     }
 }

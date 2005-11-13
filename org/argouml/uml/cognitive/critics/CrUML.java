@@ -108,7 +108,7 @@ public class CrUML extends Critic {
     public boolean predicate(Object dm, Designer dsgr) {
 	Project p = ProjectManager.getManager().getCurrentProject();
         if (p.isInTrash(dm)
-                || (Model.getFacade().isAModelElement(dm) 
+                || (Model.getFacade().isAModelElement(dm)
                 && Model.getUmlFactory().isRemoved(dm))) {
             return NO_PROBLEM;
         } else {
@@ -195,4 +195,8 @@ public class CrUML extends Critic {
 	return new UMLToDoItem(this, dm, dsgr);
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 1785043010468681602L;
 } /* end class CrUML */

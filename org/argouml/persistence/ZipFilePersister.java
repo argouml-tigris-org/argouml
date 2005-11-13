@@ -28,13 +28,10 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
 import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -59,7 +56,7 @@ public class ZipFilePersister extends XmiFilePersister {
      * Logger.
      */
     private static final Logger LOG =
-    Logger.getLogger(ZipFilePersister.class);
+        Logger.getLogger(ZipFilePersister.class);
 
     /**
      * The constructor.
@@ -97,11 +94,11 @@ public class ZipFilePersister extends XmiFilePersister {
      */
     public void doSave(Project project, File file) throws SaveException {
 
-        LOG.info("Receiving file '"+file.getName()+"'");
-        
+        LOG.info("Receiving file '" + file.getName() + "'");
+
         File lastArchiveFile = new File(file.getAbsolutePath() + "~");
         File tempFile = null;
-        
+
         try {
             tempFile = createTempFile(file);
         } catch (FileNotFoundException e) {
@@ -116,13 +113,15 @@ public class ZipFilePersister extends XmiFilePersister {
         try {
             //project.setFile(file);
 
-            ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(file));            
+            ZipOutputStream stream =
+                new ZipOutputStream(new FileOutputStream(file));
             String fileName = file.getName();
-            ZipEntry xmiEntry = new ZipEntry(fileName.substring(0,fileName.lastIndexOf(".")));
+            ZipEntry xmiEntry =
+                new ZipEntry(fileName.substring(0, fileName.lastIndexOf(".")));
             stream.putNextEntry(xmiEntry);
             OutputStream bout = new BufferedOutputStream(stream);
             writer = new OutputStreamWriter(bout, getEncoding());
-            
+
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember =
@@ -183,8 +182,8 @@ public class ZipFilePersister extends XmiFilePersister {
         MemberFilePersister persister = null;
         if (pm instanceof ProjectMemberDiagram) {
             persister =
-        PersistenceManager.getInstance()
-                .getDiagramMemberFilePersister();
+                PersistenceManager.getInstance()
+                    .getDiagramMemberFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {
             persister = new TodoListMemberFilePersister();
         } else if (pm instanceof ProjectMemberModel) {
@@ -192,22 +191,25 @@ public class ZipFilePersister extends XmiFilePersister {
         }
         return persister;
     }
-    
+
     /**
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
     public Project doLoad(File file)
         throws OpenException {
 
-        LOG.info("Receiving file '"+file.getName()+"'");
-        
+        LOG.info("Receiving file '" + file.getName() + "'");
+
         try {
             Project p = new Project();
             String fileName = file.getName();
-            String extension = fileName.substring(fileName.indexOf('.'),fileName.lastIndexOf('.'));
-            InputStream stream = openZipStreamAt(file.toURL(),extension);     
+            String extension =
+                fileName.substring(
+                        fileName.indexOf('.'),
+                        fileName.lastIndexOf('.'));
+            InputStream stream = openZipStreamAt(file.toURL(), extension);
             MemberFilePersister persister = new ModelMemberFilePersister();
-            persister.load(p, stream);  
+            persister.load(p, stream);
             p.addMember(new ProjectMemberTodoList("", p));
             p.setRoot(p.getModel());
             p.setUrl(file.toURL());
@@ -217,20 +219,6 @@ public class ZipFilePersister extends XmiFilePersister {
             throw new OpenException(e);
         }
 
-    }
-
-    private void readerToWriter(
-            Reader reader,
-            Writer writer) throws IOException {
-
-        int ch;
-        while ((ch = reader.read()) != -1) {
-            if (ch != 0xFFFF) {
-                writer.write(ch);
-            } else {
-                LOG.info("Stripping out 0xFFFF from XMI");
-            }
-        }
     }
 
     /**
@@ -252,42 +240,5 @@ public class ZipFilePersister extends XmiFilePersister {
             entry = zis.getNextEntry();
         }
         return zis;
-    }
-
-    /**
-     * A stream of input streams for reading the Zipped file.
-     */
-    private class SubInputStream extends FilterInputStream {
-        private ZipInputStream in;
-
-        /**
-         * The constructor.
-         *
-         * @param z
-         *            the zip input stream
-         */
-        public SubInputStream(ZipInputStream z) {
-            super(z);
-            in = z;
-        }
-
-        /**
-         * @see java.io.InputStream#close()
-         */
-        public void close() throws IOException {
-            in.closeEntry();
-        }
-
-        /**
-         * Reads the next ZIP file entry and positions stream at the beginning
-         * of the entry data.
-         *
-         * @return the ZipEntry just read
-         * @throws IOException
-         *             if an I/O error has occurred
-         */
-        public ZipEntry getNextEntry() throws IOException {
-            return in.getNextEntry();
-        }
     }
 }

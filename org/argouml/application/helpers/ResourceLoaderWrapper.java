@@ -249,7 +249,7 @@ public final class ResourceLoaderWrapper {
         if (icon == null) {
 
             String cName = Model.getMetaTypes().getName(value);
-            
+
             icon = lookupIconResource(cName);
             if (icon == null) {
                 LOG.warn("Can't find icon for " + cName);
@@ -334,6 +334,9 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-destroyaction", "DestroyAction");
         images.put("button.new-extension-point", "New Extension Point");
         images.put("button.new-extend", "Extend");
+    }
+
+    static {
         images.put("button.new-finalstate", "FinalState");
         images.put("button.new-fork", "Fork");
         images.put("button.new-generalization", "Generalization");
@@ -351,6 +354,9 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-nodeinstance", "NodeInstance");
         images.put("button.new-object", "Object");
         images.put("button.new-objectflowstate", "ObjectFlowState");
+    }
+
+    static {
         images.put("button.new-operation", "New Operation");
         images.put("button.new-package", "Package");
         images.put("button.new-parameter", "New Parameter");

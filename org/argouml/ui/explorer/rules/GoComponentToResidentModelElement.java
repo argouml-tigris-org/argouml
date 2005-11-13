@@ -34,7 +34,7 @@ import org.argouml.model.Model;
 
 /**
  * Rule for Component -> Resident Element.
- * 
+ *
  * @author mvw@tigris.org
  *
  */
@@ -53,7 +53,7 @@ public class GoComponentToResidentModelElement extends AbstractPerspectiveRule {
     public Collection getChildren(Object parent) {
         if (Model.getFacade().isAComponent(parent)) {
             // First get the collection of ElementResidence
-            Iterator eri = 
+            Iterator eri =
                 Model.getFacade().getResidentElements(parent).iterator();
             Collection result = new ArrayList();
             while (eri.hasNext()) {

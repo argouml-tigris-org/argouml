@@ -54,7 +54,7 @@ import org.tigris.gef.graph.MutableGraphSupport;
  * @since November 14, 2002, 10:20 PM
  */
 public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
-    
+
     /**
      * Logger.
      */
@@ -62,7 +62,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         Logger.getLogger(UMLMutableGraphSupport.class);
 
     private DiDiagram diDiagram;
-    
+
     /**
      * Contains all the nodes in the graphmodel/diagram.
      */
@@ -90,7 +90,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     public UMLMutableGraphSupport() {
         super();
     }
-    
+
     /**
      * Get all the nodes from the graphmodel/diagram.
      *
@@ -181,8 +181,8 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      *
      * @return the homemodel
      */
-    public Object getHomeModel() { 
-        return homeModel; 
+    public Object getHomeModel() {
+        return homeModel;
     }
 
     /**
@@ -191,17 +191,18 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * @param ns the namespace
      */
     public void setHomeModel(Object ns) {
-        if (!Model.getFacade().isANamespace(ns))
+        if (!Model.getFacade().isANamespace(ns)) {
             throw new IllegalArgumentException();
+        }
         homeModel = ns;
     }
-    
+
     /**
      * The connect method specifying a connection
      * type by class is unavailable in the ArgoUML implementation.
      * TODO: This should be unsupported. Use the 3 Object version
      *
-     * @see org.tigris.gef.graph.MutableGraphModel#connect(java.lang.Object, 
+     * @see org.tigris.gef.graph.MutableGraphModel#connect(java.lang.Object,
      * java.lang.Object, java.lang.Class)
      */
     public Object connect(Object fromPort, Object toPort, Class edgeClass) {
@@ -221,7 +222,8 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         // Create the UML connection of the given type between the
         // given model elements.
         // default aggregation (none)
-        Object connection = buildConnection(
+        Object connection =
+            buildConnection(
                 edgeClass, fromPort, style, toPort,
                 null, unidirectional,
                 model);
@@ -239,7 +241,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
                   + " and a " + toPort.getClass().getName());
         return connection;
     }
-    
+
     /**
      * Construct and add a new edge of the given kind and connect
      * the given ports.
@@ -258,39 +260,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      */
     public Object connect(Object fromPort, Object toPort, Object edgeType) {
         Class edgeClass = (Class) edgeType;
-        // If this was an association then there will be relevant
-        // information to fetch out of the mode arguments.  If it
-        // not an association then these will be passed forward
-        // harmlessly as null.
-        Editor curEditor = Globals.curEditor();
-        ModeManager modeManager = curEditor.getModeManager();
-        Mode mode = modeManager.top();
-        Dictionary args = mode.getArgs();
-        Object style = args.get("aggregation"); //MAggregationKind
-        Boolean unidirectional = (Boolean) args.get("unidirectional");
-        Object model =
-            ProjectManager.getManager().getCurrentProject().getModel();
-
-        // Create the UML connection of the given type between the
-        // given model elements.
-        // default aggregation (none)
-        Object connection = buildConnection(
-                edgeClass, fromPort, style, toPort,
-                null, unidirectional,
-                model);
-
-        if (connection == null) {
-            LOG.debug("Cannot make a " + edgeClass.getName()
-                + " between a " + fromPort.getClass().getName()
-                + " and a " + toPort.getClass().getName());
-            return null;
-        }
-
-        addEdge(connection);
-        LOG.debug("Connection type" + edgeClass.getName()
-               + " made between a " + fromPort.getClass().getName()
-               + " and a " + toPort.getClass().getName());
-        return connection;
+        return connect(fromPort, toPort, edgeClass);
     }
 
     /**
@@ -309,7 +279,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      *                   <code>edgeClass</code> if we succeeded,
      *                   <code>null</code> otherwise)
      */
-    public Object connect(Object fromPort, Object toPort, Object edgeType, 
+    public Object connect(Object fromPort, Object toPort, Object edgeType,
             Map styleAttributes) {
         return null;
     }
@@ -340,7 +310,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
 
         if (edge instanceof CommentEdge) {
             return ((CommentEdge) edge).getSource();
-        } else if (Model.getFacade().isARelationship(edge) 
+        } else if (Model.getFacade().isARelationship(edge)
             || Model.getFacade().isATransition(edge)
             || Model.getFacade().isAAssociationEnd(edge))  {
             return Model.getUmlHelper().getSource(edge);
@@ -359,7 +329,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
 
     /**
      * Return the destination end of an edge.
-     * 
+     *
      * @param edge  The edge for which we want the destination port.
      *
      * @return      The destination port for the edge, or <code>null</code> if
@@ -372,14 +342,14 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         } else if (Model.getFacade().isAAssociation(edge)) {
             Vector conns = new Vector(Model.getFacade().getConnections(edge));
             return conns.elementAt(1);
-        } else if (Model.getFacade().isARelationship(edge) 
+        } else if (Model.getFacade().isARelationship(edge)
                 || Model.getFacade().isATransition(edge)
                 || Model.getFacade().isAAssociationEnd(edge)) {
             return Model.getUmlHelper().getDestination(edge);
         } else if (Model.getFacade().isALink(edge)) {
             return Model.getCommonBehaviorHelper().getDestination(edge);
         }
- 
+
         // Don't know what to do otherwise
 
         LOG.error(this.getClass().toString() + ": getDestPort("
@@ -460,14 +430,15 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
                 buildCommentConnection(fromElement, toElement);
         } else {
             try {
-                connection = Model.getUmlFactory().buildConnection(
-                    edgeType,
-                    fromElement,
-                    fromStyle,
-                    toElement,
-                    toStyle,
-                    unidirectional,
-                    namespace);
+                connection =
+                    Model.getUmlFactory().buildConnection(
+                            edgeType,
+                            fromElement,
+                            fromStyle,
+                            toElement,
+                            toStyle,
+                            unidirectional,
+                            namespace);
             } catch (UmlException ex) {
                 // fail silently as we expect users to accidentally drop
                 // on to wrong component
@@ -526,12 +497,13 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             Object edgeType,
             Object fromElement,
             Object toElement) {
-        
+
         if (!nodes.contains(fromElement) || !nodes.contains(toElement)) {
-            // The connection is not valid unless both nodes are in this graph model.
+            // The connection is not valid unless both nodes are
+            // in this graph model.
             return false;
         }
-        
+
         if (edgeType.equals(CommentEdge.class)) {
             return ((Model.getFacade().isAComment(fromElement)
                    && Model.getFacade().isAModelElement(toElement))
@@ -543,7 +515,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
                 fromElement,
                 toElement);
     }
-    
+
     /**
      * Package scope. Only the factory is supposed to set this.
      * @param dd
@@ -551,11 +523,11 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     void setDiDiagram(DiDiagram dd) {
         this.diDiagram = dd;
     }
-    
+
     /**
-     * Get the object that represents this diagram 
+     * Get the object that represents this diagram
      * in the DiagramInterchangeModel.
-     * 
+     *
      * @return the Diagram Interchange Diagram.
      */
     public DiDiagram getDiDiagram() {

@@ -77,7 +77,7 @@ public abstract class PropPanelAction extends PropPanelModelElement {
 
         /**
          * The constructor.
-         * 
+         *
          * @param name
          *                the name of the properties panel
          * @param icon

@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
@@ -52,11 +51,10 @@ import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.Handle;
 
 /**
- * Class to display graphics for a UML ConcurrentRegion in a diagram
+ * Class to display graphics for a UML ConcurrentRegion in a diagram.
  *
  * @author pepargouml@yahoo.es *
  */
-
 public class FigConcurrentRegion extends FigState
         implements
         MouseListener,
@@ -65,7 +63,7 @@ public class FigConcurrentRegion extends FigState
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** The main label on this icon. */
+    // /** The main label on this icon. */
     //FigText _name;
 
     private FigRect cover;
@@ -84,7 +82,8 @@ public class FigConcurrentRegion extends FigState
                 getInitialWidth() - 2, getInitialHeight() - 2,
                 Color.cyan, Color.cyan));
 
-        cover = new FigRect(getInitialX(),
+        cover =
+            new FigRect(getInitialX(),
                 getInitialY(),
                 getInitialWidth(), getInitialHeight(),
                 Color.white, Color.white);
@@ -115,7 +114,7 @@ public class FigConcurrentRegion extends FigState
 
     /**
      * The constructor.
-     * 
+     *
      * @param gm (not used)
      * @param node the UML model element represented by this Fig
      */
@@ -126,7 +125,7 @@ public class FigConcurrentRegion extends FigState
 
     /**
      * The constructor.
-     * 
+     *
      * @param gm (not used)
      * @param node the UML model element represented by this Fig
      * @param col the line color
@@ -194,7 +193,7 @@ public class FigConcurrentRegion extends FigState
 
     /**
      * Override setBounds to keep shapes looking right. <p>
-     *  
+     *
      * When resized by this way, it only changes the height and the
      * adjacent region's height.
      *
@@ -216,26 +215,29 @@ public class FigConcurrentRegion extends FigState
             regionsVector = f.getEnclosedFigs();
             index = regionsVector.indexOf((Object) this, 0);
 
-            /* if curHandle.index is 0 or 2, 
+            /* if curHandle.index is 0 or 2,
              * the adjacent region is the previous region
              * but if it is 5 or 7, the adjacent region is the next region.
-             * curHandle.index show which corner of the bound we are dragging */
+             * curHandle.index show which corner of the bound we are dragging.
+             */
             if (((curHandle.index == 0) || (curHandle.index == 2))
-                    && index > 0)
+                    && index > 0) {
                 adjacentindex = index - 1;
+            }
             if (((curHandle.index == 5) || (curHandle.index == 7))
                     && (index < (regionsVector.size() - 1)))
                 adjacentindex = index + 1;
             if (h <= getMinimumSize().height) {
-                if ( h <= oldBounds.height) {
+                if (h <= oldBounds.height) {
                     h = oldBounds.height;
                     y = oldBounds.y;
                 }
             }
 
-            /* We aren't able to resize neither the top bound 
+            /* We aren't able to resize neither the top bound
              * from the first region nor
-             * the bottom bound from the last region*/
+             * the bottom bound from the last region.
+             */
 
             if (adjacentindex == -1) {
                 x = oldBounds.x;
@@ -247,37 +249,38 @@ public class FigConcurrentRegion extends FigState
                     Rectangle fR = f.getBounds();
                     f.setBounds(fR.x, fR.y, w + 6, fR.height);
                 }
-            }
-            else {
+            } else {
                 int hIncrement = oldBounds.height - h;
-                FigConcurrentRegion adjacentFig = ((FigConcurrentRegion) 
+                FigConcurrentRegion adjacentFig =
+                    ((FigConcurrentRegion)
                         regionsVector.elementAt(adjacentindex));
-                if ((adjacentFig.getBounds().height + hIncrement) 
+                if ((adjacentFig.getBounds().height + hIncrement)
                         <= adjacentFig.getMinimumSize().height) {
                     y = oldBounds.y;
                     h = oldBounds.height;
-                }
-                else {
-                    if ((curHandle.index == 0) || (curHandle.index == 2))
+                } else {
+                    if ((curHandle.index == 0) || (curHandle.index == 2)) {
                         ((FigConcurrentRegion) regionsVector.
                             elementAt(adjacentindex)).setBounds(0, hIncrement);
-                    if ((curHandle.index == 5) || (curHandle.index == 7))
+                    }
+                    if ((curHandle.index == 5) || (curHandle.index == 7)) {
                         ((FigConcurrentRegion) regionsVector.
                             elementAt(adjacentindex)).setBounds(-hIncrement,
                                     hIncrement);
+                    }
                 }
             }
         }
 
         dividerline.setShape(x, y, x + w, y);
-        getNameFig().setBounds(x + MARGIN, 
-                y + SPACE_TOP, 
-                w - 2 * MARGIN, 
+        getNameFig().setBounds(x + MARGIN,
+                y + SPACE_TOP,
+                w - 2 * MARGIN,
                 nameDim.height);
         getInternal().setBounds(
-                x + MARGIN, 
+                x + MARGIN,
                 y + nameDim.height + SPACE_TOP + SPACE_MIDDLE,
-                w - 2 * MARGIN, 
+                w - 2 * MARGIN,
                 h - nameDim.height - SPACE_TOP - SPACE_MIDDLE - SPACE_BOTTOM);
         getBigPort().setBounds(x, y, w, h);
         cover.setBounds(x, y, w, h);
@@ -287,7 +290,7 @@ public class FigConcurrentRegion extends FigState
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    /** 
+    /**
      * To resize with X and Y increments, absolute width and keeping the height.
      * @param xInc the x increment
      * @param yInc the y increment
@@ -295,8 +298,9 @@ public class FigConcurrentRegion extends FigState
      * @param concurrency is concurrent?
      */
     public void setBounds(int xInc, int yInc, int w, boolean concurrency) {
-        if (getNameFig() == null)
+        if (getNameFig() == null) {
             return;
+        }
         Rectangle oldBounds = getBounds();
         Dimension nameDim = getNameFig().getMinimumSize();
         int x = oldBounds.x + xInc;
@@ -315,20 +319,21 @@ public class FigConcurrentRegion extends FigState
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    /** 
+    /**
      * To resize with X, Y and height increments and absolute width.
      * The boolean parameter is added in order to override the method.
-     * 
+     *
      * @param xInc the x increment
      * @param yInc the y increment
      * @param w the width
      * @param concurrency is concurrent?
      * @param hInc the height increment
      */
-    public void setBounds(int xInc, int yInc, int w, int hInc, 
+    public void setBounds(int xInc, int yInc, int w, int hInc,
             boolean concurrency) {
-        if (getNameFig() == null)
+        if (getNameFig() == null) {
             return;
+        }
         Rectangle oldBounds = getBounds();
         Dimension nameDim = getNameFig().getMinimumSize();
         int x = oldBounds.x + xInc;
@@ -348,15 +353,17 @@ public class FigConcurrentRegion extends FigState
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    /** To resize with Y increments, height increment and
+    /**
+     * To resize with Y increments, height increment and
      * keeping the X and width.
-     * 
+     *
      * @param yInc the y increment
      * @param hInc the height increment
      */
     public void setBounds(int yInc, int hInc) {
-        if (getNameFig() == null)
+        if (getNameFig() == null) {
             return;
+        }
         Rectangle oldBounds = getBounds();
         Dimension nameDim = getNameFig().getMinimumSize();
         int x = oldBounds.x;
@@ -400,7 +407,7 @@ public class FigConcurrentRegion extends FigState
     public void setFillColor(Color col) {
         cover.setFillColor(col);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
@@ -414,7 +421,7 @@ public class FigConcurrentRegion extends FigState
     public void setFilled(boolean f) {
         cover.setFilled(f);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
@@ -428,7 +435,7 @@ public class FigConcurrentRegion extends FigState
     public void setLineWidth(int w) {
         dividerline.setLineWidth(w);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
@@ -495,25 +502,29 @@ public class FigConcurrentRegion extends FigState
         final Object trCollection = mee.getNewValue();
         final String eName = mee.getPropertyName();
         final Object owner = getOwner();
-        /*A Concurrent region cannot have incoming or outgoing transitions so
-        incoming or outgoing transitions are redirected to its concurrent
-        composite state container*/
-        SwingUtilities.invokeLater( new Runnable() {
+        /*
+         * A Concurrent region cannot have incoming or outgoing transitions so
+         * incoming or outgoing transitions are redirected to its concurrent
+         * composite state container.
+         */
+        SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 Object tr = null;
+                // TODO: Is this comparison correct?
+                // Where is the string created?
                 if (eName == "incoming") {
-                    if (!((Collection) trCollection).isEmpty())
+                    if (!((Collection) trCollection).isEmpty()) {
                         tr = ((Collection) trCollection).iterator().next();
+                    }
                     if (tr != null
-                            && Model.getFacade().isATransition(tr))
-                    {
-                        Model.getCommonBehaviorHelper().setTarget(tr, 
+                            && Model.getFacade().isATransition(tr)) {
+                        Model.getCommonBehaviorHelper().setTarget(tr,
                                 Model.getFacade().getContainer(owner));
                     }
-                }
-                else if (eName == "outgoing") {
-                    if (!((Collection) trCollection).isEmpty())
+                } else if (eName == "outgoing") {
+                    if (!((Collection) trCollection).isEmpty()) {
                         tr = ((Collection) trCollection).iterator().next();
+                    }
                     if (tr != null
                             && Model.getFacade().isATransition(tr))
                     {
@@ -546,8 +557,9 @@ public class FigConcurrentRegion extends FigState
      * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
      */
     public void mouseDragged(MouseEvent e) {
-        if (curHandle.index == -1)
+        if (curHandle.index == -1) {
             Globals.curEditor().getSelectionManager().select(getEnclosingFig());
+        }
     }
 
     /**
@@ -556,4 +568,8 @@ public class FigConcurrentRegion extends FigState
     public void mouseMoved(MouseEvent e) {
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -7228935179004210975L;
 } /* end class FigConcurrentRegion */

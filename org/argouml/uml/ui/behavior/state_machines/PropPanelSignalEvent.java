@@ -54,7 +54,7 @@ public class PropPanelSignalEvent extends PropPanelEvent {
      */
     public void initialize() {
         super.initialize();
-        
+
         JList signalList = new UMLSignalEventSignalList(
                 new UMLSignalEventSignalListModel());
         signalList.setVisibleRowCount(1);

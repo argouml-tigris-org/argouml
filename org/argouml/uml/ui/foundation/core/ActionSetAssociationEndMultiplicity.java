@@ -28,13 +28,13 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionSetMultiplicity;
 
 /**
- * 
+ *
  * @author mkl
- * 
+ *
  */
 public class ActionSetAssociationEndMultiplicity extends ActionSetMultiplicity {
 
-    private static final ActionSetAssociationEndMultiplicity SINGLETON = 
+    private static final ActionSetAssociationEndMultiplicity SINGLETON =
         new ActionSetAssociationEndMultiplicity();
 
     /**

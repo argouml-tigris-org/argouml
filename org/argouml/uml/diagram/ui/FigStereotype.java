@@ -33,7 +33,7 @@ import org.tigris.gef.presentation.FigText;
 
 /**
  * A specialist FigText for display stereotypes.
- * 
+ *
  * @author Bob Tarling
  */
 public class FigStereotype extends FigGroup {
@@ -49,7 +49,7 @@ public class FigStereotype extends FigGroup {
 
     /**
      * The constructor.
-     * 
+     *
      * @param x
      *            x
      * @param y
@@ -91,22 +91,22 @@ public class FigStereotype extends FigGroup {
             setVisible(false);
             return;
         }
-        
+
         setVisible(true);
-        
+
         this.removeAll();
 
-        
+
         int xPosn = getX();
         int yPosn = getY();
-        
+
         FigSingleLineText singleStereotype;
-        
+
 //        if (pseudoStereotype != null) {
 //            addStereotypeText(pseudoStereotype, xPosn, yPosn);
 //            yPosn += STEREOHEIGHT;
 //        }
-//        
+//
 //        Iterator it = Model.getFacade().getStereotypes(getOwner()).iterator();
 //        while (it.hasNext()) {
 //            Object stereotype = it.next();
@@ -114,7 +114,7 @@ public class FigStereotype extends FigGroup {
 //            yPosn += STEREOHEIGHT;
 //        }
     }
-    
+
     private void addStereotypeText(String text, int xPosn, int yPosn) {
         FigSingleLineText singleStereotype = new FigSingleLineText(xPosn, yPosn, getWidth(), STEREOHEIGHT, true);
         singleStereotype.setEditable(false);

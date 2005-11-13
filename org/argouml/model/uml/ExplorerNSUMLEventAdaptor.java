@@ -47,7 +47,7 @@ public final class ExplorerNSUMLEventAdaptor
 
     private static final Logger LOG =
         Logger.getLogger(ExplorerNSUMLEventAdaptor.class);
-    
+
     /**
      * Creates a new instance of ExplorerUMLEventAdaptor.
      */
@@ -91,7 +91,7 @@ public final class ExplorerNSUMLEventAdaptor
             || (e.getNewValue() != null
                 && !e.getNewValue().equals(e.getOldValue()))) {
 
-            
+
 //	    firePropertyChanged("modelElementChanged", e.getSource());
             AttributeChangeEvent event =
                 new AttributeChangeEvent(e.getSource(),

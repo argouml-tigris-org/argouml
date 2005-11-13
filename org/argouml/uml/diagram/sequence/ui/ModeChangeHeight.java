@@ -21,6 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.awt.Color;
@@ -38,7 +39,7 @@ public class ModeChangeHeight extends FigModifyingModeImpl {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public ModeChangeHeight() {
         contractSet = false;
@@ -147,4 +148,9 @@ public class ModeChangeHeight extends FigModifyingModeImpl {
     private int startX, startY, currentY;
     private Editor editor;
     private Color rubberbandColor;
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2383958235268066102L;
 }

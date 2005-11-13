@@ -93,10 +93,10 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
     public void refresh() {
         refreshTransaction = true;
         super.refresh();
-        AttributesCompartmentContainer ac = 
+        AttributesCompartmentContainer ac =
                 (AttributesCompartmentContainer) getPanelTarget();
         attrCheckBox.setSelected(ac.isAttributesVisible());
-        OperationsCompartmentContainer oc = 
+        OperationsCompartmentContainer oc =
                 (OperationsCompartmentContainer) getPanelTarget();
         operCheckBox.setSelected(oc.isOperationsVisible());
         refreshTransaction = false;

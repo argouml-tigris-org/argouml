@@ -33,7 +33,6 @@ import java.io.IOException;
 import javax.swing.event.EventListenerList;
 import javax.swing.filechooser.FileFilter;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 
 /**
@@ -43,13 +42,6 @@ import org.argouml.kernel.Project;
  */
 public abstract class AbstractFilePersister extends FileFilter
         implements ProjectFilePersister {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(AbstractFilePersister.class);
-
     private EventListenerList listenerList = new EventListenerList();
 
     /**
@@ -166,11 +158,12 @@ public abstract class AbstractFilePersister extends FileFilter
         }
         return null;
     }
-    
+
     /**
      * Given the full filename this returns true if that filename contains the
      * expected extension for the is persister.
-     * @param filename
+     *
+     * @param filename The filename to test.
      * @return true if the filename is valid for this persister
      */
     public boolean isFileExtensionApplicable(String filename) {
@@ -230,24 +223,6 @@ public abstract class AbstractFilePersister extends FileFilter
     }
 
     /**
-     * Handle any common requirements on detection of a save error.
-     * Such as restoring the archive. This method is called should
-     * the concrete implementation of doSave(...) throw a
-     * SaveException.
-     *
-     * @param project The project being saved.
-     * @param file The file to which the save is taking place.
-     * @param e The original exception that triggered a call to
-     *          this method.
-     * @throws SaveException if anything goes wrong in trying to
-     *                       restore the previous archive.
-     */
-    private void postSaveFailure(Project project, File file, SaveException e)
-        throws SaveException {
-
-    }
-
-    /**
      * Implement in your concrete class to save a project to a
      * file.<p>
      * There is no need to worry about archiving or restoring
@@ -299,7 +274,7 @@ public abstract class AbstractFilePersister extends FileFilter
     public void addProgressListener(ProgressListener listener) {
         listenerList.add(ProgressListener.class, listener);
     }
-    
+
     /**
      * Remove any object no longer interested in listening to persistence
      * progress.

@@ -122,5 +122,9 @@ public class ArgoJMenu extends JMenu {
         a.addPropertyChangeListener(createActionChangeListener(mi));
         return mi;
     }
-    
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 8318663502924796474L;
 } /* end class ArgoJMenu */

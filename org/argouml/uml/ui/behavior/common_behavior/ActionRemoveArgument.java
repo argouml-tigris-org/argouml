@@ -40,7 +40,7 @@ import org.argouml.uml.ui.AbstractActionRemoveElement;
  */
 public class ActionRemoveArgument extends AbstractActionRemoveElement {
 
-  
+
     /**
      * Constructor for ActionRemoveArgument.
      */

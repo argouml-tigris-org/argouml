@@ -34,11 +34,11 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
 import org.tigris.gef.presentation.Fig;
 
-/** 
- * Action to trigger generation of source 
+/**
+ * Action to trigger generation of source
  * for all selected classes and interfaces.
- * 
- * @stereotype singleton 
+ *
+ * @stereotype singleton
  */
 public class ActionGenerateOne extends UMLAction {
 

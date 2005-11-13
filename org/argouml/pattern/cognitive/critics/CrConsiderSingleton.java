@@ -96,7 +96,7 @@ public class CrConsiderSingleton extends CrUML {
         if (!(Model.getFacade().isAClass(dm))) {
             return NO_PROBLEM;
         }
-        
+
         // and not association classes
         if (Model.getFacade().isAAssociationClass(dm)) {
             return NO_PROBLEM;
@@ -157,5 +157,10 @@ public class CrConsiderSingleton extends CrUML {
 	return PROBLEM_FOUND;
     }
 
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -178026888698499288L;
 } /* end class CrConsiderSingleton */
 

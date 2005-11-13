@@ -89,7 +89,7 @@ public class FigEdgeAssociationClass
         setSourceFigNode((FigNode) fromFig);
         computeRoute();
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // accessors
 

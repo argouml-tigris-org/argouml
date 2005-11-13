@@ -42,7 +42,7 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
  * The combobox model for the type belonging to some attribute.
- * 
+ *
  * @since Nov 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */

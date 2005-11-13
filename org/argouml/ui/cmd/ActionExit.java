@@ -53,7 +53,7 @@ public class ActionExit extends UMLAction
      * Remember if this form is already active, so that it does
      * not popup twice.
      */
-    private static boolean active = false;
+    private static boolean active;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -71,7 +71,7 @@ public class ActionExit extends UMLAction
 
     /**
      * See ProjectBrowser.askConfirmationAndSave() for a very similar procedure!
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed (ActionEvent ae) {
@@ -128,4 +128,9 @@ public class ActionExit extends UMLAction
         System.exit (0);
 	return true;
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -6264722939329644183L;
 } /* end class ActionExit */

@@ -73,7 +73,7 @@ public class PropPanelState extends AbstractPropPanelState {
                 getDoScroll());
         addField(Translator.localize("label.deferrable"),
                 getDeferrableEventsScroll());
-        
+
         addSeperator();
 
         addField(Translator.localize("label.incoming"),

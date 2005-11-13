@@ -40,7 +40,7 @@ public class TabStereotype extends PropPanel {
 
     private static String orientation = Configuration.getString(Configuration
             .makeKey("layout", "tabstereotype"));
-    
+
     private Object target;
 
     private UMLModelElementStereotypeListModel stereoListModel;
@@ -82,7 +82,7 @@ public class TabStereotype extends PropPanel {
             return;
         }
         target = t;
-        
+
         stereoListModel.setTarget(t);
 
         validate();

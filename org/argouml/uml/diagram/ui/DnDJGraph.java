@@ -49,17 +49,17 @@ import org.tigris.gef.graph.presentation.JGraph;
 
 /**
  * This is a JGraph with Drag and Drop capabilities.
- * 
+ *
  * @author mvw@tigris.org
  */
-class DnDJGraph 
+class DnDJGraph
     extends JGraph
     implements DropTargetListener
     {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public DnDJGraph() {
         super();
@@ -68,7 +68,7 @@ class DnDJGraph
 
     /**
      * The constructor.
-     * 
+     *
      * @param cc
      */
     public DnDJGraph(ConnectionConstrainer cc) {
@@ -78,7 +78,7 @@ class DnDJGraph
 
     /**
      * The constructor.
-     * 
+     *
      * @param d
      */
     public DnDJGraph(Diagram d) {
@@ -88,7 +88,7 @@ class DnDJGraph
 
     /**
      * The constructor.
-     * 
+     *
      * @param gm
      */
     public DnDJGraph(GraphModel gm) {
@@ -98,16 +98,16 @@ class DnDJGraph
 
     /**
      * The constructor.
-     * 
+     *
      * @param ed
      */
     public DnDJGraph(Editor ed) {
         super(ed);
         makeDropTarget();
     }
-    
-    private void makeDropTarget(){ 
-        new DropTarget(this, 
+
+    private void makeDropTarget(){
+        new DropTarget(this,
                 DnDConstants.ACTION_COPY_OR_MOVE,
                 this);
     }
@@ -152,7 +152,7 @@ class DnDJGraph
             dropTargetDropEvent.rejectDrop();
             return;
         }
-        
+
         dropTargetDropEvent.acceptDrop(dropTargetDropEvent.getDropAction());
         //get the model elements that are being transfered.
         Collection modelElements;
@@ -166,12 +166,12 @@ class DnDJGraph
             Iterator i = modelElements.iterator();
             while (i.hasNext()) {
                 Object me = i.next();
-                if (Model.getFacade().isAModelElement(me)) { 
-                    if (gm.canAddEdge(me)) { 
+                if (Model.getFacade().isAModelElement(me)) {
+                    if (gm.canAddEdge(me)) {
                         gm.addEdge(me);
                     } else if (gm.canAddNode(me)) {
                         AddExistingNodeCommand cmd =
-                            new AddExistingNodeCommand(me, dropTargetDropEvent, 
+                            new AddExistingNodeCommand(me, dropTargetDropEvent,
                                     count++);
                         cmd.execute();
                     }

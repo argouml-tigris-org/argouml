@@ -415,17 +415,18 @@ public class Project implements java.io.Serializable, TargetListener {
          */
         if (diagrams.size() < 1) {
             Object treeRoot = Model.getModelManagementFactory().getRootModel();
-            ArgoDiagram defaultDiagram = DiagramFactory.getInstance()
-                .createDiagram(UMLClassDiagram.class, treeRoot, null);
+            ArgoDiagram defaultDiagram =
+                DiagramFactory.getInstance()
+                    .createDiagram(UMLClassDiagram.class, treeRoot, null);
             addMember(defaultDiagram);
             activeDiagram = defaultDiagram;
             TargetManager.getInstance().setTarget(defaultDiagram);
         } else {
-            /* If the current diagram has just been deleted, 
-             * we better select another one to be displayed. 
+            /* If the current diagram has just been deleted,
+             * we better select another one to be displayed.
              */
             if (activeDiagram == d) {
-                ArgoDiagram defaultDiagram 
+                ArgoDiagram defaultDiagram
                     = (ArgoDiagram) diagrams.get(0);
                 activeDiagram = defaultDiagram;
                 TargetManager.getInstance().setTarget(defaultDiagram);
@@ -674,9 +675,9 @@ public class Project implements java.io.Serializable, TargetListener {
 
         if (!Model.getFacade().isANamespace(ns)) {
             throw new IllegalArgumentException(
-                    "Looking for the classifier " + s + 
-                    " in a non-namespace object of " + ns +
-                    ". A namespace was expected.");
+                    "Looking for the classifier " + s
+                    + " in a non-namespace object of " + ns
+                    + ". A namespace was expected.");
     	}
 
         Collection allClassifiers =
@@ -948,8 +949,10 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param obj the object to be thrown away
      */
     protected void trashInternal(Object obj) {
-        if (Model.getFacade().isAModel(obj)) return; //Can not delete the model
-        
+        if (Model.getFacade().isAModel(obj)) {
+            return; //Can not delete the model
+        }
+
         boolean needSave = false;
         if (obj != null) {
             TargetManager.getInstance().removeTarget(obj);
@@ -962,13 +965,15 @@ public class Project implements java.io.Serializable, TargetListener {
             removeFigs(allFigs);
 
             Model.getUmlFactory().delete(obj);
-            
-            /* Since the above step also removes 
+
+            /*
+             * Since the above step also removes
              * some other dependent modelelements,
-             * we have to make sure that they are removed 
-             * from the target history list, too.*/
+             * we have to make sure that they are removed
+             * from the target history list, too.
+             */
             TargetManager.getInstance().checkForRemovedModelElements();
-            
+
             if (obj instanceof ProjectMember
                     && members.contains(obj)) {
                 members.remove(obj);
@@ -1139,7 +1144,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Returns the cgPrefs.
-     * 
+     *
      * @deprecated use getGenerationPrefs() instead
      * @return GenerationPreferences
      */
@@ -1252,7 +1257,9 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Called to update the current namespace and active diagram after
      * the target has changed.
-     * @param target
+     *
+     * TODO: The parameter is not used. Why?
+     * @param target Not used.
      */
     private void setTarget(Object target) {
         Object theCurrentNamespace = null;

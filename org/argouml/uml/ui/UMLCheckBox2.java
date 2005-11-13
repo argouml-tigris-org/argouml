@@ -52,7 +52,7 @@ public abstract class UMLCheckBox2 extends JCheckBox
 
     private Object checkBoxTarget;
     private String propertySetName;
-    
+
     /**
      * Constructor for UMLCheckBox2.
      * @param text the text of the check box
@@ -64,10 +64,10 @@ public abstract class UMLCheckBox2 extends JCheckBox
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
         propertySetName = name;
         addActionListener(a);
-    
+
         setActionCommand((String) a.getValue(Action.ACTION_COMMAND_KEY));
     }
-    
+
     /**
      * The property value has changed so rebuild our view.
      */

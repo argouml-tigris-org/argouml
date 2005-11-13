@@ -29,7 +29,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 
 /**
- * UML 1.5 Well-formedness rule [1] for Transition, to remove 
+ * UML 1.5 Well-formedness rule [1] for Transition, to remove
  * a trigger or guard from fork outgoing transition.
  *
  * @author pepargouml@yahoo.es
@@ -51,29 +51,42 @@ public class CrInvalidForkTriggerOrGuard extends CrUML {
      * org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-        if (!(Model.getFacade().isATransition(dm))) return NO_PROBLEM;
+        if (!(Model.getFacade().isATransition(dm))) {
+            return NO_PROBLEM;
+        }
         Object tr = /*(MTransition)*/ dm;
         Object/*MEvent*/ t = Model.getFacade().getTrigger(tr);
         Object g = Model.getFacade().getGuard(tr);
         Object sv = Model.getFacade().getSource(tr);
-        if (!(Model.getFacade().isAPseudostate(sv))) return NO_PROBLEM;
+        if (!(Model.getFacade().isAPseudostate(sv))) {
+            return NO_PROBLEM;
+        }
         Object k = Model.getFacade().getPseudostateKind(sv);
         if (!Model.getFacade().
                 equalsPseudostateKind(k,
-                        Model.getPseudostateKind().getFork()))
+                        Model.getPseudostateKind().getFork())) {
             return NO_PROBLEM;
+        }
         boolean hasTrigger =
                 (t != null && Model.getFacade().getName(t) != null
                 && Model.getFacade().getName(t).length() > 0);
-        if (hasTrigger) return PROBLEM_FOUND;
-        boolean noGuard = 
+        if (hasTrigger) {
+            return PROBLEM_FOUND;
+        }
+        boolean noGuard =
             (g == null || Model.getFacade().getExpression(g) == null
                 || Model.getFacade().getBody(Model.getFacade()
                         .getExpression(g)) == null
                 || Model.getFacade().getBody(Model.getFacade()
                         .getExpression(g)).toString().length() == 0);
-        if (!noGuard) return PROBLEM_FOUND;
+        if (!noGuard) {
+            return PROBLEM_FOUND;
+        }
         return NO_PROBLEM;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -713044875133409390L;
 } /* end class CrInvalidForkTriggerOrGuard */

@@ -40,7 +40,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.TabModelTarget;
 import org.tigris.toolbar.ToolBar;
 
-/** 
+/**
  * A tab that contains textual information.
  */
 public class TabText
@@ -51,13 +51,17 @@ public class TabText
     private Object target;
     private JTextArea textArea = new JTextArea();
     private boolean parseChanges = true;
-    private boolean enabled = false;
+    private boolean enabled;
 
     /**
-     * The optional toolbar. Contains null if no toolbar was requested.
+     * The optional toolbar. Contains <code>null</code> if no toolbar
+     * was requested.
      */
-    private JToolBar toolbar = null;
+    private JToolBar toolbar;
 
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(TabText.class);
 
     ////////////////////////////////////////////////////////////////
@@ -72,7 +76,7 @@ public class TabText
         this(title, false);
     }
 
-    /** 
+    /**
      * Create a text tab and optionally request a toolbar.
      * @since ARGO0.9.4
      *
@@ -136,7 +140,7 @@ public class TabText
 
     /**
      * Refresh the text of the tab.
-     * 
+     *
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
@@ -145,7 +149,7 @@ public class TabText
     }
 
     /**
-     * This tab pane is enabled if there is a target, 
+     * This tab pane is enabled if there is a target,
      * i.e. the target must not be null.
      *
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
@@ -156,7 +160,7 @@ public class TabText
 
     /**
      * The target has changed, so let's generate some text to be shown.
-     * 
+     *
      * @param t the object to be "generated" = make a string of it
      * @return the generated text
      */
@@ -167,13 +171,14 @@ public class TabText
     /**
      * The user has edited the text in the textfield, so let's parse it now,
      * and update the model.
-     * 
+     *
      * @param s the string to parse
      */
     protected void parseText(String s) {
-        if (s == null)
+        if (s == null) {
             s = "(null)";
-        LOG.debug("parsing text:" + s); 
+        }
+        LOG.debug("parsing text:" + s);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -183,24 +188,27 @@ public class TabText
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
      */
     public void insertUpdate(DocumentEvent e) {
-        if (parseChanges)
+        if (parseChanges) {
             parseText(textArea.getText());
+        }
     }
 
     /**
      * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
      */
     public void removeUpdate(DocumentEvent e) {
-        if (parseChanges)
+        if (parseChanges) {
             parseText(textArea.getText());
+        }
     }
 
     /**
      * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
      */
     public void changedUpdate(DocumentEvent e) {
-        if (parseChanges)
+        if (parseChanges) {
             parseText(textArea.getText());
+        }
     }
 
     /**
@@ -250,4 +258,8 @@ public class TabText
         return enabled;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1484647093166393888L;
 } /* end class TabText */

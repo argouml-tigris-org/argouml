@@ -88,7 +88,9 @@ public class ExplorerTree
      */
     private boolean updatingSelectionViaTreeSelection;
 
-    /** Creates a new instance of ExplorerTree. */
+    /**
+     * Creates a new instance of ExplorerTree.
+     */
     public ExplorerTree() {
         super();
 
@@ -122,12 +124,18 @@ public class ExplorerTree
 
         private JTree mLTree;
 
+        /**
+         * The constructor.
+         * @param newtree
+         */
         public ExplorerMouseListener(JTree newtree) {
             super();
             mLTree = newtree;
         }
 
-        /** brings up the pop-up menu */
+        /**
+         * Brings up the pop-up menu.
+         */
         public void mousePressed(MouseEvent me) {
             if (me.isPopupTrigger()) {
                 me.consume();
@@ -149,7 +157,9 @@ public class ExplorerTree
             }
         }
 
-        /** brings up the pop-up menu */
+        /**
+         * Brings up the pop-up menu.
+         */
         public void mouseClicked(MouseEvent me) {
             if (me.isPopupTrigger()) {
                 me.consume();
@@ -159,9 +169,9 @@ public class ExplorerTree
                 myDoubleClick();
             }
         }
-        
+
         /**
-         * Double-clicking on an item attempts 
+         * Double-clicking on an item attempts
          * to show the item in a diagram.
          */
         private void myDoubleClick() {
@@ -173,22 +183,27 @@ public class ExplorerTree
             }
         }
 
-        /** builds a pop-up menu for extra functionality for the Tree*/
+        /**
+         * Builds a pop-up menu for extra functionality for the Tree.
+         *
+         * @param me The mouse event.
+         */
         public void showPopupMenu(MouseEvent me) {
 
-            TreePath path = getPathForLocation( me.getX(), me.getY() );
-            if ( path == null ) {
+            TreePath path = getPathForLocation(me.getX(), me.getY());
+            if (path == null) {
                 return;
             }
-            
-            /* We preserve the current (multiple) selection, 
+
+            /*
+             * We preserve the current (multiple) selection,
              * if we are over part of it ...
              */
-            if ( !isPathSelected( path ) ) {
+            if (!isPathSelected(path)) {
                 /* ... otherwise we select the item below the mousepointer. */
-                getSelectionModel().setSelectionPath( path );
+                getSelectionModel().setSelectionPath(path);
             }
-            
+
             Object selectedItem =
                 ((DefaultMutableTreeNode) path.getLastPathComponent())
                         .getUserObject();
@@ -208,6 +223,7 @@ public class ExplorerTree
      *
      * @see javax.swing.JTree#convertValueToText(java.lang.Object,
      * boolean, boolean, boolean, int, boolean)
+     * @see javax.swing.JTree#convertValueToText(java.lang.Object, boolean, boolean, boolean, int, boolean)
      */
     public String convertValueToText(Object value,
 				     boolean selected,
@@ -228,13 +244,14 @@ public class ExplorerTree
             if (Model.getFacade().isATransition(value)
 		    || Model.getFacade().isAExtensionPoint(value)) {
                 name = GeneratorDisplay.getInstance().generate(value);
-            }
-            /* Changing the label in case of comments.
-             * This is necessary in UML 1.3 since the name of the comment 
-             * is the same as the content of the comment (called "body" 
-             * in UML 1.4), causing the total comment to be
-             * displayed in the perspective */
-            else if (Model.getFacade().isAComment(value)) {
+            } else if (Model.getFacade().isAComment(value)) {
+                /*
+                 * Changing the label in case of comments.
+                 * This is necessary in UML 1.3 since the name of the comment
+                 * is the same as the content of the comment (called "body"
+                 * in UML 1.4), causing the total comment to be
+                 * displayed in the perspective.
+                 */
                 name = Model.getFacade().getName(value);
 
                 if (name != null
@@ -242,8 +259,7 @@ public class ExplorerTree
 		    && name.indexOf("\n") > -1) {
 
                     name = name.substring(0, name.indexOf("\n")) + "...";
-                }
-                else if (name != null && name.length() > 80) {
+                } else if (name != null && name.length() > 80) {
                     name = name.substring(0, 80) + "...";
                 }
             } else {
@@ -251,14 +267,15 @@ public class ExplorerTree
             }
 
             if (name == null || name.equals("")) {
-                name = 
+                name =
                     "(anon " + Model.getFacade().getUMLClassName(value) + ")";
             }
 
             // Look for stereotype
             if (showStereotype) {
                 // TODO: MULTIPLESTEREOTYPES
-                Object stereo = CollectionUtil.getFirstItemOrNull(
+                Object stereo =
+                    CollectionUtil.getFirstItemOrNull(
                         Model.getFacade().getStereotypes(value));
                 if (stereo != null) {
                     name += " " + GeneratorDisplay.getInstance()
@@ -271,16 +288,18 @@ public class ExplorerTree
 
         if (Model.getFacade().isATaggedValue(value)) {
             String tagName = Model.getFacade().getTagOfTag(value);
-            if (tagName == null || tagName.equals(""))
+            if (tagName == null || tagName.equals("")) {
                 tagName = "(anon)";
+            }
             return ("1-" + tagName);
         }
 
         if (value instanceof Diagram) {
             return ((Diagram) value).getName();
         }
-        if (value != null)
+        if (value != null) {
             return value.toString();
+        }
         return "-";
     }
 
@@ -289,13 +308,17 @@ public class ExplorerTree
      */
     class ExplorerTreeWillExpandListener implements TreeWillExpandListener {
 
-        /** Does nothing. **/
+        /**
+         * @see javax.swing.event.TreeWillExpandListener#treeWillCollapse(javax.swing.event.TreeExpansionEvent)
+         */
         public void treeWillCollapse(TreeExpansionEvent tee) {
 	}
 
         /**
          * Updates stereotype setting,
          * adds all children per treemodel 'build on demand' design.
+         *
+         * @see javax.swing.event.TreeWillExpandListener#treeWillExpand(javax.swing.event.TreeExpansionEvent)
          */
         public void treeWillExpand(TreeExpansionEvent tee) {
 
@@ -342,7 +365,7 @@ public class ExplorerTree
         setSelection(targets.toArray());
         updatingSelectionViaTreeSelection = false;
     }
-    
+
     /**
      * Sets the selection state for a given set of targets.
      */
@@ -353,7 +376,7 @@ public class ExplorerTree
         int rows = getRowCount();
         for (int i = 0; i < targets.length; i++) {
             Object target = targets[i];
-            if(target instanceof Fig) {
+            if (target instanceof Fig) {
                 target = ((Fig) target).getOwner();
             }
             for (int j = 0; j < rows; j++) {
@@ -366,7 +389,7 @@ public class ExplorerTree
             }
         }
         updatingSelectionViaTreeSelection = false;
-        
+
         if (this.getSelectionCount() > 0) {
             scrollRowToVisible(this.getSelectionRows()[0]);
         }
@@ -392,8 +415,10 @@ public class ExplorerTree
                 List elementsAsList = new ArrayList();
                 for (int i = 0;
                     selectedPaths != null && i < selectedPaths.length; i++) {
-                    Object element = ((DefaultMutableTreeNode) selectedPaths[i]
-                                   .getLastPathComponent()).getUserObject();
+                    Object element =
+                        ((DefaultMutableTreeNode)
+                                selectedPaths[i].getLastPathComponent())
+                                .getUserObject();
                     elementsAsList.add(element);
                     // scan the visible rows for duplicates of
                     // this elem and select them
@@ -414,8 +439,9 @@ public class ExplorerTree
                 boolean callSetTarget = true;
                 List addedElements = new ArrayList();
                 for (int i = 0; i < addedOrRemovedPaths.length; i++) {
-                    Object element = ((DefaultMutableTreeNode)
-                            addedOrRemovedPaths[i].getLastPathComponent())
+                    Object element =
+                        ((DefaultMutableTreeNode)
+                                addedOrRemovedPaths[i].getLastPathComponent())
                             .getUserObject();
                     if (!e.isAddedPath(i)) {
                         callSetTarget = false;
@@ -434,9 +460,11 @@ public class ExplorerTree
                     List removedTargets = new ArrayList();
                     List addedTargets = new ArrayList();
                     for (int i = 0; i < addedOrRemovedPaths.length; i++) {
-                        Object element = ((DefaultMutableTreeNode)
-                                addedOrRemovedPaths[i]
-                             .getLastPathComponent()).getUserObject();
+                        Object element =
+                            ((DefaultMutableTreeNode)
+                                    addedOrRemovedPaths[i]
+                                        .getLastPathComponent())
+                                .getUserObject();
                         if (e.isAddedPath(i)) {
                             addedTargets.add(element);
                         } else {
@@ -494,12 +522,13 @@ public class ExplorerTree
                 int rows = getRowCount();
                 for (int i = 0; i < targets.length; i++) {
                     Object target = targets[i];
-                    if(target instanceof Fig) {
+                    if (target instanceof Fig) {
                         target = ((Fig) target).getOwner();
                     }
                     for (int j = 0; j < rows; j++) {
-                        Object rowItem = ((DefaultMutableTreeNode)
-                            getPathForRow(j).getLastPathComponent())
+                        Object rowItem =
+                            ((DefaultMutableTreeNode)
+                                    getPathForRow(j).getLastPathComponent())
                             .getUserObject();
                         if (rowItem == target) {
                             updatingSelectionViaTreeSelection = true;
@@ -530,12 +559,13 @@ public class ExplorerTree
                 int rows = getRowCount();
                 for (int i = 0; i < targets.length; i++) {
                     Object target = targets[i];
-                    if(target instanceof Fig) {
+                    if (target instanceof Fig) {
                         target = ((Fig) target).getOwner();
                     }
                     for (int j = 0; j < rows; j++) {
-                        Object rowItem = ((DefaultMutableTreeNode)
-                            getPathForRow(j).getLastPathComponent())
+                        Object rowItem =
+                            ((DefaultMutableTreeNode)
+                                    getPathForRow(j).getLastPathComponent())
                                 .getUserObject();
                         if (rowItem == target) {
                             updatingSelectionViaTreeSelection = true;
@@ -587,4 +617,9 @@ public class ExplorerTree
         }
     }
 
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 992867483644759920L;
 }

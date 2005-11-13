@@ -39,7 +39,7 @@ class ActionVisibilityPublic extends AbstractActionRadioMenuItem {
             Model.getVisibilityKind().getPublic()
                 .equals(valueOfTarget(o))));
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement.AbstractActionRadioMenuItem#toggleValueOfTarget(java.lang.Object)
      */
@@ -47,11 +47,11 @@ class ActionVisibilityPublic extends AbstractActionRadioMenuItem {
         Model.getCoreHelper().setVisibility(t,
             Model.getVisibilityKind().getPublic());
     }
-        
+
     /**
      * Make use of the default visibility, which is public...
      * TODO: centralise this knowledge.
-     * 
+     *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement.AbstractActionRadioMenuItem#valueOfTarget(java.lang.Object)
      */
     Object valueOfTarget(Object t) {

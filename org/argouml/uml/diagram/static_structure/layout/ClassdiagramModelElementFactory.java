@@ -40,7 +40,7 @@ import org.tigris.gef.presentation.FigNode;
  * @author Markus Klink
  * @stereotype singleton
 */
-public class ClassdiagramModelElementFactory 
+public class ClassdiagramModelElementFactory
 {
     private static final Logger LOG =
 	Logger.getLogger(ClassdiagramModelElementFactory.class);
@@ -50,9 +50,9 @@ public class ClassdiagramModelElementFactory
      */
     public static final ClassdiagramModelElementFactory SINGLETON =
 	new ClassdiagramModelElementFactory();
-    
+
     private ClassdiagramModelElementFactory() { }
-    
+
     /** create layouter object from a Fig.*
      *
      * @param f Object which contains the Fig

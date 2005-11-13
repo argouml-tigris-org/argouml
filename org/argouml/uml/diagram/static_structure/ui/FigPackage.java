@@ -68,7 +68,7 @@ import org.tigris.gef.presentation.FigText;
  * Class to display graphics for a UML package in a class diagram.
  */
 public class FigPackage extends FigNodeModelElement
-    implements StereotypeContainer, VisibilityContainer 
+    implements StereotypeContainer, VisibilityContainer
 {
     private static final Logger LOG = Logger.getLogger(FigPackage.class);
 
@@ -94,9 +94,9 @@ public class FigPackage extends FigNodeModelElement
      * it is specified or not.
      */
     private boolean stereotypeVisible = true;
-    
+
     /**
-     * Flag that indicates if the visibility should be shown in front 
+     * Flag that indicates if the visibility should be shown in front
      * of the name.
      */
     private boolean visibilityVisible = false;
@@ -166,8 +166,8 @@ public class FigPackage extends FigNodeModelElement
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
         updateEdges();
-        
-        visibilityVisible = 
+
+        visibilityVisible =
                 Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY);
     }
 
@@ -187,7 +187,7 @@ public class FigPackage extends FigNodeModelElement
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isAPackage(own)) {
-            notationProviderName.putValue("visibilityVisible", 
+            notationProviderName.putValue("visibilityVisible",
                 new Boolean(isVisibilityVisible()));
         }
     }
@@ -338,7 +338,7 @@ public class FigPackage extends FigNodeModelElement
         forceRepaintShadow();
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
-    
+
     /**
      * USED BY PGML.tee.
      * @return the class name and bounds together with compartment
@@ -349,19 +349,19 @@ public class FigPackage extends FigNodeModelElement
                 + "stereotypeVisible=" + isStereotypeVisible()
                 + ";"
                 + "visibilityVisible=" + isVisibilityVisible();
-    }    
-    
-    
+    }
+
+
     ////////////////////////////////////////////////////////////////
     // user interaction methods
 
     /**
-     * Handles changes of the model. 
+     * Handles changes of the model.
      * If the visibility is changed via the properties panel, then
      * the display of it on the diagram has to follow the change.
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */ 
+     */
     protected void modelChanged(PropertyChangeEvent mee) {
         // visibility
         if (mee == null
@@ -571,7 +571,7 @@ public class FigPackage extends FigNodeModelElement
                 doStereotype(true);
             }
         });
-    
+
         if (vOn) showMenu.add(new UMLAction(
             Translator.localize("menu.popup.show.hide-visibility"),
                 UMLAction.NO_ICON)
@@ -596,7 +596,7 @@ public class FigPackage extends FigNodeModelElement
                 doVisibility(true);
             }
         });
-        
+
         popUpActions.insertElementAt(showMenu,
             popUpActions.size() - getPopupAddOffset());
 
@@ -632,7 +632,7 @@ public class FigPackage extends FigNodeModelElement
             f.damage();
         }
     }
-    
+
     /**
      * Change the visibility of the Visibility of all Figs.
      *
@@ -703,7 +703,7 @@ public class FigPackage extends FigNodeModelElement
 			TargetManager.getInstance().setTarget(lFirst);
 			return;
         }
-        
+
         /* try to create a new class diagram */
         me.consume();
         super.mouseClicked(me);
@@ -712,7 +712,7 @@ public class FigPackage extends FigNodeModelElement
         } catch (Exception ex) {
             LOG.error(ex);
         }
-        
+
         return;
 
 		} /*if package */
@@ -722,10 +722,10 @@ public class FigPackage extends FigNodeModelElement
     }
 
     private void createClassDiagram(
-            Object namespace, 
-            String defaultName, 
+            Object namespace,
+            String defaultName,
             Project project) throws PropertyVetoException {
-        
+
         String namespaceDescr;
         if (namespace != null
                 && Model.getFacade().getName(namespace) != null) {
@@ -741,17 +741,17 @@ public class FigPackage extends FigNodeModelElement
                 dialogText,
                 "Add new class diagram?",
                 JOptionPane.YES_NO_OPTION);
-        
+
         if (option == JOptionPane.YES_OPTION) {
-                        
+
             ArgoDiagram classDiagram =
                 DiagramFactory.getInstance().
                 createDiagram(UMLClassDiagram.class, namespace, null);
-                
+
             String diagramName = defaultName + "_" + classDiagram.getName();
-            
+
             project.addMember(classDiagram);
-            
+
             TargetManager.getInstance().setTarget(classDiagram);
             /* change prefix */
             classDiagram.setName(diagramName);
@@ -788,25 +788,25 @@ public class FigPackage extends FigNodeModelElement
     public void setVisibilityVisible(boolean isVisible) {
         visibilityVisible = isVisible;
         if (notationProviderName != null)
-            notationProviderName.putValue("visibilityVisible", 
+            notationProviderName.putValue("visibilityVisible",
                 new Boolean(isVisible));
         renderingChanged();
         damage();
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
 
         /* The following 2 lines should be retained for reference.
-         * They represent the better way of editing on the diagram, which 
+         * They represent the better way of editing on the diagram, which
          * 1. would work for different notations, and
-         * 2. would indicate to the user that he can edit more aspects 
+         * 2. would indicate to the user that he can edit more aspects
          * of the modelelement than the name alone.
-         * But: it is different behaviour, which I (MVW) 
+         * But: it is different behaviour, which I (MVW)
          * do not know if it is acceptable.*/
-        
+
 //        String s = GeneratorDisplay.getInstance().generate(getOwner());
 //        ft.setText(s);
 
@@ -820,32 +820,32 @@ public class FigPackage extends FigNodeModelElement
      */
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
-        int xs[] = {r.x, r.x + r.width - indentX, r.x + r.width - indentX, 
+        int xs[] = {r.x, r.x + r.width - indentX, r.x + r.width - indentX,
                     r.x + r.width,   r.x + r.width,  r.x,            r.x};
         int ys[] = {r.y, r.y,                     r.y + tabHeight,
                     r.y + tabHeight, r.y + r.height, r.y + r.height, r.y};
         Point p = Geometry.ptClosestTo(
-                xs, 
+                xs,
                 ys,
                 7 , anotherPt);
         return p;
     }
-    
+
 } /* end class FigPackage */
 
 /**
- * The bigport needs to overrule the getClosestPoint, 
+ * The bigport needs to overrule the getClosestPoint,
  * because it is the port of this FigNode.
- * 
+ *
  * @author mvw@tigris.org
  */
 class PackagePortFigRect extends FigRect {
     private int indentX;
     private int tabHeight;
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param x the x
      * @param y the y
      * @param w the width
@@ -856,21 +856,21 @@ class PackagePortFigRect extends FigRect {
         this.indentX = ix;
         tabHeight = th;
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
-        int xs[] = {r.x, r.x + r.width - indentX, r.x + r.width - indentX, 
+        int xs[] = {r.x, r.x + r.width - indentX, r.x + r.width - indentX,
                     r.x + r.width,   r.x + r.width,  r.x,            r.x};
         int ys[] = {r.y, r.y,                     r.y + tabHeight,
                     r.y + tabHeight, r.y + r.height, r.y + r.height, r.y};
         Point p = Geometry.ptClosestTo(
-                xs, 
+                xs,
                 ys,
                 7 , anotherPt);
         return p;
     }
-    
-}    
+
+}

@@ -30,11 +30,15 @@ import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 
-/** 
+/**
  * A critic to detect when a state has too many ingoing and
  * outgoing transitions.
  */
 public class CrTooManyTransitions extends AbstractCrTooMany {
+    /**
+     * Threshold.
+     */
+    private static final int TRANSITIONS_THRESHOLD = 10;
 
     /**
      * The constructor.
@@ -42,7 +46,7 @@ public class CrTooManyTransitions extends AbstractCrTooMany {
     public CrTooManyTransitions() {
         setupHeadAndDesc();
 	addSupportedDecision(UMLDecision.STATE_MACHINES);
-	setThreshold(10);
+	setThreshold(TRANSITIONS_THRESHOLD);
 	addTrigger("incoming");
 	addTrigger("outgoing");
 
@@ -50,19 +54,26 @@ public class CrTooManyTransitions extends AbstractCrTooMany {
 
     /**
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *         java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAStateVertex(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAStateVertex(dm))) {
+            return NO_PROBLEM;
+        }
 	Object sv = /*(MStateVertex)*/ dm;
 
-	int threshold = getThreshold();
 	Collection in = Model.getFacade().getIncomings(sv);
 	Collection out = Model.getFacade().getOutgoings(sv);
 	int inSize = (in == null) ? 0 : in.size();
 	int outSize = (out == null) ? 0 : out.size();
-	if (inSize + outSize <= threshold) return NO_PROBLEM;
+	if (inSize + outSize <= getThreshold()) {
+            return NO_PROBLEM;
+        }
 	return PROBLEM_FOUND;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5732942378849267065L;
 } /* end class CrTooManyTransitions */

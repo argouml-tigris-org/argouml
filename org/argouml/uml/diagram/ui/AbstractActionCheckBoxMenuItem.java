@@ -31,10 +31,10 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
 
 /**
- * This class adds the common algorithms 
- * for handling multiple targets 
+ * This class adds the common algorithms
+ * for handling multiple targets
  * for a checkbox menuitem to the UMLAction.
- * 
+ *
  * @author mvw@tigris.org
  */
 abstract class AbstractActionCheckBoxMenuItem extends UMLAction {
@@ -42,13 +42,13 @@ abstract class AbstractActionCheckBoxMenuItem extends UMLAction {
     public AbstractActionCheckBoxMenuItem(String key, boolean hasIcon) {
         super(key, hasIcon);
     }
-       
+
     /**
      * This action should be enabled when: <ul>
-     * <li>all targets are modelelements that support this checkmark and 
-     * <li>all targets have the checkmark either on or off 
+     * <li>all targets are modelelements that support this checkmark and
+     * <li>all targets have the checkmark either on or off
      *     (mixed is not yet supported, but could be if a tri-state
-     *     checkmark is implemented). 
+     *     checkmark is implemented).
      * </ul>
      */
     public boolean isEnabled() {
@@ -71,7 +71,7 @@ abstract class AbstractActionCheckBoxMenuItem extends UMLAction {
         }
         return result;
     }
-    
+
     /**
      * @param t the target modelelement
      * @return the value of the checkmark for this modelelement
@@ -80,7 +80,7 @@ abstract class AbstractActionCheckBoxMenuItem extends UMLAction {
 
     /**
      * This action is performed on ALL targets.
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public final void actionPerformed(ActionEvent e) {
@@ -91,7 +91,7 @@ abstract class AbstractActionCheckBoxMenuItem extends UMLAction {
             toggleValueOfTarget(t);
         }
     }
-    
+
     /**
      * @param t the target modelelement
      */

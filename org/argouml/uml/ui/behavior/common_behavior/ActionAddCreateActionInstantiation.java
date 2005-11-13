@@ -41,7 +41,7 @@ public class ActionAddCreateActionInstantiation extends AbstractActionAddModelEl
 
     private Object choiceClass = Model.getMetaTypes().getClassifier();
 
-   
+
     public ActionAddCreateActionInstantiation() {
         super();
         setMultiSelect(false);
@@ -55,7 +55,7 @@ public class ActionAddCreateActionInstantiation extends AbstractActionAddModelEl
         if (selected != null && selected.size()>=1)
         Model.getCommonBehaviorHelper().setInstantiation(getTarget(), selected.get(0));
         else
-            Model.getCommonBehaviorHelper().setInstantiation(getTarget(), null);       
+            Model.getCommonBehaviorHelper().setInstantiation(getTarget(), null);
     }
 
     /**

@@ -26,9 +26,9 @@ package org.argouml.uml.diagram.ui;
 
 
 /**
-* An interface to be implemented by any Fig that may or may not 
+* An interface to be implemented by any Fig that may or may not
 * show a full path (of which the segments are seperated by ::).
-* 
+*
 * @author mvw@tigris.org
 */
 public interface PathContainer {

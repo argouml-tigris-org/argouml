@@ -92,7 +92,7 @@ import org.tigris.gef.presentation.Fig;
 public class RESequenceDiagramDialog extends ArgoDialog implements ActionListener, ItemListener {
 
     private final static int X_OFFSET = 10;
-	
+
     /**
      * Constructor.
      *
@@ -272,7 +272,7 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
 		_modeChoice.addItem("Traverse calls automatically with a chosen depth");
 		_modeChoice.addItemListener(this);
 		content.add(_modeChoice, constraints);
-		
+
 		_manuPanel = getManuallyTab();
 		_autoPanel = getAutomaticallyTab();
 
@@ -280,7 +280,7 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         _changingPanel = new JPanel(new BorderLayout(0, 0));
 		_changingPanel.add(_manuPanel, BorderLayout.CENTER);
         content.add(_changingPanel, constraints);
-		
+
 		return content;
     }
 

@@ -39,7 +39,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.swingext.SpacerPanel;
@@ -51,31 +50,25 @@ import org.tigris.gef.ui.ColorRenderer;
  * line and fill color information.
  *
  */
-public class StylePanelFig extends StylePanel implements ItemListener,
+public class StylePanelFig
+    extends StylePanel
+    implements ItemListener,
         FocusListener, KeyListener {
+    private static final String CUSTOM_ITEM =
+        Translator.localize("label.stylepane.custom") + "...";
 
-    private static final Logger LOG = Logger
-            .getLogger(StylePanelFig.class);
-
-    private static final String CUSTOM_ITEM = Translator
-            .localize("label.stylepane.custom")
-            + "...";
-
-    private JLabel bboxLabel = new JLabel(Translator
-            .localize("label.stylepane.bounds")
-            + ": ");
+    private JLabel bboxLabel =
+        new JLabel(Translator.localize("label.stylepane.bounds") + ": ");
 
     private JTextField bboxField = new JTextField();
 
-    private JLabel fillLabel = new JLabel(Translator
-            .localize("label.stylepane.fill")
-            + ": ");
+    private JLabel fillLabel =
+        new JLabel(Translator.localize("label.stylepane.fill") + ": ");
 
     private JComboBox fillField = new JComboBox();
 
-    private JLabel lineLabel = new JLabel(Translator
-            .localize("label.stylepane.line")
-            + ": ");
+    private JLabel lineLabel =
+        new JLabel(Translator.localize("label.stylepane.line") + ": ");
 
     private JComboBox lineField = new JComboBox();
 
@@ -86,8 +79,8 @@ public class StylePanelFig extends StylePanel implements ItemListener,
     private SpacerPanel spacer3 = new SpacerPanel();
 
     /**
-     * The constructor of the style panel of a Fig. 
-     * This constructor does not create any contents of the panel. 
+     * The constructor of the style panel of a Fig.
+     * This constructor does not create any contents of the panel.
      *
      * @param title the title string
      */
@@ -112,7 +105,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
 
         fillField.setRenderer(new ColorRenderer());
         lineField.setRenderer(new ColorRenderer());
-        
+
         bboxLabel.setLabelFor(bboxField);
         add(bboxLabel);
         add(bboxField);
@@ -120,7 +113,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
         fillLabel.setLabelFor(fillField);
         add(fillLabel);
         add(fillField);
-        
+
         lineLabel.setLabelFor(lineField);
         add(lineLabel);
         add(lineField);
@@ -202,8 +195,9 @@ public class StylePanelFig extends StylePanel implements ItemListener,
 
         if (getPanelTarget() instanceof FigEdgeModelElement) {
             hasEditableBoundingBox(false);
-        } else
+        } else {
             hasEditableBoundingBox(true);
+        }
 
         // The boundary box as held in the target fig, and as listed in
         // the
@@ -306,14 +300,18 @@ public class StylePanelFig extends StylePanel implements ItemListener,
         // field is
         // empty.
         String bboxStr = bboxField.getText().trim();
-        if (bboxStr.length() == 0) { return null; } // Parse the string as if
+        if (bboxStr.length() == 0) {
+            return null;
+        } // Parse the string as if
         // possible
         Rectangle res = new Rectangle();
-        java.util.StringTokenizer st = new java.util.StringTokenizer(bboxStr,
-                ", ");
+        java.util.StringTokenizer st =
+            new java.util.StringTokenizer(bboxStr, ", ");
         try {
             boolean changed = false;
-            if (!st.hasMoreTokens()) return getPanelTarget().getBounds();
+            if (!st.hasMoreTokens()) {
+                return getPanelTarget().getBounds();
+            }
             res.x = Integer.parseInt(st.nextToken());
             if (!st.hasMoreTokens()) {
                 res.y = getPanelTarget().getBounds().y;
@@ -369,7 +367,8 @@ public class StylePanelFig extends StylePanel implements ItemListener,
      */
     protected void handleCustomColor(JComboBox field, String title,
             Color targetColor) {
-        Color newColor = JColorChooser.showDialog(ProjectBrowser.getInstance(),
+        Color newColor =
+            JColorChooser.showDialog(ProjectBrowser.getInstance(),
                 title, targetColor);
         if (newColor != null) {
             field.insertItemAt(newColor, field.getItemCount() - 1);
@@ -384,10 +383,13 @@ public class StylePanelFig extends StylePanel implements ItemListener,
      */
     public void setTargetFill() {
         Object c = fillField.getSelectedItem();
-        if (getPanelTarget() == null || c == null) return;
+        if (getPanelTarget() == null || c == null) {
+            return;
+        }
         Color oldColor = getPanelTarget().getFillColor();
-        if (c instanceof Color) 
+        if (c instanceof Color) {
             getPanelTarget().setFillColor((Color) c);
+        }
         getPanelTarget().setFilled(c instanceof Color);
         getPanelTarget().endTrans();
         if (!c.equals(oldColor)) {
@@ -400,9 +402,13 @@ public class StylePanelFig extends StylePanel implements ItemListener,
      */
     public void setTargetLine() {
         Object c = lineField.getSelectedItem();
-        if (getPanelTarget() == null || c == null) return;
+        if (getPanelTarget() == null || c == null) {
+            return;
+        }
         Color oldColor = getPanelTarget().getLineColor();
-        if (c instanceof Color) getPanelTarget().setLineColor((Color) c);
+        if (c instanceof Color) {
+            getPanelTarget().setLineColor((Color) c);
+        }
         getPanelTarget().setLineWidth((c instanceof Color) ? 1 : 0);
         getPanelTarget().endTrans();
         if (!c.equals(oldColor)) {
@@ -537,4 +543,8 @@ public class StylePanelFig extends StylePanel implements ItemListener,
         return spacer3;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -6232843473753751128L;
 }

@@ -94,7 +94,7 @@ public class FigComment
 
     private FigPoly outlineFig;
     private FigPoly urCorner; // the upper right corner
-    
+
     /**
      * Flag to indicate that we have just been created. This is to fix the
      * problem with loading comments that have stereotypes already
@@ -427,14 +427,14 @@ public class FigComment
             storeBody(ft.getText());
         }
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
         showHelp("parsing.help.comment");
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
@@ -494,7 +494,7 @@ public class FigComment
                          stereoMin.width);
             aSize.height += stereoMin.height;
         }
-        
+
         // And add the gaps around the textfield to get the minimum
         // size of the note.
         return new Dimension(aSize.width + 4 + dogear,
@@ -508,23 +508,23 @@ public class FigComment
         if (bodyTextFig == null) {
             return;
         }
-        
+
         Dimension stereoMin = getStereotypeFig().getMinimumSize();
-        
+
         int stereotypeHeight = 0;
         if (getStereotypeFig().isVisible()) {
             stereotypeHeight = stereoMin.height;
         }
-        
+
         Rectangle oldBounds = getBounds();
 
         // Resize the text figure
-        bodyTextFig.setBounds(px + 2, py + 2 + stereotypeHeight, 
+        bodyTextFig.setBounds(px + 2, py + 2 + stereotypeHeight,
                 w - 4 - dogear, h - 4 - stereotypeHeight);
 
         getStereotypeFig().setBounds(px + 2, py + 2,
                 w - 4 - dogear, stereoMin.height);
-        
+
         // Resize the big port around the figure
         getBigPort().setBounds(px, py, w, h);
 
@@ -570,7 +570,7 @@ public class FigComment
 
         if (mee instanceof AttributeChangeEvent
                 && mee.getPropertyName().equals("body")) {
-            
+
             bodyTextFig.setText(mee.getNewValue().toString());
             calcBounds();
             setBounds(getBounds());
@@ -605,7 +605,7 @@ public class FigComment
         Rectangle rect = getBounds();
 
         Dimension stereoMin = getStereotypeFig().getMinimumSize();
-        
+
         if (Model.getFacade().getStereotypes(me).isEmpty()) {
 
             if (getStereotypeFig().isVisible()) {
@@ -629,7 +629,7 @@ public class FigComment
                 if (!newlyCreated) {
                     rect.y -= stereoMin.height;
                     rect.height += stereoMin.height;
-                    rect.width = 
+                    rect.width =
                         Math.max(getMinimumSize().width, rect.width);
                     setBounds(rect.x, rect.y, rect.width, rect.height);
                     calcBounds();
@@ -646,12 +646,12 @@ public class FigComment
      */
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
-        int xs[] = {r.x, r.x + r.width - dogear, r.x + r.width, 
+        int xs[] = {r.x, r.x + r.width - dogear, r.x + r.width,
                     r.x + r.width,  r.x,            r.x};
         int ys[] = {r.y, r.y,                    r.y + dogear,
                     r.y + r.height, r.y + r.height, r.y};
         Point p = Geometry.ptClosestTo(
-                xs, 
+                xs,
                 ys,
                 6 , anotherPt);
         return p;

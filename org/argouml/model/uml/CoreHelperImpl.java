@@ -1169,7 +1169,7 @@ class CoreHelperImpl implements CoreHelper {
 	        nsmodel.getFacade().getConnections(relationship).iterator();
 	    if (it.hasNext()) {
 		return nsmodel.getFacade().getInstance(it.next());
-	    } 
+	    }
             return null;
         }
         if (relationship instanceof MAssociation) {
@@ -1249,7 +1249,7 @@ class CoreHelperImpl implements CoreHelper {
 		it.next();
 		if (it.hasNext()) {
 		    return nsmodel.getFacade().getInstance(it.next());
-		} 
+		}
 		return null;
 	    }
             return null;
@@ -1671,7 +1671,7 @@ class CoreHelperImpl implements CoreHelper {
 	    getChildren(currentChildren, (MGeneralization) it.next(), generalizations);
 	}
     }
-	
+
 
     /**
      * Returns all interfaces that are realized by the given class or
@@ -1768,7 +1768,7 @@ class CoreHelperImpl implements CoreHelper {
         if (kindType.equals("composite")) {
             return MAggregationKind.COMPOSITE.equals(
                             associationEnd1.getAggregation());
-        } 
+        }
         throw new IllegalArgumentException("kindType: " + kindType
 					       + " not supported");
     }
@@ -2488,7 +2488,7 @@ class CoreHelperImpl implements CoreHelper {
                 ((MStructuralFeature) handle).setChangeability(
                     MChangeableKind.CHANGEABLE);
                     return;
-            } 
+            }
             ((MStructuralFeature) handle).setChangeability(
                     MChangeableKind.FROZEN);
             return;
@@ -2906,7 +2906,7 @@ class CoreHelperImpl implements CoreHelper {
                 }
             }
             final String safeName = name;
-            
+
             final MModelElement modelElement = (MModelElement) handle;
 
             Model.notifyMementoCreationObserver(
@@ -3429,9 +3429,9 @@ class CoreHelperImpl implements CoreHelper {
         if (handle instanceof MModelElement && residence instanceof MElementResidence) {
             ((MModelElement) handle).addElementResidence((MElementResidence) residence);
             return;
-        }	
+        }
         throw new IllegalArgumentException("handle: " + handle
-                + " or residence: " + residence);        
+                + " or residence: " + residence);
 	}
 
 	/* (non-Javadoc)
@@ -3441,9 +3441,9 @@ class CoreHelperImpl implements CoreHelper {
         if (handle instanceof MAssociationRole && connection instanceof MAssociationEnd) {
             ((MAssociationRole) handle).removeConnection((MAssociationEnd) connection);
             return;
-        }	
+        }
         throw new IllegalArgumentException("handle: " + handle
-                + " or connection: " + connection);        
+                + " or connection: " + connection);
 	}
 
 	/* (non-Javadoc)
@@ -3453,9 +3453,9 @@ class CoreHelperImpl implements CoreHelper {
         if (handle instanceof MModelElement && residence instanceof MElementResidence) {
             ((MModelElement) handle).removeElementResidence((MElementResidence) residence);
             return;
-        }	
+        }
         throw new IllegalArgumentException("handle: " + handle
-                + " or residence: " + residence);        
+                + " or residence: " + residence);
 	}
 
     /**

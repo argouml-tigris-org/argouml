@@ -114,7 +114,7 @@ public class TabDocumentation extends PropPanel {
         JScrollPane spDocs = new JScrollPane();
         spDocs.getViewport().add(doc);
         addField(Translator.localize("label.documentation"), spDocs);
-        
+
         // Comment.name text field - editing disabled
         UMLTextArea2 comment = new UMLTextArea2(
                 new UMLModelElementCommentDocument(false));

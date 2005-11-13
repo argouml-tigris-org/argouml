@@ -219,7 +219,7 @@ public class FigAssociation extends FigEdgeModelElement {
         }
 	super.setOwner(newOwner);
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
      */
@@ -243,12 +243,12 @@ public class FigAssociation extends FigEdgeModelElement {
             }
         }
     }
-    
+
     /**
      * Get all model elements associated with this assocation
      * include stereotypes, association ends, and stereotypes
      * on association ends.
-     * 
+     *
      * @param element association to get all associated elements for
      * @return collection of associated elements
      */
@@ -280,10 +280,10 @@ public class FigAssociation extends FigEdgeModelElement {
 	if (conn == null || conn.size() == 0) {
 	    return;
 	}
-    
-	String msg = 
+
+	String msg =
 	    Translator.localize("statusmsg.bar.error.parsing.multiplicity");
-	
+
 	if (ft == srcRole) {
 	    Object srcAE = (conn.toArray())[0];
 	    Model.getCoreHelper().setName(srcAE, srcRole.getText());
@@ -318,7 +318,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	    }
 	}
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
@@ -350,9 +350,9 @@ public class FigAssociation extends FigEdgeModelElement {
         String visi = "";
         Object et = Model.getFacade().getType(end);
         if (Model.getFacade().isNavigable(end)
-	    && (Model.getFacade().isAClass(et) 
+	    && (Model.getFacade().isAClass(et)
                 || Model.getFacade().isAInterface(et))) {
-	    visi = 
+	    visi =
 	        Notation.generate(this, Model.getFacade().getVisibility(end));
         }
         Collection stereos = Model.getFacade().getStereotypes(end);
@@ -385,14 +385,14 @@ public class FigAssociation extends FigEdgeModelElement {
         }
         super.propertyChange(e);
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent e) {
 	super.modelChanged(e);
 	Object association = getOwner(); //MAssociation
-	if (association == null || getLayer() == null 
+	if (association == null || getLayer() == null
             || Model.getUmlFactory().isRemoved(association)) {
 	    return;
 	}
@@ -479,9 +479,9 @@ public class FigAssociation extends FigEdgeModelElement {
 	Vector popUpActions = super.getPopUpActions(me);
         /* Check if multiple items are selected: */
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
-        /* None of the menu-items below apply 
+        /* None of the menu-items below apply
          * when multiple modelelements are selected:*/
-        if (ms) return popUpActions; 
+        if (ms) return popUpActions;
 
 	// x^2 + y^2 = r^2  (equation of a circle)
 	Point firstPoint = this.getFirstPoint();

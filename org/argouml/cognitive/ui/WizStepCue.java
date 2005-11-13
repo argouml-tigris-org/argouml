@@ -33,7 +33,7 @@ import javax.swing.border.EtchedBorder;
 import org.argouml.swingext.SpacerPanel;
 
 
-/** 
+/**
  * A non-modal wizard step that shows instructions and prompts
  * the user to enter a string.
  *
@@ -98,7 +98,10 @@ public class WizStepCue extends WizStep {
 	getMainPanel().add(spacer2);
     }
 
-
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5886729588114736302L;
 } /* end class WizStepCue */
 
 

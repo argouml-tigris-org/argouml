@@ -78,7 +78,7 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
 
     /** Overrule this to add extra buttons. */
     protected void addExtraButtons() { }
-    
+
     /**
      * @return Returns the incomingScroll.
      */

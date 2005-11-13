@@ -32,7 +32,7 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewSignal;
 
 /**
- * 
+ *
  * @author MarkusK
  *
  */

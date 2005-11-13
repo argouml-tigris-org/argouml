@@ -28,7 +28,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  * Action for removing (moving to trash) objects from the model. Objects can be:
- * - Modelelements 
+ * - Modelelements
  * - Diagrams (argodiagram and it's children)
  * The root model and the last diagram in the project can not be removed. The
  * reason for this is to prevent problems updating the detailspane and the

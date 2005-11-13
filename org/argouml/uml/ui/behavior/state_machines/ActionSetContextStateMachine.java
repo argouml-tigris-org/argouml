@@ -39,7 +39,7 @@ import org.argouml.uml.ui.UMLComboBox2;
 public class ActionSetContextStateMachine extends UMLAction {
 
     private Logger LOG = Logger.getLogger(ActionSetContextStateMachine.class);
-    
+
     private static final ActionSetContextStateMachine SINGLETON =
 	new ActionSetContextStateMachine();
 

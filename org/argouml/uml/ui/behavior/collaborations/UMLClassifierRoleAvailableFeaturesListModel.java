@@ -55,7 +55,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
         setAllElements(Model.getCollaborationsHelper()
                 .allAvailableFeatures(getTarget()));
     }
-    
+
     public void propertyChange(PropertyChangeEvent e) {
         if (e instanceof AddAssociationEvent) {
             if (e.getPropertyName().equals("base")
@@ -90,7 +90,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
                 super.propertyChange(e);
         }
     }
-    
+
 
     /**
      * TODO: Why this function that the other models do not need?

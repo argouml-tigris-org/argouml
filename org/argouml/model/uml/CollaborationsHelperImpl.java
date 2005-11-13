@@ -1036,7 +1036,7 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
      * java.lang.Object, java.lang.Object)
      */
     public void removeInteraction(Object collab, Object interaction) {
-        if (collab instanceof MCollaboration 
+        if (collab instanceof MCollaboration
                 && interaction instanceof MInteraction) {
             ((MCollaboration) collab).removeInteraction(
                     (MInteraction) interaction);
@@ -1044,7 +1044,7 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
         }
         throw new IllegalArgumentException(
                 "collab: " + collab
-                + " or interaction: " + interaction);		
+                + " or interaction: " + interaction);
     }
 }
 

@@ -46,16 +46,16 @@ class ActionModifierAbstract extends AbstractActionCheckBoxMenuItem {
         Model.getCoreHelper().setAbstract(t,
                             !Model.getFacade().isAbstract(t));
     }
-    
+
     /**
      * This action should be enabled when: <ul>
-     * <li>all targets are modelelements that support 
-     *     the "abstract" checkmark and 
-     * <li>all targets are either abstract or not 
+     * <li>all targets are modelelements that support
+     *     the "abstract" checkmark and
+     * <li>all targets are either abstract or not
      *     (mixed is not yet supported, but could be if a tri-state
-     *     checkmark is implemented) 
+     *     checkmark is implemented)
      * </ul>
-     * 
+     *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement.AbstractActionCheckBoxMenuItem#valueOfTarget(java.lang.Object)
      */
     boolean valueOfTarget(Object t) {

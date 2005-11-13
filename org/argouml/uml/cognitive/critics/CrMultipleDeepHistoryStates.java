@@ -41,7 +41,9 @@ import org.argouml.uml.cognitive.UMLToDoItem;
  * @author pepargouml@yahoo.es
  */
 public class CrMultipleDeepHistoryStates extends CrUML {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
             Logger.getLogger(CrMultipleDeepHistoryStates.class);
 
@@ -60,12 +62,15 @@ public class CrMultipleDeepHistoryStates extends CrUML {
      * org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-        if (!(Model.getFacade().isAPseudostate(dm))) return NO_PROBLEM;
+        if (!(Model.getFacade().isAPseudostate(dm))) {
+            return NO_PROBLEM;
+        }
         Object k = Model.getFacade().getPseudostateKind(dm);
         if (!Model.getFacade()
                 .equalsPseudostateKind(k,
-                        Model.getPseudostateKind().getDeepHistory()))
+                        Model.getPseudostateKind().getDeepHistory())) {
             return NO_PROBLEM;
+        }
 
         // container state / composite state
         Object cs = Model.getFacade().getModelElementContainer(dm);
@@ -80,15 +85,18 @@ public class CrMultipleDeepHistoryStates extends CrUML {
             if (Model.getFacade().isAPseudostate(sv)
                     && Model.getFacade().equalsPseudostateKind(
                             Model.getFacade().getPseudostateKind(sv),
-                            Model.getPseudostateKind().getDeepHistory()))
+                            Model.getPseudostateKind().getDeepHistory())) {
                 initialStateCount++;
+            }
         }
-        if (initialStateCount > 1) return PROBLEM_FOUND;
+        if (initialStateCount > 1) {
+            return PROBLEM_FOUND;
+        }
         return NO_PROBLEM;
     }
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object, 
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
      * org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
@@ -125,7 +133,9 @@ public class CrMultipleDeepHistoryStates extends CrUML {
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-        if (!isActive()) return false;
+        if (!isActive()) {
+            return false;
+        }
         ListSet offs = i.getOffenders();
         Object dm = offs.firstElement();
         ListSet newOffs = computeOffenders(dm);
@@ -133,5 +143,9 @@ public class CrMultipleDeepHistoryStates extends CrUML {
         return res;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -4893102976661022514L;
 } /* end class CrMultipleDeepHistoryStates */
 

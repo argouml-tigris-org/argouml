@@ -81,7 +81,7 @@ public class ActionEdgesDisplay extends UMLAction {
     /**
      * TODO: Support commentEdges.
      * TODO: Support associations to self.
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

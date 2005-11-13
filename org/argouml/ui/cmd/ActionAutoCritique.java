@@ -37,9 +37,12 @@ import org.argouml.uml.ui.UMLAction;
  */
 class ActionAutoCritique extends UMLAction {
 
+    /**
+     * The constructor.
+     */
     public ActionAutoCritique() {
 	super("action.toggle-auto-critique", NO_ICON);
-	putValue("SELECTED", 
+	putValue("SELECTED",
                 new Boolean(Designer.theDesigner().getAutoCritique()));
     }
 
@@ -57,5 +60,10 @@ class ActionAutoCritique extends UMLAction {
         ToDoList.getInstance().setPaused(!ToDoList.getInstance().isPaused());
     }
 
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 9057306108717070004L;
 } /* end class ActionAutoCritique */
 

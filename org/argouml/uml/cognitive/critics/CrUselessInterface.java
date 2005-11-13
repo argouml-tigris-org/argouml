@@ -56,21 +56,29 @@ public class CrUselessInterface extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!Model.getFacade().isAInterface(dm))
-	    return NO_PROBLEM;
+	if (!Model.getFacade().isAInterface(dm)) {
+            return NO_PROBLEM;
+        }
 
-	if (!Model.getFacade().isPrimaryObject(dm))
-	    return NO_PROBLEM;
+	if (!Model.getFacade().isPrimaryObject(dm)) {
+            return NO_PROBLEM;
+        }
 
 
-	Iterator iter = 
+	Iterator iter =
 	    Model.getFacade().getSupplierDependencies(dm).iterator();
 
-	while (iter.hasNext())
-	    if (Model.getFacade().isRealize(iter.next()))
+	while (iter.hasNext()) {
+	    if (Model.getFacade().isRealize(iter.next())) {
 		return NO_PROBLEM;
+            }
+        }
 
 	return PROBLEM_FOUND;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -6586457111453473553L;
 } /* end class CrUselessInterface */

@@ -25,8 +25,8 @@
 package org.argouml.uml.generator;
 
 /**
- * Holds informations about a source unit and its content, whether 
- * it exists only in memory or it's stored in a file. 
+ * Holds informations about a source unit and its content, whether
+ * it exists only in memory or it's stored in a file.
  * @author aslo
  */
 public class SourceUnit {
@@ -35,12 +35,12 @@ public class SourceUnit {
      */
     public static final String FILE_SEPARATOR =
         System.getProperty("file.separator");
-    
+
     private Language language;
     private String name;
     private String basePath;
     private String content;
-    
+
     /**
      * @param theName Name of the unit.
      * @param path The path relative to the project source path.
@@ -51,7 +51,7 @@ public class SourceUnit {
         setBasePath(path);
         this.content = theContent;
     }
-    
+
     /**
      * @param fullName Name with path relative to the project source path.
      * @param theContent The source code of the unit.
@@ -60,28 +60,28 @@ public class SourceUnit {
         setFullName(fullName);
         content = theContent;
     }
-    
+
     /**
      * @return Returns the source code of the unit.
      */
     public String getContent() {
         return content;
     }
-    
+
     /**
      * @param theContent The source code for this unit.
      */
     public void setContent(String theContent) {
         this.content = theContent;
     }
-    
+
     /**
      * @return Returns the file name of this unit, without path.
      */
     public String getName() {
         return name;
     }
-    
+
     /**
      * @param filename The file name of this unit, without path.
      */
@@ -93,7 +93,7 @@ public class SourceUnit {
             name = filename;
         }
     }
-    
+
     /**
      * @return Returns The base path of the unit (relative to the
      * project source path).
@@ -101,7 +101,7 @@ public class SourceUnit {
     public String getBasePath() {
         return basePath;
     }
-    
+
     /**
      * @param path The base path of the unit (relative to the
      * project source path).
@@ -114,7 +114,7 @@ public class SourceUnit {
             basePath = path;
         }
     }
-    
+
     /**
      * @return Returns The name with path of the unit (relative to the
      * project source path).
@@ -122,7 +122,7 @@ public class SourceUnit {
     public String getFullName() {
         return basePath + System.getProperty("file.separator") + name;
     }
-    
+
     /**
      * @param path The full name (with path) of the unit, relative to the
      * project source path.
@@ -137,14 +137,14 @@ public class SourceUnit {
             name = path;
         }
     }
-    
+
     /**
      * @return Returns the language.
      */
     public Language getLanguage() {
         return language;
     }
-    
+
     /**
      * @param lang The language to set.
      */

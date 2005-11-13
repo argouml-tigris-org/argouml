@@ -27,15 +27,15 @@ package org.argouml.uml.notation;
 import org.argouml.model.Model;
 
 /**
- * This abstract class forms the basis of all Notation providers 
+ * This abstract class forms the basis of all Notation providers
  * for the text shown next to a Transition. Subclass this for all languages.
- * 
+ *
  * @author mvw@tigris.org
  */
 public abstract class TransitionNotation extends ValueHandler {
 
     protected Object myTransition;
-    
+
     /**
      * The constructor.
      */
@@ -51,7 +51,7 @@ public abstract class TransitionNotation extends ValueHandler {
      */
     public void putValue(String key, Object newValue) {
         // TODO: Auto-generated method stub
-        
+
     }
 
 

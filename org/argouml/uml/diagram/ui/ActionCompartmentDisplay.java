@@ -82,7 +82,7 @@ public class ActionCompartmentDisplay extends UMLAction {
      * Static instance to show the attribute compartment of a class.
      */
     private static final UMLAction SHOW_ATTR_COMPARTMENT =
-        new ActionCompartmentDisplay(true, 
+        new ActionCompartmentDisplay(true,
                 "action.show-attribute-compartment", 0);
 
     /**
@@ -96,7 +96,7 @@ public class ActionCompartmentDisplay extends UMLAction {
      * Static instance to show the operation compartment of a class.
      */
     private static final UMLAction SHOW_OPER_COMPARTMENT =
-        new ActionCompartmentDisplay(true, 
+        new ActionCompartmentDisplay(true,
                 "action.show-operation-compartment", 1);
 
     /**
@@ -169,9 +169,9 @@ public class ActionCompartmentDisplay extends UMLAction {
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * Return the compartment show and/or hide actions 
+     * Return the compartment show and/or hide actions
      * needed for the selected Figs.
-     * Only returns the actions for the menu-items that make sense 
+     * Only returns the actions for the menu-items that make sense
      * for the current selection.
      */
     public static Collection getActions() {
@@ -188,25 +188,25 @@ public class ActionCompartmentDisplay extends UMLAction {
         while (i.hasNext()) {
             Fig f = (Fig) i.next();
             if (f instanceof AttributesCompartmentContainer) {
-                boolean v = 
+                boolean v =
                     ((AttributesCompartmentContainer) f).isAttributesVisible();
                 if (v) aOn = true;
                 else aOff = true;
             }
             if (f instanceof OperationsCompartmentContainer) {
-                boolean v = 
+                boolean v =
                     ((OperationsCompartmentContainer) f).isOperationsVisible();
                 if (v) oOn = true;
                 else oOff = true;
             }
             if (f instanceof ExtensionsCompartmentContainer) {
-                boolean v = 
+                boolean v =
                     ((ExtensionsCompartmentContainer) f).isExtensionPointVisible();
                 if (v) eOn = true;
                 else eOff = true;
             }
         }
-        
+
         if ((aOn || oOn) && (aOn || aOff)) {
             actions.add(HIDE_ALL_COMPARTMENTS);
         }
@@ -221,17 +221,17 @@ public class ActionCompartmentDisplay extends UMLAction {
         }
         if (oOn) {
             actions.add(HIDE_OPER_COMPARTMENT);
-        } 
+        }
         if (oOff) {
             actions.add(SHOW_OPER_COMPARTMENT);
         }
         if (eOn) {
             actions.add(HIDE_EXTPOINT_COMPARTMENT);
-        } 
+        }
         if (eOff) {
             actions.add(SHOW_EXTPOINT_COMPARTMENT);
         }
-        
+
         return actions;
     }
 
@@ -246,7 +246,7 @@ public class ActionCompartmentDisplay extends UMLAction {
      * @param ae  The event that triggered us.
      */
     public void actionPerformed(ActionEvent ae) {
-	Iterator i = 
+	Iterator i =
             Globals.curEditor().getSelectionManager().selections().iterator();
 	while (i.hasNext()) {
 	    Selection sel = (Selection) i.next();

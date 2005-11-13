@@ -48,20 +48,20 @@ import org.tigris.gef.presentation.FigNode;
 public class TabSrc
     extends TabText
     implements ItemListener {
-    
+
     private static final Logger LOG = Logger.getLogger(TabSrc.class);
-    
+
     private Language langName = null;
     private String fileName = null;
     private SourceUnit[] files = null;
-    
+
     private LanguageComboBox cbLang = new LanguageComboBox();
     private JComboBox cbFiles = new JComboBox();
-    
+
     ////////////////////////////////////////////////////////////////
     // constructor
-    
-    /** 
+
+    /**
      * Create a tab that contains a toolbar.
      * Then add a notation selector onto it.
      */
@@ -83,7 +83,7 @@ public class TabSrc
     protected void finalize() {
         cbLang.removeItemListener(this);
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // accessors
 
@@ -125,7 +125,7 @@ public class TabSrc
         Object modelTarget = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
         setShouldBeEnabled(Model.getFacade().isAClassifier(modelTarget));
         cbFiles.removeAllItems();
-        files = null;        
+        files = null;
         if (shouldBeEnabled()) {
             LOG.debug("TabSrc getting src for " + modelTarget);
             Collection code =
@@ -177,7 +177,7 @@ public class TabSrc
                 fileName = (String) cbFiles.getSelectedItem();
                 super.setTarget(getTarget());
             }
-            
+
         }
     }
 

@@ -62,9 +62,12 @@ import org.argouml.util.CollectionUtil;
  * </pre>
  */
 public class WizOperName extends WizMEName {
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(WizOperName.class);
 
-    private boolean possibleConstructor = false;
+    private boolean possibleConstructor;
 
     private boolean stereotypePathChosen;
 
@@ -72,13 +75,13 @@ public class WizOperName extends WizMEName {
 
     private String option1 = "This is not a constructor.";
 
-    private WizStepChoice step1 = null;
+    private WizStepChoice step1;
 
-    private WizStepCue step2 = null;
+    private WizStepCue step2;
 
     private Object oldStereotype;
 
-    private boolean oldStereotypeIsSet = false;
+    private boolean oldStereotypeIsSet;
 
     /**
      * @see org.argouml.cognitive.ui.Wizard#getNumSteps()
@@ -200,7 +203,8 @@ public class WizOperName extends WizMEName {
 
                 if (!oldStereotypeIsSet) {
                     // TODO: MULTIPLESTEREOTYPES
-                    oldStereotype = CollectionUtil.getFirstItemOrNull(
+                    oldStereotype =
+                        CollectionUtil.getFirstItemOrNull(
                             Model.getFacade().getStereotypes(oper));
                     oldStereotypeIsSet = true;
                 }
@@ -211,7 +215,7 @@ public class WizOperName extends WizMEName {
                 // put it there.
                 Object m = Model.getFacade().getModel(oper);
                 Object theStereotype = null;
-                for (Iterator iter = 
+                for (Iterator iter =
                         Model.getFacade().getOwnedElements(m).iterator();
                                         iter.hasNext();) {
                     Object candidate = iter.next();
@@ -313,4 +317,8 @@ public class WizOperName extends WizMEName {
         return ns;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -4013730212763172160L;
 } /* end class WizOperName */

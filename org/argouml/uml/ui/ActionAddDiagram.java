@@ -72,7 +72,7 @@ public abstract class ActionAddDiagram extends UMLAction {
             //changes...  to eliminate coupling on gui.
             ExplorerEventAdaptor.getInstance().modelElementAdded(ns);
             TargetManager.getInstance().setTarget(diagram);
-            
+
             super.actionPerformed(e);
         } else {
             LOG.error("No valid namespace found");

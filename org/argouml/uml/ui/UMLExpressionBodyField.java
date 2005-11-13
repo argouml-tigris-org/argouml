@@ -89,7 +89,7 @@ public class UMLExpressionBodyField extends JTextArea
         String oldText = getText();
         String newText = model.getBody();
         LOG.debug("UMLExpressionBodyField: update: " + oldText + " " + newText);
-        
+
         if (oldText == null || newText == null || !oldText.equals(newText)) {
             if (oldText != newText) {
                 LOG.debug("setNewText!!");

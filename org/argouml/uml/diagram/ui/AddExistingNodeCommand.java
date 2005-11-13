@@ -50,26 +50,26 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    
+
     /**
      * The UML object to be added to the diagram.
      */
     private Object object;
-    
+
     /**
      * the DropTargetDropEvent that caused this action
      */
     private DropTargetDropEvent dropEvent;
-    
+
     /**
-     * 0 if this is the 1st element dropped here, 
+     * 0 if this is the 1st element dropped here,
      * n if this is the (n+1)-th element dropped here.
      */
     private int count;
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param o the UML modelelement to be added
      */
     public AddExistingNodeCommand(Object o) {
@@ -78,14 +78,14 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
 
     /**
      * The constructor.
-     * 
+     *
      * @param o the UML modelelement to be added
-     * @param event the DropTargetDropEvent that caused this. 
-     *              Also <code>null</code> is acceptable 
-     * @param count 0 if this is the 1st element dropped here, 
+     * @param event the DropTargetDropEvent that caused this.
+     *              Also <code>null</code> is acceptable
+     * @param count 0 if this is the 1st element dropped here,
      *              n if this is the (n+1)-th element dropped here.
      */
-    public AddExistingNodeCommand(Object o, DropTargetDropEvent event, 
+    public AddExistingNodeCommand(Object o, DropTargetDropEvent event,
             int cnt) {
         object = o;
         dropEvent = event;
@@ -117,13 +117,13 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
         if (dropEvent == null) {
             Globals.mode(placeMode, false);
         } else {
-            /* Calculate the drop location, and place every n-th element 
+            /* Calculate the drop location, and place every n-th element
              * at an offset proportional to n. */
             Point p = new Point(
-                    dropEvent.getLocation().x + (count * 100), 
+                    dropEvent.getLocation().x + (count * 100),
                     dropEvent.getLocation().y);
-            /* Take canvas scrolling into account. 
-             * The implementation below does place the element correctly 
+            /* Take canvas scrolling into account.
+             * The implementation below does place the element correctly
              * when the canvas has been scrolled. */
             Rectangle r = ce.getJComponent().getVisibleRect();
             p.translate(r.x, r.y);
@@ -150,9 +150,9 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
                     false);
             placeMode.mouseReleased(me);
 
-            /* Set the size of the object's fig to minimum. 
-             * See issue 3410. 
-             * This binds the use of this Command to the 
+            /* Set the size of the object's fig to minimum.
+             * See issue 3410.
+             * This binds the use of this Command to the
              * current diagram of the current project! */
             ArgoDiagram diagram = ProjectManager.getManager()
                 .getCurrentProject().getActiveDiagram();

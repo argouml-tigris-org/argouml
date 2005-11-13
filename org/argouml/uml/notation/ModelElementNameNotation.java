@@ -27,17 +27,17 @@ package org.argouml.uml.notation;
 import org.argouml.model.Model;
 
 /**
- * This abstract class forms the basis of all Notation providers 
- * for the text shown in the Fig that represents the name of the modelelement. 
+ * This abstract class forms the basis of all Notation providers
+ * for the text shown in the Fig that represents the name of the modelelement.
  * Subclass this for all languages.
- * 
+ *
  * @author mvw@tigris.org
  */
 public abstract class ModelElementNameNotation extends ValueHandler {
 
     protected Object myModelElement;
-    
-    
+
+
     /**
      * The constructor.
      */

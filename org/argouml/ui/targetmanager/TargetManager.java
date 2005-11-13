@@ -21,6 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.ui.targetmanager;
 
 import java.awt.BorderLayout;
@@ -55,30 +56,30 @@ import org.tigris.gef.presentation.Fig;
  * The manager of the target of ArgoUML.
  * The target of ArgoUML is the element currently selected by the user.
  * This can either be an instance of a meta-class (an
- * Interface or a Class for example) but it can also be a diagram 
+ * Interface or a Class for example) but it can also be a diagram
  * or anything that is shown
  * on a diagram.<p>
  *
  * There can be multiple targets in case
- * someone selected multiple items in the explorer or on the diagram. 
- * This can be done by shift-clicking or Ctrl-clicking items, 
+ * someone selected multiple items in the explorer or on the diagram.
+ * This can be done by shift-clicking or Ctrl-clicking items,
  * or by drawing a box on the diagram around the items to select.<p>
- * 
+ *
  * In case multiple targets are selected, the target manager will add each
- * target to the beginning of the list of targets. This way, 
- * the first item of the list is the last selected item. 
- * Most functions in ArgoUML work on all selected items. 
- * However, a few (intentionally) only work on one target, 
- * such as the properties panels. 
- * These functions have 2 ways of retrieving the target they should work on: 
+ * target to the beginning of the list of targets. This way,
+ * the first item of the list is the last selected item.
+ * Most functions in ArgoUML work on all selected items.
+ * However, a few (intentionally) only work on one target,
+ * such as the properties panels.
+ * These functions have 2 ways of retrieving the target they should work on:
  * <ul>
- * <li>1. Use the functions that return one target only, 
+ * <li>1. Use the functions that return one target only,
  * such as getTarget(), getModelTarget(), getFigTarget().
- * <li>2. Use the first item in the list returned by 
+ * <li>2. Use the first item in the list returned by
  * getTargets(), getModelTargets(). </ul><p>
- * 
- * Remark: There is currently no function getFigs(), 
- * returning a list of selected figs. 
+ *
+ * Remark: There is currently no function getFigs(),
+ * returning a list of selected figs.
  * But you can obtain such a list from GEF. <p>
  *
  * The purpose of the targetmanager is to have a central spot where we
@@ -88,11 +89,12 @@ import org.tigris.gef.presentation.Fig;
  * in knowing wether the selection changed are acknowledged. <p>
  *
  * Note in particular that null is an invalid target.<p>
- * 
- * Thanks to the architecture of ArgoUML of Modelelements and Figs, 
- * one rule has been decided upon (by mvw@tigris.org): <br>
- * The list of targets shall not contain any Fig that has an owner. 
- * Instead, the owner is enlisted. 
+ *
+ * Thanks to the architecture of ArgoUML of Modelelements and Figs,
+ * one rule has been decided upon (by mvw@tigris.org):<ul>
+ * <li>The list of targets shall not contain any Fig that has an owner.
+ * Instead, the owner is enlisted.
+ * </ul>
  *
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -106,12 +108,12 @@ public final class TargetManager {
      * browser.
      * @author jaap.branderhorst@xs4all.nl
      */
-    private class HistoryManager implements TargetListener {
+    private final class HistoryManager implements TargetListener {
 
         private static final int MAX_SIZE = 100;
 
         /**
-         * The history with targets
+         * The history with targets.
          */
         private List history = new ArrayList();
 
@@ -122,7 +124,7 @@ public final class TargetManager {
         private boolean navigateBackward;
 
         /**
-         * The pointer to the current target in the history
+         * The pointer to the current target in the history.
          */
         private int currentTarget = -1;
 
@@ -151,8 +153,9 @@ public final class TargetManager {
                     oldTarget instanceof Fig
 		    ? ((Fig) oldTarget).getOwner()
 		    : oldTarget;
-                if (oldTarget == theModelTarget)
+                if (oldTarget == theModelTarget) {
                     return;
+                }
             }
             if (target != null && !navigateBackward) {
                 if (currentTarget + 1 == history.size()) {
@@ -201,12 +204,13 @@ public final class TargetManager {
          *
          */
         private void navigateForward() {
-            if (currentTarget >= history.size() - 1)
+            if (currentTarget >= history.size() - 1) {
                 throw new IllegalStateException(
 			"NavigateForward is not allowed "
 			+ "since the targetpointer is pointing at "
 			+ "the upper boundary "
 			+ "of the history");
+            }
             setTarget(((WeakReference) history.get(++currentTarget)).get());
         }
 
@@ -237,7 +241,8 @@ public final class TargetManager {
         }
 
         /**
-         * Checks if it's possible to navigate forward
+         * Checks if it's possible to navigate forward.
+         *
          * @return true if it's possible to navigate forward
          */
         private boolean navigateForwardPossible() {
@@ -325,8 +330,10 @@ public final class TargetManager {
                 // times in history
             }
             if (oldCurrentTarget != currentTarget) {
-                Actions.updateAllEnabled(); /*TODO: (MVW) Why? Actions is
-                * listening to target changes already... */
+                Actions.updateAllEnabled();
+                /* TODO: (MVW) Why? Actions is
+                 * listening to target changes already...
+                 */
             }
         }
 
@@ -368,12 +375,12 @@ public final class TargetManager {
     /**
      * Cache for the modeltarget. See getModelTarget.
      */
-    private Object modelTarget = null;
+    private Object modelTarget;
 
     /**
      * Cache for the figTarget. See getFigTarget.
      */
-    private Fig figTarget = null;
+    private Fig figTarget;
 
     /**
      * The list with targetlisteners.
@@ -392,9 +399,9 @@ public final class TargetManager {
     private boolean inTransaction = false;
 
     private Action addAttributeAction = new ActionAddAttribute();
-    
+
     private Action addOperationAction = new ActionAddOperation();
-    
+
     /**
      * Singleton retrieval method.
      * @return the targetmanager
@@ -404,23 +411,23 @@ public final class TargetManager {
     }
 
     /**
-     * Singleton constructor should remain private
+     * Singleton constructor should remain private.
      */
     private TargetManager() {
     }
-    
+
     /**
      * Only for debugging.
      */
     public void debugTM() {
-        if (dtm == null) { 
+        if (dtm == null) {
 //            dtm = new DebugTMDialog(targets);
 //            dtm.setVisible(true);
             ;
         }
     }
-    private DebugTMDialog dtm = null;
-    
+    private DebugTMDialog dtm;
+
     /**
      * Sets the targets to the single given object. If there are targets at the
      * moment of calling this method, these will be removed as targets. To
@@ -430,12 +437,14 @@ public final class TargetManager {
      * @param o The new target, null clears all targets.
      */
     public synchronized void setTarget(Object o) {
-	if (isInTargetTransaction())
-	    return;
+	if (isInTargetTransaction()) {
+            return;
+        }
 
 	if ((targets.size() == 0 && o == null)
-            || (targets.size() == 1 && targets.get(0).equals(o)))
-	    return;
+	        || (targets.size() == 1 && targets.get(0).equals(o))) {
+            return;
+        }
 
 	startTargetTransaction();
 
@@ -443,8 +452,8 @@ public final class TargetManager {
 	targets.clear();
 
 	if (o != null) {
-            if (o instanceof UMLDiagram) { // Needed for Argo startup :-( 
-                targets.add(o); 
+            if (o instanceof UMLDiagram) { // Needed for Argo startup :-(
+                targets.add(o);
             } else {
 	        targets.add(getOwner(o));
             }
@@ -452,7 +461,7 @@ public final class TargetManager {
 	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
 
         endTargetTransaction();
-        
+
         debugTM();
     }
 
@@ -471,12 +480,10 @@ public final class TargetManager {
 	if (TargetEvent.TARGET_SET.equals(eventName)) {
 	    fireTargetSet(event);
 	    return;
-	}
-	else if (TargetEvent.TARGET_ADDED.equals(eventName)) {
+	} else if (TargetEvent.TARGET_ADDED.equals(eventName)) {
 	    fireTargetAdded(event);
 	    return;
-	}
-	else if (TargetEvent.TARGET_REMOVED.equals(eventName)) {
+	} else if (TargetEvent.TARGET_REMOVED.equals(eventName)) {
 	    fireTargetRemoved(event);
 	    return;
 	}
@@ -506,30 +513,32 @@ public final class TargetManager {
      * an event will be fired also in case that that element would not equal
      * the element returned by getTarget().
      * Note also that any nulls within the Collection will be ignored.
-     * 
+     *
      * @param targetsCollection The new targets list.
      */
     public synchronized void setTargets(Collection targetsCollection) {
 	Iterator ntarg;
 
-	if (isInTargetTransaction())
-	    return;
+	if (isInTargetTransaction()) {
+            return;
+        }
 
         Collection targetsList = new ArrayList();
         if (targetsCollection != null) {
-            targetsList.addAll(targetsCollection);                
+            targetsList.addAll(targetsCollection);
         }
 
         List modifiedList = new ArrayList();
         Iterator it = targetsList.iterator();
         while (it.hasNext()) {
             Object o = it.next();
-            o = getOwner(o); 
-            if (!modifiedList.contains(o)) 
-                    modifiedList.add(o);
+            o = getOwner(o);
+            if (!modifiedList.contains(o)) {
+                modifiedList.add(o);
+            }
         }
         targetsList = modifiedList;
-        
+
 	// remove any nulls so we really ignore them
 	if (targetsList.contains(null)) {
 	    List withoutNullList = new ArrayList(targetsList);
@@ -551,8 +560,9 @@ public final class TargetManager {
 
 	    while (ntarg.hasNext()) {
 		Object targ = ntarg.next();
-		if (targ == null)
-		    continue;
+		if (targ == null) {
+                    continue;
+                }
 		if (!targets.contains(targ)
 		    || (first && targ != getTarget())) {
 		    oldTargets = targets.toArray();
@@ -560,11 +570,13 @@ public final class TargetManager {
 		}
                 first = false;
 	    }
-	} else
-	    oldTargets = targets.toArray();
+	} else {
+            oldTargets = targets.toArray();
+        }
 
-	if (oldTargets == null)
-	    return;
+	if (oldTargets == null) {
+            return;
+        }
 
 	startTargetTransaction();
 
@@ -575,8 +587,9 @@ public final class TargetManager {
 	ntarg = targetsList.iterator();
 	while (ntarg.hasNext()) {
 	    Object targ = ntarg.next();
-	    if (targets.contains(targ))
-		continue;
+	    if (targets.contains(targ)) {
+                continue;
+            }
 	    targets.add(targ);
 	}
 
@@ -594,19 +607,21 @@ public final class TargetManager {
      * @param target the target to be added.
      */
     public synchronized void addTarget(Object target) {
-	if (isInTargetTransaction())
-	    return;
+	if (isInTargetTransaction()) {
+            return;
+        }
 
-        if (target == null 
-                        || targets.contains(target) 
-                        || targets.contains(getOwner(target)))
-	    return;
+        if (target == null
+                || targets.contains(target)
+                || targets.contains(getOwner(target))) {
+            return;
+        }
 
 	startTargetTransaction();
 
 	Object[] oldTargets = targets.toArray();
 	targets.add(0, getOwner(target));
-        
+
 	internalOnSetTarget(TargetEvent.TARGET_ADDED, oldTargets);
 
 	endTargetTransaction();
@@ -620,11 +635,13 @@ public final class TargetManager {
      * @param target The target to remove.
      */
     public synchronized void removeTarget(Object target) {
-        if (isInTargetTransaction())
-	    return;
+        if (isInTargetTransaction()) {
+            return;
+        }
 
-	if (target == null /*|| !targets.contains(target)*/)
-	    return;
+	if (target == null /*|| !targets.contains(target)*/) {
+            return;
+        }
 
 	startTargetTransaction();
 
@@ -632,9 +649,10 @@ public final class TargetManager {
 	targets.remove(target);
 
         targets.removeAll(getOwnerAndAllFigs(target));
-        
-        if (targets.size() != oldTargets.length)
+
+        if (targets.size() != oldTargets.length) {
             internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);
+        }
 
 	endTargetTransaction();
     }
@@ -642,8 +660,8 @@ public final class TargetManager {
     private Collection getOwnerAndAllFigs(Object o) {
         Collection c = new ArrayList();
         c.add(o);
-        if (o instanceof Fig) { 
-            if (((Fig) o).getOwner() != null) { 
+        if (o instanceof Fig) {
+            if (((Fig) o).getOwner() != null) {
                 o = ((Fig) o).getOwner();
                 c.add(o);
             }
@@ -657,20 +675,20 @@ public final class TargetManager {
         }
         return c;
     }
-    
+
     /**
-     * @param o the object 
+     * @param o the object
      * @return the owner of the fig, or if it didn't exist, the object itself
      */
     public Object getOwner(Object o) {
-        if (o instanceof Fig) { 
-            if (((Fig) o).getOwner() != null) { 
+        if (o instanceof Fig) {
+            if (((Fig) o).getOwner() != null) {
                 o = ((Fig) o).getOwner();
             }
         }
         return o;
     }
-    
+
     /**
      * Returns a collection with all targets. Returns an empty collection
      * if there are no targets. If there are several targets then the first
@@ -701,22 +719,28 @@ public final class TargetManager {
     }
 
     /**
-     * If there is only one model target, then it is returned. 
+     * If there is only one model target, then it is returned.
      * Otherwise null.
-     * 
-     * @return the single model target 
+     *
+     * @return the single model target
      */
     public synchronized Object getSingleModelTarget() {
         int i = 0;
         Iterator iter = getTargets().iterator();
         while (iter.hasNext()) {
-            if(determineModelTarget(iter.next()) != null) i++;
-            if (i > 1) break;
+            if(determineModelTarget(iter.next()) != null) {
+                i++;
+            }
+            if (i > 1) {
+                break;
+            }
         }
-        if (i == 1) return modelTarget;
+        if (i == 1) {
+            return modelTarget;
+        }
         return null;
     }
-    
+
     /**
      * Adds a listener.
      * @param listener the listener to add
@@ -804,14 +828,14 @@ public final class TargetManager {
     }
 
     private void endTargetTransaction() {
-        
+
         boolean addAttributeEnabled;
         if (targets.size() == 1) {
             Object target = determineModelTarget(targets.get(0));
             if ((Model.getFacade().isAClass(target)
                     || (Model.getFacade().isAFeature(target)
                     && Model.getFacade().isAClass(
-                    Model.getFacade().getOwner(target)))
+                            Model.getFacade().getOwner(target)))
                     || Model.getFacade().isAAssociationEnd(target))) {
                 addAttributeEnabled = true;
             } else {
@@ -820,7 +844,7 @@ public final class TargetManager {
         } else {
             addAttributeEnabled = false;
         }
-        
+
         boolean addOperationEnabled;
         if (targets.size() == 1) {
             Object target = determineModelTarget(targets.get(0));
@@ -834,10 +858,10 @@ public final class TargetManager {
         } else {
             addOperationEnabled = false;
         }
-        
+
         addAttributeAction.setEnabled(addAttributeEnabled);
         addOperationAction.setEnabled(addOperationEnabled);
-        
+
         inTransaction = false;
     }
 
@@ -849,7 +873,7 @@ public final class TargetManager {
     public Action getAddAttributeAction() {
         return addAttributeAction;
     }
-    
+
     /**
      * Get the Action class for creating and adding a new operation
      * to the single selected target (or its owner).
@@ -858,7 +882,7 @@ public final class TargetManager {
     public Action getAddOperationAction() {
         return addOperationAction;
     }
-    
+
     /**
      * Convenience method to return the target as fig. If the current
      * target (retrieved by getTarget) is either a fig itself or the
@@ -871,9 +895,9 @@ public final class TargetManager {
     }
 
     /**
-     * Calculates the most probable 'fig-form' of some target. Beware: 
+     * Calculates the most probable 'fig-form' of some target. Beware:
      * The result does NOT depend on the current diagram!
-     * 
+     *
      * @param target the target to calculate the 'fig-form' for.
      * @return The fig-form.
      */
@@ -952,7 +976,8 @@ public final class TargetManager {
     }
 
     /**
-     * Checks if it's possible to navigate backward
+     * Checks if it's possible to navigate backward.
+     *
      * @return true if it's possible to navigate backward
      */
     public boolean navigateBackPossible() {
@@ -973,9 +998,9 @@ public final class TargetManager {
     public void removeHistoryElement(Object o) {
         historyManager.removeHistoryTarget(o);
     }
-    
+
     /**
-     * This routine checks the list of history items for 
+     * This routine checks the list of history items for
      * UML modelelements that were removed.
      */
     public void checkForRemovedModelElements() {
@@ -984,12 +1009,12 @@ public final class TargetManager {
 
 }
 
-class DebugTMDialog extends JDialog 
+class DebugTMDialog extends JDialog
     implements TargetListener {
-        
+
     private DefaultListModel lm = new DefaultListModel();
     private JList lst;
-        
+
         /**
          * The constructor.
          */
@@ -998,7 +1023,7 @@ class DebugTMDialog extends JDialog
                     false);
         JPanel mainPanel = new JPanel(new BorderLayout());
         getContentPane().add(mainPanel);
-            
+
         lst = new JList(lm);
         lst.setPreferredSize(new Dimension(400, 200));
         setTarget(t);
@@ -1018,7 +1043,7 @@ class DebugTMDialog extends JDialog
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTargets());    
+        setTarget(e.getNewTargets());
     }
 
     /**
@@ -1027,12 +1052,12 @@ class DebugTMDialog extends JDialog
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets());
     }
-    
+
     private void setTarget(Object[] t) {
         Collection c = new ArrayList(Arrays.asList(t));
         setTarget(c);
     }
-    
+
     private void setTarget(Collection c) {
         lm.clear();
         Iterator i = c.iterator();
@@ -1040,5 +1065,9 @@ class DebugTMDialog extends JDialog
             lm.addElement(i.next());
         }
     }
-        
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 5689661623411068387L;
 }

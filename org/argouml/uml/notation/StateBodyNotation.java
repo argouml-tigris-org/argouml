@@ -27,15 +27,15 @@ package org.argouml.uml.notation;
 import org.argouml.model.Model;
 
 /**
- * This abstract class forms the basis of all Notation providers 
+ * This abstract class forms the basis of all Notation providers
  * for the text shown in the body of a state. Subclass this for all languages.
- * 
+ *
  * @author mvw@tigris.org
  */
 public abstract class StateBodyNotation extends ValueHandler {
-    
+
     protected Object myState;
-    
+
     /**
      * The constructor.
      */
@@ -51,8 +51,8 @@ public abstract class StateBodyNotation extends ValueHandler {
      */
     public void putValue(String key, Object newValue) {
         // TODO: Auto-generated method stub
-        
+
     }
 
-    
+
 }

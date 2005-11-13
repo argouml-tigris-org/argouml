@@ -44,8 +44,9 @@ import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
  * This class handles only UML Deployment Diagrams.<p>
  *
  */
-public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
-        implements VetoableChangeListener {
+public class DeploymentDiagramGraphModel
+    extends UMLMutableGraphSupport
+    implements VetoableChangeListener {
     /**
      * Logger.
      */
@@ -63,27 +64,33 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      */
     public List getPorts(Object nodeOrEdge) {
         Vector res = new Vector();  //wasteful!
-        if (Model.getFacade().isANode(nodeOrEdge)) 
+        if (Model.getFacade().isANode(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
+        }
         if (Model.getFacade().isANodeInstance(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
         }
 
-        if (Model.getFacade().isAComponent(nodeOrEdge))
+        if (Model.getFacade().isAComponent(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
+        }
         if (Model.getFacade().isAComponentInstance(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
         }
-        if (Model.getFacade().isAClass(nodeOrEdge)) 
+        if (Model.getFacade().isAClass(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
-        if (Model.getFacade().isAInterface(nodeOrEdge)) 
+        }
+        if (Model.getFacade().isAInterface(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
-        if (Model.getFacade().isAObject(nodeOrEdge)) 
+        }
+        if (Model.getFacade().isAObject(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
+        }
         return res;
     }
 
-    /** Return the node or edge that owns the given port
+    /**
+     * Return the node or edge that owns the given port.
      *
      * @see org.tigris.gef.graph.BaseGraphModel#getOwner(java.lang.Object)
      */
@@ -101,7 +108,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
         Vector res = new Vector(); //wasteful!
         if (Model.getFacade().isANode(port)) {
             Collection ends = Model.getFacade().getAssociationEnds(port);
-            if (ends == null) return res; // empty Vector
+            if (ends == null) {
+                return res; // empty Vector
+            }
             Iterator iter = ends.iterator();
             while (iter.hasNext()) {
                 Object aec = /*(MAssociationEnd)*/ iter.next();
@@ -115,7 +124,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
         }
         if (Model.getFacade().isAComponent(port)) {
             Collection ends = Model.getFacade().getAssociationEnds(port);
-            if (ends == null) return res; // empty Vector
+            if (ends == null) {
+                return res; // empty Vector
+            }
             Iterator endEnum = ends.iterator();
             while (endEnum.hasNext()) {
                 Object aec = /*(MAssociationEnd)*/ endEnum.next();
@@ -129,7 +140,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
         }
         if (Model.getFacade().isAClass(port)) {
             Collection ends = Model.getFacade().getAssociationEnds(port);
-            if (ends == null) return res; // empty Vector
+            if (ends == null) {
+                return res; // empty Vector
+            }
             Iterator endEnum = ends.iterator();
             while (endEnum.hasNext()) {
                 Object ae = /*(MAssociationEnd)*/ endEnum.next();
@@ -138,7 +151,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
         }
         if (Model.getFacade().isAInterface(port)) {
             Collection ends = Model.getFacade().getAssociationEnds(port);
-            if (ends == null) return res; // empty Vector
+            if (ends == null) {
+                return res; // empty Vector
+            }
             Iterator endEnum = ends.iterator();
             while (endEnum.hasNext()) {
                 Object ae = /*(MAssociationEnd)*/ endEnum.next();
@@ -155,7 +170,8 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
         return res;
     }
 
-    /** Return all edges going from given port
+    /**
+     * Return all edges going from given port.
      *
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
@@ -172,8 +188,12 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
     public boolean canAddNode(Object node) {
-        if (node == null) return false;
-        if (containsNode(node)) return false;
+        if (node == null) {
+            return false;
+        }
+        if (containsNode(node)) {
+            return false;
+        }
         if (Model.getFacade().isAAssociation(node)) {
             Collection ends = Model.getFacade().getConnections(node);
             Iterator iter = ends.iterator();
@@ -204,8 +224,12 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
      */
     public boolean canAddEdge(Object edge)  {
-        if (edge == null) return false;
-        if (containsEdge(edge)) return false;
+        if (edge == null) {
+            return false;
+        }
+        if (containsEdge(edge)) {
+            return false;
+        }
         Object end0 = null, end1 = null;
         if (edge instanceof CommentEdge) {
             end0 = ((CommentEdge) edge).getSource();
@@ -221,15 +245,20 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
         } else if (Model.getFacade().isARelationship(edge)) {
             end0 = Model.getCoreHelper().getSource(edge);
             end1 = Model.getCoreHelper().getDestination(edge);
-        }
-        else if (Model.getFacade().isALink(edge)) {
+        } else if (Model.getFacade().isALink(edge)) {
             end0 = Model.getCommonBehaviorHelper().getSource(edge);
             end1 =
                     Model.getCommonBehaviorHelper().getDestination(edge);
         }
-        if (end0 == null || end1 == null) return false;
-        if (!containsNode(end0)) return false;
-        if (!containsNode(end1)) return false;
+        if (end0 == null || end1 == null) {
+            return false;
+        }
+        if (!containsNode(end0)) {
+            return false;
+        }
+        if (!containsNode(end1)) {
+            return false;
+        }
         return true;
     }
 
@@ -241,7 +270,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      */
     public void addNode(Object node) {
         LOG.debug("adding class node!!");
-        if (!canAddNode(node)) return;
+        if (!canAddNode(node)) {
+            return;
+        }
         getNodes().add(node);
         // TODO: assumes public, user pref for default visibility?
         //do I have to check the namespace here? (Toby)
@@ -259,7 +290,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      */
     public void addEdge(Object edge) {
         LOG.debug("adding class edge!!!!!!");
-        if (!canAddEdge(edge)) return;
+        if (!canAddEdge(edge)) {
+            return;
+        }
         getEdges().add(edge);
         // TODO: assumes public
         if (Model.getFacade().isAModelElement(edge)
@@ -282,12 +315,13 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
                 Object ae = /*(MAssociationEnd)*/ iter.next();
                 if (!Model.getFacade().isANaryAssociation(
                         Model.getFacade().getAssociation(ae))
-                        && canAddEdge(Model.getFacade().getAssociation(ae)))
+                        && canAddEdge(Model.getFacade().getAssociation(ae))) {
                     addEdge(Model.getFacade().getAssociation(ae));
+                }
                 return;
             }
         }
-        if (Model.getFacade().isAAssociation(node) ) {
+        if (Model.getFacade().isAAssociation(node)) {
             Collection ends = Model.getFacade().getConnections(node);
             Iterator iter = ends.iterator();
             while (iter.hasNext()) {
@@ -302,8 +336,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
             Iterator iter = ends.iterator();
             while (iter.hasNext()) {
                 Object link = Model.getFacade().getLink(iter.next());
-                if (canAddEdge(link))
+                if (canAddEdge(link)) {
                     addEdge(link);
+                }
                 return;
             }
         }
@@ -313,28 +348,31 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
             while (iter.hasNext()) {
                 // g contains a Generalization
                 Object g = iter.next();
-                if (canAddEdge(g))
+                if (canAddEdge(g)) {
                     addEdge(g);
+                }
                 return;
             }
             iter = Model.getFacade().getSpecializations(node).iterator();
             while (iter.hasNext()) {
                 // s contains a specialization
                 Object s = iter.next();
-                if (canAddEdge(s))
+                if (canAddEdge(s)) {
                     addEdge(s);
+                }
                 return;
             }
         }
         if (Model.getFacade().isAModelElement(node)) {
             Vector specs =
-                    new Vector(Model.getFacade().getClientDependencies(node));
+                new Vector(Model.getFacade().getClientDependencies(node));
             specs.addAll(Model.getFacade().getSupplierDependencies(node));
             Iterator iter = specs.iterator();
             while (iter.hasNext()) {
                 Object dep = /*(MDependency)*/ iter.next();
-                if (canAddEdge(dep))
+                if (canAddEdge(dep)) {
                     addEdge(dep);
+                }
                 return;
             }
         }
@@ -387,6 +425,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
         }
     }
 
+    /**
+     * The UID.
+     */
     static final long serialVersionUID = 1003748292917485298L;
 
 } /* end class DeploymentDiagramGraphModel */

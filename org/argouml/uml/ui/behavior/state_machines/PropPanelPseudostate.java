@@ -59,7 +59,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
                 getIncomingScroll());
         addField(Translator.localize("label.outgoing"),
                 getOutgoingScroll());
-        
+
         TargetManager.getInstance().addTargetListener(this);
     }
 

@@ -34,7 +34,7 @@ import org.argouml.model.Model;
 
 /**
  * Rule for Transistion to Guard.
- * 
+ *
  * @author MarkusK
  */
 public class GoTransitionToGuard extends AbstractPerspectiveRule {

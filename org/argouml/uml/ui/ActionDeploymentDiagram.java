@@ -31,7 +31,7 @@ import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-/** 
+/**
  * Action to trigger creation of a deployment diagram.
  */
 public class ActionDeploymentDiagram extends ActionAddDiagram {
@@ -70,7 +70,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
 					       + "is not a namespace.");
         }
         return (UMLDiagram)DiagramFactory.getInstance().createDiagram(
-                UMLDeploymentDiagram.class, 
+                UMLDeploymentDiagram.class,
                 handle,
                 null);
     }

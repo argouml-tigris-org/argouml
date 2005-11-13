@@ -47,7 +47,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
     private static final Logger LOG = Logger.getLogger(FigCompartment.class);
 
     private FigSeperator compartmentSeperator;
-    
+
     /**
      * The constructor.
      *
@@ -61,7 +61,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
         compartmentSeperator = new FigSeperator(10, 10, 11);
         addFig(compartmentSeperator);
     }
-    
+
     protected FigSeperator getSeperatorFig() {
         return compartmentSeperator;
     }
@@ -96,8 +96,8 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      * @see org.tigris.gef.presentation.FigGroup#addFig(org.tigris.gef.presentation.Fig)
      */
     public void addFig(Fig fig) {
-        if (fig != getBigPort() && 
-                !(fig instanceof FigFeature) && 
+        if (fig != getBigPort() &&
+                !(fig instanceof FigFeature) &&
                 !(fig instanceof FigSeperator)) {
             LOG.error("Illegal Fig added to a FigFeature");
             throw new IllegalArgumentException(
@@ -113,7 +113,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      * TODO: Check that this is correct?
      */
     public abstract void populate();
-    
+
     /**
      * Returns the new size of the FigGroup (either attributes or
      * operations) after calculation new bounds for all sub-figs,
@@ -138,7 +138,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
                        int rowHeight) {
         return getMinimumSize();
     }
-    
+
     /**
      * The minimum width is the minimum width of the widest child feature.
      * The minium height is the total minimum height of all child figs but no
@@ -152,12 +152,12 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
         }
         return d;
     }
-    
+
     protected void setBoundsImpl(int x, int y, int w, int h) {
         int newW = w;
         int n = getFigs().size() - 1;
         int newH = h;
-        
+
         Iterator figs = iterator();
         Fig fig;
         int fw;
@@ -180,25 +180,25 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
         getBigPort().setBounds(x + 1, y + 1, newW - 3, newH - 1);
         calcBounds();
     }
-    
+
     /**
      * Create a new feature
      */
     abstract public void createFeature();
-    
+
     protected class FigSeperator extends FigLine {
         FigSeperator(int x, int y, int len) {
             super(x, y, (x + len) - 1, y);
         }
-        
+
         public Dimension getSize() {
             return new Dimension((_x2 - _x1) +1, getLineWidth());
         }
-        
+
         public Dimension getMinimumSize() {
             return new Dimension(0, getLineWidth());
         }
-        
+
         public void setBoundsImpl(int x, int y, int w, int h) {
             setX1(x);
             setY1(y);

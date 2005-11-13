@@ -110,7 +110,7 @@ import org.tigris.gef.presentation.FigText;
  * origin is at our top left corner, and the Y coordinates are
  * reversed.<p>
  */
-public class FigUseCase extends FigNodeModelElement 
+public class FigUseCase extends FigNodeModelElement
     implements ExtensionsCompartmentContainer {
 
     private static final Logger LOG = Logger.getLogger(FigUseCase.class);
@@ -378,7 +378,7 @@ public class FigUseCase extends FigNodeModelElement
     public Vector getPopUpActions(MouseEvent me) {
         /* Check if multiple items are selected: */
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
-        
+
         // Get the parent vector first
         Vector popUpActions = super.getPopUpActions(me);
 
@@ -392,7 +392,7 @@ public class FigUseCase extends FigNodeModelElement
         popUpActions.insertElementAt(addMenu,
             popUpActions.size() - getPopupAddOffset());
 
-        // Show menu to display/hide the extension point compartment. 
+        // Show menu to display/hide the extension point compartment.
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
         Iterator i = ActionCompartmentDisplay.getActions().iterator();
         while (i.hasNext()) {
@@ -712,7 +712,7 @@ public class FigUseCase extends FigNodeModelElement
         firePropChange("bounds", oldBounds, getBounds());
         updateEdges();
     }
-    
+
     /**
      * Returns the new size of the FigGroup (either attributes or operations)
      * after calculation new bounds for all sub-figs, considering their minimal
@@ -720,9 +720,9 @@ public class FigUseCase extends FigNodeModelElement
      * TODO: This is a duplicate method from FigFeaturesCompartment
      * it should just be in one place.
      * <p>
-     * 
+     *
      * This method has side effects that are sometimes used.
-     * 
+     *
      * @param fg
      *            the FigGroup to be updated
      * @param x
@@ -1113,7 +1113,7 @@ public class FigUseCase extends FigNodeModelElement
 
         // Remove the help text shown in the textEditStarted()
         ProjectBrowser.getInstance().getStatusBar().showStatus("");
-        
+
         // Only works if we have an owner
         Object useCase = /*(MUseCase)*/ getOwner();
         if (useCase == null) {
@@ -1129,7 +1129,7 @@ public class FigUseCase extends FigNodeModelElement
         String text = hlft.getText();
         ParserDisplay.SINGLETON.parseExtensionPointFig(useCase, ep, text);
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
@@ -1441,12 +1441,12 @@ public class FigUseCase extends FigNodeModelElement
 
     /**
      * Makes sure that the edges stick to the elipse fig of the usecase.
-     * TODO: This function is called way too many times - I count 6x when 
+     * TODO: This function is called way too many times - I count 6x when
      * simply clicking on this usecase, and 20x when clicking on the button
      * on selection at the right hand side of a usecase.
-     * Once this problem is solved, try increasing the "maxPoint" 4-fold, 
+     * Once this problem is solved, try increasing the "maxPoint" 4-fold,
      * to make edge attachment when dragging much smoother.
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
     public List getGravityPoints() {

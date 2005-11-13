@@ -76,12 +76,12 @@ public final class ActionSequenceDiagram extends UMLAction {
             Model.getCollaborationsFactory().buildCollaboration(
                 owner,
                 target);
-        UMLDiagram diagram = 
+        UMLDiagram diagram =
             (UMLDiagram)DiagramFactory.getInstance().createDiagram(
-                UMLSequenceDiagram.class, 
+                UMLSequenceDiagram.class,
                 collaboration,
                 null);
-        
+
         ProjectManager.getManager().getCurrentProject().addMember(diagram);
         TargetManager.getInstance().setTarget(diagram);
         ExplorerEventAdaptor.getInstance().modelElementChanged(owner);

@@ -29,23 +29,15 @@ package org.argouml.ui;
  * TODO: Document its purpose or remove if useless.
  */
 public class UsageStatistic {
-    // //////////////////////////////////////////////////////////////
-    // instance variables
-    private String name;
-
-    private int value;
-
     /**
      * The constructor.
-     * 
+     *
      * @param n
      *            the name
      * @param v
      *            the value
      */
     public UsageStatistic(String n, int v) {
-        name = n;
-        value = v;
     }
 
 } /* end class UsageStatistic */

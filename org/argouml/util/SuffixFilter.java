@@ -60,10 +60,16 @@ public class SuffixFilter extends FileFilter {
      * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
      */
     public boolean accept(File f) {
-	if (f == null) return false;
-	if (f.isDirectory()) return true;
+	if (f == null) {
+            return false;
+        }
+	if (f.isDirectory()) {
+            return true;
+        }
 	String extension = getExtension(f);
-	if (suffix.equalsIgnoreCase(extension)) return true;
+	if (suffix.equalsIgnoreCase(extension)) {
+            return true;
+        }
 	return false;
     }
 
@@ -72,7 +78,9 @@ public class SuffixFilter extends FileFilter {
      * @return the extension string (without the dot)
      */
     public static String getExtension(File f) {
-	if (f == null) return null;
+	if (f == null) {
+            return null;
+        }
 	return getExtension(f.getName());
     }
 
@@ -103,9 +111,9 @@ public class SuffixFilter extends FileFilter {
     }
 
     /**
-     * Adding this function enables easy selection of suffixfilters 
+     * Adding this function enables easy selection of suffixfilters
      * e.g. in a combobox.
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     public String toString() {

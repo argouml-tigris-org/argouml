@@ -54,7 +54,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
 
     /**
      * The constructor.
-     * 
+     *
      * @param f the <code>Frame</code> from which the dialog is displayed
      * @param e the exception
      */
@@ -64,14 +64,14 @@ public class ExceptionDialog extends JDialog implements ActionListener {
 
     /**
      * The constructor.
-     * 
+     *
      * @param f the <code>Frame</code> from which the dialog is displayed
      * @param message the message
      * @param e the exception
      */
     public ExceptionDialog(Frame f, String message, Throwable e) {
         super(f);
-        message += "\n" + "Please copy and paste the stack trace below " 
+        message += "\n" + "Please copy and paste the stack trace below "
                 + "and report an issue at http://www.argouml.org";
         setResizable(true);
         setModal(false);
@@ -86,12 +86,12 @@ public class ExceptionDialog extends JDialog implements ActionListener {
 
         // the text box containing the problem messages
         JEditorPane textArea = new JEditorPane();
-        
+
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
         String exception = sw.toString();
-        
+
         textArea.setText(exception);
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(new JScrollPane(textArea));
@@ -126,7 +126,12 @@ public class ExceptionDialog extends JDialog implements ActionListener {
     }
 
     private void disposeDialog() {
-        setVisible(false); 
+        setVisible(false);
         dispose();
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -2773182347529547418L;
 }

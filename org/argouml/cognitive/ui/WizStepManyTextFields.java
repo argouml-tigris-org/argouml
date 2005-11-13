@@ -36,7 +36,7 @@ import javax.swing.border.EtchedBorder;
 import org.argouml.swingext.SpacerPanel;
 
 
-/** 
+/**
  * A non-modal wizard step that shows instructions and prompts
  * the user to enter a series of strings in textfields.
  *
@@ -144,6 +144,10 @@ public class WizStepManyTextFields extends WizStep {
 	return res;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5154002407806917092L;
 } /* end class WizStepManyTextFields */
 
 

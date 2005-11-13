@@ -47,7 +47,7 @@ import org.argouml.ui.cmd.ActionOpenBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.util.osdep.StartBrowser;
 
-/** 
+/**
  * Each Critic may provide a Wizard to help fix the problem it
  * identifies.  The "Next>" button will advance through the steps of
  * the wizard, and increase the colored progress bar on the ToDoItem
@@ -59,7 +59,6 @@ import org.argouml.util.osdep.StartBrowser;
 
 public class WizStep extends JPanel
     implements TabToDoTarget, ActionListener, DocumentListener {
-
     ////////////////////////////////////////////////////////////////
     // constants
     private static final ImageIcon WIZ_ICON =
@@ -81,7 +80,7 @@ public class WizStep extends JPanel
     private JPanel  buttonPanel = new JPanel();
 
     /**
-     * The current target
+     * The current target.
      */
     private Object target;
 
@@ -104,8 +103,9 @@ public class WizStep extends JPanel
      */
     protected static final void setMnemonic(JButton b, String key) {
 	String m = Translator.localize(key);
-	if (m == null)
+	if (m == null) {
 	    return;
+        }
 	if (m.length() == 1) {
 	    b.setMnemonic(m.charAt(0));
 	}
@@ -162,7 +162,7 @@ public class WizStep extends JPanel
 
     /**
      * @deprecated since 0.15.3. The method in TabToDoTarget has been
-     * 		   deprecated, the visibility of this method will change 
+     * 		   deprecated, the visibility of this method will change
      *             to protected in the future, and replaced by
      * 		   {@link org.argouml.ui.targetmanager.TargetManager}.
      *
@@ -189,11 +189,12 @@ public class WizStep extends JPanel
             nextButton.setEnabled(w != null ? w.canGoNext() : false);
             finishButton.setEnabled(w != null ? w.canFinish() : false);
 
-            if (tdi.getMoreInfoURL() == null 
+            if (tdi.getMoreInfoURL() == null
                     || "".equals(tdi.getMoreInfoURL())) {
                 helpButton.setEnabled(false);
-            } else
+            } else {
                 helpButton.setEnabled(true);
+            }
         } else {
             return;
         }
@@ -201,7 +202,7 @@ public class WizStep extends JPanel
 
     /**
      * Set the target anew.
-     * 
+     *
      * TODO: This method is never used. What is its intention? Remove it?
      */
     public void refresh() { setTarget(target); }
@@ -255,8 +256,9 @@ public class WizStep extends JPanel
      * Called when the Help button is pressed.
      */
     public void doHelp() {
-	if (!(target instanceof ToDoItem))
+	if (!(target instanceof ToDoItem)) {
 	    return;
+        }
 	ToDoItem item = (ToDoItem) target;
 	String urlString = item.getMoreInfoURL();
 	StartBrowser.openUrl(urlString);
@@ -269,7 +271,9 @@ public class WizStep extends JPanel
 	TabToDo ttd =
 	    (TabToDo) ProjectBrowser.getInstance().getTab(TabToDo.class);
 	JPanel ws = getWizard().getCurrentPanel();
-	if (ws instanceof WizStep) ((WizStep) ws).setTarget(target);
+	if (ws instanceof WizStep) {
+	    ((WizStep) ws).setTarget(target);
+        }
 	ttd.showStep(ws);
     }
 
@@ -281,10 +285,15 @@ public class WizStep extends JPanel
      */
     public void actionPerformed(ActionEvent ae) {
 	Object src = ae.getSource();
-	if (src == backButton) doBack();
-	else if (src == nextButton) doNext();
-	else if (src == finishButton) doFinsh();
-	else if (src == helpButton) doHelp();
+	if (src == backButton) {
+	    doBack();
+        } else if (src == nextButton) {
+	    doNext();
+        } else if (src == finishButton) {
+	    doFinsh();
+        } else if (src == helpButton) {
+	    doHelp();
+        }
     }
 
     ////////////////////////////////////////////////////////////////
@@ -337,4 +346,9 @@ public class WizStep extends JPanel
 	setTarget(e.getNewTarget());
     }
 
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 8845081753813440684L;
 } /* end class WizStep */

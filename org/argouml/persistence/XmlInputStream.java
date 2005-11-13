@@ -21,6 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.persistence;
 
 import java.io.BufferedInputStream;
@@ -67,7 +68,7 @@ public class XmlInputStream extends BufferedInputStream {
     /**
      * The number of characters read so far.
      */
-    private long readCount = 0;
+    private long readCount;
 
     /**
      * The expected stream length.
@@ -182,7 +183,7 @@ public class XmlInputStream extends BufferedInputStream {
 
         if (count > 0) {
             return count;
-        } 
+        }
         return -1;
     }
 

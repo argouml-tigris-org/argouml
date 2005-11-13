@@ -57,30 +57,51 @@ public class CrDisambigStateName extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAState(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAState(dm))) {
+            return NO_PROBLEM;
+        }
 	String myName = Model.getFacade().getName(dm);
 	// TODO: should define a CompoundCritic
-	if (myName == null || myName.equals("")) return NO_PROBLEM;
+	if (myName == null || myName.equals("")) {
+            return NO_PROBLEM;
+        }
 	String myNameString = myName;
-	if (myNameString.length() == 0) return NO_PROBLEM;
+	if (myNameString.length() == 0) {
+            return NO_PROBLEM;
+        }
 	Collection pkgs = Model.getFacade().getElementImports2(dm);
-	if (pkgs == null) return NO_PROBLEM;
+	if (pkgs == null) {
+            return NO_PROBLEM;
+        }
 	for (Iterator iter = pkgs.iterator(); iter.hasNext();) {
 	    Object imp = /*(MElementImport)*/ iter.next();
 	    Object ns = Model.getFacade().getPackage(imp);
-	    if (ns == null) return NO_PROBLEM;
+	    if (ns == null) {
+                return NO_PROBLEM;
+            }
 	    Collection oes = Model.getFacade().getOwnedElements(ns);
-	    if (oes == null) return NO_PROBLEM;
+	    if (oes == null) {
+                return NO_PROBLEM;
+            }
 	    Iterator elems = oes.iterator();
 	    while (elems.hasNext()) {
 		Object eo = /*(MElementImport)*/ elems.next();
-		Object me = /*(MModelElement)*/ 
+		Object me =
+                    /*(MModelElement)*/
 		    Model.getFacade().getModelElement(eo);
-		if (!(Model.getFacade().isAClassifier(me))) continue;
-		if (me == dm) continue;
+		if (!(Model.getFacade().isAClassifier(me))) {
+                    continue;
+                }
+		if (me == dm) {
+                    continue;
+                }
 		String meName = Model.getFacade().getName(me);
-		if (meName == null || meName.equals("")) continue;
-		if (meName.equals(myNameString)) return PROBLEM_FOUND;
+		if (meName == null || meName.equals("")) {
+                    continue;
+                }
+		if (meName.equals(myNameString)) {
+                    return PROBLEM_FOUND;
+                }
 	    }
 	}
 	return NO_PROBLEM;
@@ -93,4 +114,8 @@ public class CrDisambigStateName extends CrUML {
 	return ClClassName.getTheInstance();
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 5027208502429769593L;
 } /* end class CrDisambigStateName */

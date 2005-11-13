@@ -28,7 +28,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
@@ -45,9 +48,11 @@ import org.tigris.gef.presentation.FigText;
  * @author 5eichler
  */
 public class FigComponent extends FigNodeModelElement {
-    /** The distance between the left edge of the fig and the left edge of the
-     * main rectangle. 
-     * Originally named BIGPORT_X (which explains what BX stands for). */
+    /**
+     * The distance between the left edge of the fig and the left edge of the
+     * main rectangle.
+     * Originally named BIGPORT_X (which explains what BX stands for).
+     */
     private static final int BX = 10;
 
     private static final int OVERLAP = 4;
@@ -64,8 +69,10 @@ public class FigComponent extends FigNodeModelElement {
      */
     public FigComponent() {
         cover = new FigRect(BX, 10, 120, 80, Color.black, Color.white);
-        upperRect = new FigRect(0, 2 * BX, 2 * BX, BX, Color.black, Color.white);
-        lowerRect = new FigRect(0, 4 * BX, 2 * BX, BX, Color.black, Color.white);
+        upperRect =
+            new FigRect(0, 2 * BX, 2 * BX, BX, Color.black, Color.white);
+        lowerRect =
+            new FigRect(0, 4 * BX, 2 * BX, BX, Color.black, Color.white);
 
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);
@@ -81,7 +88,8 @@ public class FigComponent extends FigNodeModelElement {
 
     // TODO: Why not just super( gm, node ) instead?? (ChL)
     /**
-     * The constructor that hooks the Fig into an existing UML element
+     * The constructor that hooks the Fig into an existing UML element.
+     *
      * @param gm ignored
      * @param node the UML element
      */
@@ -192,8 +200,7 @@ public class FigComponent extends FigNodeModelElement {
         if (h < (6 * BX)) {
             upperRect.setBounds(x, y + 2 * h / 6, 20, 10);
             lowerRect.setBounds(x, y + 4 * h / 6, 20, 10);
-        }
-        else {
+        } else {
             upperRect.setBounds(x, y + 2 * BX, 2 * BX, BX);
             lowerRect.setBounds(x, y + 4 * BX, 2 * BX, BX);
         }
@@ -352,6 +359,9 @@ public class FigComponent extends FigNodeModelElement {
     }
 
 
+    /**
+     * The UID.
+     */
     static final long serialVersionUID = 1647392857462847651L;
 
 } /* end class FigComponent */

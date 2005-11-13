@@ -62,7 +62,7 @@ import tudresden.ocl.parser.node.TName;
   * @author v1.0: Falk Finger
   * @author v2.0: Steffen Zschaler
   */
-public class TabConstraints extends AbstractArgoJPanel 
+public class TabConstraints extends AbstractArgoJPanel
     implements TabModelTarget {
 
     private static final Logger LOG = Logger.getLogger(TabConstraints.class);

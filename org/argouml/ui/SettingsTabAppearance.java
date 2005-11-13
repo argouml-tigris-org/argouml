@@ -64,7 +64,7 @@ public class SettingsTabAppearance
     private JComboBox   language;
     private JLabel      metalLabel;
     private JCheckBox   smoothEdges;
-    
+
     private Locale locale = null;
 
     /**
@@ -122,7 +122,7 @@ public class SettingsTabAppearance
         languageLabel.setLabelFor(language);
         top.add(languageLabel);
         top.add(language);
-        
+
         top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(top, BorderLayout.CENTER);
 
@@ -175,7 +175,7 @@ public class SettingsTabAppearance
          * get too wide. Also the default does not give the new java 5.0 looks.
         SwingUtilities.updateComponentTreeUI(SwingUtilities.getRootPane(this));
         */
-        
+
         Configuration.setBoolean(Argo.KEY_SMOOTH_EDGES,
             smoothEdges.isSelected());
 
@@ -225,26 +225,26 @@ class MyLocale {
 
     /**
      * The constructor.
-     * 
+     *
      * @param locale the Locale
      */
     MyLocale(Locale locale) {
         myLocale = locale;
     }
-    
+
     /**
      * @return returns the locale
      */
     Locale getLocale() {
         return myLocale;
     }
-    
+
     /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return myLocale.toString() + " (" 
-            + myLocale.getDisplayLanguage(myLocale) + " " 
+        return myLocale.toString() + " ("
+            + myLocale.getDisplayLanguage(myLocale) + " "
             + myLocale.getDisplayCountry(myLocale) + ")";
     }
 

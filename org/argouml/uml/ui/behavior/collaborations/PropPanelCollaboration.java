@@ -87,7 +87,7 @@ public class PropPanelCollaboration extends PropPanelNamespace {
             new JScrollPane(constrainingList));
 
         // we do not add the owned-elements since they are not of real interest
-        
+
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());

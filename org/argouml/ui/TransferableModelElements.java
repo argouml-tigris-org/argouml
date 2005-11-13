@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.ui;
 
 import java.awt.datatransfer.DataFlavor;
@@ -32,16 +31,16 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
- * A transferable wraps the data that is transferred 
- * (in casu a collection of UML modelelements) 
- * from a drag source to a drop target. 
- * The initiator of a drag wraps data in a transferable, 
+ * A transferable wraps the data that is transferred
+ * (in casu a collection of UML modelelements)
+ * from a drag source to a drop target.
+ * The initiator of a drag wraps data in a transferable,
  * and drops are handled by accessing a transferable's data.
  */
 public class TransferableModelElements implements Transferable {
 
     /**
-     * The data flavor we use for collections of UML elements. 
+     * The data flavor we use for collections of UML elements.
      */
     public static final DataFlavor UML_COLLECTION_FLAVOR =
         new DataFlavor(Collection.class, "UML ModelElements Collection");
@@ -52,7 +51,7 @@ public class TransferableModelElements implements Transferable {
 
     /**
      * The constructor.
-     * 
+     *
      * @param data the collection of UML elements
      */
     public TransferableModelElements(Collection data) {
@@ -69,10 +68,12 @@ public class TransferableModelElements implements Transferable {
 
         if (dataFlavor.match(UML_COLLECTION_FLAVOR)) {
             return theModelElements;
-        } 
-        /* TODO: We could also support other flavors here, 
-         * e.g. image (then you can drag modelelements directly into 
-         * your wordprocessor, to be inserted as an image). */
+        }
+        /*
+         * TODO: We could also support other flavors here,
+         * e.g. image (then you can drag modelelements directly into
+         * your wordprocessor, to be inserted as an image).
+         */
         throw new UnsupportedFlavorException(dataFlavor);
     }
 

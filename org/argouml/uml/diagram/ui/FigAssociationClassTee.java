@@ -42,25 +42,25 @@ public class FigAssociationClassTee extends FigNodeModelElement {
         bigPort = new FigCircle(0, 0, 10, 10, Color.black, Color.white);
         addFig(bigPort);
     }
-    
+
     public boolean hit(Rectangle r) {
         return false;
     }
-    
+
     public Object deepHitPort(int x, int y) {
         return null;
     }
-    
+
     public Object hitPort(int x, int y) {
         return null;
     }
-    
+
     public Fig hitFig(Rectangle r) {
         return null;
     }
-    
+
     public boolean isSelectable() {
         return false;
     }
-    
+
 }

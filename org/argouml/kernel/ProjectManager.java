@@ -59,7 +59,7 @@ import org.tigris.gef.undo.UndoManager;
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
  */
-public final class ProjectManager 
+public final class ProjectManager
     implements PropertyChangeListener, MementoCreationObserver {
 
     /**
@@ -79,26 +79,28 @@ public final class ProjectManager
      */
     public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
 
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(ProjectManager.class);
 
     /**
-     * The singleton instance of this class
+     * The singleton instance of this class.
      */
     private static ProjectManager instance = new ProjectManager();
 
     /**
-     * The project that is visible in the projectbrowser
+     * The project that is visible in the projectbrowser.
      */
     private static Project currentProject;
 
     /**
-     * Flag to indicate we are creating a new current project
+     * Flag to indicate we are creating a new current project.
      */
     private boolean creatingCurrentProject;
 
     /**
-     * The listener list
+     * The listener list.
      */
     private EventListenerList listenerList = new EventListenerList();
 
@@ -160,8 +162,7 @@ public final class ProjectManager
      * @param newValue The new value.
      */
     private void firePropertyChanged(String propertyName,
-				     Object oldValue, Object newValue)
-    {
+				     Object oldValue, Object newValue) {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
@@ -169,13 +170,14 @@ public final class ProjectManager
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == PropertyChangeListener.class) {
                 // Lazily create the event:
-                if (event == null)
+                if (event == null) {
                     event =
                         new PropertyChangeEvent(
                             this,
                             propertyName,
                             oldValue,
                             newValue);
+                }
                 ((PropertyChangeListener) listeners[i + 1]).propertyChange(
                     event);
             }
@@ -185,7 +187,7 @@ public final class ProjectManager
 
     /**
      * Sets the current project (the project that is viewable in the
-     * projectbrowser). 
+     * projectbrowser).
      * Sets the current diagram for the project (if one exists).
      * This method fires a propertychanged event.<p>
      *
@@ -213,7 +215,7 @@ public final class ProjectManager
     /**
      * Returns the current project.<p>
      *
-     * If there is no project, a new one is created 
+     * If there is no project, a new one is created
      * (unless we are busy creating one).
      *
      * @return Project the current project
@@ -239,29 +241,30 @@ public final class ProjectManager
         currentProject.setRoot(model);
         currentProject.setCurrentNamespace(model);
         currentProject.addMember(model);
-        ArgoDiagram d = DiagramFactory.getInstance()
-            .createDiagram(UMLClassDiagram.class, model, null);
+        ArgoDiagram d =
+            DiagramFactory.getInstance()
+                .createDiagram(UMLClassDiagram.class, model, null);
         currentProject.addMember(d);
         currentProject.addMember(DiagramFactory.getInstance()
                 .createDiagram(UMLUseCaseDiagram.class, model, null));
         currentProject.addMember(new ProjectMemberTodoList("", currentProject));
         ProjectManager.getManager().setNeedsSave(false);
         currentProject.setActiveDiagram(d);
-        firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME, 
+        firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
                             oldProject, currentProject);
         creatingCurrentProject = false;
         UndoManager.getInstance().empty();
-        
+
         if (!UndoEnabler.ENABLED) {
             UndoManager.getInstance().setUndoMax(0);
         }
         return currentProject;
     }
-    
+
     /**
      * Test if the model needs to be saved.
      *
-     * @return <tt>true</tt> if the model needs to be saved.
+     * @return <code>true</code> if the model needs to be saved.
      */
     public boolean needsSave() {
         return ActionSaveProject.getInstance().isEnabled();
@@ -299,7 +302,9 @@ public final class ProjectManager
         oldProject.remove();
     }
 
-    /** React to PropertyChangeEvents, e.g. send by the Designer.
+    /**
+     * React to PropertyChangeEvents, e.g. send by the Designer.
+     *
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent pce) {
@@ -313,7 +318,7 @@ public final class ProjectManager
     }
 
     /**
-     * Called when the model subsystem creates a memento. 
+     * Called when the model subsystem creates a memento.
      * We must add this to the UndoManager.
      *
      * @see org.argouml.model.MementoCreationObserver#mementoCreated(org.argouml.model.ModelMemento)

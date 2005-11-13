@@ -122,14 +122,14 @@ public abstract class FigNodeModelElement
         Logger.getLogger(FigNodeModelElement.class);
 
     private DiElement diElement = null;
-    
+
     ////////////////////////////////////////////////////////////////
     // constants
 
     private NotationName currentNotationName;
     private static final Font LABEL_FONT;
     private static final Font ITALIC_LABEL_FONT;
-    
+
     protected NotationProvider4 notationProviderName;
 
     /**
@@ -260,23 +260,23 @@ public abstract class FigNodeModelElement
      * be removed from the diagram.
      */
     private boolean removeFromDiagram = true;
-    
+
     /**
-     * Set this to force a repaint of the shadow. 
-     * Normally repainting only happens 
-     * when the outside boundaries change 
-     * (for performance reasons (?)). 
+     * Set this to force a repaint of the shadow.
+     * Normally repainting only happens
+     * when the outside boundaries change
+     * (for performance reasons (?)).
      * In some cases this does not
      * suffice, and you can set this attribute to force the update.
      */
     private boolean forceRepaint;
 
     /**
-     * Flag that indicates if the full namespace path should be shown 
+     * Flag that indicates if the full namespace path should be shown
      * in front of the name.
      */
     private boolean pathVisible = false;
-    
+
     /**
      * The main constructor.
      *
@@ -311,7 +311,7 @@ public abstract class FigNodeModelElement
         setOwner(node);
         nameFig.setText(placeString());
         readyToEdit = false;
-        
+
         //ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
@@ -429,7 +429,7 @@ public abstract class FigNodeModelElement
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
-        
+
         // popupAddOffset should be equal to the number of items added here:
         popUpActions.addElement(new JSeparator());
         popupAddOffset = 1;
@@ -440,11 +440,11 @@ public abstract class FigNodeModelElement
         }
         popUpActions.addElement(new ActionDeleteModelElements());
         popupAddOffset++;
-        
+
         /* Check if multiple items are selected: */
         if (TargetManager.getInstance().getTargets().size() == 1) {
             ToDoList list = Designer.theDesigner().getToDoList();
-            Vector items = 
+            Vector items =
                     (Vector) list.elementsForOffender(getOwner()).clone();
             if (items != null && items.size() > 0) {
                 ArgoJMenu critiques = new ArgoJMenu("menu.popup.critiques");
@@ -502,7 +502,7 @@ public abstract class FigNodeModelElement
             }
         }
     }
-    
+
     /**
      * @return the pop-up menu item for Visibility
      */
@@ -675,17 +675,17 @@ public abstract class FigNodeModelElement
             int y = getY();
 
             /* Only create a new shadow image if figure size has changed.
-             * Which does not catch all cases: 
-             * consider show/hide toggle of a stereotype on a package: 
-             * in this case the total size remains, but the notch 
-             * at the corner increases/decreases. 
-             * Hence also check the "forceRepaint" attribute. 
+             * Which does not catch all cases:
+             * consider show/hide toggle of a stereotype on a package:
+             * in this case the total size remains, but the notch
+             * at the corner increases/decreases.
+             * Hence also check the "forceRepaint" attribute.
              */
             if (width != cachedWidth
                     || height != cachedHeight
                     || forceRepaint) {
                 forceRepaint = false;
-                
+
                 cachedWidth = width;
                 cachedHeight = height;
 
@@ -935,14 +935,14 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * This method is called when the user doubleclicked on the text field, 
+     * This method is called when the user doubleclicked on the text field,
      * and starts editing. Subclasses should overrule this field to e.g.
      * supply help to the user about the used format. <p>
-     * 
-     * It is also possible to alter the text to be edited 
+     *
+     * It is also possible to alter the text to be edited
      * already here, e.g. by adding the stereotype in front of the name,
      * but that seems not user-friendly.
-     *  
+     *
      * @param ft the FigText that will be edited and contains the start-text
      */
     protected void textEditStarted(FigText ft) {
@@ -950,22 +950,22 @@ public abstract class FigNodeModelElement
             showHelp(notationProviderName.getParsingHelp());
         }
     }
-    
+
     /**
-     * Utility function to localize the given string with help text, 
+     * Utility function to localize the given string with help text,
      * and show it in the status bar of the ArgoUML window.
      * This function is used in favour of the inline call
-     * to enable later improvements; e.g. it would be possible to 
+     * to enable later improvements; e.g. it would be possible to
      * show a help-balloon. TODO: Work this out.
      * One matter to possibly improve: show multiple lines.
-     * 
+     *
      * @param s the given string to be localized and shown
      */
     protected void showHelp(String s) {
         ProjectBrowser.getInstance().getStatusBar().showStatus(
                 Translator.localize(s));
     }
-    
+
     /**
      * This method is called after the user finishes editing a text
      * field that is in the FigNodeModelElement.  Determine which
@@ -1081,7 +1081,7 @@ public abstract class FigNodeModelElement
             throw new IllegalArgumentException("event may never be null "
                            + "with modelchanged");
         }
-        if (getOwner() == null 
+        if (getOwner() == null
                 || Model.getUmlFactory().isRemoved(getOwner())) {
             return;
         }
@@ -1201,7 +1201,7 @@ public abstract class FigNodeModelElement
      */
     protected void initNotationProviders(Object own) {
         if (Model.getFacade().isAModelElement(own)) {
-            notationProviderName = 
+            notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_NAME, this, own);
             notationProviderName.putValue("pathVisible", new Boolean(isPathVisible()));
@@ -1219,7 +1219,7 @@ public abstract class FigNodeModelElement
             LOG.warn("I return...");
             return;
         }
-        
+
         Object modelElement = getOwner();
         stereotypeFig.setOwner(modelElement);
         if (modelElement != null) {
@@ -1248,7 +1248,7 @@ public abstract class FigNodeModelElement
     public boolean isPathVisible() {
         return pathVisible;
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.PathContainer#setPathVisible(boolean)
      */
@@ -1465,7 +1465,7 @@ public abstract class FigNodeModelElement
         if (this instanceof ArgoEventListener) {
             ArgoEventPump.removeListener(this);
         }
-        Object own = getOwner();       
+        Object own = getOwner();
         if (Model.getFacade().isAClassifier(own)
                 &&!Model.getUmlFactory().isRemoved(own)) {
             Iterator it = Model.getFacade().getFeatures(own).iterator();
@@ -1576,7 +1576,7 @@ public abstract class FigNodeModelElement
     protected boolean isCheckSize() {
         return checkSize;
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.FigNode#isDragConnectable()
      */
@@ -1659,11 +1659,11 @@ public abstract class FigNodeModelElement
     public void forceRepaintShadow() {
         forceRepaint = true;
     }
-    
+
     public void setDiElement(DiElement diElement) {
         this.diElement = diElement;
     }
-    
+
     public DiElement getDiElement() {
         return diElement;
     }
@@ -1674,7 +1674,7 @@ public abstract class FigNodeModelElement
     protected static int getPopupAddOffset() {
         return popupAddOffset;
     }
-    
+
 } /* end class FigNodeModelElement */
 
 

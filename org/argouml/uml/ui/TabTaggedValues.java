@@ -63,7 +63,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
     implements TabModelTarget, ListSelectionListener {
 
     private Logger LOG = Logger.getLogger(TabTaggedValues.class);
-    
+
     ////////////////////////////////////////////////////////////////
     // instance variables
     private Object target;
@@ -74,12 +74,12 @@ public class TabTaggedValues extends AbstractArgoJPanel
     private JToolBar buttonPanel;
 
     private UMLComboBox2 tagDefinitionsComboBox;
- 
+
     private UMLComboBoxModel2 tagDefinitionsComboBoxModel;
-    
+
     private Class tagDefinitionClass = (Class) Model.getMetaTypes()
             .getTagDefinition();
-    
+
     /**
      * The constructor.
      */
@@ -103,7 +103,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
             //tagDefinitionsComboBox.setDoubleBuffered(true);
             //tagDefinitionsComboBox.setEditable(true);
             tagDefinitionsComboBox.setRenderer(new UMLListCellRenderer2(false));
-            table.setDefaultEditor(tagDefinitionClass, 
+            table.setDefaultEditor(tagDefinitionClass,
                 new DefaultCellEditor(tagDefinitionsComboBox));
             table.setDefaultRenderer(tagDefinitionClass,
                     new UMLTableCellRenderer());
@@ -178,12 +178,12 @@ public class TabTaggedValues extends AbstractArgoJPanel
         if (tagDefinitionClass != null) {
             tagDefinitionsComboBoxModel.setTarget(t);
         }
-        
+
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        
+
         tableModel.setTarget(target);
         table.sizeColumnsToFit(0);
-        
+
         if (target != null) {
             titleLabel.setText("Target: "
 				+ Model.getFacade().getUMLClassName(target)

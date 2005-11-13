@@ -47,7 +47,8 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * The PGML Parser.
  */
-public class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
+public class PGMLStackParser
+    extends org.tigris.gef.persistence.pgml.PGMLStackParser {
     /**
      * Constructor.
      * @param modelElementsByUuid a map of model elements indexed
@@ -74,8 +75,8 @@ public class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackPa
                                              String localname,
                                              String qname,
                                              Attributes attributes)
-            throws SAXException {
-        
+        throws SAXException {
+
         // Ignore non-private elements within FigNode groups
         if (container instanceof FigGroupHandler) {
             FigGroup group = ((FigGroupHandler) container).getFigGroup();
@@ -83,21 +84,21 @@ public class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackPa
                 return null;
             }
         }
-        
+
         // Handle ItemUID in container contents
-        if ( qname.equals("private") && ( container instanceof Container)) {
-        	return new PrivateHandler( this, (Container)container);
+        if (qname.equals("private") && (container instanceof Container)) {
+        	return new PrivateHandler(this, (Container) container);
         }
-        
-        DefaultHandler handler = 
+
+        DefaultHandler handler =
             super.getHandler(stack, container, uri, localname, qname,
                     attributes);
-        
+
         if (handler instanceof FigEdgeHandler) {
             return new org.argouml.persistence.FigEdgeHandler(
-                    this, ((FigEdgeHandler)handler).getFigEdge());
+                    this, ((FigEdgeHandler) handler).getFigEdge());
         }
-        
+
         return handler;
 
     }
@@ -196,7 +197,7 @@ public class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackPa
             } else if ("pathVisible".equals(name)) {
                 ((PathContainer) fig)
                     .setPathVisible(value.equalsIgnoreCase("true"));
-            }  
+            }
         }
     }
 }

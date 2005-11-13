@@ -68,7 +68,7 @@ public class PropPanelExtend extends PropPanelModelElement {
      */
 
     public PropPanelExtend() {
-        super("Extend", lookupIcon("Extend"), 
+        super("Extend", lookupIcon("Extend"),
                 ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
@@ -81,7 +81,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         addSeperator();
 
 
-        // Link to the two ends. 
+        // Link to the two ends.
         addField(Translator.localize("label.usecase-base"),
                 getSingleRowScroll(new UMLLinkedList(
                         new UMLExtendBaseListModel())));
@@ -116,7 +116,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());
     }
-    
+
     /**
      * @return a scrollpane with a single row
      */

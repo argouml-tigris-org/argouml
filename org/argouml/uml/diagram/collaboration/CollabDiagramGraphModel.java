@@ -43,7 +43,9 @@ import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
  */
 public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener {
-    
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(CollabDiagramGraphModel.class);
 
@@ -86,7 +88,8 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	return res;
     }
 
-    /** Return the node or edge that owns the given port
+    /**
+     * Return the node or edge that owns the given port.
      *
      * @see org.tigris.gef.graph.BaseGraphModel#getOwner(java.lang.Object)
      */
@@ -94,7 +97,8 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	return port;
     }
 
-    /** Return all edges going to given port
+    /**
+     * Return all edges going to given port.
      *
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
@@ -103,7 +107,9 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	if (Model.getFacade().isAClassifierRole(port)) {
 	    Object cr = /*(MClassifierRole)*/ port;
 	    Collection ends = Model.getFacade().getAssociationEnds(cr);
-	    if (ends == null) return res; // empty Vector
+	    if (ends == null) {
+                return res; // empty Vector
+            }
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
 		Object aer = /*(MAssociationEndRole)*/ iter.next();
@@ -131,8 +137,12 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
     public boolean canAddNode(Object node) {
-	if (node == null) return false;
-	if (containsNode(node)) return false;
+	if (node == null) {
+            return false;
+        }
+	if (containsNode(node)) {
+            return false;
+        }
 	return (Model.getFacade().isAClassifierRole(node)
             || Model.getFacade().isAMessage(node)
             || Model.getFacade().isAComment(node));
@@ -144,14 +154,20 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
      */
     public boolean canAddEdge(Object edge)  {
-	if (edge == null) return false;
-	if (containsEdge(edge)) return false;
+	if (edge == null) {
+            return false;
+        }
+	if (containsEdge(edge)) {
+            return false;
+        }
 	Object end0 = null;
         Object end1 = null;
 	if (Model.getFacade().isAAssociationRole(edge)) {
 	    Collection conns = Model.getFacade().getConnections(edge);
             Iterator iter = conns.iterator();
-	    if (conns.size() < 2) return false;
+	    if (conns.size() < 2) {
+                return false;
+            }
 	    Object associationEndRole0 = iter.next();
 	    Object associationEndRole1 = iter.next();
 	    if (associationEndRole0 == null || associationEndRole1 == null) {
@@ -168,7 +184,9 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	if (Model.getFacade().isADependency(edge)) {
 	    Collection clients = Model.getFacade().getClients(edge);
 	    Collection suppliers = Model.getFacade().getSuppliers(edge);
-	    if (clients == null || suppliers == null) return false;
+	    if (clients == null || suppliers == null) {
+                return false;
+            }
 	    end0 = (clients.toArray())[0];
 	    end1 = (suppliers.toArray())[0];
 	}
@@ -176,9 +194,15 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	    end0 = ((CommentEdge) edge).getSource();
 	    end1 = ((CommentEdge) edge).getDestination();
 	}
-	if (end0 == null || end1 == null) return false;
-	if (!containsNode(end0)) return false;
-	if (!containsNode(end1)) return false;
+	if (end0 == null || end1 == null) {
+            return false;
+        }
+	if (!containsNode(end0)) {
+            return false;
+        }
+	if (!containsNode(end1)) {
+            return false;
+        }
 	return true;
     }
 
@@ -190,7 +214,9 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      */
     public void addNode(Object node) {
 	LOG.debug("adding MClassifierRole node!!");
-	if (!canAddNode(node)) return;
+	if (!canAddNode(node)) {
+            return;
+        }
 	getNodes().add(node);
 	// TODO: assumes public, user pref for default visibility?
 	if (Model.getFacade().isAClassifier(node)) {
@@ -208,7 +234,9 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      */
     public void addEdge(Object edge) {
         LOG.debug("adding class edge!!!!!!");
-        if (!canAddEdge(edge)) return;
+        if (!canAddEdge(edge)) {
+            return;
+        }
         getEdges().add(edge);
         // TODO: assumes public
         if (Model.getFacade().isAModelElement(edge)
@@ -223,14 +251,15 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      */
     public void addNodeRelatedEdges(Object node) {
         super.addNodeRelatedEdges(node);
-        
+
 	if (Model.getFacade().isAClassifier(node)) {
 	    Collection ends = Model.getFacade().getAssociationEnds(node);
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
 		Object ae = /*(MAssociationEndRole)*/ iter.next();
-		if (canAddEdge(Model.getFacade().getAssociation(ae)))
-		    addEdge(Model.getFacade().getAssociation(ae));
+		if (canAddEdge(Model.getFacade().getAssociation(ae))) {
+                    addEdge(Model.getFacade().getAssociation(ae));
+                }
 	    }
 	}
 	if (Model.getFacade().isAGeneralizableElement(node)) {
@@ -269,7 +298,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     }
 
 
-    /** 
+    /**
      * Return true if the two given ports can be connected by a
      * kind of edge to be determined by the ports.
      *
@@ -278,8 +307,9 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      */
     public boolean canConnect(Object fromP, Object toP) {
 	if ((Model.getFacade().isAClassifierRole(fromP))
-	    && (Model.getFacade().isAClassifierRole(toP)))
-	    return true;
+	    && (Model.getFacade().isAClassifierRole(toP))) {
+            return true;
+        }
 	return false;
     }
 
@@ -298,14 +328,23 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	    Object me = Model.getFacade().getModelElement(eo);
 	    if (oldOwned.contains(eo)) {
 		LOG.debug("model removed " + me);
-		if (Model.getFacade().isAClassifier(me)) removeNode(me);
-		if (Model.getFacade().isAMessage(me)) removeNode(me);
-		if (Model.getFacade().isAAssociation(me)) removeEdge(me);
-	    }
-	    else {
+		if (Model.getFacade().isAClassifier(me)) {
+                    removeNode(me);
+                }
+		if (Model.getFacade().isAMessage(me)) {
+                    removeNode(me);
+                }
+		if (Model.getFacade().isAAssociation(me)) {
+                    removeEdge(me);
+                }
+	    } else {
 		LOG.debug("model added " + me);
 	    }
 	}
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -4895696235473642985L;
 } /* end class CollabDiagramGraphModel */

@@ -50,14 +50,14 @@ public class ModelManagementFactoryImpl
     /**
      * Logger.
      */
-    private static final Logger LOG = 
+    private static final Logger LOG =
             Logger.getLogger(ModelManagementFactoryImpl.class);
 
     /**
      * The root model.
      */
     private MModel rootModel;
-    
+
     /**
      * The model implementation.
      */
@@ -93,7 +93,7 @@ public class ModelManagementFactoryImpl
         LOG.info("Setting the root model to " + theRootModel);
         this.rootModel = (MModel) theRootModel;
     }
-    
+
     /**
      * Gets the root model of the project
      * @return the current root model.
@@ -101,8 +101,8 @@ public class ModelManagementFactoryImpl
     public Object getRootModel() {
         return rootModel;
     }
-    
-    
+
+
     /**
      * Create an empty but initialized instance of a UML ElementImport.
      *

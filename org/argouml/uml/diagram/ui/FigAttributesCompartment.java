@@ -65,7 +65,7 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
         int xpos = attrPort.getX();
         int ypos = attrPort.getY();
         int acounter = 2; // Skip background port and seperator
-        
+
         Collection strs = Model.getFacade().getStructuralFeatures(cls);
         if (strs != null) {
             Iterator iter = strs.iterator();
@@ -116,7 +116,7 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
      */
     public void createFeature() {
         Object classifier = getGroup().getOwner();
-        
+
         Project project = ProjectManager.getManager().getCurrentProject();
 
         Collection propertyChangeListeners =
@@ -124,8 +124,8 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
         Object intType = project.findType("int");
         Object model = project.getModel();
         Object attr = Model.getCoreFactory().buildAttribute(
-                classifier, 
-                model, 
+                classifier,
+                model,
                 intType,
                 propertyChangeListeners);
         populate();
