@@ -46,18 +46,24 @@ public class NotationComboBox
     extends JComboBox
     implements ArgoNotationEventListener {
 
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(NotationComboBox.class);
 
-    private static NotationComboBox singleton = null;
+    /**
+     * The instance.
+     */
+    private static NotationComboBox singleton;
 
     /**
      * @return the singleton
      */
     public static NotationComboBox getInstance() {
         // Only instantiate when we need it.
-        if (singleton == null)
+        if (singleton == null) {
             singleton = new NotationComboBox();
+        }
         return singleton;
     }
 
@@ -124,4 +130,9 @@ public class NotationComboBox
         setVisible(true);
         invalidate();
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 4059899784583789412L;
 }

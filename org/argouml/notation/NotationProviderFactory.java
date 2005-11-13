@@ -64,7 +64,7 @@ public final class NotationProviderFactory
     public static NotationProviderFactory getInstance() { return SINGLETON; }
 
     private List providers = new ArrayList();
-    
+
     /**
      * Constructor to disallow other to create this.
      */

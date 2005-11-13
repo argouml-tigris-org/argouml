@@ -35,40 +35,40 @@ import org.argouml.uml.notation.uml.InitNotationUml;
 /**
  * @author mvw@tigris.org
  */
-public class NotationProviderFactory2 {
+public final class NotationProviderFactory2 {
 
     /**
      * TYPE_NAME the name of the modelelement, e.g. class, package, state
      */
     public static final int TYPE_NAME = 1;
-    
+
     /**
-     * TYPE_TRANSITION the main text shown above the transition
+     * TYPE_TRANSITION the main text shown above the transition.
      */
     public static final int TYPE_TRANSITION = 2;
-    
+
     /**
-     * TYPE_STATEBODY the multiline text shown inside the state body
+     * TYPE_STATEBODY the multiline text shown inside the state body.
      */
     public static final int TYPE_STATEBODY = 3;
 
     /**
-     * TYPE_ACTIONSTATE the text shown in an actionstate
+     * TYPE_ACTIONSTATE the text shown in an actionstate.
      */
     public static final int TYPE_ACTIONSTATE = 4;
 
     /**
-     * TYPE_ATTRIBUTE the text shown in a attribute compartment (1 attrib only)
+     * TYPE_ATTRIBUTE the text shown in a attribute compartment (1 attrib only).
      */
     public static final int TYPE_ATTRIBUTE = 5;
-    
+
     /**
-     * TYPE_OPERATION the text shown in a operation compartment (1 oper only)
+     * TYPE_OPERATION the text shown in a operation compartment (1 oper only).
      */
     public static final int TYPE_OPERATION = 6;
-    
+
     /**
-     * TYPE_OBJECT the text shown on an object
+     * TYPE_OBJECT the text shown on an object.
      */
     public static final int TYPE_OBJECT = 7;
 
@@ -93,7 +93,7 @@ public class NotationProviderFactory2 {
     /**
      * The instance is the singleton.
      */
-    private static NotationProviderFactory2 instance = null;
+    private static NotationProviderFactory2 instance;
 
     /**
      * The constructor.
@@ -121,10 +121,10 @@ public class NotationProviderFactory2 {
      * @return the provider
      * @param object the constructor parameter
      */
-    public NotationProvider4 getNotationProvider(int type, 
+    public NotationProvider4 getNotationProvider(int type,
             NotationContext context, Object object) {
         NotationName name = context.getContextNotation();
-        Class clazz = getNotationProviderClass(type, name); 
+        Class clazz = getNotationProviderClass(type, name);
         if (clazz != null) {
             Class[] p = {Object.class};
             Constructor constructor = null;
@@ -137,7 +137,9 @@ public class NotationProviderFactory2 {
                 // TODO: Auto-generated catch block
                 e.printStackTrace();
             }
-            Object[] params = { object };
+            Object[] params = {
+                object,
+            };
 
             try {
                 return (NotationProvider4) constructor.newInstance(params);
@@ -159,14 +161,15 @@ public class NotationProviderFactory2 {
     }
 
     /**
-     * This function looks for the requested notation provider type. 
-     * It is guaranteed to deliver <ul><li>
-     * the requested type of the requested notation language,</li><li>
-     * or the requested type of the default notation,</li><li>
-     * or null.</li></ul>
-     * 
+     * This function looks for the requested notation provider type.
+     * It is guaranteed to deliver:<ul>
+     * <li>the requested type of the requested notation language,
+     * <li>the requested type of the default notation, or
+     * <li><code>null</code>.
+     * </ul>
+     *
      * @param type the provider type
-     * @param context the context (i.e. the notation name)
+     * @param name the context (i.e. the notation name)
      * @return the provider
      */
     private Class getNotationProviderClass(int type, NotationName name) {
@@ -182,13 +185,14 @@ public class NotationProviderFactory2 {
         }
         return null;
     }
-    
+
     /**
      * @param type the provider type
      * @param notationName the name of the notation (language)
      * @param provider the provider
      */
-    public void addNotationProvider(int type, NotationName notationName, Class provider) {
+    public void addNotationProvider(int type,
+            NotationName notationName, Class provider) {
         if (allLanguages.containsKey(notationName)) {
             Map t = (Map) allLanguages.get(notationName);
             t.put(new Integer(type), provider);
@@ -200,23 +204,25 @@ public class NotationProviderFactory2 {
     }
 
     /**
-     * @param notationName the UML notation that is to be used as default 
-     *                     if no other is found 
+     * @param notationName the UML notation that is to be used as default
+     *                     if no other is found
      */
     public void setDefaultNotation(NotationName notationName) {
         if (allLanguages.containsKey(notationName)) {
             defaultLanguage = notationName;
         }
     }
-    
+
     /**
      * We need this to remove modules.
-     * 
+     *
      * @param notationName the notation to be removed
      * @return true if the notation was removed
      */
     public boolean removeNotation(NotationName notationName) {
-        if (defaultLanguage == notationName) return false;
+        if (defaultLanguage == notationName) {
+            return false;
+        }
         if (allLanguages.containsKey(notationName)) {
             //TODO: Remove it here
             return true;

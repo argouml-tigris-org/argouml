@@ -138,4 +138,8 @@ public class ActionNotation extends UMLAction
      */
     public void menuCanceled(MenuEvent me) { }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 1364283215100616618L;
 }

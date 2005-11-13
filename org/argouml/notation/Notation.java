@@ -39,6 +39,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.model.Model;
+import org.argouml.uml.generator.GeneratorDisplay;
 
 /**
  * Provides centralized methods dealing with notation.
@@ -60,7 +61,7 @@ public final class Notation implements PropertyChangeListener {
      * part of ArgoUML core distribution.
      */
     private static NotationName notationArgo =
-        org.argouml.uml.generator.GeneratorDisplay.getInstance().getNotation();
+        GeneratorDisplay.getInstance().getNotation();
     /*
      * Remark:
      * There is also a java-like notation, which is also
@@ -126,16 +127,22 @@ public final class Notation implements PropertyChangeListener {
      */
     public static final ConfigurationKey KEY_SHOW_TYPES =
         Configuration.makeKey("notation", "show", "types");
-    
+
     /**
      * Default value for the shadow size of classes, interfaces etc.
      */
     public static final ConfigurationKey KEY_DEFAULT_SHADOW_WIDTH =
         Configuration.makeKey("notation", "default", "shadow-width");
 
+    /**
+     * The instance.
+     */
     private static final Notation SINGLETON = new Notation();
 
 
+    /**
+     * The constructor.
+     */
     private Notation() {
         Configuration.addListener(KEY_USE_GUILLEMOTS, this);
         Configuration.addListener(KEY_DEFAULT_NOTATION, this);
@@ -150,6 +157,8 @@ public final class Notation implements PropertyChangeListener {
     /**
      * Remove the notation change listener.
      * <code>finalize</code> should never happen, but play it safe.
+     *
+     * TODO: Explain why we don't call super.finalize()!
      */
     protected void finalize() {
         Configuration.removeListener(KEY_DEFAULT_NOTATION, this);
@@ -190,7 +199,7 @@ public final class Notation implements PropertyChangeListener {
 
     /**
      * Returns the Notation as set in the menu.
-     * 
+     *
      * @return the default NotationName
      */
     public static NotationName getConfigueredNotation() {
@@ -207,7 +216,7 @@ public final class Notation implements PropertyChangeListener {
         LOG.debug("default notation is " + n.getConfigurationValue());
         return n;
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // class accessors
 
@@ -486,8 +495,9 @@ public final class Notation implements PropertyChangeListener {
      * @param ctx  Context used to identify the notation
      * @param s   The UML element to generate for.
      * @return     The generated text.
-     * 
-     * TODO: MULTIPLESTEREOTYPES  Need version that handles a Collection of Stereotypes
+     *
+     * TODO: MULTIPLESTEREOTYPES  Need version that handles a Collection of
+     * Stereotypes.
      */
     public static String generateStereotype(
             NotationContext ctx,
@@ -646,8 +656,8 @@ public final class Notation implements PropertyChangeListener {
      * @param o          The object to generate.
      *
      * @param documented  This flag only has any effect for
-     *                    Operations and Attributes. See 
-     *                    GeneratorJava.generateConstraintEnrichedDocComment().
+     * Operations and Attributes.
+     * See {@link GeneratorJava#generateConstraintEnrichedDocComment()}.
      *
      * @return            The generated string.
      */
@@ -674,9 +684,9 @@ public final class Notation implements PropertyChangeListener {
      *
      * @param o          The object to generate.
      *
-     * @param documented  This flag only has any effect for
-     *                    Operations and Attributes. See 
-     *                    GeneratorJava.generateConstraintEnrichedDocComment().
+     * @param documented  This flag only has any effect for Operations and
+     * Attributes.
+     * See {@link GeneratorJava#generateConstraintEnrichedDocComment()}.
      *
      * @return            The generated string.
      */

@@ -24,55 +24,54 @@
 
 package org.argouml.notation;
 
-import javax.swing.Action;
 
 
 /**
- * A class that implements this interface manages a text 
- * shown on a diagram. This means it is able to generate 
- * text that represents one or more UML objects. 
+ * A class that implements this interface manages a text
+ * shown on a diagram. This means it is able to generate
+ * text that represents one or more UML objects.
  * And when the user has edited this text, the model may be adapted
  * by parsing the text.
- * Additionally, a help text for the parsing is provided, 
- * so that the user knows the syntax. 
- *  
+ * Additionally, a help text for the parsing is provided,
+ * so that the user knows the syntax.
+ *
  * @author mvw@argouml.org
  */
 public interface NotationProvider4 {
 
     /**
      * @param text the text given by the user to be parsed to adapt the model
-     * @return after parsing, the modelelement is generated again, 
+     * @return after parsing, the modelelement is generated again,
      *         to normalize the given text
      */
-    public String parse(String text);
+    String parse(String text);
 
     /**
-     * @return the string written in the correct notation 
+     * @return the string written in the correct notation
      */
-    public String toString();
+    String toString();
 
     /**
-     * @return a i18 key that represents a help string 
+     * @return a i18 key that represents a help string
      *         giving an explanation to the user of the syntax
      */
-    public String getParsingHelp();
+    String getParsingHelp();
 
-    /** 
+    /**
      * Sets the <code>Value</code> associated with the specified key.
      *
      * @param key  the <code>String</code> that identifies the stored object
      * @param newValue the <code>Object</code> to store using this key
      */
-    public void putValue(String key, Object newValue);
-    
+    void putValue(String key, Object newValue);
 
-    /** 
+
+    /**
      * Gets the <code>Object</code> associated with the specified key.
      *
      * @param key a string containing the specified <code>key</code>
      * @return the binding <code>Object</code> stored with this key; if there
      *          are no keys, it will return <code>null</code>
      */
-    public Object getValue(String key);
+    Object getValue(String key);
 }

@@ -49,15 +49,15 @@ import org.argouml.ui.ShadowComboBox;
  */
 public class SettingsTabNotation extends SettingsTabHelper {
 
-    private JCheckBox allowNotations = null;
-    private JCheckBox useGuillemots = null;
-    private JCheckBox showVisibility = null;
-    private JCheckBox showMultiplicity = null;
-    private JCheckBox showInitialValue = null;
-    private JCheckBox showProperties = null;
-    private JCheckBox showStereotypes = null;
-    private JCheckBox showTypes = null;
-    private ShadowComboBox defaultShadowWidth = null;
+    private JCheckBox allowNotations;
+    private JCheckBox useGuillemots;
+    private JCheckBox showVisibility;
+    private JCheckBox showMultiplicity;
+    private JCheckBox showInitialValue;
+    private JCheckBox showProperties;
+    private JCheckBox showStereotypes;
+    private JCheckBox showTypes;
+    private ShadowComboBox defaultShadowWidth;
 
     /**
      * The constructor.
@@ -104,7 +104,7 @@ public class SettingsTabNotation extends SettingsTabHelper {
 
         showTypes = createCheckBox("label.show-types");
         top.add(showTypes, constraints);
-        
+
         showStereotypes = createCheckBox("label.show-stereotypes");
         top.add(showStereotypes, constraints);
 
@@ -132,8 +132,10 @@ public class SettingsTabNotation extends SettingsTabHelper {
         showInitialValue.setSelected(
             getBoolean(Notation.KEY_SHOW_INITIAL_VALUE));
         showProperties.setSelected(getBoolean(Notation.KEY_SHOW_PROPERTIES));
-        /* The next one defaults to TRUE, to stay compatible with older
-         * ArgoUML versions that did not have this setting: */
+        /*
+         * The next one defaults to TRUE, to stay compatible with older
+         * ArgoUML versions that did not have this setting:
+         */
         showTypes.setSelected(Configuration.getBoolean(
                 Notation.KEY_SHOW_TYPES, true));
         showMultiplicity.setSelected(
@@ -212,4 +214,9 @@ public class SettingsTabNotation extends SettingsTabHelper {
      * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
      */
     public String getTabKey() { return "tab.notation"; }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 3206897060245290104L;
 }
