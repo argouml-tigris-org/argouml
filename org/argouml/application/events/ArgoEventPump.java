@@ -344,9 +344,8 @@ public final class ArgoEventPump {
         public int hashCode() {
             if (listener != null) {
                 return eventType + listener.hashCode();
-            } else {
-                return eventType;
             }
+            return eventType;
         }
 
         /**

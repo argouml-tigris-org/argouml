@@ -118,9 +118,8 @@ public class Agency extends Observable { //implements java.io.Serialization
         Designer dsgr = Designer.theDesigner();
         if (dsgr == null) {
             return null;
-	} else {
-            return dsgr.getAgency();
 	}
+        return dsgr.getAgency();
     }
     ////////////////////////////////////////////////////////////////
     // accessors
@@ -409,9 +408,8 @@ public class Agency extends Observable { //implements java.io.Serialization
         Agency a = theAgency();
         if (a == null) {
             return;
-	} else {
-            a.addObserver(obs);
 	}
+        a.addObserver(obs);
     }
 
     /**
