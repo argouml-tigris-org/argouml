@@ -135,11 +135,11 @@ public class FigFeature extends CompartmentFigText {
     public Selection makeSelection() {
         return new SelectionFeature(this);
     }
-    
+
     public void setTextFilled(boolean filled) {
         super.setTextFilled(false);
     }
-    
+
     public void setFilled(boolean filled) {
         super.setFilled(false);
     }

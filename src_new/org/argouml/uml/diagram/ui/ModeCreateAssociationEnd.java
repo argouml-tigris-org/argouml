@@ -73,7 +73,7 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
         if (underMouse == null) {
             underMouse = editor.hit(x - 16, y - 16, 32, 32);
         }
-        
+
         if (underMouse == null && _npoints == 0) {
             done();
             me.consume();
@@ -84,9 +84,9 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
             me.consume();
             return;
         }
-        
+
         Object modelElement = underMouse.getOwner();
-        
+
         if (!Model.getFacade().isAAssociationClass(modelElement)) {
             if (underMouse instanceof FigAssociation) {
                 oldFigAssociation = (FigEdge) underMouse;
@@ -144,11 +144,11 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
         if (!(graphModel instanceof MutableGraphModel)) {
             destFig = null;
         }
-        
-        
+
+
         MutableGraphModel mutableGraphModel = (MutableGraphModel) graphModel;
         // TODO: potential class cast exception
-        if (destFig instanceof FigAssociation && 
+        if (destFig instanceof FigAssociation &&
                 !(destFig instanceof FigAssociationClass)) {
             Object association = destFig.getOwner();
             boolean isValid =
@@ -169,7 +169,7 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
                         x - figNode.getWidth() / 2,
                         y - figNode.getHeight() / 2);
                 editor.add(figNode);
-                associationEnds = 
+                associationEnds =
                     Model.getFacade().getConnections(association);
                 Iterator it = associationEnds.iterator();
                 mutableGraphModel.addEdge(it.next());

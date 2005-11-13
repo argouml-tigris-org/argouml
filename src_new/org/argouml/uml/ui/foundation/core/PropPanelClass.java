@@ -56,7 +56,7 @@ public class PropPanelClass extends PropPanelClassifier {
      * The constructor.
      */
     public PropPanelClass() {
-        super("Class", 
+        super("Class",
             lookupIcon("Class"),
             ConfigLoader.getTabPropsOrientation());
 

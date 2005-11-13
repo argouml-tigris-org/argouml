@@ -29,10 +29,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -43,16 +41,18 @@ import org.apache.log4j.Logger;
  * in a temporary directory and reads them.
  * TODO: Remove this class when all code generators implements the new
  * CodeGenerator interface directly.
- * 
+ *
  * @author Daniele Tamino
  */
 public class FileGeneratorAdapter implements CodeGenerator {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(FileGeneratorAdapter.class);
 
     private FileGenerator fileGen;
-    
+
     /**
      * @param fg The FileGenerator to wrap.
      */
@@ -60,7 +60,7 @@ public class FileGeneratorAdapter implements CodeGenerator {
         fileGen = fg;
         LOG.debug("Wrapping " + fg + " info FileGeneratorAdapter");
     }
-    
+
     /**
      * @see org.argouml.uml.generator.CodeGenerator#generate(java.util.Collection, boolean)
      */
@@ -117,7 +117,7 @@ public class FileGeneratorAdapter implements CodeGenerator {
     }
 
     // methods to manage files in the temporary directory
-    
+
     private File createTempDir() {
         File tmpdir = null;
         try  {
@@ -132,15 +132,15 @@ public class FileGeneratorAdapter implements CodeGenerator {
             return null;
         }
     }
-    
+
     private interface FileAction {
-        /*
+        /**
          * Execute some action on the specified file.
          */
         void act(File f) throws IOException;
     }
 
-    /*
+    /**
      * Visit directory in post-order fashion.
      */
     private void traverseDir(File dir, FileAction action) throws IOException {
@@ -156,7 +156,7 @@ public class FileGeneratorAdapter implements CodeGenerator {
             action.act(dir);
         }
     }
-    
+
     /**
      * Reads all files in a directory in memory.
      * @param dir
@@ -167,7 +167,7 @@ public class FileGeneratorAdapter implements CodeGenerator {
             final Vector ret = new Vector();
             final int prefix = dir.getPath().length() + 1;
             traverseDir(dir, new FileAction() {
-                
+
                 public void act(File f) throws IOException {
                     // skip backup files. This is actually a workaround for the
                     // cpp generator, which always creates backup files (it's a
@@ -189,7 +189,7 @@ public class FileGeneratorAdapter implements CodeGenerator {
                                 result.toString()));
                     }
                 }
-                
+
             });
             return ret;
         } catch (IOException ioe) {
@@ -199,7 +199,7 @@ public class FileGeneratorAdapter implements CodeGenerator {
     }
 
     /**
-     * Deletes a directory and all of its contents. 
+     * Deletes a directory and all of its contents.
      * @param dir The directory to delete.
      */
     private void deleteDir(File dir) {

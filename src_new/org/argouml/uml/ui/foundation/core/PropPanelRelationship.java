@@ -40,12 +40,12 @@ public class PropPanelRelationship extends PropPanelModelElement {
 
     /**
      * The constructor.
-     * 
+     *
      * @param name
      * @param icon
      * @param orientation
      */
-    public PropPanelRelationship(String name, ImageIcon icon, 
+    public PropPanelRelationship(String name, ImageIcon icon,
             Orientation orientation) {
         super(name, icon, orientation);
     }

@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 
 public class UMLTableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
-   
+
     public UMLTableCellRenderer() {
         super();
     }
@@ -20,7 +20,7 @@ public class UMLTableCellRenderer extends DefaultTableCellRenderer implements Ta
             if (value instanceof String)
                 setText((String)value);
             else
-                setText("");            
+                setText("");
         }
     }
 }

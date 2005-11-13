@@ -68,7 +68,7 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
         int xpos = operPort.getX();
         int ypos = operPort.getY();
         int ocounter = 2; // Skip background port and seperator
-        
+
         Collection behs = Model.getFacade().getOperations(cls);
         if (behs != null) {
             Iterator iter = behs.iterator();
@@ -135,7 +135,7 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
                 .buildOperation(classifier, model, voidType, propertyChangeListeners);
         populate();
         TargetManager.getInstance().setTarget(oper);
-        
+
         // TODO: None of the following should be needed. Fig such as FigClass and
         // FigInterface should be listening for add/remove events and know when
         // an operation has been added and add a listener to the operation to themselves

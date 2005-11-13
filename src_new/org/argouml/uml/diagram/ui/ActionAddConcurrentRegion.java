@@ -83,7 +83,7 @@ public class ActionAddConcurrentRegion extends UMLAction {
             size = figs.size();
         } catch (Exception e) {
         }
-        return super.shouldBeEnabled() && (size > 0) 
+        return super.shouldBeEnabled() && (size > 0)
             && (TargetManager.getInstance().getModelTargets().size() < 2);
     }
 
@@ -103,10 +103,10 @@ public class ActionAddConcurrentRegion extends UMLAction {
             Object st = f.getOwner();
             Editor editor = Globals.curEditor();
             GraphModel gm = editor.getGraphModel();
-            LayerDiagram lay = 
+            LayerDiagram lay =
                 ((LayerDiagram) editor.getLayerManager().getActiveLayer());
 
-            Rectangle rName = 
+            Rectangle rName =
                 ((FigNodeModelElement) f).getNameFig().getBounds();
             Rectangle rFig = f.getBounds();
             Fig encloser = null;
@@ -118,9 +118,9 @@ public class ActionAddConcurrentRegion extends UMLAction {
 
             if (!Model.getFacade().isConcurrent(st)) {
 
-                Object region1 = 
+                Object region1 =
                     Model.getStateMachinesFactory().buildCompositeState(st);
-                FigConcurrentRegion region = 
+                FigConcurrentRegion region =
                     new FigConcurrentRegion(gm, region1,
                                             Color.white,
                                             rFig.width - 6,
@@ -139,7 +139,7 @@ public class ActionAddConcurrentRegion extends UMLAction {
 
                 if (!nodesInside.isEmpty()) {
                     for (int i = 0; i < nodesInside.size(); i++) {
-                        FigStateVertex curFig = 
+                        FigStateVertex curFig =
                             (FigStateVertex) nodesInside.elementAt(i);
                         curFig.setEnclosingFig(region);
                         curFig.redrawEnclosedFigs();
@@ -147,10 +147,10 @@ public class ActionAddConcurrentRegion extends UMLAction {
                 }
             }
 
-            Object region2 = 
+            Object region2 =
                 Model.getStateMachinesFactory().buildCompositeState(st);
-            FigConcurrentRegion regionNew = 
-                new FigConcurrentRegion(gm, region2, Color.black, 
+            FigConcurrentRegion regionNew =
+                new FigConcurrentRegion(gm, region2, Color.black,
                         rFig.width - 6, 126);
 
             regionNew.setLocation(f.getX() + 3, f.getY() + rFig.height - 1);

@@ -54,7 +54,7 @@ public class PropPanelLinkEnd extends PropPanelModelElement {
                 getStereotypeSelector());
 
         addSeperator();
-        
+
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionDeleteSingleModelElement());
     }

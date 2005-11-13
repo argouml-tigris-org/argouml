@@ -183,9 +183,9 @@ public abstract class FileImportSupport implements PluggableImport {
      */
     public JComponent getChooser(Import imp) {
         String directory = Globals.getLastDirectory();
-        
+
         final JFileChooser chooser = new ImportFileChooser(imp, directory);
-        
+
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         SuffixFilter[] filters = getSuffixFilters();
         if (filters != null) {

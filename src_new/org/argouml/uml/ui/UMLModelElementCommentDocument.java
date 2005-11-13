@@ -32,8 +32,8 @@ import org.argouml.model.Model;
 /**
  * This class provides a text field that can be used to display
  * the text of all Comments associated with an annotated ModelElement.
- * 
- * TODO: This could use more work.  Currently it returns all 
+ *
+ * TODO: This could use more work.  Currently it returns all
  * Comment.name or Comment.body attributes concatenated together
  * into a single read-only document.
  *
@@ -41,13 +41,13 @@ import org.argouml.model.Model;
  * @author Tom Morris (tfmorris@gmail.com)
  */
 public class UMLModelElementCommentDocument extends UMLPlainTextDocument {
-    
+
     private boolean useBody;
 
     /**
      * Creates a UMLPlainTextDocument object that represents the text of a
      * Comment associated with a ModelElement
-     * 
+     *
      * @param useBody
      *            use the UML 1.4 body attribute instead of the UML 1.3 name
      *            attribute
@@ -59,9 +59,9 @@ public class UMLModelElementCommentDocument extends UMLPlainTextDocument {
 
     /**
      * Add a Comment with the given string
-     * 
+     *
      * TODO: Currently a no-op, doc is read only
-     * 
+     *
      * @param text the property
      */
     protected void setProperty(String text) {
@@ -74,7 +74,7 @@ public class UMLModelElementCommentDocument extends UMLPlainTextDocument {
 
     /**
      * Get the text of all comments annotating this Model Element
-     * 
+     *
      * @return the text of all comments
      */
     protected String getProperty() {
@@ -87,7 +87,7 @@ public class UMLModelElementCommentDocument extends UMLPlainTextDocument {
                 s = (String) Model.getFacade().getBody(c);
                 //sb.append((String) Model.getFacade().getBody(c));
             } else {
-                s = Model.getFacade().getName(c); 
+                s = Model.getFacade().getName(c);
                 //sb.append(Model.getFacade().getName(c));
             }
             if (s == null) {

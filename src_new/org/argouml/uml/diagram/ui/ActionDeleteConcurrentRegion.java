@@ -55,7 +55,7 @@ public class ActionDeleteConcurrentRegion extends UMLAction {
 	/** logger */
     private static final Logger LOG =
         Logger.getLogger(ActionDeleteConcurrentRegion.class);
-    
+
     private static ActionDeleteConcurrentRegion singleton =
         new ActionDeleteConcurrentRegion();
 
@@ -111,7 +111,7 @@ public class ActionDeleteConcurrentRegion extends UMLAction {
                 p.moveToTrash(f.getOwner());
             //It wasnt the last region
             if (index < nodesInside.size() - 1) {
-                Rectangle rFig = 
+                Rectangle rFig =
                     ((Fig) nodesInside.elementAt(index + 1)).getBounds();
                 height = rFig.y - r.y;
                 for (int i = ++index; i < nodesInside.size();  i++)
@@ -135,7 +135,7 @@ public class ActionDeleteConcurrentRegion extends UMLAction {
                         encloser.getOwner(), false);
                 if (!nodesInside.isEmpty()) {
                     for (int i = 0; i < nodesInside.size(); i++) {
-                        FigStateVertex curFig = 
+                        FigStateVertex curFig =
                             (FigStateVertex) nodesInside.elementAt(i);
                         curFig.setEnclosingFig(encloser);
                     }

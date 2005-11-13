@@ -36,7 +36,7 @@ import org.argouml.notation.NotationProvider4;
 public abstract class ValueHandler implements NotationProvider4{
 
     protected HashMap keyTable;
-    
+
     /**
      * @see org.argouml.notation.NotationProvider4#putValue(java.lang.String, java.lang.Object)
      */
@@ -51,10 +51,10 @@ public abstract class ValueHandler implements NotationProvider4{
         } else {
             keyTable.put(key,newValue);
         }
-        
+
     }
 
-    /** 
+    /**
      * Gets the <code>Object</code> associated with the specified key.
      *
      * @param key a string containing the specified <code>key</code>
@@ -68,6 +68,6 @@ public abstract class ValueHandler implements NotationProvider4{
         }
         return keyTable.get(key);
     }
-    
-    
+
+
 }

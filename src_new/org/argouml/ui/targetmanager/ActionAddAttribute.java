@@ -47,17 +47,17 @@ class ActionAddAttribute extends UndoableAction {
         super(Translator.localize("button.new-attribute"),
                 ResourceLoaderWrapper.lookupIcon("button.new-attribute"));
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        
+
         super.actionPerformed(ae);
-        
+
         Object target = TargetManager.getInstance().getModelTarget();
         Object classifier = null;
-        
+
         if (Model.getFacade().isAClassifier(target)
                 || Model.getFacade().isAAssociationEnd(target)) {
             classifier = target;
@@ -73,11 +73,17 @@ class ActionAddAttribute extends UndoableAction {
             project.findFigsForMember(classifier);
         Object intType = project.findType("int");
         Object model = project.getModel();
-        Object attr = Model.getCoreFactory().buildAttribute(
-                classifier, 
-                model, 
+        Object attr =
+            Model.getCoreFactory().buildAttribute(
+                classifier,
+                model,
                 intType,
                 propertyChangeListeners);
         TargetManager.getInstance().setTarget(attr);
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -111785878370086329L;
 } /* end class ActionAddAttribute */

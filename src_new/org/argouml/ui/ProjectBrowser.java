@@ -101,7 +101,7 @@ import org.tigris.toolbar.layouts.DockBorderLayout;
  *
  * @stereotype singleton
  */
-public class ProjectBrowser
+public final class ProjectBrowser
     extends JFrame
     implements IStatusBar, PropertyChangeListener, TargetListener {
 
@@ -136,9 +136,10 @@ public class ProjectBrowser
 
     private MultiEditorPane editorPane;
 
-    /* Work in progress here to allow multiple details panes with
-    ** different contents - Bob Tarling
-    */
+    /*
+     * TODO: Work in progress here to allow multiple details panes with
+     * different contents - Bob Tarling
+     */
     private DetailsPane northEastPane;
     private DetailsPane northPane;
     private DetailsPane northWestPane;
@@ -176,19 +177,19 @@ public class ProjectBrowser
     private ToDoPane todoPane;
 
     /**
-     * The action to redo the last undone action
+     * The action to redo the last undone action.
      */
-    private final RedoAction redoAction = 
+    private final RedoAction redoAction =
         new RedoAction(Translator.localize("action.redo"));
 
     /**
-     * The action to undo the last user interaction
+     * The action to undo the last user interaction.
      */
-    private final UndoAction undoAction = 
+    private final UndoAction undoAction =
         new UndoAction(Translator.localize("action.undo"));
-    
+
     /**
-     * The action to remove the current selected Figs from the diagram
+     * The action to remove the current selected Figs from the diagram.
      */
     private final ActionRemoveFromDiagram removeFromDiagram =
         new ActionRemoveFromDiagram(
@@ -245,14 +246,14 @@ public class ProjectBrowser
         // adds this as listener to TargetManager so gets notified
         // when the active diagram changes
         TargetManager.getInstance().addTargetListener(this);
-        
-        // Add a listener to focus changes. 
+
+        // Add a listener to focus changes.
         // Rationale: reset the undo manager to start a new chain.
-        KeyboardFocusManager kfm = 
+        KeyboardFocusManager kfm =
             KeyboardFocusManager.getCurrentKeyboardFocusManager();
         kfm.addPropertyChangeListener(new PropertyChangeListener() {
-            private Object obj = null;
-            
+            private Object obj;
+
             /**
              * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
              */
@@ -263,8 +264,9 @@ public class ProjectBrowser
                         && (obj != evt.getNewValue())) {
                     obj = evt.getNewValue();
                     UndoManager.getInstance().startChain();
-                    /* This next line is ideal for debugging the taborder 
-                     * (focus traversal), see e.g. issue 1849.*/
+                    /* This next line is ideal for debugging the taborder
+                     * (focus traversal), see e.g. issue 1849.
+                     */
 //                  System.out.println("Focus changed " + obj);
                 }
             }
@@ -669,7 +671,7 @@ public class ProjectBrowser
      * Given a list of offenders, displays the according diagram.
      * This method jumps to the diagram showing the offender,
      * and scrolls to make it visible.
-     * 
+     *
      * @param dms vector of offenders
      */
     public void jumpToDiagramShowing(Vector dms) {
@@ -720,7 +722,7 @@ public class ProjectBrowser
 			 .getRoot())) {
             setTarget(first);
         }
-        
+
         // and finally, adjust the scrollbars to show the Fig
         Project p = ProjectManager.getManager().getCurrentProject();
         if (p != null) {
@@ -894,13 +896,13 @@ public class ProjectBrowser
 
     /**
      * Enabled the remove action if an item is selected in anything other then
-     * the activity or state diagrams
+     * the activity or state diagrams.
      */
     private void determineRemoveEnabled() {
         Editor editor = Globals.curEditor();
         boolean removeEnabled =
             !editor.getSelectionManager().getFigs().isEmpty();
-        if (editor.getGraphModel() instanceof ActivityDiagramGraphModel 
+        if (editor.getGraphModel() instanceof ActivityDiagramGraphModel
             || editor.getGraphModel() instanceof StateDiagramGraphModel) {
             removeEnabled = false;
         }
@@ -945,7 +947,7 @@ public class ProjectBrowser
 
         try {
             if (!PersistenceManager.getInstance()
-                    .confirmOverwrite(overwrite, file)) { 
+                    .confirmOverwrite(overwrite, file)) {
                 return false;
             }
 
@@ -1108,13 +1110,13 @@ public class ProjectBrowser
                             + file.getName()
                             + " is not of a known file type");
                 }
-                
+
                 DiagramFactory.getInstance().getDiagram().clear();
-                
+
                 p = persister.doLoad(file);
 
                 if (Model.getDiagramInterchangeModel() != null) {
-                    Collection diagrams = 
+                    Collection diagrams =
                         DiagramFactory.getInstance().getDiagram();
                     Iterator diag = diagrams.iterator();
                     while (diag.hasNext()) {
@@ -1125,7 +1127,7 @@ public class ProjectBrowser
                                 .next());
                     }
                 }
-                
+
                 ProjectBrowser.getInstance().showStatus(
                     MessageFormat.format(Translator.localize(
                         "label.open-project-status-read"),
@@ -1266,7 +1268,7 @@ public class ProjectBrowser
         FindDialog.getInstance().doClearTabs();
         FindDialog.getInstance().doResetFields();
     }
-    
+
     /**
      * Get the action that can undo the last user interaction on this project.
      * @return the undo action.
@@ -1274,7 +1276,7 @@ public class ProjectBrowser
     public Action getUndoAction() {
         return undoAction;
     }
-    
+
     /**
      * Get the action that can redo the last undone action.
      * @return the redo action.
@@ -1282,7 +1284,7 @@ public class ProjectBrowser
     public Action getRedoAction() {
         return redoAction;
     }
-    
+
     /**
      * Get the action that removes selected figs from the diagram.
      * @return the remove from diagram action.
@@ -1290,5 +1292,9 @@ public class ProjectBrowser
     public Action getRemoveFromDiagramAction() {
         return removeFromDiagram;
     }
-    
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 6974246679451284917L;
 } /* end class ProjectBrowser */

@@ -54,10 +54,11 @@ public class GoNamespaceToClassifierAndPackage
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (!Model.getFacade().isANamespace(parent))
+        if (!Model.getFacade().isANamespace(parent)) {
             return null;
+        }
 
-        Iterator elements = 
+        Iterator elements =
             Model.getFacade().getOwnedElements(parent).iterator();
         List result = new ArrayList();
 

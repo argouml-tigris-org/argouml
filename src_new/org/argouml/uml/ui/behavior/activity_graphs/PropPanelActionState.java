@@ -61,7 +61,7 @@ public class PropPanelActionState extends AbstractPropPanelState {
         addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());       
+                getStereotypeSelector());
         addField(Translator.localize("label.container"),
                 getContainerScroll());
         addField(Translator.localize("label.entry"),
@@ -69,7 +69,7 @@ public class PropPanelActionState extends AbstractPropPanelState {
 
         addField(Translator.localize("label.deferrable"),
                 getDeferrableEventsScroll());
-        
+
         addSeperator();
 
         addField(Translator.localize("label.incoming"),

@@ -38,35 +38,35 @@ import org.argouml.uml.ui.UMLAction;
  * @author Bob Tarling
  */
 class ActionAddStereotype extends UMLAction {
-    
+
     /**
      * Logger.
      */
     private static final Logger LOG =
         Logger.getLogger(ActionAddStereotype.class);
-    
+
     private Object modelElement;
     private Object stereotype;
-    
+
     public ActionAddStereotype(Object modelElement, Object stereotype) {
-        super(NotationHelper.getLeftGuillemot() + 
-                Model.getFacade().getName(stereotype) + 
+        super(NotationHelper.getLeftGuillemot() +
+                Model.getFacade().getName(stereotype) +
                 NotationHelper.getRightGuillemot(), NO_ICON);
         this.modelElement = modelElement;
         this.stereotype = stereotype;
     }
-    
+
     public void actionPerformed(ActionEvent ae) {
         if (Model.getFacade().getStereotypes(modelElement).contains(stereotype)) {
-            Model.getCoreHelper().removeStereotype(modelElement, stereotype);            
+            Model.getCoreHelper().removeStereotype(modelElement, stereotype);
         } else {
             Object stereo = Model.getModelManagementHelper().
-                getCorrespondingElement(stereotype, 
+                getCorrespondingElement(stereotype,
                         Model.getFacade().getModel(modelElement), true);
             Model.getCoreHelper().addStereotype(modelElement, stereo);
         }
     }
-    
+
     public Object getValue(String key) {
         if ("SELECTED".equals(key)) {
             if (Model.getFacade().getStereotypes(modelElement).contains(stereotype))

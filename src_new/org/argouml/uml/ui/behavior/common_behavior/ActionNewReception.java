@@ -54,7 +54,7 @@ public class ActionNewReception extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        Object classifier =  
+        Object classifier =
             TargetManager.getInstance().getModelTarget();
         if (!Model.getFacade().isAClassifier(classifier)) {
             throw new IllegalArgumentException(

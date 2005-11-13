@@ -49,10 +49,10 @@ abstract public class FigClassifierBox extends FigNodeModelElement
         implements OperationsCompartmentContainer {
 
     /**
-     * The Fig for the operations compartment (if any). 
+     * The Fig for the operations compartment (if any).
      */
     protected FigOperationsCompartment operationsFig;
-    
+
     /**
      * Text highlighted by mouse actions on the diagram.<p>
      */
@@ -70,7 +70,7 @@ abstract public class FigClassifierBox extends FigNodeModelElement
         operationsFig =
             new FigOperationsCompartment(
                     10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
-        
+
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
         // lines. Initially not set to be displayed, but this will be changed
@@ -79,9 +79,9 @@ abstract public class FigClassifierBox extends FigNodeModelElement
         getStereotypeFig().setLineWidth(1);
         // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
-        
+
     }
-    
+
     /**
      * @see java.lang.Object#clone()
      */
@@ -99,20 +99,20 @@ abstract public class FigClassifierBox extends FigNodeModelElement
     }
 
 
-    
+
     private void addFigsNoCalcBounds() {
         setSuppressCalcBounds(true);
         addFigs();
         setSuppressCalcBounds(false);
     }
-    
+
     private void addFigs() {
         addFig(getStereotypeFig());  //0
         addFig(getNameFig());        //1
         addFig(getBigPort());        //2
     }
-    
-    
+
+
     /**
      * Updates the operations box. Called from modelchanged if there is
      * a modelevent effecting the attributes and from renderingChanged in all
@@ -134,7 +134,7 @@ abstract public class FigClassifierBox extends FigNodeModelElement
         setBounds(rect.x, rect.y, rect.width, rect.height);
         damage();
     }
-    
+
     /**
      * @return The vector of graphics for operations (if any).
      * First one is the rectangle for the entire operations box.
@@ -151,7 +151,7 @@ abstract public class FigClassifierBox extends FigNodeModelElement
     public Rectangle getOperationsBounds() {
         return operationsFig.getBounds();
     }
-    
+
     /**
      * Returns the visibility status of the operations compartment
      * @return true if the operations are visible, false otherwise
@@ -161,7 +161,7 @@ abstract public class FigClassifierBox extends FigNodeModelElement
     public boolean isOperationsVisible() {
         return operationsFig.isVisible();
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#translate(int, int)
      */
@@ -194,13 +194,13 @@ abstract public class FigClassifierBox extends FigNodeModelElement
             ((SelectionClass) sel).hideButtons();
         }
         unhighlight();
-        
+
         Rectangle r = new Rectangle(
-                mouseEvent.getX() - 1, 
-                mouseEvent.getY() - 1, 
-                2, 
+                mouseEvent.getX() - 1,
+                mouseEvent.getY() - 1,
+                2,
                 2);
-        
+
         Fig f = hitFig(r);
         if (f instanceof FigFeaturesCompartment) {
             FigFeaturesCompartment figCompartment = (FigFeaturesCompartment) f;
@@ -228,7 +228,7 @@ abstract public class FigClassifierBox extends FigNodeModelElement
     protected CompartmentFigText unhighlight() {
         return unhighlight(operationsFig);
     }
-    
+
     final protected CompartmentFigText unhighlight(FigFeaturesCompartment fc) {
         Fig ft;
         for (int i = 1; i < fc.getFigs().size(); i++) {

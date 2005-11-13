@@ -163,7 +163,7 @@ public class ActivityGraphsFactoryImpl
                 || theContext instanceof MClassifier
                 || theContext instanceof MPackage)) {
             throw new IllegalArgumentException(
-                    "Must have a context of a behaviorial feature, " 
+                    "Must have a context of a behaviorial feature, "
                     + "classifier or package to build an activity diagram.");
         }
 

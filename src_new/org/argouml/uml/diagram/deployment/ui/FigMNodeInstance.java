@@ -53,7 +53,7 @@ import org.tigris.gef.presentation.FigText;
  * @author 5eichler@informatik.uni-hamburg.de
  */
 public class FigMNodeInstance extends FigNodeModelElement {
-    
+
     private int d = 20;
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -90,7 +90,8 @@ public class FigMNodeInstance extends FigNodeModelElement {
     }
 
     /**
-     * Constructor which hooks the new Fig into an existing UML element
+     * Constructor which hooks the new Fig into an existing UML element.
+     *
      * @param gm ignored
      * @param node the UML element
      */
@@ -132,21 +133,21 @@ public class FigMNodeInstance extends FigNodeModelElement {
     public void setLineColor(Color c) {
         cover.setLineColor(c);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         cover.setLineWidth(w);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return cover.getFilled();
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
@@ -188,9 +189,10 @@ public class FigMNodeInstance extends FigNodeModelElement {
 
         Dimension stereoDim = getStereotypeFig().getMinimumSize();
         Dimension nameDim = getNameFig().getMinimumSize();
-        getNameFig().setBounds(x + 4, y + d + stereoDim.height + 1,
+        getNameFig().setBounds(
+                x + 4, y + d + stereoDim.height + 1,
                 w - d - 8, nameDim.height);
-        getStereotypeFig().setBounds(x + 1, y + d + 1, 
+        getStereotypeFig().setBounds(x + 1, y + d + 1,
                 w - d - 2, stereoDim.height);
         _x = x;
         _y = y;
@@ -232,12 +234,10 @@ public class FigMNodeInstance extends FigNodeModelElement {
                                 .setComponentInstance(nod, comp);
                         super.setEnclosingFig(encloser);
                     }
-                }
-                else if (Model.getFacade().isANode(comp)) {
+                } else if (Model.getFacade().isANode(comp)) {
                     super.setEnclosingFig(encloser);
                 }
-            }
-            else if (encloser == null) {
+            } else if (encloser == null) {
                 if (Model.getFacade().getComponentInstance(nod) != null) {
                     Model.getCommonBehaviorHelper()
                             .setComponentInstance(nod, null);
@@ -292,12 +292,20 @@ public class FigMNodeInstance extends FigNodeModelElement {
         return true;
     }
 
+    /**
+     * The UID.
+     */
     static final long serialVersionUID = 8822005566372687713L;
-    
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         Object nodeInst =  getOwner();
-        if (nodeInst == null) return;
+        if (nodeInst == null) {
+            return;
+        }
         if ("classifier".equals(mee.getPropertyName())
                 && mee.getSource() == nodeInst) {
             updateNameText();
@@ -310,8 +318,9 @@ public class FigMNodeInstance extends FigNodeModelElement {
      */
     protected void updateNameText() {
         Object noi = /*(MNodeInstance)*/ getOwner();
-        if (noi == null)
+        if (noi == null) {
             return;
+        }
         String nameStr = "";
         if (Model.getFacade().getName(noi) != null) {
             nameStr = Model.getFacade().getName(noi).trim();
@@ -343,24 +352,25 @@ public class FigMNodeInstance extends FigNodeModelElement {
      */
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
-        int xs[] = {r.x,     
-                    r.x + d, 
-                    r.x + r.width, 
-                    r.x + r.width,
-                    r.x + r.width - d, 
-                    r.x,     
-                    r.x};
-        int ys[] = {r.y + d, 
-                    r.y,    
-                    r.y,      
-                    r.y + r.height - d,
-                    r.y + r.height, 
-                    r.y + r.height, 
-                    r.y + d};
-        Point p = Geometry.ptClosestTo(
-                xs, 
-                ys,
-                7 , anotherPt);
+        int[] xs = {
+            r.x,
+            r.x + d,
+            r.x + r.width,
+            r.x + r.width,
+            r.x + r.width - d,
+            r.x,
+            r.x,
+        };
+        int[] ys = {
+            r.y + d,
+            r.y,
+            r.y,
+            r.y + r.height - d,
+            r.y + r.height,
+            r.y + r.height,
+            r.y + d,
+        };
+        Point p = Geometry.ptClosestTo(xs, ys, 7, anotherPt);
         return p;
     }
 } /* end class FigMNodeInstance */

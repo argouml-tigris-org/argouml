@@ -38,17 +38,17 @@ import org.argouml.notation.Notation;
  * Generator2 subclass to generate notation for display in diagrams in
  * text fields in the ArgoUML user interface.  The generated code
  * is UML. <p>
- * 
- * In contrary to its name, this is not the only class 
+ *
+ * In contrary to its name, this is not the only class
  * to generate for the "Display". Similarely to the GeneratorJava class,
- * this class would better have been named GeneratorUML. 
+ * this class would better have been named GeneratorUML.
  *
  * @stereotype singleton
  * @author jrobbins@ics.uci.edu
- * @deprecated since V0.19.8 by mvw. Replaced by a split architecture: 
- * see for the notation part 
- * http://argouml.tigris.org/proposals/notation/index.html, 
- * and for the code part issue 3546. 
+ * @deprecated since V0.19.8 by mvw. Replaced by a split architecture:
+ * see for the notation part
+ * http://argouml.tigris.org/proposals/notation/index.html,
+ * and for the code part issue 3546.
  */
 public class GeneratorDisplay extends Generator2 {
 
@@ -126,7 +126,7 @@ public class GeneratorDisplay extends Generator2 {
      *          Object, boolean)
      */
     public String generateOperation(Object op, boolean documented) {
-        String stereoStr = 
+        String stereoStr =
             generateStereotype(Model.getFacade().getStereotypes(op));
         String visStr =
 	    generateVisibility(op);
@@ -253,7 +253,7 @@ public class GeneratorDisplay extends Generator2 {
     public String generateAttribute(Object attr, boolean documented) {
         String visibility = generateVisibility(attr);
         // generateStereotype accepts a collection, despite its name
-        String stereo = 
+        String stereo =
             generateStereotype(Model.getFacade().getStereotypes(attr));
         String name = Model.getFacade().getName(attr);
         String multiplicity =
@@ -333,7 +333,7 @@ public class GeneratorDisplay extends Generator2 {
         s.append(generateKind(Model.getFacade().getKind(parameter)));
         if (s.length() > 0) s.append(" ");
         s.append(generateName(Model.getFacade().getName(parameter)));
-        String classRef = 
+        String classRef =
             generateClassifierRef(Model.getFacade().getType(parameter));
         if (classRef.length() > 0) {
             s.append(" : ");
@@ -659,7 +659,7 @@ public class GeneratorDisplay extends Generator2 {
             }
 
             action = generateAction(act);
-            /* Dirty fix for issue 1758 (Needs to be amended 
+            /* Dirty fix for issue 1758 (Needs to be amended
              * when we start supporting parameters): */
             if (!action.endsWith(")")) action = action + "()";
         }
@@ -908,7 +908,7 @@ public class GeneratorDisplay extends Generator2 {
         if (Model.getChangeableKind().getFrozen().equals(ck)) {
             return "final ";
         }
-        //if (Model.getFacade().ADD_ONLY_CHANGEABLEKIND.equals(ck)) 
+        //if (Model.getFacade().ADD_ONLY_CHANGEABLEKIND.equals(ck))
         //    return "final ";
         return "";
     }
@@ -920,7 +920,7 @@ public class GeneratorDisplay extends Generator2 {
     public String generateMultiplicity(Object m) {
         if (m == null || "1".equals(Model.getFacade().toString(m))) {
             return "";
-        } 
+        }
         return Model.getFacade().toString(m);
     }
 
@@ -1121,7 +1121,7 @@ public class GeneratorDisplay extends Generator2 {
      * @return the generated parameter list
      */
     private String generateParameterList(Object parameterListOwner) {
-        Iterator it = 
+        Iterator it =
             Model.getFacade().getParameters(parameterListOwner).iterator();
         StringBuffer list = new StringBuffer();
         list.append("(");

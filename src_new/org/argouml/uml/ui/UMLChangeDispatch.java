@@ -124,13 +124,13 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
                 dispatch((Container) component);
             if (component instanceof UMLUserInterfaceComponent
                     && component.isVisible()) {
-                
+
                 switch(eventType) {
                 case -1:
                 case 0:
                     ((UMLUserInterfaceComponent) component).targetChanged();
                     break;
-                    
+
                 case 7:
                     ((UMLUserInterfaceComponent) component).targetReasserted();
                     break;

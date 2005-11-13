@@ -128,19 +128,19 @@ public class ExplorerPopup extends JPopupMenu {
                 activeDiagram instanceof UMLSequenceDiagram;
             final boolean stateDiagramActive =
                 activeDiagram instanceof UMLStateDiagram;
-            final Object selectedStateMachine
-                = (stateVertexSelected)
+            final Object selectedStateMachine =
+                (stateVertexSelected)
                     ? Model.getStateMachinesHelper()
 		          .getStateMachine(selectedItem)
                     : null;
-            final Object diagramStateMachine
-                = (stateDiagramActive)
+            final Object diagramStateMachine =
+                (stateDiagramActive)
                     ? ((UMLStateDiagram) activeDiagram).getStateMachine()
                     : null;
-            final Object diagramActivity
-                 = (activityDiagramActive)
+            final Object diagramActivity =
+                (activityDiagramActive)
                         ? ((UMLActivityDiagram) activeDiagram).getStateMachine()
-                        : null;            
+                        : null;
             if (!ms) {
                 if ((classifierSelected && !dataTypeSelected
                     && !classifierAndRelationShipSelected)
@@ -153,7 +153,7 @@ public class ExplorerPopup extends JPopupMenu {
                             && !sequenceDiagramActive)
                         || nAryAssociationSelected
                         || commentSelected
-            ) {
+                ) {
                     UMLAction action =
                         new ActionAddExistingNode(
                             menuLocalize("menu.popup.add-to-diagram"),
@@ -232,4 +232,9 @@ public class ExplorerPopup extends JPopupMenu {
         return Translator.localize(key);
     }
 
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5663884871599931780L;
 }

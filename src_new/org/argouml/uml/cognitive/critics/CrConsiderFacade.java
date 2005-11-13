@@ -24,18 +24,15 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to suggest using the facade stereotype. <p>
- * 
+ *
  * TODO: at the moment only a dummy implementation
 */
 public class CrConsiderFacade extends CrUML {
-    private static final Logger LOG =
-	Logger.getLogger(CrConsiderFacade.class);
 
     /**
      * The constructor.
@@ -55,5 +52,9 @@ public class CrConsiderFacade extends CrUML {
 	return NO_PROBLEM;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5513915374319458662L;
 } /* end class CrEmptyPackage */
 

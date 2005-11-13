@@ -52,7 +52,7 @@ public class CommentEdge {
     CommentEdge() {
         uuid = UUIDManager.getInstance().getNewUUID();
     }
-    
+
     /**
      * Constructor.
      *
@@ -110,7 +110,7 @@ public class CommentEdge {
         }
         dest = destination;
     }
-    
+
     /**
      * @param source The source to set.
      */

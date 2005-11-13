@@ -29,7 +29,7 @@ import java.awt.event.ActionEvent;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-/** 
+/**
  * Action for viewing/editing source path settings of model elements.
  */
 public class ActionGenerationSettings extends UMLAction {

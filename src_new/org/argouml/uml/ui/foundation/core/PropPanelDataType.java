@@ -52,13 +52,13 @@ public class PropPanelDataType extends PropPanelClassifier {
     private JScrollPane attributeScroll;
 
     private JScrollPane literalsScroll;
-    
+
     private JScrollPane operationScroll;
 
-    
+
     private static UMLClassAttributeListModel attributeListModel =
         new UMLClassAttributeListModel();
-    
+
     private static UMLEnumerationLiteralsListModel literalsListModel =
         new UMLEnumerationLiteralsListModel();
 
@@ -264,5 +264,5 @@ public class PropPanelDataType extends PropPanelClassifier {
         }
         return literalsScroll;
     }
-    
+
 } /* end class PropPanelDataType */

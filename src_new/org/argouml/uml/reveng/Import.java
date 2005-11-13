@@ -578,33 +578,33 @@ public class Import {
          */
         public void run() {
             // We shouldn't really turn off events, but as long
-            // as we are, wrap in try block to make sure they get 
+            // as we are, wrap in try block to make sure they get
             // turned back on.
             Model.getPump().stopPumpingEvents();
             try {
                 if (filesLeft.size() > 0) {
-                    
+
                     // if there ae 2 passes:
                     if (importLevel > 0) {
                         if (filesLeft.size() <= countFiles / 2) {
-                            
+
                             if (importLevel == 1)
                                 setAttribute("level", new Integer(1));
                             else
                                 setAttribute("level", new Integer(2));
                         }
                     }
-                    
+
                     Object curFile = filesLeft.elementAt(0);
                     filesLeft.removeElementAt(0);
-                    
+
                     try {
                         st.mark(curFile.toString());
                         ProjectBrowser.getInstance().showStatus(
                                 "Importing " + curFile.toString());
                         parseFile(ProjectManager.getManager().getCurrentProject(),
                                 curFile); // Try to parse this file.
-                        
+
                         int tot = countFiles;
                         if (diagramInterface != null) {
                             tot += diagramInterface.getModifiedDiagrams()
@@ -620,7 +620,7 @@ public class Import {
                                 .showProgress(100 * act / tot);
                     }
                     catch (Exception e1) {
-                        
+
                         nextPassFiles.addElement(curFile);
                         StringBuffer sb = new StringBuffer(80);
                         // RuntimeExceptions should be reported here!
@@ -649,13 +649,13 @@ public class Import {
                         }
                         problems.append(sb);
                     }
-                    
+
                     if (!isCancelled()) {
                         SwingUtilities.invokeLater(this);
                         return;
                     }
                 }
-                
+
                 if (nextPassFiles.size() > 0
                         && nextPassFiles.size() < countFilesThisPass) {
                     filesLeft = nextPassFiles;
@@ -664,18 +664,18 @@ public class Import {
                     SwingUtilities.invokeLater(this);
                     return;
                 }
-                
+
                 // Do post load processings.
                 st.mark("postprocessings");
-                
+
                 // Check if any diagrams where modified and the project
                 // should be saved before exiting.
                 if (diagramInterface != null && needsSave()) {
                     ProjectManager.getManager().setNeedsSave(true);
                 }
-                
+
                 ProjectBrowser.getInstance().showStatus("Import done");
-                
+
                 // Layout the modified diagrams.
                 if (doLayout) {
                     st.mark("layout");
@@ -686,32 +686,32 @@ public class Import {
                                     .getModifiedDiagrams().elementAt(i);
                             ClassdiagramLayouter layouter =
                                 module.getLayout(diagram);
-                            
+
                             layouter.layout();
-                            
+
                             // Resize the diagram???
                             iss.setValue(countFiles + (i + 1) / 10);
                         }
                     }
                 }
-                
+
                 iss.done();
                 ProjectBrowser.getInstance().setCursor(
                         Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                
+
                 // if errors occured, display the collected messages here
                 if (problems != null && problems.length() > 0) {
                     ProblemsDialog pd = new ProblemsDialog();
                     pd.setVisible(true);
                 }
-                
+
                 // turn critiquing on again
                 if (criticThreadWasOn) {
                     Designer.theDesigner().setAutoCritique(true);
                 }
-                
+
                 ExplorerEventAdaptor.getInstance().structureChanged();
-                
+
                 LOG.info(st);
                 ProjectBrowser.getInstance().getStatusBar().showProgress(0);
             } finally {
@@ -1015,15 +1015,15 @@ class ImportClasspathDialog extends JDialog {
 
     class AddListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            
+
             String directory = Globals.getLastDirectory();
             JFileChooser ch = new JFileChooser(directory);
             if (ch == null) ch = new JFileChooser();
-            
+
             final JFileChooser chooser = ch;
-            
+
             chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            
+
             chooser.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if (e.getActionCommand().equals(
@@ -1038,7 +1038,7 @@ class ImportClasspathDialog extends JDialog {
                     }
                 }
             });
-            
+
             chooser.showOpenDialog(ProjectBrowser.getInstance());
         }
     }

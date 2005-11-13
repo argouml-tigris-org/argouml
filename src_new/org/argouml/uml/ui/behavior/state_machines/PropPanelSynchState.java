@@ -42,7 +42,7 @@ public class PropPanelSynchState extends PropPanelStateVertex {
      * The constructor.
      */
     public PropPanelSynchState() {
-        super("Synch State", 
+        super("Synch State",
             lookupIcon("SynchState"),
             ConfigLoader.getTabPropsOrientation());
 

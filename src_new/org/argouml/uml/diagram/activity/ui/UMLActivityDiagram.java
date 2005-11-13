@@ -393,7 +393,7 @@ public class UMLActivityDiagram extends UMLDiagram {
         }
         if (Model.getUmlFactory().isRemoved(getNamespace())) {
             return true;
-        }        
+        }
         Object context = Model.getFacade().getContext(getStateMachine());
         if (context == null) {
             return true;
@@ -407,18 +407,19 @@ public class UMLActivityDiagram extends UMLDiagram {
     public Object getDependentElement() {
         return getStateMachine(); /* The ActivityGraph. */
     }
-    
-    /** 
+
+    /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base) {
-        return false; 
-        /* TODO: We may return the following when the 
-         * relocate() has been implemented. */
+        return false;
+        /* TODO: We may return the following when the
+         * relocate() has been implemented.
+         */
 //      Model.getActivityGraphsHelper()
 //      .isAddingActivityGraphAllowed(base);
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
      */
@@ -426,5 +427,8 @@ public class UMLActivityDiagram extends UMLDiagram {
         return false;
     }
 
-
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 6223128918989919230L;
 } /* end class UMLActivityDiagram */

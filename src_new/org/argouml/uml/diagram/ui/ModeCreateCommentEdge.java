@@ -49,7 +49,7 @@ import org.tigris.gef.presentation.FigPoly;
  * @author pepargouml@yahoo.es
  */
 public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
-    
+
     private Object sourceModelElement;
 
     /**
@@ -61,7 +61,7 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
         if (underMouse == null) {
             underMouse = editor.hit(x - 16, y - 16, 32, 32);
         }
-        
+
         if (underMouse == null && _npoints == 0) {
             done();
             me.consume();
@@ -72,16 +72,16 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
             me.consume();
             return;
         }
-        
+
         sourceModelElement = underMouse.getOwner();
-        
+
         if (underMouse instanceof FigEdgeModelElement) {
             // If we're drawing from an edge
-            
+
             FigEdgeModelElement sourceEdge = (FigEdgeModelElement) underMouse;
             sourceEdge.makeCommentPort();
             FigCommentPort commentPort = sourceEdge.getCommentPort();
-            
+
             underMouse = commentPort;
             setSourceFigNode(commentPort);
             setStartPort(sourceModelElement);
@@ -127,7 +127,7 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
         }
         MutableGraphModel graphModel =
             (MutableGraphModel)editor.getGraphModel();
-        
+
         if (destFig instanceof FigEdgeModelElement
                 && Model.getFacade().isAComment(sourceModelElement)) {
             FigEdgeModelElement destEdge = (FigEdgeModelElement) destFig;

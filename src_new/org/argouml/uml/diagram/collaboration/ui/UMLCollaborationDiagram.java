@@ -198,7 +198,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
             throw new IllegalStateException(
                     "The namespace of the collaboration diagram is not set");
         }
-        
+
         Collection messages;
         Iterator msgIterator;
         Collection ownedElements =
@@ -389,20 +389,21 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     public Object getDependentElement() {
         return getNamespace(); /* The collaboration. */
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base) {
-        /* TODO: We may return the following when the 
-         * relocate() has been implemented. */
-//      if (Model.getFacade().isAOperation(base) 
+        /* TODO: We may return the following when the
+         * relocate() has been implemented.
+         */
+//      if (Model.getFacade().isAOperation(base)
 //      || Model.getFacade().isANamespace(base))
 //      return Model.getCollaborationsHelper()
 //      .isAddingCollaborationAllowed(base);
         return false;
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
      */
@@ -410,4 +411,9 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         return false;
     }
 
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 8081715986963837750L;
 } /* end class UMLCollaborationDiagram */

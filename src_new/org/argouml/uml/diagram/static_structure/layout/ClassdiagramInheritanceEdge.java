@@ -29,7 +29,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 
 /**
- * 
+ *
  * @author mkl
  */
 public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
@@ -48,7 +48,7 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
 
     /**
      * Constructor.
-     * 
+     *
      * @param edge the fig edge
      */
     public ClassdiagramInheritanceEdge(FigEdge edge) {
@@ -92,11 +92,11 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
 
     /**
      * @see org.argouml.uml.diagram.layout.LayoutedEdge#layout()
-     * 
+     *
      * Layout the edges in a way that they form a nice inheritance tree. Try to
      * implement these nice zigzag lines between classes and works well when the
      * row difference is one.
-     * 
+     *
      * @author Markus Klink
      * @since 0.9.6
      */
@@ -140,7 +140,7 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
 
     /**
      * Set the line-offset for this edge
-     * 
+     *
      * @param anOffset
      *            the offset to use for this edge
      */

@@ -30,7 +30,7 @@ import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-/** 
+/**
  * Action to trigger creation of new collaboration diagram.
  */
 public class ActionCollaborationDiagram extends ActionAddDiagram {
@@ -65,7 +65,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
                             .buildCollaboration(namespace, target);
         }
         return (UMLDiagram)DiagramFactory.getInstance().createDiagram(
-                UMLCollaborationDiagram.class, 
+                UMLCollaborationDiagram.class,
                 collaboration,
                 null);
     }

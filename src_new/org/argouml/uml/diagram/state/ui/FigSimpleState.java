@@ -134,17 +134,17 @@ public class FigSimpleState extends FigState {
 	Dimension nameDim = getNameFig().getMinimumSize();
 	Dimension internalDim = getInternal().getMinimumSize();
 
-	int h = SPACE_TOP + nameDim.height 
-            + SPACE_MIDDLE + internalDim.height 
+	int h = SPACE_TOP + nameDim.height
+            + SPACE_MIDDLE + internalDim.height
             + SPACE_BOTTOM;
-	int w = Math.max(nameDim.width + 2 * MARGIN, 
+	int w = Math.max(nameDim.width + 2 * MARGIN,
                 internalDim.width + 2 * MARGIN);
 	return new Dimension(w, h);
     }
 
-    /** 
+    /**
      * Override setBounds to keep shapes looking right.
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
@@ -154,19 +154,19 @@ public class FigSimpleState extends FigState {
 	Rectangle oldBounds = getBounds();
 	Dimension nameDim = getNameFig().getMinimumSize();
 
-	getNameFig().setBounds(x + MARGIN, 
-                y + SPACE_TOP, 
-                w - 2 * MARGIN,  
+	getNameFig().setBounds(x + MARGIN,
+                y + SPACE_TOP,
+                w - 2 * MARGIN,
                 nameDim.height);
-	divider.setShape(x, 
+	divider.setShape(x,
                 y + DIVIDER_Y + nameDim.height,
                 x + w - 1,
                 y + DIVIDER_Y + nameDim.height);
 
 	getInternal().setBounds(
-                x + MARGIN, 
+                x + MARGIN,
 	        y + SPACE_TOP + nameDim.height + SPACE_MIDDLE,
-	        w - 2 * MARGIN, 
+	        w - 2 * MARGIN,
 	        h - SPACE_TOP - nameDim.height - SPACE_MIDDLE - SPACE_BOTTOM);
 
 	getBigPort().setBounds(x, y, w, h);

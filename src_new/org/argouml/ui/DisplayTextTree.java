@@ -42,6 +42,9 @@ import org.argouml.uml.ui.UMLTreeCellRenderer;
  * navigation (the explorer) and the todo list.
  */
 public class DisplayTextTree extends JTree {
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(DisplayTextTree.class);
 
     /**
@@ -82,9 +85,9 @@ public class DisplayTextTree extends JTree {
      * Override the default JTree implementation to display the
      * appropriate text for any object that will be displayed in
      * the todo list.
-     * 
-     * TODO: Since this is only used for the Todo list, 
-     * it should not be located here, which is a common class 
+     *
+     * TODO: Since this is only used for the Todo list,
+     * it should not be located here, which is a common class
      * for both trees, the explorer and the todo list.
      *
      * @param value the given object
@@ -129,10 +132,12 @@ public class DisplayTextTree extends JTree {
         super.fireTreeExpanded(path);
 
         LOG.debug("fireTreeExpanded");
-        if (reexpanding)
+        if (reexpanding) {
             return;
-        if (path == null || expandedPathsInModel == null)
+        }
+        if (path == null || expandedPathsInModel == null) {
             return;
+        }
         Vector expanded = getExpandedPaths();
         expanded.removeElement(path);
         expanded.addElement(path);
@@ -146,8 +151,9 @@ public class DisplayTextTree extends JTree {
         super.fireTreeCollapsed(path);
 
         LOG.debug("fireTreeCollapsed");
-        if (path == null || expandedPathsInModel == null)
+        if (path == null || expandedPathsInModel == null) {
             return;
+        }
         Vector expanded = getExpandedPaths();
         expanded.removeElement(path);
     }
@@ -159,8 +165,9 @@ public class DisplayTextTree extends JTree {
 
         LOG.debug("setModel");
         Object r = newModel.getRoot();
-        if (r != null)
+        if (r != null) {
             super.setModel(newModel);
+        }
         reexpand();
     }
 
@@ -192,8 +199,9 @@ public class DisplayTextTree extends JTree {
     private void reexpand() {
 
         LOG.debug("reexpand");
-        if (expandedPathsInModel == null)
+        if (expandedPathsInModel == null) {
             return;
+        }
 
         reexpanding = true;
 
@@ -205,4 +213,8 @@ public class DisplayTextTree extends JTree {
         reexpanding = false;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 949560309817566838L;
 }

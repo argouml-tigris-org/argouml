@@ -60,13 +60,13 @@ public class PropPanelStereotype extends PropPanelModelElement {
     private static UMLTagDefinitionListModel
     tagDefinitionListModel =
         new UMLTagDefinitionListModel();
-    
+
     private JScrollPane generalizationScroll;
 
     private JScrollPane specializationScroll;
 
     private JScrollPane tagDefinitionScroll;
-    
+
     /**
      * Construct new stereotype properties tab
      */
@@ -147,5 +147,5 @@ public class PropPanelStereotype extends PropPanelModelElement {
         }
         return tagDefinitionScroll;
     }
-    
+
 } /* end class PropPanelStereotype */

@@ -137,12 +137,12 @@ import ru.novosoft.uml.model_management.MSubsystem;
 class UmlFactoryImpl
     extends AbstractUmlModelFactory
     implements UmlFactory {
-    
+
     /**
      * Logger.<p>
      */
     private static final Logger LOG = Logger.getLogger(UmlFactoryImpl.class);
-    
+
     /**
      * The model implementation.
      */
@@ -407,7 +407,7 @@ class UmlFactoryImpl
             connection = getUseCases().buildInclude(fromElement, toElement);
         } else if (elementType
                 == nsmodel.getMetaTypes().getTransition()) {
-            connection = 
+            connection =
                 getStateMachines().buildTransition(fromElement, toElement);
         }
 

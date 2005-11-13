@@ -149,8 +149,8 @@ class PropertySpecialString {
  * diagrams.
  *
  * @stereotype singleton
- * @deprecated since V0.19.8 by mvw. Replaced by a new notation architecture: 
- * see http://argouml.tigris.org/proposals/notation/index.html. 
+ * @deprecated since V0.19.8 by mvw. Replaced by a new notation architecture:
+ * see http://argouml.tigris.org/proposals/notation/index.html.
 
  */
 public final class ParserDisplay {
@@ -428,10 +428,10 @@ public final class ParserDisplay {
      * @throws ParseException for invalid input
      */
     public void parseOperationFig(
-            Object classifier, 
-            Object operation, 
+            Object classifier,
+            Object operation,
             String text) throws ParseException {
-        
+
         if (classifier == null || operation == null) {
             return;
         }
@@ -507,16 +507,16 @@ public final class ParserDisplay {
      * @throws ParseException for invalid input
      */
     public void parseAttributeFig(
-            Object classifier, 
-            Object attribute, 
+            Object classifier,
+            Object attribute,
             String text) throws ParseException {
-        
+
         if (classifier == null || attribute == null) {
             return;
         }
-        
+
         Project project = ProjectManager.getManager().getCurrentProject();
-        
+
         ParseException pex = null;
         int start = 0;
         int end = indexOfNextCheckedSemicolon(text, start);
@@ -1561,7 +1561,7 @@ public final class ParserDisplay {
             /* (MStereotype) */root)) {
                 return root;
             }
-            LOG.debug("Missed stereotype " 
+            LOG.debug("Missed stereotype "
                     + Model.getFacade().getBaseClass(root));
         }
 
@@ -1771,11 +1771,11 @@ public final class ParserDisplay {
          * 4. Unhook and erase the existing trigger.
          */
         Object evt = Model.getFacade().getTrigger(trans);
-        Object model = 
+        Object model =
         	ProjectManager.getManager().getCurrentProject().getModel();
         Object ns = Model.getStateMachinesHelper()
         		.findNamespaceForEvent(trans, model);
-        StateMachinesFactory sMFactory = 
+        StateMachinesFactory sMFactory =
         	Model.getStateMachinesFactory();
         boolean createdEvent = false;
         if (trigger.length() > 0) {
@@ -2082,7 +2082,7 @@ public final class ParserDisplay {
 
         if (bases != null) {
             // Remove bases that aren't there anymore
-            
+
             // copy - can't iterate modify live collection while iterating it
             Collection b = new ArrayList(Model.getFacade().getBases(cls));
             Iterator it = b.iterator();
@@ -2127,7 +2127,7 @@ public final class ParserDisplay {
      * Parse a Message textual description.<p>
      *
      * TODO: - This method is too complex, lets break it up. <p>
-     * 
+     *
      * Parses a message line of the form:
      *
      * <pre>
@@ -2612,9 +2612,9 @@ public final class ParserDisplay {
                                       Model.getFacade().getValue(arg)))) {
                     String value = (args.get(i) != null ? (String) args.get(i)
                             : "");
-                    Object e = 
+                    Object e =
                         Model.getDataTypesFactory().createExpression(
-                            Notation.getConfigueredNotation().toString(), 
+                            Notation.getConfigueredNotation().toString(),
                             value.trim());
                     Model.getCommonBehaviorHelper().setValue(arg, e);
                 }

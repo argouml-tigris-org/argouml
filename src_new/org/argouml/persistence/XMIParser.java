@@ -41,8 +41,8 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.xml.sax.InputSource;
 
 /**
- * Read an XMI file.
- * <p>
+ * Read an XMI file.<p>
+ *
  * Despite the name, no actual parsing is done here.  This
  * manages the overall reading process, but all actual XMI
  * deserialization is the responsibility of the Model subsystem.
@@ -53,7 +53,9 @@ public class XMIParser {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(XMIParser.class);
 
     private static XMIParser singleton = new XMIParser();
@@ -61,9 +63,9 @@ public class XMIParser {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    private Object curModel = null;
-    private Project proj = null;
-    private HashMap uUIDRefs = null;
+    private Object curModel;
+    private Project proj;
+    private HashMap uUIDRefs;
 
     /**
      * The constructor.
@@ -106,7 +108,7 @@ public class XMIParser {
      * @param url the URL
      * @throws OpenException when there is an IO error
      */
-    public synchronized void readModels(Project p, URL url) 
+    public synchronized void readModels(Project p, URL url)
         throws OpenException {
 
         proj = p;
@@ -140,13 +142,14 @@ public class XMIParser {
                 diagramsElement.addAll(Model.getModelManagementHelper().
                         getAllModelElementsOfKind(element,
                                 Model.getMetaTypes().getStateMachine()));
-                Collection ownedElements = Model.getFacade().getOwnedElements(
-                        element);
+                Collection ownedElements =
+                    Model.getFacade().getOwnedElements(element);
                 Iterator oeIterator = ownedElements.iterator();
                 while (oeIterator.hasNext()) {
                     Object me = oeIterator.next();
-                    if (Model.getFacade().getName(me) == null)
+                    if (Model.getFacade().getName(me) == null) {
                         Model.getCoreHelper().setName(me, "");
+                    }
                 }
             } else if (facade.isAStateMachine(element)) {
                 diagramsElement.add(element);
@@ -166,20 +169,21 @@ public class XMIParser {
             ArgoDiagram diagram = null;
             if (facade.isAActivityGraph(element)) {
                 LOG.info("Creating activity diagram for "
-                        + facade.getUMLClassName(element) 
+                        + facade.getUMLClassName(element)
                         + "<<" + facade.getName(element) + ">>");
-                diagram = new UMLActivityDiagram( namespace , element );
+                diagram = new UMLActivityDiagram(namespace , element);
             } else {
                 LOG.info("Creating state diagram for "
-                        + facade.getUMLClassName(element) 
-                        + "<<" + facade.getName(element) + ">>");                
-                diagram = new UMLStateDiagram( namespace , element );
-            }                    
-            if (diagram != null)
+                        + facade.getUMLClassName(element)
+                        + "<<" + facade.getName(element) + ">>");
+                diagram = new UMLStateDiagram(namespace , element);
+            }
+            if (diagram != null) {
                 proj.addMember(diagram);
+            }
         }
     }
-    
+
     /**
      * @return Returns the singleton.
      */

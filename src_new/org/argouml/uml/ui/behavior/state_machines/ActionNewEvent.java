@@ -62,7 +62,7 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
          * The deferrable event key
          */
         public static final String DEFERRABLE_EVENT = "deferrable-event";
-        
+
     }
     /**
      * Constructor for ActionNewEvent.
@@ -80,15 +80,15 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
     protected abstract Object createEvent(Object ns);
 
     /**
-     * Creates the event, sets its role and namespace, 
+     * Creates the event, sets its role and namespace,
      * and navigates towards it.
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object target = getTarget();
-        Object model = 
+        Object model =
         	ProjectManager.getManager().getCurrentProject().getModel();
         Object ns = Model.getStateMachinesHelper()
         		.findNamespaceForEvent(target, model);

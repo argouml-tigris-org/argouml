@@ -33,7 +33,7 @@ public class AttributeNotationUml extends AttributeNotation {
 
     /**
      * The constructor.
-     * 
+     *
      * @param attribute the attribute that is represented
      */
     public AttributeNotationUml(Object attribute) {

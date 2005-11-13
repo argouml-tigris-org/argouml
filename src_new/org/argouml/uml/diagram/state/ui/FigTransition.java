@@ -111,8 +111,8 @@ public class FigTransition extends FigEdgeModelElement {
                         Model.getFacade().getSource(newOwner))
                     || Model.getFacade().isAObjectFlowState(
                             Model.getFacade().getTarget(newOwner));
-            
-            notationProvider = 
+
+            notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                     NotationProviderFactory2.TYPE_TRANSITION, this, newOwner);
         }
@@ -237,7 +237,7 @@ public class FigTransition extends FigEdgeModelElement {
                     Model.getFacade().isAObjectFlowState(getSource())
                     || Model.getFacade().isAObjectFlowState(getDestination());
                 getFig().setDashed(dashed);
-            }            
+            }
         } else if (e instanceof RemoveAssociationEvent) {
             // unregister the guard condition
             if (Model.getFacade().isATransition(e.getSource())
@@ -314,7 +314,7 @@ public class FigTransition extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        if(notationProvider != null) 
+        if(notationProvider != null)
             getNameFig().setText(notationProvider.toString());
     }
 

@@ -30,12 +30,16 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
-/** 
+/**
  * A critic to detect when a classifier has too many attributes.
  *
  * @author mkl
  */
 public class CrTooManyAttr extends AbstractCrTooMany {
+    /**
+     * Threshold.
+     */
+    private static final int ATTRIBUTES_THRESHOLD = 7;
 
     /**
      * The constructor.
@@ -44,7 +48,7 @@ public class CrTooManyAttr extends AbstractCrTooMany {
     public CrTooManyAttr() {
         setupHeadAndDesc();
 	addSupportedDecision(UMLDecision.STORAGE);
-	setThreshold(7);
+	setThreshold(ATTRIBUTES_THRESHOLD);
 	addTrigger("structuralFeature");
     }
 
@@ -53,19 +57,29 @@ public class CrTooManyAttr extends AbstractCrTooMany {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAClassifier(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAClassifier(dm))) {
+            return NO_PROBLEM;
+        }
 	Object cls = /*(MClassifier)*/ dm;
 	// TODO: consider inherited attributes?
-	int threshold = getThreshold();
 	Collection str = Model.getFacade().getFeatures(cls);
-	if (str == null) return NO_PROBLEM;
+	if (str == null) {
+            return NO_PROBLEM;
+        }
 	int n = 0;
 	for (Iterator iter = str.iterator(); iter.hasNext();) {
-	    if (Model.getFacade().isAStructuralFeature(iter.next()))
+	    if (Model.getFacade().isAStructuralFeature(iter.next())) {
 		n++;
+            }
 	}
-	if (n <= threshold) return NO_PROBLEM;
+	if (n <= getThreshold()) {
+            return NO_PROBLEM;
+        }
 	return PROBLEM_FOUND;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 1281218975903539324L;
 } /* end class CrTooManyAttr */

@@ -30,7 +30,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 /**
  * The listmodel behind the transition property for an event on the event's
  * property panel.
- * 
+ *
  * @author mkl
  */
 public class UMLEventTransitionListModel extends UMLModelElementListModel2 {

@@ -33,7 +33,7 @@ import javax.swing.border.EtchedBorder;
 import org.argouml.swingext.SpacerPanel;
 
 
-/** 
+/**
  * A non-modal wizard step that shows instructions and prompts
  * the user to confirm an action.
  *
@@ -45,7 +45,7 @@ public class WizStepConfirm extends WizStep {
     private JTextArea instructions = new JTextArea();
 
     /**
-     * The constructor. Since this constructor does not set the 
+     * The constructor. Since this constructor does not set the
      * necessary instructions, it is private.
      */
     private WizStepConfirm() {
@@ -106,4 +106,8 @@ public class WizStepConfirm extends WizStep {
 	instructions.setText(instr);
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 9145817515169354813L;
 } /* end class WizStepConfirm */

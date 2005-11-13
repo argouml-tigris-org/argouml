@@ -31,11 +31,11 @@ import javax.swing.Icon;
  * @author Daniele Tamino
  */
 public class Language {
-    
+
     private String name;
     private String title;
     private Icon icon;
-    
+
     /**
      * @param theName The name of the language.
      * @param theTitle A string representing the language for display.
@@ -52,7 +52,7 @@ public class Language {
     }
 
     /**
-     * Creates a language with no icon.  
+     * Creates a language with no icon.
      * @param theName The name of the language.
      * @param theTitle A string representing the language for display.
      */
@@ -61,14 +61,14 @@ public class Language {
     }
 
     /**
-     * Creates a language with title equal to the name.  
+     * Creates a language with title equal to the name.
      * @param theName The name of the language.
      * @param theIcon An icon for the language.
      */
     public Language(String theName, Icon theIcon) {
         this(theName, theName, theIcon);
     }
-    
+
     /**
      * Creates a language with title equal to the name and no icon.
      * @param theName The name of the language.
@@ -120,7 +120,7 @@ public class Language {
     public void setTitle(String theTitle) {
         this.title = theTitle;
     }
-    
+
     /**
      * @see java.lang.Object#toString()
      */
@@ -128,5 +128,5 @@ public class Language {
         String tit = getTitle();
         return tit == null ? "(no name)" : tit;
     }
-    
+
 }

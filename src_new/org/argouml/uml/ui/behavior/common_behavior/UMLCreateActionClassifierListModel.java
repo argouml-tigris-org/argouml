@@ -64,7 +64,7 @@ public class UMLCreateActionClassifierListModel extends
     }
 
     /**
-     * 
+     *
      */
     protected boolean isValidElement(Object elem) {
         return Model.getFacade().isAClassifier(elem)

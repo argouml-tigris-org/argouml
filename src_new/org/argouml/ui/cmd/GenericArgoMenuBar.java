@@ -59,8 +59,6 @@ import org.argouml.ui.targetmanager.NavigateTargetForwardAction;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
-import org.argouml.uml.ui.ActionCopy;
-import org.argouml.uml.ui.ActionCut;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.ActionDeploymentDiagram;
 import org.argouml.uml.ui.ActionGenerateAll;
@@ -137,56 +135,56 @@ public class GenericArgoMenuBar extends JMenuBar
     /**
      * lru project list.
      */
-    private LastRecentlyUsedMenuList lruList = null;
+    private LastRecentlyUsedMenuList lruList;
 
     /**
      * Edit menu.
      */
-    private JMenu edit = null;
+    private JMenu edit;
 
     /**
      * The Select menu is a submenu of Edit.
      */
-    private JMenu select = null;
+    private JMenu select;
 
     /**
      * View under which is the Goto Diagram, Find, Zoom, Adjust grid etc.
      */
-    private ArgoJMenu view = null;
+    private ArgoJMenu view;
 
     /**
      * Toolbar:create diagram.
      */
-    private JMenu createDiagrams = null;
+    private JMenu createDiagrams;
 
     /**
      * Currently disactivated.
      */
-    private JMenu tools = null;
+    private JMenu tools;
 
     /**
      * Supports java generation,
      * modules for php and html/javadocs are planned
      * feel free to contribute here!
      */
-    private JMenu generate = null;
+    private JMenu generate;
 
     /**
      * This should be invoked automatically when importing sources.
      */
-    private ArgoJMenu arrange = null;
+    private ArgoJMenu arrange;
 
     /**
      * The critique menu.
      */
-    private ArgoJMenu critique = null;
+    private ArgoJMenu critique;
 
     /**
      * It needs it. Currently there is only system information and an
      * about text. Hyperlinking to online docs at
      * argouml.org is considered to be a basic improvement.
      */
-    private JMenu help = null;
+    private JMenu help;
 
 
     /**
@@ -476,9 +474,9 @@ public class GenericArgoMenuBar extends JMenuBar
     private void initMenuEdit(int mask) {
 
         KeyStroke ctrlA = KeyStroke.getKeyStroke(KeyEvent.VK_A, mask);
-        KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, mask);
-        KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, mask);
-        KeyStroke ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, mask);
+        KeyStroke.getKeyStroke(KeyEvent.VK_C, mask);
+        KeyStroke.getKeyStroke(KeyEvent.VK_V, mask);
+        KeyStroke.getKeyStroke(KeyEvent.VK_X, mask);
         KeyStroke ctrlY = KeyStroke.getKeyStroke(KeyEvent.VK_Y, mask);
         KeyStroke ctrlZ = KeyStroke.getKeyStroke(KeyEvent.VK_Z, mask);
         KeyStroke delKey  = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
@@ -488,19 +486,19 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(edit, "Edit");
 
         if (UndoEnabler.ENABLED) {
-            JMenuItem undoItem = 
+            JMenuItem undoItem =
                 edit.add(ProjectBrowser.getInstance().getUndoAction());
             setMnemonic(undoItem, "Undo");
             setAccelerator(undoItem, ctrlZ);
 
-            JMenuItem redoItem = 
+            JMenuItem redoItem =
                 edit.add(ProjectBrowser.getInstance().getRedoAction());
             setMnemonic(redoItem, "Redo");
             setAccelerator(redoItem, ctrlY);
 
             edit.addSeparator();
         }
-        
+
         select = new JMenu(menuLocalize("Select"));
         setMnemonic(select, "Select");
         edit.add(select);
@@ -537,11 +535,11 @@ public class GenericArgoMenuBar extends JMenuBar
 //        setAccelerator(pasteItem, ctrlV);
 //
 //        edit.addSeparator();
-        
-        Action removeFromDiagram = 
+
+        Action removeFromDiagram =
             ProjectBrowser.getInstance().getRemoveFromDiagramAction();
         JMenuItem removeItem = edit.add(removeFromDiagram);
-        
+
         setMnemonic(removeItem, "Remove from Diagram");
         setAccelerator(removeItem, delKey);
 
@@ -874,4 +872,9 @@ public class GenericArgoMenuBar extends JMenuBar
     public JMenu getTools() {
 	return tools;
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2904074534530273119L;
 }

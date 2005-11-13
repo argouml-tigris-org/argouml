@@ -76,9 +76,9 @@ public class FigClass extends FigClassifierBox
         Logger.getLogger(FigClass.class);
 
     FigAttributesCompartment attributesFigCompartment;
-    
+
     Fig borderFig;
-    
+
     /**
      * Text highlighted by mouse actions on the diagram.<p>
      */
@@ -150,7 +150,7 @@ public class FigClass extends FigClassifierBox
 
         getBigPort().setLineWidth(0);
         getBigPort().setFillColor(Color.white);
-        
+
         // Set name box. Note the upper line will be blanked out if there is
         // eventually a stereotype above.
         getNameFig().setLineWidth(1);
@@ -170,11 +170,11 @@ public class FigClass extends FigClassifierBox
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
         // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setVisible(true);
-        
+
         borderFig = new FigEmptyRect(10, 10, 0, 0);
         borderFig.setLineWidth(1);
         borderFig.setLineColor(Color.black);
-        
+
         getStereotypeFig().setLineWidth(0);
 
         // Mark this as newly created. This is to get round the problem with
@@ -217,9 +217,9 @@ public class FigClass extends FigClassifierBox
         this();
         setOwner(node);
         enableSizeChecking(true);
-        
+
     }
-    
+
     /**
      * @see java.lang.Object#clone()
      */
@@ -406,14 +406,14 @@ public class FigClass extends FigClassifierBox
             }
         }
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         borderFig.setLineWidth(w);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
@@ -445,11 +445,11 @@ public class FigClass extends FigClassifierBox
         // name compartment and build up.
 
         Dimension aSize = getNameFig().getMinimumSize();
-        
+
         // +2 padding before and after name
-        
+
         aSize.height += 4;
-        
+
         if (aSize.height < 21) {
             aSize.height = 21;
         }
@@ -500,11 +500,11 @@ public class FigClass extends FigClassifierBox
         // name compartment and build up.
 
         Dimension aSize = getNameFig().getMinimumSize();
-        
+
         // +2 padding before and after name
-        
+
         aSize.height += 4;
-        
+
         if (aSize.height < 21) {
             aSize.height = 21;
         }
@@ -649,7 +649,7 @@ public class FigClass extends FigClassifierBox
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
             } catch (ParseException pe) {
                 String msg = "statusmsg.bar.error.parsing.attribute";
-                Object[] args = {pe.getLocalizedMessage(), 
+                Object[] args = {pe.getLocalizedMessage(),
                     new Integer(pe.getErrorOffset())};
                 ProjectBrowser.getInstance().getStatusBar().showStatus(
                         Translator.messageFormat(msg, args));
@@ -669,7 +669,7 @@ public class FigClass extends FigClassifierBox
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
             } catch (ParseException pe) {
                 String msg = "statusmsg.bar.error.parsing.operation";
-                Object[] args = {pe.getLocalizedMessage(), 
+                Object[] args = {pe.getLocalizedMessage(),
                     new Integer(pe.getErrorOffset())};
                 ProjectBrowser.getInstance().getStatusBar().showStatus(
                         Translator.messageFormat(msg, args));
@@ -852,15 +852,15 @@ public class FigClass extends FigClassifierBox
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
-        
+
         Rectangle rect = getBounds();
-        
+
         int stereotypeHeight = 0;
         if (getStereotypeFig().isVisible()) {
             stereotypeHeight = getStereotypeFig().getHeight();
         }
         int heightWithoutStereo = getHeight() - stereotypeHeight;
-        
+
         getStereotypeFig().setOwner(getOwner());
         ((FigStereotypesCompartment) getStereotypeFig()).populate();
 
@@ -868,10 +868,10 @@ public class FigClass extends FigClassifierBox
         if (getStereotypeFig().isVisible()) {
             stereotypeHeight = getStereotypeFig().getHeight();
         }
-        
+
         setBounds(
                 rect.x,
-                rect.y, 
+                rect.y,
                 rect.width,
                 heightWithoutStereo + stereotypeHeight);
         calcBounds();
@@ -925,7 +925,7 @@ public class FigClass extends FigClassifierBox
      */
     protected void setBoundsImpl(final int x, final int y, final int w, final int h) {
         Rectangle oldBounds = getBounds();
-        
+
         // set bounds of big box
         getBigPort().setBounds(x, y, w, h);
         borderFig.setBounds(x, y, w, h);
@@ -933,41 +933,41 @@ public class FigClass extends FigClassifierBox
         // Save our old boundaries (needed later), and get minimum size
         // info. "aSize will be used to maintain a running calculation of our
         // size at various points.
-        
+
         final int whitespace = h - getMinimumSize().height;
 
         getNameFig().setLineWidth(0);
         getNameFig().setLineColor(Color.red);
         int currentHeight = 0;
-        
+
         if (getStereotypeFig().isVisible()) {
             int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
             getStereotypeFig().setBounds(
-                    x, 
-                    y, 
-                    w, 
+                    x,
+                    y,
+                    w,
                     stereotypeHeight);
             currentHeight = stereotypeHeight;
         }
 
         currentHeight += 2; // Give an extra couple of pixels before the name.
-        
+
         int nameHeight = getNameFig().getMinimumSize().height;
         getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
         currentHeight += nameHeight;
-        
+
         currentHeight += 2; // Give an extra couple of pixels after the name.
 
-        
+
         if (isAttributesVisible()) {
             int attributesHeight = getAttributesFig().getMinimumSize().height;
             if (isOperationsVisible()) {
                 attributesHeight += whitespace / 2;
             }
             getAttributesFig().setBounds(
-                    x, 
-                    y + currentHeight, 
-                    w, 
+                    x,
+                    y + currentHeight,
+                    w,
                     attributesHeight);
             currentHeight += attributesHeight;
         }
@@ -976,9 +976,9 @@ public class FigClass extends FigClassifierBox
             int operationsY = y + currentHeight;
             int operationsHeight = (h + y) - operationsY - 1;
             getOperationsFig().setBounds(
-                    x, 
-                    operationsY, 
-                    w, 
+                    x,
+                    operationsY,
+                    w,
                     operationsHeight);
         }
 
@@ -1004,7 +1004,7 @@ public class FigClass extends FigClassifierBox
         attributesCompartment.populate();
 
         Rectangle rect = getBounds();
-        
+
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);
@@ -1072,7 +1072,7 @@ public class FigClass extends FigClassifierBox
      */
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
-        if (oldOwner != null && oldOwner != newOwner 
+        if (oldOwner != null && oldOwner != newOwner
                 && !Model.getUmlFactory().isRemoved(oldOwner)) {
 	    // remove the listeners if the owner is changed
             Object cl = /*(MClass)*/ oldOwner;
@@ -1082,7 +1082,7 @@ public class FigClass extends FigClassifierBox
                 Model.getPump().removeModelEventListener(this, feat); //MVW
                 if (Model.getFacade().isAOperation(feat)) {
                     Object oper = /*(MOperation)*/ feat;
-                    Iterator it2 = 
+                    Iterator it2 =
                         Model.getFacade().getParameters(oper).iterator();
                     while (it2.hasNext()) {
                         Object param = /*(MParameter)*/ it2.next();
@@ -1100,7 +1100,7 @@ public class FigClass extends FigClassifierBox
                 Model.getPump().addModelEventListener(this, feat); //MVW
                 if (Model.getFacade().isAOperation(feat)) {
                     Object oper = /*(MOperation)*/ feat;
-                    Iterator it2 = 
+                    Iterator it2 =
                         Model.getFacade().getParameters(oper).iterator();
                     while (it2.hasNext()) {
                         Object param = /*(MParameter)*/ it2.next();

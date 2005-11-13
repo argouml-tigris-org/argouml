@@ -27,17 +27,17 @@ package org.argouml.uml.notation;
 import org.argouml.model.Model;
 
 /**
- * This abstract class forms the basis of all Notation providers 
- * for the text shown in the attribute compartment of a Class. 
+ * This abstract class forms the basis of all Notation providers
+ * for the text shown in the attribute compartment of a Class.
  * Subclass this for all languages.
- * 
+ *
  * @author mvw@tigris.org
  */
 public abstract class AttributeNotation extends ValueHandler {
 
     protected Object myAttribute;
     protected Object myClass;
-    
+
     /**
      * The constructor.
      */

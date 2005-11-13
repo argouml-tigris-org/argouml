@@ -47,7 +47,7 @@ import org.tigris.gef.presentation.Fig;
  * The model for a list that contains ModelElements. The state of the Element is
  * still kept in the model subsystem itself. This list is only to be used as the
  * model for some GUI element like UMLLinkedList.
- * 
+ *
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */

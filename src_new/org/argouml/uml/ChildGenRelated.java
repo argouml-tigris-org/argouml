@@ -38,11 +38,14 @@ import org.tigris.gef.util.ChildGenerator;
  * Classes the attributes and operations, for diagrams nodes and elements, for
  * transitions trigger, guard and effects etc. Look in the code to find precise
  * functionality.
- * 
+ *
  * @stereotype singleton
  * @author jrobbins
  */
 public class ChildGenRelated implements ChildGenerator {
+    /**
+     * The instance.
+     */
     private static final ChildGenRelated SINGLETON = new ChildGenRelated();
 
     /**
@@ -55,7 +58,7 @@ public class ChildGenRelated implements ChildGenerator {
     /**
      * Reply a java.util.Enumeration of the children of the given Object Returns
      * an enumeration or null if not possible to get the children.
-     * 
+     *
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */
     public Enumeration gen(Object o) {
@@ -64,8 +67,9 @@ public class ChildGenRelated implements ChildGenerator {
 
         if (Model.getFacade().isAPackage(o)) {
             Collection ownedElements = Model.getFacade().getOwnedElements(o);
-            if (ownedElements != null)
+            if (ownedElements != null) {
                 return null;
+            }
         }
 
         if (Model.getFacade().isAClassifier(o)) {
@@ -94,8 +98,9 @@ public class ChildGenRelated implements ChildGenerator {
         if (Model.getFacade().isAStateMachine(o)) {
             Object sm = /* (MStateMachine) */o;
             Object top = Model.getFacade().getTop(sm);
-            if (top != null)
+            if (top != null) {
                 res.addAll(Model.getFacade().getSubvertices(top));
+            }
             res.add(Model.getFacade().getContext(sm)); //wasteful!
             res.addAll(Model.getFacade().getTransitions(sm));
             return res.elements();
@@ -137,4 +142,9 @@ public class ChildGenRelated implements ChildGenerator {
         }
         return res.elements();
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -893946595629032267L;
 } /* end class ChildGenRelated */

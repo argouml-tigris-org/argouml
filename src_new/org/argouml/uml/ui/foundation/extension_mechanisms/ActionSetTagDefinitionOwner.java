@@ -41,13 +41,13 @@ import org.argouml.uml.ui.UMLComboBox2;
 public class ActionSetTagDefinitionOwner extends UMLAction {
 
     private Logger LOG = Logger.getLogger(ActionSetTagDefinitionOwner.class);
-  
+
     /**
      * The Singleton.
      */
     public static final ActionSetTagDefinitionOwner SINGLETON =
             new ActionSetTagDefinitionOwner();
-    
+
     /**
      * Constructor.
      */

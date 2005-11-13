@@ -297,8 +297,9 @@ public class ClassGenerationDialog
 
         // Generate Button --------------------------------------
         if (e.getSource() == getOkButton()) {
-            String path = ((String) outputDirectoryComboBox.getModel()
-                    .getSelectedItem()).trim();
+            String path =
+                ((String) outputDirectoryComboBox.getModel()
+                        .getSelectedItem()).trim();
             Project p = ProjectManager.getManager().getCurrentProject();
             p.getGenerationPrefs().setOutputDir(path);
             List[] fileNames = new Vector[languages.size()];
@@ -312,7 +313,7 @@ public class ClassGenerationDialog
                 if (!isPathInModel) {
                     Collection files =
                         generator.generateFiles(nodes, path, false);
-                    for (Iterator fit = files.iterator(); fit.hasNext();) { 
+                    for (Iterator fit = files.iterator(); fit.hasNext();) {
                         fileNames[i].add(path + CodeGenerator.FILE_SEPARATOR
                                 + fit.next());
                     }
@@ -321,7 +322,9 @@ public class ClassGenerationDialog
                     Map nodesPerPath = new HashMap();
                     for (Iterator iter = nodes.iterator(); iter.hasNext();) {
                         Object node = iter.next();
-                        if (!Model.getFacade().isAClassifier(node)) continue;
+                        if (!Model.getFacade().isAClassifier(node)) {
+                            continue;
+                        }
                         path = GeneratorManager.getCodePath(node);
                         if (path == null) {
                             Object parent =
@@ -338,7 +341,8 @@ public class ClassGenerationDialog
                         if (path != null) {
                             final String fileSep = CodeGenerator.FILE_SEPARATOR;
                             if (path.endsWith(fileSep)) { // remove trailing /
-                                path = path.substring(0, path.length()
+                                path =
+                                    path.substring(0, path.length()
                                         - fileSep.length());
                             }
                             Set np = (Set) nodesPerPath.get(path);
@@ -355,7 +359,8 @@ public class ClassGenerationDialog
                                         node, "src_lang");
                             String savedLang = null;
                             if (taggedValue != null) {
-                                savedLang = Model.getFacade().getValueOfTag(
+                                savedLang =
+                                    Model.getFacade().getValueOfTag(
                                         taggedValue);
                             }
                             if (taggedValue == null || !language.getName()
@@ -366,7 +371,7 @@ public class ClassGenerationDialog
                             }
                         }
                     } // end for (all nodes)
-                    
+
                     // generate the files
                     Iterator nit = nodesPerPath.keySet().iterator();
                     while (nit.hasNext()) {
@@ -376,7 +381,7 @@ public class ClassGenerationDialog
                         // selectable option
                         Collection files =
                             generator.generateFiles(nodeColl, basepath, false);
-                        for (Iterator fit = files.iterator(); fit.hasNext();) { 
+                        for (Iterator fit = files.iterator(); fit.hasNext();) {
                             fileNames[i].add(basepath
                                     + CodeGenerator.FILE_SEPARATOR
                                     + fit.next());
@@ -392,7 +397,8 @@ public class ClassGenerationDialog
     private void doBrowse() {
         try {
             // Show Filechooser to select OuputDirectory
-            JFileChooser chooser = new JFileChooser(
+            JFileChooser chooser =
+                new JFileChooser(
                     (String) outputDirectoryComboBox
                         .getModel()
                         .getSelectedItem());
@@ -592,7 +598,7 @@ public class ClassGenerationDialog
             } else if (col >= 0 && col < getLanguagesCount()) {
                 if (checked[col].contains(cls)) {
                     return Boolean.TRUE;
-                } 
+                }
                 return Boolean.FALSE;
             } else {
                 return "CC-r:" + row + " c:" + col;
@@ -667,6 +673,16 @@ public class ClassGenerationDialog
 	    }
             getOkButton().setEnabled(value);
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 6108214254680694765L;
     } /* end class TableModelClassChecks */
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8897965616334156746L;
 } /* end class ClassGenerationDialog */
 

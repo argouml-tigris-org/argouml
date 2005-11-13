@@ -59,5 +59,5 @@ public class UMLTagDefinitionListModel
             && Model.getFacade().getTagDefinitions(getTarget())
             	.contains(element);
     }
-    
+
 }

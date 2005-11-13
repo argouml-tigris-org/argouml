@@ -93,9 +93,9 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay,
 				 Object node, Map styleAttributes) {
-        
+
         FigNodeModelElement figNode = null;
-        
+
         if (node == null) {
             throw new IllegalArgumentException("A node must be supplied");
         }
@@ -121,11 +121,11 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
                     "Node is not a recognised type. Received "
                     + node.getClass().getName());
         }
-        
+
         figNode.setDiElement(
                 GraphChangeAdapter.getInstance().createElement(gm, node));
-                
-        
+
+
         return figNode;
 
     }
@@ -230,7 +230,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
                     "Don't know how to create FigEdge for model type "
                     + edge.getClass().getName());
         }
-        
+
         if (newEdge.getSourcePortFig() == null) {
             Object source;
             if (edge instanceof CommentEdge) {
@@ -240,7 +240,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             }
             setSourcePort(newEdge, (FigNode) lay.presentationFor(source));
         }
-        
+
         if (newEdge.getDestPortFig() == null) {
             Object dest;
             if (edge instanceof CommentEdge) {
@@ -250,17 +250,17 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             }
             setDestPort(newEdge, (FigNode) lay.presentationFor(dest));
         }
-        
+
         if (newEdge.getSourcePortFig() == null
                 || newEdge.getDestPortFig() == null) {
             throw new IllegalStateException("Edge of type "
                     + newEdge.getClass().getName()
                     + " created with no source or destination port");
         }
-        
+
         newEdge.setDiElement(
             GraphChangeAdapter.getInstance().createElement(gm, edge));
-        
+
         return newEdge;
     }
 

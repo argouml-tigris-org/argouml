@@ -41,7 +41,8 @@ import org.xml.sax.SAXException;
  * to nodes inside other edges.
  * @author Bob Tarling
  */
-public class FigEdgeHandler extends org.tigris.gef.persistence.pgml.FigEdgeHandler {
+public class FigEdgeHandler
+    extends org.tigris.gef.persistence.pgml.FigEdgeHandler {
 
     /**
      * @param parser
@@ -51,14 +52,13 @@ public class FigEdgeHandler extends org.tigris.gef.persistence.pgml.FigEdgeHandl
         super(parser, theEdge);
     }
     /**
-     * Incorporates a contained element into this FigEdge object.
-     * <p>
-     * 
+     * Incorporates a contained element into this FigEdge object.<p>
+     *
      * Three types of contained elements are supported: FigLine or FigPoly
      * become the Fig associated with this FigEdge; String valued elements
      * (i.e., <em>private</em> elements) are themselves parsed to determin the
      * source and destination PortFig's for this FigEdge.
-     * 
+     *
      * @see org.tigris.gef.persistence.pgml.Container#addObject(java.lang.Object)
      */
     public void addObject(Object o) throws SAXException {
@@ -127,7 +127,8 @@ public class FigEdgeHandler extends org.tigris.gef.persistence.pgml.FigEdgeHandl
 
     /**
      * Get the FigNode that the fig if represents.
-     * @param parser
+     *
+     * @param parser The parser to use.
      * @param figId (In the form Figx.y.z)
      * @return the FigNode with the given id
      */

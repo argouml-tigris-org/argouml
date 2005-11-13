@@ -52,9 +52,11 @@ import org.tigris.gef.presentation.FigText;
  * @author 5eichler
  */
 public class FigComponentInstance extends FigNodeModelElement {
-    /** The distance between the left edge of the fig and the left edge of the
-     * main rectangle. 
-     * Originally named BIGPORT_X (which explains what BX stands for). */
+    /**
+     * The distance between the left edge of the fig and the left edge of the
+     * main rectangle.
+     * Originally named BIGPORT_X (which explains what BX stands for).
+     */
     private static final int BX = 10;
 
     private static final int OVERLAP = 4;
@@ -62,7 +64,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     private FigRect cover;
     private FigRect upperRect;
     private FigRect lowerRect;
-    
+
     private NotationProvider4 notationProvider;
 
     ////////////////////////////////////////////////////////////////
@@ -73,8 +75,10 @@ public class FigComponentInstance extends FigNodeModelElement {
      */
     public FigComponentInstance() {
         cover = new FigRect(BX, 10, 120, 80, Color.black, Color.white);
-        upperRect = new FigRect(0, 2 * BX, 2 * BX, BX, Color.black, Color.white);
-        lowerRect = new FigRect(0, 4 * BX, 2 * BX, BX, Color.black, Color.white);
+        upperRect =
+            new FigRect(0, 2 * BX, 2 * BX, BX, Color.black, Color.white);
+        lowerRect =
+            new FigRect(0, 4 * BX, 2 * BX, BX, Color.black, Color.white);
 
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);
@@ -89,7 +93,8 @@ public class FigComponentInstance extends FigNodeModelElement {
     }
 
     /**
-     * Constructor that hooks the Fig into an existing UML element
+     * Constructor that hooks the Fig into an existing UML element.
+     *
      * @param gm ignored
      * @param node the UML element
      */
@@ -109,7 +114,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isAComponentInstance(own)) {
-            notationProvider = 
+            notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                     NotationProviderFactory2.TYPE_COMPONENTINSTANCE, this, own);
         }
@@ -191,8 +196,7 @@ public class FigComponentInstance extends FigNodeModelElement {
         if (h < (6 * BX)) {
             upperRect.setBounds(x, y + 2 * h / 6, 20, 10);
             lowerRect.setBounds(x, y + 4 * h / 6, 20, 10);
-        }
-        else {
+        } else {
             upperRect.setBounds(x, y + 2 * BX, 2 * BX, BX);
             lowerRect.setBounds(x, y + 4 * BX, 2 * BX, BX);
         }
@@ -231,8 +235,9 @@ public class FigComponentInstance extends FigNodeModelElement {
         super.mousePressed(me);
         Editor ce = Globals.curEditor();
         Selection sel = ce.getSelectionManager().findSelectionFor(this);
-        if (sel instanceof SelectionComponentInstance)
+        if (sel instanceof SelectionComponentInstance) {
             ((SelectionComponentInstance) sel).hideButtons();
+        }
     }
 
     /**
@@ -339,7 +344,7 @@ public class FigComponentInstance extends FigNodeModelElement {
             showHelp(notationProvider.getParsingHelp());
         }
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
@@ -347,17 +352,22 @@ public class FigComponentInstance extends FigNodeModelElement {
         getStereotypeFig().setOwner(getOwner());
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         Object compInst =  getOwner();
-        if (compInst == null) return;
+        if (compInst == null) {
+            return;
+        }
         if ("classifier".equals(mee.getPropertyName())
                 && mee.getSource() == compInst) {
             updateNameText();
             damage();
         }
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
@@ -368,7 +378,7 @@ public class FigComponentInstance extends FigNodeModelElement {
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getHandleBox()
      *
@@ -392,5 +402,8 @@ public class FigComponentInstance extends FigNodeModelElement {
 
     }
 
+    /**
+     * The UID.
+     */
     static final long serialVersionUID = 1647392857462847651L;
 } /* end class FigComponentInstance */

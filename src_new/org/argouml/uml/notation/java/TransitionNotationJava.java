@@ -63,5 +63,5 @@ public class TransitionNotationJava extends TransitionNotation {
         return GeneratorJava.getInstance().generateTransition(myTransition);
     }
 
-    
+
 }

@@ -100,7 +100,7 @@ public class FigStubState extends FigStateVertex {
 
     /**
      * The constructor.
-     * 
+     *
      * @param gm (ignored)
      * @param node the UML owner element
      */

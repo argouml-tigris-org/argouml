@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// Classes: AbstractSection
-// Original Author: Marian Heddesheimer
-
-// 09 Feb 2003: Thomas Neustupny (thn@tigris.org), extraced abstract class
-
 package org.argouml.uml.generator;
 
 import java.io.BufferedReader;
@@ -42,13 +37,14 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 /**
+ * Reading and writing preserved sections from the code.
  *
- *Reading and writing preserved sections from the code
- *
- * @author  Marian
+ * @author Marian Heddesheimer
  */
-public abstract class AbstractSection
-{
+public abstract class AbstractSection {
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(AbstractSection.class);
 
@@ -60,7 +56,9 @@ public abstract class AbstractSection
 
     private Map mAry;
 
-    /** Creates a new instance of Section */
+    /**
+     * Creates a new instance of Section.
+     */
     public AbstractSection() {
         mAry = new HashMap();
         mAry.clear();
@@ -85,8 +83,7 @@ public abstract class AbstractSection
      * @param outputLostSections true if lost sections are to be written
      */
     public void write(String filename, String indent,
-		      boolean outputLostSections)
-    {
+		      boolean outputLostSections) {
         try {
             FileReader f = new FileReader(filename);
             BufferedReader fr = new BufferedReader(f);
@@ -100,23 +97,24 @@ public abstract class AbstractSection
                     if (content != null) {
                         fw.write(line + LINE_SEPARATOR);
                         fw.write(content);
-                        // read until the end section is found, discard 
+                        // read until the end section is found, discard
                         // generated content
                         String endSectionId = null;
                         do {
                             line = fr.readLine();
                             if (line == null) {
                                 throw new EOFException(
-                                        "Reached end of file while looking " 
-                                        + "for the end of section with ID = \"" 
+                                        "Reached end of file while looking "
+                                        + "for the end of section with ID = \""
                                         + sectionId + "\"!");
                             }
                             endSectionId = getSectId(line);
                         } while (endSectionId == null);
-                        if (!endSectionId.equals(sectionId))
-                            LOG.error("Mismatch between sectionId (\"" 
-                                    + sectionId + "\") and endSectionId (\"" 
+                        if (!endSectionId.equals(sectionId)) {
+                            LOG.error("Mismatch between sectionId (\""
+                                    + sectionId + "\") and endSectionId (\""
                                     + endSectionId + "\")!");
+                        }
                     }
                     mAry.remove(sectionId);
                 }
@@ -198,7 +196,7 @@ public abstract class AbstractSection
             second = line.indexOf(end2);
         }
         String s = null;
-        if ( (first >= 0) && (second >= 0) ) {
+        if ((first >= 0) && (second >= 0)) {
             first = first + begin.length();
             s = line.substring(first, second);
         }

@@ -94,7 +94,7 @@ public class UMLStateMachineContextComboBoxModel
         return Model.getFacade().isAClass(element)
                 || Model.getFacade().isAUseCase(element);
     }
-    
+
     /**
      * Helper method for buildModelList.
      * <p>

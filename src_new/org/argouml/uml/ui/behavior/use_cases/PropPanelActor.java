@@ -48,7 +48,7 @@ public class PropPanelActor extends PropPanelClassifier {
      * <p>Constructor. Builds up the various fields required.</p>
      */
     public PropPanelActor() {
-    	super("Actor", lookupIcon("Actor"), 
+    	super("Actor", lookupIcon("Actor"),
                 ConfigLoader.getTabPropsOrientation());
 
 

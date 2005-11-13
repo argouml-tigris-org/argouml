@@ -61,7 +61,7 @@ public class ActionActivityDiagram extends ActionAddDiagram {
             // this fails always, see issue 1817
         }*/
         return (UMLDiagram)DiagramFactory.getInstance().createDiagram(
-                UMLActivityDiagram.class, 
+                UMLActivityDiagram.class,
                 ns,
                 graph);
     }

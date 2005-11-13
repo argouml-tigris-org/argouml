@@ -56,15 +56,15 @@ import org.tigris.gef.persistence.PostscriptWriter;
 
 /**
  * This class has some similar functions like PersistenceManager. <p>
- * 
- * It centralizes all knowledge about the different graphical formats. 
- * This class is the only one that is supposed to know 
+ *
+ * It centralizes all knowledge about the different graphical formats.
+ * This class is the only one that is supposed to know
  * the complete list of supported graphics formats.
- * 
+ *
  * @author mvw@tigris.org
  */
 public class SaveGraphicsManager {
-    
+
     /**
      * The configuration key for the preferred graphics format.
      */
@@ -82,28 +82,28 @@ public class SaveGraphicsManager {
      */
     public static final ConfigurationKey KEY_SAVEALL_GRAPHICS_PATH =
         Configuration.makeKey("graphics", "save-all", "path");
-    
+
     /**
      * The configuration key for the export graphics resolution.
      */
     public static final ConfigurationKey KEY_GRAPHICS_RESOLUTION =
         Configuration.makeKey("graphics", "export", "resolution");
-    
+
     /**
      * the default file format
      */
     private SuffixFilter defaultFilter;
-    
+
     /**
-     * the list of other file formats 
+     * the list of other file formats
      */
     private List otherFilters = new ArrayList();
-    
+
     /**
      * The singleton instance.
      */
     private static SaveGraphicsManager INSTANCE;
-    
+
     /**
      * The constructor.
      */
@@ -131,7 +131,7 @@ public class SaveGraphicsManager {
             }
         }
     }
-    
+
     /**
      * @param f the new default file-format
      */
@@ -144,14 +144,14 @@ public class SaveGraphicsManager {
         Configuration.setString(
                 KEY_DEFAULT_GRAPHICS_FILTER,
                 f.getSuffix());
-        
+
         Collections.sort(otherFilters, new Comparator() {
             public int compare(Object arg0, Object arg1) {
                 return ((SuffixFilter)arg0).getSuffix().compareToIgnoreCase(
                         ((SuffixFilter)arg1).getSuffix());
-            }}); 
+            }});
     }
-    
+
     /**
      * @return returns the singleton
      */
@@ -185,18 +185,18 @@ public class SaveGraphicsManager {
         String fileName = defaultName + "." + defaultFilter.getSuffix();
         chooser.setSelectedFile(new File(fileName));
         chooser.addPropertyChangeListener(
-                JFileChooser.FILE_FILTER_CHANGED_PROPERTY, 
+                JFileChooser.FILE_FILTER_CHANGED_PROPERTY,
                 new FileFilterChangedListener(chooser, defaultName));
     }
-    
+
     /**
      * This class listens to changes in the selected filefilter.
-     * If the user changes the filefilter 
+     * If the user changes the filefilter
      * (e.g. he changes from *.gif to *.png),
      * then the filename field got emptied before I introduced this class.
-     * Now, a new filename is made up, based on 
+     * Now, a new filename is made up, based on
      * the diagram name + the new extension (suffix).
-     *  
+     *
      * @author mvw@tigris.org
      */
     class FileFilterChangedListener implements PropertyChangeListener {
@@ -218,7 +218,7 @@ public class SaveGraphicsManager {
             /* So, let's do it the hard way: */
             SwingUtilities.invokeLater(new Anonymous1(fileName));
         }
-        
+
         class Anonymous1 implements Runnable {
             private String fileName;
             Anonymous1(String fn){
@@ -229,7 +229,7 @@ public class SaveGraphicsManager {
             }
         }
     }
-    
+
     /**
      * @param name the filename
      * @return the filter
@@ -248,7 +248,7 @@ public class SaveGraphicsManager {
         }
         return null;
     }
-    
+
     /**
      * @return the extension of the default filter
      *         (just the text, not the ".")
@@ -256,7 +256,7 @@ public class SaveGraphicsManager {
     public String getDefaultSuffix() {
         return defaultFilter.getSuffix();
     }
-    
+
     /**
      * @param in the input file or path name which may or may not
      *           have a recognised extension
@@ -269,9 +269,9 @@ public class SaveGraphicsManager {
         }
         return in;
     }
-    
+
     /**
-     * @param suffix the suffix (extension) of the filename, 
+     * @param suffix the suffix (extension) of the filename,
      *               which corresponds to the graphics format to be used
      * @return the command that will do the save
      */
@@ -287,13 +287,13 @@ public class SaveGraphicsManager {
             cmd = new CmdSaveGIF();
         } else if (FileFilters.SVG_FILTER.getSuffix().equals(suffix)) {
             cmd = new CmdSaveSVG();
-        } 
+        }
         return cmd;
     }
-    
+
     /**
-     * @return the complete collection of SuffixFilters, 
-     *         the first one is the default one 
+     * @return the complete collection of SuffixFilters,
+     *         the first one is the default one
      */
     public Collection getSettingsList() {
         Collection c = new ArrayList();

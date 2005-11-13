@@ -185,7 +185,7 @@ public class UMLClassDiagram extends UMLDiagram {
         manageDefault(actions, "diagram.class.dependency");
         return actions;
     }
-    
+
     /**
      * Return an array of association actions in the
      * pattern of which to build a popup toolbutton.
@@ -203,7 +203,7 @@ public class UMLClassDiagram extends UMLDiagram {
         manageDefault(actions, "diagram.class.association");
         return actions;
     }
-    
+
     private Object[] getAggregationActions() {
         Object[] actions = {
             getActionAggregation(),
@@ -212,7 +212,7 @@ public class UMLClassDiagram extends UMLDiagram {
         manageDefault(actions, "diagram.class.aggregation");
         return actions;
     }
-    
+
     private Object[] getCompositionActions() {
         Object[] actions = {
             getActionComposition(),
@@ -274,7 +274,7 @@ public class UMLClassDiagram extends UMLDiagram {
         }
         return actionAssociationEnd;
     }
-    
+
     /**
      * @return Returns the actionClass.
      */
@@ -492,12 +492,12 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     private Action getActionOperation() {
         if (actionOperation == null) {
-            actionOperation = 
+            actionOperation =
                 TargetManager.getInstance().getAddOperationAction();
         }
         return actionOperation;
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */

@@ -48,7 +48,7 @@ public class PropPanelTransition extends PropPanelModelElement {
      *
      */
     public PropPanelTransition() {
-        super("Transition", 
+        super("Transition",
             lookupIcon("Transition"),
             ConfigLoader.getTabPropsOrientation());
 

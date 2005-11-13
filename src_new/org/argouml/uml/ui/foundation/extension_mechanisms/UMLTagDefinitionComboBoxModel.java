@@ -47,7 +47,7 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
 
     private Logger LOG = Logger.getLogger(UMLTagDefinitionComboBoxModel.class);
-    
+
     /**
      * Constructor for UMLTagDefinitionComboBoxModel.
      */
@@ -55,13 +55,13 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
         super("tagdefinition", false);
     }
 
-    
+
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
         Object owner = Model.getFacade().getOwner(element);
-        return (Model.getFacade().isATagDefinition(element) 
+        return (Model.getFacade().isATagDefinition(element)
                 && (owner == null || Model
                 .getFacade().getStereotypes(getTarget()).contains(owner)));
     }
@@ -94,7 +94,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
 
     private Collection getApplicableTagDefinitions(Object t) {
         Set paths = new HashSet();
-        Set availableTagDefs = new TreeSet(new Comparator() {        
+        Set availableTagDefs = new TreeSet(new Comparator() {
             public int compare(Object o1, Object o2) {
                 try {
                     String name1 = Model.getFacade().getName(o1);
@@ -113,11 +113,11 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
         Collection models = project.getModels();
         Iterator it = models.iterator();
         while (it.hasNext()) {
-            addAllUniqueModelElementsFrom(availableTagDefs, paths, 
+            addAllUniqueModelElementsFrom(availableTagDefs, paths,
                     Model.getModelManagementHelper().getAllModelElementsOfKind(
-                            it.next(), Model.getMetaTypes().getTagDefinition()));         
+                            it.next(), Model.getMetaTypes().getTagDefinition()));
         }
-        addAllUniqueModelElementsFrom(availableTagDefs, paths, 
+        addAllUniqueModelElementsFrom(availableTagDefs, paths,
                 Model.getModelManagementHelper().getAllModelElementsOfKind(
                         project.getDefaultModel(),
                         Model.getMetaTypes().getTagDefinition()));
@@ -132,7 +132,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
         availableTagDefs.removeAll(notValids);
         return availableTagDefs;
     }
-    
+
     /**
      * Helper method for buildModelList.
      * <p>

@@ -40,11 +40,16 @@ import org.argouml.model.Model;
  * associated with a language name. Also remembers the currently selected
  * language. GeneratorManager is a singleton.
  */
-public class GeneratorManager {
-
+public final class GeneratorManager {
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(GeneratorManager.class);
 
+    /**
+     * The instance.
+     */
     private static final GeneratorManager INSTANCE =
         new GeneratorManager();
 
@@ -59,6 +64,9 @@ public class GeneratorManager {
 
     private Language currLanguage = null;
 
+    /**
+     * The constructor.
+     */
     private GeneratorManager() {
         // private constructor to enforce singleton
     }
@@ -66,7 +74,7 @@ public class GeneratorManager {
     /**
      * Registers a new generator. If a generator with the same language is
      * already registered, it's replaced by the new one.
-     * 
+     *
      * @param lang The language.
      * @param gen The CodeGenerator object to register.
      */
@@ -83,7 +91,7 @@ public class GeneratorManager {
     /**
      * Removes a generator. If no generator with that name is registered,
      * nothing is done.
-     * 
+     *
      * @param lang The language. Shall not be null.
      * @return The old generator being removed or null.
      */
@@ -91,10 +99,11 @@ public class GeneratorManager {
         CodeGenerator old = (CodeGenerator) generators.remove(lang);
         if (lang.equals(currLanguage)) {
             Iterator it = generators.keySet().iterator();
-            if (it.hasNext())
+            if (it.hasNext()) {
                 currLanguage = (Language) it.next();
-            else
+            } else {
                 currLanguage = null;
+            }
         }
         if (old != null) {
             ArgoEventPump.fireEvent(
@@ -117,10 +126,10 @@ public class GeneratorManager {
         }
         return null;
     }
-    
+
     /**
      * Access method that finds the correct generator based on a name.
-     * 
+     *
      * @param lang The language.
      * @return a CodeGenerator (or <code>null</code> if not found).
      */
@@ -149,7 +158,7 @@ public class GeneratorManager {
     }
 
     /**
-     * @return the current generator, or <code>null</code> if there are no  
+     * @return the current generator, or <code>null</code> if there are no
      * generator registered at all.
      */
     public CodeGenerator getCurrGenerator() {
@@ -163,7 +172,7 @@ public class GeneratorManager {
     public Map getGenerators() {
         return (Map) ((HashMap) generators).clone();
     }
-    
+
     /**
      * @return A copy of the Set of the languages.
      */
@@ -189,10 +198,10 @@ public class GeneratorManager {
     }
 
     // some convenience methods
-    
+
     /**
      * Gets the path of the code base for a model element.<p>
-     * If empty or not existing return <tt>null</tt>.
+     * If empty or not existing return <code>null</code>.
      *
      * @param me The model element
      * @return String representation of "src_path" tagged value.
@@ -201,7 +210,7 @@ public class GeneratorManager {
         if (me == null) {
             return null;
         }
-        
+
         Object taggedValue = Model.getFacade().getTaggedValue(me, "src_path");
         String s;
         if (taggedValue == null) {

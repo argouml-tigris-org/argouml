@@ -21,6 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.ui.targetmanager;
 
 import java.util.ArrayList;
@@ -38,37 +39,38 @@ import java.util.List;
 public class TargetEvent extends EventObject {
 
     /**
-     * Indicates that a total new set of targets is set
+     * Indicates that a total new set of targets is set.
      */
     public static final String TARGET_SET = "set";
 
     /**
-     * Indicates that a target is being added to the list of targets
+     * Indicates that a target is being added to the list of targets.
      */
     public static final String TARGET_ADDED = "added";
 
     /**
-     * Indicates that a target is being removed from the list of targets
+     * Indicates that a target is being removed from the list of targets.
      */
     public static final String TARGET_REMOVED = "removed";
 
     /**
-     * The name of the event
+     * The name of the event.
      */
     private String theEventName;
 
     /**
-     * The old targets before the change took place
+     * The old targets before the change took place.
      */
     private Object[] theOldTargets;
 
     /**
-     * The new targets after the change took place
+     * The new targets after the change took place.
      */
     private Object[] theNewTargets;
 
     /**
-     * Constructs a new TargetEvent
+     * Constructs a new TargetEvent.
+     *
      * @param source The source that fired the TargetEvent, will
      * allways be the TargetManager
      * @param tEName The name of the TargetEvent, can be TARGET_SET,
@@ -85,7 +87,7 @@ public class TargetEvent extends EventObject {
     }
 
     /**
-     * Getter for the name
+     * Getter for the name.
      * @return the name of the event
      */
     public String getName() {
@@ -93,7 +95,7 @@ public class TargetEvent extends EventObject {
     }
 
     /**
-     * Getter for the old targets
+     * Getter for the old targets.
      * @return an object array with the old targets
      */
     public Object[] getOldTargets() {
@@ -101,7 +103,7 @@ public class TargetEvent extends EventObject {
     }
 
     /**
-     * Getter for the new targets
+     * Getter for the new targets.
      * @return an object array with the new targets
      */
     public Object[] getNewTargets() {
@@ -109,7 +111,7 @@ public class TargetEvent extends EventObject {
     }
 
     /**
-     * Helper for getting the new target
+     * Helper for getting the new target.
      * @return the zero'th element in _newTargets, or null
      */
     public Object getNewTarget() {
@@ -118,7 +120,7 @@ public class TargetEvent extends EventObject {
     }
 
     /**
-     * Gets the targets that are removed from the selection
+     * Gets the targets that are removed from the selection.
      * @return the removed targets
      */
     public Collection getRemovedTargetCollection() {
@@ -134,9 +136,9 @@ public class TargetEvent extends EventObject {
         }
         return removedTargets;
     }
-    
+
     /**
-     * Gets the targets that are removed from the selection
+     * Gets the targets that are removed from the selection.
      * @return the removed targets
      */
     public Object[] getRemovedTargets() {
@@ -144,7 +146,7 @@ public class TargetEvent extends EventObject {
     }
 
     /**
-     * Returns the targets that are added to the selection
+     * Returns the targets that are added to the selection.
      * @return the added targets
      */
     public Collection getAddedTargetCollection() {
@@ -160,13 +162,18 @@ public class TargetEvent extends EventObject {
         }
         return addedTargets;
     }
-    
+
     /**
-     * Returns the targets that are added to the selection
+     * Returns the targets that are added to the selection.
      * @return the added targets
      */
     public Object[] getAddedTargets() {
         return getAddedTargetCollection().toArray();
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -307886693486269426L;
 }
 

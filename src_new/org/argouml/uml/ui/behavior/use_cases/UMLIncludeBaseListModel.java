@@ -28,7 +28,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- * 
+ *
  * @author MarkusK
  *
  */

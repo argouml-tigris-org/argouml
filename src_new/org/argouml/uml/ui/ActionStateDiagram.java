@@ -31,7 +31,7 @@ import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-/** 
+/**
  * Action to create a new statechart diagram.
  */
 public class ActionStateDiagram extends ActionAddDiagram {
@@ -57,7 +57,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
         Object/*MStateMachine*/ machine =
             Model.getStateMachinesFactory().buildStateMachine(target);
         return (UMLDiagram)DiagramFactory.getInstance().createDiagram(
-                UMLStateDiagram.class, 
+                UMLStateDiagram.class,
                 Model.getFacade().getNamespace(machine),
                 machine);
     }

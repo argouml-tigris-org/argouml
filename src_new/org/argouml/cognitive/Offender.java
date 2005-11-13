@@ -28,11 +28,11 @@ package org.argouml.cognitive;
  * An Offender is an object which produces a ToDoItem. When such an item is
  * produced the offender as well as the designer can be informed about the new
  * ToDoItem.
- * 
+ *
  * @see DesignMaterial
- * 
+ *
  * @author MarkusK
- *  
+ *
  */
 public interface Offender {
 
@@ -40,12 +40,11 @@ public interface Offender {
      * When a poster produces a ToDoItem, both the Designer and the "offending"
      * DesignMaterial's are notified. Subclasses may, for example, visually
      * change their appearance to indicate the presence of an error. One paper
-     * called this 'clarifiers'.
-     * <p>
-     * 
+     * called this 'clarifiers'.<p>
+     *
      * @param item
      *            the todo item
      */
-    public void inform(ToDoItem item);
+    void inform(ToDoItem item);
 
 }

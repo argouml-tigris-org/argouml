@@ -61,9 +61,9 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
 
         JList deferrableList = new UMLStateDeferrableEventList(
                 new UMLStateDeferrableEventListModel());
-        
+
         deferrableEventsScroll = new JScrollPane(deferrableList);
-                
+
         entryList = new UMLStateEntryList(new UMLStateEntryListModel());
         entryList.setVisibleRowCount(1);
         entryScroll = new JScrollPane(entryList);

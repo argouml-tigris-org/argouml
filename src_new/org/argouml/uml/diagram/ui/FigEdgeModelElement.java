@@ -102,11 +102,11 @@ public abstract class FigEdgeModelElement
 
     private static final Logger LOG =
         Logger.getLogger(FigEdgeModelElement.class);
-    
+
     private DiElement diElement = null;
-    
+
     /**
-     * Set the removeFromDiagram to false if this edge may not 
+     * Set the removeFromDiagram to false if this edge may not
      * be removed from the diagram.
      */
     private boolean removeFromDiagram = true;
@@ -137,7 +137,7 @@ public abstract class FigEdgeModelElement
      * Use getNameFig(), no setter should be required.
      */
     private FigText name;
-    
+
     /**
      * The Fig that displays the stereotype of this model element.
      * Use getStereotypeFig(), no setter should be required.
@@ -145,7 +145,7 @@ public abstract class FigEdgeModelElement
     private Fig stereotypeFig;
 
     private FigCommentPort commentPort;
-    
+
     private ItemUID itemUid;
 
     /**
@@ -161,7 +161,7 @@ public abstract class FigEdgeModelElement
      *  _name element that holds the name of the model element and adds
      *  itself as a listener. */
     public FigEdgeModelElement() {
-        
+
         name = new FigText(10, 30, 90, 20);
         name.setFont(LABEL_FONT);
         name.setTextColor(Color.black);
@@ -196,7 +196,7 @@ public abstract class FigEdgeModelElement
     protected void finalize() {
         ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
-    
+
     public void makeCommentPort() {
         if (commentPort == null) {
             commentPort = new FigCommentPort();
@@ -244,7 +244,7 @@ public abstract class FigEdgeModelElement
         } else {
             tip = toString();
         }
-        
+
         if (tip != null && tip.length() > 0 && !tip.endsWith(" ")) {
             tip += " ";
         }
@@ -272,7 +272,7 @@ public abstract class FigEdgeModelElement
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
         if (!ms) {
             ToDoList list = Designer.theDesigner().getToDoList();
-            Vector items = 
+            Vector items =
                 (Vector) list.elementsForOffender(getOwner()).clone();
             if (items != null && items.size() > 0) {
                 ArgoJMenu critiques = new ArgoJMenu("menu.popup.critiques");
@@ -497,7 +497,7 @@ public abstract class FigEdgeModelElement
         } else {
             super.propertyChange(pve);
         }
-        
+
         if (Model.getFacade().isABase(src)) {
             /* If the source of the event is an UML object,
              * then the UML model has been changed.*/
@@ -508,14 +508,14 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * This method is called when the user doubleclicked on the text field, 
+     * This method is called when the user doubleclicked on the text field,
      * and starts editing. Subclasses should overrule this field to e.g.
      * supply help to the user about the used format. <p>
-     * 
-     * It is also possible to alter the text to be edited 
+     *
+     * It is also possible to alter the text to be edited
      * already here, e.g. by adding the stereotype in front of the name,
      * but that seems not user-friendly.
-     *  
+     *
      * @param ft the FigText that will be edited and contains the start-text
      */
     protected void textEditStarted(FigText ft) {
@@ -523,15 +523,15 @@ public abstract class FigEdgeModelElement
             showHelp("parsing.help.fig-edgemodelelement");
         }
     }
-    
+
     /**
-     * Utility function to localize the given string with help text, 
+     * Utility function to localize the given string with help text,
      * and show it in the status bar of the ArgoUML window.
      * This function is used in favour of the inline call
-     * to enable later improvements; e.g. it would be possible to 
+     * to enable later improvements; e.g. it would be possible to
      * show a help-balloon. TODO: Work this out.
      * One matter to possibly improve: show multiple lines.
-     * 
+     *
      * @param s the given string to be localized and shown
      */
     protected void showHelp(String s) {
@@ -704,7 +704,7 @@ public abstract class FigEdgeModelElement
      * Implementations of this method should register/unregister the fig for all
      * (model)events. For FigEdgeModelElement only the fig itself is registered
      * as listening to events fired by the owner itself. But for, for example,
-     * FigAssociation the fig must also register for events fired by the 
+     * FigAssociation the fig must also register for events fired by the
      * stereotypes of the owner.
      * @param newOwner the new owner for the listeners
      */
@@ -717,7 +717,7 @@ public abstract class FigEdgeModelElement
             Model.getPump().addModelEventListener(this, newOwner);
         }
     }
-  
+
     /**
      * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
      */
@@ -725,7 +725,7 @@ public abstract class FigEdgeModelElement
         super.setLayer(lay);
         getFig().setLayer(lay);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
@@ -764,7 +764,7 @@ public abstract class FigEdgeModelElement
         PropertyChangeEvent changeEvent =
             (PropertyChangeEvent) event.getSource();
         if (changeEvent.getPropertyName().equals("argo.notation.only.uml")) {
-            if (changeEvent.getNewValue().equals("true")) { 
+            if (changeEvent.getNewValue().equals("true")) {
                 setContextNotation(Notation.getConfigueredNotation());
             }
         } else {
@@ -848,8 +848,8 @@ public abstract class FigEdgeModelElement
             fig.removeFromDiagram();
         }
 
-        /* TODO: MVW: Why the next action? 
-         * Deleting a fig from 1 diagram should not influence others! 
+        /* TODO: MVW: Why the next action?
+         * Deleting a fig from 1 diagram should not influence others!
          * */
         // GEF does not take into account the multiple diagrams we have
         // therefore we loop through our diagrams and delete each and every
@@ -861,9 +861,9 @@ public abstract class FigEdgeModelElement
             ArgoDiagram diagram = (ArgoDiagram) it.next();
             diagram.damage();
         }
-        
+
         super.removeFromDiagram();
-        
+
         //This partly solves issue 3042.
 //        Layer l = this.getLayer();
 //        if (l != null) l.remove(this);
@@ -1037,11 +1037,11 @@ public abstract class FigEdgeModelElement
     protected void allowRemoveFromDiagram(boolean allowed) {
         this.removeFromDiagram = allowed;
     }
-    
+
     public void setDiElement(DiElement diElement) {
         this.diElement = diElement;
     }
-    
+
     public DiElement getDiElement() {
         return diElement;
     }
@@ -1052,5 +1052,5 @@ public abstract class FigEdgeModelElement
     protected static int getPopupAddOffset() {
         return popupAddOffset;
     }
-  
+
 } /* end class FigEdgeModelElement */

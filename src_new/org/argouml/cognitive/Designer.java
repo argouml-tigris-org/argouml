@@ -91,8 +91,8 @@ public final class Designer
     }
 
     /**
-     * The key to remember persistently the latest choice made 
-     * for the menuitem Toggle Auto-Critique. 
+     * The key to remember persistently the latest choice made
+     * for the menuitem Toggle Auto-Critique.
      */
     public static final ConfigurationKey AUTO_CRITIQUE =
         Configuration.makeKey("cognitive", "autocritique");
@@ -151,9 +151,10 @@ public final class Designer
      */
     private Agency agency;
 
-    /* the clarifying icon for this poster
+    /**
+     * The clarifying icon for this poster.
      */
-    private Icon clarifier = null;
+    private Icon clarifier;
 
 
     private Thread critiquerThread;
@@ -488,8 +489,8 @@ public final class Designer
      *
      * @return autoCritique
      */
-    public boolean getAutoCritique() { 
-        return Configuration.getBoolean(Designer.AUTO_CRITIQUE, true); 
+    public boolean getAutoCritique() {
+        return Configuration.getBoolean(Designer.AUTO_CRITIQUE, true);
     }
 
     /**
@@ -920,6 +921,15 @@ public final class Designer
         public Enumeration gen(Object o) {
                 return EnumerationEmpty.theInstance();
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 7599621170029351645L;
     } /* end class ChildGenDMElements */
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -3647853023882216454L;
 } /* end class Designer */

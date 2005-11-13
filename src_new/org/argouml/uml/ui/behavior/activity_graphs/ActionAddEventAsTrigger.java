@@ -31,7 +31,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**
- * Provide a dialog which helps the user to select one event out of an existing list, 
+ * Provide a dialog which helps the user to select one event out of an existing list,
  * which will be used as the trigger of the transition.
  * @author MarkusK
  *

@@ -53,7 +53,7 @@ class ConfigurationProperties extends ConfigurationHandler {
     /**
      * The primary property bundle.
      */
-    private Properties propertyBundle = null;
+    private Properties propertyBundle;
 
     /**
      * Flag to ensure that only the first load failure is reported
@@ -131,7 +131,7 @@ class ConfigurationProperties extends ConfigurationHandler {
      */
     boolean saveFile(File file) {
 	try {
-	    propertyBundle.store(new FileOutputStream(file), 
+	    propertyBundle.store(new FileOutputStream(file),
                     "ArgoUML properties");
 	    LOG.info("Configuration saved to " + file);
 	    return true;
@@ -208,7 +208,9 @@ class ConfigurationProperties extends ConfigurationHandler {
     }
 
     /**
-     * Remove a property
+     * Remove a property.
+     *
+     * @param key The property to remove.
      */
     public void remove(String key) {
         propertyBundle.remove(key);

@@ -62,12 +62,12 @@ public class FigEdgeNote
 	       MouseListener,
 	       KeyListener,
 	       PropertyChangeListener {
-    
+
     /**
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(FigEdgeNote.class);
-    
+
     private Object owner;
 
 
@@ -90,25 +90,25 @@ public class FigEdgeNote
      */
     public FigEdgeNote(Object commentEdge, Layer theLayer) {
         this();
-        
+
         if (!(theLayer instanceof LayerPerspectiveMutable)) {
             throw new IllegalArgumentException("The layer must be a mutable perspective. Got " + theLayer);
         }
-        
+
         if (!(commentEdge instanceof CommentEdge)) {
             throw new IllegalArgumentException("The owner must be a CommentEdge. Got " + commentEdge);
         }
-        
+
         Object fromNode = ((CommentEdge) commentEdge).getSource();
         if (!(Model.getFacade().isAModelElement(fromNode))) {
             throw new IllegalArgumentException("The given comment edge must start at a model element. Got " + fromNode);
         }
-        
+
         Object toNode = ((CommentEdge) commentEdge).getDestination();
         if (!(Model.getFacade().isAModelElement(toNode))) {
             throw new IllegalArgumentException("The given comment edge must end at a model element. Got " + toNode);
         }
-        
+
         Fig destFig = theLayer.presentationFor(toNode);
         if (destFig instanceof FigEdgeModelElement) {
             destFig = ((FigEdgeModelElement)destFig).getCommentPort();
@@ -116,7 +116,7 @@ public class FigEdgeNote
         if (!(destFig instanceof FigNodeModelElement)) {
             throw new IllegalArgumentException("The given comment edge must end at a model element in the given layer.");
         }
-        
+
         Fig sourceFig = theLayer.presentationFor(fromNode);
         if (sourceFig instanceof FigEdgeModelElement) {
             sourceFig = ((FigEdgeModelElement)sourceFig).getCommentPort();
@@ -124,14 +124,14 @@ public class FigEdgeNote
         if (!(sourceFig instanceof FigNodeModelElement)) {
             throw new IllegalArgumentException("The given comment edge must start at a model element in the given layer.");
         }
-        
+
         setLayer(theLayer);
         setDestFigNode((FigNode) destFig);
         setDestPortFig(destFig);
         setSourceFigNode((FigNode) sourceFig);
         setSourcePortFig(sourceFig);
         computeRoute();
-        
+
         setOwner(commentEdge);
     }
 

@@ -160,7 +160,7 @@ public abstract class PropPanelModelElement extends PropPanel {
         addField(Translator.localize("label.constraints"),
                 getConstraintScroll());
         add(getNamespaceVisibilityPanel());
-        
+
     }
 
     /**
@@ -262,7 +262,7 @@ public abstract class PropPanelModelElement extends PropPanel {
     /**
      * Returns the stereotype selecter. This is a component which allows the
      * user to select a single item as the stereotype.
-     * 
+     *
      * @return the stereotype selecter
      */
     protected JComponent getStereotypeSelector() {

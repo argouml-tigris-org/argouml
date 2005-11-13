@@ -279,7 +279,7 @@ class UseCasesHelperImpl implements UseCasesHelper {
             throw new IllegalArgumentException(
                     "The base cannot be null");
         }
-        
+
         if (!(base instanceof MUseCase)) {
             throw new IllegalArgumentException(
                     "The base cannot be a " + base.getClass().getName());
@@ -491,7 +491,7 @@ class UseCasesHelperImpl implements UseCasesHelper {
         if (!(useCase instanceof MUseCase)) {
             throw new IllegalArgumentException("A use case must be supplied");
         }
-        
+
         if ((extend instanceof MBase) && ((MBase) extend).isRemoved()) {
             throw new IllegalStateException("Operation on a removed object ["
                     + extend + "]");

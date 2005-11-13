@@ -234,7 +234,7 @@ class NSUMLModelEventPump
                   + modelClass + ", "
                   + propertyNames + ")");
         register(classEventListeners,
-                 new NSUMLClassEventListener(listener, modelClass, 
+                 new NSUMLClassEventListener(listener, modelClass,
                                              propertyNames, this));
     }
 
@@ -257,27 +257,27 @@ class NSUMLModelEventPump
             relay.delete();
         }
     }
-    
+
     /**
      * @see org.argouml.model.ModelEventPump#startPumpingEvents()
      */
     public void startPumpingEvents() {
         UmlModelEventPump.getPump().startPumpingEvents();
     }
-    
+
     /**
      * @see org.argouml.model.ModelEventPump#stopPumpingEvents()
      */
     public void stopPumpingEvents() {
         UmlModelEventPump.getPump().stopPumpingEvents();
     }
-    
+
     /**
      * @see org.argouml.model.ModelEventPump#flushModelEvents()
      */
     public void flushModelEvents() {
     }
-    
+
     /**
      * @see org.argouml.model.ModelEventPump#reallyFlushModelEvents()
      */

@@ -63,28 +63,44 @@ public class OpenException extends PersistenceException {
     public OpenException(Throwable cause) {
         super(cause);
     }
-    
-    
+
+
+    /**
+     * @see java.lang.Throwable#printStackTrace()
+     */
     public void printStackTrace() {
         super.printStackTrace();
-        if (getCause() instanceof SAXException &&
-                ((SAXException)getCause()).getException() != null) {
-            ((SAXException)getCause()).getException().printStackTrace();
+        if (getCause() instanceof SAXException
+                && ((SAXException) getCause()).getException() != null) {
+            ((SAXException) getCause()).getException().printStackTrace();
         }
     }
+
+    /**
+     * @see java.lang.Throwable#printStackTrace(java.io.PrintStream)
+     */
     public void printStackTrace(PrintStream ps) {
         super.printStackTrace(ps);
-        if (getCause() instanceof SAXException &&
-                ((SAXException)getCause()).getException() != null) {
-            ((SAXException)getCause()).getException().printStackTrace(ps);
+        if (getCause() instanceof SAXException
+                && ((SAXException) getCause()).getException() != null) {
+            ((SAXException) getCause()).getException().printStackTrace(ps);
         }
     }
+
+    /**
+     * @see java.lang.Throwable#printStackTrace(java.io.PrintWriter)
+     */
     public void printStackTrace(PrintWriter pw) {
         super.printStackTrace(pw);
-        if (getCause() instanceof SAXException &&
-                ((SAXException)getCause()).getException() != null) {
-            ((SAXException)getCause()).getException().printStackTrace(pw);
+        if (getCause() instanceof SAXException
+                && ((SAXException) getCause()).getException() != null) {
+            ((SAXException) getCause()).getException().printStackTrace(pw);
         }
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -4787911270548948677L;
 }
 

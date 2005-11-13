@@ -35,7 +35,7 @@ import org.argouml.model.Model;
 /**
  * Rule for SubmachineState to StateMachine. This enables the user to easily
  * browse the submachine states.
- * 
+ *
  * @author MarkusK
  */
 public class GoSubmachineStateToStateMachine extends AbstractPerspectiveRule {

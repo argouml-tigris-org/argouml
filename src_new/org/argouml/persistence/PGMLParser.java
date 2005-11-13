@@ -210,14 +210,14 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             .equals(oldName)) {
             return "org.argouml.uml.diagram.static_structure.ui.FigComment";
         }
-        
+
         // TODO: Use stylesheet to convert or wait till we use Fig
         // factories in diagram subsystem.
         // What is the last version that used FigState?
 	if ("org.argouml.uml.diagram.state.ui.FigState".equals(oldName)) {
 	    return "org.argouml.uml.diagram.state.ui.FigSimpleState";
 	}
-    
+
         // TODO: I think this is so old we don't need it any more
         // This goes way back to pre-zargo days
         if (oldName.startsWith("uci.gef.")) {
@@ -227,11 +227,11 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
         String translated = (String) translationTable.get(oldName);
         LOG.debug("old = " + oldName + " / new = " + translated);
-        
+
         if (translated == null) {
             return oldName;
         }
-        
+
         return translated;
     }
 
@@ -455,13 +455,13 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     public synchronized Diagram readDiagram (
             InputStream is,
             boolean closeStream) throws SAXException {
-        
+
         try {
             //initialise parsing attributes:
             _figRegistry = new HashMap();
             InputSource source = new InputSource(is);
             _nestedGroups = 0; //issue 2452
-    
+
             LOG.info("=======================================");
             LOG.info("== READING DIAGRAM");
             SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -471,7 +471,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             SAXParser pc = factory.newSAXParser();
             source.setSystemId(systemId);
             source.setEncoding("UTF-8");
-    
+
             // what is this for?
             // source.setSystemId(url.toString());
             pc.parse(source, this);
@@ -626,7 +626,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             }
         }
      */
-        
+
         if (xStr != null && !xStr.equals("")) {
             int x = Integer.parseInt(xStr);
             int y = Integer.parseInt(yStr);
@@ -661,7 +661,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         setAttrs(f, attrList);
         return f;
     }
-    
+
     /**
      * Set the fig style attributes. This should move into
      * the render factories as described in issue 859.
@@ -675,7 +675,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         while (it.hasNext()) {
             name = (String) it.next();
             value = (String) attributeMap.get(name);
-            
+
             if ("operationsVisible".equals(name)) {
                 ((OperationsCompartmentContainer) fig)
                     .setOperationsVisible(value.equalsIgnoreCase("true"));
@@ -694,7 +694,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             }
         }
     }
-    
+
     /**
      * Return the model element being referred to by interogating
      * the attributes of the XML group node.
@@ -704,7 +704,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         String href = attrList.getValue("href");
         return _ownerRegistry.get(href);
     }
-    
+
 
     /**
      * The StringTokenizer is expected to be positioned at the start a a string
@@ -732,7 +732,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 name = namevaluepair.substring(0, equalsPos);
                 value = namevaluepair.substring(equalsPos + 1);
             }
-            
+
             map.put(name, value);
         }
         return map;
@@ -746,7 +746,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         super.handlePGML(attrList);
         LOG.info("Diagram name is " + _diagram.getName());
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // internal methods
     // TODO: This code is identical to GEF other than the IllegalStatException,
@@ -771,7 +771,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 Object owner = findOwner(initStr);
                 if (owner == null) {
                     throw new IllegalStateException(
-                        "The owner of the diagram can not be found UUID = " 
+                        "The owner of the diagram can not be found UUID = "
                                     + initStr);
                 }
                 _diagram.initialize(owner);
@@ -781,7 +781,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         }
     }
 
-    
+
     /**
      * @see org.tigris.gef.xml.pgml.PGMLParser#privateStateEndElement(java.lang.String)
      */
@@ -834,7 +834,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             _currentEdge.setDestFigNode(dfn);
         }
     }
-    
+
     /**
      * @see org.tigris.gef.xml.pgml.PGMLParser#findFig(java.lang.String)
      */
@@ -867,6 +867,6 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
         return f;
     }
-    
+
 } /* end class PGMLParser */
 

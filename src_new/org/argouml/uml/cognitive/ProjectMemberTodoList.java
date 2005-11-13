@@ -111,17 +111,16 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
 
     	dsgr = Designer.theDesigner();
     	in = dsgr.getToDoList().getResolvedItems();
-        
+
     	out = new Vector();
-    	for (Iterator it = in.iterator(); it.hasNext(); ) {
+    	for (Iterator it = in.iterator(); it.hasNext();) {
             Object o = it.next();
     	    try {
                 rci = (ResolvedCritic) o;
                 if (rci == null) {
                     continue;
                 }
-    	    }
-    	    catch (ClassCastException e) {
+    	    } catch (ClassCastException e) {
         		continue;
     	    }
     	    out.addElement(new ResolvedCriticXMLHelper(rci));

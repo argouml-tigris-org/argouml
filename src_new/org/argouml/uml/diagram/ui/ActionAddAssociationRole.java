@@ -61,10 +61,10 @@ public class ActionAddAssociationRole extends CmdSetMode {
         _modeArgs.put("aggregation", aggregationKind);
         _modeArgs.put("unidirectional", new Boolean(unidirectional));
     }
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param aggregationKind the required aggregation for the association.
      * @param unidirectional true if this is to create a unidirectional
      *        association

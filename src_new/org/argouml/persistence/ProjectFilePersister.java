@@ -39,13 +39,13 @@ public interface ProjectFilePersister {
      * @param file The file to write.
      * @throws SaveException if anything goes wrong.
      */
-    public void save(Project project, File file) throws SaveException;
+    void save(Project project, File file) throws SaveException;
 
     /**
      * @param file the file of the project to load.
      * @return the Project
-     * 
+     *
      * @throws OpenException when we fail to open from this url
      */
-    public Project doLoad(File file) throws OpenException;
+    Project doLoad(File file) throws OpenException;
 }

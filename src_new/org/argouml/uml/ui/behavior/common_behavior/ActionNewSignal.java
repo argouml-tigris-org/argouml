@@ -23,13 +23,13 @@ public class ActionNewSignal extends AbstractActionNewModelElement {
         super("button.new-signal");
         putValue(Action.NAME, Translator.localize("button.new-signal"));
         Icon icon = ResourceLoaderWrapper.lookupIcon("SignalSending");
-        putValue(Action.SMALL_ICON, icon);       
+        putValue(Action.SMALL_ICON, icon);
     }
 
     /**
      * Creates a new signal and in case of a SignalEvent as target also set the
      * Signal for this event.
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

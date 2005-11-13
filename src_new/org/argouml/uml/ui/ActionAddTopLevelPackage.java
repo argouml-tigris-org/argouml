@@ -32,8 +32,8 @@ import org.argouml.model.Model;
 
 /**
  * Add a new package at the top level, i.e. a model.<p>
- * 
- * TODO: ArgoUML currently only supports one model. 
+ *
+ * TODO: ArgoUML currently only supports one model.
  */
 public class ActionAddTopLevelPackage extends UMLAction {
 

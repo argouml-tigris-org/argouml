@@ -35,7 +35,7 @@ import org.tigris.gef.presentation.FigCircle;
 
 /**
  * Class to display graphics for a UML Choice State in a diagram - the circle.
- * 
+ *
  * TODO: This should really be renamed FigChoiceState.  It's the
  * last vestige the UML 1.3 name.
  *
@@ -61,7 +61,7 @@ public class FigBranchState extends FigStateVertex {
     // constructors
 
     /**
-     * constructor
+     * Constructor.
      */
     public FigBranchState() {
         bp = new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan);
@@ -75,7 +75,9 @@ public class FigBranchState extends FigStateVertex {
         setBlinkPorts(false); //make port invisble unless mouse enters
     }
 
-    /** constructor
+    /**
+     * Constructor.
+     *
      * @param gm ignored
      * @param node the owner
      */
@@ -86,7 +88,7 @@ public class FigBranchState extends FigStateVertex {
 
     /**
      * This makes dragging connected edges very smooth.
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
     public Point getClosestPoint(Point anotherPt) {
@@ -108,7 +110,9 @@ public class FigBranchState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /** Choice states are fixed size.
+    /**
+     * Choice states are fixed size.
+     *
      * @see org.tigris.gef.presentation.Fig#isResizable()
      */
     public boolean isResizable() {
@@ -187,6 +191,9 @@ public class FigBranchState extends FigStateVertex {
     public void keyPressed(KeyEvent ke) {
     }
 
+    /**
+     * The UID.
+     */
     static final long serialVersionUID = 6572261327347541373L;
 
 } /* end class FigBranchState */

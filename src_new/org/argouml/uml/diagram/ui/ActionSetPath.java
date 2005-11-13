@@ -35,7 +35,7 @@ import org.tigris.gef.presentation.Fig;
 /**
  * Action to set or unset the display of the path (namespace) for elements
  * supporting such an action.
- * 
+ *
  * @see org.argouml.uml.diagram.ui.PathContainer
  * @author MarkusK
  */

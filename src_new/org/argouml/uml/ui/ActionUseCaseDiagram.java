@@ -30,7 +30,7 @@ import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
-/** 
+/**
  * Action to create a new use case diagram.
  */
 public class ActionUseCaseDiagram extends ActionAddDiagram {
@@ -53,7 +53,7 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
                 "The argument " + namespace + "is not a namespace.");
         }
         return (UMLDiagram)DiagramFactory.getInstance().createDiagram(
-                UMLUseCaseDiagram.class, 
+                UMLUseCaseDiagram.class,
                 namespace,
                 null);
     }

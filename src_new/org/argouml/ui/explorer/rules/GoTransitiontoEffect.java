@@ -34,7 +34,7 @@ import org.argouml.model.Model;
 
 /**
  * Rule for Transition->Effect.
- * 
+ *
  * @author MarkusK
  */
 public class GoTransitiontoEffect extends AbstractPerspectiveRule {

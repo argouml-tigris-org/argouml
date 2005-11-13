@@ -29,7 +29,6 @@ import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -60,7 +59,7 @@ import org.tigris.gef.util.UnexpectedException;
  *
  * @author mvw@tigris.org
  */
-public class PersistenceManager {
+public final class PersistenceManager {
     /**
      * The singleton instance.
      */
@@ -95,7 +94,7 @@ public class PersistenceManager {
      */
     public static final ConfigurationKey KEY_IMPORT_XMI_PATH =
         Configuration.makeKey("xmi", "import", "path");
-    
+
     /**
      * Create the default diagram persister.
      */
@@ -119,10 +118,11 @@ public class PersistenceManager {
         otherPersisters.add(quickViewDump);
         xmiPersister = new XmiFilePersister();
         zipPersister = new ZipFilePersister();
-        /* Exclude the XMIPersister as an otherPersister, 
-         * since it does not retain 
+        /* Exclude the XMIPersister as an otherPersister,
+         * since it does not retain
          * the complete project after a save/load cycle.
-         * See issue 3099. */
+         * See issue 3099.
+         */
 //        otherPersisters.add(xmiPersister);
     }
 
@@ -213,7 +213,7 @@ public class PersistenceManager {
     public String getXmiExtension() {
         return xmiPersister.getExtension();
     }
-    
+
     /**
      * @param in the input file or path name which may or may not
      *           have a recognised extension
@@ -240,7 +240,7 @@ public class PersistenceManager {
         return in;
     }
 
-    
+
     /**
      * @param in the input url which may or may not have a recognised extension
      * @return the url with default extension added,
@@ -313,10 +313,10 @@ public class PersistenceManager {
             DiagramMemberFilePersister persister) {
     	diagramMemberFilePersister = persister;
     }
-    
+
     /**
      * Returns true if we are allowed to overwrite the given file.
-     * 
+     *
      * @param overwrite if true, then the user is not asked
      * @param file the given file
      * @return true if we are allowed to overwrite the given file
@@ -324,12 +324,12 @@ public class PersistenceManager {
     public boolean confirmOverwrite(boolean overwrite, File file) {
         if (file.exists() && !overwrite) {
             String sConfirm =
-                MessageFormat.format(Translator.localize(
-                "optionpane.confirm-overwrite"),
-                new Object[] {file});
+                Translator.messageFormat(
+                    "optionpane.confirm-overwrite",
+                    new Object[] {file});
             int nResult =
                 JOptionPane.showConfirmDialog(
-                        ProjectBrowser.getInstance(), 
+                        ProjectBrowser.getInstance(),
                         sConfirm,
                         Translator.localize(
                             "optionpane.confirm-overwrite-title"),
@@ -358,9 +358,10 @@ class MultitypeFileFilter extends FileFilter {
 
     public boolean add(AbstractFilePersister filter) {
         filters.add(filter);
-        desc = ((desc == null) 
-                ? "" 
-                : desc + ", ") 
+        desc =
+            ((desc == null)
+                ? ""
+                : desc + ", ")
             + "*." + filter.getExtension();
         return false;
     }
@@ -368,18 +369,25 @@ class MultitypeFileFilter extends FileFilter {
     public Collection getAll() {
         return filters;
     }
-    
-    // Accept any file that any of our filters will accept
+
+    /**
+     * Accept any file that any of our filters will accept.
+     *
+     * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
+     */
     public boolean accept(File arg0) {
         Iterator it = filters.iterator();
         while (it.hasNext()) {
-            if ( ((FileFilter)it.next()).accept(arg0) ) {
+            if (((FileFilter) it.next()).accept(arg0)) {
                 return true;
             }
         }
         return false;
     }
 
+    /**
+     * @see javax.swing.filechooser.FileFilter#getDescription()
+     */
     public String getDescription() {
         Object[] s = {desc};
         return Translator.messageFormat("filechooser.all-types-desc", s);

@@ -568,7 +568,7 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
 
     public void setInstantiation(Object createaction, Object instantiation) {
         if (createaction instanceof MCreateAction
-            && (instantiation instanceof MClassifier 
+            && (instantiation instanceof MClassifier
                     || instantiation == null)) {
             ((MCreateAction) createaction)
                     .setInstantiation((MClassifier) instantiation);
@@ -581,14 +581,14 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
     public Object getActionOwner(Object action) {
         if (!(Model.getFacade().isAAction(action)))
             return null;
-        
+
         if (Model.getFacade().getStimuli(action) != null) {
             Iterator iter = Model.getFacade().getStimuli(action).iterator();
             if (iter.hasNext()) {
                 return iter.next();
             }
         }
-        
+
         if (Model.getFacade().getMessages(action) != null) {
             Iterator iter = Model.getFacade().getMessages(action).iterator();
             if (iter.hasNext()) {
@@ -598,31 +598,31 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
 /*
             if (Model.getFacade().getState1(action)!=null){
                 return Model.getFacade().getState1(action);
-                
+
             }
 
             if (Model.getFacade().getState2(action)!=null){
                 return Model.getFacade().getState2(action);
-                
+
             }
 
             if (Model.getFacade().getState3(action)!=null){
                 return Model.getFacade().getState3(action);
-                
+
             }
-            
+
             if (Model.getFacade().getState3(action)!=null){
                 return Model.getFacade().getState3(action);
-                
+
             }
- */           
+ */
         if (Model.getFacade().getTransition(action) != null) {
             return Model.getFacade().getTransition(action);
-            
+
         }
-        
+
         return null;
-    }    
+    }
 }
 
 

@@ -84,7 +84,7 @@ public class SettingsTabEnvironment extends SettingsTabHelper
         label.setLabelFor(fieldGraphicsFormat);
         top.add(label);
         top.add(fieldGraphicsFormat);
-        
+
         label = createLabel("label.default.graphics-resolution");
         theResolutions = new ArrayList();
         theResolutions.add(new GResolution(1, "combobox.item.resolution-1"));
@@ -166,15 +166,16 @@ public class SettingsTabEnvironment extends SettingsTabHelper
         fieldUserDir.setText(Configuration.getString(Argo.KEY_STARTUP_DIR,
 		System.getProperty("user.dir")));
         fieldStartupDir.setText(Argo.getDirectory());
-        
+
         fieldGraphicsFormat.removeAllItems();
         Collection c = SaveGraphicsManager.getInstance().getSettingsList();
         fieldGraphicsFormat.setModel(new DefaultComboBoxModel(c.toArray()));
-        
+
         fieldGraphicsResolution.removeAllItems();
         fieldGraphicsResolution.setModel(new DefaultComboBoxModel(
                 theResolutions.toArray()));
-        int defaultResolution = Configuration.getInteger(
+        int defaultResolution =
+            Configuration.getInteger(
                 SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 1);
         Iterator i = theResolutions.iterator();
         while (i.hasNext()) {
@@ -191,12 +192,12 @@ public class SettingsTabEnvironment extends SettingsTabHelper
      */
     public void handleSettingsTabSave() {
         Configuration.setString(Argo.KEY_STARTUP_DIR, fieldUserDir.getText());
-        
+
         GResolution r = (GResolution) fieldGraphicsResolution.getSelectedItem();
-        Configuration.setInteger(SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 
+        Configuration.setInteger(SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION,
                 r.getResolution());
-        
-        SaveGraphicsManager.getInstance().setDefaultFilter( 
+
+        SaveGraphicsManager.getInstance().setDefaultFilter(
                 (SuffixFilter) fieldGraphicsFormat.getSelectedItem());
     }
 
@@ -230,8 +231,9 @@ public class SettingsTabEnvironment extends SettingsTabHelper
      */
     public String getModuleAuthor() { return "ArgoUML Core"; }
 
-    /** This should call on a global config file somewhere
-     * .9.4 is the last version of argo
+    /**
+     * This should call on a global config file somewhere
+     * .9.4 is the last version of argo.
      *
      * @see org.argouml.application.api.ArgoModule#getModuleVersion()
      */
@@ -246,23 +248,27 @@ public class SettingsTabEnvironment extends SettingsTabHelper
      * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
      */
     public String getTabKey() { return "tab.environment"; }
-    
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 543442930918741133L;
 }
 
 
 class GResolution {
     private int resolution;
     private String label;
-    
+
     GResolution(int r, String name) {
         resolution = r;
         label = Translator.localize(name);
     }
-    
+
     int getResolution() {
         return resolution;
     }
-    
+
     public String toString() {
         return label;
     }

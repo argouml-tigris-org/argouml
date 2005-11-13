@@ -114,17 +114,17 @@ public class ActionOpenProject extends AbstractAction
             chooser.setAcceptAllFileFilterUsed(false);
 
             pm.setOpenFileChooserFilter(chooser);
-            
+
             String fn = Configuration.getString(
                     PersistenceManager.KEY_OPEN_PROJECT_PATH);
             if (fn.length() > 0) {
                 chooser.setSelectedFile(new File(fn));
             }
-            
+
             int retval = chooser.showOpenDialog(pb);
             if (retval == JFileChooser.APPROVE_OPTION) {
                 File theFile = chooser.getSelectedFile();
-                
+
                 if (!theFile.canRead()) {
                     /* Try adding the extension from the chosen filter. */
                     FileFilter ffilter = chooser.getFileFilter();

@@ -63,7 +63,7 @@ public class PropPanelAssociationClass extends PropPanelClassifier {
      * The constructor.
      */
     public PropPanelAssociationClass() {
-        super("AssociationClass", lookupIcon("AssociationClass"), 
+        super("AssociationClass", lookupIcon("AssociationClass"),
                 ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
@@ -86,13 +86,13 @@ public class PropPanelAssociationClass extends PropPanelClassifier {
                 getGeneralizationScroll());
         addField(Translator.localize("label.specializations"),
                 getSpecializationScroll());
-        
+
         JList assocEndList = new UMLLinkedList(
                 new UMLAssociationConnectionListModel());
         assocEndScroll = new JScrollPane(assocEndList);
         addField(Translator.localize("label.connections"),
                 assocEndScroll);
-        
+
         addSeperator();
 
         addField(Translator.localize("label.attributes"),
@@ -101,9 +101,9 @@ public class PropPanelAssociationClass extends PropPanelClassifier {
         JList connections = new UMLLinkedList(
                 new UMLClassifierAssociationEndListModel());
         JScrollPane connectionsScroll = new JScrollPane(connections);
-        addField(Translator.localize("label.association-ends"), 
+        addField(Translator.localize("label.association-ends"),
                 connectionsScroll);
-        
+
         addField(Translator.localize("label.operations"),
                 getOperationScroll());
         addField(Translator.localize("label.owned-elements"),

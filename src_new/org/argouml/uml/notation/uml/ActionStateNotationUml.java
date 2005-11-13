@@ -35,7 +35,7 @@ public class ActionStateNotationUml extends ActionStateNotation {
 
     /**
      * The constructor.
-     * 
+     *
      * @param actionState the UML ActionState
      */
     public ActionStateNotationUml(Object actionState) {

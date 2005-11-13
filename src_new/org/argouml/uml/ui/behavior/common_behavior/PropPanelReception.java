@@ -44,7 +44,7 @@ import org.tigris.swidgets.GridLayout2;
  * PropertyPanel for a Reception.
  */
 public class PropPanelReception extends PropPanelModelElement {
-    
+
     private JPanel modifiersPanel;
 
     /**
@@ -61,7 +61,7 @@ public class PropPanelReception extends PropPanelModelElement {
                 getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
-        
+
         modifiersPanel =
             new JPanel(new GridLayout2());
         modifiersPanel.setBorder(

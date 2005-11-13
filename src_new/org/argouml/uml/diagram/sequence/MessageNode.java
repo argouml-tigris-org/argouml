@@ -35,31 +35,49 @@ import org.argouml.uml.diagram.sequence.ui.FigClassifierRole;
  */
 public class MessageNode extends Object {
 
-    /** Nothing has happened yet */
+    /**
+     * Nothing has happened yet.
+     */
     public static final int INITIAL = 0;
 
-    /** At some later node, this object is created */
+    /**
+     * At some later node, this object is created.
+     */
     public static final int PRECREATED = 1;
 
-    /** Having done something without being called */
+    /**
+     * Having done something without being called.
+     */
     public static final int DONE_SOMETHING_NO_CALL = 2;
 
-    /** Having been called */
+    /**
+     * Having been called.
+     */
     public static final int CALLED = 3;
 
-    /** Implicitly returned from a call */
+    /**
+     * Implicitly returned from a call.
+     */
     public static final int IMPLICIT_RETURNED = 4;
 
-    /** Having been called with a return pending */
+    /**
+     * Having been called with a return pending.
+     */
     public static final int CREATED = 5;
 
-    /** After having returned from a call */
+    /**
+     * After having returned from a call.
+     */
     public static final int RETURNED = 6;
 
-    /** After the object is destroyed */
+    /**
+     * After the object is destroyed.
+     */
     public static final int DESTROYED = 7;
 
-    /** Implicitly returned from being created */
+    /**
+     * Implicitly returned from being created.
+     */
     public static final int IMPLICIT_CREATED = 8;
 
     // TODO: Need to replace this with FigMessage
@@ -80,7 +98,8 @@ public class MessageNode extends Object {
     }
 
     /**
-     * TODO: Need to replace this with getFigMessage
+     * TODO: Need to replace this with getFigMessage.
+     *
      * @return the figMessagePort
      */
     public FigMessagePort getFigMessagePort() {
@@ -90,24 +109,21 @@ public class MessageNode extends Object {
     /**
      * @return the state
      */
-    public int getState()
-    {
+    public int getState() {
         return state;
     }
 
     /**
      * @param st the state
      */
-    public void setState( int st)
-    {
+    public void setState(int st) {
         state = st;
     }
 
     /**
      * @param theCallers the callers
      */
-    public void setCallers( List theCallers)
-    {
+    public void setCallers(List theCallers) {
         this.callers = theCallers;
     }
 
@@ -128,51 +144,51 @@ public class MessageNode extends Object {
     /**
      * @param fmp the fig messageport
      */
-    public void setFigMessagePort( FigMessagePort fmp)
-    {
+    public void setFigMessagePort(FigMessagePort fmp) {
         figMessagePort = fmp;
     }
 
     public boolean canCall() {
-        return figMessagePort == null && (
-            state == INITIAL 
-            || state == CREATED 
-            || state == CALLED 
-            || state == DONE_SOMETHING_NO_CALL 
-            || state == IMPLICIT_RETURNED
-            || state == IMPLICIT_CREATED);
+        return figMessagePort == null
+            && (state == INITIAL
+                    || state == CREATED
+                    || state == CALLED
+                    || state == DONE_SOMETHING_NO_CALL
+                    || state == IMPLICIT_RETURNED
+                    || state == IMPLICIT_CREATED);
     }
 
     public boolean canBeCalled() {
-        return figMessagePort == null && (
-            state == INITIAL 
-            || state == CREATED 
-            || state == DONE_SOMETHING_NO_CALL 
-            || state == CALLED 
-            || state == RETURNED 
-            || state == IMPLICIT_RETURNED 
-            || state == IMPLICIT_CREATED);
+        return figMessagePort == null
+            && (state == INITIAL
+                    || state == CREATED
+                    || state == DONE_SOMETHING_NO_CALL
+                    || state == CALLED
+                    || state == RETURNED
+                    || state == IMPLICIT_RETURNED
+                    || state == IMPLICIT_CREATED);
     }
 
-    public boolean canReturn( Object caller) {
-        return figMessagePort == null 
-            && callers != null 
-            && callers.contains( caller);
+    public boolean canReturn(Object caller) {
+        return figMessagePort == null
+            && callers != null
+            && callers.contains(caller);
     }
 
     public boolean canBeReturnedTo() {
-        return figMessagePort == null 
-            && ( state == DONE_SOMETHING_NO_CALL || state == CALLED
-            || state == CREATED || state == IMPLICIT_RETURNED
-            || state == IMPLICIT_CREATED);
+        return figMessagePort == null
+            && (state == DONE_SOMETHING_NO_CALL
+                    || state == CALLED
+                    || state == CREATED
+                    || state == IMPLICIT_RETURNED
+                    || state == IMPLICIT_CREATED);
     }
 
-    public boolean matchingCallerList( Object caller, int callerIndex)
-    {
-        if ( callers != null && callers.lastIndexOf( caller) == callerIndex)
-        {
-            if ( state == IMPLICIT_RETURNED)
+    public boolean matchingCallerList(Object caller, int callerIndex) {
+        if (callers != null && callers.lastIndexOf(caller) == callerIndex) {
+            if (state == IMPLICIT_RETURNED) {
                 state = CALLED;
+            }
             return true;
         }
         return false;
@@ -191,10 +207,11 @@ public class MessageNode extends Object {
     }
 
     public boolean canBeDestroyed() {
-        return figMessagePort == null 
-            && ( state == DONE_SOMETHING_NO_CALL || state == CREATED 
-                || state == CALLED || state == RETURNED 
-                || state == IMPLICIT_RETURNED 
+        return figMessagePort == null
+            && (state == DONE_SOMETHING_NO_CALL
+                || state == CREATED
+                || state == CALLED || state == RETURNED
+                || state == IMPLICIT_RETURNED
                 || state == IMPLICIT_CREATED);
     }
 }

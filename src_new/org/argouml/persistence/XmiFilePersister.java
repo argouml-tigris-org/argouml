@@ -21,6 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.persistence;
 
 import java.io.BufferedOutputStream;
@@ -44,7 +45,9 @@ import org.argouml.uml.cognitive.ProjectMemberTodoList;
  * @author Bob Tarling
  */
 public class XmiFilePersister extends AbstractFilePersister {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(XmiFilePersister.class);
 
@@ -80,7 +83,7 @@ public class XmiFilePersister extends AbstractFilePersister {
 
         File lastArchiveFile = new File(file.getAbsolutePath() + "~");
         File tempFile = null;
-        
+
         try {
             tempFile = createTempFile(file);
         } catch (FileNotFoundException e) {
@@ -168,7 +171,7 @@ public class XmiFilePersister extends AbstractFilePersister {
      */
     public Project doLoad(File file)
         throws OpenException {
-        
+
         try {
             Project p = new Project();
             XMIParser.getSingleton().readModels(p, file.toURL());
@@ -184,5 +187,5 @@ public class XmiFilePersister extends AbstractFilePersister {
             throw new OpenException(e);
         }
     }
-    
+
 }

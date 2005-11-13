@@ -40,10 +40,10 @@ import org.argouml.uml.generator.ui.ClassGenerationDialog;
 /**
  * Action to trigger code generation for one or more classes.
  * <p>
- * In fact, only all named classes and interfaces 
- * on the active diagram are generated. 
- * Or, if this delivers an empty collection, all selected classes, interfaces 
- * and the contents of selected packages are generated 
+ * In fact, only all named classes and interfaces
+ * on the active diagram are generated.
+ * Or, if this delivers an empty collection, all selected classes, interfaces
+ * and the contents of selected packages are generated
  * (independent if they are named or not). <p>
  * TODO: Implement a more logical behaviour.
  */

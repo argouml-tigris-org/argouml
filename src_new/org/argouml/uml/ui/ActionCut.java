@@ -101,11 +101,11 @@ public class ActionCut extends AbstractAction implements CaretListener {
             ActionPaste.getInstance().setEnabled(true);
         }
     }
-    
+
     /**
      * Disable cutting figs from a diagram to prevent issue 3480.
      * See also ActionPaste, which is also disabled for similar reasons.
-     * 
+     *
      * @return true if cut is allowed for the selected items
      */
     private boolean removeFromDiagramAllowed() {

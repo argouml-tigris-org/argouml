@@ -92,7 +92,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     /**
      * Construct new PropPanel using LabelledLayout.
      * <p>
-     * 
+     *
      * @param icon
      *            The icon to display for the panel
      * @param title
@@ -123,7 +123,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * Constructs a new Proppanel without an icon. If there is an icon it's
      * updated at runtime via settarget.
      * <p>
-     * 
+     *
      * @param title
      *            the title
      * @param orientation
@@ -135,7 +135,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     /**
      * Set the orientation of the panel.
-     * 
+     *
      * @see org.tigris.swidgets.Orientable#setOrientation(org.tigris.swidgets.Orientation)
      */
     public void setOrientation(Orientation orientation) {
@@ -151,22 +151,22 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         button.setFocusable(false); // Buttons shall not go in the tabbing loop
         buttonPanel.add(button);
     }
-    
+
     /**
      * Add a button to the toolbar of a property panel using the action to
      * control the behavior of the action.
-     * 
+     *
      * @param action
      *            the action which will be used in the toolbar button.
      */
     protected void addAction(Action action) {
         addAction(action, null);
     }
-    
+
     /**
      * Add a button to the toolbar of a property panel using the action to
      * control the behavior of the action.
-     * 
+     *
      * @param action
      *            the action which will be used in the toolbar button.
      * @param tooltip
@@ -177,13 +177,13 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         if (tooltip != null) button.setToolTipText(tooltip);
         button.setText("");
         button.setFocusable(false);
-        buttonPanel.add(button);   
+        buttonPanel.add(button);
     }
 
     /**
      * Add a component with the specified label.
      * <p>
-     * 
+     *
      * @param label
      *            the label for the component
      * @param component
@@ -209,7 +209,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     /**
      * Add a component with the specified label positioned after another
      * component.
-     * 
+     *
      * @param label
      *            the label for the component
      * @param component
@@ -239,7 +239,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * Add a component with the specified label positioned before another
      * component.
      * <p>
-     * 
+     *
      * @param label
      *            the label for the component
      * @param component
@@ -277,7 +277,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * <p>
      * This involves resetting the third party listeners.
      * <p>
-     * 
+     *
      * @deprecated As Of Argouml version 0.13.5, This will change visibility
      *             from release 0.16
      * @param t
@@ -305,7 +305,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
                 modelElement = target;
             }
 
-            // This will add a new ModelElement event listener 
+            // This will add a new ModelElement event listener
             // after update is complete
 
             dispatch = new UMLChangeDispatch(this,
@@ -331,7 +331,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     /**
      * Builds a eventlistenerlist of all targetlisteners that are part of this
      * container and its children.
-     * 
+     *
      * @param container
      *            the container to search for targetlisteners
      * @return an EventListenerList with all TargetListeners on this container
@@ -386,7 +386,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     /**
      * This method can be overriden in derived Panels where the appropriate
      * namespace for display may not be the same as the namespace of the target.
-     * 
+     *
      * @return the namespace
      */
     protected Object getDisplayNamespace() {
@@ -455,7 +455,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     /**
      * Check whether this element can be deleted. Currently it only checks
      * whether we delete the main model. ArgoUML does not like that.
-     * 
+     *
      * @since 0.13.2
      * @return whether this element can be deleted
      */
@@ -554,7 +554,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     /**
      * Look up an icon.
-     * 
+     *
      * @param name
      *            the resource name.
      * @return an ImageIcon corresponding to the given resource name

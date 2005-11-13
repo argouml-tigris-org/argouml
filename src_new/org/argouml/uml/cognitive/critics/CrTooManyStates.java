@@ -30,11 +30,15 @@ import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 
-/** 
+/**
  * A critic to detect when a composite state has too
  * many subvertices.
  */
 public class CrTooManyStates extends AbstractCrTooMany {
+    /**
+     * Threshold.
+     */
+    private static final int STATES_THRESHOLD = 20;
 
     /**
      * The constructor.
@@ -43,7 +47,7 @@ public class CrTooManyStates extends AbstractCrTooMany {
     public CrTooManyStates() {
         setupHeadAndDesc();
 	addSupportedDecision(UMLDecision.STATE_MACHINES);
-	setThreshold(20);
+	setThreshold(STATES_THRESHOLD);
 	addTrigger("substate");
     }
 
@@ -52,13 +56,20 @@ public class CrTooManyStates extends AbstractCrTooMany {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isACompositeState(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isACompositeState(dm))) {
+            return NO_PROBLEM;
+        }
 	Object cs = /*(MCompositeState)*/ dm;
 
-	int threshold = getThreshold();
 	Collection subs = Model.getFacade().getSubvertices(cs);
-	if (subs.size() <= threshold) return NO_PROBLEM;
+	if (subs.size() <= getThreshold()) {
+            return NO_PROBLEM;
+        }
 	return PROBLEM_FOUND;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -7320341818814870066L;
 } /* end class CrTooManyStates */

@@ -23,6 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,9 +42,9 @@ import org.argouml.model.XmiReader;
 import org.xml.sax.InputSource;
 
 /**
- *   This class implements the abstract class Profile for use in modelling
- *   Java language projects.  Eventually, this class may be replaced by
- *   a configurable profile.
+ * This class implements the abstract class Profile for use in modelling
+ * Java language projects.  Eventually, this class may be replaced by
+ * a configurable profile.
  *
  * TODO: (MVW) I see only little Java specific stuff here.
  * Most of this should be moved to a ProfileUML.java file, which
@@ -52,10 +53,12 @@ import org.xml.sax.InputSource;
  * TODO: (MVW) Document the use of "argo.defaultModel" in
  * the argo.user.properties file.
  *
- *   @author Curt Arnold
+ * @author Curt Arnold
  */
 public class ProfileJava extends Profile {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(ProfileJava.class);
 
     private Object/*MModel*/ defaultModel;
@@ -123,7 +126,7 @@ public class ProfileJava extends Profile {
 	} else {
 	    name = "unknown type";
 	}
-	Object/*MMultiplicity*/ mult = 
+	Object/*MMultiplicity*/ mult =
 	    Model.getFacade().getMultiplicity(assocEnd);
 	if (mult != null) {
 	    StringBuffer buf = new StringBuffer(name);
@@ -169,9 +172,9 @@ public class ProfileJava extends Profile {
      */
     protected String defaultGeneralizationName(Object/*MGeneralization*/ gen,
 					       Object namespace) {
-	Object/*MGeneralizableElement*/ child = 
+	Object/*MGeneralizableElement*/ child =
 	    Model.getFacade().getChild(gen);
-	Object/*MGeneralizableElement*/ parent = 
+	Object/*MGeneralizableElement*/ parent =
 	    Model.getFacade().getParent(gen);
 	StringBuffer buf = new StringBuffer();
 	buf.append(formatElement(child, namespace));
@@ -198,8 +201,9 @@ public class ProfileJava extends Profile {
 		name = defaultGeneralizationName(element, namespace);
 	    }
 	}
-	if (name == null)
-	    name = "anon";
+	if (name == null) {
+            name = "anon";
+        }
 	return name;
     }
 
@@ -219,7 +223,7 @@ public class ProfileJava extends Profile {
 			   Object/*MModelElement*/ element,
 			   String pathSep) {
 	if (element != null) {
-	    Object/*MNamespace*/ parent = 
+	    Object/*MNamespace*/ parent =
 	        Model.getFacade().getNamespace(element);
 	    if (parent != null && parent != element) {
 		buildPath(buffer, parent, pathSep);
@@ -298,7 +302,7 @@ public class ProfileJava extends Profile {
         //    get a file name for the default model
         //
         String modelFileName = System.getProperty("argo.defaultModel");
-        
+
         if (modelFileName == null) {
             modelFileName = "/org/argouml/model/mdr/mof/default-uml14.xmi";
         }
@@ -314,7 +318,8 @@ public class ProfileJava extends Profile {
                 File modelFile = new File(modelFileName);
                 if (modelFileName.endsWith("zip")) {
                     String fileName = modelFile.getName();
-                    String extension = fileName.substring(
+                    String extension =
+                        fileName.substring(
                             fileName.indexOf('.'), fileName.lastIndexOf('.'));
                     String path = modelFile.getParent();
                     // Add the path of the model to the search path, so we can
@@ -328,8 +333,9 @@ public class ProfileJava extends Profile {
                     } catch (IOException e) {
                         throw new ProfileException(e);
                     }
-                } else
+                } else {
                     is = new FileInputStream(modelFile);
+                }
             } catch (FileNotFoundException ex) {
                 //
                 // No file found, try looking in the resources
@@ -338,7 +344,8 @@ public class ProfileJava extends Profile {
                 // in the same ClassLoader that the default.xmi.
                 // If we run using Java Web Start then we have every ArgoUML
                 // file in the same jar (i.e. the same ClassLoader).
-                is = new Object().getClass().getResourceAsStream(
+                is =
+                    new Object().getClass().getResourceAsStream(
                         modelFileName);
             }
             if (is != null) {
@@ -350,7 +357,7 @@ public class ProfileJava extends Profile {
                 } catch (UmlException e) {
                     throw new ProfileException(e);
                 }
-            } 
+            }
             LOG.error("Value of property argo.defaultModel ("
                     + modelFileName
                     + ") did not correspond to an available file.\n");
@@ -360,10 +367,10 @@ public class ProfileJava extends Profile {
 
     /**
      * Open a ZipInputStream to the first file found with a given extension.
-     * 
-     * TODO: Remove since this is a duplicate of ZipFilePersister method 
+     *
+     * TODO: Remove since this is a duplicate of ZipFilePersister method
      * when we have refactored the Persister subsystem.
-     * 
+     *
      * @param url
      *            The URL of the zip file.
      * @param ext
@@ -380,5 +387,5 @@ public class ProfileJava extends Profile {
             entry = zis.getNextEntry();
         }
         return zis;
-    }    
+    }
 }

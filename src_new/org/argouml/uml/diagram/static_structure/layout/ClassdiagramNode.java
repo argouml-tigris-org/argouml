@@ -226,7 +226,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
             } else if (diff > 0) {
                 result = 1;
             } // else: result = 0
-            // Java 1.5: 
+            // Java 1.5:
             // result = (int) Math.signum(node.getWeight() - this.getWeight());
         }
         if (result == 0) {
@@ -336,7 +336,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
      * @return The weight of the subtree.
      */
     private float getSubtreeWeight() {
-        
+
         float w = 1;
         for (Iterator iter = downlinks.iterator(); iter.hasNext();) {
             w += ((ClassdiagramNode) iter.next()).getSubtreeWeight()
@@ -344,7 +344,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
         }
         return w;
     }
-    
+
     /**
      * Get the type order number of this node. This number may be used to
      * influence the sort order of ClassdiagramNodes.

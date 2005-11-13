@@ -58,13 +58,13 @@ class ActionAddOperation extends UndoableAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        
+
         super.actionPerformed(ae);
-        
+
         Project project = ProjectManager.getManager().getCurrentProject();
         Object target =  TargetManager.getInstance().getModelTarget();
         Object classifier = null;
-        
+
         if (Model.getFacade().isAClassifier(target)) {
             classifier = target;
         } else if (Model.getFacade().isAFeature(target)) {
@@ -72,18 +72,20 @@ class ActionAddOperation extends UndoableAction {
         } else {
             return;
         }
-        
+
         Collection propertyChangeListeners =
             project.findFigsForMember(classifier);
         Object model = project.getModel();
         Object voidType = project.findType("void");
-        Object oper = Model.getCoreFactory().buildOperation(
+        Object oper =
+            Model.getCoreFactory().buildOperation(
                 classifier, model, voidType, propertyChangeListeners);
         TargetManager.getInstance().setTarget(oper);
 
-        // TODO: None of the following should be needed. Fig such as FigClass and
-        // FigInterface should be listening for add/remove events and know when
-        // an operation has been added and add a listener to the operation to themselves
+        // TODO: None of the following should be needed.
+        // Fig such as FigClass and FigInterface should be listening for
+        // add/remove events and know when an operation has been added and
+        // add a listener to the operation to themselves
         // See similar in FigOperationsCompartment
         Iterator it = project.findAllPresentationsFor(classifier).iterator();
         while (it.hasNext()) {
@@ -93,4 +95,9 @@ class ActionAddOperation extends UndoableAction {
             Model.getPump().addModelEventListener(listener, oper);
         }
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1383845502957256177L;
 } /* end class ActionAddOperation */

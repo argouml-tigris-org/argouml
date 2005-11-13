@@ -156,7 +156,7 @@ public class PropPanelOperation extends PropPanelFeature {
             putValue(Action.NAME,
                     Translator.localize("button.new-raised-signal"));
             Icon icon = ResourceLoaderWrapper.lookupIcon("SignalSending");
-            putValue(Action.SMALL_ICON, icon);            
+            putValue(Action.SMALL_ICON, icon);
         }
 
         /**
@@ -182,7 +182,7 @@ public class PropPanelOperation extends PropPanelFeature {
             putValue(Action.NAME,
                     Translator.localize("button.new-method"));
             Icon icon = ResourceLoaderWrapper.lookupIcon("Method");
-            putValue(Action.SMALL_ICON, icon);       
+            putValue(Action.SMALL_ICON, icon);
         }
 
         /**

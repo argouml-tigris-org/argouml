@@ -39,7 +39,7 @@ public class TransitionNotationUml extends TransitionNotation {
 
     /**
      * The constructor.
-     * 
+     *
      * @param transition the transition represented by this notation
      */
     public TransitionNotationUml(Object transition) {

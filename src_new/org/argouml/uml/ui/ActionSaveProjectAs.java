@@ -89,7 +89,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         if (f == null) {
             return false;
         }
-        
+
         boolean success = ProjectBrowser.getInstance().trySave(overwrite, f);
         if (success) {
             ProjectBrowser.getInstance().setTitle(
@@ -150,7 +150,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
                 }
             }
             return theFile;
-        } 
+        }
         return null;
     }
 

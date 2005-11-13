@@ -41,9 +41,9 @@ class ActionModifierRoot extends AbstractActionCheckBoxMenuItem {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement.AbstractActionCheckBoxMenuItem#toggleValueOfTarget(java.lang.Object)
      */
     void toggleValueOfTarget(Object t) {
-        Model.getCoreHelper().setRoot(t, !Model.getFacade().isRoot(t));    
+        Model.getCoreHelper().setRoot(t, !Model.getFacade().isRoot(t));
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement.AbstractActionCheckBoxMenuItem#valueOfTarget(java.lang.Object)
      */

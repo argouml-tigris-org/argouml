@@ -36,20 +36,19 @@ public interface CodeGenerator {
     /**
      * The file seperator for this operating system.
      */
-    public static final String FILE_SEPARATOR =
-        System.getProperty("file.separator");
+    String FILE_SEPARATOR = System.getProperty("file.separator");
 
     // FIXME: maybe convert all Collections of modelelements
     // into Sets, because they shall not contain duplicate elements.
-    
+
     /**
      * Generate code for the specified classifiers. If generation of
      * dependencies is requested, then every file the specified elements
      * depends on is generated too (e.g. if the class MyClass has an attribute
      * of type OtherClass, then files for OtherClass are generated too).
-     * 
+     *
      * @param elements the UML model elements to generate code for.
-     * @param deps Recursively generate dependency files too. 
+     * @param deps Recursively generate dependency files too.
      * @return A collection of SourceUnit objects. The collection may be empty
      * if no file is generated.
      */
@@ -71,7 +70,7 @@ public interface CodeGenerator {
      * modelelements.
      * @see #generate(Collection, boolean)
      * @param elements the UML model elements to generate code for.
-     * @param deps Recursively generate dependency files too. 
+     * @param deps Recursively generate dependency files too.
      * @return The filenames (with relative path) as a collection of Strings.
      * The collection may be empty if no file will be generated.
      */

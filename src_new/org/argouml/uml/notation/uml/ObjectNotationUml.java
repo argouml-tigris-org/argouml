@@ -39,7 +39,7 @@ public class ObjectNotationUml extends ObjectNotation {
 
     /**
      * The constructor.
-     * 
+     *
      * @param theObject the UML Object
      */
     public ObjectNotationUml(Object theObject) {
@@ -118,7 +118,7 @@ public class ObjectNotationUml extends ObjectNotation {
 
         if ((nameStr.length() == 0) && (baseString.length() == 0)) {
             return "";
-        } 
+        }
         baseString = baseString.trim();
         if (baseString.length() < 1) {
             return nameStr.trim();

@@ -86,48 +86,48 @@ public class ActionSaveGraphics
     private boolean trySave() {
         Object target =
             ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-        
+
         if (!(target instanceof Diagram)) {
             return false;
         }
-        
+
         String defaultName = ((Diagram) target).getName();
         defaultName = Util.stripJunk(defaultName);
-        
+
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p =  ProjectManager.getManager().getCurrentProject();
-        SaveGraphicsManager sgm = SaveGraphicsManager.getInstance(); 
+        SaveGraphicsManager sgm = SaveGraphicsManager.getInstance();
         try {
             JFileChooser chooser = null;
-        
+
             if (p != null
                 	&& p.getURL() != null
                 	&& p.getURL().getFile().length() > 0) {
-        
+
             	String filename = p.getURL().getFile();
                 // TODO: Someone please explain this.
             	if (!filename.startsWith("/FILE1/+/")) {
             	    chooser = new JFileChooser(p.getURL().getFile());
             	}
             }
-        
+
             if (chooser == null) {
                 chooser = new JFileChooser();
             }
-        
+
             Object[] s = { defaultName };
             chooser.setDialogTitle(
                     Translator.messageFormat("filechooser.save-graphics", s));
             // Only specified format are allowed.
             chooser.setAcceptAllFileFilterUsed(false);
             sgm.setFileChooserFilters(chooser, defaultName);
-            
+
             String fn = Configuration.getString(
                     SaveGraphicsManager.KEY_SAVE_GRAPHICS_PATH);
             if (fn.length() > 0) {
                 chooser.setSelectedFile(new File(fn));
             }
-            
+
             int retval = chooser.showSaveDialog(pb);
             if (retval == JFileChooser.APPROVE_OPTION) {
                 File theFile = chooser.getSelectedFile();
@@ -136,8 +136,8 @@ public class ActionSaveGraphics
                     Configuration.setString(
                             SaveGraphicsManager.KEY_SAVE_GRAPHICS_PATH,
                             path);
-                    
-                    theFile = new File(theFile.getParentFile(), 
+
+                    theFile = new File(theFile.getParentFile(),
                             sgm.fixExtension(theFile.getName()));
                     String suffix = sgm.getFilterFromFileName(theFile.getName())
                         .getSuffix();
@@ -146,13 +146,13 @@ public class ActionSaveGraphics
             }
         } catch (OutOfMemoryError e) {
             new ExceptionDialog(ProjectBrowser.getInstance(),
-                "You have run out of memory. " 
+                "You have run out of memory. "
                 + "Close down ArgoUML and restart with a larger heap size.", e);
         } catch (Exception e) {
             new ExceptionDialog(ProjectBrowser.getInstance(), e);
             LOG.error("Got some exception", e);
         }
-        
+
         return false;
     }
 
@@ -163,31 +163,31 @@ public class ActionSaveGraphics
      * @param theFile is the file that we are writing to
      * @param suffix is the suffix. Used for deciding what format the file
      * shall have.
-     * @param useUI is true if we are supposed to use the UI e.g. to warn 
+     * @param useUI is true if we are supposed to use the UI e.g. to warn
      *              the user that we are replacing an old file.
      */
     private boolean doSave(File theFile,
 			   String suffix, boolean useUI)
 	throws FileNotFoundException, IOException {
-        
-        SaveGraphicsManager sgm = SaveGraphicsManager.getInstance(); 
+
+        SaveGraphicsManager sgm = SaveGraphicsManager.getInstance();
         CmdSaveGraphics cmd = null;
-        
+
         cmd = sgm.getSaveCommandBySuffix(suffix);
         if (cmd == null) {
             return false;
         }
-        
+
         if (useUI) {
             ProjectBrowser.getInstance().showStatus(
                             "Writing " + theFile + "...");
         }
 	if (theFile.exists() && useUI) {
 	    int response = JOptionPane.showConfirmDialog(
-                ProjectBrowser.getInstance(), 
-                Translator.messageFormat("optionpane.confirm-overwrite", 
-                        new Object[] {theFile}), 
-                Translator.localize("optionpane.confirm-overwrite-title"), 
+                ProjectBrowser.getInstance(),
+                Translator.messageFormat("optionpane.confirm-overwrite",
+                        new Object[] {theFile}),
+                Translator.localize("optionpane.confirm-overwrite-title"),
                 JOptionPane.YES_NO_OPTION);
 	    if (response != JOptionPane.YES_OPTION) {
 		return false;

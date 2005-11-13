@@ -58,7 +58,7 @@ public class FigActionState extends FigStateVertex {
     // instance variables
 
     private FigRRect cover;
-    
+
     private NotationProvider4 notationProvider;
 
     ////////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ public class FigActionState extends FigStateVertex {
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isAActionState(own)) {
-            notationProvider = 
+            notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                     NotationProviderFactory2.TYPE_ACTIONSTATE, this, own);
         }
@@ -228,7 +228,8 @@ public class FigActionState extends FigStateVertex {
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (mee instanceof AddAssociationEvent||mee instanceof AttributeChangeEvent) {
+        if (mee instanceof AddAssociationEvent
+                || mee instanceof AttributeChangeEvent) {
             if (mee.getSource() == getOwner()
                 && mee.getPropertyName().equals("entry")) {
                 if (mee.getNewValue() != null) {
@@ -247,11 +248,12 @@ public class FigActionState extends FigStateVertex {
                 }
             }
         } else if (mee instanceof RemoveAssociationEvent) {
-            if (mee.getOldValue() != null&& mee.getPropertyName().equals("entry")) {
+            if (mee.getOldValue() != null
+                    && mee.getPropertyName().equals("entry")) {
                 Model.getPump().removeModelEventListener(this,
                         mee.getOldValue(), "script");
                 updateNameText();
-                damage();            
+                damage();
             }
         }
     }
@@ -261,7 +263,7 @@ public class FigActionState extends FigStateVertex {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        if(notationProvider != null) { 
+        if (notationProvider != null) {
             getNameFig().setText(notationProvider.toString());
         }
     }
@@ -273,7 +275,7 @@ public class FigActionState extends FigStateVertex {
     protected void textEdited(FigText ft) throws PropertyVetoException {
         ft.setText(notationProvider.parse(ft.getText()));
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
@@ -282,5 +284,9 @@ public class FigActionState extends FigStateVertex {
             showHelp(notationProvider.getParsingHelp());
         }
     }
-    
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -3526461404860044420L;
 } /* end class FigActionState */

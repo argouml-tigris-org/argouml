@@ -69,13 +69,13 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class FigClassifierRole extends FigNodeModelElement
     implements MouseListener, HandlerFactory {
-    
+
     /**
      * Logger.
      */
     private static final Logger LOG =
         Logger.getLogger(FigClassifierRole.class);
-    
+
     /**
      * The width of an activation box.
      */
@@ -250,7 +250,7 @@ public class FigClassifierRole extends FigNodeModelElement
         fmp.setOwner(owner);
         addFig(fmp);
         updateNodeStates();
-        
+
         return fmp;
     }
 
@@ -264,7 +264,7 @@ public class FigClassifierRole extends FigNodeModelElement
         }
         return linkPositions.size() + ":" + portCount;
     }
-    
+
     /**
      * Connect a FigMessagePort with a MessageNode by position.
      */
@@ -450,7 +450,7 @@ public class FigClassifierRole extends FigNodeModelElement
             MessageNode node = (MessageNode) linkPositions.get(i);
             if (node.getFigMessagePort() != null) {
                 break;
-            } 
+            }
             node.setState(newState);
         }
     }
@@ -772,8 +772,8 @@ public class FigClassifierRole extends FigNodeModelElement
     // HandlerFactory implementation
     /**
      * @see org.tigris.gef.persistence.pgml.HandlerFactory#getHandler(
-     * org.tigris.gef.persistence.pgml.HandlerStack, java.lang.Object, 
-     * java.lang.String, java.lang.String, java.lang.String, 
+     * org.tigris.gef.persistence.pgml.HandlerStack, java.lang.Object,
+     * java.lang.String, java.lang.String, java.lang.String,
      * org.xml.sax.Attributes)
      */
     public DefaultHandler getHandler(HandlerStack stack,
@@ -1197,20 +1197,20 @@ public class FigClassifierRole extends FigNodeModelElement
         if (messageNode == null) {
             return null;
         }
-        
+
         if (Model.getFacade().isAClassifierRole(messageNode)) {
             LOG.warn("Got a ClassifierRole - only legal on load");
             return null;
         }
-        
+
         if (!(messageNode instanceof MessageNode)) {
             throw new IllegalArgumentException(
                     "Expecting a MessageNode but got a "
                     + messageNode.getClass().getName());
         }
-  
+
         setMatchingFig((MessageNode) messageNode);
-         
+
         if (((MessageNode) messageNode).getFigMessagePort() != null) {
             return ((MessageNode) messageNode).getFigMessagePort();
         }
@@ -1244,7 +1244,7 @@ public class FigClassifierRole extends FigNodeModelElement
 
     /**
      * Adds a node at the given position.
-     * 
+     *
      * @param position the position in which the node will be added
      * @param node the node to be added
      */
@@ -1271,18 +1271,19 @@ public class FigClassifierRole extends FigNodeModelElement
 
     /**
      * Gets a node that has the given position (creates new nodes if needed).
-     * 
+     *
      * @param position the position of the resulting node
      *
      * @return the node with the given position
      */
     public MessageNode getNode(int position) {
         if (position < linkPositions.size()) {
-            return (MessageNode)linkPositions.get(position);
+            return (MessageNode) linkPositions.get(position);
         }
         MessageNode node = null;
         for (int cnt = position - linkPositions.size(); cnt >= 0; cnt--) {
-            linkPositions.add(node = new MessageNode(this));
+            node = new MessageNode(this);
+            linkPositions.add(node);
         }
         calcBounds();
         return node;
@@ -1297,7 +1298,7 @@ public class FigClassifierRole extends FigNodeModelElement
     public Selection makeSelection() {
         return new SelectionClassifierRole(this);
     }
-    
+
     static class TempFig extends FigLine {
         TempFig(Object owner, int x, int y, int x2) {
             super(x, y, x2, y);
@@ -1347,4 +1348,9 @@ public class FigClassifierRole extends FigNodeModelElement
             return result;
         }
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 7763573563940441408L;
 }

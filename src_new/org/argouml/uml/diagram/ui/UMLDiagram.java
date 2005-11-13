@@ -406,7 +406,7 @@ public abstract class UMLDiagram
 
     protected void manageDefault(Object[] actions, String key) {
         Action defaultAction = null;
-        ConfigurationKey k = 
+        ConfigurationKey k =
             Configuration.makeKey("default", "popupactions", key);
         String defaultName = Configuration.getString(k);
         PopupActionsListener listener = new PopupActionsListener(k);
@@ -428,36 +428,36 @@ public abstract class UMLDiagram
                 }
             }
         }
-        
+
         if (defaultAction != null) {
             defaultAction.putValue("isDefault", Boolean.valueOf(true));
         }
     }
-    
+
     class PopupActionsListener implements PropertyChangeListener {
         private boolean blockEvents = false;
         private ConfigurationKey key;
-        
+
         public PopupActionsListener(ConfigurationKey k) {
             key = k;
         }
-        
+
         public void propertyChange(PropertyChangeEvent evt) {
             if (evt.getSource() instanceof Action) {
-                Action a = (Action) evt.getSource(); 
+                Action a = (Action) evt.getSource();
                 if (!blockEvents && evt.getPropertyName().equals("popped")) {
                     blockEvents = true;
-                    /* Switch the value back off, so that we will 
+                    /* Switch the value back off, so that we will
                      * get notified again next time. */
                     a.putValue("popped", Boolean.valueOf(false));
                     blockEvents = false;
-                    Configuration.setString(key, 
+                    Configuration.setString(key,
                             (String) a.getValue(Action.NAME));
                 }
             }
         }
     }
-    
+
     /**
      * This diagram listens to events from its namespace ModelElement;
      * when the modelelement is removed, we also want to delete this
@@ -680,7 +680,7 @@ public abstract class UMLDiagram
      * @return true if the diagram needs to be removed
      */
     public boolean needsToBeRemoved() {
-        return namespace == null 
+        return namespace == null
                 || Model.getUmlFactory().isRemoved(namespace)
                 || getOwner() == null
                 || Model.getUmlFactory().isRemoved(getOwner());
@@ -699,7 +699,7 @@ public abstract class UMLDiagram
     public Object getDependentElement() {
         return null;
     }
-    
+
     /* (non-Javadoc)
      * @see org.argouml.uml.diagram.ui.Relocatable#isRelocationAllowed(java.lang.Object)
      */
@@ -709,6 +709,6 @@ public abstract class UMLDiagram
      * @see org.argouml.uml.diagram.ui.Relocatable#relocate(java.lang.Object)
      */
     public abstract boolean relocate(Object base);
-    
+
 } /* end class UMLDiagram */
 

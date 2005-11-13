@@ -95,7 +95,7 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
         addField(Translator.localize("label.subvertex"),
                 new JScrollPane(subverticesList));
     }
-    
+
     /**
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex#addExtraButtons()
      */

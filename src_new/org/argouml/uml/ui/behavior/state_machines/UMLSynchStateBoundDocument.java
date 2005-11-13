@@ -32,7 +32,7 @@ import javax.swing.text.BadLocationException;
 
 /**
  * The Document/model for the bound of a synch state.
- * 
+ *
  * @author pepargouml@yahoo.es
  */
 public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
@@ -67,7 +67,7 @@ public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
     }
 
     /**
-     * @see javax.swing.text.Document#insertString(int, java.lang.String, 
+     * @see javax.swing.text.Document#insertString(int, java.lang.String,
      * javax.swing.text.AttributeSet)
      */
     public void insertString(int offset, String str, AttributeSet a)

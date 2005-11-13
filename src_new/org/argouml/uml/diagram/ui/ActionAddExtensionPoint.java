@@ -137,7 +137,7 @@ public final class ActionAddExtensionPoint extends UMLAction {
     public boolean shouldBeEnabled() {
 	Object target = TargetManager.getInstance().getModelTarget();
 
-	return super.shouldBeEnabled() 
+	return super.shouldBeEnabled()
                 && (Model.getFacade().isAUseCase(target));
     }
 

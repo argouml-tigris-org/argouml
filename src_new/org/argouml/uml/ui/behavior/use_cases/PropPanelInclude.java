@@ -51,8 +51,8 @@ public class PropPanelInclude extends PropPanelModelElement {
      * Constructor. Builds up the various fields required.
      */
     public PropPanelInclude() {
-        super("Include", 
-                lookupIcon("Include"), 
+        super("Include",
+                lookupIcon("Include"),
                 ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),

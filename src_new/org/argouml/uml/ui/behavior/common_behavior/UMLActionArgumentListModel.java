@@ -8,11 +8,11 @@ public class UMLActionArgumentListModel extends UMLModelElementListModel2 {
     public UMLActionArgumentListModel() {
         super("arguments");
     }
-    
+
     protected void buildModelList() {
         if (getTarget() != null) {
             setAllElements(Model.getFacade().getActualArguments(getTarget()));
-        }        
+        }
     }
 
     protected boolean isValidElement(Object element) {

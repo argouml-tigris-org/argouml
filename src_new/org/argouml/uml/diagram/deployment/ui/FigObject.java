@@ -97,7 +97,7 @@ public class FigObject extends FigNodeModelElement {
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isAObject(own)) {
-            notationProvider = 
+            notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                     NotationProviderFactory2.TYPE_OBJECT, this, own);
         }
@@ -279,6 +279,9 @@ public class FigObject extends FigNodeModelElement {
 
     }
 
+    /**
+     * The UID.
+     */
     static final long serialVersionUID = -185736690375678962L;
 
     /**

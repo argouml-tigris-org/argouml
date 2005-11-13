@@ -50,7 +50,6 @@ public class CrReservedName extends CrUML {
     private static Vector umlReserved = new Vector();
     private static Vector javaReserved = new Vector();
 
-
     static {
 	umlReserved.addElement("none");
 	umlReserved.addElement("interface");
@@ -60,6 +59,9 @@ public class CrReservedName extends CrUML {
 	umlReserved.addElement("frozen");
 	umlReserved.addElement("aggregate");
 	umlReserved.addElement("composite");
+    }
+
+    static {
 	umlReserved.addElement("becomes");
 	umlReserved.addElement("call");
 	umlReserved.addElement("component");
@@ -70,6 +72,9 @@ public class CrReservedName extends CrUML {
 	//_umlReserved.addElement("document");
 	umlReserved.addElement("enumeration");
 	umlReserved.addElement("extends");
+    }
+
+    static {
 	umlReserved.addElement("facade");
 	//_umlReserved.addElement("file");
 	umlReserved.addElement("framework");
@@ -94,6 +99,9 @@ public class CrReservedName extends CrUML {
 	umlReserved.addElement("table");
 	umlReserved.addElement("thread");
 	umlReserved.addElement("type");
+    }
+
+    static {
 	umlReserved.addElement("useCaseModel");
 	umlReserved.addElement("uses");
 	umlReserved.addElement("utility");
@@ -109,7 +117,9 @@ public class CrReservedName extends CrUML {
 	//     _umlReserved.addElement("fork");
 	//     _umlReserved.addElement("join");
 	//     _umlReserved.addElement("history");
+    }
 
+    static {
 	javaReserved.addElement("public");
 	javaReserved.addElement("private");
 	javaReserved.addElement("protected");
@@ -134,6 +144,9 @@ public class CrReservedName extends CrUML {
 	javaReserved.addElement("Vector");
 	javaReserved.addElement("Hashtable");
 	javaReserved.addElement("Properties");
+    }
+
+    static {
 	javaReserved.addElement("null");
 	javaReserved.addElement("true");
 	javaReserved.addElement("false");
@@ -154,6 +167,9 @@ public class CrReservedName extends CrUML {
 	javaReserved.addElement("catch");
 	javaReserved.addElement("finally");
 	javaReserved.addElement("new");
+    }
+
+    static {
 	javaReserved.addElement("synchronized");
 	javaReserved.addElement("static");
 	javaReserved.addElement("final");
@@ -182,7 +198,7 @@ public class CrReservedName extends CrUML {
 
 
     ////////////////////////////////////////////////////////////////
-    /** 
+    /**
      * Constructor.
      */
     public CrReservedName() {
@@ -202,27 +218,39 @@ public class CrReservedName extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isPrimaryObject(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isPrimaryObject(dm))) {
+            return NO_PROBLEM;
+        }
 
-        if (!(Model.getFacade().isAModelElement(dm))) return NO_PROBLEM;
+        if (!(Model.getFacade().isAModelElement(dm))) {
+            return NO_PROBLEM;
+        }
         String meName = Model.getFacade().getName(dm);
-        if (meName == null || meName.equals("")) return NO_PROBLEM;
+        if (meName == null || meName.equals("")) {
+            return NO_PROBLEM;
+        }
         String nameStr = meName;
-        if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
+        if (nameStr == null || nameStr.length() == 0) {
+            return NO_PROBLEM;
+        }
 
-	if (isBuiltin(nameStr))
-	    return NO_PROBLEM;
+	if (isBuiltin(nameStr)) {
+            return NO_PROBLEM;
+        }
 
         Enumeration names = umlReserved.elements();
         while (names.hasMoreElements()) {
             String word = (String) names.nextElement();
-            if (word.equalsIgnoreCase(nameStr)) return PROBLEM_FOUND;
+            if (word.equalsIgnoreCase(nameStr)) {
+                return PROBLEM_FOUND;
+            }
         }
 
         return NO_PROBLEM;
     }
 
-    /** Dont critique the built-in java types, they are supposed to
+    /**
+     * Dont critique the built-in java types, they are supposed to
      * have those "reserved" names.
      *
      * @param name The name of the type to test.
@@ -247,7 +275,7 @@ public class CrReservedName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    String sug = 
+	    String sug =
 	        Model.getFacade().getName(item.getOffenders().elementAt(0));
 	    String ins = "Change the name to something different.";
 	    ((WizMEName) w).setInstructions(ins);
@@ -261,5 +289,9 @@ public class CrReservedName extends CrUML {
      */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5839267391209851505L;
 } /* end class CrReservedName */
 

@@ -46,27 +46,27 @@ import org.tigris.gef.ui.ColorRenderer;
  * shadow width.
  *
  */
-public class StylePanelFigNodeModelElement extends StylePanelFig implements
-        ItemListener, FocusListener, KeyListener {
+public class StylePanelFigNodeModelElement
+    extends StylePanelFig
+    implements ItemListener, FocusListener, KeyListener {
 
     /**
      * Flag to indicate that a refresh is going on.
      */
-    private boolean refreshTransaction = false;
-        
-    private JLabel shadowLabel = new JLabel(Translator
-            .localize("label.stylepane.shadow")
-            + ": ");
+    private boolean refreshTransaction;
+
+    private JLabel shadowLabel =
+        new JLabel(Translator.localize("label.stylepane.shadow") + ": ");
 
     /* TODO: i18n */
     private JLabel displayLabel = new JLabel("Display: ");
 
     private JCheckBox pathCheckBox = new JCheckBox("Path");
-    
+
     private JComboBox shadowField = new ShadowComboBox();
 
     private JPanel displayPane;
-    
+
     /**
      * The constructor.
      *
@@ -81,26 +81,26 @@ public class StylePanelFigNodeModelElement extends StylePanelFig implements
         shadowLabel.setLabelFor(shadowField);
         add(shadowLabel);
         add(shadowField);
-        
+
         displayPane = new JPanel();
         displayPane.setLayout(new FlowLayout(FlowLayout.LEFT));
         addToDisplayPane(pathCheckBox);
-        
+
         displayLabel.setLabelFor(displayPane);
         add(displayPane, 0); // add in front of the others
         add(displayLabel, 0); // add the label in front of the "pane"
-        
+
         //This instead of the label ???
         //displayPane.setBorder(new TitledBorder(
         //    Translator.localize("Display: ")));
-        
+
         pathCheckBox.addItemListener(this);
     }
 
     public void addToDisplayPane(JCheckBox cb) {
         displayPane.add(cb);
     }
-    
+
     /**
      * @see org.argouml.ui.TabTarget#refresh()
      */
@@ -111,12 +111,12 @@ public class StylePanelFigNodeModelElement extends StylePanelFig implements
         PathContainer pc = (PathContainer) getPanelTarget();
         pathCheckBox.setSelected(pc.isPathVisible());
         refreshTransaction = false;
-        
+
         // Change the shadow size if appropriate
         if (getPanelTarget() instanceof FigNodeModelElement) {
 
-            int shadowSize = ((FigNodeModelElement)
-                    getPanelTarget()).getShadowSize();
+            int shadowSize =
+                ((FigNodeModelElement) getPanelTarget()).getShadowSize();
 
             if (shadowSize > 0) {
                 shadowField.setSelectedIndex(shadowSize);
@@ -134,8 +134,9 @@ public class StylePanelFigNodeModelElement extends StylePanelFig implements
     public void setTargetShadow() {
         int i = shadowField.getSelectedIndex();
         if (getPanelTarget() == null
-                || !(getPanelTarget() instanceof FigNodeModelElement))
+                || !(getPanelTarget() instanceof FigNodeModelElement)) {
             return;
+        }
         FigNodeModelElement nodeTarget = (FigNodeModelElement) getPanelTarget();
         int oldShadowSize = nodeTarget.getShadowSize();
         nodeTarget.setShadowSize(i);
@@ -158,9 +159,14 @@ public class StylePanelFigNodeModelElement extends StylePanelFig implements
                 pc.setPathVisible(pathCheckBox.isSelected());
                 ProjectManager.getManager().setNeedsSave(true);
             } else {
-                super.itemStateChanged(e);        
+                super.itemStateChanged(e);
             }
         }
     }
 
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2976511918225030560L;
 } /* end class StylePanelFigNodeModelElement */

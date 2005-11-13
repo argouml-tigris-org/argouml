@@ -42,11 +42,11 @@ public class FigCommentPort extends FigNodeModelElement {
         bigPort = new FigCircle(0, 0, 10, 10, Color.black, Color.white);
         addFig(bigPort);
     }
-    
+
     public boolean hit(Rectangle r) {
         return false;
     }
-    
+
     /**
      * @deprecated in 0.11.1 use org.tigris.gef.persistence.pgml.PgmlUtility.getClassNameAndBounds(Fig)
      */
@@ -54,21 +54,21 @@ public class FigCommentPort extends FigNodeModelElement {
     public String classNameAndBounds() {
         return getClass().getName() + "[" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + "]";
     }
-    
+
     public Object hitPort(int x, int y) {
         return null;
     }
-    
+
     public Fig hitFig(Rectangle r) {
         return null;
     }
-    
+
     public boolean isSelectable() {
         return false;
     }
-    
+
     public Fig getPortFig(Object port) {
         return bigPort;
     }
-    
+
 }

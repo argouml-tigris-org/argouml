@@ -299,7 +299,7 @@ public class NSUMLModelFacade implements Facade {
     public boolean isAAggregationKind(Object handle) {
         return handle instanceof MAggregationKind;
     }
-    
+
     /**
      * @see org.argouml.model.Facade#isAArgument(java.lang.Object)
      */
@@ -1276,7 +1276,7 @@ public class NSUMLModelFacade implements Facade {
     public boolean isATaggedValue(Object handle) {
         return handle instanceof MTaggedValue;
     }
-    
+
     /**
      * @see org.argouml.model.Facade#isATerminateAction(java.lang.Object)
      */
@@ -1310,7 +1310,7 @@ public class NSUMLModelFacade implements Facade {
     public boolean isAUninterpretedAction(Object handle) {
         return handle instanceof MUninterpretedAction;
     }
-    
+
     /**
      * Recognizer for Usage.
      *
@@ -2279,7 +2279,7 @@ public class NSUMLModelFacade implements Facade {
     }
 
     /**
-     * Get the Expression belonging to an Argument, Guard, ChangeEvent 
+     * Get the Expression belonging to an Argument, Guard, ChangeEvent
      * or timeEvent.
      *
      * @param handle the Object to get the Expression from
@@ -3263,7 +3263,7 @@ public class NSUMLModelFacade implements Facade {
         // ...
 	return illegalArgumentCollection(handle);
     }
-    
+
     /**
      * Get the list of Link Ends connected to this link end.
      *
@@ -4505,8 +4505,8 @@ public class NSUMLModelFacade implements Facade {
         //
 	return illegalArgumentObject(handle);
     }
-    
-    /** 
+
+    /**
      * @see org.argouml.model.Facade#getWhen(java.lang.Object)
      */
     public Object getWhen(Object target) {
@@ -4722,7 +4722,7 @@ public class NSUMLModelFacade implements Facade {
 	illegalArgument(arg1, arg2);
 	return null;
     }
-    
+
     /**
      * @see org.argouml.model.Facade#getTipString(java.lang.Object)
      */
@@ -4746,7 +4746,7 @@ public class NSUMLModelFacade implements Facade {
     public boolean isATagDefinition(Object handle) {
         return false;
     }
-    
+
     /**
      * Not implemented in the UML 1.3 metamodel.
      * @see org.argouml.model.Facade#isAEnumeration(java.lang.Object)
@@ -4788,5 +4788,5 @@ public class NSUMLModelFacade implements Facade {
             return illegalArgumentList(handle);
         }
     }
-	
+
 }

@@ -48,42 +48,42 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.Util;
 
 
-/** 
- * Wraps a CmdSaveGIF or CmdSave(E)PS to allow selection of an output file. 
+/**
+ * Wraps a CmdSaveGIF or CmdSave(E)PS to allow selection of an output file.
  * Introduced thanks to issue 2126. Saves diagrams only as GIFs. <p>
- * 
+ *
  * TODO: Add a user choice for other formats (PNG, SVG,...)
- *  
+ *
  * @author Leonardo Souza Mario Bueno (lsbueno@tigris.org)
  */
 
 public class ActionSaveAllGraphics extends UMLAction {
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(ActionSaveAllGraphics.class);
-    
-    
+
+
     ////////////////////////////////////////////////////////////////
     // constructors
-    
+
     /**
      * The constructor.
-     * 
+     *
      */
     public ActionSaveAllGraphics() {
 	super( "action.save-all-graphics", NO_ICON);
     }
-    
-    
+
+
     ////////////////////////////////////////////////////////////////
     // main methods
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed( ActionEvent ae ) {
 	trySave( false );
     }
-    
+
     /**
      * @param overwrite true if we can overwrite without asking
      * @return success
@@ -107,7 +107,7 @@ public class ActionSaveAllGraphics extends UMLAction {
 	}
 	tm.setTarget(activeDiagram);
 	return okSoFar;
-    }	
+    }
 
     /**
      * @param overwrite true if we can overwrite without asking
@@ -115,7 +115,7 @@ public class ActionSaveAllGraphics extends UMLAction {
      * @param saveDir the directory to save to
      * @return success
      */
-    protected boolean trySaveDiagram(boolean overwrite, Object target, 
+    protected boolean trySaveDiagram(boolean overwrite, Object target,
             File saveDir) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	if ( target instanceof Diagram ) {
@@ -151,7 +151,7 @@ public class ActionSaveAllGraphics extends UMLAction {
 	}
 	return false;
     }
-    
+
 
     /**
      * @param p the current project
@@ -170,7 +170,7 @@ public class ActionSaveAllGraphics extends UMLAction {
         int retval = chooser.showSaveDialog( pb );
 
         if ( retval == JFileChooser.APPROVE_OPTION ) {
-            File theFile = chooser.getSelectedFile(); 
+            File theFile = chooser.getSelectedFile();
             String path = theFile.getPath();
             Configuration.setString(
                     SaveGraphicsManager.KEY_SAVEALL_GRAPHICS_PATH,
@@ -180,15 +180,15 @@ public class ActionSaveAllGraphics extends UMLAction {
         return null;
     }
 
-    private boolean saveGraphicsToFile(File theFile, CmdSaveGraphics cmd, 
+    private boolean saveGraphicsToFile(File theFile, CmdSaveGraphics cmd,
             boolean overwrite) throws IOException {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	if ( theFile.exists() && !overwrite ) {
 	    int response =
-		JOptionPane.showConfirmDialog(pb, 
-                    Translator.messageFormat("optionpane.confirm-overwrite", 
-                            new Object[] {theFile}), 
-                    Translator.localize("optionpane.confirm-overwrite-title"), 
+		JOptionPane.showConfirmDialog(pb,
+                    Translator.messageFormat("optionpane.confirm-overwrite",
+                            new Object[] {theFile}),
+                    Translator.localize("optionpane.confirm-overwrite-title"),
                     JOptionPane.YES_NO_OPTION);
 	    if (response == JOptionPane.NO_OPTION) return false;
 	}
@@ -206,11 +206,11 @@ public class ActionSaveAllGraphics extends UMLAction {
 	}
 	return true;
     }
-    
+
     private JFileChooser getFileChooser(Project p) {
 	JFileChooser chooser = null;
 	try {
-	    if ( p != null && p.getURL() != null 
+	    if ( p != null && p.getURL() != null
                     && p.getURL().getFile().length() > 0 ) {
 		String filename = p.getURL().getFile();
 		if ( !filename.startsWith( "/FILE1/+/" ) )
@@ -221,7 +221,7 @@ public class ActionSaveAllGraphics extends UMLAction {
 	catch ( Exception ex ) {
 	    LOG.error("exception in opening JFileChooser", ex);
 	}
-	
+
 	if ( chooser == null ) chooser = new JFileChooser();
 	chooser.setDialogTitle(
                 Translator.localize("filechooser.save-all-graphics"));
@@ -231,4 +231,4 @@ public class ActionSaveAllGraphics extends UMLAction {
 	return chooser;
     }
 
-} /* end class ActionSaveAllGraphics */ 
+} /* end class ActionSaveAllGraphics */

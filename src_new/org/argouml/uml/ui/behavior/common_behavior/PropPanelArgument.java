@@ -62,6 +62,6 @@ public class PropPanelArgument extends PropPanelModelElement {
 
         addAction(new ActionNavigateAction());
         addAction(new ActionDeleteSingleModelElement());
-        
+
     }
 }

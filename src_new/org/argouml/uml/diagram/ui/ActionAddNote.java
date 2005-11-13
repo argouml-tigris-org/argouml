@@ -47,7 +47,7 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 
 /**
- * Action to add a note aka comment. This action adds a Comment to 0..* 
+ * Action to add a note aka comment. This action adds a Comment to 0..*
  * modelelements.
  */
 public class ActionAddNote extends UMLAction {
@@ -74,17 +74,17 @@ public class ActionAddNote extends UMLAction {
         }
         return false;
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
         Collection targets = TargetManager.getInstance().getModelTargets();
-        
+
         //Let's build the comment first, unlinked.
         Diagram diagram = ProjectManager.getManager().getCurrentProject()
             .getActiveDiagram();
-        Object comment = Model.getCoreFactory().buildComment(null, 
+        Object comment = Model.getCoreFactory().buildComment(null,
                 ((UMLDiagram) diagram).getNamespace());
 
         //Now, we link it to the modelelements which are represented by FigNode
@@ -107,7 +107,7 @@ public class ActionAddNote extends UMLAction {
         //Create the Node Fig for the comment itself and draw it
         ((MutableGraphModel) diagram.getGraphModel()).addNode(comment);
         Fig noteFig = diagram.presentationFor(comment); // remember the fig for later
-        
+
         //Create the comment links and draw them
         MutableGraphModel mgm =
             (MutableGraphModel) Globals.curEditor().getGraphModel();
@@ -151,7 +151,7 @@ public class ActionAddNote extends UMLAction {
                 }
             }
         }
-        
+
         //Place the comment Fig on the nicest spot on the diagram
         noteFig.setLocation(x, y);
 

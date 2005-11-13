@@ -34,21 +34,20 @@ import javax.swing.border.EtchedBorder;
 import org.argouml.swingext.SpacerPanel;
 
 
-/** 
+/**
  * A non-modal wizard step that shows instructions and prompts
  * the user to enter a string.
  *
  * @see org.argouml.cognitive.critics.Critic
  * @see org.argouml.cognitive.ui.Wizard
  */
-
 public class WizStepTextField extends WizStep {
     private JTextArea instructions = new JTextArea();
     private JLabel label = new JLabel("Value:");
     private JTextField field = new JTextField(20);
 
     /**
-     * The constructor. Since this constructor does not set the necessary 
+     * The constructor. Since this constructor does not set the necessary
      * instructions, textfield label and default value, it is private.
      */
     private WizStepTextField() {
@@ -141,4 +140,8 @@ public class WizStepTextField extends WizStep {
      */
     public String getText() { return field.getText(); }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -4245718254267840545L;
 } /* end class WizStepTextField */

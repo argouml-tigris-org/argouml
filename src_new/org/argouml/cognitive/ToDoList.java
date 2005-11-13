@@ -529,9 +529,9 @@ public class ToDoList extends Observable implements Runnable, Serializable {
 
     /**
      * Add the given resolved critic to the list of resolved critics.
-     * 
+     *
      * @param rc the resolved critic
-     * @return <code>true</code> if successfully added; 
+     * @return <code>true</code> if successfully added;
      *         <code>false</code> otherwise
      */
     public boolean addResolvedCritic(ResolvedCritic rc) {
@@ -752,4 +752,8 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         return res.toString();
     }
 
+    /**
+     * The UID. 
+     */
+    private static final long serialVersionUID = -1288801672594900893L;
 } /* end class ToDoList */

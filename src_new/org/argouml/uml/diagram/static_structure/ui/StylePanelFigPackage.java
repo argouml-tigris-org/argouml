@@ -58,7 +58,7 @@ public class StylePanelFigPackage extends StylePanelFigNodeModelElement {
         addToDisplayPane(stereoCheckBox);
         stereoCheckBox.setSelected(false);
         stereoCheckBox.addItemListener(this);
-        
+
         addToDisplayPane(visibilityCheckBox);
         visibilityCheckBox.addItemListener(this);
     }

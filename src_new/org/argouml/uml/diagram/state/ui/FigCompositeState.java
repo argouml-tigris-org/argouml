@@ -58,7 +58,7 @@ public class FigCompositeState extends FigState {
     // constructors
 
     /**
-     * The main constructor
+     * The main constructor.
      *
      */
     public FigCompositeState() {
@@ -66,7 +66,8 @@ public class FigCompositeState extends FigState {
         setBigPort(new FigRRect(getInitialX() + 1, getInitialY() + 1,
 				getInitialWidth() - 2, getInitialHeight() - 2,
 				Color.cyan, Color.cyan));
-        cover = new FigRRect(getInitialX(), getInitialY(),
+        cover =
+            new FigRRect(getInitialX(), getInitialY(),
 			      getInitialWidth(), getInitialHeight(),
 			      Color.black, Color.white);
 
@@ -97,7 +98,8 @@ public class FigCompositeState extends FigState {
     }
 
     /**
-     * The constructor for when a new Fig is created for an existing UML elm
+     * The constructor for when a new Fig is created for an existing UML elm.
+     *
      * @param gm ignored
      * @param node the UML element
      */
@@ -137,11 +139,13 @@ public class FigCompositeState extends FigState {
         Dimension nameDim = getNameFig().getMinimumSize();
         Dimension internalDim = getInternal().getMinimumSize();
 
-        int h = SPACE_TOP + nameDim.height 
-            + SPACE_MIDDLE + internalDim.height 
+        int h =
+            SPACE_TOP + nameDim.height
+            + SPACE_MIDDLE + internalDim.height
             + SPACE_BOTTOM;
-        int w = Math.max(nameDim.width + 2 * MARGIN, 
-                internalDim.width + 2 * MARGIN);
+        int w =
+            Math.max(nameDim.width + 2 * MARGIN,
+                     internalDim.width + 2 * MARGIN);
         return new Dimension(w, h);
     }
 
@@ -152,14 +156,15 @@ public class FigCompositeState extends FigState {
         return true;
     }
 
-    /** 
+    /**
      * Override setBounds to keep shapes looking right.
-     *  
+     *
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
-        if (getNameFig() == null)
+        if (getNameFig() == null) {
             return;
+        }
 
         Rectangle oldBounds = getBounds();
         Dimension nameDim = getNameFig().getMinimumSize();
@@ -171,12 +176,12 @@ public class FigCompositeState extends FigState {
         if (getOwner() != null) {
             if (Model.getFacade().isConcurrent(getOwner())
                     && !regionsVector.isEmpty()
-                    && regionsVector.lastElement() 
+                    && regionsVector.lastElement()
                         instanceof FigConcurrentRegion) {
-                FigConcurrentRegion f = 
+                FigConcurrentRegion f =
                     ((FigConcurrentRegion) regionsVector.lastElement());
                 Rectangle regionBounds = f.getBounds();
-                if ((h - oldBounds.height + regionBounds.height) 
+                if ((h - oldBounds.height + regionBounds.height)
                         <= (f.getMinimumSize().height)) {
                     h = oldBounds.height;
                     y = oldBounds.y;
@@ -184,19 +189,19 @@ public class FigCompositeState extends FigState {
             }
         }
 
-        getNameFig().setBounds(x + MARGIN, 
-                y + SPACE_TOP, 
-                w - 2 * MARGIN, 
+        getNameFig().setBounds(x + MARGIN,
+                y + SPACE_TOP,
+                w - 2 * MARGIN,
                 nameDim.height);
-        divider.setShape(x, 
+        divider.setShape(x,
                 y + DIVIDER_Y + nameDim.height,
-                x + w - 1, 
+                x + w - 1,
                 y + DIVIDER_Y + nameDim.height);
 
         getInternal().setBounds(
-                x + MARGIN, 
+                x + MARGIN,
                 y + nameDim.height + SPACE_TOP + SPACE_MIDDLE,
-                w - 2 * MARGIN, 
+                w - 2 * MARGIN,
                 h - nameDim.height - SPACE_TOP - SPACE_MIDDLE - SPACE_BOTTOM);
 
         getBigPort().setBounds(x, y, w, h);
@@ -211,13 +216,13 @@ public class FigCompositeState extends FigState {
         if (getOwner() != null) {
             if (Model.getFacade().isConcurrent(getOwner())
                     && !regionsVector.isEmpty()
-                    && regionsVector.lastElement() 
+                    && regionsVector.lastElement()
                         instanceof FigConcurrentRegion) {
-                FigConcurrentRegion f = 
+                FigConcurrentRegion f =
                     ((FigConcurrentRegion) regionsVector.lastElement());
                 for (int i = 0; i < regionsVector.size() - 1; i++) {
                     ((FigConcurrentRegion) regionsVector.elementAt(i))
-                        .setBounds(x - oldBounds.x, y - oldBounds.y, 
+                        .setBounds(x - oldBounds.x, y - oldBounds.y,
                                 w - 6, true);
                 }
                 f.setBounds(x - oldBounds.x,
@@ -227,23 +232,25 @@ public class FigCompositeState extends FigState {
 
     }
 
-    /** 
-     * To resize only when a new concurrent region is added, 
+    /**
+     * To resize only when a new concurrent region is added,
      * changing the height.
-     * 
+     *
      * @param h the new height
      */
     public void setBounds(int h) {
-        if (getNameFig() == null)
+        if (getNameFig() == null) {
             return;
+        }
         Rectangle oldBounds = getBounds();
         Dimension nameDim = getNameFig().getMinimumSize();
         int x = oldBounds.x;
         int y = oldBounds.y;
         int w = oldBounds.width;
 
-        getInternal().setBounds(x + 2, y + nameDim.height + 4,
-			    w - 4, h - nameDim.height - 6);
+        getInternal().setBounds(
+                x + 2, y + nameDim.height + 4,
+                w - 4, h - nameDim.height - 6);
         getBigPort().setBounds(x, y, w, h);
         cover.setBounds(x, y, w, h);
 
@@ -380,4 +387,8 @@ public class FigCompositeState extends FigState {
         return 0;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8173637358029852407L;
 } /* end class FigCompositeState */

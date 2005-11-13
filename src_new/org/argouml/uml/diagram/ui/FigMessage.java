@@ -66,7 +66,7 @@ public class FigMessage extends FigNodeModelElement {
     private static final int EAST = 2;
     private static final int WEST = 3;
     private static final int NORTH = 4;
-    
+
     /**
      * The current arrow direction set to constants above.
      */
@@ -79,7 +79,7 @@ public class FigMessage extends FigNodeModelElement {
      * The main constructor
      */
     public FigMessage() {
-        setShadowSize(0); // Issue 2714. 
+        setShadowSize(0); // Issue 2714.
 	getNameFig().setLineWidth(0);
 	getNameFig().setReturnAction(FigText.END_EDITING);
 	getNameFig().setFilled(false);
@@ -264,21 +264,21 @@ public class FigMessage extends FigNodeModelElement {
         if (getNameFig() == null) {
             return;
         }
-        
+
         Rectangle oldBounds = getBounds();
-        
+
         Dimension nameMin = getNameFig().getMinimumSize();
-        
+
         int ht = 0;
-        
+
         if (nameMin.height > figPoly.getHeight())
             ht = (nameMin.height - figPoly.getHeight()) / 2;
-        
+
         getNameFig().setBounds(x, y, w - figPoly.getWidth(), nameMin.height);
         getBigPort().setBounds(x, y, w - figPoly.getWidth(), nameMin.height);
         figPoly.setBounds(x + getNameFig().getWidth(), y + ht,
         		   figPoly.getWidth(), figPoly.getHeight());
-        
+
         firePropChange("bounds", oldBounds, getBounds());
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
         updateEdges();
@@ -296,7 +296,7 @@ public class FigMessage extends FigNodeModelElement {
 		ProjectBrowser.getInstance().getStatusBar().showStatus("");
 	    } catch (ParseException pe) {
                 String msg = "statusmsg.bar.error.parsing.message";
-                Object[] args = {pe.getLocalizedMessage(), 
+                Object[] args = {pe.getLocalizedMessage(),
                     new Integer(pe.getErrorOffset())};
                 ProjectBrowser.getInstance().getStatusBar().showStatus(
                         Translator.messageFormat(msg, args));

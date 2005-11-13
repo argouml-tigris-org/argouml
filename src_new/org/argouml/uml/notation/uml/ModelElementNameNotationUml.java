@@ -39,11 +39,11 @@ import org.argouml.uml.notation.ModelElementNameNotation;
 import org.argouml.util.MyTokenizer;
 
 /**
- * Handles the notation of the name of a modelelement in UML, 
+ * Handles the notation of the name of a modelelement in UML,
  * ie a string on the format:<pre>
  *     [ &lt;&lt; stereotype &gt;&gt;] [+|-|#] [name]
  * </pre>
- * 
+ *
  * @author mvw@tigris.org
  */
 public class ModelElementNameNotationUml extends ModelElementNameNotation {
@@ -59,7 +59,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
      * Parses a model element, ie reads a string that contains
      * the stereotype, visibility and name,
      * and assigns the properties to the passed MModelElement.
-     *  
+     *
      * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
      */
     public String parse(String text) {
@@ -67,7 +67,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
             parseModelElement(myModelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.node-modelelement";
-            Object[] args = {pe.getLocalizedMessage(), 
+            Object[] args = {pe.getLocalizedMessage(),
                              new Integer(pe.getErrorOffset())};
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                 Translator.messageFormat(msg, args));
@@ -96,7 +96,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
     }
 
     /**
-     * 
+     *
      * @return a string which represents the path
      */
     protected String generatePath() {
@@ -114,21 +114,21 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
             while (!stack.isEmpty()) {
                 s += (String) stack.pop() + "::";
             }
-            
+
             if (s.length() > 0 && !s.endsWith(":")) {
                 s += "::";
             }
         }
         return s;
     }
-    
+
     protected String generateVisibility() {
         String s = "";
-        Boolean b = ((Boolean)this.getValue("visibilityVisible")); 
+        Boolean b = ((Boolean)this.getValue("visibilityVisible"));
         if (b != null && b.booleanValue()) {
             Object v = Model.getFacade().getVisibility(myModelElement);
             if (v == null) {
-                /* Initially, the visibility is not set in the model. 
+                /* Initially, the visibility is not set in the model.
                  * Still, we want to show the default, i.e. public.*/
                 v = Model.getVisibilityKind().getPublic();
             }
@@ -219,29 +219,29 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
 
         if (name != null && name.startsWith("+")) {
             name = name.substring(1).trim();
-            Model.getCoreHelper().setVisibility(me, 
+            Model.getCoreHelper().setVisibility(me,
                             Model.getVisibilityKind().getPublic());
         }
         if (name != null && name.startsWith("-")) {
             name = name.substring(1).trim();
-            Model.getCoreHelper().setVisibility(me, 
+            Model.getCoreHelper().setVisibility(me,
                             Model.getVisibilityKind().getPrivate());
         }
         if (name != null && name.startsWith("#")) {
             name = name.substring(1).trim();
-            Model.getCoreHelper().setVisibility(me, 
+            Model.getCoreHelper().setVisibility(me,
                             Model.getVisibilityKind().getProtected());
         }
-        
+
         if (name != null) {
             Model.getCoreHelper().setName(me, name);
         }
 
         if (stereotype != null) {
             stereotype = stereotype.trim();
-            
+
             //TODO: Make this here inline. Replace ParserDisplay!
-            Object stereo = 
+            Object stereo =
                 ParserDisplay.SINGLETON.getStereotype(me, stereotype);
 
             if (stereo != null) {

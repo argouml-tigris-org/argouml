@@ -42,11 +42,15 @@ import org.tigris.gef.presentation.Fig;
 public class ArgoDiagram extends Diagram {
 
     private ItemUID id;
-    
-    /**
-     * Hack to use vetocheck in constructing names.
-     */
-    private static ArgoDiagram theInstance = new ArgoDiagram();
+
+    static {
+        /**
+         * Hack to use vetocheck in constructing names.
+         *
+         * TODO: Is this needed?
+         */
+        new ArgoDiagram();
+    }
 
     /**
      * The constructor.
@@ -96,7 +100,9 @@ public class ArgoDiagram extends Diagram {
 
     ////////////////////////////////////////////////////////////////
     // event management
-
+    /**
+     * The UID.
+     */
     static final long serialVersionUID = -401219134410459387L;
 
     /**
