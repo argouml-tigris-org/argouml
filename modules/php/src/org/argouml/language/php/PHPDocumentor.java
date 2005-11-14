@@ -169,10 +169,6 @@ public final class PHPDocumentor {
      * Creates a new DocBlock for the given model element
      *
      * @param modelElement The model element to document.
-     *
-     * @return <code>true</code> on success;
-     *         <code>false</code> otherwise.
-     *
      * @throws Exception
      */
     private void create(Object modelElement) throws Exception {

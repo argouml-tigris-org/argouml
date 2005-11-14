@@ -29,7 +29,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -46,8 +45,9 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
 
     private JComponent stereotypeSelector;
 
-    private static UMLTagDefinitionStereotypeComboBoxModel
-    stereotypeComboBoxModel = new UMLTagDefinitionStereotypeComboBoxModel();
+    private static UMLTagDefinitionStereotypeComboBoxModel 
+        stereotypeComboBoxModel = 
+            new UMLTagDefinitionStereotypeComboBoxModel();
 
 
     /**
@@ -98,7 +98,8 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
             stereotypeSelector = new Box(BoxLayout.X_AXIS);
             stereotypeSelector.add(new UMLComboBoxNavigator(this,
                     Translator.localize("label.stereotype.navigate.tooltip"),
-                    new UMLComboBox2(stereotypeComboBoxModel,new ActionSetTagDefinitionOwner())
+                    new UMLComboBox2(stereotypeComboBoxModel,
+                            new ActionSetTagDefinitionOwner())
                     ));
         }
         return stereotypeSelector;

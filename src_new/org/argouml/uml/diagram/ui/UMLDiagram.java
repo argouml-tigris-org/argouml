@@ -700,12 +700,12 @@ public abstract class UMLDiagram
         return null;
     }
 
-    /* (non-Javadoc)
+    /*
      * @see org.argouml.uml.diagram.ui.Relocatable#isRelocationAllowed(java.lang.Object)
      */
     public abstract boolean isRelocationAllowed(Object base);
 
-    /* (non-Javadoc)
+    /*
      * @see org.argouml.uml.diagram.ui.Relocatable#relocate(java.lang.Object)
      */
     public abstract boolean relocate(Object base);
