@@ -169,9 +169,9 @@ public class ExplorerTree
                 myDoubleClick();
             }
         }
-
+        
         /**
-         * Double-clicking on an item attempts
+         * Double-clicking on an item attempts 
          * to show the item in a diagram.
          */
         private void myDoubleClick() {
@@ -190,20 +190,20 @@ public class ExplorerTree
          */
         public void showPopupMenu(MouseEvent me) {
 
-            TreePath path = getPathForLocation(me.getX(), me.getY());
-            if (path == null) {
+            TreePath path = getPathForLocation( me.getX(), me.getY() );
+            if ( path == null ) {
                 return;
             }
-
+            
             /*
              * We preserve the current (multiple) selection,
              * if we are over part of it ...
              */
-            if (!isPathSelected(path)) {
+            if ( !isPathSelected( path ) ) {
                 /* ... otherwise we select the item below the mousepointer. */
-                getSelectionModel().setSelectionPath(path);
+                getSelectionModel().setSelectionPath( path );
             }
-
+            
             Object selectedItem =
                 ((DefaultMutableTreeNode) path.getLastPathComponent())
                         .getUserObject();
@@ -221,8 +221,6 @@ public class ExplorerTree
      * appropriate text for any object that will be displayed in
      * the Nav pane.
      *
-     * @see javax.swing.JTree#convertValueToText(java.lang.Object,
-     * boolean, boolean, boolean, int, boolean)
      * @see javax.swing.JTree#convertValueToText(java.lang.Object, boolean, boolean, boolean, int, boolean)
      */
     public String convertValueToText(Object value,
@@ -247,9 +245,9 @@ public class ExplorerTree
             } else if (Model.getFacade().isAComment(value)) {
                 /*
                  * Changing the label in case of comments.
-                 * This is necessary in UML 1.3 since the name of the comment
-                 * is the same as the content of the comment (called "body"
-                 * in UML 1.4), causing the total comment to be
+             * This is necessary in UML 1.3 since the name of the comment 
+             * is the same as the content of the comment (called "body" 
+             * in UML 1.4), causing the total comment to be
                  * displayed in the perspective.
                  */
                 name = Model.getFacade().getName(value);
@@ -267,7 +265,7 @@ public class ExplorerTree
             }
 
             if (name == null || name.equals("")) {
-                name =
+                name = 
                     "(anon " + Model.getFacade().getUMLClassName(value) + ")";
             }
 
@@ -365,7 +363,7 @@ public class ExplorerTree
         setSelection(targets.toArray());
         updatingSelectionViaTreeSelection = false;
     }
-
+    
     /**
      * Sets the selection state for a given set of targets.
      */
@@ -376,7 +374,7 @@ public class ExplorerTree
         int rows = getRowCount();
         for (int i = 0; i < targets.length; i++) {
             Object target = targets[i];
-            if (target instanceof Fig) {
+            if(target instanceof Fig) {
                 target = ((Fig) target).getOwner();
             }
             for (int j = 0; j < rows; j++) {
@@ -389,7 +387,7 @@ public class ExplorerTree
             }
         }
         updatingSelectionViaTreeSelection = false;
-
+        
         if (this.getSelectionCount() > 0) {
             scrollRowToVisible(this.getSelectionRows()[0]);
         }
@@ -441,7 +439,7 @@ public class ExplorerTree
                 for (int i = 0; i < addedOrRemovedPaths.length; i++) {
                     Object element =
                         ((DefaultMutableTreeNode)
-                                addedOrRemovedPaths[i].getLastPathComponent())
+                            addedOrRemovedPaths[i].getLastPathComponent())
                             .getUserObject();
                     if (!e.isAddedPath(i)) {
                         callSetTarget = false;
@@ -462,7 +460,7 @@ public class ExplorerTree
                     for (int i = 0; i < addedOrRemovedPaths.length; i++) {
                         Object element =
                             ((DefaultMutableTreeNode)
-                                    addedOrRemovedPaths[i]
+                                addedOrRemovedPaths[i]
                                         .getLastPathComponent())
                                 .getUserObject();
                         if (e.isAddedPath(i)) {
@@ -522,13 +520,13 @@ public class ExplorerTree
                 int rows = getRowCount();
                 for (int i = 0; i < targets.length; i++) {
                     Object target = targets[i];
-                    if (target instanceof Fig) {
+                    if(target instanceof Fig) {
                         target = ((Fig) target).getOwner();
                     }
                     for (int j = 0; j < rows; j++) {
                         Object rowItem =
                             ((DefaultMutableTreeNode)
-                                    getPathForRow(j).getLastPathComponent())
+                            getPathForRow(j).getLastPathComponent())
                             .getUserObject();
                         if (rowItem == target) {
                             updatingSelectionViaTreeSelection = true;
@@ -559,13 +557,13 @@ public class ExplorerTree
                 int rows = getRowCount();
                 for (int i = 0; i < targets.length; i++) {
                     Object target = targets[i];
-                    if (target instanceof Fig) {
+                    if(target instanceof Fig) {
                         target = ((Fig) target).getOwner();
                     }
                     for (int j = 0; j < rows; j++) {
                         Object rowItem =
                             ((DefaultMutableTreeNode)
-                                    getPathForRow(j).getLastPathComponent())
+                            getPathForRow(j).getLastPathComponent())
                                 .getUserObject();
                         if (rowItem == target) {
                             updatingSelectionViaTreeSelection = true;

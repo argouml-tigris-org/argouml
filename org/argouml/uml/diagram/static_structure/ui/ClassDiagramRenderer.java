@@ -151,7 +151,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         FigEdgeModelElement newEdge = null;
         if (Model.getFacade().isAAssociationClass(edge)) {
             FigAssociationClass ascCFig = new FigAssociationClass(edge, lay);
-            //TODO check why we are returning early for an association class.
+            // TODO: check why we are returning early for an association class.
             return ascCFig;
         } else if (Model.getFacade().isAAssociationEnd(edge)) {
             FigAssociationEnd asend = new FigAssociationEnd(edge, lay);

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -21,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PathConvPercent.java
-// Classes: PathConvPercent
-// Original Author: abonner@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Point;
@@ -36,7 +32,10 @@ import org.tigris.gef.presentation.Fig;
 /**
  * Used to place labels as specific positions along a FigEdge. For example, a
  * label can be placed in the middle of a FigEdge by using 50%. This version
- * changes the behavior as it tries to avoid that the itemFig cuts through the pathFig.
+ * changes the behavior as it tries to avoid that the itemFig cuts through the
+ * pathFig.
+ * 
+ * @author abonner@ics.uci.edu
  */
 
 public class PathConvPercent2 extends PathConv {
@@ -47,7 +46,8 @@ public class PathConvPercent2 extends PathConv {
 
     private int offset = 0;
 
-    public PathConvPercent2(Fig theFig, Fig itemFig, int newPercent, int newOffset) {
+    public PathConvPercent2(Fig theFig, Fig itemFig, int newPercent,
+            int newOffset) {
         super(theFig);
         this.itemFig = itemFig;
         setPercentOffset(newPercent, newOffset);
