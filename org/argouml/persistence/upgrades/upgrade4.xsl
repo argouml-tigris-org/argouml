@@ -29,7 +29,7 @@ at the junction of the association edge and the dashed edge.
 		>
 			<xsl:copy-of select="./node()"/>
 		</group>
-        <group name="tee.{$fig-id}"
+        <group name="tee_{$fig-id}"
              description="org.argouml.uml.diagram.ui.FigAssociationClassTee[{$x - 9}, {$y - 3}, 10, 10]"
              href="{@href}"
              fill="{@fill}"
@@ -40,7 +40,7 @@ at the junction of the association edge and the dashed edge.
           <private>
           </private>
     
-          <ellipse name="tee.{$fig-id}.0"
+          <ellipse name="tee_{$fig-id}.0"
             x="{$x}"
             y="{$y}"
             rx="5"
@@ -65,8 +65,8 @@ at the junction of the association edge and the dashed edge.
 		<xsl:variable name="private" select="text()"/>
 		<xsl:variable name="destFigNode" select="substring(substring-after($private,'destFigNode='),2)"/>
       <private>
-          <xsl:value-of select="$private" />sourcePortFig="tee.<xsl:value-of select="$destFigNode" />
-          sourceFigNode="tee.<xsl:value-of select="$destFigNode" />
+          <xsl:value-of select="$private" />sourcePortFig="tee_<xsl:value-of select="$destFigNode" />
+          sourceFigNode="tee_<xsl:value-of select="$destFigNode" />
       </private>
 	
 			<xsl:apply-templates/>
