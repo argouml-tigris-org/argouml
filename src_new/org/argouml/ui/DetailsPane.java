@@ -591,7 +591,7 @@ public class DetailsPane
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        setTarget(TargetManager.getInstance().getSingleModelTarget());
+        setTarget(TargetManager.getInstance().getSingleTarget());
         fireTargetAdded(e);
     }
 
@@ -599,7 +599,7 @@ public class DetailsPane
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(TargetManager.getInstance().getSingleModelTarget());
+        setTarget(TargetManager.getInstance().getSingleTarget());
         fireTargetRemoved(e);
     }
 
@@ -607,7 +607,7 @@ public class DetailsPane
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(TargetManager.getInstance().getSingleModelTarget());
+        setTarget(TargetManager.getInstance().getSingleTarget());
         fireTargetSet(e);
     }
 

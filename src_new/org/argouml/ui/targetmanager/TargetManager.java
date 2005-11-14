@@ -707,6 +707,16 @@ public final class TargetManager {
     }
 
     /**
+     * If there is only one target, then it is returned.
+     * Otherwise null.
+     * 
+     * @return the one and only target
+     */
+    public synchronized Object getSingleTarget() {
+        return targets.size() == 1 ? targets.get(0) : null;
+    }
+    
+    /**
      * @return the target from the model
      */
     public synchronized Collection getModelTargets() {

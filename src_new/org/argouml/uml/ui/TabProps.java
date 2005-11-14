@@ -750,7 +750,7 @@ public class TabProps
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        setTarget(TargetManager.getInstance().getSingleModelTarget());
+        setTarget(TargetManager.getInstance().getSingleTarget());
         fireTargetAdded(e);
         if (listenerList.getListenerCount() > 0) {
             validate();
@@ -763,7 +763,7 @@ public class TabProps
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(TargetManager.getInstance().getSingleModelTarget());
+        setTarget(TargetManager.getInstance().getSingleTarget());
         fireTargetRemoved(e);
         validate();
         repaint();
@@ -773,7 +773,7 @@ public class TabProps
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(TargetManager.getInstance().getSingleModelTarget());
+        setTarget(TargetManager.getInstance().getSingleTarget());
         fireTargetSet(e);
         validate();
         repaint();
