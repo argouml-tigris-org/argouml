@@ -207,11 +207,20 @@ public class MessageNode extends Object {
     }
 
     public boolean canBeDestroyed() {
-        return figMessagePort == null
-            && (state == DONE_SOMETHING_NO_CALL
-                || state == CREATED
-                || state == CALLED || state == RETURNED
-                || state == IMPLICIT_RETURNED
-                || state == IMPLICIT_CREATED);
+        boolean destroyableNode=( figMessagePort == null 
+            && ( state == DONE_SOMETHING_NO_CALL
+                || state == CREATED 
+                || state == CALLED || state == RETURNED 
+                || state == IMPLICIT_RETURNED 
+                || state == IMPLICIT_CREATED));
+        if ( destroyableNode) {
+            for ( int i=ownerObject.getIndexOf( this)+1; 
+                destroyableNode && i<ownerObject.getNodeCount(); ++i) {
+                MessageNode node=ownerObject.getNode( i);
+                if ( node.getFigMessagePort()!=null)
+                    destroyableNode=false;
+            }
+        }
+        return destroyableNode;
     }
 }
