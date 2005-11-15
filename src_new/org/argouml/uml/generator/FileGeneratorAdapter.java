@@ -175,18 +175,23 @@ public class FileGeneratorAdapter implements CodeGenerator {
                     if (!f.isDirectory() && !f.getName().endsWith(".bak")) {
                         FileReader fr = new FileReader(f);
                         BufferedReader bfr = new BufferedReader(fr);
-                        StringBuffer result =
-                            new StringBuffer((int) f.length());
-                        String line = bfr.readLine();
-                        do {
-                            result.append(line);
-                            line = bfr.readLine();
-                            if (line != null) {
-                                result.append('\n');
-                            }
-                        } while (line != null);
-                        ret.add(new SourceUnit(f.toString().substring(prefix),
-                                result.toString()));
+                        try { 
+                            StringBuffer result =
+                                new StringBuffer((int) f.length());
+                            String line = bfr.readLine();
+                            do {
+                                result.append(line);
+                                line = bfr.readLine();
+                                if (line != null) {
+                                    result.append('\n');
+                                }
+                            } while (line != null);
+                            ret.add(new SourceUnit(f.toString().substring(
+                                    prefix), result.toString()));
+                        } finally {
+                            bfr.close();
+                            fr.close();
+                        }
                     }
                 }
 
