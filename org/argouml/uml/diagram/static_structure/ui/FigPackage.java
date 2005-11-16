@@ -430,7 +430,8 @@ public class FigPackage extends FigNodeModelElement
      *
      * Some of this has "magic numbers" hardcoded in. In particular there is
      * a knowledge that the minimum height of a name compartment is 21
-     * pixels.
+     * pixels. This height is needed to be able to display the "Clarifier"
+     * inside the name compartment.
      *
      * @param xa  Desired X coordinate of upper left corner
      *
