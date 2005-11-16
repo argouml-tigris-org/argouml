@@ -31,11 +31,14 @@ import java.awt.Font;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * A MultiLine FigText to provide consistency across Figs displaying multiple
- * lines of text.
+ * A SingleLine FigText to provide consistency across Figs displaying single
+ * lines of text.<ul>
  * <li>The display area is transparent</li>
  * <li>Text is center justified</li>
  * <li>There is no line border</li>
+ * <li>There is space below the line for a "Clarifier", 
+ * i.e. a red squiggly line.</li></ul>
+ * 
  * @author Bob Tarling
  */
 public class FigSingleLineText extends FigText {
