@@ -74,16 +74,11 @@ public interface UseCasesFactory {
     Object createUseCaseInstance();
 
     /**
-     * Build an extend relationship.<p>
-     *
-     * Set the namespace to the base (preferred) or else extension's
-     * namespace. We don't do any checking on base and extension. They
-     * should be different, but that is someone else's problem.<p>
-     *
+     * Build an extend relationship with a newly created extension point.
+     * Equivalent to calling 3 argument form with null as 3rd argument.<p>
+     * 
      * @param abase       The base use case for the relationship
-     *
      * @param anextension The extension use case for the relationship
-     *
      * @return            The new extend relationship or <code>null</code>
      *                    if it can't be created.
      */
@@ -91,12 +86,16 @@ public interface UseCasesFactory {
 
     /**
      * Build an extend relationship.<p>
-     *
-     * @param abase       The base use case for the relationship
-     * @param anextension The extension use case for the relationship
-     * @param apoint      The insertion point for the extension
-     * @return            The new extend relationship or <code>null</code>
-     *                    if it can't be created.
+     * 
+     * @param abase
+     *            The base use case for the relationship
+     * @param anextension
+     *            The extension use case for the relationship
+     * @param apoint
+     *            The extension point in the base for the extension. If null,
+     *            one is created.
+     * @return The new extend relationship or <code>null</code> if it can't be
+     *         created.
      */
     Object buildExtend(Object abase, Object anextension, Object apoint);
 
