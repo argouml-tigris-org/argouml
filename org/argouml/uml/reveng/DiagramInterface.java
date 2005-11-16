@@ -144,8 +144,8 @@ public class DiagramInterface {
             FigPackage newPackageFig = new FigPackage(currentGM, newPackage);
             if (currentGM.canAddNode(newPackage)) {
 
-                currentGM.addNode(newPackage);
                 currentLayer.add(newPackageFig);
+                currentGM.addNode(newPackage);
                 currentLayer.putInPosition(newPackageFig);
             }
         }
