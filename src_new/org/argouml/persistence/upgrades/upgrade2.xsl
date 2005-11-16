@@ -4,6 +4,25 @@
 	<xsl:output method="xml" indent="yes"/>
 	<xsl:preserve-space elements="uml"/>
 
+<!-- remove the contents old style sequence diagrams -->
+    <!-- First remove all pgml members -->
+	<xsl:template match='member[./@type = "pgml"]'>
+    </xsl:template>
+    
+    <!-- Then remove the sequence diagrams -->
+	<xsl:template match='pgml[starts-with(./@description, "org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram")]'>
+    </xsl:template>
+    
+    <!-- Now reintroduce pgml members based on new number of diagrams -->
+	<xsl:template match='member[./@type = "xmi"]'>
+        <member type="{@type}" name="{@name}"/>
+        <xsl:for-each select="/uml/pgml[starts-with(./@description, 'org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram')=false]">
+            <member type="pgml" name="diagram"/>
+        </xsl:for-each>
+    </xsl:template>
+
+
+    
 	<!-- convert the first group under a FigClass to a FigAttributesCompartment -->
 	<xsl:template match='group[starts-with(./@description, "org.argouml.uml.diagram.static_structure.ui.FigClass[")]/group[1]'>
 		
@@ -39,7 +58,7 @@
 
 
 	
-	<!-- convert the first (an presumably only) group under a FigInterface to a FigOperationsCompartment -->
+	<!-- convert the first (and presumably only) group under a FigInterface to a FigOperationsCompartment -->
 	<xsl:template match='group[starts-with(./@description, "org.argouml.uml.diagram.static_structure.ui.FigInterface[")]/group[1]'>
 		
 		<xsl:call-template name="compartment">
