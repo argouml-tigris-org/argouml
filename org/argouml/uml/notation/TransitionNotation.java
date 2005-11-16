@@ -46,13 +46,4 @@ public abstract class TransitionNotation extends ValueHandler {
         myTransition = transition;
     }
 
-    /**
-     * @see org.argouml.notation.NotationProvider4#putValue(java.lang.String, java.lang.Object)
-     */
-    public void putValue(String key, Object newValue) {
-        // TODO: Auto-generated method stub
-
-    }
-
-
 }
