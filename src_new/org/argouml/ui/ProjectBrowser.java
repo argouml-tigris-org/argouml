@@ -1231,7 +1231,7 @@ public final class ProjectBrowser
      * Open a Message Dialog with an error message.
      *
      * @param attemptingTo What we were doing when the error occured.
-     * @param message the message to display.
+     * @param message the message to display.  Only used in commandline mode.
      * @param showUI true if an error message may be shown to the user,
      *               false if run in commandline mode
      * @param ex The exception that was thrown.
@@ -1243,7 +1243,8 @@ public final class ProjectBrowser
                 new ExceptionDialog(
                         ProjectBrowser.getInstance(),
                         "An error occured attempting to " + attemptingTo,
-                        ex);
+                        ex, 
+                        true);
             dialog.setVisible(true);
         } else {
             StringWriter sw = new StringWriter();
