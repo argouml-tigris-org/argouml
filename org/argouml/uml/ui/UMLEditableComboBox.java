@@ -30,6 +30,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxEditor;
@@ -50,7 +52,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
-public abstract class UMLEditableComboBox extends UMLComboBox2 {
+public abstract class UMLEditableComboBox extends UMLComboBox2 implements FocusListener {
 
     /**
      * The comboboxeditor for editable uml comboboxes. This has to be changed
@@ -100,6 +102,7 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
                     add(imageIconLabel, BorderLayout.WEST);
                 }
                 add(theTextField, BorderLayout.CENTER);
+                theTextField.addFocusListener(UMLEditableComboBox.this);
             }
 
             public void setText(String text) {
@@ -256,6 +259,9 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * TODO: From ComboBox javadoc - "This method is public as an implementation side
+     * effect. do not call or override."
+     * We should find some other way to implement this.
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
@@ -281,4 +287,15 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
      */
     protected abstract void doOnEdit(Object item);
 
+    final public void focusGained(FocusEvent arg0) {
+    }
+
+    /**
+     * TODO: This is a temporary method of making sure the model is updated
+     * on loss of focus of a combo box. In the long term we should attempt to
+     * update the model on each keypress.
+     */
+    final public void focusLost(FocusEvent arg0) {
+        doOnEdit(getEditor().getItem());
+    }
 }
