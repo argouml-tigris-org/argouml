@@ -297,13 +297,15 @@ public class ZargoFilePersister extends UmlFilePersister {
 
             ZipEntry currentEntry = null;
             while ((currentEntry = sub.getNextEntry()) != null) {
-                if (currentEntry.getName().endsWith(".pgml")
-                        || currentEntry.getName().endsWith(".todo")) {
+                if (currentEntry.getName().endsWith(".pgml")) {
 
-                    reader =
-			new BufferedReader(
-				new InputStreamReader(sub, encoding));
-                    // Skip 2 lines
+                    reader = new BufferedReader(
+                        	new InputStreamReader(sub, encoding));
+                    // Skip the 2 lines
+                    //<?xml version="1.0" encoding="UTF-8" ?>
+                    //<!DOCTYPE pgml SYSTEM "pgml.dtd">
+                    // TODO: This could be made more robust, these 2 lines should be
+                    // there but what if they don't exist?
                     reader.readLine();
                     reader.readLine();
                     readerToWriter(reader, writer);
@@ -313,6 +315,24 @@ public class ZargoFilePersister extends UmlFilePersister {
             }
             zis.close();
 
+            // Alway load the todo items last so that any model
+            // elements or figs that the todo items refer to
+            // will exist before creating critics.
+            zis = openZipStreamAt(file.toURL(), ".todo");
+            reader = new BufferedReader(new InputStreamReader(zis, encoding));
+            // Skip the 2 lines
+            //<?xml version = "1.0" encoding = "UTF-8" ?>
+            //<!DOCTYPE todo SYSTEM "todo.dtd" >
+            // TODO: This could be made more robust, these 2 lines should be
+            // there but what if they don't exist?
+            reader.readLine();
+            reader.readLine();
+
+            readerToWriter(reader, writer);
+
+            zis.close();
+            reader.close();
+            
             writer.println("</uml>");
             writer.close();
             LOG.info("Complated combining files");
