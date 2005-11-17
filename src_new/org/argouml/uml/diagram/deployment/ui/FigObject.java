@@ -179,6 +179,8 @@ public class FigObject extends FigNodeModelElement {
 
         int w = nameMin.width + 10;
         int h = nameMin.height + 5;
+        
+        w = Math.max(60, w);
         return new Dimension(w, h);
     }
 

@@ -44,6 +44,9 @@ import org.tigris.gef.presentation.FigGroup;
 
 /**
  * Class to display graphics for a UML Class in a diagram.<p>
+ * 
+ * Note that the upper line of the name box will be blanked out 
+ * if there is eventually a stereotype above.
  */
 abstract public class FigClassifierBox extends FigNodeModelElement
         implements OperationsCompartmentContainer {
@@ -59,12 +62,6 @@ abstract public class FigClassifierBox extends FigNodeModelElement
     protected CompartmentFigText highlightedFigText = null;
 
     FigClassifierBox() {
-
-        // Set name box. Note the upper line will be blanked out if there is
-        // eventually a stereotype above.
-        getNameFig().setLineWidth(1);
-        getNameFig().setFilled(true);
-
         // this rectangle marks the operation section; all operations
         // are inside it
         operationsFig =

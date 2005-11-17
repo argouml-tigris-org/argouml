@@ -70,7 +70,7 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
         if (strs != null) {
             Iterator iter = strs.iterator();
             List figs = getFigs();
-            CompartmentFigText attr;
+            CompartmentFigText attr = null;
             while (iter.hasNext()) {
                 Object structuralFeature = iter.next();
                 if (figs.size() <= acounter) {
@@ -100,7 +100,11 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
                         Model.getScopeKind().
                         getClassifier().equals(Model.getFacade().
                                 getOwnerScope(structuralFeature)));
+                attr.setBotMargin(0);
                 acounter++;
+            }
+            if (attr != null) {
+                attr.setBotMargin(6);
             }
             if (figs.size() > acounter) {
                 //cleanup of unused attribute FigText's

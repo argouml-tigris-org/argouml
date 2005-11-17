@@ -125,6 +125,8 @@ public class FigFeature extends CompartmentFigText {
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_LEFT);
         setReturnAction(FigText.END_EDITING);
+        setRightMargin(3);
+        setLeftMargin(3);
     }
 
     /**

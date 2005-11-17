@@ -73,7 +73,7 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
         if (behs != null) {
             Iterator iter = behs.iterator();
             List figs = getFigs();
-            CompartmentFigText oper;
+            CompartmentFigText oper = null;
             while (iter.hasNext()) {
                 Object behaviouralFeature = iter.next();
                 if (figs.size() <= ocounter) {
@@ -108,7 +108,11 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
                     oper.setFont(FigNodeModelElement.getLabelFont());
                 }
                 oper.damage();
+                oper.setBotMargin(0);
                 ocounter++;
+            }
+            if (oper != null) {
+                oper.setBotMargin(9);
             }
             if (figs.size() > ocounter) {
                 //cleanup of unused operation FigText's

@@ -123,11 +123,6 @@ public class FigInterface extends FigClassifierBox {
         getBigPort().setLineWidth(0);
         getBigPort().setFillColor(Color.white);
 
-        // Set name box. Note the upper line will be blanked out if there is
-        // eventually a stereotype above.
-        getNameFig().setLineWidth(1);
-        getNameFig().setFilled(true);
-
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
         // lines. Initially not set to be displayed, but this will be changed
@@ -665,13 +660,9 @@ public class FigInterface extends FigClassifierBox {
             currentHeight = stereotypeHeight;
         }
 
-        currentHeight += 2; // Give an extra couple of pixels before the name.
-
         int nameHeight = getNameFig().getMinimumSize().height;
         getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
         currentHeight += nameHeight;
-
-        currentHeight += 2; // Give an extra couple of pixels after the name.
 
         if (getOperationsFig().isVisible()) {
             int operationsY = y + currentHeight;

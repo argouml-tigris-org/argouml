@@ -52,6 +52,7 @@ import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Editor;
@@ -151,11 +152,6 @@ public class FigClass extends FigClassifierBox
         getBigPort().setLineWidth(0);
         getBigPort().setFillColor(Color.white);
 
-        // Set name box. Note the upper line will be blanked out if there is
-        // eventually a stereotype above.
-        getNameFig().setLineWidth(1);
-        getNameFig().setFilled(false);
-
         // Attributes inside. First one is the attribute box itself.
         attributesFigCompartment =
             new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
@@ -196,9 +192,6 @@ public class FigClass extends FigClassifierBox
         addFig(operationsFig);
         addFig(attributesFigCompartment);
         addFig(borderFig);
-
-        getStereotypeFig().setFilled(false);
-        getNameFig().setFilled(false);
 
         setSuppressCalcBounds(false);
         // Set the bounds of the figure to the total of the above (hardcoded)
@@ -446,14 +439,6 @@ public class FigClass extends FigClassifierBox
 
         Dimension aSize = getNameFig().getMinimumSize();
 
-        // +2 padding before and after name
-
-        aSize.height += 4;
-
-        if (aSize.height < 21) {
-            aSize.height = 21;
-        }
-
         // If we have a stereotype displayed, then allow some space for that
         // (width and height)
 
@@ -489,9 +474,6 @@ public class FigClass extends FigClassifierBox
     /**
      * Gets the minimum size permitted for a class on the diagram.<p>
      *
-     * Parts of this are hardcoded, notably the fact that the name
-     * compartment has a minimum height of 21 pixels.<p>
-     *
      * @return  the size of the minimum bounding box.
      */
     public Dimension getMinimumSizeSingleStereotype() {
@@ -500,14 +482,6 @@ public class FigClass extends FigClassifierBox
         // name compartment and build up.
 
         Dimension aSize = getNameFig().getMinimumSize();
-
-        // +2 padding before and after name
-
-        aSize.height += 4;
-
-        if (aSize.height < 21) {
-            aSize.height = 21;
-        }
 
         // If we have a stereotype displayed, then allow some space for that
         // (width and height)
@@ -931,7 +905,7 @@ public class FigClass extends FigClassifierBox
         borderFig.setBounds(x, y, w, h);
 
         // Save our old boundaries (needed later), and get minimum size
-        // info. "aSize will be used to maintain a running calculation of our
+        // info. "whitespace" will be used to maintain a running calculation of our
         // size at various points.
 
         final int whitespace = h - getMinimumSize().height;
@@ -950,14 +924,9 @@ public class FigClass extends FigClassifierBox
             currentHeight = stereotypeHeight;
         }
 
-        currentHeight += 2; // Give an extra couple of pixels before the name.
-
         int nameHeight = getNameFig().getMinimumSize().height;
         getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
         currentHeight += nameHeight;
-
-        currentHeight += 2; // Give an extra couple of pixels after the name.
-
 
         if (isAttributesVisible()) {
             int attributesHeight = getAttributesFig().getMinimumSize().height;
