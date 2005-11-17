@@ -59,20 +59,20 @@ public class ActionNewTagDefinition extends AbstractActionNewModelElement {
         Object namespace = null;
         if (Model.getFacade().isAStereotype(t)) {
             owner = t;
-            namespace = Model.getFacade().getNamespace(owner);
         } else if (Model.getFacade().isAPackage(t)) {
             namespace = t;
         } else {
             namespace = Model.getFacade().getModel(t);
-            }
+        }
         Object newTagDefinition = Model.getExtensionMechanismsFactory()
             .buildTagDefinition(
                     (String) null,
                     owner,
                     namespace
             );
-        Object multiplicity = Model.getDataTypesFactory().createMultiplicity(0,1);
-        Model.getCoreHelper().setMultiplicity(newTagDefinition,multiplicity);
+        Object multiplicity = Model.getDataTypesFactory()
+            .createMultiplicity(0, 1);
+        Model.getCoreHelper().setMultiplicity(newTagDefinition, multiplicity);
         TargetManager.getInstance().setTarget(newTagDefinition);
         super.actionPerformed(e);
     }
