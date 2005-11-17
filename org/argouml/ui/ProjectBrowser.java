@@ -67,6 +67,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.persistence.LastLoadInfo;
+import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFilePersister;
 import org.argouml.persistence.VersionException;
@@ -1244,7 +1245,7 @@ public final class ProjectBrowser
                         ProjectBrowser.getInstance(),
                         "An error occured attempting to " + attemptingTo,
                         ex, 
-                        true);
+                        ex instanceof OpenException);
             dialog.setVisible(true);
         } else {
             StringWriter sw = new StringWriter();
