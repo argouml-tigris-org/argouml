@@ -34,6 +34,7 @@ import java.awt.event.WindowEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
@@ -99,6 +100,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
 
         // the introducing label
         northLabel = new JLabel(message);
+        northLabel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         getContentPane().add(northLabel, BorderLayout.NORTH);
 
         // the text box containing the problem messages
