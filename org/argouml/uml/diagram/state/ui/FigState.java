@@ -33,6 +33,7 @@ import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -48,9 +49,9 @@ import org.tigris.gef.presentation.FigText;
  */
 public abstract class FigState extends FigStateVertex {
 
-    protected static final int SPACE_TOP = 1;
-    protected static final int SPACE_MIDDLE = 5;
-    protected static final int DIVIDER_Y = 4;
+    protected static final int SPACE_TOP = 0;
+    protected static final int SPACE_MIDDLE = 0;
+    protected static final int DIVIDER_Y = 0;
     protected static final int SPACE_BOTTOM = 6;
 
     protected static final int MARGIN = 2;
@@ -67,6 +68,15 @@ public abstract class FigState extends FigStateVertex {
      */
     public FigState() {
         super();
+        setBigPort(new FigRRect(getInitialX() + 1, getInitialY() + 1,
+                getInitialWidth() - 2, getInitialHeight() - 2,
+                Color.cyan, Color.cyan));
+        getNameFig().setLineWidth(0);
+        getNameFig().setBounds(getInitialX() + 2, getInitialY() + 2,
+                       getInitialWidth() - 4,
+                       getNameFig().getBounds().height);
+        getNameFig().setFilled(false);
+        
         internal =
             new FigText(getInitialX() + 2,
                     getInitialY() + 2 + 21 + 4,

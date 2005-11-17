@@ -78,10 +78,6 @@ public class FigConcurrentRegion extends FigState
      */
     public FigConcurrentRegion() {
         super();
-        setBigPort(new FigRect(getInitialX() + 1, getInitialY() + 1,
-                getInitialWidth() - 2, getInitialHeight() - 2,
-                Color.cyan, Color.cyan));
-
         cover =
             new FigRect(getInitialX(),
                 getInitialY(),
@@ -95,10 +91,6 @@ public class FigConcurrentRegion extends FigState
         dividerline.setDashed(true);
         getBigPort().setLineWidth(0);
         cover.setLineWidth(0);
-        getNameFig().setLineWidth(0);
-        getNameFig().setBounds(getInitialX() + 2, getInitialY() + 2,
-                getInitialWidth() - 6, getNameFig().getBounds().height);
-        getNameFig().setFilled(false);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());

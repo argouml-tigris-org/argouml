@@ -282,7 +282,7 @@ public abstract class FigNodeModelElement
      *
      */
     public FigNodeModelElement() {
-        // this rectangle marks the whole interface figure; everything
+        // this rectangle marks the whole modelelement figure; everything
         // is inside it:
         bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
 
@@ -290,6 +290,9 @@ public abstract class FigNodeModelElement
         nameFig.setLineWidth(1);
         nameFig.setFilled(true);
         nameFig.setText(placeString());
+        nameFig.setBotMargin(7); // make space for the clarifier
+        nameFig.setRightMargin(4); // margin between text and border
+        nameFig.setLeftMargin(4); 
 
         stereotypeFig = new FigStereotypesCompartment(10, 10, 90, 15);
 
