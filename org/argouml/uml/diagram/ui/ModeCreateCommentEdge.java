@@ -81,11 +81,13 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
             FigEdgeModelElement sourceEdge = (FigEdgeModelElement) underMouse;
             sourceEdge.makeCommentPort();
             FigCommentPort commentPort = sourceEdge.getCommentPort();
+            sourceEdge.computeRoute();
 
             underMouse = commentPort;
             setSourceFigNode(commentPort);
             setStartPort(sourceModelElement);
             setStartPortFig(commentPort);
+            
         } else if (underMouse instanceof FigNodeModelElement) {
             if (getSourceFigNode() == null) {
                 setSourceFigNode((FigNode) underMouse);
@@ -133,6 +135,7 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
             FigEdgeModelElement destEdge = (FigEdgeModelElement) destFig;
             destEdge.makeCommentPort();
             destFig = destEdge.getCommentPort();
+            destEdge.computeRoute();
         }
 
         if (destFig instanceof FigNodeModelElement) {
