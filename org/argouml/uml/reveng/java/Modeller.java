@@ -24,6 +24,7 @@
 
 package org.argouml.uml.reveng.java;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -779,9 +780,9 @@ public class Modeller {
 	            Model.getConcurrencyKind().getSequential());
 	}
 
-	for (Iterator i =
-	        Model.getFacade().getParameters(mOperation).iterator();
-	     i.hasNext();) {
+        Collection c = new ArrayList(Model.getFacade()
+                .getParameters(mOperation));
+	for (Iterator i = c.iterator(); i.hasNext();) {
 	    Model.getCoreHelper().removeParameter(mOperation, i.next());
 	}
 
