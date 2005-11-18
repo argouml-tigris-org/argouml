@@ -227,8 +227,7 @@ public class FigAssociation extends FigEdgeModelElement {
         Object oldOwner = getOwner();
         if (oldOwner != null) {
             Model.getPump().removeModelEventListener(this, oldOwner);
-            if (!Model.getUmlFactory().isRemoved(oldOwner)
-                    && Model.getFacade().isAAssociation(oldOwner)) {
+            if (Model.getFacade().isAAssociation(oldOwner)) {
                 Collection oldConns = associatedElements(oldOwner);
                 for (Iterator i = oldConns.iterator(); i.hasNext();) {
                     Model.getPump().removeModelEventListener(this, i.next());
@@ -392,8 +391,7 @@ public class FigAssociation extends FigEdgeModelElement {
     protected void modelChanged(PropertyChangeEvent e) {
 	super.modelChanged(e);
 	Object association = getOwner(); //MAssociation
-	if (association == null || getLayer() == null
-            || Model.getUmlFactory().isRemoved(association)) {
+	if (association == null || getLayer() == null) {
 	    return;
 	}
 
