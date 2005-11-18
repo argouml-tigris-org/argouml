@@ -1469,8 +1469,7 @@ public abstract class FigNodeModelElement
             ArgoEventPump.removeListener(this);
         }
         Object own = getOwner();
-        if (Model.getFacade().isAClassifier(own)
-                &&!Model.getUmlFactory().isRemoved(own)) {
+        if (Model.getFacade().isAClassifier(own)) {
             Iterator it = Model.getFacade().getFeatures(own).iterator();
             while (it.hasNext()) {
                 Object feature = it.next();

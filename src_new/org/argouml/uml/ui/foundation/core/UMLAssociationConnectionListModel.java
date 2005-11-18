@@ -49,8 +49,7 @@ public class UMLAssociationConnectionListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (getTarget() != null
-                && !Model.getUmlFactory().isRemoved(getTarget())) {
+        if (getTarget() != null) {
             setAllElements(Model.getFacade().getConnections(getTarget()));
         }
     }
