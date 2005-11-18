@@ -41,6 +41,7 @@ import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
@@ -683,14 +684,17 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 ((AttributesCompartmentContainer) fig)
                     .setAttributesVisible(value.equalsIgnoreCase("true"));
             } else if ("stereotypeVisible".equals(name)) {
-                    ((StereotypeContainer) fig)
+                ((StereotypeContainer) fig)
                     .setStereotypeVisible(value.equalsIgnoreCase("true"));
             } else if ("visibilityVisible".equals(name)) {
-                    ((VisibilityContainer) fig)
+                ((VisibilityContainer) fig)
                     .setVisibilityVisible(value.equalsIgnoreCase("true"));
             } else if ("pathVisible".equals(name)) {
-                    ((PathContainer) fig)
+                ((PathContainer) fig)
                     .setPathVisible(value.equalsIgnoreCase("true"));
+            } else if ("extensionPointVisible".equals(name)) {
+                ((ExtensionsCompartmentContainer) fig)
+                    .setExtensionPointVisible(value.equalsIgnoreCase("true"));
             }
         }
     }
