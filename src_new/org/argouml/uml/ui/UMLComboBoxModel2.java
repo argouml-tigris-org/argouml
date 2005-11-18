@@ -28,7 +28,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -95,12 +94,12 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     private String propertySetName;
 
     /**
-     * Flag to indicate wether list events should be fired.
+     * Flag to indicate whether list events should be fired.
      */
     private boolean fireListEvents = true;
 
     /**
-     * Flag to indicate wether the model is being build.
+     * Flag to indicate whether the model is being build.
      */
     private boolean buildingModel = false;
 
@@ -190,20 +189,26 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
 
     /**
      * Utility method to change all elements in the list with modelelements
-     * at once.
+     * at once.  A minimal update strategy is used to minimize event firing
+     * for unchanged elements.
      *
      * @param elements the given elements
      */
     protected void setElements(Collection elements) {
         if (elements != null) {
-            if (!objects.isEmpty()) {
-                fireIntervalRemoved(this, 0, objects.size() - 1);
+            ArrayList toBeRemoved = new ArrayList();
+            for (int i = 0; i < objects.size(); i++) {
+                Object o = objects.get(i);
+                if (!elements.contains(o) && !(isClearable && "".equals(o))) {
+                    toBeRemoved.add(o);
+                }
             }
-            objects = Collections.synchronizedList(new ArrayList(elements));
-            if (!objects.isEmpty()) {
-                fireIntervalAdded(this, 0, objects.size() - 1);
+            removeAll(toBeRemoved);
+            addAll(elements);
+            
+            if (!objects.contains(selectedObject)) {
+                selectedObject = null;
             }
-            selectedObject = null;
             if (isClearable && !elements.contains("")) {
                 addElement("");
             }
@@ -266,9 +271,13 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
             Object o = it.next();
             addElement(o);
         }
-        setSelectedItem(o2);
+        if (o2 != null) {
+            setSelectedItem(o2);
+        }
         fireListEvents = true;
-        fireIntervalAdded(this, oldSize - 1, objects.size() - 1);
+        if (objects.size() != oldSize) {
+            fireIntervalAdded(this, oldSize - 1, objects.size() - 1);
+        }
     }
 
     /**
@@ -409,11 +418,9 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     public void removeAllElements() {
         int startIndex = 0;
         int endIndex = Math.max(0, objects.size() - 1);
-        // if (!_objects.isEmpty()) {
         objects.clear();
         selectedObject = null;
         fireIntervalRemoved(this, startIndex, endIndex);
-        // }
     }
 
     /**
