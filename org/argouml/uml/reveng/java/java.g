@@ -1963,10 +1963,18 @@ WS    :    (    ' '
 
 // Single-line comments
 SL_COMMENT
+{ boolean nl = false; }
     :    "//"
-        (~('\n'|'\r'))* ('\n'|'\r'('\n')?)
+        ( ~( '\n' | '\r' | '\uffff' ) )*
+        /* single line comment may not be followed by new line at the end of file */
+        ( ({LA(2) == '\n'}? '\r' '\n'
+           | '\r'
+           | '\n'
+          )
+          { nl = true; }
+        )?
         { addWhitespace($getText);
-          $setType(Token.SKIP); newline(); }
+          $setType(Token.SKIP); if (nl) newline(); }
     ;
 
 // javadoc comments
