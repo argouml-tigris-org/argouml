@@ -55,8 +55,10 @@ class DiagramNameDocument implements DocumentListener, TargetListener {
      * The constructor.
      */
     public DiagramNameDocument(JTextField theField) {
-        TargetManager.getInstance().addTargetListener(this);
         field = theField;
+        TargetManager tm = TargetManager.getInstance();
+        tm.addTargetListener(this);
+        setTarget(tm.getTarget());
     }
 
     /**
