@@ -28,6 +28,7 @@ import java.beans.PropertyChangeEvent;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -89,7 +90,8 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
          * Rebuild the list from scratch to be sure it's correct.
          */
         if (evt instanceof RemoveAssociationEvent
-                || evt instanceof AddAssociationEvent) {
+                || evt instanceof AddAssociationEvent
+                || evt instanceof AttributeChangeEvent) {
             buildModelList();
         } else {
             super.propertyChange(evt);
