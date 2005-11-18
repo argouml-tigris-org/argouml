@@ -411,6 +411,16 @@ public class FigUseCase extends FigNodeModelElement
     }
 
     /**
+     * USED BY PGML.tee.
+     * @return the class name and bounds together with compartment
+     * visibility.
+     */
+    public String classNameAndBounds() {
+        return super.classNameAndBounds()
+                + "extensionPointVisible=" + isExtensionPointVisible();
+    }
+
+    /**
      * Returns whether the extension points are currently displayed.<p>
      *
      * @return  <code>true</code> if the extensionpoints are visible,
@@ -1491,15 +1501,4 @@ public class FigUseCase extends FigNodeModelElement
         damage();
     }
 
-
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#postLoad()
-     */
-    public void postLoad() {
-        super.postLoad();
-        if (epVec != null && epVec.isVisible()) {
-            setExtensionPointVisible(true);
-        }
-    }
 } /* end class FigUseCase */
