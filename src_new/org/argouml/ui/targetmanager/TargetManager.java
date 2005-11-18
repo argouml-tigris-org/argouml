@@ -228,12 +228,18 @@ public final class TargetManager {
 			+ "of the history");
             }
             navigateBackward = true;
-            setTarget(((WeakReference) history.get(--currentTarget)).get());
+            // If nothing selected, go to last selected target
+            if (targets.size() == 0) {
+                setTarget(((WeakReference) history.get(currentTarget)).get());
+            } else {
+                setTarget(((WeakReference) history.get(--currentTarget)).get());
+            }
             navigateBackward = false;
         }
 
         /**
          * Checks if it's possible to navigate back.
+         * 
          * @return true if it's possible to navigate back.
          */
         private boolean navigateBackPossible() {
