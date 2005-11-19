@@ -293,8 +293,7 @@ public abstract class FigEdgeModelElement
             }
         }
         // Add stereotypes submenu
-        Action[] stereoActions =
-            StereotypeUtility.getApplyStereotypeActions(getOwner());
+        Action[] stereoActions = getApplyStereotypeActions();
         if (stereoActions != null) {
             popUpActions.insertElementAt(new JSeparator(), 0);
             ArgoJMenu stereotypes = new ArgoJMenu(
@@ -305,6 +304,10 @@ public abstract class FigEdgeModelElement
             popUpActions.insertElementAt(stereotypes, 0);
         }
         return popUpActions;
+    }
+    
+    protected Action[] getApplyStereotypeActions() {
+        return StereotypeUtility.getApplyStereotypeActions(getOwner());
     }
 
     /**
