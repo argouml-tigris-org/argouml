@@ -194,16 +194,28 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	    end0 = ((CommentEdge) edge).getSource();
 	    end1 = ((CommentEdge) edge).getDestination();
 	}
-	if (end0 == null || end1 == null) {
+        // Both ends must be defined and nodes that are on the graph already.
+        if (end0 == null || end1 == null) {
+            LOG.error("Edge rejected. Its ends are not attached to anything");
             return false;
         }
-	if (!containsNode(end0)) {
+        
+        if (!containsNode(end0)
+                && !containsEdge(end0)) {
+            LOG.error("Edge rejected. Its source end is attached to " +
+                    end0 +
+                    " but this is not in the graph model");
             return false;
         }
-	if (!containsNode(end1)) {
+        if (!containsNode(end1)
+                && !containsEdge(end1)) {
+            LOG.error("Edge rejected. Its destination end is attached to " +
+                    end1 +
+                    " but this is not in the graph model");
             return false;
         }
-	return true;
+        
+        return true;
     }
 
 
