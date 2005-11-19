@@ -520,11 +520,13 @@ public class SequenceDiagramGraphModel
     }
 
 
-    public void setHomeModel(Object ns) {
-        if (!Model.getFacade().isANamespace(ns))
-            throw new IllegalArgumentException();
-        setCollaboration( ns);
-        super.setHomeModel( ns);
+    public void setHomeModel(Object namespace) {
+        if (!Model.getFacade().isANamespace(namespace))
+            throw new IllegalArgumentException(
+                    "A sequence diagram home model must be a namespace, received a "
+                    + namespace);
+        setCollaboration( namespace);
+        super.setHomeModel( namespace);
     }
 
 }
