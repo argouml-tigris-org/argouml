@@ -32,7 +32,6 @@ package org.argouml.uml.diagram.ui;
 
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
-import org.tigris.gef.base.ModeCreatePolyEdge;
 
 /**
  * An extension of CmdSetMode to set the parameters for a comment link.

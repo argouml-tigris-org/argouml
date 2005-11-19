@@ -50,14 +50,6 @@ public class ActivityDiagramGraphModel extends StateDiagramGraphModel {
     }
 
     /**
-     * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
-     */
-    public boolean canAddEdge(Object edge) {
-        boolean canAdd = super.canAddEdge(edge);
-        return canAdd;
-    }
-
-    /**
      * The UID.
      */
     private static final long serialVersionUID = 5047684232283453072L;

@@ -30,6 +30,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
+import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.graph.MutableGraphModel;
@@ -75,7 +77,8 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
 
         sourceModelElement = underMouse.getOwner();
 
-        if (underMouse instanceof FigEdgeModelElement) {
+        if (underMouse instanceof FigEdgeModelElement
+                && !(underMouse instanceof FigEdgeNote)) {
             // If we're drawing from an edge
 
             FigEdgeModelElement sourceEdge = (FigEdgeModelElement) underMouse;
@@ -131,7 +134,8 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
             (MutableGraphModel)editor.getGraphModel();
 
         if (destFig instanceof FigEdgeModelElement
-                && Model.getFacade().isAComment(sourceModelElement)) {
+                && Model.getFacade().isAComment(sourceModelElement)
+                && !(destFig instanceof FigEdgeNote)) {
             FigEdgeModelElement destEdge = (FigEdgeModelElement) destFig;
             destEdge.makeCommentPort();
             destFig = destEdge.getCommentPort();
@@ -157,9 +161,8 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
                 editor.damageAll();
                 p.setComplete(true);
 
-                Object edgeType = getArg("edgeClass");
                 setNewEdge(graphModel.connect(
-                       getStartPort(), foundPort, (Class) edgeType));
+                       getStartPort(), foundPort, CommentEdge.class));
 
                 // Calling connect() will add the edge to the GraphModel and
                 // any LayerPersectives on that GraphModel will get a

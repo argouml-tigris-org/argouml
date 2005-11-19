@@ -234,10 +234,8 @@ public class UseCaseDiagramGraphModel
         }
 
         // Get the two ends of any valid edge
-
-        Object end0 = null;
-        Object end1 = null;
-
+        Object sourceModelElement = null;
+        Object destModelElement = null;
         if (Model.getFacade().isAAssociation(edge)) {
 
             // Only allow binary associations
@@ -258,21 +256,21 @@ public class UseCaseDiagramGraphModel
                 return false;
             }
 
-            end0 = Model.getFacade().getType(associationEnd0);
-            end1 = Model.getFacade().getType(associationEnd1);
+            sourceModelElement = Model.getFacade().getType(associationEnd0);
+            destModelElement = Model.getFacade().getType(associationEnd1);
         }
         else if (Model.getFacade().isAGeneralization(edge)) {
-            end0 = Model.getFacade().getChild(edge);
-            end1 = Model.getFacade().getParent(edge);
+            sourceModelElement = Model.getFacade().getChild(edge);
+            destModelElement = Model.getFacade().getParent(edge);
         }
         else if (Model.getFacade().isAExtend(edge)) {
-            end0 = Model.getFacade().getBase(edge);
-            end1 = Model.getFacade().getExtension(edge);
+            sourceModelElement = Model.getFacade().getBase(edge);
+            destModelElement = Model.getFacade().getExtension(edge);
         }
         else if (Model.getFacade().isAInclude(edge)) {
 
-            end0 = Model.getFacade().getBase(edge);
-            end1 = Model.getFacade().getAddition(edge);
+            sourceModelElement = Model.getFacade().getBase(edge);
+            destModelElement = Model.getFacade().getAddition(edge);
         }
         else if (Model.getFacade().isADependency(edge)) {
 
@@ -289,20 +287,35 @@ public class UseCaseDiagramGraphModel
                 return false;
             }
 
-            end0 = (clients.toArray())[0];
-            end1 = (suppliers.toArray())[0];
+            sourceModelElement = (clients.toArray())[0];
+            destModelElement = (suppliers.toArray())[0];
         } else if (edge instanceof CommentEdge) {
-            end0 = ((CommentEdge) edge).getSource();
-            end1 = ((CommentEdge) edge).getDestination();
+            sourceModelElement = ((CommentEdge) edge).getSource();
+            destModelElement = ((CommentEdge) edge).getDestination();
         }
 
         // Both ends must be defined and nodes that are on the graph already.
-
-        if (end0 == null || end1 == null) {
+        if (sourceModelElement == null || destModelElement == null) {
+            LOG.error("Edge rejected. Its ends are not attached to anything");
             return false;
         }
 
-        return (containsNode(end0) && containsNode(end1));
+        if (!containsNode(sourceModelElement)
+                && !containsEdge(sourceModelElement)) {
+            LOG.error("Edge rejected. Its source end is attached to " +
+                    sourceModelElement +
+                    " but this is not in the graph model");
+            return false;
+        }
+        if (!containsNode(destModelElement)
+                && !containsEdge(destModelElement)) {
+            LOG.error("Edge rejected. Its destination end is attached to " +
+                    destModelElement +
+                    " but this is not in the graph model");
+            return false;
+        }
+
+        return true;
     }
 
 
