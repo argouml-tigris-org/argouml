@@ -32,7 +32,9 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -63,12 +65,9 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
         FigNode result = null;
         if (Model.getFacade().isAClassifierRole(node)) {
             result = new FigClassifierRole(node);
-        }
-        if (Model.getFacade().isAComment(node)) {
+        } else if (Model.getFacade().isAComment(node)) {
             result = new FigComment(gm, node);
         }
-        // if (node instanceof MStimulus) return new FigSeqStimulus(gm, node);
-        // TODO: Something here.
         LOG.debug("SequenceDiagramRenderer getFigNodeFor " + result);
         return result;
     }
@@ -82,6 +81,9 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge,
 				 Map styleAttributes) {
+        if (edge instanceof CommentEdge) {
+            return new FigEdgeNote(edge, lay);
+        }
         return getFigEdgeFor(edge, styleAttributes);
     }
 

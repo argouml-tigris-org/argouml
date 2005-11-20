@@ -162,7 +162,7 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
                 p.setComplete(true);
 
                 setNewEdge(graphModel.connect(
-                       getStartPort(), foundPort, CommentEdge.class));
+                       getStartPort(), foundPort, (Object)CommentEdge.class));
 
                 // Calling connect() will add the edge to the GraphModel and
                 // any LayerPersectives on that GraphModel will get a

@@ -165,40 +165,40 @@ public abstract class FigMessage
             Point startPoint = sourceFig.connectionPoint(destFig.getCenter());
             Point endPoint = destFig.connectionPoint(sourceFig.getCenter());
             if (sourceFig instanceof FigMessagePort
-		&& destFig instanceof FigMessagePort) {
+                    && destFig instanceof FigMessagePort) {
                 FigMessagePort srcMP = (FigMessagePort) sourceFig;
                 FigMessagePort destMP = (FigMessagePort) destFig;
                 // If it is a self-message
                 if (srcMP.getNode().getFigClassifierRole()
-		    == destMP.getNode().getFigClassifierRole()) {
+                        == destMP.getNode().getFigClassifierRole()) {
                     if (startPoint.x < sourceFig.getCenter().x) {
                         startPoint.x += sourceFig.getWidth();
-		    }
+                    }
                     endPoint.x = startPoint.x;
                     setEndPoints(startPoint, endPoint);
                     // If this is the first time it is laid out, will only
                     // have 2 points, add the middle point
                     if (getNumPoints() <= 2) {
                         insertPoint(0, startPoint.x
-				    + SequenceDiagramLayout.OBJECT_DISTANCE / 3,
+                                + SequenceDiagramLayout.OBJECT_DISTANCE / 3,
                                     (startPoint.y + endPoint.y) / 2);
                     } else {
-			// Otherwise, move the middle point
+                        // Otherwise, move the middle point
                         int middleX =
-			    startPoint.x
-			    + SequenceDiagramLayout.OBJECT_DISTANCE / 3;
+                            startPoint.x
+                            + SequenceDiagramLayout.OBJECT_DISTANCE / 3;
                         int middleY = (startPoint.y + endPoint.y) / 2;
                         Point p = getPoint(1);
                         if (p.x != middleX || p.y != middleY) {
-			    setPoint(new Handle(1), middleX, middleY);
+                            setPoint(new Handle(1), middleX, middleY);
                         }
                     }
                 } else {
                     setEndPoints(startPoint, endPoint);
-		}
+                }
             } else {
                 setEndPoints(startPoint, endPoint);
-	    }
+            }
             calcBounds();
             layoutEdge();
         }
@@ -227,9 +227,9 @@ public abstract class FigMessage
      */
     protected void layoutEdge() {
         if (getSourcePortFig() instanceof FigMessagePort
-	    && getDestPortFig() instanceof FigMessagePort) {
+                && getDestPortFig() instanceof FigMessagePort) {
             if (((FigMessagePort) getSourcePortFig()).getNode() != null
-		&& ((FigMessagePort) getDestPortFig()).getNode() != null) {
+                    && ((FigMessagePort) getDestPortFig()).getNode() != null) {
                 ((SequenceDiagramLayout) getLayer()).updateActivations();
                 Globals.curEditor().damageAll();
             }

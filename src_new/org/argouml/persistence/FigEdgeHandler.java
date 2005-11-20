@@ -25,7 +25,9 @@ package org.argouml.persistence;
 
 import java.util.StringTokenizer;
 
+import org.argouml.uml.diagram.ui.FigCommentPort;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.persistence.pgml.PGMLStackParser;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -104,11 +106,11 @@ public class FigEdgeHandler
             }
 
             if (spf == null && sfn != null) {
-                spf = (Fig) sfn.getPortFigs().get(0);
+                spf = getPortFig(sfn);
             }
 
             if (dpf == null && dfn != null) {
-                dpf = (Fig) dfn.getPortFigs().get(0);
+                dpf = getPortFig(dfn);
             }
 
             if (spf == null || dpf == null || sfn == null || dfn == null) {
@@ -146,5 +148,21 @@ public class FigEdgeHandler
         FigEdgeModelElement edge = (FigEdgeModelElement) parser.findFig(figId);
         edge.makeCommentPort();
         return edge.getCommentPort();
+    }
+    
+
+    /**
+     * Get the Fig from the FigNode that is the port.
+     *
+     * @param figNode the FigNode
+     * @return the Fig that is the port on the given FigNode
+     */
+    private Fig getPortFig(FigNode figNode) {
+        if (figNode instanceof FigCommentPort) {
+            // TODO: Can we just do this every time, no need for else - Bob
+            return ((FigNodeModelElement)figNode).getBigPort();
+        } else {
+            return (Fig) figNode.getPortFigs().get(0);
+        }
     }
 }

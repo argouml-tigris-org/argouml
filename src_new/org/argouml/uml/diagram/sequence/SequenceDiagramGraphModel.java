@@ -192,21 +192,20 @@ public class SequenceDiagramGraphModel
             return false;
         }
         
-        if (!containsNode(end0)
-                && !containsEdge(end0)) {
+        if (!containsNode(end0) && !containsEdge(end0)) {
             LOG.error("Edge rejected. Its source end is attached to " +
                     end0 +
                     " but this is not in the graph model");
             return false;
         }
-        if (!containsNode(end1)
-                && !containsEdge(end1)) {
+        if (!containsNode(end1) && !containsEdge(end1)) {
             LOG.error("Edge rejected. Its destination end is attached to " +
                     end1 +
                     " but this is not in the graph model");
             return false;
         }
-        
+
+        System.out.println("We can add " + edge);
         return true;
     }
 
@@ -262,7 +261,14 @@ public class SequenceDiagramGraphModel
      * @see org.tigris.gef.graph.MutableGraphModel#canConnect(
      * java.lang.Object, java.lang.Object)
      */
-    public boolean canConnect(Object fromP, Object toP) {
+    public boolean canConnect(Object fromP, Object toP, Object edgeType) {
+        
+        if (edgeType == CommentEdge.class && 
+                (Model.getFacade().isAComment(fromP) || Model.getFacade().isAComment(fromP))) {
+            return true;
+        }
+        
+        
         if ( ! ( fromP instanceof MessageNode) || ! ( toP instanceof MessageNode))
             return false;
         if ( fromP==toP)
@@ -294,16 +300,8 @@ public class SequenceDiagramGraphModel
         } else if (Model.getMetaTypes().getDestroyAction().equals(actionType)) {
             return nodeFrom.canDestroy() && nodeTo.canBeDestroyed();
         }
-            // not supported action
-            return false;
-        }
-
-    /**
-     * Override deprecated function?
-     */
-    public Object connect( Object fromPort, Object toPort, Class edgeType)
-    {
-        return null;
+        // not supported action
+        return false;
     }
 
     /**
@@ -317,8 +315,11 @@ public class SequenceDiagramGraphModel
      *          Object, Object, Class)
      */
     public Object connect(Object fromPort, Object toPort, Object edgeType) {
-        if (!canConnect(fromPort, toPort)) {
+        if (!canConnect(fromPort, toPort, edgeType)) {
             return null;
+        }
+        if (edgeType == CommentEdge.class) {
+            return super.connect(fromPort, toPort, (Object)edgeType);
         }
         Object edge = null;
         Object fromObject = null;
