@@ -128,7 +128,7 @@ public class FigEdgeHandler
     }
 
     /**
-     * Get the FigNode that the fig if represents.
+     * Get the FigNode that the fig id represents.
      *
      * @param parser The parser to use.
      * @param figId (In the form Figx.y.z)
@@ -160,7 +160,7 @@ public class FigEdgeHandler
     private Fig getPortFig(FigNode figNode) {
         if (figNode instanceof FigCommentPort) {
             // TODO: Can we just do this every time, no need for else - Bob
-            return ((FigNodeModelElement)figNode).getBigPort();
+            return figNode;
         } else {
             return (Fig) figNode.getPortFigs().get(0);
         }
