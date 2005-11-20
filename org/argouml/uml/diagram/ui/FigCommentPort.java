@@ -46,6 +46,11 @@ public class FigCommentPort extends FigNodeModelElement {
     public boolean hit(Rectangle r) {
         return false;
     }
+    
+    public void setOwner(Object own) {
+        bigPort.setOwner(own);
+        super.setOwner(own);
+    }
 
     /**
      * @deprecated in 0.11.1 use org.tigris.gef.persistence.pgml.PgmlUtility.getClassNameAndBounds(Fig)

@@ -1566,9 +1566,9 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * @return Returns the _bigPort.
+     * @return the fig which is the port where edges connect to this node
      */
-    protected Fig getBigPort() {
+    public Fig getBigPort() {
         return bigPort;
     }
 

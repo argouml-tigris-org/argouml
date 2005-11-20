@@ -206,40 +206,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * java.lang.Object, java.lang.Class)
      */
     public Object connect(Object fromPort, Object toPort, Class edgeClass) {
-        // If this was an association then there will be relevant
-        // information to fetch out of the mode arguments.  If it
-        // not an association then these will be passed forward
-        // harmlessly as null.
-        Editor curEditor = Globals.curEditor();
-        ModeManager modeManager = curEditor.getModeManager();
-        Mode mode = modeManager.top();
-        Dictionary args = mode.getArgs();
-        Object style = args.get("aggregation"); //MAggregationKind
-        Boolean unidirectional = (Boolean) args.get("unidirectional");
-        Object model =
-            ProjectManager.getManager().getCurrentProject().getModel();
-
-        // Create the UML connection of the given type between the
-        // given model elements.
-        // default aggregation (none)
-        Object connection =
-            buildConnection(
-                edgeClass, fromPort, style, toPort,
-                null, unidirectional,
-                model);
-
-        if (connection == null) {
-            LOG.debug("Cannot make a " + edgeClass.getName()
-                + " between a " + fromPort.getClass().getName()
-                + " and a " + toPort.getClass().getName());
-            return null;
-        }
-
-        addEdge(connection);
-        LOG.debug("Connection type" + edgeClass.getName()
-                  + " made between a " + fromPort.getClass().getName()
-                  + " and a " + toPort.getClass().getName());
-        return connection;
+        return connect(fromPort, toPort, (Object)edgeClass);
     }
 
     /**
@@ -259,8 +226,44 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      *                   <code>null</code> otherwise)
      */
     public Object connect(Object fromPort, Object toPort, Object edgeType) {
-        Class edgeClass = (Class) edgeType;
-        return connect(fromPort, toPort, edgeClass);
+        // If this was an association then there will be relevant
+        // information to fetch out of the mode arguments.  If it
+        // not an association then these will be passed forward
+        // harmlessly as null.
+        Editor curEditor = Globals.curEditor();
+        ModeManager modeManager = curEditor.getModeManager();
+        Mode mode = modeManager.top();
+        Dictionary args = mode.getArgs();
+        Object style = args.get("aggregation"); //MAggregationKind
+        Boolean unidirectional = (Boolean) args.get("unidirectional");
+        Object model =
+            ProjectManager.getManager().getCurrentProject().getModel();
+
+        // Create the UML connection of the given type between the
+        // given model elements.
+        // default aggregation (none)
+        Object connection =
+            buildConnection(
+                edgeType, fromPort, style, toPort,
+                null, unidirectional,
+                model);
+
+        if (connection == null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Cannot make a " + edgeType
+                        + " between a " + fromPort.getClass().getName()
+                        + " and a " + toPort.getClass().getName());
+            }
+            return null;
+        }
+
+        addEdge(connection);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Connection type" + edgeType
+                      + " made between a " + fromPort.getClass().getName()
+                      + " and a " + toPort.getClass().getName());
+        }
+        return connection;
     }
 
     /**
