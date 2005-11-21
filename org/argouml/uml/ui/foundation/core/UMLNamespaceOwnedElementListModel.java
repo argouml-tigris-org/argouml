@@ -28,6 +28,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
+ * A model for all elements owned by a namespace.
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 2, 2003
