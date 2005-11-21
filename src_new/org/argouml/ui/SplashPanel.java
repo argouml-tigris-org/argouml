@@ -48,7 +48,7 @@ class SplashPanel extends JPanel {
     /**
      * The constructor.
      * 
-     * @param iconName
+     * @param iconName the name of the image to be shown
      */
     public SplashPanel(String iconName) {
 	super();
