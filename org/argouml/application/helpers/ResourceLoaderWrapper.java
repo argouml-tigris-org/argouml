@@ -131,6 +131,7 @@ public final class ResourceLoaderWrapper {
 	String lookAndFeelArgoUmlImagePath =
 	    lookAndFeelPath(lookAndFeelClassName, "argouml");
 	ResourceLoader.addResourceExtension("gif");
+        ResourceLoader.addResourceExtension("png");
 	ResourceLoader.addResourceLocation(lookAndFeelGeneralImagePath);
 	ResourceLoader.addResourceLocation(lookAndFeelNavigationImagePath);
 	ResourceLoader.addResourceLocation(lookAndFeelDiagramImagePath);

@@ -23,74 +23,59 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.ui;
+
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.Graphics;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.AbstractButton; //MVW
-
 import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
 
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 
+/**
+ * This panel is used in the splash-screen and the aboutbox.
+ * It contains an image and a version text.
+ * 
+ * @author mvw@tigris.org
+ */
 class SplashPanel extends JPanel {
 
     private ImageIcon splashImage = null;
+    
+    /**
+     * The constructor.
+     * 
+     * @param iconName
+     */
     public SplashPanel(String iconName) {
 	super();
 	splashImage =
-	    ResourceLoaderWrapper
-	        .lookupIconResource(iconName);
+	    ResourceLoaderWrapper.lookupIconResource(iconName);
 
-	JPanel topNorth = new JPanel(new BorderLayout());
-	topNorth.setPreferredSize(new Dimension(6, 6));
-	topNorth.setBorder(new BevelBorder(BevelBorder.RAISED));
-	topNorth.add(new JLabel(""), BorderLayout.CENTER);
+	JLabel splashLabel = new JLabel("", SwingConstants.LEFT) {
 
-	JPanel topSouth = new JPanel(new BorderLayout());
-	topSouth.setPreferredSize(new Dimension(6, 6));
-	topSouth.setBorder(new BevelBorder(BevelBorder.RAISED));
-	topSouth.add(new JLabel(""), BorderLayout.CENTER);
-
-	JLabel topCenter = new JLabel("ArgoUML v" + ArgoVersion.getVersion(),
-				      SwingConstants.CENTER);
-	// 40 works for 0.10
-	topCenter.setFont(new Font("SansSerif", Font.BOLD, 35));
-	topCenter.setPreferredSize(new Dimension(60, 60));
-	topCenter.setOpaque(false);
-	topCenter.setForeground(Color.white);
-
-	JPanel top = new JPanel(new BorderLayout());
-	top.setBackground(Color.darkGray);
-	top.add(topNorth, BorderLayout.NORTH);
-	top.add(topCenter, BorderLayout.CENTER);
-	top.add(topSouth, BorderLayout.SOUTH);
-
-	JLabel splashButton = new JLabel("");
-	if (splashImage != null) {
-	    // int imgWidth = splashImage.getIconWidth();
-	    // int imgHeight = splashImage.getIconHeight();
-	    // Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-	    // setLocation(scrSize.width/2 - imgWidth/2,
-	    // scrSize.height/2 - imgHeight/2);
-	    splashButton.setIcon(splashImage);
+	    /**
+             * The following values were determined experimentally:
+             * left margin 10, top margin 18.
+             * 
+	     * @see javax.swing.JComponent#paint(java.awt.Graphics)
+	     */
+	    public void paint(Graphics g) {
+	        super.paint(g);
+	        g.drawString("v" + ArgoVersion.getVersion(), 
+	                getInsets().left + 10, getInsets().top + 18);
+	    }
+	    
+        };
+        
+        if (splashImage != null) {
+	    splashLabel.setIcon(splashImage);
 	}
-	// setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 	setLayout(new BorderLayout(0, 0));
-	//splashButton.setMargin(new Insets(0, 0, 0, 0));
-	// JPanel main = new JPanel(new BorderLayout());
-	// setBorder(new EtchedBorder(EtchedBorder.RAISED));
-	add(top, BorderLayout.NORTH);
-
-	splashButton.setHorizontalAlignment(AbstractButton.CENTER); //MVW
-	add(splashButton, BorderLayout.CENTER);
-	// add(_statusBar, BorderLayout.SOUTH);
+	add(splashLabel, BorderLayout.CENTER);
     }
 
     public ImageIcon getImage() {
