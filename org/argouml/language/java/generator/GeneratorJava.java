@@ -1385,7 +1385,7 @@ public class GeneratorJava
 	//         s += generateName(n) + " ";
         //     if (ae.isNavigable()) s += "navigable ";
         //     if (ae.getIsOrdered()) s += "ordered ";
-        if (Model.getFacade().getUpper(ae) != 1) {
+        if (Model.getFacade().getUpper(ae) == 1) {
             sb.append(generateClassifierRef(Model.getFacade().getType(ae)));
         } else {
             sb.append("Vector "); //generateMultiplicity(m) + " ";
