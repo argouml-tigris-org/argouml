@@ -16400,23 +16400,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </sect2>
 
-        <sect2 id="critics.CrParamTypeNotImported">
-
-          <title>Import Parameter Type into Class</title>
-
-          <para>Suggestion that the type of a parameter used within an 
-          operation of a class is not visible.</para>
-
-          <warning>
-
-            <para>It is not clear how this can ever be caused within 
-            ArgoUML. In any case this critic can never trigger in the 
-            current implementation of ArgoUML.</para>
-
-          </warning>
-
-        </sect2>
-
       </sect1>
 
     </chapter>
