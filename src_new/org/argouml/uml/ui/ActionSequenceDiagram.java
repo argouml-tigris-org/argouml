@@ -70,8 +70,9 @@ public final class ActionSequenceDiagram extends UMLAction {
         if (Model.getFacade().isAClassifier(target)) {
             owner = Model.getFacade().getNamespace(target);
         } else if (Model.getFacade().isAOperation(target)) {
-            owner = Model.getFacade().getNamespace(target);
+            owner = Model.getFacade().getOwner(target);
         }
+        if (owner == null) return; // The UML allows for this. We don't.
         Object collaboration =
             Model.getCollaborationsFactory().buildCollaboration(
                 owner,
