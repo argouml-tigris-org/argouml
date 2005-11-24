@@ -107,13 +107,14 @@ See issue 3134 and issue 3297.
 	     Performance improvement 2. "count" is probably not the most efficient way to determine
 	     if any instance exists, investigate a better way.
 	-->
-	<!-- Get a list of all the uuids in the XMI -->
-	<xsl:variable name="uuids" select="/uml/XMI/XMI.content//*/@xmi.uuid" />
+	<!-- key definition for UUIDs -->
+        <xsl:key name="uuid-key" match="*" use="@xmi.uuid"/>
 	<!-- Now for each resolved critic only copy it across if its uuid is
 	     in that list -->
 	<xsl:template match='/uml/todo/resolvedcritics/issue'>
 		<xsl:variable name="offender" select="offender/text()" />
-		<xsl:if test="count($uuids[. = $offender]) != 0">
+        <xsl:variable name="uuid" select="key('uuid-key',string(.))/@xmi.uuid"/>
+		<xsl:if test="$uuid">
 			<issue>
 				<poster><xsl:value-of select="poster/text()" /></poster>
 				<offender><xsl:value-of select="$offender" /></offender>
