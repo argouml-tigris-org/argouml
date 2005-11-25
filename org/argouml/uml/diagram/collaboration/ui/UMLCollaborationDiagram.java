@@ -34,7 +34,6 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
@@ -248,9 +247,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     private Action getActionClassifierRole() {
         if (actionClassifierRole == null) {
             actionClassifierRole =
-                new RadioAction(new CmdCreateNode(
-                        Model.getMetaTypes().getClassifierRole(),
-                        "button.new-classifierrole"));
+                new RadioAction(new ActionAddClassifierRole());
         }
         return actionClassifierRole;
     }
