@@ -38,12 +38,14 @@ import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
+import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display graphics for a UML ActionState in a diagram.
+ * It contains a multiline textfield for the Entry Action Expression.
  *
  * @author ics 125b silverbullet team
  */
@@ -74,11 +76,18 @@ public class FigActionState extends FigStateVertex {
         cover = new FigRRect(10, 10, 90, 25, Color.black, Color.white);
         cover.setCornerRadius(getHeight() / 2);
 
-        getBigPort().setLineWidth(0);
+        // overrule the single-line namefig created by the parent
+        setNameFig(new FigMultiLineText(10 + PADDING, 10, 90 - PADDING * 2, 25,
+                true));
         getNameFig().setLineWidth(0);
-        getNameFig().setBounds(10 + PADDING, 10, 90 - PADDING * 2, 25);
-        getNameFig().setFilled(false);
-        getNameFig().setReturnAction(FigText.INSERT);
+        getNameFig().setText(placeString());
+        getNameFig().setBotMargin(7); // make space for the clarifier
+        getNameFig().setTopMargin(7); // for vertical symmetry
+        getNameFig().setRightMargin(4); // margin between text and border
+        getNameFig().setLeftMargin(4);
+        getNameFig().setJustification(FigText.JUSTIFY_CENTER);
+
+        getBigPort().setLineWidth(0);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
