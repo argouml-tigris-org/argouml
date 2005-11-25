@@ -58,8 +58,8 @@ public class ActionAddDataType extends AbstractActionNewModelElement {
         if (Model.getFacade().isANamespace(target))
             ns = target;
         if (Model.getFacade().isAParameter(target))
-            if (Model.getFacade().getModelElementContainer(target) != null)
-                target = Model.getFacade().getModelElementContainer(target);
+            if (Model.getFacade().getBehavioralFeature(target) != null)
+                target = Model.getFacade().getBehavioralFeature(target);
         if (Model.getFacade().isAFeature(target))
             if (Model.getFacade().getOwner(target) != null)
                 target = Model.getFacade().getOwner(target);
