@@ -81,18 +81,15 @@ public class UMLSequenceDiagram extends UMLDiagram {
         }
         ((SequenceDiagramGraphModel) getGraphModel())
 	    .setCollaboration(collaboration);
+        setNamespace(collaboration); //See issue 3373.
     }
 
     /**
-     * Returns the owner of this diagram. In the case of sequencediagrams it's
-     * allways the root model.
+     * Returns the owner of this diagram. 
      *
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
      */
     public Object getOwner() {
-        // TODO: in the future (when there are multiple models) this
-        // should be changeable
-        //return ProjectManager.getManager().getCurrentProject().getRoot();
         return getNamespace();
     }
 
