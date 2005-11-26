@@ -108,7 +108,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
-        if (highlightCause) {
+        if (highlightCause && e.getCause() != null) {
             pw.print("Cause : ");
             e.getCause().printStackTrace(pw);
             pw.print("-------\nFull exception : ");
