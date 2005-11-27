@@ -7799,6 +7799,81 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </sect2>
 
+        <sect2>
+
+          <title>Import XMI…</title>
+
+          <para>This menu-item allows to load an 
+          UML model which was exported by e.g. another tool,
+          as a XMI file, according the XMI V1.0, V1.1 or V1.2 standard. 
+          The extension of such file should be <literal>.xmi</literal>.
+          </para>
+
+          <para>If the model has been altered (as indicated by the 
+          &quot;*&quot; in the titlebar of ArgoUML&apos;s window), then 
+          activating the &quot;Import XMI...&quot; 
+          function is potentionally not 
+          the user&apos;s intention, since it will erase the changes. 
+          Hence a confirmation dialog appears to allow the user to save 
+          his work first, or cancel the operation completely.</para>
+
+          <figure float="1">
+
+            <title>The confirmation dialog for <literal>
+            Imposrt XMI...</literal>.</title>
+
+            <screenshot><mediaobject><imageobject>
+            <imagedata align="center"
+             fileref="images/reference/menu_dialog_confirm_new.png"
+             format="PNG"/></imageobject></mediaobject></screenshot>
+          </figure>
+
+          <para>When the menu is activated, the standard filechooser 
+          appears, see <xref linkend="fig.ref.menu_import_xmi"/>.
+          Beware the fact that this file will only contain the model, 
+          not any diagram layout. Hence, 
+          the new project will not contain any diagrams.</para>
+
+          <figure float="1" id="fig.ref.menu_import_xmi">
+
+            <title>The dialog for <literal>
+            Import XMI…</literal>.</title>
+
+            <screenshot><mediaobject><imageobject>
+            <imagedata align="center"
+             fileref="images/reference/menu_import_xmi.png"
+             format="PNG"/></imageobject></mediaobject></screenshot>
+          </figure>
+
+        </sect2>
+
+        <sect2>
+
+          <title>Export XMI…</title>
+
+          <para>This menu-item allows to save the complete structure of 
+          the UML model as a XMI file, according the XMI V1.2 standard. 
+          Beware the fact that this file will only contain the model, 
+          not any diagram layout. Hence, if the xmi file is reloaded 
+          with the <literal>File - Open Project…</literal> menu, then 
+          the diagrams are lost.</para>
+
+          <para>When the menu is activated, the standard filechooser 
+          appears, see <xref linkend="fig.ref.menu_export_xmi"/>.</para>
+
+          <figure float="1" id="fig.ref.menu_export_xmi">
+
+            <title>The dialog for <literal>
+            Export XMI…</literal>.</title>
+
+            <screenshot><mediaobject><imageobject>
+            <imagedata align="center"
+             fileref="images/reference/menu_export_xmi.png"
+             format="PNG"/></imageobject></mediaobject></screenshot>
+          </figure>
+
+        </sect2>
+
         <sect2 id="s3.ref.menu_import_sources">
 
           <title><guiicon><inlinemediaobject><imageobject>
@@ -10396,36 +10471,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>The Tools Menu</title>
 
         <para>This menu provides a generic menu attachment point for 
-        any plug-ins provided with ArgoUML. The standard system has one 
-        plug-in, and this menu entry contains one submenu by 
+        any plug-ins provided with ArgoUML. The standard system has no 
+        plug-in, and this menu entry 
+        is empty by 
         default.</para>
-
-        <sect2>
-
-          <title>Export as XMI…</title>
-
-          <para>This menu-item allows to save the complete structure of 
-          the UML model as a XMI file, according the XMI V1.0 standard. 
-          Beware the fact that this file will only contain the model, 
-          not any diagram layout. Hence, if the xmi file is reloaded 
-          with the <literal>File - Open Project…</literal> menu, then 
-          the diagrams are lost.</para>
-
-          <para>When the menu is activated, the standard filechooser 
-          appears, see <xref linkend="fig.ref.menu_export_xmi"/>.</para>
-
-          <figure float="1" id="fig.ref.menu_export_xmi">
-
-            <title>The dialog for <literal>
-            Export XMI…</literal>.</title>
-
-            <screenshot><mediaobject><imageobject>
-            <imagedata align="center"
-             fileref="images/reference/menu_export_xmi.png"
-             format="PNG"/></imageobject></mediaobject></screenshot>
-          </figure>
-
-        </sect2>
 
       </sect1>
 
