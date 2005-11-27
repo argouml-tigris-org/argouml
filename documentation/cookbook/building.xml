@@ -2563,7 +2563,17 @@ active.
 </para>
 	    </listitem>
 	  </orderedlist>
-	</listitem>
+   	</listitem>
+	  
+	<listitem>
+	  <para>Notify persons responsible for installers</para>
+	  <para>
+This is done by sending a mail on the
+<ulink url="mailto:dev@argoumlinstallers.tigris.org">
+  installers mailing list
+</ulink>.
+</para>
+   	</listitem>
 	  
 	<listitem>
 	  <para>Make announcements!</para>
