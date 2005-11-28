@@ -7166,7 +7166,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <itemizedlist>
 
-          <listitem>
+<!--      <listitem>
 
             <para><guiicon><inlinemediaobject><imageobject>
             <imagedata align="center" fileref="images/icons/cut.gif"
@@ -7195,7 +7195,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <xref linkend="s2.ref.menu_paste"/>.</para>
 
           </listitem>
-
+-->
           <listitem>
 
             <para><guiicon><inlinemediaobject><imageobject>
@@ -7475,9 +7475,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         keyboard. Each level of each menu is identified by a letter 
         (shown underlined in the menu or entry name from the moment the 
         ALT key is pressed). This sequence of letters while holding 
-        down the ALT key selects the entry. In the version V0.14 of 
-        ArgoUML this functionality is only available when running under 
-        Microsoft Windows.</para>
+        down the ALT key selects the entry. 
+        </para>
 
         <para>The following is an explanation of why the menuitems are 
         grouped as they are.</para>
@@ -7502,7 +7501,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               like e.g. selecting. This menu is not intended for 
               diagram layout functions. Most functions here do 
               something with the selected modelelement and diagram. The 
-              item &quot;Settings...&quot; is an exception here, 
+              item &quot;Settings...&quot; is an exception to this rule, 
               logically it might belong better under the File menu, but 
               people are used to find it here.</para>
 
@@ -7556,8 +7555,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para>The <emphasis>Tools</emphasis> menu currently 
-              contains the &quot;Export as XMI&quot; item. Also, if 
+              <para>The <emphasis>Tools</emphasis> menu is currently 
+              empty. If 
               plugins are installed, then their functions appear 
               here.</para>
 
@@ -7700,6 +7699,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
+              <para>ArgoUML file (*.zargo, *.uml)</para>
+
+            </listitem>
+
+            <listitem>
+
               <para>ArgoUML compressed project file (*.zargo)</para>
 
             </listitem>
@@ -7738,7 +7743,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>In certain circumstances, there is nothing to save, 
             and this menuitem is downlighted. E.g. when the user did 
             not yet alter a loaded project. The presence of a 
-            &quot;*&quot; in the titlebar of ArgoUML&apos;s window 
+            <quote>*</quote> in the titlebar of ArgoUML&apos;s window 
             indicates that the current project is <quote>dirty</quote> 
             (has been altered), and can be saved.</para>
 
@@ -7926,6 +7931,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               If enabled (the default), reverse engineering will track 
               through sub-directories for any further Java files. If 
               not it will restrict to the selected directory.</para>
+
+            </listitem>
+
+            <listitem>
+
+              <para><literal>Changed/new files only</literal>. 
+              If enabled (the default), only changed and new files are imported. 
+              If not all classes will be replaced.</para>
 
             </listitem>
 
