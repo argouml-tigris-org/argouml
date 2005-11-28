@@ -1867,7 +1867,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             main features of ArgoUML. As is conventional, menu options 
             and toolbar options that are not available are grayed out 
             and menu items that invoke a dialog box are followed by an 
-            ellipsis (…).</para>
+            ellipsis (...).</para>
 
             <itemizedlist>
 
@@ -2231,13 +2231,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <para>First, let&apos;s save the model in it&apos;s 
               current (empty and unnamed) state. On the menu bar, click 
               on <literal>File</literal>, then on <literal>
-              Save Project As…</literal> as shown in 
+              Save Project As...</literal> as shown in 
               <xref linkend="fig.tut.saveas"/>.</para>
 
               <figure float="1" id="fig.tut.saveas">
 
                 <title>Invoking <literal>
-                Save Project As…</literal></title>
+                Save Project As...</literal></title>
 
                 <screenshot><mediaobject><imageobject>
                 <imagedata align="center"
@@ -2272,7 +2272,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <title>The File Chooser Dialog</title>
 
               <para>But let&apos;s go back to saving our project. After 
-              clicking on the <literal>Save Project As…</literal> menu 
+              clicking on the <literal>Save Project As...</literal> menu 
               command, we get the file chooser dialog to enter the file 
               name we wish to use as shown in 
               <xref linkend="fig.tut.filechoose"/>.</para>
@@ -2536,7 +2536,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               </orderedlist>
 
               <para>Et viola! SVG! Give it a try and zoom around a 
-              little… They are not pretty though, so if you know 
+              little... They are not pretty though, so if you know 
               anything about rendering beautiful SVG let us know!</para>
 
               <para>Oh, and by the way, you&apos;ll need a browser that 
@@ -2890,7 +2890,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>The Case Study (To be written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
       </sect1>
 
     </chapter>
@@ -4918,28 +4918,28 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           simpler use cases: &quot;Deposit Cash&quot;, &quot;Withdraw 
           Cash&quot; and &quot;Query Account&quot;.</para>
 
-          <remark>More to be written…</remark>
+          <remark>More to be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Associations (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Advanced Diagram Features (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Use Case Specifications (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
@@ -4947,7 +4947,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Supplementary Requirements Specification (To be 
           written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
       </sect1>
@@ -4989,38 +4989,38 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>The Analysis Process (To be written)</title>
 
-        <remark>Include CRC cards. To be written…</remark>
+        <remark>Include CRC cards. To be written...</remark>
         <sect2>
 
           <title>Output of the Analysis Process (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Concept Diagram (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>System Sequence Diagram (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>System Statechart Diagram (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Realization Use Case Diagram (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
@@ -5029,7 +5029,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <remark>Use Case Specifications and Supplementary 
             Requirements Specifications recast in solution language. To 
-            be written…</remark>
+            be written...</remark>
           </sect3>
 
         </sect2>
@@ -5040,24 +5040,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Class Diagrams (To be written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
         <sect2>
 
           <title>The Class Diagram (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Advanced Class Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Association Classes (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5073,7 +5073,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Classes</title>
 
           <remark>Identifying class diagrams from existing materials 
-          (Vision, Use Cases etc). To be written…</remark>
+          (Vision, Use Cases etc). To be written...</remark>
           <sect3>
 
             <title>Using the Note Icon in the Tool Bar</title>
@@ -5100,12 +5100,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Associations (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Aggregation (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5114,7 +5114,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Class Attributes and Operations (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Entering Data Into Attributes and Methods 
@@ -5135,14 +5135,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Class Attributes (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Class Operations (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5155,14 +5155,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Association Classes (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Stereotypes (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5173,26 +5173,26 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Sequence Diagrams (To be written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
         <sect2>
 
           <title>The Sequence Diagram (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Identifying Actions (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Advanced Sequence Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
       </sect1>
@@ -5228,14 +5228,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Actions (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Advanced Sequence Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
       </sect1>
@@ -5244,26 +5244,26 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Statechart Diagrams (To be written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
         <sect2>
 
           <title>The Statechart Diagram (To be written)</title>
 
           <remark>Types of statechart diagram (Moore, Mealy); 
-          Hierarchical diagrams. To be written…</remark>
+          Hierarchical diagrams. To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Advanced Statechart Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Hierarchical Statechart Diagrams (To be 
             written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5278,7 +5278,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Statechart Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Creating a Statechart Diagram</title>
@@ -5294,7 +5294,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>States (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Editing a Composite State</title>
@@ -5313,27 +5313,27 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Transitions (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Actions (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Advanced Statechart Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Hierarchical Statechart Diagrams (To be 
             written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5344,7 +5344,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Realization Use Cases (To be written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
       </sect1>
 
       <sect1>
@@ -5352,7 +5352,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>Creating Realization Use Cases in ArgoUML (To be 
         written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
       </sect1>
 
       <sect1>
@@ -5363,19 +5363,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Concept Class Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Identifying classes (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Identifying associations (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5384,12 +5384,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>System Sequence Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Identifying actions (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5398,14 +5398,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>System Statechart Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Realization Use Cases (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
       </sect1>
@@ -5442,24 +5442,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>The Design Process (To be written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
         <sect2>
 
           <title>Output of the Design Process (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Package Diagram (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Realization Class Diagrams (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
@@ -5467,7 +5467,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <title>Sequence Diagrams and Collaboration Diagrams (To be 
             written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
@@ -5475,21 +5475,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <title>Statechart Diagrams and Activity Diagrams (To be 
             written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Deployment Diagram (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Documents (To be written)</title>
 
-            <remark>System Architecture. To be written…</remark>
+            <remark>System Architecture. To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5500,38 +5500,38 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Package Diagrams (To be written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
         <sect2>
 
           <title>The Package Diagram (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Advanced Package Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Subpackages (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Adding DataTypes (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Adding Stereotypes (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5547,12 +5547,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Packages</title>
 
           <remark>How to work out what goes in packages. To be 
-          written…</remark>
+          written...</remark>
           <sect3>
 
             <title>Subpackages (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5561,26 +5561,26 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Relationships between packages (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Dependency (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Generalization (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Realization and Abstraction (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5589,19 +5589,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Advanced Package Features (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Creating New Datatypes (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Creating New Stereotypes (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5612,24 +5612,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>More on Class Diagrams (To be written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
         <sect2>
 
           <title>The Class Diagram (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Class Attributes (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Class Operations (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5638,12 +5638,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Advanced Class Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Realization and Abstraction (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5659,26 +5659,26 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Classes (To be written)</title>
 
           <remark>More on identifying classes from existing materials 
-          and use of stereotypes. To be written…</remark>
+          and use of stereotypes. To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Class Attributes and Operations (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Class Attributes (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Class Operations (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5775,7 +5775,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Stereotypes (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5794,31 +5794,31 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </note>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
         <sect2>
 
           <title>More on the Sequence Diagram (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>The Collaboration Diagram (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Messages (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Actions (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5827,7 +5827,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Advanced Collaboration Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
       </sect1>
@@ -5841,19 +5841,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Collaboration Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Messages (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Actions (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5862,7 +5862,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Advanced Collaboration Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
       </sect1>
@@ -5871,50 +5871,50 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Statechart Diagrams (To be written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
         <sect2>
 
           <title>The Statechart Diagram (To be written)</title>
 
-          <remark>More on this. To be written…</remark>
+          <remark>More on this. To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Advanced Statechart Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Actions (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Transitions (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
             <sect4>
 
               <title>Triggers (To be written)</title>
 
-              <remark>To be written…</remark>
+              <remark>To be written...</remark>
             </sect4>
 
             <sect4>
 
               <title>Guards (To be written)</title>
 
-              <remark>To be written…</remark>
+              <remark>To be written...</remark>
             </sect4>
 
             <sect4>
 
               <title>Effectss (To be written)</title>
 
-              <remark>To be written…</remark>
+              <remark>To be written...</remark>
             </sect4>
 
           </sect3>
@@ -5923,19 +5923,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Pseudo States (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
             <sect4>
 
               <title>Junction and Choice (To be written)</title>
 
-              <remark>To be written…</remark>
+              <remark>To be written...</remark>
             </sect4>
 
             <sect4>
 
               <title>Fork and Join (To be written)</title>
 
-              <remark>To be written…</remark>
+              <remark>To be written...</remark>
             </sect4>
 
           </sect3>
@@ -5944,14 +5944,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Hierarchical State Machines (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Models for State History (To be written)</title>
 
-            <remark>Shallow v Deep. To be written…</remark>
+            <remark>Shallow v Deep. To be written...</remark>
           </sect3>
 
         </sect2>
@@ -5967,59 +5967,59 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Statechart Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>States (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Transitions (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Actions (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Advanced Statechart Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Transitions (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
             <sect4>
 
               <title>Triggers (To be written)</title>
 
-              <remark>To be written…</remark>
+              <remark>To be written...</remark>
             </sect4>
 
             <sect4>
 
               <title>Guards (To be written)</title>
 
-              <remark>To be written…</remark>
+              <remark>To be written...</remark>
             </sect4>
 
             <sect4>
 
               <title>Effectss (To be written)</title>
 
-              <remark>To be written…</remark>
+              <remark>To be written...</remark>
             </sect4>
 
           </sect3>
@@ -6028,19 +6028,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Pseudo States (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
             <sect4>
 
               <title>Junction and Choice (To be written)</title>
 
-              <remark>To be written…</remark>
+              <remark>To be written...</remark>
             </sect4>
 
             <sect4>
 
               <title>Fork and Join (To be written)</title>
 
-              <remark>To be written…</remark>
+              <remark>To be written...</remark>
             </sect4>
 
           </sect3>
@@ -6049,14 +6049,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Hierarchical State Machines (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>History (To be written)</title>
 
-            <remark>Shallow v Deep. To be written…</remark>
+            <remark>Shallow v Deep. To be written...</remark>
           </sect3>
 
         </sect2>
@@ -6067,17 +6067,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Activity Diagrams (To be written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
         <sect2>
 
           <title>The Activity Diagram (To be written)</title>
 
-          <remark>More on this. To be written…</remark>
+          <remark>More on this. To be written...</remark>
           <sect3>
 
             <title>Action States (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -6093,7 +6093,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Activity Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Creating an Activity Diagram</title>
@@ -6109,7 +6109,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Action States (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
       </sect1>
@@ -6118,12 +6118,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Deployment Diagrams (To be written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
         <sect2>
 
           <title>The Deployment Diagram (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
       </sect1>
@@ -6137,12 +6137,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Nodes (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Node Instances (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -6151,12 +6151,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Components (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Component Instances (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -6166,26 +6166,26 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Relationships between nodes and components (To be 
           written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Dependency (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Associations (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Links (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -6196,7 +6196,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>System Architecture (To be written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
       </sect1>
 
       <sect1>
@@ -6207,19 +6207,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Packages (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Identifying Packages (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Datatypes and Stereotypes (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -6228,19 +6228,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Class Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Identifying classes (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
 
             <title>Identifying associations (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
           <sect3>
@@ -6248,7 +6248,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <title>Specifying Attributes and Operations (To be 
             written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -6257,12 +6257,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Sequence Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Identifying actions (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -6271,12 +6271,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Collaboration Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
           <sect3>
 
             <title>Identifying Messages (To be written)</title>
 
-            <remark>To be written…</remark>
+            <remark>To be written...</remark>
           </sect3>
 
         </sect2>
@@ -6285,28 +6285,28 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Statechart Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>Activity Diagrams (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>The Deployment Diagram (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
         <sect2>
 
           <title>The System Architecture (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect2>
 
       </sect1>
@@ -7651,9 +7651,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <imagedata align="center"
            fileref="images/icons/open_project.gif"
            format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-          Open Project…</title>
+          Open Project...</title>
 
-          <indexterm><primary>Open Project…</primary></indexterm>
+          <indexterm><primary>Open Project...</primary></indexterm>
           <indexterm><primary>Shortcut 
           key</primary><secondary>Ctrl-O</secondary></indexterm>
           <para>Shortcut Ctrl-O.</para>
@@ -7665,7 +7665,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_open_project">
 
             <title>The file selection dialog for <literal>
-            Open Project…</literal>.</title>
+            Open Project...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -7728,10 +7728,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>Shortcut Ctrl-S.</para>
 
           <para>This saves the project using its current file name. Use 
-          <literal>Save Project As…</literal> to save the project to a 
+          <literal>Save Project As...</literal> to save the project to a 
           different file. If no filename is given yet (e.g. after 
           <literal>New</literal>), then this function works exactly as 
-          <literal>Save Project As…</literal>.</para>
+          <literal>Save Project As...</literal>.</para>
 
           <note>
 
@@ -7752,7 +7752,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <imagedata align="center"
            fileref="images/icons/save_project_as.gif"
            format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-          Save Project As…</title>
+          Save Project As...</title>
 
           <para>This opens a dialog allowing you to save the project 
           under a different file name (or to specify a file name for 
@@ -7801,7 +7801,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Import XMI…</title>
+          <title>Import XMI...</title>
 
           <para>This menu-item allows to load an 
           UML model which was exported by e.g. another tool,
@@ -7820,7 +7820,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1">
 
             <title>The confirmation dialog for <literal>
-            Imposrt XMI...</literal>.</title>
+            Import XMI...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -7837,7 +7837,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_import_xmi">
 
             <title>The dialog for <literal>
-            Import XMI…</literal>.</title>
+            Import XMI...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -7849,13 +7849,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Export XMI…</title>
+          <title>Export XMI...</title>
 
           <para>This menu-item allows to save the complete structure of 
           the UML model as a XMI file, according the XMI V1.2 standard. 
           Beware the fact that this file will only contain the model, 
           not any diagram layout. Hence, if the xmi file is reloaded 
-          with the <literal>File - Open Project…</literal> menu, then 
+          with the <literal>File - Open Project...</literal> menu, then 
           the diagrams are lost.</para>
 
           <para>When the menu is activated, the standard filechooser 
@@ -7864,7 +7864,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_export_xmi">
 
             <title>The dialog for <literal>
-            Export XMI…</literal>.</title>
+            Export XMI...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -7880,7 +7880,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <imagedata align="center"
            fileref="images/icons/import_sources.gif"
            format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-          Import Sources…</title>
+          Import Sources...</title>
 
           <para>A very powerful feature of ArgoUML is that it can 
           <quote>Reverse Engineer</quote> Java code to yield a class 
@@ -7896,7 +7896,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_import_sources">
 
             <title>The file selection dialog for <literal>
-            Import Sources…</literal>.</title>
+            Import Sources...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -8012,9 +8012,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <imagedata align="center"
            fileref="images/icons/page_setup.gif"
            format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-          Page Setup…</title>
+          Page Setup...</title>
 
-          <indexterm><primary>Page Setup …</primary></indexterm>
+          <indexterm><primary>Page Setup ...</primary></indexterm>
           <para>This brings up the standard dialog box provided by the 
           operating system to adjust printer paper size, orientation, 
           and other options.</para>
@@ -8026,9 +8026,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title><guiicon><inlinemediaobject><imageobject>
           <imagedata align="center" fileref="images/icons/print.gif"
            format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-          Print…</title>
+          Print...</title>
 
-          <indexterm><primary>Print …</primary></indexterm>
+          <indexterm><primary>Print ...</primary></indexterm>
           <indexterm><primary>Shortcut 
           key</primary><secondary>Ctrl-P</secondary></indexterm>
           <para>Shortcut Ctrl-P.</para>
@@ -8076,7 +8076,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Save Graphics…</title>
+          <title>Save Graphics...</title>
 
           <para>This menu entry brings up a dialog box allowing the 
           currently selected diagram (in the editing pane) to be saved 
@@ -8144,7 +8144,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Save Configuration</title>
 
           <para>ArgoUML has various user specific configurations that 
-          can be set, through the <literal>Settings…</literal> entry on 
+          can be set, through the <literal>Settings...</literal> entry on 
           the <literal>Edit</literal> menu (see 
           <xref linkend="s2.ref.menu_settings"/>) or directly on the 
           various panes. Also the main window size and location is such 
@@ -8174,7 +8174,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>The maximum number of files that is listed here, can be 
           adjusted in the <literal>Edit</literal> -&gt; <literal>
-          Settings…</literal> menu. The list of files is stored in the 
+          Settings...</literal> menu. The list of files is stored in the 
           <filename>argo.user.properties</filename> file in the 
           user&apos;s home directory.</para>
 
@@ -8480,7 +8480,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title><guiicon><inlinemediaobject><imageobject>
           <imagedata align="center" fileref="images/icons/settings.gif"
            format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-          Settings…</title>
+          Settings...</title>
 
           <para>This menu entry brings up a dialog box, which allows 
           the user to set various options that control the behavior of 
@@ -8925,7 +8925,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Goto Diagram…</title>
+          <title>Goto Diagram...</title>
 
           <para>This menu entry brings up a dialog box, describing all 
           the diagrams in the current project under ArgoUML.</para>
@@ -8933,7 +8933,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_goto_diagram">
 
             <title>The dialog for <literal>Goto 
-            Diagram…</literal>.</title>
+            Diagram...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -8993,14 +8993,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title><guiicon><inlinemediaobject><imageobject>
           <imagedata align="center" fileref="images/icons/find.gif"
            format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-          Find…</title>
+          Find...</title>
 
           <para>This menu entry brings up a non-modal dialog box for 
           the ArgoUML search engine.</para>
 
           <figure float="1" id="fig.ref.menu_find">
 
-            <title>The dialog for <literal>Find…</literal>.</title>
+            <title>The dialog for <literal>Find...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -10016,7 +10016,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2 id="s2.ref.menu_generate_selected_classes">
 
-          <title>Generate Selected Classes …</title>
+          <title>Generate Selected Classes ...</title>
 
           <para>This menu entry brings up a dialog box for the ArgoUML 
           code generator (see 
@@ -10026,7 +10026,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_generate_selected_classes">
 
             <title>The dialog for <literal>Generate Selected 
-            Classes…</literal>.</title>
+            Classes...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -10065,7 +10065,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Generate All Classes…</title>
+          <title>Generate All Classes...</title>
 
           <indexterm><primary>Generate All Classes</primary></indexterm>
           <indexterm><primary>Shortcut 
@@ -10073,7 +10073,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>Shortcut F7.</para>
 
           <para>This function behaves as <literal>
-          Generate Selected Classes…</literal> (see 
+          Generate Selected Classes...</literal> (see 
           <xref linkend="s2.ref.menu_generate_selected_classes"/>) 
           would with all classes in the current diagram selected.</para>
 
@@ -10081,7 +10081,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Generate Code for Project… (To be Written)</title>
+          <title>Generate Code for Project... (To be Written)</title>
 
           <para />
 
@@ -10089,7 +10089,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Settings for Generate for Project… (To be 
+          <title>Settings for Generate for Project... (To be 
           Written)</title>
 
           <para />
@@ -10150,7 +10150,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2 id="s2.ref.menu_design_issues">
 
-          <title>Design Issues…</title>
+          <title>Design Issues...</title>
 
           <para>This menu entry brings up a dialog box controlling how 
           critics associated with a particular design area are to be 
@@ -10160,7 +10160,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_design_issues">
 
             <title>The dialog for <literal>
-            Design Issues…</literal>.</title>
+            Design Issues...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -10195,7 +10195,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Design Goals…</title>
+          <title>Design Goals...</title>
 
           <para>This menu entry brings up a dialog box controlling how 
           design goals are to be handled (see 
@@ -10204,7 +10204,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_design_goals">
 
             <title>The dialog for <literal>
-            Design Goals…</literal>.</title>
+            Design Goals...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -10233,7 +10233,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <tip>
 
             <para>It may be useful to think of this function as very 
-            similar to <literal>Design Issues…</literal> (see 
+            similar to <literal>Design Issues...</literal> (see 
             <xref linkend="s2.ref.menu_design_issues"/>), but with 
             grouping of critics according to the outcomes of OOA&amp;D 
             rather than grouping according to the structure of 
@@ -10254,7 +10254,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2 id="s2.ref.menu_browse_critics">
 
-          <title>Browse Critics…</title>
+          <title>Browse Critics...</title>
 
           <para>This menu entry brings up a dialog box controlling the 
           individual critics (see 
@@ -10263,7 +10263,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_browse_critics">
 
             <title>The dialog for <literal>
-            Browse Critics…</literal>.</title>
+            Browse Critics...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -11059,7 +11059,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <quote>interrupt</quote> themselves: they are thinking of 
           working on one part of the design, and then they make a 
           decision that needs a change in some other part, and then 
-          that has an implication on some other part, and… and… and… 
+          that has an implication on some other part, and... and... and... 
           the designer forgets what it was they were originally trying 
           to accomplish. They need to <quote>pop their mental 
           stack</quote> to come back to finish what the started. If 
@@ -11181,7 +11181,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Set Source Path… (To be written)</title>
+          <title>Set Source Path... (To be written)</title>
 
           <para>This entry on the pop-up menu ...</para>
 
@@ -13511,7 +13511,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         </figure>
 
         <para>Customization of the critics behaviour is possible 
-        through the <literal>Browse critics…</literal> menu (see 
+        through the <literal>Browse critics...</literal> menu (see 
         <xref linkend="s2.ref.menu_browse_critics"/>).</para>
 
         <para>The body of the tab describes the problem found by the 
@@ -13526,7 +13526,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <imagedata align="center"
              fileref="images/icons/new_to_do_item.gif"
              format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-            <literal>New To Do Item…</literal> This launches a dialog 
+            <literal>New To Do Item...</literal> This launches a dialog 
             box (see <xref linkend="fig.ref.details_new_to_do"/>), 
             which allows you to create your own to-do item, with its 
             own headline (which appears in the to-do pane), priority 
@@ -13552,7 +13552,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <imagedata align="center"
              fileref="images/icons/resolve_item.gif"
              format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-            <literal>Resolve Item…</literal> This pops up a dialog 
+            <literal>Resolve Item...</literal> This pops up a dialog 
             allowing the user to resolve the selected to-do item (see 
             <xref linkend="fig.ref.details_resolve_to_do"/>). This is 
             an important dialog, because it allows you to deal with 
@@ -13616,7 +13616,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <imagedata align="center"
              fileref="images/icons/send_email.gif"
              format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-            <literal>Send Email To Expert…</literal> Activating this 
+            <literal>Send Email To Expert...</literal> Activating this 
             tool allows the user to send an Email to an expert asking 
             for advice. This works like clicking a 
             &quot;mailto:users@argouml.tigris.org?subject=[critic 
@@ -13639,7 +13639,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             Initially this period is 10 minutes, but it doubles on each 
             successive application of the Snooze button. The critic can 
             be awakened explicitly through the <literal>
-            Critique &gt; Browse Critics…</literal> menu (see 
+            Critique &gt; Browse Critics...</literal> menu (see 
             <xref linkend="s2.ref.menu_browse_critics"/>).</para>
 
             <tip>
@@ -14814,7 +14814,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             Medium</literal> and <literal>Low</literal>. The priority 
             associated with the to-do items generated by a particular 
             critic may be altered through the <literal>
-            Critique &gt; Browse Critics…</literal> menu (see 
+            Critique &gt; Browse Critics...</literal> menu (see 
             <xref linkend="s2.ref.menu_browse_critics"/>).</para>
 
           </listitem>
@@ -38473,24 +38473,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       <title>Requirements Documents (To be written)</title>
 
-      <remark>To be written…</remark>
+      <remark>To be written...</remark>
       <sect2>
 
         <title>Vision Document (To be written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
       </sect2>
 
       <sect2>
 
         <title>Use Case Specifications (To be written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
         <sect3>
 
           <title>UC Specification 1 (To be written)</title>
 
-          <remark>To be written…</remark>
+          <remark>To be written...</remark>
         </sect3>
 
       </sect2>
@@ -38500,7 +38500,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>Supplementary Requirements Specification (To be 
         written)</title>
 
-        <remark>To be written…</remark>
+        <remark>To be written...</remark>
       </sect2>
 
     </sect1>
@@ -38515,7 +38515,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       <title>The UML specs (To be written)</title>
 
-      <para>To be written…</para>
+      <para>To be written...</para>
 
     </sect1>
 
@@ -38523,13 +38523,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       <title>UML related papers (To be written)</title>
 
-      <para>To be written…</para>
+      <para>To be written...</para>
 
       <sect2>
 
         <title>UML action specifications (To be written)</title>
 
-        <para>To be written…</para>
+        <para>To be written...</para>
 
       </sect2>
 
@@ -38539,7 +38539,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       <title>UML related websites (To be written)</title>
 
-      <para>To be written…</para>
+      <para>To be written...</para>
 
     </sect1>
 
@@ -38553,7 +38553,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       <title>Other Open Source Projects (To be written)</title>
 
-      <para>To be written…</para>
+      <para>To be written...</para>
 
     </sect1>
 
@@ -38561,7 +38561,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       <title>Commercial Tools (To be written)</title>
 
-      <para>To be written…</para>
+      <para>To be written...</para>
 
     </sect1>
 
