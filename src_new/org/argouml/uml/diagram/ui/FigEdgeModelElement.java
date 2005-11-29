@@ -639,15 +639,13 @@ public abstract class FigEdgeModelElement
     // internal methods
 
     /**
-     * This is called after any part of the UML MModelElement has
+     * This is called after any part of the UML ModelElement has
      * changed. This method automatically updates the name FigText.
      * Subclasses should override and update other parts.<p>
      *
      * @param e the event
      */
     protected void modelChanged(PropertyChangeEvent e) {
-        if (getOwner() != null && Model.getUmlFactory().isRemoved(getOwner()))
-            return;
         if (e == null
             || (e.getSource() == getOwner()
                     && "name".equals(e.getPropertyName()))) {
