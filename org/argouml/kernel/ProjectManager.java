@@ -276,6 +276,8 @@ public final class ProjectManager
      * the SaveProject tool icon and the title bar (for showing a *).
      *
      * @param newValue The new state.
+     * @deprecated The save action does this work automatically.
+     * Remove this after 0.20.
      */
     public void setNeedsSave(boolean newValue) {
         boolean oldValue = ActionSaveProject.getInstance().isEnabled();
