@@ -264,7 +264,12 @@ public class SequenceDiagramGraphModel
     public boolean canConnect(Object fromP, Object toP, Object edgeType) {
         
         if (edgeType == CommentEdge.class && 
-                (Model.getFacade().isAComment(fromP) || Model.getFacade().isAComment(fromP))) {
+                (Model.getFacade().isAComment(fromP) || 
+                        Model.getFacade().isAComment(toP)) &&
+                !(Model.getFacade().isAComment(fromP) &&
+                        Model.getFacade().isAComment(toP))) {
+            // We can connect if we get a comment edge and one (only one) node
+            // that is a comment.
             return true;
         }
         
