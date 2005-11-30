@@ -485,6 +485,9 @@ public final class ProjectBrowser
 
     /**
      * @see java.awt.Frame#setTitle(java.lang.String)
+     * TODO: I think we need to rethink this. We should expect getTitle()
+     * to return the same as the value that was set by setTitle. This is
+     * not currently the case.
      */
     public void setTitle(String title) {
         if (title == null || "".equals(title)) {
