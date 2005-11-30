@@ -198,9 +198,9 @@ public abstract class AbstractModelEventPump {
     }
 
     /**
-     * The saveAction is updated (if needed).
+     * Enable the save action.
      */
-    public void fireAction() {
+    public void enableSaveAction() {
         if (saveAction != null && !saveAction.isEnabled()) {
             saveAction.setEnabled(true);
         }
