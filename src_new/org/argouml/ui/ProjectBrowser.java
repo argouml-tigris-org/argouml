@@ -506,7 +506,11 @@ public final class ProjectBrowser
             }
         }
     }
-
+    
+    public void showSaveIndicator() {
+        super.setTitle(getTitle() + " *");
+    }
+    
     /**
      * Updates the window title to contain the latest values for
      * project name, active diagram, and save status.
@@ -854,6 +858,8 @@ public final class ProjectBrowser
         } else if (evt.getPropertyName()
             .equals(ProjectManager.SAVE_STATE_PROPERTY_NAME)) {
             // the save state changed
+            // TODO: remove after 0.20. We don't need to listen for this
+            // but now is not a good time to change.
             updateTitle();
         }
     }

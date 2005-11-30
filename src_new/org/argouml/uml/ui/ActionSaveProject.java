@@ -97,4 +97,18 @@ public class ActionSaveProject extends AbstractAction {
         }
     }
 
+    /**
+     * When we become enabled inform the user by highlighting the title bar
+     * with an asterisk.
+     */
+    public void setEnabled(boolean enabled) {
+        if (enabled == this.enabled) {
+            return;
+        }
+        super.setEnabled(enabled);
+        if (enabled) {
+            ProjectBrowser.getInstance().showSaveIndicator();
+        }
+    }
+
 } /* end class ActionSaveProject */
