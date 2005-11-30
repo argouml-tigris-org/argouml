@@ -49,6 +49,8 @@ public class TabSrc
     extends TabText
     implements ItemListener {
 
+    private static final long serialVersionUID = -4958164807996827484L;
+
     private static final Logger LOG = Logger.getLogger(TabSrc.class);
 
     private Language langName = null;
@@ -67,7 +69,7 @@ public class TabSrc
      */
     public TabSrc() {
         super("tab.source", true);
-        langName = null;
+        langName = (Language) cbLang.getSelectedItem();
         fileName = null;
         getToolbar().add(cbLang);
         getToolbar().addSeparator();
@@ -88,22 +90,45 @@ public class TabSrc
     // accessors
 
     /**
+     * Populate files[] and cbFiles, using the specified element.
+     */
+    private void generateSource(Object elem) {
+	LOG.debug("TabSrc.genText(): getting src for "
+		  + Model.getFacade().getName(elem));
+	Collection code =
+	    GeneratorHelper.generate(langName, elem, false);
+	cbFiles.removeAllItems();
+	if (!code.isEmpty()) {
+	    files = new SourceUnit[code.size()];
+	    files = (SourceUnit[]) code.toArray(files);
+	    for (int i = 0; i < files.length; i++) {
+		String title = files[i].getName();
+		if (files[i].getBasePath().length() > 0) {
+		    title += " ( " + files[i].getFullName() + ")";
+		}
+		cbFiles.addItem(title);
+	    }
+	}
+    }
+
+    /**
      * @see org.argouml.ui.TabText#genText(java.lang.Object)
      */
     protected String genText(Object modelObject) {
-        if (modelObject != getTarget()) {
-            setTarget(modelObject); // shouldn't happen
+        if (files == null) {
+	    generateSource(modelObject);
         }
         if (files != null && files.length > cbFiles.getSelectedIndex())
             return files[cbFiles.getSelectedIndex()].getContent();
-        return "N/A"; // never return null here!
+        return null;
     }
 
     /**
      * @see org.argouml.ui.TabText#parseText(java.lang.String)
      */
     protected void parseText(String s) {
-        LOG.debug("TabSrc   setting src for " + getTarget());
+        LOG.debug("TabSrc   setting src for " 
+                + Model.getFacade().getName(getTarget()));
         Object modelObject = getTarget();
         if (getTarget() instanceof FigNode)
             modelObject = ((FigNode) getTarget()).getOwner();
@@ -111,7 +136,6 @@ public class TabSrc
             modelObject = ((FigEdge) getTarget()).getOwner();
         if (modelObject == null)
             return;
-        LOG.debug("TabSrc   setting src for " + modelObject);
         /* TODO: Implement this! */
         //Parser.ParseAndUpdate(modelObject, s);
     }
@@ -124,24 +148,8 @@ public class TabSrc
     public void setTarget(Object t) {
         Object modelTarget = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
         setShouldBeEnabled(Model.getFacade().isAClassifier(modelTarget));
-        cbFiles.removeAllItems();
-        files = null;
-        if (shouldBeEnabled()) {
-            LOG.debug("TabSrc getting src for " + modelTarget);
-            Collection code =
-                GeneratorHelper.generate(langName, modelTarget, false);
-            if (!code.isEmpty()) {
-                files = new SourceUnit[code.size()];
-                files = (SourceUnit[]) code.toArray(files);
-                for (int i = 0; i < files.length; i++) {
-                    String title = files[i].getName();
-                    if (files[i].getBasePath().length() > 0) {
-                        title += " ( " + files[i].getFullName() + ")";
-                    }
-                    cbFiles.addItem(title);
-                }
-            }
-        }
+	cbFiles.removeAllItems();
+	files = null;
         super.setTarget(t);
     }
 
@@ -169,15 +177,20 @@ public class TabSrc
     public void itemStateChanged(ItemEvent event) {
         if (event.getSource() == cbLang) {
             if (event.getStateChange() == ItemEvent.SELECTED) {
-                langName = (Language) cbLang.getSelectedItem();
-                refresh();
+		Language newLang = (Language) cbLang.getSelectedItem();
+		if (!newLang.equals(langName)) {
+		    langName = newLang;
+		    refresh();
+		}
             }
         } else if (event.getSource() == cbFiles) {
             if (event.getStateChange() == ItemEvent.SELECTED) {
-                fileName = (String) cbFiles.getSelectedItem();
-                super.setTarget(getTarget());
+		String newFile = (String) cbFiles.getSelectedItem();
+		if (!newFile.equals(fileName)) {
+		    fileName = newFile;
+		    super.setTarget(getTarget());
+		}
             }
-
         }
     }
 
