@@ -393,7 +393,7 @@ abstract class NSUMLEventListener implements MElementListener {
      * @param pce The event to send.
      */
     private void fire(PropertyChangeEvent pce) {
-        pump.fireAction();
+        pump.enableSaveAction();
         PropertyChangeListener pcl = getListener();
         if (pcl != null) {
             pcl.propertyChange(pce);
