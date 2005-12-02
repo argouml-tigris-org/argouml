@@ -676,9 +676,12 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenu distribute =
 	    (JMenu) arrange.add(new JMenu(menuLocalize("Distribute")));
 	setMnemonic(distribute, "Distribute");
-        JMenu reorder =
-	    (JMenu) arrange.add(new JMenu(menuLocalize("Reorder")));
-	setMnemonic(reorder, "Reorder");
+    JMenu reorder = null;
+    // TODO: Uncomment these 2 lines after after 0.20.
+    // This is a hack that removes the ordering menu according to issue 3645
+
+//       reorder = (JMenu) arrange.add(new JMenu(menuLocalize("Reorder")));
+//	setMnemonic(reorder, "Reorder");
         JMenu nudge =
 	    (JMenu) arrange.add(new JMenu(menuLocalize("Nudge")));
         setMnemonic(nudge, "Nudge");
