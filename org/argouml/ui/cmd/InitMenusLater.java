@@ -179,26 +179,29 @@ class InitMenusLater implements Runnable {
 	GenericArgoMenuBar.setMnemonic(distributeVCenters,
 				       "distribute vertical centers");
 
-        JMenuItem reorderBringForward =
-	    reorder.add(new CmdReorder(CmdReorder.BRING_FORWARD));
-	GenericArgoMenuBar.setMnemonic(reorderBringForward,
-				       "reorder bring forward");
+        if (reorder != null) {
+            JMenuItem reorderBringForward =
+                reorder.add(new CmdReorder(CmdReorder.BRING_FORWARD));
+                GenericArgoMenuBar.setMnemonic(reorderBringForward,
+                               "reorder bring forward");
 
-        JMenuItem reorderSendBackward =
-	    reorder.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
-	GenericArgoMenuBar.setMnemonic(reorderSendBackward,
-				       "reorder send backward");
+                JMenuItem reorderSendBackward =
+                reorder.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
+                GenericArgoMenuBar.setMnemonic(reorderSendBackward,
+                               "reorder send backward");
 
-        JMenuItem reorderBringToFront =
-	    reorder.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
-	GenericArgoMenuBar.setMnemonic(reorderBringToFront,
-				       "reorder bring to front");
+                JMenuItem reorderBringToFront =
+                reorder.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
+                GenericArgoMenuBar.setMnemonic(reorderBringToFront,
+                               "reorder bring to front");
 
-        JMenuItem reorderSendToBack =
-	    reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
-	GenericArgoMenuBar.setMnemonic(reorderSendToBack,
-				       "reorder send to back");
+                JMenuItem reorderSendToBack =
+                reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
+                GenericArgoMenuBar.setMnemonic(reorderSendToBack,
+                               "reorder send to back");
 
+        }
+        
         JMenuItem nudgeLeft = nudge.add(new CmdNudge(CmdNudge.LEFT));
 	GenericArgoMenuBar.setMnemonic(nudgeLeft, "nudge left");
 
