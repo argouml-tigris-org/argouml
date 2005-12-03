@@ -29,7 +29,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Toolkit;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.JDialog;
@@ -140,20 +140,20 @@ public class AboutBox extends JDialog {
         /* It looks better if the height increases, too */
         imgHeight += 40 + 40;
         myInsetPanel.add(splashPanel);
-        tabs.addTab("Splash", myInsetPanel);
+        tabs.addTab(localize("aboutbox.tab.splash"), myInsetPanel);
 
-	tabs.addTab("Version", createPane(getVersion()));
-	tabs.addTab("Credits", createPane(getCredits()));
+	tabs.addTab(localize("aboutbox.tab.version"), createPane(getVersion()));
+	tabs.addTab(localize("aboutbox.tab.credits"), createPane(getCredits()));
 
-	tabs.addTab("Contact Info",
+	tabs.addTab(localize("aboutbox.tab.contacts"),
 		     createPane(localize("aboutbox.contacts")));
-	tabs.addTab("Report bugs",
+	tabs.addTab(localize("aboutbox.tab.bugreport"),
 		     createPane(localize("aboutbox.bugreport")));
-	tabs.addTab("Legal",
+	tabs.addTab(localize("aboutbox.tab.legal"),
 		     createPane(localize("aboutbox.legal")));
 
 	// Add the About tabs from the modules.
-	ArrayList list = Argo.getPlugins(PluggableAboutTab.class);
+	List list = Argo.getPlugins(PluggableAboutTab.class);
 	ListIterator iterator = list.listIterator();
 	while (iterator.hasNext()) {
 	    Object o = iterator.next();
