@@ -28,6 +28,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
@@ -99,6 +100,8 @@ public final class ProjectManager
      */
     private boolean creatingCurrentProject;
 
+    private Action saveAction;
+    
     /**
      * The listener list.
      */
@@ -260,14 +263,9 @@ public final class ProjectManager
         }
         return currentProject;
     }
-
-    /**
-     * Test if the model needs to be saved.
-     *
-     * @return <code>true</code> if the model needs to be saved.
-     */
-    public boolean needsSave() {
-        return ActionSaveProject.getInstance().isEnabled();
+    
+    public void setSaveAction(Action saveAction) {
+        this.saveAction = saveAction;
     }
 
     /**
@@ -276,17 +274,10 @@ public final class ProjectManager
      * the SaveProject tool icon and the title bar (for showing a *).
      *
      * @param newValue The new state.
-     * @deprecated The save action does this work automatically.
-     * Remove this after 0.20.
      */
     public void setNeedsSave(boolean newValue) {
-        boolean oldValue = ActionSaveProject.getInstance().isEnabled();
-
-        if (oldValue != newValue) {
-            ActionSaveProject.getInstance().setEnabled(newValue);
-            firePropertyChanged(SAVE_STATE_PROPERTY_NAME,
-                            new Boolean(!newValue),
-                            new Boolean(newValue));
+        if (saveAction != null) {
+            saveAction.setEnabled(newValue);
         }
     }
 
