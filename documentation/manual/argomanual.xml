@@ -8087,7 +8087,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </sect2>
 
-        <sect2>
+        <sect2 id="s2.ref.menu_export_graphics">
 
           <title>Export Graphics...</title>
 
@@ -8276,10 +8276,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>The Edit Menu</title>
 
-        <para>This menu provides support for selecting artifacts on the 
-        editing pane; cut, copy and paste functions; removal of 
-        artifacts from diagrams and the model; and control of user 
-        settings.</para>
+        <para>This menu provides support for 
+        selecting artifacts on the editing pane; 
+        removal of artifacts from diagrams and the model; 
+        and control of user settings.</para>
 
         <sect2 id="s2.ref.menu_select">
 
@@ -8374,6 +8374,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </sect2>
 
+<!--
         <sect2 id="s2.ref.menu_cut">
 
           <title><guiicon><inlinemediaobject><imageobject>
@@ -8399,7 +8400,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </warning>
 
         </sect2>
-
+-->
+<!--
         <sect2 id="s2.ref.menu_copy">
 
           <title><guiicon><inlinemediaobject><imageobject>
@@ -8424,7 +8426,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </warning>
 
         </sect2>
-
+-->
+<!--
         <sect2 id="s2.ref.menu_paste">
 
           <title><guiicon><inlinemediaobject><imageobject>
@@ -8450,6 +8453,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </warning>
 
         </sect2>
+-->
 
         <sect2 id="s2.menu_edit_remove_from_diagram">
 
@@ -8468,7 +8472,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           diagram, but not from the model.</para>
 
           <para>The modelelement can be re-added to the diagram by 
-          button 2 click on the modelelement in the explorer.</para>
+          button 2 click on the modelelement in the explorer, 
+          or by dragging it onto the diagram.</para>
 
         </sect2>
 
@@ -8565,9 +8570,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           corner in the border of the window) causes the same effect as 
           <literal>Cancel</literal>.</para>
 
-          <para>These settings can be saved for use by subsequent 
-          ArgoUML sessions (see 
-          <xref linkend="s2.ref.menu_save_config"/>).</para>
+          <para>These settings are saved persistently for use by subsequent 
+          ArgoUML sessions.</para>
 
           <sect3>
 
@@ -8606,26 +8610,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para><literal>Report Usage Statistics</literal> (set 
-                by default). This setting has no effect in V0.18 of 
-                ArgoUML.</para>
-
-              </listitem>
-
-              <listitem>
-
-                <para><literal>Report on Load Times</literal> (clear by 
-                default). If enabled, load times at start up for the 
-                various phases of initialization are reported when the 
-                &quot;info&quot; level of logging is switched on — 
-                something a user is not able to do. These times are 
-                only visible for and of use to developers — they have 
-                no meaning to the ordinary user.</para>
-
-              </listitem>
-
-              <listitem>
-
                 <para><literal>Reload last saved project on 
                 startup</literal> (clear by default). Check this item 
                 if you always work on the same project, and wish to 
@@ -8642,8 +8626,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <title>Environment Tab</title>
 
             <para>Selecting the <literal>Environment</literal> tab 
-            (button 1 click on the tab) lists seven environmental 
-            items. Note that none of these can be set — this tab is 
+            (button 1 click on the tab) lists several environmental items. 
+            Note that none of the paths can be altered — these are 
             just a matter of record.</para>
 
             <figure float="1">
@@ -8658,6 +8642,30 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             </figure>
 
             <itemizedlist>
+
+              <listitem>
+
+                <para><literal>Default Graphics Format</literal>. 
+                Here you can select the same graphics formats as in the 
+                menu <xref linkend="s2.ref.menu_export_graphics"/>.
+                The chosen format is selected by default 
+                in the Export Graphics and Export All Graphics menu-items.
+                </para>
+
+              </listitem>
+
+              <listitem>
+
+                <para><literal>Graphics Export Resolution</literal>.
+                This allows you to artificially increase 
+                the resolution of produced graphics.
+                The advised setting is "Standard". 
+                To be able to use "High" or "Extra High", 
+                you usually need to start the Java virtual machine 
+                with extra memory.
+                </para>
+
+              </listitem>
 
               <listitem>
 
@@ -8741,14 +8749,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para><literal>Full Name:</literal>. Allows the user to 
+                <para><literal>Full Name</literal>. Allows the user to 
                 record her full name.</para>
 
               </listitem>
 
               <listitem>
 
-                <para><literal>Email Address:</literal>. Allows the 
+                <para><literal>Email Address</literal>. Allows the 
                 user to record his Email address.</para>
 
               </listitem>
@@ -8785,21 +8793,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para><literal>Use only UML notation</literal> (clear 
                 by default). This feature allows changing the notation 
-                (i.e. language: UML, Java,...) used on the diagrams and 
-                in the source tab of the details pane. Suppose that a 
+                (i.e. language: UML, Java,...) used on the diagrams. 
+                Suppose that a 
                 designer creates a diagram and indicates that the 
                 notation of the diagram is Java. Someone viewing the 
                 diagram with &quot;Use only UML notation&quot; checked 
                 will <emphasis>only</emphasis> see UML notation in the 
-                classes and source tab no matter what notation the 
+                classes no matter what notation the 
                 designer has used. See also 
                 <xref linkend="s2.ref.menu_notation"/>).</para>
 
                 <warning>
 
                   <para>If this setting is checkmarked, then the 
-                  language selector combobox on the source tab of the 
-                  details pane does not appear. On the other hand, the 
                   menuitem View-&gt;Notation remains available, but 
                   changing it has no effect.</para>
 
@@ -8849,6 +8855,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para><literal>Show properties</literal> (clear by 
                 default) (To be written)</para>
+
+              </listitem>
+
+              <listitem>
+
+                <para><literal>Show types and parameters</literal> 
+                (set by default). When this checkbox is unmarked, 
+                attributes in classes are shown without type indication, 
+                and operations are shown without parameters.
+                This feature may be usefull during 
+                the analysis phase of your project.</para>
 
               </listitem>
 
