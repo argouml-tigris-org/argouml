@@ -25,10 +25,14 @@ sums are correct and that it is regularly updated!
 <!-- Tigris CSS seems to be overriding td align="right" for some browsers -->
 <STYLE type="text/css">
   TABLE.stats TD, TABLE.stats TH { text-align : right }
+  TD[align="right"], TH[align="right"] { text-align : right !important }
+  TD[align="left"], TH[align="left"] { text-align : left !important}
+  TD[align="center"], TH[align="center"] { text-align : center !important}
 </STYLE>
 
 <div class="h2" id="d0181">
 <H2><a name="0181">Downloads of ArgoUML 0.18.1</a></H2>
+<p>
 ArgoUML 0.18.1 was released on 30th of April 2005.<p>
 This only counts the downloads through the argouml project.
 Since 0.18.1, downloads are also available through the
@@ -39,7 +43,7 @@ These are not currently included in the count.
 <tr>
 <th>
 When
-</th><th>
+</th><th align="center">
 zip
 </th><th>
 tar.gz
@@ -193,7 +197,7 @@ Total
 </td><td align="right">
 35710
 </td>
-<td>
+<td align="left">
 (Downloads of interim 0.16 release.  Not included 0.16.1 total.)
 </td>
 </tr>
@@ -533,6 +537,7 @@ June 2-11, 2004 which may have been the result of a runaway script.
 
 <div class="h2" id="explanation">
 <H2>How do we count?</H2>
+<p>
 These counts are based on the download counts from our web site.<p>
 
 In an attempt to let the figures reflect the amount of people that have
