@@ -239,6 +239,8 @@ public final class ProjectBrowser
             ResourceLoaderWrapper.lookupIconResource("ArgoIcon");
         this.setIconImage(argoImage.getImage());
         //
+        ProjectManager.getManager().setSaveAction(
+                ActionSaveProject.getInstance());
 
         // adds this as listener to projectmanager so it gets updated when the
         // project changes
@@ -495,7 +497,7 @@ public final class ProjectBrowser
         } else {
             // ask the Project if we are "dirty" - i.e. need to save
             String changeIndicator = "";
-            if (ProjectManager.getManager().needsSave()) {
+            if (ActionSaveProject.getInstance().isEnabled()) {
                 changeIndicator = " *";
             }
             ArgoDiagram activeDiagram =
@@ -1046,7 +1048,7 @@ public final class ProjectBrowser
         Project p = ProjectManager.getManager().getCurrentProject();
 
 
-        if (p != null && ProjectManager.getManager().needsSave()) {
+        if (p != null && ActionSaveProject.getInstance().isEnabled()) {
             String t =
                 MessageFormat.format(Translator.localize(
                         "optionpane.open-project-save-changes-to"),
