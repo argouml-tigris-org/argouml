@@ -92,8 +92,15 @@ public class ActionAddNote extends UMLAction {
         Iterator i = targets.iterator();
         while (i.hasNext()) {
             Object obj = i.next();
+            Fig destFig = diagram.presentationFor(obj);
+            if (destFig instanceof FigEdgeModelElement) {
+                FigEdgeModelElement destEdge = (FigEdgeModelElement) destFig;
+                destEdge.makeCommentPort();
+                destFig = destEdge.getCommentPort();
+                destEdge.calcBounds();
+            }
             if (Model.getFacade().isAModelElement(obj)
-                    && (diagram.presentationFor(obj) instanceof FigNode)
+                    && (destFig instanceof FigNode)
                     && (!(Model.getFacade().isAComment(obj)))) {
                 if (firstTarget == null) firstTarget = obj;
                 /* Prevent e.g. AssociationClasses from being added trice: */
@@ -129,6 +136,9 @@ public class ActionAddNote extends UMLAction {
             Fig elemFig = diagram.presentationFor(firstTarget);
             if (elemFig == null)
                 return;
+            if (elemFig instanceof FigEdgeModelElement) {
+                elemFig = ((FigEdgeModelElement) elemFig).getCommentPort();
+            }
             if (elemFig instanceof FigNode) {
                 // TODO: We need a better algorithm.
                 x = elemFig.getX() + elemFig.getWidth() + DISTANCE;
