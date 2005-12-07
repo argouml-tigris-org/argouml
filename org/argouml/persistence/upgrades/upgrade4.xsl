@@ -4,6 +4,22 @@
 	<xsl:output method="xml" indent="yes"/>
 	<xsl:preserve-space elements="uml"/>
 
+
+<!-- Make sure pgml members appear immediately after xmi -->
+    <!-- First remove all pgml members from wherever they are-->
+	<xsl:template match='member[./@type = "pgml"]'>
+    </xsl:template>
+    
+    <!-- Now reintroduce pgml members after xmi member -->
+	<xsl:template match='member[./@type = "xmi"]'>
+        <member type="{@type}" name="{@name}"/>
+        <xsl:for-each select="/uml/pgml">
+            <member type="pgml" name="diagram"/>
+        </xsl:for-each>
+    </xsl:template>
+
+
+
 <!-- 
 Fix Association Classes so that the dashed edge has both a source and
 destination node. This involves creating a new node Fig (FigAssociationClassTee)
