@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
-"http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd">
+"../docbook-setup/docbookx/docbookx.dtd">
 <!-- $Id$ -->
 <!--
 Copyright (c) 1996-2005 The Regents of the University of California. All
@@ -9026,10 +9026,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <warning>
 
-            <para>The V0.18 imlementation of ArgoUML does not 
+            <para>The V0.20 implementation of ArgoUML does not 
             inmediately update the dialog box with changes made to 
             diagrams: change of name, addition of diagrams, deletion of 
-            diagrams.</para>
+            diagrams.<!-- This is issue 2475. -->
+            </para>
 
           </warning>
 
@@ -9059,7 +9060,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <literal>Name and Location</literal>, <literal>
           Last Modified</literal>, <literal>Tagged Values</literal> and 
           <literal>Constraints</literal>. Of these all but the first 
-          are grayed out in the V0.18 version of ArgoUML (because they 
+          are grayed out in the V0.20 version of ArgoUML (because they 
           are not imlemented yet), so the first tab is always 
           selected.</para>
 
@@ -9211,7 +9212,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>This dialog box is not modal, which allows it to 
             remain open while editing the model for easy navigation. 
-            But the V0.18 imlementation of ArgoUML does not inmediately 
+            But the V0.20 implementation of ArgoUML does not inmediately 
             update the dialog box with changes made to the found 
             artifacts: change of artifact name, change of diagram name. 
             Deletion of a diagram does not stop the possibility to 
@@ -9345,7 +9346,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <caution>
 
-            <para>In the V0.18 version of ArgoUML this is not actually 
+            <para>In the V0.20 version of ArgoUML this is not actually 
             a true snap to grid. It just defines the increments by 
             which artifacts are moved around. Thus if an item has an X 
             coordinate of 4 and Grid Snap is set to 8, moving will take 
@@ -9371,7 +9372,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <warning>
 
             <para>This menu-item is incorrectly implemented in the 
-            V0.18 version of ArgoUML, since it should be a tick box 
+            V0.20 version of ArgoUML, since it should be a tick box 
             toggle.</para>
 
           </warning>
@@ -9388,58 +9389,31 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <xref linkend="s3.ref.menu_settings_notations"/>).</para>
 
           <para>This feature defines the user&apos;s default notation. 
-          ArgoUML allows defining a class in a diagram as being 
-          represented using a specific notation.</para>
+          </para>
 
-          <para>There are 3 ways to set the notation for a figure on a 
-          diagram:</para>
+          <para>There are 2 ways to set the notation for the 
+          diagrams:</para>
 
           <itemizedlist>
 
             <listitem>
 
               <para>In the settings dialog, by choosing &quot;Use only 
-              UML notation&quot; which overrides the other 2 for all 
-              figures.</para>
+              UML notation&quot; which overrides the other method.</para>
 
             </listitem>
 
             <listitem>
 
-              <para>In the View menu, item Notation. This overrides the 
-              settings made for all figures on all diagrams! So, 
-              changing this radio button is really an action, which 
-              resets all individually made choices, as described in the 
-              next method:</para>
-
-            </listitem>
-
-            <listitem>
-
-              <para>In the details pane, in the source tab, by directly 
-              selecting the language for the selected figure in the 
-              combobox for the language. This setting is not saved 
-              persistently.</para>
+              <para>In the View menu, item Notation. This determines  
+              how all textual adornments of figures on all diagrams are shown.
+              </para>
 
             </listitem>
 
           </itemizedlist>
 
-          <para>For example a class <literal>Able</literal> which is 
-          represented in Java, and class <literal>Baker</literal> which 
-          is represented in C++, with class <literal>Able</literal> 
-          using class <literal>Baker</literal> and a class <literal>
-          Charlie</literal> which references <literal>Able</literal>, 
-          but does not have a specific notation defined for the diagram 
-          element.</para>
-
-          <para>In this situation, <literal>Charlie</literal> would be 
-          represented in the default notation, while <literal>
-          Able</literal> and <literal>Baker</literal> would be 
-          represented as defined in the diagram element. Changing the 
-          default notation would cause <literal>
-          Charlie</literal>&apos;s notation to change but not <literal>
-          Able</literal> or <literal>Baker</literal>.</para>
+          <para>The following 2 notations are build in ArgoUML:</para>
 
           <itemizedlist>
 
@@ -9450,7 +9424,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/uml_notation.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>UML 1.3</literal>. Uses UML notation as the 
-              default notation for classes.</para>
+              default notation for every modelelement on any diagram.</para>
 
             </listitem>
 
@@ -9461,7 +9435,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/java_notation.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Java</literal>. Uses Java notation as the 
-              default notation for classes.</para>
+              default notation for every modelelement on any diagram.</para>
 
             </listitem>
 
