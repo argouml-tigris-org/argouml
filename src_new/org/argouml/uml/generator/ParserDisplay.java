@@ -685,8 +685,8 @@ public final class ParserDisplay {
      * All elements are optional and, if left unspecified, will preserve their
      * old values.<p>
      *
-     * A <em>stereotype</em> can be given between any element in the line on the
-     * form: &lt;&lt;stereotype&gt;&gt;<p>
+     * <em>Stereotypes</em> can be given between any element in the line on the
+     * form: &lt;&lt;stereotype1,stereotype2,stereotype3&gt;&gt;<p>
      *
      * The following properties are recognized to have special meaning:
      * abstract, concurrency, concurrent, guarded, leaf, query, root and
@@ -734,7 +734,7 @@ public final class ParserDisplay {
                 } else if ("<<".equals(token)) {
                     if (stereotype != null) {
                         throw new ParseException("Operations cannot have two "
-                                + "stereotypes", st.getTokenIndex());
+                                + "sets of stereotypes", st.getTokenIndex());
                     }
                     stereotype = "";
                     while (true) {
@@ -899,15 +899,7 @@ public final class ParserDisplay {
             setProperties(op, properties, operationSpecialStrings);
         }
 
-        if (stereotype != null) {
-            stereotype = stereotype.trim();
-            Object stereo = getStereotype(op, stereotype);
-            if (stereo != null) {
-                Model.getCoreHelper().setStereotype(op, stereo);
-            } else if ("".equals(stereotype)) {
-                Model.getCoreHelper().setStereotype(op, null);
-            }
-        }
+        dealWithStereotypes(op, stereotype);
     }
 
     /**
@@ -1165,10 +1157,10 @@ public final class ParserDisplay {
      * initial-value and before the type or end (to allow java-style array
      * indexing in the initial value). It must be given on form [multiplicity]
      * with the square brackets included.
-     * <li>Stereotype can be given between any element except after the
+     * <li>Stereotypes can be given between any element except after the
      * initial-value and before the type or end (to allow java-style bit-shifts
      * in the initial value). It must be given on form
-     * &lt;&lt;stereotype&gt;&gt;.
+     * &lt;&lt;stereotype1,stereotype2,stereotype3&gt;&gt;.
      * </ul>
      *
      * The following properties are recognized to have special meaning:
@@ -1192,7 +1184,6 @@ public final class ParserDisplay {
         String multiplicity = null;
         String name = null;
         Vector properties = null;
-        Collection stereotypes = new ArrayList();
         String stereotype = null;
         String token;
         String type = null;
@@ -1426,7 +1417,22 @@ public final class ParserDisplay {
             setProperties(attribute, properties, attributeSpecialStrings);
         }
 
+        dealWithStereotypes(attribute, stereotype);
+    }
 
+    /**
+     * This function shall replace the previous set of stereotypes 
+     * of the given modelelement with a new set, 
+     * given in the form of a "," seperated string of stereotype names.
+     * 
+     * @param umlobject the UML element to adapt
+     * @param stereotype comma seperated stereotype names
+     */
+    private void dealWithStereotypes(Object umlobject, String stereotype) {
+        String token;
+        MyTokenizer mst;
+        Collection stereotypes = new ArrayList();
+        
         /* Convert the string (e.g. "aaa,bbb,ccc") 
          * into seperate stereotype-names (e.g. "aaa", "bbb", "ccc").
          */
@@ -1440,14 +1446,20 @@ public final class ParserDisplay {
             }
         }
         
-        // remove stereotypes
-        Iterator i = Model.getFacade().getStereotypes(attribute).iterator();
+        // collect the to be removed stereotypes
+        Collection toBeRemoved = new ArrayList();
+        Iterator i = Model.getFacade().getStereotypes(umlobject).iterator();
         while (i.hasNext()) {
             String stereotypename = Model.getFacade().getName(i.next());
             if (!stereotypes.contains(stereotypename)) {
-                Object umlstereo = getStereotype(attribute, stereotypename);
-                Model.getCoreHelper().removeStereotype(attribute, umlstereo);
+                toBeRemoved.add(getStereotype(umlobject, stereotypename));
             }
+        }
+        
+        // and now remove them
+        i = toBeRemoved.iterator();
+        while(i.hasNext()) {
+            Model.getCoreHelper().removeStereotype(umlobject, i.next());
         }
 
         // add stereotypes
@@ -1455,9 +1467,9 @@ public final class ParserDisplay {
             i = stereotypes.iterator();
             while (i.hasNext()) {
                 String stereotypename = (String) i.next();
-                Object umlstereo = getStereotype(attribute, stereotypename);
+                Object umlstereo = getStereotype(umlobject, stereotypename);
                 if (umlstereo != null) {
-                    Model.getCoreHelper().addStereotype(attribute, umlstereo);
+                    Model.getCoreHelper().addStereotype(umlobject, umlstereo);
                 }
             }
         }
