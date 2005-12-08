@@ -54,7 +54,6 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.generator.GeneratorDisplay;
-import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
@@ -268,13 +267,15 @@ public class ExplorerTree
 
             // Look for stereotype
             if (showStereotype) {
-                // TODO: MULTIPLESTEREOTYPES
-                Object stereo =
-                    CollectionUtil.getFirstItemOrNull(
-                        Model.getFacade().getStereotypes(value));
-                if (stereo != null) {
-                    name += " " + GeneratorDisplay.getInstance()
-                        .generate(stereo);
+                Iterator i = Model.getFacade().getStereotypes(value).iterator();
+                Object stereo;
+                while(i.hasNext()) {
+                    stereo = i.next();
+                    name += " " 
+                        + GeneratorDisplay.getInstance().generate(stereo);
+                }
+                if (name != null && name.length() > 80) {
+                    name = name.substring(0, 80) + "...";
                 }
             }
 
