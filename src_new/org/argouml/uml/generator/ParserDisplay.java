@@ -447,7 +447,7 @@ public final class ParserDisplay {
             return;
         }
         String s = text.substring(start, end).trim();
-        if (s == null || s.length() == 0) {
+        if (s.length() == 0) {
             //no non-whitechars in text? remove op!
             currentProject.moveToTrash(operation);
             TargetManager.getInstance().setTarget(classifier);
@@ -461,7 +461,7 @@ public final class ParserDisplay {
         end = indexOfNextCheckedSemicolon(text, start);
         while (end > start && end <= text.length()) {
             s = text.substring(start, end).trim();
-            if (s != null && s.length() > 0) {
+            if (s.length() > 0) {
                 // yes, there are more:
                 Collection propertyChangeListeners =
                     currentProject.findFigsForMember(classifier);
@@ -1192,6 +1192,7 @@ public final class ParserDisplay {
         String multiplicity = null;
         String name = null;
         Vector properties = null;
+        Collection stereotypes = new ArrayList();
         String stereotype = null;
         String token;
         String type = null;
@@ -1200,7 +1201,7 @@ public final class ParserDisplay {
         boolean hasColon = false;
         boolean hasEq = false;
         int multindex = -1;
-        MyTokenizer st;
+        MyTokenizer st, mst;
 
         text = text.trim();
         if (text.length() > 0 && VISIBILITYCHARS.indexOf(text.charAt(0)) >= 0) {
@@ -1225,9 +1226,8 @@ public final class ParserDisplay {
                         // TODO: MULTIPLESTEREOTYPES
                         if (stereotype != null) {
                             throw new ParseException(
-                                    "Attribute cannot have two"
-                                            + " stereotypes", st
-                                            .getTokenIndex());
+                                "Attribute cannot have two sets of stereotypes", 
+                                st.getTokenIndex());
                         }
                         stereotype = "";
                         while (true) {
@@ -1426,13 +1426,39 @@ public final class ParserDisplay {
             setProperties(attribute, properties, attributeSpecialStrings);
         }
 
+
+        /* Convert the string (e.g. "aaa,bbb,ccc") 
+         * into seperate stereotype-names (e.g. "aaa", "bbb", "ccc").
+         */
         if (stereotype != null) {
-            stereotype = stereotype.trim();
-            Object stereo = getStereotype(attribute, stereotype);
-            if (stereo != null) {
-                Model.getCoreHelper().setStereotype(attribute, stereo);
-            } else if ("".equals(stereotype)) {
-                Model.getCoreHelper().setStereotype(attribute, null);
+            mst = new MyTokenizer(stereotype, " ,\\,");
+            while (mst.hasMoreTokens()) {
+                token = mst.nextToken();
+                if (!",".equals(token) && !" ".equals(token)) {
+                    stereotypes.add(token);
+                }
+            }
+        }
+        
+        // remove stereotypes
+        Iterator i = Model.getFacade().getStereotypes(attribute).iterator();
+        while (i.hasNext()) {
+            String stereotypename = Model.getFacade().getName(i.next());
+            if (!stereotypes.contains(stereotypename)) {
+                Object umlstereo = getStereotype(attribute, stereotypename);
+                Model.getCoreHelper().removeStereotype(attribute, umlstereo);
+            }
+        }
+
+        // add stereotypes
+        if (!stereotypes.isEmpty()) {
+            i = stereotypes.iterator();
+            while (i.hasNext()) {
+                String stereotypename = (String) i.next();
+                Object umlstereo = getStereotype(attribute, stereotypename);
+                if (umlstereo != null) {
+                    Model.getCoreHelper().addStereotype(attribute, umlstereo);
+                }
             }
         }
     }
@@ -2572,7 +2598,7 @@ public final class ParserDisplay {
 
         if (fname != null) {
             String expr = fname.trim();
-            if (varname != null && varname.length() > 0) {
+            if (varname.length() > 0) {
                 expr = varname.trim() + " := " + expr;
             }
 
