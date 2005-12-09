@@ -143,7 +143,8 @@ public abstract class FigState extends FigStateVertex {
             }
             // we don't have to act on incoming and outgoing
             // transitions since that doesn't change the fig.
-        } else if (Model.getFacade().getInternalTransitions(getOwner())
+        } else if (getOwner() != null)
+            if (Model.getFacade().getInternalTransitions(getOwner())
                 .contains(mee.getSource())
                 || // the internal transitions
                 (mee.getSource() == Model.getFacade().getEntry(getOwner()))
