@@ -45,7 +45,7 @@ with other users?</a></li>
 
 <H4>Java Web Start</H4>
 <ul>
-<li><a href="#jwswhatisit">What is JavaWebStart?</a></li>
+<li><a href="#jwswhatisit">What is Java Web Start?</a></li>
 <li><a href="#jwshowtoinstall">How do I install Java Web Start?</a></li>
 <li><a href="#jwsbadmime">It says Bad MIME type.</a></li>
 <li><a href="#jwsexpired">The certificate has expired.</a></li>
@@ -87,8 +87,8 @@ with other users?</a></li>
 <li><a href="#savsvg_link">How do I save my diagram as .SVG?</a>
 <li><a href="#eps_link">Can I save my diagram as EPS with a preview image?</a>
 <li><a href="#output_link">Can I output my entire project as an HTML?</a>
-<li><a href="#part_link">Can I control what part of a diagram that shall be saved so as to only save a fraction?</a>
-<li><a href="#xmic_link">Does ArgoUML generate an XMI document?</a>
+<li><a href="#part_link">Can I save just part of a diagram?</a>
+
 </ul>
 
 <H4>Other topics</H4>
@@ -97,7 +97,7 @@ with other users?</a></li>
 <li><a href="#sanity_link">Is there a mechanism to do a sanity check in ArgoUML and enforce that sanity check?</a>
 <li><a href="#empty_zargo">I saved a project from ArgoUML, and then when I opened it later ArgoUML said it was empty. What can I do?</a>
 <li><a href="#strange_language">I started ArgoUML and it is in
-Russion/Spanish/French/German.
+Russian/Spanish/French/German.
 Why? How can I configure it so it will be in English?</a> 
 <li><a href="#ati_bug">Why are the links not displayed correctly?</a>
 </ul>
@@ -270,27 +270,12 @@ products have been diverging and are now very different.
 
 <DT><a name="uml_versions">What versions of UML are supported?</a>
 <DD>
-We currently only support UML1.3.
-
+ArgoUML versions through version 0.18.1 support UML 1.3.  Beginning with version 
+0.20 in early 2006, ArgoUML will support UML 1.4.
 <p>
-There are various hurdles to get through before UML2.
-
-<p>
-We are currently using the NSUML model repository and this ties us to UML1.3.
-
-<p>
-By moving instead to JMI we will have an upgrade path.
-
-<p>
-The plans for moving to JMI are
-<a href="http://argouml.tigris.org/project_schedule.html">here</a>
-but due to the nature of open 
-source development are subject to change at any time.
-
-<p>
-The current release plan only goes as far as replacing NSUML. Plans have not 
-yet been finalized for how to progress from there.
-
+Support of UML 2.0 probably won't happen until a new version of JMI is defined
+    which supports UML 2.0 and there is an open source implementation which
+    supports it.
 
 
 <DT><a name="help_link">When I click on help I get sent to a server for example:
@@ -405,28 +390,24 @@ what really happens in this case.
 
 <A NAME="jws"><h3>Java Web Start (JWS)</h3></A>
 
-<DT><a name="jwswhatisit" />What is JavaWebStart?</a>
+<DT><a name="jwswhatisit" />What is Java Web Start?</a>
 <DD>
-It is a way to download and install and launch java applications via
-the web.  Once you have JWS installed, you can launch ArgoUML by
-clicking on a link.  
-You can also add an ArgoUML icon to your desktop.
-If you are using the JWS file for the "latest" stable or development
-release, you will automatically upgrade to new releases as they are
-made available.
+It is a way to download and install and launch Java applications with
+a single click and have the updated automatically when new versions
+are available.
 <P>
-You will need to download and install Java Web Start though
-(unless you are on Mac OS 10 where it is included).
+Java Web Start is included with recent Java Runtime Environments
+include Java 1.4.2 and Java 5/1.5.
 <P>
 For more information, see the <a
-href="http://java.sun.com/products/javawebstart/">JavaWebStart product
+href="http://java.sun.com/products/javawebstart/">Java Web Start product
 page</a>.
 
-
-<DT><a name="jwshowtoinstall" />How do I install JavaWebStart?</a>
+<DT><a name="jwshowtoinstall" />How do I install Java Web Start?</a>
 <DD>
-See the installation instructions on the Sun web site: 
-<a href="http://java.sun.com/products/javawebstart/">JavaWebStart</a>.
+If you have a recent JRE, you probably don't need to, but if you do,
+see the installation instructions on the Sun web site: 
+<a href="http://java.sun.com/products/javawebstart/">Java Web Start</a>.
 <P>
 In particular, note that Mozilla and Netscape 6.x 
 users must take an additional step
@@ -633,24 +614,11 @@ nudge (move a little bit) elements.
 <DT><a name="sequence_diagrams_not_working">
       Why don't the sequence diagrams work?
     </a>
-<DD>In 0.10.1 they should be working.
-This implementation is however not faithful to UML,
-nor to the look and feel of the rest of ArgoUML.
+<DD>Sequence diagrams stopped working in 0.12
+and were disabled completely through 0.18.1.
 <p>
-
-In 0.12 there are problems with the sequence diagrams.
-Among other things the arrow heads does not appear.
-<p>
-
-In 0.14, 0.16, and 0.18
-the sequence diagrams are completely turned off and should not
-be working.
-<p>
-
-A new implementation will be made.
-We are very eager for this new implementation to work correctly so
-if you can <a href="#helpdeveloping">help</a> with this,
-please join the development.
+Sequence diagrams have been reintroduced with
+ArgoUML 0.20 with a completely new implementation.
 
 
 <DT><a name="ord_link">I'm trying to change the ordering of the links in the sequence
@@ -674,7 +642,7 @@ Then click on the note icon.
 ArgoUML will generate the link automatically.
 
 <p>
-You can also right click to add a note as well!
+You can also right click to add a note as well.
 
 <p>
 Be aware that your note will not appear in the source code
@@ -689,63 +657,54 @@ navigation pane (the left pane tree view).
 <DT><a name="model_link">Where can I find some sample ArgoUML models?</a>
 <DD>There are some models at:
 <ul>
-<li><a href="http://argouml.tigris.org/models/addisonwesley/UMLDistilled.zargo">http://argouml.tigris.org/models/addisonwesley/UMLDistilled.zargo</a>
-<li><a href="http://argouml.tigris.org/models/omg/uml13.zargo">http://argouml.tigris.org/models/omg/uml13.zargo</a>
-<li><a href="http://argouml.tigris.org/models/omg/uml14.zargo">http://argouml.tigris.org/models/omg/uml14.zargo</a>
-<li><a href="http://argouml.tigris.org/models/oreilly/nutshell4.zargo">http://argouml.tigris.org/models/oreilly/nutshell4.zargo</a>
+<li><a href="http://argouml.tigris.org/models/addisonwesley/UMLDistilled.zargo">Diagrams from <i>UML Distilled</i></a>
+<li><a href="http://argouml.tigris.org/models/omg/uml13.zargo">Diagrams from UML 1.3 specification (chapter 2 only)</a>
+<li><a href="http://argouml.tigris.org/models/omg/uml14.zargo">Diagrams from UML 1.4 </a>
+<li><a href="http://argouml.tigris.org/models/oreilly/nutshell4.zargo">Diagrams from O'Reilly Nutshell book</a>
 </ul>
-Alas they are very old and also reported not to be working.
-This is one of the things where we need to 
-<A HREF="#helpdeveloping">do more work</A>.
+Most of these are incomplete, so if you'd like to to
+<A HREF="#helpdeveloping">do more work</A> on them
+or create additional examples, the contribution would be welcome.
 </DL>
 
 <H3>XMI and other formats</H3>
 <DL>
-<DT><a name="xmia_link">Does ArgoUML save .xmi files?</a>
-<DD>Yes.
-It saves the model information in an .xmi-file,  the diagram information in a .pgml-file and 
-information about the project in a .argo file.
-All of these are then zipped to a .zargo-file. 
-You can easily extract the .xmi from the .zargo file using jar.
+<DT><a name="xmia_link">Does ArgoUML save XMI files?</a>
+<DD>Yes.  ArgoUML versions through 0.18.1 will export XMI 1.0 files containing models
+    conforming to the UML 1.3 metamodel.  Beginning with ArgoUML 0.20, XMI 1.2
+    files are exported conforming to the UML 1.4 metamodel.
 <p>
-The version 0.14 and later of ArgoUML has a function in the menu
-under "Tools" to export an XMI file.
+    XMI files can be exported separately and they are also included in
+    the zipped .zargo file where they can be extracted using the 'jar' command.
 
 <DT><a name="xmib_link">How do I import an .xmi into ArgoUML and what formats are known to be
 supported?</a>
-<DD>Because of the variety of .xmi formats being generated you will
-encounter problems using other .xmis generated from other
-applications.
-ArgoUML's native storage format is another implementation of XMI (Curt
-Arnold believes that it has been hacked so it can also read the Unisys
-variant).
-He recommends that if you are comfortable with XSLT, you can typically
-transform one variant of UML + XMI to another, plus MetaIntegrations
-(<a href="http://www.metaintegration.net">http://www.metaintegrations.net</a>) makes a version of their Bridge
-product available to transform between XMI flavors.
-
+<DD>The Import XMI File option on the Tools or File menu (depending on your version)
+    can be used to import an XMI file from another tool.
+    No diagram data is included in the XMI file for UML versions prior to UML 2.0,
+    so you will only get the model data, not any diagrams.
+<p>
+    UML 1.3/XMI 1.0 is the only format supported through ArgoUML 0.18.1.
+    Beginning with 0.20, ArgoUML can read UML 1.3 & 1.4 in XMI 1.0, 1.1, and 1.2
+    formats.  It only writes UML 1.4/XMI 1.2.
+<p>
+    Interoperability with other modeling tools has improved over time, but
+    still continues to be problematic in some cases.  XSLT can be used to
+    correct some problems and you can find examples included in the
+    ArgoUML CVS sources.  There are also commercial solutions available
+    from companies such as 
+    <a href="http://www.metaintegration.net">MetaIntegrations</a>.
 
 <DT><a name="xmi_newer">Currently ArgoUML exports to XMI version 1.0 only, why?</a>
 <DD>
-ArgoUML exports XMI of version 1.0 only and will continue to do so until 
-the NSUML library inside ArgoUML is replaced (say with Netbeans MDR). 
-There is currently no date set for this upgrade.<p>
+Through ArgoUML 0.18.1 only UML 1.3/XMI 1.0 is exported.  Beginning
+with 0.20, only UML 1.4/XMI 1.2 is exported, although both UML 1.3
+and 1.4 are read as well as all of XMI 1.0, 1.1, and 1.2.
+<p>
+The UML 1.4/XMI 1.2 combination should be interoperable with many
+more tools than UML 1.3/XMI 1.0, but if you need a different version,
+you'll have to use a separate tool to do the conversion.
 
-This can be a problem if the exported XMI has to be read and parsed by 
-other tools (such as AndroMDA) which require a more up-to-date version 
-of XMI. A model driven architecture tool, such as AndroMDA 
-(<a href="http://www.andromda.org">http://www.andromda.org</a>),
-will parse the XMI file and generate a Java 
-framework of the chosen flavour (POJO, EJB, Hiberbate, Strut). However 
-AndroMDA will be unable to parse a version 1.0 XMI file as exported by 
-ArgoUML.<p>
-
-As a work around, open the ArgoUML project file (the *.zargo file) with 
-(the community edition of) Poseidon and use it to generate the latest 
-version of the XMI file that AndroMDA (and other such tools) can work with.<p>
-<address>
-Contributed by: Raj Subramani
-</address>
 
 <DT><a name="rose_link">Can ArgoUML read an MDL file generated by Rational Rose?</a>
 <DD>No.
@@ -753,23 +712,28 @@ MDL is a Rational Rose-specific format.
 You are much better off getting Rose to export an XMI file.
 
 <p>
-Rose has an add-on that can create XMI format from an MDL file that is available <a href="http://www.rational.com/support/downloadcenter/addins/media/rose/xml_133.zip">here</a>.
+Rose has an XMI Add-in that can create XMI format from an MDL file.  It may
+    move as the IBM site is reorganized, but you may be able to find
+     <a href="ftp://www6.software.ibm.com/software/developer/library/rational/2834/Rose/RoseXMLTools1.3.6.01.zip">version 1.3.6 here</a>.
+    If that doesn't work     
+     <a href="http://www-128.ibm.com/developerworks/rational/library/content/03July/2500/2834/Rose/rational_rose.html">this</a>
+     might take you to a page of Rose add-ins that you can search.
+     There's also a
+     <a href="http://www-1.ibm.com/support/docview.wss?uid=swg21131368">technote</a>
+     describing the various versions of this add-in.
 
-<p>
-You will then need a tool to convert that .XMI to a version that ArgoUML understands.
-
+ 
 
 <DT><a name="addtag_link">I have a project where I need to add tags to attributes. How do I do that?</a>
-<DD>Open the zargo file with any zip application and you'll find the XMI inside. If you want to convert it to XSD then go to <a href="http://xmlmodeling.com/">http://xmlmodeling.com/</a> (Dave Carlson's site) and convert the XMI there.
+<DD>Open the zargo file with any zip application and you'll find the XMI inside. If you want to convert it to XSD then go to <a href="http://www.xmlmodeling.com/">http://xmlmodeling.com/</a> (Dave Carlson's site) and convert the XMI there.
 
 
 <DT><a name="gentle_link">I have a Gentleware project. How do I convert it to ArgoUML?</a>
-<DD>If you don't have sequence diagrams in your project you can do the following to convert a Gentleware Project for use with ArgoUML:<p>
-0) Make sure to backup your project first.<p>
-1) Unpack the Gentleware project Project.zargo. example : (unzip Project.zargo) or (jar xvf Project.zargo)<p>
-2) Then try reading and then saving the project with an appropriate UML Tool.<p>
-3) Repackage the project. example (zip NewProject.zargo *.xmi *.pgml *.argo) or (jar cvf NewProject.zargo *)<p>
-4) You should now be able to read the project with ArgoUML.<p>
+<DD>When Poseidon was first created from ArgoUML it was possible to manually convert
+    projects, but the two tools have diverged too much to make this practical any more.<p>
+<p>
+    Export an XMI file from Poseidon and import it to ArgoUML like you would from
+    any other modelling too.
 </DL>
 
 <H3>Printing and Graphics</H3>
@@ -780,9 +744,9 @@ generate gif, postscript, eps or .svg format.
 
 
 <DT><a name="svg_link">What does SVG stand for?</a>
-<DD>A super cool vector graphics format (like MM Flash) that is
-totally open and is gaining enormous ground in the graphics
-world. Find out more at the <a href="http://www.w3.org/Graphics/SVG/Overview.htm8">www.W3C.org</a>.
+<DD>Scalable Vector Graphics.  It's a standard of the 
+World Wide Web Consortium (W3C).  Find out more at the 
+    <a href="http://www.w3.org/Graphics/SVG/Overview.htm8">www.w3.org</a>.
 
 
 <DT><a name="savsvg_link">How do I save my diagram as .SVG?</a>
@@ -799,8 +763,7 @@ Example myumldiagram.svg
 <DD>No.
 
 
-<DT><a name="part_link">Can I control what part of a diagram that shall be saved so as to only
-save a fraction?</a>
+<DT><a name="part_link">Can I save just part of a diagram?</a>
 <DD>No. You will have to edit the image after saving.
 
 
@@ -820,7 +783,8 @@ ArgoUML works as if the .zargo files is a single binary file.
 If several users open it at once to do work some work will be lost.
 
 
-<DT><a name="sanity_link">Is there a mechanism to do a sanity check in ArgoUML and enforce that sanity check?</a> 
+<DT><a name="sanity_link">Is there a mechanism to do a sanity check in 
+ArgoUML and enforce that sanity check?</a> 
 <DD>Yes, by paying attention to the to do items
 generated by the critics.
 They will give you ideas on what the problems are with your model
@@ -836,11 +800,23 @@ as long as he ignores (or turns of) the critics with suggestions.
 <DT><a name="empty_zargo">I saved a project from ArgoUML,
 and then when I opened it later ArgoUML said it was empty. 
 What can I do?</a> 
-<DD>Often the problem is a null character or an accent. ArgoUML still doesn't deal very well with problems related to these characters. There is also some discussion of addressing this problem in a future version of ArgoUML.
+<DD>Many types of corruption can be repaired by hand by
+a member of the development team.  These problems have
+become less and less common, but if you do encounter one
+the best thing to due is create a bug report in Issuezilla
+and attach your project.  If your project contains information that
+you don't want posted in an attachment, you may be able to
+email it privately to one of the developers.  
+<p>
+When you
+report the problem, try to include as much information as
+possible about the actions leading up to the problem to
+give the developers the best chance of finding and fixing
+the root cause (in addition to repairing your file).
 
 
 <DT><a name="strange_language">I started ArgoUML and it is in
-Russion/Spanish/French/German.
+Russian/Spanish/French/German.
 Why? How can I configure it so it will be in English?</a> 
 <DD>ArgoUML attempts to detect the language settings from your
 environment and start with the language you prefer.
@@ -885,7 +861,7 @@ There is a bug in JDK 1.4 or later with Windows 2000 and the ATI graphic card.
 <p>
 See this report 
 <a href="http://developer.java.sun.com/developer/bugParade/bugs/4756347.html">
-  in Suns bug database
+  in Sun's bug database
 </a>
 about it.
 
@@ -937,7 +913,8 @@ Useful information includes:
       Hard Drive space, and 
       free hard drive space
 </ul>
-It is also helpful if you can upload the zargo project file for the project that is having problems.
+It is also helpful if you can upload the zargo project file for the project 
+that is having problems.
 <p>
 
 
@@ -952,7 +929,8 @@ How you do this is explained on the
 </a>
 page.
 
-<DT><a name="attach_file">Something is happening when I run ArgoUML that's hard to describe. How should I send a picture or document describing it?</a>
+<DT><a name="attach_file">Something is happening when I run ArgoUML that's 
+hard to describe. How should I send a picture or document describing it?</a>
 <DD>
 It is probably a bug.
 Write a defect report and attach your picture or document
@@ -964,7 +942,8 @@ there is no need to send an email about it.
 The discussion and investigation will take place in that issue in Issuezilla.
 
 
-<DT><a name="vote_link">How do I indicate that I think an enhancement or fix is important?</a>
+<DT><a name="vote_link">How do I indicate that I think an enhancement or fix 
+is important?</a>
 <DD>
 You vote for the issue.
 <ul>
@@ -984,7 +963,8 @@ This is unless you have turned it off in your Issuezilla settings.
 Your votes helps the developers of ArgoUML to know what defects are the
 most important to solve and what features are the most important to add.
 
-<DT><a name="vtcount_link">How do I see how many votes have been cast for an enhancement or fix?</a>
+<DT><a name="vtcount_link">How do I see how many votes have been cast for
+an enhancement or fix?</a>
 <DD>You can query for all issues that have at least one vote 
 by entering "1" in the At least ____ votes field and 
 clicking on the Submit query button.
@@ -997,7 +977,8 @@ Another way is to change the columns shown by Issuezilla list to include the
 Votes column.
 
 
-<DT><a name="magic_link">Why isn't there any magic controlling this FAQ where the questions and
+<DT><a name="magic_link">Why isn't there any magic controlling this FAQ where the
+questions and
 answers are automatically generated and my problem always appear on the top
 of the list?</a>
 <DD>Because the developers of the ArgoUML project don't know where such
