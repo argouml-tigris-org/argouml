@@ -944,6 +944,9 @@ public class FigClass extends FigClassifierBox
         if (isOperationsVisible()) {
             int operationsY = y + currentHeight;
             int operationsHeight = (h + y) - operationsY - 1;
+            if (operationsHeight < getOperationsFig().getMinimumSize().height) {
+                operationsHeight = getOperationsFig().getMinimumSize().height;
+            }
             getOperationsFig().setBounds(
                     x,
                     operationsY,
