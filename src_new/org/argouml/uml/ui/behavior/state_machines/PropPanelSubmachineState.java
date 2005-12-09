@@ -99,6 +99,13 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
     }
 
     /**
+     * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex#addExtraButtons()
+     */
+    protected void addExtraButtons() {
+        // Intentionally do nothing.
+    }
+
+    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
