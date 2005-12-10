@@ -177,15 +177,15 @@ class ArgoAny implements Any, Type2 {
 		    && (Model.getFacade().getUpper(multiplicity) > 1
 			|| Model.getFacade().getUpper(multiplicity)
                            == -1)) {
-		    // TODO: MULTIPLESTEREOTYPES
-		    Object stereotype =
-                        CollectionUtil.getFirstItemOrNull(
-                            Model.getFacade().getStereotypes(ae));
-		    // to do: think about the condition of this if-statement
-		    // ordered association end -> Sequence; otherwise -> Set
-		    if (stereotype != null
-			    && stereotype.toString() != null
-			    && "ordered".equals(stereotype.toString())) {
+		    Collection c = Model.getFacade().getStereotypes(ae);
+		    Iterator i = c.iterator();
+		    String stname = "";
+		    while (i.hasNext()) {
+		        Object o = i.next();
+		        stname = Model.getFacade().getName(o);
+		        if ("ordered".equals(stname)) break;
+		    }
+		    if("ordered".equals(stname)) {
 			isSequence = true;
 		    } else {
 			isSet = true;
