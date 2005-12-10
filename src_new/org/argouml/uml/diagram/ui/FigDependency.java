@@ -39,6 +39,9 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 
 /**
+ * This class represents a Fig for a Dependency.
+ * It has a dashed line and a V-shaped arrow-head.
+ * 
  * @author ics 125b course, spring 1998
  */
 public class FigDependency extends FigEdgeModelElement {

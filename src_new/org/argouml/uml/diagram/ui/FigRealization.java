@@ -35,7 +35,9 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * This class represents a Fig for a Realization.
+ * This class represents a Fig for a Realization,
+ * i.e. a dependency with stereotype <<realize>>.
+ * It has a dashed line and a triangle arrow-head.
  *
  *
  * @author agauthie
