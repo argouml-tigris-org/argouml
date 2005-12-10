@@ -453,12 +453,15 @@ public class GeneratorJava
         StringBuffer sb = new StringBuffer(80);
         String nameStr = null;
         boolean constructor = false;
-        // TODO: MULTIPLESTEREOTYPES
-        Object stereo =
-            CollectionUtil.getFirstItemOrNull(
-                Model.getFacade().getStereotypes(op));
-        if (stereo != null
-                && Model.getFacade().getName(stereo).equals("create")) {
+
+        Iterator its = Model.getFacade().getStereotypes(op).iterator();
+        String name = "";
+        while (its.hasNext()) {
+            Object o = its.next();
+            name = Model.getFacade().getName(o);
+            if ("create".equals(name)) break;
+        }
+        if("create".equals(name)) {
             // constructor
             nameStr =
                 generateName(Model.getFacade().getName(
