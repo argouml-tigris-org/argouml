@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -42,7 +43,6 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigPermission;
 import org.argouml.uml.diagram.ui.FigRealization;
 import org.argouml.uml.diagram.ui.FigUsage;
-import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -195,12 +195,16 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         } else if (Model.getFacade().isAAbstraction(edge)) {
             newEdge = new FigRealization(edge);
         } else if (Model.getFacade().isADependency(edge)) {
-            // TODO: MULTIPLESTEREOTYPES
-            Object stereotype = CollectionUtil.getFirstItemOrNull(
-                    Model.getFacade().getStereotypes(edge));
-            if (stereotype != null
-                    && Model.getExtensionMechanismsHelper().isStereotypeInh(
-                            stereotype, "realize", "Abstraction")) {
+            
+            Collection c = Model.getFacade().getStereotypes(edge);
+            Iterator i = c.iterator();
+            String name = "";
+            while (i.hasNext()) {
+                Object o = i.next();
+                name = Model.getFacade().getName(o);
+                if ("realize".equals(name)) break;
+            }
+            if("realize".equals(name)) {
                 FigRealization realFig = new FigRealization(edge);
 
                 Object supplier =
