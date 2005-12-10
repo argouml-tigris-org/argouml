@@ -1214,7 +1214,6 @@ public final class ParserDisplay {
                     if (hasEq) {
                         value += token;
                     } else {
-                        // TODO: MULTIPLESTEREOTYPES
                         if (stereotype != null) {
                             throw new ParseException(
                                 "Attribute cannot have two sets of stereotypes", 
