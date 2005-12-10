@@ -492,12 +492,13 @@ public final class Notation implements PropertyChangeListener {
     }
 
     /**
+     * There is no need for a version that handles a Collection of
+     * Stereotypes, since that is only needed for display, 
+     * and hence already handled in ParserDisplay, e.g. for attributes.
+     * 
      * @param ctx  Context used to identify the notation
      * @param s   The UML element to generate for.
      * @return     The generated text.
-     *
-     * TODO: MULTIPLESTEREOTYPES  Need version that handles a Collection of
-     * Stereotypes.
      */
     public static String generateStereotype(
             NotationContext ctx,
