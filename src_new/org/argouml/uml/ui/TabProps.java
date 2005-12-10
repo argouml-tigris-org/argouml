@@ -487,9 +487,6 @@ public class TabProps
         if (Model.getFacade().isADataType(modelElement)) {
             return new PropPanelDataType();
         }
-        if (Model.getFacade().isADependency(modelElement)) {
-            return new PropPanelDependency();
-        }
         if (Model.getFacade().isADestroyAction(modelElement)) {
             return new PropPanelDestroyAction();
         }
@@ -627,6 +624,9 @@ public class TabProps
         }
         if (Model.getFacade().isATimeEvent(modelElement)) {
             return new PropPanelTimeEvent();
+        }
+        if (Model.getFacade().isADependency(modelElement)) {
+            return new PropPanelDependency();
         }
         // Create prop panels for primitives
         if (modelElement instanceof FigText) {
