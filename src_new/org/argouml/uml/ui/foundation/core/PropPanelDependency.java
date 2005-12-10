@@ -85,7 +85,7 @@ public class PropPanelDependency extends PropPanelRelationship {
      * @see org.argouml.uml.ui.PropPanel#PropPanel(String, Orientation)
      */
     protected PropPanelDependency(String name, Orientation orientation) {
-        super(name, lookupIcon("Dependency"), orientation);
+        super(name, lookupIcon(name), orientation);
         JList supplierList = new UMLLinkedList(
                 new UMLDependencySupplierListModel(), true);
         supplierScroll = new JScrollPane(supplierList);
