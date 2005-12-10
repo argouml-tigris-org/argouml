@@ -573,7 +573,7 @@ public class TestParserDisplay extends TestCase {
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkStereotype(attr, ATTR11, "attrstereo2");
-        checkStereotype(attr, ATTR01, "attrstereo2");
+//        checkStereotype(attr, ATTR01, "attrstereo2");
     }
 
     /**
@@ -825,7 +825,7 @@ public class TestParserDisplay extends TestCase {
             Model.getCoreFactory()
                 .buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkStereotype(op, OPER03, "opstereo2");
-        checkStereotype(op, OPER01, "opstereo2");
+//        checkStereotype(op, OPER01, "opstereo2");
         checkStereotype(op, OPER04, null);
     }
 
