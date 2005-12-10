@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -82,7 +83,6 @@ import org.argouml.uml.diagram.use_case.ui.FigActor;
 import org.argouml.uml.diagram.use_case.ui.FigExtend;
 import org.argouml.uml.diagram.use_case.ui.FigInclude;
 import org.argouml.uml.diagram.use_case.ui.FigUseCase;
-import org.argouml.util.CollectionUtil;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
@@ -251,11 +251,15 @@ public abstract class UmlDiagramRenderer
         } else if (Model.getFacade().isAUsage(edge)) {
             newEdge = new FigUsage();
         } else if (Model.getFacade().isADependency(edge)) {
-            // TODO: MULTIPLESTEREOTYPES
-            Object stereotype = CollectionUtil.getFirstItemOrNull(
-                    Model.getFacade().getStereotypes(edge));
-            if (Model.getExtensionMechanismsHelper().isStereotypeInh(
-                            stereotype, "realize", "Abstraction")) {
+            Collection c = Model.getFacade().getStereotypes(edge);
+            Iterator i = c.iterator();
+            String name = "";
+            while (i.hasNext()) {
+                Object o = i.next();
+                name = Model.getFacade().getName(o);
+                if ("realize".equals(name)) break;
+            }
+            if("realize".equals(name)) {
                 newEdge = new FigRealization();
             } else {
                 newEdge = new FigDependency();
