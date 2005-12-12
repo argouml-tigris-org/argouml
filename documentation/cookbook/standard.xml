@@ -1436,99 +1436,87 @@ Leave the two other fields empty.
     <sect2>
       <title>Run the JUnit tests</title>
       <para>
-There is perhaps some fancy way of doing this but while we figure that out
-this "revert to ant"-way can be used to run the tests:
+The problem is that to run ArgoUML, you need to have jars from both
+the argouml project and
+the argouml-mdr project
+available in the class path.
+If you don't, then all tests that actually do something with the
+model subsystem will fail with a 
+<classname>java.lang.ExceptionInInitializerError</classname>
+(if it is the first test) or
+<classname>java.lang.NoClassDefFoundError</classname>.
 </para>
 
+      <para>
+The way the two projects are set up it is the argouml-mdr
+project that depends on the argouml project.
+This means that when running things from the argouml-mdr project
+everything from the argouml project is available but not the other way around.
+Since the tests are located in the argouml project,
+the argouml-mdr things will be missing when running the tests as default.
+</para>
+
+      <para>
+Here is the simplest way to run a test, fixing this:
+</para>
       <orderedlist>
-	<listitem>
-	  <para>
-          In the menu select Window => Preferences. 
-          Select Ant => Runtime at the left hand side.
-          Select the tab Classpath.
-          Select Ant Home Entries.
+        <listitem>
+          <para>
+Start the test in the normal way i.e.
+Right click on the test case and select 
+Run As => JUnit Test,
+Debug As => JUnit Test or
+some keyboard short cut.
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
-Press the <command>Add Jars...</command> button and add
-<filename>optional.jar</filename> from 
-<filename>argouml/tools/ant-1.4.1</filename>.
+        <listitem>
+          <para>
+Watch as the test fails with
+<classname>java.lang.ExceptionInInitializerError</classname>
 </para>
-	</listitem>
+          <para>
+If the test happens to succeed, 
+either you have chosen one of the rare tests that actually don't use the model,
+or you have not set up the two projects according to the instructions...
+</para>
+        </listitem>
 
-	<listitem>
-	  <para>
-Press the <command>Add Jars...</command> button and add
-all jars from
-<filename>argouml/tools/ant-<replaceable>1.4.1</replaceable>/lib</filename>.
+        <listitem>
+          <para>
+From the Toolbar or from the Run menu select Debug... or Run...
+A window will open with the Configuration to run the test.
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
-Press the <command>Add Jars...</command> button and add
-<filename>jdepend.jar</filename> from 
-<filename>argouml/tools/jdepend-<replaceable>2.2</replaceable>/lib</filename>.
+        <listitem>
+          <para>
+Change the project to the argouml-mdr project (in the Test tab).
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
-Press the <command>Add Jars...</command> button and add
-<filename>junit.jar</filename> from 
-<filename>argouml/tools/junit-<replaceable>3.8.1</replaceable></filename>.
+        <listitem>
+          <para>
+Press Debug (or Run).
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
-Press OK to store the new Ant classpath entries.
+        <listitem>
+          <para>
+The test now works.
 </para>
-	  <para>
-These first items need only be done once as a set up.
-</para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
-Run ant with the 
-<command>alltests</command> target.
-</para>
-	  <para>
-This is done by 
-selecting in the menu: Run => External Tools => External Tools...
-This will open the "Create, manage, and run configurations" dialog.
-</para>
-	  <para>
-      Select the Ant Build at the left and press the New button.
-      Rename to ArgoUML AllTests.
-Then, in the Targets tab, select the <command>alltests</command> target,
-deselect all other targets, press the Apply button,
-and finally press Run.
-</para>
-
-	  <para>
-This run configuration
-is remembered by Eclipse so after this the 
-drop-down next to the
-Run tool can be used.
-In the same way, you can make other run configurations 
-for the other ant targets in the build.xml file.
-</para>
-	</listitem>
       </orderedlist>
       <para>
-Once you have found a failing test case and would like to investigate
-that further, you can run it as a JUnit test case from within Eclipse,
-making full use of the Eclipse debugger.
-This is done by browsing to the test case
-(in the package explorer you browse to
-argouml => tests =>
-<replaceable>whatever package</replaceable> =>
-<replaceable>whatever class</replaceable>),
-right-click on it and select Run => Debug JUnit Test.
+Eclipse will remember the Configuration for that test so you can run it from
+the Debug or Run Toolbars,
+the Run => Run History or Run => Debug History menu items,
+Right clicking on the same test and selecting Run... or Debug....
+But if you do Right click on the same test followed by
+Run As... or 
+Debug As...
+a new Configuration will be created that has the default project once again.
 </para>
     </sect2>
   </sect1>
