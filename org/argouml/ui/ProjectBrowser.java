@@ -178,6 +178,11 @@ public final class ProjectBrowser
     private ToDoPane todoPane;
 
     /**
+     * The title of this frame without any extending * to indicate save status.
+     */
+    private String title = "";
+    
+    /**
      * The action to redo the last undone action.
      */
     private final RedoAction redoAction =
@@ -487,33 +492,47 @@ public final class ProjectBrowser
 
     /**
      * @see java.awt.Frame#setTitle(java.lang.String)
-     * TODO: I think we need to rethink this. We should expect getTitle()
-     * to return the same as the value that was set by setTitle. This is
-     * not currently the case.
      */
-    public void setTitle(String title) {
+    final public void setTitle(final String title) {
+        this.title = title;
+        // ask the Project if we are "dirty" - i.e. need to save
+        String changeIndicator = "";
+        if (ActionSaveProject.getInstance().isEnabled()) {
+            changeIndicator = " *";
+        }
+        super.setTitle(title + " - " + changeIndicator);
+    }
+
+    /**
+     * Return the title of the frame that was set with setTitle.
+     */
+    final public String getTitle() {
+        return title;
+    }
+
+    final public void buildTitle(final String title) {
         if (title == null || "".equals(title)) {
-            setTitle(getAppName());
+            buildTitle(getAppName());
         } else {
-            // ask the Project if we are "dirty" - i.e. need to save
-            String changeIndicator = "";
-            if (ActionSaveProject.getInstance().isEnabled()) {
-                changeIndicator = " *";
-            }
             ArgoDiagram activeDiagram =
                 ProjectManager.getManager()
-                	.getCurrentProject().getActiveDiagram();
+                    .getCurrentProject().getActiveDiagram();
             if (activeDiagram != null) {
-                super.setTitle(title + " - " + activeDiagram.getName()
-                    + " - " + getAppName() + changeIndicator);
+                setTitle(title + " - " + activeDiagram.getName()
+                    + " - " + getAppName());
             } else {
-                super.setTitle(title + " - " + getAppName() + changeIndicator);
+                setTitle(title + " - " + getAppName());
             }
+            setTitle(title);
         }
     }
     
+    /**
+     * Set the save indicator (the * after the title) to appear depending on
+     * the curreny save action enabled status.
+     */
     public void showSaveIndicator() {
-        super.setTitle(getTitle() + " *");
+        super.setTitle(title);
     }
     
     /**
@@ -522,7 +541,7 @@ public final class ProjectBrowser
      */
     protected void updateTitle() {
         if (ProjectManager.getManager().getCurrentProject() != null) {
-            setTitle(ProjectManager.getManager().getCurrentProject().getName());
+            buildTitle(ProjectManager.getManager().getCurrentProject().getName());
         }
     }
 
@@ -854,7 +873,7 @@ public final class ProjectBrowser
             .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
             Project p = (Project) evt.getNewValue();
             if (p != null) {
-                setTitle(p.getName());
+                buildTitle(p.getName());
                 //Designer.TheDesigner.getToDoList().removeAllElements();
                 Designer.setCritiquingRoot(p);
                 // update all panes
