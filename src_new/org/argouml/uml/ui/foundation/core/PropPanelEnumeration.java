@@ -94,8 +94,6 @@ public class PropPanelEnumeration extends PropPanelDataType {
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAClassifier(target)) {
-                Object stereotype = CollectionUtil.getFirstItemOrNull(
-                        Model.getFacade().getStereotypes(target));
     
                 Collection propertyChangeListeners =
                     ProjectManager.getManager()
