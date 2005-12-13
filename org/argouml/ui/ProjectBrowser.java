@@ -500,7 +500,7 @@ public final class ProjectBrowser
         if (ActionSaveProject.getInstance().isEnabled()) {
             changeIndicator = " *";
         }
-        super.setTitle(title + " - " + changeIndicator);
+        super.setTitle(title + changeIndicator);
     }
 
     /**
@@ -532,7 +532,7 @@ public final class ProjectBrowser
      * the curreny save action enabled status.
      */
     public void showSaveIndicator() {
-        super.setTitle(title);
+        setTitle(title);
     }
     
     /**
