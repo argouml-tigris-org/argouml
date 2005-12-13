@@ -105,6 +105,7 @@ public class PropPanelOperation extends PropPanelFeature {
         addAction(new ActionNewRaisedSignal());
         addAction(new ActionNewMethod());
         addAction(new ActionAddDataType());
+        addAction(new ActionAddEnumeration());
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());
     }

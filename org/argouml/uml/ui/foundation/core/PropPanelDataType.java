@@ -90,6 +90,7 @@ public class PropPanelDataType extends PropPanelClassifier {
 
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionAddDataType());
+        addAction(new ActionAddEnumeration());
         addAction(new ActionAddQueryOperation());
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());

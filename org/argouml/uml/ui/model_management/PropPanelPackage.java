@@ -37,6 +37,7 @@ import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.ActionAddDataType;
+import org.argouml.uml.ui.foundation.core.ActionAddEnumeration;
 import org.argouml.uml.ui.foundation.core.PropPanelNamespace;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementGeneralizationListModel;
@@ -129,6 +130,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
         addAction(new ActionNavigateNamespace());
         addAction(new ActionAddPackage());
         addAction(new ActionAddDataType());
+        addAction(new ActionAddEnumeration());
         addAction(new ActionNewStereotype());
         addAction(new ActionNewTagDefinition());
         addAction(new ActionDeleteSingleModelElement());

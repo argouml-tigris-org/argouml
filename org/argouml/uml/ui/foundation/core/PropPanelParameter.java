@@ -47,7 +47,6 @@ public class PropPanelParameter extends PropPanelModelElement {
 
     /**
      * The constructor.
-     *
      */
     public PropPanelParameter() {
         super(
@@ -79,6 +78,7 @@ public class PropPanelParameter extends PropPanelModelElement {
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionAddParameter());
         addAction(new ActionAddDataType());
+        addAction(new ActionAddEnumeration());
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());
     }
