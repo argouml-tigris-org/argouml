@@ -71,6 +71,7 @@ public class ActionSaveProject extends AbstractAction {
     protected ActionSaveProject() {
         super(Translator.localize("action.save-project"),
                 ResourceLoaderWrapper.lookupIcon("action.save-project"));
+        super.setEnabled(false);
     }
 
     /**
