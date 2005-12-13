@@ -298,7 +298,7 @@ public class Main {
         st.mark("perspectives");
 
         if (urlToOpen == null) {
-            pb.setTitle(Translator.localize("label.projectbrowser-title"));
+            pb.buildTitle(Translator.localize("label.projectbrowser-title"));
 	}
 
         if (splash != null) {

@@ -106,9 +106,7 @@ public class ActionSaveProject extends AbstractAction {
             return;
         }
         super.setEnabled(enabled);
-        if (enabled) {
-            ProjectBrowser.getInstance().showSaveIndicator();
-        }
+        ProjectBrowser.getInstance().showSaveIndicator();
     }
 
 } /* end class ActionSaveProject */
