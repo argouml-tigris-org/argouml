@@ -235,6 +235,7 @@ public final class ProjectManager
      * @return Project
      */
     public Project makeEmptyProject() {
+        Model.getPump().stopPumpingEvents();
         creatingCurrentProject = true;
         LOG.info("making empty project");
         Project oldProject = currentProject;
@@ -261,6 +262,7 @@ public final class ProjectManager
         if (!UndoEnabler.ENABLED) {
             UndoManager.getInstance().setUndoMax(0);
         }
+        Model.getPump().startPumpingEvents();
         return currentProject;
     }
     
