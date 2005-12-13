@@ -1084,6 +1084,14 @@ public class CoreFactoryImpl
     }
 
     /**
+     * @see org.argouml.model.CoreFactory#buildEnumeration(java.lang.String, java.lang.Object)
+     */
+    public Object buildEnumeration(String name, Object owner) {
+        // TODO: Auto-generated method stub
+        return null;
+    }
+
+    /**
      * Builds a modelelement dependency between two modelelements.<p>
      *
      * @param clientObj is the client

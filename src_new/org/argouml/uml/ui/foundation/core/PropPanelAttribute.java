@@ -93,6 +93,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         addAction(new ActionNavigateContainerElement());
         addAction(TargetManager.getInstance().getAddAttributeAction());
         addAction(new ActionAddDataType());
+        addAction(new ActionAddEnumeration());
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());
     }
