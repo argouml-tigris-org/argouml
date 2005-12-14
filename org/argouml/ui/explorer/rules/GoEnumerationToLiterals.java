@@ -29,8 +29,13 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
+/**
+ * Go rule to navigate from an Enumeration to its Literals. <p>
+ * Enumeration->Literal.
+ */
 public class GoEnumerationToLiterals extends AbstractPerspectiveRule {
 
     /**
@@ -61,14 +66,7 @@ public class GoEnumerationToLiterals extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return "Enumeration->Literals";
-    }
-
-    /**
-     * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#toString()
-     */
-    public String toString() {
-        return super.toString();
+        return Translator.localize ("misc.enumeration.literal");
     }
 
     /**
