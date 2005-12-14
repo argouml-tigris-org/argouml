@@ -28,16 +28,17 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.util.CollectionUtil;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -59,10 +60,15 @@ public class PropPanelEnumeration extends PropPanelDataType {
 
         addField(Translator.localize("label.literals"),
                 getLiteralsScroll());
-
-        addAction(new ActionAddLiteral());
     }
 
+    /**
+     * @see org.argouml.uml.ui.foundation.core.PropPanelDataType#addEnumerationButtons()
+     */
+    protected void addEnumerationButtons() {
+        super.addEnumerationButtons();
+        addAction(new ActionAddLiteral());
+    }
 
     /**
      * Returns the attributeScroll.
@@ -86,6 +92,8 @@ public class PropPanelEnumeration extends PropPanelDataType {
             super("button.new-enumeration-literal");
             putValue(Action.NAME, Translator.localize(
                 "button.new-enumeration-literal"));
+            Icon icon = ResourceLoaderWrapper.lookupIcon("EnumerationLiteral");
+            putValue(Action.SMALL_ICON, icon);
         }
     
         /**
@@ -94,21 +102,9 @@ public class PropPanelEnumeration extends PropPanelDataType {
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAClassifier(target)) {
-    
-                Collection propertyChangeListeners =
-                    ProjectManager.getManager()
-                        .getCurrentProject().findFigsForMember(target);
-                Object intType =
-                    ProjectManager.getManager()
-                        .getCurrentProject().findType("int");
-                Object model =
-                    ProjectManager.getManager()
-                        .getCurrentProject().getModel();
-                Object attr =
-                    Model.getCoreFactory().buildAttribute(target,
-                            model, intType, propertyChangeListeners);
-                Model.getCoreHelper().setChangeable(attr, false);
-                TargetManager.getInstance().setTarget(attr);
+                Object el =
+                    Model.getCoreFactory().buildEnumerationLiteral("", target);
+                TargetManager.getInstance().setTarget(el);
                 super.actionPerformed(e);
             }
         }
