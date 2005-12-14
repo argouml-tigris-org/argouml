@@ -371,6 +371,13 @@ public interface CoreFactory {
      * @return an initialized UML Enumeration instance
      */
     Object buildEnumeration(String name, Object owner);
+    
+    /**
+     * @param name is the name
+     * @param enumeration is the enumeration of the literal
+     * @return an initialized UML EnumerationLiteral instance
+     */
+    Object buildEnumerationLiteral(String name, Object enumeration);
 
     /**
      * Builds a modelelement dependency between two modelelements.<p>
