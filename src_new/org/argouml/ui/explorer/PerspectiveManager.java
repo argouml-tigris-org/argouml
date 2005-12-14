@@ -301,7 +301,12 @@ public final class PerspectiveManager {
             if (getPerspectives().size() == 0) {
                 loadDefaultPerspectives();
             }
-        } catch (Exception e1) {
+        } catch (ClassNotFoundException e) {
+
+        } catch (InstantiationException e) {
+
+        } catch (IllegalAccessException e) {
+
         }
     }
 
@@ -341,6 +346,7 @@ public final class PerspectiveManager {
         packagePerspective.addRule(new GoUseCaseToExtensionPoint());
         packagePerspective.addRule(new GoClassifierToStructuralFeature());
         packagePerspective.addRule(new GoClassifierToBehavioralFeature());
+        packagePerspective.addRule(new GoEnumerationToLiterals());
         packagePerspective.addRule(new GoCollaborationToInteraction());
         packagePerspective.addRule(new GoInteractionToMessages());
         packagePerspective.addRule(new GoMessageToAction());
