@@ -24,18 +24,10 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
 
@@ -79,32 +71,5 @@ public class PropPanelEnumeration extends PropPanelDataType {
             literalsScroll = new JScrollPane(list);
         }
         return literalsScroll;
-    }
-
-    private class ActionAddLiteral extends AbstractActionNewModelElement {
-
-        /**
-         * The constructor.
-         */
-        public ActionAddLiteral() {
-            super("button.new-enumeration-literal");
-            putValue(Action.NAME, Translator.localize(
-                "button.new-enumeration-literal"));
-            Icon icon = ResourceLoaderWrapper.lookupIcon("EnumerationLiteral");
-            putValue(Action.SMALL_ICON, icon);
-        }
-    
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            Object target = TargetManager.getInstance().getModelTarget();
-            if (Model.getFacade().isAClassifier(target)) {
-                Object el =
-                    Model.getCoreFactory().buildEnumerationLiteral("", target);
-                TargetManager.getInstance().setTarget(el);
-                super.actionPerformed(e);
-            }
-        }
     }
 }

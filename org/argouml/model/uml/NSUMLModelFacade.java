@@ -2266,6 +2266,13 @@ public class NSUMLModelFacade implements Facade {
     }
 
     /**
+     * @see org.argouml.model.Facade#getEnumeration(java.lang.Object)
+     */
+    public Object getEnumeration(Object handle) {
+        return null;
+    }
+
+    /**
      * Returns the exit action to a state.
      *
      * @param handle is the state
@@ -4752,6 +4759,13 @@ public class NSUMLModelFacade implements Facade {
      * @see org.argouml.model.Facade#isAEnumeration(java.lang.Object)
      */
     public boolean isAEnumeration(Object handle) {
+        return false;
+    }
+
+    /**
+     * @see org.argouml.model.Facade#isAEnumerationLiteral(java.lang.Object)
+     */
+    public boolean isAEnumerationLiteral(Object handle) {
         return false;
     }
 

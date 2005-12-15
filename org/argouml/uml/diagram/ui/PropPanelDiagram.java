@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 
 import javax.swing.DefaultListModel;
@@ -32,21 +31,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNavigate;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.PropPanel;
-import org.argouml.uml.ui.UMLLinkMouseListener;
-import org.argouml.uml.ui.UMLLinkedListCellRenderer;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -196,29 +191,5 @@ class UMLDiagramHomeModelListModel
         if (ns != null) {
             addElement(ns);
         }
-    }
-}
-
-/**
- * A JList that just has one row.
- */
-class OneRowLinkedList extends JList {
-    /**
-     * The constructor.
-     *
-     * @param dataModel the data model
-     */
-    public OneRowLinkedList(DefaultListModel dataModel) {
-        super();
-        setModel(dataModel);
-        setDoubleBuffered(true);
-        setCellRenderer(new UMLLinkedListCellRenderer(true));
-        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        setForeground(Color.blue);
-        setSelectionForeground(Color.blue.darker());
-        UMLLinkMouseListener mouseListener = new UMLLinkMouseListener(this);
-        setFont(LookAndFeelMgr.getInstance().getSmallFont());
-        addMouseListener(mouseListener);
-        setVisibleRowCount(1);
     }
 }

@@ -24,7 +24,16 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.OneRowLinkedList;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -50,8 +59,60 @@ public class PropPanelEnumerationLiteral extends PropPanelModelElement {
         addField(Translator.localize("label.stereotype"),
                 getStereotypeSelector());
 
+        JList lst = new OneRowLinkedList(new EnumerationListModel());
+        addField(Translator.localize("label.enumeration"),
+                new JScrollPane(lst));
+
         addAction(new ActionNavigateContainerElement());
+        addAction(new ActionAddLiteral());
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());
     }
 } /* end class PropPanelAttribute */
+
+/**
+ * The list model for the namespace of a diagram.
+ *
+ * @author mvw@tigris.org
+ */
+class EnumerationListModel
+    extends DefaultListModel
+    implements TargetListener {
+
+    /**
+     * Constructor for UMLCommentAnnotatedElementListModel.
+     */
+    public EnumerationListModel() {
+        super();
+        setTarget(TargetManager.getInstance().getModelTarget());
+        TargetManager.getInstance().addTargetListener(this);
+    }
+
+    /**
+     * @see TargetListener#targetAdded(TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        setTarget(e.getNewTarget());
+    }
+
+    /**
+     * @see TargetListener#targetRemoved(TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        setTarget(e.getNewTarget());
+    }
+
+    /**
+     * @see TargetListener#targetSet(TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        setTarget(e.getNewTarget());
+    }
+
+    private void setTarget(Object t) {
+        removeAllElements();
+        if (Model.getFacade().isAEnumerationLiteral(t)) {
+            addElement(Model.getFacade().getEnumeration(t));
+        }
+    }
+}
