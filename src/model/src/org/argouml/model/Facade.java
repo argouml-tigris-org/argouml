@@ -431,6 +431,14 @@ public interface Facade {
     boolean isAEnumeration(Object handle);
 
     /**
+     * Recognizer for UML EnumerationLiteral
+     * 
+     * @param handle the candidate
+     * @return true if handle is an UML EnumerationLiteral
+     */
+    boolean isAEnumerationLiteral(Object handle);
+    
+    /**
      * Recognizer for Event.
      *
      * @param handle candidate
@@ -1419,6 +1427,14 @@ public interface Facade {
      */
     Object getEntry(Object handle);
 
+    /**
+     * Returns the Enumeration of an EnumerationLiteral.
+     * 
+     * @param handle the enumerationliteral
+     * @return the enumeration
+     */
+    Object getEnumeration(Object handle);
+    
     /**
      * Returns the enumeration literals of a UML Enumeration.
      *
