@@ -25,6 +25,7 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.beans.PropertyChangeEvent;
+import java.util.Collection;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
@@ -64,8 +65,9 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         Object model =
             ProjectManager.getManager().getCurrentProject().getRoot();
-        setElements(Model.getCoreHelper().getAllPossibleNamespaces(
-                /*(MModelElement)*/ getTarget(), model));
+        Object t = getTarget();
+        Collection c = Model.getCoreHelper().getAllPossibleNamespaces(t, model);
+        setElements(c);
     }
 
     /**
