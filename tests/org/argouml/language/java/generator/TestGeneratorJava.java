@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.language.java.generator;
 
 import org.argouml.model.Model;
@@ -86,6 +85,26 @@ public class TestGeneratorJava extends TestCase {
                 Model.getVisibilityKind().getProtected());
         result = GeneratorJava.getInstance().generateClassifierStart(class1);
         assertTrue("A class should not have protected in its specification",
+                result.indexOf("protected") == -1);
+    }
+
+    /**
+     * check the Java Code Generator does not generate a protected class ....
+     */
+    public void testGenerateClassifierStart2() {
+        StringBuffer result;
+
+        Model.getCoreHelper().setVisibility(inter1,
+                Model.getVisibilityKind().getPublic());
+        result = GeneratorJava.getInstance().generateClassifierStart(inter1);
+        assertTrue("A interface should have public in its specification",
+                result.indexOf("public") == 0);
+
+        Model.getCoreHelper().setVisibility(inter1,
+                Model.getVisibilityKind().getProtected());
+        result = GeneratorJava.getInstance().generateClassifierStart(inter1);
+        assertTrue(
+                "A interface should not have protected in its specification",
                 result.indexOf("protected") == -1);
     }
 
