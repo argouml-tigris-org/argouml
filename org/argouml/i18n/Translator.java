@@ -113,6 +113,7 @@ public final class Translator {
             new Locale("en", ""),
             new Locale("fr", ""),
             new Locale("es", ""),
+            new Locale("de", ""),
             new Locale("nb", ""),
             new Locale("ru", ""),
             new Locale("zh", ""),
