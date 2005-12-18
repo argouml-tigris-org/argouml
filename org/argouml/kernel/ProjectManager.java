@@ -236,6 +236,7 @@ public final class ProjectManager
      */
     public Project makeEmptyProject() {
         Model.getPump().stopPumpingEvents();
+        
         creatingCurrentProject = true;
         LOG.info("making empty project");
         Project oldProject = currentProject;
@@ -252,17 +253,18 @@ public final class ProjectManager
         currentProject.addMember(DiagramFactory.getInstance()
                 .createDiagram(UMLUseCaseDiagram.class, model, null));
         currentProject.addMember(new ProjectMemberTodoList("", currentProject));
-        ProjectManager.getManager().setNeedsSave(false);
         currentProject.setActiveDiagram(d);
         firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
                             oldProject, currentProject);
         creatingCurrentProject = false;
-        UndoManager.getInstance().empty();
 
+        UndoManager.getInstance().empty();
         if (!UndoEnabler.ENABLED) {
             UndoManager.getInstance().setUndoMax(0);
         }
         Model.getPump().startPumpingEvents();
+        
+        ProjectManager.getManager().setNeedsSave(false);
         return currentProject;
     }
     
