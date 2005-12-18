@@ -27,6 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -41,6 +42,10 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  * @author jaap.branderhorst@xs4all.nl, alexb
  */
 public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
+    
+    private static final Logger LOG =
+        Logger.getLogger(UMLModelElementNamespaceComboBoxModel.class);
+    
     /**
      * Constructor for UMLModelElementNamespaceComboBoxModel.
      */
@@ -67,6 +72,17 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
             ProjectManager.getManager().getCurrentProject().getRoot();
         Object t = getTarget();
         Collection c = Model.getCoreHelper().getAllPossibleNamespaces(t, model);
+
+        /* These next 2 lines for the case that the current namespace 
+         * is not a valid one... Which ofcourse should not happen, 
+         * but it does - see the project attached to issue 3772. */
+        /* TODO: Enhance the isValidNamespace function so
+         * that this never happens. */
+        if (t != null) {
+            Object namespace = Model.getFacade().getNamespace(t);
+            if (!c.contains(namespace)) c.add(namespace);
+            LOG.warn("The current namespace is not a valid one!");
+        }
         setElements(c);
     }
 
