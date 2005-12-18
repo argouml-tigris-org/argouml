@@ -100,9 +100,11 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         /*
          * Rebuild the list from scratch to be sure it's correct.
          */
-        if (evt.getSource() == getTarget()
+        Object t = getTarget();
+        if (t != null 
+                && evt.getSource() == t
                 && evt.getNewValue() != null) {
-            setTarget(getTarget());
+            setTarget(t);
         }
     }
 }
