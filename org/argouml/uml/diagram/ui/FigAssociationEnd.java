@@ -26,12 +26,15 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
+import org.argouml.notation.NotationHelper;
 import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;
@@ -177,20 +180,26 @@ public class FigAssociationEnd extends FigEdgeModelElement {
             visi =
                 Notation.generate(this, Model.getFacade().getVisibility(owner));
         }
-        // TODO: MULTIPLESTEREOTYPES
-        Object stereo = CollectionUtil.getFirstItemOrNull(
-                Model.getFacade().getStereotypes(owner));
+        Collection stereos = Model.getFacade().getStereotypes(owner);
+        String stereoString = "";
+        Iterator i = stereos.iterator();
+        while (i.hasNext()) {
+            Object stereo = i.next();
+            if (stereoString.length() < 1) {
+                stereoString += NotationHelper.getLeftGuillemot();
+            } else {
+                stereoString += ",";
+            }
+            stereoString += Model.getFacade().getName(stereo);
+        }
+        if (stereoString.length() > 0) stereoString += 
+            NotationHelper.getRightGuillemot() + " ";
 
         multiToUpdate.setText(Notation.generate(this, multi));
         orderingToUpdate.setText(getOrderingName(order));
         String n = Notation.generate(this, name);
         if (n.length() < 1) visi = ""; //temporary solution for issue 1011
-        if (stereo != null) {
-            roleToUpdate.setText(Notation.generate(this, stereo)
-                    + " " + visi + n);
-        } else {
-            roleToUpdate.setText(visi + n);
-        }
+        roleToUpdate.setText(stereoString + visi + n);
     }
 
     /**
