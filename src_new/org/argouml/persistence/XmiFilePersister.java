@@ -176,6 +176,7 @@ public class XmiFilePersister extends AbstractFilePersister {
             Project p = new Project();
             XMIParser.getSingleton().readModels(p, file.toURL());
             Object model = XMIParser.getSingleton().getCurModel();
+            XMIParser.getSingleton().registerDiagrams(p);            
             Model.getUmlHelper().addListenersToModel(model);
             p.setUUIDRefs(XMIParser.getSingleton().getUUIDRefs());
             p.addMember(new ProjectMemberTodoList("", p));
