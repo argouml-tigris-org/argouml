@@ -29,10 +29,7 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.AddAssociationEvent;
-import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -101,18 +98,11 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
     */
     public void propertyChange(PropertyChangeEvent evt) {
         /*
-         * Although we've registered for notification of ownedElement changes, a
-         * added/removed association doesn't necessarily mean that this is no
-         * longer available as a legal namespace.
-         *
          * Rebuild the list from scratch to be sure it's correct.
          */
-        if (evt instanceof RemoveAssociationEvent
-                || evt instanceof AddAssociationEvent
-                || evt instanceof AttributeChangeEvent) {
-            buildModelList();
-        } else {
-            super.propertyChange(evt);
+        if (evt.getSource() == getTarget()
+                && evt.getNewValue() != null) {
+            setTarget(getTarget());
         }
     }
 }
