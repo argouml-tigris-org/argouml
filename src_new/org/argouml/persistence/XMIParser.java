@@ -36,8 +36,11 @@ import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.model.XmiReader;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.xml.sax.InputSource;
 
 /**
@@ -67,6 +70,8 @@ public class XMIParser {
     private Project proj;
     private HashMap uUIDRefs;
 
+    private Collection elementsRead;
+    
     /**
      * The constructor.
      *
@@ -116,78 +121,129 @@ public class XMIParser {
         LOG.info("=======================================");
         LOG.info("== READING MODEL " + url);
         try {
-            XmiReader reader = Model.getXmiReader();
             InputSource source = new InputSource(url.openStream());
             source.setSystemId(url.toString());
-            Collection elements = reader.parse(source);
-            registerModelAndDiagrams(elements);
+            readModels(p,source);
+        } catch (Exception ex) {
+            throw new OpenException(ex);
+        }
+        LOG.info("=======================================");
+    }
+    
+    public void registerDiagrams(Project project) {
+        registerDiagrams(project, elementsRead, true);
+    }
+
+    /**
+     * Read a XMI file from the given inputsource.
+     * @param p Project to which load the inputsource.
+     * @param source The InputSource
+     * @throws OpenException If an error occur while reading the source
+     */
+    public synchronized void readModels(Project p, InputSource source)
+        throws OpenException {
+
+        proj = p;
+
+        try {
+            XmiReader reader = Model.getXmiReader();
+            curModel = null;
+            elementsRead = reader.parse(source);
+            if (elementsRead != null && !elementsRead.isEmpty()) {
+                Facade facade = Model.getFacade();
+                Object current;
+                Iterator elements = elementsRead.iterator();
+                while (elements.hasNext()) {
+                    current = elements.next();
+                    if (facade.isAModel(current)) {
+                        LOG.info("Loaded model '" + facade.getName(current) + "'");
+                        if (curModel==null)
+                            curModel = current;
+                    }
+                }
+            }            
             uUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
         } catch (Exception ex) {
             throw new OpenException(ex);
         }
         LOG.info("=======================================");
-
-
     }
-
-    protected void registerModelAndDiagrams(Collection elements) {
+    
+    /**
+     * Create and register diagrams for activity and statemachines in the model(s) of
+     * the project.
+     * Create a default class diagram and use case diagrams, if createDefaults is true.
+     * @param project The project
+     * @param createDefaults If true defaults diagrams will be created.
+     */
+    public void registerDiagrams(Project project, Collection elements, boolean createDefaults) {
         Facade facade = Model.getFacade();
+        //Collection elements = project.getModels();
         Collection diagramsElement = new ArrayList();
         Iterator it = elements.iterator();
         while (it.hasNext()) {
             Object element = it.next();
             if (facade.isAModel(element)) {
-                proj.addModel(element);
-                curModel = element;
                 diagramsElement.addAll(Model.getModelManagementHelper().
                         getAllModelElementsOfKind(element,
                                 Model.getMetaTypes().getStateMachine()));
-                Collection ownedElements =
-                    Model.getFacade().getOwnedElements(element);
-                Iterator oeIterator = ownedElements.iterator();
-                while (oeIterator.hasNext()) {
-                    Object me = oeIterator.next();
-                    if (Model.getFacade().getName(me) == null) {
-                        Model.getCoreHelper().setName(me, "");
-                    }
-                }
-            } else if (facade.isAStateMachine(element)) {
-                diagramsElement.add(element);
             }
         }
-        //
+        DiagramFactory diagramFactory = DiagramFactory.getInstance();
         it = diagramsElement.iterator();
         while (it.hasNext()) {
             Object element = it.next();
-            Object namespace = null;
-            if (facade.getNamespace(element) == null) {
+            Object namespace = facade.getNamespace(element);
+            if (namespace == null) {
                 namespace = facade.getContext(element);
                 Model.getCoreHelper().setNamespace(element, namespace);
-            } else {
-                namespace = facade.getNamespace(element);
             }
             ArgoDiagram diagram = null;
             if (facade.isAActivityGraph(element)) {
                 LOG.info("Creating activity diagram for "
                         + facade.getUMLClassName(element)
                         + "<<" + facade.getName(element) + ">>");
-                diagram = new UMLActivityDiagram(namespace , element);
+                diagram = diagramFactory.createDiagram(UMLActivityDiagram.class, namespace , element);
             } else {
                 LOG.info("Creating state diagram for "
                         + facade.getUMLClassName(element)
                         + "<<" + facade.getName(element) + ">>");
-                diagram = new UMLStateDiagram(namespace , element);
+                diagram = diagramFactory.createDiagram(UMLStateDiagram.class, namespace , element);
             }
             if (diagram != null) {
                 proj.addMember(diagram);
             }
         }
+        //ISSUE 3516 : Add the same diagrams than when creating an empty project when
+        //importing XMI
+        if (createDefaults) {
+            LOG.info("Create class diagram");
+            ArgoDiagram d = diagramFactory.createDiagram(UMLClassDiagram.class, curModel, null);
+            proj.addMember(d);
+            LOG.info("Create use case diagram");
+            proj.addMember(diagramFactory
+                    .createDiagram(UMLUseCaseDiagram.class, curModel, null));
+            proj.setActiveDiagram(d);
+        }
     }
-
     /**
      * @return Returns the singleton.
      */
     public static XMIParser getSingleton() {
         return singleton;
+    }
+
+    /**
+     * @return Returns the elementsRead.
+     */
+    public Collection getElementsRead() {
+        return elementsRead;
+    }
+
+    /**
+     * @param elementsRead The elementsRead to set.
+     */
+    public void setElementsRead(Collection elementsRead) {
+        this.elementsRead = elementsRead;
     }
 } /* end class XMIParser */
