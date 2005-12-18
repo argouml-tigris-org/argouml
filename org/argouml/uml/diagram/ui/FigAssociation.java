@@ -41,10 +41,10 @@ import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation.Notation;
+import org.argouml.notation.NotationHelper;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;
 import org.tigris.gef.presentation.ArrowHead;
@@ -354,21 +354,27 @@ public class FigAssociation extends FigEdgeModelElement {
 	    visi =
 	        Notation.generate(this, Model.getFacade().getVisibility(end));
         }
-        Collection stereos = Model.getFacade().getStereotypes(end);
-        // TODO: MULTIPLESTEREOTYPES
-        Object stereo = CollectionUtil.getFirstItemOrNull(stereos);
 
+        Collection stereos = Model.getFacade().getStereotypes(end);
+        String stereoString = "";
+        Iterator i = stereos.iterator();
+        while (i.hasNext()) {
+            Object stereo = i.next();
+            if (stereoString.length() < 1) {
+                stereoString += NotationHelper.getLeftGuillemot();
+            } else {
+                stereoString += ",";
+            }
+            stereoString += Model.getFacade().getName(stereo);
+        }
+        if (stereoString.length() > 0) stereoString += 
+            NotationHelper.getRightGuillemot() + " ";
 
 	multiToUpdate.setText(Notation.generate(this, multi));
 	orderingToUpdate.setText(getOrderingName(order));
 	String n = Notation.generate(this, name);
 	if (n.length() < 1) visi = ""; //temporary solution for issue 1011
-	if (stereo != null) {
-	    roleToUpdate.setText(Notation.generate(this, stereo)
-				 + " " + visi + n);
-	} else {
-	    roleToUpdate.setText(visi + n);
-	}
+        roleToUpdate.setText(stereoString + visi + n);
     }
 
     /**
