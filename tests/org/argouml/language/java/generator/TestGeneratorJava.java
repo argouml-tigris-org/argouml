@@ -37,6 +37,8 @@ public class TestGeneratorJava extends TestCase {
 
     Object class1;
 
+    Object innerClass;
+
     Object inter1;
 
     /**
@@ -58,6 +60,7 @@ public class TestGeneratorJava extends TestCase {
         Model.getModelManagementFactory().setRootModel(mmodel);
         namespace = Model.getModelManagementFactory().createPackage();
         class1 = Model.getCoreFactory().buildClass("Class1", namespace);
+        innerClass = Model.getCoreFactory().buildClass("InnerClass", class1);
         inter1 = Model.getCoreFactory().buildInterface("Inter1", namespace);
 
     }
@@ -71,6 +74,7 @@ public class TestGeneratorJava extends TestCase {
 
     /**
      * check the Java Code Generator does not generate a protected class ....
+     * These tests are applicable for outer classes (inside a package).
      */
     public void testGenerateClassifierStart() {
         StringBuffer result;
@@ -78,11 +82,15 @@ public class TestGeneratorJava extends TestCase {
         Model.getCoreHelper().setVisibility(class1,
                 Model.getVisibilityKind().getPublic());
         result = GeneratorJava.getInstance().generateClassifierStart(class1);
+        assertTrue(Model.getFacade().isAPackage(
+                Model.getFacade().getNamespace(class1)));
         assertTrue("A class should have public in its specification", result
                 .indexOf("public") == 0);
 
         Model.getCoreHelper().setVisibility(class1,
                 Model.getVisibilityKind().getProtected());
+        assertTrue(Model.getFacade().isAPackage(
+                Model.getFacade().getNamespace(class1)));
         result = GeneratorJava.getInstance().generateClassifierStart(class1);
         assertTrue("A class should not have protected in its specification",
                 result.indexOf("protected") == -1);
@@ -97,15 +105,46 @@ public class TestGeneratorJava extends TestCase {
         Model.getCoreHelper().setVisibility(inter1,
                 Model.getVisibilityKind().getPublic());
         result = GeneratorJava.getInstance().generateClassifierStart(inter1);
+        assertTrue(Model.getFacade().isAPackage(
+                Model.getFacade().getNamespace(inter1)));
+
         assertTrue("A interface should have public in its specification",
                 result.indexOf("public") == 0);
 
         Model.getCoreHelper().setVisibility(inter1,
                 Model.getVisibilityKind().getProtected());
         result = GeneratorJava.getInstance().generateClassifierStart(inter1);
+        assertTrue(Model.getFacade().isAPackage(
+                Model.getFacade().getNamespace(inter1)));
         assertTrue(
                 "A interface should not have protected in its specification",
                 result.indexOf("protected") == -1);
+    }
+
+    /**
+     * check the Java Code Generator does not generate a protected class ....
+     * These tests are applicable for inner classes (inside a class).
+     */
+    public void testGenerateClassifierStart3() {
+        StringBuffer result;
+
+        Model.getCoreHelper().setVisibility(innerClass,
+                Model.getVisibilityKind().getPublic());
+        result = GeneratorJava.getInstance()
+                .generateClassifierStart(innerClass);
+        assertTrue(Model.getFacade().isAClass(
+                Model.getFacade().getNamespace(innerClass)));
+        assertTrue("A class should have public in its specification", result
+                .indexOf("public") == 0);
+
+        Model.getCoreHelper().setVisibility(innerClass,
+                Model.getVisibilityKind().getProtected());
+        assertTrue(Model.getFacade().isAClass(
+                Model.getFacade().getNamespace(innerClass)));
+        result = GeneratorJava.getInstance()
+                .generateClassifierStart(innerClass);
+        assertTrue("A class should not have protected in its specification",
+                result.indexOf("protected") == 0);
     }
 
 }
