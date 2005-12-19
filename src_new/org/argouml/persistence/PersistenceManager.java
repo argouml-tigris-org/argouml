@@ -73,21 +73,16 @@ public final class PersistenceManager {
     private ZipFilePersister zipPersister;
 
     /**
-     * The configuration key for the "save project" file location.
+     * The configuration key for the project file location.
      */
-    public static final ConfigurationKey KEY_SAVE_PROJECT_PATH =
-        Configuration.makeKey("project", "save", "path");
+    public static final ConfigurationKey KEY_PROJECT_NAME_PATH =
+        Configuration.makeKey("project", "name", "path");
+
     /**
      * The configuration key for the "open project" file location.
      */
     public static final ConfigurationKey KEY_OPEN_PROJECT_PATH =
         Configuration.makeKey("project", "open", "path");
-
-    /**
-     * The configuration key for the "export xmi" file location.
-     */
-    public static final ConfigurationKey KEY_EXPORT_XMI_PATH =
-        Configuration.makeKey("xmi", "export", "path");
 
     /**
      * The configuration key for the "import xmi" file location.

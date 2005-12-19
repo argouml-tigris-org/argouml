@@ -126,8 +126,9 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         PersistenceManager.getInstance().setSaveFileChooserFilters(chooser);
 
         String fn = Configuration.getString(
-                PersistenceManager.KEY_SAVE_PROJECT_PATH);
+                PersistenceManager.KEY_PROJECT_NAME_PATH);
         if (fn.length() > 0) {
+            fn = PersistenceManager.getInstance().getBaseName(fn);
             chooser.setSelectedFile(new File(fn));
         }
 
@@ -138,9 +139,9 @@ public class ActionSaveProjectAs extends ActionSaveProject {
                 (AbstractFilePersister) chooser.getFileFilter();
             if (theFile != null) {
                 Configuration.setString(
-                        PersistenceManager.KEY_SAVE_PROJECT_PATH,
-                        theFile.getPath());
-
+                        PersistenceManager.KEY_PROJECT_NAME_PATH,
+                        PersistenceManager.getInstance().getBaseName(
+                                theFile.getPath()));
                 String name = theFile.getName();
                 if (!name.endsWith("." + filter.getExtension())) {
                     theFile =
