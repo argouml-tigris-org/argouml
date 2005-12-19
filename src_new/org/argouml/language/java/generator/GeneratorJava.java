@@ -666,8 +666,8 @@ public class GeneratorJava
         sb.append(DocumentationManager.getComments(cls));
         sb.append(generateConstraintEnrichedDocComment(cls, true, ""));
 
-        // Now add visibility
-        if (Model.getFacade().isPublic(cls)) {
+        // Now add visibility, but not for non public top level classifiers
+        if (Model.getFacade().isPublic(cls) || Model.getFacade().isAClassifier(Model.getFacade().getNamespace(cls))) {
             sb.append(generateVisibility(Model.getFacade().getVisibility(cls)));
         }
 
