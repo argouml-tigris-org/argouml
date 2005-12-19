@@ -130,22 +130,22 @@ public class DocumentationManager {
      * @return true if the given element has docs.
      */
     public static boolean hasDocs(Object o) {
-	if (Model.getFacade().isAModelElement(o)) {
-	    Iterator i = Model.getFacade().getTaggedValues(o);
+        if (Model.getFacade().isAModelElement(o)) {
+            Iterator i = Model.getFacade().getTaggedValues(o);
 
-	    if (i != null) {
-		while (i.hasNext()) {
-		    Object tv = i.next();
-		    String tag = Model.getFacade().getTagOfTag(tv);
-		    String value = Model.getFacade().getValueOfTag(tv);
-		    if ((tag.equals("documentation") || tag.equals("javadocs"))
-			&& value != null && value.trim().length() > 0) {
-			return true;
-		    }
-		}
-	    }
-	}
-	return false;
+            if (i != null) {
+                while (i.hasNext()) {
+                    Object tv = i.next();
+                    String tag = Model.getFacade().getTagOfTag(tv);
+                    String value = Model.getFacade().getValueOfTag(tv);
+                    if (("documentation".equals(tag) || "javadocs".equals(tag))
+                        && value != null && value.trim().length() > 0) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
