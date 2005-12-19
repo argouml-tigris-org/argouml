@@ -82,6 +82,7 @@ public class ArgoDiagram extends Diagram {
      */
     public void setName(String n) throws PropertyVetoException {
         super.setName(n);
+        ProjectManager.getManager().setNeedsSave(true);
     }
 
     /**
