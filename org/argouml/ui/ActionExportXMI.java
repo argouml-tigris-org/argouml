@@ -65,8 +65,9 @@ public final class ActionExportXMI extends AbstractAction {
 
         String fn =
             Configuration.getString(
-                PersistenceManager.KEY_EXPORT_XMI_PATH);
+                PersistenceManager.KEY_PROJECT_NAME_PATH);
         if (fn.length() > 0) {
+            fn = PersistenceManager.getInstance().getBaseName(fn);
             chooser.setSelectedFile(new File(fn));
         }
 
@@ -76,8 +77,9 @@ public final class ActionExportXMI extends AbstractAction {
             if (theFile != null) {
                 String name = theFile.getName();
                 Configuration.setString(
-                        PersistenceManager.KEY_EXPORT_XMI_PATH,
-                        theFile.getPath());
+                        PersistenceManager.KEY_PROJECT_NAME_PATH,
+                        PersistenceManager.getInstance().getBaseName(
+                                theFile.getPath()));
                 name = pm.fixXmiExtension(name);
                 theFile = new File(theFile.getParent(), name);
                 ProjectBrowser.getInstance().trySave(false, theFile);
