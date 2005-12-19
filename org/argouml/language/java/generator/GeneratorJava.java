@@ -664,10 +664,12 @@ public class GeneratorJava
         // so the next line is commented. See Issue 1505
         //sb.append (LINE_SEPARATOR);
         sb.append(DocumentationManager.getComments(cls));
-	sb.append(generateConstraintEnrichedDocComment(cls, true, ""));
+        sb.append(generateConstraintEnrichedDocComment(cls, true, ""));
 
         // Now add visibility
-        sb.append(generateVisibility(Model.getFacade().getVisibility(cls)));
+        if (Model.getFacade().isPublic(cls)) {
+            sb.append(generateVisibility(Model.getFacade().getVisibility(cls)));
+        }
 
         // Add other modifiers
         if (Model.getFacade().isAbstract(cls)
@@ -1099,7 +1101,7 @@ public class GeneratorJava
         if (s == null || s.length() == 0 || s.equals("/** */"))
             return "";
         String t = Model.getFacade().getTagOfTag(tv);
-        if (t.equals("documentation"))
+        if ("documentation".equals(t))
             return "";
         return generateName(t) + "=" + s;
     }
