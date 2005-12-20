@@ -119,12 +119,12 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#setStereoType(
+     * @see org.argouml.model.ExtensionMechanismsHelper#addCopyStereotype(
      *         java.lang.Object,
      *         java.lang.Object)
      */
-    public void setStereoType(Object modelElement, Object stereotype) {
-        impl.setStereoType(modelElement, stereotype);
+    public void addCopyStereotype(Object modelElement, Object stereotype) {
+        impl.addCopyStereotype(modelElement, stereotype);
     }
 
     /**

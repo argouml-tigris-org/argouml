@@ -1132,28 +1132,6 @@ public interface CoreHelper {
     void setSpecifications(Object handle, Collection specifications);
 
     /**
-     * Sets the stereotype of some modelelement. The method also
-     * copies a stereotype that is not a part of the current model to
-     * the current model.<p>
-     *
-     * TODO: Currently does not copy the stereotype, but changes the
-     * namespace to the new model (kidnapping it). That might possibly be
-     * dangerous, especially if more complex profile models are developed.
-     * This documentation should say what is supposed to be done. I think
-     * it would have been better if the caller had been responsible for the
-     * stereotype being in the right model and been adviced of
-     * eg ModelManagementHelper.getCorrespondingElement(...). Or if that had
-     * been used here. This function could possibly assert that the caller had
-     * got it right.<p>
-     *
-     * TODO: MULTIPLESTEREOTYPES remove this method
-     *
-     * @param handle model element
-     * @param stereo stereotype
-     */
-    void setStereotype(Object handle, Object stereo);
-
-    /**
      * Adds a stereotype to some modelelement.
      *
      * @param modelElement model element
@@ -1162,12 +1140,27 @@ public interface CoreHelper {
     void addStereotype(Object modelElement, Object stereo);
 
     /**
+     * Adds a collection of stereotype to some modelelement.
+     *
+     * @param modelElement model element
+     * @param stereos stereotype
+     */
+    void addAllStereotypes(Object modelElement, Collection stereos);
+
+    /**
      * Removes a stereotype from some modelelement.
      *
      * @param handle model element
      * @param stereo stereotype
      */
     void removeStereotype(Object handle, Object stereo);
+
+    /**
+     * Removes all stereotypes from a given modelelement.
+     *
+     * @param handle model element
+     */
+    void clearStereotypes(Object handle);
 
     /**
      * Sets a tagged value of some modelelement.

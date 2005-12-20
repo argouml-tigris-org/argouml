@@ -43,11 +43,11 @@ import org.argouml.model.Model;
 public class StereotypeUtility {
 
     /**
-     * Utility classes for
+     * Utility classes for 
      */
     private StereotypeUtility() {
         super();
-        // TODO Auto-generated constructor stub
+        // TODO: Auto-generated constructor stub
     }
 
     public static Action[] getApplyStereotypeActions(Object modelElement) {
@@ -65,13 +65,14 @@ public class StereotypeUtility {
                     throw new ClassCastException(e.getMessage());
                 }
             }
-        });
+        });            
         Collection models =
             ProjectManager.getManager().getCurrentProject().getModels();
-
-            addAllUniqueModelElementsFrom(availableStereotypes, paths, Model.getExtensionMechanismsHelper().
-            getAllPossibleStereotypes(models, modelElement));
-
+            
+        addAllUniqueModelElementsFrom(availableStereotypes, paths, Model
+                .getExtensionMechanismsHelper().getAllPossibleStereotypes(
+                        models, modelElement));
+        
         if (!availableStereotypes.isEmpty()) {
             Action[] menuActions = new Action[availableStereotypes.size()];
 
@@ -83,7 +84,7 @@ public class StereotypeUtility {
         }
         return null;
     }
-
+    
     /**
      * Helper method for buildModelList.
      * <p>
@@ -105,5 +106,5 @@ public class StereotypeUtility {
             }
         }
     }
-
+    
 }

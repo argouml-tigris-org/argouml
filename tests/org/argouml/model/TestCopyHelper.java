@@ -104,7 +104,7 @@ public class TestCopyHelper extends TestCase {
         Model.getCoreHelper().setSpecification(k, false);
         Model.getCoreHelper().setTaggedValue(k, "TVKey", "TVNewValue");
         Model.getCoreHelper().setActive(k, true);
-        Model.getExtensionMechanismsHelper().setStereoType(k, st);		
+        Model.getExtensionMechanismsHelper().addCopyStereotype(k, st);		
 	assertEquals("TestClass", Model.getFacade().getName(c));
 	assertTrue(Model.getFacade().getVisibility(c) 
                 == Model.getVisibilityKind().getPublic());
@@ -166,7 +166,7 @@ public class TestCopyHelper extends TestCase {
                 Model.getVisibilityKind().getProtected());
         Model.getCoreHelper().setSpecification(d, false);
         Model.getCoreHelper().setTaggedValue(d, "TVKey", "TVNewValue");
-        Model.getExtensionMechanismsHelper().setStereoType(d, st);	
+        Model.getExtensionMechanismsHelper().addCopyStereotype(d, st);	
 	assertEquals("TestDataType", Model.getFacade().getName(c));
 	assertTrue(Model.getFacade().getVisibility(c) 
                 == Model.getVisibilityKind().getPublic());
@@ -227,7 +227,7 @@ public class TestCopyHelper extends TestCase {
                 Model.getVisibilityKind().getProtected());
         Model.getCoreHelper().setSpecification(i, false);
         Model.getCoreHelper().setTaggedValue(i, "TVKey", "TVNewValue");
-        Model.getExtensionMechanismsHelper().setStereoType(i, st);	
+        Model.getExtensionMechanismsHelper().addCopyStereotype(i, st);	
 	assertEquals("TestInterface", Model.getFacade().getName(c));
 	assertTrue(Model.getFacade().getVisibility(c) 
                 == Model.getVisibilityKind().getPublic());
@@ -288,7 +288,7 @@ public class TestCopyHelper extends TestCase {
                 Model.getVisibilityKind().getProtected());
         Model.getCoreHelper().setSpecification(p, false);
         Model.getCoreHelper().setTaggedValue(p, "TVKey", "TVNewValue");
-        Model.getExtensionMechanismsHelper().setStereoType(p, st);	
+        Model.getExtensionMechanismsHelper().addCopyStereotype(p, st);	
 	assertEquals("TestPackage", Model.getFacade().getName(c));
 	assertTrue(Model.getFacade().getVisibility(c)  
                 == Model.getVisibilityKind().getPublic());
@@ -352,7 +352,7 @@ public class TestCopyHelper extends TestCase {
                 Model.getVisibilityKind().getProtected());
         Model.getCoreHelper().setSpecification(s, false);
         Model.getCoreHelper().setTaggedValue(s, "TVKey", "TVNewValue");
-        Model.getExtensionMechanismsHelper().setStereoType(s, st);
+        Model.getExtensionMechanismsHelper().addCopyStereotype(s, st);
         Model.getExtensionMechanismsHelper().setBaseClass(st, "ClassifierRole");
         Model.getExtensionMechanismsHelper().setIcon(s, "Icon2");
         assertEquals("TestStereotype", Model.getFacade().getName(c));

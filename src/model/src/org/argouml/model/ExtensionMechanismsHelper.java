@@ -119,7 +119,7 @@ public interface ExtensionMechanismsHelper {
      * @param modelElement is the model element
      * @param stereotype is the stereotype
      */
-    void setStereoType(Object modelElement, Object stereotype);
+    void addCopyStereotype(Object modelElement, Object stereotype);
 
     /**
      * Tests if a stereotype is a stereotype with some name and base class.

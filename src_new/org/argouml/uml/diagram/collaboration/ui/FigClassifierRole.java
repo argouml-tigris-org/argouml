@@ -30,6 +30,7 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -229,21 +230,15 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         Rectangle   bounds = getBounds();
 
-        // TODO: MULTIPLESTEREOTYPES
-        Object stereo =
-            CollectionUtil.getFirstItemOrNull(
-                Model.getFacade().getStereotypes(me));
+        Collection stereos = Model.getFacade().getStereotypes(me);
 
         // Where we now have no stereotype, mark as not displayed. Were we do
-        // have a stereotype, set the text and mark as displayed. If we remove
+        // have a stereotype, mark as displayed. If we remove
         // or add/change a stereotype we adjust the vertical bounds
         // appropriately. Otherwise we need not work out the bounds here. That
         // will be done in setBounds().
 
-        if ((stereo == null)
-	    || (Model.getFacade().getName(stereo) == null)
-	    || (Model.getFacade().getName(stereo).length() == 0)) {
-
+        if ((stereos == null) || stereos.isEmpty()) {
             if (getStereotypeFig().isVisible()) {
                 bounds.height -= getStereotypeFig().getBounds().height;
                 getStereotypeFig().setVisible(false);
@@ -260,7 +255,7 @@ public class FigClassifierRole extends FigNodeModelElement {
                 getStereotypeFig().setVisible(true);
             }
 
-            // Set the text and recalculate its bounds
+            // recalculate its bounds
 
             getStereotypeFig().calcBounds();
 

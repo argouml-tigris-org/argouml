@@ -125,15 +125,11 @@ public class TestModelFacade2 extends TestCase {
                     "TestStereotype",
                     Model.getFacade().getNamespace(cls));
         
-        Model.getCoreHelper().setStereotype(cls, stereotype);
+        Model.getCoreHelper().addStereotype(cls, stereotype);
         
         Collection coll2 = Model.getFacade().getStereotypes(cls);
         
         assertEquals(1, coll2.size());
         assertTrue(coll2.contains(stereotype));
-        assertEquals(
-            stereotype,
-            CollectionUtil.getFirstItemOrNull(
-                    Model.getFacade().getStereotypes(cls)));
     }
 }

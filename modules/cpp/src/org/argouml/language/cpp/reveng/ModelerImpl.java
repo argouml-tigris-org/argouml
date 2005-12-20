@@ -880,7 +880,7 @@ public class ModelerImpl implements Modeler {
             // outside of the class definition!
             assert Model.getFacade().isAClass(contextStack.peek());
             xtor = buildOperation(contextStack.peek(), getVoid());
-            Model.getExtensionMechanismsHelper().setStereoType(xtor,
+            Model.getExtensionMechanismsHelper().addCopyStereotype(xtor,
                 getStereotype(xtor, stereotypeName));
             contextStack.push(xtor);
         }

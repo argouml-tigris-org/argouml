@@ -25,6 +25,7 @@
 package org.argouml.uml.generator;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -33,7 +34,6 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.util.CollectionUtil;
 
 /**
  * Test the ParserDisplay.
@@ -66,7 +66,9 @@ public class TestParserDisplay extends TestCase {
     private static final String ATTR11 =
         "<<attrstereo2>> +name : String = a[15]";
     private static final String ATTR12 = "+ name : String = a << 5";
-
+    private static final String ATTR13 =
+        "<<attrstereo1,attrstereo2>> +name : String = a[15]";
+    
     private static final String NATTR01 = "too many string in an attribute";
     private static final String NATTR02 = "+vis name";
     private static final String NATTR03 = "vis name : type : type";
@@ -90,7 +92,8 @@ public class TestParserDisplay extends TestCase {
         + "out foo: double = 0., inout bar = \"\"some\"\":String) "
         + "{leaf,query} : String";
     private static final String OPER04 = "<<>> # name2()";
-
+    private static final String OPER05 = "<< opstereo1, opstereo2 >>  name5()";
+    
     private static final String NOPER01 = "name(";
     private static final String NOPER02 = "\"name\"()";
     private static final String NOPER03 = "\"vis\" name()";
@@ -520,6 +523,9 @@ public class TestParserDisplay extends TestCase {
         checkValue(attr, ATTR12, "a << 5");
     }
 
+    /*
+     * Add stereotype to a model element if it doesn't already have it
+     */
     private void softAddStereotype(String name, Object elem) {
         Object ns =  
             ProjectManager.getManager().getCurrentProject().getModel();
@@ -562,18 +568,23 @@ public class TestParserDisplay extends TestCase {
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
-        checkStereotype(attr, ATTR01, null);
+        checkStereotype(attr, ATTR01, new String[] {});
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
-        checkStereotype(attr, ATTR10, "attrstereo1");
+        checkStereotype(attr, ATTR10, new String[] {"attrstereo1"});
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
-        checkStereotype(attr, ATTR11, "attrstereo2");
-//        checkStereotype(attr, ATTR01, "attrstereo2");
+        checkStereotype(attr, ATTR11, new String[] {"attrstereo2"});
+        
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        Model.getCoreHelper().setNamespace(attr, ns);
+
+        checkStereotype(attr, ATTR13, new String[] {"attrstereo1",
+                                                    "attrstereo2"});
     }
 
     /**
@@ -814,19 +825,19 @@ public class TestParserDisplay extends TestCase {
         op =
             Model.getCoreFactory()
                 .buildOperation(cl, ns, voidType, propertyChangeListeners);
-        checkStereotype(op, OPER01, null);
+        checkStereotype(op, OPER01, new String[] {});
 
         op =
             Model.getCoreFactory()
                 .buildOperation(cl, ns, voidType, propertyChangeListeners);
-        checkStereotype(op, OPER02, "opstereo1");
+        checkStereotype(op, OPER02, new String[] {"opstereo1"});
 
         op =
             Model.getCoreFactory()
                 .buildOperation(cl, ns, voidType, propertyChangeListeners);
-        checkStereotype(op, OPER03, "opstereo2");
-//        checkStereotype(op, OPER01, "opstereo2");
-        checkStereotype(op, OPER04, null);
+        checkStereotype(op, OPER03, new String [] {"opstereo2"});
+        checkStereotype(op, OPER04, new String[] {});
+        checkStereotype(op, OPER05, new String [] {"opstereo1", "opstereo2"});
     }
 
     /**
@@ -1137,43 +1148,35 @@ public class TestParserDisplay extends TestCase {
      *
      * @param feature The feature.
      * @param text The text to parse.
-     * @param val The name of the stereotype.
+     * @param val The name of the stereotype(s).
      * @throws ParseException if we cannot parse the text.
      */
-    private void checkStereotype(Object feature, String text, String val)
+    private void checkStereotype(Object feature, String text, String[] val)
         throws ParseException {
 
-        // TODO: MULTIPLESTEREOTYPES
-        // This needs to be generalized to test multiple stereotypes
-        
         if (Model.getFacade().isAAttribute(feature)) {
             ParserDisplay.SINGLETON.parseAttribute(text, feature);
-            Object stereo = CollectionUtil.getFirstItemOrNull(
-                    Model.getFacade().getStereotypes(feature));
-            assertTrue(
-                   text + " gave wrong stereotype "
-                   + (stereo != null
-                      ? Model.getFacade().getName(stereo)
-                      : "(null)"),
-                   (val == null && stereo == null)
-                   || (val != null
-                       && stereo != null
-                       && val.equals(Model.getFacade().getName(stereo))));
         } else if (Model.getFacade().isAOperation(feature)) {
             ParserDisplay.SINGLETON.parseOperation(text, feature);
-            Object stereo = CollectionUtil.getFirstItemOrNull(
-                    Model.getFacade().getStereotypes(feature));
-            assertTrue(
-                   text
-                   + " gave wrong stereotype "
-                   + (stereo != null
-                      ? Model.getFacade().getName(stereo)
-                      : "(null)"),
-                   (val == null && stereo == null)
-                   || (val != null
-                       && stereo != null
-                       && val.equals(Model.getFacade().getName(stereo))));
+        } else {
+            fail("Unknown feature type " + feature);
         }
+        
+        Collection stereos = Model.getFacade().getStereotypes(feature);
+        ArrayList stereoNames = new ArrayList();
+        for (Iterator i = stereos.iterator(); i.hasNext();) {
+            stereoNames.add(Model.getFacade().getName(i.next()));
+        }
+        boolean stereosMatch = true;
+        for (int i = 0; i < val.length; i++) {
+            if (!stereoNames.contains(val[i])) {
+                stereosMatch = false;
+            }
+        }
+        assertTrue(
+               text + " gave wrong stereotype " + stereos.toArray(),
+                  val.length == stereos.size() 
+                  && stereosMatch);
     }
 
     /**
