@@ -313,14 +313,14 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
      * @param modelElement is the model element
      * @param stereotype is the stereotype
      */
-    public void setStereoType(Object modelElement, Object stereotype) {
-        if (stereotype != null) {
-            stereotype = nsmodel.getModelManagementHelper()
-                    .getCorrespondingElement(stereotype,
-                            nsmodel.getFacade().getModel(modelElement), true);
-        }
-        nsmodel.getCoreHelper().setStereotype(modelElement, stereotype);
-    }
+//    public void setStereoType(Object modelElement, Object stereotype) {
+//        if (stereotype != null) {
+//            stereotype = nsmodel.getModelManagementHelper()
+//                    .getCorrespondingElement(stereotype,
+//                            nsmodel.getFacade().getModel(modelElement), true);
+//        }
+//        nsmodel.getCoreHelper().setStereotype(modelElement, stereotype);
+//    }
 
     /**
      * Tests if a stereotype is a stereotype with some name and base class.
@@ -487,5 +487,13 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
         throw new IllegalArgumentException("handle: " + handle
                 + " or taggedValues: " + taggedValues);
 	}
+
+    /**
+     * @see org.argouml.model.ExtensionMechanismsHelper#addCopyStereotype(java.lang.Object, java.lang.Object)
+     */
+    public void addCopyStereotype(Object modelElement, Object stereotype) {
+        // TODO: Auto-generated method stub
+        
+    }
 }
 

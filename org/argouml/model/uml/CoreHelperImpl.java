@@ -3479,4 +3479,20 @@ class CoreHelperImpl implements CoreHelper {
     public void setEnumerationLiterals(Object enumeration, List literals) {
         // ILB
     }
+
+    /**
+     * @see org.argouml.model.CoreHelper#addAllStereotypes(java.lang.Object, java.util.Collection)
+     */
+    public void addAllStereotypes(Object modelElement, Collection stereos) {
+        // TODO: Auto-generated method stub
+        
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#clearStereotypes(java.lang.Object)
+     */
+    public void clearStereotypes(Object handle) {
+        // TODO: Auto-generated method stub
+        
+    }
 }
