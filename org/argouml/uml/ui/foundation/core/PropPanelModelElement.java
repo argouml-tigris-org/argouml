@@ -60,8 +60,6 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     private JComponent namespaceSelector;
 
-    private JComponent stereotypeSelector;
-
     private JScrollPane supplierDependencyScroll;
 
     private JScrollPane clientDependencyScroll;

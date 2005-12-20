@@ -92,7 +92,7 @@ public class WizAddConstructor extends UMLWizard {
 	        Model.getCoreFactory().buildOperation(me, model,
 	                voidType, newName, propertyChangeListeners);
 	    Model.getCoreHelper()
-	        .setStereotype(oper, getCreateStereotype(oper));
+	        .addStereotype(oper, getCreateStereotype(oper));
 	    TargetManager.getInstance().setTargets(savedTargets);
 	}
     }
