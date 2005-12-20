@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
@@ -60,7 +61,11 @@ public class GoModelToDiagrams extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-	// TODO: What?
+        if (Model.getFacade().isAModel(parent)) {
+            Set set = new HashSet();
+            set.add(parent);
+            return set;
+        }
 	return null;
     }
 }
