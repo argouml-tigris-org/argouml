@@ -41,7 +41,7 @@ public class GoModelToElements extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.namespace.owned-element");
+	return Translator.localize ("misc.model.elements");
     }
 
     /**
