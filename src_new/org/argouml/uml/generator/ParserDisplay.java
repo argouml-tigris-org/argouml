@@ -39,8 +39,7 @@ import org.argouml.model.Model;
 import org.argouml.model.StateMachinesFactory;
 import org.argouml.notation.Notation;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.Profile;
-import org.argouml.uml.ProfileException;
+import org.argouml.uml.notation.uml.NotationUtilityUml;
 import org.argouml.util.MyTokenizer;
 
 
@@ -899,7 +898,7 @@ public final class ParserDisplay {
             setProperties(op, properties, operationSpecialStrings);
         }
 
-        dealWithStereotypes(op, stereotype);
+        NotationUtilityUml.dealWithStereotypes(op, stereotype);
     }
 
     /**
@@ -1416,62 +1415,7 @@ public final class ParserDisplay {
             setProperties(attribute, properties, attributeSpecialStrings);
         }
 
-        dealWithStereotypes(attribute, stereotype);
-    }
-
-    /**
-     * This function shall replace the previous set of stereotypes 
-     * of the given modelelement with a new set, 
-     * given in the form of a "," seperated string of stereotype names.
-     * 
-     * @param umlobject the UML element to adapt
-     * @param stereotype comma seperated stereotype names
-     */
-    private void dealWithStereotypes(Object umlobject, String stereotype) {
-        String token;
-        MyTokenizer mst;
-        Collection stereotypes = new ArrayList();
-        
-        /* Convert the string (e.g. "aaa,bbb,ccc") 
-         * into seperate stereotype-names (e.g. "aaa", "bbb", "ccc").
-         */
-        if (stereotype != null) {
-            mst = new MyTokenizer(stereotype, " ,\\,");
-            while (mst.hasMoreTokens()) {
-                token = mst.nextToken();
-                if (!",".equals(token) && !" ".equals(token)) {
-                    stereotypes.add(token);
-                }
-            }
-        }
-        
-        // collect the to be removed stereotypes
-        Collection toBeRemoved = new ArrayList();
-        Iterator i = Model.getFacade().getStereotypes(umlobject).iterator();
-        while (i.hasNext()) {
-            String stereotypename = Model.getFacade().getName(i.next());
-            if (!stereotypes.contains(stereotypename)) {
-                toBeRemoved.add(getStereotype(umlobject, stereotypename));
-            }
-        }
-        
-        // and now remove them
-        i = toBeRemoved.iterator();
-        while(i.hasNext()) {
-            Model.getCoreHelper().removeStereotype(umlobject, i.next());
-        }
-
-        // add stereotypes
-        if (!stereotypes.isEmpty()) {
-            i = stereotypes.iterator();
-            while (i.hasNext()) {
-                String stereotypename = (String) i.next();
-                Object umlstereo = getStereotype(umlobject, stereotypename);
-                if (umlstereo != null) {
-                    Model.getCoreHelper().addStereotype(umlobject, umlstereo);
-                }
-            }
-        }
+        NotationUtilityUml.dealWithStereotypes(attribute, stereotype);
     }
 
     /**
@@ -1571,103 +1515,6 @@ public final class ParserDisplay {
 
             Model.getCoreHelper().setTaggedValue(elem, name, value);
         }
-    }
-
-    /**
-     * Recursively search a hive of a model for a stereotype with the name given
-     * in name.
-     *
-     * @param obj
-     *            The model element to be suitable for.
-     * @param root
-     *            The model element to search from.
-     * @param name
-     *            The name of the stereotype to search for.
-     * @return An stereotype named name, or null if none is found.
-     */
-    private Object recFindStereotype(Object obj, Object root, String name) {
-        Object stereo;
-
-        if (root == null) {
-            return null;
-        }
-
-        if (Model.getFacade().isAStereotype(root)
-                && name.equals(Model.getFacade().getName(root))) {
-            if (Model.getExtensionMechanismsHelper().isValidStereoType(obj,
-            /* (MStereotype) */root)) {
-                return root;
-            }
-            LOG.debug("Missed stereotype "
-                    + Model.getFacade().getBaseClass(root));
-        }
-
-        if (!Model.getFacade().isANamespace(root)) {
-            return null;
-        }
-
-        Collection ownedElements = Model.getFacade().getOwnedElements(root);
-
-        if (ownedElements == null) {
-            return null;
-        }
-
-        // Loop through each element in the namespace, recursing.
-
-        Iterator iter = ownedElements.iterator();
-
-        while (iter.hasNext()) {
-            stereo = recFindStereotype(obj, iter.next(), name);
-            if (stereo != null) {
-                return stereo;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Finds a stereotype named name either in the subtree of the model rooted
-     * at root, or in the the ProfileJava model.<p>
-     *
-     * TODO: Should create the stereotype under root if it isn't found.
-     *
-     * @param obj
-     *            A ModelElement to find a suitable stereotype for.
-     * @param name
-     *            The name of the stereotype to search for.
-     * @return A stereotype named name, or possibly null.
-     */
-    public Object getStereotype(Object obj, String name) {
-        Object root = Model.getFacade().getModel(obj);
-        Object stereo;
-
-        stereo = recFindStereotype(obj, root, name);
-        if (stereo != null) {
-            return stereo;
-        }
-
-        try {
-            Project project = ProjectManager.getManager().getCurrentProject();
-            Profile profile = project.getProfile();
-            stereo = recFindStereotype(obj, profile.getProfileModel(), name);
-        } catch (ProfileException e) {
-            // TODO: How are we going to handle exceptions here?
-            // I suspect the profile should be part of the project
-            // and not a singleton.
-            LOG.error("Failed to get profile", e);
-        }
-
-        if (stereo != null) {
-            return Model.getModelManagementHelper().getCorrespondingElement(
-                    stereo, root);
-        }
-
-        if (root != null && name.length() > 0) {
-            stereo = Model.getExtensionMechanismsFactory().buildStereotype(
-                    obj, name, root);
-        }
-
-        return stereo;
     }
 
     /**
