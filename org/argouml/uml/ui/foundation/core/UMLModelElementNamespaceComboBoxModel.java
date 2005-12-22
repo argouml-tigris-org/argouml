@@ -70,15 +70,17 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         Object t = getTarget();
         Collection c = Model.getCoreHelper().getAllPossibleNamespaces(t, model);
 
-        /* These next 2 lines for the case that the current namespace 
+        /* These next lines for the case that the current namespace 
          * is not a valid one... Which ofcourse should not happen, 
          * but it does - see the project attached to issue 3772. */
         /* TODO: Enhance the isValidNamespace function so
          * that this never happens. */
         if (t != null) {
             Object namespace = Model.getFacade().getNamespace(t);
-            if (!c.contains(namespace)) c.add(namespace);
-            LOG.warn("The current namespace is not a valid one!");
+            if (!c.contains(namespace)) { 
+                c.add(namespace);
+                LOG.warn("The current namespace is not a valid one!");
+            }
         }
         setElements(c);
     }
@@ -104,7 +106,8 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         if (t != null 
                 && evt.getSource() == t
                 && evt.getNewValue() != null) {
-            setTarget(t);
+//            setTarget(t); // this fixes issue 3780, but causes issue 3832.
+            buildModelList();
         }
     }
 }
