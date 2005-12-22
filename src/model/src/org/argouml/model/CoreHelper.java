@@ -396,6 +396,16 @@ public interface CoreHelper {
      * @return Collection
      */
     Collection getAllAttributes(Object clazz);
+    
+    /**
+     * Returns a Set containing all ModelElements visible 
+     * outside of the Namespace. 
+     * This is an "Additional Operation" from the UML spec.
+     * 
+     * @param ns the given namespace
+     * @return the collection with modelelements
+     */
+    Collection getAllVisibleElements(Object ns);
 
     /**
      * Returns the source of a relation. The source of a relation is

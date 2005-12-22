@@ -1136,6 +1136,14 @@ class CoreHelperImpl implements CoreHelper {
     }
 
     /**
+     * @see org.argouml.model.CoreHelper#getAllVisibleElements(java.lang.Object)
+     */
+    public Collection getAllVisibleElements(Object ns) {
+        // TODO: Auto-generated method stub
+        return null;
+    }
+
+    /**
      * Returns the source of a relation. The source of a relation is
      * defined as the modelelement that propagates this relation. If
      * there are more then 1 sources, only the first is returned. If

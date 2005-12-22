@@ -367,6 +367,13 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     }
 
     /**
+     * @see org.argouml.model.CoreHelper#getAllVisibleElements(java.lang.Object)
+     */
+    public Collection getAllVisibleElements(Object ns) {
+        return impl.getAllVisibleElements(ns);
+    }
+
+    /**
      * @see org.argouml.model.CoreHelper#getSource(java.lang.Object)
      */
     public Object getSource(Object relationship) {
