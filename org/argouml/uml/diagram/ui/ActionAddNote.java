@@ -39,7 +39,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -48,7 +47,10 @@ import org.tigris.gef.presentation.FigPoly;
 
 /**
  * Action to add a note aka comment. This action adds a Comment to 0..*
- * modelelements.
+ * modelelements. <p>
+ * 
+ * The modelelements that are present on the current diagram, are connected
+ * graphically. All others are only annotated in the model.
  */
 public class ActionAddNote extends UMLAction {
 
@@ -86,6 +88,7 @@ public class ActionAddNote extends UMLAction {
             .getActiveDiagram();
         Object comment = Model.getCoreFactory().buildComment(null,
                 ((UMLDiagram) diagram).getNamespace());
+        MutableGraphModel mgm = (MutableGraphModel) diagram.getGraphModel();
 
         //Now, we link it to the modelelements which are represented by FigNode
         Object firstTarget = null;
@@ -100,7 +103,6 @@ public class ActionAddNote extends UMLAction {
                 destEdge.calcBounds();
             }
             if (Model.getFacade().isAModelElement(obj)
-                    && (destFig instanceof FigNode)
                     && (!(Model.getFacade().isAComment(obj)))) {
                 if (firstTarget == null) firstTarget = obj;
                 /* Prevent e.g. AssociationClasses from being added trice: */
@@ -110,23 +112,22 @@ public class ActionAddNote extends UMLAction {
                 }
             }
         }
-
+        
         //Create the Node Fig for the comment itself and draw it
-        ((MutableGraphModel) diagram.getGraphModel()).addNode(comment);
+        mgm.addNode(comment);
         Fig noteFig = diagram.presentationFor(comment); // remember the fig for later
 
         //Create the comment links and draw them
-        MutableGraphModel mgm =
-            (MutableGraphModel) Globals.curEditor().getGraphModel();
-
         i = Model.getFacade().getAnnotatedElements(comment).iterator();
         while (i.hasNext()) {
             Object obj = i.next();
-            CommentEdge commentEdge = new CommentEdge(comment, obj);
-            ((MutableGraphModel) diagram.getGraphModel()).addEdge(commentEdge);
-            FigEdge fe = (FigEdge) diagram.presentationFor(commentEdge);
-            FigPoly fp = (FigPoly) fe.getFig();
-            fp.setComplete(true);
+            if (diagram.presentationFor(obj) != null) {
+                CommentEdge commentEdge = new CommentEdge(comment, obj);
+                mgm.addEdge(commentEdge);
+                FigEdge fe = (FigEdge) diagram.presentationFor(commentEdge);
+                FigPoly fp = (FigPoly) fe.getFig();
+                fp.setComplete(true);
+            }
         }
 
         //Calculate the position of the comment, based on the 1st target only
@@ -134,27 +135,27 @@ public class ActionAddNote extends UMLAction {
         int y = 20;
         if (firstTarget != null) {
             Fig elemFig = diagram.presentationFor(firstTarget);
-            if (elemFig == null)
-                return;
-            if (elemFig instanceof FigEdgeModelElement) {
-                elemFig = ((FigEdgeModelElement) elemFig).getCommentPort();
-            }
-            if (elemFig instanceof FigNode) {
-                // TODO: We need a better algorithm.
-                x = elemFig.getX() + elemFig.getWidth() + DISTANCE;
-                y = elemFig.getY();
-                Rectangle drawingArea =
-                    ProjectBrowser.getInstance().getEditorPane().getBounds();
-                if (x + noteFig.getWidth() > drawingArea.getX()) {
-                    x = elemFig.getX() - noteFig.getWidth() - DISTANCE;
-                    if (x < 0) {
-                        x = elemFig.getX();
-                        y = elemFig.getY() - noteFig.getHeight() - DISTANCE;
-                        if (y < 0) {
-                            y = elemFig.getY() + elemFig.getHeight() + DISTANCE;
-                            if (y + noteFig.getHeight() > drawingArea.getHeight()) {
-                                x = 0;
-                                y = 0;
+            if (elemFig != null) {
+                if (elemFig instanceof FigEdgeModelElement) {
+                    elemFig = ((FigEdgeModelElement) elemFig).getCommentPort();
+                }
+                if (elemFig instanceof FigNode) {
+                    // TODO: We need a better algorithm.
+                    x = elemFig.getX() + elemFig.getWidth() + DISTANCE;
+                    y = elemFig.getY();
+                    Rectangle drawingArea =
+                        ProjectBrowser.getInstance().getEditorPane().getBounds();
+                    if (x + noteFig.getWidth() > drawingArea.getX()) {
+                        x = elemFig.getX() - noteFig.getWidth() - DISTANCE;
+                        if (x < 0) {
+                            x = elemFig.getX();
+                            y = elemFig.getY() - noteFig.getHeight() - DISTANCE;
+                            if (y < 0) {
+                                y = elemFig.getY() + elemFig.getHeight() + DISTANCE;
+                                if (y + noteFig.getHeight() > drawingArea.getHeight()) {
+                                    x = 0;
+                                    y = 0;
+                                }
                             }
                         }
                     }
