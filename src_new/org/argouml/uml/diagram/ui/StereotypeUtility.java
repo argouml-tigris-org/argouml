@@ -51,6 +51,28 @@ public class StereotypeUtility {
     }
 
     public static Action[] getApplyStereotypeActions(Object modelElement) {
+        Set availableStereotypes = getAvailableStereotypes(modelElement);
+        
+        if (!availableStereotypes.isEmpty()) {
+            Action[] menuActions = new Action[availableStereotypes.size()];
+
+            Iterator it = availableStereotypes.iterator();
+            for (int i = 0; it.hasNext(); ++i) {
+                menuActions[i] = new ActionAddStereotype(modelElement, it.next());
+            }
+            return menuActions;
+        }
+        return null;
+    }
+
+    /**
+     * Returns a set of all unique available stereotypes 
+     * for a given modelelement.
+     * 
+     * @param modelElement the given modelelement
+     * @return the set with stereotype UML objects
+     */
+    public static Set getAvailableStereotypes(Object modelElement) {
         Set paths = new HashSet();
         Set availableStereotypes = new TreeSet(new Comparator() {
             public int compare(Object o1, Object o2) {
@@ -72,17 +94,7 @@ public class StereotypeUtility {
         addAllUniqueModelElementsFrom(availableStereotypes, paths, Model
                 .getExtensionMechanismsHelper().getAllPossibleStereotypes(
                         models, modelElement));
-        
-        if (!availableStereotypes.isEmpty()) {
-            Action[] menuActions = new Action[availableStereotypes.size()];
-
-            Iterator it = availableStereotypes.iterator();
-            for (int i = 0; it.hasNext(); ++i) {
-                menuActions[i] = new ActionAddStereotype(modelElement, it.next());
-            }
-            return menuActions;
-        }
-        return null;
+        return availableStereotypes;
     }
     
     /**
