@@ -158,14 +158,14 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
             }
             if (Model.getFacade().isAStereotype(value)) {
                 Object b = Model.getFacade().getBaseClass(value);
-                name = name + " <i>[" + makeText(b) + "]</i>";
+                name = name + " [" + makeText(b) + "]";
             }
         } else if (Model.getFacade().isAMultiplicity(value)) {
             name = Model.getFacade().getName(value);
         } else {
             name = makeTypeName(value);
         }
-        return "<html>" + name + "</html>";
+        return name;
 
     }
 
