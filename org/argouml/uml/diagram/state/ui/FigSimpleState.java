@@ -198,7 +198,10 @@ public class FigSimpleState extends FigState {
     /**
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
-    public void setFilled(boolean f) { cover.setFilled(f); }
+    public void setFilled(boolean f) {
+        cover.setFilled(f);
+        getBigPort().setFilled(f);
+    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getFilled()

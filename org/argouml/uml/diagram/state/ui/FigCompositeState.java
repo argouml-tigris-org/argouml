@@ -308,6 +308,7 @@ public class FigCompositeState extends FigState {
      */
     public void setFilled(boolean f) {
         cover.setFilled(f);
+        getBigPort().setFilled(f);
     }
 
     /**
