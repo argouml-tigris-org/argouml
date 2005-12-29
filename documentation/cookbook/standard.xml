@@ -874,7 +874,8 @@ Type the new project name: argouml-mdr, and press Next.
 Ignore the build path settings. We will come back to them later.
 Press Finish, which starts the checking out process.
 You are probably directed to the Java Perspective with a question if
-you want or not. At this point it doesn't matter. Just press Yes or No!
+you want or not.
+At this point, you better press No, to be able to perform the next step.
 </para>
 
 	  <para>
@@ -884,6 +885,8 @@ Press the button Finish.
 Select Java Project, and press Next.
 Type the new project name: argouml, and press Next.
 Ignore the build path settings. We will come back to them later.
+<!-- (Note MVW: I had to remove the item from the Source tab, 
+otherwise the compile later on fails.) -->
 Press Finish, which starts the checking out process.
 You are probably directed to the Java Perspective with a question if
 you want or not. At this point it doesn't matter. Just press Yes or No!
