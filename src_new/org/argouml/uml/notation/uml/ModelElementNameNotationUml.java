@@ -159,11 +159,11 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
         String token;
 
         try {
-            st = new MyTokenizer(text, "<<,«,»,>>,::");
+            st = new MyTokenizer(text, "<<,\u00AB,\u00BB,>>,::");
             while (st.hasMoreTokens()) {
                 token = st.nextToken();
 
-                if ("<<".equals(token) || "«".equals(token)) {
+                if ("<<".equals(token) || "\u00AB".equals(token)) {
                     if (stereotype != null) {
                         throw new ParseException("Element cannot have "
                                 + "two groups of stereotypes", st.getTokenIndex());
@@ -172,7 +172,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
                     stereotype = "";
                     while (true) {
                         token = st.nextToken();
-                        if (">>".equals(token) || "»".equals(token)) {
+                        if (">>".equals(token) || "\u00BB".equals(token)) {
                             break;
                         }
                         stereotype += token;

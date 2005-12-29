@@ -232,7 +232,7 @@ public class AboutBox extends JDialog {
         buf.append("+ Localization German: Harald Braun\n");
         buf.append("+ Localization Spanish: Stewart Munoz\n");
         buf.append("+ Localization British English: Alex Bagehot\n");
-        buf.append("+ Localization Norwegian (bokmål): Hans Fredrik Nordhaug\n");
+        buf.append("+ Localization Norwegian (bokm\u00E5l): Hans Fredrik Nordhaug\n");
         buf.append("+ Localization Chinese: Jeff Liu\n\n");
 
         buf.append(Translator.messageFormat(
