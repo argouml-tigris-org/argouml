@@ -65,13 +65,30 @@ public interface NotationProvider4 {
      */
     void putValue(String key, Object newValue);
 
+    /**
+     * Sets the <code>Value</code> associated with the specified key.
+     * 
+     * @param key the <code>String</code> that identifies the stored object
+     * @param newValue the <code>Object</code> to store using this key
+     */
+    void putValue(String key, boolean newValue);
+
 
     /**
      * Gets the <code>Object</code> associated with the specified key.
      *
      * @param key a string containing the specified <code>key</code>
-     * @return the binding <code>Object</code> stored with this key; if there
-     *          are no keys, it will return <code>null</code>
+     * @return the binding <code>Object</code> stored with this key; if this
+     *          key is not present, it will return <code>null</code>
      */
     Object getValue(String key);
+
+    /**
+     * Gets the <code>boolean</code> associated with the specified key.
+     *
+     * @param key a string containing the specified <code>key</code>
+     * @return the binding <code>boolean</code> stored with this key; if this
+     *          key is not present, it will return <code>false</code>
+     */
+    boolean isValue(String key);
 }

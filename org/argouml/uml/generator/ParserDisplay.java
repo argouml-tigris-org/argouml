@@ -898,7 +898,7 @@ public final class ParserDisplay {
             setProperties(op, properties, operationSpecialStrings);
         }
 
-        NotationUtilityUml.dealWithStereotypes(op, stereotype);
+        NotationUtilityUml.dealWithStereotypes(op, stereotype, true);
     }
 
     /**
@@ -1415,7 +1415,7 @@ public final class ParserDisplay {
             setProperties(attribute, properties, attributeSpecialStrings);
         }
 
-        NotationUtilityUml.dealWithStereotypes(attribute, stereotype);
+        NotationUtilityUml.dealWithStereotypes(attribute, stereotype, true);
     }
 
     /**
