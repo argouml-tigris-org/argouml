@@ -25,6 +25,8 @@
 package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Stack;
 import java.util.Vector;
@@ -32,6 +34,7 @@ import java.util.Vector;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.GeneratorDisplay;
 import org.argouml.uml.notation.ModelElementNameNotation;
@@ -88,21 +91,40 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        String name;
-        name = Model.getFacade().getName(myModelElement);
-        if (name == null) name = "";
-        return generateVisibility() + generatePath() + name;
+        String name = Model.getFacade().getName(myModelElement);
+        StringBuffer sb = new StringBuffer("");
+        if (isValue("fullyHandleStereotypes")) sb.append(generateStereotypes());
+        sb.append(generateVisibility());
+        sb.append(generatePath());
+        if (name != null) sb.append(name);
+        return sb.toString();
     }
 
+    protected String generateStereotypes() {
+        Collection c = Model.getFacade().getStereotypes(myModelElement);
+        StringBuffer sb = new StringBuffer(50);
+        Iterator i = c.iterator();
+        boolean first = true;
+        while (i.hasNext()) {
+            Object o = i.next();
+            if (!first) sb.append(',');
+            if (o != null) {
+                sb.append(Model.getFacade().getName(o));
+                first = false;
+            }
+        }
+        return first ? "" : NotationHelper.getLeftGuillemot()
+            + sb.toString()
+            + NotationHelper.getRightGuillemot();
+    }
+    
     /**
      *
      * @return a string which represents the path
      */
     protected String generatePath() {
         String s = "";
-        Object o = this.getValue("pathVisible");
-        boolean b = (o == null) ? false : ((Boolean) o).booleanValue();
-        if (b) {
+        if (isValue("pathVisible")) {
             Object p = myModelElement;
             Stack stack = new Stack();
             Object ns = Model.getFacade().getNamespace(p);
@@ -126,8 +148,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
      */
     protected String generateVisibility() {
         String s = "";
-        Boolean b = ((Boolean) this.getValue("visibilityVisible"));
-        if (b != null && b.booleanValue()) {
+        if (isValue("visibilityVisible")) {
             Object v = Model.getFacade().getVisibility(myModelElement);
             if (v == null) {
                 /* Initially, the visibility is not set in the model.
@@ -239,7 +260,8 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
             Model.getCoreHelper().setName(me, name);
         }
 
-        NotationUtilityUml.dealWithStereotypes(me, stereotype);
+        NotationUtilityUml.dealWithStereotypes(me, stereotype, 
+                isValue("fullyHandleStereotypes"));
 
         if (path != null) {
             Object nspe =

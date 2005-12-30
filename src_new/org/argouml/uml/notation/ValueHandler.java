@@ -69,5 +69,21 @@ public abstract class ValueHandler implements NotationProvider4{
         return keyTable.get(key);
     }
 
+    /**
+     * @see org.argouml.notation.NotationProvider4#putValue(java.lang.String, boolean)
+     */
+    public void putValue(String key, boolean newValue) {
+        Boolean b = new Boolean(newValue);
+        putValue(key, b);
+    }
+
+    /**
+     * @see org.argouml.notation.NotationProvider4#isValue(java.lang.String)
+     */
+    public boolean isValue(String key) {
+        Object o = this.getValue(key);
+        if (!(o instanceof Boolean)) return false;
+        return ((Boolean) o).booleanValue();
+    }
 
 }

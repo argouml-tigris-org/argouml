@@ -78,9 +78,7 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
      */
     protected String generatePath() {
         String s = "";
-        Object o = this.getValue("pathVisible");
-        boolean b = (o == null) ? false : ((Boolean) o).booleanValue();
-        if (b) {
+        if (isValue("pathVisible")) {
             Object p = myModelElement;
             Stack stack = new Stack();
             Object ns = Model.getFacade().getNamespace(p);
@@ -104,8 +102,7 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
      */
     protected String generateVisibility() {
         String s = "";
-        Boolean b = ((Boolean)this.getValue("visibilityVisible"));
-        if (b != null && b.booleanValue()) {
+        if (isValue("visibilityVisible")) {
             Object v = Model.getFacade().getVisibility(myModelElement);
             if (v == null) {
                 /* Initially, the visibility is not set in the model.

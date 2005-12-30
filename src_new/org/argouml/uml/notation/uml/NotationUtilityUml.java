@@ -57,8 +57,11 @@ public final class NotationUtilityUml {
      * 
      * @param umlobject the UML element to adapt
      * @param stereotype comma seperated stereotype names
+     * @param full false if stereotypes are only added, 
+     *             true if removal should be done, too.
      */
-    public static void dealWithStereotypes(Object umlobject, String stereotype) {
+    public static void dealWithStereotypes(Object umlobject, String stereotype, 
+            boolean full) {
         String token;
         MyTokenizer mst;
         Collection stereotypes = new ArrayList();
@@ -76,25 +79,27 @@ public final class NotationUtilityUml {
             }
         }
         
-        // collect the to be removed stereotypes
-        Collection toBeRemoved = new ArrayList();
-        Iterator i = Model.getFacade().getStereotypes(umlobject).iterator();
-        while (i.hasNext()) {
-            String stereotypename = Model.getFacade().getName(i.next());
-            if (!stereotypes.contains(stereotypename)) {
-                toBeRemoved.add(getStereotype(umlobject, stereotypename));
+        if (full) {
+            // collect the to be removed stereotypes
+            Collection toBeRemoved = new ArrayList();
+            Iterator i = Model.getFacade().getStereotypes(umlobject).iterator();
+            while (i.hasNext()) {
+                String stereotypename = Model.getFacade().getName(i.next());
+                if (!stereotypes.contains(stereotypename)) {
+                    toBeRemoved.add(getStereotype(umlobject, stereotypename));
+                }
             }
-        }
         
-        // and now remove them
-        i = toBeRemoved.iterator();
-        while(i.hasNext()) {
-            Model.getCoreHelper().removeStereotype(umlobject, i.next());
+            // and now remove them
+            i = toBeRemoved.iterator();
+            while(i.hasNext()) {
+                Model.getCoreHelper().removeStereotype(umlobject, i.next());
+            }
         }
 
         // add stereotypes
         if (!stereotypes.isEmpty()) {
-            i = stereotypes.iterator();
+            Iterator i = stereotypes.iterator();
             while (i.hasNext()) {
                 String stereotypename = (String) i.next();
                 Object umlstereo = getStereotype(umlobject, stereotypename);
