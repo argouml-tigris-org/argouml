@@ -633,6 +633,15 @@ csh-style shells like csh and tcsh you will instead have to write
 </para>
 	    </listitem>
 	    <listitem>
+	      <para>After checking out with CVS, the shell files (build.sh,...) 
+	      and executables (ant,...) have the wrong attributes. 
+	      The CVS documentation says: "Files also lose
+          their ownerships and permissions during repository transactions." 
+	      Hence, you have to make such files executable 
+	      before you will be able to run them.
+	      </para>
+	    </listitem>
+	    <listitem>
 	      <para>
 Change the current directory to the directory you are building
 </para>
