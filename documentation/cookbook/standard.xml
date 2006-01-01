@@ -916,7 +916,7 @@ Build using ant.
 	  <para>
 Browse to <filename>argouml/src_new/build.xml</filename>,
 select the <filename>build.xml</filename>-file,
-right-click on it, and do Run Ant...
+right-click on it, and do Run As - Ant Build...
 This pops up the External Tools... pop up
 with the Targets tab already selected.
 Select compile (default target in the Targets tab),
@@ -926,7 +926,7 @@ and finally press Run.
 	  <para>
 Browse to <filename>argouml-mdr/build.xml</filename>,
 select the <filename>build.xml</filename>-file,
-right-click on it, and do Run Ant...
+right-click on it, and do Run As - Ant Build...
 This pops up the External Tools... pop up
 with the Targets tab already selected.
 Select <command>generate</command>,
@@ -1162,7 +1162,7 @@ Eclipse Workspace separate from your other projects.
 Code conventions.
 </para>
 	  <para>See in the menu Window => Preferences. 
-      Then select Java => Code Style => Code Formatter.
+      Then select Java => Code Style => Formatter.
 Set the Code Formatter to "Java conventions [built-in]".
 </para>
 	</listitem>
@@ -1170,6 +1170,9 @@ Set the Code Formatter to "Java conventions [built-in]".
 	<listitem>
 	  <para>
 TAB character width is 8.
+</para>
+	  <para>
+	  This will only work correctly by default from Eclipse V3.2 onwards.
 </para>
 	  <para>
 Solution for Eclipse 3.0:
@@ -1220,7 +1223,7 @@ set the Code Templates for Overriding methods to
       Set it to
 <programlisting>
 // &dollar;&dollar;Id&dollar;&dollar;
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
