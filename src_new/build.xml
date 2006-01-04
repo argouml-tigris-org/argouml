@@ -1023,7 +1023,7 @@ cd ../argouml/src_new
     <!--        individual users can set as wanted.                -->
     <!--        That is part of issue 579.                         -->
 
-    <junit errorproperty="junit.failure" fork="yes" haltonfailure="false" maxmemory="48M" printsummary="true">
+    <junit errorproperty="junit.failure" fork="yes" haltonfailure="false" maxmemory="128M" printsummary="true">
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
         <classpath>
