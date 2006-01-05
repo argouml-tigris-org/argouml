@@ -174,7 +174,7 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 implements FocusL
             if (((UMLComboBoxModel2) getModel()).contains(anObject)) {
                 editor.setText(((UMLListCellRenderer2) getRenderer())
                         .makeText(anObject));
-                if (theShowIcon)
+                if (theShowIcon && (anObject != null))
                     panel.setIcon(ResourceLoaderWrapper.getInstance()
                             .lookupIcon(anObject));
             } else
