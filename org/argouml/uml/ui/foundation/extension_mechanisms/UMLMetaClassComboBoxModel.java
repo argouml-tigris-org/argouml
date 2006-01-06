@@ -25,8 +25,6 @@
 // $header$
 package org.argouml.uml.ui.foundation.extension_mechanisms;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -42,33 +40,8 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  */
 public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
 
-    private Collection metaClasses = new ArrayList(Arrays.asList(new String[] {
-        "ModelElement", "Classifier", "Class", "Interface", "DataType",
-        "Exception", "Signal",
-
-        "Association", "AssociationEnd", "Attribute", "Operation",
-        "Generalization", "Flow", "Usage", "BehavioralFeature",
-        "Feature", "Namespace", "GeneralizableElement", 
-        "Parameter", "Constraint", "StructuralFeature", "Method",
-        "Relationship", "AssociationClass", "Dependency",
-        "Binding", "Artifact", "EnumerationLiteral",
-        "Primitive", "Enumeration", "Reception", "Action",
-        "Instance", "Stimulus", "Object", "LinkEnd", "DataValue",
-        "ClassifierRole", "Collaboration", "Interaction", "Message",
-        "UseCase", "ExtensionPoint",
-        "StateMachine", "Guard", "Transition", "StateVertex", "State",
-        "SynchState", "PseudoState", "SubState", "CompositeState",
-        "SimpleState", "FinalState", "SubmachineState",
-        "Event", "SignalEvent", "TimeEvent", "ChangeEvent",
-        "Partition", "ActivityGraph", "SubactivityState", 
-        "ActionState", "CallState", "ClassifierInState",
-
-        "CallEvent", "Abstraction", "Component", "Package", "Constraint",
-        "Comment", "ObjectFlowState",
-
-        "Model", "Subsystem", "Collaboration", "Permission", "Actor",
-        "Node", "NodeInstance", "Link",
-    }));
+    private Collection metaClasses = 
+            Model.getCoreHelper().getAllMetatypeNames();
 
     /**
      * Constructor.
