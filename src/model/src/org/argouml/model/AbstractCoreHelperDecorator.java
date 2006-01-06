@@ -1142,4 +1142,11 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     public void setEnumerationLiterals(Object enumeration, List literals) {
         impl.setEnumerationLiterals(enumeration, literals);
     }
+    
+    /**
+     * @see org.argouml.model.CoreHelper#getAllMetatypeNames()
+     */
+    public Collection getAllMetatypeNames() {
+        return impl.getAllMetatypeNames();
+    }
 }
