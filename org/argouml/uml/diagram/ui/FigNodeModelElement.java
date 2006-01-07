@@ -1535,7 +1535,7 @@ public abstract class FigNodeModelElement
 //     * @param fig the stereotype Fig
 //     */
 //    protected void setStereotypeFig(Fig fig) {
-//        stereo = (FigStereotype)fig;
+//        stereo = (FigStereotypeText)fig;
 //    }
 //
     /**
