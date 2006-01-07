@@ -3503,4 +3503,9 @@ class CoreHelperImpl implements CoreHelper {
         // TODO: Auto-generated method stub
         
     }
+
+    public Collection getAllMetatypeNames() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
