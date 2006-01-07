@@ -535,7 +535,6 @@ class CoreHelperImpl implements CoreHelper {
         while (depIterator.hasNext()) {
             Object dep = depIterator.next();
             Object stereo = CollectionUtil.getFirstItemOrNull(
-                    //TODO: MULTIPLE STEREOTYPES
                     Model.getFacade().getStereotypes(dep));
             if ((dep instanceof MAbstraction)
                 && stereo != null
