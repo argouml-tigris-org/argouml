@@ -789,6 +789,7 @@ public final class TargetManager {
 	                + listeners[i + 1]
 	                            + " an error is thrown.",
 	                            e);
+                e.printStackTrace();
             }
         }
     }
@@ -810,6 +811,7 @@ public final class TargetManager {
 			  + listeners[i + 1]
 			  + " an error is thrown.",
 			  e);
+                e.printStackTrace();
 	    }
         }
     }
@@ -831,6 +833,7 @@ public final class TargetManager {
 			  + listeners[i + 1]
 			  + " an error is thrown.",
 			  e);
+                e.printStackTrace();
 	    }
         }
     }
