@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -35,15 +34,13 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLTagDefinitionStereotypeComboBoxModel extends UMLComboBoxModel2 {
-
-    private Logger LOG = Logger.getLogger(UMLTagDefinitionStereotypeComboBoxModel.class);
+public class UMLTagDefinitionOwnerComboBoxModel extends UMLComboBoxModel2 {
 
     /**
      * Constructor for UMLModelElementStereotypeComboBoxModel.
      */
-    public UMLTagDefinitionStereotypeComboBoxModel() {
-        super("stereotype", true);
+    public UMLTagDefinitionOwnerComboBoxModel() {
+        super("stereotype", true); //TODO: Should this not be "owner"?
         Model.getPump().addClassModelEventListener(
             this,
             Model.getMetaTypes().getNamespace(),
