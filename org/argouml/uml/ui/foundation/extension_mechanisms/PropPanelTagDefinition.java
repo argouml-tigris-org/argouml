@@ -24,18 +24,29 @@
 
 package org.argouml.uml.ui.foundation.extension_mechanisms;
 
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLMultiplicityComboBox2;
 import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
+import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -49,7 +60,11 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
         ownerComboBoxModel = 
             new UMLTagDefinitionOwnerComboBoxModel();
 
-
+    private UMLComboBoxModel2 tdNamespaceComboBoxModel =
+        new UMLTagDefinitionNamespaceComboBoxModel();
+    
+    private JComponent tdNamespaceSelector;
+    
     /**
      * The combobox for the multiplicity of this type.
      */
@@ -75,7 +90,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
         addField(Translator.localize("label.owner"),
                 getOwnerSelector());
         addField(Translator.localize("label.namespace"),
-                getNamespaceSelector());
+                getTDNamespaceSelector());
         addField(Translator.localize("label.multiplicity"),
                 getMultiplicityComboBox());
         add(getNamespaceVisibilityPanel());
@@ -87,6 +102,16 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
         addAction(new ActionDeleteSingleModelElement());
     }
 
+    protected JComponent getTDNamespaceSelector() {
+        if (tdNamespaceSelector == null) {
+            tdNamespaceSelector = new UMLSearchableComboBox(
+                    tdNamespaceComboBoxModel,
+                    new ActionSetTagDefinitionNamespace(), true);
+        }
+        return tdNamespaceSelector;
+
+    }
+    
     /**
      * Returns the stereotype selecter. This is a component which allows the
      * user to select a single item as the stereotype.
@@ -126,3 +151,81 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
 
 
 } /* end class PropPanelClass */
+
+class UMLTagDefinitionNamespaceComboBoxModel 
+    extends UMLModelElementNamespaceComboBoxModel {
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     */
+    protected boolean isValidElement(Object o) {
+        return Model.getFacade().isANamespace(o);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel#buildModelList()
+     */
+    protected void buildModelList() {
+        Object model =
+            ProjectManager.getManager().getCurrentProject().getRoot();
+        Collection c = new ArrayList();
+        c.add(null);
+        c.addAll(Model.getModelManagementHelper().getAllNamespaces(model));
+        setElements(c);
+    }
+
+    /**
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+         /*
+          * Rebuild the list from scratch to be sure it's correct.
+          */
+         Object t = getTarget();
+         if (t != null && evt.getSource() == t) {
+             // allow the evt.getNewValue() to be null (see parent class)
+             buildModelList();
+             setSelectedItem(getSelectedModelElement());
+         }
+     }
+}
+
+class ActionSetTagDefinitionNamespace extends UMLAction {
+    /**
+     * Constructor for ActionSetModelElementNamespace.
+     */
+    protected ActionSetTagDefinitionNamespace() {
+        super("Set", true, NO_ICON);
+    }
+
+    /**
+     * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        Object oldNamespace = null;
+        Object newNamespace = null;
+        Object m = null;
+        if (source instanceof UMLComboBox2) {
+            UMLComboBox2 box = (UMLComboBox2) source;
+            Object o = box.getTarget();
+            if (Model.getFacade().isAModelElement(o)) {
+                m = /*(MModelElement)*/ o;
+                oldNamespace = Model.getFacade().getNamespace(m);
+            }
+            o = box.getSelectedItem();
+            if (Model.getFacade().isANamespace(o)) {
+                newNamespace = /*(MNamespace)*/ o;
+            }
+        }
+        if (newNamespace != oldNamespace && m != null && newNamespace != null) {
+            // if there is a namespace, 
+            // then there may not be a owner (stereotype)
+            Model.getCoreHelper().setOwner(m, null);
+            Model.getCoreHelper().setNamespace(m, newNamespace);
+            super.actionPerformed(e);
+        }
+    }
+
+
+}

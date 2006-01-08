@@ -24,11 +24,11 @@
 
 package org.argouml.uml.ui.foundation.extension_mechanisms;
 
+import java.awt.AWTEvent;
 import java.awt.event.ActionEvent;
 
-import javax.swing.SwingUtilities;
-
 import org.apache.log4j.Logger;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -64,18 +64,23 @@ public class ActionSetTagDefinitionOwner extends UMLAction {
         LOG.info("Receiving " + e + "/" + e.getID() + "/"
                 + e.getActionCommand());
         if (source instanceof UMLComboBox2
-                && e.getModifiers() == ActionEvent.MOUSE_EVENT_MASK) {
+                && e.getModifiers() == AWTEvent.MOUSE_EVENT_MASK) {
             UMLComboBox2 combo = (UMLComboBox2) source;
-            final Object o = combo.getSelectedItem();
+            Object o = combo.getSelectedItem();
             final Object tagDefinition = combo.getTarget();
             LOG.info("Set owner to " + o);
             if (Model.getFacade().isAStereotype(o)
                     && Model.getFacade().isATagDefinition(tagDefinition)) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        Model.getCoreHelper().setOwner(tagDefinition, o);
-                    }
-                });
+                Object model = 
+                    ProjectManager.getManager().getCurrentProject().getModel();
+                final Object stereo = Model.getModelManagementHelper()
+                    .getCorrespondingElement(o, model, true);
+                // TODO: Why was this next code here? Is it save to remove it?
+//                SwingUtilities.invokeLater(new Runnable() {
+//                    public void run() {
+                Model.getCoreHelper().setOwner(tagDefinition, stereo);
+//                    }
+//                });
             }
         }
     }
