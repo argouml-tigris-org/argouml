@@ -28,7 +28,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.HashSet;
 import java.util.Stack;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -1578,7 +1580,32 @@ public class Modeller {
 		        Model.getFacade().getNamespace(me),
 		        mc);
 	    }
-	} else {
+    } else {
+        if ("stereotype".equals(sTagName)) {
+            // multiple stereotype support: make one stereotype tag from many stereotype tags:
+            Object tv = getTaggedValue(me, sTagName);
+            if (tv != null) {
+                String sStereotype = Model.getFacade().getValueOfTag(tv);
+                if (sStereotype != null && sStereotype.length() > 0) {
+                    sTagData = sStereotype + ',' + sTagData;
+                }
+            }
+            // now eliminate multiple entries in that comma separated list
+            HashSet stSet = new HashSet();
+            StringTokenizer st = new StringTokenizer(sTagData, ", ");
+            while (st.hasMoreTokens()) {
+                stSet.add(st.nextToken().trim());
+            }
+            StringBuffer sb = new StringBuffer();
+            Iterator iter = stSet.iterator();
+            while (iter.hasNext()) {
+                if (sb.length() > 0) {
+                    sb.append(',');
+                }
+                sb.append(iter.next());
+            }
+            sTagData = sb.toString();
+        }
 	    Model.getExtensionMechanismsHelper().setValueOfTag(
 	            getTaggedValue(me, sTagName),
 	            sTagData);
@@ -1732,21 +1759,24 @@ public class Modeller {
                 modelElement, "documentation"), sJavaDocs);
 	    // If there is a tagged value named stereotype, make it a real
 	    // stereotype
-            // TODO: MULTIPLESTEREOTYPES - should we allow multiple instances
-            // of this tagged value?  Or parse a single instance for multiple
-            // stereotypes? - tfm
+            // we allow multiple instances
+            // of this tagged value AND parse a single instance for multiple
+            // stereotypes
             Object tv =
                 Model.getFacade().getTaggedValue(modelElement, "stereotype");
             String stereo = null;
             if (tv != null) {
                 stereo = Model.getFacade().getValueOfTag(tv);
             }
-	    if (stereo != null && stereo.length() > 0) {
-		Model.getCoreHelper().addStereotype(
-		        modelElement,
-		        getStereotype(stereo));
-	    }
-	}
+            if (stereo != null && stereo.length() > 0) {
+                StringTokenizer st = new StringTokenizer(stereo, ", ");
+                while (st.hasMoreTokens()) {
+                    Model.getCoreHelper().addStereotype(
+                        modelElement,
+                        getStereotype(st.nextToken().trim()));
+                }
+            }
+        }
     }
 
     /**
