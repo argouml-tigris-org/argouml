@@ -73,7 +73,7 @@ public class CrMultipleInitialStates extends CrUML {
         }
 
         // container state / composite state
-        Object cs = Model.getFacade().getModelElementContainer(dm);
+        Object cs = Model.getFacade().getContainer(dm);
         if (cs == null) {
             LOG.debug("null parent state");
             return NO_PROBLEM;
@@ -112,7 +112,7 @@ public class CrMultipleInitialStates extends CrUML {
      */
     protected ListSet computeOffenders(Object ps) {
         ListSet offs = new ListSet(ps);
-        Object cs = Model.getFacade().getModelElementContainer(ps);
+        Object cs = Model.getFacade().getContainer(ps);
         if (cs == null) {
             LOG.debug("null parent in still valid");
             return offs;
