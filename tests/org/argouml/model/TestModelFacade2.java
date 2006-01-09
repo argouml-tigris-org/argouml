@@ -26,8 +26,6 @@ package org.argouml.model;
 
 import java.util.Collection;
 
-import org.argouml.util.CollectionUtil;
-
 import junit.framework.TestCase;
 
 /**
@@ -93,6 +91,28 @@ public class TestModelFacade2 extends TestCase {
 
 	Collection collection = Model.getFacade().getPartitions(container);
 	assertTrue(collection.contains(partition));
+        assertTrue(container.equals(Model.getFacade().getModelElementContainer(
+                partition)));
+    }
+    
+    /**
+     * Test getModelElementContainer.
+     */
+    public void testGetModelElementContainer() {
+        StateMachinesFactory factory = Model.getStateMachinesFactory();
+        StateMachinesHelper helper = Model.getStateMachinesHelper();
+
+        Object stateMachine = factory.createStateMachine();
+        Object state = factory.createSimpleState();
+        Object action = Model.getCommonBehaviorFactory().createCallAction();
+        helper.setStateMachine(state, stateMachine);
+        helper.setEntry(state, action);
+
+        Object parentComposite = Model.getFacade().getModelElementContainer(
+                action);
+        assertTrue(state.equals(parentComposite));
+        assertTrue(stateMachine.equals(Model.getFacade()
+                .getModelElementContainer(parentComposite)));
     }
 
     /**
