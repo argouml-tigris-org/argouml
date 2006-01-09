@@ -102,8 +102,8 @@ public abstract class ActionAddDiagram extends UMLAction {
                     ns = owner;
                 }
             }
-            if (ns == null && Model.getFacade().isABase(target)) {
-                owner = Model.getFacade().getModelElementContainer(target);
+            if (ns == null && Model.getFacade().isAModelElement(target)) {
+                owner = Model.getFacade().getNamespace(target);
                 if (owner != null && Model.getFacade().isANamespace(owner)) {
                     ns = owner;
                 }

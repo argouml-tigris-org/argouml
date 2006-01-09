@@ -803,6 +803,14 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     }
 
     /**
+     * @see org.argouml.model.CoreHelper#setContainer(
+     *         java.lang.Object, java.lang.Object)
+     */
+    public void setContainer(Object handle, Object component) {
+        impl.setContainer(handle, component);
+    }
+
+    /**
      * @see org.argouml.model.CoreHelper#setInitialValue(
      *         java.lang.Object, java.lang.Object)
      */

@@ -230,8 +230,9 @@ public class RESequenceDiagramDialog extends ArgoDialog implements ActionListene
         if (target instanceof Fig) {
             target = ((Fig) target).getOwner();
         }
-        if (Model.getFacade().isABase(target)) {
-            newTarget = Model.getFacade().getModelElementContainer(target);
+        if (Model.getFacade().isAModelElement(target)
+                && Model.getFacade().getNamespace(target) != null) {
+            newTarget = Model.getFacade().getNamespace(target);
         } else if (target instanceof Diagram) {
             Diagram firstDiagram = (Diagram) p.getDiagrams().get(0);
             if (target != firstDiagram) {

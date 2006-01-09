@@ -52,7 +52,6 @@ import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Editor;
@@ -867,11 +866,10 @@ public class FigClass extends FigClassifierBox
                 && (Model.getFacade().isAComponent(encloser.getOwner()))) {
             Object component = /*(MComponent)*/ encloser.getOwner();
             Object in = /*(MInterface)*/ getOwner();
-            Model.getCoreHelper()
-                    .setModelElementContainer(resident, component);
+            Model.getCoreHelper().setContainer(resident, component);
             Model.getCoreHelper().setResident(resident, in);
         } else {
-            Model.getCoreHelper().setModelElementContainer(resident, null);
+            Model.getCoreHelper().setContainer(resident, null);
             Model.getCoreHelper().setResident(resident, null);
         }
 

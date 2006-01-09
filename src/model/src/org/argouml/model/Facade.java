@@ -213,14 +213,9 @@ public interface Facade {
     /**
      * Recognizer for an object that is some form of
      * an element in the model. MBase was the Novosoft term.<p>
-     *
-     * In UML terms, the root of the type hierarchy is the
-     * type Element which is abstract and has subtypes
-     * ModelElement and PresentationElement.<p>
-     *
-     * TODO: This method could be renamed to be more
-     * relevant to current UML standards.<p>
-     *
+     * 
+     * @deprecated use isAModelElement or a more specific recognizer
+     *             for all new code
      * @param handle candidate
      * @return true if handle is a base.
      */
@@ -1547,7 +1542,7 @@ public interface Facade {
      *
      * @param handle is an element residence
      * @return component
-     * @deprecated see getModelElementContainer
+     * @deprecated use getContainer
      */
     Object getImplementationLocation(Object handle);
 
@@ -1782,24 +1777,37 @@ public interface Facade {
     Collection getConstraints(Object handle);
 
     /**
-     * Returns the Component that is the container for the given modelelement,
-     * according the ElementResidence relationship in the metamodel. 
-     * The container will be null for modelelements that don't have
-     * an ElementResidence relationship defined between itself and a Component.
+     * Returns the container for the given modelelement. If you know the type of
+     * ModelElement you are working with, you should use the appropriate more
+     * specific function (e.g. getAssociation for an AssociationEnd).<p>
      * 
-     * @param handle is the modelelement
-     * @return Object the Component
+     * This is principally intended as a convenience function for generic code
+     * that deals with a variety of element types that just wants a parent of
+     * some type without really caring what it is.<p>
+     * 
+     * The container is the owner of the modelelement. It will be null for
+     * elements that don't have an owner. All elements except for the root
+     * element in a project should have an owner. The root element is always a
+     * model.<p>
+     * 
+     * In the future, this function could return the container of Figs too.
+     * 
+     * @param handle
+     *            is the base
+     * @return Object
      */
     Object getModelElementContainer(Object handle);
 
     /**
-     * Returns the CompositeState that is the container of
-     * the given StateVertex.<p>
-     *
-     * UML 1.4 adds support for ElementResidence
-     *
-     * @param handle the StateVertex
-     * @return the CompositeState that is the container
+     * Returns the CompositeState or Component that is the container of the
+     * given StateVertex or ElementResidence, respectively.<p>
+     * 
+     * ElementResidence support is new in UML 1.4 (was
+     * getImplementationLocation)
+     * 
+     * @param handle
+     *            the StateVertex or ElementResidence
+     * @return the CompositeState or Component that is the container
      */
     Object getContainer(Object handle);
 

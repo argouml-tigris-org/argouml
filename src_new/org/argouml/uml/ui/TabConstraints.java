@@ -264,19 +264,8 @@ public class TabConstraints extends AbstractArgoJPanel
         public void addConstraint() {
 
             // check ocl parsing constraints
-            /*
-             * TODO: sz9: I think this should read
-             * mmeContext =
-             *      OclUtil.getInnerMostEnclosingNamespace(m_mmeiTarget);
-             */
-            Object/*MModelElement*/ mmeContext = theMMmeiTarget;
-
-            while (!(Model.getFacade().isAClassifier(mmeContext))
-		   && mmeContext != null) {
-                mmeContext =
-                    Model.getFacade().getModelElementContainer(mmeContext);
-            }
-
+            Object mmeContext = OCLUtil
+                    .getInnerMostEnclosingNamespace(theMMmeiTarget);
             String contextName = Model.getFacade().getName(mmeContext);
             String targetName = Model.getFacade().getName(theMMmeiTarget);
             if ((contextName == null
@@ -376,14 +365,9 @@ public class TabConstraints extends AbstractArgoJPanel
                 // Parse and check specified constraint.
                 OclTree tree = null;
 
-                Object/*MModelElement*/ mmeContext = theMMmeiTarget;
-
                 try {
-                    while (!(Model.getFacade().isAClassifier(mmeContext))) {
-                        mmeContext =
-			    Model.getFacade().getModelElementContainer(
-			            mmeContext);
-                    }
+                    Object mmeContext = OCLUtil
+                            .getInnerMostEnclosingNamespace(theMMmeiTarget);
 
                     try {
                         tree =
@@ -553,13 +537,8 @@ public class TabConstraints extends AbstractArgoJPanel
                     // Also set name in constraint body -- Added 03/14/2001
                     try {
                         OclTree tree = null;
-
-                        Object/*MModelElement*/ mmeContext = theMMmeiTarget;
-                        while (!(Model.getFacade().isAClassifier(mmeContext))) {
-                            mmeContext =
-                                Model.getFacade().getModelElementContainer(
-                                        mmeContext);
-                        }
+                        Object mmeContext = OCLUtil
+                                .getInnerMostEnclosingNamespace(theMMmeiTarget);
 
                         constraintBody =
                             Model.getFacade().getBody(theMMcConstraint);
