@@ -47,14 +47,13 @@ public final class OCLUtil {
      */
     public static Object getInnerMostEnclosingNamespace (Object me) {
 
-        if (!Model.getFacade().isAModelElement(me)) {
-            throw new IllegalArgumentException();
-	}
+        if (Model.getFacade().isAFeature(me)) {
+            me = Model.getFacade().getOwner(me);
+        }
 
-	while ((me != null)
-	       && (!(Model.getFacade().isANamespace(me)))) {
-	    me = Model.getFacade().getModelElementContainer(me);
-	}
+        if (!Model.getFacade().isANamespace(me)) {
+            throw new IllegalArgumentException();
+        }
 
 	return me;
     }
