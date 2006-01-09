@@ -26,8 +26,8 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -168,8 +168,9 @@ class UMLTagDefinitionNamespaceComboBoxModel
     protected void buildModelList() {
         Object model =
             ProjectManager.getManager().getCurrentProject().getRoot();
-        Collection c = new ArrayList();
+        Collection c = new HashSet();
         c.add(null);
+        c.add(model);
         c.addAll(Model.getModelManagementHelper().getAllNamespaces(model));
         setElements(c);
     }

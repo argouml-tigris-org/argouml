@@ -99,7 +99,8 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
      */
     public void setSelectedItem(Object anItem) {
         addElement(anItem);
-        super.setSelectedItem(Model.getFacade().toString(anItem));
+        super.setSelectedItem((anItem == null) ? null 
+                : Model.getFacade().toString(anItem));
     }
 
 }
