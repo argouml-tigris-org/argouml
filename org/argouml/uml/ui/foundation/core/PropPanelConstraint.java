@@ -37,39 +37,35 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
- * Proppanel for comments (notes). <p>
- *
- * In UML 1.3, the text of the comment is kept
- * in the name of the Comment.<p>
- *
- * In UML 1.4 and beyond, the Comment has a "body"
- * attribute, to contain the comment string.
+ * Proppanel for Constraints . <p>
+
  */
-public class PropPanelComment extends PropPanelModelElement {
+public class PropPanelConstraint extends PropPanelModelElement {
 
     /**
-     * Constructor for PropPanelComment.
+     * Constructor for PropPanelConstraint.
      */
-    public PropPanelComment() {
-        super("Comment", ConfigLoader.getTabPropsOrientation());
+    public PropPanelConstraint() {
+        super("Constraint", ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
 
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
+//        addField(Translator.localize("label.language"), Model.getFacade()
+//                .getLanguage(Model.getFacade().getBody(getTarget())));
 
-        addField(Translator.localize("label.annotated-elements"),
+        addField(Translator.localize("label.constrained-elements"),
             new JScrollPane(new UMLLinkedList(
-                    new UMLCommentAnnotatedElementListModel())));
+                    new UMLConstraintConstrainedElementListModel())));
 
         addSeperator();
 
-        UMLTextArea2 text = new UMLTextArea2(new UMLCommentBodyDocument());
-        text.setLineWrap(true);
+        UMLTextArea2 text = new UMLTextArea2(new UMLConstraintBodyDocument());
+        text.setEditable(false);
+        text.setLineWrap(false);
         text.setRows(5);
         JScrollPane pane = new JScrollPane(text);
-        addField(Translator.localize("label.comment.body"), pane);
+        addField(Translator.localize("label.constraint.body"), pane);
 
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionNewStereotype());
@@ -77,37 +73,29 @@ public class PropPanelComment extends PropPanelModelElement {
     }
 }
 
-class UMLCommentBodyDocument extends UMLPlainTextDocument {
+// TODO: replace this with TabConstraint code...
+class UMLConstraintBodyDocument extends UMLPlainTextDocument {
     
     /**
      * Constructor for UMLModelElementNameDocument.
      */
-    public UMLCommentBodyDocument() {
+    public UMLConstraintBodyDocument() {
         super("body"); 
-        /*
-         * TODO: This is probably not the right location
-         * for switching off the "filterNewlines".
-         * The setting gets lost after selecting a different
-         * ModelElement in the diagram.
-         * BTW, see how it is used in
-         * javax.swing.text.PlainDocument.
-         * See issue 1812.
-         */
-        putProperty("filterNewlines", Boolean.FALSE);
     }
     
     /**
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
-        Model.getCoreHelper().setBody(getTarget(), text);
+        //Model.getCoreHelper().setBody(getTarget(), text);
     }
     
     /**
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {
-        return (String) Model.getFacade().getBody(getTarget());
+        return (String) Model.getFacade().getBody(
+                Model.getFacade().getBody(getTarget()));
     }
     
 }
