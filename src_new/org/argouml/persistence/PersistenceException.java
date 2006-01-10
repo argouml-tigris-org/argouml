@@ -30,8 +30,6 @@ package org.argouml.persistence;
  */
 public class PersistenceException extends Exception {
 
-    private Throwable cause = null;
-
     /**
      * Constructor
      */
@@ -52,56 +50,15 @@ public class PersistenceException extends Exception {
      * @param c the cause of the exception
      */
     public PersistenceException(String message, Throwable c) {
-        super(message);
-        this.cause = c;
+        super(message, c);
     }
 
     /**
      * @param c the cause of the exception
      */
     public PersistenceException(Throwable c) {
-        super();
-        this.cause = c;
+        super(c);
     }
 
-    /**
-     * @see java.lang.Throwable#getCause()
-     */
-    public Throwable getCause() {
-        return cause;
-    }
-
-    /**
-     * @see java.lang.Throwable#printStackTrace()
-     */
-    public void printStackTrace() {
-        super.printStackTrace();
-        if (cause != null) {
-            System.out.println("Caused by:");
-            cause.printStackTrace();
-        }
-    }
-
-    /**
-     * @see java.lang.Throwable#printStackTrace(java.io.PrintStream)
-     */
-    public void printStackTrace(java.io.PrintStream ps) {
-        super.printStackTrace(ps);
-        if (cause != null) {
-            ps.println("Caused by:");
-            cause.printStackTrace(ps);
-        }
-    }
-
-    /**
-     * @see java.lang.Throwable#printStackTrace(java.io.PrintWriter)
-     */
-    public void printStackTrace(java.io.PrintWriter pw) {
-        super.printStackTrace(pw);
-        if (cause != null) {
-            pw.println("Caused by:");
-            cause.printStackTrace(pw);
-        }
-    }
 }
 
