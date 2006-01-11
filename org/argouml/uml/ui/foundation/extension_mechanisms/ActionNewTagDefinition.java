@@ -70,9 +70,6 @@ public class ActionNewTagDefinition extends AbstractActionNewModelElement {
                     owner,
                     namespace
             );
-        Object multiplicity = Model.getDataTypesFactory()
-            .createMultiplicity(0, 1);
-        Model.getCoreHelper().setMultiplicity(newTagDefinition, multiplicity);
         TargetManager.getInstance().setTarget(newTagDefinition);
         super.actionPerformed(e);
     }
