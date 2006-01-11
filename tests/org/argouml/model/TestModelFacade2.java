@@ -119,7 +119,9 @@ public class TestModelFacade2 extends TestCase {
      * Test some Tagged Value functions.
      */
     public void testTaggedValue() {
-	Object cls = Model.getCoreFactory().buildClass();
+        Model.getModelManagementFactory().setRootModel(
+                Model.getModelManagementFactory().createModel());
+        Object cls = Model.getCoreFactory().buildClass();
 
 	assertNull(Model.getFacade().getTaggedValue(cls, "fooValue"));
 	Model.getCoreHelper().setTaggedValue(cls, "fooValue", "foo");

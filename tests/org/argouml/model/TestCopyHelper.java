@@ -40,6 +40,15 @@ public class TestCopyHelper extends TestCase {
 	super(name);
 	
     }
+    
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() {
+        // Make sure we have a root model for TagDefinitions to get put in.
+        ModelManagementFactory mmf = Model.getModelManagementFactory();
+        mmf.setRootModel(mmf.createModel());
+    }
 
     /**
      * Testing the existance of public static members.
