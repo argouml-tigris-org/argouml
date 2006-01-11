@@ -45,13 +45,13 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
 import org.argouml.uml.ui.foundation.extension_mechanisms.UMLTagDefinitionComboBoxModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBar;
@@ -61,8 +61,6 @@ import org.tigris.toolbar.ToolBar;
  */
 public class TabTaggedValues extends AbstractArgoJPanel
     implements TabModelTarget, ListSelectionListener {
-
-    private Logger LOG = Logger.getLogger(TabTaggedValues.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -77,8 +75,6 @@ public class TabTaggedValues extends AbstractArgoJPanel
 
     private UMLComboBoxModel2 tagDefinitionsComboBoxModel;
 
-    private Class tagDefinitionClass = (Class) Model.getMetaTypes()
-            .getTagDefinition();
 
     /**
      * The constructor.
@@ -91,24 +87,31 @@ public class TabTaggedValues extends AbstractArgoJPanel
 
         JButton b = new JButton();
         buttonPanel.add(b);
+        b.setToolTipText(
+                Translator.localize("button.button.new-tagdefinition"));
+        b.setAction(new ActionNewTagDefinition());
+
+        b = new JButton();
+        buttonPanel.add(b);
         b.setToolTipText(Translator.localize("button.delete"));
         b.setAction(new ActionRemoveTaggedValue(this));
-
+  
         tableModel = new TabTaggedValuesModel(this);
         table.setModel(tableModel);
         table.setRowSelectionAllowed(false);
-        if (tagDefinitionClass != null) {
-            tagDefinitionsComboBoxModel = new UMLTagDefinitionComboBoxModel();
-            tagDefinitionsComboBox = new UMLComboBox2(tagDefinitionsComboBoxModel);
-            //tagDefinitionsComboBox.setDoubleBuffered(true);
-            //tagDefinitionsComboBox.setEditable(true);
-            tagDefinitionsComboBox.setRenderer(new UMLListCellRenderer2(false));
-            table.setDefaultEditor(tagDefinitionClass,
+        tagDefinitionsComboBoxModel = new UMLTagDefinitionComboBoxModel();
+        tagDefinitionsComboBox = new UMLComboBox2(tagDefinitionsComboBoxModel);
+        //tagDefinitionsComboBox.setDoubleBuffered(true);
+        //tagDefinitionsComboBox.setEditable(true);
+        Class tagDefinitionClass = (Class) Model.getMetaTypes()
+                .getTagDefinition();
+        tagDefinitionsComboBox.setRenderer(new UMLListCellRenderer2(false));
+        table.setDefaultEditor(tagDefinitionClass,
                 new DefaultCellEditor(tagDefinitionsComboBox));
-            table.setDefaultRenderer(tagDefinitionClass,
-                    new UMLTableCellRenderer());
-            table.getSelectionModel().addListSelectionListener(this);
-        }
+        table.setDefaultRenderer(tagDefinitionClass,
+                new UMLTableCellRenderer());
+        table.getSelectionModel().addListSelectionListener(this);
+
         JScrollPane sp = new JScrollPane(table);
         Font labelFont = LookAndFeelMgr.getInstance().getSmallFont();
         table.setFont(labelFont);
@@ -166,18 +169,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
         target = t;
         shouldBeEnabled = true;
 
-        //TableColumn keyCol = _table.getColumnModel().getColumn(0);
-        //TableColumn valCol = _table.getColumnModel().getColumn(1);
-        //keyCol.setMinWidth(50);
-        //keyCol.setWidth(150);
-        //keyCol.setPreferredWidth(150);
-        //valCol.setMinWidth(250);
-        //valCol.setWidth(550);
-        //valCol.setPreferredWidth(550);
-
-        if (tagDefinitionClass != null) {
-            tagDefinitionsComboBoxModel.setTarget(t);
-        }
+        tagDefinitionsComboBoxModel.setTarget(t);
 
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
@@ -261,7 +253,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
     public void valueChanged(ListSelectionEvent e) {
-        if (!e.getValueIsAdjusting() && e.getFirstIndex() != e.getLastIndex()) {
+        if (!e.getValueIsAdjusting()) {
             DefaultListSelectionModel sel = (DefaultListSelectionModel) e
                     .getSource();
             ArrayList tvs = new ArrayList(Model.getFacade()
