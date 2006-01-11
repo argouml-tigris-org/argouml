@@ -47,6 +47,10 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
         //stores the action command into the UMLPlainTextDocument
         //class which is also used
         //for setProperty and getProperty
+        
+        // TODO: This appears to expect that the UML 1.3 tag name
+        // will appear as a property name in an event, but with the
+        // UML 1.4 switch to TagDefinitions, this won't work
         super(taggedValue);
     }
 
