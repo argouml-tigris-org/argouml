@@ -118,9 +118,9 @@ public class TabStereotype extends PropPanel {
                 Translator.localize("label.available-stereotypes")));
 
         // make buttons
-        addStButton = new JButton("<<");
+        addStButton = new JButton(">>");
         addStButton.setToolTipText(Translator.localize("button.add-stereo"));
-        removeStButton = new JButton(">>");
+        removeStButton = new JButton("<<");
         removeStButton.setToolTipText(Translator.localize(
                 "button.remove-stereo"));
         addStButton.setEnabled(false);
@@ -156,10 +156,10 @@ public class TabStereotype extends PropPanel {
         thePanel.setLayout(new BoxLayout(thePanel, BoxLayout.X_AXIS));
         thePanel.setBorder(BorderFactory.createEmptyBorder(
                 INSET_PX, INSET_PX, INSET_PX, INSET_PX));        
-        thePanel.add(selectedScroll);
+        thePanel.add(availableScroll);
         thePanel.add(xferButtons);
         thePanel.add(Box.createRigidArea(new Dimension(5,1)));
-        thePanel.add(availableScroll);
+        thePanel.add(selectedScroll);
         
         return thePanel;
     }
