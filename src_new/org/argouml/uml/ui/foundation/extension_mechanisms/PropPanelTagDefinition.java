@@ -45,8 +45,10 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLMultiplicityComboBox2;
 import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
+import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
+import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -55,16 +57,18 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelTagDefinition extends PropPanelModelElement {
 
     private JComponent ownerSelector;
+    private JComponent tdNamespaceSelector;
+    private UMLComboBox2 typeComboBox;
 
+    
     private static UMLTagDefinitionOwnerComboBoxModel 
         ownerComboBoxModel = 
             new UMLTagDefinitionOwnerComboBoxModel();
-
     private UMLComboBoxModel2 tdNamespaceComboBoxModel =
         new UMLTagDefinitionNamespaceComboBoxModel();
-    
-    private JComponent tdNamespaceSelector;
-    
+    // Despite the misleading name the following class does the right thing
+    private static UMLStructuralFeatureTypeComboBoxModel typeComboBoxModel;
+
     /**
      * The combobox for the multiplicity of this type.
      */
@@ -96,6 +100,12 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
         add(getNamespaceVisibilityPanel());
 
         addSeperator();
+
+        UMLComboBoxNavigator typeComboBoxNav = new UMLComboBoxNavigator(this,
+                Translator.localize("label.class.navigate.tooltip"),
+                getTypeComboBox());
+        typeComboBoxNav.setEnabled(false);
+        addField(Translator.localize("label.type"), typeComboBoxNav);
 
         addAction(new ActionNavigateNamespace());
         addAction(new ActionNewTagDefinition());
@@ -147,6 +157,25 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
             multiplicityComboBox.setEditable(true);
         }
         return multiplicityComboBox;
+    }
+    
+    /**
+     * Returns the typeComboBox.
+     * @return UMLComboBox2
+     */
+    public UMLComboBox2 getTypeComboBox() {
+        if (typeComboBox == null) {
+            if (typeComboBoxModel == null) {
+                typeComboBoxModel =
+                    new UMLStructuralFeatureTypeComboBoxModel();
+            }
+            typeComboBox =
+                new UMLComboBox2(
+                                 typeComboBoxModel,
+                                 ActionSetStructuralFeatureType.getInstance());
+            typeComboBox.setEnabled(false);
+        }
+        return typeComboBox;
     }
 
 
