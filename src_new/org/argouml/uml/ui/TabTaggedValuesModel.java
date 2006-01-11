@@ -75,7 +75,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
      */
     public void setTarget(Object t) {
         if (LOG.isDebugEnabled())
-            LOG.debug("Set target to "+t);
+            LOG.debug("Set target to " + t);
         if (!Model.getFacade().isAModelElement(t)) {
             throw new IllegalArgumentException();
         }
@@ -86,8 +86,8 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             if (t != null)
                 Model.getPump().addModelEventListener(this, t);
         }
-        //always fire changes in the case something has changed in the composition
-        //of the taggedValues collection.
+        // always fire changes in the case something has changed in the
+        // composition of the taggedValues collection.
         fireTableDataChanged();
         tab.resizeColumns();
     }
@@ -118,8 +118,6 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
     public Class getColumnClass(int c) {
-        if (Model.getMetaTypes().getTagDefinition()==null)
-            return String.class;
         if (c == 0)
             return (Class) Model.getMetaTypes().getTagDefinition();
         if (c == 1)
@@ -158,8 +156,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         }
         Object tv = tvs.elementAt(row);
         if (col == 0) {
-            Object n = (Model.getMetaTypes().getTagDefinition()!=null)?
-                    Model.getFacade().getTagDefinition(tv):Model.getFacade().getTagOfTag(tv);
+            Object n = Model.getFacade().getTagDefinition(tv);
             if (n == null) {
                 return "";
             }
@@ -202,6 +199,8 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
                 Model.getExtensionMechanismsHelper().setTag(tv, aValue);
             }
             if (columnIndex == 1) {
+                // TODO: It's not legal to have a TaggedValue without a type
+                // Need to give it a default type or force user to pick one
                 Model.getExtensionMechanismsHelper().setTag(tv, "");
                 Model.getCommonBehaviorHelper().setValue(tv, aValue);
             }
