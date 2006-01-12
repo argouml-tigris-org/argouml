@@ -32,6 +32,8 @@ import java.util.HashSet;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
@@ -42,12 +44,14 @@ import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMultiplicityComboBox2;
 import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
+import org.argouml.uml.ui.foundation.core.UMLNamespaceOwnedElementListModel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.argouml.util.ConfigLoader;
 
@@ -59,15 +63,18 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
     private JComponent ownerSelector;
     private JComponent tdNamespaceSelector;
     private UMLComboBox2 typeComboBox;
+    private JScrollPane typedValuesScroll;
 
     
     private static UMLTagDefinitionOwnerComboBoxModel 
         ownerComboBoxModel = 
             new UMLTagDefinitionOwnerComboBoxModel();
-    private UMLComboBoxModel2 tdNamespaceComboBoxModel =
+    private UMLComboBoxModel2 tdNamespaceComboBoxModel = 
         new UMLTagDefinitionNamespaceComboBoxModel();
     // Despite the misleading name the following class does the right thing
     private static UMLStructuralFeatureTypeComboBoxModel typeComboBoxModel;
+    private static UMLTagDefinitionTypedValuesListModel typedValuesListModel = 
+        new UMLTagDefinitionTypedValuesListModel();
 
     /**
      * The combobox for the multiplicity of this type.
@@ -107,6 +114,9 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
         typeComboBoxNav.setEnabled(false);
         addField(Translator.localize("label.type"), typeComboBoxNav);
 
+        addField(Translator.localize("label.tagged-values"),
+                getTypedValuesScroll());
+        
         addAction(new ActionNavigateNamespace());
         addAction(new ActionNewTagDefinition());
         addAction(new ActionDeleteSingleModelElement());
@@ -177,6 +187,19 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
         }
         return typeComboBox;
     }
+    
+    /**
+     * Returns the typedValuesScroll.
+     * @return JScrollPane
+     */
+    public JScrollPane getTypedValuesScroll() {
+        if (typedValuesScroll == null) {
+            JList typedValuesList  = new UMLLinkedList(typedValuesListModel);
+            typedValuesScroll = new JScrollPane(typedValuesList);
+        }
+        return typedValuesScroll;
+
+    }
 
 
 } /* end class PropPanelClass */
@@ -208,16 +231,16 @@ class UMLTagDefinitionNamespaceComboBoxModel
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-         /*
-          * Rebuild the list from scratch to be sure it's correct.
-          */
-         Object t = getTarget();
-         if (t != null && evt.getSource() == t) {
-             // allow the evt.getNewValue() to be null (see parent class)
-             buildModelList();
-             setSelectedItem(getSelectedModelElement());
-         }
-     }
+        /*
+         * Rebuild the list from scratch to be sure it's correct.
+         */
+        Object t = getTarget();
+        if (t != null && evt.getSource() == t) {
+            // allow the evt.getNewValue() to be null (see parent class)
+            buildModelList();
+            setSelectedItem(getSelectedModelElement());
+        }
+    }
 }
 
 class ActionSetTagDefinitionNamespace extends UMLAction {

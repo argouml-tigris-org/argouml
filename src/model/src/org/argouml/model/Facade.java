@@ -2361,6 +2361,14 @@ public interface Facade {
     Object getType(Object handle);
 
     /**
+     * Returns collection of TaggedValues typed by a TagDefinition
+     *
+     * @param handle the TagDefinition
+     * @return collection of TaggedValues
+     */
+    Collection getTypedValues(Object handle);
+
+    /**
      * Returns the target of some transition.
      *
      * @param handle is the transition
