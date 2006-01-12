@@ -39,7 +39,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
-import org.argouml.uml.ui.ActionNavigateNamespace;
+import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -116,7 +116,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
         addField(Translator.localize("label.tagged-values"),
                 getTypedValuesScroll());
         
-        addAction(new ActionNavigateNamespace());
+        addAction(new ActionNavigateContainerElement());
         addAction(new ActionNewTagDefinition());
         addAction(new ActionDeleteSingleModelElement());
     }
