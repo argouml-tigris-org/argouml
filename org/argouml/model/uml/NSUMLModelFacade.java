@@ -4803,4 +4803,9 @@ public class NSUMLModelFacade implements Facade {
         }
     }
 
+    public Collection getTypedValues(Object handle) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
