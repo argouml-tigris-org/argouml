@@ -29,7 +29,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
-import org.argouml.uml.ui.ActionNavigateNamespace;
+import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -70,7 +70,7 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
         compositeList.setVisibleRowCount(1);
         containerScroll = new JScrollPane(compositeList);
 
-        addAction(new ActionNavigateNamespace());
+        addAction(new ActionNavigateContainerElement());
         addExtraButtons();
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());
