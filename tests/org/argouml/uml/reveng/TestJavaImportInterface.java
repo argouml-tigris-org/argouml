@@ -65,6 +65,7 @@ public class TestJavaImportInterface extends TestCase {
             lexer.setTokenObjectClass("org.argouml.uml.reveng.java.ArgoToken");
             parser = new JavaRecognizer(lexer);
             _model = Model.getModelManagementFactory().createModel();
+            Model.getModelManagementFactory().setRootModel(_model);
             modeller = new Modeller(_model, null, null, false, false,
                     "TestInterface.java");
         } catch (Exception ex) {}
