@@ -85,7 +85,8 @@ public final class NotationUtilityUml {
             Iterator i = Model.getFacade().getStereotypes(umlobject).iterator();
             while (i.hasNext()) {
                 String stereotypename = Model.getFacade().getName(i.next());
-                if (!stereotypes.contains(stereotypename)) {
+                if (stereotypename != null 
+                        && !stereotypes.contains(stereotypename)) {
                     toBeRemoved.add(getStereotype(umlobject, stereotypename));
                 }
             }

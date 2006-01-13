@@ -32,6 +32,8 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -52,6 +54,7 @@ import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Editor;
@@ -805,6 +808,7 @@ public class FigClass extends FigClassifierBox
             damage();
         }
         if (mee == null || mee.getPropertyName().equals("stereotype")) {
+            updateListeners(getOwner());
             updateStereotypeText();
             updateAttributes();
             updateOperations();
@@ -814,6 +818,10 @@ public class FigClass extends FigClassifierBox
             if (Model.getFacade().getStereotypes(getOwner())
                     .contains(source)) {
                 updateStereotypeText();
+                damage();
+            } else if (mee.getPropertyName().equals("name")) {
+                updateAttributes();
+                updateOperations();
                 damage();
             }
         }
@@ -1044,44 +1052,37 @@ public class FigClass extends FigClassifierBox
         Object oldOwner = getOwner();
         if (oldOwner != null && oldOwner != newOwner) {
 	    // remove the listeners if the owner is changed
-            Object cl = /*(MClass)*/ oldOwner;
-            Iterator it = Model.getFacade().getFeatures(cl).iterator();
+            Iterator it = Model.getFacade().getFeatures(oldOwner).iterator();
             while (it.hasNext()) {
-                Object feat = /*(MFeature)*/ it.next();
-                Model.getPump().removeModelEventListener(this, feat); //MVW
+                Object feat = it.next();
+                Model.getPump().removeModelEventListener(this, feat);
+                Collection c = new ArrayList(Model.getFacade().getStereotypes(feat));
                 if (Model.getFacade().isAOperation(feat)) {
-                    Object oper = /*(MOperation)*/ feat;
-                    Iterator it2 =
-                        Model.getFacade().getParameters(oper).iterator();
-                    while (it2.hasNext()) {
-                        Object param = /*(MParameter)*/ it2.next();
-                        Model.getPump()
-			    .removeModelEventListener(this, param);
-                    }
+                    c.addAll(Model.getFacade().getParameters(feat));
+                }
+                Iterator it2 = c.iterator();
+                while (it2.hasNext()) {
+                    Object obj = it2.next();
+                    Model.getPump().removeModelEventListener(this, obj);
                 }
             }
         }
-        if (newOwner != null) { // add the listeners to the newOwner
-            Object cl = /*(MClass)*/ newOwner;
-            Iterator it = Model.getFacade().getFeatures(cl).iterator();
+        if (newOwner != null) { 
+            // add the listeners to the newOwner
+            Iterator it = Model.getFacade().getFeatures(newOwner).iterator();
             while (it.hasNext()) {
-                Object feat = /*(MFeature)*/ it.next();
-                Model.getPump().addModelEventListener(this, feat); //MVW
+                Object feat = it.next();
+                Collection c = new ArrayList(Model.getFacade().getStereotypes(feat));
                 if (Model.getFacade().isAOperation(feat)) {
-                    Object oper = /*(MOperation)*/ feat;
-                    Iterator it2 =
-                        Model.getFacade().getParameters(oper).iterator();
-                    while (it2.hasNext()) {
-                        Object param = /*(MParameter)*/ it2.next();
-                        // UmlModelEventPump.getPump()
-                        // .removeModelEventListener(this, param);
-                        Model.getPump()
-			    .addModelEventListener(this, param);
-                    }
+                    c.addAll(Model.getFacade().getParameters(feat));
+                }
+                Iterator it2 = c.iterator();
+                while (it2.hasNext()) {
+                    Object obj = it2.next();
+                    Model.getPump().addModelEventListener(this, obj);
                 }
             }
         }
-
         super.updateListeners(newOwner);
     }
 
