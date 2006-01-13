@@ -586,7 +586,8 @@ public class FigInterface extends FigClassifierBox {
         if (getOwner() == null) {
             return;
         }
-
+        super.modelChanged(mee);
+        boolean damage = false;
         // operations
         if (mee == null
                 || Model.getFacade().isAOperation(mee.getSource())
@@ -594,10 +595,16 @@ public class FigInterface extends FigClassifierBox {
                 || (mee.getSource() == getOwner()
                 && mee.getPropertyName().equals("feature"))) {
             updateOperations();
+            damage = true;
+        }
+        if (mee != null && Model.getFacade().getStereotypes(getOwner())
+                .contains(mee.getSource())) {
+            updateStereotypeText();
+            damage = true;
+        }
+        if (damage) {
             damage();
         }
-        super.modelChanged(mee);
-
     }
 
     /**
