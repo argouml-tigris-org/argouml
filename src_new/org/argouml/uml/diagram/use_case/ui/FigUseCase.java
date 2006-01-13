@@ -1329,14 +1329,25 @@ public class FigUseCase extends FigNodeModelElement
         // Let our superclass sort itself out first
 
         super.modelChanged(mee);
+
+        boolean damage = false;
         if (mee == null
 	    || mee.getPropertyName().equals("extensionPoint")
 	    || Model.getFacade().isAExtensionPoint(mee.getSource())) {
             updateExtensionPoint();
             return;
         }
+        if (mee != null && Model.getFacade().getStereotypes(getOwner())
+                .contains(mee.getSource())) {
+            updateStereotypeText();
+            damage = true;
+        }
         if (mee == null || mee.getPropertyName().equals("isAbstract")) {
             updateNameText();
+            damage = true;
+        }
+        if (damage) {
+            damage();
         }
     }
 
