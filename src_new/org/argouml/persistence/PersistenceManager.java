@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -70,6 +69,7 @@ public final class PersistenceManager {
     private List otherPersisters = new ArrayList();
     private UmlFilePersister quickViewDump;
     private XmiFilePersister xmiPersister;
+    private XmiFilePersister xmlPersister;
     private ZipFilePersister zipPersister;
 
     /**
@@ -112,13 +112,11 @@ public final class PersistenceManager {
         quickViewDump = new UmlFilePersister();
         otherPersisters.add(quickViewDump);
         xmiPersister = new XmiFilePersister();
+        otherPersisters.add(xmiPersister);
+        xmlPersister = new XmlFilePersister();
+        otherPersisters.add(xmlPersister);
         zipPersister = new ZipFilePersister();
-        /* Exclude the XMIPersister as an otherPersister,
-         * since it does not retain
-         * the complete project after a save/load cycle.
-         * See issue 3099.
-         */
-//        otherPersisters.add(xmiPersister);
+        otherPersisters.add(zipPersister);
     }
 
     /**
@@ -163,7 +161,10 @@ public final class PersistenceManager {
         chooser.addChoosableFileFilter(defaultPersister);
         Iterator iter = otherPersisters.iterator();
         while (iter.hasNext()) {
-            chooser.addChoosableFileFilter((AbstractFilePersister) iter.next());
+            AbstractFilePersister fp = (AbstractFilePersister) iter.next();
+            if (!fp.equals(xmiPersister) && !fp.equals(xmlPersister)) {
+                chooser.addChoosableFileFilter(fp);
+            }
         }
         chooser.setFileFilter(defaultPersister);
     }
@@ -343,24 +344,36 @@ public final class PersistenceManager {
  * file type added to it.
  */
 class MultitypeFileFilter extends FileFilter {
-    Vector filters;
-    String desc;
+    private ArrayList filters;
+    private String desc;
 
+    /**
+     * Constructor
+     */
     public MultitypeFileFilter() {
         super();
-        filters = new Vector();
+        filters = new ArrayList();
     }
 
-    public boolean add(AbstractFilePersister filter) {
+    /**
+     * Add a FileFilter to list of file filters to be accepted
+     * 
+     * @param filter FileFilter to be added
+     */
+    public void add(AbstractFilePersister filter) {
         filters.add(filter);
         desc =
             ((desc == null)
                 ? ""
                 : desc + ", ")
             + "*." + filter.getExtension();
-        return false;
     }
 
+    /**
+     * Return all added FileFilters.
+     * 
+     * @return collection of FileFilters
+     */
     public Collection getAll() {
         return filters;
     }
