@@ -27,6 +27,8 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -115,8 +117,8 @@ public class FigGeneralization extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent e) {
-	// do not set _name
-	updateStereotypeText();
+        super.modelChanged(e);
+        updateListeners(getOwner());
 	updateDiscriminatorText();
     }
 
@@ -175,6 +177,29 @@ public class FigGeneralization extends FigEdgeModelElement {
 		throw new IllegalStateException("FigGeneralization "
 						+ "has an illegal owner");
 	    }
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
+     */
+    protected void updateListeners(Object newOwner) {
+        Object oldOwner = getOwner();
+        if (oldOwner != null) {
+            Model.getPump().removeModelEventListener(this, oldOwner);
+            if (Model.getFacade().isAGeneralization(oldOwner)) {
+                Collection oldConns = Model.getFacade().getStereotypes(oldOwner);
+                for (Iterator i = oldConns.iterator(); i.hasNext();) {
+                    Model.getPump().removeModelEventListener(this, i.next());
+                }
+            }
+        }
+        if (Model.getFacade().isAGeneralization(newOwner)) {
+            Model.getPump().addModelEventListener(this, newOwner);
+            Collection newConns = Model.getFacade().getStereotypes(newOwner);
+            for (Iterator i = newConns.iterator(); i.hasNext();) {
+                Model.getPump().addModelEventListener(this, i.next());
+            }
+        }
     }
 
     /**
