@@ -363,16 +363,23 @@ public class FigPackage extends FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
+        super.modelChanged(mee);
+        boolean damage = false;
         // visibility
         if (mee == null
                 || Model.getFacade().isAPackage(mee.getSource())
                 || (mee.getSource() == getOwner()
                 && mee.getPropertyName().equals("visibility"))) {
             renderingChanged();
+            damage = true;
+        }
+        if (mee != null && Model.getFacade().getStereotypes(getOwner())
+                .contains(mee.getSource())) {
+            updateStereotypeText();
+            damage = true;
+        }
+        if (damage) {
             damage();
-        } else {
-            // name, etc. updating
-            super.modelChanged(mee);
         }
     }
 
