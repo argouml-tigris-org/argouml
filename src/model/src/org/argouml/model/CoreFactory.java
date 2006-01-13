@@ -369,6 +369,7 @@ public interface CoreFactory {
      * @param name is the name
      * @param owner is the namespace
      * @return an initialized UML Enumeration instance
+     * @since UML 1.4
      */
     Object buildEnumeration(String name, Object owner);
     
@@ -376,6 +377,7 @@ public interface CoreFactory {
      * @param name is the name
      * @param enumeration is the enumeration of the literal
      * @return an initialized UML EnumerationLiteral instance
+     * @since UML 1.4
      */
     Object buildEnumerationLiteral(String name, Object enumeration);
 
