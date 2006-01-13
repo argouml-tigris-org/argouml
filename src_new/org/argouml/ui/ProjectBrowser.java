@@ -1197,21 +1197,20 @@ public final class ProjectBrowser
                 if (!LastLoadInfo.getInstance().getLastLoadStatus()) {
                     p = oldProject;
                     success = false;
+                    // TODO: This seems entirely redundant
+                    // for now I've made the message more generic, but it
+                    // should be removed at a convenient time - tfm
                     reportError(
-                            "Problem in loading the project "
+                            "Problem loading the project "
                             + file.getName()
                             + "\n"
-                            + "Project file probably corrupt from "
-                            + "an earlier version or ArgoUML.\n"
                             + "Error message:\n"
                             + LastLoadInfo.getInstance().getLastLoadMessage()
                             + "\n"
-                            + "Since the project was incorrectly "
-                            + "saved some things might be missing "
-                            + "from before you saved it.\n"
-                            + "These things cannot be restored. "
-                            + "You can continue working with what "
-                            + "was actually loaded.\n",
+                            + "Some (or all) information may be missing "
+                            + "from the project.\n"
+                            + "Please report this problem at "
+                            + "http://argouml.tigris.org\n",
                             showUI);
                 } else if (oldProject != null) {
                     // if p equals oldProject there was an exception and we do
