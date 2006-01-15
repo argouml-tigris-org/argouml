@@ -7693,26 +7693,33 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           Files of type:</literal> to specify a filter on the files to 
           be shown in the directory listing. Only files that match the 
           filter are listed. The available filters are listed below. 
-          The default filter is the first one (.zargo).</para>
+          The default filter is the first one, 
+          which combines all available formats.</para>
 
           <itemizedlist>
 
             <listitem>
-
-              <para>ArgoUML file (*.zargo, *.uml)</para>
-
+              <para>ArgoUML file (*.zargo, *.uml, *.xmi, *.xml, *.zip)</para>
             </listitem>
 
             <listitem>
-
               <para>ArgoUML compressed project file (*.zargo)</para>
-
             </listitem>
 
             <listitem>
-
               <para>ArgoUML project file (*.uml)</para>
+            </listitem>
 
+            <listitem>
+              <para>XML Metadata Interchange (*.xmi)</para>
+            </listitem>
+            
+            <listitem>
+              <para>XML Metadata Interchange (*.xml)</para>
+            </listitem>
+            
+            <listitem>
+              <para>XMI compressed project file (*.zip)</para>
             </listitem>
 
           </itemizedlist>
