@@ -8826,28 +8826,51 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para><literal>Show visibility</literal> (clear by 
-                default) (To be written)</para>
+                default). If this is selected, then ArgoUML will
+                show the visibility indicators in front of e.g. attributes
+                in the diagram.
+                In UML the notation is "+" for public, "-" for private,
+                and "#" for protected. 
+                The "package" visibility, that was introduced since UML 1.4
+                is not yet supported by ArgoUML.
+                E.g. for an attribute, it may show:
+                <literal>+newAttr : int</literal>.
+                </para>
 
               </listitem>
 
               <listitem>
 
                 <para><literal>Show multiplicity</literal> (clear by 
-                default) (To be written)</para>
+                default). If this is selected, then ArgoUML will show 
+                the multiplicity of e.g. attributes in the diagram. 
+                In UML notation, the multiplicity is shown between [], such as: 
+                <literal>+newAttr [0..*] : int</literal>.
+                This setting has no impact on showing multiplicity 
+                near associationends.
+                </para>
 
               </listitem>
 
               <listitem>
 
                 <para><literal>Show initial value</literal> (clear by 
-                default) (To be written)</para>
+                default). If this is selected, then ArgoUML will show
+                the initial value of e.g. attributes in the diagram.
+                In UML notation, the initial value is shown e.g. like this:
+                <literal>+newAttr : int = 1</literal>.
+              </para>
 
               </listitem>
 
               <listitem>
 
                 <para><literal>Show properties</literal> (clear by 
-                default) (To be written)</para>
+                default). If this is selected, then ArgoUML will show
+                various properties between braces {}.
+                E.g. for an attribute, it may show:
+                <literal>+newAttr : int { frozen }</literal>.
+                </para>
 
               </listitem>
 
@@ -8858,21 +8881,35 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 attributes in classes are shown without type indication, 
                 and operations are shown without parameters.
                 This feature may be usefull during 
-                the analysis phase of your project.</para>
+                the analysis phase of your project.
+                If all checkmarks in 
+                the Notation Tab are unchecked, then
+                e.g. for an attribute, ArgoUML may show:
+                <literal>newAttr</literal>. And for an operation: 
+                <literal>newOperation()</literal>.
+                </para>
 
               </listitem>
 
               <listitem>
 
                 <para><literal>Show stereotypes in explorer</literal> 
-                (clear by default) (To be written)</para>
+                (clear by default). If this is selected, then ArgoUML will show
+                stereotypes next to the icons of the modelelements 
+                in the Explorer, i.e. the tree structure at the left hand side.
+                </para>
 
               </listitem>
 
               <listitem>
 
                 <para><literal>Default shadow width</literal> (set to 1 
-                by default) (To be written)</para>
+                by default). ArgoUML is able to draw all elements 
+                on a diagram with a shadow. Use this setting to adjust the 
+                size of the shadow, used when the modelelement is created.
+                The details tab "Presentation" allows to set the shadow per
+                modelelement, after they are created.
+                </para>
 
               </listitem>
 
@@ -8941,10 +8978,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>This tab shows a list of modules that are installed, 
             which may be enabled or disabled. Since this is a new 
-            concept for ArgoUML, it currently contains either nothing, 
-            or a module named ArgoTestLoadableModules, which is just a 
-            module that allows to test the concept. It adds a useless 
-            button on the Tools menu, nothing else.</para>
+            concept for ArgoUML, it currently contains a list of modules that 
+            can not be removed, and a button to test the concept. 
+            Pressing this button adds a useless menu-item
+            on the Tools menu, nothing else.</para>
 
             <para>Notice also that this is a &quot;new&quot; modules 
             concept so the old Pluggable modules do not work this way, 
@@ -9480,8 +9517,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>This menu entry creates a blank use case diagram, and 
           selects that diagram in the editing pane. If a package is 
-          currently selected, the use case diagram will be created 
-          within that package, it will be shown within the package on 
+          currently selected, then the use case diagram will be created 
+          within that package. 
+          This means that it will be shown within the package on 
           the explorer hierarchy (under Package-centric view) and 
           artifacts created on the diagram will be created within the 
           namespace of the package. This does not only apply to a 
@@ -9509,7 +9547,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>This menu entry creates a blank class diagram, and 
           selects that diagram in the editing pane. If a package is 
           currently selected, the class diagram will be created within 
-          that package, it will be shown within the package on the 
+          that package. 
+          This means that it will be shown within the package on the 
           explorer hierarchy (under Package-centric view) and artifacts 
           created on the diagram will be created within the namespace 
           of the package. This does not only apply to a package, but 
@@ -9534,12 +9573,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
            format="GIF"/></imageobject></inlinemediaobject></guiicon> 
           New Sequence Diagram</title>
 
-          <warning>
-
-            <para>Sequence diagrams are not supported in ArgoUML V0.18. 
-            hence this menuitem is downlighted all the time.</para>
-
-          </warning>
+          <para>This menu entry creates a blank sequence diagram, and 
+          selects that diagram in the editing pane. If a class is 
+          currently selected, the sequence diagram will be created within 
+          that class. 
+          This means that it will be shown within the class on the 
+          explorer hierarchy (under Package-centric view) and artifacts 
+          created on the diagram will be created within the namespace 
+          of the package. This does not only apply to a class, but 
+          also to any other classifier, such as interface, use case, etc.
+          It is also possible to make sequence diagrams for an operation.
+          </para>
 
         </sect2>
 
