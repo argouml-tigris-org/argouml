@@ -10023,9 +10023,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Toggle Auto Resizing (to be written)</title>
+          <title>Toggle Auto Resizing</title>
 
-          <para>This menu-item is a checkbox ...</para>
+          <para>This menu-item is a checkbox 
+          that currently does not do anything.
+          </para>
 
         </sect2>
 
@@ -10057,7 +10059,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <note>
 
           <para>Without any plugin modules installed, ArgoUML supports 
-          only code generation of Java. ArgoUML V0.18 supports the 
+          only code generation of Java. ArgoUML V0.20 supports the 
           following languages by plugin: C#, C++, php4, php5.</para>
 
         </note>
@@ -10301,7 +10303,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <warning>
 
-            <para>The V0.18 version of ArgoUML provides a single design 
+            <para>The V0.20 version of ArgoUML provides a single design 
             goal, <literal>Unspecified</literal>, with its slider set 
             by default to priority 1. However it contains no critics 
             and so has no effect.</para>
@@ -10347,7 +10349,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           to-do items associated with that critic will be removed from 
           the to-do pane.</para>
 
-          <para>The V0.18 version of ArgoUML has a total of 90 critics, 
+          <para>The V0.20 version of ArgoUML has a total of 90 critics, 
           a few of which are incompletely implemented. They are 
           described in detail by design issue category in the chapter 
           on critics (see <xref linkend="ch.ref.critics"/>).</para>
@@ -10393,7 +10395,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <warning>
 
-            <para>In the V0.18 release of ArgoUML there is no further 
+            <para>In the V0.20 release of ArgoUML there is no further 
             information available, and the <literal>Go</literal> button 
             is always grayed out and disabled.</para>
 
@@ -10433,7 +10435,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <caution>
 
-            <para>In the V0.18 release of ArgoUML this selector has no 
+            <para>In the V0.20 release of ArgoUML this selector has no 
             function whatsoever. It is for future development.</para>
 
           </caution>
@@ -10469,7 +10471,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <caution>
 
-                <para>In the V0.18 version of ArgoUML this function is 
+                <para>In the V0.20 version of ArgoUML this function is 
                 not implemented, and this button is always grayed out. 
                 It is for future development.</para>
 
@@ -10506,7 +10508,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <caution>
 
-                <para>In the V0.18 version of ArgoUML this function is 
+                <para>In the V0.20 version of ArgoUML this function is 
                 not implemented, and this button is always grayed out. 
                 It is for future development.</para>
 
@@ -10688,7 +10690,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         ArgoUML window, with the explorer highlighted.</para>
 
         <figure float="1" id="fig.ref.navigation_pane">
-
+          <!-- This diagram shows the navigation overview. 
+          It is a complete ArgoUML
+          window, but with all except the explorer grayed out. This was
+          done using GIMP with selected areas using Filters->Color->Map->
+          Color Range Mapping from black to black & white to HSV 0,0,75.-->
           <title>Overview of the explorer</title>
 
           <screenshot><mediaobject><imageobject>
@@ -10993,7 +10999,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>All three titles of the lists do show the numer of 
           items in the list. ArgoUML V0.18 has 8 default perspectives, 
-          and 60 rules in the library to build perspectives from.</para>
+          and 68 rules in the library to build perspectives from.</para>
 
           <para>The buttons at the top right are explained as 
           follows:</para>
