@@ -8116,33 +8116,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <itemizedlist>
 
             <listitem>
-
-              <para>PNG image (*.png)</para>
-
-            </listitem>
-
-            <listitem>
-
               <para>GIF image (*.gif)</para>
-
             </listitem>
-
             <listitem>
-
-              <para>Postscript file (*.ps)</para>
-
-            </listitem>
-
-            <listitem>
-
               <para>Encapsulated Postscript file (*.eps)</para>
-
             </listitem>
-
             <listitem>
-
+              <para>PNG image (*.png)</para>
+            </listitem>
+            <listitem>
+              <para>Postscript file (*.ps)</para>
+            </listitem>
+            <listitem>
               <para>Scalable Vector Graphics file (*.svg)</para>
-
             </listitem>
 
           </itemizedlist>
@@ -8151,7 +8137,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           is set in the dialog under the menu entry Edit - Settings...</para>
 
           <caution>
-
+            <!-- TODO: Is this still true? -->
             <para>The PNG graphics does not support shadows very well, 
             so maybe it is better to either save in GIF format, or 
             switch shadows off before saving in PNG format.</para>
