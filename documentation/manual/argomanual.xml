@@ -10784,7 +10784,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Button 1 Motion</title>
           
           <para>Button 1 motion means that you pick up one or more 
-          modelelements, and dragging them to a new location. 
+          modelelements, and drag them to a new location. 
           Dropping the modelelement somewhere 
           causes ArgoUML to execute some function 
           that depends on where you drop the modelelements. 
@@ -12408,7 +12408,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <para><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center" fileref="images/icons/state.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>State</literal>. Add a state to the 
+              <literal>Simple State</literal>. Add a simple state to the 
               diagram.</para>
 
             </listitem>
@@ -12444,7 +12444,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/synchstate.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>State</literal>. Add a synchstate to the 
+              <literal>Synch State</literal>. Add a synchstate to the 
               diagram.</para>
 
             </listitem>
@@ -12455,7 +12455,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/submachinestate.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>State</literal>. Add a submachinestate to the 
+              <literal>Submachine State</literal>. Add a submachinestate to the 
               diagram.</para>
 
             </listitem>
@@ -12466,7 +12466,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/stubstate.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>State</literal>. Add a stubstate to the 
+              <literal>Stub State</literal>. Add a stubstate to the 
               diagram.</para>
 
             </listitem>
@@ -12511,6 +12511,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <literal>Junction</literal>. Add a junction pseudostate 
               to the diagram.</para>
 
+              <caution>
+
+                <para>A well formed junction should have at least one incoming 
+                transition and exactly one outgoing. ArgoUML does not 
+                enforce this, but an ArgoUML critic will complain about 
+                any junction that does not follow this rule.</para>
+
+              </caution>
             </listitem>
 
             <listitem>
@@ -12519,15 +12527,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/branch.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Branch</literal>. Add a branch pseudostate to 
+              <literal>Choice</literal>. Add a choice pseudostate to 
               the diagram.</para>
 
               <caution>
 
-                <para>A well formed branch should have one incoming 
-                transition and two or more outgoing. ArgoUML does not 
+                <para>A well formed choice should have at least one incoming 
+                transition and exactly one outgoing. ArgoUML does not 
                 enforce this, but an ArgoUML critic will complain about 
-                any branch that does not follow this rule.</para>
+                any choice that does not follow this rule.</para>
 
               </caution>
 
@@ -12727,7 +12735,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/objectflowstate.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Join</literal>. Add a objectflowstate to the 
+              <literal>ObjectFlowState</literal>. Add a objectflowstate to the 
               diagram.</para>
 
             </listitem>
@@ -13288,6 +13296,27 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             </listitem>
 
+            <listitem>
+
+              <para><literal>Add All Relations</literal>. 
+              Only appears where the 
+              selected artifact is a class or interface. 
+              Makes all relations visible that exist in the model and
+              that are connected to the selected artifact.
+              </para>
+
+            </listitem>
+
+            <listitem>
+
+              <para><literal>Remove all Relations</literal>. 
+              Only appears where the 
+              selected artifact is a class or interface.
+              Removes all connected relations from the diagram 
+              (without removing them from the model).
+              </para>
+
+            </listitem>
           </itemizedlist>
 
         </sect2>
@@ -13406,6 +13435,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             </listitem>
 
+            <listitem>
+
+              <para><literal>Hide Visibility</literal>. Only appears 
+              when the visibility of a package is displayed. Hides the 
+              visibility.</para>
+
+            </listitem>
+
+            <listitem>
+
+              <para><literal>Show Visibility</literal>. Only appears 
+              when the visibility of a package is hidden. Displays the 
+              visibility.</para>
+
+            </listitem>
           </itemizedlist>
 
         </sect2>
