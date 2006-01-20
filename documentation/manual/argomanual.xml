@@ -10778,7 +10778,49 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           open or close.</para>
 
         </sect2>
+        
+        <sect2>
 
+          <title>Button 1 Motion</title>
+          
+          <para>Button 1 motion means that you pick up one or more 
+          modelelements, and dragging them to a new location. 
+          Dropping the modelelement somewhere 
+          causes ArgoUML to execute some function 
+          that depends on where you drop the modelelements. 
+          </para>
+
+          <sect3>
+          <title>From Explorer to Explorer</title>
+          <para>
+          Releasing the mouse button above a namespace, 
+          makes the modelelement owned by the namespace.
+          In the Package-centric explorer perspective, this
+          means a straigh-forward drag-and-drop function.
+		  </para>
+		  
+		  <para>Use this drap and drop feature to easily move 
+		  e.g. classes from one package into another.
+		  </para>
+		  </sect3>
+
+          <sect3>
+          <title>From Explorer to Diagram</title>
+          <para>Dropping a modelelement on the diagram 
+          is the equivalent of the "Add to Diagram" function.
+          Hence, if the diagram did not yet show this modelelement, 
+          it is added.
+		  </para>
+		  
+		  <para>Use this drap and drop feature e.g. to easily create 
+		  a diagram from imported XMI files. 
+		  This because XMI files contain all the modelelements, 
+		  but not any diagram information.
+		  </para>
+		  </sect3>
+
+        </sect2>
+        
         <sect2>
 
           <title>Button 2 Actions</title>
@@ -11070,7 +11112,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </sect2>
 
-        <sect2>
+        <!--sect2>
 
           <title>The Explorer Panes</title>
 
@@ -11153,7 +11195,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           panes have yet to be implemented in ArgoUML while more 
           pressing issues are addressed.</para>
 
-        </sect2>
+        </sect2-->
 
       </sect1>
 
@@ -11223,7 +11265,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 artifact drawn on it. All artifacts that were shown on 
                 the diagram remain present in the model. This because a 
                 class diagram does not &quot;map&quot; on any artifact 
-                according the UML standard V1.3.</para>
+                according the UML standard V1.4.</para>
 
               </listitem>
 
@@ -11233,7 +11275,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 statemachine it represents, and hence also all the 
                 artifacts owned by the statemachine. This because a 
                 statechart diagram does &quot;map&quot; into a 
-                StateMachine according the UML standard V1.3.</para>
+                StateMachine according the UML standard V1.4.</para>
 
               </listitem>
 
@@ -11308,7 +11350,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <para>The pane has a tool bar at the top, and a single tab 
         labeled <literal>As Diagram</literal> at the bottom, which has 
-        no function in the 0.18 version of ArgoUML. The main area shows 
+        no function in the 0.20 version of ArgoUML. The main area shows 
         the currently selected diagram, of which the name is shown in 
         the window title bar.</para>
 
@@ -11401,11 +11443,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Button 1 Motion</title>
 
+          <!-- This has never worked AFAIK!
           <para>When adding an artifact using the toolbar, button 1 
           motion can generally be used to define the size of the new 
           artifact. Its dimensions (line ends, diagonal corners of a 
           rectangular artifact etc) are defined by button 1 down and 
           button 1 up.</para>
+          -->
 
           <para>Where the artifact being added is some form of 
           connector its termination point is shown with button 1 up 
@@ -11480,10 +11524,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           specific pop-up menus.</para>
 
           <para>In case multiple elements are selected, the pop-up menu 
-          only appears if all the items are of the same kind. The 
-          functions apply to all selected elements, but in the V0.18 
-          implementation of ArgoUML, many work only on one element, or 
-          even misbehave.</para>
+          only appears if all the items are of the same kind. 
+          In this case, the 
+          functions apply to all selected elements.</para>
 
         </sect2>
 
@@ -11554,6 +11597,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </listitem>
 
         </itemizedlist>
+        
+        <para>Some of the tools that are generally not all used so often, 
+        are combined in a dropdown, 
+        to take less space on the toolbar. 
+        See e.g. <xref linkend="fig.ref.edit_graphical_tools"/>.
+        Press the symbol at the right of the tool to pop it open.
+        These drop-down tools remember their last used tool persistently. 
+        This means that when ArgoUML starts, 
+        they show the last tool that was activated 
+        the previous time ArgoUML was run.
+        </para>
 
         <sect2 id="s2.ref.edit_layout">
 
@@ -11980,12 +12034,38 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Association</literal>. Add an association 
               between two artifacts selected using button 1 motion 
-              (from the first artifact to the second). There are 6 
-              types of association offered here, see 
-              <xref linkend="fig.ref.edit_association_tools"/>: 
-              <literal>association</literal>, <literal>
-              aggregation</literal> and <literal>composition</literal>, 
-              and all these three can be <literal>
+              (from the first artifact to the second). There are 2 
+              types of association offered here, <literal>
+              bidirectional</literal> or <literal>
+              unidirectional</literal>.</para>
+
+            </listitem>
+
+            <listitem>
+
+              <para><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/composition_plain.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Composition</literal>. Add an composition 
+              between two artifacts selected using button 1 motion 
+              (from the first artifact to the second). There are 2 
+              types of composition offered here, <literal>
+              bidirectional</literal> or <literal>
+              unidirectional</literal>.</para>
+
+            </listitem>
+
+            <listitem>
+
+              <para><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/aggregation_plain.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Aggregation</literal>. Add an aggregation
+              between two artifacts selected using button 1 motion 
+              (from the first artifact to the second). There are 2
+              types of aggregation offered here, <literal>
               bidirectional</literal> or <literal>
               unidirectional</literal>.</para>
 
@@ -12047,7 +12127,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               and <literal>Usage</literal> (
               <guiicon><inlinemediaobject><imageobject>
               <imagedata align="center" fileref="images/icons/usage.gif"
-               format="GIF"/></imageobject></inlinemediaobject></guiicon>).</para>
+               format="GIF"/></imageobject></inlinemediaobject></guiicon>).
+               A <literal>Permission</literal> is created by default 
+               with stereotype <literal>Import</literal>, and is used to import
+               elements from one package into another.
+              </para>
 
             </listitem>
 
@@ -12057,7 +12141,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/attribute.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Add Attribute</literal>. Add an attribute to the 
+              <literal>Attribute</literal>. Add a new attribute to the 
               currently selected class. The attribute is given the 
               default name <literal>newAttr</literal> of type <literal>
               int</literal> and may be edited by button 1 double click 
@@ -12080,7 +12164,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/operation.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Add Operation</literal>. Add an operation to the 
+              <literal>Operation</literal>. Add a new operation to the 
               currently selected class or interface. The operation is 
               given the default name <literal>newOperation</literal> 
               with no arguments and return type <literal>void</literal> 
@@ -12097,6 +12181,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               </note>
 
             </listitem>
+            
+            <listitem>
+
+              <para><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/associationclass.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Association Class</literal>. 
+              Add a new association class 
+              between two artifacts selected using button 1 motion 
+              (from the first artifact to the second).</para>
+
+            </listitem>
 
           </itemizedlist>
 
@@ -12106,15 +12203,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Sequence Diagram Specific Tools</title>
 
-          <warning>
-
-            <para>Sequence diagrams are not implemented in V0.18 of 
-            ArgoUML. Hence the description below will (might) only 
-            become correct in future versions of ArgoUML.</para>
-
-          </warning>
-
-          <para>Six tools are provided specific to UML artifacts on 
+          <para>Seven tools are provided specific to UML artifacts on 
           sequence diagrams. The detailed properties of these artifacts 
           are described in the section on sequence diagram artifacts 
           (see <xref linkend="ch.ref.entseq"/>).</para>
@@ -12125,9 +12214,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
-               fileref="images/icons/object.gif"
+               fileref="images/icons/classifierrole_sd.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Object</literal>. Add an object to the 
+              <literal>ClassifierRole</literal>. Add a classifierrole to the 
               diagram.</para>
 
             </listitem>
@@ -12136,11 +12225,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
-               fileref="images/icons/stimulus_call.gif"
+               fileref="images/icons/call_action.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Stimulus Call</literal>. Add a call stimulus 
-              between two objects selected using button 1 motion (from 
-              the originating object to the receiving object).</para>
+              <literal>Message with Call Action</literal>. 
+              Add a call message 
+              between two classifierroles selected using button 1 motion (from 
+              the originating classifierrole to the receiving classifierrole).
+              </para>
 
             </listitem>
 
@@ -12148,11 +12239,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
-               fileref="images/icons/stimulus_create.gif"
+               fileref="images/icons/return_action.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Stimulus Create</literal>. Add a create stimulus 
-              between two objects selected using button 1 motion (from 
-              the originating object to the receiving object).</para>
+              <literal>Message with Return Action</literal>. 
+              Add a return message 
+              between two classifierroles selected using button 1 motion (from 
+              the originating classifierrole to the receiving classifierrole).
+              </para>
 
             </listitem>
 
@@ -12160,12 +12253,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
-               fileref="images/icons/stimulus_destroy.gif"
+               fileref="images/icons/create_action.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Stimulus Destroy</literal>. Add a destroy 
-              stimulus between two objects selected using button 1 
-              motion (from the originating object to the receiving 
-              object).</para>
+              <literal>Message with Create Action</literal>. 
+              Add a create message 
+              between two classifierroles selected using button 1 motion (from 
+              the originating classifierrole to the receiving classifierrole).
+              </para>
 
             </listitem>
 
@@ -12173,11 +12267,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
-               fileref="images/icons/stimulus_send.gif"
+               fileref="images/icons/destroy_action.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Stimulus Send</literal>. Add a send stimulus 
-              between two objects selected using button 1 motion (from 
-              the originating object to the receiving object).</para>
+              <literal>Message with Destroy Action</literal>. 
+              Add a destroy message 
+              between two classifierroles selected using button 1 motion (from 
+              the originating classifierrole to the receiving classifierrole).
+              </para>
 
             </listitem>
 
@@ -12185,11 +12281,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
-               fileref="images/icons/stimulus_return.gif"
+               fileref="images/icons/sequence_expand.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Stimulus Return</literal>. Add a return stimulus 
-              between two objects selected using button 1 motion (from 
-              the originating object to the receiving object).</para>
+              <literal>Add vertical space to diagram</literal>.  
+              (to be written).</para>
+
+            </listitem>
+
+            <listitem>
+
+              <para><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/sequence_contract.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Remove Vertical Space in Diagram</literal>. 
+              (to be written).</para>
 
             </listitem>
 
