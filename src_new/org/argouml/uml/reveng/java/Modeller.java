@@ -1548,13 +1548,14 @@ public class Modeller {
     private void addJavadocTagContents(Object me,
 				       String sTagName,
 				       String sTagData) {
-	if ((sTagName.equals("invariant"))
-	    || (sTagName.equals("pre-condition"))
-	    || (sTagName.equals("post-condition"))) {
+        int colonPos = (sTagData != null) ? sTagData.indexOf(':') : -1;
+        if (colonPos != -1 && (("invariant".equals(sTagName))
+	    || ("pre-condition".equals(sTagName))
+	    || ("post-condition".equals(sTagName)))) {
 
 	    // add as OCL constraint
 	    String sContext = OCLUtil.getContextString(me);
-	    String name = sTagData.substring(0, sTagData.indexOf(':'));
+	    String name = sTagData.substring(0, colonPos);
 	    String body = null;
 	    if (sTagName.equals ("invariant")) {
 		// add as invariant constraint Note that no checking
