@@ -77,8 +77,7 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramFactory;
-import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
-import org.argouml.uml.diagram.state.StateDiagramGraphModel;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
 import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.ActionSaveProjectAs;
@@ -86,6 +85,7 @@ import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.IStatusBar;
 import org.tigris.gef.undo.RedoAction;
@@ -931,11 +931,12 @@ public final class ProjectBrowser
      */
     private void determineRemoveEnabled() {
         Editor editor = Globals.curEditor();
-        boolean removeEnabled =
-            !editor.getSelectionManager().getFigs().isEmpty();
-        if (editor.getGraphModel() instanceof ActivityDiagramGraphModel
-            || editor.getGraphModel() instanceof StateDiagramGraphModel) {
-            removeEnabled = false;
+        Collection figs = editor.getSelectionManager().getFigs();
+        boolean removeEnabled = !figs.isEmpty();
+        GraphModel gm = editor.getGraphModel();
+        if (gm instanceof UMLMutableGraphSupport) { 
+            removeEnabled = 
+                ((UMLMutableGraphSupport)gm).isRemoveFromDiagramAllowed(figs);
         }
         removeFromDiagram.setEnabled(removeEnabled);
     }

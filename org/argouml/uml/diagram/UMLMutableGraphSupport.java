@@ -537,4 +537,13 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         return diDiagram;
     }
 
+    /**
+     * Return true if the current targets may be removed from the diagram.
+     *
+     * @param figs a collection with the selected figs
+     * @return true if the targets may be removed
+     */
+    public boolean isRemoveFromDiagramAllowed(Collection figs) {
+        return !figs.isEmpty();
+    }
 }
