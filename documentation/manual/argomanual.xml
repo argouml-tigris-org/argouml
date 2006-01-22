@@ -10894,8 +10894,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <listitem>
 
-            <para><literal>Class-centric</literal>. (To be 
-            written)</para>
+            <para><literal>Class-centric</literal>. 
+            Shows classes in their package hierarchy as well as  
+            datatypes and use case diagram elements. Similar to the  
+            Package-centric view but it doesn’t show connecting or  
+            associating elements.  
+            <!-- Got this from 
+            http://www.devshed.com/c/a/Practices/Design-with-ArgoUML/3/ -->
+            </para>
 
           </listitem>
 
