@@ -14894,7 +14894,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           Ctrl-X</literal>, <literal>Ctrl-C</literal> and <literal>
           Ctrl-V</literal> respectively.</para>
 
-          <warning>
+          <!--warning>
 
             <para>There is a known problem with the V0.20 release of 
             ArgoUML. The <literal>Cut</literal>, <literal>
@@ -14903,7 +14903,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             constraint editor. If used they will work on the currently 
             selected artifact in the editing pane.</para>
 
-          </warning>
+          </warning-->
 
         </sect2>
 
@@ -14911,7 +14911,32 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
       
       <sect1>
       <title>Stereotype Tab</title>
-      <para>(To be written)</para>
+      
+      <para>This tab shows the available and applied stereotypes for the 
+      currently selected modelelement. 
+      It consists of 2 panels and 2 buttons.
+      The buttons allow to move the stereotypes
+      from one list to the other.
+      </para>
+      
+      <figure float="1" id="fig.ref.detpane_stereotype">
+
+          <title>An example of a stereotype tab for a class.</title>
+
+          <screenshot><mediaobject><imageobject>
+          <imagedata align="center"
+           fileref="images/reference/detpane_stereotype.png"
+           format="PNG"/></imageobject></mediaobject></screenshot>
+        </figure>
+        
+        <para>In the lists, between <literal>[]</literal> 
+        the baseclass of the stereotypes is shown.
+        E.g. in the figure above, 
+        the <literal>thread [Classifier]</literal> stereotype 
+        may be applied to all types of classifiers, 
+        such as Class, UseCase,...
+        </para>
+        
       </sect1>
 
       <sect1>
