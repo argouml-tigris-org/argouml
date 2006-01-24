@@ -34,6 +34,7 @@ import java.util.Vector;
  * Created from the old ModelManagementHelper.
  */
 public interface ModelManagementHelper {
+    
     /**
      * Returns all subsystems found in this namespace and in its children.
      *
@@ -44,9 +45,6 @@ public interface ModelManagementHelper {
 
     /**
      * Returns all namespaces found in this namespace and in its children
-     *
-     * This method is CPU intensive and therefore needs to be as efficient as
-     * possible.
      *
      * @param ns namespace to process
      * @return Collection of all namespaces found
@@ -67,9 +65,6 @@ public interface ModelManagementHelper {
      * Returns all modelelements found in this namespace and its children
      * that are of some class kind.<p>
      *
-     * This method is CPU intensive and therefore needs to be as efficient as
-     * possible.<p>
-     *
      * @param nsa is the namespace
      * @param type is the class kind
      * @return Collection
@@ -89,8 +84,9 @@ public interface ModelManagementHelper {
     Collection getAllModelElementsOfKind(Object nsa, String kind);
 
     /**
-     * Returns all surrounding namespaces of some namespace ns. See
-     * section 2.5.3.24 of the UML 1.3 spec for a definition.
+     * Returns all surrounding namespaces of some namespace ns. See section
+     * 2.5.3.26 of the UML 1.4 spec for a definition.
+     * 
      * @param ns to process
      * @return Collection of surrounding namespaces.
      */
