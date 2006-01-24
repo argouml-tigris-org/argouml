@@ -129,6 +129,18 @@ public class TestModelManagementHelper extends TestCase {
     }
     
     /**
+     * Test to make sure that we can get UmlClass since its name is different
+     */
+    public void testGetUmlClassModelElements() {
+        setUpTestsOfTagDefinitionContainedInStereotype();
+        Collection col = Model.getModelManagementHelper()
+                .getAllModelElementsOfKind(theGoodPackage,
+                        Model.getMetaTypes().getUMLClass());
+        assertTrue("Failed to get UmlClass ModelElement", col
+                .contains(theClass));
+    }
+    
+    /**
      * Test the getPath method with a tag definition contained in a stereotype.
      */
     public void testGetPathForTagDefinitionInStereotype() {
