@@ -1476,10 +1476,10 @@ public class Modeller {
 	            element,
 	            Model.getVisibilityKind().getPublic());
 	} else {
-            Model.getCoreHelper().setTaggedValue(
+            // Default Java visibility is "package"
+            Model.getCoreHelper().setVisibility(
                     element,
-                    "src_visibility",
-                    "default");
+                    Model.getVisibilityKind().getPackage());
 	}
     }
 

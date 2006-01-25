@@ -1459,6 +1459,8 @@ public final class ParserDisplay {
             return Model.getVisibilityKind().getPublic();
         } else if ("#".equals(name) || "protected".equals(name)) {
             return Model.getVisibilityKind().getProtected();
+        } else if ("~".equals(name) || "package".equals(name)) {
+            return Model.getVisibilityKind().getPackage();
         } else {
             /* if ("-".equals(name) || "private".equals(name)) */
             return Model.getVisibilityKind().getPrivate();

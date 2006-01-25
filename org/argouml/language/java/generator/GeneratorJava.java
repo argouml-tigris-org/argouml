@@ -52,7 +52,6 @@ import org.argouml.ocl.ArgoFacade;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
-import org.argouml.util.CollectionUtil;
 
 import tudresden.ocl.OclTree;
 import tudresden.ocl.parser.analysis.DepthFirstAdapter;
@@ -1489,6 +1488,9 @@ public class GeneratorJava
             if (Model.getFacade().isProtected(o)) {
                 return "protected ";
             }
+            if (Model.getFacade().isPackage(o)) {
+                return "";
+            }
         }
         if (Model.getFacade().isAVisibilityKind(o)) {
             if (Model.getVisibilityKind().getPublic().equals(o)) {
@@ -1499,6 +1501,9 @@ public class GeneratorJava
             }
             if (Model.getVisibilityKind().getProtected().equals(o)) {
                 return "protected ";
+            }
+            if (Model.getVisibilityKind().getPackage().equals(o)) {
+                return "";
             }
         }
         return "";

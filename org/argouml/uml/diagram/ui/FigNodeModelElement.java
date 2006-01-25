@@ -515,7 +515,8 @@ public abstract class FigNodeModelElement
         visibilityMenu.addRadioItem(new ActionVisibilityPublic(getOwner()));
         visibilityMenu.addRadioItem(new ActionVisibilityPrivate(getOwner()));
         visibilityMenu.addRadioItem(new ActionVisibilityProtected(getOwner()));
-
+        visibilityMenu.addRadioItem(new ActionVisibilityPackage(getOwner()));
+        
         return visibilityMenu;
     }
 
