@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -39,12 +38,17 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
 public class UMLModelElementVisibilityRadioButtonPanel
     extends UMLRadioButtonPanel {
 
-    private static Map labelTextsAndActionCommands = new HashMap();
+    private static HashMap labelTextsAndActionCommands = new HashMap();
 
+    // TODO: The buttons should be order of reducing visibility, but
+    // they get ordered by natural order of the keys (hash order?)
     static {
         labelTextsAndActionCommands.put(Translator.localize(
                 "label.visibility-public"),
                 ActionSetModelElementVisibility.PUBLIC_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize(
+                "label.visibility-package"),
+                ActionSetModelElementVisibility.PACKAGE_COMMAND);
         labelTextsAndActionCommands.put(Translator.localize(
                 "label.visibility-protected"),
                 ActionSetModelElementVisibility.PROTECTED_COMMAND);
@@ -76,6 +80,9 @@ public class UMLModelElementVisibilityRadioButtonPanel
                             Model.getVisibilityKind().getPublic())) {
                 setSelected(ActionSetModelElementVisibility.PUBLIC_COMMAND);
             } else if (kind.equals(
+                    Model.getVisibilityKind().getPackage())) {
+                setSelected(ActionSetModelElementVisibility.PACKAGE_COMMAND);
+            } else if (kind.equals(
                     Model.getVisibilityKind().getProtected())) {
                 setSelected(ActionSetModelElementVisibility.PROTECTED_COMMAND);
             } else if (kind.equals(
@@ -86,4 +93,5 @@ public class UMLModelElementVisibilityRadioButtonPanel
             }
         }
     }
+
 }

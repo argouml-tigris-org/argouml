@@ -255,7 +255,11 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
             Model.getCoreHelper().setVisibility(me,
                             Model.getVisibilityKind().getProtected());
         }
-
+        if (name != null && name.startsWith("~")) {
+            name = name.substring(1).trim();
+            Model.getCoreHelper().setVisibility(me,
+                            Model.getVisibilityKind().getPackage());
+        }
         if (name != null) {
             Model.getCoreHelper().setName(me, name);
         }

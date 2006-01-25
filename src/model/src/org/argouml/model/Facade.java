@@ -1102,6 +1102,18 @@ public interface Facade {
     boolean isPrimaryObject(Object handle);
 
     /**
+     * Recognizer for attributes with package visibility.
+     *
+     * TODO: This method name was chosen for compatibility with
+     * the existing naming scheme, but has the potential of 
+     * clashing with some future use.
+     * 
+     * @param handle candidate
+     * @return true if handle has package visibility
+     */
+    boolean isPackage(Object handle);
+    
+    /**
      * Recognizer for attributes with private.
      *
      * @param handle candidate

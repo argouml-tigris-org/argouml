@@ -870,6 +870,9 @@ public class GeneratorDisplay extends Generator2 {
             if (Model.getFacade().isProtected(o)) {
                 return "#";
             }
+            if (Model.getFacade().isPackage(o)) {
+                return "~";
+            }
         }
         if (Model.getFacade().isAVisibilityKind(o)) {
             if (Model.getVisibilityKind().getPublic().equals(o)) {
@@ -880,6 +883,9 @@ public class GeneratorDisplay extends Generator2 {
             }
             if (Model.getVisibilityKind().getProtected().equals(o)) {
                 return "#";
+            }
+            if (Model.getVisibilityKind().getPackage().equals(o)) {
+                return "~";
             }
         }
         return "";

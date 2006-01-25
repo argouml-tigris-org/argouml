@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies. This software program and
+// and this paragraph appear in all copies.  This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,29 +22,39 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.model;
+package org.argouml.uml.diagram.ui;
 
-/**
- * The different VisibilityKinds.
- */
-public interface VisibilityKind {
+import org.argouml.model.Model;
+
+class ActionVisibilityPackage extends AbstractActionRadioMenuItem {
     /**
-     * @return Returns the Private VisibilityKind.
+     * The constructor.
+     *
+     * @param o the target
      */
-    Object getPrivate();
+    public ActionVisibilityPackage(Object o) {
+        super("checkbox.visibility.package-uc", NO_ICON);
+        putValue("SELECTED", new Boolean(
+            Model.getVisibilityKind().getPackage()
+                .equals(valueOfTarget(o))));
+    }
 
     /**
-     * @return Returns the Protected VisibilityKind.
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement.AbstractActionRadioMenuItem#toggleValueOfTarget(java.lang.Object)
      */
-    Object getProtected();
+    void toggleValueOfTarget(Object t) {
+        Model.getCoreHelper().setVisibility(t,
+            Model.getVisibilityKind().getPackage());
+    }
 
     /**
-     * @return Returns the Public VisibilityKind.
+     * Make use of the default visibility, which is public...
+     * TODO: centralise this knowledge.
+     *
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement.AbstractActionRadioMenuItem#valueOfTarget(java.lang.Object)
      */
-    Object getPublic();
-    
-    /**
-     * @return Returns the Package VisibilityKind.
-     */
-    Object getPackage();
+    Object valueOfTarget(Object t) {
+        Object v = Model.getFacade().getVisibility(t);
+        return v == null ? Model.getVisibilityKind().getPublic() : v;
+    }
 }

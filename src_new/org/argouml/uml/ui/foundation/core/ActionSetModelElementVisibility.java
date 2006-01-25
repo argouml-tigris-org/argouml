@@ -60,6 +60,11 @@ public class ActionSetModelElementVisibility extends UMLAction {
     public static final String PRIVATE_COMMAND = "private";
 
     /**
+     * PACKAGE_COMMAND determines the visibility.
+     */
+    public static final String PACKAGE_COMMAND = "package";
+
+    /**
      * Constructor for ActionSetElementOwnershipSpecification.
      */
     protected ActionSetModelElementVisibility() {
@@ -82,6 +87,8 @@ public class ActionSetModelElementVisibility extends UMLAction {
                     kind = Model.getVisibilityKind().getPublic();
                 } else if (actionCommand.equals(PROTECTED_COMMAND)) {
                     kind = Model.getVisibilityKind().getProtected();
+                } else if (actionCommand.equals(PACKAGE_COMMAND)) {
+                    kind = Model.getVisibilityKind().getPackage();
                 } else {
                     kind = Model.getVisibilityKind().getPrivate();
                 }
