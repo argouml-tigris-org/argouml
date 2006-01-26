@@ -192,7 +192,7 @@ public final class ParserDisplay {
      * The character with a meaning as a visibility at the start
      * of an attribute.
      */
-    private static final String VISIBILITYCHARS = "+#-";
+    private static final String VISIBILITYCHARS = "+#-~";
 
     /**
      * Constructs the object contained in SINGLETON and initializes some
