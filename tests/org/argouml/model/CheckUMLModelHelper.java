@@ -266,10 +266,10 @@ public final class CheckUMLModelHelper {
                             Model.getExtensionMechanismsHelper()
                                 .isValidStereoType(base, stereo2));
                         if (!(Model.getFacade().isAClass(base))) {
-                            TestCase.assertFalse(
+                            TestCase.assertTrue(
                                 "Stereotype with base class of Class" 
                                     + " incorrectly allowed for this metaclass",
-                                Model.getExtensionMechanismsHelper()
+                                !Model.getExtensionMechanismsHelper()
                                     .isValidStereoType(base, stereo1));
                         } else {
                             Object inter =
