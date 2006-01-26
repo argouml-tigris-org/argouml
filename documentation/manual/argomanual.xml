@@ -23101,9 +23101,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         </blockquote>
 
         <para><emphasis>visibility</emphasis> is <literal>+</literal>, 
-        <literal>#</literal> or <literal>-</literal> corresponding to 
-        <literal>public</literal>, <literal>protected</literal> or 
-        <literal>private</literal> visibility respectively.</para>
+        <literal>#</literal>, <literal>-</literal> or 
+        <literal>~</literal> corresponding to 
+        <literal>public</literal>, <literal>protected</literal>, 
+        <literal>private</literal>, or <literal>package</literal> 
+        visibility respectively.</para>
 
         <para><emphasis>attributeName</emphasis> is the actual name of 
         the attribute being declared.</para>
