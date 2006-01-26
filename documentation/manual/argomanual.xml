@@ -8834,9 +8834,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 show the visibility indicators in front of e.g. attributes
                 in the diagram.
                 In UML the notation is "+" for public, "-" for private,
-                and "#" for protected. 
-                The "package" visibility, that was introduced since UML 1.4
-                is not yet supported by ArgoUML.
+                "#" for protected, and "~" for package. 
                 E.g. for an attribute, it may show:
                 <literal>+newAttr : int</literal>.
                 </para>
@@ -14253,7 +14251,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para><literal>Visibility</literal>
             This checkbox allows to hide the visibility of 
             a package. 
-            The visibility is shown in UML notation as +, - or #.
+            The visibility is shown in UML notation as +, -, # or ~.
             </para>
           </listitem>
 
@@ -17194,8 +17192,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <indexterm><primary>Visibility</primary><secondary>of 
                 Model</secondary></indexterm>
                 <para>Radio box, with entries <literal>
-                public</literal>, <literal>private</literal>, and 
-                <literal>protected</literal>.</para>
+                public</literal>, <literal>private</literal>,  
+                <literal>protected</literal>, and 
+                <literal>package</literal>.</para>
 
                 <para>Records the visibility for the model. Since 
                 ArgoUML only permits one model, this has no meaningful 
@@ -17839,8 +17838,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <indexterm><primary>Visibility</primary><secondary>of 
                 Datatype</secondary></indexterm>
                 <para>Radio box, with entries <literal>
-                public</literal>, <literal>private</literal>, and 
-                <literal>protected</literal>.</para>
+                public</literal>, <literal>private</literal>, 
+                <literal>protected</literal>, and
+                <literal>package</literal>.</para>
 
                 <para>Records the visibility for the Datatype.</para>
 
@@ -22150,9 +22150,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Radio box, with three entries <literal>
-                public</literal>, <literal>private</literal> and 
-                <literal>protected</literal>. Indicates whether the 
+                <para>Radio box, with four entries <literal>
+                public</literal>, <literal>private</literal>, 
+                <literal>protected</literal>, and
+                <literal>package</literal>. Indicates whether the 
                 package is visible outside the package.</para>
 
               </listitem>
@@ -22869,9 +22870,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Radio box, with three entries <literal>
-                public</literal>, <literal>private</literal> and 
-                <literal>protected</literal>. Indicates whether the 
+                <para>Radio box, with four entries <literal>
+                public</literal>, <literal>private</literal>, 
+                <literal>protected</literal>, and
+                <literal>package</literal>. Indicates whether the 
                 class is visible outside the namespace.</para>
 
               </listitem>
@@ -23594,8 +23596,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <indexterm><primary>Visibility</primary><secondary>of 
                 Attribute</secondary></indexterm>
                 <para>Radio box, with entries <literal>
-                public</literal>, <literal>private</literal>, and 
-                <literal>protected</literal>.</para>
+                public</literal>, <literal>private</literal>, 
+                <literal>protected</literal> and 
+                <literal>package</literal>.</para>
 
                 <itemizedlist>
 
@@ -23623,6 +23626,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                   </listitem>
 
+
+                  <listitem>
+
+                    <para><literal>package</literal>. The attribute 
+                    is available only to artifacts contained in the
+                    same package.</para>
+
+                  </listitem>
+                  
                 </itemizedlist>
 
               </listitem>
@@ -23739,9 +23751,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         query, root and sequential.</para>
 
         <para>The <emphasis>visibility</emphasis> is <literal>
-        +</literal>, <literal>#</literal> or <literal>-</literal> 
+        +</literal>, <literal>#</literal>, <literal>-</literal> or
+        <literal>~</literal> 
         corresponding to <literal>public</literal>, <literal>
-        protected</literal> or <literal>private</literal> visibility 
+        protected</literal>, <literal>private</literal> visibility,
+        or <literal>package</literal> visibility 
         respectively.</para>
 
         <para><literal>static</literal> and <literal>final</literal> 
@@ -24223,8 +24237,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <indexterm><primary>Visibility</primary><secondary>of 
                 Operation</secondary></indexterm>
                 <para>Radio box, with entries <literal>
-                public</literal>, <literal>private</literal>, and 
-                <literal>protected</literal>.</para>
+                public</literal>, <literal>private</literal>,  
+                <literal>protected</literal> and
+                <literal>package</literal>.</para>
 
                 <itemizedlist>
 
@@ -24249,6 +24264,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>protected</literal>. The operation 
                     is available only to the owning class, or artifacts 
                     that are subclasses of the owning class.</para>
+
+                  </listitem>
+                  <listitem>
+
+                    <para><literal>package</literal>. The operation 
+                    is available only artifacts contained in the 
+                    same package.</para>
 
                   </listitem>
 
@@ -26553,9 +26575,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Visibility</primary></indexterm>
                 <indexterm><primary>Visibility</primary><secondary>of 
                 Association End</secondary></indexterm>
-                <para>Radio box, with three entries <literal>
-                public</literal>, <literal>private</literal> and 
-                <literal>protected</literal>. Indicates whether 
+                <para>Radio box, with four entries <literal>
+                public</literal>, <literal>private</literal>,  
+                <literal>protected</literal>, and 
+                <literal>package</literal>. Indicates whether 
                 navigation to this end may be by: i) any classifier; 
                 ii) only by the source classifier; or iii) only the 
                 source classifier and its children.</para>
@@ -27390,8 +27413,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>Radio box, with three entries <literal>
-                public</literal>, <literal>protected</literal> and 
-                <literal>private</literal>. Indicates whether 
+                public</literal>, <literal>protected</literal>, 
+                <literal>private</literal> and
+                <literal>package</literal>. Indicates whether 
                 navigation to this end may be by: i) any classifier; 
                 ii) only the source classifier and its children; or 
                 iii) only by the source classifier.</para>
