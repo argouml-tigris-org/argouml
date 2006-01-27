@@ -37582,15 +37582,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Built In Stereotypes</title>
 
-        <para>UML 1.4 defines a large number of stereotypes which are 
-        all supported by ArgoUML.</para>
+        <para>UML 1.4 defines a large number of stereotypes 
+        of which most are 
+        supported by ArgoUML.</para>
 
         <caution>
 
           <para>Not all stereotypes defined by UML 1.4 appear in 
-          ArgoUML due to limitations in the current implementation of 
-          some artifacts. The table below lists all stereotypes defined 
-          in UML 1.4 and if their base elements are supported in 
+          ArgoUML V0.20 due to 
+          the fact that they were not yet updated 
+          from previous versions of ArgoUML 
+          that only supported UML 1.3.
+          Also, there are
+          limitations in the current implementation of 
+          some base elements. The table below lists all stereotypes defined 
+          in UML 1.4 and if they are supported in 
           ArgoUML or not.</para>
 
         </caution>
@@ -37598,7 +37604,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <caution>
 
           <para>The UML 1.4 standard also specifies many stereotypes in 
-          the chapters <quote>Standard Profiles</quote>: one for 
+          the chapters <quote>Example Profiles</quote>: one for 
           <quote>Software Development</quote> and one for 
           <quote>Business Modeling</quote>. Due to the specialized 
           nature of these profiles, implementation in ArgoUML is 
@@ -37623,9 +37629,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <tbody>
 
               <row><entry><para>access</para></entry><entry><para>Permission</para></entry><entry><para>yes</para></entry></row>
-              <row><entry><para>appliedProfile</para></entry><entry><para>Package</para></entry><entry><para>???</para></entry></row>
+              <row><entry><para>appliedProfile</para></entry><entry><para>Package</para></entry><entry><para>no</para></entry></row>
               <row><entry><para>association</para></entry><entry><para>AssociationEnd</para></entry><entry><para>yes</para></entry></row>
-              <row><entry><para>auxiliary</para></entry><entry><para>Class</para></entry><entry><para>???</para></entry></row>
+              <row><entry><para>auxiliary</para></entry><entry><para>Class</para></entry><entry><para>no</para></entry></row>
               <row><entry><para>become</para></entry><entry><para>Flow</para></entry><entry><para>no</para></entry></row>
 
               <row><entry><para>call</para></entry><entry><para>Usage</para></entry><entry><para>yes</para></entry></row>
@@ -37644,20 +37650,20 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <row><entry><para>destroy</para></entry><entry><para>CallEvent</para></entry><entry><para>yes</para></entry></row>
 
-              <row><entry><para>document</para></entry><entry><para>Abstraction</para></entry><entry><para>???</para></entry></row>
+              <row><entry><para>document</para></entry><entry><para>Abstraction</para></entry><entry><para>no</para></entry></row>
 
-              <row><entry><para>executable</para></entry><entry><para>Abstraction</para></entry><entry><para>???</para></entry></row>
+              <row><entry><para>executable</para></entry><entry><para>Abstraction</para></entry><entry><para>no</para></entry></row>
 
               <row><entry><para>facade</para></entry><entry><para>Package</para></entry><entry><para>yes</para></entry></row>
 
-              <row><entry><para>file</para></entry><entry><para>Abstraction</para></entry><entry><para>???</para></entry></row>
-              <row><entry><para>focus</para></entry><entry><para>Class</para></entry><entry><para>???</para></entry></row>
+              <row><entry><para>file</para></entry><entry><para>Abstraction</para></entry><entry><para>no</para></entry></row>
+              <row><entry><para>focus</para></entry><entry><para>Class</para></entry><entry><para>no</para></entry></row>
               <row><entry><para>framework</para></entry><entry><para>Package</para></entry><entry><para>yes</para></entry></row>
 
               <row><entry><para>friend</para></entry><entry><para>Permission</para></entry><entry><para>yes</para></entry></row>
 
               <row><entry><para>global</para></entry><entry><para>AssociationEnd</para></entry><entry><para>yes</para></entry></row>
-              <row><entry><para>implementation</para></entry><entry><para>Class</para></entry><entry><para>???</para></entry></row>
+              <row><entry><para>implementation</para></entry><entry><para>Class</para></entry><entry><para>no</para></entry></row>
               <row><entry><para>implementation</para></entry><entry><para>Generalization</para></entry><entry><para>yes</para></entry></row>
 
               
@@ -37669,25 +37675,25 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <row><entry><para>invariant</para></entry><entry><para>Constraint</para></entry><entry><para>no</para></entry></row>
 
-              <row><entry><para>library</para></entry><entry><para>Abstraction</para></entry><entry><para>???</para></entry></row>
+              <row><entry><para>library</para></entry><entry><para>Abstraction</para></entry><entry><para>no</para></entry></row>
 
               <row><entry><para>local</para></entry><entry><para>AssociationEnd</para></entry><entry><para>yes</para></entry></row>
 
-              <row><entry><para>metaclass</para></entry><entry><para>Class</para></entry><entry><para>???</para></entry></row>
+              <row><entry><para>metaclass</para></entry><entry><para>Class</para></entry><entry><para>no</para></entry></row>
 
               <row><entry><para>metamodel</para></entry><entry><para>Package</para></entry><entry><para>yes</para></entry></row>
-              <row><entry><para>modelLibrary</para></entry><entry><para>Package</para></entry><entry><para>???</para></entry></row>
+              <row><entry><para>modelLibrary</para></entry><entry><para>Package</para></entry><entry><para>no</para></entry></row>
 
               <row><entry><para>parameter</para></entry><entry><para>AssociationEnd</para></entry><entry><para>yes</para></entry></row>
 
               <row><entry><para>postcondition</para></entry><entry><para>Constraint</para></entry><entry><para>no</para></entry></row>
 
-              <row><entry><para>powertype</para></entry><entry><para>Class</para></entry><entry><para>???</para></entry></row>
+              <row><entry><para>powertype</para></entry><entry><para>Class</para></entry><entry><para>no</para></entry></row>
 
               <row><entry><para>precondition</para></entry><entry><para>Constraint</para></entry><entry><para>no</para></entry></row>
 
               <row><entry><para>process</para></entry><entry><para>Classifier</para></entry><entry><para>yes</para></entry></row>
-              <row><entry><para>profile</para></entry><entry><para>Package</para></entry><entry><para>???</para></entry></row>
+              <row><entry><para>profile</para></entry><entry><para>Package</para></entry><entry><para>no</para></entry></row>
               
               <row><entry><para>realize</para></entry><entry><para>Abstraction</para></entry><entry><para>yes</para></entry></row>
 
@@ -37702,14 +37708,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <row><entry><para>send</para></entry><entry><para>Usage</para></entry><entry><para>yes</para></entry></row>
 
               <row><entry><para>signalflow</para></entry><entry><para>ObjectFlowState</para></entry><entry><para>yes</para></entry></row>
-              <row><entry><para>source</para></entry><entry><para>Abstraction</para></entry><entry><para>???</para></entry></row>
-              <row><entry><para>stateInvariant</para></entry><entry><para>Constraint</para></entry><entry><para>???</para></entry></row>
+              <row><entry><para>source</para></entry><entry><para>Abstraction</para></entry><entry><para>no</para></entry></row>
+              <row><entry><para>stateInvariant</para></entry><entry><para>Constraint</para></entry><entry><para>no</para></entry></row>
               
               <row><entry><para>stub</para></entry><entry><para>Package</para></entry><entry><para>yes</para></entry></row>
 
               <row><entry><para>systemModel</para></entry><entry><para>Package</para></entry><entry><para>yes</para></entry></row>
 
-              <row><entry><para>table</para></entry><entry><para>Abstraction</para></entry><entry><para>???</para></entry></row>
+              <row><entry><para>table</para></entry><entry><para>Abstraction</para></entry><entry><para>no</para></entry></row>
 
               <row><entry><para>thread</para></entry><entry><para>Classifier</para></entry><entry><para>yes</para></entry></row>
 
