@@ -36,6 +36,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Configuration;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
@@ -301,11 +302,14 @@ public class ProfileJava extends Profile {
         //
         //    get a file name for the default model
         //
-        String modelFileName = System.getProperty("argo.defaultModel");
+        String configModel = Configuration.getString(
+                Configuration.makeKey("defaultModel"),
+                    "/org/argouml/model/mdr/mof/default-uml14.xmi");
+        
+        LOG.debug("Config Model:" + configModel);
+        
+        String modelFileName = System.getProperty("argo.defaultModel",configModel);
 
-        if (modelFileName == null) {
-            modelFileName = "/org/argouml/model/mdr/mof/default-uml14.xmi";
-        }
         //
         //   if there is a default model
         //
