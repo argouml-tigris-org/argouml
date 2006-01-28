@@ -31,10 +31,7 @@ import java.awt.event.MouseListener;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
-import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -334,6 +331,11 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
             newFigNodeAssociation.removeFromDiagram();
             oldFigAssociation.setOwner(association);
         }
+    }
+
+    public void leave() {
+        abort();
+        super.leave();
     }
 
 } /* end class ModeCreateAssociation */
