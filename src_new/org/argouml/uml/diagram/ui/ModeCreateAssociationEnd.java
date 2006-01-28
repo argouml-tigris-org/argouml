@@ -31,7 +31,9 @@ import java.awt.event.MouseListener;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
 import org.tigris.gef.base.Editor;
@@ -62,7 +64,6 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
     private FigEdge oldFigAssociation;
     private Object association;
     private Collection associationEnds;
-
 
     /**
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
@@ -178,75 +179,89 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
             }
         }
 
-        if (destFig instanceof FigNode &&
-                !(destFig instanceof FigClassAssociationClass) &&
-                !Model.getFacade().isANaryAssociation(destFig.getOwner())) {
-            FigNode destFigNode = (FigNode) destFig;
-            // If its a FigNode, then check within the
-            // FigNode to see if a port exists
-            Object foundPort = destFigNode.deepHitPort(x, y);
-
-            if (foundPort == getStartPort() && _npoints < 4) {
-                // user made a false start
-                done();
-                me.consume();
-                return;
-            }
-            if (foundPort != null) {
-                Fig destPortFig = destFigNode.getPortFig(foundPort);
-                FigPoly p = (FigPoly) _newItem;
-                if (foundPort == getStartPort() && _npoints >= 4) {
-                    p.setSelfLoop(true);
+        if (destFig instanceof FigNode) {
+            if (!(destFig instanceof FigClassAssociationClass) &&
+                    !Model.getFacade().isANaryAssociation(destFig.getOwner())) {
+                FigNode destFigNode = (FigNode) destFig;
+                // If its a FigNode, then check within the
+                // FigNode to see if a port exists
+                Object foundPort = destFigNode.deepHitPort(x, y);
+    
+                if (foundPort == getStartPort() && _npoints < 4) {
+                    // user made a false start
+                    abort();
+                    done();
+                    me.consume();
+                    return;
                 }
-                editor.damageAll();
-                p.setComplete(true);
-
-                Object edgeType = getArg("edgeClass");
-                setNewEdge(mutableGraphModel.connect(
-                       getStartPort(), foundPort, (Class) edgeType));
-
-                // Calling connect() will add the edge to the GraphModel and
-                // any LayerPersectives on that GraphModel will get a
-                // edgeAdded event and will add an appropriate FigEdge
-                // (determined by the GraphEdgeRenderer).
-
-                if (getNewEdge() != null) {
-                    getSourceFigNode().damage();
-                    destFigNode.damage();
-                    Layer lay = editor.getLayerManager().getActiveLayer();
-                    FigEdge fe = (FigEdge) lay.presentationFor(getNewEdge());
-                    _newItem.setLineColor(Color.black);
-                    fe.setFig(_newItem);
-                    fe.setSourcePortFig(getStartPortFig());
-                    fe.setSourceFigNode(getSourceFigNode());
-                    fe.setDestPortFig(destPortFig);
-                    fe.setDestFigNode(destFigNode);
-
-                    if (fe != null) {
-                        editor.getSelectionManager().select(fe);
+                if (foundPort != null) {
+                    Fig destPortFig = destFigNode.getPortFig(foundPort);
+                    FigPoly p = (FigPoly) _newItem;
+                    if (foundPort == getStartPort() && _npoints >= 4) {
+                        p.setSelfLoop(true);
                     }
                     editor.damageAll();
-
-                    // if the new edge implements the MouseListener
-                    // interface it has to receive the mouseReleased() event
-                    if (fe instanceof MouseListener) {
-                        ((MouseListener) fe).mouseReleased(me);
+                    p.setComplete(true);
+    
+                    Object edgeType = getArg("edgeClass");
+                    if (!mutableGraphModel.canConnect(
+                           getStartPort(), foundPort, edgeType)) {
+                        abort();
+                    } else {
+                        setNewEdge(mutableGraphModel.connect(
+                                getStartPort(), foundPort, (Class) edgeType));
+    
+                         // Calling connect() will add the edge to the GraphModel and
+                         // any LayerPersectives on that GraphModel will get a
+                         // edgeAdded event and will add an appropriate FigEdge
+                         // (determined by the GraphEdgeRenderer).
+    
+                         if (getNewEdge() != null) {
+                             getSourceFigNode().damage();
+                             destFigNode.damage();
+                             Layer lay = editor.getLayerManager().getActiveLayer();
+                             FigEdge fe = (FigEdge) lay.presentationFor(getNewEdge());
+                             _newItem.setLineColor(Color.black);
+                             fe.setFig(_newItem);
+                             fe.setSourcePortFig(getStartPortFig());
+                             fe.setSourceFigNode(getSourceFigNode());
+                             fe.setDestPortFig(destPortFig);
+                             fe.setDestFigNode(destFigNode);
+    
+                             if (fe != null) {
+                                 editor.getSelectionManager().select(fe);
+                             }
+                             editor.damageAll();
+    
+                             // if the new edge implements the MouseListener
+                             // interface it has to receive the mouseReleased() event
+                             if (fe instanceof MouseListener) {
+                                 ((MouseListener) fe).mouseReleased(me);
+                             }
+    
+                             // set the new edge in place
+                             if (getSourceFigNode() != null) {
+                                 getSourceFigNode().updateEdges();
+                             }
+                             if (destFigNode != null) {
+                                 destFigNode.updateEdges();
+                             }
+                             endAttached();
+                         } else {
+                             // The user must have release on some FigNode that is not valid
+                             abort();
+                         }
                     }
-
-                    // set the new edge in place
-                    if (getSourceFigNode() != null) {
-                        getSourceFigNode().updateEdges();
-                    }
-                    if (destFigNode != null) {
-                        destFigNode.updateEdges();
-                    }
-                    endAttached();
+                    done();
+                    me.consume();
+                    return;
                 }
-                done();
-                me.consume();
-                return;
+            } else {
+                // The user must have release on some FigNode that is not valid
+                abort();
             }
         }
+        
         if (!nearLast(x, y)) {
             editor.damageAll();
             Point snapPt = new Point(x, y);
@@ -258,18 +273,6 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
         _lastX = x;
         _lastY = y;
         me.consume();
-
-        /* If a FigNodeAssociation has been created and placed but
-         * the connection fails, it must be undone.
-         */
-        if (getNewEdge() == null
-                && newFigNodeAssociation != null
-                && newFigNodeAssociation instanceof FigNodeAssociation) {
-            Editor editor = Globals.curEditor();
-            editor.remove(newFigNodeAssociation);
-            newFigNodeAssociation.removeFromDiagram();
-            oldFigAssociation.setOwner(association);
-        }
     }
 
     /**
@@ -316,6 +319,21 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
         editor.getSelectionManager().deselectAll();
 
         return figNode;
+    }
+
+    /**
+     * This method must be called if the edge drawing is aborted for
+     * any reason.
+     * It removes any FigNodeAssociation that may have been created
+     * when drawing started from a FigAssociation edge.
+     */
+    private void abort() {
+        if (newFigNodeAssociation != null) {
+            Editor editor = Globals.curEditor();
+            editor.remove(newFigNodeAssociation);
+            newFigNodeAssociation.removeFromDiagram();
+            oldFigAssociation.setOwner(association);
+        }
     }
 
 } /* end class ModeCreateAssociation */
