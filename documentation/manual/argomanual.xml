@@ -29323,11 +29323,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Limitations Concerning Statechart Diagrams in 
           ArgoUML</title>
 
-          <para>The statechart diagrams support the 4 event types 
-          defined (CallEvent, SignalEvent, ChangeEvent and TimeEvent), 
-          but the SignalEvent is purely textual, with no way to link it 
-          back to its associated Signal. Also the various kinds of 
-          Actions are only supported in the same way.</para>
+          <para>The statechart diagrams support the 7 action types 
+          defined (CallAtion, CreateAction, DestroyAction,
+          ReturnAction, SendAction, 
+          TerminateAction and UninterpretedAction), 
+          but there is no way to use the same action 
+          more than once.
+          Also, in a few cases, it is not possible to 
+          set or select the related elements; 
+          e.g.there is no way to select a signal for a SendAction. 
+          </para>
 
           <para>Code generation from statechart diagrams is not 
           developed yet.</para>
@@ -29415,21 +29420,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Source</literal></term>
+              <term><literal>Stereotype</literal></term>
 
               <listitem>
 
-                <para>Standard tab, containing just the name of the 
-                state.</para>
-
-                <note>
-
-                  <para>In the fullness of time this tab will contain 
-                  code to implement the state (code for actions will be 
-                  associated with the particular actions). This is not 
-                  implemented in the current release of ArgoUML.</para>
-
-                </note>
+                <para>Standard tab.</para>
 
               </listitem>
 
@@ -29441,55 +29436,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Standard tab. In the UML metamodel, <literal>
-                State</literal> has the following standard tagged 
-                values defined.</para>
-
-                <itemizedlist>
-
-                  <listitem>
-
-                    <para><literal>derived</literal> (from the 
-                    superclass, <literal>ModelElement</literal>). 
-                    Values <literal>true</literal>, meaning the state 
-                    is redundant—it can be formally derived from other 
-                    elements, or <literal>false</literal> meaning it 
-                    cannot.</para>
-
-                    <note>
-
-                      <para>Derived states still have their value in 
-                      analysis to introduce useful names or concepts, 
-                      and in design to avoid re-computation.</para>
-
-                    </note>
-
-                    <note>
-
-                      <para>The UML <literal>Element</literal> 
-                      metaclass from which all other artifacts are 
-                      derived includes the tagged element <literal>
-                      documentation</literal> which is handled by the 
-                      <emphasis>documentation tab</emphasis> under 
-                      ArgoUML</para>
-
-                    </note>
-
-                  </listitem>
-
-                </itemizedlist>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Checklist</literal></term>
-
-              <listitem>
-
-                <para>Standard tab for a State.</para>
+                <para>Standard tab.</para>
 
               </listitem>
 
@@ -29556,15 +29503,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>This deletes the state from the model</para>
 
-                <warning>
+                <note>
 
                   <para>This is a deletion from the model, 
-                  <emphasis>not</emphasis> just the diagram. To delete 
-                  a state from the diagram, but keep it within the 
-                  model, use the main menu <literal>Remove From 
-                  Diagram</literal> (or press the Delete key).</para>
+                  <emphasis>not</emphasis> just the diagram. 
+                  You can not just remove 
+                  a state from the diagram, and keep it within the 
+                  model, as is possible in other diagrams.
+                  </para>
 
-                </warning>
+                </note>
 
               </listitem>
 
@@ -29596,37 +29544,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   convention.</para>
 
                 </note>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Stereotype</literal></term>
-
-              <listitem>
-
-                <para>Drop down selector. State has no stereotypes by 
-                default in the UML standard.</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Navigate Stereotype</literal></term>
-
-              <listitem>
-
-                <para><guiicon><inlinemediaobject><imageobject>
-                <imagedata align="center"
-                 fileref="images/icons/navigate_stereotype.gif"
-                 format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <xref linkend="s1.ref.stereotype"/>).</para>
 
               </listitem>
 
@@ -29773,6 +29690,58 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               </listitem>
 
             </varlistentry>
+            
+            <varlistentry>
+
+              <term><literal>Deferrable Events</literal></term>
+
+              <listitem>
+
+                <para>Text box. Shows a list of events 
+                that are candidates to be retained 
+                by the state machine 
+                if they trigger no transitions out of the
+                state (not consumed).
+                </para>
+
+                <para>Button 1 click navigates to the selected event, 
+                button 2 on an event 
+                gives a pop up menu with the following entries.
+                </para>
+
+                <itemizedlist>
+
+                  <listitem>
+
+                    <para><literal>Select</literal>. Allows 
+                    to add already existing events 
+                    to the list of deferred ones.
+                    </para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para><literal>New</literal>. Add a new event 
+                    of a certain kind. This menu has the 
+                    following submenus to select the kind of event: 
+                    Call Event, Change Event, Signal Event, Time Event.
+                    </para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para><literal>Delete From Model</literal>. Delete 
+                    the event.</para>
+
+                  </listitem>
+
+                </itemizedlist>
+
+              </listitem>
+
+            </varlistentry>
 
             <varlistentry>
 
@@ -29781,8 +29750,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>Text area. Lists all the transitions that enter 
-                this state, including any internal transitions within 
-                the state (described below).</para>
+                this state.</para>
 
                 <para>Button 1 double click navigates to the selected 
                 entry.</para>
@@ -29798,8 +29766,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>Text area. Lists all the transitions that leave 
-                this state, including any internal transitions within 
-                the state (described below).</para>
+                this state.</para>
 
                 <para>Button 1 double click navigates to the selected 
                 action.</para>
