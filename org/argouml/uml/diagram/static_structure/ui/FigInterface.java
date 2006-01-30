@@ -716,6 +716,7 @@ public class FigInterface extends FigClassifierBox {
     /**
      * @see
      * org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     * TODO: Refactor into FigClassifierBox
      */
     protected void updateStereotypeText() {
         Rectangle rect = getBounds();
@@ -734,6 +735,11 @@ public class FigInterface extends FigClassifierBox {
             stereotypeHeight = getStereotypeFig().getHeight();
         }
 
+        int minWidth = this.getMinimumSize().width;
+        if (minWidth > rect.width) {
+            rect.width = minWidth;
+        }
+        
         setBounds(
                 rect.x,
                 rect.y,

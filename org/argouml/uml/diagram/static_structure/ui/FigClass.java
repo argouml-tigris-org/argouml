@@ -831,6 +831,7 @@ public class FigClass extends FigClassifierBox
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     * TODO: Refactor into FigClassifierBox
      */
     protected void updateStereotypeText() {
 
@@ -848,6 +849,11 @@ public class FigClass extends FigClassifierBox
         stereotypeHeight = 0;
         if (getStereotypeFig().isVisible()) {
             stereotypeHeight = getStereotypeFig().getHeight();
+        }
+        
+        int minWidth = this.getMinimumSize().width;
+        if (minWidth > rect.width) {
+            rect.width = minWidth;
         }
 
         setBounds(
