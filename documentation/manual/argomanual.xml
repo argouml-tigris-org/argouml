@@ -16901,14 +16901,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Source</literal></term>
+              <term><literal>Stereotype</literal></term>
 
               <listitem>
 
-                <para>Standard tab. This contains a template package 
-                declaration appropriate to the entire model. In the 
-                future this would be part of the code generation 
-                activity.</para>
+                <para>Standard tab. 
+                This contains a a list of the stereotypes 
+                applied to this model, and a list of
+                available stereotypes that may be applied to the model.
+                </para>
 
               </listitem>
 
