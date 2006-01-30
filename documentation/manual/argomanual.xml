@@ -29790,7 +29790,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                   <para>This field shows the name of the transition, 
                   while on the diagram the name of the trigger is 
-                  shown.</para>
+                  shown, seperated with a <literal>/</literal> from
+                  the effect script.</para>
 
                 </note>
 
