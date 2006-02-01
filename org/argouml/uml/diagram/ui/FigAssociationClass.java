@@ -149,7 +149,7 @@ public class FigAssociationClass
                 Iterator nodes = lay.getContents().iterator();
                 while (nodes.hasNext()) {
                     Fig auxFig = (Fig) nodes.next();
-                    if (auxFig.getOwner().equals(thisFig.getOwner())) {
+                    if (thisFig.getOwner().equals(auxFig.getOwner())) {
                         if (auxFig instanceof FigClassAssociationClass) {
                             figNode = (FigClassAssociationClass) auxFig;
                             figNode.setMainFig(thisFig);
