@@ -281,5 +281,10 @@ public class KindsImpl
         return MOrderingKind.UNORDERED;
     }
 
+    public Object getPackage() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
 
