@@ -4808,4 +4808,9 @@ public class NSUMLModelFacade implements Facade {
         return null;
     }
 
+    public boolean isPackage(Object handle) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }
