@@ -171,33 +171,41 @@ public class FigTransition extends FigEdgeModelElement {
         if (e == null) {
             return;
         }
+        // TODO: In case of AttributeChange we probably want to
+        // unregister old listener - tfm
         if (e instanceof AddAssociationEvent
                 || e instanceof AttributeChangeEvent) {
             // register the guard condition
             if (Model.getFacade().isATransition(e.getSource())
                     && (e.getSource() == getOwner()
                             && e.getPropertyName().equals("guard"))) {
-                Model.getPump().addModelEventListener(this,
-                        e.getNewValue(), "expression");
+                if (e.getNewValue() != null) {
+                    Model.getPump().addModelEventListener(this,
+                            e.getNewValue(), "expression");
+                }
                 updateNameText();
                 damage();
             } else if (Model.getFacade().isATransition(e.getSource())
                     && e.getSource() == getOwner()
                     && e.getPropertyName().equals("trigger")) {
                 // register the event (or trigger)
-                Model.getPump().addModelEventListener(this,
-                        e.getNewValue(), new String[] {
-                            "parameter", "name",
-                            //TODO: How to listen to time/change expression?
-                        });
+                if (e.getNewValue() != null) {
+                    Model.getPump().addModelEventListener(this,
+                            e.getNewValue(), new String[] {
+                        "parameter", "name",
+                        //TODO: How to listen to time/change expression?
+                    });
+                }
                 updateNameText();
                 damage();
             } else if (Model.getFacade().isATransition(e.getSource())
                     && e.getSource() == getOwner()
                     && e.getPropertyName().equals("effect")) {
                 // register the action
-                Model.getPump().addModelEventListener(this,
-                        e.getNewValue(), "script");
+                if (e.getNewValue() != null) {
+                    Model.getPump().addModelEventListener(this,
+                            e.getNewValue(), "script");
+                }
                 updateNameText();
                 damage();
             } else if (Model.getFacade().isAEvent(e.getSource())
