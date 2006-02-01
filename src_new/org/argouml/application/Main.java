@@ -279,6 +279,7 @@ public class Main {
         Designer.disableCritiquing();
         Designer.clearCritiquing();
 
+        boolean projectLoaded = false;
         if (urlToOpen != null) {
             String filename = urlToOpen.getFile();
             File file = new File(filename);
@@ -286,10 +287,12 @@ public class Main {
             System.err.println("The filename is " + filename);
             System.err.println("The file is " + file);
             System.err.println("File.exists = " + file.exists());
-            pb.loadProject(file, true);
+            projectLoaded = pb.loadProject(file, true);
         }
-
-        ProjectManager.getManager().makeEmptyProject();
+        
+        if (!projectLoaded) {
+            ProjectManager.getManager().makeEmptyProject();
+        }
 
         st.mark("set project");
 
