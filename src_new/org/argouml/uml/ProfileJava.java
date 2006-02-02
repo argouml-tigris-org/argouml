@@ -303,8 +303,9 @@ public class ProfileJava extends Profile {
         //    get a file name for the default model
         //
         String configModel = Configuration.getString(
-                Configuration.makeKey("defaultModel"),
-                    "/org/argouml/model/mdr/mof/default-uml14.xmi");
+                Configuration.makeKey("defaultModel"));
+        if (configModel==null || "".equals(configModel))
+            configModel = "/org/argouml/model/mdr/mof/default-uml14.xmi";
         
         LOG.debug("Config Model:" + configModel);
         
