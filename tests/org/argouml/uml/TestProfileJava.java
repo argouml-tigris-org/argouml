@@ -38,6 +38,15 @@ import junit.framework.TestCase;
 public class TestProfileJava extends TestCase {
     
     /**
+     * The constructor.
+     *
+     * @param name the name of the test.
+     */
+    public TestProfileJava(String name) {
+        super(name);
+    }
+    
+    /**
      * Test whether we can load default model (profile). ProfileJava will throw
      * an exception for an invalid profile model, but just create and return an
      * empty model to return if the file for the profile doesn't exist. Check
