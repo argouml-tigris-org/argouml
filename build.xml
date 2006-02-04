@@ -962,7 +962,8 @@ checkout argouml-mdr
 cd ../../argouml-mdr
 ./build.sh generate jar
 cd ../argouml/src_new
-</echo>
+    </echo>
+    <fail message="argouml-mdr.jar not available."/>
   </target>
 
   <target name="internal-tests-using-mdr"
@@ -978,7 +979,8 @@ cd ../argouml/src_new
     <!--        individual users can set as wanted.                -->
     <!--        That is part of issue 579.                         -->
 
-    <junit errorproperty="junit.failure" fork="yes" haltonfailure="false"
+    <junit errorproperty="junit.failure" failureproperty="junit.failure" 
+           fork="yes" haltonfailure="false"
            maxmemory="48M" printsummary="true">
         <!-- TODO: this property name should be made generic -->
 	<sysproperty key="test.model.uml13" value="${010215.xml}"/>
@@ -996,14 +998,12 @@ cd ../argouml/src_new
       <batchtest todir="${argo.tests.reports}/junit/output">
         <fileset dir="${argo.tests.src}">
           <include name="org/argouml/**/Test*.java"/>
-        	<!-- this is the only test specific to MDR -->
-        	  <exclude name="org/argouml/**/TestUmlModelEventPumpDeprecated.java"/>
         </fileset>
       </batchtest>
     </junit>
 
     <antcall target="junit-report-create"/>
-
+    <fail message="JUnit tests failed." if="junit.failure"/>
   </target>
 
 
@@ -1023,7 +1023,8 @@ cd ../argouml/src_new
     <!--        individual users can set as wanted.                -->
     <!--        That is part of issue 579.                         -->
 
-    <junit errorproperty="junit.failure" fork="yes" haltonfailure="false" maxmemory="128M" printsummary="true">
+    <junit errorproperty="junit.failure" failureproperty="junit.failure" 
+        fork="yes" haltonfailure="false" maxmemory="128M" printsummary="true">
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
         <classpath>
@@ -1039,6 +1040,7 @@ cd ../argouml/src_new
       </batchtest>
     </junit>
     <antcall target="junit-report-create"/>
+    <fail message="JUnit tests failed." if="junit.failure"/>
   </target>
 
 
