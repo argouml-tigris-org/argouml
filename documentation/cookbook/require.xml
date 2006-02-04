@@ -271,7 +271,7 @@ User of ArgoUML
     <title>Requirements for UML</title>
     <sect2 id="REQ5">
       <title>
-ArgoUML shall be a correct implementation of the UML 1.3 model.
+ArgoUML shall be a correct implementation of the UML 1.4 model.
 </title>
 	    <para>
 REQ5 REVa
@@ -284,7 +284,7 @@ The UML model might later on be used in some other tool.
 If the implementation is not correct then ArgoUML will not be
 compatible with that other tool or the user will be confused.
 There might be a lot of tough decisions when it comes to 
-if it is ArgoUML or some other tool that deviates from the UML 1.3
+if it is ArgoUML or some other tool that deviates from the UML 1.4
 but there shall never be any doubt that the intention of ArgoUML
 is to implement UML correctly.
 </para>
@@ -295,7 +295,7 @@ User of ArgoUML
     </sect2>
     <sect2 id="REQ6">
       <title>
-ArgoUML shall implement everything in the UML 1.3 model.
+ArgoUML shall implement everything in the UML 1.4 model.
 </title>
 	    <para>
 REQ6 REVa
