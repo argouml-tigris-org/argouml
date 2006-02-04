@@ -34613,7 +34613,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>The UML standard specifies that the text shown in the 
           action state on the activity diagram should contain the 
           expression associated with the entry action - which is 
-          implemented as such in ArgoUML V0.18. In past versions of 
+          implemented as such since ArgoUML V0.18. In past versions of 
           ArgoUML (0.16.1 and before), the diagram used to show the 
           action state name. Loading a project created by one of the 
           older versions, causes the project file to be converted to 
@@ -34690,22 +34690,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Source</literal></term>
+              <term><literal>Stereotype</literal></term>
 
               <listitem>
 
-                <para>Standard tab that shows the name of the action 
-                state.</para>
-
-                <note>
-
-                  <para>In the fullness of time this tab will contain 
-                  code to implement the action state (code for actions 
-                  will be associated with the particular actions). This 
-                  is not implemented in the current release of 
-                  ArgoUML.</para>
-
-                </note>
+                <para>Standard tab that shows the stereotypes of the action 
+                state. 
+                In the UML metamodel, 
+                there are no stereotypes defined 
+                by default for a action state.
+                </para>
 
               </listitem>
 
@@ -34718,54 +34712,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>Standard tab. In the UML metamodel, <literal>
-                ActionState</literal> has the following standard tagged 
+                ActionState</literal> has no standard tagged 
                 values defined.</para>
-
-                <itemizedlist>
-
-                  <listitem>
-
-                    <para><literal>derived</literal> (from the 
-                    superclass, <literal>ModelElement</literal>). 
-                    Values <literal>true</literal>, meaning the action 
-                    state is redundant—it can be formally derived from 
-                    other elements, or <literal>false</literal> meaning 
-                    it cannot.</para>
-
-                    <note>
-
-                      <para>Derived action states still have their 
-                      value in analysis and design to introduce useful 
-                      names or concepts, and in design to avoid 
-                      re-computation.</para>
-
-                    </note>
-
-                  </listitem>
-
-                </itemizedlist>
-
-                <note>
-
-                  <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
-                  the tagged element <literal>documentation</literal> 
-                  which is handled by the <emphasis>documentation 
-                  tab</emphasis> under ArgoUML</para>
-
-                </note>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Checklist</literal></term>
-
-              <listitem>
-
-                <para>Standard tab for a state.</para>
 
               </listitem>
 
@@ -34791,7 +34739,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Navigate up through the package structure.</para>
+                <para>Navigate up through the containment structure.
+                Action states are contained by the 
+                (otherwise invisible) top state.
+                </para>
 
               </listitem>
 
@@ -34826,7 +34777,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/property_delete.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Delete</literal></term>
+              <literal>Delete from Model</literal></term>
 
               <listitem>
 
@@ -34885,30 +34836,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Stereotype</literal></term>
+              <term><literal>Container</literal></term>
 
               <listitem>
 
-                <para>Drop down selector. Action state has no 
-                stereotypes by default in the UML standard.</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Navigate Stereotype</literal></term>
-
-              <listitem>
-
-                <para><guiicon><inlinemediaobject><imageobject>
-                <imagedata align="center"
-                 fileref="images/icons/navigate_stereotype.gif"
-                 format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <xref linkend="s1.ref.stereotype"/>).</para>
+                <para>Text box. The container of the action state.
+                This shows the otherwise invisible composite state
+                at the top of the containment hierarchy.
+                </para>
 
               </listitem>
 
@@ -34954,7 +34889,20 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               </listitem>
 
             </varlistentry>
+            <varlistentry>
 
+              <term><literal>Deferrable events</literal></term>
+
+              <listitem>
+
+                <para>Text box. The deferrable events of the action state. 
+                <!-- This seems to be a bug. Should this be here? -->
+                </para>
+
+              </listitem>
+
+            </varlistentry>
+            
             <varlistentry>
 
               <term><literal>Incoming</literal></term>
