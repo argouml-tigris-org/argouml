@@ -16969,11 +16969,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Navigate up through the package structure of the 
+                <para>Navigate up through the composition structure of the 
                 model.</para>
 
-                <para>Since the model is the top package nothing will 
-                happen.</para>
+                <para>Since the model is the top package nothing can 
+                happen, and this button is allways downlighted.</para>
 
               </listitem>
 
@@ -17029,6 +17029,29 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <xref linkend="s1.ref.datatype"/>) within the model 
                 (which appears on no diagram), navigating immediately 
                 to the properties tab for that DataType.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/enumeration.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New Enumeration</literal></term>
+
+              <listitem>
+
+                <indexterm><primary>Add Enumeration</primary></indexterm>
+                <indexterm><primary>New Enumeration</primary></indexterm>
+                <indexterm><primary>Create 
+                New</primary><secondary>Enumeration</secondary></indexterm>
+                <para>This creates a new Enumeration (see 
+                <xref linkend="s1.ref.enumeration"/>) within the model 
+                (which appears on no diagram), navigating immediately 
+                to the properties tab for that Enumeration.</para>
 
               </listitem>
 
@@ -18020,6 +18043,604 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   the attribute property sheet should be ignored.</para>
 
                 </caution>
+
+              </listitem>
+
+            </varlistentry>
+
+          </variablelist>
+
+        </sect2>
+
+      </sect1>
+
+      <sect1 id="s1.ref.enumeration">
+
+        <title>Enumeration</title>
+
+        <indexterm><primary>Enumeration</primary></indexterm>
+        <para>Enumeration can be thought of as simple classes. They have 
+        no attributes, and any operations on them must have no 
+        side-effects. A useful analogy is primitive datatypes in a 
+        language like Java. The boolean <quote>true</quote> stands on its 
+        own—it has no inner structure. There are operations (for 
+        example logical xor) on the booleans, but when I perform <literal>
+        true xor true</literal> the result is a new boolean, 
+        and the original 2 booleans <quote>true</quote> 
+        are unchanged by the exercise.</para>
+
+        <para>Within UML 1.4, <literal>Enumeration</literal> is a 
+        sub-class of the <literal>DataType</literal> metaclass.  
+        </para>
+
+        <para>The big difference with other DataTypes, is that an
+        Enumeration has <literal>EnumerationLiteral</literal>s. 
+        E.g. the Enumeration <quote>boolean</quote> is defined as
+        having 2 EnumerationLiterals, <quote>true</quote> and
+        <quote>false</quote>.
+        </para>
+
+        <para>Within ArgoUML new enumerations may be created using the 
+        <literal>New Enumeration</literal> button on the property tabs of 
+        the model and packages (in which case the new enumeration is 
+        restricted in scope to the package), as well as the properties 
+        tab for datatype and enumeration.</para>
+
+        <note>
+
+          <para>UML 1.4 allows user defined datatypes to be placed on 
+          class diagrams. This is not yet possible in ArgoUML.</para>
+
+        </note>
+
+        <sect2>
+
+          <title>Enumeration Details Tabs</title>
+
+          <indexterm><primary>Enumeration Details 
+          Tabs</primary></indexterm>
+          <indexterm><primary>Details Tabs</primary><secondary>for 
+          Enumeration</secondary></indexterm>
+          <para>The details tabs that are active for enumerations are as 
+          follows.</para>
+
+          <variablelist>
+
+            <varlistentry>
+
+              <term><literal>ToDoItem</literal></term>
+
+              <listitem>
+
+                <para>Standard tab.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Properties</literal></term>
+
+              <listitem>
+
+                <indexterm><primary>Enumeration 
+                Properties</primary></indexterm>
+                <indexterm><primary>Properties</primary><secondary>of 
+                Enumeration</secondary></indexterm>
+                <para>See 
+                <xref linkend="s2.ref.enumeration_property_toolbar"/> and 
+                <xref linkend="s2.ref.enumeration_property_fields"/> 
+                below.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Documentation</literal></term>
+
+              <listitem>
+
+                <para>Standard tab. See 
+                <xref linkend="s2.ref.documentation_tab"/>.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Source</literal></term>
+
+              <listitem>
+
+                <para>Standard tab. 
+                </para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Stereotype</literal></term>
+
+              <listitem>
+
+                <para>Standard tab. The UML metamodel has the following 
+                stereotypes defined by default for a Classifier, 
+                which also apply to an Enumeration: 
+                </para>
+                
+                <itemizedlist>
+
+                  <listitem>
+                    <para><literal>metaclass</literal> (from the 
+                    superclass, <literal>Classifier</literal>). 
+                    </para>
+                  </listitem>
+
+                  <listitem>
+                    <para><literal>powertype</literal> (from the 
+                    superclass, <literal>Classifier</literal>). 
+                    </para>
+                  </listitem>
+
+                  <listitem>
+                    <para><literal>process</literal> (from the 
+                    superclass, <literal>Classifier</literal>). 
+                    </para>
+                  </listitem>
+
+                  <listitem>
+                    <para><literal>thread</literal> (from the 
+                    superclass, <literal>Classifier</literal>). 
+                    </para>
+                  </listitem>
+
+                  <listitem>
+                    <para><literal>utility</literal> (from the 
+                    superclass, <literal>Classifier</literal>). 
+                    </para>
+                  </listitem>
+
+                </itemizedlist>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Tagged Values</literal></term>
+
+              <listitem>
+
+                <indexterm><primary>Enumeration Tagged 
+                Values</primary></indexterm>
+                <indexterm><primary>Tagged 
+                Values</primary><secondary>of 
+                Enumeration</secondary></indexterm>
+                <para>Standard tab. In the UML metamodel, <literal>
+                Enumeration</literal> has no standard tagged 
+                values defined.</para>
+
+
+              </listitem>
+
+            </varlistentry>
+
+          </variablelist>
+
+        </sect2>
+
+        <sect2 id="s2.ref.enumeration_property_toolbar">
+
+          <title>Enumeration Property Toolbar</title>
+
+          <indexterm><primary>Enumeration Property 
+          Toolbar</primary></indexterm>
+          <indexterm><primary>Property Toolbar</primary><secondary>for 
+          Enumeration</secondary></indexterm>
+          <variablelist>
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/navigate_up.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Go up</literal></term>
+
+              <listitem>
+
+                <para>Navigate up through the composition structure.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/datatype.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New datatype</literal></term>
+
+              <listitem>
+
+                <para>This creates a new datatype (see 
+                <xref linkend="s1.ref.class_class"/>) within the same 
+                package as the current enumeration.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/enumeration_literal.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New enumeration literal</literal></term>
+
+              <listitem>
+
+                <para>This creates a new enumeration literal within the 
+                enumeration, navigating immediately to the properties tab 
+                for that literal.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/operation.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New Operation</literal></term>
+
+              <listitem>
+
+                <para>This creates a new operation within the enumeration, 
+                navigating immediately to the properties tab for that 
+                operation.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/stereotype.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New Stereotype</literal></term>
+
+              <listitem>
+
+                <indexterm><primary>Add Stereotype</primary></indexterm>
+                <indexterm><primary>New Stereotype</primary></indexterm>
+                <indexterm><primary>Create 
+                New</primary><secondary>Stereotype</secondary></indexterm>
+                <para>This creates a new Stereotype (see 
+                <xref linkend="s1.ref.stereotype"/>) within the same 
+                package as the enumeration, navigating immediately to the 
+                properties tab for that stereotype.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/property_delete.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Delete from Model</literal></term>
+
+              <listitem>
+
+                <para>This deletes the datatype from the model.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+          </variablelist>
+
+        </sect2>
+
+        <sect2 id="s2.ref.enumeration_property_fields">
+
+          <title>Property Fields For Enumeration</title>
+
+          <indexterm><primary>Enumeration Property 
+          Fields</primary></indexterm>
+          <indexterm><primary>Property Fields</primary><secondary>for 
+          Enumeration</secondary></indexterm>
+          <variablelist>
+
+            <varlistentry>
+
+              <term><literal>Name</literal></term>
+
+              <listitem>
+
+                <indexterm><primary>Enumeration Name</primary></indexterm>
+                <indexterm><primary>Name</primary><secondary>of 
+                Enumeration</secondary></indexterm>
+                <para>Text box. The name of the enumeration. The primitive 
+                enumerations all have lower case names, but there is no 
+                formal convention.</para>
+
+                <note>
+
+                  <para>The default name supplied for a newly created 
+                  datatype is the empty string <quote />. Enumerations 
+                  with empty string names will appear with the name 
+                  <literal>(anon Enumeration)</literal> in the 
+                  explorer.</para>
+
+                </note>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Namespace</literal></term>
+
+              <listitem>
+
+                <para>Drop down selector. Allows changeing the 
+                namespace for the enumeration. This is the composition 
+                hierarchy.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Modifiers</literal></term>
+
+              <listitem>
+
+                <indexterm><primary>Enumeration 
+                Modifiers</primary></indexterm>
+                <indexterm><primary>Modifiers</primary><secondary>of 
+                Enumeration</secondary></indexterm>
+                <para>Check box, with entries <literal>
+                Abstract</literal>, <literal>Leaf</literal> and 
+                <literal>Root</literal>.</para>
+
+                <itemizedlist>
+
+                  <listitem>
+
+                    <para><literal>Abstract</literal> is used to 
+                    declare that this enumeration cannot be instantiated, 
+                    but must always be specialized.</para>
+
+                    <note>
+
+                      <para>ArgoUML provides no mechanism for 
+                      specializing enumerations, so this check box is of 
+                      little use.</para>
+
+                    </note>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para><literal>Leaf</literal> indicates that this 
+                    enumeration can have no further sub-types, while 
+                    <literal>Root</literal> indicates it is a top level 
+                    enumeration.</para>
+
+                    <tip>
+
+                      <para>In the absence of specialization of 
+                      enumerations within ArgoUML these have little value. 
+                      In effect all enumerations are both <literal>
+                      Root</literal> and <literal>Final</literal></para>
+
+                    </tip>
+
+                  </listitem>
+
+                </itemizedlist>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Visibility</literal></term>
+
+              <listitem>
+
+                <indexterm><primary>Enumeration 
+                Visibility</primary></indexterm>
+                <indexterm><primary>Visibility</primary><secondary>of 
+                Enumeration</secondary></indexterm>
+                <para>Radio box, with entries <literal>
+                public</literal>, <literal>private</literal>, 
+                <literal>protected</literal>, and
+                <literal>package</literal>.</para>
+
+                <para>Records the visibility for the Enumeration.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Client Dependencies</literal></term>
+
+              <listitem>
+
+                <para>Text area. Lists any elements that depend on this 
+                enumeration.</para>
+
+                <caution>
+
+                  <para>It is not clear that defining dependencies between 
+                  enumerations makes much sense.</para>
+
+                </caution>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Supplier Dependencies</literal></term>
+
+              <listitem>
+
+                <para>Text area. Lists any elements that this enumeration 
+                depends on.</para>
+
+                <caution>
+
+                  <para>It is not clear that defining dependencies between 
+                  enumeration makes much sense.</para>
+
+                </caution>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Generalizations</literal></term>
+
+              <listitem>
+
+                <para>Text area. Lists any enumeration that 
+                <emphasis>generalizes</emphasis> this enumeration.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Specializations</literal></term>
+
+              <listitem>
+
+                <para>Text box. Lists any specialized enumerations (i.e. 
+                for which this enumeration is a generalization.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Operations</literal></term>
+
+              <listitem>
+
+                <para>Text area. Lists all the operations defined on 
+                this enumeration. Button 1 double click navigates to the 
+                selected operation. button 2 click brings up a pop up 
+                menu with two entries.</para>
+
+                <itemizedlist>
+
+                  <listitem>
+
+                    <para><literal>Move Up</literal>. Only available 
+                    where there are two or more operations, and the 
+                    operation selected is not at the top. It is moved 
+                    up one.</para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para><literal>Move Down</literal>. Only available 
+                    where there are two or more operations listed, and 
+                    the operation selected is not at the bottom. It is 
+                    moved down one.</para>
+
+                  </listitem>
+
+                </itemizedlist>
+
+                <para>See <xref linkend="s1.ref.operation"/> for 
+                details of operations.</para>
+
+                <caution>
+
+                  <para>ArgoUML treats all operations as equivalent. 
+                  Any operations created here will use the same 
+                  mechanism as operations for classes. Remember that 
+                  operations on enumerations must have no side effects 
+                  (they are read-only). This means the <literal>
+                  query</literal> modifier <emphasis>must</emphasis> be 
+                  checked for all operations.</para>
+
+                </caution>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Literals</literal></term>
+
+              <listitem>
+
+                <indexterm><primary>Enumeration 
+                Literals</primary></indexterm>
+                <indexterm><primary>Literals</primary><secondary>of 
+                Enumeration</secondary></indexterm>
+                <para>Text area. Lists all the enumeration literals 
+                defined for this enumeration. Button 1 double click 
+                navigates to the selected literal, button 2 click 
+                brings up a pop up menu with two entries.</para>
+
+                <itemizedlist>
+
+                  <listitem>
+
+                    <para><literal>Move Up</literal>. Only available 
+                    where there are two or more literals, and the 
+                    literal selected is not at the top. It is moved up 
+                    one.</para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para><literal>Move Down</literal>. Only available 
+                    where there are two or more literals listed, and 
+                    the literal selected is not at the bottom. It is 
+                    moved down one.</para>
+
+                  </listitem>
+
+                </itemizedlist>
 
               </listitem>
 
