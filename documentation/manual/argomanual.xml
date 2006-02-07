@@ -702,14 +702,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <ulink url="http://www.rational.com">www.rational.com</ulink>, 
         in which three of the key researchers in the field (Booch, 
         Jacobson and Rumbaugh were involved). They produced documents 
-        describing v0.9 and v0.91 during 1996. The effort was taken 
+        describing UML v0.9 and v0.91 during 1996. The effort was taken 
         industry wide through the Object Management Group (OMG), 
         already well known for the CORBA standard. A first proposal, 
         1.0 was published in early 1997, with an improved version 1.1 
         approved that autumn.</para>
 
         <para>ArgoUML is based on UML v1.4, which was adopted by OMG in 
-        March 200-. The current official version is UML v1.5 dated 
+        March 2000. The current official version is UML v1.5 dated 
         March 2003, soon to be replaced by a major revision, UML v2.0, 
         which is in the final stages of standardization and is 
         expected to be complete in 2006.</para>
@@ -1308,19 +1308,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           easy inter-working between applications, and the ability to 
           move from one application to another as necessary.</para>
 
-          <para>It is this very flexibility that means some commercial 
-          software is not built to use standards. In a monopolistic 
-          strategy, non-standard interfaces lock your customer to 
-          you.</para>
-
-          <para>This is a two-edged sword. Customers are not stupid, 
-          and are reluctant to buy non-standard software, because of 
-          the danger of lock-in.</para>
-
-          <para>The open source movement, is inherently about avoiding 
-          monopolistic control of software. Open standards are a 
-          natural direction for such software—including ArgoUML.</para>
-
           <sect3>
 
             <title>XML Metadata Interchange (XMI)</title>
@@ -1335,19 +1322,18 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             its goal of being a standard for communication between 
             designers.</para>
 
-            <para>The reality is not quite this good. XMI is a recent 
-            standard, and ArgoUML is one of the few tools to implement 
-            it. Furthermore it says nothing about the graphical 
+            <para>The reality is not quite this good. Prior to UML 2.0
+            the XMI file includes no information about the graphical 
             representation of the models, so diagram layout is lost. 
             ArgoUML gets round this by saving graphical information 
-            with the model (see <xref linkend="s3.tut.loadsave"/>
+            separately with the model (see <xref linkend="s3.tut.loadsave"/>
             ).</para>
 
           </sect3>
 
           <sect3>
 
-            <title>Scalable Vector Graphics (SVG)</title>
+            <title>Graphics Formats - SVG, PNG, JPEG</title>
 
             <para><emphasis>Scalable Vector Graphics (SVG)</emphasis> 
             is a recent standard proposed to the W3C Standardization 
@@ -5297,7 +5283,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             and event for a composite state?</para>
 
             <para>The answer is to select a class, then you can create 
-            a state diagram.</para>
+            a statechart diagram.</para>
 
           </sect3>
 
@@ -6600,7 +6586,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Interactions and state diagrams</title>
+          <title>Interactions and statechart diagrams</title>
 
           <para>There is currently no support for this in ArgoUML, not 
           for any language.</para>
@@ -10945,7 +10931,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             graphics associated with classes.</para>
 
             <para>Beneath each state machine is a hierarchy showing the 
-            state diagram and all of the states. Beneath each state is 
+            statechart diagram and all of the states. Beneath each state is 
             a list of the transitions in and out of the state.</para>
 
             <para>Beneath each activity graph is a hierarchy showing 
@@ -12395,7 +12381,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Statechart Diagram Specific Tools</title>
 
           <para>Eleven tools are provided specific to UML artifacts on 
-          state diagrams. The detailed properties of these artifacts 
+          statechart diagrams. The detailed properties of these artifacts 
           are described in the section on statechart diagram artifacts 
           (see <xref linkend="ch.ref.entstate"/>).</para>
 
@@ -31984,7 +31970,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Guard</literal> has no standard tagged 
                 values defined.</para>
 
-              </listitem>
+                  </listitem>
 
             </varlistentry>
 
@@ -32255,7 +32241,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Pseudostate</literal> has no standard tagged 
                 values defined.</para>
 
-              </listitem>
+                  </listitem>
 
             </varlistentry>
 
@@ -32559,7 +32545,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Final State</literal> has no standard tagged 
                 values defined.</para>
 
-              </listitem>
+                  </listitem>
 
             </varlistentry>
 
@@ -33037,7 +33023,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Synch State</literal> has no standard tagged 
                 values defined.</para>
 
-              </listitem>
+                  </listitem>
 
             </varlistentry>
 
@@ -35336,7 +35322,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 ActionState</literal> has no standard tagged 
                 values defined.</para>
 
-              </listitem>
+                  </listitem>
 
             </varlistentry>
 
