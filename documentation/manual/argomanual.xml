@@ -163,7 +163,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     <para>Furthermore, it is our goal to provide comprehensive support 
     for OCL (the Object Constraint Language) and XMI (the XML Model 
-    Interchange format), which many other tools do not support.</para>
+    Interchange format).</para>
 
     <para>ArgoUML was originally developed by a small group of people 
     as a research project. ArgoUML has many features that make it 
@@ -314,8 +314,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <listitem>
 
             <para>ArgoUML supports open standards extensively—UML, XMI, 
-            SVG, OCL and others. In this respect, ArgoUML is still 
-            ahead of many commercial tools.</para>
+            SVG, OCL and others.</para>
 
           </listitem>
 
@@ -1336,12 +1335,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <title>Graphics Formats - SVG, PNG, JPEG</title>
 
             <para><emphasis>Scalable Vector Graphics (SVG)</emphasis> 
-            is a recent standard proposed to the W3C Standardization 
-            body (<ulink url="http://www.w3c.org">www.w3c.org</ulink>) 
-            by Adobe (
-            <ulink url="http://www.adobe.com">www.adobe.com</ulink>). 
-            As yet it is not widely adopted, but is likely to become 
-            the standard for graphical data that is based on vectors 
+            is a W3C standard 
+            (<ulink url="http://www.w3.org/TR/SVG/">
+            http://www.w3.org/TR/SVG/</ulink>) 
+            for graphical data that is based on vectors 
             (i.e. lines) rather than bitmaps.</para>
 
             <para>For now ArgoUML saves diagrams using an earlier 
@@ -1349,6 +1346,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             Language (PGML)</emphasis>. However it has the option to 
             export graphical data as SVG for those who can make use of 
             it.</para>
+            
+            <para>When ArgoUML supports UML 2.0, it will store
+            diagrams using the UML 2.0 Diagram Interchange format.</para>
 
           </sect3>
 
@@ -2444,18 +2444,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <title>Precision Graphics Markup Language (PGML)</title>
 
-              <para>PGML is the saving format for diagram information 
-              used in ArgoUML. Although this is outdated a little, it 
-              shows why we chose PGML in the first place. In the 
-              future, PGML will be replaced by an extended XMI format 
-              which will include graphical representation.</para>
+              <para>PGML is the current storage format for diagram information 
+              used in ArgoUML. In the future, PGML will be replaced by
+              the UML 2.0 Diagram Interchange format.</para>
 
-              <para>In April 1998 Adobe Systems proposed a new Standard 
-              for Vector Graphics to the World Wide Web Consortium 
-              (W3C), which should facilitate the creation and usage of 
-              image material in the World Wide Web. It will be replaced 
-              by SVG. We will support SVG by generating it from the XMI 
-              in the future.</para>
 
             </sect4>
 
@@ -2487,15 +2479,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <title>Scalable Vector Graphics (SVG)</title>
 
-              <para>A super cool vector graphics format (like MM Flash) 
-              that is totally open and is gaining enormous ground in 
-              the graphics world. Find out more at 
-              <ulink url="http://www.w3c.org">
-              www.w3c.org</ulink>.</para>
+              <para>A World Wide Web Consortium (W3C)
+              standard vector graphics format
+              (<ulink url="http://www.w3.org/TR/SVG/">
+              http://www.w3.org/TR/SVG/</ulink>).</para>
 
-              <para>As well visit <ulink url="http://www.adobe.com">
-              adobe.com</ulink> for the plugin for Netscape Navigator 
-              and Internet Explorer.</para>
+              <para>Support is built in to modern browsers,
+              but you can also get a plugin for older 
+              browsers from <ulink url="http://www.adobe.com">
+              adobe.com</ulink>.</para>
 
             </sect4>
 
@@ -2524,22 +2516,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para>Et viola! SVG! Give it a try and zoom around a 
               little... They are not pretty though, so if you know 
-              anything about rendering beautiful SVG let us know!</para>
+              anything about rendering beautiful SVG let us know.</para>
 
-              <para>Oh, and by the way, you&apos;ll need a browser that 
-              can read SVG. See <ulink url="http://www.adobe.com">
-              adobe.com</ulink> for the plugin for Netscape Navigator 
-              and Internet Explorer</para>
-
-              <para>There are a few browsers that read SVG natively: 
-              <application>Amaya</application>, <application>
-              X-Smiles</application>, and a rudimentary version of 
-              <application>Mozilla.</application></para>
+              <para>Most modern browsers support SVG.  If yours
+              doesn't try <ulink url="http://www.mozilla.com/firefox/">
+              Firefox</ulink> or get a plugin for your 
+              current browser from 
+              <ulink url="http://www.adobe.com">
+              adobe.com</ulink></para>
 
               <note>
 
                 <para>You will not have scroll bars for your SVG unless 
-                it is embedded into an HTML! Good luck and let us know 
+                it is embedded in HTML. Good luck and let us know 
                 what you find!</para>
 
               </note>
@@ -2552,11 +2541,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>XMI</title>
 
-            <para>There is now a tool available which supports various 
-            dialects of XMI and their interconversion. This should make 
-            portability of different models in to ArgoUML considerably 
-            easier. Any work on using this with ArgoUML would be much 
-            appreciated.</para>
+            <para>ArgoUML supports XMI 1.0, 1.1, and 1.2 files which
+            contain UML 1.3 and UML 1.4 models.  For best compatibility
+            with ArgoUML, export your models using UML 1.4 and XMI 1.1
+            or 1.2.  Be sure to turn off any proprietary extensions
+            (such as Poseidon's diagram data).</para>
+            
+            <para>With UML versions earlier than UML 2.0, it isn't
+            possible to save diagram information, so no diagrams
+            will be transferred.</para>
 
             <para>There is also a tool that converts XMI to HTML. For 
             more information, see 
@@ -2567,82 +2560,45 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <title>Using XMI from Rational Rose</title>
 
-              <para>It is probably not possible to take a model 
-              generated by Rational Rose in XMI format and put it into 
-              ArgoUML directly.</para>
-
-              <para>The conversion tool identified above will probably 
-              solve the problem. If you can document how this is done, 
-              you&apos;d make a lot of friends in a hurry!</para>
+              <para>...</para>
 
             </sect4>
 
             <sect4>
 
-              <title>Using Models Created by Gentleware</title>
+              <title>Using Models Created by Poseidon</title>
 
-              <para>Gentleware is a commercial development based on 
-              ArgoUML. It diverged a little while ago and the XMI 
-              representations are no longer full compatible.</para>
-
-              <para>Eugenio Alvarez suggests the following procedure to 
-              convert a Gentleware project for use with ArgoUML. It 
-              works if there are no sequence diagrams in the 
-              project.</para>
-
-              <orderedlist>
-
-                <listitem>
-
-                  <para>Make sure to backup your project first.</para>
-
-                </listitem>
-
-                <listitem>
-
-                  <para>Unpackage the Gentleware project Project.zargo. 
-                  For example <literal>unzip Project.zargo</literal> or 
-                  <literal>jar xvf Project.zargo</literal>.</para>
-
-                </listitem>
-
-                <listitem>
-
-                  <para>Then try reading and then saving the project 
-                  with UMLTool (Contact Eugenio Alvarez to get this 
-                  tool).</para>
-
-                </listitem>
-
-                <listitem>
-
-                  <para>Repackage the project. For example <literal>
-                  zip NewProject.zargo *.xmi *.pgml *.argo</literal> or 
-                  <literal>jar cvf NewProject.zargo *</literal>.</para>
-
-                </listitem>
-
-                <listitem>
-
-                  <para>Try reading the project with ArgoUML.</para>
-
-                </listitem>
-
-              </orderedlist>
+              <para>In the <literal>Export project to XMI</literal> dialog, but sure
+              to clear the selection of <literal>Save with diagram data</literal>literal>.</para>
 
             </sect4>
 
             <sect4>
 
-              <title>XMI Interchangeability between ArgoUML 0.8.1a and 
-              0.10, 0.12, and 0.14</title>
+              <title>Using Models Created by MagicDraw</title>
 
-              <para>This depends on the version of NSUML (the UML 
-              engine underlying ArgoUML) you are using. Look in the 
-              start-up messages on the console for the entry for 
-              Novosoft UML Library for the version number. Using 
-              version 0.4.19 is OK, and the XMI files should be 
-              interchangeable.</para>
+              <para>...</para>
+
+            </sect4>
+            
+            <sect4>
+
+              <title>XMI Compatibility with other versions of ArgoUML</title>
+
+              <para>Versions of ArgoUML prior to 0.19.7 supported
+              UML 1.3/XMI 1.0.  After this time, the save format
+              is UML 1.4/XMI 1.2 which is not backward compatible.
+              Newer versions of ArgoUML will read projects written
+              by older versions, but not vice versa.  If you might
+              need to return to an older version of ArgoUML you should
+              be careful to save a backup of your old projects.</para>
+              
+              <para>Additionally, if you write XMI files which 
+              need to be read by other tools, you should take into
+              account the different versions.  Most modern UML
+              modelling tools should read UML 1.4, but you may
+              have in-house code generators or other tools which
+              are tied to UML 1.3.</para>
 
             </sect4>
 
@@ -2650,18 +2606,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <title>Importing Other XMI Formats into ArgoUML</title>
 
-              <para>Because of the variety of XMI formats being 
-              generated you will encounter problems using XMI files 
-              generated from other applications. ArgoUML&apos;s native 
-              storage format is another implementation of XMI (Curt 
-              Arnold believes that it has been hacked so it can also 
-              read the Unisys variant). He recommends that if you are 
-              comfortable with XSLT, you can typically transform one 
-              variant of UML and XMI to another, plus MetaIntegrations 
-              <ulink url="http://www.metaintegrations.net">
-              www.metaintegrations.net</ulink> makes a version of their 
-              <application>Bridge</application> product available to 
-              transform between XMI flavors.</para>
+              <para>XMI compatibility between UML modeling tools
+              has improved over the years, but you may still
+              occasionally run into problems.</para>
+              
+              <para>ArgoUML will not read XMI files which contain
+              UML 1.5 or UML 2.0 models, but it should be able
+              to open most UML 1.4 and UML 1.3 files.  If you find
+              one that it can't open, please file a bug report
+              so that a developer can investigate.</para>
 
             </sect4>
 
@@ -2669,7 +2622,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <title>Generating XMI Format</title>
 
-              <para>Select the command <literal>Tools</literal>→
+              <para>Select the command <literal>File</literal>→
               <literal>Export as XMI</literal> and choose a 
               filename.</para>
 
@@ -7796,7 +7749,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Import XMI...</title>
 
           <para>This menu-item allows to load an 
-          UML model which was exported by e.g. another tool,
+          UML 1.3 or 1.4 model which was exported by e.g. another tool,
           as a XMI file, according the XMI V1.0, V1.1 or V1.2 standard. 
           The extension of such file should be <literal>.xmi</literal>.
           </para>
@@ -7844,9 +7797,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Export XMI...</title>
 
           <para>This menu-item allows to save the complete structure of 
-          the UML model as a XMI file, according the XMI V1.2 standard. 
+          the UML 1.4 model as a XMI file, according the XMI V1.2 standard. 
           Beware the fact that this file will only contain the model, 
-          not any diagram layout. Hence, if the xmi file is reloaded 
+          not any diagram layout. Hence, if the XMI file is reloaded 
           with the <literal>File - Open Project...</literal> menu, then 
           the diagrams are lost.</para>
 
