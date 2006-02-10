@@ -61,12 +61,23 @@ public class RadioAction extends AbstractButtonAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
-        super.actionPerformed(actionEvent);
-        realAction.actionPerformed(actionEvent);
-        // TODO: Change this to ArgoDiagram
         UMLDiagram diagram = (UMLDiagram)
             ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-        diagram.deselectOtherTools(this);
+        if (Globals.getSticky() && diagram.getSelectedAction() == this) {
+            // If the user selects an Action that is already selected in sticky mode
+            // (double clicked) then we turn off sticky mode and make sure no
+            // action is selected.
+            Globals.setSticky(false);
+            diagram.deselectAllTools();
+            Editor ce = Globals.curEditor();
+            if (ce != null) {
+                ce.finishMode();
+            }
+            return;
+        }
+        super.actionPerformed(actionEvent);
+        realAction.actionPerformed(actionEvent);
+        diagram.setSelectedAction(this);
         Globals.setSticky(isDoubleClick());
         if (!isDoubleClick()) {
             Editor ce = Globals.curEditor();
