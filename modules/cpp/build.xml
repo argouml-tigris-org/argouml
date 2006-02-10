@@ -144,15 +144,15 @@ round-trip engineering for C++ projects.
     <property name="module.version" value="${argo.core.version}-${DSTAMP}-${TSTAMP}"/>
 
     <path id="module.compile.classpath">
-      <fileset dir="${argo.build.dir}">
-          <include name="argouml.jar" />
-          <include name="argouml-model.jar" />
-          <include name="nsuml.jar" />
-          <include name="ocl-argo.jar" />
-          <include name="antlrall.jar" />
-          <include name="log4j.jar" />
-          <include name="gef.jar" />
-      </fileset>
+        <pathelement location="${argo.build.dir}/argouml.jar"/>
+        <pathelement location="${ocl-argo.jar.path}"/>
+        <pathelement location="${gef.jar.path}"/>
+        <pathelement location="${log4j.jar.path}"/>
+        <pathelement location="${swidgets.jar.path}"/>
+        <pathelement location="${toolbar.jar.path}"/>
+        <pathelement location="${commons-logging.jar.path}"/>
+        <pathelement location="${antlrall.jar.path}"/>
+        <pathelement location="${argo.build.dir}/argouml-model.jar"/>
     </path>
       
     <path id="module.compile-tests.classpath">
