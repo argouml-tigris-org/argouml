@@ -82,7 +82,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Return the node or edge that owns the given port.
      */
     public Object getOwner(Object port) {
-	return port;
+        return port;
     }
 
     /**
@@ -274,7 +274,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             Object associationEnd0 = iter.next();
             Object associationEnd1 = iter.next();
             if (associationEnd0 == null || associationEnd1 == null) {
-                LOG.error("Association rejected. Both ends are null");
+                LOG.error("Association rejected. An end is null");
                 return false;
             }
             sourceModelElement = Model.getFacade().getType(associationEnd0);
@@ -282,11 +282,23 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         } else if (Model.getFacade().isAAssociationEnd(edge)) {
             sourceModelElement = Model.getFacade().getAssociation(edge);
             destModelElement = Model.getFacade().getType(edge);
+            if (sourceModelElement == null || destModelElement == null) {
+                LOG.error("Association end rejected. An end is null");
+                return false;
+            }
 
-            return (sourceModelElement != null
-                    && destModelElement != null
-                    && (containsEdge(sourceModelElement) || containsNode(sourceModelElement))
-                    && containsNode(destModelElement));
+            if (!containsEdge(sourceModelElement) && !containsNode(sourceModelElement)) {
+                LOG.error("Association end rejected. The source model element ("
+                        + sourceModelElement.getClass().getName()
+                        + ") must be on the diagram");
+                return false;
+            }
+
+            if (!containsNode(destModelElement)) {
+                LOG.error("Association end rejected. The destination model element must be on the diagram");
+                return false;
+            }
+
         } else if (Model.getFacade().isAGeneralization(edge)) {
             sourceModelElement = Model.getFacade().getChild(edge);
             destModelElement = Model.getFacade().getParent(edge);
@@ -461,7 +473,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
                 Object associationEnd = iter.next();
                 if (canAddEdge(associationEnd)) {
                     addEdge(associationEnd);
-        	}
+                }
             }
         }
     }
