@@ -1059,18 +1059,40 @@ public abstract class FigNodeModelElement
 
     /**
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
-     *
-     * not used, do nothing.
      */
     public void keyReleased(KeyEvent ke) {
+        if (!readyToEdit) {
+            if (Model.getFacade().isAModelElement(getOwner())) {
+                Model.getCoreHelper().setName(getOwner(), "");
+                readyToEdit = true;
+            } else {
+                LOG.debug("not ready to edit name");
+                return;
+            }
+        }
+        if (ke.isConsumed() || getOwner() == null) {
+            return;
+        }
+        nameFig.keyReleased(ke);
     }
 
     /**
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
-     *
-     * not used, do nothing.
      */
     public void keyTyped(KeyEvent ke) {
+        if (!readyToEdit) {
+            if (Model.getFacade().isAModelElement(getOwner())) {
+                Model.getCoreHelper().setName(getOwner(), "");
+                readyToEdit = true;
+            } else {
+                LOG.debug("not ready to edit name");
+                return;
+            }
+        }
+        if (ke.isConsumed() || getOwner() == null) {
+            return;
+        }
+        nameFig.keyTyped(ke);
     }
 
     ////////////////////////////////////////////////////////////////
