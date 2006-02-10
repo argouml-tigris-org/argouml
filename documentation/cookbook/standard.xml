@@ -660,68 +660,6 @@ updates of the version of a sub-product.
         <surname>Tolke</surname>
       </author>
     </sect1info>
-    <title>Settings for Eclipse 2</title>
-    <para>
-These style guides correspond to the following settings in Eclipse 2:
-</para>
-    <itemizedlist>
-      <listitem>
-        <para>In Preferences => Java => Code Formatter => New Lines</para>
-        <para>
-None of the boxes 
-"Insert a new line before opening brace",
-"Insert new lines in control statements",
-"Clear all blank lines",
-"Insert new line between 'else if'",
-or
-"Insert a new line inside an empty block"
-are checked.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-In Preferences => Java => Code Formatter => Line Splitting
-</para>
-        <para>
-Maximum line length is 80.
-</para>
-      </listitem>
-      <listitem>
-        <para>In Preferences => Java => Code Formatter => Style</para>
-        <para>
-None of the boxes
-"Compact assignment"
-or
-"Indentation is represented by a tab"
-are checked.
-</para>
-        <para>
-Number of spaces representing a tab: 4.
-This should probably be read as Number of spaces representing a 
-level of indentation.
-</para>
-      </listitem>
-      <listitem>
-        <para>In Preferences => Java => Java Editor => Appearance</para>
-        <para>
-Displayed tab width: 8
-</para>
-        <para>
-"Insert space for tabs (see Formatting preferences)" checked.
-There seems to be no way of having tabs set at width 8 and the
-indentation level set at 4 at the same time so we must let
-Eclipse generate code without tabs to obey the Sun Coding standard.
-</para>
-      </listitem>
-    </itemizedlist>
-  </sect1>
-  <sect1>
-    <sect1info>
-      <author>
-        <firstname>Linus</firstname>
-        <surname>Tolke</surname>
-      </author>
-    </sect1info>
     <title>Settings for NetBeans</title>
     <para>
 These style guides correspond to the following settings in NetBeans:
@@ -864,7 +802,6 @@ unfold the newly created repository
 :pserver:<replaceable>your user name</replaceable>@cvs.tigris.org:/cvs)
 and within it, HEAD.
 </para>
-
 	  <para>
 Select the argouml-mdr project, right-click on it, and to Check Out As.
 Check out as a project configured using the New Project Wizard.
@@ -923,7 +860,7 @@ Select compile (default target in the Targets tab),
 deselect all other targets
 and finally press Run.
 </para>
-	  <para>
+	    <para>
 Browse to <filename>argouml-mdr/build.xml</filename>,
 select the <filename>build.xml</filename>-file,
 right-click on it, and do Run As - Ant Build...
@@ -1034,7 +971,6 @@ modules and then reload the source trees.
 	  <para>
 Set build path for the argouml-mdr project.
 </para>
-
 	  <para>
       In the Java perspective, select the project argouml-mdr, 
       i.e. the icon at the top of the Package Explorer.
@@ -1405,6 +1341,14 @@ Unused code => Unnecessary declaration of thrown checked exception: Warning.
       Checkclipse is a plug in for Eclipse which needs to be installed separately.
       It enables style checking according the rules set for the ArgoUML project.
     </para>
+      <para>Get the latest Checkclipse kit from SourceForge at
+              <ulink url="http://sourceforge.net/projects/checkclipse"/> 
+      and install it by unzipping into your Eclipse plugins directory and
+      restarting Eclipse.  (Checkstyle is bundled with Checkclipse so it's
+      not necessary to install it separately, but the web site is 
+              <ulink url="http://checkstyle.sourceforge.net/"/> 
+     for reference.)
+    </para>
       <para>
       In the Java perspective, select the project argouml, 
       i.e. the icon at the top of the Package Explorer.
@@ -1414,22 +1358,22 @@ and then fill the fields like this:
 </para>
       <itemizedlist>
 	<listitem>
-	  <para>Enable Checkstyle
+	  <para>Enable Checkstyle - 
 Checked.
 </para>
 	</listitem>
 	<listitem>
-	  <para>Checkstyle Configuration File:
+	  <para>Checkstyle Configuration File: 
 <filename>/argouml/tools/checkstyle/checkstyle_argouml.xml</filename>
 </para>
 	</listitem>
 	<listitem>
-	  <para>Checkstyle Properties File:
+	  <para>Checkstyle Properties File: 
 <filename>/argouml/tools/checkstyle/checkstyle.properties</filename>
 </para>
 	</listitem>
 	<listitem>
-	  <para>File Filter Definition:
+	  <para>File Filter Definition: 
 <filename>/argouml/tools/checkstyle/checkclipse.filefilters</filename>
 </para>
 	</listitem>
@@ -1453,7 +1397,7 @@ model subsystem will fail with a
 <classname>java.lang.NoClassDefFoundError</classname>.
 </para>
 
-      <para>
+	  <para>
 The way the two projects are set up it is the argouml-mdr
 project that depends on the argouml project.
 This means that when running things from the argouml-mdr project
@@ -1466,18 +1410,18 @@ the argouml-mdr things will be missing when running the tests as default.
 Here is the simplest way to run a test, fixing this:
 </para>
       <orderedlist>
-        <listitem>
-          <para>
+	<listitem>
+	  <para>
 Start the test in the normal way i.e.
 Right click on the test case and select 
 Run As => JUnit Test,
 Debug As => JUnit Test or
 some keyboard short cut.
 </para>
-        </listitem>
+	</listitem>
 
-        <listitem>
-          <para>
+	<listitem>
+	  <para>
 Watch as the test fails with
 <classname>java.lang.ExceptionInInitializerError</classname>
 </para>
@@ -1486,29 +1430,29 @@ If the test happens to succeed,
 either you have chosen one of the rare tests that actually don't use the model,
 or you have not set up the two projects according to the instructions...
 </para>
-        </listitem>
+	</listitem>
 
-        <listitem>
-          <para>
+	<listitem>
+	  <para>
 From the Toolbar or from the Run menu select Debug... or Run...
 A window will open with the Configuration to run the test.
 </para>
-        </listitem>
+	</listitem>
 
-        <listitem>
-          <para>
+	<listitem>
+	  <para>
 Change the project to the argouml-mdr project (in the Test tab).
 </para>
-        </listitem>
+	</listitem>
 
-        <listitem>
-          <para>
+	<listitem>
+	  <para>
 Press Debug (or Run).
 </para>
-        </listitem>
+	</listitem>
 
-        <listitem>
-          <para>
+	<listitem>
+	  <para>
 The test now works.
 </para>
         </listitem>
