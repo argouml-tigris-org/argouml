@@ -75,6 +75,7 @@ public class FigFeature extends CompartmentFigText {
         /**
          * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
          */
+        // TODO: Review - should be keyTyped()??? - Bob
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_DOWN
                 || e.getKeyCode() == KeyEvent.VK_UP) {

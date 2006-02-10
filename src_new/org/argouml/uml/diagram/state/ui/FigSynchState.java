@@ -216,6 +216,8 @@ public class FigSynchState extends FigStateVertex {
      *
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
+    // TODO: Review - should be keyTyped()or do we need this at all?
+    // Could we set readyToEdit=false?? - Bob
     public void keyPressed(KeyEvent ke) {
     }
 

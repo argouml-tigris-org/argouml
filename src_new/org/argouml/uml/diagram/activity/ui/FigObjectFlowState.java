@@ -334,6 +334,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {
+        // TODO: Review - should be keyTyped()??? - Bob
         if (!isReadyToEdit()) {
             if (Model.getFacade().isAModelElement(getOwner())) {
                 updateClassifierText();

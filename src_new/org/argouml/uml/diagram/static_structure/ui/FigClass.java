@@ -566,6 +566,7 @@ public class FigClass extends FigClassifierBox
     /**
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
+    // TODO: Review - should be keyTyped() - Bob
     public void keyPressed(KeyEvent ke) {
         int key = ke.getKeyCode();
         if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {

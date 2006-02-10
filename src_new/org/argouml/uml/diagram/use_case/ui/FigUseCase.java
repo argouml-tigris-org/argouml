@@ -1049,7 +1049,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @param ke  The key event that caused us to be invoked.
      */
-
+    // TODO: Review - should be keyTyped()??? - Bob
     public void keyPressed(KeyEvent ke) {
         int key = ke.getKeyCode();
 
