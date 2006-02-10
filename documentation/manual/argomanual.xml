@@ -1595,13 +1595,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             </itemizedlist>
 
-            <para>You should have a directory containing the following 
-            files: <literal>antlrall.jar</literal>, <literal>
-            gef.jar</literal>, <literal>nsuml.jar</literal>, <literal>
-            README.txt</literal>, <literal>argouml.jar</literal>, 
-            <literal>log4j.jar</literal>, <literal>
-            ocl-argo.jar</literal> and <literal>
-            xerces.jar</literal>.</para>
+            <para>You should have a directory containing 
+            a number of <literal>.jar</literal> files and a 
+            <literal>README.txt</literal>.</para>
 
           </sect3>
 
@@ -34719,7 +34715,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>Standard tab, showing the message number and 
-                action expression separated by a colon (when UML 1.3 is 
+                action expression separated by a colon (when UML 1.4 is 
                 selected in the drop-down).</para>
 
                 <caution>

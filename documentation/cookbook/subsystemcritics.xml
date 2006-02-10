@@ -211,7 +211,7 @@ You can have multiple calls to this method for different meta-classes.
 After this add a method 
 <command>public boolean predicate2(Object dm, Designer dsgr);</command>.
 This is the decision routine for the critic.
-<parameter>dm</parameter> is the UML entity (an NSUML object)
+<parameter>dm</parameter> is the UML entity (a Model subsystem object)
 that is being checked.
 The second argument, <parameter>dsgr</parameter> is for future
 development and can be ignored.
@@ -306,7 +306,12 @@ For commented examples to copy, look at
 </para>
 	    </listitem>
 <listitem><para>...fix a critique?</para>
-<para>Locate the critique and insert some logging code. You should make sure that you understand all the implications of changes, therefore it is a good idea to see what makes the critic nag in the first place. But rest assured: some of the critics haven't been updated to reflect the latest changes in ArgoUML, so this is a procedure which is well worth digging into, since it gives you also some exposure to related NSUML elements.</para>
+<para>Locate the critique and insert some logging code. You should make sure 
+that you understand all the implications of changes, therefore it is a good idea
+to see what makes the critic nag in the first place. But rest assured: some of 
+the critics haven't been updated to reflect the latest changes in ArgoUML, so 
+this is a procedure which is well worth digging into, since it gives you also 
+some exposure to related UML elements.</para>
 </listitem>
 <listitem><para>...change the text of a critique?</para>
 <para>

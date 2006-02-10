@@ -287,21 +287,16 @@ needed for running ArgoUML and therefore distributed with ArgoUML.
 	  <listitem>
 	    <para>
 	    <indexterm>
-	      <primary>NSUML</primary>
+	      <primary>MDR</primary>
 	    </indexterm>
-NSUML, the Novosoft UML library.
+MDR, the Netbeans Model Data Repository.
 </para>
 	    <para>
-The ArgoUML project doesn't develop the Java classes for 
-storing, saving and loading an UML Model.
-That work is done by NSUML and is used by ArgoUML.
+This library provides services to manipulate both the UML
+metamodel and the users model.  It includes services to
+serial/deserialize to/from XMI.
 </para>
-<!--
-	    <para>
-See <xref linkend="nsuml"/> for some reading tips on how to learn
-the insides of NSUML.
-</para>
--->
+
 	  </listitem>
 
 	  <listitem>

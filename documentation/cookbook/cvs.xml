@@ -629,7 +629,7 @@ the documentation from the XML-source to HTML and PDF.
 	<para>A set of jar files.</para>
 	<para>
 This directory contains the jar files of products shipped with ArgoUML
-(such as log4j, NSUML).
+(such as log4j, MDR).
 </para>
 	<para>
 These are distributed with ArgoUML and have licenses that allow this.

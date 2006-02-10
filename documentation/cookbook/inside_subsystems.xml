@@ -72,13 +72,10 @@
     <para> The Code Generation subsystem is a Control subsystem. See <xref
         linkend="view_control_subsystems"></xref>. </para>
     
-    <para> Currently (up until April 2004) very much of this subsystem is located
-      in <classname>org.argouml.uml.generator</classname> and we have a need
-      to modify the interfaces of the subsystem to no longer include any NSUML
-      types. This move will be carried out by creating new interfaces in
-      <classname>org.argouml.language</classname> and deprecating the old
-      ones. </para>
-    <para> This is my (Linus Tolke) suggested way of how it is going to work: </para>
+
+    <para> The following describes the plan, as of April 2004, as outlined by
+    by Linus Tolke as to how to isolate the NSUML references (it may need to
+    be updated to reflect what was actually done): </para>
     
     <para> The different languages or notations supplied with ArgoUML are found
       in sub-packages of {@link org.argouml.language}. </para>
@@ -147,13 +144,14 @@
     <sect2>
       <title>Which sources are involved?</title>
       <para> The package org.argouml.uml.reveng is supposed to hold those
-        classes that are common to all RE packages. At the moment this is the Import
+        classes that are common to all reverse engineering (RE) packages. 
+        At the moment this is the Import
         class which is mainly responsible to recognize directories, get their
-        content and parse every known source file in them. These are only java
+        content and parse every known source file in them. These are only Java
         files at the moment, but there might be other languages like C++ in the
         future. With this concept you could mix several languages within a
-        project. The DiagramInterface is used to visualize generated NSUML
-        meta-model objects then. </para>
+        project. The DiagramInterface is then used to visualize generated 
+        Model subsystem objects. </para>
       <para> The package org.argouml.uml.reveng.java holds the Java specific
         parts of the current RE code. C++ RE might go to
         org.argouml.uml.reveng.cc, or so... </para>
@@ -165,7 +163,7 @@
         example. The main difference is the missing AST (Abstract Syntax Tree)
         generation and tree-parser. So the original example generates an AST (a
         treelike data structure) and then traverses this tree, while the ArgoUML
-        code parses the source file and generates NSUML objects directly from the
+        code parses the source file and generates Model subsystem objects directly from the
         sources. This was done to avoid the memory usage of an AST and the frequent
         GC while parsing many source files. </para>
     </sect2>
@@ -173,7 +171,7 @@
       <title>Which model/diagram elements are generated?</title>
       <para> The *context classes hold the current context for a package, class
         etc. When the required information for an object is available, the
-        corresponding NSUML object is created and passed to the
+        corresponding Model subsystem object is created and passed to the
         DiagramInterface to visualize it. </para>
     </sect2>
     <sect2>

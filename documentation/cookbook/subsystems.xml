@@ -485,79 +485,13 @@ see <xref linkend="ocl"></xref>.
   <itemizedlist>
   <listitem><para>Well, ArgoUML is obviously the main thing.</para></listitem>
   <listitem><para>GEF stands for <emphasis>Graph Editing Framework</emphasis>. It is the package which controls most of the graphical aspects of ArgoUML.</para></listitem>
-  <listitem><para>NSUML stands for <emphasis>Novosoft UML</emphasis>. This library gives ArgoUML all the components which are required to deal with UML objects and their relationships with each other. Normally you can recognize everything out of the NSUML packages very easily because the classes start with a capital M.</para>
+  <listitem><para>MDR stands for ...</para>
   </listitem>
   </itemizedlist>
   </para>
   </sect1>
   -->
   
-  <!-- Move to chapter 5.
-  <sect1 id="nsuml">
-  <title>NS-UML</title>
-  <sect2>
-  <title>Tip for understanding NS-UML (from Jeremy Bennett)</title>
-  <indexterm>
-  <primary>NSUML</primary>
-  <secondary>understanding</secondary>
-  </indexterm>
-  <para>
-  I found that building a javadoc for the NSUML source was quite helpful.
-  There are some comments in key places, and it allows you to see what
-  operations are available.
-  </para>
-  <para>
-  Its not part of their standard distribution, so you have to generate
-  it yourself. Jeremy Bennet has written the following script to do it:
-  </para>
-  <para>
-  makedoc.sh:
-  <programlisting>
-  #!/bin/sh
-  
-  # A script to drive Javadoc for all this
-  
-  ###############################################################################
-  # The source trees for ordinary source and generated source and where we put it
-  # all.
-  NSUML_HOME=&dollar;HOME/nsuml0_4_19/nsuml
-  SRCDIR=&dollar;{NSUML_HOME}/src
-  GENDIR=&dollar;{NSUML_HOME}/gen
-  DESTDIR=&dollar;{NSUML_HOME}/docs/javadocs
-  
-  # Run the javadoc command
-  javadoc -d &dollar;DESTDIR -sourcepath &dollar;GENDIR:&dollar;SRCDIR @&dollar;{NSUML_HOME}/package_list
-  </programlisting>
-  Where package_list is:
-  <programlisting>
-  ru.novosoft.uml
-  ru.novosoft.uml.behavior.activity_graphs
-  ru.novosoft.uml.behavior.collaborations
-  ru.novosoft.uml.behavior.common_behavior
-  ru.novosoft.uml.behavior.state_machines
-  ru.novosoft.uml.behavior.use_cases
-  ru.novosoft.uml.foundation.core
-  ru.novosoft.uml.foundation.data_types
-  ru.novosoft.uml.foundation.extension_mechanisms
-  ru.novosoft.uml.model_management
-  ru.novosoft.uml.undo
-  ru.novosoft.uml.xmi
-  </programlisting>
-  </para>
-  </sect2>
-  <sect2>
-  <title>Tip for understanding NS-UML (from Ryan Ismert)</title>
-  <indexterm>
-  <primary>NSUML</primary>
-  <secondary>understanding</secondary>
-  </indexterm>
-  <para>
-  The file docs/guide/NS_Uml_Api.html that comes in the NSUML source is
-  very helpful.
-  </para>
-  </sect2>
-  </sect1>
-  -->
   
   <!-- This is taken care of.
   <sect1 id="small">

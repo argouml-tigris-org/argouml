@@ -396,19 +396,13 @@ run a development environment.
     <title>Checklist for using sub-products</title>
 
     <para>
-In the ArgoUML project we use several sub-products to solve parts
-of the problem for us.
-These sub-products are an important part of the ArgoUML tool and
+In the ArgoUML project we use several third-party libraries
+to solve parts of the problem for us.
+These libraries (referred to as "sub-products" below)
+are an important part of the ArgoUML tool and
 must be handled in a good way if ArgoUML is going to be successful.
 </para>
-    <para>
-When this is written (March 2004) we have had problems with the
-discontinuance of one of the sub-products (NSUML) and will continue to 
-have it for well some time in the future, until we have managed to replace it.
-The problem with NSUML could probably not have been foreseen or avoided
-if this checklist would have been in place when NSUML was taken into
-the project but some more apparent risks with sub-product candidates might be.
-</para>
+
     <para>
 Here is the list of things to check in the sub-product
 and to discuss with yourself and maybe with the ArgoUML development team
@@ -451,7 +445,7 @@ as many people as possible.
 Java is still under development and there are nice features available in
 future releases.
 In ArgoUML we have a plan for how to handle this. It is to always support
-two major releases of Java (currently JDK 1.3 and 1.4).
+two major releases of Java (currently JDK 1.4 and 1.5).
 We cannot have a sub-product that restricts us in this aspect.
 </para>
       </listitem>

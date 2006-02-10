@@ -58,7 +58,7 @@ Property Panels for UML model elements are found as class
 <filename>PropPanel<replaceable>XXX</replaceable>.java</filename>, 
 where <replaceable>XXX</replaceable> is the
 UML meta-class. They are in sub-packages of org.argouml.uml.ui
-corresponding to the <replaceable>XXX</replaceable> NSUML packages, 
+corresponding to the <replaceable>XXX</replaceable> UML packages, 
 which in turn correspond to
 their section in the chapter 2 of the UML 1.3 spec. 
 </para>
@@ -218,604 +218,13 @@ are provided in org.argouml.uml.ui.
         <para> In our example we create 
           <literal>UMLUseCaseExtendListModel</literal>. Its constructor takes 
           no arguments. However, we need to provide the parent class with a 
-          NSUML event name by invokeing the constructor of the parent class, 
+          Model subsystem event name by invoking the constructor of the parent class, 
           with the event name as parameter.</para>
-        <para> A string naming an NSUML event that should force a refresh of 
+        <para> A string naming an Model subsystem event that should force a refresh of 
           the list model. A null value will cause all events to trigger a 
-          refresh. The best way to identify the event you want to use is to 
-          look at the NSUML source for the container object 
-          (<literal>MUseCaseImpl</literal> in our example) for calls to 
-          <literal>fire<replaceable>XXX</replaceable>()</literal>. The first 
-          argument is the name of the event (in our case 
-          <literal>extend</literal>). There is no definitive list, but from the 
-          NSUML source, these are all the names of events that are used: </para>
-        <itemizedlist>
-          <listitem>
-            <para>action</para>
-          </listitem>
-          <listitem>
-            <para>actionSequence</para>
-          </listitem>
-          <listitem>
-            <para>activator</para>
-          </listitem>
-          <listitem>
-            <para>activityGraph</para>
-          </listitem>
-          <listitem>
-            <para>actualArgument</para>
-          </listitem>
-          <listitem>
-            <para>addition</para>
-          </listitem>
-          <listitem>
-            <para>aggregation</para>
-          </listitem>
-          <listitem>
-            <para>alias</para>
-          </listitem>
-          <listitem>
-            <para>annotatedElement</para>
-          </listitem>
-          <listitem>
-            <para>argument</para>
-          </listitem>
-          <listitem>
-            <para>association</para>
-          </listitem>
-          <listitem>
-            <para>associationEnd</para>
-          </listitem>
-          <listitem>
-            <para>associationEndRole</para>
-          </listitem>
-          <listitem>
-            <para>associationRole</para>
-          </listitem>
-          <listitem>
-            <para>attribute</para>
-          </listitem>
-          <listitem>
-            <para>attributeLink</para>
-          </listitem>
-          <listitem>
-            <para>availableContents</para>
-          </listitem>
-          <listitem>
-            <para>availableFeature</para>
-          </listitem>
-          <listitem>
-            <para>availableQualifier</para>
-          </listitem>
-          <listitem>
-            <para>base</para>
-          </listitem>
-          <listitem>
-            <para>baseClass</para>
-          </listitem>
-          <listitem>
-            <para>baseElement</para>
-          </listitem>
-          <listitem>
-            <para>behavior</para>
-          </listitem>
-          <listitem>
-            <para>behavioralFeature</para>
-          </listitem>
-          <listitem>
-            <para>binding</para>
-          </listitem>
-          <listitem>
-            <para>body</para>
-          </listitem>
-          <listitem>
-            <para>bound</para>
-          </listitem>
-          <listitem>
-            <para>callAction</para>
-          </listitem>
-          <listitem>
-            <para>changeability</para>
-          </listitem>
-          <listitem>
-            <para>changeExpression</para>
-          </listitem>
-          <listitem>
-            <para>child</para>
-          </listitem>
-          <listitem>
-            <para>classifier</para>
-          </listitem>
-          <listitem>
-            <para>classifierInState</para>
-          </listitem>
-          <listitem>
-            <para>classifierRole</para>
-          </listitem>
-          <listitem>
-            <para>classifierRole1</para>
-          </listitem>
-          <listitem>
-            <para>client</para>
-          </listitem>
-          <listitem>
-            <para>clientDependency</para>
-          </listitem>
-          <listitem>
-            <para>collaboration</para>
-          </listitem>
-          <listitem>
-            <para>collaboration1</para>
-          </listitem>
-          <listitem>
-            <para>comment</para>
-          </listitem>
-          <listitem>
-            <para>communicationConnection</para>
-          </listitem>
-          <listitem>
-            <para>communicationLink</para>
-          </listitem>
-          <listitem>
-            <para>componentInstance</para>
-          </listitem>
-          <listitem>
-            <para>concurrency</para>
-          </listitem>
-          <listitem>
-            <para>condition</para>
-          </listitem>
-          <listitem>
-            <para>connection</para>
-          </listitem>
-          <listitem>
-            <para>constrainedElement</para>
-          </listitem>
-          <listitem>
-            <para>constrainedElement2</para>
-          </listitem>
-          <listitem>
-            <para>constrainingElement</para>
-          </listitem>
-          <listitem>
-            <para>constraint</para>
-          </listitem>
-          <listitem>
-            <para>container</para>
-          </listitem>
-          <listitem>
-            <para>contents</para>
-          </listitem>
-          <listitem>
-            <para>context</para>
-          </listitem>
-          <listitem>
-            <para>createAction</para>
-          </listitem>
-          <listitem>
-            <para>defaultElement</para>
-          </listitem>
-          <listitem>
-            <para>defaultValue</para>
-          </listitem>
-          <listitem>
-            <para>deferrableEvent</para>
-          </listitem>
-          <listitem>
-            <para>deploymentLocation</para>
-          </listitem>
-          <listitem>
-            <para>discriminator</para>
-          </listitem>
-          <listitem>
-            <para>dispatchAction</para>
-          </listitem>
-          <listitem>
-            <para>doActivity</para>
-          </listitem>
-          <listitem>
-            <para>dynamicArguments</para>
-          </listitem>
-          <listitem>
-            <para>dynamicMultiplicity</para>
-          </listitem>
-          <listitem>
-            <para>effect</para>
-          </listitem>
-          <listitem>
-            <para>elementImport</para>
-          </listitem>
-          <listitem>
-            <para>elementImport2</para>
-          </listitem>
-          <listitem>
-            <para>elementResidence</para>
-          </listitem>
-          <listitem>
-            <para>entry</para>
-          </listitem>
-          <listitem>
-            <para>event</para>
-          </listitem>
-          <listitem>
-            <para>exit</para>
-          </listitem>
-          <listitem>
-            <para>expression</para>
-          </listitem>
-          <listitem>
-            <para>extend</para>
-          </listitem>
-          <listitem>
-            <para>extend2</para>
-          </listitem>
-          <listitem>
-            <para>extendedElement</para>
-          </listitem>
-          <listitem>
-            <para>extender</para>
-          </listitem>
-          <listitem>
-            <para>extenderID</para>
-          </listitem>
-          <listitem>
-            <para>extension</para>
-          </listitem>
-          <listitem>
-            <para>extensionPoint</para>
-          </listitem>
-          <listitem>
-            <para>feature</para>
-          </listitem>
-          <listitem>
-            <para>generalization</para>
-          </listitem>
-          <listitem>
-            <para>guard</para>
-          </listitem>
-          <listitem>
-            <para>icon</para>
-          </listitem>
-          <listitem>
-            <para>implementationLocation</para>
-          </listitem>
-          <listitem>
-            <para>include</para>
-          </listitem>
-          <listitem>
-            <para>include2</para>
-          </listitem>
-          <listitem>
-            <para>incoming</para>
-          </listitem>
-          <listitem>
-            <para>initialValue</para>
-          </listitem>
-          <listitem>
-            <para>instance</para>
-          </listitem>
-          <listitem>
-            <para>instantiation</para>
-          </listitem>
-          <listitem>
-            <para>inState</para>
-          </listitem>
-          <listitem>
-            <para>interaction</para>
-          </listitem>
-          <listitem>
-            <para>internalTransition</para>
-          </listitem>
-          <listitem>
-            <para>isAbstarct</para>
-          </listitem>
-          <listitem>
-            <para>isAbstract</para>
-          </listitem>
-          <listitem>
-            <para>isActive</para>
-          </listitem>
-          <listitem>
-            <para>isAsynchronous</para>
-          </listitem>
-          <listitem>
-            <para>isConcurent</para>
-          </listitem>
-          <listitem>
-            <para>isDynamic</para>
-          </listitem>
-          <listitem>
-            <para>isInstantiable</para>
-          </listitem>
-          <listitem>
-            <para>isLeaf</para>
-          </listitem>
-          <listitem>
-            <para>isNavigable</para>
-          </listitem>
-          <listitem>
-            <para>isQuery</para>
-          </listitem>
-          <listitem>
-            <para>isRoot</para>
-          </listitem>
-          <listitem>
-            <para>isSpecification</para>
-          </listitem>
-          <listitem>
-            <para>isSynch</para>
-          </listitem>
-          <listitem>
-            <para>kind</para>
-          </listitem>
-          <listitem>
-            <para>link</para>
-          </listitem>
-          <listitem>
-            <para>linkEnd</para>
-          </listitem>
-          <listitem>
-            <para>location</para>
-          </listitem>
-          <listitem>
-            <para>mapping</para>
-          </listitem>
-          <listitem>
-            <para>message</para>
-          </listitem>
-          <listitem>
-            <para>message1</para>
-          </listitem>
-          <listitem>
-            <para>message2</para>
-          </listitem>
-          <listitem>
-            <para>message3</para>
-          </listitem>
-          <listitem>
-            <para>message4</para>
-          </listitem>
-          <listitem>
-            <para>method</para>
-          </listitem>
-          <listitem>
-            <para>modelElement</para>
-          </listitem>
-          <listitem>
-            <para>modelElement2</para>
-          </listitem>
-          <listitem>
-            <para>multiplicity</para>
-          </listitem>
-          <listitem>
-            <para>name</para>
-          </listitem>
-          <listitem>
-            <para>namespace</para>
-          </listitem>
-          <listitem>
-            <para>nodeInstance</para>
-          </listitem>
-          <listitem>
-            <para>objectFlowState</para>
-          </listitem>
-          <listitem>
-            <para>occurrence</para>
-          </listitem>
-          <listitem>
-            <para>operation</para>
-          </listitem>
-          <listitem>
-            <para>ordering</para>
-          </listitem>
-          <listitem>
-            <para>outgoing</para>
-          </listitem>
-          <listitem>
-            <para>ownedElement</para>
-          </listitem>
-          <listitem>
-            <para>owner</para>
-          </listitem>
-          <listitem>
-            <para>ownerScope</para>
-          </listitem>
-          <listitem>
-            <para>package</para>
-          </listitem>
-          <listitem>
-            <para>parameter</para>
-          </listitem>
-          <listitem>
-            <para>parent</para>
-          </listitem>
-          <listitem>
-            <para>participant</para>
-          </listitem>
-          <listitem>
-            <para>partition</para>
-          </listitem>
-          <listitem>
-            <para>partition1</para>
-          </listitem>
-          <listitem>
-            <para>powertype</para>
-          </listitem>
-          <listitem>
-            <para>powertypeRange</para>
-          </listitem>
-          <listitem>
-            <para>predecessor</para>
-          </listitem>
-          <listitem>
-            <para>presentation</para>
-          </listitem>
-          <listitem>
-            <para>qualifiedValue</para>
-          </listitem>
-          <listitem>
-            <para>qualifier</para>
-          </listitem>
-          <listitem>
-            <para>raisedSignal</para>
-          </listitem>
-          <listitem>
-            <para>receiver</para>
-          </listitem>
-          <listitem>
-            <para>reception</para>
-          </listitem>
-          <listitem>
-            <para>recurrence</para>
-          </listitem>
-          <listitem>
-            <para>referenceState</para>
-          </listitem>
-          <listitem>
-            <para>representedClassifier</para>
-          </listitem>
-          <listitem>
-            <para>representedOperation</para>
-          </listitem>
-          <listitem>
-            <para>requiredTag</para>
-          </listitem>
-          <listitem>
-            <para>resident</para>
-          </listitem>
-          <listitem>
-            <para>residentElement</para>
-          </listitem>
-          <listitem>
-            <para>script</para>
-          </listitem>
-          <listitem>
-            <para>sendAction</para>
-          </listitem>
-          <listitem>
-            <para>sender</para>
-          </listitem>
-          <listitem>
-            <para>signal</para>
-          </listitem>
-          <listitem>
-            <para>slot</para>
-          </listitem>
-          <listitem>
-            <para>source</para>
-          </listitem>
-          <listitem>
-            <para>sourceFlow</para>
-          </listitem>
-          <listitem>
-            <para>specialization</para>
-          </listitem>
-          <listitem>
-            <para>specification</para>
-          </listitem>
-          <listitem>
-            <para>state</para>
-          </listitem>
-          <listitem>
-            <para>state1</para>
-          </listitem>
-          <listitem>
-            <para>state2</para>
-          </listitem>
-          <listitem>
-            <para>state3</para>
-          </listitem>
-          <listitem>
-            <para>stateMachine</para>
-          </listitem>
-          <listitem>
-            <para>stereotype</para>
-          </listitem>
-          <listitem>
-            <para>stereotypeConstraint</para>
-          </listitem>
-          <listitem>
-            <para>stimulus</para>
-          </listitem>
-          <listitem>
-            <para>stimulus1</para>
-          </listitem>
-          <listitem>
-            <para>stimulus2</para>
-          </listitem>
-          <listitem>
-            <para>stimulus3</para>
-          </listitem>
-          <listitem>
-            <para>structuralFeature</para>
-          </listitem>
-          <listitem>
-            <para>subject</para>
-          </listitem>
-          <listitem>
-            <para>submachine</para>
-          </listitem>
-          <listitem>
-            <para>submachineState</para>
-          </listitem>
-          <listitem>
-            <para>subvertex</para>
-          </listitem>
-          <listitem>
-            <para>supplier</para>
-          </listitem>
-          <listitem>
-            <para>supplierDependency</para>
-          </listitem>
-          <listitem>
-            <para>tag</para>
-          </listitem>
-          <listitem>
-            <para>taggedValue</para>
-          </listitem>
-          <listitem>
-            <para>target</para>
-          </listitem>
-          <listitem>
-            <para>targetFlow</para>
-          </listitem>
-          <listitem>
-            <para>targetScope</para>
-          </listitem>
-          <listitem>
-            <para>templateParameter</para>
-          </listitem>
-          <listitem>
-            <para>templateParameter2</para>
-          </listitem>
-          <listitem>
-            <para>templateParameter3</para>
-          </listitem>
-          <listitem>
-            <para>top</para>
-          </listitem>
-          <listitem>
-            <para>transition</para>
-          </listitem>
-          <listitem>
-            <para>trigger</para>
-          </listitem>
-          <listitem>
-            <para>type</para>
-          </listitem>
-          <listitem>
-            <para>useCase</para>
-          </listitem>
-          <listitem>
-            <para>value</para>
-          </listitem>
-          <listitem>
-            <para>visibility</para>
-          </listitem>
-          <listitem>
-            <para>when</para>
-          </listitem>
-        </itemizedlist>
+          refresh. The name of the event is the same as the name of the associated
+          attribute or association end from the UML 1.4 metamodel.</para>
+ 
         <para> This list model should then be provided with a number of 
           methods. The following are mandatory, since they are declared 
           abstract in the parent. </para>
@@ -900,18 +309,19 @@ are provided in org.argouml.uml.ui.
                 <quote>add</quote> operation is supported. The 
                 <literal>addAtUtil()</literal> method (see below) may prove 
                 helpful. </para>
-              <para> In this routine you may create a new NSUML entity. There 
-                seem to be three ways to do this, in order of preference 1) use 
-                a utility from the <literal>MMUtil</literal> class, 2) use the 
-                NSUML Factory class to create what you want 3) use new on a 
-                <literal>M<replaceable>XXX</replaceable>Impl</literal> class. 
-                Whilst 1) is best, most of the <literal>MMUtil</literal> 
-                routines are not yet general enough. </para>
-              <para> Be sure to set it up (don't forget e.g namespace etc). 
+              <para> In this routine you may create a new Model subsytem entity.
+                The best way to do this is using a buildXXX method from the 
+                appropriate factory so that the appropriate initialization
+                gets done, but you can also use a createXXX method and set
+                it up (don't forget e.g namespace etc) yourself.
                 Remember also to change anything that references the newly 
                 created entity. </para>
               <warning>
-                <para> The NSUML routines generally set up the 
+                <para> NOTE:  The following was written regarding NSUML.
+                  It may be generally true for the Model subsystem, but
+                  this hasn't been verified.</para>
+                  
+                  <para>NSUML routines generally set up the 
                   <quote>other</quote> end of a relationship automatically if 
                   you set up one end. If you try to do both (on a NxM 
                   relationship) you will probably end up doing it twice. If you 
@@ -1009,8 +419,10 @@ are provided in org.argouml.uml.ui.
                 event)</literal>
             </term>
             <listitem>
+              <!-- TODO: --><warning>This describes the old event interface.
+              It needs to be updated.</warning>
               <para> part of the NSUML EventListener interface. Called when an 
-                add event happens, i.e. some NSUML object has been added. The 
+                add event happens, i.e. some Model subsystem object has been added. The 
                 default provided looks to see if the event is the role name we 
                 declared, or we are listening to all events, and if so looks to 
                 see if it relates to an element in our list. If so Swing is 
@@ -1023,8 +435,10 @@ are provided in org.argouml.uml.ui.
                 event)</literal>
             </term>
             <listitem>
+              <!-- TODO: --><warning>This describes the old event interface.
+              It needs to be updated.</warning>
               <para> part of the NSUML EventListener interface. Called when a 
-                remove event happens, i.e. some NSUML object has been removed. 
+                remove event happens, i.e. some Model subsystem object has been removed. 
                 The default provided looks to see if the event is the role name 
                 we declared, or we are listening to all events, and if so looks 
                 to see if it relates to an element in our list. If so Swing is 
@@ -1046,6 +460,8 @@ are provided in org.argouml.uml.ui.
               <literal>public void propertySet(final MElementEvent p1)</literal>
             </term>
             <listitem>
+              <!-- TODO: --><warning>This describes the old event interface.
+              It needs to be updated.</warning>
               <para> these are all required as part of the NSUML EventListener 
                 interface, which is not well documented. In each case the 
                 default implementation recomputes the size, and advises Swing 
@@ -1090,8 +506,8 @@ are provided in org.argouml.uml.ui.
               <literal>public final String getProperty()</literal>
             </term>
             <listitem>
-              <para> returns the NSUML event name being monitored (null if all 
-                are being monitored). </para>
+              <para> returns the Model subsystem event name being monitored
+              (null if all are being monitored). </para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -1109,7 +525,7 @@ are provided in org.argouml.uml.ui.
               <literal>final Object getTarget()</literal>
             </term>
             <listitem>
-              <para> returns the NSUML object associated with the container 
+              <para> returns the Model subsystem object associated with the container 
                 (some child of <literal>PropPanel</literal> usually) that holds 
                 this list model. </para>
             </listitem>
@@ -1342,15 +758,15 @@ allowVoid, baseClass, useModel)</literal>.
 The container is the <literal>PropPanel</literal> where we are setting
 up this ComboBox, the predicate is the name of a public method in that
 PropPanel that, given a model element, determines if it should be in
-the drop down, the event is the NSUML <literal>MElementEvent</literal>
+the drop down, the event is the Model subsystem event
 name we are looking for (see earlier for the list),
 <literal>getter</literal> is the name of a public method in the
 PropPanel that yields the current entry in the combo Box (of type
 <literal>baseClass</literal>), <literal>setter</literal> (with a
 single argument of type <literal>baseClass</literal>) sets that entry,
 <literal>allowVoid</literal> if <literal>true</literal> will allow an
-empty entry for the box, <literal>baseClass</literal> is the NSUML
-meta-class from which all entries must descend,
+empty entry for the box, <literal>baseClass</literal> is the UML
+metaclass from which all entries must descend,
 <literal>useModel</literal> is <literal>true</literal> to consider all
 the elements in the standard profile model for inclusion (so the Java
 types, standard stereotypes etc.).

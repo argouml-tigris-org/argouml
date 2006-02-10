@@ -223,16 +223,16 @@ protected static Action _actionUseCase =
 </para>
 
 	    <para>
-The first argument is the class of the node to create from NSUML, the
+The first argument is the class of the node to create from 
+the Model subsystem Metatypes interface, the
 second a textual tool tip.
 </para>
 
 	    <para>For creating associations we have:</para>
-<!-- TODO: Update this! It has been changed. -->
 	    <para><programlisting>
 protected static Action _actionAssoc =
       new CmdSetMode(ModeCreatePolyEdge.class,
-	   	     "edgeClass", MAssociationImpl.class,
+	   	     "edgeClass", Model.getMetaTypes().getAssociation(),
 		     "Association");
 </programlisting>
 </para>
@@ -300,14 +300,14 @@ the use case diagram graph model is in
 
 	    <para>
 This provides two routines, <methodname>getFigNodeFor()</methodname>, which
-provides a fig object to represent a given NSUML node object and
+provides a fig object to represent a given UML node object and
 <methodname>getFigEdgeFor()</methodname>, which provides a fig object to
-represent a given NSUML edge object.
+represent a given UML edge object.
 </para>
 
 	    <para>
 In our example, we must extend <methodname>getFigEdgeFor()</methodname> so
-it can handle NSUML MExtend objects (producing a
+it can handle UML Extend objects (producing a
 <classname>FigExtend</classname>).
 </para>
 	</sect3>
@@ -324,7 +324,7 @@ uses them.
 
 	    <para>
 The implementation must provide constructors for both a generic fig,
-and one representing a specific NSUML object. It should provide a
+and one representing a specific Model subsystem object. It should provide a
 setFig() method to set a particular figure as the representation. It
 should provide a method canEdit() to indicate whether the Fig can be
 edited. It should provide an event handler modelChanged() to cope with

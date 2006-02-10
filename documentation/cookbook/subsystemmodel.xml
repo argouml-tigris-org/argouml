@@ -43,12 +43,9 @@ The Model is located in <classname>org.argouml.model</classname>.
 The Model is a Model subsystem. See <xref linkend="model_subsystems"></xref>.
 </para>
       <para>
-Currently there is a full implementation using NSUML to store
-the OMG UML Model.
-</para>
-      <para>
-Development is in progress for an MDR implmentation storing both the OMG UML
-Model and Diagram Interchange Model.
+Currently there is a full implementation using NetBeans MDR to store
+the OMG UML 1.4 metamodel.  The previous implementation used the NSUML
+library to implement a UML 1.3 metamodel.
 </para>
       <para>
 The decision of which implementation to use is controlled by the Model class
@@ -204,8 +201,8 @@ The model factories and the model helpers are described in
 <xref linkend="model_helpers"/> respectively.
 </para>
 	  <para>
-In the beginning of 2003, in the work to replace NSUML, the need for this
-interface not to use any NSUML classes was seen.
+In the beginning of 2003, in the work to replace NSUML, the need 
+was seen for this interface to not use any NSUML classes.
 The <classname>ModelFacade</classname> was introduced to wrap
 model factories,
 model helpers, and
@@ -466,24 +463,11 @@ Would this be an improvement?
   <sect2>
     <title>NSUML specifics</title>
     <para>
-This is currently implemented using NSUML internally to implement 
+This was implemented using NSUML internally to implement 
 the UML model.
-The plan is to replace NSUML with some JMI compliant model instead
-(probably MDR),
-and for that reason
-all APIs to the Model subsystem using NSUML objects are
-to be replaced by interfaces without NSUML object and
-eventually removed.
-</para>
-    <para>
-The NSUML model itself does not define enough 'business' logic
-to be directly used and the factories and helper classes provide a
-set of interfaces that wraps all functions of NSUML.
-</para>
-
-      <para>
-In the NSUML implementation factories contain delete methods
-but they are only used internally within the Model subsystem.
+The NSUML implementation was replaced with the NetBeans
+Model Data Repository (MDR) which implements the
+JSR-040 Java Metadata Interface.
 </para>
 
   </sect2>
@@ -493,39 +477,35 @@ but they are only used internally within the Model subsystem.
     <title>How to work against the model</title>
 
     <para>
-NS-UML is used within the Model subsystem to keep all data structures
-in place.
-Eventually we will change that to JMI/MDR that is newer and better and 
-will take us into UML 1.4, UML 1.5 and UML 2.0.
-Working directly against NS-UML or JMI/MDR will make changes in the
-NS-UML or JMI/MDR affect large portions of the code.
-For this reason we have in the Model subsystem,
-a set of classes that lay between the NS-UML and JMI/MDR that
-hides the APIs of NS-UML or JMI/MDR between something that will not
-change while moving between them.
+The Model subsystem is 
+a set of classes that lay between the model implementation
+(e.g. MDR) and the rest of ArgoUML that
+hides the APIs of the implementation.  It was originally
+implemented to provide the ability to switch between
+NSUML and MDR.
 This is the API classes of the Model subsystem i.e.
 Factories, Helpers, Event Pump (where to register for changes).
 </para>
     <para>
-Here follows a list of how different things are done for the purpose
-of making the transition easy.
+Here follows a list of how different things were done to
+make the transition easy.
 Everything within ArgoUML should access the Model subsystem through the
 interfaces in the <classname>org.argouml.model</classname> package.
-The NS-UML or JMI/MDR and whatever other implementation we could eventually
+The NSUML or MDR and whatever other implementation we eventually
 come up with would provide the implementation of those interfaces.
 </para>
     <table>
       <title>How to work against the model</title>
       <tgroup cols="4">
         <colspec colnum="1" colname="What" colwidth="1*"/>
-        <colspec colnum="2" colname="NS-UML" colwidth="2*"/>
-        <colspec colnum="3" colname="JMI/MDR" colwidth="2*"/>
+        <colspec colnum="2" colname="NSUML" colwidth="2*"/>
+        <colspec colnum="3" colname="MDR" colwidth="2*"/>
         <colspec colnum="4" colname="Model" colwidth="3*"/>
         <thead>
           <row>
             <entry>What</entry>
-            <entry>NS-UML (use only within Model subsystem)</entry>
-            <entry>JMI/MDR (use only within Model subsystem)</entry>
+            <entry>NSUML (use only within Model subsystem)</entry>
+            <entry>MDR (use only within Model subsystem)</entry>
             <entry>Model subsystem</entry>
           </row>
         </thead>
@@ -664,10 +644,11 @@ It is provided for use of others.
 	  <listitem>
 	    <para>...add a new model element?</para>
 	    <para>
-Make a parameterless build method for your NSUML model element in one of
+<!-- TODO: This needs to be updated for Model subsystem -->
+Make a parameterless build method for your  model element in one of
 the UML Factories (for instance <classname>CoreFactory</classname>).
-Stick to the UML 1.3 spec to choose the correct Factory.
-The package structure under <classname>org.argouml.model.uml</classname>
+Use the UML 1.4 spec to choose the correct Factory.
+The package structure under <classname>org.argouml.model</classname>
 follows the chapters in the UML spec so get it and read it!
 In the build method, create a new model element using the appropriate
 create method in the factory.

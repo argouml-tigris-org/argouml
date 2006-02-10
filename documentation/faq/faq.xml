@@ -566,16 +566,6 @@ rowsep="1"
 ><qandaentry
 ><question
 ><para
->When I save in 0.8.1a .xmi files show up in my save directory, are these just as interchangeable as the 0.9.x .xmi files?</para
-></question
-><answer
-><para
->This depends on the nsuml version you are using (you can find out about this i your startup messages on console). Version 0.4.19 is okay, should be interchangeable.</para
-></answer
-></qandaentry
-><qandaentry
-><question
-><para
 >How do I import an .xmi into Argo and what formats are known to be supported?</para
 ></question
 ><answer
