@@ -131,7 +131,7 @@ class FigMessageGroup extends FigGroup {
         super(figs);
     }
 
-    protected void updateFigPositions() {
+    private void updateFigPositions() {
     	Collection figs = getFigs(); // the figs that make up this group
         Iterator it = figs.iterator();
     	if (!figs.isEmpty()) {
