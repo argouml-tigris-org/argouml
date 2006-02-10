@@ -31,7 +31,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 
 /**
- * Action to remove a actualArgument from a Action.
+ * Action to delete an actualArgument from a Action.
  * 
  * @since aug 10, 2003
  * @author Decki, Endi, Yayan. Polytechnic of Bandung Indonesia, Computer
@@ -44,7 +44,7 @@ public class ActionRemoveArgument extends AbstractActionRemoveElement {
      * Constructor for ActionRemoveArgument.
      */
     protected ActionRemoveArgument() {
-        super(Translator.localize("menu.popup.remove"));
+        super(Translator.localize("menu.popup.delete"));
     }
 
     /**
