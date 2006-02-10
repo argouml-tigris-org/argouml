@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,6 +36,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Configuration;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
@@ -62,6 +63,9 @@ public class ProfileJava extends Profile {
     private static final Logger LOG = Logger.getLogger(ProfileJava.class);
 
     private Object/*MModel*/ defaultModel;
+    
+    static final String DEFAULT_PROFILE = 
+                            "/org/argouml/model/mdr/mof/default-uml14.xmi";
 
     /**
      * The constructor.
@@ -290,79 +294,101 @@ public class ProfileJava extends Profile {
     }
 
     /**
-     * This function loads the model object containing the default model from
-     * either property "argo.defaultModel", or "/org/argouml/default.xmi".
+     * This function loads our profile or default Model and returns it
+     * as a Model.  Priority is the property "argo.defaultModel", 
+     * followed by the key "defaultModel" in the Configuration properties.
+     * If these are both null or the profile fails to load, we fall
+     * back to our DEFAULT_PROFILE. 
      * May result in null, if the files are not found.
      *
-     * @return the model object
-     * @throws ProfileException if failed to load profile
+     * @return the profile model object or null
      */
-    public Object loadProfileModel() throws ProfileException {
-        //
-        //    get a file name for the default model
-        //
-        String modelFileName = System.getProperty("argo.defaultModel");
+    public Object loadProfileModel() {
+        Object profileModel = null;
+        String configModel = Configuration.getString(Configuration
+                .makeKey("defaultModel"), DEFAULT_PROFILE);
+        String modelFileName = System.getProperty("argo.defaultModel",
+                configModel);
 
-        if (modelFileName == null) {
-            modelFileName = "/org/argouml/model/mdr/mof/default-uml14.xmi";
-        }
-        //
-        //   if there is a default model
-        //
         if (modelFileName != null) {
-            InputStream is = null;
-            //
-            //  try to find a file with that name
-            //
-            try {
-                File modelFile = new File(modelFileName);
-                if (modelFileName.endsWith("zip")) {
-                    String fileName = modelFile.getName();
-                    String extension =
-                        fileName.substring(
+            profileModel = loadProfile(modelFileName);
+            if (profileModel != null) {
+                return profileModel;
+            }
+        }
+        
+        if (!(DEFAULT_PROFILE.equals(modelFileName))) {
+            LOG.warn("Falling back to default profile '" 
+                    + DEFAULT_PROFILE + "'");
+            profileModel = loadProfile(DEFAULT_PROFILE);
+            if (profileModel != null) {
+                return profileModel;
+            }            
+        }
+
+        LOG.error("Failed to load any profile - returning empty model");
+        return Model.getModelManagementFactory().createModel();
+    }
+    
+    private Object loadProfile(String modelFileName) {
+        LOG.info("Loading profile '" + modelFileName + "'");
+        InputStream is = null;
+        //
+        //  try to find a file with that name
+        //
+        try {
+            File modelFile = new File(modelFileName);
+            if (modelFileName.endsWith("zip")) {
+                String fileName = modelFile.getName();
+                String extension =
+                    fileName.substring(
                             fileName.indexOf('.'), fileName.lastIndexOf('.'));
-                    String path = modelFile.getParent();
-                    // Add the path of the model to the search path, so we can
-                    // read dependent models
+                String path = modelFile.getParent();
+                // Add the path of the model to the search path, so we can
+                // read dependent models
+                if (path != null) {
                     System.setProperty("org.argouml.model.modules_search_path",
                             path);
-                    try {
-                        is = openZipStreamAt(modelFile.toURL(), extension);
-                    } catch (MalformedURLException e) {
-                        throw new ProfileException(e);
-                    } catch (IOException e) {
-                        throw new ProfileException(e);
-                    }
-                } else {
-                    is = new FileInputStream(modelFile);
                 }
-            } catch (FileNotFoundException ex) {
-                //
-                // No file found, try looking in the resources
-                //
-                // Notice that the class that we run getClass() in needs to be
-                // in the same ClassLoader that the default.xmi.
-                // If we run using Java Web Start then we have every ArgoUML
-                // file in the same jar (i.e. the same ClassLoader).
-                is =
-                    new Object().getClass().getResourceAsStream(
-                        modelFileName);
-            }
-            if (is != null) {
-                LOG.info("Loading profile '" + modelFileName + "'");
                 try {
-                    XmiReader xmiReader = Model.getXmiReader();
-                    InputSource inputSource = new InputSource(is);
-                    return xmiReader.parseToModel(inputSource);
-                } catch (UmlException e) {
-                    throw new ProfileException(e);
+                    is = openZipStreamAt(modelFile.toURL(), extension);
+                } catch (MalformedURLException e) {
+                    LOG.error("Exception while loading profile '"
+                            + modelFileName + "'", e);
+                    return null;
+                } catch (IOException e) {
+                    LOG.error("Exception while loading profile '"
+                            + modelFileName + "'", e);
+                    return null;
                 }
+            } else {
+                is = new FileInputStream(modelFile);
             }
-            LOG.error("Value of property argo.defaultModel ("
-                    + modelFileName
-                    + ") did not correspond to an available file.\n");
+        } catch (FileNotFoundException ex) {
+            //
+            // No file found, try looking in the resources
+            //
+            // Note that the class that we run getClass() in needs to be
+            // in the same ClassLoader as the profile XMI file.
+            // If we run using Java Web Start then we have every ArgoUML
+            // file in the same jar (i.e. the same ClassLoader).
+            is = new Object().getClass().getResourceAsStream(modelFileName);
         }
-        return Model.getModelManagementFactory().createModel();
+        if (is != null) {
+
+            try {
+                XmiReader xmiReader = Model.getXmiReader();
+                InputSource inputSource = new InputSource(is);
+                LOG.info("Loaded profile '" + modelFileName + "'");
+                return xmiReader.parseToModel(inputSource);
+            } catch (UmlException e) {
+                LOG.error("Exception while loading profile '" 
+                        + modelFileName + "'", e);
+                return null;
+            }
+        }
+        LOG.warn("Profile '" + modelFileName + "' not found");
+        return null;
     }
 
     /**
