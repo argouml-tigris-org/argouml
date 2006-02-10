@@ -40,7 +40,6 @@ import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.xml.sax.InputSource;
 
 /**
@@ -123,7 +122,7 @@ public class XMIParser {
         try {
             InputSource source = new InputSource(url.openStream());
             source.setSystemId(url.toString());
-            readModels(p,source);
+            readModels(p, source);
         } catch (Exception ex) {
             throw new OpenException(ex);
         }
@@ -156,8 +155,9 @@ public class XMIParser {
                 while (elements.hasNext()) {
                     current = elements.next();
                     if (facade.isAModel(current)) {
-                        LOG.info("Loaded model '" + facade.getName(current) + "'");
-                        if (curModel==null)
+                        LOG.info("Loaded model '" + facade.getName(current) 
+                                + "'");
+                        if (curModel == null)
                             curModel = current;
                     }
                 }
@@ -170,15 +170,21 @@ public class XMIParser {
     }
     
     /**
-     * Create and register diagrams for activity and statemachines in the model(s) of
-     * the project.
-     * Create a default class diagram and use case diagrams, if createDefaults is true.
-     * @param project The project
-     * @param createDefaults If true defaults diagrams will be created.
+     * Create and register diagrams for activity and statemachines in the
+     * model(s) of the project. If no other diagrams are created and atLeastOne
+     * is true, than a default Class Diagram will be created.  ArgoUML currently
+     * requires at least one diagram for proper operation.
+     * 
+     * @param project
+     *            The project
+     * @param elements
+     *            Collection of top level model elements to process
+     * @param atLeastOne
+     *            If true, forces at least one diagram to be created.
      */
-    public void registerDiagrams(Project project, Collection elements, boolean createDefaults) {
+    public void registerDiagrams(Project project, Collection elements,
+            boolean atLeastOne) {
         Facade facade = Model.getFacade();
-        //Collection elements = project.getModels();
         Collection diagramsElement = new ArrayList();
         Iterator it = elements.iterator();
         while (it.hasNext()) {
@@ -187,6 +193,8 @@ public class XMIParser {
                 diagramsElement.addAll(Model.getModelManagementHelper().
                         getAllModelElementsOfKind(element,
                                 Model.getMetaTypes().getStateMachine()));
+            } else if (facade.isAStateMachine(element)) {
+                diagramsElement.add(element);
             }
         }
         DiagramFactory diagramFactory = DiagramFactory.getInstance();
@@ -203,29 +211,31 @@ public class XMIParser {
                 LOG.info("Creating activity diagram for "
                         + facade.getUMLClassName(element)
                         + "<<" + facade.getName(element) + ">>");
-                diagram = diagramFactory.createDiagram(UMLActivityDiagram.class, namespace , element);
+                diagram = diagramFactory.createDiagram(
+                        UMLActivityDiagram.class, namespace, element);
             } else {
                 LOG.info("Creating state diagram for "
                         + facade.getUMLClassName(element)
                         + "<<" + facade.getName(element) + ">>");
-                diagram = diagramFactory.createDiagram(UMLStateDiagram.class, namespace , element);
+                diagram = diagramFactory.createDiagram(UMLStateDiagram.class,
+                        namespace, element);
             }
             if (diagram != null) {
                 proj.addMember(diagram);
             }
         }
-        //ISSUE 3516 : Add the same diagrams than when creating an empty project when
-        //importing XMI
-        if (createDefaults) {
-            LOG.info("Create class diagram");
-            ArgoDiagram d = diagramFactory.createDiagram(UMLClassDiagram.class, curModel, null);
+        // ISSUE 3516 : Make sure there is at least one diagram because
+        // ArgoUML requires it for correct operation
+        if (atLeastOne && proj.getDiagramCount() < 1) {
+            ArgoDiagram d = diagramFactory.createDiagram(UMLClassDiagram.class,
+                    curModel, null);
             proj.addMember(d);
-            LOG.info("Create use case diagram");
-            proj.addMember(diagramFactory
-                    .createDiagram(UMLUseCaseDiagram.class, curModel, null));
-            proj.setActiveDiagram(d);
+        }
+        if (proj.getDiagramCount() >= 1 && proj.getActiveDiagram() == null) {
+            proj.setActiveDiagram((ArgoDiagram) proj.getDiagrams().get(0));
         }
     }
+    
     /**
      * @return Returns the singleton.
      */
@@ -241,9 +251,9 @@ public class XMIParser {
     }
 
     /**
-     * @param elementsRead The elementsRead to set.
+     * @param elements The elementsRead to set.
      */
-    public void setElementsRead(Collection elementsRead) {
-        this.elementsRead = elementsRead;
+    public void setElementsRead(Collection elements) {
+        this.elementsRead = elements;
     }
 } /* end class XMIParser */
