@@ -169,7 +169,6 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         changeabilityRadioButtonpanel =
             new UMLAssociationEndChangeabilityRadioButtonPanel(
                 Translator.localize("label.changeability"), true);
-        // TODO: Should this be UMLAssociationEndVisibilityRadioButtonPanel?
         visibilityRadioButtonPanel =
             new UMLModelElementVisibilityRadioButtonPanel(
                 Translator.localize("label.visibility"), true);
