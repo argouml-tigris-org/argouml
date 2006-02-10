@@ -645,7 +645,7 @@ public class GenericArgoMenuBar extends JMenuBar
 
         JMenuItem stateDiagram =
             createDiagrams.add(new ActionStateDiagram());
-        setMnemonic(stateDiagram, "State Diagram");
+        setMnemonic(stateDiagram, "Statechart Diagram");
         createDiagramToolbar.add((new ActionStateDiagram()));
 
         JMenuItem activityDiagram =
