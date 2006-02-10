@@ -309,6 +309,7 @@ public class FigComment
     /**
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
+    // TODO: Review - should be keyTyped()? - Bob
     public void keyPressed(KeyEvent ke) {
         if (!readyToEdit) {
             if (Model.getFacade().isAModelElement(getOwner())) {

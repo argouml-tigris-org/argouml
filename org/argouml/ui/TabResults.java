@@ -300,10 +300,11 @@ public class TabResults
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent e) {
-	if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-	    e.consume();
-	    myDoubleClick(e.getSource());
-	}
+        // TODO: Review - should be keyTyped()??? - Bob
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            e.consume();
+            myDoubleClick(e.getSource());
+        }
     }
 
     /**
