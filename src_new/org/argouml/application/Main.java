@@ -291,7 +291,9 @@ public class Main {
         }
         
         if (!projectLoaded) {
-            ProjectManager.getManager().makeEmptyProject();
+            // The following will create an empty project as a side effect
+            // if none exists
+            ProjectManager.getManager().getCurrentProject();
         }
 
         st.mark("set project");
