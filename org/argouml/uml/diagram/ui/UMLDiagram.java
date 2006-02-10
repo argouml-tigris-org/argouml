@@ -171,6 +171,8 @@ public abstract class UMLDiagram
 
     private JToolBar toolBar;
 
+    private Action selectedAction;
+    
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -525,14 +527,13 @@ public abstract class UMLDiagram
     }
 
     /**
-     * Set all toolbar buttons to unselected other then the toolbar button
-     * with the supplied action.
+     * Set the given action as the selected action (ie pressed down on the
+     * diagram toolbar). All other actions become unselected.
      *
-     * @param otherThanAction the action of the button
-     *                        that is NOT to be deselected
+     * @param selectedAction the action to become selected
      */
-    public void deselectOtherTools(Action otherThanAction) {
-        //cat.debug("Looking for action " + otherThanAction);
+    public void setSelectedAction(Action selectedAction) {
+        this.selectedAction = selectedAction;
         int toolCount = toolBar.getComponentCount();
         for (int i = 0; i < toolCount; ++i) {
             Component c = toolBar.getComponent(i);
@@ -542,12 +543,11 @@ public abstract class UMLDiagram
                 if (action instanceof RadioAction) {
                     action = ((RadioAction) action).getAction();
                 }
-                Action otherAction = otherThanAction;
-                if (otherThanAction instanceof RadioAction) {
-                    otherAction = ((RadioAction) otherThanAction).getAction();
+                Action otherAction = selectedAction;
+                if (selectedAction instanceof RadioAction) {
+                    otherAction = ((RadioAction) selectedAction).getAction();
                 }
                 if (!action.equals(otherAction)) {
-                    //cat.debug("Unselecting " + tb);
                     tb.setSelected(false);
                     ButtonModel bm = tb.getModel();
                     bm.setRollover(false);
@@ -556,7 +556,6 @@ public abstract class UMLDiagram
                     bm.setPressed(false);
                     tb.setBorderPainted(false);
                 } else {
-                    //cat.debug("Selecting " + tb);
                     tb.setSelected(true);
                     ButtonModel bm = tb.getModel();
                     bm.setRollover(true);
@@ -565,29 +564,17 @@ public abstract class UMLDiagram
             }
         }
     }
+    
+    public Action getSelectedAction() {
+        return selectedAction;
+    }
 
     /**
      * Unselect all the toolbar buttons.
      */
     public void deselectAllTools() {
-        int toolCount = toolBar.getComponentCount();
-        for (int i = 0; i < toolCount; ++i) {
-            Component c = toolBar.getComponent(i);
-            if (c instanceof ToolButton) {
-                ToolButton tb = (ToolButton) c;
-                Action action = tb.getRealAction();
-                if (action instanceof RadioAction) {
-                    action = ((RadioAction) action).getAction();
-                }
-                tb.setSelected(false);
-                ButtonModel bm = tb.getModel();
-                bm.setRollover(false);
-                bm.setSelected(false);
-                bm.setArmed(false);
-                bm.setPressed(false);
-                tb.setBorderPainted(false);
-            }
-        }
+        setSelectedAction(actionSelect);
+        actionSelect.actionPerformed(null);
     }
 
     /**
