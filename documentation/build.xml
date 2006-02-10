@@ -33,25 +33,19 @@ What tools do I need to use this build file?
 <project name="ArgoDocs" default="defaulthtml" basedir="..">
 
   <property name="argo.root.dir" value="${basedir}"/>
+  <property file="${argo.root.dir}/src_new/default.properties"/>
   <property file="${argo.root.dir}/documentation/build.properties"/>
   <property file="${user.home}/argouml.build.properties"/>
   <property file="${argo.root.dir}/documentation/default.properties"/>
   <property name="documentation.dir" value="${argo.root.dir}/documentation"/>
 
-  <!-- The ambition is that there should be only one place where the
-       docbook-xsl version is located. This would be it then.
-       Currently this is not the case. The version is also in all the
-       docbook-setup/create-blabla.xsl files so when you change this
-       you need also to change those files. This is to be made as part 
-       of the deployment of a new version of docbook-xsl.
-    -->
-  <property name="docbook-xsl" value="docbook-xsl-1.66.1"/>
-
   <property name="docbook-xsl-root" 
-	    value="${documentation.dir}/docbook-setup/${docbook-xsl}"/>
+	    value="${documentation.dir}/docbook-setup/docbook-xsl"/>
   <property name="docbook-xsl-source-url"
-            value="http://puzzle.dl.sourceforge.net/sourceforge/docbook/${docbook-xsl}.zip"/>
+            value="${docbook-xsl-source-url-base}docbook-xsl-${docbook-xsl-version}.zip"/>
 
+  <echo> "${fop.build.dir}"</echo>
+  <echo> "${saxon.jar.path}"</echo>
   <path id="saxon.classpath">
     <pathelement location="${saxon.jar.path}" />
   </path>
@@ -81,9 +75,13 @@ What tools do I need to use this build file?
 	</classpath>
     </available>
 
-<echo message="Testing for docbook-xsl: ${docbook-xsl-root}/xhtml/xref.xsl"/>
-    <available property="docbook-xsl-is-available"
-	       file="${docbook-xsl-root}/xhtml/xref.xsl"/>
+<echo message="Checking for docbook-xsl version ${docbook-xsl-version}"/>
+    <xmlproperty file="${docbook-xsl-root}/VERSION" prefix="scratch" />
+    <condition property="docbook-xsl-is-available">
+        <equals arg1="${scratch.xsl:stylesheet.fm:project.fm:Version}"
+                arg2="${docbook-xsl-version}"
+         />
+    </condition>
 
   </target>
 
@@ -187,10 +185,13 @@ directory for further information.
           unless="docbook-xsl-is-available">
       <fail message="docbook-xsl is not available.">
 
-The docbook-xsl package is not available. It is not possible to generate the
-documentation without it.
+The docbook-xsl package is not available or is not the correct version. 
+It is not possible to generate the documentation without it.
 
-To get it, call ant with the docbook-xsl-get target.
+To get it, call ant with target - docbook-xsl-get 
+          
+          build docbock-xsl-get
+          
       </fail>
   </target>
 
@@ -198,14 +199,21 @@ To get it, call ant with the docbook-xsl-get target.
           description="Download the docbook-xsl stylesheets."
  	  unless="docbook-xsl-is-available">
     <get src="${docbook-xsl-source-url}"
-         dest="${documentation.dir}/docbook-setup/${docbook-xsl}.zip"
+         dest="${documentation.dir}/docbook-setup/docbook-xsl-${docbook-xsl-version}.zip"
 	 usetimestamp="true"
 	 verbose="false"
 	 ignoreerrors="true"/>
 
-    <unzip src="${documentation.dir}/docbook-setup/${docbook-xsl}.zip"
+    <unzip src="${documentation.dir}/docbook-setup/docbook-xsl-${docbook-xsl-version}.zip"
            dest="${documentation.dir}/docbook-setup"/>
 
+    <!-- Make directory name version independent (deleting any old files) -->
+    <delete dir="${documentation.dir}/docbook-setup/docbook-xsl"/>
+    <move todir="${documentation.dir}/docbook-setup/docbook-xsl">
+    	<fileset dir="${documentation.dir}/docbook-setup/docbook-xsl-${docbook-xsl-version}"/>
+    </move>
+  	          
+	<!-- TFM - this needs updating -->
     <!-- Check availability again - if the get worked, it will be there. -->
     <available property="docbook-xsl-is-available"
 	       file="${docbook-xsl-root}/xhtml/xref.xsl"/>
@@ -285,7 +293,7 @@ To get it, call ant with the docbook-xsl-get target.
 
     <!-- The developers' cookbook -->
 
-    <antcall target="internal-dispatcher">    
+    <antcall target="internal-dispatcher">
       <!-- sub-dir of 'documentation' with xml file -->
       <param name="doc.subdir"  value="cookbook"/>
       <!-- DocBook filename without xml extension   -->
@@ -294,7 +302,7 @@ To get it, call ant with the docbook-xsl-get target.
 
     <!-- The quick guide -->
 
-    <antcall target="internal-dispatcher">    
+    <antcall target="internal-dispatcher">
       <!-- sub-dir of 'documentation' with xml file -->
       <param name="doc.subdir"  value="quick-guide"/>
       <!-- DocBook filename without xml extension   -->
@@ -303,7 +311,7 @@ To get it, call ant with the docbook-xsl-get target.
 
     <!-- The user manual -->
 
-    <antcall target="internal-dispatcher">    
+    <antcall target="internal-dispatcher">
       <!-- sub-dir of 'documentation' with xml file -->
       <param name="doc.subdir"  value="manual"/>
       <!-- DocBook filename without xml extension   -->
@@ -324,14 +332,13 @@ To get it, call ant with the docbook-xsl-get target.
   <!--   that the user invoked.                                            -->
   <!--                                                                     -->
   <!--   This target does the following:                                   -->
-  <!--     a. copies the file xxx.in to xxx.xml                            -->
   <!--     b. copies the used 'images' dir to 'source' dir                 -->
   <!--     c. calls 'create-XXXX' targets sequentially                     -->
   <!--     d. removes the previously copied 'images' dir                   -->
   <!--     e. removes the generated file                                   -->
   <!-- =================================================================== -->
 
-  <target name="internal-dispatcher">
+  <target name="internal-dispatcher" unless="skip-${doc.prefix}">
 
     <!-- We generate a property file. -->
     <copy file="${documentation.dir}/${doc.subdir}/${doc.prefix}.xml"
@@ -532,7 +539,7 @@ To get it, call ant with the docbook-xsl-get target.
       <arg value="${source.xml}.prep"/>
       <arg value="${source.xsl}"/>
     </java>
-
+  	
     <!-- Invoke Fop on our terms. This is the only place we need more memory
          (for the user manual), so we invoke as a forked process with a bigger
          VM.
@@ -548,6 +555,7 @@ To get it, call ant with the docbook-xsl-get target.
 	 not be included in the output. -->
 
     <echo message="Building PDF for ${source.fo}..."/>
+
     <java classname="org.apache.fop.apps.Fop"
           maxmemory="176M"
           fork="yes"
@@ -556,7 +564,7 @@ To get it, call ant with the docbook-xsl-get target.
       <classpath>
         <pathelement location="${jimi.jar.path}"/>
         <pathelement location="${fop.build.dir}/fop.jar"/>
-        <pathelement location="${fop.lib.dir}/avalon-framework-cvs-20020806.jar"/>
+      	<pathelement location="${fop.lib.dir}/avalon-framework-cvs-20020806.jar"/>
         <pathelement location="${fop.lib.dir}/batik.jar"/>
         <pathelement location="${fop.lib.dir}/xalan-2.4.1.jar"/>
         <pathelement location="${fop.lib.dir}/xml-apis.jar"/>

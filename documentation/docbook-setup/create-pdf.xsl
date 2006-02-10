@@ -32,7 +32,7 @@
 	exclude-result-prefixes="doc"
 	extension-element-prefixes="saxon xalanredirect lxslt">
 
-	<xsl:import href="docbook-xsl-1.66.1/fo/docbook.xsl"/>
+	<xsl:import href="docbook-xsl/fo/docbook.xsl"/>
 	<xsl:import href="commonsettings.xsl"/>
 
         <!-- Added by Jeremy Bennett for 1.49 XSL stylesheets -->
@@ -42,7 +42,7 @@
         <xsl:variable name="paper.type" select="A4"/>
         <xsl:variable name="default.table.width" select="'15cm'"/>
         <xsl:variable name="draft.watermark.image"
-                      select="docbook-xsl-1.66.1/images/draft.png"/>
+                      select="docbook-xsl/images/draft.png"/>
                       
   <!-- Added by MVW -->
 
@@ -51,5 +51,10 @@ book toc
 part nop
 chapter nop
   </xsl:variable>
+
+  <!-- variablelist is used with long "variables" consisting
+    of methods and their parameters - lay them out stacked instead of
+    side-by-side so that they don't overlap -->
+  <xsl:variable name="variablelist.as.blocks" select="1"/>
 
 </xsl:stylesheet>
