@@ -49,7 +49,7 @@ public class TestProfileJava extends TestCase {
     /**
      * Test whether we can load default model (profile). ProfileJava will throw
      * an exception for an invalid profile model, but just create and return an
-     * empty model to return if the file for the profile doesn't exist. Check
+     * empty model if the file for the profile doesn't exist. Check
      * for both failure modes.
      * 
      * @throws ProfileException
