@@ -38,7 +38,7 @@ public class TestExtensionMechanismsFactory extends TestCase {
      */
     private static String[] allModelElements = {
 	"Stereotype",
-//        "TagDefinition",
+        "TagDefinition",
 	"TaggedValue",
     };
 
