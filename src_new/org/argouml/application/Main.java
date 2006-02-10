@@ -291,9 +291,12 @@ public class Main {
         }
         
         if (!projectLoaded) {
-            // The following will create an empty project as a side effect
-            // if none exists
-            ProjectManager.getManager().getCurrentProject();
+            // Although this looks redundant, it's needed to get all
+            // the initialization state set correctly.  
+            // Too many side effects as part of initialization!
+            ProjectManager.getManager().setCurrentProject(
+                    ProjectManager.getManager().getCurrentProject());
+            ProjectManager.getManager().setNeedsSave(false);
         }
 
         st.mark("set project");
