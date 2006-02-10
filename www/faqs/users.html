@@ -72,6 +72,7 @@ with other users?</a></li>
 
 <H4>XMI and other Formats</H4>
 <ul>
+<li><a href="#xmiload_link">Why won't my XMI file load?</a>
 <li><a href="#xmia_link">Does ArgoUML save .xmi files?</a>
 <li><a href="#xmib_link">How do I import an .xmi into ArgoUML and what formats are known to be supported?</a>
 <li><a href="#xmi_newer">Currently ArgoUML exports to XMI version 1.0 only, why?</a>
@@ -663,7 +664,32 @@ or create additional examples, the contribution would be welcome.
 
 <H3>XMI and other formats</H3>
 <DL>
-<DT><a name="xmia_link">Does ArgoUML save XMI files?</a>
+<DT><a name="xmiload_link">Why won't my XMI file load?</a>
+<DD>There are several possible reasons for ArgoUML to be unable to load 
+your file.  Some of them include:
+  <ul>
+    <li><em>Wrong UML/XMI version</em> - ArgoUML supports UML 1.3 or 1.4 stored
+    in XMI 1.0, 1.1, or 1.2 files. It's native format is UML 1.4, so
+    that's the best version to choose if you have a choice. Similarly
+    XMI 1.1 or 1.2 will provide the best information transfer. Versions
+    of UML greater than 1.4 and versions of XMI greater than 1.2 are 
+    <b>not</b> supported.</li>
+
+    <li><em>Proprietary vendor format</em> - Some tools write non-standard XMI
+    files either by default or always. Here are some tips for getting
+    standard files from a few known tools:
+    <ul>
+      <li>Poseidon - Turn <b>off</b> the option <i>Save with diagram
+      data</i> in the Export Project to XMI dialog.</li>
+      <li>MagicDraw - Turn <b>on</b> the <i>Rich XMI</i> option on the
+      Save As dialog and select either XMI 1.1 or XMI 1.2. Also, if your
+      project references any external modules such as the Magic Draw
+      profile, you'll need to import those so that ArgoUML can reference
+      them. Right click on the module in the explorer pane and select
+      Modules-&gt;Import.</li>
+    </ul>
+    </li>
+  </ul><DT><a name="xmia_link">Does ArgoUML save XMI files?</a>
 <DD>Yes.  ArgoUML versions through 0.18.1 will export XMI 1.0 files containing models
     conforming to the UML 1.3 metamodel.  Beginning with ArgoUML 0.20, XMI 1.2
     files are exported conforming to the UML 1.4 metamodel.
