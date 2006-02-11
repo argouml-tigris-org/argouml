@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.Action;
+import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -464,6 +465,8 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem exitItem = file.add(new ActionExit());
         setMnemonic(exitItem, "Exit");
         setAccelerator(exitItem, altF4);
+        
+        makeButtonsTransparent(fileToolbar);
     }
 
     /**
@@ -662,6 +665,8 @@ public class GenericArgoMenuBar extends JMenuBar
 
         appendPluggableMenus(createDiagrams,
 			     PluggableMenu.KEY_CREATE_DIAGRAMS);
+        
+        makeButtonsTransparent(createDiagramToolbar);
     }
 
     /**
@@ -811,6 +816,7 @@ public class GenericArgoMenuBar extends JMenuBar
                     ProjectBrowser.getInstance().getRemoveFromDiagramAction());
             editToolbar.add(NavigateTargetBackAction.getInstance());
             editToolbar.add(NavigateTargetForwardAction.getInstance());
+            makeButtonsTransparent(editToolbar);
         }
         return editToolbar;
     }
@@ -835,6 +841,7 @@ public class GenericArgoMenuBar extends JMenuBar
 					   Boolean.TRUE);
             viewToolbar.add(new ActionFind());
             viewToolbar.add(new ZoomSliderButton());
+            makeButtonsTransparent(viewToolbar);
         }
         return viewToolbar;
     }
@@ -878,6 +885,18 @@ public class GenericArgoMenuBar extends JMenuBar
 	return tools;
     }
 
+    /*
+     * Make buttons of a toolbar transparent so the gradient background
+     * shows through
+     */
+    private void makeButtonsTransparent(JToolBar toolbar) {
+        // Make the buttons transparent so gradient backgrounds show through
+        for (int i = 0; i < toolbar.getComponentCount(); i++) {
+            JButton b = (JButton) toolbar.getComponent(i);
+            b.setOpaque(false);
+        }
+    }
+    
     /**
      * The UID.
      */
