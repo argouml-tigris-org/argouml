@@ -155,7 +155,6 @@ Property files to be searched:
     </path>
 
     <path id="argo.compile.classpath">
-      <pathelement location="${jmi.jar.path}"/>
       <pathelement location="${ocl-argo.jar.path}"/>
       <pathelement location="${gef.jar.path}"/>
       <pathelement location="${log4j.jar.path}"/>
@@ -572,12 +571,11 @@ Property files to be searched:
   <!-- =================================================================== -->
   <target name="package" depends="jar"
           description="Prepare all jar files, both built and just delivered.">
-    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar log4j.jar ocl-argo.jar toolbar.jar jmi.jar swidgets.jar commons-logging.jar argouml-model.jar"/>
+    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar log4j.jar ocl-argo.jar toolbar.jar swidgets.jar commons-logging.jar argouml-model.jar"/>
     <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar"/>
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar"/>
     <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
     <copy file="${commons-logging.jar.path}" tofile="${argo.build.dir}/commons-logging.jar"/>
-    <copy file="${jmi.jar.path}" tofile="${argo.build.dir}/jmi.jar"/>
     <copy file="${swidgets.jar.path}" tofile="${argo.build.dir}/swidgets.jar"/>
     <copy file="${toolbar.jar.path}" tofile="${argo.build.dir}/toolbar.jar"/>
     <copy file="${ocl-argo.jar.path}" tofile="${argo.build.dir}/ocl-argo.jar"/>
