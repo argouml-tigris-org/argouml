@@ -281,6 +281,10 @@ public final class ProjectBrowser
         });
     }
 
+    public void addPanel(Component comp, Object obj) {
+        workAreaPane.add(comp, obj);
+    }
+    
     /**
      * Singleton retrieval method for the projectbrowser. Lazely instantiates
      * the projectbrowser.
