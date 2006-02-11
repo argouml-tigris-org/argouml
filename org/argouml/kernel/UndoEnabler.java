@@ -37,7 +37,7 @@ public final class UndoEnabler {
      * Do not commit to CVS in this state.
      * TODO: Implement!
      */
-    public static final boolean ENABLED = false;
+    public static boolean enabled = false;
 
     /**
      * The constructor.

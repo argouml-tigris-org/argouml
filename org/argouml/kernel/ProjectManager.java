@@ -259,7 +259,7 @@ public final class ProjectManager
         creatingCurrentProject = false;
 
         UndoManager.getInstance().empty();
-        if (!UndoEnabler.ENABLED) {
+        if (!UndoEnabler.enabled) {
             UndoManager.getInstance().setUndoMax(0);
         }
         Model.getPump().startPumpingEvents();
