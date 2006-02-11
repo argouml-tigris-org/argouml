@@ -485,17 +485,19 @@ public class GenericArgoMenuBar extends JMenuBar
         edit = add(new JMenu(menuLocalize("Edit")));
         setMnemonic(edit, "Edit");
 
-        if (UndoEnabler.ENABLED) {
-            JMenuItem undoItem =
-                edit.add(ProjectBrowser.getInstance().getUndoAction());
-            setMnemonic(undoItem, "Undo");
-            setAccelerator(undoItem, ctrlZ);
+        JMenuItem undoItem =
+            edit.add(ProjectBrowser.getInstance().getUndoAction());
+        setMnemonic(undoItem, "Undo");
+        setAccelerator(undoItem, ctrlZ);
+        undoItem.setVisible(UndoEnabler.enabled);
 
-            JMenuItem redoItem =
-                edit.add(ProjectBrowser.getInstance().getRedoAction());
-            setMnemonic(redoItem, "Redo");
-            setAccelerator(redoItem, ctrlY);
+        JMenuItem redoItem =
+            edit.add(ProjectBrowser.getInstance().getRedoAction());
+        setMnemonic(redoItem, "Redo");
+        setAccelerator(redoItem, ctrlY);
+        redoItem.setVisible(UndoEnabler.enabled);
 
+        if (UndoEnabler.enabled) {
             edit.addSeparator();
         }
 
