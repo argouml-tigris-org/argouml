@@ -27,7 +27,8 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 
 /**
@@ -52,8 +53,12 @@ public class ActionRemoveArgument extends AbstractActionRemoveElement {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        Model.getCommonBehaviorHelper().removeActualArgument(getTarget(),
-                getObjectToRemove());
+        if (getObjectToRemove() != null) {
+            Project p = ProjectManager.getManager().getCurrentProject();
+            Object o = getObjectToRemove();
+            setObjectToRemove(null);
+            p.moveToTrash(o);
+        }
     }
 
 }

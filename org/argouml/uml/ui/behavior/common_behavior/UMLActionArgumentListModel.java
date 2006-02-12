@@ -30,7 +30,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 public class UMLActionArgumentListModel extends UMLModelElementListModel2 {
 
     public UMLActionArgumentListModel() {
-        super("arguments");
+        super("actualArgument");
     }
 
     protected void buildModelList() {

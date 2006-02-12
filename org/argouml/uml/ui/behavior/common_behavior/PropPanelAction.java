@@ -24,13 +24,21 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.TitledBorder;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLExpressionBodyField;
@@ -103,11 +111,7 @@ public abstract class PropPanelAction extends PropPanelModelElement {
                 scriptPanel = new JPanel(new GridLayout2());
                 scriptPanel.setBorder(new TitledBorder(Translator
                                 .localize("label.script")));
-                // recurrencePanel.add(addField(Translator.localize("label.expression"),
-                // new JScrollPane(
-                // new UMLExpressionBodyField(expressionModel, true))));
-                // recurrencePanel.add(addField(Translator.localize("label.language"),
-                // new UMLExpressionLanguageField(expressionModel, false)));
+
                 scriptPanel.add(new JScrollPane(new UMLExpressionBodyField(
                                 scriptModel, true)));
                 scriptPanel.add(new UMLExpressionLanguageField(scriptModel,
@@ -140,6 +144,7 @@ public abstract class PropPanelAction extends PropPanelModelElement {
                                 argumentsScroll);
 
                 addAction(new ActionNavigateContainerElement());
+                addAction(new ActionCreateArgument());
                 addAction(new ActionNewStereotype());
                 addAction(new ActionDeleteSingleModelElement());
 
@@ -166,10 +171,10 @@ public abstract class PropPanelAction extends PropPanelModelElement {
         public JScrollPane getRecurrenceScroll() {
                 if (recurrenceScroll == null) {
                         recurrenceScroll = new JScrollPane(
-                                        new UMLExpressionBodyField(
-                                                        recurrenceModel, true),
-                                        JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-                                        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                                new UMLExpressionBodyField(
+                                              recurrenceModel, true),
+                                ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
+                                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 }
                 return recurrenceScroll;
         }
@@ -181,18 +186,30 @@ public abstract class PropPanelAction extends PropPanelModelElement {
                 return argumentsScroll;
         }
 
-        /*
-         * public void initialize() { _expressionModel = new UMLExpressionModel(
-         * this, (Class) ModelFacade.ACTION, "script", (Class)
-         * ModelFacade.ACTION_EXPRESSION, "getScript", "setScript" );
-         * _recurrenceModel = new UMLExpressionModel( this, (Class)
-         * ModelFacade.ACTION, "recurrence", (Class)
-         * ModelFacade.ITERATION_EXPRESSION, "getRecurrence", "setRecurrence" );
-         * _argumentsList = new UMLMutableLinkedList(new
-         * UMLActionActualArgumentListModel(), null,
-         * ActionNewArgument.SINGLETON, ActionRemoveArgument.SINGLETON, false);
-         * _argumentsList.setForeground(Color.blue);
-         * _argumentsList.setVisibleRowCount(5);
-         * _argumentsList.setFont(smallFont); }
-         */
+}
+
+class ActionCreateArgument extends AbstractActionNewModelElement {
+
+    /**
+     * Constructor for ActionNewArgument.
+     */
+    public ActionCreateArgument() {
+        super("button.new-argument");
+        putValue(Action.NAME, 
+                Translator.localize("button.new-argument"));
+        putValue(Action.SMALL_ICON, 
+                ResourceLoaderWrapper.lookupIcon("NewParameter"));
+    }
+
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+        Object t = TargetManager.getInstance().getTarget();
+        if (Model.getFacade().isAAction(t)) {
+            Object argument = Model.getCommonBehaviorFactory().createArgument();
+            Model.getCommonBehaviorHelper().addActualArgument(t, argument);
+            TargetManager.getInstance().setTarget(argument);
+        }
+    }
 }
