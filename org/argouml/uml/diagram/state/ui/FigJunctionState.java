@@ -61,35 +61,24 @@ public class FigJunctionState extends FigStateVertex {
     /** constructor
      */
     public FigJunctionState() {
-	setBigPort(new FigPoly(Color.cyan, Color.cyan));
-	head = new FigPoly(Color.black, Color.white);
-	getBigPort().addPoint(X, Y);
-	getBigPort().addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
-	getBigPort().addPoint(X, Y + HEIGHT);
-	getBigPort().addPoint(X - WIDTH / 2, Y + HEIGHT / 2);
+        setEditable(false);
+        setBigPort(new FigPoly(Color.cyan, Color.cyan));
+        head = new FigPoly(Color.black, Color.white);
+        getBigPort().addPoint(X, Y);
+        getBigPort().addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
+        getBigPort().addPoint(X, Y + HEIGHT);
+        getBigPort().addPoint(X - WIDTH / 2, Y + HEIGHT / 2);
+        
+        head.addPoint(X, Y);
+        head.addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
+        head.addPoint(X, Y + HEIGHT);
+        head.addPoint(X - WIDTH / 2, Y + HEIGHT / 2);
+        head.addPoint(X, Y);
 
-	head.addPoint(X, Y);
-	head.addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
-	head.addPoint(X, Y + HEIGHT);
-	head.addPoint(X - WIDTH / 2, Y + HEIGHT / 2);
-	head.addPoint(X, Y);
+        addFig(getBigPort());
+        addFig(head);
 
-	// Add the following to allow name editing on the diagram
-/*        setNameFig(new FigText(X + 10, Y + 22, 0, 21, true));
-        getNameFig().setFilled(false);
-        getNameFig().setLineWidth(0);
-        getNameFig().setFont(getLabelFont());
-        getNameFig().setTextColor(Color.black);
-        getNameFig().setMultiLine(false);
-        getNameFig().setAllowsTab(false);
-        getNameFig().setJustificationByName("center");
-*/
-	// add Figs to the FigNode in back-to-front order
-	addFig(getBigPort());
-	addFig(head);
-//        addFig(getNameFig());
-
-	setBlinkPorts(false); //make port invisble unless mouse enters
+        setBlinkPorts(false); //make port invisble unless mouse enters
     }
 
     /**
@@ -184,16 +173,6 @@ public class FigJunctionState extends FigStateVertex {
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) { }
-
-    /**
-     * Block any textentry on the diagram - there is nothing to edit!
-     *
-     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-     */
-    // TODO: Review - should be keyTyped()or do we need this at all?
-    // Could we set readyToEdit=false?? - Bob
-    public void keyPressed(KeyEvent ke) { }
-
 
     /**
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)

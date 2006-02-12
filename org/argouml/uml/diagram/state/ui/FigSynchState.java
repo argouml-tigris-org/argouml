@@ -66,6 +66,7 @@ public class FigSynchState extends FigStateVertex {
      * The constructor.
      */
     public FigSynchState() {
+        setEditable(false);
 
         setBigPort(new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan,
                 Color.cyan));
@@ -210,15 +211,4 @@ public class FigSynchState extends FigStateVertex {
      */
     public void mouseClicked(MouseEvent me) {
     }
-
-    /**
-     * Block any textentry on the diagram - there is nothing to edit!
-     *
-     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-     */
-    // TODO: Review - should be keyTyped()or do we need this at all?
-    // Could we set readyToEdit=false?? - Bob
-    public void keyPressed(KeyEvent ke) {
-    }
-
 } /* end class FigSynchState */

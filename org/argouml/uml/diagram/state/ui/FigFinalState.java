@@ -67,6 +67,7 @@ public class FigFinalState extends FigStateVertex {
      */
     public FigFinalState() {
         super();
+        setEditable(false);
         Color handleColor = Globals.getPrefs().getHandleColor();
         FigCircle bigPort =
             new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.white);
@@ -206,16 +207,6 @@ public class FigFinalState extends FigStateVertex {
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
-    }
-
-    /**
-     * Block any textentry on the diagram - there is nothing to edit!
-     *
-     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-     */
-    // TODO: Review - should be keyTyped()or do we need this at all?
-    // Could we set readyToEdit=false?? - Bob
-    public void keyPressed(KeyEvent ke) {
     }
 
     /**

@@ -63,6 +63,7 @@ public class FigInitialState extends FigStateVertex {
      * Main constructor
      */
     public FigInitialState() {
+        setEditable(false);
         FigCircle bigPort =
             new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan);
         head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.black);
@@ -202,16 +203,6 @@ public class FigInitialState extends FigStateVertex {
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
-    }
-
-    /**
-     * Block keypresses. There is nothing to enter on the diagram.
-     *
-     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-     */
-    // TODO: Review - should be keyTyped()or do we need this at all?
-    // Could we set readyToEdit=false?? - Bob
-    public void keyPressed(KeyEvent ke) {
     }
 
     static final long serialVersionUID = 6572261327347541373L;
