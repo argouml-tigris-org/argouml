@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -195,23 +195,23 @@ public class SettingsTabModules extends SettingsTabHelper {
 	    notYetLoadedPanel = null;
 	}
 
-	notYetLoadedPanel = new JPanel();
+        Container allNotYetLoaded = Box.createVerticalBox();
 
 	Iterator iter =
 	    ModuleLoader2.notYetLoadedModules().entrySet().iterator();
+        boolean seen = false;
 	while (iter.hasNext()) {
 	    Map.Entry entry = (Map.Entry) iter.next();
 	    final String name = (String) entry.getKey();
 	    final String classname = (String) entry.getValue();
 
-	    JLabel label = new JLabel(name);
-	    JButton button = new JButton("Attempt to load");
+	    JButton button = new JButton(name);
 	    button.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent event) {
 		    try {
 		        getClass().getClassLoader().loadClass(classname);
-                ModuleLoader2.addClass(classname);
-                handleSettingsTabRefresh();
+		        ModuleLoader2.addClass(classname);
+		        handleSettingsTabRefresh();
 		    } catch (ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(
 				notYetLoadedPanel,
@@ -224,15 +224,19 @@ public class SettingsTabModules extends SettingsTabHelper {
 		}
 	    });
 
-	    // button.setLabel(label);
-
-	    Container box = Box.createHorizontalBox();
-	    box.add(label);
-	    box.add(button);
-	    notYetLoadedPanel.add(box);
+	    allNotYetLoaded.add(button);
+            seen = true;
 	}
 
-	add(notYetLoadedPanel, BorderLayout.SOUTH);
+        if (seen) {
+            notYetLoadedPanel = new JPanel();
+            notYetLoadedPanel.setLayout(new BorderLayout());
+            notYetLoadedPanel.add(new JLabel("Attempt to load:"),
+                                  BorderLayout.NORTH);
+            notYetLoadedPanel.add(allNotYetLoaded, BorderLayout.CENTER);
+            add(notYetLoadedPanel, BorderLayout.SOUTH);
+        }
+        validate();
     }
 
     /**
