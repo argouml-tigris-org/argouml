@@ -61,6 +61,7 @@ public class FigJoinState extends FigStateVertex {
      * The main constructor.
      */
     public FigJoinState() {
+        setEditable(false);
         setBigPort(new FigRect(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan));
         head = new FigRect(X, Y, WIDTH, HEIGHT, Color.black, Color.black);
         // add Figs to the FigNode in back-to-front order
@@ -175,14 +176,6 @@ public class FigJoinState extends FigStateVertex {
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
-    }
-
-    /**
-     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-     */
-    // TODO: Review - should be keyTyped()or do we need this at all?
-    // Could we set readyToEdit=false?? - Bob
-    public void keyPressed(KeyEvent ke) {
     }
 
     static final long serialVersionUID = 2075803883819230367L;

@@ -278,6 +278,10 @@ public abstract class FigNodeModelElement
     private boolean pathVisible = false;
 
     /**
+     * If the contains text to be edited by the user.
+     */
+    private boolean editable = true;
+    /**
      * The main constructor.
      *
      */
@@ -1042,6 +1046,9 @@ public abstract class FigNodeModelElement
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {
+        if (!editable) {
+            return;
+        }
         if (!readyToEdit) {
             if (Model.getFacade().isAModelElement(getOwner())) {
                 Model.getCoreHelper().setName(getOwner(), "");
@@ -1061,6 +1068,9 @@ public abstract class FigNodeModelElement
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
     public void keyReleased(KeyEvent ke) {
+        if (!editable) {
+            return;
+        }
         if (!readyToEdit) {
             if (Model.getFacade().isAModelElement(getOwner())) {
                 Model.getCoreHelper().setName(getOwner(), "");
@@ -1080,6 +1090,9 @@ public abstract class FigNodeModelElement
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
     public void keyTyped(KeyEvent ke) {
+        if (!editable) {
+            return;
+        }
         if (!readyToEdit) {
             if (Model.getFacade().isAModelElement(getOwner())) {
                 Model.getCoreHelper().setName(getOwner(), "");
@@ -1701,6 +1714,24 @@ public abstract class FigNodeModelElement
      */
     protected static int getPopupAddOffset() {
         return popupAddOffset;
+    }
+
+    /**
+     * Determine if this node can be edited.
+     * @return
+     */
+    public boolean isEditable() {
+        return editable;
+    }
+
+    /**
+     * By default a node is directly editable by simply selecting
+     * that node and starting to type.
+     * Should a subclass of FigNodeModelElement not desire this behaviour
+     * then it should call setEditable(false) in its constructor.
+     */
+    protected void setEditable(boolean editable) {
+        this.editable = editable;
     }
 
 } /* end class FigNodeModelElement */

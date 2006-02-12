@@ -618,12 +618,7 @@ public abstract class FigEdgeModelElement
     /**
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
-    // TODO: Review - should be keyTyped()??? - Bob
     public void keyPressed(KeyEvent ke) {
-        if (ke.isConsumed())
-            return;
-        if (name != null && canEdit(name))
-            name.keyPressed(ke);
     }
 
     /**
@@ -638,6 +633,10 @@ public abstract class FigEdgeModelElement
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
     public void keyTyped(KeyEvent ke) {
+        if (ke.isConsumed())
+            return;
+        if (name != null && canEdit(name))
+            name.keyPressed(ke);
     }
 
     ////////////////////////////////////////////////////////////////

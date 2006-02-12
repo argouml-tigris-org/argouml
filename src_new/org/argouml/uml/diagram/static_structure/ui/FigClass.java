@@ -561,47 +561,6 @@ public class FigClass extends FigClassifierBox
     }
 
     ////////////////////////////////////////////////////////////////
-    // user interaction methods
-
-    /**
-     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-     */
-    // TODO: Review - should be keyTyped() - Bob
-    public void keyPressed(KeyEvent ke) {
-        int key = ke.getKeyCode();
-        if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
-            CompartmentFigText ft = unhighlight();
-            if (ft != null) {
-                int i = new Vector(getAttributesFig().getFigs()).indexOf(ft);
-                FigGroup fg = getAttributesFig();
-                if (i == -1) {
-                    i = new Vector(getOperationsFig().getFigs()).indexOf(ft);
-                    fg = getOperationsFig();
-                }
-                if (i != -1) {
-                    if (key == KeyEvent.VK_UP) {
-                        ft = (CompartmentFigText)
-			    getPreviousVisibleFeature(fg, ft, i);
-                    } else {
-                        ft = (CompartmentFigText)
-			    getNextVisibleFeature(fg, ft, i);
-                    }
-                    if (ft != null) {
-                        ft.setHighlighted(true);
-                        highlightedFigText = ft;
-                        return;
-                    }
-                }
-            }
-        } else if (key == KeyEvent.VK_ENTER && highlightedFigText != null) {
-            highlightedFigText.startTextEditor(ke);
-            ke.consume();
-            return;
-        }
-        super.keyPressed(ke);
-    }
-
-    ////////////////////////////////////////////////////////////////
     // internal methods
 
     /**

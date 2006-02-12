@@ -94,6 +94,7 @@ import org.tigris.gef.undo.UndoManager;
 import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Orientation;
+import org.tigris.swidgets.SplitterLayout;
 import org.tigris.swidgets.Vertical;
 import org.tigris.toolbar.layouts.DockBorderLayout;
 
@@ -281,10 +282,6 @@ public final class ProjectBrowser
         });
     }
 
-    public void addPanel(Component comp, Object obj) {
-        workAreaPane.add(comp, obj);
-    }
-    
     /**
      * Singleton retrieval method for the projectbrowser. Lazely instantiates
      * the projectbrowser.
@@ -400,15 +397,15 @@ public final class ProjectBrowser
                 DetailsPane detailsPane = (DetailsPane) entry.getValue();
                 TargetManager.getInstance().addTargetListener(detailsPane);
             }
-            workAreaPane.add((Component) entry.getValue(), position);
+            addPanel((Component) entry.getValue(), position);
         }
-        workAreaPane.add(explorerPane, BorderSplitPane.WEST);
+        addPanel(explorerPane, BorderSplitPane.WEST);
 
         getTab(TabToDo.class); // TODO: If this doesn't have side effects,
                                //       it can be removed alltogether.
         //todo.setTree(_todoPane);
-        workAreaPane.add(todoPane, BorderSplitPane.SOUTHWEST);
-        workAreaPane.add(editorPane);
+        addPanel(todoPane, BorderSplitPane.SOUTHWEST);
+        addPanel(editorPane, BorderSplitPane.CENTER);
         // Toolbar boundry is the area between the menu and the status
         // bar. It contains the workarea at centre and the toolbar
         // position north, south, east or west.
@@ -423,6 +420,15 @@ public final class ProjectBrowser
         toolbarBoundry.add(workAreaPane, BorderLayout.CENTER);
 
         return toolbarBoundry;
+    }
+    
+    /**
+     * Add a panel to a split pane area
+     * @param comp the panel to add
+     * @param obj the position (BorderSplitPane.EAST etc)
+     */
+    void addPanel(Component comp, Object obj) {
+        workAreaPane.add(comp, obj);
     }
 
     /**

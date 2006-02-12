@@ -332,6 +332,11 @@ public final class ProjectManager
             public void dispose() {
                 modelMemento.dispose();
             }
+            
+            public String toString() {
+                return (isStartChain() ? "*" : " ") + "ModelMemento " + modelMemento;
+            }
+
         };
         UndoManager.getInstance().addMemento(wrappedMemento);
     }

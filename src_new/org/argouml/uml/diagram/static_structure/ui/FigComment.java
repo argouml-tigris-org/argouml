@@ -309,8 +309,24 @@ public class FigComment
     /**
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
-    // TODO: Review - should be keyTyped()? - Bob
     public void keyPressed(KeyEvent ke) {
+    }
+
+    /**
+     * Not used, do nothing.
+     *
+     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+     */
+    public void keyReleased(KeyEvent ke) {
+    }
+
+    /**
+     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+     */
+    public void keyTyped(KeyEvent ke) {
+        if (Character.isISOControl(ke.getKeyChar())) {
+            return;
+        }
         if (!readyToEdit) {
             if (Model.getFacade().isAModelElement(getOwner())) {
                 storeBody("");
@@ -326,21 +342,7 @@ public class FigComment
         if (getOwner() == null) {
             return;
         }
-        bodyTextFig.keyPressed(ke);
-    }
-
-    /**
-     * Not used, do nothing.
-     *
-     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
-     */
-    public void keyReleased(KeyEvent ke) {
-    }
-
-    /**
-     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
-     */
-    public void keyTyped(KeyEvent ke) {
+        bodyTextFig.keyTyped(ke);
     }
 
     ////////////////////////////////////////////////////////////////

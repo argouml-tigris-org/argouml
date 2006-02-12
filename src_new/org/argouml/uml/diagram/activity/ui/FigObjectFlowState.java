@@ -333,8 +333,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     /**
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
-    public void keyPressed(KeyEvent ke) {
-        // TODO: Review - should be keyTyped()??? - Bob
+    public void keyTyped(KeyEvent ke) {
         if (!isReadyToEdit()) {
             if (Model.getFacade().isAModelElement(getOwner())) {
                 updateClassifierText();
@@ -348,7 +347,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         if (ke.isConsumed() || getOwner() == null) {
             return;
         }
-        classifier.keyPressed(ke);
+        classifier.keyTyped(ke);
     }
 
     /**

@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
@@ -1038,67 +1037,6 @@ public class FigUseCase extends FigNodeModelElement
     public void mouseExited(MouseEvent me) {
         super.mouseExited(me);
         unhighlight();
-    }
-
-    /**
-     * Deal with a key being pressed.<p>
-     *
-     * We deal with UP and DOWN, and use these to move through the list
-     *   of selected extension points. We deal with ENTER and use that to start
-     *   the text editor.<p>
-     *
-     * @param ke  The key event that caused us to be invoked.
-     */
-    // TODO: Review - should be keyTyped()??? - Bob
-    public void keyPressed(KeyEvent ke) {
-        int key = ke.getKeyCode();
-
-        // For UP and DOWN cycle through the extension points.
-
-        if ((key == KeyEvent.VK_UP) || (key == KeyEvent.VK_DOWN)) {
-
-            // Find the currently highlighted EP (if any) and unhighlight it
-
-            CompartmentFigText ft = unhighlight();
-
-            if (ft != null) {
-                // TODO: in future version of GEF call getFigs returning array
-                int i = new Vector(epVec.getFigs()).indexOf(ft);
-
-                // If we found one of the current EP's move forward or
-                // backwards as appopriate, and set a newly selected EP as
-                // highlighted
-
-                if (i != -1) {
-                    if (key == KeyEvent.VK_UP) {
-                        ft = getPreviousVisibleFeature(epVec, i);
-                    } else {
-                        ft = getNextVisibleFeature(epVec, i);
-                    }
-
-                    if (ft != null) {
-                        ft.setHighlighted(true);
-                        highlightedFigText = ft;
-                        return;
-                    }
-                }
-            }
-        }
-
-        // For ENTER start editing any text that is highlighted, remembering to
-        // consume the ENTER event.
-
-        else if ((key == KeyEvent.VK_ENTER) && (highlightedFigText != null)) {
-            highlightedFigText.startTextEditor(ke);
-            ke.consume();
-            return;
-        }
-
-        // Anything else defer to our parent.
-
-        else {
-            super.keyPressed(ke);
-        }
     }
 
     ///////////////////////////////////////////////////////////////////////////

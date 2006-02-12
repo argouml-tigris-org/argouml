@@ -300,11 +300,6 @@ public class TabResults
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent e) {
-        // TODO: Review - should be keyTyped()??? - Bob
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            e.consume();
-            myDoubleClick(e.getSource());
-        }
     }
 
     /**
@@ -317,6 +312,10 @@ public class TabResults
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
     public void keyTyped(KeyEvent e) {
+        if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+            e.consume();
+            myDoubleClick(e.getSource());
+        }
     }
 
     ////////////////////////////////////////////////////////////////

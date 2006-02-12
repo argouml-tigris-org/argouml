@@ -66,6 +66,7 @@ public abstract class FigHistoryState extends FigStateVertex {
      * Main constructor
      */
     public FigHistoryState() {
+        setEditable(false);
         setBigPort(new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan));
         head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.white);
         h = new FigText(X, Y, WIDTH - 10, HEIGHT - 10);
@@ -192,16 +193,6 @@ public abstract class FigHistoryState extends FigStateVertex {
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
-    }
-
-    /**
-     * Block any textentry on the diagram - there is nothing to edit!
-     *
-     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-     */
-    // TODO: Review - should be keyTyped()or do we need this at all?
-    // Could we set readyToEdit=false?? - Bob
-    public void keyPressed(KeyEvent ke) {
     }
 
     static final long serialVersionUID = 6572261327347541373L;

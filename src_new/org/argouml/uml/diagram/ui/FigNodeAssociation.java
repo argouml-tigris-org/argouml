@@ -70,6 +70,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
      * The constructor.
      */
     public FigNodeAssociation() {
+        setEditable(false);
         setBigPort(new FigDiamond(0, 0, 70, 70, Color.cyan, Color.cyan));
         head = new FigDiamond(0, 0, 70, 70, Color.black, Color.white);
         // Add the following to allow name editing on the diagram
@@ -282,17 +283,6 @@ public class FigNodeAssociation extends FigNodeModelElement {
             mutableGraphModel.removeEdge(owner);
         }
     }
-    ////////////////////////////////////////////////////////////////
-    // Event handlers
-
-    /**
-     * Block any textentry on the diagram - there is nothing to edit!
-     *
-     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-     */
-    // TODO: Review - should be keyTyped()??? - Bob
-    public void keyPressed(KeyEvent ke) { }
-
 } /* end class FigNodeAssociation */
 
 
