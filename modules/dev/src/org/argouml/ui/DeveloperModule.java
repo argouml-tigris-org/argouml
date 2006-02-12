@@ -25,7 +25,6 @@
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JMenu;
@@ -34,7 +33,6 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.kernel.UndoEnabler;
@@ -44,15 +42,10 @@ import org.tigris.gef.undo.UndoManager;
 import org.tigris.gef.undo.UndoManagerWrapper;
 
 /**
- * Module that registers itself to the Tools menu.<p>
- *
- * This is primarily designed to be able to test ModuleLoader2.<p>
- *
- * @author Linus Tolke
- * @since  0.17.1
+ * A module to provide debug windows for developers of ArgoUML
+ * @author Bob Tarling
  */
-public final class DeveloperModule extends UMLAction
-    implements ModuleInterface {
+public final class DeveloperModule implements ModuleInterface {
     
     /**
      * Logger.
@@ -60,11 +53,7 @@ public final class DeveloperModule extends UMLAction
     private static final Logger LOG =
         Logger.getLogger(DeveloperModule.class);
 
-    /**
-     * The menu item.
-     */
-    private JMenuItem menuItem;
-    JPanel undoLogPanel;
+    private JPanel undoLogPanel;
 
     UndoManagerWrapper um = new UndoManagerWrapper();
     
@@ -72,10 +61,6 @@ public final class DeveloperModule extends UMLAction
      * This is creatable from the module loader.
      */
     public DeveloperModule() {
-	super("Test entry", false);
-
-	menuItem = new JMenuItem("Testit");
-	menuItem.addActionListener(this);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -85,11 +70,12 @@ public final class DeveloperModule extends UMLAction
      * @see ModuleInterface#enable()
      */
     public boolean enable() {
+        // TODO: Add a checkbox menu item to hide/show undo panel
+        
         UndoManager.setInstance(um);
         // Hack into the edit menu and make the 
         GenericArgoMenuBar menubar =
             (GenericArgoMenuBar) ProjectBrowser.getInstance().getJMenuBar();
-        menubar.getTools().add(menuItem);
         JMenu editMenu = ProjectBrowser.getInstance().getJMenuBar().getMenu(1);
         
         editMenu.getMenuComponent(0).setVisible(true);
@@ -111,7 +97,6 @@ public final class DeveloperModule extends UMLAction
     public boolean disable() {
         GenericArgoMenuBar menubar =
             (GenericArgoMenuBar) ProjectBrowser.getInstance().getJMenuBar();
-        menubar.getTools().remove(menuItem);
         UndoEnabler.enabled = false;
         return true;
     }
