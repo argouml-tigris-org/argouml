@@ -433,9 +433,14 @@ public final class ModuleLoader2 {
      */
     private void huntForModules() {
         // TODO: huntForInternalModules();
-	huntForModulesFromExtensionDir();
-	// TODO: huntForModulesFromJavaWebStart();
-    addClass("org.argouml.ui.DeveloperModule");
+        huntForModulesFromExtensionDir();
+        // TODO: huntForModulesFromJavaWebStart();
+        try {
+            addClass("org.argouml.ui.DeveloperModule");
+        } catch (ClassNotFoundException e) {
+            // We'll automatically use the dev module if we find
+            // it but don't care is we don'e
+        }
     }
 
     /**
@@ -521,8 +526,14 @@ public final class ModuleLoader2 {
 			    new URLClassLoader(new URL[] {
 				file[i].toURL(),
 			    });
-			Translator.addClassLoader(classloader);
-	                processJarFile(classloader, file[i]);
+            try {
+                Translator.addClassLoader(classloader);
+                processJarFile(classloader, file[i]);
+            } catch (ClassNotFoundException e) {
+                LOG.error("The class is not found.", e);
+                return;
+            }
+                    
 		    }
 		} catch (IOException ioe) {
 		    LOG.debug("Cannot open the directory " + dirname, ioe);
@@ -539,7 +550,8 @@ public final class ModuleLoader2 {
      * @param classloader The classloader to use.
      * @param file The file to process.
      */
-    private void processJarFile(ClassLoader classloader, File file) {
+    private void processJarFile(ClassLoader classloader, File file)
+    throws ClassNotFoundException {
 	JarFile jarfile = null;
         Manifest manifest = null;
 	LOG.info("Opening jar file " + file);
@@ -583,8 +595,9 @@ public final class ModuleLoader2 {
      *
      * @param classname The name of the class (including package).
      */
-    public static void addClass(String classname) {
-	getInstance().addClass(ModuleLoader2.class.getClassLoader(),
+    public static void addClass(String classname)
+    throws ClassNotFoundException {
+        getInstance().addClass(ModuleLoader2.class.getClassLoader(),
 			       classname);
     }
 
@@ -597,15 +610,11 @@ public final class ModuleLoader2 {
      * @param classLoader The ClassLoader to load from.
      * @param classname The name.
      */
-    private void addClass(ClassLoader classLoader, String classname) {
+    private void addClass(ClassLoader classLoader, String classname)
+    throws ClassNotFoundException{
         Class moduleClass;
         LOG.info("Loading module " + classname);
-        try {
-            moduleClass = classLoader.loadClass(classname);
-        } catch (ClassNotFoundException e) {
-            LOG.error("The class " + classname + " is not found.", e);
-            return;
-        }
+        moduleClass = classLoader.loadClass(classname);
 
         Constructor c;
         try {

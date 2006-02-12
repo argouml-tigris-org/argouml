@@ -210,6 +210,8 @@ public class SettingsTabModules extends SettingsTabHelper {
 		public void actionPerformed(ActionEvent event) {
 		    try {
 		        getClass().getClassLoader().loadClass(classname);
+                ModuleLoader2.addClass(classname);
+                handleSettingsTabRefresh();
 		    } catch (ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(
 				notYetLoadedPanel,
@@ -219,9 +221,6 @@ public class SettingsTabModules extends SettingsTabHelper {
 				JOptionPane.ERROR_MESSAGE);
 			return;
 		    }
-
-		    ModuleLoader2.addClass(classname);
-		    handleSettingsTabRefresh();
 		}
 	    });
 
