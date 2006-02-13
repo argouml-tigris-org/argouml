@@ -161,8 +161,7 @@ public class FigTransition extends FigEdgeModelElement {
 
     /**
      * This is called after any part of the UML ModelElement has changed. This
-     * method automatically updates the name FigText. Subclasses should override
-     * and update other parts.
+     * method automatically updates the attached FigText. 
      *
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
@@ -202,10 +201,13 @@ public class FigTransition extends FigEdgeModelElement {
                     && e.getSource() == getOwner()
                     && e.getPropertyName().equals("effect")) {
                 // register the action
-                if (e.getNewValue() != null) {
+                if (Model.getFacade().isAAction(e.getNewValue())) {
                     Model.getPump().addModelEventListener(this,
-                            e.getNewValue(), "script");
+                            e.getNewValue(), "script"); /* Works!*/
+                    Model.getPump().addModelEventListener(this,
+                            e.getNewValue(), "actualArgument"); /* Works!*/
                 }
+                /* The new value may be null if the effect is removed. */
                 updateNameText();
                 damage();
             } else if (Model.getFacade().isAEvent(e.getSource())
@@ -232,6 +234,18 @@ public class FigTransition extends FigEdgeModelElement {
                 damage();
             } else if (Model.getFacade().isAAction(e.getSource())) {
                 // handle events send by the action-effect
+                // PropertyName is "trigger" or "script"
+                if (Model.getFacade().isAArgument(e.getNewValue())) {
+                    /* For arguments, listen to changes of the value */
+                    Model.getPump().addModelEventListener(this,
+                            e.getNewValue(), "value");
+                }
+                /* The next lines outside the above if clause for the case 
+                 * where the "script" changes! */
+                updateNameText();
+                damage();
+            } else if (Model.getFacade().isAArgument(e.getSource())) {
+                // handle events from the arguments of the effect action
                 updateNameText();
                 damage();
             } else if (Model.getFacade().isAParameter(e.getSource())) {
@@ -270,8 +284,19 @@ public class FigTransition extends FigEdgeModelElement {
                     && e.getSource() == getOwner()
                     && e.getPropertyName().equals("effect")) {
                 // unregister the action
-                Model.getPump().removeModelEventListener(this,
-                        e.getOldValue(), "script");
+                if (Model.getFacade().isAAction(e.getOldValue())) {
+                    Model.getPump().removeModelEventListener(this,
+                            e.getOldValue(), "script");
+                    Model.getPump().removeModelEventListener(this,
+                            e.getOldValue(), "actualArgument");
+                }
+                updateNameText();
+                damage();
+            } else if (Model.getFacade().isAAction(e.getSource())) {
+                if (Model.getFacade().isAArgument(e.getOldValue())) {
+                    Model.getPump().removeModelEventListener(this,
+                            e.getOldValue(), "value");
+                }
                 updateNameText();
                 damage();
             }
