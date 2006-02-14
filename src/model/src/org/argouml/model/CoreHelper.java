@@ -167,12 +167,13 @@ public interface CoreHelper {
     Collection getOperationsInh(Object classifier);
 
     /**
-     * This method finds all paramters of the given operation which
-     * have the MParamterDirectionType RETURN. If it is only one, it
+     * This method finds all parameters of the given operation which
+     * have the ParameterDirectionType RETURN. If it is only one, it
      * is returned.  In case there are no return parameters, null is
      * returned. If there is more than one return paramter, first of
      * them is returned, but a message is logged.<p>
      *
+     * @deprecated use getReturnParameters
      * @param operation1 the operation you want to find the return
      * parameter for.
      * @return If this operation has only one paramter with Kind: RETURN,
@@ -1219,6 +1220,8 @@ public interface CoreHelper {
     /**
      * Set the UUID of this element.
      *
+     * @deprecated not supported by MDR - use Tagged Value 
+     * or other private mechanism.
      * @param handle base element (MBase type)
      * @param uuid is the UUID
      */
