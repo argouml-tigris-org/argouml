@@ -25,9 +25,10 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.JTextArea;
 
 import org.argouml.i18n.Translator;
+import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateAction;
 import org.argouml.uml.ui.UMLExpressionBodyField;
@@ -55,10 +56,11 @@ public class PropPanelArgument extends PropPanelModelElement {
 
         UMLExpressionModel2 expressionModel = new UMLExpressionExpressionModel(
                 this, "expression");
-        addField(Translator.localize("label.value"), new JScrollPane(
-                new UMLExpressionBodyField(expressionModel, true),
-                ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+        JTextArea ebf = new UMLExpressionBodyField(expressionModel, true);
+        ebf.setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        ebf.setRows(3); // make it take up all remaining height
+        addField(Translator.localize("label.value"), 
+                new JScrollPane(ebf));
         addField(Translator.localize("label.language"),
                 new UMLExpressionLanguageField(expressionModel, true));
 
