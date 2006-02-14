@@ -39,6 +39,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Diagram;
@@ -178,6 +179,8 @@ public abstract class ActionBaseDelete extends UMLAction {
                     newTarget = p.getRoot();
                 }
             }
+        } else if (target instanceof CommentEdge) {
+            newTarget = ((CommentEdge)target).getSource();
         } else {
             newTarget = p.getRoot();
         }
@@ -230,6 +233,9 @@ public abstract class ActionBaseDelete extends UMLAction {
             } else {
                 sure = true;
             }
+        } else if (target instanceof CommentEdge) {
+            // we can delete CommentEdge now too thanks to issue 3643.
+            sure = true;
         }
         return sure;
     }
