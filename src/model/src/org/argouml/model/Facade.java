@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -1251,8 +1251,17 @@ public interface Facade {
      *
      * @param handle the stereotype
      * @return the baseclass
+     * @deprecated use getBaseClasses for UML 1.4 and later
      */
     Object getBaseClass(Object handle);
+
+    /**
+     * Collection of baseclasses of some stereotype.
+     *
+     * @param handle the stereotype
+     * @return collection containing all applicable baseclasses
+     */
+    Collection getBaseClasses(Object handle);
 
     /**
      * The base of some model element.<p>
@@ -1809,6 +1818,30 @@ public interface Facade {
      * @return Object
      */
     Object getModelElementContainer(Object handle);
+    
+    /**
+     * Returns all composite components of given ModelElement.
+     * This is the inverse of getModelElementContainer and
+     * that method will return handle for all elements in the
+     * Collection.<p>
+     * 
+     * @param handle ModelElement for which to fetch components
+     * @return collection of components contained by ModelElement
+     */
+    List getModelElementContents(Object handle);
+
+    /**
+     * Returns all ModelElements associated with the given ModelElement
+     * by a MOF level association (not an just an association in the user 
+     * model, although it includes those too).<p>
+     * 
+     * This is useful for traversing the model to find elements which
+     * are related in ANY way to the current element.
+     * 
+     * @param handle ModelElement for which to find associated elements
+     * @return collection of elements associated with ModelElement
+     */
+    List getModelElementAssociated(Object handle);
 
     /**
      * Returns the CompositeState or Component that is the container of the
@@ -2518,7 +2551,8 @@ public interface Facade {
     Object getAggregation(Object handle);
 
     /**
-     * Returns all associated classes for some given classifier.
+     * Returns all associated classes (classes connected by an
+     * Association) for some given classifier.
      * Returns an empty collection if the given argument handle is not
      * a classifier.  The given parameter is included in the returned
      * collection if it has a self-referencing association.
