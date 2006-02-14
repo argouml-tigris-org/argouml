@@ -139,7 +139,7 @@ public class StylePanelFigText extends StylePanelFig {
     }
 
     /**
-     * Refresh the text element with all selected values.
+     * Refresh the style panel when the Fig has been altered.
      *
      * @see org.argouml.ui.TabTarget#refresh()
      */
@@ -177,11 +177,15 @@ public class StylePanelFigText extends StylePanelFig {
             textColorField.setSelectedItem(c);
         }
 
-        c = ft.getFillColor();
-        getFillField().setSelectedItem(c);
-        if (c != null && !getFillField().getSelectedItem().equals(c)) {
-            getFillField().insertItemAt(c, getFillField().getItemCount() - 1);
-            getFillField().setSelectedItem(c);
+        if (ft.getFilled()) {
+            Color fc = ft.getFillColor();
+            getFillField().setSelectedItem(fc);
+            if (fc != null && !getFillField().getSelectedItem().equals(fc)) {
+                getFillField().insertItemAt(fc, getFillField().getItemCount() - 1);
+                getFillField().setSelectedItem(fc);
+            }
+        } else {
+            getFillField().setSelectedIndex(0);
         }
     }
 
