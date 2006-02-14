@@ -31,7 +31,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
@@ -53,28 +52,9 @@ import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.GridLayout2;
 
 /**
- * An abstract representatation of the properties panel of an Action. TODO: this
- * property panel needs refactoring to remove dependency on old gui components.
+ * An abstract representatation of the properties panel of an Action. 
  */
 public abstract class PropPanelAction extends PropPanelModelElement {
-
-        private JScrollPane expressionScroll;
-
-        private UMLExpressionLanguageField languageField;
-
-        private JScrollPane recurrenceScroll;
-
-        private JScrollPane argumentsScroll;
-
-        private UMLExpressionModel2 scriptModel;
-
-        private UMLExpressionModel2 recurrenceModel;
-
-        private JList argumentsList;
-
-        private JPanel recurrencePanel;
-
-        private JPanel scriptPanel;
 
         /**
          * The constructor.
@@ -108,7 +88,7 @@ public abstract class PropPanelAction extends PropPanelModelElement {
                 UMLExpressionModel2 scriptModel = new UMLScriptExpressionModel(
                                 this, "script");
 
-                scriptPanel = new JPanel(new GridLayout2());
+                JPanel scriptPanel = new JPanel(new GridLayout2());
                 scriptPanel.setBorder(new TitledBorder(Translator
                                 .localize("label.script")));
 
@@ -122,7 +102,7 @@ public abstract class PropPanelAction extends PropPanelModelElement {
                 UMLExpressionModel2 recurrenceModel = new UMLRecurrenceExpressionModel(
                                 this, "recurrence");
 
-                recurrencePanel = new JPanel(new GridLayout2());
+                JPanel recurrencePanel = new JPanel(new GridLayout2());
                 recurrencePanel.setBorder(new TitledBorder(Translator
                                 .localize("label.recurrence")));
                 recurrencePanel.add(new JScrollPane(new UMLExpressionBodyField(
@@ -134,7 +114,7 @@ public abstract class PropPanelAction extends PropPanelModelElement {
 
                 addSeperator();
 
-                argumentsList = new UMLMutableLinkedList(
+                JList argumentsList = new UMLMutableLinkedList(
                                 new UMLActionArgumentListModel(), null,
                                 new ActionNewArgument(),
                                 new ActionRemoveArgument(), true);
@@ -148,42 +128,6 @@ public abstract class PropPanelAction extends PropPanelModelElement {
                 addAction(new ActionNewStereotype());
                 addAction(new ActionDeleteSingleModelElement());
 
-        }
-
-        public JScrollPane getExpressionScroll() {
-                if (expressionScroll == null) {
-                        UMLExpressionBodyField field = new UMLExpressionBodyField(
-                                        scriptModel, true);
-                        field.setRows(3);
-                        expressionScroll = new JScrollPane(field);
-                }
-                return expressionScroll;
-        }
-
-        public UMLExpressionLanguageField getLanguageField() {
-                if (languageField == null) {
-                        languageField = new UMLExpressionLanguageField(
-                                        scriptModel, true);
-                }
-                return languageField;
-        }
-
-        public JScrollPane getRecurrenceScroll() {
-                if (recurrenceScroll == null) {
-                        recurrenceScroll = new JScrollPane(
-                                new UMLExpressionBodyField(
-                                              recurrenceModel, true),
-                                ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
-                                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-                }
-                return recurrenceScroll;
-        }
-
-        public JScrollPane getArgumentsScroll() {
-                if (argumentsScroll == null) {
-                        argumentsScroll = new JScrollPane(argumentsList);
-                }
-                return argumentsScroll;
         }
 
 }

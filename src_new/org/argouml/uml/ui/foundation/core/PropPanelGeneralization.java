@@ -46,18 +46,8 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     private JTextField discriminatorTextField;
 
-    private JScrollPane parentScroll;
-
-    private JScrollPane childScroll;
-
     private static UMLDiscriminatorNameDocument discriminatorDocument =
         new UMLDiscriminatorNameDocument();
-
-    private static UMLGeneralizationChildListModel childListModel =
-        new UMLGeneralizationChildListModel();
-
-    private static UMLGeneralizationParentListModel parentListModel =
-        new UMLGeneralizationParentListModel();
 
     /**
      * The constructor.
@@ -82,11 +72,19 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
         addSeperator();
 
-        addField(Translator.localize("label.parent"),
-                getParentScroll());
+        UMLGeneralizationParentListModel parentListModel =
+            new UMLGeneralizationParentListModel();
+        JList parentList = new UMLLinkedList(parentListModel);
+        parentList.setVisibleRowCount(1);
+        addField(Translator.localize("label.parent"), 
+                new JScrollPane(parentList));
 
+        UMLGeneralizationChildListModel childListModel =
+            new UMLGeneralizationChildListModel();
+        JList childList = new UMLLinkedList(childListModel);
+        childList.setVisibleRowCount(1);
         addField(Translator.localize("label.child"),
-                getChildScroll());
+                new JScrollPane(childList));
 
         addField(Translator.localize("label.powertype"),
                 new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(),
@@ -118,36 +116,6 @@ public class PropPanelGeneralization extends PropPanelModelElement {
             discriminatorTextField = new UMLTextField2(discriminatorDocument);
         }
         return discriminatorTextField;
-    }
-
-    /**
-     * @return the scrollpane for the parent
-     */
-    protected JScrollPane getParentScroll() {
-        if (parentScroll == null) {
-            JList list = new UMLLinkedList(parentListModel);
-            list.setVisibleRowCount(1);
-            parentScroll =
-                new JScrollPane(list,
-                        JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-                        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        }
-        return parentScroll;
-    }
-
-    /**
-     * @return the scrollpane for the child
-     */
-    public JScrollPane getChildScroll() {
-        if (childScroll == null) {
-            JList list = new UMLLinkedList(childListModel);
-            list.setVisibleRowCount(1);
-            childScroll =
-                new JScrollPane(list,
-                        JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-                        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        }
-        return childScroll;
     }
 
 } /* end class PropPanelGeneralization */
