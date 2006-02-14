@@ -49,12 +49,6 @@ public interface ExtensionMechanismsFactory {
     /**
      * Builds a stereotype for some kind of modelelement.
      *
-     * TODO: MVW: This needs rethinking/rework! I have the following questions:
-     *       Why does it not search for a stereotype in the namespace using
-     *       properties and only create a new stereotype if it will actually
-     *       be used? Ie, why is there not a
-     *       getStereotype(String name, String baseClass)? (edited by d00mst)
-     *
      * @param theModelElementObject    a Model Element that the stereotype
      *                                 will be applied to. The stereotype will
      *                                 have its BaseClass set to an appropriate
@@ -64,6 +58,14 @@ public interface ExtensionMechanismsFactory {
      *                                 created within.
      * @return                         the resulting stereotype object
      * @throws IllegalArgumentException if either argument is null.
+     */
+    /*
+     * TODO: MVW: This needs rethinking/rework! I have the following questions:
+     * Why does it not search for a stereotype in the namespace using properties
+     * and only create a new stereotype if it will actually be used? Ie, why is
+     * there not a getStereotype(String name, String baseClass)? (edited by
+     * d00mst)
+     * 
      */
     Object buildStereotype(Object theModelElementObject,
             Object theName,
@@ -110,12 +112,12 @@ public interface ExtensionMechanismsFactory {
 
     /**
      * Build an initialized instance of a TagDefinition.
-     * @param text is the name of the TagDeginition
+     * @param name is the name of the TagDefinition
      * @param stereotype is the optional stereotype owning the TagDefinition
      * @param ns is the namespace to put the TagDefinition.
      * @return a newly created TagDefinition.
      */
-    Object buildTagDefinition(String text, Object stereotype, Object ns);
+    Object buildTagDefinition(String name, Object stereotype, Object ns);
 
     /**
      * Create a TagDefinition.
