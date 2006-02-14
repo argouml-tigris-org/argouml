@@ -50,6 +50,7 @@ import java.util.Vector;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
@@ -66,12 +67,12 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.LastLoadInfo;
 import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFilePersister;
 import org.argouml.persistence.VersionException;
-import org.argouml.ui.cmd.ActionExit;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -80,7 +81,6 @@ import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
 import org.argouml.uml.ui.ActionSaveProject;
-import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
@@ -94,7 +94,6 @@ import org.tigris.gef.undo.UndoManager;
 import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Orientation;
-import org.tigris.swidgets.SplitterLayout;
 import org.tigris.swidgets.Vertical;
 import org.tigris.toolbar.layouts.DockBorderLayout;
 
@@ -239,7 +238,7 @@ public final class ProjectBrowser
         setAppName(applicationName);
 
         // allows me to ask "Do you want to save first?"
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(ProjectBrowser.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowCloser());
         ImageIcon argoImage =
             ResourceLoaderWrapper.lookupIconResource("ArgoIcon");
@@ -856,9 +855,48 @@ public final class ProjectBrowser
     }
 
     /**
+     * Exit the application if no save is required.
+     * If a save is required then prompt the user if they wish to,
+     * save and exit, exit without saving or cancel the exit operation. 
+     */
+    public void tryExit() {
+        if (ActionSaveProject.getInstance().isEnabled()) {
+            Project p = ProjectManager.getManager().getCurrentProject();
+
+            String t = MessageFormat.format(Translator.localize(
+                "optionpane.exit-save-changes-to"),
+                new Object[] {p.getName()});
+            int response = JOptionPane.showConfirmDialog(
+                    this, t, t, JOptionPane.YES_NO_CANCEL_OPTION);
+
+            if (response == JOptionPane.CANCEL_OPTION
+                    || response == JOptionPane.CLOSED_OPTION) {
+                return;
+            }
+            if (response == JOptionPane.YES_OPTION) {
+                if (ActionSaveProject.getInstance().isEnabled()) {
+                    trySave (true);
+                }
+                if (ActionSaveProject.getInstance().isEnabled()) {
+                    trySaveAs(false);
+                }
+                if (ActionSaveProject.getInstance().isEnabled()) {
+                    return;
+                }
+            }
+        }
+        Configuration.save();
+        System.exit(0);
+    }
+    
+    public void dispose() {
+        
+    }
+    
+    /**
      * Receives window events.
      */
-    static class WindowCloser extends WindowAdapter {
+    class WindowCloser extends WindowAdapter {
         /**
          * Constructor.
          */
@@ -869,7 +907,7 @@ public final class ProjectBrowser
          * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
          */
         public void windowClosing(WindowEvent e) {
-            new ActionExit().actionPerformed(null);
+            tryExit();
         }
     } /* end class WindowCloser */
 
@@ -1093,15 +1131,14 @@ public final class ProjectBrowser
                 return false;
             }
             if (response == JOptionPane.YES_OPTION) {
-                boolean safe = false;
 
                 if (ActionSaveProject.getInstance().isEnabled()) {
-                    safe = ProjectBrowser.getInstance().trySave(true);
+                    trySave(true);
                 }
-                if (!safe) {
-                    safe = ActionSaveProjectAs.SINGLETON.trySave(false);
+                if (ActionSaveProject.getInstance().isEnabled()) {
+                    trySaveAs(false);
                 }
-                if (!safe) {
+                if (ActionSaveProject.getInstance().isEnabled()) {
                     return false;
                 }
             }
@@ -1333,6 +1370,80 @@ public final class ProjectBrowser
      */
     public Action getRemoveFromDiagramAction() {
         return removeFromDiagram;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.ActionSaveProject#trySave(boolean)
+     */
+    public boolean trySaveAs(boolean overwrite) {
+        File f = getNewFile();
+        if (f == null) {
+            return false;
+        }
+
+        boolean success = ProjectBrowser.getInstance().trySave(overwrite, f);
+        if (success) {
+            ProjectBrowser.getInstance().buildTitle(
+                ProjectManager.getManager().getCurrentProject().getName());
+        }
+        return success;
+    }
+    
+    /**
+     * @return the File to save to
+     */
+    protected File getNewFile() {
+        ProjectBrowser pb = ProjectBrowser.getInstance();
+        Project p = ProjectManager.getManager().getCurrentProject();
+
+        JFileChooser chooser = null;
+        URL url = p.getURL();
+        if ((url != null) && (url.getFile().length() > 0)) {
+            chooser = new JFileChooser(url.getFile());
+        }
+        if (chooser == null) {
+            chooser = new JFileChooser();
+        }
+
+        if (url != null) {
+            chooser.setSelectedFile(new File(url.getFile()));
+        }
+
+        String sChooserTitle =
+        Translator.localize("filechooser.save-as-project");
+        chooser.setDialogTitle(sChooserTitle + " " + p.getName());
+
+        chooser.setAcceptAllFileFilterUsed(false);
+        PersistenceManager.getInstance().setSaveFileChooserFilters(chooser);
+
+        String fn = Configuration.getString(
+                PersistenceManager.KEY_PROJECT_NAME_PATH);
+        if (fn.length() > 0) {
+            fn = PersistenceManager.getInstance().getBaseName(fn);
+            chooser.setSelectedFile(new File(fn));
+        }
+
+        int retval = chooser.showSaveDialog(pb);
+        if (retval == JFileChooser.APPROVE_OPTION) {
+            File theFile = chooser.getSelectedFile();
+            AbstractFilePersister filter =
+                (AbstractFilePersister) chooser.getFileFilter();
+            if (theFile != null) {
+                Configuration.setString(
+                        PersistenceManager.KEY_PROJECT_NAME_PATH,
+                        PersistenceManager.getInstance().getBaseName(
+                                theFile.getPath()));
+                String name = theFile.getName();
+                if (!name.endsWith("." + filter.getExtension())) {
+                    theFile =
+                        new File(
+                            theFile.getParent(),
+                            name + "." + filter.getExtension());
+                }
+            }
+            return theFile;
+        }
+        return null;
     }
 
     /**
