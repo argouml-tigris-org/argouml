@@ -145,21 +145,17 @@ public abstract class FigState extends FigStateVertex {
             // transitions since that doesn't change the fig.
         } else if (getOwner() != null)
             if (Model.getFacade().getInternalTransitions(getOwner())
-                .contains(mee.getSource())
-                || // the internal transitions
-                (mee.getSource() == Model.getFacade().getEntry(getOwner()))
-                || // the entry
-                (mee.getSource() == Model.getFacade().getExit(getOwner()))
-                || // the exit
-                (mee.getSource() == Model.getFacade().getDoActivity(getOwner()))
-                || // the doacitivity
-                Model.getFacade().getDeferrableEvents(getOwner()).contains(
-                        mee.getSource())) {
-            // the defered events
-            updateInternal();
-            updateListeners(getOwner());
-            damage();
-        }
+                    .contains(mee.getSource())
+                    || (mee.getSource() == Model.getFacade().getEntry(getOwner()))
+                    || (mee.getSource() == Model.getFacade().getExit(getOwner()))
+                    || (mee.getSource() 
+                            == Model.getFacade().getDoActivity(getOwner()))
+                    || Model.getFacade().getDeferrableEvents(getOwner()).contains(
+                            mee.getSource())) {
+                updateInternal();
+                updateListeners(getOwner());
+                damage();
+            }
 
     }
 
@@ -228,7 +224,7 @@ public abstract class FigState extends FigStateVertex {
         if (state == null) {
             return;
         }
-        if(notationProviderBody != null)
+        if (notationProviderBody != null)
             internal.setText(notationProviderBody.toString());
         calcBounds();
         setBounds(getBounds());
