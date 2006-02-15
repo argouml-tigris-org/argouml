@@ -29,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
+import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLTextArea2;
@@ -87,9 +88,8 @@ public class PropPanelReception extends PropPanelModelElement {
                 new UMLReceptionSpecificationDocument());
         specText.setLineWrap(true);
         specText.setRows(5);
-        JScrollPane specificationScroll = new JScrollPane(specText,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        specText.setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        JScrollPane specificationScroll = new JScrollPane(specText);
         addField(Translator.localize("label.specification"),
                 specificationScroll);
 
