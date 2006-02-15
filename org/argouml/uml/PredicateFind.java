@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,10 +66,17 @@ public class PredicateFind implements Predicate {
      * @return true if the name of the given diagram equals
      */
     public boolean matchDiagram(Diagram d) {
-	boolean res = diagramName.predicate(d.getName());
-	return res;
+        return matchDiagram(d.getName());
     }
 
+    /**
+     * @param name the name to match
+     * @return true if the name of the given diagram equals
+     */
+    public boolean matchDiagram(String name) {
+        return diagramName.predicate(name);
+    }
+    
     /**
      * @param m the given package
      * @return true if the name of the given package is equal

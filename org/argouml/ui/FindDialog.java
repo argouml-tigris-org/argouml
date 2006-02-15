@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,10 +60,11 @@ import org.tigris.gef.util.PredicateType;
 
 
 /**
- * TODO: What does this class do?<p>
- *
- * This is one of the few classes in Argo that is
- * self running (i.e. not modal).<p>
+ * Main dialog for Find function.
+ * 
+ * This is one of the few dialog boxes in Argo that is
+ * non-modal (so that the user can keep the results on
+ * the screen while they work with them).<p>
  *
  * The search is buggy and needs work.
  */
@@ -341,10 +342,12 @@ public class FindDialog extends ArgoDialog
     public void initTypes() {
         type.addItem(PredicateMType.create()); // Any type
 
-        type.addItem(PredicateMType.create(Model.getMetaTypes().getUMLClass()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getUMLClass()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getInterface()));
-        type.addItem(PredicateMType.create(Model.getMetaTypes().getActor()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getActor()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getAssociation()));
         type.addItem(PredicateMType.create(
@@ -357,11 +360,14 @@ public class FindDialog extends ArgoDialog
                 Model.getMetaTypes().getDependency()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getGeneralization()));
-        type.addItem(PredicateMType.create(Model.getMetaTypes().getInstance()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getInstance()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getInterface()));
-        type.addItem(PredicateMType.create(Model.getMetaTypes().getLink()));
-        type.addItem(PredicateMType.create(Model.getMetaTypes().getPackage()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getLink()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getPackage()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getOperation()));
         type.addItem(PredicateMType.create(
@@ -374,7 +380,8 @@ public class FindDialog extends ArgoDialog
                 Model.getMetaTypes().getStateVertex()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getTransition()));
-        type.addItem(PredicateMType.create(Model.getMetaTypes().getUseCase()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getUseCase()));
 
     }
 
@@ -578,7 +585,7 @@ public class FindDialog extends ArgoDialog
     }
 
     /**
-     * React on a double-click on a given tab.
+     * Double click on tab detaches it in a free floating window.
      *
      * MVW: This is the only place where spawning is still enabled.
      *
@@ -589,8 +596,7 @@ public class FindDialog extends ArgoDialog
         if (t instanceof AbstractArgoJPanel) {
             if (((AbstractArgoJPanel) t).spawn() != null) {
                 resultTabs.removeElementAt(tab);
-                //TODO: This next line does not work...
-                location.removeItem("In Tab:"
+                location.removeItem("In Tab: "
                                 + ((AbstractArgoJPanel) t).getTitle());
             }
         }

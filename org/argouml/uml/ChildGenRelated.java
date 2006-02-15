@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,10 +24,9 @@
 
 package org.argouml.uml;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.model.Model;
 import org.tigris.gef.base.Diagram;
@@ -36,8 +35,7 @@ import org.tigris.gef.util.ChildGenerator;
 /**
  * Generator to find related elements for some model elements, such as for
  * Classes the attributes and operations, for diagrams nodes and elements, for
- * transitions trigger, guard and effects etc. Look in the code to find precise
- * functionality.
+ * transitions trigger, guard and effects etc. 
  *
  * @stereotype singleton
  * @author jrobbins
@@ -63,84 +61,28 @@ public class ChildGenRelated implements ChildGenerator {
      */
     public Enumeration gen(Object o) {
 
-        Vector res = new Vector();
-
+        // This is carried over from previous implementation
+        // not sure why we don't want contents of package - tfm - 20060214
         if (Model.getFacade().isAPackage(o)) {
-            Collection ownedElements = Model.getFacade().getOwnedElements(o);
-            if (ownedElements != null) {
-                return null;
-            }
+            return null;
         }
-
-        if (Model.getFacade().isAClassifier(o)) {
-            Object cls = /* (MClassifier) */o;
-            Collection assocEnds = Model.getFacade().getAssociationEnds(cls);
-            Iterator assocIterator = assocEnds.iterator();
-            while (assocIterator.hasNext()) {
-                res.add(Model.getFacade().getAssociation(assocIterator.next()));
-            }
-
-            res.addAll(Model.getFacade().getFeatures(cls));
-            res.addAll(Model.getFacade().getBehaviors(cls));
-            return res.elements();
-        }
-
-        if (Model.getFacade().isAAssociation(o)) {
-            Object asc = /* (MAssociation) */o;
-            Collection assocEnds = Model.getFacade().getConnections(asc);
-            Iterator iter = assocEnds.iterator();
-            while (iter.hasNext()) {
-                res.add(Model.getFacade().getType(iter.next()));
-            }
-            return res.elements();
-        }
-
-        if (Model.getFacade().isAStateMachine(o)) {
-            Object sm = /* (MStateMachine) */o;
-            Object top = Model.getFacade().getTop(sm);
-            if (top != null) {
-                res.addAll(Model.getFacade().getSubvertices(top));
-            }
-            res.add(Model.getFacade().getContext(sm)); //wasteful!
-            res.addAll(Model.getFacade().getTransitions(sm));
-            return res.elements();
-        }
-
-        if (Model.getFacade().isAStateVertex(o)) {
-            Object sv = /* (MStateVertex) */o;
-            res.addAll(Model.getFacade().getIncomings(sv));
-            res.addAll(Model.getFacade().getOutgoings(sv));
-
-            if (Model.getFacade().isAState(o)) {
-                Object s = /* (MState) */o;
-                res.addAll(Model.getFacade().getInternalTransitions(s));
-            }
-
-            if (Model.getFacade().isACompositeState(o)) {
-                Object cs = /* (MCompositeState) */o;
-                res.addAll(Model.getFacade().getSubvertices(cs));
-            }
-            return res.elements();
-        }
-
-        if (Model.getFacade().isATransition(o)) {
-            Object tr = /* (MTransition) */o;
-            res.add(Model.getFacade().getTrigger(tr));
-            res.add(Model.getFacade().getGuard(tr));
-            res.add(Model.getFacade().getEffect(tr));
-            res.add(Model.getFacade().getSource(tr));
-            res.add(Model.getFacade().getTarget(tr));
-            return res.elements();
-        }
-
-        // tons more cases
-
+        
         if (o instanceof Diagram) {
+            ArrayList res = new ArrayList();
             Diagram d = (Diagram) o;
             res.add(d.getGraphModel().getNodes());
             res.add(d.getGraphModel().getEdges());
+            return Collections.enumeration(res);
         }
-        return res.elements();
+
+        // For all other model elements, return any elements 
+        // associated in any way
+        if (Model.getFacade().isAModelElement(o)) {
+            return Collections.enumeration(Model.getFacade()
+                    .getModelElementAssociated(o));
+        }
+
+        throw new IllegalArgumentException("Unknown element type " + o);
     }
 
     /**
