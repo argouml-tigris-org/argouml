@@ -45,7 +45,6 @@ import org.argouml.ui.CmdSetMode;
 import org.argouml.ui.explorer.Relocatable;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.UUIDHelper;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.base.ModeBroom;
 import org.tigris.gef.base.ModeCreateFigCircle;
 import org.tigris.gef.base.ModeCreateFigInk;
@@ -493,13 +492,18 @@ public abstract class UMLDiagram
     public void removeAsTarget() {
         Enumeration elems = elements();
         while (elems.hasMoreElements()) {
-            Object o = elems.nextElement();
-            if (o instanceof PropertyChangeListener) {
-                PropertyChangeListener listener = (PropertyChangeListener) o;
-                Object figowner = ((Fig) o).getOwner();
-                Model.getPump().removeModelEventListener(listener, figowner);
+            Fig fig = (Fig) elems.nextElement();
+            if (fig instanceof FigNodeModelElement) {
+                ((FigNodeModelElement)fig).updateListeners(null);
+            }
+            if (fig instanceof FigEdgeModelElement) {
+                ((FigEdgeModelElement)fig).updateListeners(null);
             }
         }
+        /* TODO: (MVW) I believe the presence of the following line is a bug.
+         * But if I remove it, then an exception occurs, when 
+         * deleting a element that has a diagram, since
+         * the propertyChange() above starts to work...*/
         Model.getPump().removeModelEventListener(this, getNamespace());
     }
 
@@ -507,21 +511,20 @@ public abstract class UMLDiagram
      * Adds the UMLDiagram and all the figs on it as listener to
      * UML Events.  Together with removeAsModelListener this is
      * a performance improvement.
-     *
      */
     public void setAsTarget() {
         Enumeration elems = elements();
         while (elems.hasMoreElements()) {
             Fig fig = (Fig) elems.nextElement();
-            if (fig instanceof PropertyChangeListener) {
-                Object owner = fig.getOwner();
-                /* pump.addModelEventListener(
-                 *      (PropertyChangeListener)fig, owner);
-                 * Instead, this will make sure all the correct
-                 * event listeners are set:
-                 */
-                fig.setOwner(null);
-                fig.setOwner(owner);
+            Object owner = fig.getOwner();
+            /* This will make sure all the correct
+             * event listeners are set:
+             */
+            if (fig instanceof FigNodeModelElement) {
+                ((FigNodeModelElement)fig).updateListeners(owner);
+            }
+            if (fig instanceof FigEdgeModelElement) {
+                ((FigEdgeModelElement)fig).updateListeners(owner);
             }
         }
     }

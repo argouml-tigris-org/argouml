@@ -1220,6 +1220,15 @@ public abstract class FigNodeModelElement
     }
 
     /**
+     * In ArgoUML, for every Fig, this setOwner() function
+     * may only be called twice: Once after the fig is created, 
+     * with a non-null argument, and once at end-of-life of the Fig,
+     * with a null argument. It is not allowed in ArgoUML to change 
+     * the owner of a fig in any other way. <p>
+     * 
+     * Hence, during the lifetime of this Fig object, 
+     * the owner shall go from null to some UML object, and to null again. 
+     * 
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object own) {
@@ -1317,10 +1326,26 @@ public abstract class FigNodeModelElement
 
     /**
      * Implementations of this method should register/unregister the fig for all
-     * (model)events. For FigNodeModelElement only the fig itself is registred
+     * (model)events. For FigNodeModelElement only the fig itself is registered
      * as listening to events fired by the owner itself. But for, for example,
      * FigClass the fig must also register for events fired by the operations
-     * and attributes of the owner.
+     * and attributes of the owner. <p>
+     * 
+     * An explanation of the original 
+     * purpose of this method is given in issue 1321.<p>
+     * 
+     * This function is used in UMLDiagram, which removes all listeners 
+     * to all Figs when a diagram is not displayed, and restore them
+     * when it becomes visible again. <p>
+     * 
+     * In this case, it is not imperative that indeed ALL listeners are 
+     * updated, as long as the ones removed get added again and vice versa. <p>
+     * 
+     * Additionally, this function may be used by the modelChanged() function.
+     * <p>
+     * 
+     * In this case, it IS imperative that all listeners get removed / added.
+     * 
      * @param newOwner the new owner for the listeners
      */
     protected void updateListeners(Object newOwner) {
@@ -1331,7 +1356,6 @@ public abstract class FigNodeModelElement
         if (newOwner != null) {
             Model.getPump().addModelEventListener(this, newOwner);
         }
-
     }
 
     /**
