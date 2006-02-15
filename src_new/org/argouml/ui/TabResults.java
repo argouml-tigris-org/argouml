@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -85,11 +85,11 @@ public class TabResults
     private Vector diagrams = new Vector();
     private boolean relatedShown = false;
 
-    private JLabel resultsLabel = new JLabel(/*"Results:"*/);
+    private JLabel resultsLabel = new JLabel();
     private JTable resultsTable;
     private TMResults resultsModel;
 
-    private JLabel relatedLabel = new JLabel(/*"Related Elements:"*/);
+    private JLabel relatedLabel = new JLabel();
     private JTable relatedTable = new JTable(4, 4);
     private TMResults relatedModel = new TMResults();
 
@@ -360,6 +360,20 @@ public class TabResults
 	setResults(results, diagrams);
     }
 
+    /*
+     * Do a recursive depth first search of the project. The children of the
+     * root are all user models and all the diagrams. Searches of the diagrams
+     * will terminate immediately if they fail to match, but the models are
+     * searched to their leaves, even if the diagram predicate doesn't match an
+     * empty diagram name.  This is inefficient, but shouldn't be a common case.
+     * <p>
+     * Another effect of the current algorithm is that model elements will 
+     * appear once for each diagram that they are included in PLUS an additional
+     * time with no diagram name given.  It would be slightly more friendly
+     * have the non-diagram list only includes those elements which didn't
+     * appear in any other diagram, but we're not going to do the bookkeeping
+     * for now.  - tfm 20060214
+     */
     private void depthFirst(Object node, Diagram lastDiagram) {
 	if (node instanceof Diagram) {
 	    lastDiagram = (Diagram) node;
@@ -370,7 +384,8 @@ public class TabResults
 	Enumeration elems = cg.gen(node);
 	while (elems.hasMoreElements()) {
 	    Object c = elems.nextElement();
-	    if (pred.predicate(c)) {
+	    if (pred.predicate(c)  
+                    && (lastDiagram != null || pred.matchDiagram("")) ) {
 		results.addElement(c);
 		diagrams.addElement(lastDiagram);
 	    }
