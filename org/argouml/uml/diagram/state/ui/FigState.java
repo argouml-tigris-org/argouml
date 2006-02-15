@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.state.ui;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
@@ -127,95 +128,82 @@ public abstract class FigState extends FigStateVertex {
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (mee.getSource().equals(getOwner())) {
-            // the events concerning the MState
-            if (mee.getPropertyName().equals("classifierInState")
-                    || mee.getPropertyName().equals("deferrableEvent")
-                    || mee.getPropertyName().equals("internalTransition")
-                    || mee.getPropertyName().equals("doActivity")
-                    || mee.getPropertyName().equals("entry")
-                    || mee.getPropertyName().equals("exit")) {
-                updateInternal();
-                // register this fig as a listener if the event is
-                // about adding modelelements to the state
-                updateListeners(getOwner());
-                damage();
-            }
-            // we don't have to act on incoming and outgoing
-            // transitions since that doesn't change the fig.
-        } else if (getOwner() != null)
-            if (Model.getFacade().getInternalTransitions(getOwner())
-                    .contains(mee.getSource())
-                    || (mee.getSource() == Model.getFacade().getEntry(getOwner()))
-                    || (mee.getSource() == Model.getFacade().getExit(getOwner()))
-                    || (mee.getSource() 
-                            == Model.getFacade().getDoActivity(getOwner()))
-                    || Model.getFacade().getDeferrableEvents(getOwner()).contains(
-                            mee.getSource())) {
-                updateInternal();
-                updateListeners(getOwner());
-                damage();
-            }
-
+        updateInternal();
+        updateListeners(getOwner());
+        damage();
     }
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object newOwner) {
+        // this takes care of the listeners on the state itself:
         super.updateListeners(newOwner);
         Object oldOwner = getOwner();
         if (oldOwner != null) {
-            // lets remove all registrations since this is called
-            // BEFORE the owner is changed (I hope nobody is going to
-            // change that...) the owner is the oldOwner
-            Object state = getOwner();
-            if (state != null) {
-                Iterator it =
-                    Model.getFacade().getInternalTransitions(state).iterator();
-                while (it.hasNext()) {
-                    Model.getPump().removeModelEventListener(this,
-                            it.next());
-                }
-                if (Model.getFacade().getDoActivity(state) != null) {
-                    Model.getPump().removeModelEventListener(this,
-                            Model.getFacade().getDoActivity(state));
-                }
-                if (Model.getFacade().getEntry(state) != null) {
-                    Model.getPump().removeModelEventListener(this,
-                            Model.getFacade().getEntry(state));
-                }
-                if (Model.getFacade().getExit(state) != null) {
-                    Model.getPump().removeModelEventListener(this,
-                            Model.getFacade().getExit(state));
-                }
+            // lets remove all registered listeners for the body text
+            Iterator it =
+                Model.getFacade().getInternalTransitions(oldOwner).iterator();
+            while (it.hasNext()) {
+                Model.getPump().removeModelEventListener(this, it.next());
             }
+            Object doActivity = Model.getFacade().getDoActivity(oldOwner);
+            removeListenersForAction(doActivity);
+            Object entryAction = Model.getFacade().getEntry(oldOwner);
+            removeListenersForAction(entryAction);
+            Object exitAction = Model.getFacade().getEntry(oldOwner);
+            removeListenersForAction(exitAction);
         }
         if (newOwner != null) {
-            // register for events from all internal transitions
-            Object state = newOwner;
+            // register for events from all modelelements 
+            // that change the body text
             Iterator it =
-                Model.getFacade().getInternalTransitions(state).iterator();
+                Model.getFacade().getInternalTransitions(newOwner).iterator();
             while (it.hasNext()) {
-                Model.getPump().addModelEventListener(this,
-                        it.next());
+                Model.getPump().addModelEventListener(this, it.next());
             }
             // register for the doactivity etc.
-            if (Model.getFacade().getDoActivity(state) != null) {
-                Model.getPump().addModelEventListener(this,
-                        Model.getFacade().getDoActivity(state));
-            }
-            if (Model.getFacade().getEntry(state) != null) {
-                Model.getPump().addModelEventListener(this,
-                        Model.getFacade().getEntry(state));
-            }
-            if (Model.getFacade().getExit(state) != null) {
-                Model.getPump().addModelEventListener(this,
-                        Model.getFacade().getExit(state));
-            }
+            Object doActivity = Model.getFacade().getDoActivity(newOwner);
+            addListenersForAction(doActivity);
+            Object entryAction = Model.getFacade().getEntry(newOwner);
+            addListenersForAction(entryAction);
+            Object exitAction = Model.getFacade().getExit(newOwner);
+            addListenersForAction(exitAction);
         }
     }
 
+    /**
+     * @param action
+     */
+    private void removeListenersForAction(Object action) {
+        if (action != null) {
+            Model.getPump().removeModelEventListener(this, action,
+                    new String[] { "script", "actualArgument"});
+            Collection args = Model.getFacade().getActualArguments(action);
+            Iterator i = args.iterator();
+            while (i.hasNext()) {
+                Object argument = i.next();
+                Model.getPump().removeModelEventListener(this, argument,
+                       "value");
+            }
+        }
+    }
+    
+    /**
+     * @param action
+     */
+    private void addListenersForAction(Object action) {
+        if (action != null) {
+            Model.getPump().addModelEventListener(this, action,
+                    new String[] { "script", "actualArgument"});
+            Collection args = Model.getFacade().getActualArguments(action);
+            Iterator i = args.iterator();
+            while (i.hasNext()) {
+                Object argument = i.next();
+                Model.getPump().addModelEventListener(this, argument, "value");
+            }
+        }
+    }
     /**
      * Updates the text inside the state.
      */
