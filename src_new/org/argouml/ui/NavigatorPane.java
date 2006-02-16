@@ -75,14 +75,12 @@ class NavigatorPane
         ExplorerTree tree = new DnDExplorerTree();
         ToolBar toolbar = new ToolBar();
 
-        toolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         toolbar.setFloatable(false);
         toolbar.add(new ActionPerspectiveConfig());
         toolbar.add(perspectiveCombo);
 
         ToolBar toolbar2 = new ToolBar();
 
-        toolbar2.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         toolbar2.setFloatable(false);
 
         orderByCombo.addItem(new TypeThenNameOrder());
