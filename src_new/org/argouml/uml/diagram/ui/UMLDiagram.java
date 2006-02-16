@@ -58,6 +58,7 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.base.ModeSelect;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBarFactory;
+import org.tigris.toolbar.ToolBarManager;
 import org.tigris.toolbar.toolbutton.ToolButton;
 
 /**
@@ -557,12 +558,16 @@ public abstract class UMLDiagram
                     bm.setSelected(false);
                     bm.setArmed(false);
                     bm.setPressed(false);
-                    tb.setBorderPainted(false);
+                    if (!ToolBarManager.alwaysUseStandardRollover()) {
+                        tb.setBorderPainted(false);
+                    }
                 } else {
                     tb.setSelected(true);
                     ButtonModel bm = tb.getModel();
                     bm.setRollover(true);
-                    tb.setBorderPainted(true);
+                    if (!ToolBarManager.alwaysUseStandardRollover()) {
+                        tb.setBorderPainted(true);
+                    }
                 }
             }
         }
