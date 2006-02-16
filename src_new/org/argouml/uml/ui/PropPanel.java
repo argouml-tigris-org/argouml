@@ -104,7 +104,6 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         super(title);
         setOrientation(orientation);
         buttonPanel = new ToolBar();
-        buttonPanel.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
         buttonPanel.setFloatable(false);
 
         setLayout(new LabelledLayout(orientation == Vertical.getInstance()));
