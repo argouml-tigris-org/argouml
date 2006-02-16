@@ -624,23 +624,31 @@ public class Main {
 
 	JOptionPane.setRootFrame(pb);
 
-	// Set the screen layout to what the user left it before, or
-	// to reasonable defaults.
-	Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-	pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        // Set the screen layout to what the user left it before, or
+        // to reasonable defaults.
+        Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-	int configFrameWidth =
-	    Configuration.getInteger(Argo.KEY_SCREEN_WIDTH,
-				     (int) (0.95 * scrSize.width));
-	int configFrameHeight =
-	    Configuration.getInteger(Argo.KEY_SCREEN_HEIGHT,
-				     (int) (0.95 * scrSize.height));
+        int configFrameWidth =
+            Configuration.getInteger(Argo.KEY_SCREEN_WIDTH,
+        			     (int) (0.95 * scrSize.width));
         int w = Math.min(configFrameWidth, scrSize.width);
+        if (w == 0) {
+            w = 600;
+        }
+        
+        int configFrameHeight =
+            Configuration.getInteger(Argo.KEY_SCREEN_HEIGHT,
+                         (int) (0.95 * scrSize.height));
         int h = Math.min(configFrameHeight, scrSize.height);
-	int x = Configuration.getInteger(Argo.KEY_SCREEN_LEFT_X, 0);
-	int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);
-	pb.setLocation(x, y);
-	pb.setSize(w, h);
+        if (h == 0) {
+            h = 400;
+        }
+        
+        int x = Configuration.getInteger(Argo.KEY_SCREEN_LEFT_X, 0);
+        int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);
+        pb.setLocation(x, y);
+        pb.setSize(w, h);
         return splash;
     }
 
