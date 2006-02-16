@@ -97,7 +97,15 @@ public final class DeveloperModule implements ModuleInterface {
     public boolean disable() {
         GenericArgoMenuBar menubar =
             (GenericArgoMenuBar) ProjectBrowser.getInstance().getJMenuBar();
-        UndoEnabler.enabled = false;
+        JMenu editMenu = ProjectBrowser.getInstance().getJMenuBar().getMenu(1);
+        
+        editMenu.getMenuComponent(0).setVisible(false);
+        editMenu.getMenuComponent(1).setVisible(false);
+        UndoManager.getInstance().empty();
+        UndoManager.getInstance().setUndoMax(0);
+        
+        JComponent undoLogPanel = UndoLogPanel.getInstance();
+        ProjectBrowser.getInstance().removePanel(undoLogPanel);
         return true;
     }
 
