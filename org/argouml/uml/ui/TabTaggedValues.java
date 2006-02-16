@@ -82,7 +82,6 @@ public class TabTaggedValues extends AbstractArgoJPanel
     public TabTaggedValues() {
         super("tab.tagged-values");
         buttonPanel = new ToolBar();
-        buttonPanel.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         buttonPanel.setFloatable(false);
 
         JButton b = new JButton();

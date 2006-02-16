@@ -41,6 +41,7 @@ import org.argouml.ocl.OCLUtil;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.toolbar.ToolBarManager;
 
 import tudresden.ocl.OclException;
 import tudresden.ocl.OclTree;
@@ -103,7 +104,9 @@ public class TabConstraints extends AbstractArgoJPanel
      * until mouse rolls over button.
      */
     private void setToolbarRollover(boolean enable) {
-        getOclToolbar().putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+        if (!ToolBarManager.alwaysUseStandardRollover()) {
+            getOclToolbar().putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+        }
     }
 
     /**

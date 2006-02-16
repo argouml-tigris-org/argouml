@@ -94,7 +94,6 @@ public class TabText
         // If a toolbar was requested, create an empty one.
         if (withToolbar) {
             toolbar = new ToolBar();
-            toolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
             toolbar.setOrientation(SwingConstants.HORIZONTAL);
             add(toolbar, BorderLayout.NORTH);
         }

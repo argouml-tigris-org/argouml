@@ -95,7 +95,6 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
         setLayout(new BorderLayout());
 
         JToolBar toolBar = new ToolBar(SwingConstants.VERTICAL);
-        toolBar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         toolBar.add(actionNewToDoItem);
         toolBar.add(actionResolve);
         toolBar.add(actionEmailExpert);

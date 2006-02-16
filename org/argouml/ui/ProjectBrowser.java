@@ -431,6 +431,16 @@ public final class ProjectBrowser
     }
 
     /**
+     * Remove a panel from a split pane area
+     * @param comp the panel to remove
+     */
+    void removePanel(Component comp) {
+        workAreaPane.remove(comp);
+        workAreaPane.validate();
+        workAreaPane.repaint();
+    }
+
+    /**
      * Set the size of each panel to that last saved in the configuration file.
      */
     private void restorePanelSizes() {

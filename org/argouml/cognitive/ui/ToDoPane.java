@@ -134,7 +134,6 @@ public class ToDoPane extends JPanel
         combo = new JComboBox();
         tree = new DisplayTextTree();
         toolbar = new ToolBar();
-        toolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
 
         perspectives = new Vector();
 
