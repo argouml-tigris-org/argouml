@@ -30,7 +30,6 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -39,8 +38,8 @@ import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.generator.ParserDisplay;
-import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -69,7 +68,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
 
     /**
-     * The minimum padding above and below the stereotype and name.<p>
+     * The minimum padding top and bottom.<p>
      */
     private static final int PADDING = 5;
 
@@ -122,9 +121,9 @@ public class FigClassifierRole extends FigNodeModelElement {
         Dimension stereoMin = getStereotypeFig().getMinimumSize();
 
         getStereotypeFig().setLineWidth(0);
-        getStereotypeFig().setFilled(false);
-        getStereotypeFig().setVisible(false);
-
+        getStereotypeFig().setVisible(true);
+        //getStereotypeFig().setFilled(false);
+        getStereotypeFig().setFillColor(Color.red);
         getStereotypeFig().setBounds(10, 10, 90, stereoMin.height);
 
         // The name. Width is the same as the cover, height is whatever its
@@ -217,56 +216,33 @@ public class FigClassifierRole extends FigNodeModelElement {
      * displayed.<p>
      */
     protected void updateStereotypeText() {
+        Rectangle rect = getBounds();
 
-        // Can't do anything if we haven't got an owner to have a stereotype!
+        int stereotypeHeight = 0;
+        if (getStereotypeFig().isVisible()) {
+            stereotypeHeight = getStereotypeFig().getHeight();
+        }
+        int heightWithoutStereo = getHeight() - stereotypeHeight;
 
-        Object me = /*(MModelElement)*/ getOwner();
+        getStereotypeFig().setOwner(getOwner());
+        ((FigStereotypesCompartment) getStereotypeFig()).populate();
 
-        if (me == null) {
-            return;
+        stereotypeHeight = 0;
+        if (getStereotypeFig().isVisible()) {
+            stereotypeHeight = getStereotypeFig().getHeight();
+        }
+        
+        int minWidth = this.getMinimumSize().width;
+        if (minWidth > rect.width) {
+            rect.width = minWidth;
         }
 
-        // Record the old bounds and get the stereotype
-
-        Rectangle   bounds = getBounds();
-
-        Collection stereos = Model.getFacade().getStereotypes(me);
-
-        // Where we now have no stereotype, mark as not displayed. Were we do
-        // have a stereotype, mark as displayed. If we remove
-        // or add/change a stereotype we adjust the vertical bounds
-        // appropriately. Otherwise we need not work out the bounds here. That
-        // will be done in setBounds().
-
-        if ((stereos == null) || stereos.isEmpty()) {
-            if (getStereotypeFig().isVisible()) {
-                bounds.height -= getStereotypeFig().getBounds().height;
-                getStereotypeFig().setVisible(false);
-            }
-        } else {
-
-            int oldHeight = getStereotypeFig().getBounds().height;
-
-            // If we weren't currently displayed the effective height was
-            // zero. Mark the stereotype as displayed
-
-            if (!(getStereotypeFig().isVisible())) {
-                oldHeight = 0;
-                getStereotypeFig().setVisible(true);
-            }
-
-            // recalculate its bounds
-
-            getStereotypeFig().calcBounds();
-
-            bounds.height += getStereotypeFig().getBounds().height - oldHeight;
-        }
-
-        // Set the bounds to our old bounds (reduced if we have taken the
-        // stereotype away). If the bounds aren't big enough when we've added a
-        // stereotype, they'll get increased as needed.
-
-        setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+        setBounds(
+                rect.x,
+                rect.y,
+                rect.width,
+                heightWithoutStereo + stereotypeHeight);
+        calcBounds();
     }
 
 
@@ -330,31 +306,17 @@ public class FigClassifierRole extends FigNodeModelElement {
 
     public Dimension getMinimumSize() {
 
-        Dimension bigPortMin = getBigPort().getMinimumSize();
-        Dimension coverMin   = cover.getMinimumSize();
         Dimension stereoMin  = getStereotypeFig().getMinimumSize();
         Dimension nameMin    = getNameFig().getMinimumSize();
 
         Dimension newMin    = new Dimension(nameMin.width, nameMin.height);
 
-        // Work out whether we need to count in the stereotype
-
         if (getStereotypeFig().isVisible()) {
             newMin.width   = Math.max(newMin.width, stereoMin.width);
             newMin.height += stereoMin.height;
         }
-
-        // Maximum should allow for bigPort and cover.
-
-        newMin.height =
-            Math.max(bigPortMin.height,
-                    Math.max(coverMin.height,
-                            newMin.height + PADDING * 2));
-
-        newMin.width  =
-            Math.max(bigPortMin.width,
-                    Math.max(coverMin.width,
-                            newMin.width + PADDING * 2));
+        
+        newMin.height += PADDING;
 
         return newMin;
     }
