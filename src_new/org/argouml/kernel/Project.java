@@ -42,6 +42,9 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProjectSaveEvent;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoDiagram;
@@ -395,8 +398,9 @@ public class Project implements java.io.Serializable, TargetListener {
         if (!models.contains(m)) {
             models.addElement(m);
         }
-        setCurrentNamespace(m);
-        ProjectManager.getManager().setNeedsSave(true);
+        setCurrentNamespace(m);        
+        ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
+
     }
 
     /**
@@ -763,7 +767,7 @@ public class Project implements java.io.Serializable, TargetListener {
         // send indeterminate new value instead of making copy of vector
         diagrams.addElement(d);
         d.addVetoableChangeListener(new Vcl());
-        ProjectManager.getManager().setNeedsSave(true);
+        ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
     }
 
     /**
@@ -805,7 +809,7 @@ public class Project implements java.io.Serializable, TargetListener {
         public void vetoableChange(PropertyChangeEvent evt)
             throws PropertyVetoException {
             if (evt.getPropertyName().equals("name")) {
-                ProjectManager.getManager().setNeedsSave(true);
+                ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
             }
         }
     }
@@ -889,7 +893,7 @@ public class Project implements java.io.Serializable, TargetListener {
             ((Diagram) diagrams.elementAt(i)).postSave();
         }
         // TODO: is postSave needed for models?
-        ProjectManager.getManager().setNeedsSave(false);
+        ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
     }
 
     /**
@@ -907,7 +911,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
         setRoot(model);
 
-        ProjectManager.getManager().setNeedsSave(false);
+        ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
         // we don't need this HashMap anymore so free up the memory
         uuidRefs = null;
     }
@@ -1016,7 +1020,11 @@ public class Project implements java.io.Serializable, TargetListener {
                 ((CommentEdge) obj).delete();
             }
         }
-        ProjectManager.getManager().setNeedsSave(needSave);
+        if (needSave) {
+            ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
+        }
+        else
+            ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.ISSAVED_PROJECTSAVE_EVENT, this));
     }
 
     private Collection collectAllEnclosedFigsRecursively(Fig f) {
