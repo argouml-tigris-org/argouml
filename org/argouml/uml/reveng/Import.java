@@ -66,6 +66,9 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.PluggableImport;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProjectSaveEvent;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -351,13 +354,6 @@ public class Import {
             configPanel = tab;
         }
         return configPanel;
-    }
-
-    /**
-     * Invoke the dialog to get the class path.
-     */
-    public void getUserClasspath() {
-        new ImportClasspathDialog(this);
     }
 
     /**
@@ -671,7 +667,7 @@ public class Import {
                 // Check if any diagrams where modified and the project
                 // should be saved before exiting.
                 if (diagramInterface != null && needsSave()) {
-                    ProjectManager.getManager().setNeedsSave(true);
+                    ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
                 }
 
                 ProjectBrowser.getInstance().showStatus("Import done");
