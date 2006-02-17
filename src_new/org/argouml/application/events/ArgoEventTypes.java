@@ -127,7 +127,26 @@ public interface ArgoEventTypes {
      * Last generation event.
      */
     int LAST_GENERATOR_EVENT       =  1399;
-
+    
+    /** 
+     * Any change event
+     */
+    int ANY_PROJECTSAVE_EVENT            = 1400;
+    
+    /**
+     * project needs to be saved
+     */
+    int NEEDS_PROJECTSAVE_EVENT          = 1401;
+    
+    /**
+     * project is saved
+     */
+    int ISSAVED_PROJECTSAVE_EVENT          = 1402;
+    
+    /**
+     * last project save event.
+     */
+    int LAST_PROJECTSAVE_EVENT          = 1499;
 
     /**
      * Id marker for the last Argo event.
