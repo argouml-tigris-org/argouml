@@ -32,7 +32,9 @@ import javax.swing.Action;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.Designer;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProjectSaveEvent;
+import org.argouml.application.events.ArgoProjectSaveListener;
 import org.argouml.model.MementoCreationObserver;
 import org.argouml.model.Model;
 import org.argouml.model.ModelMemento;
@@ -61,7 +63,7 @@ import org.tigris.gef.undo.UndoManager;
  * @stereotype singleton
  */
 public final class ProjectManager
-    implements PropertyChangeListener, MementoCreationObserver {
+    implements MementoCreationObserver, ArgoProjectSaveListener {
 
     /**
      * The name of the property that defines the current project.
@@ -300,21 +302,6 @@ public final class ProjectManager
     }
 
     /**
-     * React to PropertyChangeEvents, e.g. send by the Designer.
-     *
-     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-     */
-    public void propertyChange(PropertyChangeEvent pce) {
-        if (pce.getPropertyName().equals(
-                Designer.MODEL_TODOITEM_ADDED)) {
-            setNeedsSave(true);
-        } else if (pce.getPropertyName().equals(
-                Designer.MODEL_TODOITEM_DISMISSED)) {
-            setNeedsSave(true);
-        }
-    }
-
-    /**
      * Called when the model subsystem creates a memento.
      * We must add this to the UndoManager.
      *
@@ -339,5 +326,16 @@ public final class ProjectManager
 
         };
         UndoManager.getInstance().addMemento(wrappedMemento);
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.application.events.ArgoProjectSaveListener#needsChange(org.argouml.application.events.ArgoProjectSaveEvent)
+     */
+    public void needsChange(ArgoProjectSaveEvent apse) {
+        if (apse.getEventType() == ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT) {
+            setNeedsSave(true);
+        } else {
+            setNeedsSave(false);
+        }
     }
 }
