@@ -29,7 +29,9 @@ import java.beans.PropertyChangeEvent;
 
 import javax.swing.JCheckBox;
 
-import org.argouml.kernel.ProjectManager;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProjectSaveEvent;
 import org.argouml.ui.StylePanelFigNodeModelElement;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
@@ -115,11 +117,11 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
             if (src == attrCheckBox) {
                 ((AttributesCompartmentContainer) getPanelTarget())
                     .setAttributesVisible(attrCheckBox.isSelected());
-                ProjectManager.getManager().setNeedsSave(true);
+                ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
             } else if (src == operCheckBox) {
                 ((OperationsCompartmentContainer) getPanelTarget())
                     .setOperationsVisible(operCheckBox.isSelected());
-                ProjectManager.getManager().setNeedsSave(true);
+                ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
             } else
                 super.itemStateChanged(e);
         }

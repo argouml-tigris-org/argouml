@@ -35,8 +35,10 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProjectSaveEvent;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.PathContainer;
 import org.tigris.gef.ui.ColorRenderer;
@@ -142,7 +144,7 @@ public class StylePanelFigNodeModelElement
         nodeTarget.setShadowSize(i);
         getPanelTarget().endTrans();
         if (i != oldShadowSize) {
-            ProjectManager.getManager().setNeedsSave(true);
+            ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
         }
     }
 
@@ -157,7 +159,7 @@ public class StylePanelFigNodeModelElement
             } else if (src == pathCheckBox) {
                 PathContainer pc = (PathContainer) getPanelTarget();
                 pc.setPathVisible(pathCheckBox.isSelected());
-                ProjectManager.getManager().setNeedsSave(true);
+                ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
             } else {
                 super.itemStateChanged(e);
             }
