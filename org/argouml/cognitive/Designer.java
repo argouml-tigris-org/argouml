@@ -37,6 +37,9 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProjectSaveEvent;
 import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.ui.ActionGoToCritique;
@@ -445,10 +448,16 @@ public final class Designer
      * @param oldValue the old value
      * @param newValue the new value
      */
-    public static void firePropertyChange(String property,
-            Object oldValue, Object newValue) {
+    public static void firePropertyChange(String property, Object oldValue,
+            Object newValue) {
         if (pcs != null) {
             pcs.firePropertyChange(property, oldValue, newValue);
+        }
+        if (MODEL_TODOITEM_ADDED.equals(property)
+                || MODEL_TODOITEM_DISMISSED.equals(property)) {
+            ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(
+                    ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, Designer
+                            .theDesigner()));
         }
     }
 
