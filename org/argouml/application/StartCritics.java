@@ -52,7 +52,6 @@ public class StartCritics implements Runnable {
         org.argouml.uml.cognitive.critics.Init.init();
         org.argouml.uml.cognitive.checklist.Init.init();
         Project p = ProjectManager.getManager().getCurrentProject();
-        Designer.addListener(ProjectManager.getManager());
         // set the icon for this poster
         dsgr.setClarifier(ResourceLoaderWrapper.lookupIconResource("PostItD0"));
         dsgr.setDesignerName(Configuration.getString(Argo.KEY_USER_FULLNAME));
