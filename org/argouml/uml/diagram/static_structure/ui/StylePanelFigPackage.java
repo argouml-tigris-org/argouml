@@ -28,7 +28,9 @@ import java.awt.event.ItemEvent;
 
 import javax.swing.JCheckBox;
 
-import org.argouml.kernel.ProjectManager;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProjectSaveEvent;
 import org.argouml.ui.StylePanelFigNodeModelElement;
 import org.argouml.uml.diagram.ui.StereotypeContainer;
 import org.argouml.uml.diagram.ui.VisibilityContainer;
@@ -92,11 +94,11 @@ public class StylePanelFigPackage extends StylePanelFigNodeModelElement {
             if (src == stereoCheckBox) {
                 ((StereotypeContainer) getPanelTarget())
                     .setStereotypeVisible(stereoCheckBox.isSelected());
-                ProjectManager.getManager().setNeedsSave(true);
+                ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
             } else if (src == visibilityCheckBox) {
                 ((VisibilityContainer) getPanelTarget())
                     .setVisibilityVisible(visibilityCheckBox.isSelected());
-                ProjectManager.getManager().setNeedsSave(true);
+                ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
             } else
                 super.itemStateChanged(e);
         }

@@ -28,7 +28,9 @@ import java.awt.event.ItemEvent;
 
 import javax.swing.JCheckBox;
 
-import org.argouml.kernel.ProjectManager;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProjectSaveEvent;
 import org.argouml.ui.StylePanelFigNodeModelElement;
 
 /**
@@ -85,7 +87,7 @@ public class StylePanelFigInterface extends StylePanelFigNodeModelElement {
             if (src == operCheckBox) {
                 ((FigInterface) getPanelTarget())
                     .setOperationsVisible(operCheckBox.isSelected());
-                ProjectManager.getManager().setNeedsSave(true);
+                ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
             } else
                 super.itemStateChanged(e);
         }

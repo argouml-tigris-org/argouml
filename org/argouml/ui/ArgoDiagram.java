@@ -28,6 +28,9 @@ import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProjectSaveEvent;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -82,7 +85,7 @@ public class ArgoDiagram extends Diagram {
      */
     public void setName(String n) throws PropertyVetoException {
         super.setName(n);
-        ProjectManager.getManager().setNeedsSave(true);
+        ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
     }
 
     /**

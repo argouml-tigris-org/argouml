@@ -39,8 +39,10 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProjectSaveEvent;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.ui.ColorRenderer;
@@ -276,7 +278,7 @@ public class StylePanelFig
             getPanelTarget().setBounds(bounds.x, bounds.y, bounds.width,
                     bounds.height);
             getPanelTarget().endTrans();
-            ProjectManager.getManager().setNeedsSave(true);
+            ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
         }
     }
 
@@ -393,7 +395,7 @@ public class StylePanelFig
         getPanelTarget().setFilled(c instanceof Color);
         getPanelTarget().endTrans();
         if (!c.equals(oldColor)) {
-            ProjectManager.getManager().setNeedsSave(true);
+            ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
         }
     }
 
@@ -412,7 +414,7 @@ public class StylePanelFig
         getPanelTarget().setLineWidth((c instanceof Color) ? 1 : 0);
         getPanelTarget().endTrans();
         if (!c.equals(oldColor)) {
-            ProjectManager.getManager().setNeedsSave(true);
+            ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
         }
     }
 
