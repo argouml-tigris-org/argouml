@@ -54,6 +54,9 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProjectSaveEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -367,7 +370,7 @@ public class ClassGenerationDialog
                                     .equals(savedLang)) {
                                 Model.getCoreHelper().setTaggedValue(node,
                                         "src_lang", language.getName());
-                                ProjectManager.getManager().setNeedsSave(true);
+                                ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
                             }
                         }
                     } // end for (all nodes)
