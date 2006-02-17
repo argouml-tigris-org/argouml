@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.Action;
-import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
