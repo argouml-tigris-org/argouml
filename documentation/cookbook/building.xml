@@ -2182,7 +2182,7 @@ and run the command
 You also need to set the tag in the sub-projects so the following command
 is more like it:
 <programlisting>
-for proj in argouml argouml-mdr argouml-csharp argouml-es argouml-nb argouml-i18n-zh
+for proj in argouml argouml-mdr argouml-csharp argouml-en-gb argouml-es argouml-fr argouml-ru argouml-nb argouml-i18n-zh
 do
     ( cd &dollar;proj &amp;&amp; cvs tag VERSION_<replaceable>X_Y_Z</replaceable>_F )
 done

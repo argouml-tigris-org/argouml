@@ -3,7 +3,7 @@
 
 # The purpose of this shellscript is to make all the release work.
 
-CHILDPROJECTS="argouml-mdr argouml-csharp argouml-es argouml-nb argouml-i18n-zh"
+CHILDPROJECTS="argouml-mdr argouml-csharp argouml-es argouml-en-gb argouml-fr argouml-nb argouml-ru argouml-i18n-zh"
 
 # Check that JAVA_HOME is set.
 if test ! -x $JAVA_HOME/bin/javac
