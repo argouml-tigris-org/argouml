@@ -282,12 +282,6 @@ Property files to be searched:
     </copy>
   </target>
 
-  <target name="copy-i18n-es" if="has.i18n.es">
-    <copy todir="${argo.build.classes}/org/argouml/i18n">
-      <fileset dir="${argo.src.dir}/../src/i18n/es/src/org/argouml/i18n" includes="*.properties"/>
-    </copy>
-  </target>
-
   <target name="copy-i18n-fr" if="has.i18n.fr">
     <copy todir="${argo.build.classes}/org/argouml/i18n">
       <fileset dir="${argo.src.dir}/../src/i18n/fr/src/org/argouml/i18n" includes="*.properties"/>
@@ -311,11 +305,6 @@ Property files to be searched:
                type="dir" 
                property="has.i18n.en_GB"/>
     <antcall target="copy-i18n-en_GB"/>
-
-    <available file="${argo.src.dir}/../src/i18n/es/src/org/argouml/i18n"
-               type="dir" 
-               property="has.i18n.es"/>
-    <antcall target="copy-i18n-es"/>
 
     <available file="${argo.src.dir}/../src/i18n/fr/src/org/argouml/i18n"
                type="dir" 
