@@ -38,12 +38,12 @@ import org.tigris.swidgets.Orientation;
  *
  * @author 5heyden
  */
-public class PropPanelState extends AbstractPropPanelState {
+public class PropPanelSimpleState extends AbstractPropPanelState {
 
     /**
      * Constructor.
      */
-    public PropPanelState() {
+    public PropPanelSimpleState() {
         this("Simple State", lookupIcon("SimpleState"),
                 ConfigLoader.getTabPropsOrientation());
     }
@@ -55,7 +55,7 @@ public class PropPanelState extends AbstractPropPanelState {
      * @param icon the icon shown at the top
      * @param orientation the orientation of the panel
      */
-    public PropPanelState(String name, ImageIcon icon,
+    public PropPanelSimpleState(String name, ImageIcon icon,
             Orientation orientation) {
         super(name, icon, ConfigLoader.getTabPropsOrientation());
 
@@ -85,5 +85,5 @@ public class PropPanelState extends AbstractPropPanelState {
 
     }
 
-} /* end class PropPanelState */
+} /* end class PropPanelSimpleState */
 
