@@ -90,8 +90,9 @@ public class TMResults extends AbstractTableModel {
      * @see javax.swing.table.TableModel#getRowCount()
      */
     public int getRowCount() {
-        if (rowObjects == null)
+        if (rowObjects == null) {
             return 0;
+        }
         return rowObjects.size();
     }
 
@@ -99,16 +100,20 @@ public class TMResults extends AbstractTableModel {
      * @see javax.swing.table.TableModel#getColumnName(int)
      */
     public String getColumnName(int c) {
-        if (c == 0)
+        if (c == 0) {
             return Translator.localize("dialog.find.column-name.type");
-        if (c == 1)
+        }
+        if (c == 1) {
             return Translator.localize("dialog.find.column-name.name");
-        if (c == 2)
+        }
+        if (c == 2) {
             return Translator.localize(showInDiagramColumn
                     ? "dialog.find.column-name.in-diagram"
                     : "dialog.find.column-name.description");
-        if (c == 3)
+        }
+        if (c == 3) {
             return Translator.localize("dialog.find.column-name.description");
+        }
         return "XXX";
     }
 
@@ -130,19 +135,21 @@ public class TMResults extends AbstractTableModel {
      * @see javax.swing.table.TableModel#getValueAt(int, int)
      */
     public Object getValueAt(int row, int col) {
-        if (row < 0 || row >= rowObjects.size())
+        if (row < 0 || row >= rowObjects.size()) {
             return "bad row!";
-        if (col < 0 || col >= (showInDiagramColumn ? 4 : 3))
+        }
+        if (col < 0 || col >= (showInDiagramColumn ? 4 : 3)) {
             return "bad col!";
+        }
         Object rowObj = rowObjects.elementAt(row);
         if (rowObj instanceof Diagram) {
             Diagram d = (Diagram) rowObj;
             switch (col) {
 	    case 0 : // the name of this type of diagram
-		String name = null;
-		if (d instanceof UMLDiagram)
-		    name = ((UMLDiagram) d).getLabelName();
-		return name;
+		if (d instanceof UMLDiagram) {
+                    return ((UMLDiagram) d).getLabelName();
+                }
+		return null;
 	    case 1 : // the name of this instance of diagram
 		return d.getName();
 	    case 2 : // "N/A" or "x nodes and x edges"
@@ -151,6 +158,7 @@ public class TMResults extends AbstractTableModel {
                     : countNodesAndEdges(d);
 	    case 3 : // "x nodes and x edges"
 		return countNodesAndEdges(d);
+	    default:
             }
         }
         if (Model.getFacade().isAModelElement(rowObj)) {
@@ -169,11 +177,14 @@ public class TMResults extends AbstractTableModel {
                     : d.getName();
 	    case 3 : // TODO: implement this - show some documentation?
 		return "docs";
+	    default:
             }
         }
         switch (col) {
 	case 0 : // the name of this type of Object
-            if (rowObj == null ) return "";
+            if (rowObj == null) {
+                return "";
+            }
 	    String clsName = rowObj.getClass().getName();
 	    int lastDot = clsName.lastIndexOf(".");
 	    return clsName.substring(lastDot + 1);
@@ -183,6 +194,7 @@ public class TMResults extends AbstractTableModel {
 	    return "??";
 	case 3 :
 	    return "docs";
+	default:
         }
         return "unknown!";
     }
@@ -206,4 +218,8 @@ public class TMResults extends AbstractTableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1444599676429024575L;
 } /* end class TMResults */

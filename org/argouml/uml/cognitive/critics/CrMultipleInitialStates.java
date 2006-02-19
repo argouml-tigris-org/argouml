@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -80,7 +80,6 @@ public class CrMultipleInitialStates extends CrUML {
         }
         Collection peers = Model.getFacade().getSubvertices(cs);
         int initialStateCount = 0;
-        int size = peers.size();
         for (Iterator iter = peers.iterator(); iter.hasNext();) {
             Object sv = iter.next();
             if (Model.getFacade().isAPseudostate(sv)
@@ -147,5 +146,9 @@ public class CrMultipleInitialStates extends CrUML {
         return res;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 4151051235876065649L;
 } /* end class CrMultipleInitialStates */
 
