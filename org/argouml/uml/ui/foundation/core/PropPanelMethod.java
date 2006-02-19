@@ -24,17 +24,29 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateOwner;
+import org.argouml.uml.ui.UMLAction;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
+import org.tigris.swidgets.GridLayout2;
 
 /**
  * A property panel for methods.
@@ -44,6 +56,8 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelMethod extends PropPanelFeature {
 
     private JTextField languageTextField;
+    private UMLComboBox2 specificationComboBox;
+    private static UMLMethodSpecificationComboBoxModel specificationComboBoxModel;
     private UMLModelElementLanguageDocument languageDocument =
         new UMLModelElementLanguageDocument();
 
@@ -60,17 +74,35 @@ public class PropPanelMethod extends PropPanelFeature {
         addField(Translator.localize("label.name"),
                 getNameTextField());
 
-        addField(Translator.localize("label.language"),
-                getLanguageTextField());
-
         addField(Translator.localize("label.owner"),
                 getOwnerScroll());
+        
+        /* The specification field shows the Operation: */
+        addField(Translator.localize("label.specification"),
+                new UMLComboBoxNavigator(
+                        this,
+                        Translator.localize("label.specification.navigate.tooltip"),
+                        getSpecificationComboBox()));
 
+        add(getVisibilityPanel());
+        
+        JPanel modifiersPanel = new JPanel(new GridLayout2(0, 3,
+                GridLayout2.ROWCOLPREFERRED));
+        modifiersPanel.setBorder(new TitledBorder(Translator.localize(
+                "label.modifiers")));
+        modifiersPanel.add(new UMLBehavioralFeatureQueryCheckBox());
+        modifiersPanel.add(new UMLFeatureOwnerScopeCheckBox());
+        add(modifiersPanel);
+        
         addSeperator();
+
+        addField(Translator.localize("label.language"),
+                getLanguageTextField());
 
         UMLTextArea2 bodyArea = new UMLTextArea2(uptd);
         bodyArea.setLineWrap(true);
         bodyArea.setRows(5);
+        bodyArea.setFont(LookAndFeelMgr.getInstance().getSmallFont());
         JScrollPane pane = new JScrollPane(bodyArea);
         addField(Translator.localize("label.body"), pane);
 
@@ -86,6 +118,93 @@ public class PropPanelMethod extends PropPanelFeature {
             languageTextField = new UMLTextField2(languageDocument);
         }
         return languageTextField;
+    }
+
+    public UMLComboBox2 getSpecificationComboBox() {
+        if (specificationComboBox == null) {
+            if (specificationComboBoxModel == null) {
+                specificationComboBoxModel =
+                    new UMLMethodSpecificationComboBoxModel();
+            }
+            specificationComboBox =
+                new UMLComboBox2(
+                        specificationComboBoxModel,
+                                 new ActionSetMethodSpecification());
+        }
+        return specificationComboBox;
+    }
+
+    private class UMLMethodSpecificationComboBoxModel extends UMLComboBoxModel2 {
+
+        public UMLMethodSpecificationComboBoxModel() {
+            super("specification", false);
+            Model.getPump().addClassModelEventListener(this,
+                    Model.getMetaTypes().getOperation(), "method");
+        }
+
+        protected boolean isValidElement(Object element) {
+            return Model.getFacade().getSpecification(getTarget()) == element;
+        }
+
+        protected void buildModelList() {
+            if (getTarget() != null) {
+                removeAllElements();
+                Object classifier = Model.getFacade().getOwner(getTarget());
+                addAll(Model.getFacade().getOperations(classifier));
+            }
+        }
+
+        protected Object getSelectedModelElement() {
+            return Model.getFacade().getSpecification(getTarget());
+        }
+        
+        public void propertyChange(PropertyChangeEvent evt) {
+            if (evt instanceof AttributeChangeEvent) {
+                if (evt.getPropertyName().equals("specification")) {
+                    if (evt.getSource() == getTarget()
+                            && (getChangedElement(evt) != null)) {
+                        Object elem = getChangedElement(evt);
+                        setSelectedItem(elem);
+                    }
+                }
+            }
+        }
+    }
+
+    private class ActionSetMethodSpecification extends UMLAction {
+
+        /**
+         * Constructor for ActionSetStructuralFeatureType.
+         */
+        protected ActionSetMethodSpecification() {
+            super(Translator.localize("Set"), false, NO_ICON);
+        }
+
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            Object source = e.getSource();
+            Object oldOperation = null;
+            Object newOperation = null;
+            Object method = null;
+            if (source instanceof UMLComboBox2) {
+                UMLComboBox2 box = (UMLComboBox2) source;
+                Object o = box.getTarget(); // the method
+                if (Model.getFacade().isAMethod(o)) {
+                    method = o;
+                    oldOperation = Model.getFacade().getSpecification(method);
+                }
+                o = box.getSelectedItem(); // the selected operation
+                if (Model.getFacade().isAOperation(o)) {
+                    newOperation = o;
+                }
+            }
+            if (newOperation != oldOperation && method != null) {
+                Model.getCoreHelper().setSpecification(method, newOperation);
+            }
+        }
     }
 
     private class UMLModelElementLanguageDocument extends UMLPlainTextDocument {
@@ -156,7 +275,7 @@ public class PropPanelMethod extends PropPanelFeature {
                 if (expr != null) {
                     Model.getDataTypesHelper().setBody(expr, text);
                 } else {
-                    Model.getCoreHelper().setBody(text,
+                    Model.getCoreHelper().setBody(meth,
                             Model.getDataTypesFactory()
                             .createProcedureExpression(null, text));
                 }
@@ -175,4 +294,5 @@ public class PropPanelMethod extends PropPanelFeature {
             }
         }
     }
+
 } /* end class PropPanelMethod */
