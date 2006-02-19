@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,7 +27,6 @@ import java.util.StringTokenizer;
 
 import org.argouml.uml.diagram.ui.FigCommentPort;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.persistence.pgml.PGMLStackParser;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -68,7 +67,7 @@ public class FigEdgeHandler
         if (o instanceof FigLine || o instanceof FigPoly) {
             edge.setFig((Fig) o);
             if (o instanceof FigPoly) {
-                ((FigPoly) o)._isComplete = true;
+                ((FigPoly) o).setComplete(true);
             }
             edge.calcBounds();
             if (edge instanceof FigEdgePoly) {
@@ -149,7 +148,7 @@ public class FigEdgeHandler
         edge.makeCommentPort();
         return edge.getCommentPort();
     }
-    
+
 
     /**
      * Get the Fig from the FigNode that is the port.

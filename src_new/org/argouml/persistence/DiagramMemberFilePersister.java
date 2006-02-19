@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,23 +56,23 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
     public void load(Project project, InputStream inputStream)
         throws OpenException {
 
-            // If the model repository doesn't manage a DI model
-            // then we must generate our Figs by inspecting PGML
-            try {
-                // Give the parser a map of model elements
-                // keyed by their UUID. This is used to allocate
-                // figs to their owner using the "href" attribute
-                // in PGML.
-                PGMLStackParser parser = new PGMLStackParser(project.getUUIDRefs());
-                Diagram d = parser.readDiagram(inputStream, false);
-                inputStream.close();
-                project.addMember(d);
-            } catch (Exception e) {
-                if (e instanceof OpenException) {
-                    throw (OpenException) e;
-                }
-                throw new OpenException(e);
+        // If the model repository doesn't manage a DI model
+        // then we must generate our Figs by inspecting PGML
+        try {
+            // Give the parser a map of model elements
+            // keyed by their UUID. This is used to allocate
+            // figs to their owner using the "href" attribute
+            // in PGML.
+            PGMLStackParser parser = new PGMLStackParser(project.getUUIDRefs());
+            Diagram d = parser.readDiagram(inputStream, false);
+            inputStream.close();
+            project.addMember(d);
+        } catch (Exception e) {
+            if (e instanceof OpenException) {
+                throw (OpenException) e;
             }
+            throw new OpenException(e);
+        }
     }
 
     /**

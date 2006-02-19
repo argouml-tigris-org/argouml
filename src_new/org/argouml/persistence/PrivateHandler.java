@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,79 +42,83 @@ import org.tigris.gef.persistence.pgml.PGMLHandler;
 import org.xml.sax.SAXException;
 
 /**
- * <p>
  * Will set the ItemUID for objects represented by
- * PGML elements that contain <private> elements that have
- * ItemUID assignments in them.
- * </p>
- * <p>
+ * PGML elements that contain private elements that have
+ * ItemUID assignments in them.<p>
+ *
  * Currently, there are three possibilities: ArgoDiagram,
  * FigNode, FigEdge
- * </p>
  */
-public class PrivateHandler extends org.tigris.gef.persistence.pgml.PrivateHandler {
-    private Container _container;
+public class PrivateHandler
+    extends org.tigris.gef.persistence.pgml.PrivateHandler {
 
+    private Container container;
+
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(PrivateHandler.class);
 
-    public PrivateHandler( PGMLStackParser parser, Container container)
-    {
-        super( parser, container);
-        _container=container;
+    /**
+     * The constructor.
+     *
+     * @param parser
+     * @param cont
+     */
+    public PrivateHandler(PGMLStackParser parser, Container cont) {
+        super(parser, cont);
+        container = cont;
     }
 
     /**
      * If the containing object is a type for which the private element
      * might contain an ItemUID, extract the ItemUID if it exists and assign it
      * to the object.
-
      */
-    public void gotElement( String contents)
-    throws SAXException
-    {
-        if ( _container instanceof PGMLHandler)
-        {
-            Object o=getPGMLStackParser().getDiagram();
-            if ( o instanceof ArgoDiagram)
-            {
-                ItemUID uid=getItemUID( contents);
-                if ( uid!=null)
-                    ((ArgoDiagram)o).setItemUID( uid);
+    public void gotElement(String contents)
+        throws SAXException {
+
+        if (container instanceof PGMLHandler) {
+            Object o = getPGMLStackParser().getDiagram();
+            if (o instanceof ArgoDiagram) {
+                ItemUID uid = getItemUID(contents);
+                if (uid != null) {
+                    ((ArgoDiagram) o).setItemUID(uid);
+                }
             }
             // No other uses of string in PGMLHandler
             return;
         }
-        if ( _container instanceof FigGroupHandler)
-        {
-            Object o=((FigGroupHandler)_container).getFigGroup();
-            if ( o instanceof FigNodeModelElement)
-            {
-                ItemUID uid=getItemUID( contents);
-                if ( uid!=null)
-                    ((FigNodeModelElement)o).setItemUID( uid);
+
+        if (container instanceof FigGroupHandler) {
+            Object o = ((FigGroupHandler) container).getFigGroup();
+            if (o instanceof FigNodeModelElement) {
+                ItemUID uid = getItemUID(contents);
+                if (uid != null) {
+                    ((FigNodeModelElement) o).setItemUID(uid);
+                }
             }
         }
-        if ( _container instanceof FigEdgeHandler)
-        {
-            Object o=((FigEdgeHandler)_container).getFigEdge();
-            if ( o instanceof FigEdgeModelElement)
-            {
-                ItemUID uid=getItemUID( contents);
-                if ( uid!=null)
-                    ((FigEdgeModelElement)o).setItemUID( uid);
+
+        if (container instanceof FigEdgeHandler) {
+            Object o = ((FigEdgeHandler) container).getFigEdge();
+            if (o instanceof FigEdgeModelElement) {
+                ItemUID uid = getItemUID(contents);
+                if (uid != null) {
+                    ((FigEdgeModelElement) o).setItemUID(uid);
+                }
             }
         }
 
         // Handle other uses of <private> contents
-        super.gotElement( contents);
+        super.gotElement(contents);
     }
 
     /**
-     * Determine if the string contains an ItemUID
+     * Determine if the string contains an ItemUID.
      */
-    private ItemUID getItemUID( String privateContents)
-    {
-        StringTokenizer st = new StringTokenizer( privateContents, "\n");
+    private ItemUID getItemUID(String privateContents) {
+        StringTokenizer st = new StringTokenizer(privateContents, "\n");
 
         while (st.hasMoreElements()) {
             String str = st.nextToken();
@@ -127,7 +131,7 @@ public class PrivateHandler extends org.tigris.gef.persistence.pgml.PrivateHandl
                 }
                 if ("ItemUID".equals(nval.getName())
                     && nval.getValue().length() > 0) {
-                    return new ItemUID( nval.getValue());
+                    return new ItemUID(nval.getValue());
                 }
             }
         }
@@ -175,24 +179,25 @@ public class PrivateHandler extends org.tigris.gef.persistence.pgml.PrivateHandl
      * @return A NameVal, or null if they could not be split.
      */
     protected NameVal splitNameVal(String str) {
-    NameVal rv = null;
-    int lqpos, rqpos;
-    int eqpos = str.indexOf('=');
+        NameVal rv = null;
+        int lqpos, rqpos;
+        int eqpos = str.indexOf('=');
 
-    if (eqpos < 0) {
-        return null;
-    }
+        if (eqpos < 0) {
+            return null;
+        }
 
-    lqpos = str.indexOf('"', eqpos);
-    rqpos = str.lastIndexOf('"');
+        lqpos = str.indexOf('"', eqpos);
+        rqpos = str.lastIndexOf('"');
 
-    if (lqpos < 0 || rqpos <= lqpos) {
-        return null;
-    }
+        if (lqpos < 0 || rqpos <= lqpos) {
+            return null;
+        }
 
-    rv = new NameVal(str.substring(0, eqpos),
-            str.substring(lqpos + 1, rqpos));
+        rv =
+            new NameVal(str.substring(0, eqpos),
+                str.substring(lqpos + 1, rqpos));
 
-    return rv;
+        return rv;
     }
 }

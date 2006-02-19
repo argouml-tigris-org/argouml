@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -84,12 +84,12 @@ public class UmlFilePersister extends AbstractFilePersister
      * The percentage completeness of phases complete.
      * Does not include part-completed phases.
      */
-    private int percentPhasesComplete = 0;
+    private int percentPhasesComplete;
 
     /**
      * The sections complete of a load or save.
      */
-    private int phasesCompleted = 0;
+    private int phasesCompleted;
 
     /**
      * The number of equals phases the progress will measure.
@@ -97,7 +97,7 @@ public class UmlFilePersister extends AbstractFilePersister
      * There is one phase for each upgrade from a previous
      * version and one pahse for the final load.
      */
-    private int progressPhaseCount = 0;
+    private int progressPhaseCount;
 
     private static final String ARGO_TEE =
 	"/org/argouml/persistence/argo2.tee";
@@ -323,7 +323,7 @@ public class UmlFilePersister extends AbstractFilePersister
                 file = transform(file, fileVersion);
                 long endTime = System.currentTimeMillis();
                 LOG.info("Upgrading took "
-                        + ((endTime - startTime)/1000)
+                        + ((endTime - startTime) / 1000)
                         + " seconds");
                 ++phasesCompleted;
                 percentPhasesComplete =
