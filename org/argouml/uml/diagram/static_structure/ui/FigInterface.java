@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
@@ -66,6 +65,9 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigInterface extends FigClassifierBox {
 
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(FigInterface.class);
 
     ////////////////////////////////////////////////////////////////
@@ -93,9 +95,10 @@ public class FigInterface extends FigClassifierBox {
     /**
      * Main constructor for a {@link FigInterface}.
      *
-     * Parent {@link FigNodeModelElement} will have created the main
-     * box {@link #getBigPort()} and its name {@link #getNameFig()}
-     * and stereotype (@link #getStereotypeFig()}. This constructor
+     * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
+     * will have created the main box {@link #getBigPort()} and
+     * its name {@link #getNameFig()} and stereotype
+     * (@link #getStereotypeFig()}. This constructor
      * creates a box for the operations.<p>
      *
      * The properties of all these graphic elements are adjusted
@@ -107,11 +110,11 @@ public class FigInterface extends FigClassifierBox {
      *
      * <em>Warning</em>. Much of the graphics positioning is hard coded. The
      * overall figure is placed at location (10,10). The name compartment (in
-     * the parent {@link FigNodeModelElement} is 21 pixels high. The
-     * stereotype compartment is created 15 pixels high in the parent, but we
-     * change it to 19 pixels, 1 more than ({@link #STEREOHEIGHT} here. The
-     * operations box is created at 19 pixels, 2 more than
-     * {@link #ROWHEIGHT}.<p>
+     * the parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
+     * is 21 pixels high. The stereotype compartment is created 15 pixels high
+     * in the parent, but we change it to 19 pixels, 1 more than
+     * ({@link #STEREOHEIGHT} here. The operations box is created at 19 pixels,
+     * 2 more than {@link #ROWHEIGHT}.<p>
      *
      * CAUTION: This constructor (with no arguments) is the only one
      * that does enableSizeChecking(false), all others must set it true.
@@ -387,12 +390,15 @@ public class FigInterface extends FigClassifierBox {
                 && !Model.getFacade().isAInstance(encloser.getOwner()))) {
             super.setEnclosingFig(encloser);
         }
-        if (!(Model.getFacade().isAModelElement(getOwner())))
+        if (!(Model.getFacade().isAModelElement(getOwner()))) {
             return;
+        }
         /* If this fig is not visible, do not adapt the UML model!
-        * This is used for deleting. See issue 3042. */
-        if  (!isVisible())
+         * This is used for deleting. See issue 3042.
+         */
+        if  (!isVisible()) {
             return;
+        }
         Object me = /*(MModelElement)*/ getOwner();
         Object m = null;
 
@@ -409,8 +415,8 @@ public class FigInterface extends FigClassifierBox {
             if (Model.getFacade().getNamespace(me) == null
                     && (TargetManager.getInstance().getTarget()
                     instanceof UMLDiagram)) {
-                m = /*(MNamespace)*/
-                        ((UMLDiagram) TargetManager.getInstance().getTarget())
+                m =
+                    ((UMLDiagram) TargetManager.getInstance().getTarget())
                         .getNamespace();
                 Model.getCoreHelper().setNamespace(me, m);
             }
@@ -459,8 +465,10 @@ public class FigInterface extends FigClassifierBox {
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
             } catch (ParseException pe) {
                 String msg = "statusmsg.bar.error.parsing.operation";
-                Object[] args = {pe.getLocalizedMessage(),
-                                 new Integer(pe.getErrorOffset())};
+                Object[] args = {
+                    pe.getLocalizedMessage(),
+                    new Integer(pe.getErrorOffset()),
+                };
                 ProjectBrowser.getInstance().getStatusBar().showStatus(
                         Translator.messageFormat(msg, args));
             }
@@ -665,9 +673,6 @@ public class FigInterface extends FigClassifierBox {
         operationsCompartment.populate();
         Fig operPort = operationsCompartment.getBigPort();
 
-        int xpos = operPort.getX();
-        int ypos = operPort.getY();
-
         Rectangle rect = getBounds();
 
         // ouch ugly but that's for a next refactoring
@@ -691,7 +696,7 @@ public class FigInterface extends FigClassifierBox {
         int heightWithoutStereo = getHeight() - stereotypeHeight;
 
         getStereotypeFig().setOwner(getOwner());
-        ((FigStereotypesCompartment)getStereotypeFig()).populate();
+        ((FigStereotypesCompartment) getStereotypeFig()).populate();
 
         stereotypeHeight = 0;
         if (getStereotypeFig().isVisible()) {
@@ -702,7 +707,7 @@ public class FigInterface extends FigClassifierBox {
         if (minWidth > rect.width) {
             rect.width = minWidth;
         }
-        
+
         setBounds(
                 rect.x,
                 rect.y,
@@ -710,5 +715,10 @@ public class FigInterface extends FigClassifierBox {
                 heightWithoutStereo + stereotypeHeight);
         calcBounds();
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -390783219580351197L;
 
 } /* end class FigInterface */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,7 +47,6 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Geometry;
@@ -78,8 +77,8 @@ public class FigComment
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private int x = 0;
-    private int y = 0;
+    private int x;
+    private int y;
     private int width = 80;
     private int height = 60;
     private int dogear = 10; // a dog-ear = a bent corner in a book
@@ -100,7 +99,7 @@ public class FigComment
      * problem with loading comments that have stereotypes already
      * defined.<p>
      */
-    private boolean newlyCreated = false;
+    private boolean newlyCreated;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -134,7 +133,9 @@ public class FigComment
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
 
-        bodyTextFig = new FigMultiLineText(x + 2, y + 2, width - 2 - dogear, height - 4, true);
+        bodyTextFig =
+            new FigMultiLineText(x + 2, y + 2,
+                                 width - 2 - dogear, height - 4, true);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
@@ -212,7 +213,7 @@ public class FigComment
     public void setOwner(Object own) {
         super.setOwner(own);
         if (own != null) {
-            String body = (String)Model.getFacade().getBody(getOwner());
+            String body = (String) Model.getFacade().getBody(getOwner());
             if (body != null) {
                 bodyTextFig.setText(body);
             }
@@ -451,7 +452,7 @@ public class FigComment
     /**
      * Stores the body text in the associated model element.
      *
-     * @param note The body text to store.
+     * @param body The body text to store.
      */
     public final void storeBody(String body) {
         if (getOwner() != null) {
@@ -649,20 +650,34 @@ public class FigComment
      */
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
-        int xs[] = {r.x, r.x + r.width - dogear, r.x + r.width,
-                    r.x + r.width,  r.x,            r.x};
-        int ys[] = {r.y, r.y,                    r.y + dogear,
-                    r.y + r.height, r.y + r.height, r.y};
-        Point p = Geometry.ptClosestTo(
+        int[] xs = {
+            r.x, r.x + r.width - dogear, r.x + r.width,
+            r.x + r.width,  r.x,            r.x,
+        };
+        int[] ys = {
+            r.y, r.y,                    r.y + dogear,
+            r.y + r.height, r.y + r.height, r.y,
+        };
+        Point p =
+            Geometry.ptClosestTo(
                 xs,
                 ys,
-                6 , anotherPt);
+                6,
+                anotherPt);
         return p;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
+     */
     public void paint(Graphics g) {
         Color col = outlineFig.getFillColor();
         urCorner.setFillColor(col.darker());
         super.paint(g);
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 7242542877839921267L;
 } /* end class FigComment */

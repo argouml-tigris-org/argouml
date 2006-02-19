@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,14 +26,11 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.Handle;
 
@@ -46,10 +43,10 @@ import org.tigris.gef.presentation.Handle;
 public class FigFeature extends CompartmentFigText {
 
     private class SelectionFeature extends Selection {
-
         /**
          * Constructor for SelectionFeature.
-         * @param f
+         *
+         * @param f The Fig.
          */
         public SelectionFeature(Fig f) {
             super(f);
@@ -71,6 +68,11 @@ public class FigFeature extends CompartmentFigText {
          */
         public void hitHandle(Rectangle r, Handle h) {
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 7437255966804296937L;
     }
 
     /**
@@ -96,18 +98,30 @@ public class FigFeature extends CompartmentFigText {
 
     /**
      * Via makeSelection we can add a custom selection class. This way
-     * we can add a custom keyevent handler for our attributes or operations
+     * we can add a custom keyevent handler for our attributes or operations.
+     *
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
         return new SelectionFeature(this);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.FigText#setTextFilled(boolean)
+     */
     public void setTextFilled(boolean filled) {
         super.setTextFilled(false);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
     public void setFilled(boolean filled) {
         super.setFilled(false);
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -6174252286709779782L;
 }

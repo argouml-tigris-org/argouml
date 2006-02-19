@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
@@ -54,7 +53,6 @@ import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Editor;
@@ -85,18 +83,11 @@ public class FigClass extends FigClassifierBox
     /**
      * Text highlighted by mouse actions on the diagram.<p>
      */
-    private CompartmentFigText highlightedFigText = null;
+    private CompartmentFigText highlightedFigText;
 
     /**
-     * Flag to indicate that we have just been created. This is to fix the
-     * problem with loading classes that have stereotypes already
-     * defined.<p>
-     */
-    private boolean newlyCreated = false;
-
-    /**
-     * <p>Manages residency of a class within a component on a deployment
-     *   diagram.</p>
+     * Manages residency of a class within a component on a deployment
+     * diagram.
      */
     private Object resident =
             Model.getCoreFactory().createElementResidence();
@@ -107,9 +98,10 @@ public class FigClass extends FigClassifierBox
     /**
      * Main constructor for a {@link FigClass}.<p>
      *
-     * Parent {@link FigNodeModelElement} will have created the main
-     * box {@link #getBigPort()} and its name {@link #getNameFig()}
-     * and stereotype (@link #getStereotypeFig()}. This constructor
+     * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
+     * will have created the main box {@link #getBigPort()} and its
+     * name {@link #getNameFig()} and stereotype
+     * (@link #getStereotypeFig()}. This constructor
      * creates a box for the attributes and operations.<p>
      *
      * The properties of all these graphic elements are adjusted
@@ -137,7 +129,8 @@ public class FigClass extends FigClassifierBox
      *
      * <em>Warning</em>. Much of the graphics positioning is hard
      * coded. The overall figure is placed at location (10,10). The
-     * name compartment (in the parent {@link FigNodeModelElement} is
+     * name compartment (in the parent
+     * {@link org.argouml.uml.diagram.ui.FigNodeModelElement} is
      * 21 pixels high. The stereotype compartment is created 15 pixels
      * high in the parent, but we change it to 19 pixels, 1 more than
      * ({@link #STEREOHEIGHT} here. The attribute and operations boxes
@@ -174,15 +167,6 @@ public class FigClass extends FigClassifierBox
         borderFig.setLineColor(Color.black);
 
         getStereotypeFig().setLineWidth(0);
-
-        // Mark this as newly created. This is to get round the problem with
-        // creating figs for loaded classes that had stereotypes. They are
-        // saved with their dimensions INCLUDING the stereotype, but since we
-        // pretend the stereotype is not visible, we add height the first time
-        // we render such a class. This is a complete fudge, and really we
-        // ought to address how class objects with stereotypes are saved. But
-        // that will be hard work.
-        newlyCreated = true;
 
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.
@@ -511,8 +495,10 @@ public class FigClass extends FigClassifierBox
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
             } catch (ParseException pe) {
                 String msg = "statusmsg.bar.error.parsing.attribute";
-                Object[] args = {pe.getLocalizedMessage(),
-                    new Integer(pe.getErrorOffset())};
+                Object[] args = {
+                    pe.getLocalizedMessage(),
+                    new Integer(pe.getErrorOffset()),
+                };
                 ProjectBrowser.getInstance().getStatusBar().showStatus(
                         Translator.messageFormat(msg, args));
             }
@@ -531,8 +517,10 @@ public class FigClass extends FigClassifierBox
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
             } catch (ParseException pe) {
                 String msg = "statusmsg.bar.error.parsing.operation";
-                Object[] args = {pe.getLocalizedMessage(),
-                    new Integer(pe.getErrorOffset())};
+                Object[] args = {
+                    pe.getLocalizedMessage(),
+                    new Integer(pe.getErrorOffset()),
+                };
                 ProjectBrowser.getInstance().getStatusBar().showStatus(
                         Translator.messageFormat(msg, args));
             }
@@ -676,9 +664,12 @@ public class FigClass extends FigClassifierBox
             if (mee instanceof AddAssociationEvent) {
                 AddAssociationEvent aae = (AddAssociationEvent) mee;
                 /* Ensure we will get an event for the name change of
-                 * the newly created attribute: */
-                Model.getPump().addModelEventListener(this, aae.getChangedValue(),
-                    new String[] {"name", "kind", "type", "defaultValue"});
+                 * the newly created attribute:
+                 */
+                Model.getPump().addModelEventListener(
+                        this,
+                        aae.getChangedValue(),
+                        new String[] {"name", "kind", "type", "defaultValue"});
                 damage();
                 return;
             } else if (mee instanceof RemoveAssociationEvent) {
@@ -736,7 +727,7 @@ public class FigClass extends FigClassifierBox
         if (getStereotypeFig().isVisible()) {
             stereotypeHeight = getStereotypeFig().getHeight();
         }
-        
+
         int minWidth = this.getMinimumSize().width;
         if (minWidth > rect.width) {
             rect.width = minWidth;
@@ -748,7 +739,6 @@ public class FigClass extends FigClassifierBox
                 rect.width,
                 heightWithoutStereo + stereotypeHeight);
         calcBounds();
-        newlyCreated = false;
     }
 
     /**
@@ -760,8 +750,9 @@ public class FigClass extends FigClassifierBox
                 && !Model.getFacade().isAInstance(encloser.getOwner()))) {
             super.setEnclosingFig(encloser);
         }
-        if (!(Model.getFacade().isAModelElement(getOwner())))
+        if (!(Model.getFacade().isAModelElement(getOwner()))) {
             return;
+        }
         if (encloser != null
                 && (Model.getFacade().isAComponent(encloser.getOwner()))) {
             Object component = /*(MComponent)*/ encloser.getOwner();
@@ -795,7 +786,8 @@ public class FigClass extends FigClassifierBox
      *
      * @param h  Desired height of the FigClass
      */
-    protected void setBoundsImpl(final int x, final int y, final int w, final int h) {
+    protected void setBoundsImpl(final int x, final int y,
+            final int w, final int h) {
         Rectangle oldBounds = getBounds();
 
         // set bounds of big box
@@ -803,8 +795,8 @@ public class FigClass extends FigClassifierBox
         borderFig.setBounds(x, y, w, h);
 
         // Save our old boundaries (needed later), and get minimum size
-        // info. "whitespace" will be used to maintain a running calculation of our
-        // size at various points.
+        // info. "whitespace" will be used to maintain a running calculation
+        // of our size at various points.
 
         final int whitespace = h - getMinimumSize().height;
 
@@ -948,7 +940,8 @@ public class FigClass extends FigClassifierBox
             while (it.hasNext()) {
                 Object feat = it.next();
                 Model.getPump().removeModelEventListener(this, feat);
-                Collection c = new ArrayList(Model.getFacade().getStereotypes(feat));
+                Collection c =
+                    new ArrayList(Model.getFacade().getStereotypes(feat));
                 if (Model.getFacade().isAOperation(feat)) {
                     c.addAll(Model.getFacade().getParameters(feat));
                 }
@@ -959,12 +952,13 @@ public class FigClass extends FigClassifierBox
                 }
             }
         }
-        if (newOwner != null) { 
+        if (newOwner != null) {
             // add the listeners to the newOwner
             Iterator it = Model.getFacade().getFeatures(newOwner).iterator();
             while (it.hasNext()) {
                 Object feat = it.next();
-                Collection c = new ArrayList(Model.getFacade().getStereotypes(feat));
+                Collection c =
+                    new ArrayList(Model.getFacade().getStereotypes(feat));
                 if (Model.getFacade().isAOperation(feat)) {
                     c.addAll(Model.getFacade().getParameters(feat));
                 }
@@ -977,5 +971,10 @@ public class FigClass extends FigClassifierBox
         }
         super.updateListeners(newOwner);
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 3415118710864626882L;
 
 } /* end class FigClass */
