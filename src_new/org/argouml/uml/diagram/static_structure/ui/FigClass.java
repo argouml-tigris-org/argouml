@@ -959,6 +959,7 @@ public class FigClass extends FigClassifierBox
                 Object feat = it.next();
                 Collection c =
                     new ArrayList(Model.getFacade().getStereotypes(feat));
+                c.add(feat);
                 if (Model.getFacade().isAOperation(feat)) {
                     c.addAll(Model.getFacade().getParameters(feat));
                 }
