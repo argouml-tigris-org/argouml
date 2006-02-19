@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -144,7 +144,10 @@ public class StylePanelFigNodeModelElement
         nodeTarget.setShadowSize(i);
         getPanelTarget().endTrans();
         if (i != oldShadowSize) {
-            ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
+            ArgoEventPump.fireEvent(
+                    new ArgoProjectSaveEvent(
+                            ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT,
+                            this));
         }
     }
 
@@ -159,7 +162,10 @@ public class StylePanelFigNodeModelElement
             } else if (src == pathCheckBox) {
                 PathContainer pc = (PathContainer) getPanelTarget();
                 pc.setPathVisible(pathCheckBox.isSelected());
-                ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
+                ArgoEventPump.fireEvent(
+                        new ArgoProjectSaveEvent(
+                                ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT,
+                                this));
             } else {
                 super.itemStateChanged(e);
             }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -181,7 +181,7 @@ public final class ProjectBrowser
      * The title of this frame without any extending * to indicate save status.
      */
     private String title = "";
-    
+
     /**
      * The action to redo the last undone action.
      */
@@ -420,9 +420,10 @@ public final class ProjectBrowser
 
         return toolbarBoundry;
     }
-    
+
     /**
-     * Add a panel to a split pane area
+     * Add a panel to a split pane area.
+     *
      * @param comp the panel to add
      * @param obj the position (BorderSplitPane.EAST etc)
      */
@@ -431,7 +432,8 @@ public final class ProjectBrowser
     }
 
     /**
-     * Remove a panel from a split pane area
+     * Remove a panel from a split pane area.
+     *
      * @param comp the panel to remove
      */
     void removePanel(Component comp) {
@@ -517,39 +519,40 @@ public final class ProjectBrowser
      * setTitle method by displaying an asterisk to signify save status
      * @see java.awt.Frame#setTitle(java.lang.String)
      */
-    final public void setTitle(final String title) {
-        this.title = title;
+    public void setTitle(final String titleArg) {
+        title = titleArg;
         String changeIndicator = "";
         if (ActionSaveProject.getInstance().isEnabled()) {
             changeIndicator = " *";
         }
-        super.setTitle(title + changeIndicator);
+        super.setTitle(titleArg + changeIndicator);
     }
 
     /**
-     * Return the title of the frame that was set with setTitle.
+     * @return the title of the frame that was set with
+     * {@link #setTitle(String)}.
      */
-    final public String getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    final public void buildTitle(final String title) {
-        if (title == null || "".equals(title)) {
+    public void buildTitle(final String titleArg) {
+        if (titleArg == null || "".equals(titleArg)) {
             buildTitle(getAppName());
         } else {
             ArgoDiagram activeDiagram =
                 ProjectManager.getManager()
                     .getCurrentProject().getActiveDiagram();
             if (activeDiagram != null) {
-                setTitle(title + " - " + activeDiagram.getName()
+                setTitle(titleArg + " - " + activeDiagram.getName()
                     + " - " + getAppName());
             } else {
-                setTitle(title + " - " + getAppName());
+                setTitle(titleArg + " - " + getAppName());
             }
-            setTitle(title);
+            setTitle(titleArg);
         }
     }
-    
+
     /**
      * Set the save indicator (the * after the title) to appear depending on
      * the curreny save action enabled status.
@@ -557,14 +560,15 @@ public final class ProjectBrowser
     public void showSaveIndicator() {
         setTitle(title);
     }
-    
+
     /**
      * Updates the window title to contain the latest values for
      * project name, active diagram, and save status.
      */
     protected void updateTitle() {
         if (ProjectManager.getManager().getCurrentProject() != null) {
-            buildTitle(ProjectManager.getManager().getCurrentProject().getName());
+            buildTitle(
+                    ProjectManager.getManager().getCurrentProject().getName());
         }
     }
 
@@ -871,16 +875,18 @@ public final class ProjectBrowser
     /**
      * Exit the application if no save is required.
      * If a save is required then prompt the user if they wish to,
-     * save and exit, exit without saving or cancel the exit operation. 
+     * save and exit, exit without saving or cancel the exit operation.
      */
     public void tryExit() {
         if (ActionSaveProject.getInstance().isEnabled()) {
             Project p = ProjectManager.getManager().getCurrentProject();
 
-            String t = MessageFormat.format(Translator.localize(
-                "optionpane.exit-save-changes-to"),
-                new Object[] {p.getName()});
-            int response = JOptionPane.showConfirmDialog(
+            String t =
+                MessageFormat.format(Translator.localize(
+                        "optionpane.exit-save-changes-to"),
+                    new Object[] {p.getName()});
+            int response =
+                JOptionPane.showConfirmDialog(
                     this, t, t, JOptionPane.YES_NO_CANCEL_OPTION);
 
             if (response == JOptionPane.CANCEL_OPTION
@@ -902,11 +908,14 @@ public final class ProjectBrowser
         Configuration.save();
         System.exit(0);
     }
-    
+
+    /**
+     * @see java.awt.Window#dispose()
+     */
     public void dispose() {
-        
+
     }
-    
+
     /**
      * Receives window events.
      */
@@ -996,9 +1005,9 @@ public final class ProjectBrowser
         Collection figs = editor.getSelectionManager().getFigs();
         boolean removeEnabled = !figs.isEmpty();
         GraphModel gm = editor.getGraphModel();
-        if (gm instanceof UMLMutableGraphSupport) { 
-            removeEnabled = 
-                ((UMLMutableGraphSupport)gm).isRemoveFromDiagramAllowed(figs);
+        if (gm instanceof UMLMutableGraphSupport) {
+            removeEnabled =
+                ((UMLMutableGraphSupport) gm).isRemoveFromDiagramAllowed(figs);
         }
         removeFromDiagram.setEnabled(removeEnabled);
     }
@@ -1335,7 +1344,7 @@ public final class ProjectBrowser
                 new ExceptionDialog(
                         ProjectBrowser.getInstance(),
                         "An error occured attempting to " + attemptingTo,
-                        ex, 
+                        ex,
                         ex instanceof OpenException);
             dialog.setVisible(true);
         } else {
@@ -1402,7 +1411,7 @@ public final class ProjectBrowser
         }
         return success;
     }
-    
+
     /**
      * @return the File to save to
      */
@@ -1424,14 +1433,14 @@ public final class ProjectBrowser
         }
 
         String sChooserTitle =
-        Translator.localize("filechooser.save-as-project");
+            Translator.localize("filechooser.save-as-project");
         chooser.setDialogTitle(sChooserTitle + " " + p.getName());
 
         chooser.setAcceptAllFileFilterUsed(false);
         PersistenceManager.getInstance().setSaveFileChooserFilters(chooser);
 
-        String fn = Configuration.getString(
-                PersistenceManager.KEY_PROJECT_NAME_PATH);
+        String fn =
+            Configuration.getString(PersistenceManager.KEY_PROJECT_NAME_PATH);
         if (fn.length() > 0) {
             fn = PersistenceManager.getInstance().getBaseName(fn);
             chooser.setSelectedFile(new File(fn));

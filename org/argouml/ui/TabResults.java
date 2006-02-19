@@ -67,23 +67,28 @@ public class TabResults
                 ActionListener,
                 ListSelectionListener,
                 KeyListener {
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(TabResults.class);
 
-    private static int numJumpToRelated = 0;
+    private static int numJumpToRelated;
 
-    /** Insets in pixels  */
+    /**
+     * Insets in pixels.
+     */
     private static final int INSET_PX = 3;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
     private PredicateFind pred;
-    private ChildGenerator cg = null;
-    private Object root = null;
+    private ChildGenerator cg;
+    private Object root;
     private JSplitPane mainPane;
     private Vector results = new Vector();
     private Vector related = new Vector();
     private Vector diagrams = new Vector();
-    private boolean relatedShown = false;
+    private boolean relatedShown;
 
     private JLabel resultsLabel = new JLabel();
     private JTable resultsTable;
@@ -253,8 +258,9 @@ public class TabResults
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
-	if (me.getClickCount() >= 2)
-	    myDoubleClick(me.getSource());
+	if (me.getClickCount() >= 2) {
+            myDoubleClick(me.getSource());
+        }
     }
 
     /**
@@ -274,22 +280,24 @@ public class TabResults
 	Diagram d = null;
 	if (src == resultsTable) {
 	    int row = resultsTable.getSelectionModel().getMinSelectionIndex();
-	    if (row < 0)
-		return;
+	    if (row < 0) {
+                return;
+            }
 	    sel = results.elementAt(row);
 	    d = (Diagram) diagrams.elementAt(row);
 	} else if (src == relatedTable) {
 	    int row = relatedTable.getSelectionModel().getMinSelectionIndex();
-	    if (row < 0)
-		return;
+	    if (row < 0) {
+                return;
+            }
 	    numJumpToRelated++;
 	    sel = related.elementAt(row);
 	}
 
-	if (d != null)
-	    LOG.debug("go " + sel + " in " + d.getName());
-	if (d != null)
-	    TargetManager.getInstance().setTarget(d);
+	if (d != null) {
+            LOG.debug("go " + sel + " in " + d.getName());
+            TargetManager.getInstance().setTarget(d);
+        }
 	TargetManager.getInstance().setTarget(sel);
     }
 
@@ -360,14 +368,15 @@ public class TabResults
 	setResults(results, diagrams);
     }
 
-    /*
+    /**
      * Do a recursive depth first search of the project. The children of the
      * root are all user models and all the diagrams. Searches of the diagrams
      * will terminate immediately if they fail to match, but the models are
      * searched to their leaves, even if the diagram predicate doesn't match an
-     * empty diagram name.  This is inefficient, but shouldn't be a common case.
-     * <p>
-     * Another effect of the current algorithm is that model elements will 
+     * empty diagram name.  This is inefficient, but shouldn't be a common
+     * case.<p>
+     *
+     * Another effect of the current algorithm is that model elements will
      * appear once for each diagram that they are included in PLUS an additional
      * time with no diagram name given.  It would be slightly more friendly
      * have the non-diagram list only includes those elements which didn't
@@ -377,15 +386,16 @@ public class TabResults
     private void depthFirst(Object node, Diagram lastDiagram) {
 	if (node instanceof Diagram) {
 	    lastDiagram = (Diagram) node;
-	    if (!pred.matchDiagram(lastDiagram))
-		return;
+	    if (!pred.matchDiagram(lastDiagram)) {
+                return;
+            }
 	    // diagrams are not placed in search results
 	}
 	Enumeration elems = cg.gen(node);
 	while (elems.hasMoreElements()) {
 	    Object c = elems.nextElement();
-	    if (pred.predicate(c)  
-                    && (lastDiagram != null || pred.matchDiagram("")) ) {
+	    if (pred.predicate(c)
+                    && (lastDiagram != null || pred.matchDiagram(""))) {
 		results.addElement(c);
 		diagrams.addElement(lastDiagram);
 	    }
@@ -393,4 +403,8 @@ public class TabResults
 	}
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 4980167466628873068L;
 } /* end class TabResults */

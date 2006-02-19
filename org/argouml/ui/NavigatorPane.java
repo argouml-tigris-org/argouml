@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -67,6 +67,8 @@ class NavigatorPane
      * perspective, a combobox to select ordering,
      * a JTree to display the UML model,
      * and a configuration dialog to tailor the perspectives.
+     *
+     * @param splash The splash screen where to show progress.
      */
     public NavigatorPane(SplashScreen splash) {
 
@@ -128,18 +130,31 @@ class NavigatorPane
     }
 
     class ActionPerspectiveConfig extends UMLAction {
-
+        /**
+         * The constructor.
+         */
         public ActionPerspectiveConfig() {
             // this is not a "global" action, since it is never downlighted...
 	    super("action.configure-perspectives", HAS_ICON);
 	}
 
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent ae) {
-
             PerspectiveConfigurator ncd =
 		new PerspectiveConfigurator(ProjectBrowser.getInstance());
             ncd.setVisible(true);
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -8175160679969551440L;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 8403903607517813289L;
 } /* end class NavigatorPane */
