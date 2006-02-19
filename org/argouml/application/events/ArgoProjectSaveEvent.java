@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,11 +27,10 @@ package org.argouml.application.events;
 /**
  * An event class to send a message to the ArgoEventPump, which notifies anyone
  * registered as an ArgoProjectSaveListener.
- * 
+ *
  * @author MarkusK
  */
 public class ArgoProjectSaveEvent extends ArgoEvent {
-
     /**
      * @param eT
      *            eventType
@@ -42,12 +41,23 @@ public class ArgoProjectSaveEvent extends ArgoEvent {
         super(eT, src);
     }
 
+    /**
+     * @see org.argouml.application.events.ArgoEvent#getEventStartRange()
+     */
     public int getEventStartRange() {
         return ArgoEventTypes.ANY_PROJECTSAVE_EVENT;
     }
 
+    /**
+     * @see org.argouml.application.events.ArgoEvent#getEventEndRange()
+     */
     public int getEventEndRange() {
         return ArgoEventTypes.LAST_PROJECTSAVE_EVENT;
     }
 
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8364878289985889610L;
 }
