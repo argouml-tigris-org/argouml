@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,9 +37,9 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
@@ -94,31 +94,37 @@ import org.tigris.gef.base.Globals;
  * There are now 3 levels of detail for import:<p>
  *
  * <ol>
- *   <li> 0 = classifiers only
- *   <li> 1 = classifiers plus feature specifications
- *   <li> 2 = full import, feature detail (ie. operations with methods)
+ *   <li> 0 - classifiers only
+ *   <li> 1 - classifiers plus feature specifications
+ *   <li> 2 - full import, feature detail (ie. operations with methods)
  * </ol>
  *
- * @author Andreas Rueckert <a_rueckert@gmx.net>
+ * @author Andreas Rueckert a_rueckert@gmx.net
  */
 public class Import {
 
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(Import.class);
 
-    /** Imported directory */
+    /**
+     * Imported directory.
+     */
     private String srcPath;
 
-    /** Create a interface to the current diagram */
+    /**
+     * Create a interface to the current diagram.
+     */
     private DiagramInterface diagramInterface;
 
     /**
-     * current language module
+     * Current language module.
      */
     private PluggableImport module;
 
     /**
-     * key = module name, value = PluggableImport instance
+     * keys are module name, values are PluggableImport instance.
      */
     private Hashtable modules;
 
@@ -161,20 +167,22 @@ public class Import {
      */
     public Import() {
         modules = new Hashtable();
-        ArrayList arraylist = Argo.getPlugins(PluggableImport.class);
+        List arraylist = Argo.getPlugins(PluggableImport.class);
         ListIterator iterator = arraylist.listIterator();
         while (iterator.hasNext()) {
             PluggableImport pIModule = (PluggableImport) iterator.next();
             modules.put(pIModule.getModuleName(), pIModule);
         }
-        if (modules.size() == 0)
+        if (modules.size() == 0) {
             throw new RuntimeException("Internal error. "
                        + "No import modules defined");
+        }
         // "Java" is a default module
         module = (PluggableImport) modules.get("Java");
-        if (module == null)
+        if (module == null) {
             throw new RuntimeException("Internal error. "
                        + "Default import module not found");
+        }
         JComponent chooser = module.getChooser(this);
         dialog =
             new JDialog(ProjectBrowser.getInstance(),
@@ -245,8 +253,8 @@ public class Import {
             JPanel general = new JPanel();
             general.setLayout(new GridLayout(13, 1));
 
-            general.add(new JLabel(Translator
-                    .localize("action.import-select-lang")));
+            general.add(new JLabel(
+                    Translator.localize("action.import-select-lang")));
 
             Vector languages = new Vector();
 
@@ -254,49 +262,35 @@ public class Import {
                 languages.add(keys.nextElement());
             }
             JComboBox selectedLanguage = new JComboBox(languages);
-            selectedLanguage.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    JComboBox cb = (JComboBox) e.getSource();
-                    String selected = (String) cb.getSelectedItem();
-                    module = (PluggableImport) modules.get(selected);
-                    dialog.getContentPane().remove(0);
-                    JComponent chooser = module.getChooser(importInstance);
-                    if (chooser == null) {
-                        chooser = new JPanel();
-                    }
-                    dialog.getContentPane().add(chooser, 0);
-                    JComponent config = module.getConfigPanel();
-                    if (config == null) {
-                        config = new JPanel();
-                    }
-                    tab.remove(1);
-                    tab.add(config, selected, 1);
-                    tab.validate();
-                    dialog.validate();
-                }
-            });
+            selectedLanguage.addActionListener(
+                    new SelectedLanguageListener(importInstance, tab));
             general.add(selectedLanguage);
 
-            descend = new JCheckBox(Translator
-                    .localize("action.import-option-descend-dir-recur"));
+            descend =
+                new JCheckBox(Translator.localize(
+                        "action.import-option-descend-dir-recur"));
             descend.setSelected(true);
             general.add(descend);
 
-            changedOnly = new JCheckBox(Translator
-                    .localize("action.import-option-changed_new"), true);
+            changedOnly =
+                new JCheckBox(Translator.localize(
+                        "action.import-option-changed_new"), true);
             general.add(changedOnly);
 
-            createDiagrams = new JCheckBox(Translator
-                    .localize("action.import-option-create-diagram"), true);
+            createDiagrams =
+                new JCheckBox(Translator.localize(
+                        "action.import-option-create-diagram"), true);
             general.add(createDiagrams);
 
-            minimiseFigs = new JCheckBox(Translator
-                    .localize("action.import-option-min-class-icon"), true);
+            minimiseFigs =
+                new JCheckBox(Translator.localize(
+                        "action.import-option-min-class-icon"), true);
             general.add(minimiseFigs);
 
-            layoutDiagrams = new JCheckBox( Translator.localize(
-                    "action.import-option-perform-auto-diagram-layout"),
-                    true);
+            layoutDiagrams =
+                new JCheckBox(Translator.localize(
+                        "action.import-option-perform-auto-diagram-layout"),
+                        true);
             general.add(layoutDiagrams);
 
             // de-selects the fig minimising & layout
@@ -311,24 +305,28 @@ public class Import {
             });
 
             // select the level of import
-            // 0 = classifiers only
-            // 1 = classifiers plus feature specifications
-            // 2 = full import, feature detail
+            // 0 - classifiers only
+            // 1 - classifiers plus feature specifications
+            // 2 - full import, feature detail
 
-            JLabel importDetailLabel = new JLabel(Translator
-                    .localize("action.import-level-of-import-detail"));
+            JLabel importDetailLabel =
+                new JLabel(Translator.localize(
+                        "action.import-level-of-import-detail"));
             ButtonGroup detailButtonGroup = new ButtonGroup();
 
-            classOnly = new JRadioButton(Translator
-                    .localize("action.import-option-classfiers"));
+            classOnly =
+                new JRadioButton(Translator.localize(
+                        "action.import-option-classfiers"));
             detailButtonGroup.add(classOnly);
 
-            classAndFeatures = new JRadioButton(Translator
-                    .localize("action.import-option-classifiers-plus-specs"));
+            classAndFeatures =
+                new JRadioButton(Translator.localize(
+                        "action.import-option-classifiers-plus-specs"));
             detailButtonGroup.add(classAndFeatures);
 
-            fullImport = new JRadioButton(Translator
-                    .localize("action.import-option-full-import"));
+            fullImport =
+                new JRadioButton(Translator.localize(
+                        "action.import-option-full-import"));
             fullImport.setSelected(true);
             detailButtonGroup.add(fullImport);
 
@@ -337,8 +335,8 @@ public class Import {
             general.add(classAndFeatures);
             general.add(fullImport);
 
-            general.add(new JLabel(Translator
-                    .localize("action.import-file-encoding")));
+            general.add(new JLabel(
+                    Translator.localize("action.import-file-encoding")));
             String enc =
                 Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);
             if (enc == null || enc.trim().equals("")) {
@@ -356,6 +354,52 @@ public class Import {
         return configPanel;
     }
 
+    private class SelectedLanguageListener implements ActionListener {
+
+        /**
+         * The current import.
+         */
+        private Import importInstance;
+
+        /**
+         * The pane.
+         */
+        private JTabbedPane tab;
+
+        /**
+         * The constructor.
+         * @param i The current import.
+         * @param t The pane.
+         */
+        SelectedLanguageListener(Import i, JTabbedPane t) {
+            importInstance = i;
+            tab = t;
+        }
+
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            JComboBox cb = (JComboBox) e.getSource();
+            String selected = (String) cb.getSelectedItem();
+            module = (PluggableImport) modules.get(selected);
+            dialog.getContentPane().remove(0);
+            JComponent chooser = module.getChooser(importInstance);
+            if (chooser == null) {
+                chooser = new JPanel();
+            }
+            dialog.getContentPane().add(chooser, 0);
+            JComponent config = module.getConfigPanel();
+            if (config == null) {
+                config = new JPanel();
+            }
+            tab.remove(1);
+            tab.add(config, selected, 1);
+            tab.validate();
+            dialog.validate();
+        }
+    }
+
     /**
      * This method is called by ActionImportFromSources to start the
      * import run.<p>
@@ -370,13 +414,14 @@ public class Import {
 
         if (changedOnly.isSelected()) {
             // filter out all unchanged files
-            Object model = ProjectManager.getManager().getCurrentProject()
-                    .getModel();
+            Object model =
+                ProjectManager.getManager().getCurrentProject().getModel();
             for (int i = files.size() - 1; i >= 0; i--) {
                 File f = (File) files.elementAt(i);
                 String fn = f.getAbsolutePath();
                 String lm = String.valueOf(f.lastModified());
-                if (lm.equals(Model.getFacade().getTaggedValueValue(model, fn))) {
+                if (lm.equals(
+                        Model.getFacade().getTaggedValueValue(model, fn))) {
                     files.remove(i);
                 }
             }
@@ -386,13 +431,14 @@ public class Import {
             // 2 passes needed
             files.addAll(files); // for the second pass
 
-            if (classAndFeatures.isSelected())
+            if (classAndFeatures.isSelected()) {
                 importLevel = 1;
-            else
+            } else {
                 importLevel = 2;
-        }
-        else
+            }
+        } else {
             importLevel = 0;
+        }
 
         // we always start with a level 0 import
         setAttribute("level", new Integer(0));
@@ -444,7 +490,8 @@ public class Import {
             String fn = ((File) f).getAbsolutePath();
             String lm = String.valueOf(((File) f).lastModified());
             if (lm != null) {
-                Model.getCoreHelper().setTaggedValue(project.getModel(), fn, lm);
+                Model.getCoreHelper()
+                    .setTaggedValue(project.getModel(), fn, lm);
             }
         }
     }
@@ -455,8 +502,9 @@ public class Import {
      * @return true, if "Create diagrams from imported code" is selected
      */
     public boolean isCreateDiagramsChecked() {
-        if (createDiagrams != null)
+        if (createDiagrams != null) {
             return createDiagrams.isSelected();
+        }
         return true;
     }
 
@@ -466,8 +514,9 @@ public class Import {
      * @return true, if "Discend directories recursively" is selected
      */
     public boolean isDiscendDirectoriesRecursively() {
-        if (descend != null)
+        if (descend != null) {
             return descend.isSelected();
+        }
         return true;
     }
 
@@ -477,15 +526,16 @@ public class Import {
      * @return true, if "Minimise Class icons in diagrams" is selected
      */
     public boolean isMinimiseFigsChecked() {
-        if (minimiseFigs != null)
+        if (minimiseFigs != null) {
             return minimiseFigs.isSelected();
+        }
         return false;
     }
 
     /**
      * If we have modified any diagrams, the project was modified and
      * should be saved. I don't consider a import, that only modifies
-     * the metamodel, at this point (Andreas Rueckert <a_rueckert@gmx.net>).
+     * the metamodel, at this point (Andreas Rueckert).
      * Calling Project.setNeedsSave(true) doesn't work here, because
      * Project.postLoad() is called after the import and it sets the
      * needsSave flag to false.<p>
@@ -583,11 +633,11 @@ public class Import {
                     // if there ae 2 passes:
                     if (importLevel > 0) {
                         if (filesLeft.size() <= countFiles / 2) {
-
-                            if (importLevel == 1)
+                            if (importLevel == 1) {
                                 setAttribute("level", new Integer(1));
-                            else
+                            } else {
                                 setAttribute("level", new Integer(2));
+                            }
                         }
                     }
 
@@ -598,13 +648,16 @@ public class Import {
                         st.mark(curFile.toString());
                         ProjectBrowser.getInstance().showStatus(
                                 "Importing " + curFile.toString());
-                        parseFile(ProjectManager.getManager().getCurrentProject(),
+                        parseFile(
+                                ProjectManager.getManager()
+                                    .getCurrentProject(),
                                 curFile); // Try to parse this file.
 
                         int tot = countFiles;
                         if (diagramInterface != null) {
-                            tot += diagramInterface.getModifiedDiagrams()
-                                    .size() / 10;
+                            tot +=
+                                diagramInterface.getModifiedDiagrams().size()
+                                / 10;
                         }
                         iss.setMaximum(tot);
                         int act =
@@ -614,8 +667,7 @@ public class Import {
                         iss.setValue(act);
                         ProjectBrowser.getInstance().getStatusBar()
                                 .showProgress(100 * act / tot);
-                    }
-                    catch (Exception e1) {
+                    } catch (Exception e1) {
 
                         nextPassFiles.addElement(curFile);
                         StringBuffer sb = new StringBuffer(80);
@@ -630,8 +682,7 @@ public class Import {
                             e1.printStackTrace(pw);
                             sb.append(sw.getBuffer());
                             LOG.error(sb.toString(), e1);
-                        }
-                        else {
+                        } else {
                             sb.append("Uncaught exception encountered"
                                     + " while parsing ");
                             sb.append(curFile.toString());
@@ -667,7 +718,10 @@ public class Import {
                 // Check if any diagrams where modified and the project
                 // should be saved before exiting.
                 if (diagramInterface != null && needsSave()) {
-                    ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
+                    ArgoEventPump.fireEvent(
+                            new ArgoProjectSaveEvent(
+                                    ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT,
+                                    this));
                 }
 
                 ProjectBrowser.getInstance().showStatus("Import done");
@@ -678,7 +732,8 @@ public class Import {
                     if (diagramInterface != null) {
                         for (int i = 0; i < diagramInterface
                                 .getModifiedDiagrams().size(); i++) {
-                            UMLDiagram diagram = (UMLDiagram) diagramInterface
+                            UMLDiagram diagram =
+                                (UMLDiagram) diagramInterface
                                     .getModifiedDiagrams().elementAt(i);
                             ClassdiagramLayouter layouter =
                                 module.getLayout(diagram);
@@ -737,10 +792,18 @@ public class Import {
 
         private JProgressBar progress;
 
+        /**
+         * The constructor.
+         *
+         * @param title
+         * @param iconName
+         */
         public ImportStatusScreen(String title, String iconName) {
 
             super();
-            if (title != null) setTitle(title);
+            if (title != null) {
+                setTitle(title);
+            }
             Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
             getContentPane().setLayout(new BorderLayout(0, 0));
 
@@ -783,8 +846,10 @@ public class Import {
                 pass = "2-nd pass";
             }
 
-            int fileNumber = (i != 1 && numberOfFiles != 0) ? ((i - 1)
-                    % (numberOfFiles / 2) + 1) : 1;
+            int fileNumber =
+                (i != 1 && numberOfFiles != 0)
+                    ? ((i - 1) % (numberOfFiles / 2) + 1)
+                        : 1;
 
             progressLabel.setText("Parsing file "
                   + fileNumber + " of " + numberOfFiles / 2
@@ -798,18 +863,29 @@ public class Import {
             cancelButton.addActionListener(al);
         }
 
-        public void done() { setVisible(false); dispose(); }
+        public void done() {
+            setVisible(false);
+            dispose();
+        }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -1336242911879462274L;
     }
 
 
     /**
-     * A window that shows the problems occured during import
+     * A window that shows the problems occured during import.
      */
     class ProblemsDialog extends JDialog implements ActionListener {
 
         private JButton closeButton;
         private JLabel northLabel;
 
+        /**
+         * The constructor.
+         */
         public ProblemsDialog() {
             super();
             setResizable(true);
@@ -820,8 +896,8 @@ public class Import {
             getContentPane().setLayout(new BorderLayout(0, 0));
 
             // the introducing label
-            northLabel = new JLabel(Translator.localize(
-                    "label.import-problems"));
+            northLabel =
+                new JLabel(Translator.localize("label.import-problems"));
             getContentPane().add(northLabel, BorderLayout.NORTH);
 
             // the text box containing the problem messages
@@ -852,6 +928,9 @@ public class Import {
             pack();
         }
 
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e) {
             disposeDialog();
         }
@@ -859,6 +938,11 @@ public class Import {
         public void disposeDialog() {
             setVisible(false); dispose();
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -9221358976863603143L;
     }
 }
 
@@ -867,9 +951,11 @@ public class Import {
  */
 class ImportClasspathDialog extends JDialog {
 
-    /** logger */
-    private static final Logger LOG = Logger
-            .getLogger(ImportClasspathDialog.class);
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(ImportClasspathDialog.class);
 
     private JList paths;
     private DefaultListModel pathsModel;
@@ -959,6 +1045,9 @@ class ImportClasspathDialog extends JDialog {
 //    }
 
     class OkListener implements ActionListener {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e) {
 
             URL[] urls = new URL[pathsModel.size()];
@@ -984,6 +1073,9 @@ class ImportClasspathDialog extends JDialog {
     }
 
     class RemoveListener implements ActionListener {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e) {
             //This method can be called only if
             //there's a valid selection
@@ -1010,11 +1102,16 @@ class ImportClasspathDialog extends JDialog {
 
 
     class AddListener implements ActionListener {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e) {
 
             String directory = Globals.getLastDirectory();
             JFileChooser ch = new JFileChooser(directory);
-            if (ch == null) ch = new JFileChooser();
+            if (ch == null) {
+                ch = new JFileChooser();
+            }
 
             final JFileChooser chooser = ch;
 
@@ -1038,5 +1135,10 @@ class ImportClasspathDialog extends JDialog {
             chooser.showOpenDialog(ProjectBrowser.getInstance());
         }
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8684620532717336574L;
 }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,8 +46,8 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * Instances of this class interface the current Class diagram.
- * <p>
+ * Instances of this class interface the current Class diagram.<p>
+ *
  * This class is used by the import mechanism to create packages,
  * interfaces and classes within the diagrams.
  * It is also used to find the correct diagram to work in.
@@ -56,10 +56,13 @@ import org.tigris.gef.presentation.Fig;
  * @since 0.9
  */
 public class DiagramInterface {
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(DiagramInterface.class);
 
-    private Editor currentEditor = null;
+    private Editor currentEditor;
 
     /**
      * To know what diagrams we have to layout after the import,
@@ -160,10 +163,11 @@ public class DiagramInterface {
      */
     public boolean isInDiagram(Object p) {
 
-	if (currentDiagram == null)
+	if (currentDiagram == null) {
             return false;
-        else
+        } else {
             return currentDiagram.getNodes(null).contains(p);
+        }
     }
 
     /**
@@ -179,7 +183,7 @@ public class DiagramInterface {
     }
 
     /**
-     * Create a diagram name from a package name
+     * Create a diagram name from a package name.
      *
      * @param packageName The package name.
      * @return The name for the diagram.
@@ -200,8 +204,9 @@ public class DiagramInterface {
 	ProjectMember m;
 	if (isDiagramInProject(name)) {
             Project project = ProjectManager.getManager().getCurrentProject();
-	    m = findDiagramMemberByUniqueName(project,
-                getDiagramName(name) + ".pgml");
+	    m =
+                findDiagramMemberByUniqueName(project,
+                        getDiagramName(name) + ".pgml");
 
 	    // The diagram already exists in this project. Select it
 	    // as the current target.
@@ -225,8 +230,8 @@ public class DiagramInterface {
     public void addClassDiagram(Object ns, String name) {
 	Project p = ProjectManager.getManager().getCurrentProject();
 	try {
-        ArgoDiagram d =
-            DiagramFactory.getInstance().createDiagram(
+	    ArgoDiagram d =
+	        DiagramFactory.getInstance().createDiagram(
                     UMLClassDiagram.class,
                     ns,
                     null);
@@ -235,8 +240,7 @@ public class DiagramInterface {
 	    d.setName(getDiagramName(name));
             p.addMember(d);
 	    setCurrentDiagram(d);
-	}
-	catch (PropertyVetoException pve) { }
+	} catch (PropertyVetoException pve) { }
     }
 
     /**
@@ -260,17 +264,17 @@ public class DiagramInterface {
             newClassFig.setOperationsVisible(!minimise);
 
             newClassFig.setSize(newClassFig.getMinimumSize());
-        }
-        // the class is in the diagram
-        // so we are on a second pass,
-        // find the fig for this class can update its visible state.
-        else {
+        } else {
+            // the class is in the diagram
+            // so we are on a second pass,
+            // find the fig for this class can update its visible state.
             FigClass existingFig = null;
             List figs = currentLayer.getContentsNoEdges();
             for (int i = 0; i < figs.size(); i++) {
                 Fig fig = (Fig) figs.get(i);
-                if (newClass == fig.getOwner())
+                if (newClass == fig.getOwner()) {
                     existingFig = (FigClass) fig;
+                }
             }
             existingFig.renderingChanged();
         }
@@ -303,17 +307,17 @@ public class DiagramInterface {
 
             newInterfaceFig.setOperationsVisible(!minimise);
             newInterfaceFig.setSize(newInterfaceFig.getMinimumSize());
-        }
-        // the class is in the diagram
-        // so we are on a second pass,
-        // find the fig for this class can update its visible state.
-        else {
+        } else {
+            // the class is in the diagram
+            // so we are on a second pass,
+            // find the fig for this class can update its visible state.
             FigInterface existingFig = null;
             List figs = currentLayer.getContentsNoEdges();
             for (int i = 0; i < figs.size(); i++) {
                 Fig fig = (Fig) figs.get(i);
-                if (newInterface == fig.getOwner())
+                if (newInterface == fig.getOwner()) {
                     existingFig = (FigInterface) fig;
+                }
             }
             existingFig.renderingChanged();
         }
