@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,8 +25,6 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
@@ -42,7 +40,6 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author pepargouml@yahoo.es
  */
-
 public class FigSynchState extends FigStateVertex {
 
     ////////////////////////////////////////////////////////////////
@@ -88,7 +85,6 @@ public class FigSynchState extends FigStateVertex {
         addFig(bound);
 
         setBlinkPorts(false); //make port invisble unless mouse enters
-        Rectangle r = getBounds();
     }
 
     /**
@@ -211,4 +207,9 @@ public class FigSynchState extends FigStateVertex {
      */
     public void mouseClicked(MouseEvent me) {
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -7025279430656399031L;
 } /* end class FigSynchState */

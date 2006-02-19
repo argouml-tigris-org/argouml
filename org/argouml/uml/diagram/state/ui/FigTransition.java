@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -59,7 +59,7 @@ public class FigTransition extends FigEdgeModelElement {
      * "object flow".
      * If the line is solid, then it represents "control flow".
      */
-    private boolean dashed = false;
+    private boolean dashed;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -68,7 +68,8 @@ public class FigTransition extends FigEdgeModelElement {
      */
     public FigTransition() {
         super();
-        addPathItem(getNameFig(), new PathConvPercent2(this, getNameFig(), 50, 10));
+        addPathItem(getNameFig(),
+                    new PathConvPercent2(this, getNameFig(), 50, 10));
         getFig().setLineColor(Color.black);
         setDestArrowHead(endArrow);
         allowRemoveFromDiagram(false);
@@ -161,7 +162,7 @@ public class FigTransition extends FigEdgeModelElement {
 
     /**
      * This is called after any part of the UML ModelElement has changed. This
-     * method automatically updates the attached FigText. 
+     * method automatically updates the attached FigText.
      *
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
@@ -191,9 +192,9 @@ public class FigTransition extends FigEdgeModelElement {
                 if (e.getNewValue() != null) {
                     Model.getPump().addModelEventListener(this,
                             e.getNewValue(), new String[] {
-                        "parameter", "name",
-                        //TODO: How to listen to time/change expression?
-                    });
+                                "parameter", "name",
+                                //TODO: How to listen to time/change expression?
+                            });
                 }
                 updateNameText();
                 damage();
@@ -240,8 +241,9 @@ public class FigTransition extends FigEdgeModelElement {
                     Model.getPump().addModelEventListener(this,
                             e.getNewValue(), "value");
                 }
-                /* The next lines outside the above if clause for the case 
-                 * where the "script" changes! */
+                /* The next lines outside the above if clause for the case
+                 * where the "script" changes!
+                 */
                 updateNameText();
                 damage();
             } else if (Model.getFacade().isAArgument(e.getSource())) {
@@ -347,8 +349,14 @@ public class FigTransition extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        if(notationProvider != null)
+        if (notationProvider != null) {
             getNameFig().setText(notationProvider.toString());
+        }
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2938247797781036110L;
 
 } /* end class FigTransition */

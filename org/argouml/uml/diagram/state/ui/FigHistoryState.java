@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,8 +25,6 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
@@ -46,7 +44,6 @@ public abstract class FigHistoryState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private static final int MARGIN = 2;
     private static final int X = 10;
     private static final int Y = 10;
     private static final int WIDTH = 24;
@@ -55,7 +52,9 @@ public abstract class FigHistoryState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** The main label on this icon. */
+    /**
+     * The main label on this icon.
+     */
     private FigText h;
     private FigCircle head;
 
@@ -63,7 +62,7 @@ public abstract class FigHistoryState extends FigStateVertex {
     // constructors
 
     /**
-     * Main constructor
+     * Main constructor.
      */
     public FigHistoryState() {
         setEditable(false);
@@ -81,7 +80,6 @@ public abstract class FigHistoryState extends FigStateVertex {
         addFig(h);
 
         setBlinkPorts(false); //make port invisble unless mouse enters
-        Rectangle r = getBounds();
     }
 
     /**
@@ -99,7 +97,8 @@ public abstract class FigHistoryState extends FigStateVertex {
     }
 
     /**
-     * The constructor that hooks the Fig into the UML modelelement
+     * The constructor that hooks the Fig into the UML modelelement.
+     *
      * @param gm ignored
      * @param node the UML element
      */
@@ -123,9 +122,10 @@ public abstract class FigHistoryState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /** History states are fixed size. */
     /**
      * @see org.tigris.gef.presentation.Fig#isResizable()
+     *
+     * History states are fixed size.
      */
     public boolean isResizable() {
         return false;
@@ -195,6 +195,9 @@ public abstract class FigHistoryState extends FigStateVertex {
     public void mouseClicked(MouseEvent me) {
     }
 
+    /**
+     * The UID.
+     */
     static final long serialVersionUID = 6572261327347541373L;
 
 } /* end class FigHistoryState */

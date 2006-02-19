@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -77,7 +77,7 @@ public abstract class FigState extends FigStateVertex {
                        getInitialWidth() - 4,
                        getNameFig().getBounds().height);
         getNameFig().setFilled(false);
-        
+
         internal =
             new FigText(getInitialX() + 2,
                     getInitialY() + 2 + 21 + 4,
@@ -155,7 +155,7 @@ public abstract class FigState extends FigStateVertex {
             removeListenersForAction(exitAction);
         }
         if (newOwner != null) {
-            // register for events from all modelelements 
+            // register for events from all modelelements
             // that change the body text
             Iterator it =
                 Model.getFacade().getInternalTransitions(newOwner).iterator();
@@ -172,13 +172,12 @@ public abstract class FigState extends FigStateVertex {
         }
     }
 
-    /**
-     * @param action
-     */
     private void removeListenersForAction(Object action) {
         if (action != null) {
             Model.getPump().removeModelEventListener(this, action,
-                    new String[] { "script", "actualArgument"});
+                    new String[] {
+                        "script", "actualArgument",
+                    });
             Collection args = Model.getFacade().getActualArguments(action);
             Iterator i = args.iterator();
             while (i.hasNext()) {
@@ -188,14 +187,13 @@ public abstract class FigState extends FigStateVertex {
             }
         }
     }
-    
-    /**
-     * @param action
-     */
+
     private void addListenersForAction(Object action) {
         if (action != null) {
             Model.getPump().addModelEventListener(this, action,
-                    new String[] { "script", "actualArgument"});
+                    new String[] {
+                        "script", "actualArgument",
+                    });
             Collection args = Model.getFacade().getActualArguments(action);
             Iterator i = args.iterator();
             while (i.hasNext()) {
@@ -212,8 +210,9 @@ public abstract class FigState extends FigStateVertex {
         if (state == null) {
             return;
         }
-        if (notationProviderBody != null)
+        if (notationProviderBody != null) {
             internal.setText(notationProviderBody.toString());
+        }
         calcBounds();
         setBounds(getBounds());
     }
