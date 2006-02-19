@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,7 +31,6 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.util.CollectionUtil;
 
 import tudresden.ocl.check.OclTypeException;
 import tudresden.ocl.check.types.Any;
@@ -183,9 +182,11 @@ class ArgoAny implements Any, Type2 {
 		    while (i.hasNext()) {
 		        Object o = i.next();
 		        stname = Model.getFacade().getName(o);
-		        if ("ordered".equals(stname)) break;
+		        if ("ordered".equals(stname)) {
+                            break;
+                        }
 		    }
-		    if("ordered".equals(stname)) {
+		    if ("ordered".equals(stname)) {
 			isSequence = true;
 		    } else {
 			isSet = true;
@@ -255,6 +256,7 @@ class ArgoAny implements Any, Type2 {
                                               final Type[] params,
                                               boolean fCheckIsQuery)
 	throws OclTypeException {
+
 	if (classifier == null) {
 	    throw new OclTypeException("attempting to access features of Void");
 	}

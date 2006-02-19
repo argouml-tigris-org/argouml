@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -79,7 +79,7 @@ public class ModelMemberFilePersister extends MemberFilePersister {
         // Created xmireader with method getErrors to check if parsing went well
         try {
             source.setEncoding("UTF-8");
-            XMIParser.getSingleton().readModels(project ,source);
+            XMIParser.getSingleton().readModels(project, source);
             mmodel = XMIParser.getSingleton().getCurModel();
         } catch (OpenException e) {
             LastLoadInfo.getInstance().setLastLoadStatus(false);
@@ -98,7 +98,8 @@ public class ModelMemberFilePersister extends MemberFilePersister {
 
         project.addMember(mmodel);
 
-        project.setUUIDRefs(new HashMap(XMIParser.getSingleton().getUUIDRefs()));
+        project.setUUIDRefs(
+                new HashMap(XMIParser.getSingleton().getUUIDRefs()));
     }
 
     /**
