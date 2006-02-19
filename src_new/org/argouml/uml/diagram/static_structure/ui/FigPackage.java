@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,15 +68,19 @@ import org.tigris.gef.presentation.FigText;
  * Class to display graphics for a UML package in a class diagram.
  */
 public class FigPackage extends FigNodeModelElement
-    implements StereotypeContainer, VisibilityContainer
-{
+    implements StereotypeContainer, VisibilityContainer {
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(FigPackage.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private int x = 0;
-    private int y = 0;
+    private static final int MIN_HEIGHT = 21;
+
+    private int x;
+    private int y;
     private int width = 140;
     private int height = 100;
     private int indentX = 50;
@@ -99,16 +103,16 @@ public class FigPackage extends FigNodeModelElement
      * Flag that indicates if the visibility should be shown in front
      * of the name.
      */
-    private boolean visibilityVisible = false;
+    private boolean visibilityVisible;
 
     /**
-     * <p>A rectangle to blank out the line that would otherwise appear at the
-     *   bottom of the stereotype text box.</p>
+     * A rectangle to blank out the line that would otherwise appear at the
+     * bottom of the stereotype text box.
      */
     private FigRect stereoLineBlinder;
 
     /**
-     * The main constructor
+     * The main constructor.
      */
     public FigPackage() {
         setBigPort(
@@ -172,7 +176,8 @@ public class FigPackage extends FigNodeModelElement
     }
 
     /**
-     * Contructor that hooks the fig into the UML element
+     * Contructor that hooks the fig into the UML element.
+     *
      * @param gm ignored
      * @param node the UML element
      */
@@ -403,8 +408,8 @@ public class FigPackage extends FigNodeModelElement
         Dimension aSize = getNameFig().getMinimumSize();
 
         int w = aSize.width + indentX;
-        if (aSize.height < 21) {
-            aSize.height = 21;
+        if (aSize.height < MIN_HEIGHT) {
+            aSize.height = MIN_HEIGHT;
         }
 
         int minWidth = Math.max(0, w + 1 + getShadowSize());
@@ -474,8 +479,8 @@ public class FigPackage extends FigNodeModelElement
 
         int minHeight = getNameFig().getMinimumSize().height;
 
-        if (minHeight < 21) {
-            minHeight = 21;
+        if (minHeight < MIN_HEIGHT) {
+            minHeight = MIN_HEIGHT;
         }
 
         // Now sort out the stereotype display. If the stereotype is displayed,
@@ -490,7 +495,8 @@ public class FigPackage extends FigNodeModelElement
             currentY += stereoMin.height;
         }
 
-        getStereotypeFig().setBounds(xa, ya, newW - indentX, stereoMin.height + 1);
+        getStereotypeFig().setBounds(xa, ya,
+                newW - indentX, stereoMin.height + 1);
         int nameWidth = newW - indentX;
         if (nameWidth < stereoMin.width + 1) {
             nameWidth = stereoMin.width + 2;
@@ -548,62 +554,99 @@ public class FigPackage extends FigNodeModelElement
             Fig f = (Fig) i.next();
             if (f instanceof StereotypeContainer) {
                 boolean v = ((StereotypeContainer) f).isStereotypeVisible();
-                if (v) sOn = true;
-                else sOff = true;
+                if (v) {
+                    sOn = true;
+                } else {
+                    sOff = true;
+                }
                 v = ((VisibilityContainer) f).isVisibilityVisible();
-                if (v) vOn = true;
-                else vOff = true;
+                if (v) {
+                    vOn = true;
+                } else {
+                    vOff = true;
+                }
             }
         }
-        if (sOn) showMenu.add(new UMLAction(
-            Translator.localize("menu.popup.show.hide-stereotype"),
-                    UMLAction.NO_ICON)
-	{
-            /**
-             * @see java.awt.event.ActionListener#actionPerformed(
-             *         java.awt.event.ActionEvent)
-             */
-            public void actionPerformed(ActionEvent ae) {
-                doStereotype(false);
-            }
-	});
-        if (sOff) showMenu.add(new UMLAction(
-            Translator.localize("menu.popup.show.show-stereotype"),
-                UMLAction.NO_ICON)
-        {
-            /**
-             * @see java.awt.event.ActionListener#actionPerformed(
-             *         java.awt.event.ActionEvent)
-             */
-            public void actionPerformed(ActionEvent ae) {
-                doStereotype(true);
-            }
-        });
 
-        if (vOn) showMenu.add(new UMLAction(
-            Translator.localize("menu.popup.show.hide-visibility"),
-                UMLAction.NO_ICON)
-        {
-            /**
-             * @see java.awt.event.ActionListener#actionPerformed(
-             *         java.awt.event.ActionEvent)
-             */
-            public void actionPerformed(ActionEvent ae) {
-                doVisibility(false);
-            }
-        });
-        if (vOff) showMenu.add(new UMLAction(
+        if (sOn) {
+            showMenu.add(new UMLAction(
+                    Translator.localize("menu.popup.show.hide-stereotype"),
+                        UMLAction.NO_ICON) {
+                /**
+                 * @see java.awt.event.ActionListener#actionPerformed(
+                 *         java.awt.event.ActionEvent)
+                 */
+                public void actionPerformed(ActionEvent ae) {
+                    doStereotype(false);
+                }
+
+                /**
+                 * The UID.
+                 */
+                private static final long serialVersionUID =
+                    1999499813643610674L;
+            });
+        }
+
+        if (sOff) {
+            showMenu.add(new UMLAction(
+                    Translator.localize("menu.popup.show.show-stereotype"),
+                        UMLAction.NO_ICON) {
+                /**
+                 * @see java.awt.event.ActionListener#actionPerformed(
+                 *         java.awt.event.ActionEvent)
+                 */
+                public void actionPerformed(ActionEvent ae) {
+                    doStereotype(true);
+                }
+
+                /**
+                 * The UID.
+                 */
+                private static final long serialVersionUID =
+                    -4327161642276705610L;
+            });
+        }
+
+        if (vOn) {
+            showMenu.add(new UMLAction(
+                    Translator.localize("menu.popup.show.hide-visibility"),
+                        UMLAction.NO_ICON) {
+                /**
+                 * @see java.awt.event.ActionListener#actionPerformed(
+                 *         java.awt.event.ActionEvent)
+                 */
+                public void actionPerformed(ActionEvent ae) {
+                    doVisibility(false);
+                }
+
+                /**
+                 * The UID.
+                 */
+                private static final long serialVersionUID =
+                    8574809709777267866L;
+            });
+        }
+
+        if (vOff) {
+            showMenu.add(new UMLAction(
                 Translator.localize("menu.popup.show.show-visibility"),
-                    UMLAction.NO_ICON)
-        {
-            /**
-             * @see java.awt.event.ActionListener#actionPerformed(
-             *         java.awt.event.ActionEvent)
-             */
-            public void actionPerformed(ActionEvent ae) {
-                doVisibility(true);
-            }
-        });
+                    UMLAction.NO_ICON) {
+                /**
+                 * @see java.awt.event.ActionListener#actionPerformed(
+                 *         java.awt.event.ActionEvent)
+                 */
+                public void actionPerformed(ActionEvent ae) {
+                    doVisibility(true);
+                }
+
+                /**
+                 * The UID.
+                 */
+                private static final long serialVersionUID =
+                    7722093402948975834L;
+            });
+        }
 
         popUpActions.insertElementAt(showMenu,
             popUpActions.size() - getPopupAddOffset());
@@ -660,10 +703,22 @@ public class FigPackage extends FigNodeModelElement
     }
 
     class FigPackageFigText extends FigText {
+        /**
+	 * The constructor.
+         *
+	 * @param xa
+	 * @param ya
+	 * @param w
+	 * @param h
+	 */
 	public FigPackageFigText(int xa, int ya, int w, int h) {
 	    super(xa, ya, w, h);
 	}
 
+	/**
+	 * @see java.awt.event.MouseListener#mouseClicked(
+         *         java.awt.event.MouseEvent)
+	 */
 	public void mouseClicked(MouseEvent me) {
 
 	    String lsDefaultName = "main";
@@ -694,39 +749,46 @@ public class FigPackage extends FigNodeModelElement
 			    if (lDiagram.getName() != null
 				&& lDiagram.getName().startsWith(
 				        lsDefaultName)) {
-				me.consume();
+			        me.consume();
 				super.mouseClicked(me);
 				TargetManager.getInstance().setTarget(lDiagram);
 				return;
 			    }
 			}
-        } /*while*/
+		    } /*while*/
 
-        /* if we get here then we didnt get the
-         * default diagram*/
-        if (lFirst != null) {
+		    /* If we get here then we didn't get the
+		     * default diagram.
+                     */
+		    if (lFirst != null) {
 			me.consume();
 			super.mouseClicked(me);
 
 			TargetManager.getInstance().setTarget(lFirst);
 			return;
-        }
+		    }
 
-        /* try to create a new class diagram */
-        me.consume();
-        super.mouseClicked(me);
-        try {
-            createClassDiagram(lNS, lsDefaultName, lP);
-        } catch (Exception ex) {
-            LOG.error(ex);
-        }
+		    /* Try to create a new class diagram.
+                     */
+		    me.consume();
+		    super.mouseClicked(me);
+		    try {
+		        createClassDiagram(lNS, lsDefaultName, lP);
+		    } catch (Exception ex) {
+		        LOG.error(ex);
+		    }
 
-        return;
+		    return;
 
 		} /*if package */
 	    } /* if doubleclicks */
 	    super.mouseClicked(me);
 	}
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -1355316218065323634L;
     }
 
     private void createClassDiagram(
@@ -754,7 +816,7 @@ public class FigPackage extends FigNodeModelElement
 
             ArgoDiagram classDiagram =
                 DiagramFactory.getInstance().
-                createDiagram(UMLClassDiagram.class, namespace, null);
+                    createDiagram(UMLClassDiagram.class, namespace, null);
 
             String diagramName = defaultName + "_" + classDiagram.getName();
 
@@ -795,9 +857,10 @@ public class FigPackage extends FigNodeModelElement
      */
     public void setVisibilityVisible(boolean isVisible) {
         visibilityVisible = isVisible;
-        if (notationProviderName != null)
+        if (notationProviderName != null) {
             notationProviderName.putValue("visibilityVisible",
                 new Boolean(isVisible));
+        }
         renderingChanged();
         damage();
     }
@@ -813,7 +876,8 @@ public class FigPackage extends FigNodeModelElement
          * 2. would indicate to the user that he can edit more aspects
          * of the modelelement than the name alone.
          * But: it is different behaviour, which I (MVW)
-         * do not know if it is acceptable.*/
+         * do not know if it is acceptable.
+         */
 
 //        String s = GeneratorDisplay.getInstance().generate(getOwner());
 //        ft.setText(s);
@@ -828,17 +892,27 @@ public class FigPackage extends FigNodeModelElement
      */
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
-        int xs[] = {r.x, r.x + r.width - indentX, r.x + r.width - indentX,
-                    r.x + r.width,   r.x + r.width,  r.x,            r.x};
-        int ys[] = {r.y, r.y,                     r.y + tabHeight,
-                    r.y + tabHeight, r.y + r.height, r.y + r.height, r.y};
-        Point p = Geometry.ptClosestTo(
+        int[] xs = {
+            r.x, r.x + r.width - indentX, r.x + r.width - indentX,
+            r.x + r.width,   r.x + r.width,  r.x,            r.x,
+        };
+        int[] ys = {
+            r.y, r.y,                     r.y + tabHeight,
+            r.y + tabHeight, r.y + r.height, r.y + r.height, r.y,
+        };
+        Point p =
+            Geometry.ptClosestTo(
                 xs,
                 ys,
-                7 , anotherPt);
+                7,
+                anotherPt);
         return p;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 3617092272529451041L;
 } /* end class FigPackage */
 
 /**
@@ -870,15 +944,25 @@ class PackagePortFigRect extends FigRect {
      */
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
-        int xs[] = {r.x, r.x + r.width - indentX, r.x + r.width - indentX,
-                    r.x + r.width,   r.x + r.width,  r.x,            r.x};
-        int ys[] = {r.y, r.y,                     r.y + tabHeight,
-                    r.y + tabHeight, r.y + r.height, r.y + r.height, r.y};
-        Point p = Geometry.ptClosestTo(
+        int[] xs = {
+            r.x, r.x + r.width - indentX, r.x + r.width - indentX,
+            r.x + r.width,   r.x + r.width,  r.x,            r.x,
+        };
+        int[] ys = {
+            r.y, r.y,                     r.y + tabHeight,
+            r.y + tabHeight, r.y + r.height, r.y + r.height, r.y,
+        };
+        Point p =
+            Geometry.ptClosestTo(
                 xs,
                 ys,
-                7 , anotherPt);
+                7,
+                anotherPt);
         return p;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -7083102131363598065L;
 }
