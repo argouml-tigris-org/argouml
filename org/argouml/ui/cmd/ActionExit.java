@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,18 +25,9 @@
 package org.argouml.ui.cmd;
 
 import java.awt.event.ActionEvent;
-import java.text.MessageFormat;
-
-import javax.swing.JOptionPane;
 
 import org.argouml.application.api.CommandLineInterface;
-import org.argouml.application.api.Configuration;
-import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.ActionSaveProject;
-import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.UMLAction;
 
 /**
@@ -45,16 +36,6 @@ import org.argouml.uml.ui.UMLAction;
  */
 public class ActionExit extends UMLAction
     implements CommandLineInterface {
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    /**
-     * Remember if this form is already active, so that it does
-     * not popup twice.
-     */
-    private static boolean active;
-
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -63,7 +44,6 @@ public class ActionExit extends UMLAction
      */
     public ActionExit() {
         super ("action.exit", NO_ICON);
-        active = false;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -74,8 +54,8 @@ public class ActionExit extends UMLAction
      *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void actionPerformed (ActionEvent ae) {
-	    ProjectBrowser.getInstance().tryExit();
+    public void actionPerformed(ActionEvent ae) {
+        ProjectBrowser.getInstance().tryExit();
     }
 
 

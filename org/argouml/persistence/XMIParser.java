@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,6 +60,9 @@ public class XMIParser {
      */
     private static final Logger LOG = Logger.getLogger(XMIParser.class);
 
+    /**
+     * The instance.
+     */
     private static XMIParser singleton = new XMIParser();
 
     ////////////////////////////////////////////////////////////////
@@ -70,7 +73,7 @@ public class XMIParser {
     private HashMap uUIDRefs;
 
     private Collection elementsRead;
-    
+
     /**
      * The constructor.
      *
@@ -128,7 +131,7 @@ public class XMIParser {
         }
         LOG.info("=======================================");
     }
-    
+
     public void registerDiagrams(Project project) {
         registerDiagrams(project, elementsRead, true);
     }
@@ -155,26 +158,27 @@ public class XMIParser {
                 while (elements.hasNext()) {
                     current = elements.next();
                     if (facade.isAModel(current)) {
-                        LOG.info("Loaded model '" + facade.getName(current) 
-                                + "'");
-                        if (curModel == null)
+                        LOG.info("Loaded model '" + facade.getName(current)
+                                 + "'");
+                        if (curModel == null) {
                             curModel = current;
+                        }
                     }
                 }
-            }            
+            }
             uUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
         } catch (Exception ex) {
             throw new OpenException(ex);
         }
         LOG.info("=======================================");
     }
-    
+
     /**
      * Create and register diagrams for activity and statemachines in the
      * model(s) of the project. If no other diagrams are created and atLeastOne
      * is true, than a default Class Diagram will be created.  ArgoUML currently
      * requires at least one diagram for proper operation.
-     * 
+     *
      * @param project
      *            The project
      * @param elements
@@ -211,14 +215,16 @@ public class XMIParser {
                 LOG.info("Creating activity diagram for "
                         + facade.getUMLClassName(element)
                         + "<<" + facade.getName(element) + ">>");
-                diagram = diagramFactory.createDiagram(
-                        UMLActivityDiagram.class, namespace, element);
+                diagram =
+                    diagramFactory.createDiagram(UMLActivityDiagram.class,
+                                                 namespace, element);
             } else {
                 LOG.info("Creating state diagram for "
                         + facade.getUMLClassName(element)
                         + "<<" + facade.getName(element) + ">>");
-                diagram = diagramFactory.createDiagram(UMLStateDiagram.class,
-                        namespace, element);
+                diagram =
+                    diagramFactory.createDiagram(UMLStateDiagram.class,
+                                                 namespace, element);
             }
             if (diagram != null) {
                 proj.addMember(diagram);
@@ -227,15 +233,16 @@ public class XMIParser {
         // ISSUE 3516 : Make sure there is at least one diagram because
         // ArgoUML requires it for correct operation
         if (atLeastOne && proj.getDiagramCount() < 1) {
-            ArgoDiagram d = diagramFactory.createDiagram(UMLClassDiagram.class,
-                    curModel, null);
+            ArgoDiagram d =
+                diagramFactory.createDiagram(UMLClassDiagram.class,
+                                             curModel, null);
             proj.addMember(d);
         }
         if (proj.getDiagramCount() >= 1 && proj.getActiveDiagram() == null) {
             proj.setActiveDiagram((ArgoDiagram) proj.getDiagrams().get(0));
         }
     }
-    
+
     /**
      * @return Returns the singleton.
      */

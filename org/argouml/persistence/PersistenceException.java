@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,20 +25,21 @@
 package org.argouml.persistence;
 
 /**
- * An exception to be thrown by some persistence operation
+ * An exception to be thrown by some persistence operation.
+ *
  * @author Bob Tarling
  */
 public class PersistenceException extends Exception {
-
     /**
-     * Constructor
+     * Constructor.
      */
     public PersistenceException() {
         super();
     }
 
     /**
-     * Constructor
+     * Constructor.
+     *
      * @param message the message
      */
     public PersistenceException(String message) {
@@ -60,5 +61,10 @@ public class PersistenceException extends Exception {
         super(c);
     }
 
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 4626477344515962964L;
 }
 
