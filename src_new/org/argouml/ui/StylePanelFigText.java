@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -181,7 +181,8 @@ public class StylePanelFigText extends StylePanelFig {
             Color fc = ft.getFillColor();
             getFillField().setSelectedItem(fc);
             if (fc != null && !getFillField().getSelectedItem().equals(fc)) {
-                getFillField().insertItemAt(fc, getFillField().getItemCount() - 1);
+                getFillField().insertItemAt(fc,
+                                            getFillField().getItemCount() - 1);
                 getFillField().setSelectedItem(fc);
             }
         } else {
