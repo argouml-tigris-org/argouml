@@ -27,6 +27,7 @@ package org.argouml.uml;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 
 import org.argouml.model.Model;
 import org.tigris.gef.base.Diagram;
@@ -35,7 +36,7 @@ import org.tigris.gef.util.ChildGenerator;
 /**
  * Generator to find related elements for some model elements, such as for
  * Classes the attributes and operations, for diagrams nodes and elements, for
- * transitions trigger, guard and effects etc. 
+ * transitions trigger, guard and effects etc.
  *
  * @stereotype singleton
  * @author jrobbins
@@ -66,16 +67,16 @@ public class ChildGenRelated implements ChildGenerator {
         if (Model.getFacade().isAPackage(o)) {
             return null;
         }
-        
+
         if (o instanceof Diagram) {
-            ArrayList res = new ArrayList();
+            List res = new ArrayList();
             Diagram d = (Diagram) o;
             res.add(d.getGraphModel().getNodes());
             res.add(d.getGraphModel().getEdges());
             return Collections.enumeration(res);
         }
 
-        // For all other model elements, return any elements 
+        // For all other model elements, return any elements
         // associated in any way
         if (Model.getFacade().isAModelElement(o)) {
             return Collections.enumeration(Model.getFacade()

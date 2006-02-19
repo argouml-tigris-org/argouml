@@ -76,7 +76,7 @@ public class PredicateFind implements Predicate {
     public boolean matchDiagram(String name) {
         return diagramName.predicate(name);
     }
-    
+
     /**
      * @param m the given package
      * @return true if the name of the given package is equal
@@ -90,10 +90,16 @@ public class PredicateFind implements Predicate {
      * @see org.tigris.gef.util.Predicate#predicate(java.lang.Object)
      */
     public boolean predicate(Object o) {
-	if (!(Model.getFacade().isAModelElement(o))) return false;
+	if (!(Model.getFacade().isAModelElement(o))) {
+            return false;
+        }
 	Object me = /*(MModelElement)*/ o;
 	return theType.predicate(me) && specific.predicate(me)
 	    && elementName.predicate(Model.getFacade().getName(me));
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 9149816242647422438L;
 } /* end class PredicateFind */
