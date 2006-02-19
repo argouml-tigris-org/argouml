@@ -1146,6 +1146,14 @@ public interface CoreHelper {
     void setSpecification(Object handle, boolean specification);
 
     /**
+     * Set the specification (i.e. the operation) of a Method.
+     * 
+     * @param method the method
+     * @param specification the operation
+     */
+    void setSpecification(Object method, Object specification);
+    
+    /**
      * Sets the specifications of some association end.
      *
      * @param handle the association end

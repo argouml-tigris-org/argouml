@@ -393,6 +393,14 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
         }, specification, Model.getFacade().isSpecification(handle));
     }
 
+    public void setSpecification(final Object handle, Object specification) {
+        createMemento(new ObjectSetter() {
+            public void set(Object value) {
+                getComponent().setSpecification(handle, value);
+            }
+        }, specification, Model.getFacade().getSpecification(handle));
+    }
+
     /**
      * @see org.argouml.model.CoreHelper#setTargetScope(
      *         java.lang.Object, java.lang.Object)

@@ -2492,8 +2492,16 @@ public interface Facade {
      * @param handle the Reception
      * @return String the Specification
      */
-    String getSpecification(Object handle);
+    String getSpecificationString(Object handle);
 
+    /**
+     * Returns the Specification of a given Method, i.e. its operation.
+     *
+     * @param handle the Method
+     * @return String the Specification Operation
+     */
+    Object getSpecification(Object handle);
+    
     /**
      * Returns all Interfaces of which this class is a realization.
      *

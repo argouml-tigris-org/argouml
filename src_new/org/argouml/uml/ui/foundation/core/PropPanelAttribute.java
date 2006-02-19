@@ -61,6 +61,8 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         addField(Translator.localize("label.multiplicity"),
                 getMultiplicityComboBox());
 
+        add(getVisibilityPanel());
+        
         addSeperator();
 
         addField(Translator.localize("label.type"),
@@ -79,7 +81,6 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         addField(Translator.localize("label.initial-value"),
                 new UMLInitialValueComboBox(this));
 
-        add(getVisibilityPanel());
         add(getChangeabilityRadioButtonPanel());
 
         JPanel modifiersPanel = new JPanel(new FlexiGridLayout(0, 3,
