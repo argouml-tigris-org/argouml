@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -62,25 +62,25 @@ public class SequenceDiagramGraphModel
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-        /**
+    /**
      * The collaboration this sequence diagram belongs too.
-         */
+     */
     private Object collaboration;
 
-        /**
+    /**
      * The interaction that is shown on the sequence diagram.
-         */
+     */
     private Object interaction;
 
-        /**
-     * State for actions in sequence diagram
-        */
-    private Object default_state;
+    /**
+     * State for actions in sequence diagram.
+     */
+    private Object defaultState;
 
     /**
-     * State machine for default state
+     * State machine for default state.
      */
-    private Object default_state_machine;
+    private Object defaultStateMachine;
 
     ////////////////////////////////////////////////////////////////
     // GraphModel implementation
@@ -88,8 +88,6 @@ public class SequenceDiagramGraphModel
     /**
      * Default constructor. Constructs a model and a collaboration in
      * the root of the current project.
-     *
-     * @param c the collaboration
      */
     public SequenceDiagramGraphModel() {
     }
@@ -103,10 +101,10 @@ public class SequenceDiagramGraphModel
         Vector ports = new Vector();
         if (Model.getFacade().isAClassifierRole(nodeOrEdge)) {
             ports.addAll(Model.getFacade().getMessages1(nodeOrEdge));
-            ports.addAll( Model.getFacade().getMessages2(nodeOrEdge));
+            ports.addAll(Model.getFacade().getMessages2(nodeOrEdge));
         } else if (Model.getFacade().isAMessage(nodeOrEdge)) {
-            ports.add( Model.getFacade().getSender( nodeOrEdge));
-            ports.add( Model.getFacade().getReceiver( nodeOrEdge));
+            ports.add(Model.getFacade().getSender(nodeOrEdge));
+            ports.add(Model.getFacade().getReceiver(nodeOrEdge));
         }
         return ports;
     }
@@ -141,7 +139,7 @@ public class SequenceDiagramGraphModel
     public List getOutEdges(Object port) {
         Vector res = new Vector();
         if (Model.getFacade().isAClassifierRole(port)) {
-           res.addAll(Model.getFacade().getMessages1(port));
+            res.addAll(Model.getFacade().getMessages1(port));
         }
         return res;
     }
@@ -158,8 +156,8 @@ public class SequenceDiagramGraphModel
         if (node == null) {
             return false;
         }
-        return ! getNodes().contains( node)
-          && Model.getFacade().getNamespace( node)==getCollaboration();
+        return !getNodes().contains(node)
+          && Model.getFacade().getNamespace(node) == getCollaboration();
     }
 
     /**
@@ -171,17 +169,17 @@ public class SequenceDiagramGraphModel
         if (edge == null) {
             return false;
         }
-        
-        if ( getEdges().contains( edge)) {
+
+        if (getEdges().contains(edge)) {
             return false;
         }
-        
+
         Object end0 = null;
         Object end1 = null;
 
         if (Model.getFacade().isAMessage(edge)) {
-            end0 = Model.getFacade().getSender( edge);
-            end1 = Model.getFacade().getReceiver( edge);
+            end0 = Model.getFacade().getSender(edge);
+            end1 = Model.getFacade().getReceiver(edge);
         } else if (edge instanceof CommentEdge) {
             end0 = ((CommentEdge) edge).getSource();
             end1 = ((CommentEdge) edge).getDestination();
@@ -191,17 +189,17 @@ public class SequenceDiagramGraphModel
             LOG.error("Edge rejected. Its ends are not attached to anything");
             return false;
         }
-        
+
         if (!containsNode(end0) && !containsEdge(end0)) {
-            LOG.error("Edge rejected. Its source end is attached to " +
-                    end0 +
-                    " but this is not in the graph model");
+            LOG.error("Edge rejected. Its source end is attached to "
+                    + end0
+                    + " but this is not in the graph model");
             return false;
         }
         if (!containsNode(end1) && !containsEdge(end1)) {
-            LOG.error("Edge rejected. Its destination end is attached to " +
-                    end1 +
-                    " but this is not in the graph model");
+            LOG.error("Edge rejected. Its destination end is attached to "
+                    + end1
+                    + " but this is not in the graph model");
             return false;
         }
 
@@ -216,7 +214,7 @@ public class SequenceDiagramGraphModel
      */
     public void addNode(Object node) {
         if (canAddNode(node)) {
-            getNodes().add( node);
+            getNodes().add(node);
             fireNodeAdded(node);
         }
 
@@ -230,8 +228,8 @@ public class SequenceDiagramGraphModel
      */
     public void addEdge(Object edge) {
         if (canAddEdge(edge)) {
-            getEdges().add( edge);
-        fireEdgeAdded(edge);
+            getEdges().add(edge);
+            fireEdgeAdded(edge);
         }
     }
 
@@ -245,11 +243,11 @@ public class SequenceDiagramGraphModel
             Collection ends = Model.getFacade().getMessages2(node);
             Iterator iter = ends.iterator();
             while (iter.hasNext()) {
-                addEdge( iter.next());
-                }
-            iter=Model.getFacade().getMessages1(node).iterator();
+                addEdge(iter.next());
+            }
+            iter = Model.getFacade().getMessages1(node).iterator();
             while (iter.hasNext()) {
-                addEdge( iter.next());
+                addEdge(iter.next());
             }
         }
     }
@@ -262,31 +260,33 @@ public class SequenceDiagramGraphModel
      * java.lang.Object, java.lang.Object)
      */
     public boolean canConnect(Object fromP, Object toP, Object edgeType) {
-        
-        if (edgeType == CommentEdge.class && 
-                (Model.getFacade().isAComment(fromP) || 
-                        Model.getFacade().isAComment(toP)) &&
-                !(Model.getFacade().isAComment(fromP) &&
-                        Model.getFacade().isAComment(toP))) {
+
+        if (edgeType == CommentEdge.class
+                && (Model.getFacade().isAComment(fromP)
+                        || Model.getFacade().isAComment(toP))
+                && !(Model.getFacade().isAComment(fromP)
+                        && Model.getFacade().isAComment(toP))) {
             // We can connect if we get a comment edge and one (only one) node
             // that is a comment.
             return true;
         }
-        
-        
-        if ( ! ( fromP instanceof MessageNode) || ! ( toP instanceof MessageNode))
-            return false;
-        if ( fromP==toP)
-            return false;
 
-        MessageNode nodeFrom=(MessageNode)fromP;
-        MessageNode nodeTo=(MessageNode)toP;
 
-        if ( nodeFrom.getFigClassifierRole()==nodeTo.getFigClassifierRole())
-        {
-            FigClassifierRole fig=nodeFrom.getFigClassifierRole();
-            if ( fig.getIndexOf( nodeFrom)>=fig.getIndexOf( nodeTo))
+        if (!(fromP instanceof MessageNode) || !(toP instanceof MessageNode)) {
+            return false;
+        }
+        if (fromP == toP) {
+            return false;
+        }
+
+        MessageNode nodeFrom = (MessageNode) fromP;
+        MessageNode nodeTo = (MessageNode) toP;
+
+        if (nodeFrom.getFigClassifierRole() == nodeTo.getFigClassifierRole()) {
+            FigClassifierRole fig = nodeFrom.getFigClassifierRole();
+            if (fig.getIndexOf(nodeFrom) >= fig.getIndexOf(nodeTo)) {
                 return false;
+            }
         }
 
         Editor curEditor = Globals.curEditor();
@@ -297,10 +297,13 @@ public class SequenceDiagramGraphModel
         if (Model.getMetaTypes().getCallAction().equals(actionType)) {
             return nodeFrom.canCall() && nodeTo.canBeCalled();
         } else if (Model.getMetaTypes().getReturnAction().equals(actionType)) {
-            return nodeTo.canBeReturnedTo() && nodeFrom.canReturn( nodeTo.getClassifierRole());
+            return nodeTo.canBeReturnedTo()
+                && nodeFrom.canReturn(nodeTo.getClassifierRole());
         } else if (Model.getMetaTypes().getCreateAction().equals(actionType)) {
-            if ( nodeFrom.getFigClassifierRole()==nodeTo.getFigClassifierRole())
+            if (nodeFrom.getFigClassifierRole()
+                    == nodeTo.getFigClassifierRole()) {
                 return false;
+            }
             return nodeFrom.canCreate() && nodeTo.canBeCreated();
         } else if (Model.getMetaTypes().getDestroyAction().equals(actionType)) {
             return nodeFrom.canDestroy() && nodeTo.canBeDestroyed();
@@ -324,7 +327,7 @@ public class SequenceDiagramGraphModel
             return null;
         }
         if (edgeType == CommentEdge.class) {
-            return super.connect(fromPort, toPort, (Object)edgeType);
+            return super.connect(fromPort, toPort, (Object) edgeType);
         }
         Object edge = null;
         Object fromObject = null;
@@ -351,7 +354,7 @@ public class SequenceDiagramGraphModel
                 if (fromPort instanceof MessageNode
                     && toPort instanceof MessageNode) {
                     fromObject = ((MessageNode) fromPort).getClassifierRole();
-                    toObject = ((MessageNode)toPort).getClassifierRole();
+                    toObject = ((MessageNode) toPort).getClassifierRole();
                     action =
                         Model.getCommonBehaviorFactory()
                             .createCreateAction();
@@ -393,18 +396,18 @@ public class SequenceDiagramGraphModel
             if (associationRole == null) {
                 associationRole =
                     Model.getCollaborationsFactory().buildAssociationRole(
-                    fromObject, toObject);
+                            fromObject, toObject);
             }
 
             Object message =
                 Model.getCollaborationsFactory().buildMessage(
                     getInteraction(),
                     associationRole);
-            if ( action!=null)
-            {
-            Model.getCollaborationsHelper().setAction(message, action);
+            if (action != null) {
+                Model.getCollaborationsHelper().setAction(message, action);
                 Model.getStateMachinesHelper().setDoActivity(
-                    Model.getStateMachinesFactory().buildSimpleState( getDefaultState()),
+                    Model.getStateMachinesFactory().buildSimpleState(
+                            getDefaultState()),
                     action);
             }
             Model.getCollaborationsHelper()
@@ -455,10 +458,11 @@ public class SequenceDiagramGraphModel
      * @return the collaboration of the diagram.
      */
     public Object getCollaboration() {
-        if ( collaboration==null){
-            collaboration = Model.getCollaborationsFactory().buildCollaboration(
-                ProjectManager.getManager().getCurrentProject()
-                .getRoot());
+        if (collaboration == null) {
+            collaboration =
+                Model.getCollaborationsFactory().buildCollaboration(
+                        ProjectManager.getManager().getCurrentProject()
+                        .getRoot());
         }
 
         return collaboration;
@@ -471,9 +475,10 @@ public class SequenceDiagramGraphModel
      */
     public void setCollaboration(Object c) {
         collaboration = c;
-        Collection interactions=Model.getFacade().getInteractions( c);
-        if ( ! interactions.isEmpty())
-            interaction=interactions.iterator().next();
+        Collection interactions = Model.getFacade().getInteractions(c);
+        if (!interactions.isEmpty()) {
+            interaction = interactions.iterator().next();
+        }
     }
 
     private Object getInteraction() {
@@ -486,36 +491,34 @@ public class SequenceDiagramGraphModel
     }
 
     private Object getDefaultStateMachine() {
-        if ( default_state_machine==null)
-        {
-            Object ns = Model.getFacade().getRepresentedClassifier( getCollaboration());
-            Iterator it = Model.getFacade().getOwnedElements( ns).iterator();
+        if (defaultStateMachine == null) {
+            Object ns =
+                Model.getFacade().getRepresentedClassifier(getCollaboration());
+            Iterator it = Model.getFacade().getOwnedElements(ns).iterator();
             while (it.hasNext()) {
                 Object child = it.next();
                 if (Model.getFacade().isAStateMachine(child)) {
-                    default_state_machine = child;
+                    defaultStateMachine = child;
                     break;
                 }
             }
-            if (default_state_machine == null)
-            {
-                default_state_machine = Model.getStateMachinesFactory().
-                    buildStateMachine(
-                    ns);
-                Model.getStateMachinesFactory().buildCompositeStateOnStateMachine(
-                    default_state_machine);
+            if (defaultStateMachine == null) {
+                defaultStateMachine =
+                    Model.getStateMachinesFactory().buildStateMachine(ns);
+                Model.getStateMachinesFactory()
+                    .buildCompositeStateOnStateMachine(defaultStateMachine);
             }
         }
-        return default_state_machine;
+        return defaultStateMachine;
     }
 
     private Object getDefaultState() {
-        if ( default_state==null)
-        {
-            default_state=Model.getStateMachinesHelper().getTop(
-                getDefaultStateMachine());
+        if (defaultState == null) {
+            defaultState =
+                Model.getStateMachinesHelper()
+                    .getTop(getDefaultStateMachine());
         }
-        return default_state;
+        return defaultState;
     }
 
     /**
@@ -527,12 +530,18 @@ public class SequenceDiagramGraphModel
 
 
     public void setHomeModel(Object namespace) {
-        if (!Model.getFacade().isANamespace(namespace))
+        if (!Model.getFacade().isANamespace(namespace)) {
             throw new IllegalArgumentException(
-                    "A sequence diagram home model must be a namespace, received a "
+                    "A sequence diagram home model must be a namespace, "
+                    + "received a "
                     + namespace);
-        setCollaboration( namespace);
-        super.setHomeModel( namespace);
+        }
+        setCollaboration(namespace);
+        super.setHomeModel(namespace);
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -3799402191353570488L;
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -207,18 +207,20 @@ public class MessageNode extends Object {
     }
 
     public boolean canBeDestroyed() {
-        boolean destroyableNode=( figMessagePort == null 
-            && ( state == DONE_SOMETHING_NO_CALL
-                || state == CREATED 
-                || state == CALLED || state == RETURNED 
-                || state == IMPLICIT_RETURNED 
+        boolean destroyableNode =
+            (figMessagePort == null
+            && (state == DONE_SOMETHING_NO_CALL
+                || state == CREATED
+                || state == CALLED || state == RETURNED
+                || state == IMPLICIT_RETURNED
                 || state == IMPLICIT_CREATED));
-        if ( destroyableNode) {
-            for ( int i=ownerObject.getIndexOf( this)+1; 
-                destroyableNode && i<ownerObject.getNodeCount(); ++i) {
-                MessageNode node=ownerObject.getNode( i);
-                if ( node.getFigMessagePort()!=null)
-                    destroyableNode=false;
+        if (destroyableNode) {
+            for (int i = ownerObject.getIndexOf(this) + 1;
+                destroyableNode && i < ownerObject.getNodeCount(); ++i) {
+                MessageNode node = ownerObject.getNode(i);
+                if (node.getFigMessagePort() != null) {
+                    destroyableNode = false;
+                }
             }
         }
         return destroyableNode;
