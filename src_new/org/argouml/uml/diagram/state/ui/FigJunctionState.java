@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.state.ui;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
@@ -58,7 +57,8 @@ public class FigJunctionState extends FigStateVertex {
 
     ////////////////////////////////////////////////////////////////
     // constructors
-    /** constructor
+    /**
+     * Constructor.
      */
     public FigJunctionState() {
         setEditable(false);
@@ -68,7 +68,7 @@ public class FigJunctionState extends FigStateVertex {
         getBigPort().addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
         getBigPort().addPoint(X, Y + HEIGHT);
         getBigPort().addPoint(X - WIDTH / 2, Y + HEIGHT / 2);
-        
+
         head.addPoint(X, Y);
         head.addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
         head.addPoint(X, Y + HEIGHT);
@@ -82,7 +82,7 @@ public class FigJunctionState extends FigStateVertex {
     }
 
     /**
-     * constructor
+     * Constructor.
      *
      * @param gm ignored
      * @param node the owner
@@ -106,7 +106,9 @@ public class FigJunctionState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Fig accesors
 
-    /** Initial states are fixed size.
+    /**
+     * Initial states are fixed size.
+     *
      * @see org.tigris.gef.presentation.Fig#isResizable()
      */
     public boolean isResizable() { return false; }
@@ -179,20 +181,29 @@ public class FigJunctionState extends FigStateVertex {
      */
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
-        int xs[] = {r.x + r.width / 2,
+        int[] xs = {r.x + r.width / 2,
                     r.x + r.width,
                     r.x + r.width / 2,
                     r.x,
-                    r.x + r.width / 2};
-        int ys[] = {r.y,
+                    r.x + r.width / 2,
+        };
+        int[] ys = {r.y,
                     r.y + r.height / 2,
                     r.y + r.height,
                     r.y + r.height / 2,
-                    r.y};
-        Point p = Geometry.ptClosestTo(
+                    r.y,
+        };
+        Point p =
+            Geometry.ptClosestTo(
                 xs,
                 ys,
-                5 , anotherPt);
+                5,
+                anotherPt);
         return p;
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5845934640541945686L;
 } /* end class FigJunctionState */

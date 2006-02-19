@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,6 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
@@ -43,7 +42,6 @@ public class FigForkState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private static final int MARGIN = 2;
     private static final int X = 10;
     private static final int Y = 10;
     private static final int WIDTH = 80;
@@ -69,11 +67,11 @@ public class FigForkState extends FigStateVertex {
         addFig(head);
 
         setBlinkPorts(false); //make port invisble unless mouse enters
-        Rectangle r = getBounds();
     }
 
     /**
-     * The constructor which links the Fig into the existing UML element
+     * The constructor which links the Fig into the existing UML element.
+     *
      * @param gm ignored
      * @param node the UML element
      */
@@ -96,15 +94,18 @@ public class FigForkState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /** Override setBounds to keep shapes looking right
+    /**
+     * Override setBounds to keep shapes looking right.
+     *
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
-        if (w > h)
+        if (w > h) {
             h = HEIGHT;
-        else
+        } else {
             w = HEIGHT;
+        }
         getBigPort().setBounds(x, y, w, h);
         head.setBounds(x, y, w, h);
 
@@ -177,6 +178,9 @@ public class FigForkState extends FigStateVertex {
     public void mouseClicked(MouseEvent me) {
     }
 
+    /**
+     * The UID.
+     */
     static final long serialVersionUID = 6702818473439087473L;
 
 } /* end class FigForkState */
