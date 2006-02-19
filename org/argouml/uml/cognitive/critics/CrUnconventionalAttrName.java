@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -102,7 +102,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 	// check whether constant, constants are often weird and thus not a
 	// problem
 	Object/*MChangeableKind*/ ck = Model.getFacade().getChangeability(attr);
-	if (ck!=null&&Model.getFacade().isFrozen(ck)) {
+	if (ck != null && Model.getFacade().isFrozen(ck)) {
 	    return NO_PROBLEM;
 	}
 
@@ -214,5 +214,10 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 4741909365018862474L;
 
 } /* end class CrUnconventionalAttrName */

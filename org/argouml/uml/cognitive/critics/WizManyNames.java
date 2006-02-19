@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -73,7 +73,7 @@ public class WizManyNames extends UMLWizard {
      */
     public void setMEs(Vector m) {
         int mSize = m.size();
-        for (int i=0; i < 3 && i < mSize; ++i) {
+        for (int i = 0; i < 3 && i < mSize; ++i) {
             if (!Model.getFacade().isAModelElement(m.get(i))) {
                 throw new IllegalArgumentException(
                     "The vector should contain model elements in "
@@ -139,4 +139,9 @@ public class WizManyNames extends UMLWizard {
 	default:
 	}
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -2827847568754795770L;
 } /* end class WizManyNames */
