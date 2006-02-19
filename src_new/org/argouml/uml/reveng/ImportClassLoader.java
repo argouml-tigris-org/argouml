@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,59 +38,66 @@ import org.argouml.application.api.Configuration;
 
 /**
  * Class to help users reverse engineer class information from arbitrary
- * .jar/.class file resources, like an import classpath.
+ * .jar/.class file resources, like an import classpath.<p>
  *
- * <p>can be used as follows:
+ * can be used as follows:
  *
- *<pre>
- *<code>
+ * <pre>
+ * <code>
+ * try {
+ *     ImportClassLoader loader = ImportClassLoader.getInstance();
+ *     // add paths...
+ *     loader.addFile(new File("/opt/lib/myjar.jar"));
  *
- * try{
- * ImportClassLoader loader = ImportClassLoader.getInstance();
- * // add paths...
- * loader.addFile(new File("/opt/lib/myjar.jar"));
+ *     Class clazz = loader.loadClass("org.xyz.MyException");
+ *     Object ex = clazz.newInstance();
+ *     cat.info("loaded class ok");
+ * } catch(Exception e) {
+ *     cat.warn("error loading class: "+e.toString());
+ * }
+ * </code>
+ * </pre>
  *
- *  Class clazz = loader.loadClass("org.xyz.MyException");
- *  Object ex = clazz.newInstance();
- *   cat.info("loaded class ok");
- * }catch(Exception e){cat.warn("error loading class: "+e.toString());}
+ * It supports adding and removing Files from the import classpath.
+ * And saving and loading the path to/from the users properties file.<p>
  *
- *</code>
- *</pre>
+ * It should be possible to make this the system class loader, but
+ * I haven't got this to work yet:
  *
- * <p>It supports adding and removing Files from the import classpath.
- *    And saving and loading the path to/from the users properties file.
- *
- *<p>It should be possible to make this the system class loader, but
- *   I haven't got this to work yet:</p>
- *
- *<pre>
- *<code>
+ * <pre>
+ * <code>
  * final URLClassLoader urlClassLoader = new URLClassLoader(urls, cl);
  * //create a new custom class with the default classloader as its parent
  * try {
- * EventQueue eq = Toolkit.getDefaultToolkit().getSystemEventQueue();
- * eq.invokeAndWait(new Runnable() {
- * public void run() {
- * Thread.currentThread().setContextClassLoader(urlClassLoader);
- * //this will replace the default system class loader with the new custom
- * //classloader, so that the jvm will use the new custom classloader to
- * // lookup a class
- * }
- * });
- * //...
- *</code>
- *</pre>
+ *     EventQueue eq = Toolkit.getDefaultToolkit().getSystemEventQueue();
+ *     eq.invokeAndWait(new Runnable() {
+ *         public void run() {
+ *             Thread.currentThread().setContextClassLoader(urlClassLoader);
+ *             // this will replace the default system class loader with
+ *             // the new custom classloader, so that the jvm will use
+ *             // the new custom classloader to lookup a class
+ *         }
+ *     });
+ *     //...
+ * </code>
+ * </pre>
  *
  * @author alexb
  */
-public class ImportClassLoader extends URLClassLoader {
+public final class ImportClassLoader extends URLClassLoader {
 
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(ImportClassLoader.class);
 
     private static ImportClassLoader instance;
 
+    /**
+     * The constructor.
+     *
+     * @param urls An array of urls.
+     */
     private ImportClassLoader(URL[] urls) {
         super(urls);
     }
@@ -108,10 +115,10 @@ public class ImportClassLoader extends URLClassLoader {
             String path =
                 Configuration.getString(Argo.KEY_USER_IMPORT_CLASSPATH,
                     System.getProperty("user.dir"));
-        return getInstance(getURLs(path));
-        }
-        else
+            return getInstance(getURLs(path));
+        } else {
             return instance;
+        }
     }
 
     /**
@@ -164,8 +171,9 @@ public class ImportClassLoader extends URLClassLoader {
         List urls = new ArrayList(); //getURLs();
         for (int i = 0; i < this.getURLs().length; i++) {
 
-            if (!url.equals(getURLs()[i]))
+            if (!url.equals(getURLs()[i])) {
                 urls.add(getURLs()[i]);
+            }
         }
 
         // can't remove the last file

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -84,7 +84,9 @@ public abstract class FileImportSupport implements PluggableImport {
 	    configPanel = new JPanel();
 	    configPanel.setLayout(new GridBagLayout());
 
-	    JLabel attributeLabel = new JLabel(Translator.localize("action.import-java-attr-model"));
+	    JLabel attributeLabel =
+                new JLabel(
+                        Translator.localize("action.import-java-attr-model"));
 	    configPanel.add(attributeLabel,
 			    new GridBagConstraints(GridBagConstraints.RELATIVE,
 						   GridBagConstraints.RELATIVE,
@@ -97,7 +99,8 @@ public abstract class FileImportSupport implements PluggableImport {
 						   0, 0));
 	    ButtonGroup group1 = new ButtonGroup();
 	    attribute =
-		new JRadioButton(Translator.localize("action.import-java-UML-attr"));
+		new JRadioButton(
+                        Translator.localize("action.import-java-UML-attr"));
 	    attribute.setSelected(true);
 	    group1.add(attribute);
 	    configPanel.add(attribute,
@@ -111,7 +114,8 @@ public abstract class FileImportSupport implements PluggableImport {
 						   new Insets(0, 5, 0, 5),
 						   0, 0));
 	    JRadioButton association =
-		new JRadioButton(Translator.localize("action.import-java-UML-assoc"));
+		new JRadioButton(
+                        Translator.localize("action.import-java-UML-assoc"));
 	    group1.add(association);
 	    configPanel.add(association,
 			    new GridBagConstraints(GridBagConstraints.RELATIVE,
@@ -126,7 +130,9 @@ public abstract class FileImportSupport implements PluggableImport {
 
 	    ButtonGroup group2 = new ButtonGroup();
 	    datatype =
-		new JRadioButton(Translator.localize("action.import-java-array-model-datatype"));
+		new JRadioButton(
+                        Translator.localize(
+                                "action.import-java-array-model-datatype"));
 	    datatype.setSelected(true);
 	    group2.add(datatype);
 	    configPanel.add(datatype,
@@ -140,7 +146,9 @@ public abstract class FileImportSupport implements PluggableImport {
 						   new Insets(5, 5, 0, 5),
 						   0, 0));
 	    JRadioButton multi =
-		new JRadioButton(Translator.localize("action.import-java-array-model-multi"));
+		new JRadioButton(
+                        Translator.localize(
+                                "action.import-java-array-model-multi"));
 	    group2.add(multi);
 	    configPanel.add(multi,
 			    new GridBagConstraints(GridBagConstraints.RELATIVE,
@@ -451,5 +459,10 @@ public abstract class FileImportSupport implements PluggableImport {
 	public void cancelSelection() {
             theImport.disposeDialog();
 	}
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 3298461148934583094L;
     }
 }
