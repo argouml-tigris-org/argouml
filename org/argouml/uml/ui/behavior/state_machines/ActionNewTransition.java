@@ -28,6 +28,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
@@ -54,13 +55,10 @@ public class ActionNewTransition extends AbstractActionNewModelElement {
     public static final String DESTINATION = "destination";
 
 
-    private static final ActionNewTransition SINGLETON =
-        new ActionNewTransition();
-
     /**
      * Constructor for ActionNewTransition.
      */
-    protected ActionNewTransition() {
+    public ActionNewTransition() {
         super();
     }
 
@@ -70,19 +68,13 @@ public class ActionNewTransition extends AbstractActionNewModelElement {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         if (getValue(SOURCE) == null || getValue(DESTINATION) == null) {
+            Object target = TargetManager.getInstance().getModelTarget();
             Model.getStateMachinesFactory()
-                .buildInternalTransition(getTarget());
+                .buildInternalTransition(target);
         } else {
             Model.getStateMachinesFactory()
                 .buildTransition(getValue(SOURCE), getValue(DESTINATION));
         }
-    }
-
-    /**
-     * @return Returns the SINGLETON.
-     */
-    public static ActionNewTransition getInstance() {
-        return SINGLETON;
     }
 
 }

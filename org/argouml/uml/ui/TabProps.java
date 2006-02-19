@@ -97,7 +97,7 @@ import org.argouml.uml.ui.behavior.state_machines.PropPanelFinalState;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelGuard;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelPseudostate;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelSignalEvent;
-import org.argouml.uml.ui.behavior.state_machines.PropPanelState;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelSimpleState;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelStateMachine;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelStubState;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelSubmachineState;
@@ -575,7 +575,7 @@ public class TabProps
             return new PropPanelSignal();
         }
         if (Model.getFacade().isAState(modelElement)) {
-            return new PropPanelState();
+            return new PropPanelSimpleState(); //TODO: Check!
         }
         if (Model.getFacade().isAStateMachine(modelElement)) {
             return new PropPanelStateMachine();

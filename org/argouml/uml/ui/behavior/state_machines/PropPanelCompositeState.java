@@ -100,8 +100,8 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex#addExtraButtons()
      */
     protected void addExtraButtons() {
-        addAction(
-                ActionAddConcurrentRegion.getSingleton());
+        super.addExtraButtons();
+        addAction(ActionAddConcurrentRegion.getSingleton());
     }
 
     /**
