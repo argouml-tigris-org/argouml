@@ -1,5 +1,5 @@
 <TABLE>
-<TR><TH>Name</TH><TH>Comment</TH></TR>
+<TR><TH COLSPAN=2>Downloads</TH></TR>
 
 <TR><TD>
 <a href="@URLROOT@/ArgoUML-@VERSION@.tar.gz">ArgoUML-@VERSION@.tar.gz</a>
@@ -34,11 +34,13 @@ binary distribution, including all libaries
 <TR><TD>
 <a href="@URLROOT@/argomanual-@VERSION@.pdf">argomanual-@VERSION@.pdf</a>
 </TD><TD>
+User Manual
 </TD></TR>
 
 <TR><TD>
 <a href="@URLROOT@/quickguide-@VERSION@.pdf">quickguide-@VERSION@.pdf</a>
 </TD><TD>
+Quick Guide
 </TD></TR>
 
 
@@ -50,8 +52,7 @@ binary distribution, including all libaries
 Starts from Java Web Start
 </TD></TR>
 
-
-<TR><TH COLSPAN=2>IzPack installer</TH></TR>
+<TR><TH COLSPAN=2>Installers</TH></TR>
 
 Added when available.
 
@@ -62,6 +63,7 @@ Added when available.
 <TR><TD>
 <a href="@URLROOT@/cookbook-@VERSION@.pdf">cookbook-@VERSION@.pdf</a>
 </TD><TD>
+Cookbook
 </TD></TR>
 
 <TR><TD>
