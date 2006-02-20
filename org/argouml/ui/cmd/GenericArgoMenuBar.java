@@ -418,10 +418,10 @@ public class GenericArgoMenuBar extends JMenuBar
         fileToolbar.add(new ActionOpenProject());
         file.addSeparator();
 
-        JMenuItem saveProjectItem = file.add(ActionSaveProject.getInstance());
+        JMenuItem saveProjectItem = file.add(ProjectBrowser.getInstance().getSaveAction());
         setMnemonic(saveProjectItem, "Save");
         setAccelerator(saveProjectItem, ctrlS);
-        fileToolbar.add((ActionSaveProject.getInstance()));
+        fileToolbar.add((ProjectBrowser.getInstance().getSaveAction()));
         JMenuItem saveProjectAsItem = file.add(new ActionSaveProjectAs());
         setMnemonic(saveProjectAsItem, "SaveAs");
         JMenuItem revertToSavedItem = file.add(new ActionRevertToSaved());
