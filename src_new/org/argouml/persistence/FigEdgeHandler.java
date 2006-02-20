@@ -145,6 +145,9 @@ public class FigEdgeHandler
         // the FigNode.
         figId = figId.substring(0, figId.indexOf('.'));
         FigEdgeModelElement edge = (FigEdgeModelElement) parser.findFig(figId);
+        if (edge == null) {
+            throw new IllegalStateException("Can't find a FigNode with id " + figId);
+        }
         edge.makeCommentPort();
         return edge.getCommentPort();
     }
