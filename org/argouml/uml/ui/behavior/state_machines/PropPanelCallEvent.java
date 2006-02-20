@@ -33,6 +33,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
+import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.ActionNewParameter;
@@ -86,11 +87,18 @@ class UMLCallEventOperationComboBox2 extends UMLSearchableComboBox {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        Object target = TargetManager.getInstance().getModelTarget();
-        if (Model.getFacade().isACallEvent(target)) {
-            Model.getCommonBehaviorHelper().setOperation(
-                    target,
-                    getSelectedItem());
+        super.actionPerformed(e);
+        Object source = e.getSource();
+        if (source instanceof UMLComboBox2) {
+            Object selected = ((UMLComboBox2) source).getSelectedItem();
+            Object target = ((UMLComboBox2) source).getTarget();
+            if (Model.getFacade().isACallEvent(target) 
+                && Model.getFacade().isAOperation(selected)) {
+                if (Model.getFacade().getOperation(target) != selected) {
+                    Model.getCommonBehaviorHelper()
+                        .setOperation(target, selected);
+                }
+            }
         }
     }
 }
