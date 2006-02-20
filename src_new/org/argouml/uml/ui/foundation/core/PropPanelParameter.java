@@ -76,7 +76,7 @@ public class PropPanelParameter extends PropPanelModelElement {
                 Translator.localize("label.parameter.kind"), true));
 
         addAction(new ActionNavigateContainerElement());
-        addAction(new ActionAddParameter());
+        addAction(new ActionNewParameter());
         addAction(new ActionAddDataType());
         addAction(new ActionAddEnumeration());
         addAction(new ActionNewStereotype());
