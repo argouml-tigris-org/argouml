@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,81 +55,83 @@ import org.tigris.swidgets.GridLayout2;
  * An abstract representatation of the properties panel of an Action. 
  */
 public abstract class PropPanelAction extends PropPanelModelElement {
-
-        /**
-         * The constructor.
-         */
-        public PropPanelAction() {
-                this("Action", null);
-        }
-
-        /**
-         * The constructor.
-         *
-         * @param name
-         *                the name of the properties panel
-         * @param icon
-         *                the icon to be shown next to the name
-         */
-        public PropPanelAction(String name, ImageIcon icon) {
-                super(name, icon, ConfigLoader.getTabPropsOrientation());
-                initialize();
-        }
-
-        /**
-         * The initialization of the panel with its fields and stuff.
-         */
-        public void initialize() {
-
-                addField(Translator.localize("label.name"), getNameTextField());
-
-                add(new UMLActionAsynchronousCheckBox());
-
-                UMLExpressionModel2 scriptModel = new UMLScriptExpressionModel(
-                                this, "script");
-
-                JPanel scriptPanel = new JPanel(new GridLayout2());
-                scriptPanel.setBorder(new TitledBorder(Translator
-                                .localize("label.script")));
-
-                scriptPanel.add(new JScrollPane(new UMLExpressionBodyField(
-                                scriptModel, true)));
-                scriptPanel.add(new UMLExpressionLanguageField(scriptModel,
-                                false));
-
-                add(scriptPanel);
-
-                UMLExpressionModel2 recurrenceModel = new UMLRecurrenceExpressionModel(
-                                this, "recurrence");
-
-                JPanel recurrencePanel = new JPanel(new GridLayout2());
-                recurrencePanel.setBorder(new TitledBorder(Translator
-                                .localize("label.recurrence")));
-                recurrencePanel.add(new JScrollPane(new UMLExpressionBodyField(
-                                recurrenceModel, true)));
-                recurrencePanel.add(new UMLExpressionLanguageField(
-                                recurrenceModel, false));
-
-                add(recurrencePanel);
-
-                addSeperator();
-
-                JList argumentsList = new UMLMutableLinkedList(
-                                new UMLActionArgumentListModel(), null,
-                                new ActionNewArgument(),
-                                new ActionRemoveArgument(), true);
-                argumentsList.setVisibleRowCount(5);
-                JScrollPane argumentsScroll = new JScrollPane(argumentsList);
-                addField(Translator.localize("label.arguments"),
-                                argumentsScroll);
-
-                addAction(new ActionNavigateContainerElement());
-                addAction(new ActionCreateArgument());
-                addAction(new ActionNewStereotype());
-                addAction(new ActionDeleteSingleModelElement());
-
-        }
-
+    
+    protected JScrollPane argumentsScroll;
+    
+    /**
+     * The constructor.
+     */
+    public PropPanelAction() {
+        this("Action", null);
+    }
+    
+    /**
+     * The constructor.
+     *
+     * @param name
+     *                the name of the properties panel
+     * @param icon
+     *                the icon to be shown next to the name
+     */
+    public PropPanelAction(String name, ImageIcon icon) {
+        super(name, icon, ConfigLoader.getTabPropsOrientation());
+        initialize();
+    }
+    
+    /**
+     * The initialization of the panel with its fields and stuff.
+     */
+    public void initialize() {
+        
+        addField(Translator.localize("label.name"), getNameTextField());
+        
+        add(new UMLActionAsynchronousCheckBox());
+        
+        UMLExpressionModel2 scriptModel = new UMLScriptExpressionModel(
+                this, "script");
+        
+        JPanel scriptPanel = new JPanel(new GridLayout2());
+        scriptPanel.setBorder(new TitledBorder(Translator
+                .localize("label.script")));
+        
+        scriptPanel.add(new JScrollPane(new UMLExpressionBodyField(
+                scriptModel, true)));
+        scriptPanel.add(new UMLExpressionLanguageField(scriptModel,
+                false));
+        
+        add(scriptPanel);
+        
+        UMLExpressionModel2 recurrenceModel = new UMLRecurrenceExpressionModel(
+                this, "recurrence");
+        
+        JPanel recurrencePanel = new JPanel(new GridLayout2());
+        recurrencePanel.setBorder(new TitledBorder(Translator
+                .localize("label.recurrence")));
+        recurrencePanel.add(new JScrollPane(new UMLExpressionBodyField(
+                recurrenceModel, true)));
+        recurrencePanel.add(new UMLExpressionLanguageField(
+                recurrenceModel, false));
+        
+        add(recurrencePanel);
+        
+        addSeperator();
+        
+        JList argumentsList = new UMLMutableLinkedList(
+                new UMLActionArgumentListModel(), null,
+                new ActionNewArgument(),
+                new ActionRemoveArgument(), true);
+        argumentsList.setVisibleRowCount(5);
+        argumentsScroll = new JScrollPane(argumentsList);
+        addField(Translator.localize("label.arguments"),
+                argumentsScroll);
+        
+        addAction(new ActionNavigateContainerElement());
+        addAction(new ActionCreateArgument());
+        addAction(new ActionNewStereotype());
+        addAction(new ActionDeleteSingleModelElement());
+        
+    }
+    
 }
 
 class ActionCreateArgument extends AbstractActionNewModelElement {
