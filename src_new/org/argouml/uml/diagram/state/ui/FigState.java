@@ -145,7 +145,7 @@ public abstract class FigState extends FigStateVertex {
             Iterator it =
                 Model.getFacade().getInternalTransitions(oldOwner).iterator();
             while (it.hasNext()) {
-                Model.getPump().removeModelEventListener(this, it.next());
+                removeListenersForTransition(it.next());
             }
             Object doActivity = Model.getFacade().getDoActivity(oldOwner);
             removeListenersForAction(doActivity);
@@ -160,7 +160,7 @@ public abstract class FigState extends FigStateVertex {
             Iterator it =
                 Model.getFacade().getInternalTransitions(newOwner).iterator();
             while (it.hasNext()) {
-                Model.getPump().addModelEventListener(this, it.next());
+                addListenersForTransition(it.next());
             }
             // register for the doactivity etc.
             Object doActivity = Model.getFacade().getDoActivity(newOwner);
@@ -202,6 +202,70 @@ public abstract class FigState extends FigStateVertex {
             }
         }
     }
+    
+    private void removeListenersForEvent(Object event) {
+        if (event != null) {
+            Model.getPump().removeModelEventListener(this, event,
+                    new String[] {
+                        "parameter", "name",
+                    });
+            Collection prms = Model.getFacade().getParameters(event);
+            Iterator i = prms.iterator();
+            while (i.hasNext()) {
+                Object parameter = i.next();
+                Model.getPump().removeModelEventListener(this, parameter);
+            }
+        }
+    }
+
+    private void addListenersForEvent(Object event) {
+        if (event != null) {
+            Model.getPump().addModelEventListener(this, event,
+                    new String[] {
+                        "parameter", "name",
+                    });
+            Collection prms = Model.getFacade().getParameters(event);
+            Iterator i = prms.iterator();
+            while (i.hasNext()) {
+                Object parameter = i.next();
+                Model.getPump().addModelEventListener(this, parameter);
+            }
+        }
+    }
+    
+    
+    private void removeListenersForTransition(Object transition) {
+        Model.getPump().removeModelEventListener(this, transition, 
+                new String[] {"guard", "trigger", "effect"});
+
+        Object guard = Model.getFacade().getGuard(transition);
+        if (guard != null) {
+            Model.getPump().removeModelEventListener(this, guard, "expression");
+        }
+
+        Object trigger = Model.getFacade().getTrigger(transition);
+        removeListenersForEvent(trigger);
+
+        Object effect = Model.getFacade().getEffect(transition);
+        removeListenersForAction(effect);
+    }
+
+    private void addListenersForTransition(Object transition) {
+        Model.getPump().addModelEventListener(this, transition, 
+                new String[] {"guard", "trigger", "effect"});
+
+        Object guard = Model.getFacade().getGuard(transition);
+        if (guard != null) {
+            Model.getPump().addModelEventListener(this, guard, "expression");
+        }
+
+        Object trigger = Model.getFacade().getTrigger(transition);
+        addListenersForEvent(trigger);
+
+        Object effect = Model.getFacade().getEffect(transition);
+        addListenersForAction(effect);
+    }    
+    
     /**
      * Updates the text inside the state.
      */
