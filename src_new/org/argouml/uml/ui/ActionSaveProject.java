@@ -47,28 +47,10 @@ public class ActionSaveProject extends AbstractAction {
      */
     private static final Logger LOG = Logger.getLogger(ActionSaveProject.class);
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    /**
-     * The singleton.
-     */
-    private static final ActionSaveProject INSTANCE = new ActionSaveProject();
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    /**
-     * @return the singleton
-     */
-    public static ActionSaveProject getInstance() {
-        return INSTANCE;
-    }
-
     /**
      * The constructor.
      */
-    protected ActionSaveProject() {
+    public ActionSaveProject() {
         super(Translator.localize("action.save-project"),
                 ResourceLoaderWrapper.lookupIcon("action.save-project"));
         super.setEnabled(false);

@@ -133,11 +133,6 @@ public final class ProjectManager
      */
     private ProjectManager() {
         super();
-        // Register with the save action with other subsystems so that
-        // any changes in those subsystems will enable the
-        // save button/menu item etc.
-        Model.getPump().setSaveAction(ActionSaveProject.getInstance());
-        MutableGraphSupport.setSaveAction(ActionSaveProject.getInstance());
         Model.setMementoCreationObserver(this);
     }
 
@@ -272,6 +267,11 @@ public final class ProjectManager
     
     public void setSaveAction(Action saveAction) {
         this.saveAction = saveAction;
+        // Register with the save action with other subsystems so that
+        // any changes in those subsystems will enable the
+        // save button/menu item etc.
+        Model.getPump().setSaveAction(saveAction);
+        MutableGraphSupport.setSaveAction(saveAction);
     }
 
     /**

@@ -65,7 +65,7 @@ public class ActionRevertToSaved extends AbstractAction {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
 
-        if (p == null || !ActionSaveProject.getInstance().isEnabled()) {
+        if (p == null || !ProjectBrowser.getInstance().getSaveAction().isEnabled()) {
             return;
         }
 

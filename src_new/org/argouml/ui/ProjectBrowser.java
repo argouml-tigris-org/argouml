@@ -115,7 +115,7 @@ public final class ProjectBrowser
      * Default height.
      */
     public static final int DEFAULT_COMPONENTHEIGHT = 200;
-
+    
     /**
      * Logger.
      */
@@ -183,9 +183,14 @@ public final class ProjectBrowser
     private String title = "";
 
     /**
+     * The action to save the current project.
+     */
+    private final Action saveAction;
+
+    /**
      * The action to redo the last undone action.
      */
-    private final RedoAction redoAction =
+    private final Action redoAction =
         new RedoAction(Translator.localize("action.redo"));
 
     /**
@@ -218,6 +223,10 @@ public final class ProjectBrowser
     private ProjectBrowser(String applicationName, SplashScreen splash) {
         super(applicationName);
         theInstance = this;
+        
+        saveAction = new ActionSaveProject();
+        ProjectManager.getManager().setSaveAction(saveAction);
+        
         if (splash != null) {
 	    splash.getStatusBar().showStatus(
 	        Translator.localize("statusmsg.bar.making-project-browser"));
@@ -244,8 +253,6 @@ public final class ProjectBrowser
             ResourceLoaderWrapper.lookupIconResource("ArgoIcon");
         this.setIconImage(argoImage.getImage());
         //
-        ProjectManager.getManager().setSaveAction(
-                ActionSaveProject.getInstance());
 
         // adds this as listener to projectmanager so it gets updated when the
         // project changes
@@ -518,11 +525,12 @@ public final class ProjectBrowser
      * The setTitle method is overridden here only to extend the standard
      * setTitle method by displaying an asterisk to signify save status
      * @see java.awt.Frame#setTitle(java.lang.String)
+     * @deprecated
      */
     public void setTitle(final String titleArg) {
         title = titleArg;
         String changeIndicator = "";
-        if (ActionSaveProject.getInstance().isEnabled()) {
+        if (saveAction.isEnabled()) {
             changeIndicator = " *";
         }
         super.setTitle(titleArg + changeIndicator);
@@ -878,7 +886,7 @@ public final class ProjectBrowser
      * save and exit, exit without saving or cancel the exit operation.
      */
     public void tryExit() {
-        if (ActionSaveProject.getInstance().isEnabled()) {
+        if (saveAction.isEnabled()) {
             Project p = ProjectManager.getManager().getCurrentProject();
 
             String t =
@@ -894,13 +902,13 @@ public final class ProjectBrowser
                 return;
             }
             if (response == JOptionPane.YES_OPTION) {
-                if (ActionSaveProject.getInstance().isEnabled()) {
+                if (saveAction.isEnabled()) {
                     trySave (true);
                 }
-                if (ActionSaveProject.getInstance().isEnabled()) {
+                if (saveAction.isEnabled()) {
                     trySaveAs(false);
                 }
-                if (ActionSaveProject.getInstance().isEnabled()) {
+                if (saveAction.isEnabled()) {
                     return;
                 }
             }
@@ -1139,7 +1147,7 @@ public final class ProjectBrowser
         Project p = ProjectManager.getManager().getCurrentProject();
 
 
-        if (p != null && ActionSaveProject.getInstance().isEnabled()) {
+        if (p != null && saveAction.isEnabled()) {
             String t =
                 MessageFormat.format(Translator.localize(
                         "optionpane.open-project-save-changes-to"),
@@ -1155,13 +1163,13 @@ public final class ProjectBrowser
             }
             if (response == JOptionPane.YES_OPTION) {
 
-                if (ActionSaveProject.getInstance().isEnabled()) {
+                if (saveAction.isEnabled()) {
                     trySave(true);
                 }
-                if (ActionSaveProject.getInstance().isEnabled()) {
+                if (saveAction.isEnabled()) {
                     trySaveAs(false);
                 }
-                if (ActionSaveProject.getInstance().isEnabled()) {
+                if (saveAction.isEnabled()) {
                     return false;
                 }
             }
@@ -1385,6 +1393,14 @@ public final class ProjectBrowser
      */
     public Action getRedoAction() {
         return redoAction;
+    }
+
+    /**
+     * Get the action that can save the current project.
+     * @return the save action.
+     */
+    public Action getSaveAction() {
+        return saveAction;
     }
 
     /**
