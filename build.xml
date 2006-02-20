@@ -267,24 +267,6 @@ Property files to be searched:
        properties file will be operational.
    -->
 
-  <!-- Targets for i18n languages in alphabetic order. -->
-  <!-- Whenever a new language is added it needs to be added here. -->
-
-  <target name="copy-i18n-de" if="has.i18n.de">
-    <copy todir="${argo.build.classes}/org/argouml/i18n">
-      <fileset dir="${argo.src.dir}/../src/i18n/de/src/org/argouml/i18n" includes="*.properties"/>
-    </copy>
-  </target>
-
-  <target name="copy-i18n">
-    <!-- Go through all languages: -->
-    <available file="${argo.src.dir}/../src/i18n/de/src/org/argouml/i18n"
-               type="dir" 
-               property="has.i18n.de"/>
-    <antcall target="copy-i18n-de"/>
-  </target>
-
-
   <!-- =================================================================== -->
   <!-- Prepares the build directory                                        -->
   <!-- =================================================================== -->
@@ -313,9 +295,6 @@ Property files to be searched:
     <copy todir="${argo.build.classes}/org/argouml/i18n">
       <fileset dir="${argo.src.dir}/org/argouml/i18n" includes="*.properties"/>
     </copy>
-
-    <!-- Go through all languages: -->
-    <antcall target="copy-i18n"/>
 
     <copy todir="${argo.build.classes}/org/argouml/resource">
       <fileset dir="${argo.src.dir}/org/argouml/resource" excludes="CVS/**" includes="**/**"/>
