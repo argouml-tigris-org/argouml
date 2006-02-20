@@ -214,19 +214,16 @@ public class FigTransition extends FigEdgeModelElement {
             } else if (Model.getFacade().isAEvent(e.getSource())
                     && Model.getFacade().getTransitions(e.getSource()).contains(
                             getOwner())) {
-                // handle events send by the event
-//                if (e.getPropertyName().equals("parameter")) {
-//                    // TODO: When does this ever get used? How to replace?
-//                    if (e.getAddedValue() != null) {
-//                        Model.getPump().addModelEventListener(
-//                                this,
-//                                e.getAddedValue());
-//                    } else if (e.getRemovedValue() != null) {
-//                        Model.getPump().removeModelEventListener(
-//                                this,
-//                                e.getRemovedValue());
-//                    }
-//                }
+                // handle events send by the event for its parameter
+                if (e.getPropertyName().equals("parameter")) {
+                    if (e.getOldValue() != null) {
+                        Model.getPump().removeModelEventListener(
+                                this, e.getOldValue());
+                    } else if (e.getNewValue() != null) {
+                        Model.getPump().addModelEventListener(
+                                this, e.getNewValue());
+                    }
+                }
                 updateNameText();
                 damage();
             } else if (Model.getFacade().isAGuard(e.getSource())) {
