@@ -67,28 +67,17 @@ public class PropPanelCallAction extends PropPanelAction {
     }
 
 
-    private class UMLCallActionOperationComboBox2 extends UMLSearchableComboBox {
+    private class UMLCallActionOperationComboBox2 
+        extends UMLSearchableComboBox {
         /**
          * The constructor.
          *
          * @param arg0 the model
          */
         public UMLCallActionOperationComboBox2(UMLComboBoxModel2 arg0) {
-            super(arg0, new SetActionOperationAction()); // no external action; we do it ourselves
+            super(arg0, new SetActionOperationAction());
             setEditable(false);
         }
-        
-//        /**
-//         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-//         */
-//        public void actionPerformed(ActionEvent e) {
-//            Object target = TargetManager.getInstance().getModelTarget();
-//            Object op = getSelectedItem();
-//            if (Model.getFacade().isACallAction(target) 
-//                    && Model.getFacade().isAOperation(op)) {
-//                Model.getCommonBehaviorHelper().setOperation(target, op);
-//            }
-//        }
     }
     
     private class SetActionOperationAction extends UMLAction {
@@ -120,7 +109,8 @@ public class PropPanelCallAction extends PropPanelAction {
         }
     }
     
-    private class UMLCallActionOperationComboBoxModel extends UMLComboBoxModel2 {
+    private class UMLCallActionOperationComboBoxModel 
+        extends UMLComboBoxModel2 {
         /**
          * The constructor.
          */
@@ -150,6 +140,11 @@ public class PropPanelCallAction extends PropPanelAction {
                         ops.addAll(Model.getFacade().getOperations(i.next()));
                     }
                 }
+                /* To be really sure, let's add the operation 
+                 * that is linked to the action in the model, 
+                 * too - if it is not listed yet.
+                 * With ArgoUML alone, you will never need this, but 
+                 * maybe with imported XMI... */
                 Object current = Model.getFacade().getOperation(target);
                 if (Model.getFacade().isAOperation(current)) {
                     if (!ops.contains(current)) {
@@ -182,6 +177,19 @@ public class PropPanelCallAction extends PropPanelAction {
             return false;
         }
 
+        /**
+         * The function in the parent removes items from the list 
+         * when deselected. We do not need that here. <p>
+         * 
+         *  This function is only needed when another operation is connected to
+         *  the action in the model, to select it in the combo. <p>
+         *  
+         *  It is e.g. not usefull to update the combo for removed operations, 
+         *  since you can only remove operations by changing the target,
+         *  and selecting the action again re-generates the complete list.
+         * 
+         * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+         */
         public void propertyChange(PropertyChangeEvent evt) {
             if (evt instanceof AttributeChangeEvent) {
                 if (evt.getPropertyName().equals("operation")) {
