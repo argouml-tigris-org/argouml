@@ -130,6 +130,9 @@ public interface ArgoEventTypes {
 
     /**
      * Any change event.
+     * @deprecated this event type isn't used (exept for start/end
+     * event id's - what are they please explain) document further
+     * or remove
      */
     int ANY_PROJECTSAVE_EVENT            = 1400;
 
@@ -140,11 +143,16 @@ public interface ArgoEventTypes {
 
     /**
      * Project is saved.
+     * @deprecated this event type is fired but never listened for
+     * please document further or remove
      */
     int ISSAVED_PROJECTSAVE_EVENT          = 1402;
 
     /**
      * last project save event.
+     * @deprecated this event type isn't used (exept for start/end
+     * event id's - what are they please explain) document further
+     * or remove
      */
     int LAST_PROJECTSAVE_EVENT          = 1499;
 
