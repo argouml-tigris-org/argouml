@@ -505,7 +505,7 @@ public abstract class FigEdgeModelElement
             super.propertyChange(pve);
         }
 
-        if (Model.getFacade().isABase(src)) {
+        if (Model.getFacade().isAModelElement(src)) {
             /* If the source of the event is an UML object,
              * then the UML model has been changed.*/
             modelChanged(pve);
