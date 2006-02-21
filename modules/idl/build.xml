@@ -29,15 +29,22 @@ The homepage of Argo is http://argouml.tigris.org
 Installing the build tools
 ==========================
 
-Building the latest versions of ArgoUML is automated using Ant which is a little but very handy tool that uses a build file written in XML (this file) as building instructions. For more information refer to "http://jakarta.apache.org/ant/". Essentially this is just setting ANT_HOME to the directory where you extracted the ant-distribution, and adding ANT_HOME/bin to your PATH.)
+Building the latest versions of ArgoUML is automated using Ant which is a 
+little but very handy tool that uses a build file written in XML (this file) 
+as building instructions. For more information refer to 
+"http://jakarta.apache.org/ant/". Essentially this is just setting ANT_HOME 
+to the directory where you extracted the ant-distribution, and adding 
+ANT_HOME/bin to your PATH.)
 
-Additionally you have to make sure, that the "JAVA_HOME" environment property should be set to match the JVM you want to use. That's it.
+Additionally you have to make sure, that the "JAVA_HOME" environment property 
+should be set to match the JVM you want to use. That's it.
 
 
 Building instructions 
 =====================
 
-First, make sure your current working directory is where this very file is located. Then just type
+First, make sure your current working directory is where this very file 
+is located. Then just type
 
 	ant
 
@@ -47,32 +54,41 @@ or, if it doesn't work
 
 to create the settings for an environment to suit Ant.
 
-After the above command you should see a help screen describing the usage of the Ant facility if everything is set up properly.
+After the above command you should see a help screen describing the usage 
+of the Ant facility if everything is set up properly.
 
 
 Property Settings
 =================
 
-You may place a simple text file named ".ant.properties" in your home directory using which you can change certain properties. For example, by adding a line to .ant.properties you can change the compiler to be used
+You may place a simple text file named ".ant.properties" in your home 
+directory using which you can change certain properties. For example, by 
+adding a line to .ant.properties you can change the compiler to be used
 
 build.compiler=jikes
 (without a blank after "jikes"!).
 
-This will force Ant to compile with jikes if you have it on your system. The other alternatives for this setting are;
+This will force Ant to compile with jikes if you have it on your system. 
+The other alternatives for this setting are;
 
 build.compiler=modern
-to use the most up-to-date version available to you which for Sun is currently javac from jdk1.3
+to use the most up-to-date version available to you which for Sun is currently 
+javac from jdk1.3
 
 or the default if no explicit setting is made anywhere;
 
 build.compiler=classic
 to use a compiler/Virtual Machine combination compatible with jdk1.2.
 
-On machines using Windows the home directory is selected to be C:\ so the instructions in the build file will look there for .ant.properties.
+On machines using Windows the home directory is selected to be C:\ so the 
+instructions in the build file will look there for .ant.properties.
 
-The filename is necessary for commonality with UNIX/LINUX systems but you will not be able to save or rename a file to this form of name using the Windows GUI directly. At least two workarounds are possible
+The filename is necessary for commonality with UNIX/LINUX systems but you 
+will not be able to save or rename a file to this form of name using the 
+Windows GUI directly. At least two workarounds are possible
 (i) use Notepad (NOT Wordpad) to create, edit, rename or save the file
-(ii) go into a DOS window and use the DOS command Edit to create, edit, rename or save the file.
+(ii) go into a DOS window and use the DOS command Edit to create, edit, 
+rename or save the file.
 After these operations the file will still be visible in the GUI.
 
 
@@ -83,18 +99,23 @@ If you want to compile ArgoUML, you need to have following:
 - your compiler in your PATH
 - JAVA_HOME correctly set to where Java2 is installed
 - ANT_HOME correctly set to where ANT is installed
-- the additional libraries (ocl-argo.jar, xml4j.jar, gef.jar, antlrall.jar, etc) in argouml/lib
+- the additional libraries (ocl-argo.jar, xml4j.jar, gef.jar, antlrall.jar, 
+etc) in argouml/lib
 - the support file (uml13.dtd) is optional but desirable in argouml/lib
 
 when these are right the command 
 
      build compile
 
-will do the job. With this arrangement problems with the set size of environment may arise for DOS command line windows, but a setting of 4096b should be ample on the Memory page of the Property dialogue box.
+will do the job. With this arrangement problems with the set size of 
+environment may arise for DOS command line windows, but a setting of 4096b 
+should be ample on the Memory page of the Property dialogue box.
 
 If something went wrong, go to the FAQ section below.
 
-Also, you'll note that reusing a single JVM instance for each task, increases tremendously the performance of the whole build system, compared to other tools (i.e. make or shell scripts) where a new JVM is started for each task.
+Also, you'll note that reusing a single JVM instance for each task, 
+increases tremendously the performance of the whole build system, compared 
+to other tools (i.e. make or shell scripts) where a new JVM is started for each task.
 
 
 
@@ -136,6 +157,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <tstamp/>
 
+    <property file="build.properties"/>
     <property file="module.properties"/>
 
     <property name="Name" value="ArgoModule-${argo.module.name}"/>
@@ -145,13 +167,10 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
 
-    <property name="argo.root" value="../.."/>
+  <!-- Load ArgoUML properties -->
+    <property file="${argo.src.dir}/default.properties"/>
      
-    <!-- Load ArgoUML properties -->
-    <property name="argo.root.dir" value="${argo.root}"/>
-    <property file="${argo.root.dir}/src_new/default.properties"/>
-     
-    <property name="module.root" value="${argo.root}/modules/${argo.module.name}"/>
+    <property name="module.root" value="."/>
     <property name="module.src.dir" value="${module.root}/src"/>
     <property name="module.lib.dir" value="${module.root}/lib"/>
     <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp.jar:${ANT_HOME}/lib/parser.jar"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/argouml-core-lib/log4j-1.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="ant-1.6.2/lib/ant.jar"/>
+	<classpathentry exported="true" kind="lib" path="junit-3.8.1/junit.jar"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>
