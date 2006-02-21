@@ -136,14 +136,8 @@ Property files to be searched:
     <property name="user.build.properties" 
               value="${user.home}/argouml.build.properties"/>
 
-    <!-- 
-	<property environment="env"/>
-    -->
-
-
     <property file="${local.build.properties}"/>
     <property file="${user.build.properties}"/>
-
     <property file="default.properties"/>
   
     <path id="java.tools.classpath">
@@ -270,23 +264,13 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Prepares the build directory                                        -->
   <!-- =================================================================== -->
-  <target name="prepare" depends="init">
+
+  <target name="prepare" depends="init,check-version">
     <!-- create directories -->
     <echo message="Preparing the build directories"/>
     <mkdir dir="${argo.build.dir}"/>
     <mkdir dir="${argo.build.dir}/ext"/>
     <mkdir dir="${argo.build.dir}"/>
-
-    <uptodate property="version.is.current"
-              targetfile="${argo.src.dir}/${version.package}/ArgoVersion.java">
-      <srcfiles dir="${argo.src.dir}/templates">
-          <include name="ArgoVersion.template"/>
-      </srcfiles>
-      <srcfiles dir="${argo.src.dir}">
-          <include name="default.properties"/>
-          <include name="build.properties"/>
-      </srcfiles>
-    </uptodate>
 
     <copy todir="${argo.build.classes}/org/argouml/Images">
       <fileset dir="${argo.src.dir}/org/argouml/Images" excludes="CVS/**" includes="**/**"/>
@@ -318,7 +302,7 @@ Property files to be searched:
   <!-- Generates the parsers from the grammars by using Antlr              -->
   <!-- =================================================================== -->
 
-  <target name="generateparser" depends="prepare"
+  <target name="generateparser" depends="init"
           description="Generate the antlr parsers.">
     <echo message="Generate parsers"/>
 
@@ -340,33 +324,28 @@ Property files to be searched:
 
   </target>
 
-  <target name="generateparser1" unless="parser1.is.current" depends="prepare">
+  <target name="generateparser1" unless="parser1.is.current" depends="init">
     <delete>
       <fileset dir="org/argouml/uml/reveng/java">
         <include name="JavaTokenTypes.txt"/>
       </fileset>
     </delete>
-    <java classname="antlr.Tool" classpath="${classpath}" fork="yes"
+    <echo message="Antlr classpath is ${antlrall.jar.path}"/>
+    <java classname="antlr.Tool" classpath="${antlrall.jar.path}" fork="yes"
           maxmemory="32M">
           <arg line="-o ${argo.src.dir}/org/argouml/uml/reveng/java  ${argo.src.dir}/org/argouml/uml/reveng/java/java.g"/>
-          <classpath>
-	          <path refid="antlr.runtime.classpath"/>
-          </classpath>
     </java>
   </target>
 
-  <target name="generateparser2" unless="parser2.is.current" depends="prepare">
+  <target name="generateparser2" unless="parser2.is.current" depends="init">
     <delete>
       <fileset dir="org/argouml/language/java/generator">
         <include name="JavaTokenTypes.txt"/>
       </fileset>
     </delete>
-    <java classname="antlr.Tool" classpath="${classpath}" fork="yes"
+    <java classname="antlr.Tool" classpath="${antlrall.jar.path}" fork="yes"
           maxmemory="32M">
           <arg line="-o ${argo.src.dir}/org/argouml/language/java/generator  ${argo.src.dir}/org/argouml/language/java/generator/java.g"/>
-          <classpath>
-	          <path refid="antlr.runtime.classpath"/>
-          </classpath>
     </java>
   </target>
 
@@ -433,7 +412,20 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Updates the version source file if necessary                        -->
   <!-- =================================================================== -->
-  <target depends="prepare" name="update-version" unless="version.is.current">
+  <target name="check-version" depends="init">
+    <uptodate property="version.is.current"
+                targetfile="${argo.src.dir}/${version.package}/ArgoVersion.java">
+      <srcfiles dir="${argo.src.dir}/templates">
+          <include name="ArgoVersion.template"/>
+      </srcfiles>
+      <srcfiles dir="${argo.src.dir}">
+          <include name="default.properties"/>
+          <include name="build.properties"/>
+      </srcfiles>
+    </uptodate>
+  </target>
+
+  <target depends="check-version" name="update-version" unless="version.is.current">
     <echo message="Creating ArgoVersion.java for version ${argo.build.version}"/>
     <filter token="ARGO_RELEASE_VERSION" value="${argo.build.version}"/>
     <copy file="${argo.src.dir}/templates/ArgoVersion.template" filtering="on" overwrite="on" tofile="${argo.src.dir}/${version.package}/ArgoVersion.java"/>
