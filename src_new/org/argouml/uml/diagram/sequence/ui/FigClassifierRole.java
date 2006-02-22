@@ -104,15 +104,9 @@ public class FigClassifierRole extends FigNodeModelElement
     public static final int DEFAULT_WIDTH = 3 * DEFAULT_HEIGHT / 2;
 
     /**
-     * The outer black rectangle of the object box (object fig without
-     * lifeline).
-     */
-    private FigRect outerBox;
-
-    /**
      * The filled box for the object box (object fig without lifeline).
      */
-    private FigRect backgroundBox;
+    private FigRect headFig;
 
     /**
      * The lifeline (dashed line under the object box to which activations are
@@ -147,17 +141,16 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     public FigClassifierRole() {
         super();
-        backgroundBox =
+        headFig =
             new FigRect(
                 0,
                 0,
                 DEFAULT_WIDTH,
                 DEFAULT_HEIGHT,
-                Color.white,
+                Color.black,
                 Color.white);
-        backgroundBox.setFilled(true);
-        outerBox = new FigRect(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        outerBox.setFilled(false);
+        headFig.setFilled(true);
+        headFig.setLineWidth(1);
         getStereotypeFig().setBounds(DEFAULT_WIDTH / 2,
 				     ROWHEIGHT + ROWDISTANCE,
 				     0,
@@ -190,10 +183,9 @@ public class FigClassifierRole extends FigNodeModelElement
             linkPositions.add(new MessageNode(this));
         }
         addFig(lifeLine);
-        addFig(backgroundBox);
+        addFig(headFig);
         addFig(getStereotypeFig());
         addFig(getNameFig());
-        addFig(outerBox);
         activationFigs = new HashSet();
     }
 
@@ -338,19 +330,18 @@ public class FigClassifierRole extends FigNodeModelElement
                 x + w / 2,
                 (getStereotypeFig().getY() - oldBounds.y
 		 + y + getStereotypeFig().getHeight() / 2)));
-        reSize(outerBox, x, y, w, h);
-        reSize(backgroundBox, x, y, w, h);
+        reSize(headFig, x, y, w, h);
         lifeLine.setBounds(
-            outerBox.getX() + outerBox.getWidth() / 2,
-            outerBox.getY() + outerBox.getHeight(),
+                headFig.getX() + headFig.getWidth() / 2,
+                headFig.getY() + headFig.getHeight(),
             0,
-            h - outerBox.getHeight());
+            h - headFig.getHeight());
         for (Iterator figIt = getFigs().iterator(); figIt.hasNext();) {
             Fig fig = (Fig) figIt.next();
             if (activationFigs.contains(fig) || fig instanceof FigMessagePort) {
                 fig.setBounds(
-                    outerBox.getX()
-		    + outerBox.getWidth() / 2
+                        headFig.getX()
+		    + headFig.getWidth() / 2
 		    - fig.getWidth() / 2,
                     y - oldBounds.y + fig.getY(),
                     fig.getWidth(),
@@ -418,7 +409,7 @@ public class FigClassifierRole extends FigNodeModelElement
      * @see FigNodeModelElement#calcBounds()
      */
     public void calcBounds() {
-        Rectangle bounds = outerBox.getBounds();
+        Rectangle bounds = headFig.getBounds();
         bounds.add(lifeLine.getBounds());
         _x = bounds.x;
         _y = bounds.y;
@@ -846,8 +837,8 @@ public class FigClassifierRole extends FigNodeModelElement
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
-        if (outerBox.getLineWidth() != w && w != 0) {
-            outerBox.setLineWidth(w);
+        if (headFig.getLineWidth() != w && w != 0) {
+            headFig.setLineWidth(w);
             lifeLine.setLineWidth(w);
             damage();
         }
@@ -857,8 +848,8 @@ public class FigClassifierRole extends FigNodeModelElement
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
-        if (col != null && col != backgroundBox.getFillColor()) {
-            backgroundBox.setFillColor(col);
+        if (col != null && col != headFig.getFillColor()) {
+            headFig.setFillColor(col);
             damage();
         }
     }
@@ -867,8 +858,8 @@ public class FigClassifierRole extends FigNodeModelElement
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean filled) {
-        if (backgroundBox.getFilled() != filled) {
-            backgroundBox.setFilled(filled);
+        if (headFig.getFilled() != filled) {
+            headFig.setFilled(filled);
             damage();
         }
     }
@@ -877,28 +868,28 @@ public class FigClassifierRole extends FigNodeModelElement
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
-        return backgroundBox.getFillColor();
+        return headFig.getFillColor();
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
-        return backgroundBox.getFilled();
+        return headFig.getFilled();
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
-        return outerBox.getLineColor();
+        return headFig.getLineColor();
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
-        return outerBox.getLineWidth();
+        return headFig.getLineWidth();
     }
 
     /**
@@ -1104,7 +1095,7 @@ public class FigClassifierRole extends FigNodeModelElement
                 }
             }
 
-        } else if (outerBox.intersects(rect)) {
+        } else if (headFig.intersects(rect)) {
             foundNode = getClassifierRoleNode();
         } else {
             return null;
@@ -1121,7 +1112,7 @@ public class FigClassifierRole extends FigNodeModelElement
         return
             nodeIndex * SequenceDiagramLayout.LINK_DISTANCE
                 + getY()
-                + outerBox.getHeight()
+                + headFig.getHeight()
                 + SequenceDiagramLayout.LINK_DISTANCE / 2;
     }
 
@@ -1130,7 +1121,7 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     public void setOwner(Object own) {
         super.setOwner(own);
-        bindPort(own, outerBox);
+        bindPort(own, headFig);
     }
 
     /**
