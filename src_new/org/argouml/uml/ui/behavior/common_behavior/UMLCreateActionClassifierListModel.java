@@ -36,7 +36,7 @@ public class UMLCreateActionClassifierListModel extends
      * Constructor for ClassifierCreateActionListModel.
      */
     public UMLCreateActionClassifierListModel() {
-        super("classifier");
+        super("instantiation");
     }
 
     /**
