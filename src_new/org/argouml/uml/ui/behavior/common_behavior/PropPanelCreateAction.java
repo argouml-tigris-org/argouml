@@ -42,24 +42,15 @@ public class PropPanelCreateAction extends PropPanelAction {
     public PropPanelCreateAction() {
         super("CreateAction", lookupIcon("CreateAction"));
 
-        // addField(Translator.localize( "label.recurrence"),
-        // getRecurrenceScroll());
-
-        UMLMutableLinkedList list = new UMLMutableLinkedList(
-                new UMLCreateActionClassifierListModel(), null, null);
-        list.setVisibleRowCount(1);
-
-        addSeperator();
-        
         AbstractActionAddModelElement action = 
             new ActionAddCreateActionInstantiation();
-        JScrollPane instantiationScroll = new JScrollPane(
-                new UMLMutableLinkedList(
-                        new UMLCreateActionClassifierListModel(), action, null,
-                        null, true));
-
-        addField(Translator.localize("label.instantiation"),
-                instantiationScroll);
+        UMLMutableLinkedList list = new UMLMutableLinkedList(
+                new UMLCreateActionClassifierListModel(), action, null, null, true);
+        list.setVisibleRowCount(1);
+        JScrollPane instantiationScroll = new JScrollPane(list);
+        addFieldBefore(Translator.localize("label.instantiation"),
+                instantiationScroll,
+                argumentsScroll);
 
     }
 
