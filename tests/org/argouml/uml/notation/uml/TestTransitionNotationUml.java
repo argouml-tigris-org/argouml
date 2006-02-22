@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.generator;
+package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
 import java.util.Collection;
@@ -32,6 +32,7 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationProvider4;
 
 /**
  * Test ParserDisplay: parsing transitions.
@@ -39,7 +40,7 @@ import org.argouml.model.Model;
  * @author MVW
  *
  */
-public class TestParseTransition extends TestCase {
+public class TestTransitionNotationUml extends TestCase {
     private Object aClass;
     private Object aOper;
     private Object aStateMachine;
@@ -50,7 +51,7 @@ public class TestParseTransition extends TestCase {
      *
      * @param str the name
      */
-    public TestParseTransition(String str) {
+    public TestTransitionNotationUml(String str) {
         super(str);
     }
 
@@ -130,11 +131,8 @@ public class TestParseTransition extends TestCase {
             boolean guard, boolean effect, boolean exception) {
         Object it = Model.getStateMachinesFactory()
             .buildInternalTransition(st);
-        try {
-            ParserDisplay.SINGLETON.parseTransition(it, text);
-        } catch (ParseException e) {
-            assertTrue("Unexpected exception for " + text, exception);
-        }
+        NotationProvider4 notation = new TransitionNotationUml(it);
+            notation.parse(text);
         if (trigger) {
             assertTrue("Trigger was not generated for " + text,
                     Model.getFacade().getTrigger(it) != null);
@@ -183,11 +181,8 @@ public class TestParseTransition extends TestCase {
 
         //try changing the triggertype to ChangeEvent
         text = "when(it happens)";
-        try {
-            ParserDisplay.SINGLETON.parseTransition(trans, text);
-        } catch (ParseException e) {
-            assertTrue("Unexpected exception for " + text, true);
-        }
+        NotationProvider4 notation = new TransitionNotationUml(trans);
+            notation.parse(text);
         trig = Model.getFacade().getTrigger(trans);
         assertTrue("Unexpected triggertype found instead of ChangeEvent",
                 Model.getFacade().isAChangeEvent(trig));
@@ -213,8 +208,9 @@ public class TestParseTransition extends TestCase {
                 Model.getFacade().getBody(expr).equals("it changed"));
 
         text = "/effect";
-        try {
-            ParserDisplay.SINGLETON.parseTransition(trans, text);
+        TransitionNotationUml notation = new TransitionNotationUml(trans);
+        try{
+            notation.parseTransition(trans, text);
         } catch (ParseException e) {
             assertTrue("Unexpected exception when removing ChangeEvent trigger",
                     true);
@@ -259,8 +255,9 @@ public class TestParseTransition extends TestCase {
                 Model.getFacade().isASignalEvent(trig));
 
         text = "/effect";
+        TransitionNotationUml notation = new TransitionNotationUml(trans);
         try {
-            ParserDisplay.SINGLETON.parseTransition(trans, text);
+            notation.parseTransition(trans, text);
         } catch (ParseException e) {
             assertTrue("Unexpected exception when removing SignalEvent trigger",
                     true);

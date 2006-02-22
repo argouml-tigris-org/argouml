@@ -34,8 +34,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.generator.GeneratorDisplay;
-import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.notation.StateBodyNotation;
 
 /**
@@ -113,7 +111,8 @@ public class StateBodyNotationUml extends StateBodyNotation {
                     s.append("\n");
                 }
                 Object trans = iter.next();
-                s.append(GeneratorDisplay.getInstance().generateTransition(trans));
+                /* TODO: Is this a good way of handling nested notation? */
+                s.append((new TransitionNotationUml(trans)).toString());
             }
         }
         return s.toString();
@@ -179,7 +178,8 @@ public class StateBodyNotationUml extends StateBodyNotation {
                      * do we do with the remainder of the
                      * parsed/to be parsed lines?
                      */
-                    ParserDisplay.SINGLETON.parseTransition(t, line);
+                    /* TODO: Is this a good way of handling nested notation? */
+                    new TransitionNotationUml(t).parse(line);
                     /* Add this new one, and mark it to be retained: */
                     internalsInfo.add(t, true);
                 }
@@ -224,14 +224,17 @@ public class StateBodyNotationUml extends StateBodyNotation {
          * @author MVW
          */
         class InfoItem {
-            private String generated;
+            private TransitionNotationUml generator;
             private Object umlObject;
             private boolean retainIt = false;
 
+            /**
+             * The constructor.
+             * @param obj the uml object
+             */
             InfoItem(Object obj) {
                 umlObject = obj;
-                generated =
-                    GeneratorDisplay.getInstance().generate(obj);
+                generator = new TransitionNotationUml(obj);
             }
             InfoItem(Object obj, boolean r) {
                 this(obj);
@@ -242,7 +245,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
              * @return the generated string representation
              */
             String getGenerated() {
-                return generated;
+                return generator.toString();
             }
 
             /**
