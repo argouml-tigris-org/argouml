@@ -49,10 +49,10 @@ public class PropPanelCreateAction extends PropPanelAction {
                 new UMLCreateActionClassifierListModel(), null, null);
         list.setVisibleRowCount(1);
 
-        AbstractActionAddModelElement action = new ActionAddCreateActionInstantiation();
-
         addSeperator();
-
+        
+        AbstractActionAddModelElement action = 
+            new ActionAddCreateActionInstantiation();
         JScrollPane instantiationScroll = new JScrollPane(
                 new UMLMutableLinkedList(
                         new UMLCreateActionClassifierListModel(), action, null,
