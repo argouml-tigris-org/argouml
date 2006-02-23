@@ -1301,6 +1301,7 @@ public final class ProjectBrowser
                         LOG.info("There are " + p.getMembers().size()
                                 + " members in the new project");
                         ProjectManager.getManager().removeProject(oldProject);
+                        saveAction.setEnabled(false);
                     }
                 }
                 ProjectManager.getManager().setCurrentProject(p);
