@@ -738,10 +738,10 @@ public abstract class FigEdgeModelElement
      */
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
-        if (oldOwner != null) {
+        if (oldOwner != null && Model.getFacade().isAModelElement(oldOwner)) {
             Model.getPump().removeModelEventListener(this, oldOwner);
         }
-        if (newOwner != null) {
+        if (newOwner != null && Model.getFacade().isAModelElement(newOwner)) {
             Model.getPump().addModelEventListener(this, newOwner);
         }
     }
