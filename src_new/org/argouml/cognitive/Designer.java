@@ -31,6 +31,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
@@ -85,6 +86,8 @@ public final class Designer
 
     private static Vector unspecDecisionVector;
     private static Vector unspecGoalVector;
+    
+    private static Action saveAction = null;
 
     static {
         unspecDecisionVector = new Vector();
@@ -442,6 +445,10 @@ public final class Designer
             pcs.removePropertyChangeListener(p);
         }
     }
+    
+    public static void setSaveAction(Action theSaveAction) {
+    	saveAction = theSaveAction;
+    }
 
     /**
      * @param property the property name
@@ -455,9 +462,9 @@ public final class Designer
         }
         if (MODEL_TODOITEM_ADDED.equals(property)
                 || MODEL_TODOITEM_DISMISSED.equals(property)) {
-            ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(
-                    ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, Designer
-                            .theDesigner()));
+        	if (saveAction != null) {
+        		saveAction.setEnabled(true);
+        	}
         }
     }
 

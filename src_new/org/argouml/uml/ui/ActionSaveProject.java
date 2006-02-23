@@ -42,7 +42,9 @@ import org.argouml.ui.ProjectBrowser;
  * @see ActionOpenProject
  */
 public class ActionSaveProject extends AbstractAction {
-    /**
+	
+	private static final long serialVersionUID = -5579548202585774293L;
+	/**
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(ActionSaveProject.class);
