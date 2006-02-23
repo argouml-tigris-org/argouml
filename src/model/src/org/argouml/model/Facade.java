@@ -2207,9 +2207,7 @@ public interface Facade {
     Object getSender(Object handle);
 
     /**
-     * Returns the sender object of a stimulus or a message.
-     *
-     * TODO: Check if this javadoc comment is really correct?
+     * Returns the Signal of a SendAction, SignalEvent or Reception.
      *
      * @param handle is the object
      * @return the signal
