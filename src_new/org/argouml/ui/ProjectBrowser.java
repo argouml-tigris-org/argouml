@@ -525,7 +525,6 @@ public final class ProjectBrowser
      * The setTitle method is overridden here only to extend the standard
      * setTitle method by displaying an asterisk to signify save status
      * @see java.awt.Frame#setTitle(java.lang.String)
-     * @deprecated
      */
     public void setTitle(final String titleArg) {
         title = titleArg;
@@ -1090,6 +1089,7 @@ public final class ProjectBrowser
             /*
              * notification of menu bar
              */
+            saveAction.setEnabled(false);
             GenericArgoMenuBar menu = (GenericArgoMenuBar) getJMenuBar();
             menu.addFileSaved(file.getCanonicalPath());
 
