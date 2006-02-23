@@ -143,12 +143,6 @@ public class StylePanelFigNodeModelElement
         int oldShadowSize = nodeTarget.getShadowSize();
         nodeTarget.setShadowSize(i);
         getPanelTarget().endTrans();
-        if (i != oldShadowSize) {
-            ArgoEventPump.fireEvent(
-                    new ArgoProjectSaveEvent(
-                            ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT,
-                            this));
-        }
     }
 
     /**
@@ -162,10 +156,6 @@ public class StylePanelFigNodeModelElement
             } else if (src == pathCheckBox) {
                 PathContainer pc = (PathContainer) getPanelTarget();
                 pc.setPathVisible(pathCheckBox.isSelected());
-                ArgoEventPump.fireEvent(
-                        new ArgoProjectSaveEvent(
-                                ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT,
-                                this));
             } else {
                 super.itemStateChanged(e);
             }

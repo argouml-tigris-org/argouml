@@ -94,17 +94,9 @@ public class StylePanelFigPackage extends StylePanelFigNodeModelElement {
             if (src == stereoCheckBox) {
                 ((StereotypeContainer) getPanelTarget())
                     .setStereotypeVisible(stereoCheckBox.isSelected());
-                ArgoEventPump.fireEvent(
-                        new ArgoProjectSaveEvent(
-                                ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT,
-                                this));
             } else if (src == visibilityCheckBox) {
                 ((VisibilityContainer) getPanelTarget())
                     .setVisibilityVisible(visibilityCheckBox.isSelected());
-                ArgoEventPump.fireEvent(
-                        new ArgoProjectSaveEvent(
-                                ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT,
-                                this));
             } else {
                 super.itemStateChanged(e);
             }
