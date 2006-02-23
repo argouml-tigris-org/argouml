@@ -87,10 +87,6 @@ public class StylePanelFigInterface extends StylePanelFigNodeModelElement {
             if (src == operCheckBox) {
                 ((FigInterface) getPanelTarget())
                     .setOperationsVisible(operCheckBox.isSelected());
-                ArgoEventPump.fireEvent(
-                        new ArgoProjectSaveEvent(
-                                ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT,
-                                this));
             } else {
                 super.itemStateChanged(e);
             }

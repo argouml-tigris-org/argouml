@@ -278,7 +278,6 @@ public class StylePanelFig
             getPanelTarget().setBounds(bounds.x, bounds.y, bounds.width,
                     bounds.height);
             getPanelTarget().endTrans();
-            ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
         }
     }
 
@@ -394,9 +393,6 @@ public class StylePanelFig
         }
         getPanelTarget().setFilled(c instanceof Color);
         getPanelTarget().endTrans();
-        if (!c.equals(oldColor)) {
-            ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
-        }
     }
 
     /**
@@ -413,9 +409,6 @@ public class StylePanelFig
         }
         getPanelTarget().setLineWidth((c instanceof Color) ? 1 : 0);
         getPanelTarget().endTrans();
-        if (!c.equals(oldColor)) {
-            ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
-        }
     }
 
     /**

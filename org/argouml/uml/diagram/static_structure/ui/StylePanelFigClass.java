@@ -117,17 +117,9 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
             if (src == attrCheckBox) {
                 ((AttributesCompartmentContainer) getPanelTarget())
                     .setAttributesVisible(attrCheckBox.isSelected());
-                ArgoEventPump.fireEvent(
-                        new ArgoProjectSaveEvent(
-                                ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT,
-                                this));
             } else if (src == operCheckBox) {
                 ((OperationsCompartmentContainer) getPanelTarget())
                     .setOperationsVisible(operCheckBox.isSelected());
-                ArgoEventPump.fireEvent(
-                        new ArgoProjectSaveEvent(
-                                ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT,
-                                this));
             } else {
                 super.itemStateChanged(e);
             }

@@ -98,15 +98,9 @@ public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
      */
     public void itemStateChanged(ItemEvent e) {
         if (!refreshTransaction) {
-            Object src = e.getSource();
-
-            // If it was the check box, reset it, otherwise invoke the parent.
-
-            if (src == epCheckBox) {
+            if (e.getSource() == epCheckBox) {
                 FigUseCase target = (FigUseCase) getTarget();
-
                 target.setExtensionPointVisible(epCheckBox.isSelected());
-                ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT, this));
             } else {
                 super.itemStateChanged(e);
             }
