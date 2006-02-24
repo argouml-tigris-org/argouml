@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -50,6 +51,7 @@ import org.argouml.uml.diagram.ui.StereotypeUtility;
 import org.argouml.uml.ui.foundation.core.UMLModelElementStereotypeListModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.Horizontal;
+import org.tigris.swidgets.LabelledLayout;
 import org.tigris.swidgets.Vertical;
 
 /**
@@ -89,7 +91,7 @@ public class TabStereotype extends PropPanel {
         super(Translator.localize("tab.stereotype"), (orientation
                 .equals("West") || orientation.equals("East")) ? Vertical
                 .getInstance() : Horizontal.getInstance());
-
+        setLayout(new BorderLayout());
         remove(getTitleLabel()); // no title looks better
         
         panel = makePanel();
