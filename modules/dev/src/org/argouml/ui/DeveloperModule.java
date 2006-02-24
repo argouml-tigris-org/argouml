@@ -28,14 +28,12 @@ import java.awt.BorderLayout;
 
 import javax.swing.JComponent;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
-import org.argouml.kernel.UndoEnabler;
 import org.argouml.moduleloader.ModuleInterface;
 import org.tigris.gef.undo.UndoLogPanel;
 import org.tigris.gef.undo.UndoManager;
