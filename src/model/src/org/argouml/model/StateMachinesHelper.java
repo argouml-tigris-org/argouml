@@ -58,11 +58,13 @@ public interface StateMachinesHelper {
      * untill the statemachine is reached.  To decouple ArgoUML as
      * much as possible from the model implementation, the parameter of the
      * method is of type Object, and the result, too.<p>
+     * 
+     * Only if the given handle is null, then an exception is thrown.
      *
-     * @param handle The state for which we want to know the
+     * @param handle The element for which we want to know the
      * statemachine
      * @return Object MStateMachine The statemachine the state belongs too or
-     * null if the given parameter is not a state or null itself.
+     * null if the given handle is not contained in this statemachine
      */
     Object getStateMachine(Object handle);
 
