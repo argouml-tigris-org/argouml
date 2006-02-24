@@ -52,9 +52,10 @@ Here is the big picture of the life of an Issue.
 
     <note>
       <para>
-Since October 2005, new issues are created in the UNCONFIRMED state
-instead of the new state.
-This picture and the processes around the issues are not yet updated.
+A decision was made in October 2005 to have new issues be created
+in the UNCONFIRMED state instead of the NEW state.  This is in the
+process of being implemented and neither this picture nor the
+processes around the issues are not yet updated.
 </para>
     </note>
 
@@ -339,8 +340,9 @@ The address to enter new issues is:
 <ulink url="http://argouml.tigris.org/issues/enter_bug.cgi">
 http://argouml.tigris.org/issues/enter_bug.cgi
 </ulink>.
-For entering new issues, registering (as described in 1.3) 
-is not required.
+To enter new issues, you will need to sign up for a Tigris
+account.  For some operations in the issue database you 
+may also need to apply for Observer status to the ArgoUML project.
 </para>
             </listitem>
             <listitem>
