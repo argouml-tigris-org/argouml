@@ -27,7 +27,6 @@ package org.argouml.uml.ui.foundation.core;
 import java.util.Collection;
 
 import javax.swing.ImageIcon;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
@@ -36,7 +35,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewReception;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Orientation;
@@ -212,8 +211,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getAssociationEndScroll() {
         if (associationEndScroll == null) {
-            JList list = new UMLLinkedList(associationEndListModel);
-            associationEndScroll = new JScrollPane(list);
+            associationEndScroll = new ScrollList(associationEndListModel);
         }
         return associationEndScroll;
 
@@ -225,8 +223,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getClassifierInStateScroll() {
         if (classifierInStateScroll == null) {
-            JList list = new UMLLinkedList(classifierInStateListModel);
-            classifierInStateScroll = new JScrollPane(list);
+            classifierInStateScroll = new ScrollList(classifierInStateListModel);
         }
         return classifierInStateScroll;
     }
@@ -237,8 +234,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getClassifierRoleScroll() {
         if (classifierRoleScroll == null) {
-            JList list = new UMLLinkedList(classifierRoleListModel);
-            classifierRoleScroll = new JScrollPane(list);
+            classifierRoleScroll = new ScrollList(classifierRoleListModel);
         }
         return classifierRoleScroll;
     }
@@ -249,8 +245,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getCollaborationScroll() {
         if (collaborationScroll == null) {
-            JList list = new UMLLinkedList(collaborationListModel);
-            collaborationScroll = new JScrollPane(list);
+            collaborationScroll = new ScrollList(collaborationListModel);
         }
         return collaborationScroll;
     }
@@ -261,8 +256,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getCreateActionScroll() {
         if (createActionScroll == null) {
-            JList list = new UMLLinkedList(createActionListModel);
-            createActionScroll = new JScrollPane(list);
+            createActionScroll = new ScrollList(createActionListModel);
         }
         return createActionScroll;
     }
@@ -273,8 +267,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getFeatureScroll() {
         if (featureScroll == null) {
-            JList list = new UMLLinkedList(featureListModel);
-            featureScroll = new JScrollPane(list);
+            featureScroll = new ScrollList(featureListModel);
         }
         return featureScroll;
     }
@@ -285,8 +278,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getGeneralizationScroll() {
         if (generalizationScroll == null) {
-            JList list = new UMLLinkedList(generalizationListModel);
-            generalizationScroll = new JScrollPane(list);
+            generalizationScroll = new ScrollList(generalizationListModel);
         }
         return generalizationScroll;
     }
@@ -297,8 +289,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getInstanceScroll() {
         if (instanceScroll == null) {
-            JList list = new UMLLinkedList(instanceListModel);
-            instanceScroll = new JScrollPane(list);
+            instanceScroll = new ScrollList(instanceListModel);
         }
         return instanceScroll;
     }
@@ -309,8 +300,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getObjectFlowStateScroll() {
         if (objectFlowStateScroll == null) {
-            JList list = new UMLLinkedList(objectFlowStateListModel);
-            objectFlowStateScroll = new JScrollPane(list);
+            objectFlowStateScroll = new ScrollList(objectFlowStateListModel);
         }
         return objectFlowStateScroll;
     }
@@ -321,8 +311,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getParameterScroll() {
         if (parameterScroll == null) {
-            JList list = new UMLLinkedList(parameterListModel);
-            parameterScroll = new JScrollPane(list);
+            parameterScroll = new ScrollList(parameterListModel);
         }
         return parameterScroll;
     }
@@ -333,8 +322,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getParticipantScroll() {
         if (participantScroll == null) {
-            JList list = new UMLLinkedList(participantListModel);
-            participantScroll = new JScrollPane(list);
+            participantScroll = new ScrollList(participantListModel);
         }
         return participantScroll;
     }
@@ -345,8 +333,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getPowerTypeRangeScroll() {
         if (powerTypeRangeScroll == null) {
-            JList list = new UMLLinkedList(powertypeRangeListModel);
-            powerTypeRangeScroll = new JScrollPane(list);
+            powerTypeRangeScroll = new ScrollList(powertypeRangeListModel);
         }
         return powerTypeRangeScroll;
     }
@@ -357,17 +344,10 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getSpecializationScroll() {
         if (specializationScroll == null) {
-            JList list = new UMLLinkedList(specializationListModel);
-            specializationScroll = new JScrollPane(list);
+            specializationScroll = new ScrollList(specializationListModel);
         }
+        
         return specializationScroll;
-    }
-
-    /**
-     * @return the action for a new reception
-     */
-    protected ActionNewReception getActionNewReception() {
-        return actionNewReception;
     }
 
     /**
@@ -376,10 +356,16 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getStructuralFeatureScroll() {
         if (structuralFeatureScroll == null) {
-            JList list = new UMLLinkedList(structuralFeatureListModel);
-            structuralFeatureScroll = new JScrollPane(list);
+            structuralFeatureScroll = new ScrollList(structuralFeatureListModel);
         }
         return structuralFeatureScroll;
+    }
+
+    /**
+     * @return the action for a new reception
+     */
+    protected ActionNewReception getActionNewReception() {
+        return actionNewReception;
     }
 
     /**

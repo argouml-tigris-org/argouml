@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.tigris.swidgets.Orientation;
 
@@ -115,8 +116,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      */
     public JScrollPane getOwnedElementsScroll() {
         if (ownedElementsScroll == null) {
-	    JList ownedElementsList  = new UMLLinkedList(ownedElementListModel);
-            ownedElementsScroll = new JScrollPane(ownedElementsList);
+            ownedElementsScroll = new ScrollList(ownedElementListModel);
         }
         return ownedElementsScroll;
 
