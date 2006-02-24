@@ -24,14 +24,13 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
@@ -109,8 +108,7 @@ public class PropPanelClass extends PropPanelClassifier {
      */
     public JScrollPane getOperationScroll() {
         if (operationScroll == null) {
-            JList list = new UMLLinkedList(operationListModel);
-            operationScroll = new JScrollPane(list);
+            operationScroll = new ScrollList(operationListModel);
         }
         return operationScroll;
     }
@@ -122,8 +120,7 @@ public class PropPanelClass extends PropPanelClassifier {
      */
     public JScrollPane getAttributeScroll() {
         if (attributeScroll == null) {
-            JList list = new UMLLinkedList(attributeListModel);
-            attributeScroll = new JScrollPane(list);
+            attributeScroll = new ScrollList(attributeListModel);
         }
         return attributeScroll;
     }

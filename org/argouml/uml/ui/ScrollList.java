@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
+import javax.swing.ScrollPaneConstants;
 
 /**
  * A scrollable list of items.
@@ -39,6 +40,7 @@ public class ScrollList extends JScrollPane {
      * @param listModel The model from which to build the list
      */
     public ScrollList(ListModel listModel) {
+        setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         setViewportView(new UMLLinkedList(listModel));
     }
 }
