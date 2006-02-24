@@ -244,9 +244,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
         // TODO: This logic may well be worth moving into the model component.
         // Provide a similar grid to the connectionsGrid
+        if (Model.getFacade().isAModel(node)) return false; // issue 3774
         return Model.getFacade().isAClass(node)
             || Model.getFacade().isAInterface(node)
-            || Model.getFacade().isAModel(node)
             || Model.getFacade().isAPackage(node);
     }
 
