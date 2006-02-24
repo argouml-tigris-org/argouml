@@ -154,6 +154,16 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         if (containsNode(node)) {
             return false;
         }
+        
+        /* The next solves issue 3665: 
+         * Do not allow to add an element to a statemachine that is contained 
+         * by another statemachine then the one represented by this diagram.*/
+        Object nodeMachine = 
+            Model.getStateMachinesHelper().getStateMachine(node);
+        if (nodeMachine != null) if(nodeMachine != getMachine()){
+            return false;
+        }
+        
         return (Model.getFacade().isAStateVertex(node)
                 || Model.getFacade().isAPartition(node)
                 || Model.getFacade().isAComment(node));
