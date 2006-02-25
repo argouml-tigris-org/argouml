@@ -158,7 +158,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
 
     <!-- Load ArgoUML properties -->
-    <property file="${argo.src.dir}/default.properties"/>
+    <property name="argo.root.dir" value="../.."/>
+    <property file="${argo.root.dir}/src_new/default.properties"/>
 
     <property name="module.root" value="."/>
     <property name="module.src.dir" value="${module.root}/src"/>
@@ -245,9 +246,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
-  <!-- <target name="compile" depends="generateparser,prepare"> -->
-
-  <target name="compile" depends="prepare"> 
+  <target name="compile" depends="generateparser,prepare">
 
     <echo message="Compiling the sources"/>
 
