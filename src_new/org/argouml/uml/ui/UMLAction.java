@@ -38,6 +38,8 @@ import org.tigris.gef.undo.UndoableAction;
 /**
  * The prototype of all actions within ArgoUML.
  *
+ * @deprecated since V0.20 by MVW, see issue 2325.
+ * Replaced by Action or Cmd or UndoableAction.
  */
 public class UMLAction extends UndoableAction {
     /**
