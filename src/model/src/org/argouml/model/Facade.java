@@ -1280,10 +1280,11 @@ public interface Facade {
     Collection getBases(Object handle);
 
     /**
-     * Get the behaviors of a Modelelement.
-     *
-     * @param handle modelelement to examine.
-     * @return the behaviors.
+     * Get the StateMachines which define the behaviors of a Modelelement.
+     * 
+     * @param handle
+     *            modelelement to examine.
+     * @return collection of StateMachines.
      */
     Collection getBehaviors(Object handle);
 
@@ -2485,25 +2486,26 @@ public interface Facade {
     Collection getStructuralFeatures(Object handle);
 
     /**
-     * Returns the Specification of a given Reception.
+     * Returns the Specification of a given Reception or Operation.
+     * If you need the Specification of a Method, use the method
+     * in CoreHelper which returns an object instead of a string.
+     * @see CoreHelper#getSpecification(Object)
      *
-     * @param handle the Reception
+     * @param handle the Reception or Operation
      * @return String the Specification
      */
-    String getSpecificationString(Object handle);
+    String getSpecification(Object handle);
 
     /**
-     * Returns the Specification of a given Method, i.e. its operation.
-     *
-     * @param handle the Method
-     * @return String the Specification Operation
-     */
-    Object getSpecification(Object handle);
-    
-    /**
-     * Returns all Interfaces of which this class is a realization.
-     *
-     * @param handle  the class you want to have the interfaces for
+     * Returns specifications for an AssociationEnd or for a Classifier it
+     * returns all Interfaces of which this class is a realization.<p>
+     * 
+     * When returning Interfaces it follows all Abstraction depencies
+     * which have the "realize" Stereotype and returns the Interfaces
+     * at the far end.
+     * 
+     * @param handle
+     *            the class you want to have the interfaces for
      * @return a collection of the Interfaces
      */
     Collection getSpecifications(Object handle);

@@ -81,7 +81,8 @@ public class PropPanelMethod extends PropPanelFeature {
         addField(Translator.localize("label.specification"),
                 new UMLComboBoxNavigator(
                         this,
-                        Translator.localize("label.specification.navigate.tooltip"),
+                        Translator
+                            .localize("label.specification.navigate.tooltip"),
                         getSpecificationComboBox()));
 
         add(getVisibilityPanel());
@@ -120,6 +121,9 @@ public class PropPanelMethod extends PropPanelFeature {
         return languageTextField;
     }
 
+    /**
+     * @return the Specification ComboBox
+     */
     public UMLComboBox2 getSpecificationComboBox() {
         if (specificationComboBox == null) {
             if (specificationComboBoxModel == null) {
@@ -143,7 +147,7 @@ public class PropPanelMethod extends PropPanelFeature {
         }
 
         protected boolean isValidElement(Object element) {
-            return Model.getFacade().getSpecification(getTarget()) == element;
+            return Model.getCoreHelper().getSpecification(getTarget()) == element;
         }
 
         protected void buildModelList() {
@@ -155,7 +159,7 @@ public class PropPanelMethod extends PropPanelFeature {
         }
 
         protected Object getSelectedModelElement() {
-            return Model.getFacade().getSpecification(getTarget());
+            return Model.getCoreHelper().getSpecification(getTarget());
         }
         
         public void propertyChange(PropertyChangeEvent evt) {
@@ -194,7 +198,8 @@ public class PropPanelMethod extends PropPanelFeature {
                 Object o = box.getTarget(); // the method
                 if (Model.getFacade().isAMethod(o)) {
                     method = o;
-                    oldOperation = Model.getFacade().getSpecification(method);
+                    oldOperation = Model.getCoreHelper().getSpecification(
+                            method);
                 }
                 o = box.getSelectedItem(); // the selected operation
                 if (Model.getFacade().isAOperation(o)) {

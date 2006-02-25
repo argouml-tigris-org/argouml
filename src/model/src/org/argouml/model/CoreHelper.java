@@ -192,7 +192,12 @@ public interface CoreHelper {
     /**
      * Returns the operation that some method realized. Returns null if
      * object isn't a method or, possibly, if the method isn't properly
-     * defined.
+     * defined.<p>
+     * 
+     * There is also a method in the Facade interface with the same name
+     * which may be what you want if you are looking for the specification
+     * of something other than a Method.
+     * @see Facade#getSpecification(Object)
      *
      * @param object  the method you want the realized operation of.
      * @return an operation, or null.
@@ -201,6 +206,8 @@ public interface CoreHelper {
 
     /**
      * Returns all Interfaces of which this class is a realization.<p>
+     * Duplicate of method by same name in Facade.
+     * @see Facade#getSpecifications(Object)
      *
      * @param classifier  the class you want to have the interfaces for
      * @return a collection of the Interfaces
