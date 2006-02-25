@@ -131,8 +131,14 @@ public class TestTransitionNotationUml extends TestCase {
             boolean guard, boolean effect, boolean exception) {
         Object it = Model.getStateMachinesFactory()
             .buildInternalTransition(st);
-        NotationProvider4 notation = new TransitionNotationUml(it);
-        notation.parse(text);
+        TransitionNotationUml notation = new TransitionNotationUml(it);
+        try {
+            notation.parseTransition(it, text);
+            assertTrue("Expected exception did not happen.", !exception);
+        } catch (ParseException e) {
+            assertTrue("Unexpected exception: " + e.getMessage(), 
+                    exception);
+        }
         if (trigger) {
             assertTrue("Trigger was not generated for " + text,
                     Model.getFacade().getTrigger(it) != null);

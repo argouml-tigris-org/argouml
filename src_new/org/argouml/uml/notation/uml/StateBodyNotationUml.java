@@ -178,8 +178,10 @@ public class StateBodyNotationUml extends StateBodyNotation {
                      * do we do with the remainder of the
                      * parsed/to be parsed lines?
                      */
-                    /* TODO: Is this a good way of handling nested notation? */
-                    new TransitionNotationUml(t).parse(line);
+                    /* TODO: Is this a good way of handling nested notation? 
+                     * The following fails the tests:
+                     * new TransitionNotationUml(t).parse(line);*/
+                    new TransitionNotationUml(t).parseTransition(t, line);
                     /* Add this new one, and mark it to be retained: */
                     internalsInfo.add(t, true);
                 }

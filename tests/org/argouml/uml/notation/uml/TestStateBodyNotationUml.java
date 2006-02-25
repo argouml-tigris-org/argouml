@@ -204,9 +204,9 @@ public class TestStateBodyNotationUml extends TestCase {
             boolean entryAction, boolean exitAction,
             boolean doAction, int internals, boolean exception) {
         try {
-//          ParserDisplay.SINGLETON.parseStateBody(sst, text);
             StateBodyNotationUml sbn = new StateBodyNotationUml(sst);
             sbn.parseStateBody(sst, text);
+            assertTrue("Expected exception did not happen.", !exception);
         } catch (ParseException e) {
             assertTrue("Unexpected exception for " + text, exception);
         }
