@@ -54,6 +54,9 @@ import org.argouml.uml.ui.UMLAction;
  * Once UMLActions are enlisted, they can never be removed!<p>
  *
  * This class is a Singleton.
+ * 
+ *  @deprecated since V0.20 by MVW, see issue 2325.
+ *  The Actions registered here should listen themselves to the target changes.
  */
 public class Actions implements TargetListener {
 
