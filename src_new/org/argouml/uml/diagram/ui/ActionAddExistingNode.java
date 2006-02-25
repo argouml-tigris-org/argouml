@@ -30,8 +30,8 @@ import java.awt.event.ActionEvent;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
 * ActionAddExistingNode enables pasting of an existing node into a Diagram.
@@ -39,34 +39,32 @@ import org.tigris.gef.graph.MutableGraphModel;
 * @author Eugenio Alvarez
 * Data Access Technologies.
 */
-public class ActionAddExistingNode extends UMLAction {
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+/**
+ * @author michiel
+ *
+ */
+public class ActionAddExistingNode extends UndoableAction {
 
     /**
      * The UML object to be added to the diagram.
      */
     private Object object;
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
-
     /**
      * The Constructor.
      *
-     * @param name the name of the action
-     * @param o the node object to be added
+     * @param name the localized name of the action
+     * @param o the node UML object to be added
      */
     public ActionAddExistingNode(String name, Object o) {
-        super(name, false, NO_ICON);
+        super(name);
         object = o;
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @see javax.swing.Action#isEnabled()
      */
-    public boolean shouldBeEnabled() {
+    public boolean isEnabled() {
         Object target = TargetManager.getInstance().getTarget();
         ArgoDiagram dia = ProjectManager.getManager().
             getCurrentProject().getActiveDiagram();
