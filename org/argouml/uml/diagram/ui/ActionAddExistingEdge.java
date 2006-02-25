@@ -28,15 +28,15 @@ package org.argouml.uml.diagram.ui;
 import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.ui.ArgoDiagram;
-import org.argouml.uml.ui.UMLAction;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
 * ActionAddExistingEdge enables pasting of an existing edge into a Diagram.
 */
-public class ActionAddExistingEdge extends UMLAction {
+public class ActionAddExistingEdge extends UndoableAction {
 
     private Object edge = null;
 
@@ -47,11 +47,9 @@ public class ActionAddExistingEdge extends UMLAction {
      * @param edgeObject    the edge (the UML ModelElement!)
      */
     public ActionAddExistingEdge(String name, Object edgeObject) {
-        super(name, true, NO_ICON);
+        super(name);
         edge = edgeObject;
-
     }
-
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
@@ -76,9 +74,9 @@ public class ActionAddExistingEdge extends UMLAction {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @see javax.swing.Action#isEnabled()
      */
-    public boolean shouldBeEnabled() {
+    public boolean isEnabled() {
         Object target = TargetManager.getInstance().getModelTarget();
         ArgoDiagram dia = ProjectManager.getManager().getCurrentProject().
             getActiveDiagram();

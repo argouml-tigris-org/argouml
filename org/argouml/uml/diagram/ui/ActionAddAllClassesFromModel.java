@@ -30,8 +30,8 @@ import java.util.Iterator;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.reveng.DiagramInterface;
-import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * ActionAddAllClassesFromModel enables pasting of an existing node into a
@@ -40,10 +40,8 @@ import org.tigris.gef.base.Globals;
  * @author Timothy M. Lebo (Oct 2003)
  * Smart Information Flow Technologies.
  */
-public class ActionAddAllClassesFromModel extends UMLAction {
+public class ActionAddAllClassesFromModel extends UndoableAction {
 
-    // Instance Variables
-    private String tabName;
     private Object object;
 
     /**
@@ -53,23 +51,14 @@ public class ActionAddAllClassesFromModel extends UMLAction {
      * @param o the Diagram
      */
     public ActionAddAllClassesFromModel(String name, Object o) {
-        super(name, true, NO_ICON);
-        tabName = name;
+        super(name);
         object = o;
     }
 
     /**
-     * shouldBeEnabled
-     *
-     * Returns true if this popup menu item should be enabled, false
-     * if it should be grayed out.
-     *
-     * @author Timothy M. Lebo (Oct 2003)
-     * Smart Information Flow Technologies.
-     *
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @see javax.swing.Action#isEnabled()
      */
-    public boolean shouldBeEnabled() {
+    public boolean isEnabled() {
 	return object instanceof UMLClassDiagram;
     }
 

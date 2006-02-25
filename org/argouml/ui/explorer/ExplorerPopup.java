@@ -26,6 +26,7 @@ package org.argouml.ui.explorer;
 
 import java.awt.event.MouseEvent;
 
+import javax.swing.Action;
 import javax.swing.JPopupMenu;
 
 import org.argouml.i18n.Translator;
@@ -45,7 +46,6 @@ import org.argouml.uml.ui.ActionAddPackage;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.ActionRESequenceDiagram;
 import org.argouml.uml.ui.ActionSetSourcePath;
-import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Diagram;
 
 /**
@@ -154,11 +154,10 @@ public class ExplorerPopup extends JPopupMenu {
                         || nAryAssociationSelected
                         || commentSelected
                 ) {
-                    UMLAction action =
+                    Action action =
                         new ActionAddExistingNode(
                             menuLocalize("menu.popup.add-to-diagram"),
                             selectedItem);
-                    action.setEnabled(action.shouldBeEnabled());
                     this.add(action);
                 }
             }
@@ -170,11 +169,10 @@ public class ExplorerPopup extends JPopupMenu {
                     || (linkSelected && !sequenceDiagramActive)
                     || transitionSelected) {
 
-                    UMLAction action =
+                    Action action =
                         new ActionAddExistingEdge(
                                 menuLocalize("menu.popup.add-to-diagram"),
                                 selectedItem);
-                    action.setEnabled(action.shouldBeEnabled());
                     this.add(action);
                 }
             }
@@ -207,11 +205,10 @@ public class ExplorerPopup extends JPopupMenu {
         // condition -tml
         if (!ms) {
             if (selectedItem instanceof UMLClassDiagram) {
-                UMLAction action =
+                Action action =
 		    new ActionAddAllClassesFromModel(
 		        menuLocalize("menu.popup.add-all-classes-to-diagram"),
 			selectedItem);
-                action.setEnabled(action.shouldBeEnabled());
                 this.add(action);
             }
         }
