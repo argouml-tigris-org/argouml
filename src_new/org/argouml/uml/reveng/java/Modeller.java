@@ -617,48 +617,15 @@ public class Modeller {
         if (parseState.getClassifier() == null) {
             // set the clasifier to be a resident in its component:
             // (before we push a new parse state on the stack)
-            Object residentDep = null;
-
-            // try find an existing residency
-            Iterator dependenciesIt =
-                Model.getCoreHelper()
-                    .getDependencies(mClassifier, parseState.getComponent())
-		        .iterator();
-            while (dependenciesIt.hasNext()) {
-
-                Object dependency = dependenciesIt.next();
-                residentDep = dependency;
-                break;
-            }
-
-            // if no existing residency was found.
-            if (residentDep == null) {
-
-                // TODO: Fix this old NSUML workaround! - tfm - 20050911
-
-                // this doesn't work because of a bug in NSUML (the
-                // ElementResidence association class is never saved
-                // to the xmi).
-
-                // //UmlHelper.getHelper().getCore()
-                // .setResident(parseState.getComponent(),mClassifier);
-
-                // next line contains current equivalent of above - tfm
-                //Model.getCoreHelper().setResident(parseState.getComponent(), mClassifier);
-
-                // therefore temporarily use a non-standard hack:
-                //if (parseState.getComponent() == null) addComponent();
-                residentDep = Model.getCoreFactory()
-                    .buildDependency(parseState.getComponent(), mClassifier);
-                Model.getExtensionMechanismsFactory().buildStereotype(
-				     residentDep,
-				     "resident",
-				     model);
-                String newName =
-                    Model.getFacade().getName(parseState.getComponent())
-                    + " -(location of)-> "
-                    + Model.getFacade().getName(mClassifier);
-                Model.getCoreHelper().setName(residentDep, newName);
+            
+            // This test is carried over from a previous implementation,
+            // but I'm not sure why it would already be set - tfm
+            if (Model.getFacade().getElementResidences(mClassifier).isEmpty()) {
+                Object resident = Model.getCoreFactory()
+                        .createElementResidence();
+                Model.getCoreHelper().setResident(resident, mClassifier);
+                Model.getCoreHelper().setContainer(resident,
+                        parseState.getComponent());
             }
         }
 
@@ -667,21 +634,7 @@ public class Modeller {
         parseState = new ParseState(parseState, mClassifier, currentPackage);
 
         setVisibility(mClassifier, modifiers);
-
-        /*
-         * Changed 2001-10-05 STEFFEN ZSCHALER
-         *
-         * Was (space added below!):
-         *
-         if((javadoc == null) || "".equals(javadoc)) {
-         javadoc = "/** * /";
-         }
-         getTaggedValue(mClassifier, "documentation").setValue(javadoc);
-         *
-         */
-
         addDocumentationTag (mClassifier, javadoc);
-
 
         return mClassifier;
     }
@@ -873,21 +826,6 @@ public class Modeller {
 	    }
 	}
 
-
-	/*
-	 * Changed 2001-10-05 STEFFEN ZSCHALER.
-	 *
-	 * Was (space added below!):
-	 *
-	 if((javadoc == null) || "".equals(javadoc)) {
-	 javadoc = "/** * /";
-	 }
-	 getTaggedValue(mOperation, "documentation").setValue(javadoc);
-	 *
-	 * Moved to end of method 2001-11-05 to allow addDocumentationTag to
-	 * access as much information as possible
-	 */
-
 	addDocumentationTag (mOperation, javadoc);
 
 	return mOperation;
@@ -973,8 +911,10 @@ public class Modeller {
 	    || (Model.getFacade().getNamespace(mClassifier)
 		== getPackage("java.lang"))) {
 
-            Object mAttribute = getAttribute(name, initializer, mClassifier);
-
+            Object mAttribute = parseState.getAttribute(name);
+            if (mAttribute == null) {
+                mAttribute = buildAttribute(parseState.getClassifier(), name);
+            }            
             parseState.feature(mAttribute);
 
             setOwnerScope(mAttribute, modifiers);
@@ -996,25 +936,9 @@ public class Modeller {
 
                 // we must remove line endings and tabs from the intializer
                 // strings, otherwise the classes will display horribly.
-                int index = 0;
-		index = initializer.indexOf("\n");
-                while (index != -1) {
-                    initializer =
-			initializer.substring(0, index)
-			+ initializer.substring(index + 2,
-						initializer.length());
-                    index = initializer.indexOf("\n");
-                }
-
-		index = initializer.indexOf("\t");
-                while (index != -1) {
-                    initializer =
-			initializer.substring(0, index)
-			+ initializer.substring(index + 2,
-						initializer.length());
-                    index = initializer.indexOf("\t");
-                }
-
+                initializer = initializer.replace('\n', ' ');
+                initializer = initializer.replace('\t', ' ');
+                
 		Object newInitialValue =
 		    Model.getDataTypesFactory()
 		        .createExpression("Java",
@@ -1234,35 +1158,19 @@ public class Modeller {
        not found, a new one is created.
 
        @param name The name of the attribute.
-       @param initializer The initializer code.
-       @param mClassifier The type, used when checking for existing
-       association.
        @return The attribute found or created.
     */
-    private Object getAttribute(String name,
-                                String initializer,
-                                Object mClassifier) {
-    	Collection list = parseState.getFeatures(name);
-        Object mAttribute = null;
-	for (Iterator it = list.iterator(); it.hasNext();) {
-	    Object o = it.next();
-	    if (Model.getFacade().isAAttribute(o)) {
-		mAttribute = o;
-		break;
-	    }
-	}
-        if (mAttribute == null) {
-            Object cls = parseState.getClassifier();
-            Collection propertyChangeListeners = ProjectManager.getManager()
-                .getCurrentProject().findFigsForMember(cls);
-            Object intType = ProjectManager.getManager()
-                .getCurrentProject().findType("int");
-            Object mdl = ProjectManager.getManager()
-                .getCurrentProject().getModel();
-            mAttribute = Model.getCoreFactory()
-                .buildAttribute(cls, mdl, intType, propertyChangeListeners);
-            Model.getCoreHelper().setName(mAttribute, name);
-        }
+    private Object buildAttribute(Object classifier, String name) {
+
+        Collection propertyChangeListeners = ProjectManager.getManager()
+                .getCurrentProject().findFigsForMember(classifier);
+        Object intType = ProjectManager.getManager().getCurrentProject()
+                .findType("int");
+        Object myModel = ProjectManager.getManager().getCurrentProject()
+                .getModel();
+        Object mAttribute = Model.getCoreFactory().buildAttribute(classifier,
+                myModel, intType, propertyChangeListeners);
+        Model.getCoreHelper().setName(mAttribute, name);
         return mAttribute;
     }
 
@@ -1365,6 +1273,9 @@ public class Modeller {
                 }
             }
         }
+        // TODO: Instead of failing, this should create any stereotypes that it
+        // requires.  Most likely cause of failure is that the stereotype isn't
+        // included in the profile that is being used. - tfm 20060224
         throw new IllegalArgumentException("Could not find "
 					   + "a suitable stereotype for "
 					   + me + " " + name + " "
@@ -1581,35 +1492,39 @@ public class Modeller {
 		        Model.getFacade().getNamespace(me),
 		        mc);
 	    }
-    } else {
-        if ("stereotype".equals(sTagName)) {
-            // multiple stereotype support: make one stereotype tag from many stereotype tags:
-            Object tv = getTaggedValue(me, sTagName);
-            if (tv != null) {
-                String sStereotype = Model.getFacade().getValueOfTag(tv);
-                if (sStereotype != null && sStereotype.length() > 0) {
-                    sTagData = sStereotype + ',' + sTagData;
+        } else {
+            if ("stereotype".equals(sTagName)) {
+                // multiple stereotype support: 
+                // make one stereotype tag from many stereotype tags
+                Object tv = getTaggedValue(me, sTagName);
+                if (tv != null) {
+                    String sStereotype = Model.getFacade().getValueOfTag(tv);
+                    if (sStereotype != null && sStereotype.length() > 0) {
+                        sTagData = sStereotype + ',' + sTagData;
+                    }
                 }
-            }
-            // now eliminate multiple entries in that comma separated list
-            HashSet stSet = new HashSet();
-            StringTokenizer st = new StringTokenizer(sTagData, ", ");
-            while (st.hasMoreTokens()) {
-                stSet.add(st.nextToken().trim());
-            }
-            StringBuffer sb = new StringBuffer();
-            Iterator iter = stSet.iterator();
-            while (iter.hasNext()) {
-                if (sb.length() > 0) {
-                    sb.append(',');
+                // now eliminate multiple entries in that comma separated list
+                HashSet stSet = new HashSet();
+                StringTokenizer st = new StringTokenizer(sTagData, ", ");
+                while (st.hasMoreTokens()) {
+                    stSet.add(st.nextToken().trim());
                 }
-                sb.append(iter.next());
+                StringBuffer sb = new StringBuffer();
+                Iterator iter = stSet.iterator();
+                while (iter.hasNext()) {
+                    if (sb.length() > 0) {
+                        sb.append(',');
+                    }
+                    sb.append(iter.next());
+                }
+                sTagData = sb.toString();
+
             }
-            sTagData = sb.toString();
-        }
-	    Model.getExtensionMechanismsHelper().setValueOfTag(
-	            getTaggedValue(me, sTagName),
-	            sTagData);
+            Model.getExtensionMechanismsHelper().addTaggedValue(
+                    me,
+                    Model.getExtensionMechanismsFactory().buildTaggedValue(
+                            sTagName, sTagData));
+
 	}
     }
 
@@ -1641,8 +1556,8 @@ public class Modeller {
 		    break;
 		case ' ':   // all white space, hope I didn't miss any ;-)
 		case '\t':
+		    // ignore white space before the first asterisk
 		    if (!fHadAsterisk) {
-			// forget every white space before the first asterisk
 			nStartPos++;
 			break;
 		    }
@@ -1715,76 +1630,75 @@ public class Modeller {
 		    fHadAsterisk = false;
 		}
 	    }
-	    sJavaDocs = sbPureDocs.toString();
-	    /* After this, we have the documentation text, but
-	     * unfortunately, there's still a trailing '/' left. If
-	     * this is even the only thing on it's line, we want to
-	     * remove the complete line, otherwise we remove just the
-	     * '/'.
-	     *
-	     * This will be either at the end of the actual comment
-	     * text or at the end of the last tag.
-	     */
+            sJavaDocs = sbPureDocs.toString();
+            
+            /*
+             * After this, we have the documentation text, but there's still a
+             * trailing '/' left, either at the end of the actual comment text
+             * or at the end of the last tag.
+             */
+            sJavaDocs = removeTrailingSlash(sJavaDocs);
+            
+            // handle last tag, if any (strip trailing slash there too)
 	    if (sCurrentTagName != null) {
-		// handle last tag...
-		sCurrentTagData = sCurrentTagData.substring(0,
-		    (sCurrentTagData.lastIndexOf('/') - 1));
-
-		if (sCurrentTagData.length() > 0
-		    && (sCurrentTagData.charAt(sCurrentTagData.length() - 1)
-			== '\n')) {
-		    sCurrentTagData = sCurrentTagData.substring(0,
-		            (sCurrentTagData.length() - 1));
-		}
-		// store tag
+		sCurrentTagData = removeTrailingSlash(sCurrentTagData);
 		addJavadocTagContents (modelElement, sCurrentTagName,
 				       sCurrentTagData);
-	    } else {
-		sJavaDocs =
-		    sJavaDocs.substring (0,
-		            sJavaDocs.lastIndexOf ('/') - 1);
-		if (sJavaDocs.length() > 0) {
-		    if (sJavaDocs.charAt (sJavaDocs.length() - 1) == '\n') {
-			sJavaDocs =
-			    sJavaDocs.substring (0, sJavaDocs.length() - 1);
-		    }
-		}
-	    }
-	    if (sJavaDocs.endsWith("/")) {
-	        sJavaDocs = sJavaDocs.substring(0, sJavaDocs.length() - 1);
 	    }
 
-	    // Do special things:
-	    // Now store documentation text
-	    Model.getExtensionMechanismsHelper().setValueOfTag(getTaggedValue(
-                modelElement, "documentation"), sJavaDocs);
-	    // If there is a tagged value named stereotype, make it a real
-	    // stereotype
-            // we allow multiple instances
-            // of this tagged value AND parse a single instance for multiple
-            // stereotypes
-            Object tv =
-                Model.getFacade().getTaggedValue(modelElement, "stereotype");
-            String stereo = null;
-            if (tv != null) {
-                stereo = Model.getFacade().getValueOfTag(tv);
-            }
+	    // Now store documentation text in a tagged value
+	    Model.getExtensionMechanismsHelper().addTaggedValue(
+                    modelElement,
+                    Model.getExtensionMechanismsFactory().buildTaggedValue(
+                            "documentation", sJavaDocs));
+	    addStereotypes(modelElement);
+        }
+    }
+
+
+    /*
+     * Remove a trailing slash, including the entire line if it's the only thing
+     * on the line. 
+     */
+    private String removeTrailingSlash(String s) {
+        if (s.endsWith("\n/")) {
+            return s.substring(0, s.length() - 2);
+        } else  if (s.endsWith("/")) {
+            return s.substring(0, s.length() - 1);
+        } else {
+            return s;
+        }
+    }
+    
+    /*
+     * If there is a tagged value named 'stereotype', make it a real
+     * stereotype and remove the tagged value.
+     * We allow multiple instances of this tagged value 
+     * AND parse a single instance for multiple stereotypes
+     */
+    private void addStereotypes(Object modelElement) {
+        Object tv = Model.getFacade()
+                .getTaggedValue(modelElement, "stereotype");
+        if (tv != null) {
+            String stereo = Model.getFacade().getValueOfTag(tv);
             if (stereo != null && stereo.length() > 0) {
                 StringTokenizer st = new StringTokenizer(stereo, ", ");
                 while (st.hasMoreTokens()) {
-                    Model.getCoreHelper().addStereotype(
-                        modelElement,
-                        getStereotype(st.nextToken().trim()));
+                    Model.getCoreHelper().addStereotype(modelElement,
+                            getStereotype(st.nextToken().trim()));
                 }
             }
+            Model.getExtensionMechanismsHelper().removeTaggedValue(
+                    modelElement, tv);
         }
     }
 
     /**
-     * Coolects parsed method calls. Used for reverse engineering of interactions.
-     *
-     * @param method The method name called.
-     * @param obj The object it is called in.
+     * Collect parsed method calls. Used for reverse engineering of
+     * interactions.
+     * 
+     * @param methodName
+     *            The method name called.
      */
     public void addCall(String methodName) {
         methodCalls.add(methodName);
