@@ -124,7 +124,7 @@ public class TestTransitionNotationUml extends TestCase {
      * @param trigger true if we expect a trigger to be generated
      * @param guard true if we expect a guard to be generated
      * @param effect true if we expect an effect to be generated
-     * @param exception true if we expect an exception to be trown
+     * @param exception true if we expect an exception to be thrown
      * @return the generated internal transition
      */
     private Object checkGenerated(Object st, String text, boolean trigger,
@@ -132,7 +132,7 @@ public class TestTransitionNotationUml extends TestCase {
         Object it = Model.getStateMachinesFactory()
             .buildInternalTransition(st);
         NotationProvider4 notation = new TransitionNotationUml(it);
-            notation.parse(text);
+        notation.parse(text);
         if (trigger) {
             assertTrue("Trigger was not generated for " + text,
                     Model.getFacade().getTrigger(it) != null);
@@ -182,7 +182,7 @@ public class TestTransitionNotationUml extends TestCase {
         //try changing the triggertype to ChangeEvent
         text = "when(it happens)";
         NotationProvider4 notation = new TransitionNotationUml(trans);
-            notation.parse(text);
+        notation.parse(text);
         trig = Model.getFacade().getTrigger(trans);
         assertTrue("Unexpected triggertype found instead of ChangeEvent",
                 Model.getFacade().isAChangeEvent(trig));
@@ -209,7 +209,7 @@ public class TestTransitionNotationUml extends TestCase {
 
         text = "/effect";
         TransitionNotationUml notation = new TransitionNotationUml(trans);
-        try{
+        try {
             notation.parseTransition(trans, text);
         } catch (ParseException e) {
             assertTrue("Unexpected exception when removing ChangeEvent trigger",
