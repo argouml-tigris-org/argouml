@@ -314,15 +314,30 @@ class ParseState {
      * @return The found operation, null if not found.
      */
     public Object getOperation(String name) {
-        LOG.info("Searching through obsolete features for " + name);
 	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
 	    Object feature = i.next();
-            LOG.info("Checking feature " + feature);
 	    if (Model.getFacade().isAOperation(feature)
                     && name.equals(Model.getFacade().getName(feature))) {
 		return feature;
 	    }
 	}
 	return null;
+    }
+
+    /**
+     * Get a attribute from the current classifier not yet modeled.
+     *
+     * @param name The name of the attribute.
+     * @return The found attribute, null if not found.
+     */
+    public Object getAttribute(String name) {
+        for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
+            Object feature = i.next();
+            if (Model.getFacade().isAAttribute(feature)
+                    && name.equals(Model.getFacade().getName(feature))) {
+                return feature;
+            }
+        }
+        return null;
     }
 }
