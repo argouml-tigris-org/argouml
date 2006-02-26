@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,9 +29,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import org.apache.log4j.Logger;
-
 import org.argouml.i18n.Translator;
-
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerManager;
@@ -40,7 +38,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
-import org.tigris.gef.presentation.FigNode;
 
 /**
  * Mode to create a link between two figobjects. This mode extends
@@ -51,6 +48,9 @@ import org.tigris.gef.presentation.FigNode;
  */
 public class ModeCreateMessage extends ModeCreate {
 
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
 	Logger.getLogger(ModeCreateMessage.class);
 
@@ -181,7 +181,6 @@ public class ModeCreateMessage extends ModeCreate {
         }
 
         int x = me.getX(), y = me.getY();
-        Class arcClass;
         Editor ce = Globals.curEditor();
         Fig f = ce.hit(x, y);
         if (f == null) {
@@ -272,4 +271,9 @@ public class ModeCreateMessage extends ModeCreate {
         editor.scrollToShow(me.getX(), startPortFig.getY());
         me.consume();
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 6004200950886660909L;
 } /* end class ModeCreateEdge */

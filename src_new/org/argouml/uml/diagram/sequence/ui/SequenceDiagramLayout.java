@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -71,7 +71,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     /**
      * Linked list with all fig objects sorted by x coordinate in it.
      */
-    private LinkedList figObjectsX = new LinkedList();
+    private List figObjectsX = new LinkedList();
 
     /**
      * The constructor.
@@ -96,7 +96,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     }
 
     /**
-     * Distributes the fig objects contained in _figObjectsX over the
+     * Distributes the fig objects contained in figObjectsX over the
      * sequencediagram.
      *
      * @param f
@@ -165,7 +165,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     /**
      * Return the node index at a certain y point.
      */
-    static public int getNodeIndex(int y) {
+    public static int getNodeIndex(int y) {
         y -= DIAGRAM_TOP_MARGE + FigClassifierRole.DEFAULT_HEIGHT;
         if (y < 0) {
             y = 0;
@@ -310,4 +310,9 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
         return retList;
 
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 4291295642883664670L;
 }
