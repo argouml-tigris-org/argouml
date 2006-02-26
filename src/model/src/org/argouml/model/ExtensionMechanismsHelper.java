@@ -161,6 +161,22 @@ public interface ExtensionMechanismsHelper {
     void setBaseClass(Object handle, Object baseClass);
 
     /**
+     * Add a baseclass to some stereotype.
+     *
+     * @param handle the stereotype
+     * @param baseClass the baseclass to add
+     */
+    void addBaseClass(Object handle, Object baseClass);
+
+    /**
+     * Remove baseclass from some stereotype.
+     *
+     * @param handle the stereotype
+     * @param baseClass the baseclass to remove
+     */
+    void removeBaseClass(Object handle, Object baseClass);
+
+    /**
      * Set the icon for a stereotype.
      *
      * @param handle Stereotype

@@ -164,6 +164,25 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
     }
 
     /**
+     * @see org.argouml.model.ExtensionMechanismsHelper#addBaseClass(
+     *         java.lang.Object,
+     *         java.lang.Object)
+     */
+    public void addBaseClass(Object handle, Object baseClass) {
+        impl.addBaseClass(handle, baseClass);
+    }
+
+    /**
+     * @see org.argouml.model.ExtensionMechanismsHelper#removeBaseClass(
+     *         java.lang.Object,
+     *         java.lang.Object)
+     */
+    public void removeBaseClass(Object handle, Object baseClass) {
+        impl.removeBaseClass(handle, baseClass);
+    }
+
+    
+    /**
      * @see org.argouml.model.ExtensionMechanismsHelper#setIcon(
      *         java.lang.Object,
      *         java.lang.Object)

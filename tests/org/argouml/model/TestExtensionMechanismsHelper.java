@@ -107,42 +107,6 @@ public class TestExtensionMechanismsHelper extends TestCase {
     }
 
 
-    
-    ////////////////////////////////////////////////////////////////////////////
-    // Tests from NSUML test converted to generic
-    // TODO: review and merge
-    ////////////////////////////////////////////////////////////////////////////
-    /**
-     * This test does not work yet since there are problems with
-     * isolating the project from the projectbrowser.
-     */
-    public void testGetAllPossibleStereotypes1() {
-        Object ns = Model.getModelManagementFactory().createPackage();
-        Object clazz = Model.getCoreFactory().buildClass(ns);
-        Object model = ProjectManager.getManager().getCurrentProject()
-                .getModel();
-        Collection models =
-            ProjectManager.getManager().getCurrentProject()
-                .getModels();
-        Object stereo1 = Model.getExtensionMechanismsFactory().buildStereotype(
-                        clazz,
-                        "test1",
-                        model,
-                        models);
-        Object stereo2 = Model.getExtensionMechanismsFactory().buildStereotype(
-                        clazz,
-                        "test2",
-                        model,
-                        models);
-        Collection col =
-            Model.getExtensionMechanismsHelper()
-                .getAllPossibleStereotypes(models, clazz);
-        assertTrue("stereotype not in list of possible stereotypes",
-                   col.contains(stereo1));
-        assertTrue("stereotype not in list of possible stereotypes",
-                   col.contains(stereo2));
-    }
-
     /**
      * Test if we can create modelelements with the names given.
      */
@@ -159,5 +123,41 @@ public class TestExtensionMechanismsHelper extends TestCase {
         CheckUMLModelHelper.isValidStereoType(
                 Model.getExtensionMechanismsFactory(),
                 TestExtensionMechanismsFactory.getAllModelElements());
+    }
+    
+    /**
+     * Test multiple base class support
+     */
+    public void testMultipleBaseClasses() {
+        String classType = (String) Model.getMetaTypes().getName(theClass);
+        assertEquals("Base class doesn't match type of model element",
+                classType,
+                Model.getFacade().getBaseClass(theStereotype));
+        assertEquals("Wrong number of base classes",
+                1,
+                Model.getFacade().getBaseClasses(theStereotype).size());
+        Model.getExtensionMechanismsHelper().removeBaseClass(theStereotype,
+                theClass);
+        assertEquals("Wrong number of base classes",
+                0,
+                Model.getFacade().getBaseClasses(theStereotype).size());
+        // Test both forms of addBaseClass
+        Model.getExtensionMechanismsHelper().addBaseClass(theStereotype,
+                theClass);
+        Model.getExtensionMechanismsHelper().addBaseClass(theStereotype,
+                "myOtherClass");
+        assertEquals("Wrong number of base classes",
+                2,
+                Model.getFacade().getBaseClasses(theStereotype).size());
+        assertTrue("Base class not found", Model.getFacade().getBaseClasses(
+                theStereotype).contains(classType));
+        assertTrue("Base class not found", Model.getFacade().getBaseClasses(
+                theStereotype).contains("myOtherClass"));
+        // Test remaining form of removeBaseClass
+        Model.getExtensionMechanismsHelper().removeBaseClass(theStereotype,
+                Model.getMetaTypes().getName(theClass));
+        assertEquals("Wrong number of base classes",
+                1,
+                Model.getFacade().getBaseClasses(theStereotype).size());
     }
 }
