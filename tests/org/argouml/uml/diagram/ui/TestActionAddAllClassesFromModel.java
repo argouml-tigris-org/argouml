@@ -75,7 +75,7 @@ public class TestActionAddAllClassesFromModel extends TestCase {
      * @since November 3, 2003
      */
     public void testShouldBeEnabled() {
-	assertTrue(action.shouldBeEnabled());
+	assertTrue(action.isEnabled());
     }
 
     /**
@@ -88,6 +88,6 @@ public class TestActionAddAllClassesFromModel extends TestCase {
     public void testShouldNotBeEnabled() {
 	action = new ActionAddAllClassesFromModel("Add all classes from model",
 						   new Object());
-	assertEquals(action.shouldBeEnabled(), false);
+	assertEquals(action.isEnabled(), false);
     }
 }
