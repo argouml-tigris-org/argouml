@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
@@ -133,7 +134,7 @@ public class FigClassifierRole extends FigNodeModelElement
     /**
      * The set of activation figs.
      */
-    private HashSet activationFigs;
+    private Set activationFigs;
 
     /**
      * Default constructor. Constructs the object rectangle, the lifeline,
@@ -348,7 +349,8 @@ public class FigClassifierRole extends FigNodeModelElement
                     fig.getHeight());
             }
         }
-        growToSize( lifeLine.getHeight()/SequenceDiagramLayout.LINK_DISTANCE+2);
+        growToSize(lifeLine.getHeight() / SequenceDiagramLayout.LINK_DISTANCE
+                + 2);
         calcBounds(); //_x = x; _height = y; _w = w; _h = h;
         firePropChange("bounds", oldBounds, getBounds());
     }
@@ -563,9 +565,8 @@ public class FigClassifierRole extends FigNodeModelElement
                     }
                     if (Model.getFacade().getSender(message) == getOwner()
 			&& !selfReceiving) {
-                        if ( callers==null)
-                        {
-                            callers=new ArrayList();
+                        if (callers == null) {
+                            callers = new ArrayList();
                         }
                         Object caller = Model.getFacade().getReceiver(message);
                         int callerIndex = callers.lastIndexOf(caller);
@@ -630,7 +631,7 @@ public class FigClassifierRole extends FigNodeModelElement
     }
 
     private void removeActivations() {
-        ArrayList activations = new ArrayList(activationFigs);
+        List activations = new ArrayList(activationFigs);
         activationFigs.clear();
         for (Iterator it = activations.iterator();
               it.hasNext();
@@ -692,6 +693,7 @@ public class FigClassifierRole extends FigNodeModelElement
 		case MessageNode.CREATED:
 		    startActivationNode = node;
 		    startFull = false;
+                default:
                 }
             } else {
                 switch (nextState) {
@@ -714,6 +716,7 @@ public class FigClassifierRole extends FigNodeModelElement
 			nextState = lastState;
 		    }
 		    break;
+		default:
                 }
             }
             lastState = nextState;
@@ -1296,19 +1299,44 @@ public class FigClassifierRole extends FigNodeModelElement
     }
 
     static class TempFig extends FigLine {
+        /**
+         * Constructor.
+         *
+         * @param owner
+         * @param x
+         * @param y
+         * @param x2
+         */
         TempFig(Object owner, int x, int y, int x2) {
             super(x, y, x2, y);
             setVisible(false);
             setOwner(owner);
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 1478952234873792638L;
     }
 
     static class FigClassifierRoleHandler extends FigGroupHandler {
-        FigClassifierRoleHandler(PGMLStackParser parser, FigClassifierRole
-				 classifierRole) {
+        /**
+         * Constructor.
+         *
+         * @param parser
+         * @param classifierRole
+         */
+        FigClassifierRoleHandler(PGMLStackParser parser,
+                FigClassifierRole classifierRole) {
             super(parser, classifierRole);
         }
 
+        /**
+         * @see org.tigris.gef.persistence.pgml.BaseHandler#getElementHandler(
+         *         org.tigris.gef.persistence.pgml.HandlerStack,
+         *         java.lang.Object, java.lang.String, java.lang.String,
+         *         java.lang.String, org.xml.sax.Attributes)
+         */
         protected DefaultHandler getElementHandler(HandlerStack stack,
             Object container,
             String uri,
@@ -1320,8 +1348,10 @@ public class FigClassifierRole extends FigNodeModelElement
             DefaultHandler result = null;
             String description;
             // Handle stereotype groups in Figs
-            if (qname.equals("group") && ( description=attributes.getValue( "description"))!=null &&
-                    description.startsWith( FigMessagePort.class.getName())) {
+            if (qname.equals("group")
+                    && ((description = attributes.getValue("description"))
+                            != null)
+                    && description.startsWith(FigMessagePort.class.getName())) {
                 FigMessagePort fmp = new FigMessagePort();
                 ((FigGroupHandler) container).getFigGroup().addFig(fmp);
                 result = new FigGroupHandler((PGMLStackParser) stack, fmp);
