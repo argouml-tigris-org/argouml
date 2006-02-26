@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,11 +44,11 @@ import org.tigris.gef.presentation.FigGroup;
 
 /**
  * Class to display graphics for a UML Class in a diagram.<p>
- * 
- * Note that the upper line of the name box will be blanked out 
+ *
+ * Note that the upper line of the name box will be blanked out
  * if there is eventually a stereotype above.
  */
-abstract public class FigClassifierBox extends FigNodeModelElement
+public abstract class FigClassifierBox extends FigNodeModelElement
         implements OperationsCompartmentContainer {
 
     /**
@@ -59,8 +59,11 @@ abstract public class FigClassifierBox extends FigNodeModelElement
     /**
      * Text highlighted by mouse actions on the diagram.<p>
      */
-    protected CompartmentFigText highlightedFigText = null;
+    protected CompartmentFigText highlightedFigText;
 
+    /**
+     * Constructor.
+     */
     FigClassifierBox() {
         // this rectangle marks the operation section; all operations
         // are inside it
@@ -95,21 +98,6 @@ abstract public class FigClassifierBox extends FigNodeModelElement
         return figClone;
     }
 
-
-
-    private void addFigsNoCalcBounds() {
-        setSuppressCalcBounds(true);
-        addFigs();
-        setSuppressCalcBounds(false);
-    }
-
-    private void addFigs() {
-        addFig(getStereotypeFig());  //0
-        addFig(getNameFig());        //1
-        addFig(getBigPort());        //2
-    }
-
-
     /**
      * Updates the operations box. Called from modelchanged if there is
      * a modelevent effecting the attributes and from renderingChanged in all
@@ -141,7 +129,7 @@ abstract public class FigClassifierBox extends FigNodeModelElement
     }
 
     /**
-     * Get the bounds of the operations compartment
+     * Get the bounds of the operations compartment.
      *
      * @return the bounds of the operations compartment
      */
@@ -150,7 +138,8 @@ abstract public class FigClassifierBox extends FigNodeModelElement
     }
 
     /**
-     * Returns the visibility status of the operations compartment
+     * Returns the visibility status of the operations compartment.
+     *
      * @return true if the operations are visible, false otherwise
      *
      * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#isOperationsVisible()
@@ -192,7 +181,8 @@ abstract public class FigClassifierBox extends FigNodeModelElement
         }
         unhighlight();
 
-        Rectangle r = new Rectangle(
+        Rectangle r =
+            new Rectangle(
                 mouseEvent.getX() - 1,
                 mouseEvent.getY() - 1,
                 2,
@@ -219,31 +209,38 @@ abstract public class FigClassifierBox extends FigNodeModelElement
     }
 
     /**
-     * Remove the highlight from the currently highlit FigText
+     * Remove the highlight from the currently highlit FigText.
+     *
      * @return the FigText that had highlight removed
      */
     protected CompartmentFigText unhighlight() {
         return unhighlight(operationsFig);
     }
 
-    final protected CompartmentFigText unhighlight(FigFeaturesCompartment fc) {
+    protected final CompartmentFigText unhighlight(FigFeaturesCompartment fc) {
         Fig ft;
         for (int i = 1; i < fc.getFigs().size(); i++) {
             ft = fc.getFigAt(i);
-            if (ft instanceof CompartmentFigText && ((CompartmentFigText)ft).isHighlighted()) {
-                ((CompartmentFigText)ft).setHighlighted(false);
+            if (ft instanceof CompartmentFigText
+                    && ((CompartmentFigText) ft).isHighlighted()) {
+                ((CompartmentFigText) ft).setHighlighted(false);
                 highlightedFigText = null;
-                return ((CompartmentFigText)ft);
+                return ((CompartmentFigText) ft);
             }
         }
         return null;
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#createFeatureIn(
+     *         org.tigris.gef.presentation.FigGroup,
+     *         java.awt.event.InputEvent)
+     */
     protected void createFeatureIn(FigGroup fg, InputEvent ie) {
         if (!(fg instanceof FigFeaturesCompartment)) {
             return;
         }
-        ((FigFeaturesCompartment)fg).createFeature();
+        ((FigFeaturesCompartment) fg).createFeature();
         List figList = fg.getFigs();
         CompartmentFigText ft =
             (CompartmentFigText) figList.get(figList.size() - 1);

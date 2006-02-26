@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,14 +51,14 @@ public class SelectionInterface extends SelectionNodeClarifiers {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger
-            .getLogger(SelectionInterface.class);
+    private static final Logger LOG =
+        Logger.getLogger(SelectionInterface.class);
 
-    private static Icon realiz = ResourceLoaderWrapper
-            .lookupIconResource("Realization");
+    private static Icon realiz =
+        ResourceLoaderWrapper.lookupIconResource("Realization");
 
-    private static Icon inherit = ResourceLoaderWrapper
-            .lookupIconResource("Generalization");
+    private static Icon inherit =
+        ResourceLoaderWrapper.lookupIconResource("Generalization");
 
 
     /**
@@ -73,8 +73,7 @@ public class SelectionInterface extends SelectionNodeClarifiers {
 
     /**
      * Return a handle ID for the handle under the mouse, or -1 if none. TODO:
-     * in the future, return a Handle instance or null.
-     * <p>
+     * in the future, return a Handle instance or null.<p>
      *
      * <pre>
      *    0-------1-------2
@@ -115,8 +114,7 @@ public class SelectionInterface extends SelectionNodeClarifiers {
         if (hitAbove(cx + cw / 2, cy, gw, gh, r)) {
             h.index = 10;
             h.instructions = "Add an interface";
-        } else
-        if (hitBelow(cx + cw / 2, cy + ch, iw, ih, r)) {
+        } else if (hitBelow(cx + cw / 2, cy + ch, iw, ih, r)) {
             h.index = 11;
             h.instructions = "Add a realization";
         } else {
@@ -175,7 +173,8 @@ public class SelectionInterface extends SelectionNodeClarifiers {
         }
         if (edgeType != null && nodeType != null) {
             Editor ce = Globals.curEditor();
-            ModeCreateEdgeAndNode m = new ModeCreateEdgeAndNode(ce, edgeType,
+            ModeCreateEdgeAndNode m =
+                new ModeCreateEdgeAndNode(ce, edgeType,
                     nodeType, false);
             m.setup((FigNode) getContent(), getContent().getOwner(), bx, by,
                     reverse);
@@ -184,6 +183,10 @@ public class SelectionInterface extends SelectionNodeClarifiers {
 
     }
 
+    /**
+     * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
+     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     */
     protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
         return gm.connect(getContent().getOwner(), newNode,
                (Class) Model.getMetaTypes().getGeneralization());
@@ -209,4 +212,8 @@ public class SelectionInterface extends SelectionNodeClarifiers {
         }
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 7209387830978444644L;
 } /* end class SelectionInterface */

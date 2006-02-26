@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,6 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
-import java.util.HashMap;
 
 import javax.swing.Action;
 
@@ -40,10 +39,8 @@ import org.argouml.model.Model;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.diagram.ui.StereotypeUtility;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspectiveMutable;
-import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 
@@ -51,11 +48,10 @@ import org.tigris.gef.presentation.FigNode;
 /**
  * Class to display a UML note connection to a
  * annotated model element.<p>
- * <p>
- * The owner of this fig is allways CommentEdge
- * </p>
  *
- * @author Andreas Rueckert <a_rueckert@gmx.net>
+ * The owner of this fig is allways CommentEdge
+ *
+ * @author Andreas Rueckert a_rueckert@gmx.net
  * @author jaap.branderhorst@xs4all.nl
  */
 public class FigEdgeNote
@@ -87,7 +83,8 @@ public class FigEdgeNote
     }
 
     /**
-     * Constructor that hooks the Fig to a CommentEdge
+     * Constructor that hooks the Fig to a CommentEdge.
+     *
      * @param commentEdge the CommentEdge
      * @param theLayer the layer (ignored)
      */
@@ -95,37 +92,48 @@ public class FigEdgeNote
         this();
 
         if (!(theLayer instanceof LayerPerspectiveMutable)) {
-            throw new IllegalArgumentException("The layer must be a mutable perspective. Got " + theLayer);
+            throw new IllegalArgumentException(
+                    "The layer must be a mutable perspective. Got "
+                    + theLayer);
         }
 
         if (!(commentEdge instanceof CommentEdge)) {
-            throw new IllegalArgumentException("The owner must be a CommentEdge. Got " + commentEdge);
+            throw new IllegalArgumentException(
+                    "The owner must be a CommentEdge. Got " + commentEdge);
         }
 
         Object fromNode = ((CommentEdge) commentEdge).getSource();
         if (!(Model.getFacade().isAModelElement(fromNode))) {
-            throw new IllegalArgumentException("The given comment edge must start at a model element. Got " + fromNode);
+            throw new IllegalArgumentException(
+                    "The given comment edge must start at a model element. "
+                    + "Got " + fromNode);
         }
 
         Object toNode = ((CommentEdge) commentEdge).getDestination();
         if (!(Model.getFacade().isAModelElement(toNode))) {
-            throw new IllegalArgumentException("The given comment edge must end at a model element. Got " + toNode);
+            throw new IllegalArgumentException(
+                    "The given comment edge must end at a model element. Got "
+                    + toNode);
         }
 
         Fig destFig = theLayer.presentationFor(toNode);
         if (destFig instanceof FigEdgeModelElement) {
-            destFig = ((FigEdgeModelElement)destFig).getCommentPort();
+            destFig = ((FigEdgeModelElement) destFig).getCommentPort();
         }
         if (!(destFig instanceof FigNodeModelElement)) {
-            throw new IllegalArgumentException("The given comment edge must end at a model element in the given layer.");
+            throw new IllegalArgumentException(
+                    "The given comment edge must end at a model element"
+                    + " in the given layer.");
         }
 
         Fig sourceFig = theLayer.presentationFor(fromNode);
         if (sourceFig instanceof FigEdgeModelElement) {
-            sourceFig = ((FigEdgeModelElement)sourceFig).getCommentPort();
+            sourceFig = ((FigEdgeModelElement) sourceFig).getCommentPort();
         }
         if (!(sourceFig instanceof FigNodeModelElement)) {
-            throw new IllegalArgumentException("The given comment edge must start at a model element in the given layer.");
+            throw new IllegalArgumentException(
+                    "The given comment edge must start at a model element "
+                    + "in the given layer.");
         }
 
         setLayer(theLayer);
@@ -189,12 +197,14 @@ public class FigEdgeNote
     public Object getOwner() {
         return owner;
     }
-    
+
     /**
      * Overrides the standard method to return null. A note edge
      * cannot have a stereotype.
+     *
+     * @return null.
      */
-    final protected Action[] getApplyStereotypeActions() {
+    protected final Action[] getApplyStereotypeActions() {
         return null;
     }
 
@@ -207,4 +217,9 @@ public class FigEdgeNote
         o.setDestination(getDestFigNode().getOwner());
         o.setSource(getSourceFigNode().getOwner());
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 7210384676965727564L;
 } /* end class FigEdgeNote */
