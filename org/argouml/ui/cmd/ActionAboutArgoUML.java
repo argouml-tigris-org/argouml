@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,25 +22,30 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.ui.cmd;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.ui.AboutBox;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.UMLAction;
 
 
 /**
  * The action to show the About ArgoUML dialog.
  */
-class ActionAboutArgoUML extends UMLAction {
+class ActionAboutArgoUML extends AbstractAction {
 
+    /**
+     * Constructor.
+     */
     public ActionAboutArgoUML() {
-        super("action.about-argouml", HAS_ICON);
+        super(Translator.localize("action.about-argouml"),
+                ResourceLoaderWrapper.lookupIcon("action.about-argouml"));
     }
 
     /**
@@ -54,5 +59,8 @@ class ActionAboutArgoUML extends UMLAction {
 	box.setVisible(true);
     }
 
-
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 7988731727182091682L;
 } /* end class ActionAboutArgoUML */
