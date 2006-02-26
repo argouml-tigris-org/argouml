@@ -230,7 +230,6 @@ Property files to be searched:
 
   <target name="ant.optional.init" depends="init">
     <path id="ant.optional.classpath">
-      <pathelement location="${ant.home}/optional.jar"/>
       <pathelement location="${ant.home}/libopt/ant-junit.jar"/>
       <pathelement location="${junit.jar.path}"/>
       <pathelement location="${jdepend.jar.path}"/>
@@ -443,20 +442,8 @@ Property files to be searched:
     <!-- create directories -->
     <mkdir dir="${argo.build.classes}"/>
   	
-  	<!-- compile Model subsystem -->
+    <!-- compile Model subsystem -->
     <ant dir="../src/model" inheritAll="false" target="install"/>  	
-
-    <!-- Things needed by other projects: -->
-    <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
-
-    <!-- Compile other projects: -->
-    <!-- compile the MDR ModelImplementation -->
-    <!-- This should work, shouldn't it? Well, it doesn't for me.
-         I think ant messes up something for MDR. (Linus, Oct 2005)
-
-    <ant dir="../../argouml-mdr" inheritAll="false" target="install"/>
-    
-    -->
 
     <!-- remove obsolete classes before compiling -->
     <delete file="${argo.build.classes}/org/argouml/model/uml/ModelListener.class"/>
@@ -634,6 +621,7 @@ Property files to be searched:
           description="Clean out all built files.">
 
     <ant dir="../src/model" inheritAll="false" target="clean"/>
+    <ant dir="../../argouml-mdr" inheritAll="false" target="clean"/>
     <delete dir="${argo.build.dir}/tests"/>
     <delete dir="${argo.build.dir}/src_new"/>
     <delete dir="${argo.build.dir}/classes"/>
@@ -657,7 +645,7 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Run ArgoUML from compiled sources                                   -->
   <!-- =================================================================== -->
-  <target name="run" depends="compile"
+  <target name="run" depends="compile,build-mdr"
           description="Run the newly compiled ArgoUML.">
     <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
@@ -673,7 +661,7 @@ Property files to be searched:
     </java>
   </target>
 
-  <target name="debug" depends="compile"
+  <target name="debug" depends="compile,build-mdr"
           description="Run ArgoUML with debug level logging.">
     <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
@@ -689,7 +677,7 @@ Property files to be searched:
     </java>
   </target>
 
-  <target name="info" depends="compile"
+  <target name="info" depends="compile,build-mdr"
           description="Run ArgoUML with info level logging.">
     <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
@@ -863,37 +851,32 @@ Property files to be searched:
 
   </target>
 
+  <!-- =================================================================== -->
+  <!-- Build MDR library - internal target which calls argouml-mdr build.  -->
+  <!-- =================================================================== -->
+  <target name="build-mdr" depends="init">
+    <!-- We build unconditionally because only the MDR build itself knows if
+         everything is up to date -->
+    <echo message="=== Calling MDR build ==="/>
+    <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
+    <!-- HUGE HACK: mdrant gets confused about where to put its temp files
+                   and tries to write relative to the home of the *original*
+                   ant task.  We create a directory where it expects and then
+                   delete it immediately afterward.
+     -->
+    <mkdir dir="build/java"/>
+    <ant dir="../../argouml-mdr" target="install" inheritAll="false" />
+    <!-- delete temp files from mdrant task in argouml-mdr build -->
+    <delete dir="build/java"/>
+  </target>
 
   <!-- =================================================================== -->
   <!-- Run the junit tests.                                                -->
   <!-- =================================================================== -->
-
   <target name="tests"
-          depends="compile,junit-fetch-init,junit-setup,junit-report-clean,ant.optional.init"
+          depends="compile,junit-fetch-init,junit-setup,junit-report-clean,
+                   ant.optional.init,build-mdr"
           description="Run all tests that don't require any GUI components in headleass mode.">
-    <available file="../../argouml-mdr/build/argouml-mdr.jar"
-               property="mdr-available"/>
-    <antcall target="internal-tests-using-mdr"/>
-    <antcall target="internal-tests-using-mdr-error"/>
-  </target>
-
-  <target name="internal-tests-using-mdr-error"
-          unless="mdr-available">
-    <echo>
-You need to have mdr compiled to run the tests.
-
-Do:
-checkout argouml-mdr
-cd ../../argouml-mdr
-./build.sh generate jar
-cd ../argouml/src_new
-    </echo>
-    <fail message="argouml-mdr.jar not available."/>
-  </target>
-
-  <target name="internal-tests-using-mdr"
-          depends="compile,junit-fetch-init,junit-setup,ant.optional.init"
-	  if="mdr-available">
     <!-- ant 1.4 uses printsummary="true"                          -->
     <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
     <!-- This should never be committed as "withOutAndErr", but    -->
@@ -936,7 +919,8 @@ cd ../argouml/src_new
   <!-- Run the junit tests, the ones that include GUI stuff.               -->
   <!-- =================================================================== -->
   <target name="guitests"
-          depends="compile,junit-fetch-init,junit-setup,junit-report-clean,ant.optional.init"
+          depends="compile,junit-fetch-init,junit-setup,junit-report-clean,
+                   ant.optional.init,build-mdr"
           description="Run all tests that require the GUI components.">
     <!-- ant 1.4 uses printsummary="true"                          -->
     <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
@@ -975,7 +959,7 @@ cd ../argouml/src_new
   <!-- JUnit test cases. Instead, if they hang or exit with error they     -->
   <!-- have failed.                                                        -->
   <!-- =================================================================== -->
-  <target name="clitests" depends="compile" 
+  <target name="clitests" depends="compile,build-mdr" 
           description="Run tests that test the command line stuff.">
 
     <!-- Don't do anything. -->
