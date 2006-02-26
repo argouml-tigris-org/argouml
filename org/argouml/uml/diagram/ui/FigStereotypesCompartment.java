@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,7 +60,7 @@ public class FigStereotypesCompartment extends FigCompartment {
 
     /**
      * One UML keyword is allowed. These are not strictly stereotypes but are
-     * displayed as such. e.g. <<interface>>
+     * displayed as such. e.g. &lt;&lt;interface&gt;&gt;
      */
     String keyword;
 
@@ -79,6 +79,9 @@ public class FigStereotypesCompartment extends FigCompartment {
 
 
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
     public void setOwner(Object own) {
         super.setOwner(own);
         populate();
@@ -93,7 +96,8 @@ public class FigStereotypesCompartment extends FigCompartment {
 
         Object modelElement = getOwner();
         if (modelElement == null) {
-            LOG.warn("Cannot populate the stereotype compartment unless the parent has an owner.");
+            LOG.warn("Cannot populate the stereotype compartment "
+                     + "unless the parent has an owner.");
             return;
         }
         int acounter = 1;
@@ -123,9 +127,9 @@ public class FigStereotypesCompartment extends FigCompartment {
                     (CompartmentFigText) figs.get(acounter);
             }
             stereotypeTextFig.setText(
-                    NotationHelper.getLeftGuillemot() +
-                    keyword +
-                    NotationHelper.getRightGuillemot());
+                    NotationHelper.getLeftGuillemot()
+                    + keyword
+                    + NotationHelper.getRightGuillemot());
             acounter++;
         }
 
@@ -151,10 +155,11 @@ public class FigStereotypesCompartment extends FigCompartment {
                     stereotypeTextFig =
                         (CompartmentFigText) figs.get(acounter);
                 }
-                stereotypeTextFig.setText(NotationHelper.getLeftGuillemot() +
-                        Model.getFacade().getName(stereotype) +
-                        NotationHelper.getRightGuillemot());
-                stereotypeTextFig.setOwner(stereotype); //TODO: update the model again here?
+                stereotypeTextFig.setText(NotationHelper.getLeftGuillemot()
+                        + Model.getFacade().getName(stereotype)
+                        + NotationHelper.getRightGuillemot());
+                stereotypeTextFig.setOwner(stereotype);
+                //TODO: update the model again here?
                 /* This causes another event, and modelChanged() called,
                  * and updateAttributes() called again...
                  */
@@ -170,6 +175,9 @@ public class FigStereotypesCompartment extends FigCompartment {
         }
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     */
     protected void setBoundsImpl(int x, int y, int w, int h) {
         Fig fig;
         int yy = y;
@@ -177,7 +185,8 @@ public class FigStereotypesCompartment extends FigCompartment {
         while (figs.hasNext()) {
             fig = (Fig) figs.next();
             if (fig != getBigPort()) {
-                fig.setBounds(x + 1, yy + 1, w - 2, fig.getMinimumSize().height);
+                fig.setBounds(x + 1, yy + 1, w - 2,
+                              fig.getMinimumSize().height);
                 yy += fig.getMinimumSize().height;
             }
         }
@@ -188,10 +197,16 @@ public class FigStereotypesCompartment extends FigCompartment {
     /**
      * Allows a parent Fig to specify some keyword text to display amongst the
      * stereotypes.
-     * An example of this usage is to display <<interface>> on FigInterface.
-     * @param keyword the text of the pseudo stereotype
+     * An example of this usage is to display &lt;&lt;interface&gt;&gt;
+     * on FigInterface.
+     * @param word the text of the pseudo stereotype
      */
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setKeyword(String word) {
+        keyword = word;
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1696363445893406130L;
 }

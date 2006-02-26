@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,11 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.beans.PropertyChangeEvent;
-
-import org.argouml.notation.NotationHelper;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.presentation.FigText;
 
 /**
  * This class represents a Fig for a Usage.
@@ -63,5 +59,10 @@ public class FigUsage extends FigDependency {
     public FigUsage(Object edge, Layer lay) {
         super(edge, lay);
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1805275467987372774L;
 } /* end class FigUsage */
 

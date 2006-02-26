@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
@@ -32,11 +31,10 @@ import java.beans.PropertyChangeEvent;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigText;
 
 /**
  * This class represents a Fig for a Realization,
- * i.e. a dependency with stereotype <<realize>>.
+ * i.e. a dependency with stereotype &lt;&lt;realize&gt;&gt;.
  * It has a dashed line and a triangle arrow-head.
  *
  *
@@ -46,7 +44,6 @@ public class FigRealization extends FigEdgeModelElement {
 
     ////////////////////////////////////////////////////////////////
     // constructors
-
     private ArrowHeadTriangle endArrow;
 
     /**
@@ -110,5 +107,9 @@ public class FigRealization extends FigEdgeModelElement {
         super.paint(g);
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5688833795126793130L;
 } /* end class FigRealization */
 

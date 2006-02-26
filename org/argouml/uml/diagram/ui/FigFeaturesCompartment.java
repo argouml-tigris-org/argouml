@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -96,9 +96,9 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      * @see org.tigris.gef.presentation.FigGroup#addFig(org.tigris.gef.presentation.Fig)
      */
     public void addFig(Fig fig) {
-        if (fig != getBigPort() &&
-                !(fig instanceof FigFeature) &&
-                !(fig instanceof FigSeperator)) {
+        if (fig != getBigPort()
+                && !(fig instanceof FigFeature)
+                && !(fig instanceof FigSeperator)) {
             LOG.error("Illegal Fig added to a FigFeature");
             throw new IllegalArgumentException(
                     "A FigFeaturesCompartment can only contain FigFeatures, "
@@ -122,7 +122,6 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      *
      * This method has side effects that are sometimes used.
      *
-     * @param fg the FigGroup to be updated
      * @param x x
      * @param y y
      * @param w w
@@ -153,9 +152,11 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
         return d;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     */
     protected void setBoundsImpl(int x, int y, int w, int h) {
         int newW = w;
-        int n = getFigs().size() - 1;
         int newH = h;
 
         Iterator figs = iterator();
@@ -182,28 +183,50 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
     }
 
     /**
-     * Create a new feature
+     * Create a new feature.
      */
-    abstract public void createFeature();
+    public abstract void createFeature();
 
     protected class FigSeperator extends FigLine {
+        /**
+         * Constructor.
+         *
+         * @param x
+         * @param y
+         * @param len
+         */
         FigSeperator(int x, int y, int len) {
             super(x, y, (x + len) - 1, y);
         }
 
+        /**
+         * @see org.tigris.gef.presentation.Fig#getSize()
+         */
         public Dimension getSize() {
-            return new Dimension((_x2 - _x1) +1, getLineWidth());
+            return new Dimension((_x2 - _x1) + 1, getLineWidth());
         }
 
+        /**
+         * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+         */
         public Dimension getMinimumSize() {
             return new Dimension(0, getLineWidth());
         }
 
+        /**
+         * @see org.tigris.gef.presentation.Fig#setBoundsImpl(
+         *         int, int, int, int)
+         */
         public void setBoundsImpl(int x, int y, int w, int h) {
             setX1(x);
             setY1(y);
             setX2((x + w) - 1);
             setY2((y + h) - 1);
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -2222511596507221760L;
     }
 }
