@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,13 +43,15 @@ import org.tigris.gef.base.LayerPerspectiveMutable;
  */
 public class UMLClassDiagram extends UMLDiagram {
 
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(UMLClassDiagram.class);
 
     ////////////////
     // actions for toolbar
     private Action actionAssociationClass;
     private Action actionClass;
-    private Action actionObject;
     private Action actionInterface;
     private Action actionDependency;
     private Action actionPermission;
@@ -113,18 +115,18 @@ public class UMLClassDiagram extends UMLDiagram {
         super.setNamespace(ns);
         ClassDiagramGraphModel gm;
         if (init) {
-                gm = new ClassDiagramGraphModel();
-        }else {
-        	gm = (ClassDiagramGraphModel) this.getGraphModel();
+            gm = new ClassDiagramGraphModel();
+        } else {
+            gm = (ClassDiagramGraphModel) this.getGraphModel();
         }
         gm.setHomeModel(ns);
         if (init) {
-        	LayerPerspective lay =
-        		new LayerPerspectiveMutable(Model.getFacade().getName(ns), gm);
-        	ClassDiagramRenderer rend = new ClassDiagramRenderer(); // singleton
-        	lay.setGraphNodeRenderer(rend);
-        	lay.setGraphEdgeRenderer(rend);
-        	setLayer(lay);
+            LayerPerspective lay =
+                new LayerPerspectiveMutable(Model.getFacade().getName(ns), gm);
+            ClassDiagramRenderer rend = new ClassDiagramRenderer(); // singleton
+            lay.setGraphNodeRenderer(rend);
+            lay.setGraphEdgeRenderer(rend);
+            setLayer(lay);
         }
     }
 
@@ -162,11 +164,10 @@ public class UMLClassDiagram extends UMLDiagram {
     // replace getActionPackage() in the function getUmlActions() above
     // with getPackageActions().
     private Object[] getPackageActions() {
-        Object[] actions =
-        {
-                getActionPackage(),
-                getActionModel(),
-                getActionSubsystem(),
+        Object[] actions = {
+            getActionPackage(),
+            getActionModel(),
+            getActionSubsystem(),
         };
         manageDefault(actions, "diagram.class.package");
         return actions;
@@ -180,7 +181,7 @@ public class UMLClassDiagram extends UMLDiagram {
         Object[] actions = {
             getActionDependency(),
             getActionPermission(),
-            getActionUsage()
+            getActionUsage(),
         };
         manageDefault(actions, "diagram.class.dependency");
         return actions;
@@ -198,8 +199,8 @@ public class UMLClassDiagram extends UMLDiagram {
         // that overridden method that should be returned in the array.
         Object[] actions = {
             getActionAssociation(),
-            getActionUniAssociation()
-         };
+            getActionUniAssociation(),
+        };
         manageDefault(actions, "diagram.class.association");
         return actions;
     }
@@ -207,7 +208,7 @@ public class UMLClassDiagram extends UMLDiagram {
     private Object[] getAggregationActions() {
         Object[] actions = {
             getActionAggregation(),
-            getActionUniAggregation()
+            getActionUniAggregation(),
         };
         manageDefault(actions, "diagram.class.aggregation");
         return actions;
@@ -216,7 +217,7 @@ public class UMLClassDiagram extends UMLDiagram {
     private Object[] getCompositionActions() {
         Object[] actions = {
             getActionComposition(),
-            getActionUniComposition()
+            getActionUniComposition(),
         };
         manageDefault(actions, "diagram.class.composition");
         return actions;
@@ -247,10 +248,11 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionAggregation() {
         if (actionAggregation == null) {
-            actionAggregation = makeCreateAssociationAction(
-                Model.getAggregationKind().getAggregate(),
-                false,
-                "button.new-aggregation");
+            actionAggregation =
+                makeCreateAssociationAction(
+                        Model.getAggregationKind().getAggregate(),
+                        false,
+                        "button.new-aggregation");
         }
         return actionAggregation;
     }
@@ -259,9 +261,10 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionAssociation() {
         if (actionAssociation == null) {
-            actionAssociation = makeCreateAssociationAction(
-                Model.getAggregationKind().getNone(),
-                false, "button.new-association");
+            actionAssociation =
+                makeCreateAssociationAction(
+                        Model.getAggregationKind().getNone(),
+                        false, "button.new-association");
         }
         return actionAssociation;
     }
@@ -270,7 +273,8 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionAssociationEnd() {
         if (actionAssociationEnd == null) {
-            actionAssociationEnd = makeCreateAssociationEndAction("button.new-association-end");
+            actionAssociationEnd =
+                makeCreateAssociationEndAction("button.new-association-end");
         }
         return actionAssociationEnd;
     }
@@ -305,9 +309,10 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionComposition() {
         if (actionComposition == null) {
-            actionComposition = makeCreateAssociationAction(
-                Model.getAggregationKind().getComposite(),
-                false, "button.new-composition");
+            actionComposition =
+                makeCreateAssociationAction(
+                        Model.getAggregationKind().getComposite(),
+                        false, "button.new-composition");
         }
         return actionComposition;
     }
@@ -329,9 +334,10 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionGeneralization() {
         if (actionGeneralization == null) {
-            actionGeneralization = makeCreateEdgeAction(
-                    Model.getMetaTypes().getGeneralization(),
-                    "button.new-generalization");
+            actionGeneralization =
+                makeCreateEdgeAction(
+                        Model.getMetaTypes().getGeneralization(),
+                        "button.new-generalization");
         }
 
         return actionGeneralization;
@@ -431,10 +437,11 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionUniAggregation() {
         if (actionUniAggregation == null) {
-            actionUniAggregation = makeCreateAssociationAction(
-                Model.getAggregationKind().getAggregate(),
-                true,
-                "button.new-uniaggregation");
+            actionUniAggregation =
+                makeCreateAssociationAction(
+                        Model.getAggregationKind().getAggregate(),
+                        true,
+                        "button.new-uniaggregation");
         }
         return actionUniAggregation;
     }
@@ -444,10 +451,11 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionUniAssociation() {
         if (actionUniAssociation == null) {
-            actionUniAssociation = makeCreateAssociationAction(
-                Model.getAggregationKind().getNone(),
-                true,
-                "button.new-uniassociation");
+            actionUniAssociation =
+                makeCreateAssociationAction(
+                        Model.getAggregationKind().getNone(),
+                        true,
+                        "button.new-uniassociation");
         }
         return actionUniAssociation;
     }
@@ -457,10 +465,11 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionUniComposition() {
         if (actionUniComposition == null) {
-            actionUniComposition = makeCreateAssociationAction(
-                Model.getAggregationKind().getComposite(),
-                true,
-                "button.new-unicomposition");
+            actionUniComposition =
+                makeCreateAssociationAction(
+                        Model.getAggregationKind().getComposite(),
+                        true,
+                        "button.new-unicomposition");
         }
         return actionUniComposition;
     }
@@ -471,7 +480,8 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionUsage() {
         if (actionUsage == null) {
             actionUsage =
-                makeCreateEdgeAction(Model.getMetaTypes().getUsage(), "button.new-usage");
+                makeCreateEdgeAction(Model.getMetaTypes().getUsage(),
+                        "button.new-usage");
         }
         return actionUsage;
     }
@@ -505,13 +515,17 @@ public class UMLClassDiagram extends UMLDiagram {
     	return Model.getFacade().isANamespace(base);
     }
 
-	/**
-	 * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
-	 */
-	public boolean relocate(Object base) {
-		setNamespace(base);
-		this.damage();
-		return true;
-	}
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
+     */
+    public boolean relocate(Object base) {
+        setNamespace(base);
+        damage();
+        return true;
+    }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -9192325790126361563L;
 } /* end class UMLClassDiagram */
