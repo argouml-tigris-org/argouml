@@ -3,10 +3,12 @@
 README.txt
 api
 argouml.sh
+argouml.bat
 build.properties
 classes
 documentation
 ext
+java
 javadocs
 junit*.properties
 test.zargo
