@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,9 +44,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -122,7 +120,7 @@ public abstract class FigNodeModelElement
     private static final Logger LOG =
         Logger.getLogger(FigNodeModelElement.class);
 
-    private DiElement diElement = null;
+    private DiElement diElement;
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -157,7 +155,7 @@ public abstract class FigNodeModelElement
     private static int popupAddOffset;
 
     // Fields used in paint() for painting shadows
-    private BufferedImage           shadowImage = null;
+    private BufferedImage           shadowImage;
     private int                     cachedWidth = -1;
     private int                     cachedHeight = -1;
     private static final LookupOp   SHADOW_LOOKUP_OP;
@@ -246,10 +244,10 @@ public abstract class FigNodeModelElement
     /**
      * The figure enclosing this figure.
      */
-    private Fig encloser = null;
+    private Fig encloser;
 
     private boolean readyToEdit = true;
-    private boolean suppressCalcBounds = false;
+    private boolean suppressCalcBounds;
 
     private int shadowSize =
         Configuration.getInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
@@ -276,7 +274,7 @@ public abstract class FigNodeModelElement
      * Flag that indicates if the full namespace path should be shown
      * in front of the name.
      */
-    private boolean pathVisible = false;
+    private boolean pathVisible;
 
     /**
      * If the contains text to be edited by the user.
@@ -297,7 +295,7 @@ public abstract class FigNodeModelElement
         nameFig.setText(placeString());
         nameFig.setBotMargin(7); // make space for the clarifier
         nameFig.setRightMargin(4); // margin between text and border
-        nameFig.setLeftMargin(4); 
+        nameFig.setLeftMargin(4);
 
         stereotypeFig = new FigStereotypesCompartment(10, 10, 90, 15);
 
@@ -326,8 +324,9 @@ public abstract class FigNodeModelElement
     /**
      * @see java.lang.Object#finalize()
      */
-    protected void finalize() {
+    protected void finalize() throws Throwable {
         ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+        super.finalize();
     }
 
     /**
@@ -477,8 +476,8 @@ public abstract class FigNodeModelElement
                 StereotypeUtility.getApplyStereotypeActions(getOwner());
             if (stereoActions != null) {
                 popUpActions.insertElementAt(new JSeparator(), 0);
-                ArgoJMenu stereotypes = new ArgoJMenu(
-                        "menu.popup.apply-stereotypes");
+                ArgoJMenu stereotypes =
+                    new ArgoJMenu("menu.popup.apply-stereotypes");
                 for (int i = 0; i < stereoActions.length; ++i) {
                     stereotypes.addCheckItem(stereoActions[i]);
                 }
@@ -487,28 +486,6 @@ public abstract class FigNodeModelElement
         }
 
         return popUpActions;
-    }
-
-    /**
-     * Helper method for buildModelList.
-     * <p>
-     * Adds those elements from source that do not have the same path as any
-     * path in paths to elements, and its path to paths. Thus elements will
-     * never contain two objects with the same path, unless they are added by
-     * other means.
-     */
-    private static void addAllUniqueModelElementsFrom(Set elements, Set paths,
-            Collection source) {
-        Iterator it2 = source.iterator();
-
-        while (it2.hasNext()) {
-            Object obj = it2.next();
-            Object path = Model.getModelManagementHelper().getPath(obj);
-            if (!paths.contains(path)) {
-                paths.add(path);
-                elements.add(obj);
-            }
-        }
     }
 
     /**
@@ -521,7 +498,7 @@ public abstract class FigNodeModelElement
         visibilityMenu.addRadioItem(new ActionVisibilityPrivate(getOwner()));
         visibilityMenu.addRadioItem(new ActionVisibilityProtected(getOwner()));
         visibilityMenu.addRadioItem(new ActionVisibilityPackage(getOwner()));
-        
+
         return visibilityMenu;
     }
 
@@ -601,7 +578,8 @@ public abstract class FigNodeModelElement
                 Model.getCoreHelper().setModelElementContainer(getOwner(),
 						     owningModelelement);
                 /* TODO: move the associations to the correct owner (namespace)
-                 * i.e. issue 2151*/
+                 * i.e. issue 2151
+                 */
             }
         }
 	if (newEncloser != encloser) {
@@ -950,8 +928,8 @@ public abstract class FigNodeModelElement
      *
      * It is also possible to alter the text to be edited
      * already here, e.g. by adding the stereotype in front of the name,
-     * by calling 
-     * <code>notationProviderName.putValue("fullyHandleStereotypes", 
+     * by calling
+     * <code>notationProviderName.putValue("fullyHandleStereotypes",
      * true);</code>, but that seems not user-friendly. See issue 3838.
      *
      * @param ft the FigText that will be edited and contains the start-text
@@ -1021,8 +999,9 @@ public abstract class FigNodeModelElement
         if (me.isConsumed()) {
             return;
         }
-        if (me.getClickCount() >= 2 &&
-                !(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK)) {
+        if (me.getClickCount() >= 2
+                && !(me.isPopupTrigger()
+                        || me.getModifiers() == InputEvent.BUTTON3_MASK)) {
             if (getOwner() == null) {
                 return;
             }
@@ -1222,14 +1201,14 @@ public abstract class FigNodeModelElement
 
     /**
      * In ArgoUML, for every Fig, this setOwner() function
-     * may only be called twice: Once after the fig is created, 
+     * may only be called twice: Once after the fig is created,
      * with a non-null argument, and once at end-of-life of the Fig,
-     * with a null argument. It is not allowed in ArgoUML to change 
+     * with a null argument. It is not allowed in ArgoUML to change
      * the owner of a fig in any other way. <p>
-     * 
-     * Hence, during the lifetime of this Fig object, 
-     * the owner shall go from null to some UML object, and to null again. 
-     * 
+     *
+     * Hence, during the lifetime of this Fig object,
+     * the owner shall go from null to some UML object, and to null again.
+     *
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object own) {
@@ -1256,7 +1235,8 @@ public abstract class FigNodeModelElement
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_NAME, this, own);
-            notationProviderName.putValue("pathVisible", new Boolean(isPathVisible()));
+            notationProviderName.putValue(
+                    "pathVisible", new Boolean(isPathVisible()));
         }
     }
 
@@ -1287,7 +1267,7 @@ public abstract class FigNodeModelElement
             if (getOwner() == null) {
                 return;
             }
-            if(notationProviderName != null) {
+            if (notationProviderName != null) {
                 nameFig.setText(notationProviderName.toString());
             }
             updateBounds();
@@ -1310,8 +1290,9 @@ public abstract class FigNodeModelElement
         }
         MutableGraphSupport.enableSaveAction();
         pathVisible = visible;
-        if (notationProviderName != null)
+        if (notationProviderName != null) {
             notationProviderName.putValue("pathVisible", new Boolean(visible));
+        }
         if (readyToEdit) {
             renderingChanged();
             damage();
@@ -1335,22 +1316,22 @@ public abstract class FigNodeModelElement
      * as listening to events fired by the owner itself. But for, for example,
      * FigClass the fig must also register for events fired by the operations
      * and attributes of the owner. <p>
-     * 
-     * An explanation of the original 
+     *
+     * An explanation of the original
      * purpose of this method is given in issue 1321.<p>
-     * 
-     * This function is used in UMLDiagram, which removes all listeners 
+     *
+     * This function is used in UMLDiagram, which removes all listeners
      * to all Figs when a diagram is not displayed, and restore them
      * when it becomes visible again. <p>
-     * 
-     * In this case, it is not imperative that indeed ALL listeners are 
+     *
+     * In this case, it is not imperative that indeed ALL listeners are
      * updated, as long as the ones removed get added again and vice versa. <p>
-     * 
-     * Additionally, this function may be used by the modelChanged() function.
-     * <p>
-     * 
+     *
+     * Additionally, this function may be used by the modelChanged()
+     * function.<p>
+     *
      * In this case, it IS imperative that all listeners get removed / added.
-     * 
+     *
      * @param newOwner the new owner for the listeners
      */
     protected void updateListeners(Object newOwner) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,7 +34,7 @@ import org.tigris.gef.presentation.Fig;
  * label can be placed in the middle of a FigEdge by using 50%. This version
  * changes the behavior as it tries to avoid that the itemFig cuts through the
  * pathFig.
- * 
+ *
  * @author abonner@ics.uci.edu
  */
 
@@ -42,10 +42,18 @@ public class PathConvPercent2 extends PathConv {
 
     private Fig itemFig;
 
-    private int percent = 0;
+    private int percent;
 
-    private int offset = 0;
+    private int offset;
 
+    /**
+     * Constructor.
+     *
+     * @param theFig
+     * @param itemFig
+     * @param newPercent
+     * @param newOffset
+     */
     public PathConvPercent2(Fig theFig, Fig itemFig, int newPercent,
             int newOffset) {
         super(theFig);
@@ -53,6 +61,9 @@ public class PathConvPercent2 extends PathConv {
         setPercentOffset(newPercent, newOffset);
     }
 
+    /**
+     * @see org.tigris.gef.base.PathConv#stuffPoint(java.awt.Point)
+     */
     public void stuffPoint(Point res) {
         int figLength = _pathFigure.getPerimeterLength();
         if (figLength < 10) {
@@ -72,10 +83,15 @@ public class PathConvPercent2 extends PathConv {
         offset = newOffset;
     }
 
+    /**
+     * @see org.tigris.gef.base.PathConv#setClosestPoint(java.awt.Point)
+     */
     public void setClosestPoint(Point newPoint) {
     }
 
-    protected void applyOffsetAmount(Point p1, Point p2, int offset, Point res) {
+    protected void applyOffsetAmount(
+            Point p1, Point p2,
+            int offset, Point res) {
         // slope of the line we're finding the normal to
         // is slope, and the normal is the negative reciprocal
         // slope is (p1.y - p2.y) / (p1.x - p2.x)
@@ -83,14 +99,16 @@ public class PathConvPercent2 extends PathConv {
         int recipnumerator = (p1.x - p2.x) * -1;
         int recipdenominator = (p1.y - p2.y);
 
-        if (recipdenominator == 0 && recipnumerator == 0)
+        if (recipdenominator == 0 && recipnumerator == 0) {
             return;
+        }
 
 
         // find the point offset on the line that gives a
         // correct offset
 
-        double len = Math.sqrt(recipnumerator * recipnumerator
+        double len =
+            Math.sqrt(recipnumerator * recipnumerator
                 + recipdenominator * recipdenominator);
         int dx = (int) ((recipdenominator * offset) / len);
         int dy = (int) ((recipnumerator * offset) / len);
@@ -117,6 +135,7 @@ public class PathConvPercent2 extends PathConv {
      * @return tangens hyberbolicus
      */
     private double tanh(double x) {
-        return ((Math.exp(x)-Math.exp(-x))/2)/((Math.exp(x)+Math.exp(-x))/2);
+        return ((Math.exp(x) - Math.exp(-x)) / 2)
+            / ((Math.exp(x) + Math.exp(-x)) / 2);
     }
 }

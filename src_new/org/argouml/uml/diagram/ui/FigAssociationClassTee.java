@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,29 +38,52 @@ import org.tigris.gef.presentation.FigCircle;
 
 public class FigAssociationClassTee extends FigNodeModelElement {
     private FigCircle bigPort;
+
+    /**
+     * Constructor.
+     */
     public FigAssociationClassTee() {
         bigPort = new FigCircle(0, 0, 10, 10, Color.black, Color.white);
         addFig(bigPort);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#hit(java.awt.Rectangle)
+     */
     public boolean hit(Rectangle r) {
         return false;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.FigNode#deepHitPort(int, int)
+     */
     public Object deepHitPort(int x, int y) {
         return null;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.FigNode#hitPort(int, int)
+     */
     public Object hitPort(int x, int y) {
         return null;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.FigGroup#hitFig(java.awt.Rectangle)
+     */
     public Fig hitFig(Rectangle r) {
         return null;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#isSelectable()
+     */
     public boolean isSelectable() {
         return false;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8228475519110321183L;
 }

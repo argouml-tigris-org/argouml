@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,8 +54,7 @@ import org.tigris.gef.graph.presentation.JGraph;
  */
 class DnDJGraph
     extends JGraph
-    implements DropTargetListener
-    {
+    implements DropTargetListener {
 
     /**
      * The constructor.
@@ -69,7 +68,7 @@ class DnDJGraph
     /**
      * The constructor.
      *
-     * @param cc
+     * @param cc The ConnectionConstrainer.
      */
     public DnDJGraph(ConnectionConstrainer cc) {
         super(cc);
@@ -79,7 +78,7 @@ class DnDJGraph
     /**
      * The constructor.
      *
-     * @param d
+     * @param d The Diagram.
      */
     public DnDJGraph(Diagram d) {
         super(d);
@@ -89,7 +88,7 @@ class DnDJGraph
     /**
      * The constructor.
      *
-     * @param gm
+     * @param gm The GraphModel.
      */
     public DnDJGraph(GraphModel gm) {
         super(gm);
@@ -99,51 +98,71 @@ class DnDJGraph
     /**
      * The constructor.
      *
-     * @param ed
+     * @param ed The Editor.
      */
     public DnDJGraph(Editor ed) {
         super(ed);
         makeDropTarget();
     }
 
-    private void makeDropTarget(){
+    private void makeDropTarget() {
         new DropTarget(this,
                 DnDConstants.ACTION_COPY_OR_MOVE,
                 this);
     }
 
+    /**
+     * @see java.awt.dnd.DropTargetListener#dragEnter(
+     *         java.awt.dnd.DropTargetDragEvent)
+     */
     public void dragEnter(DropTargetDragEvent dtde) {
     	try {
-			if (dtde.isDataFlavorSupported(
-					TransferableModelElements.UML_COLLECTION_FLAVOR)) {
-				dtde.acceptDrag(dtde.getDropAction());
-				return;
-			}
-		} catch (NullPointerException e) {
+    	    if (dtde.isDataFlavorSupported(
+    	            TransferableModelElements.UML_COLLECTION_FLAVOR)) {
+    	        dtde.acceptDrag(dtde.getDropAction());
+    	        return;
+    	    }
+    	} catch (NullPointerException e) {
 //			System.err.println("NullPointerException ignored.");
-		}
+    	}
     	dtde.rejectDrag();
     }
 
+    /**
+     * @see java.awt.dnd.DropTargetListener#dragOver(
+     *         java.awt.dnd.DropTargetDragEvent)
+     */
     public void dragOver(DropTargetDragEvent dtde) {
     	try {
-    		if (dtde.isDataFlavorSupported(
-    				TransferableModelElements.UML_COLLECTION_FLAVOR)) {
-    			dtde.acceptDrag(dtde.getDropAction());
-    			return;
-    		}
+    	    if (dtde.isDataFlavorSupported(
+    	            TransferableModelElements.UML_COLLECTION_FLAVOR)) {
+    	        dtde.acceptDrag(dtde.getDropAction());
+    	        return;
+    	    }
     	} catch (NullPointerException e) {
 //    		System.err.println("NullPointerException ignored.");
     	}
     	dtde.rejectDrag();
     }
 
+    /**
+     * @see java.awt.dnd.DropTargetListener#dropActionChanged(
+     *         java.awt.dnd.DropTargetDragEvent)
+     */
     public void dropActionChanged(DropTargetDragEvent dtde) {
     }
 
+    /**
+     * @see java.awt.dnd.DropTargetListener#dragExit(
+     *         java.awt.dnd.DropTargetEvent)
+     */
     public void dragExit(DropTargetEvent dte) {
     }
 
+    /**
+     * @see java.awt.dnd.DropTargetListener#drop(
+     *         java.awt.dnd.DropTargetDropEvent)
+     */
     public void drop(DropTargetDropEvent dropTargetDropEvent) {
         Transferable tr = dropTargetDropEvent.getTransferable();
         //if the flavor is not supported, then reject the drop:
@@ -156,11 +175,13 @@ class DnDJGraph
         dropTargetDropEvent.acceptDrop(dropTargetDropEvent.getDropAction());
         //get the model elements that are being transfered.
         Collection modelElements;
-        MutableGraphModel gm = (MutableGraphModel) ProjectManager.getManager().
-            getCurrentProject().getActiveDiagram().getGraphModel();
+        MutableGraphModel gm =
+            (MutableGraphModel) ProjectManager.getManager().
+                getCurrentProject().getActiveDiagram().getGraphModel();
         try {
             Collection oldTargets = TargetManager.getInstance().getTargets();
-            modelElements = (Collection) tr.getTransferData(
+            modelElements =
+                (Collection) tr.getTransferData(
                     TransferableModelElements.UML_COLLECTION_FLAVOR);
             int count = 0;
             Iterator i = modelElements.iterator();
@@ -186,4 +207,9 @@ class DnDJGraph
         }
     }
 
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5753683239435014182L;
 }

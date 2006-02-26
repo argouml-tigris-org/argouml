@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -99,7 +99,7 @@ public class TabDiagram
     /**
      * Prevents target event cycles between this and the TargetManager.
      */
-    private boolean updatingSelection = false;
+    private boolean updatingSelection;
 
     /**
      * The toolbar that is positioned just above
@@ -272,7 +272,8 @@ public class TabDiagram
              * ActionPaste.getInstance().setEnabled( Globals.clipBoard
              * != null && !Globals.clipBoard.isEmpty());
              */
-            Collection currentSelection = // the old selection
+            // the old selection
+            Collection currentSelection =
                 TargetManager.getInstance().getTargets();
 
             List removedTargets = new ArrayList(currentSelection);
@@ -381,7 +382,7 @@ public class TabDiagram
                 Object theTarget = null;
                 if (targets[i] instanceof Fig
 		        && manager.getActiveLayer().getContents().contains(
-                        targets[i])) {
+		                targets[i])) {
 		    theTarget = targets[i];
                 } else {
 		    theTarget = manager.presentationFor(targets[i]);
@@ -399,6 +400,10 @@ public class TabDiagram
 	}
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -3305029387374936153L;
 }
 
 
@@ -406,7 +411,6 @@ public class TabDiagram
  * The ArgoUML editor.
  */
 class ArgoEditor extends Editor {
-
     private RenderingHints  argoRenderingHints;
 
     /**
@@ -527,4 +531,9 @@ class ArgoEditor extends Editor {
                 RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
         }
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -799007144549997407L;
 }

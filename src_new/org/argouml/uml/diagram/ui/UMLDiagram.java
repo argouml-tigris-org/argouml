@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -172,7 +172,7 @@ public abstract class UMLDiagram
     private JToolBar toolBar;
 
     private Action selectedAction;
-    
+
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -276,8 +276,6 @@ public abstract class UMLDiagram
     public Object getOwner() {
         return getNamespace();
     }
-
-    static final long serialVersionUID = -401219134410459387L;
 
     /**
      * Get the toolbar for the diagram.
@@ -437,20 +435,30 @@ public abstract class UMLDiagram
     }
 
     class PopupActionsListener implements PropertyChangeListener {
-        private boolean blockEvents = false;
+        private boolean blockEvents;
         private ConfigurationKey key;
 
+        /**
+         * Constructor.
+         *
+         * @param k
+         */
         public PopupActionsListener(ConfigurationKey k) {
             key = k;
         }
 
+        /**
+         * @see java.beans.PropertyChangeListener#propertyChange(
+         *         java.beans.PropertyChangeEvent)
+         */
         public void propertyChange(PropertyChangeEvent evt) {
             if (evt.getSource() instanceof Action) {
                 Action a = (Action) evt.getSource();
                 if (!blockEvents && evt.getPropertyName().equals("popped")) {
                     blockEvents = true;
                     /* Switch the value back off, so that we will
-                     * get notified again next time. */
+                     * get notified again next time.
+                     */
                     a.putValue("popped", Boolean.valueOf(false));
                     blockEvents = false;
                     Configuration.setString(key,
@@ -495,16 +503,17 @@ public abstract class UMLDiagram
         while (elems.hasMoreElements()) {
             Fig fig = (Fig) elems.nextElement();
             if (fig instanceof FigNodeModelElement) {
-                ((FigNodeModelElement)fig).updateListeners(null);
+                ((FigNodeModelElement) fig).updateListeners(null);
             }
             if (fig instanceof FigEdgeModelElement) {
-                ((FigEdgeModelElement)fig).updateListeners(null);
+                ((FigEdgeModelElement) fig).updateListeners(null);
             }
         }
         /* TODO: (MVW) I believe the presence of the following line is a bug.
-         * But if I remove it, then an exception occurs, when 
+         * But if I remove it, then an exception occurs, when
          * deleting a element that has a diagram, since
-         * the propertyChange() above starts to work...*/
+         * the propertyChange() above starts to work...
+         */
         Model.getPump().removeModelEventListener(this, getNamespace());
     }
 
@@ -522,10 +531,10 @@ public abstract class UMLDiagram
              * event listeners are set:
              */
             if (fig instanceof FigNodeModelElement) {
-                ((FigNodeModelElement)fig).updateListeners(owner);
+                ((FigNodeModelElement) fig).updateListeners(owner);
             }
             if (fig instanceof FigEdgeModelElement) {
-                ((FigEdgeModelElement)fig).updateListeners(owner);
+                ((FigEdgeModelElement) fig).updateListeners(owner);
             }
         }
     }
@@ -572,7 +581,7 @@ public abstract class UMLDiagram
             }
         }
     }
-    
+
     public Action getSelectedAction() {
         return selectedAction;
     }
@@ -695,15 +704,18 @@ public abstract class UMLDiagram
         return null;
     }
 
-    /*
+    /**
      * @see org.argouml.uml.diagram.ui.Relocatable#isRelocationAllowed(java.lang.Object)
      */
     public abstract boolean isRelocationAllowed(Object base);
 
-    /*
+    /**
      * @see org.argouml.uml.diagram.ui.Relocatable#relocate(java.lang.Object)
      */
     public abstract boolean relocate(Object base);
 
+    /**
+     * The UID.
+     */
+    static final long serialVersionUID = -401219134410459387L;
 } /* end class UMLDiagram */
-
