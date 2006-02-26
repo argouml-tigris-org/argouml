@@ -51,7 +51,6 @@
   </developers>
   <!--
 W3C xml etc
-nsuml
 xerces
 xml-apis
   -->
@@ -61,11 +60,6 @@ xml-apis
       <artifactId>log4j</artifactId>
       <version>1.2.9</version>
       <url>http://logging.apache.org/log4j</url>
-    </dependency>
-    <dependency>
-      <groupId>nsuml</groupId>
-      <artifactId>nsuml</artifactId>
-      <version>0.4.20_modified</version>
     </dependency>
     <dependency>
       <groupId>dresden-ocl</groupId>
