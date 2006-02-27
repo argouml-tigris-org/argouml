@@ -186,9 +186,6 @@ public class FigEdgeNote
             newOwner = new CommentEdge();
         }
         owner = newOwner;
-        if (UUIDHelper.getUUID(newOwner) == null) {
-            Model.getCoreHelper().setUUID(newOwner, UUIDHelper.getNewUUID());
-        }
     }
 
     /**

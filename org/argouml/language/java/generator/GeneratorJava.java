@@ -492,8 +492,18 @@ public class GeneratorJava
         sb.append(generateVisibility(op));
 
         // pick out return type
-        Object/*MParameter*/ rp =
-	    Model.getCoreHelper().getReturnParameter(op);
+        Collection returnParams = Model.getCoreHelper().getReturnParameters(op);
+        Object rp;
+        if (returnParams.size() == 0) {
+            rp = null;
+        } else {
+            rp = returnParams.iterator().next();
+        } 
+        if (returnParams.size() > 1)  {
+            LOG.warn("Java generator only handles one return parameter"
+                    + " - Found " + returnParams.size()
+                    + " for " + Model.getFacade().getName(op));
+        }
         if (rp != null && !constructor) {
             Object/*MClassifier*/ returnType = Model.getFacade().getType(rp);
             if (returnType == null) {
@@ -666,7 +676,8 @@ public class GeneratorJava
         sb.append(generateConstraintEnrichedDocComment(cls, true, ""));
 
         // Now add visibility, but not for non public top level classifiers
-        if (Model.getFacade().isPublic(cls) || Model.getFacade().isAClassifier(Model.getFacade().getNamespace(cls))) {
+        if (Model.getFacade().isPublic(cls) 
+                || Model.getFacade().isAClassifier(Model.getFacade().getNamespace(cls))) {
             sb.append(generateVisibility(Model.getFacade().getVisibility(cls)));
         }
 
@@ -986,7 +997,19 @@ public class GeneratorJava
             }
 
             // pick out return type
-            Object rp = Model.getCoreHelper().getReturnParameter(op);
+            Collection returnParams = Model.getCoreHelper()
+                    .getReturnParameters(op);
+            Object rp;
+            if (returnParams.size() == 0) {
+                rp = null;
+            } else {
+                rp = returnParams.iterator().next();
+            } 
+            if (returnParams.size() > 1)  {
+                LOG.warn("Java generator only handles one return parameter"
+                        + " - Found " + returnParams.size()
+                        + " for " + Model.getFacade().getName(op));
+            }
             if (rp != null) {
                 Object returnType = Model.getFacade().getType(rp);
                 return generateDefaultReturnStatement(returnType);
