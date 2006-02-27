@@ -1234,11 +1234,14 @@ public interface CoreHelper {
 
     /**
      * Set the UUID of this element.
-     *
-     * @deprecated not supported by MDR - use Tagged Value 
-     * or other private mechanism.
-     * @param handle base element (MBase type)
-     * @param uuid is the UUID
+     * 
+     * @deprecated by tfm for 0.20 - getUUID is guaranteed to return a value but
+     *             it is not settable. If a settable ID is required, use a
+     *             TaggedValued or other private mechanism.
+     * @param handle
+     *            base element (MBase type)
+     * @param uuid
+     *            is the UUID
      */
     void setUUID(Object handle, String uuid);
 

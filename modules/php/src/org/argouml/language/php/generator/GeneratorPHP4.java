@@ -1227,10 +1227,6 @@ public class GeneratorPHP4
     private String generateSection(Object modelElement, String sIndent,
                                    String sSuffix) {
         String uuid = UUIDHelper.getUUID(modelElement);
-        if (uuid == null) {
-            uuid = (new UID().toString());
-            Model.getCoreHelper().setUUID(modelElement, uuid);
-        }
 
         if (sSuffix != null && sSuffix.trim() != "") {
             return Section.generate(uuid + "-" + sSuffix.trim(), sIndent);

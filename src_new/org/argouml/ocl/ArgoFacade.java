@@ -292,7 +292,18 @@ class ArgoAny implements Any, Type2 {
 	    }
 	}
 
-	Object rp = Model.getCoreHelper().getReturnParameter(foundOp);
+        Collection returnParams = Model.getCoreHelper().getReturnParameters(foundOp);
+        Object rp;
+        if (returnParams.size() == 0) {
+            rp = null;
+        } else {
+            rp = returnParams.iterator().next();
+        } 
+        if (returnParams.size() > 1)  {
+            LOG.warn("OCL compiler only handles one return parameter"
+                    + " - Found " + returnParams.size()
+                    + " for " + Model.getFacade().getName(foundOp));
+        }
 
 	if (rp == null || Model.getFacade().getType(rp) == null) {
 	    LOG.warn("WARNING: supposing return type void!");

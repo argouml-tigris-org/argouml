@@ -2660,12 +2660,18 @@ public interface Facade {
     String getValueOfTag(Object handle);
 
     /**
-     * Return the UUID of this element.
+     * Return the ID of this element.
+     * 
+     * This is guaranteed to always return a value, but the
+     * uniqueness and stability of the ID may vary by implementation.
+     * The original implementation guaranteed universally unique
+     * (across time and space) identifiers which were also stable
+     * across reloads of an XMI file.
      *
-     * @param base base element (MBase type)
+     * @param element ModelElement to retrieve ID for.
      * @return UUID
      */
-    String getUUID(Object base);
+    String getUUID(Object element);
 
     /**
      * Return the visibility of this element.

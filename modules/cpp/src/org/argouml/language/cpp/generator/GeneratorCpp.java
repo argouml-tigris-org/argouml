@@ -30,7 +30,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.rmi.server.UID;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Collection;
@@ -52,7 +51,6 @@ import org.argouml.notation.Notation;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.generator.CodeGenerator;
-import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
 import org.argouml.uml.generator.GeneratorHelper;
 import org.argouml.uml.generator.GeneratorManager;
@@ -921,7 +919,7 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateAssociationRole(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateAssociationRole(java.lang.Object)
      */
     public String generateAssociationRole(Object m) {
         return "";
@@ -929,7 +927,7 @@ public class GeneratorCpp extends Generator2
 
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateSubmachine(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateSubmachine(java.lang.Object)
      */
     public String generateSubmachine(Object m) {
         Object c = Model.getFacade().getSubmachine(m);
@@ -947,7 +945,7 @@ public class GeneratorCpp extends Generator2
 
     
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateObjectFlowState(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateObjectFlowState(java.lang.Object)
      */
     public String generateObjectFlowState(Object m) {
         Object c = Model.getFacade().getType(m);
@@ -1034,7 +1032,7 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateOperation(
+     * @see org.argouml.notation.NotationProvider2#generateOperation(
      *      java.lang.Object, boolean)
      *
      * 2002-11-28 Achim Spangler
@@ -1068,7 +1066,18 @@ public class GeneratorCpp extends Generator2
             .append(generateOperationPrefix(op));
 
         // pick out return type
-        Object rp = Model.getCoreHelper().getReturnParameter(op);
+        Collection returnParams = Model.getCoreHelper().getReturnParameters(op);
+        Object rp;
+        if (returnParams.size() == 0) {
+            rp = null;
+        } else {
+            rp = returnParams.iterator().next();
+        } 
+        if (returnParams.size() > 1)  {
+            LOG.warn("C++ generator only handles one return parameter"
+                    + " - Found " + returnParams.size()
+                    + " for " + Model.getFacade().getName(op));
+        }
         if (!constructor) {
             if (rp != null) {
                 Object returnType = Model.getFacade().getType(rp);
@@ -1196,7 +1205,7 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateAttribute(
+     * @see org.argouml.notation.NotationProvider2#generateAttribute(
      *         java.lang.Object, boolean)
      */
     public String generateAttribute(Object attr, boolean documented) {
@@ -1232,7 +1241,7 @@ public class GeneratorCpp extends Generator2
 
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateParameter(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateParameter(java.lang.Object)
      */
     public String generateParameter(Object param) {
         StringBuffer sb = new StringBuffer(20);
@@ -1269,7 +1278,7 @@ public class GeneratorCpp extends Generator2
 
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generatePackage(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generatePackage(java.lang.Object)
      */
     public String generatePackage(Object p) {
         StringBuffer sb = new StringBuffer();
@@ -1453,7 +1462,7 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateClassifier(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateClassifier(java.lang.Object)
      *
      * Generates code for a classifier, for classes and interfaces only
      * at the moment.
@@ -2058,8 +2067,19 @@ public class GeneratorCpp extends Generator2
 
             if (!methodFound) {
                 // pick out return type as default method body
-                Object rp =
-                    Model.getCoreHelper().getReturnParameter(op);
+                Collection returnParams = Model.getCoreHelper()
+                        .getReturnParameters(op);
+                Object rp;
+                if (returnParams.size() == 0) {
+                    rp = null;
+                } else {
+                    rp = returnParams.iterator().next();
+                } 
+                if (returnParams.size() > 1)  {
+                    LOG.warn("C++ generator only handles one return parameter"
+                            + " - Found " + returnParams.size()
+                            + " for " + Model.getFacade().getName(op));
+                }
                 if (rp != null) {
                     Object returnType = Model.getFacade().getType(rp);
                     sb.append(generateDefaultReturnStatement(returnType));
@@ -2075,19 +2095,11 @@ public class GeneratorCpp extends Generator2
 
     private String generateSectionTop(Object op, String localIndent) {
         String id = UUIDHelper.getUUID(op);
-        if (id == null) {
-            id = (new UID().toString());
-            Model.getCoreHelper().setUUID(op, id);
-        }
         return Section.generateTop(id, localIndent);
     }
 
     private String generateSectionBottom(Object op, String localIndent) {
         String id = UUIDHelper.getUUID(op);
-        if (id == null) {
-            id = (new UID().toString());
-            Model.getCoreHelper().setUUID(op, id);
-        }
         return Section.generateBottom(id, localIndent);
     }
 
@@ -2290,7 +2302,7 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateTaggedValue(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateTaggedValue(java.lang.Object)
      */
     public String generateTaggedValue(Object tv) {
         if (tv == null) return "";
@@ -2409,14 +2421,14 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateAssociation(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateAssociation(java.lang.Object)
      */
     public String generateAssociation(Object handle) {
         return ""; // Maybe Model.getFacade().getName(handle) ???
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateAssociationEnd(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateAssociationEnd(java.lang.Object)
      */
     public String generateAssociationEnd(Object ae) {
         if (!Model.getFacade().isNavigable(ae)) {
@@ -2544,7 +2556,7 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateVisibility(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateVisibility(java.lang.Object)
      */
     public String generateVisibility(Object o) {
         if (Model.getFacade().isAAttribute(o)) {
@@ -2671,7 +2683,7 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateMultiplicity(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateMultiplicity(java.lang.Object)
      */
     public String generateMultiplicity(Object multiplicity) {
         if (multiplicity == null
@@ -2788,14 +2800,14 @@ public class GeneratorCpp extends Generator2
      */
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateState(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateState(java.lang.Object)
      */
     public String generateState(Object handle) {
         return Model.getFacade().getName(handle);
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateStateBody(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateStateBody(java.lang.Object)
      */
     public String generateStateBody(Object state) {
         String s = "";
@@ -2828,7 +2840,7 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateTransition(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateTransition(java.lang.Object)
      */
     public String generateTransition(Object transition) {
         String s = generate(Model.getFacade().getName(transition));
@@ -2843,7 +2855,7 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateAction(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateAction(java.lang.Object)
      */
     public String generateAction(Object m) {
         Object script = Model.getFacade().getScript(m);
@@ -2853,7 +2865,7 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateActionState(java.lang.Object)
      */
     public String generateActionState(Object actionState) {
         String ret = "";
@@ -2868,7 +2880,7 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateGuard(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateGuard(java.lang.Object)
      */
     public String generateGuard(Object guard) {
         if (Model.getFacade().getExpression(guard) != null)
@@ -2877,7 +2889,7 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider2#generateMessage(java.lang.Object)
+     * @see org.argouml.notation.NotationProvider2#generateMessage(java.lang.Object)
      */
     public String generateMessage(Object message) {
         if (message == null) {
@@ -2981,7 +2993,7 @@ public class GeneratorCpp extends Generator2
 
     /**
      * @return Whether sections are generated and how.
-     * @see setUseSect
+     * @see #setUseSect(int)
      */
     public int getUseSect() {
         return Section.getUseSect();
