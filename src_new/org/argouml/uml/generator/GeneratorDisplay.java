@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -958,11 +958,8 @@ public class GeneratorDisplay extends Generator2 {
      * @see org.argouml.notation.NotationProvider2#generateObjectFlowState(java.lang.Object)
      */
     public String generateObjectFlowState(Object m) {
-        Object c = Model.getFacade().getType(m);
-        if (c == null) {
-            return "";
-        }
-        return Model.getFacade().getName(c);
+        // This method is never used.
+        return "";
     }
 
     /**

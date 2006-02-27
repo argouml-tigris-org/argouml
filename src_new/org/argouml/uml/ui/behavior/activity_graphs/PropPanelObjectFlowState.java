@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,23 +24,30 @@
 
 package org.argouml.uml.ui.behavior.activity_graphs;
 
-import javax.swing.ImageIcon;
+import java.util.Collection;
+import java.util.Vector;
+
 import javax.swing.JComboBox;
+import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.tigris.swidgets.Orientation;
+import org.argouml.model.Model;
+import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState;
 import org.argouml.util.ConfigLoader;
 
 /**
+ * The properties panel for an ObjectFlowState.
  *
  * @author mkl
- *
  */
 public class PropPanelObjectFlowState extends AbstractPropPanelState {
 
     private JComboBox classifierComboBox;
+    protected JScrollPane statesScroll;
 
     private UMLObjectFlowStateClassifierComboBoxModel classifierComboBoxModel =
         new UMLObjectFlowStateClassifierComboBoxModel();
@@ -49,20 +56,8 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
      * Constructor
      */
     public PropPanelObjectFlowState() {
-        this("ObjectFlowState", lookupIcon("ObjectFlowState"), ConfigLoader
+        super("ObjectFlowState", lookupIcon("ObjectFlowState"), ConfigLoader
                 .getTabPropsOrientation());
-    }
-
-    /**
-     * Constructor
-     *
-     * @param name the name of the properties panel, shown at the top
-     * @param icon the icon shown at the top
-     * @param orientation the orientation
-     */
-    public PropPanelObjectFlowState(String name, ImageIcon icon,
-            Orientation orientation) {
-        super(name, icon, ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
@@ -71,11 +66,18 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
         addField(Translator.localize("label.container"),
                 getContainerScroll());
 
-        // field for Classifier(InState)
+        // field for Classifier(not InState)
         addField(Translator.localize("label.type"),
                 getClassifierComboBox());
 
-        //TODO: Add field for State
+        // field for States
+        AbstractActionAddModelElement action = 
+            new ActionAddOFSState();
+        UMLMutableLinkedList list = new UMLMutableLinkedList(
+                new UMLOFSStateListModel(), action, null, null, true);
+        statesScroll = new JScrollPane(list);
+        addField(Translator.localize("label.instate"),
+                statesScroll);
 
         addSeperator();
 
@@ -85,6 +87,15 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
                 getOutgoingScroll());
 
     }
+
+
+    /**
+     * @see org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState#addExtraButtons()
+     */
+    protected void addExtraButtons() {
+        /* We do not want the Internal Transitions button here. */
+    }
+
 
     /**
      * @return the combo box for the type (Classifier or ClassifierInState)
@@ -99,3 +110,118 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
 
     }
 }
+
+class UMLOFSStateListModel extends UMLModelElementListModel2 {
+    
+    /**
+     * Constructor for UMLOFSStateListModel.
+     */
+    public UMLOFSStateListModel() {
+        /* TODO: This needs work... 
+         * We also need to listen to addition/removal 
+         * of states to/from a ClassifierInState. */
+        super("type");
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        if (getTarget() != null) {
+            Object classifier = Model.getFacade().getType(getTarget());
+            if (Model.getFacade().isAClassifierInState(classifier)) {
+                Collection c = Model.getFacade().getInStates(classifier);
+                setAllElements(c);
+            }
+        }
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
+     */
+    protected boolean isValidElement(Object elem) {
+        Object t = getTarget();
+        if (Model.getFacade().isAState(elem) 
+                && Model.getFacade().isAObjectFlowState(t)) {
+            Object type = Model.getFacade().getType(t);
+            if (Model.getFacade().isAClassifierInState(type)) {
+                Collection c = Model.getFacade().getInStates(type);
+                if (c.contains(elem)) return true;
+            }
+        }
+        return false;
+    }
+}
+
+class ActionAddOFSState extends AbstractActionAddModelElement {
+    
+    private Object choiceClass = Model.getMetaTypes().getState();
+    
+    
+    public ActionAddOFSState() {
+        super();
+        this.setMultiSelect(true);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
+     */
+    protected void doIt(Vector selected) {
+        Object t = getTarget();
+        if (Model.getFacade().isAObjectFlowState(t)) {
+            Object type = Model.getFacade().getType(t);
+            if (Model.getFacade().isAClassifierInState(type)) {
+                Model.getActivityGraphsHelper().setInStates(type, selected);
+            } else if (Model.getFacade().isAClassifier(type) 
+                    && (selected != null) 
+                    && (selected.size() > 0)) {
+                /* So, we found a Classifier that is not a ClassifierInState.
+                 * And at least one state has been selected. 
+                 * Well, let's correct that: */
+                Object cis = Model.getActivityGraphsFactory().buildClassifierInState(type, selected);
+                Model.getCoreHelper().setType(t, cis);
+            }
+        }
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
+     */
+    protected Vector getChoices() {
+        Vector ret = new Vector();
+        Object t = getTarget();
+        if (Model.getFacade().isAObjectFlowState(t)) {
+            Object classifier = Model.getFacade().getType(t);
+            if (Model.getFacade().isAClassifierInState(classifier)) {
+                classifier = Model.getFacade().getType(classifier);
+            }
+            if (Model.getFacade().isAClassifier(classifier)) {
+                ret.addAll(Model.getModelManagementHelper()
+                    .getAllModelElementsOfKindWithModel(classifier, choiceClass));
+            }
+        }
+        return ret;
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
+     */
+    protected String getDialogTitle() {
+        return Translator.localize("dialog.title.add-state");
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
+     */
+    protected Vector getSelected() {
+        Object t = getTarget();
+        if (Model.getFacade().isAObjectFlowState(t)) {
+            Object type = Model.getFacade().getType(t);
+            if (Model.getFacade().isAClassifierInState(type)) {
+                return new Vector(Model.getFacade().getInStates(type));
+            }
+        }
+        return new Vector();
+    }
+}
+

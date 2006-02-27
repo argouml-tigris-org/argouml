@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,15 +31,16 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.FigSingleLineText;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
@@ -49,8 +50,15 @@ import org.tigris.gef.presentation.FigText;
 /**
  * Class to display graphics for a UML ObjectFlowState in a diagram.<p>
  *
- * The Fig of this modelelement may either contain the Classifier name, or
- * it contains the name of the ClassifierInState AND the name of its state.
+ * The Fig of this modelelement may either represent the following UMLelements:
+ * <p> 
+ * (1) an ObjectFlowState with a Classifier as type, or <p> 
+ * (2) an ObjectFlowState with a ClassifierInState as type. <p>
+ * 
+ * In both cases (1) and (2), the Fig shows the underlined name of the Classifier,
+ * and in the latter case (2), it shows also the names of the states 
+ * of the ClassifierInState. <p>
+ * 
  * In the examples in the UML standard, this is written like<pre>
  *      PurchaseOrder
  *       [approved]
@@ -73,7 +81,6 @@ public class FigObjectFlowState extends FigNodeModelElement {
     private static final int HEIGHT = 40;
 
     private FigRect cover;
-    private FigText classifier; // the classifier(instate) name
     private FigText state;      // the state name
 
     ////////////////////////////////////////////////////////////////
@@ -89,35 +96,21 @@ public class FigObjectFlowState extends FigNodeModelElement {
             new FigRect(OFFSET, OFFSET, WIDTH, HEIGHT,
                     Color.black, Color.white);
 
-        classifier = new FigText(OFFSET, HEIGHT - OFFSET, WIDTH, 21);
-        classifier.setFont(getLabelFont());
-        classifier.setTextColor(Color.black);
-        classifier.setReturnAction(FigText.END_EDITING);
-        classifier.setTabAction(FigText.END_EDITING);
-        classifier.setLineWidth(0);
-        classifier.setFilled(false);
-        classifier.setUnderline(true);
+        getNameFig().setUnderline(true);
+        getNameFig().setLineWidth(0);
 
-        state = new FigText(OFFSET, OFFSET, WIDTH, 21);
-        state.setFont(getLabelFont());
-        state.setTextColor(Color.black);
-        state.setReturnAction(FigText.END_EDITING);
-        state.setReturnAction(FigText.END_EDITING);
-        state.setLineWidth(0);
-        state.setFilled(false);
+        state = new FigSingleLineText(OFFSET, OFFSET, WIDTH, 21, true);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
         addFig(cover);
-        addFig(classifier);
+        addFig(getNameFig());
         addFig(state);
 
         enableSizeChecking(false);
         setReadyToEdit(false);
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
-
-        setNameFig(null); // DEBUG only!
 
         ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
@@ -136,13 +129,67 @@ public class FigObjectFlowState extends FigNodeModelElement {
     }
 
     /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
+     */
+    protected void initNotationProviders(Object own) {
+        super.initNotationProviders(own);
+    }
+
+    /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if ((mee.getSource() == getOwner())
-            || (mee.getSource() == Model.getFacade().getType(getOwner()))) {
-            renderingChanged();
+        renderingChanged();
+        updateListeners(getOwner());
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
+    protected void updateListeners(Object newOwner) {
+        /* Let's NOT do this: super.updateListeners(newOwner); 
+         * We only need to listen to its "type". */
+        Object oldOwner = getOwner();
+        if (oldOwner != null) {
+            Model.getPump().removeModelEventListener(this, oldOwner, "type");
+            // lets remove all registered listeners for the type
+            Object type = Model.getFacade().getType(oldOwner);
+            if (Model.getFacade().isAClassifier(type)) {
+                if (Model.getFacade().isAClassifierInState(type)) {
+                    Object classifier = Model.getFacade().getType(type);
+                    Model.getPump().removeModelEventListener(this, classifier, "name");
+                    Model.getPump().removeModelEventListener(this, type, "inState");
+                    Collection states = Model.getFacade().getInStates(type);
+                    Iterator i = states.iterator();
+                    while (i.hasNext()) {
+                        Model.getPump().removeModelEventListener(this, i.next(), 
+                                "name");
+                    }
+                } else {
+                    Model.getPump().removeModelEventListener(this, type, "name");    
+                }
+            }
+        }
+        if (newOwner != null) {
+            Model.getPump().addModelEventListener(this, newOwner, "type");
+            // register for events from the type
+            Object type = Model.getFacade().getType(newOwner);
+            if (Model.getFacade().isAClassifier(type)) {
+                if (Model.getFacade().isAClassifierInState(type)) {
+                    Object classifier = Model.getFacade().getType(type);
+                    Model.getPump().addModelEventListener(this, classifier, "name");
+                    Model.getPump().addModelEventListener(this, type, "inState");
+                    Collection states = Model.getFacade().getInStates(type);
+                    Iterator i = states.iterator();
+                    while (i.hasNext()) {
+                        Model.getPump().addModelEventListener(this, i.next(), 
+                                "name");
+                    }
+                } else {
+                    Model.getPump().addModelEventListener(this, type, "name");    
+                }
+            }
         }
     }
 
@@ -161,7 +208,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRect) it.next());
         figClone.cover = (FigRect) it.next();
-        figClone.classifier = (FigText) it.next();
+        figClone.setNameFig((FigText) it.next());
         figClone.state = (FigText) it.next();
         return figClone;
     }
@@ -172,7 +219,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
-        Dimension tempDim = classifier.getMinimumSize();
+        Dimension tempDim = getNameFig().getMinimumSize();
         int w = tempDim.width + PADDING * 2;
         int h = tempDim.height + PADDING;
         tempDim = state.getMinimumSize();
@@ -196,11 +243,11 @@ public class FigObjectFlowState extends FigNodeModelElement {
         //if (getNameFig() == null) return;
         Rectangle oldBounds = getBounds();
 
-        Dimension classDim = classifier.getMinimumSize();
+        Dimension classDim = getNameFig().getMinimumSize();
         Dimension stateDim = state.getMinimumSize();
         /* the height of the blank space above and below the text figs: */
         int blank = (h - PADDING - classDim.height - stateDim.height) / 2;
-        classifier.setBounds(x + PADDING,
+        getNameFig().setBounds(x + PADDING,
                 y + blank,
                 w - PADDING * 2,
                 classDim.height);
@@ -236,8 +283,8 @@ public class FigObjectFlowState extends FigNodeModelElement {
                 return;
             }
             String theNewText =
-                Notation.generate(this, getOwner()); // the ObjectFlowState
-            classifier.setText(theNewText);
+                generateObjectFlowState1(getOwner()); // the ObjectFlowState
+            getNameFig().setText(theNewText);
         }
     }
 
@@ -249,38 +296,57 @@ public class FigObjectFlowState extends FigNodeModelElement {
             if (getOwner() == null) {
                 return;
             }
-            String theNewText = "";
-            Object cis = Model.getFacade().getType(getOwner());
-            if (Model.getFacade().isAClassifierInState(cis)) {
-                theNewText = "[" + Notation.generate(this, cis) + "]";
-            }
+            String theNewText = generateObjectFlowState2(getOwner());
             state.setText(theNewText);
         }
     }
 
+    /**
+     * TODO: To be moved into the Notation subsystem.
+     * 
+     * @param m the ObjectFlowState
+     * @return a string showing the name of the Classifier
+     */
+    private String generateObjectFlowState1(Object m) {
+        Object classifier = Model.getFacade().getType(m);
+        if (Model.getFacade().isAClassifierInState(classifier)) {
+            classifier = Model.getFacade().getType(classifier); 
+        }
+        if (classifier == null) {
+            return "";
+        }
+        String name = Model.getFacade().getName(classifier);
+        if (name == null) name = "";
+        return name;
+    }
+    
+    /**
+     * TODO: To be moved into the Notation subsystem.
+     * 
+     * @param m the ObjectFlowState
+     * @return a string showing the states
+     */
+    private String generateObjectFlowState2(Object m) {
+        StringBuffer theNewText = new StringBuffer("");
+        Object cis = Model.getFacade().getType(getOwner());
+        if (Model.getFacade().isAClassifierInState(cis)) {
+            theNewText.append("[ ");
+            Collection states = Model.getFacade().getInStates(cis);
+            Iterator i = states.iterator();
+            boolean first = true;
+            while (i.hasNext()) {
+                if (!first) theNewText.append(", ");
+                first = false;
+                Object state = i.next();
+                theNewText.append(Model.getFacade().getName(state));
+            }
+            theNewText.append(" ]");
+        }
+        return theNewText.toString();
+    }
+
     ////////////////////////////////////////////////////////////////
     // Fig accessors
-
-    /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#getNameFig()
-     */
-    public FigText getNameFig() {
-        return null;
-    }
-
-    /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#getName()
-     */
-    public String getName() {
-        return null;
-    }
-
-    /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#setName(java.lang.String)
-     */
-    public void setName(String n) {
-
-    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
@@ -347,7 +413,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         if (ke.isConsumed() || getOwner() == null) {
             return;
         }
-        classifier.keyTyped(ke);
+        getNameFig().keyTyped(ke);
     }
 
     /**
@@ -355,7 +421,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         try {
-            if (ft == classifier && this.getOwner() != null) {
+            if (ft == getNameFig() && this.getOwner() != null) {
                 ParserDisplay.SINGLETON.parseObjectFlowState1(ft.getText(),
                     this.getOwner());
             } else if (ft == state && this.getOwner() != null) {
@@ -380,7 +446,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
-        if (ft == classifier) {
+        if (ft == getNameFig()) {
             showHelp("parsing.help.fig-objectflowstate1");
         }
         if (ft == state) {
