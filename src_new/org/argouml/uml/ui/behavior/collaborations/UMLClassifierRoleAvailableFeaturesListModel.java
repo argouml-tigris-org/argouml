@@ -115,7 +115,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
 		"base");
         }
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (!Model.getFacade().isABase(target))
+        if (!Model.getFacade().isAModelElement(target))
             return;
         setListTarget(target);
         if (getTarget() != null) {

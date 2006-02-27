@@ -89,7 +89,7 @@ public abstract class ActionAddDiagram extends UMLAction {
         Project p = ProjectManager.getManager().getCurrentProject();
         Object target = TargetManager.getInstance().getModelTarget();
         Object ns = null;
-        if (target == null || !Model.getFacade().isABase(target)) {
+        if (target == null || !Model.getFacade().isAModelElement(target)) {
             target = p.getRoot();
         }
         if (Model.getFacade().isANamespace(target)) {

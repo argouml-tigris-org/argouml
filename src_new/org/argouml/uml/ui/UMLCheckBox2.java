@@ -93,11 +93,11 @@ public abstract class UMLCheckBox2 extends JCheckBox
      */
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (Model.getFacade().isABase(checkBoxTarget)) {
+        if (Model.getFacade().isAModelElement(checkBoxTarget)) {
             Model.getPump().removeModelEventListener(this, checkBoxTarget, propertySetName);
         }
 
-        if (Model.getFacade().isABase(target)) {
+        if (Model.getFacade().isAModelElement(target)) {
             checkBoxTarget = target;
             Model.getPump().addModelEventListener(this, checkBoxTarget, propertySetName);
             buildModel();

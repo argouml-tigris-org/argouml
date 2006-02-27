@@ -166,7 +166,7 @@ public abstract class ActionBaseDelete extends UMLAction {
         if (target instanceof Fig) {
             target = ((Fig) target).getOwner();
         }
-        if (Model.getFacade().isABase(target)) {
+        if (Model.getFacade().isAModelElement(target)) {
             newTarget = Model.getFacade().getModelElementContainer(target);
         } else if (target instanceof Diagram) {
             Diagram firstDiagram = (Diagram) p.getDiagrams().get(0);

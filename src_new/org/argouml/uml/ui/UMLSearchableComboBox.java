@@ -85,7 +85,7 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
         ComboBoxModel model = getModel();
         for (int i = 0; i < model.getSize(); i++) {
             Object element = model.getElementAt(i);
-            if (Model.getFacade().isABase(element)) {
+            if (Model.getFacade().isAModelElement(element)) {
                 if (getRenderer() instanceof UMLListCellRenderer2) {
                     String labelText = ((UMLListCellRenderer2) getRenderer())
                         .makeText(element);

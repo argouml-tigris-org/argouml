@@ -181,7 +181,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         // this is that the detailspane is configurable and cannot
         // know what's the correct target for some tab.
         if (!(t instanceof Fig)) {
-            if (Model.getFacade().isABase(t)) {
+            if (Model.getFacade().isAModelElement(t)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
                 Collection col = p.findFigsForMember(t);
                 if (col == null || col.isEmpty()) {
@@ -348,7 +348,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
     public boolean shouldBeEnabled(Object targetItem) {
 
         if (!(targetItem instanceof Fig)) {
-            if (Model.getFacade().isABase(targetItem)) {
+            if (Model.getFacade().isAModelElement(targetItem)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
                 ArgoDiagram diagram = p.getActiveDiagram();
                 if (diagram == null) {
@@ -387,7 +387,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
 //    public boolean shouldBeEnabled(Object targetItem) {
 //
 //        if (!(targetItem instanceof Fig)) {
-//            if (Model.getFacade().isABase(targetItem)) {
+//            if (Model.getFacade().isAModelElement(targetItem)) {
 //                Project p = ProjectManager.getManager().getCurrentProject();
 //                Fig f = p.getActiveDiagram().presentationFor(targetItem);
 //

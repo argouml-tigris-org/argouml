@@ -962,7 +962,7 @@ public class Project implements java.io.Serializable, TargetListener {
             TargetManager.getInstance().removeHistoryElement(obj);
             trashcan.add(obj);
         }
-        if (Model.getFacade().isABase(obj)) {
+        if (Model.getFacade().isAModelElement(obj)) {
             // an object that can be represented
             Collection allFigs = findAllPresentationsFor(obj, true);
             removeFigs(allFigs);

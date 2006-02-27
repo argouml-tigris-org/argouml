@@ -73,9 +73,9 @@ public class NameOrder
      *         A positive or negative int if the names differ.
      */
     protected int compareUserObjects(Object obj, Object obj1) {
-        if ((obj instanceof Diagram || Model.getFacade().isABase(obj))
+        if ((obj instanceof Diagram || Model.getFacade().isAModelElement(obj))
                 && (obj1 instanceof Diagram
-                        || Model.getFacade().isABase(obj1))) {
+                        || Model.getFacade().isAModelElement(obj1))) {
 	    String name = getName(obj);
 	    String name1 = getName(obj1);
             int ret = name.compareTo(name1);

@@ -274,7 +274,7 @@ public class TabProps
     public void setTarget(Object t) {
         // targets ought to be modelelements or diagrams
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        if (!(t == null || Model.getFacade().isABase(t)
+        if (!(t == null || Model.getFacade().isAModelElement(t)
                 || t instanceof ArgoDiagram)) {
             return;
         }
@@ -712,7 +712,7 @@ public class TabProps
      */
     public boolean shouldBeEnabled(Object t) {
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        if (t instanceof Diagram || Model.getFacade().isABase(t)) {
+        if (t instanceof Diagram || Model.getFacade().isAModelElement(t)) {
             shouldBeEnabled = true;
         } else {
             shouldBeEnabled = false;
