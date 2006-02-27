@@ -26,9 +26,7 @@ package org.argouml.model;
 
 
 /**
- * The interface for the factory for Uml.<p>
- *
- * Created from the old UmlFactory.
+ * The interface for the UmlFactory.
  */
 public interface UmlFactory {
     /**

@@ -25,11 +25,9 @@
 package org.argouml.model;
 
 /**
- * The interface for the factory of Collaboration.<p>
- *
- * Created from the old CollaborationsFactory.
+ * The interface for the factory of Collaboration.
  */
-public interface CollaborationsFactory {
+public interface CollaborationsFactory extends Factory {
     /**
      * Create an empty but initialized instance of a UML AssociationEndRole.
      *
@@ -59,11 +57,27 @@ public interface CollaborationsFactory {
     Object createCollaboration();
 
     /**
+     * Create an empty but initialized instance of a CollaborationInstanceSet.
+     *
+     * @since UML 1.4
+     * @return an initialized CollaborationInstanceSet instance.
+     */
+    Object createCollaborationInstanceSet();
+
+    /**
      * Create an empty but initialized instance of a UML Interaction.
      *
      * @return an initialized UML Interaction instance.
      */
     Object createInteraction();
+
+    /**
+     * Create an empty but initialized instance of an InteractionInstanceSet.
+     * 
+     * @since UML 1.4
+     * @return an initialized InteractionInstanceSet instance.
+     */
+    Object createInteractionInstanceSet();
 
     /**
      * Create an empty but initialized instance of a UML Message.

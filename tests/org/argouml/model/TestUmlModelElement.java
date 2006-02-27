@@ -41,18 +41,13 @@ public class TestUmlModelElement extends GenericUmlObjectTestFixture {
     }
 
     /**
-     * Test the creation of a ModelElement.
+     * Test Model Element
      */
     public void testModelElement() {
-	Object me =
-	    Model.getUmlFactory().buildNode(Model.getMetaTypes().getObject());
-	assertNotNull("Didn't create object", me);
-	assertTrue("Should be a base", Model.getFacade().isABase(me));
-	assertTrue("Should be a model element",
-		   Model.getFacade().isAModelElement(me));
-	runTruthTests(me);
+        // ModelElement is abstract, so no create tests
+        // TODO: Add any other relevant tests        
     }
-
+    
     /**
      * @see junit.framework.TestCase#setUp()
      */

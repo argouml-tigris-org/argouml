@@ -26,11 +26,9 @@ package org.argouml.model;
 
 
 /**
- * The interface for the factory for StateMachines.<p>
- *
- * Created from the old StateMachinesFactory.
+ * The interface for the factory for StateMachines.
  */
-public interface StateMachinesFactory {
+public interface StateMachinesFactory extends Factory {
     /**
      * Create an empty but initialized instance of a UML CallEvent.
      *

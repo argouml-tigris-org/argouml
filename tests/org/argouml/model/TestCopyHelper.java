@@ -24,6 +24,7 @@
 
 package org.argouml.model;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import junit.framework.TestCase;
@@ -85,7 +86,6 @@ public class TestCopyHelper extends TestCase {
 	Model.getCoreHelper().addOwnedElement(m1, k);
 
         st = Model.getExtensionMechanismsFactory().buildStereotype("clsStT", k);
-        Model.getExtensionMechanismsHelper().setBaseClass(st, "Class");
         Model.getCoreHelper().addOwnedElement(m1, st);
 
 	// See if we can copy a class right off
@@ -149,7 +149,6 @@ public class TestCopyHelper extends TestCase {
         Model.getCoreHelper().addOwnedElement(m1, d);
 
         st = Model.getExtensionMechanismsFactory().buildStereotype("dttStT", d);
-        Model.getExtensionMechanismsHelper().setBaseClass(st, "DataType");
         Model.getCoreHelper().addOwnedElement(m1, st);
 
 	// See if we can copy a datatype right off
@@ -210,7 +209,7 @@ public class TestCopyHelper extends TestCase {
         Model.getCoreHelper().addOwnedElement(m1, i);
 
         st = Model.getExtensionMechanismsFactory().buildStereotype("intStT", i);
-        Model.getExtensionMechanismsHelper().setBaseClass(st, "Interface");
+        Model.getExtensionMechanismsHelper().addBaseClass(st, "Interface");
         Model.getCoreHelper().addOwnedElement(m1, st);
 
 	// See if we can copy an interface right off
@@ -271,7 +270,6 @@ public class TestCopyHelper extends TestCase {
         Model.getCoreHelper().addOwnedElement(m1, p);
 
         st = Model.getExtensionMechanismsFactory().buildStereotype("pkgStT", p);
-        Model.getExtensionMechanismsHelper().setBaseClass(st, "Package");
         Model.getCoreHelper().addOwnedElement(m1, st);
 
 	// See if we can copy a package right off
@@ -333,7 +331,6 @@ public class TestCopyHelper extends TestCase {
 
         st = Model.getExtensionMechanismsFactory()
                 .buildStereotype("sttStT", m1);
-        Model.getExtensionMechanismsHelper().setBaseClass(st, "Stereotype");
         Model.getCoreHelper().addOwnedElement(m1, st);
 
 	// See if we can copy a stereotype right off
@@ -350,7 +347,8 @@ public class TestCopyHelper extends TestCase {
                 Model.getVisibilityKind().getPublic());
         Model.getCoreHelper().setSpecification(s, true);
         Model.getCoreHelper().setTaggedValue(s, "TVKey", "TVValue");
-        Model.getExtensionMechanismsHelper().setBaseClass(s, "ModelElement");
+        Model.getExtensionMechanismsHelper().removeBaseClass(s, "Model");
+        Model.getExtensionMechanismsHelper().addBaseClass(s, "ModelElement");
         Model.getExtensionMechanismsHelper().setIcon(s, "Icon1");
 	c = helper.copy(s, m2);
 	checkStereotypeCopy(s, c);
@@ -362,13 +360,15 @@ public class TestCopyHelper extends TestCase {
         Model.getCoreHelper().setSpecification(s, false);
         Model.getCoreHelper().setTaggedValue(s, "TVKey", "TVNewValue");
         Model.getExtensionMechanismsHelper().addCopyStereotype(s, st);
-        Model.getExtensionMechanismsHelper().setBaseClass(st, "ClassifierRole");
+        Model.getExtensionMechanismsHelper().addBaseClass(st, "ClassifierRole");
         Model.getExtensionMechanismsHelper().setIcon(s, "Icon2");
         assertEquals("TestStereotype", Model.getFacade().getName(c));
         assertTrue(Model.getFacade().getVisibility(c) == Model
                 .getVisibilityKind().getPublic());
         assertTrue(Model.getFacade().isSpecification(c));
-        assertEquals("ModelElement", Model.getFacade().getBaseClass(c));
+        Collection bases = Model.getFacade().getBaseClasses(c);
+        assertEquals(1, bases.size());
+        assertEquals("ModelElement", bases.iterator().next());
         assertEquals("Icon1", Model.getFacade().getIcon(c));
         assertEquals("TVValue", Model.getFacade().getValueOfTag(
                 Model.getFacade().getTaggedValue(c, "TVKey")));
@@ -380,9 +380,6 @@ public class TestCopyHelper extends TestCase {
 	// See if two copies look like copies of eachother
 	c2 = helper.copy(s, m2);
 	checkStereotypeCopy(c, c2);
-    }
-
-    private void checkBaseCopy(Object b1, Object b2) {
     }
 
     private void checkClassCopy(Object c1, Object c2) {
@@ -400,10 +397,6 @@ public class TestCopyHelper extends TestCase {
 	checkClassifierCopy(d1, d2);
     }
 
-    private void checkElementCopy(Object e1, Object e2) {
-	checkBaseCopy(e1, e2);
-    }
-
     private void checkGeneralizableElementCopy(
     		Object e1,
     		Object e2) {
@@ -411,8 +404,10 @@ public class TestCopyHelper extends TestCase {
 
 	assertTrue(Model.getFacade().isAbstract(e1) == Model.getFacade()
                 .isAbstract(e2));
-        assertTrue(Model.getFacade().isLeaf(e1) == Model.getFacade().isLeaf(e2));
-        assertTrue(Model.getFacade().isRoot(e1) == Model.getFacade().isRoot(e2));
+        assertTrue(Model.getFacade().isLeaf(e1) 
+                == Model.getFacade().isLeaf(e2));
+        assertTrue(Model.getFacade().isRoot(e1)
+                == Model.getFacade().isRoot(e2));
     }
 
     private void checkInterfaceCopy(Object i1, Object i2) {
@@ -420,20 +415,21 @@ public class TestCopyHelper extends TestCase {
     }
 
     private void checkModelElementCopy(Object e1, Object e2) {
-	checkElementCopy(e1, e2);
+        // Parent is Element, but it has no attributes or associations to check
+	// checkElementCopy(e1, e2);
 	if (Model.getFacade().getName(e1) == null) {
             assertNull(Model.getFacade().getName(e2));
         } else {
             assertEquals(Model.getFacade().getName(e1), Model.getFacade()
                     .getName(e2));
         }
-        assertTrue(Model.getFacade().getVisibility(e1) == Model.getFacade()
-                .getVisibility(e2));
-        assertTrue(Model.getFacade().isSpecification(e1) == Model.getFacade()
-                .isSpecification(e2));
-
-        assertTrue(Model.getFacade().getTaggedValuesCollection(e1).size() 
-                == Model.getFacade().getTaggedValuesCollection(e2).size());
+        assertEquals(Model.getFacade().getVisibility(e1),
+                     Model.getFacade().getVisibility(e2));
+        assertEquals(Model.getFacade().isSpecification(e1),
+                     Model.getFacade().isSpecification(e2));
+        assertEquals(Model.getFacade().getTaggedValuesCollection(e1).size(), 
+                     Model.getFacade().getTaggedValuesCollection(e2).size());
+        
 	Iterator it = Model.getFacade().getTaggedValues(e1);
 	while (it.hasNext()) {
 	    Object tv = it.next();
@@ -474,12 +470,8 @@ public class TestCopyHelper extends TestCase {
 
     private void checkStereotypeCopy(Object s1, Object s2) {
 	checkGeneralizableElementCopy(s1, s2);
-	if (Model.getFacade().getBaseClass(s1) == null) {
-	    assertNull(Model.getFacade().getBaseClass(s2));
-	} else {
-            assertEquals(Model.getFacade().getBaseClass(s1), Model.getFacade()
-                    .getBaseClass(s2));
-        }
+        assertEquals(Model.getFacade().getBaseClasses(s1), Model.getFacade()
+                .getBaseClasses(s2));
 
 	if (Model.getFacade().getIcon(s1) == null) {
 	    assertNull(Model.getFacade().getIcon(s2));

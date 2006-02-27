@@ -26,8 +26,6 @@ package org.argouml.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.argouml.kernel.ProjectManager;
-
 import junit.framework.TestCase;
 
 /**

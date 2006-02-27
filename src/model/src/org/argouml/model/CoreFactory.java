@@ -26,13 +26,18 @@ package org.argouml.model;
 
 import java.util.Collection;
 
-
 /**
- * The interface to the factory for the Core.<p>
- *
- * Created from the old CoreFactory.
+ * The interface to the factory for the Core.
  */
-public interface CoreFactory {
+public interface CoreFactory extends Factory {
+    
+    /**
+     * Create an empty but initialized instance of a UML Abstraction.
+     * 
+     * @return an initialized UML Abstraction instance.
+     */
+    public Object createAbstraction();
+    
     /**
      * Build an empty but initialized instance of a UML Abstraction
      * with a given name.
@@ -44,6 +49,28 @@ public interface CoreFactory {
      */
     Object buildAbstraction(String name, Object supplier, Object client);
 
+    /**
+     * Create an empty but initialized instance of an Artifact
+     * 
+     * @since UML 1.4
+     * @return an initialized Artifact instance.
+     */
+    public Object createArtifact();
+    
+    /**
+     * Create an empty but initialized instance of a UML Association.
+     * 
+     * @return an initialized UML Association instance.
+     */
+    public Object createAssociation();
+
+    /**
+     * Create an empty but initialized instance of a UML AssociationClass.
+     * 
+     * @return an initialized UML AssociationClass instance.
+     */
+    public Object createAssociationClass();
+    
     /**
      * Create an empty but initialized instance of a UML AssociationEnd.
      *
@@ -99,6 +126,13 @@ public interface CoreFactory {
      * @return an initialized UML DataType instance.
      */
     Object createDataType();
+    
+    /**
+    * Create an empty but initialized instance of a UML Dependency.
+    *
+    * @return an initialized UML Dependency instance.
+    */
+    public Object createDependency();
 
     /**
      * Create an empty but initialized instance of a UML ElementResidence.
@@ -106,6 +140,20 @@ public interface CoreFactory {
      * @return an initialized UML ElementResidence instance.
      */
     Object createElementResidence();
+    
+    /**
+     * Create an Enumeration.
+     * @return Object new Enumeration
+     * @since UML 1.4
+     */
+    Object createEnumeration();
+
+    /**
+     * Create an EnumerationLiteral.
+     * @return Object new Enumeration
+     * @since UML 1.4
+     */
+    Object createEnumerationLiteral();
 
     /**
      * Create an empty but initialized instance of a UML Flow.
@@ -155,6 +203,30 @@ public interface CoreFactory {
      * @return an initialized UML Permission instance.
      */
     Object createPermission();
+    
+    /**
+     * Create a UML Primitive.
+     * 
+     * @since UML 1.4
+     * @return an initialized UML Primitive instance.
+     */
+    public Object createPrimitive();
+
+    /**
+     * Create a UML ProgrammingLanguageDataType.
+     * 
+     * @since UML 1.4
+     * @return an initialized ProgrammingLanguageDataType
+     */
+    public Object createProgrammingLanguageDataType();
+
+    /**
+     * Create a UML TemplateArgument.
+     * 
+     * @since UML 1.4
+     * @return an initialized TemplateArgument instance.
+     */
+    public Object createTemplateArgument();
 
     /**
      * Create an empty but initialized instance of a UML TemplateParameter.

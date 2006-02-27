@@ -28,11 +28,9 @@ import java.util.List;
 
 
 /**
- * The interface for the factory for DataTypes.<p>
- *
- * Created from the old DataTypesFactory.
+ * The interface for the factory for DataTypes.
  */
-public interface DataTypesFactory {
+public interface DataTypesFactory extends Factory {
     /**
      * Create an empty but initialized instance of a UML ActionExpression.
      *

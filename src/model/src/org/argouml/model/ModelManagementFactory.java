@@ -25,11 +25,9 @@
 package org.argouml.model;
 
 /**
- * The interface for the factory for ModelManagement.<p>
- *
- * Created from the old ModelManagementFactory.
+ * The interface for the factory for ModelManagement.
  */
-public interface ModelManagementFactory {
+public interface ModelManagementFactory extends Factory {
     /**
      * Create an empty but initialized instance of a UML Model.
      *

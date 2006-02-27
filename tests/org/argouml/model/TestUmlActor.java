@@ -45,7 +45,8 @@ public class TestUmlActor extends GenericUmlObjectTestFixture {
 	Object o =
 	    Model.getUmlFactory().buildNode(Model.getMetaTypes().getActor());
 	assertNotNull("Didn't create object", o);
-	assertTrue("Should be a base", Model.getFacade().isABase(o));
+	assertTrue("Should be a model element", Model.getFacade()
+                .isAModelElement(o));
 	assertTrue("Should be a actor", Model.getFacade().isAActor(o));
 	runTruthTests(o);
     }

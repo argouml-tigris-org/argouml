@@ -100,7 +100,7 @@ public class TestExtensionMechanismsFactory extends TestCase {
                 .getExtensionMechanismsHelper();
         Object model = Model.getModelManagementFactory().createModel();
         Object stereo = emFactory.buildStereotype("mystereo", model);
-        Object td = emFactory.buildTagDefinition("myTD", stereo, null);
+        emFactory.buildTagDefinition("myTD", stereo, null);
         Object tv = emFactory.buildTaggedValue("myTD", "the tag value");
         Object clazz = Model.getCoreFactory().buildClass("MyClass", model);
         emHelper.addTaggedValue(clazz, tv);

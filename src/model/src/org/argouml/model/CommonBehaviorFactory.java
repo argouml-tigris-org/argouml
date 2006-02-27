@@ -26,11 +26,9 @@ package org.argouml.model;
 
 
 /**
- * The interface for the factory of the CommonBehavior.<p>
- *
- * Created from the old CommonBehaviorFactory.
+ * The interface for the factory of the CommonBehavior.
  */
-public interface CommonBehaviorFactory {
+public interface CommonBehaviorFactory extends Factory {
 
     /**
      * Create an empty but initialized instance of a UML ActionSequence.
@@ -73,6 +71,15 @@ public interface CommonBehaviorFactory {
      * @return an initialized UML CreateAction instance.
      */
     Object createCreateAction();
+    
+    /**
+     * Create an empty but initialized instance of a UML DataValue.
+     * 
+     * @since Argo 0.21.1 - UML 1.3 type, but not introduced to Model interface
+     *        until after UML 1.4 work was done.
+     * @return an initialized UML DataValue instance.
+     */
+    Object createDataValue();
 
     /**
      * Create an empty but initialized instance of a UML DestroyAction.
@@ -157,6 +164,14 @@ public interface CommonBehaviorFactory {
      * @return an initialized UML Stimulus instance.
      */
     Object createStimulus();
+    
+    /**
+     * Create an empty but initialized instance of a SubsystemInstance.
+     *
+     * @since UML 1.4
+     * @return an initialized SubsystemInstance instance.
+     */
+    Object createSubsystemInstance();
 
     /**
      * Create an empty but initialized instance of a UML TerminateAction.
@@ -173,10 +188,11 @@ public interface CommonBehaviorFactory {
     Object createUninterpretedAction();
 
     /**
-     * Builds a CallAction belonging to operation oper with a given name.
+     * Builds a CallAction belonging to operation oper with a given name.<p>
+     * 
      * Ownership of this modelelement is not set! It is unwise to build a
      * callaction without an operation since the multiplicity according to the
-     * UML spec 1.3 is 1..1. Therefore precondition is that there is an
+     * UML 1.3 spec is 1..1. Therefore precondition is that there is an
      * operation.
      *
      * @param oper the given operation
@@ -186,10 +202,13 @@ public interface CommonBehaviorFactory {
     Object buildCallAction(Object oper, String name);
 
     /**
-     * Builds a new uninterpreted action. If the argument is an action state,
-     * the new action is set as the entry action.
-     *
-     * @param actionState the given action state or null
+     * Builds a new uninterpreted action.<p>
+     * 
+     * If the argument is an action state, the new action is set as the entry
+     * action.
+     * 
+     * @param actionState
+     *            the given action state or null
      * @return the newly build UninterpretedAction
      */
     Object buildUninterpretedAction(Object actionState);
@@ -220,12 +239,14 @@ public interface CommonBehaviorFactory {
     Object buildSignal(Object feature);
 
     /**
-     * Builds a stimulus based on a given link. The link must have two
-     * linkends that are connected to an instance. These instances are
-     * used as sender and receiver of the stimulus. The source will
-     * become the sender, the destination the receiver.
-     *
-     * @param link the link
+     * Builds a stimulus based on a given link.<p>
+     * 
+     * The link must have two linkends that are connected to an instance. These
+     * instances are used as sender and receiver of the stimulus. The source
+     * will become the sender, the destination the receiver.
+     * 
+     * @param link
+     *            the link
      * @return the stimulus
      */
     Object buildStimulus(Object link);

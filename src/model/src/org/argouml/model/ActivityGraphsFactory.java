@@ -26,13 +26,10 @@ package org.argouml.model;
 
 import java.util.Collection;
 
-
 /**
- * The interface for the factory for ActivityGraphs.<p>
- *
- * Created from the old ActivityGraphsFactory.
+ * The interface for the factory for ActivityGraphs.
  */
-public interface ActivityGraphsFactory {
+public interface ActivityGraphsFactory extends Factory {
     /**
      * Create an empty but initialized instance of a UML ActionState.
      *
@@ -108,6 +105,7 @@ public interface ActivityGraphsFactory {
      * and the states.
      *
      * @param classifier the classifier (type)
+// TODO: Back out incompatible change to API
      * @param state the collection of states (inState)
      * @return the newly build classifierInState
      */

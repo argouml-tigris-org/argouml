@@ -26,11 +26,9 @@ package org.argouml.model;
 
 
 /**
- * The interface for the factory for UseCases.<p>
- *
- * Created from the old UseCasesFactory.
+ * The interface for the factory for UseCases.
  */
-public interface UseCasesFactory {
+public interface UseCasesFactory extends Factory {
     /**
      * Create an empty but initialized instance of a Extend.
      *

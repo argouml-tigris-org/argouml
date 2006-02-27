@@ -47,7 +47,8 @@ public class TestUmlUseCase extends GenericUmlObjectTestFixture {
 	Object o =
 	    Model.getUmlFactory().buildNode(Model.getMetaTypes().getUseCase());
 	assertNotNull("Didn't create object", o);
-	assertTrue("Should be a base", Model.getFacade().isABase(o));
+	assertTrue("Should be a model element", 
+                Model.getFacade().isAModelElement(o));
 	assertTrue("Should be a use case", Model.getFacade().isAUseCase(o));
 	runTruthTests(o);
     }

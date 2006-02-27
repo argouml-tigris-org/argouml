@@ -201,7 +201,7 @@ public class TestCoreFactory extends TestCase {
         Object model = Model.getModelManagementFactory().createModel();
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object class2 = Model.getCoreFactory().buildClass(model);
-        Object dep = Model.getCoreFactory().buildDependency(class1, class2);
+        Model.getCoreFactory().buildDependency(class1, class2);
         assertEquals("client dependency invalid", 
                 1, Model.getFacade().getClientDependencies(class1).size());
         assertEquals("supplier dependency invalid", 

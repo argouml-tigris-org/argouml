@@ -55,7 +55,6 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      */
     protected void setUp() throws Exception {
 	super.setUp();
-//	NavigatorPane.setInstance(null);
     }
 
     /**
@@ -117,7 +116,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      * @param o the given object for the tests
      */
     protected void runTruthTests(Object o) {
-	runTruthTest(Model.getFacade().isABase(o), true, null);
+	runTruthTest(Model.getFacade().isAModelElement(o), true, null);
 	runTruthTest(
 	        Model.getFacade().isAAbstraction(o),
 	        Model.getMetaTypes().getAbstraction());
@@ -163,9 +162,8 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	runTruthTest(Model.getFacade().isAGeneralization(o),
 	        Model.getMetaTypes().getGeneralization());
 
-	// TODO: this fails on ModelElement - why?
-	// runTruthTest(Model.getFacade().isAInstance(o),
-	//              Model.getFacade().INSTANCE);
+        runTruthTest(Model.getFacade().isAInstance(o),
+                Model.getMetaTypes().getInstance());
 	// NIF: runTruthTest(Model.getFacade().isAInteraction(o),
 	//           Model.getFacade().INTERACTION);
 
@@ -174,8 +172,8 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	        Model.getMetaTypes().getInterface());
 	runTruthTest(Model.getFacade().isALink(o),
 	        Model.getMetaTypes().getLink());
-	// NIF: runTruthTest(Model.getFacade().isAMethod(o),
-	//                   Model.getFacade().METHOD);
+        // NIF: unTruthTest(Model.getFacade().isAMethod(o),
+        //	Model.getMetaTypes().getMethod());
 	runTruthTest(Model.getFacade().isAModel(o),
 	        Model.getMetaTypes().getModel());
 	runTruthTest(
@@ -190,13 +188,11 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	        Model.getFacade().isANodeInstance(o),
 	        Model.getMetaTypes().getNodeInstance());
 
-	// TODO: this fails on ModelElement - why?
-	// runTruthTest(Model.getFacade().isAOperation(o),
-	//              Model.getFacade().OPERATION);
-
-	// TODO: this fails on ModelElement - why?
-	// runTruthTest(Model.getFacade().isAObject(o),
-	//              Model.getFacade().OBJECT);
+	runTruthTest(Model.getFacade().isAOperation(o),
+	        Model.getMetaTypes().getOperation());
+	
+	runTruthTest(Model.getFacade().isAObject(o),
+	        Model.getMetaTypes().getObject());
 
 	runTruthTest(
 	        Model.getFacade().isAPermission(o),
@@ -206,8 +202,8 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	runTruthTest(
 	        Model.getFacade().isAReception(o),
 	        Model.getMetaTypes().getReception());
-	// NIF: runTruthTest(Model.getFacade().isARelationship(o),
-	//           Model.getFacade().RELATIONSHIP);
+        //	runTruthTest(Model.getFacade().isARelationship(o),
+        //	        Model.getMetaTypes().getRelationship());
 	runTruthTest(
 	        Model.getFacade().isAStateMachine(o),
 	        Model.getMetaTypes().getStateMachine());
@@ -217,10 +213,10 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	runTruthTest(
 	        Model.getFacade().isAStereotype(o),
 	        Model.getMetaTypes().getStereotype());
-	// NIF: runTruthTest(Model.getFacade().isAStructuralFeature(o),
-        //     Model.getFacade().STRUCTURAL_FEATURE);
-	// NIF: runTruthTest(Model.getFacade().isATaggedValue(o),
-	//           Model.getFacade().TAGGED_VALUE);
+        // NIF: runTruthTest(Model.getFacade().isAStructuralFeature(o),
+        //          Model.getMetaTypes().getStructuralFeature());
+        // NIF: runTruthTest(Model.getFacade().isATaggedValue(o),
+        //          Model.getMetaTypes().getTaggedValue());
 	runTruthTest(
 	        Model.getFacade().isATransition(o),
 	        Model.getMetaTypes().getTransition());

@@ -110,11 +110,11 @@ public final class CheckUMLModelHelper {
      * Then deletes it, looses the reference and then checks that
      * the object is reclaimed.
      *
-     * @param f the DataTypesFactory
+     * @param factory the DataTypesFactory
      * @param names the UML elements to test
      * @param args the arguments of the UML elements
      */
-    public static void createAndRelease(Object f,
+    public static void createAndRelease(Object factory,
 					String[] names,
 					Object[] args) {
 	Class [] classes = new Class[args.length];
@@ -126,44 +126,103 @@ public final class CheckUMLModelHelper {
 	    if (names[i] == null) {
 	        continue;
 	    }
-	    Method m;
+            String methodName = "create" + names[i];
+	    Method method;
 	    try {
-		m =
-		    f.getClass().getDeclaredMethod("create" + names[i],
-						   classes);
+                // Make sure the create method is in the official interface
+                if (!checkInterface(factory.getClass(), Factory.class,
+                        methodName, classes)) {
+                    TestCase.fail("Method " + methodName
+                            + " does not exist in any interface of factory "
+                            + factory.getClass().getName());
+                    return;
+                } else {
+	            // Now get the factory implementation method to be invoked
+	            method =
+	                factory.getClass().getDeclaredMethod(methodName,
+	                        classes);
+	        }
 	    } catch (NoSuchMethodException e) {
-		TestCase.fail("Method create" + names[i]
-			      + " does not exist in " + f);
-		return;
-	    }
+                TestCase.fail("Method " + methodName
+                        + " does not exist in factory " + factory);
+                return;
+            }
 
 	    try {
 		// Extra careful now, not to keep any references to the
 		// second argument.
 		try {
-		    deleteAndRelease(m.invoke(f, args), names[i]);
+		    deleteAndRelease(method.invoke(factory, args), names[i]);
 		} catch (ClassCastException e) {
 		    // Here it is another object sent to the test.
-		    deleteAndRelease(m.invoke(f, args));
+		    deleteAndRelease(method.invoke(factory, args));
 		} catch (IllegalArgumentException e) {
 		    // Here it is another object sent to the test.
-		    deleteAndRelease(m.invoke(f, args));
+		    deleteAndRelease(method.invoke(factory, args));
 		}
 	    } catch (IllegalAccessException e) {
 		TestCase.fail("Method create" + names[i]
-			      + " in " + f + " cannot be called");
+			      + " in " + factory + " cannot be called");
 		return;
 	    } catch (InvocationTargetException e) {
 		TestCase.fail("Method create" + names[i]
-			      + " in " + f + " throws an exception.");
+			      + " in " + factory + " throws an exception.");
 		return;
 	    }
 	}
     }
 
     /**
-     * @param f the DataTypesFactory
-     * @param names the UML elements to test
+     * Check all interfaces of the given class for an interface which both: 
+     * 1) extends the given marker interface (in our case called 'Factory')
+     * 2) contains the given method.<p>
+     * 
+     * This extra check is to make sure that the public methods of the given
+     * factory are actually part of the public API interface.
+     * 
+     * @param factory
+     *            the factory class to test
+     * @param markerInterface
+     *            the class of the marker interface to look for
+     * @param methodName
+     *            the name of the object that we want to create
+     * @param classes
+     *            the types of the argments for the method
+     */
+    private static boolean checkInterface(Class factory, Class markerInterface,
+            String methodName, Class[] classes) {
+        Class[] interfaces = factory.getInterfaces();
+        for (int i = 0; i < interfaces.length; i++) {
+            if (markerInterface.equals(interfaces[i])) {
+                if (hasMethod(factory, methodName, classes)) {
+                    return true;
+                }
+            } else {
+                if (checkInterface(interfaces[i], markerInterface, methodName,
+                        classes)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+
+    private static boolean hasMethod(Class clazz, String methodName,
+            Class[] classes) {
+        try {
+            clazz.getDeclaredMethod(methodName, classes);
+            return true;
+        } catch (NoSuchMethodException e) {
+            return false;
+        }
+    }
+
+    /**
+     * @param f
+     *            the DataTypesFactory
+     * @param names
+     *            the UML elements to test
      */
     public static void createAndRelease(Object f, String[] names) {
 	Object[] noarguments = {

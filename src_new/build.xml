@@ -2,11 +2,6 @@
 <!-- $Id$
 This requires ANT 1.6.2
 
-if you get a message like:
-build.xml:162: Could not create task of type: copy because I can't
-               find it in the list of task class definitions
-You are not running ANT 1.6.2
-
 Introduction
 ============
 ArgoUML is a free UML tool. It is written entirely in Java.
@@ -227,7 +222,6 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Initialization target for optional ant tasks                        -->
   <!-- =================================================================== -->
-
   <target name="ant.optional.init" depends="init">
     <path id="ant.optional.classpath">
       <pathelement location="${ant.home}/libopt/ant-junit.jar"/>
@@ -248,10 +242,7 @@ Property files to be searched:
 	 <path refid="ant.optional.classpath"/>
       </classpath>
     </taskdef>
-
-    <!-- End of support section for ant optional tasks                  -->
-
-
+    
   </target>
   
 
@@ -693,7 +684,6 @@ Property files to be searched:
     </java>
   </target>
 
-
   <!-- ################################################################### -->
   <!-- Section with tests.                                                 -->
   <!-- ################################################################### -->
@@ -702,80 +692,42 @@ Property files to be searched:
   <!-- Initialize for the junit tests.                                     -->
   <!-- =================================================================== -->
   <target depends="init" name="junit-fetch-init">
-
-     <property name="011202.xml" value="tests/testmodels/01-12-02.xml"/>
-     <property name="991015.dtd" value="tests/testmodels/Model.dtd"/>
-
-     <available file="${011202.xml}" property="011202.xml.available"/>
-     <available file="${991015.dtd}" property="991015.dtd.available"/>
-     
-     <!-- UML 1.4 files (no DTD availble?) -->
-     <property name="010215.xml" value="tests/testmodels/01-02-15.xml"/>
-     <available file="${01-02-15.xml}" property="010215.xml.available"/>
-      
+    <!-- UML 1.3 metamodel 
+    <property name="metamodel.doc" value="01-12-02.xml"/>
+    -->
+    <!-- UML 1.4 metamodel -->
+    <property name="metamodel.doc" value="01-02-15.xml"/>
+    <property name="metamodel.url" 
+      value="http://www.omg.org/cgi-bin/apps/doc?ad/${metamodel.doc}" />
+    <property name="metamodel.file" value="tests/testmodels/${metamodel.doc}"/>
+    <available file="${metamodel.file}" property="metamodel.file.available"/>  
   </target>
-
-  <!-- =================================================================== -->
-  <!-- Get the uml 1.3 dtd if necessary                                    -->
-  <!-- =================================================================== -->
-  <target name="junit-get-991015-dtd" 
-          depends="junit-fetch-init" unless="991015.dtd.available">
-
-    <get dest="${991015.dtd}"
-         ignoreerrors="true"
-         src="http://www.omg.org/cgi-bin/apps/doc?ad/99-10-15.dtd"
-         usetimestamp="true"
-         verbose="false"/>
-
-     <!-- Check availability again - if the get worked, it will be there. -->
-     <available file="${991015.dtd}" property="991015.dtd.available"/>
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- Get the uml 1.3 model if necessary                                  -->
-  <!-- =================================================================== -->
-  <target name="junit-get-011202-xml"
-          depends="junit-fetch-init"
-          unless="011202.xml.available">
-
-    <get dest="${011202.xml}"
-         ignoreerrors="true"
-         src="http://www.omg.org/cgi-bin/apps/doc?ad/01-12-02.xml"
-         usetimestamp="true"
-         verbose="false"/>
-
-     <!-- Check availability again - if the get worked, it will be there. -->
-     <available file="${011202.xml}" property="011202.xml.available"/>
-  </target>
-
 
     <!-- =================================================================== -->
-    <!-- Get the uml 1.4 model if necessary                                  -->
+    <!-- Get the UML metamodel if necessary                                  -->
+    <!-- TODO: When argouml-mdr is merged, just use our copy of metamodel    -->
     <!-- =================================================================== -->
-    <target name="junit-get-010215-xml"
+    <target name="junit-get-model-internal"
             depends="junit-fetch-init"
-            unless="010215.xml.available">
+            unless="metamodel.file.available">
 
-      <get dest="${010215.xml}"
+      <get dest="${metamodel.file}"
            ignoreerrors="true"
-           src="http://www.omg.org/cgi-bin/apps/doc?ad/01-12-02.xml"
+           src="${metamodel.url}"
            usetimestamp="true"
            verbose="false"/>
 
        <!-- Check availability again - if the get worked, it will be there. -->
-       <available file="${010215.xml}" property="010215.xml.available"/>
+       <available file="${metamodel.file}" property="metamodel.file.available"/>
     </target>
 
   <!-- =================================================================== -->
-  <!-- Get the UML model and dtd if necessary                          -->
+  <!-- Get the UML model if necessary                                      -->
   <!-- =================================================================== -->
   <target name="junit-get-model"
-          depends="junit-get-010215-xml"
-          description="Gets the model and dtd for testing."/>
-    <!-- UML 1.3 dependencies
-    depends="junit-get-011202-xml,junit-get-991015-dtd"
-    -->
-    
+          depends="junit-get-model-internal"
+          description="Gets the UML model from OMG site for testing."/>
+
   <!-- =================================================================== -->
   <!-- Compiles the tests                                                  -->
   <!-- =================================================================== -->
@@ -891,7 +843,7 @@ Property files to be searched:
            fork="yes" haltonfailure="false"
            maxmemory="48M" printsummary="true">
         <!-- TODO: this property name should be made generic -->
-	<sysproperty key="test.model.uml13" value="${010215.xml}"/>
+	<sysproperty key="test.model.uml" value="${metamodel.file}"/>
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="java.awt.headless" value="true"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>

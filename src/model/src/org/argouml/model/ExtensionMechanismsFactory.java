@@ -27,11 +27,9 @@ package org.argouml.model;
 import java.util.Collection;
 
 /**
- * The interface for the factory for ExstensionMechanisms.<p>
- *
- * Created from the old ExtensionMechanismsFactory.
+ * The interface for the factory for ExstensionMechanisms.
  */
-public interface ExtensionMechanismsFactory {
+public interface ExtensionMechanismsFactory extends Factory {
     /**
      * Create an empty but initialized instance of a UML Stereotype.
      *
