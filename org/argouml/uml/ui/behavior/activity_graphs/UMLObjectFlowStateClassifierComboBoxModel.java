@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,12 +24,20 @@
 
 package org.argouml.uml.ui.behavior.activity_graphs;
 
+import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
  * A model for the classifier of an ObjectFlowState.
+ * This combo should never show the ClassifierInState! 
+ * Instead it should show its "type".
  *
  * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl, alexb
@@ -42,27 +50,48 @@ public class UMLObjectFlowStateClassifierComboBoxModel
      * TODO: MVW: I do not understand this! Is it correct?
      */
     public UMLObjectFlowStateClassifierComboBoxModel() {
-        super("classifier", false);
-        Model.getPump().addClassModelEventListener(this,
-                Model.getMetaTypes().getClassifier(), "type");
+        super("type", false);
+        // TODO: Do we need something more here?
+//        Model.getPump().addClassModelEventListener(this,
+//                Model.getMetaTypes().getClassifier(), "type");
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return Model.getFacade().isAClassifier(o);
-        // && CoreHelper.getHelper().isValidNamespace(
-        //      /*(MModelElement)*/ getTarget(), /*(MNamespace)*/ o)
+        return Model.getFacade().isAClassifier(o) 
+            && !Model.getFacade().isAClassifierInState(o);
     }
 
     /**
+     * Get all Classifiers that are not ClassifierInState.
+     * 
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
         Object model =
             ProjectManager.getManager().getCurrentProject().getModel();
-        setElements(Model.getCoreHelper().getAllClassifiers(model));
+        Collection c = new ArrayList(Model.getCoreHelper().getAllClassifiers(model));
+        Collection newList = new ArrayList();
+        Iterator i = c.iterator();
+        while (i.hasNext()) {
+            Object classifier = i.next();
+            if (!Model.getFacade().isAClassifierInState(classifier)) {
+                newList.add(classifier);
+            }
+        }
+        // get the current type - normally we won't need this, but who knows?
+        if (getTarget() != null) {
+            Object type = Model.getFacade().getType(getTarget());
+            if (Model.getFacade().isAClassifierInState(type)) {
+                // get the Classifier
+                type = Model.getFacade().getType(type);
+            }
+            if (type != null)
+                if (!newList.contains(type)) newList.add(type);
+        }
+        setElements(newList);
     }
 
     /**
@@ -70,9 +99,35 @@ public class UMLObjectFlowStateClassifierComboBoxModel
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return Model.getFacade().getType(getTarget());
+            Object type = Model.getFacade().getType(getTarget());
+            if (Model.getFacade().isAClassifierInState(type)) {
+                // get the Classifier
+                type = Model.getFacade().getType(type);
+            }
+            return type; // a Classifier that is not a ClassifierInState
         }
         return null;
     }
 
+    /**
+     * The function in the parent removes items from the list 
+     * when deselected. We do not need that here. 
+     * 
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt instanceof AttributeChangeEvent) {
+            if (evt.getPropertyName().equals("type")) {
+                if (evt.getSource() == getTarget()
+                        && (getChangedElement(evt) != null)) {
+                    Object elem = getChangedElement(evt);
+                    if (Model.getFacade().isAClassifierInState(elem)) {
+                        // get the Classifier
+                        elem = Model.getFacade().getType(elem);
+                    }
+                    setSelectedItem(elem);
+                }
+            }
+        }
+    }
 }
