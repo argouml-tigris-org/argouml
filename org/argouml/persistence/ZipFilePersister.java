@@ -220,7 +220,7 @@ public class ZipFilePersister extends XmiFilePersister {
             p.addMember(new ProjectMemberTodoList("", p));
             p.addMember(model);
             p.setRoot(model);
-            ProjectManager.getManager().setNeedsSave(false);
+            ProjectManager.getManager().setSaveEnabled(false);
             return p;
         } catch (IOException e) {
             throw new OpenException(e);
