@@ -103,7 +103,7 @@ public class UMLClassifierRoleAvailableContentsListModel
     public void setTarget(Object theNewTarget) {
         theNewTarget = theNewTarget instanceof Fig
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
-        if (Model.getFacade().isABase(theNewTarget)
+        if (Model.getFacade().isAModelElement(theNewTarget)
                 || theNewTarget instanceof Diagram) {
             if (getTarget() != null) {
                 Collection bases = Model.getFacade().getBases(getTarget());

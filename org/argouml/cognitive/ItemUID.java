@@ -157,7 +157,7 @@ public class ItemUID {
      * @return	The ID of the object, or null.
      */
     protected static String readObjectID(Object obj) {
-        if (Model.getFacade().isABase(obj)) {
+        if (Model.getFacade().isAModelElement(obj)) {
             return UUIDHelper.getUUID(obj);
         }
 	/*
@@ -226,7 +226,7 @@ public class ItemUID {
      * @return	The new ID of the object, or null.
      */
     protected static String createObjectID(Object obj) {
-	if (Model.getFacade().isABase(obj)) {
+	if (Model.getFacade().isAModelElement(obj)) {
 	    return null;
 	}
 

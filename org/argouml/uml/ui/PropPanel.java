@@ -438,7 +438,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public void removeElement() {
         Object theTarget = getTarget();
-        if (Model.getFacade().isABase(theTarget)) {
+        if (Model.getFacade().isAModelElement(theTarget)) {
             Object newTarget = Model.getFacade().getModelElementContainer(
                     theTarget);
             Object base = theTarget;
