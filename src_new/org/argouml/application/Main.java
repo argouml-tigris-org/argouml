@@ -296,7 +296,7 @@ public class Main {
             // Too many side effects as part of initialization!
             ProjectManager.getManager().setCurrentProject(
                     ProjectManager.getManager().getCurrentProject());
-            ProjectManager.getManager().setNeedsSave(false);
+            ProjectManager.getManager().setSaveEnabled(false);
         }
 
         st.mark("set project");

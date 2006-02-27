@@ -63,8 +63,7 @@ import org.tigris.gef.undo.UndoManager;
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
  */
-public final class ProjectManager
-    implements MementoCreationObserver, ArgoProjectSaveListener {
+public final class ProjectManager implements MementoCreationObserver {
 
     /**
      * The name of the property that defines the current project.
@@ -262,7 +261,9 @@ public final class ProjectManager
         }
         Model.getPump().startPumpingEvents();
         
-        ProjectManager.getManager().setNeedsSave(false);
+        if (saveAction != null) {
+            saveAction.setEnabled(false);
+        }
         return currentProject;
     }
     
@@ -283,11 +284,12 @@ public final class ProjectManager
      *
      * @param newValue The new state.
      */
-    public void setNeedsSave(boolean newValue) {
+    public void setSaveEnabled(boolean newValue) {
         if (saveAction != null) {
             saveAction.setEnabled(newValue);
         }
     }
+    
 
     /**
      * Remove the project.
@@ -328,16 +330,5 @@ public final class ProjectManager
 
         };
         UndoManager.getInstance().addMemento(wrappedMemento);
-    }
-
-    /* (non-Javadoc)
-     * @see org.argouml.application.events.ArgoProjectSaveListener#needsChange(org.argouml.application.events.ArgoProjectSaveEvent)
-     */
-    public void needsChange(ArgoProjectSaveEvent apse) {
-        if (apse.getEventType() == ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT) {
-            setNeedsSave(true);
-        } else {
-            setNeedsSave(false);
-        }
     }
 }

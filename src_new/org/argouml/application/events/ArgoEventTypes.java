@@ -138,8 +138,9 @@ public interface ArgoEventTypes {
 
     /**
      * Project needs to be saved.
+     * @deprecated this is now unused - lets delete
      */
-    int NEEDS_PROJECTSAVE_EVENT          = 1401;
+//    int NEEDS_PROJECTSAVE_EVENT          = 1401;
 
     /**
      * Project is saved.
