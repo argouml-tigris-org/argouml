@@ -66,9 +66,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.PluggableImport;
-import org.argouml.application.events.ArgoEventPump;
-import org.argouml.application.events.ArgoEventTypes;
-import org.argouml.application.events.ArgoProjectSaveEvent;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -714,15 +711,6 @@ public class Import {
 
                 // Do post load processings.
                 st.mark("postprocessings");
-
-                // Check if any diagrams where modified and the project
-                // should be saved before exiting.
-                if (diagramInterface != null && needsSave()) {
-                    ArgoEventPump.fireEvent(
-                            new ArgoProjectSaveEvent(
-                                    ArgoEventTypes.NEEDS_PROJECTSAVE_EVENT,
-                                    this));
-                }
 
                 ProjectBrowser.getInstance().showStatus("Import done");
 
