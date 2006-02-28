@@ -147,17 +147,17 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
                 while (it.hasNext()) {
                     Fig fig = (Fig) it.next();
                     if (fig.getX() >= f.getX()) {
-			it.previous();
-			it.add(f);
-			break;
+                        it.previous();
+                        it.add(f);
+                        break;
                     }
                 }
                 if (!it.hasNext()) {
-		    it.add(f);
-		}
+                    it.add(f);
+                }
             } else {
                 figObjectsX.add(f);
-	    }
+            }
             distributeFigClassifierRoles((FigClassifierRole) f);
         }
     }
@@ -165,8 +165,8 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     /**
      * Return the node index at a certain y point.
      */
-    public static int getNodeIndex(int y) {
-        y -= DIAGRAM_TOP_MARGE + FigClassifierRole.DEFAULT_HEIGHT;
+    static public int getNodeIndex(int y) {
+        y -= DIAGRAM_TOP_MARGE + FigClassifierRole.MIN_HEAD_HEIGHT;
         if (y < 0) {
             y = 0;
 	}
