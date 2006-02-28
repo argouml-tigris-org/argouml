@@ -56,4 +56,22 @@ public abstract class Profile {
      * @throws ProfileException if failed to get profile.
      */
     public abstract Object/*MModel*/ getProfileModel() throws ProfileException;
+    
+    /**
+     * Set the filename to load the profile model from.  This will be
+     * remembered and used as the file for all future loads.
+     * @param filename file name of XMI file containing model to use as profile
+     * 
+     * @throws ProfileException if the given file isn't a valid profile
+     */
+    public abstract void setProfileModelFilename(String filename)
+        throws ProfileException;
+    
+    /**
+     * Return the filename that was or will be used to load the profile/default
+     * model.
+     * @return the filename
+     */
+    public abstract String getProfileModelFilename();
+
 }
