@@ -28,14 +28,19 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.uml.ProfileException;
 
 /** Action object for handling Argo settings
  *
@@ -48,7 +53,9 @@ public class SettingsTabPreferences extends SettingsTabHelper
     private JCheckBox chkSplash = null;
     private JCheckBox chkPreload = null;
     private JCheckBox chkReloadRecent = null;
-
+    private JCheckBox chkStripDiagrams = null;
+    private JTextField defaultProfile;
+    
     /**
      * The constructor.
      *
@@ -60,46 +67,38 @@ public class SettingsTabPreferences extends SettingsTabHelper
     	top.setLayout(new GridBagLayout());
 
 	GridBagConstraints checkConstraints = new GridBagConstraints();
-	checkConstraints.anchor = GridBagConstraints.WEST;
+	checkConstraints.anchor = GridBagConstraints.LINE_START;
 	checkConstraints.gridy = 0;
 	checkConstraints.gridx = 0;
 	checkConstraints.gridwidth = 1;
 	checkConstraints.gridheight = 1;
-	checkConstraints.insets = new Insets(0, 30, 0, 4);
+	checkConstraints.insets = new Insets(4, 10, 0, 10);
 
-	GridBagConstraints labelConstraints = new GridBagConstraints();
-	labelConstraints.anchor = GridBagConstraints.EAST;
-	labelConstraints.gridy = 0;
-	labelConstraints.gridx = 0;
-	labelConstraints.gridwidth = 1;
-	labelConstraints.gridheight = 1;
-	labelConstraints.insets = new Insets(2, 10, 2, 4);
-
-	GridBagConstraints fieldConstraints = new GridBagConstraints();
-	fieldConstraints.anchor = GridBagConstraints.WEST;
-	fieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-	fieldConstraints.gridy = 0;
-	fieldConstraints.gridx = 1;
-	fieldConstraints.gridwidth = 3;
-	fieldConstraints.gridheight = 1;
-	fieldConstraints.weightx = 1.0;
-	fieldConstraints.insets = new Insets(0, 4, 0, 20);
-
-	checkConstraints.gridy = 0;
-	labelConstraints.gridy = 0;
-	fieldConstraints.gridy = 0;
+	checkConstraints.gridy = 2;
         chkSplash = createCheckBox("label.splash");
 	top.add(chkSplash, checkConstraints);
-	top.add(new JLabel(""), labelConstraints);
-	top.add(new JLabel(""), fieldConstraints);
 
-	checkConstraints.gridy = 1;
+	checkConstraints.gridy++;
         chkPreload = createCheckBox("label.preload");
  	top.add(chkPreload, checkConstraints);
 
-	checkConstraints.gridy = 3;
+	checkConstraints.gridy++;
         chkReloadRecent = createCheckBox("label.reload-recent");
  	top.add(chkReloadRecent, checkConstraints);
+
+        checkConstraints.gridy++;
+        chkStripDiagrams = createCheckBox("label.strip-diagrams");
+        top.add(chkStripDiagrams, checkConstraints);
+
+        // TODO: Profile field is currently read-only, need a selector
+        checkConstraints.gridy++;
+        top.add(createLabel("label.default-profile"), 
+                checkConstraints);
+        defaultProfile = new JTextField();
+        checkConstraints.gridy++;
+        checkConstraints.fill = GridBagConstraints.HORIZONTAL;
+        top.add(defaultProfile, checkConstraints);
+        //defaultProfile.setEnabled(false);
 
 	add(top, BorderLayout.NORTH);
     }
@@ -114,6 +113,11 @@ public class SettingsTabPreferences extends SettingsTabHelper
         chkReloadRecent.setSelected(
 		Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT,
 					 false));
+        chkStripDiagrams.setSelected(
+                Configuration.getBoolean(Argo.KEY_XMI_STRIP_DIAGRAMS,
+                                         false));
+        defaultProfile.setText(ProjectManager.getManager().getCurrentProject()
+                .getProfile().getProfileModelFilename());
     }
 
     /**
@@ -124,6 +128,17 @@ public class SettingsTabPreferences extends SettingsTabHelper
         Configuration.setBoolean(Argo.KEY_PRELOAD, chkPreload.isSelected());
         Configuration.setBoolean(Argo.KEY_RELOAD_RECENT_PROJECT,
 				 chkReloadRecent.isSelected());
+        Configuration.setBoolean(Argo.KEY_XMI_STRIP_DIAGRAMS,
+                 chkStripDiagrams.isSelected());
+        try {
+            ProjectManager.getManager().getCurrentProject().getProfile()
+                    .setProfileModelFilename(defaultProfile.getText());
+        } catch (ProfileException e) {
+            // shouldn't happen if profile was validated when selected
+            JOptionPane.showMessageDialog(this, "Setting UML profile failed", 
+                    "Profile save error", JOptionPane.ERROR_MESSAGE);
+        }
+   
     }
 
     /**

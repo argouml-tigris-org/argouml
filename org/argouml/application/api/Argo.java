@@ -225,6 +225,18 @@ public final class Argo {
      */
     public static final ConfigurationKey KEY_INPUT_SOURCE_ENCODING =
 	Configuration.makeKey("import", "file", "encoding");
+    
+    /**
+     * Key to store setting of stripping diagrams on XMI import.
+     */
+    public static final ConfigurationKey KEY_XMI_STRIP_DIAGRAMS =
+        Configuration.makeKey("import", "xmi", "stripDiagrams");
+
+    /**
+     * Key to store profile/default model.
+     */
+    public static final ConfigurationKey KEY_DEFAULT_MODEL =
+        Configuration.makeKey("defaultModel");
 
     /**
      * Key for user explorer perspectives.
