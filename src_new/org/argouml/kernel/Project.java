@@ -142,7 +142,7 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Cache for the default model.
      */
-    private HashMap defaultModelCache;
+    private HashMap defaultModelTypeCache;
 
     private Collection trashcan = new ArrayList();
 
@@ -163,6 +163,7 @@ public class Project implements java.io.Serializable, TargetListener {
         profile = new ProfileJava();
         Model.getModelManagementFactory().setRootModel(null);
 
+
         authorname = "";
         description = "";
         // this should be moved to a ui action.
@@ -174,7 +175,7 @@ public class Project implements java.io.Serializable, TargetListener {
         models = new Vector();
         diagrams = new Vector();
         cgPrefs = new GenerationPreferences();
-        defaultModelCache = new HashMap();
+        defaultModelTypeCache = new HashMap();
 
         LOG.info("making empty project with empty model");
         try {
@@ -1075,7 +1076,7 @@ public class Project implements java.io.Serializable, TargetListener {
         }
 
         defaultModel = theDefaultModel;
-        defaultModelCache = new HashMap();
+        defaultModelTypeCache = new HashMap();
     }
 
     /**
@@ -1094,12 +1095,12 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return the type.
      */
     public Object findTypeInDefaultModel(String name) {
-        if (defaultModelCache.containsKey(name)) {
-            return defaultModelCache.get(name);
+        if (defaultModelTypeCache.containsKey(name)) {
+            return defaultModelTypeCache.get(name);
         }
 
         Object result = findTypeInModel(name, getDefaultModel());
-        defaultModelCache.put(name, result);
+        defaultModelTypeCache.put(name, result);
         return result;
     }
 
@@ -1308,15 +1309,15 @@ public class Project implements java.io.Serializable, TargetListener {
             uuidRefs.clear();
         }
 
-        if (defaultModelCache != null) {
-            defaultModelCache.clear();
+        if (defaultModelTypeCache != null) {
+            defaultModelTypeCache.clear();
         }
 
         members = null;
         models = null;
         diagrams = null;
         uuidRefs = null;
-        defaultModelCache = null;
+        defaultModelTypeCache = null;
 
         url = null;
         authorname = null;
@@ -1329,7 +1330,6 @@ public class Project implements java.io.Serializable, TargetListener {
         cgPrefs = null;
         vetoSupport = null;
         activeDiagram = null;
-        defaultModelCache = null;
 
         TargetManager.getInstance().removeTargetListener(this);
         trashcan.clear();
