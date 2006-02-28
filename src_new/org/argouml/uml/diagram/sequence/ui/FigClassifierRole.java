@@ -25,7 +25,7 @@
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.awt.Color;
-import java.awt.Point;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -42,6 +42,7 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelEventPump;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
@@ -96,18 +97,18 @@ public class FigClassifierRole extends FigNodeModelElement
      * The defaultheight of the object rectangle. That's 3 times the rowheight +
      * 3 times a distance of 2 between the rows + the stereoheight.
      */
-    public static final int DEFAULT_HEIGHT =
+    public static final int MIN_HEAD_HEIGHT =
         (3 * ROWHEIGHT + 3 * ROWDISTANCE + STEREOHEIGHT);
 
     /**
      * The defaultwidth of the object rectangle.
      */
-    public static final int DEFAULT_WIDTH = 3 * DEFAULT_HEIGHT / 2;
-
+    public static final int MIN_HEAD_WIDTH = 3 * MIN_HEAD_HEIGHT / 2;
+    
     /**
      * The filled box for the object box (object fig without lifeline).
      */
-    private FigRect headFig;
+    private FigHead headFig;
 
     /**
      * The lifeline (dashed line under the object box to which activations are
@@ -142,23 +143,16 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     public FigClassifierRole() {
         super();
-        headFig =
-            new FigRect(
-                0,
-                0,
-                DEFAULT_WIDTH,
-                DEFAULT_HEIGHT,
-                Color.black,
-                Color.white);
+        headFig = new FigHead();
         headFig.setFilled(true);
         headFig.setLineWidth(1);
-        getStereotypeFig().setBounds(DEFAULT_WIDTH / 2,
+        getStereotypeFig().setBounds(MIN_HEAD_WIDTH / 2,
 				     ROWHEIGHT + ROWDISTANCE,
 				     0,
 				     0);
         getStereotypeFig().setFilled(false);
         getStereotypeFig().setLineWidth(0);
-        setNameFig(new FigText(DEFAULT_WIDTH / 2,
+        setNameFig(new FigText(MIN_HEAD_WIDTH / 2,
 			       2 * ROWDISTANCE + STEREOHEIGHT + ROWHEIGHT,
 			       0,
 			       0,
@@ -171,9 +165,9 @@ public class FigClassifierRole extends FigNodeModelElement
         getNameFig().setLineWidth(0);
         lifeLine =
             new FigLine(
-                DEFAULT_WIDTH / 2,
-                DEFAULT_HEIGHT,
-                DEFAULT_WIDTH / 2,
+                MIN_HEAD_WIDTH / 2,
+                MIN_HEAD_HEIGHT,
+                MIN_HEAD_WIDTH / 2,
                 1000,
                 Color.black);
         lifeLine.setDashed(true);
@@ -315,23 +309,17 @@ public class FigClassifierRole extends FigNodeModelElement
      * @see Fig#setBounds(int, int, int, int)
      */
     public void setBoundsImpl(int x, int y, int w, int h) {
+        y = 50;
         Rectangle oldBounds = getBounds();
-        if (getNameFig().getWidth() > w) {
-            w = getNameFig().getWidth() + 2 * MARGIN;
+        w = headFig.getMinimumSize().width;
+        headFig.setBounds(x, y, headFig.getMinimumSize().width, headFig.getMinimumSize().height);
+        int yy = y;
+        if (getStereotypeFig().isVisible()) {
+            getStereotypeFig().setBounds(x, yy, w, getStereotypeFig().getMinimumSize().height);
+            yy += getStereotypeFig().getMinimumSize().height;
         }
-        if (getStereotypeFig().getWidth() > w) {
-            w = getStereotypeFig().getWidth() + 2 * MARGIN;
-        }
-        getNameFig().setCenter(
-            new Point(x + w / 2,
-		      getNameFig().getY() - oldBounds.y + y
-		      + getNameFig().getHeight() / 2));
-        getStereotypeFig().setCenter(
-            new Point(
-                x + w / 2,
-                (getStereotypeFig().getY() - oldBounds.y
-		 + y + getStereotypeFig().getHeight() / 2)));
-        reSize(headFig, x, y, w, h);
+        getNameFig().setLocation(x, yy);
+        
         lifeLine.setBounds(
                 headFig.getX() + headFig.getWidth() / 2,
                 headFig.getY() + headFig.getHeight(),
@@ -363,33 +351,6 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     public void superTranslate(int dx, int dy) {
         setBounds(getX() + dx, getY(), getWidth(), getHeight());
-    }
-
-    /**
-     * Scales the given fig that must be part of this FigClassifierRole.<p>
-     *
-     * @param f the fig to scale
-     * @param x the new x coordinate for the FigClassifierRole
-     * @param y the new y coordinate for the FigClassifierRole
-     * @param w the new w coordinate for the FigClassifierRole
-     * @param h the new h coordinate for the FigClassifierRole
-     */
-    private void reSize(Fig f, int x, int y, int w, int h) {
-        if (f.isVisible()) {
-            int newX =
-                (_w == 0)
-                    ? x
-                    : x + (int) ((f.getX() - _x) * ((float) w / (float) _w));
-            int newY = f.getY() + y - _y;
-            int newW =
-                (_w == 0)
-                    ? 0
-                    : (int) (((float) f.getWidth()) * ((float) w / (float) _w));
-
-            int newH = f.getHeight();
-
-            f.setBounds(newX, newY, newW, newH);
-        }
     }
 
     /**
@@ -1375,6 +1336,121 @@ public class FigClassifierRole extends FigNodeModelElement
 							 attributes);
             }
             return result;
+        }
+    }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     */
+    protected void updateStereotypeText() {
+
+        Rectangle rect = headFig.getBounds();
+
+        int stereotypeHeight = 0;
+        if (getStereotypeFig().isVisible()) {
+            stereotypeHeight = getStereotypeFig().getHeight();
+        }
+        int heightWithoutStereo = headFig.getHeight() - stereotypeHeight;
+
+        getStereotypeFig().setOwner(getOwner());
+        ((FigStereotypesCompartment) getStereotypeFig()).populate();
+
+        stereotypeHeight = 0;
+        if (getStereotypeFig().isVisible()) {
+            stereotypeHeight = getStereotypeFig().getHeight();
+        }
+
+        int minWidth = headFig.getMinimumSize().width;
+        if (minWidth > rect.width) {
+            rect.width = minWidth;
+        }
+
+        headFig.setBounds(
+                rect.x,
+                rect.y,
+                rect.width,
+                heightWithoutStereo + stereotypeHeight);
+
+        if (getLayer() == null) {
+            return;
+        }
+
+        int h = MIN_HEAD_HEIGHT;
+        List figs = getLayer().getContents();
+        for (Iterator i=figs.iterator(); i.hasNext(); ) {
+            Object o = i.next();
+            if (o instanceof FigClassifierRole) {
+                FigClassifierRole other = (FigClassifierRole)o;
+                int otherHeight = other.headFig.getMinimumHeight();
+                if (otherHeight > h) {
+                    h = otherHeight;
+                }
+            }
+        }
+        
+        for (Iterator i=figs.iterator(); i.hasNext(); ) {
+            Object o = i.next();
+            if (o instanceof FigClassifierRole) {
+                FigClassifierRole other = (FigClassifierRole)o;
+                other.headFig.setHeight(h);
+                other.headFig.calcBounds();
+            }
+        }
+        
+    }
+    
+    private class FigHead extends FigRect {
+
+        FigHead() {
+            super(0, 0, 
+                    MIN_HEAD_WIDTH, MIN_HEAD_HEIGHT, 
+                    Color.black, Color.white);
+        }
+        
+        public Dimension getMinimumSize() {
+            
+            int h = MIN_HEAD_HEIGHT;
+            
+            Layer layer = getLayer();
+            
+            if (layer == null) {
+                return new Dimension(MIN_HEAD_WIDTH, MIN_HEAD_HEIGHT);
+            }
+            
+            List figs = getLayer().getContents();
+            for (Iterator i=figs.iterator(); i.hasNext(); ) {
+                Object o = i.next();
+                if (o instanceof FigClassifierRole) {
+                    FigClassifierRole other = (FigClassifierRole)o;
+                    int otherHeight = other.headFig.getMinimumHeight();
+                    if (otherHeight > h) {
+                        h = otherHeight;
+                    }
+                }
+            }
+            
+            int w = getNameFig().getMinimumSize().width;
+            if (getStereotypeFig().isVisible()) {
+                if (getStereotypeFig().getMinimumSize().width > w) {
+                    w = getStereotypeFig().getMinimumSize().width;
+                }
+            }
+            if (w < MIN_HEAD_WIDTH) {
+                w = MIN_HEAD_WIDTH;
+            }
+            return new Dimension(w, h);
+        }
+        
+        private int getMinimumHeight() {
+            
+            int h = getNameFig().getMinimumHeight();
+            if (getStereotypeFig().isVisible()) {
+                h += getStereotypeFig().getMinimumSize().height;
+            }
+            if (h < MIN_HEAD_HEIGHT) {
+                h = MIN_HEAD_HEIGHT;
+            }
+            return h;
         }
     }
 
