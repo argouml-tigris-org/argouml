@@ -312,7 +312,7 @@ public class FigClassifierRole extends FigNodeModelElement
         y = 50;
         Rectangle oldBounds = getBounds();
         w = headFig.getMinimumSize().width;
-        headFig.setBounds(x, y, headFig.getMinimumSize().width, headFig.getMinimumSize().height);
+        headFig.setBounds(x, y, w, headFig.getMinimumSize().height);
         int yy = y;
         if (getStereotypeFig().isVisible()) {
             getStereotypeFig().setBounds(x, yy, w, getStereotypeFig().getMinimumSize().height);
@@ -323,21 +323,29 @@ public class FigClassifierRole extends FigNodeModelElement
         lifeLine.setBounds(
                 headFig.getX() + headFig.getWidth() / 2,
                 headFig.getY() + headFig.getHeight(),
-            0,
-            h - headFig.getHeight());
+                0,
+                h - headFig.getHeight());
         for (Iterator figIt = getFigs().iterator(); figIt.hasNext();) {
             Fig fig = (Fig) figIt.next();
-            if (activationFigs.contains(fig) || fig instanceof FigMessagePort) {
+            if (activationFigs.contains(fig)) {
                 fig.setBounds(
-                        headFig.getX()
-		    + headFig.getWidth() / 2
-		    - fig.getWidth() / 2,
-                    y - oldBounds.y + fig.getY(),
-                    fig.getWidth(),
-                    fig.getHeight());
+                        headFig.getX() + headFig.getWidth() / 2 - fig.getWidth() / 2,
+                        y - oldBounds.y + fig.getY(),
+                        fig.getWidth(),
+                        fig.getHeight());
+            }
+            if (fig instanceof FigMessagePort) {
+                FigMessagePort fmp = (FigMessagePort)fig;
+                fmp.setBounds(
+                        headFig.getX() + headFig.getWidth() / 2 - fig.getWidth() / 2,
+                        y - oldBounds.y + fig.getY(),
+                        fig.getWidth(),
+                        fig.getHeight());
             }
         }
-        growToSize(lifeLine.getHeight() / SequenceDiagramLayout.LINK_DISTANCE
+        this.updateEdges(); //???
+        growToSize(
+                lifeLine.getHeight() / SequenceDiagramLayout.LINK_DISTANCE
                 + 2);
         calcBounds(); //_x = x; _height = y; _w = w; _h = h;
         firePropChange("bounds", oldBounds, getBounds());
@@ -480,9 +488,9 @@ public class FigClassifierRole extends FigNodeModelElement
                 }
                 Object message = fmp.getOwner();
                 boolean selfMessage =
-		    (Model.getFacade().isAMessage(message)
-		     && (Model.getFacade().getSender(message)
-			 == Model.getFacade().getReceiver(message)));
+                    (Model.getFacade().isAMessage(message)
+                     && (Model.getFacade().getSender(message)
+                     == Model.getFacade().getReceiver(message)));
                 boolean selfReceiving = false;
                 if (selfMessage) {
                     for (int j = i - 1; j >= 0; --j) {
@@ -490,7 +498,7 @@ public class FigClassifierRole extends FigNodeModelElement
                         FigMessagePort prevmp = prev.getFigMessagePort();
                         if (prevmp != null && prevmp.getOwner() == message) {
                             selfReceiving = true;
-			}
+                        }
                     }
                 }
                 if (isCallMessage(message)) {
@@ -500,21 +508,21 @@ public class FigClassifierRole extends FigNodeModelElement
                         node.setState(lastState);
                         node.setCallers(callers);
                     } else {
-			if (lastState == MessageNode.INITIAL
-			    || lastState == MessageNode.CREATED
-			    || lastState == MessageNode.IMPLICIT_CREATED
-			    || lastState == MessageNode.IMPLICIT_RETURNED
-			    || lastState == MessageNode.RETURNED) {
+                        if (lastState == MessageNode.INITIAL
+                            || lastState == MessageNode.CREATED
+                            || lastState == MessageNode.IMPLICIT_CREATED
+                            || lastState == MessageNode.IMPLICIT_RETURNED
+                            || lastState == MessageNode.RETURNED) {
 
                             lastState = MessageNode.CALLED;
 
-			}
+                        }
 
                         if (callers == null) {
                             callers = new ArrayList();
-			} else {
+                        } else {
                             callers = new ArrayList(callers);
-			}
+                        }
                         callers.add(Model.getFacade().getSender(message));
                         node.setState(lastState);
                         node.setCallers(callers);
@@ -525,7 +533,7 @@ public class FigClassifierRole extends FigNodeModelElement
                         lastState = MessageNode.CALLED;
                     }
                     if (Model.getFacade().getSender(message) == getOwner()
-			&& !selfReceiving) {
+                            && !selfReceiving) {
                         if (callers == null) {
                             callers = new ArrayList();
                         }
@@ -534,20 +542,20 @@ public class FigClassifierRole extends FigNodeModelElement
                         if (callerIndex != -1) {
                             for (int backNodeIndex = i - 1;
                                   backNodeIndex > 0
-				     && ((MessageNode) linkPositions
-					 .get(backNodeIndex))
-				     .matchingCallerList(caller, callerIndex);
+                                 && ((MessageNode) linkPositions
+                                 .get(backNodeIndex))
+                                 .matchingCallerList(caller, callerIndex);
                                   --backNodeIndex) {
-				;
-			    }
+                                ;
+                            }
                             if (callerIndex == 0) {
                                 callers = null;
                                 if (lastState == MessageNode.CALLED) {
                                     lastState = MessageNode.RETURNED;
-				}
+                                }
                             } else {
                                 callers =
-				    new ArrayList(callers.subList(0,
+                                    new ArrayList(callers.subList(0,
 								  callerIndex));
                             }
                         }
@@ -1411,13 +1419,13 @@ public class FigClassifierRole extends FigNodeModelElement
             
             int h = MIN_HEAD_HEIGHT;
             
-            Layer layer = getLayer();
+            Layer layer = FigClassifierRole.this.getLayer();
             
             if (layer == null) {
                 return new Dimension(MIN_HEAD_WIDTH, MIN_HEAD_HEIGHT);
             }
             
-            List figs = getLayer().getContents();
+            List figs = layer.getContents();
             for (Iterator i=figs.iterator(); i.hasNext(); ) {
                 Object o = i.next();
                 if (o instanceof FigClassifierRole) {
