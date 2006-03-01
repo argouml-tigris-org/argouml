@@ -112,11 +112,17 @@ public class FigTransition extends FigEdgeModelElement {
                         Model.getFacade().getSource(newOwner))
                     || Model.getFacade().isAObjectFlowState(
                             Model.getFacade().getTarget(newOwner));
-
-            notationProvider =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_TRANSITION, this, newOwner);
         }
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#initNotationProviders(java.lang.Object)
+     */
+    protected void initNotationProviders(Object own) {
+        super.initNotationProviders(own);
+        notationProvider =
+            NotationProviderFactory2.getInstance().getNotationProvider(
+                NotationProviderFactory2.TYPE_TRANSITION, this, own);        
     }
 
     /**

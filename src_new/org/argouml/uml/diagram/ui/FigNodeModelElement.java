@@ -1228,6 +1228,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
+     * Create the NotationProviders.
+     * 
      * @param own the current owner
      */
     protected void initNotationProviders(Object own) {
