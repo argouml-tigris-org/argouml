@@ -30,18 +30,16 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.text.ParseException;
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.notation.NotationProvider4;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
-import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -80,6 +78,9 @@ public class FigObjectFlowState extends FigNodeModelElement {
     private static final int WIDTH = 70;
     private static final int HEIGHT = 40;
 
+    private NotationProvider4 notationProviderType;
+    private NotationProvider4 notationProviderState;
+    
     private FigRect cover;
     private FigText state;      // the state name
 
@@ -133,6 +134,12 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
+        notationProviderType =
+            NotationProviderFactory2.getInstance().getNotationProvider(
+                NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_TYPE, this, own);
+        notationProviderState =
+            NotationProviderFactory2.getInstance().getNotationProvider(
+                NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_STATE, this, own);
     }
 
     /**
@@ -279,12 +286,9 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     private void updateClassifierText() {
         if (isReadyToEdit()) {
-            if (getOwner() == null) {
-                return;
+            if (notationProviderType != null) {
+                getNameFig().setText(notationProviderType.toString());
             }
-            String theNewText =
-                generateObjectFlowState1(getOwner()); // the ObjectFlowState
-            getNameFig().setText(theNewText);
         }
     }
 
@@ -293,56 +297,8 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     private void updateStateText() {
         if (isReadyToEdit()) {
-            if (getOwner() == null) {
-                return;
-            }
-            String theNewText = generateObjectFlowState2(getOwner());
-            state.setText(theNewText);
+            state.setText(notationProviderState.toString());
         }
-    }
-
-    /**
-     * TODO: To be moved into the Notation subsystem.
-     * 
-     * @param m the ObjectFlowState
-     * @return a string showing the name of the Classifier
-     */
-    private String generateObjectFlowState1(Object m) {
-        Object classifier = Model.getFacade().getType(m);
-        if (Model.getFacade().isAClassifierInState(classifier)) {
-            classifier = Model.getFacade().getType(classifier); 
-        }
-        if (classifier == null) {
-            return "";
-        }
-        String name = Model.getFacade().getName(classifier);
-        if (name == null) name = "";
-        return name;
-    }
-    
-    /**
-     * TODO: To be moved into the Notation subsystem.
-     * 
-     * @param m the ObjectFlowState
-     * @return a string showing the states
-     */
-    private String generateObjectFlowState2(Object m) {
-        StringBuffer theNewText = new StringBuffer("");
-        Object cis = Model.getFacade().getType(getOwner());
-        if (Model.getFacade().isAClassifierInState(cis)) {
-            theNewText.append("[ ");
-            Collection states = Model.getFacade().getInStates(cis);
-            Iterator i = states.iterator();
-            boolean first = true;
-            while (i.hasNext()) {
-                if (!first) theNewText.append(", ");
-                first = false;
-                Object state = i.next();
-                theNewText.append(Model.getFacade().getName(state));
-            }
-            theNewText.append(" ]");
-        }
-        return theNewText.toString();
     }
 
     ////////////////////////////////////////////////////////////////
@@ -420,25 +376,11 @@ public class FigObjectFlowState extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-        try {
-            if (ft == getNameFig() && this.getOwner() != null) {
-                ParserDisplay.SINGLETON.parseObjectFlowState1(ft.getText(),
-                    this.getOwner());
-            } else if (ft == state && this.getOwner() != null) {
-                ParserDisplay.SINGLETON.parseObjectFlowState2(ft.getText(),
-                        this.getOwner());
-            }
-            ProjectBrowser.getInstance().getStatusBar().showStatus("");
-        } catch (ParseException pe) {
-            String msg = "statusmsg.bar.error.parsing.objectflowstate";
-            Object[] args = {
-                pe.getLocalizedMessage(),
-                new Integer(pe.getErrorOffset()),
-            };
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
-                    Translator.messageFormat(msg, args));
-            updateClassifierText();
-            updateStateText();
+        
+        if (ft == getNameFig()) {
+            ft.setText(notationProviderType.parse(ft.getText()));
+        } else if (ft == state) {
+            ft.setText(notationProviderState.parse(ft.getText()));
         }
     }
 
@@ -447,10 +389,10 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
-            showHelp("parsing.help.fig-objectflowstate1");
+            showHelp(notationProviderType.getParsingHelp());
         }
         if (ft == state) {
-            showHelp("parsing.help.fig-objectflowstate2");
+            showHelp(notationProviderState.getParsingHelp());
         }
     }
 
