@@ -713,9 +713,19 @@ public abstract class FigEdgeModelElement
         if (newOwner != null && UUIDHelper.getUUID(newOwner) == null) {
             Model.getCoreHelper().setUUID(newOwner, UUIDHelper.getNewUUID());
         }
+        initNotationProviders(newOwner);
         modelChanged(null);
     }
 
+    /**
+     * Create the NotationProviders.
+     * 
+     * @param own the current owner
+     */
+    protected void initNotationProviders(Object own) {
+        /* Do nothing by default. */
+    }
+    
     /**
      * Implementations of this method should register/unregister the fig for all
      * (model)events. For FigEdgeModelElement only the fig itself is registered
