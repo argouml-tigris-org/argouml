@@ -21,8 +21,7 @@ DT {
 <li><a href="#source_link">Where do I get the source code for ArgoUML?</a></li>
 <li><a href="#commer_link">Is there commercial support for ArgoUML?</a></li>
 <li><a href="#uml_versions">What versions of UML are supported?</a></li>
-<li><a href="#help_link">When I click on help I get sent to a server... 
-  Where can I get the help files?</a></li>
+
 </ul>
 
 <H4>Quickstart, install and use</H4>
@@ -36,7 +35,6 @@ with other users?</a></li>
 <H4>OS Specific</H4>
 <ul>
 <li><a href="#osx_link">In OS X: How can I access the context sensitive menus?</a>
-<li><a href="#osx_java">In OS X 10.2: How can I get ArgoUML to work?</a>
 <li><a href="#win_link">In Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
 <li><a href="#unknownhostexception">In Linux: 
       I cannot start because of an java.net.UnknownHostException
@@ -56,6 +54,7 @@ with other users?</a></li>
 
 <H4>Diagrams and Navigation</H4>
 <ul>
+<li><a href="#create_diagram">How do I create a diagram?</a>
 <li><a href="#diag_link">How do I know what diagram I'm working on?</a>
 <li><a href="#actor_link">How can I sort the artifacts in the Navigation Pane?</a>
 <li><a href="#elem_link">How do I arrange my diagram elements?</a>
@@ -63,9 +62,7 @@ with other users?</a></li>
       Why don't the sequence diagrams work?
     </a>
 <li><a href="#ord_link">I'm trying to change the ordering of the links in the sequence diagram. How do I do that?</a>
-<li><a href="#state_link">How do I create a state diagram?</a>
-<li><a href="#act_link">How do I create an activity diagram?</a>
-<li><a href="#note_link">I see there is a note icon in the tool bar. How do I use it?</a>
+<li><a href="#note_link">How does the note tool in the tool bar work?</a>
 <li><a href="#easy_link">What is the easiest way to enter data into attributes and methods window for classes?</a>
 <li><a href="#model_link">Where can I find some sample ArgoUML models?</a>
 </ul>
@@ -255,43 +252,20 @@ is really complicated and not recommended.)
 
 
 <DT><a name="commer_link">Is there commercial support for ArgoUML?</a>
-<DD>Not really.
-Gentleware provides a product called <i>Poseidon</i> that is sold with support.
-
-<p>
-See <A HREF="http://www.gentleware.com">http://www.gentleware.com</A>.
-
-<p>
-Poseidon was originally ArgoUML but that was a long time ago and 
-Gentleware has made a lot of improvements.
-ArgoUML has also made improvements since then so the two
-products have been diverging and are now very different.
-
+<DD>Not currently.  Companies such as Gentleware and Genuitec have
+created commercial derivatives of ArgoUML, but these are independent
+and have separate code bases.
 
 
 <DT><a name="uml_versions">What versions of UML are supported?</a>
 <DD>
 ArgoUML versions through version 0.18.1 support UML 1.3.  Beginning with version 
-0.20 in early 2006, ArgoUML will support UML 1.4.
+0.20 in early 2006, ArgoUML began supporting UML 1.4.
 <p>
-Support of UML 2.0 probably won't happen until a new version of JMI is defined
-    which supports UML 2.0 and there is an open source implementation which
-    supports it.
+We don't have plans for the support of UML 2.0 in the immediate future, 
+but it is a goal as the standard is completed and software components
+that support it (model repository, OCL, etc) become available.
 
-
-<DT><a name="help_link">When I click on help I get sent to a server for example:
-http://ics.uci.edu/pub/arch/uml/critics/CrMultipleAgg.html but there
-isn't an ics.uci.edu server... Where can I get the help files?</a>
-<DD>This was a stub for the help files that was never implemented.
-It was so up until versions 0.10 of ArgoUML.
-<P>
-In versions 0.12 of ArgoUML this "feature" was turned off.
-<P>
-In version 0.14 you are directed to the User Manual where
-this information is described.
-The integration between the User Manual and the ArgoUML tools is currently
-rather rudimentary. Among other things it needs to use the single big file
-version of the user manual.
 
 </DL>
 
@@ -299,7 +273,9 @@ version of the user manual.
 <H3><a name="quickstart_link">Quickstart, install and use</a></H3>
 <DL>
 <DT><a name="install_link">How do I install ArgoUML?</a>
-<DD>See
+<DD>The easiest way to get started is to click on the Java Web Start link
+on our home page.  If you need a different style of installation, you can
+find more information in
 <a href="http://argouml.tigris.org/documentation/defaulthtml/quick-guide/ch02.html">
   Quick Guide Chapter 2
 </a>.
@@ -329,14 +305,6 @@ See <a href="http://argouml.tigris.org/servlets/SummarizeList?listName=users">
 <DL>
 <DT><a name="osx_link">In OS X: How can I access the context sensitive menus?</a>
 <DD>Press the Apple Key together with the mouse button
-
-
-<DT><a name="osx_java">In OS X 10.2: How can I get ArgoUML to work?</a>
-<DD>ArgoUML will not work out-of-the-box on MacOSX 10.2 for people who have the Apple Developer Tools installed, because those tools install Java 1.4.1.
-<p>
-There is a workaround, though: Apple leaves the 1.3.1 java engine installed, but in an obscure place. You can run ArgoUML from the Terminal window by typing
-<p>
-% /System/Library/Frameworks/JavaVM.framework/Versions/1.3.1/Commands/java -jar argouml.jar
 
 
 <DT><a name="win_link">In Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
@@ -609,35 +577,31 @@ nudge (move a little bit) elements.
 <DT><a name="sequence_diagrams_not_working">
       Why don't the sequence diagrams work?
     </a>
-<DD>Sequence diagrams stopped working in 0.12
-and were disabled completely through 0.18.1.
-<p>
-Sequence diagrams have been reintroduced with
-ArgoUML 0.20 with a completely new implementation.
-
+<DD>You are probably using an old version of ArgoUML.  Upgrade to 
+ArgoUML 0.20 or later. 
 
 <DT><a name="ord_link">I'm trying to change the ordering of the links in the sequence
 diagram. How do I do that?</a>
 <DD>That is not currently supported.
 
 
-<DT><a name="state_link">How do I create a state diagram?</a>
-<DD>Select a class, then you can create a state diagram.
-The same applies for activity diagrams.
+<DT><a name="create_diagram">How do I create a diagram?</a>
+<DD>If you are trying to create a Sequence, Statechart, Activity, or
+Collaboration diagram, you need to have an appropriate model element
+selected for the diagram to be associated with.
+<p>
+If you just want to experiment with different diagram types, the
+easiest thing to do is create an empty Class on the Class Diagram
+and select it to enable the other diagram buttons.
 
 
-<DT><a name="act_link">How do I create an activity diagram?</a>
-<DD>Select a use case or class, then you can create an activity
-diagram. Same as for a state diagram.
-
-
-<DT><a name="note_link">I see there is a note icon in the tool bar. How do I use it?</a>
+<DT><a name="note_link">How does the note tool in the tool bar work?</a>
 <DD>Click on your target class.
 Then click on the note icon.
 ArgoUML will generate the link automatically.
 
 <p>
-You can also right click to add a note as well.
+You can also right click on an element in the diagram to add a note as well.
 
 <p>
 Be aware that your note will not appear in the source code
@@ -689,7 +653,13 @@ your file.  Some of them include:
       Modules-&gt;Import.</li>
     </ul>
     </li>
-  </ul><DT><a name="xmia_link">Does ArgoUML save XMI files?</a>
+  </ul>
+    If the ArgoUML error message complains about an unknown element 
+    named 'UML:Diagram' (generated while loading non-standard Poseidon files 
+    and perhaps others), you may be able to get the file to load by
+    turning on the ArgoUML user preference to ignore Diagram elements on
+    user preference Settings dialog (ArgoUML 0.21.1 or later).
+<DT><a name="xmia_link">Does ArgoUML save XMI files?</a>
 <DD>Yes.  ArgoUML versions through 0.18.1 will export XMI 1.0 files containing models
     conforming to the UML 1.3 metamodel.  Beginning with ArgoUML 0.20, XMI 1.2
     files are exported conforming to the UML 1.4 metamodel.
