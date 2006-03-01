@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -82,6 +82,18 @@ public final class NotationProviderFactory2 {
      */
     public static final int TYPE_NODEINSTANCE = 9;
     
+    /**
+     * TYPE_TYPE_OBJECTFLOWSTATE_TYPE the text shown on a 
+     * objectflowstate's type, i.e. its classifier name.
+     */
+    public static final int TYPE_OBJECTFLOWSTATE_TYPE = 10;
+
+    /**
+     * TYPE_OBJECTFLOWSTATE_STATE the text shown on a 
+     * objectflowsate's state.
+     */
+    public static final int TYPE_OBJECTFLOWSTATE_STATE = 11;
+
     /**
      * defaultLanguage the Notation language used by default, i.e. UML
      */

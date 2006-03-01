@@ -62,6 +62,10 @@ public class InitNotationUml {
                 name, ComponentInstanceNotationUml.class);
         npf.addNotationProvider(NotationProviderFactory2.TYPE_NODEINSTANCE,
                 name, NodeInstanceNotationUml.class);
+        npf.addNotationProvider(NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_TYPE,
+                name, ObjectFlowStateTypeNotationUml.class);
+        npf.addNotationProvider(NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_STATE,
+                name, ObjectFlowStateStateNotationUml.class);
 
 
         NotationProviderFactory2.getInstance().setDefaultNotation(name);
