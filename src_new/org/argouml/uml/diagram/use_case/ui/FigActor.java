@@ -49,8 +49,13 @@ import org.tigris.gef.presentation.FigRect;
 public class FigActor extends FigNodeModelElement {
 
     /**
-     * The padding between
-     * the actor body and name and the top of the stereotype.<p>
+     * The serialization version - Eclipse generated for rev. 1.40
+     */
+    private static final long serialVersionUID = 7265843766314395713L;
+
+    /**
+     * The padding between the actor body and name and the top of the
+     * stereotype.
      */
     protected static final int MIN_VERT_PADDING = 4;
 
@@ -138,7 +143,7 @@ public class FigActor extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() {
-        return "new MActor";
+        return "new Actor";
     }
 
     ////////////////////////////////////////////////////////////////
@@ -182,7 +187,7 @@ public class FigActor extends FigNodeModelElement {
     }
 
     /**
-     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
         int middle = w / 2;
@@ -324,8 +329,7 @@ public class FigActor extends FigNodeModelElement {
     }
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
         super.updateStereotypeText();
@@ -355,6 +359,10 @@ public class FigActor extends FigNodeModelElement {
      */
     class ActorPortFigRect extends FigRect {
 
+        /**
+         * The serial version - Eclise generated for Rev. 1.40
+         */
+        private static final long serialVersionUID = 5973857118854162659L;
         /**
          * the parent fig, i.e. the Actor
          */
