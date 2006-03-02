@@ -33,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxEditor;
 import javax.swing.Icon;
@@ -239,9 +240,9 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 implements FocusL
 
     /**
      * @see org.argouml.uml.ui.UMLComboBox2#UMLComboBox2(
-     * UMLComboBoxModel2, UMLAction, boolean)
+     * UMLComboBoxModel2, Action, boolean)
      */
-    public UMLEditableComboBox(UMLComboBoxModel2 model, UMLAction selectAction,
+    public UMLEditableComboBox(UMLComboBoxModel2 model, Action selectAction,
             boolean showIcon) {
         super(model, selectAction, showIcon);
         setEditable(true);
@@ -251,9 +252,9 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 implements FocusL
 
     /**
      * @see org.argouml.uml.ui.UMLComboBox2#UMLComboBox2(
-     * UMLComboBoxModel2, UMLAction)
+     * UMLComboBoxModel2, Action)
      */
-    public UMLEditableComboBox(UMLComboBoxModel2 arg0, UMLAction selectAction) {
+    public UMLEditableComboBox(UMLComboBoxModel2 arg0, Action selectAction) {
         this(arg0, selectAction, true);
     }
 

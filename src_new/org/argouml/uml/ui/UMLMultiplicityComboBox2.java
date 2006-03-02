@@ -24,6 +24,8 @@
 
 package org.argouml.uml.ui;
 
+import javax.swing.Action;
+
 import org.argouml.model.Model;
 
 /**
@@ -41,7 +43,7 @@ public class UMLMultiplicityComboBox2 extends UMLSearchableComboBox {
      * @param selectAction the action
      */
     public UMLMultiplicityComboBox2(UMLComboBoxModel2 arg0,
-            UMLAction selectAction) {
+            Action selectAction) {
         super(arg0, selectAction);
     }
 

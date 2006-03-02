@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui;
 
+import javax.swing.Action;
 import javax.swing.ComboBoxModel;
 
 import org.argouml.model.Model;
@@ -44,7 +45,7 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
      * @param showIcon true if we show an icon in the list
      */
     public UMLSearchableComboBox(UMLComboBoxModel2 model,
-            UMLAction selectAction, boolean showIcon) {
+            Action selectAction, boolean showIcon) {
         super(model, selectAction, showIcon);
     }
 
@@ -54,7 +55,7 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
      * @param selectAction the action for selection
      */
     public UMLSearchableComboBox(UMLComboBoxModel2 arg0,
-            UMLAction selectAction) {
+            Action selectAction) {
         this(arg0, selectAction, true);
     }
 
