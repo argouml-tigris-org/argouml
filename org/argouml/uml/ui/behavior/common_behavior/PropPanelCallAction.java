@@ -34,10 +34,10 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLSearchableComboBox;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * The properties panel for a CallAction.
@@ -80,7 +80,7 @@ public class PropPanelCallAction extends PropPanelAction {
         }
     }
     
-    private class SetActionOperationAction extends UMLAction {
+    private class SetActionOperationAction extends UndoableAction {
         
         /**
          * The constructor.

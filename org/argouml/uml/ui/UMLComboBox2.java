@@ -26,12 +26,14 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
 import javax.swing.JComboBox;
 
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
+
 
 /**
  * ComboBox for UML modelelements. <p>
@@ -63,7 +65,7 @@ public class UMLComboBox2
      * @param action the action
      * @param showIcon true if an icon should be shown in front of the items
      */
-    public UMLComboBox2(UMLComboBoxModel2 arg0, UMLAction action,
+    public UMLComboBox2(UMLComboBoxModel2 arg0, Action action,
 			boolean showIcon) {
         super(arg0);
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
@@ -78,7 +80,7 @@ public class UMLComboBox2
      * @param arg0 the ComboBoxModel
      * @param action the action
      */
-    public UMLComboBox2(UMLComboBoxModel2 arg0, UMLAction action) {
+    public UMLComboBox2(UMLComboBoxModel2 arg0, Action action) {
         this(arg0, action, true);
     }
 

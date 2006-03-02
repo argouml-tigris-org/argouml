@@ -38,12 +38,12 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.util.ConfigLoader;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * The properties panel for a ClassifierInState.
@@ -90,7 +90,7 @@ public class PropPanelClassifierInState extends PropPanelClassifier {
 
 }
 
-class ActionSetClassifierInStateType extends UMLAction {
+class ActionSetClassifierInStateType extends UndoableAction {
 
     /**
      * Constructor for ActionSetClassifierInStateType.
