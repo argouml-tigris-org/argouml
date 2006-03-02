@@ -88,7 +88,7 @@ public interface ActivityGraphsFactory extends Factory {
     Object buildActivityGraph(Object theContext);
 
     /**
-     * Builds an objectflowstate. The objectflowstate will be a subvertex of
+     * Builds an ObjectFlowState. The ObjectFlowState will be a subvertex of
      * the given compositestate. The parameter compositeState is of
      * type Object to decouple the factory and model implementation as much as
      * possible from the rest of ArgoUML.
@@ -102,10 +102,9 @@ public interface ActivityGraphsFactory extends Factory {
     /**
      * Builds a ClassifierInState. Links it to the 2 required objects:
      * the classifier that forms the type of this classifierInState,
-     * and the states.
+     * and a collection of one or more states.
      *
      * @param classifier the classifier (type)
-// TODO: Back out incompatible change to API
      * @param state the collection of states (inState)
      * @return the newly build classifierInState
      */
