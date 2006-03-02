@@ -29,17 +29,22 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.JComboBox;
+import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.util.ConfigLoader;
@@ -53,6 +58,7 @@ import org.tigris.gef.undo.UndoableAction;
 public class PropPanelClassifierInState extends PropPanelClassifier {
 
     private JComboBox typeComboBox;
+    private JScrollPane statesScroll;
 
     private UMLClassifierInStateTypeComboBoxModel typeComboBoxModel =
         new UMLClassifierInStateTypeComboBoxModel();
@@ -73,6 +79,15 @@ public class PropPanelClassifierInState extends PropPanelClassifier {
         
         addField(Translator.localize("label.type"),
                 getClassifierInStateTypeSelector());
+        
+        // field for States
+        AbstractActionAddModelElement action = 
+            new ActionAddCISState();
+        UMLMutableLinkedList list = new UMLMutableLinkedList(
+                new UMLCISStateListModel(), action, null, null, true);
+        statesScroll = new JScrollPane(list);
+        addField(Translator.localize("label.instate"),
+                statesScroll);
 
         addAction(new ActionNavigateNamespace());
         addAction(new ActionDeleteSingleModelElement());
@@ -96,7 +111,7 @@ class ActionSetClassifierInStateType extends UndoableAction {
      * Constructor for ActionSetClassifierInStateType.
      */
     ActionSetClassifierInStateType() {
-        super("SetClassifierInStateType");
+        super();
     }
 
     /**
@@ -203,5 +218,91 @@ class UMLClassifierInStateTypeComboBoxModel extends UMLComboBoxModel2 {
                 }
             }
         }
+    }
+}
+
+class ActionAddCISState extends AbstractActionAddModelElement {
+    
+    private Object choiceClass = Model.getMetaTypes().getState();
+    
+    
+    public ActionAddCISState() {
+        super();
+        setMultiSelect(true);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
+     */
+    protected void doIt(Vector selected) {
+        Object cis = getTarget();
+        if (Model.getFacade().isAClassifierInState(cis)) {
+            Model.getActivityGraphsHelper().setInStates(cis, selected);
+        }
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
+     */
+    protected Vector getChoices() {
+        Vector ret = new Vector();
+        Object cis = getTarget();
+        Object classifier = Model.getFacade().getType(cis);
+        if (Model.getFacade().isAClassifier(classifier)) {
+            ret.addAll(Model.getModelManagementHelper()
+                    .getAllModelElementsOfKindWithModel(classifier, choiceClass));
+        }
+        return ret;
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
+     */
+    protected String getDialogTitle() {
+        return Translator.localize("dialog.title.add-state");
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
+     */
+    protected Vector getSelected() {
+        Object cis = getTarget();
+        if (Model.getFacade().isAClassifierInState(cis)) {
+            return new Vector(Model.getFacade().getInStates(cis));
+        }
+        return new Vector();
+    }
+}
+
+class UMLCISStateListModel extends UMLModelElementListModel2 {
+    
+    /**
+     * Constructor for UMLOFSStateListModel.
+     */
+    public UMLCISStateListModel() {
+        super("inState");
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        Object cis = getTarget();
+        if (Model.getFacade().isAClassifierInState(cis)) {
+            Collection c = Model.getFacade().getInStates(cis);
+            setAllElements(c);
+        }
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
+     */
+    protected boolean isValidElement(Object elem) {
+        Object cis = getTarget();
+        if (Model.getFacade().isAClassifierInState(cis)) {
+            Collection c = Model.getFacade().getInStates(cis);
+            if (c.contains(elem)) return true;
+        }
+        return false;
     }
 }
