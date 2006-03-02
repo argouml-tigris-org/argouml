@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -108,7 +107,7 @@ public class FigClassifierRole extends FigNodeModelElement
     /**
      * The filled box for the object box (object fig without lifeline).
      */
-    private FigHead headFig;
+    FigHead headFig;
 
     /**
      * The lifeline (dashed line under the object box to which activations are
@@ -143,7 +142,7 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     public FigClassifierRole() {
         super();
-        headFig = new FigHead();
+        headFig = new FigHead(getStereotypeFig(), getNameFig());
         headFig.setFilled(true);
         headFig.setLineWidth(1);
         getStereotypeFig().setBounds(MIN_HEAD_WIDTH / 2,
@@ -1405,61 +1404,6 @@ public class FigClassifierRole extends FigNodeModelElement
             }
         }
         
-    }
-    
-    private class FigHead extends FigRect {
-
-        FigHead() {
-            super(0, 0, 
-                    MIN_HEAD_WIDTH, MIN_HEAD_HEIGHT, 
-                    Color.black, Color.white);
-        }
-        
-        public Dimension getMinimumSize() {
-            
-            int h = MIN_HEAD_HEIGHT;
-            
-            Layer layer = FigClassifierRole.this.getLayer();
-            
-            if (layer == null) {
-                return new Dimension(MIN_HEAD_WIDTH, MIN_HEAD_HEIGHT);
-            }
-            
-            List figs = layer.getContents();
-            for (Iterator i=figs.iterator(); i.hasNext(); ) {
-                Object o = i.next();
-                if (o instanceof FigClassifierRole) {
-                    FigClassifierRole other = (FigClassifierRole)o;
-                    int otherHeight = other.headFig.getMinimumHeight();
-                    if (otherHeight > h) {
-                        h = otherHeight;
-                    }
-                }
-            }
-            
-            int w = getNameFig().getMinimumSize().width;
-            if (getStereotypeFig().isVisible()) {
-                if (getStereotypeFig().getMinimumSize().width > w) {
-                    w = getStereotypeFig().getMinimumSize().width;
-                }
-            }
-            if (w < MIN_HEAD_WIDTH) {
-                w = MIN_HEAD_WIDTH;
-            }
-            return new Dimension(w, h);
-        }
-        
-        private int getMinimumHeight() {
-            
-            int h = getNameFig().getMinimumHeight();
-            if (getStereotypeFig().isVisible()) {
-                h += getStereotypeFig().getMinimumSize().height;
-            }
-            if (h < MIN_HEAD_HEIGHT) {
-                h = MIN_HEAD_HEIGHT;
-            }
-            return h;
-        }
     }
 
     /**
