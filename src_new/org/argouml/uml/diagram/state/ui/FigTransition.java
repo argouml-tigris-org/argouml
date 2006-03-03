@@ -122,7 +122,7 @@ public class FigTransition extends FigEdgeModelElement {
         super.initNotationProviders(own);
         notationProvider =
             NotationProviderFactory2.getInstance().getNotationProvider(
-                NotationProviderFactory2.TYPE_TRANSITION, this, own);        
+                    NotationProviderFactory2.TYPE_TRANSITION, this, own);
     }
 
     /**
@@ -186,8 +186,7 @@ public class FigTransition extends FigEdgeModelElement {
                     && (e.getSource() == getOwner()
                             && e.getPropertyName().equals("guard"))) {
                 if (e.getNewValue() != null) {
-                    Model.getPump().addModelEventListener(this,
-                            e.getNewValue(), "expression");
+                    addElementListener(e.getNewValue(), "expression");
                 }
                 updateNameText();
                 damage();
@@ -196,11 +195,10 @@ public class FigTransition extends FigEdgeModelElement {
                     && e.getPropertyName().equals("trigger")) {
                 // register the event (or trigger)
                 if (e.getNewValue() != null) {
-                    Model.getPump().addModelEventListener(this,
-                            e.getNewValue(), new String[] {
-                                "parameter", "name",
-                                //TODO: How to listen to time/change expression?
-                            });
+                    addElementListener(e.getNewValue(),
+                            new String[] {"parameter", "name"}
+                    // TODO: How to listen to time/change expression?
+                    );
                 }
                 updateNameText();
                 damage();
@@ -209,10 +207,8 @@ public class FigTransition extends FigEdgeModelElement {
                     && e.getPropertyName().equals("effect")) {
                 // register the action
                 if (Model.getFacade().isAAction(e.getNewValue())) {
-                    Model.getPump().addModelEventListener(this,
-                            e.getNewValue(), "script"); /* Works!*/
-                    Model.getPump().addModelEventListener(this,
-                            e.getNewValue(), "actualArgument"); /* Works!*/
+                    addElementListener(e.getNewValue(),
+                            new String[] {"script", "actualArgument"});
                 }
                 /* The new value may be null if the effect is removed. */
                 updateNameText();
@@ -223,11 +219,9 @@ public class FigTransition extends FigEdgeModelElement {
                 // handle events send by the event for its parameter
                 if (e.getPropertyName().equals("parameter")) {
                     if (e.getOldValue() != null) {
-                        Model.getPump().removeModelEventListener(
-                                this, e.getOldValue());
+                        removeElementListener(e.getOldValue());
                     } else if (e.getNewValue() != null) {
-                        Model.getPump().addModelEventListener(
-                                this, e.getNewValue());
+                        addElementListener(e.getNewValue());
                     }
                 }
                 updateNameText();
@@ -241,8 +235,7 @@ public class FigTransition extends FigEdgeModelElement {
                 // PropertyName is "trigger" or "script"
                 if (Model.getFacade().isAArgument(e.getNewValue())) {
                     /* For arguments, listen to changes of the value */
-                    Model.getPump().addModelEventListener(this,
-                            e.getNewValue(), "value");
+                    addElementListener(e.getNewValue(), "value");
                 }
                 /* The next lines outside the above if clause for the case
                  * where the "script" changes!
@@ -266,45 +259,13 @@ public class FigTransition extends FigEdgeModelElement {
                 getFig().setDashed(dashed);
             }
         } else if (e instanceof RemoveAssociationEvent) {
-            // unregister the guard condition
-            if (Model.getFacade().isATransition(e.getSource())
-                    && (e.getSource() == getOwner()
-                            && e.getPropertyName().equals("guard"))) {
-                Model.getPump().removeModelEventListener(this,
-                        e.getOldValue(), "expression");
-                updateNameText();
-                damage();
-            } else if (Model.getFacade().isATransition(e.getSource())
-                    && e.getSource() == getOwner()
-                    && e.getPropertyName().equals("trigger")) {
-                // unregister the event (or trigger)
-                Model.getPump().removeModelEventListener(this,
-                        e.getOldValue(), new String[] {
-                            "parameter", "name",
-                            //TODO: How to listen to time/change expression?
-                        });
-                updateNameText();
-                damage();
-            } else if (Model.getFacade().isATransition(e.getSource())
-                    && e.getSource() == getOwner()
-                    && e.getPropertyName().equals("effect")) {
-                // unregister the action
-                if (Model.getFacade().isAAction(e.getOldValue())) {
-                    Model.getPump().removeModelEventListener(this,
-                            e.getOldValue(), "script");
-                    Model.getPump().removeModelEventListener(this,
-                            e.getOldValue(), "actualArgument");
-                }
-                updateNameText();
-                damage();
-            } else if (Model.getFacade().isAAction(e.getSource())) {
-                if (Model.getFacade().isAArgument(e.getOldValue())) {
-                    Model.getPump().removeModelEventListener(this,
-                            e.getOldValue(), "value");
-                }
-                updateNameText();
-                damage();
-            }
+            /*
+             * If an association has been removed, stop listening to
+             * the element that was there (and update our figure just in case)
+             */
+            removeElementListener(e.getOldValue());
+            updateNameText();
+            damage();
         }
     }
 

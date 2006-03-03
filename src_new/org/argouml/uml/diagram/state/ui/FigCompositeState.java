@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -151,7 +151,7 @@ public class FigCompositeState extends FigState {
     /**
      * Override setBounds to keep shapes looking right.
      *
-     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
         if (getNameFig() == null) {
@@ -347,7 +347,7 @@ public class FigCompositeState extends FigState {
         if (mee.getPropertyName().equals("isConcurrent")) {
             // TODO: this should split the composite state into two
             // regions. This must be implemented
-            updateInternal();
+            renderingChanged();
         }
 
     }

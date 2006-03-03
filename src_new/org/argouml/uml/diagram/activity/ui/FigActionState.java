@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -242,8 +242,7 @@ public class FigActionState extends FigStateVertex {
             if (mee.getSource() == getOwner()
                 && mee.getPropertyName().equals("entry")) {
                 if (mee.getNewValue() != null) {
-                    Model.getPump().addModelEventListener(this,
-                                            mee.getNewValue(), "script");
+                    addElementListener(mee.getNewValue(), "script");
                 }
                 updateNameText();
                 damage();
@@ -258,8 +257,7 @@ public class FigActionState extends FigStateVertex {
         } else if (mee instanceof RemoveAssociationEvent) {
             if (mee.getOldValue() != null
                     && mee.getPropertyName().equals("entry")) {
-                Model.getPump().removeModelEventListener(this,
-                        mee.getOldValue(), "script");
+                removeElementListener(mee.getOldValue());
                 updateNameText();
                 damage();
             }

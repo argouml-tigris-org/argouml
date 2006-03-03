@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -365,17 +365,20 @@ public class FigSubmachineState extends FigState {
      */
     protected void updateListeners(Object newOwner) {
         super.updateListeners(newOwner);
+        if (newOwner == getOwner()) {
+            return;
+        }
         if (newOwner != null) {
             Object newSm = Model.getFacade().getSubmachine(newOwner);
             if (newSm != null) {
-                Model.getPump().addModelEventListener(this, newSm);
+                addElementListener(newSm);
             }
         } else {
             Object oldOwner = getOwner();
             if (oldOwner != null) {
                 Object oldSm = Model.getFacade().getSubmachine(oldOwner);
                 if (oldSm != null) {
-                    Model.getPump().removeModelEventListener(this, oldSm);
+                    removeElementListener(oldSm);
                 }
             }
         }
@@ -384,7 +387,7 @@ public class FigSubmachineState extends FigState {
     private void updateListeners(Object newOwner, Object oldV) {
         this.updateListeners(newOwner);
         if (oldV != null) {
-            Model.getPump().removeModelEventListener(this, oldV);
+            removeElementListener(oldV);
         }
     }
 

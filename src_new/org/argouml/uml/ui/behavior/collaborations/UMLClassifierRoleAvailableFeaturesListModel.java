@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2005 The Regents of the University of California. All
+// Copyright (c) 2002-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,8 +35,12 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.tigris.gef.presentation.Fig;
 
 /**
+ * List model which implements allAvailableFeatures operation for a
+ * ClassifierRole as described in the well formedness rules.
+ * 
  * @since Oct 4, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * 
  */
 public class UMLClassifierRoleAvailableFeaturesListModel
     extends UMLModelElementListModel2 {
@@ -56,6 +60,9 @@ public class UMLClassifierRoleAvailableFeaturesListModel
                 .allAvailableFeatures(getTarget()));
     }
 
+    /**
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
     public void propertyChange(PropertyChangeEvent e) {
         if (e instanceof AddAssociationEvent) {
             if (e.getPropertyName().equals("base")
@@ -87,23 +94,20 @@ public class UMLClassifierRoleAvailableFeaturesListModel
                 removeElement(getChangedElement(e));
             }
         } else {
-                super.propertyChange(e);
+            super.propertyChange(e);
         }
     }
 
 
     /**
-     * TODO: Why this function that the other models do not need?
-     *
-     * @see
-     * org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
     public void setTarget(Object target) {
         if (getTarget() != null) {
             Collection bases = Model.getFacade().getBases(getTarget());
             Iterator it = bases.iterator();
             while (it.hasNext()) {
-                Object base = /*(MBase)*/ it.next();
+                Object base = it.next();
                 Model.getPump().removeModelEventListener(
 			this,
 			base,
@@ -111,7 +115,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
             }
             Model.getPump().removeModelEventListener(
 		this,
-		/*(MBase)*/ getTarget(),
+		getTarget(),
 		"base");
         }
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
@@ -122,7 +126,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
             Collection bases = Model.getFacade().getBases(getTarget());
             Iterator it = bases.iterator();
             while (it.hasNext()) {
-                Object base = /*(MBase)*/ it.next();
+                Object base = it.next();
                 Model.getPump().addModelEventListener(
 			this,
 			base,
@@ -131,7 +135,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
             // make sure we know it when a classifier is added as a base
             Model.getPump().addModelEventListener(
 			this,
-			/*(MBase)*/ getTarget(),
+			getTarget(),
 			"base");
             removeAllElements();
             setBuildingModel(true);

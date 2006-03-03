@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,7 +54,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
         super.setUp();
         buildElement();
         // Tests used to be coded to assume immediate event delivery.
-        // They've been modified to use flush() where needed.
+        // They've been modified to use flush() where needed. - tfm
         //oldEventPolicy = MFactoryImpl.getEventPolicy();
         //MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         buildModel();
@@ -82,7 +82,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
-        // restore original event policy - not supported by MDR
+        // restore original event policy - not supported by MDR - tfm
         //MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }

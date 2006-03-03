@@ -104,6 +104,10 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
 
     /**
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     * 
+     * TODO: This should be reviewed to see if it can be improved with a view
+     * towards removing some of the overrriding methods used as workarounds for 
+     * differences between NSUML and MDR - tfm - 20060302
      */
     public void propertyChange(PropertyChangeEvent e) {
         if (e instanceof AttributeChangeEvent) {
@@ -237,10 +241,10 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
     }
 
     /**
-     * Sets the target. If the old target is instanceof MBase, it also removes
+     * Sets the target. If the old target is a ModelElement, it also removes
      * the model from the element listener list of the target. If the new target
-     * is instanceof MBase, the model is added as element listener to the new
-     * target.
+     * is instanceof ModelElement, the model is added as element listener to the
+     * new target.
      * @param theNewTarget the new target
      */
     public void setTarget(Object theNewTarget) {
@@ -249,14 +253,14 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
         if (Model.getFacade().isAModelElement(theNewTarget)
                 || theNewTarget instanceof Diagram) {
             if (Model.getFacade().isAModelElement(listTarget)) {
-                Model.getPump().
-                    removeModelEventListener(this, listTarget, eventName);
+                Model.getPump().removeModelEventListener(this, listTarget,
+                        eventName);
             }
 
             if (Model.getFacade().isAModelElement(theNewTarget)) {
                 listTarget = theNewTarget;
-                Model.getPump().
-                    addModelEventListener(this, listTarget, eventName);
+                Model.getPump().addModelEventListener(this, listTarget,
+                        eventName);
 
                 removeAllElements();
                 buildingModel = true;

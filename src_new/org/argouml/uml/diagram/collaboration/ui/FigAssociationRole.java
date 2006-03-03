@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
-import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -46,6 +45,11 @@ import org.tigris.gef.presentation.FigGroup;
  */
 public class FigAssociationRole extends FigAssociation {
 
+    /**
+     * Serial version - Eclipse generated for rev. 1.30
+     */
+    private static final long serialVersionUID = -6543020797101620194L;
+    
     private FigMessageGroup messages = new FigMessageGroup();
 
     ////////////////////////////////////////////////////////////////
@@ -74,21 +78,17 @@ public class FigAssociationRole extends FigAssociation {
     // event handlers
 
     /**
-     * Calls the method on the "super" (FigAssociation)
-     * and then changes the name to take care of the
+     * Override standard name handling to take care of the
      * "/ name : base association name" form.
      *
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateNameText()
      */
-    protected void modelChanged(PropertyChangeEvent e) {
-        super.modelChanged(e);
-        //change the name
-        Object ar = /*(MAssociationRole)*/ getOwner();
-        if (ar == null) return;
-        // String asNameStr = ((ar.getName() == null) && (ar.getBase()
-        // == null)) ? "" : Notation.generate(this, ar);
-        String asNameStr = Notation.generate(this, ar);
-        getNameFig().setText(asNameStr);
+    protected void updateNameText() {
+        Object role = getOwner();
+        if (role != null) {
+            String asNameStr = Notation.generate(this, role);
+            getNameFig().setText(asNameStr);
+        }
     }
 
     /**
@@ -115,6 +115,12 @@ public class FigAssociationRole extends FigAssociation {
  *
  */
 class FigMessageGroup extends FigGroup {
+
+    /**
+     * Serial version - Eclipse generated for rev 1.30
+     */
+    private static final long serialVersionUID = 6899342966031358691L;
+
 
     /**
      * Constructor for FigMessageGroup.

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,10 +32,11 @@ import java.util.Iterator;
 import javax.swing.SwingUtilities;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationHelper;
-import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;
 import org.tigris.gef.presentation.Fig;
@@ -50,6 +51,10 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigAssociationEnd extends FigEdgeModelElement {
 
+    /**
+     * Serial version generation by Eclipse for rev. 1.18
+     */
+    private static final long serialVersionUID = -3029436535288973358L;
     /**
      * Group for the FigTexts concerning the association end.
      */
@@ -114,10 +119,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         setLayer(lay);
         setOwner(edge);
         if (Model.getFacade().isAAssociationEnd(edge)) {
-            Model.getPump()
-                    .removeModelEventListener(this, edge);
-            Model.getPump()
-                    .addModelEventListener(this, edge);
+            addElementListener(edge);
         }
         modelChanged(null);
     }
@@ -192,8 +194,9 @@ public class FigAssociationEnd extends FigEdgeModelElement {
             }
             stereoString += Model.getFacade().getName(stereo);
         }
-        if (stereoString.length() > 0) stereoString += 
-            NotationHelper.getRightGuillemot() + " ";
+        if (stereoString.length() > 0) {
+            stereoString += NotationHelper.getRightGuillemot() + " ";
+        }
 
         multiToUpdate.setText(Notation.generate(this, multi));
         orderingToUpdate.setText(getOrderingName(order));
@@ -207,9 +210,12 @@ public class FigAssociationEnd extends FigEdgeModelElement {
      */
     protected void modelChanged(PropertyChangeEvent e) {
         super.modelChanged(e);
-        if (e != null) updateEnd(srcMult, srcRole, srcOrdering);
-        srcMult.calcBounds();
-        computeRoute();
+        if (e instanceof AttributeChangeEvent
+                || e instanceof AssociationChangeEvent) {
+            updateEnd(srcMult, srcRole, srcOrdering);
+            srcMult.calcBounds();
+            computeRoute();
+        }
     }
 
     /**
