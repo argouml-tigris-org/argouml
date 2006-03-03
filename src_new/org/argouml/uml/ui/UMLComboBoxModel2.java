@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -303,7 +303,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     protected void setTarget(Object target) {
         LOG.debug("setTarget target :  " + target);
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (Model.getFacade().isAModelElement(target) || target instanceof Diagram) {
+        if (Model.getFacade().isAModelElement(target) 
+                || target instanceof Diagram) {
             ModelEventPump eventPump = Model.getPump();
             if (Model.getFacade().isAModelElement(comboBoxTarget)) {
                 eventPump.removeModelEventListener(this, comboBoxTarget,
@@ -584,10 +585,10 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     }
 
     /**
-     * @param fireListEvents The fireListEvents to set.
+     * @param events The fireListEvents to set.
      */
-    protected void setFireListEvents(boolean fireListEvents) {
-        this.fireListEvents = fireListEvents;
+    protected void setFireListEvents(boolean events) {
+        this.fireListEvents = events;
     }
 
 }

@@ -44,7 +44,7 @@ public class FigReturnActionMessage extends FigMessage {
     /**
      * Override to make sure dashed is preserved across saves.
      *
-     * @see org.tigris.gef.presentation.FigEdge#setFig
+     * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
      */
     public void setFig(Fig f) {
         super.setFig(f);

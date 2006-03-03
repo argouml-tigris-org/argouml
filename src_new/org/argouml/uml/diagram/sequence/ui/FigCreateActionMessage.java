@@ -48,12 +48,4 @@ public class FigCreateActionMessage extends FigMessage {
         this(null);
     }
 
-    /**
-     * @see org.argouml.uml.diagram.sequence.ui.FigMessage#layoutActivations()
-     */
-    protected void layoutActivations() {
-        // TODO: Auto-generated method stub
-
-    }
-
 }
