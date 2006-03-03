@@ -36,7 +36,6 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.Model;
-import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Layer;
@@ -49,7 +48,7 @@ import org.tigris.gef.presentation.FigNode;
  * Class to display a UML note connection to a
  * annotated model element.<p>
  *
- * The owner of this fig is allways CommentEdge
+ * The owner of this fig is always CommentEdge
  *
  * @author Andreas Rueckert a_rueckert@gmx.net
  * @author jaap.branderhorst@xs4all.nl
@@ -175,7 +174,10 @@ public class FigEdgeNote
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent e) {
+        // TODO: are we intentionally eating all events? - tfm 20060203
+        // document reason if so
     }
+    
     /**
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,9 +32,6 @@ import javax.swing.Action;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.events.ArgoEventTypes;
-import org.argouml.application.events.ArgoProjectSaveEvent;
-import org.argouml.application.events.ArgoProjectSaveListener;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.MementoCreationObserver;
 import org.argouml.model.Model;
@@ -44,7 +41,6 @@ import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
-import org.argouml.uml.ui.ActionSaveProject;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
@@ -267,6 +263,11 @@ public final class ProjectManager implements MementoCreationObserver {
         return currentProject;
     }
     
+    /**
+     * Set the save action.
+     * 
+     * @param saveAction the action to be used
+     */
     public void setSaveAction(Action saveAction) {
         this.saveAction = saveAction;
         // Register with the save action with other subsystems so that
@@ -325,7 +326,8 @@ public final class ProjectManager implements MementoCreationObserver {
             }
             
             public String toString() {
-                return (isStartChain() ? "*" : " ") + "ModelMemento " + modelMemento;
+                return (isStartChain() ? "*" : " ") + "ModelMemento "
+                        + modelMemento;
             }
 
         };
