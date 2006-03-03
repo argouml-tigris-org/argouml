@@ -35,6 +35,7 @@ with other users?</a></li>
 <H4>OS Specific</H4>
 <ul>
 <li><a href="#osx_link">In OS X: How can I access the context sensitive menus?</a>
+<li><a href="#osx_java">In OS X 10.2: How can I get ArgoUML to work?</a>
 <li><a href="#win_link">In Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
 <li><a href="#unknownhostexception">In Linux: 
       I cannot start because of an java.net.UnknownHostException
@@ -305,6 +306,14 @@ See <a href="http://argouml.tigris.org/servlets/SummarizeList?listName=users">
 <DL>
 <DT><a name="osx_link">In OS X: How can I access the context sensitive menus?</a>
 <DD>Press the Apple Key together with the mouse button
+
+
+<DT><a name="osx_java">In OS X 10.2: How can I get ArgoUML to work?</a>
+<DD>ArgoUML will not work out-of-the-box on MacOSX 10.2 for people who have the Apple Developer Tools installed, because those tools install Java 1.4.1.
+<p>
+There is a workaround, though: Apple leaves the 1.3.1 java engine installed, but in an obscure place. You can run ArgoUML from the Terminal window by typing
+<p>
+% /System/Library/Frameworks/JavaVM.framework/Versions/1.3.1/Commands/java -jar argouml.jar
 
 
 <DT><a name="win_link">In Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
