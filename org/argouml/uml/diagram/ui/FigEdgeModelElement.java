@@ -36,6 +36,8 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -45,7 +47,6 @@ import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.ArgoEventListener;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
@@ -58,9 +59,11 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationContext;
 import org.argouml.notation.NotationName;
@@ -72,7 +75,6 @@ import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Globals;
@@ -139,7 +141,6 @@ public abstract class FigEdgeModelElement
     private FigText name;
 
     /**
-     * The Fig that displays the stereotype of this model element.
      * Use getStereotypeFig(), no setter should be required.
      */
     private Fig stereotypeFig;
@@ -153,6 +154,11 @@ public abstract class FigEdgeModelElement
      * UML 1.3 or Java
      */
     private NotationName currentNotationName;
+
+    /*
+     * List of model element listeners we've registered.
+     */
+    private Collection listeners = new ArrayList();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -197,6 +203,9 @@ public abstract class FigEdgeModelElement
         ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
+    /**
+     * Create a FigCommentPort if needed
+     */
     public void makeCommentPort() {
         if (commentPort == null) {
             commentPort = new FigCommentPort();
@@ -207,6 +216,9 @@ public abstract class FigEdgeModelElement
         }
     }
 
+    /**
+     * @return the FigCommentPort
+     */
     public FigCommentPort getCommentPort() {
         return commentPort;
     }
@@ -311,6 +323,12 @@ public abstract class FigEdgeModelElement
         return popUpActions;
     }
     
+    /**
+     * Get the set of Actions which valid for adding/removing
+     * Stereotypes on the ModelElement of this Fig's owner.
+     *  
+     * @return array of Actions 
+     */
     protected Action[] getApplyStereotypeActions() {
         return StereotypeUtility.getApplyStereotypeActions(getOwner());
     }
@@ -476,7 +494,7 @@ public abstract class FigEdgeModelElement
      */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
         // update any text, colors, fonts, etc.
-        modelChanged(null);
+        renderingChanged();
         // update the relative sizes and positions of internel Figs
         Rectangle bbox = getBounds();
         setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
@@ -489,11 +507,8 @@ public abstract class FigEdgeModelElement
     public void propertyChange(PropertyChangeEvent pve) {
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
-        if (pve instanceof DeleteInstanceEvent
-                && pve.getSource() == getOwner()) {
-            ProjectManager.getManager().getCurrentProject()
-                    .moveToTrash(getOwner());
-        } else if (pName.equals("editing")
+        // We handle and consume editing events
+        if (pName.equals("editing")
             && Boolean.FALSE.equals(pve.getNewValue())) {
             LOG.debug("finished editing");
             textEdited((FigText) src);
@@ -503,6 +518,16 @@ public abstract class FigEdgeModelElement
                 && Boolean.TRUE.equals(pve.getNewValue())) {
             textEditStarted((FigText) src);
         } else {
+            // Add/remove name change listeners for applied stereotypes
+            if (src == getOwner()
+                    && "stereotype".equals(pName)) {
+                if (pve instanceof RemoveAssociationEvent) {
+                    removeElementListener(pve.getOldValue());
+                } else if (pve instanceof AddAssociationEvent) {
+                    addElementListener(pve.getNewValue(), "name");
+                }
+            }
+            // Pass everything except editing events to superclass
             super.propertyChange(pve);
         }
 
@@ -624,8 +649,6 @@ public abstract class FigEdgeModelElement
 
     /**
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
-     *
-     * Not used, do nothing.
      */
     public void keyReleased(KeyEvent ke) {
     }
@@ -637,9 +660,26 @@ public abstract class FigEdgeModelElement
         if (ke.isConsumed())
             return;
         if (name != null && canEdit(name))
-            name.keyPressed(ke);
+            name.keyTyped(ke);
     }
 
+
+    /**
+     * Rerenders the fig if needed. This functionality was originally
+     * the functionality of modelChanged but modelChanged takes the
+     * event now into account.<p>
+     * 
+     * NOTE: If you override this method you probably also want to 
+     * override the modelChanged() method
+     */
+    public void renderingChanged() {
+        // updateAnnotationPositions();
+        updateClassifiers();
+        updateNameText();
+        updateStereotypeText();
+        damage();
+    }
+    
     ////////////////////////////////////////////////////////////////
     // internal methods
 
@@ -647,15 +687,23 @@ public abstract class FigEdgeModelElement
      * This is called after any part of the UML ModelElement has
      * changed. This method automatically updates the name FigText.
      * Subclasses should override and update other parts.<p>
+     * 
+     * NOTE: If you override this method you probably also want to 
+     * override the modelChanged() method
      *
      * @param e the event
      */
+    // TODO: Merge so there's only a single place to deal with
     protected void modelChanged(PropertyChangeEvent e) {
-        if (e == null
-            || (e.getSource() == getOwner()
-                    && "name".equals(e.getPropertyName()))) {
+        if (e instanceof DeleteInstanceEvent) {
+            // No need to update if model element went away
+            return;
+        }
+        if (e.getSource() == getOwner()
+                && "name".equals(e.getPropertyName())) {
             updateNameText();
         }
+
         updateStereotypeText();
 
         if (ActionAutoResize.isAutoResizable()) {
@@ -664,10 +712,13 @@ public abstract class FigEdgeModelElement
             cmdSPS.setFigToResize(this);
             cmdSPS.doIt();
         }
-        if (!updateClassifiers()) {
-            return;
-        }
+
+        // Update attached node figures
+        updateClassifiers();
     }
+    
+
+
 
     /**
      * generate the notation for the modelelement and stuff it into the text Fig
@@ -710,11 +761,10 @@ public abstract class FigEdgeModelElement
     public void setOwner(Object newOwner) {
         updateListeners(newOwner);
         super.setOwner(newOwner);
-        if (newOwner != null && UUIDHelper.getUUID(newOwner) == null) {
-            Model.getCoreHelper().setUUID(newOwner, UUIDHelper.getNewUUID());
-        }
         initNotationProviders(newOwner);
-        modelChanged(null);
+        if (newOwner != null) {
+            renderingChanged();
+        }
     }
 
     /**
@@ -750,10 +800,10 @@ public abstract class FigEdgeModelElement
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
         if (oldOwner != null && Model.getFacade().isAModelElement(oldOwner)) {
-            Model.getPump().removeModelEventListener(this, oldOwner);
+            removeElementListener(oldOwner);
         }
         if (newOwner != null && Model.getFacade().isAModelElement(newOwner)) {
-            Model.getPump().addModelEventListener(this, newOwner);
+            addElementListener(newOwner);
         }
     }
 
@@ -839,19 +889,6 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * Rerenders the fig if needed. This functionality was originally
-     * the functionality of modelChanged but modelChanged takes the
-     * event now into account.
-     */
-    public void renderingChanged() {
-        // updateAnnotationPositions();
-        updateClassifiers();
-        updateNameText();
-        updateStereotypeText();
-        damage();
-    }
-
-    /**
      * @see org.tigris.gef.presentation.Fig#hit(java.awt.Rectangle)
      */
     public boolean hit(Rectangle r) {
@@ -864,22 +901,18 @@ public abstract class FigEdgeModelElement
 	    if (f.hit(r))
 		return true;
 	}
-
 	return super.hit(r);
     }
-
 
     /**
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     public void removeFromDiagram() {
         Object o = getOwner();
-        if (Model.getFacade().isABase(o)) {
-            Model.getPump().removeModelEventListener(this, o);
+        if (Model.getFacade().isAModelElement(o)) {
+            removeElementListener(o);
         }
-        if (this instanceof ArgoEventListener) {
-            ArgoEventPump.removeListener(this);
-        }
+        ArgoEventPump.removeListener(this);
 
         Iterator it = getPathItemFigs().iterator();
         while (it.hasNext()) {
@@ -903,9 +936,6 @@ public abstract class FigEdgeModelElement
 
         super.removeFromDiagram();
 
-        //This partly solves issue 3042.
-//        Layer l = this.getLayer();
-//        if (l != null) l.remove(this);
     }
 
     /**
@@ -1077,10 +1107,18 @@ public abstract class FigEdgeModelElement
         this.removeFromDiagram = allowed;
     }
 
-    public void setDiElement(DiElement diElement) {
-        this.diElement = diElement;
+    /**
+     * Set the associated Diagram Interchange element.
+     * 
+     * @param element the element to be associated with this Fig
+     */
+    public void setDiElement(DiElement element) {
+        this.diElement = element;
     }
 
+    /**
+     * @return the Diagram Interchange element associated with this Fig
+     */
     public DiElement getDiElement() {
         return diElement;
     }
@@ -1091,5 +1129,83 @@ public abstract class FigEdgeModelElement
     protected static int getPopupAddOffset() {
         return popupAddOffset;
     }
+    
+
+    /**
+     * Add an element listener and remember the registration.
+     * 
+     * @param element
+     *            element to listen for changes on
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
+     */
+    protected void addElementListener(Object element) {
+        listeners.add(new Object[] {element, null});
+        Model.getPump().addModelEventListener(this, element);
+    }
+
+    /**
+     * Add a listener and remember the registration.
+     * 
+     * @param element
+     *            element to listen for changes on
+     * @param property
+     *            name of property to listen for changes of
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
+     */
+    protected void addElementListener(Object element, String property) {
+        listeners.add(new Object[] {element, property});
+        Model.getPump().addModelEventListener(this, element, property);
+    }
+
+    /**
+     * Add a listener and remember the registration.
+     * 
+     * @param element
+     *            element to listen for changes on
+     * @param property
+     *            array of property names (Strings) to listen for changes of
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
+     */
+    protected void addElementListener(Object element, String[] property) {
+        listeners.add(new Object[] {element, property});
+        Model.getPump().addModelEventListener(this, element, property);
+    }
+    
+    /**
+     * Add an element listener and remember the registration.
+     * 
+     * @param element
+     *            element to listen for changes on
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
+     */
+    protected void removeElementListener(Object element) {
+        listeners.remove(new Object[] {element, null});
+        Model.getPump().removeModelEventListener(this, element);
+    }
+   
+    /**
+     * Unregister all listeners registered through addElementListener
+     * @see #addElementListener(Object, String)
+     */
+    protected void removeAllElementListeners() {
+        for (Iterator iter = listeners.iterator(); iter.hasNext();) {
+            Object[] l = (Object[]) iter.next();
+            Object property = l[1];
+            if (property == null) {
+                Model.getPump().removeModelEventListener(this, l[0]);
+            } else if (property instanceof String[]) {
+                Model.getPump().removeModelEventListener(this, l[0],
+                        (String[]) property);
+            } else if (property instanceof String) {
+                Model.getPump().removeModelEventListener(this, l[0],
+                        (String) property);
+            } else {
+                throw new RuntimeException(
+                        "Internal error in removeAllElementListeners");
+            }
+        }
+        listeners.clear();
+    }
+
 
 } /* end class FigEdgeModelElement */
