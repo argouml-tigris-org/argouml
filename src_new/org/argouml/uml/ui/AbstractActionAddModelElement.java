@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,7 +41,7 @@ import org.argouml.ui.ProjectBrowser;
  */
 public abstract class AbstractActionAddModelElement extends UMLAction {
 
-    private Object/*MModelElement*/ target;
+    private Object target;
     private boolean multiSelect = true;
     private boolean exclusive = true;
 
@@ -55,18 +55,18 @@ public abstract class AbstractActionAddModelElement extends UMLAction {
 
 
     /**
-     * Returns the target.
-     * @return MModelElement
+     * Returns the UML model target.
+     * @return UML ModelElement
      */
-    protected Object/*MModelElement*/ getTarget() {
+    protected Object getTarget() {
         return target;
     }
 
     /**
-     * Sets the target.
+     * Sets the UML model target.
      * @param theTarget The target to set
      */
-    public void setTarget(Object/*MModelElement*/ theTarget) {
+    public void setTarget(Object theTarget) {
         target = theTarget;
     }
 
