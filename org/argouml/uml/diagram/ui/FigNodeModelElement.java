@@ -44,6 +44,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -68,7 +70,6 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
@@ -82,7 +83,6 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -280,6 +280,8 @@ public abstract class FigNodeModelElement
      * If the contains text to be edited by the user.
      */
     private boolean editable = true;
+
+    private Collection listeners = new ArrayList();
     /**
      * The main constructor.
      *
@@ -295,7 +297,7 @@ public abstract class FigNodeModelElement
         nameFig.setText(placeString());
         nameFig.setBotMargin(7); // make space for the clarifier
         nameFig.setRightMargin(4); // margin between text and border
-        nameFig.setLeftMargin(4);
+        nameFig.setLeftMargin(4); 
 
         stereotypeFig = new FigStereotypesCompartment(10, 10, 90, 15);
 
@@ -351,7 +353,7 @@ public abstract class FigNodeModelElement
                 clone.nameFig = (FigText) thisFig;
             }
             if (thisFig == stereotypeFig) {
-                clone.stereotypeFig = (Fig) thisFig;
+                clone.stereotypeFig = thisFig;
             }
         }
         return clone;
@@ -498,7 +500,7 @@ public abstract class FigNodeModelElement
         visibilityMenu.addRadioItem(new ActionVisibilityPrivate(getOwner()));
         visibilityMenu.addRadioItem(new ActionVisibilityProtected(getOwner()));
         visibilityMenu.addRadioItem(new ActionVisibilityPackage(getOwner()));
-
+        
         return visibilityMenu;
     }
 
@@ -565,7 +567,7 @@ public abstract class FigNodeModelElement
                     owningModelelement = currentProject.getRoot();
                 }
 	    } else if (newEncloser != null
-                    && Model.getFacade().isABase(newEncloser.getOwner())) {
+                    && Model.getFacade().isAModelElement(newEncloser.getOwner())) {
                 owningModelelement = newEncloser.getOwner();
             }
             if (owningModelelement != null
@@ -883,11 +885,7 @@ public abstract class FigNodeModelElement
     public void propertyChange(PropertyChangeEvent pve) {
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
-        if (pve instanceof DeleteInstanceEvent
-                && pve.getSource() == getOwner()) {
-            ProjectManager.getManager().getCurrentProject()
-                .moveToTrash(getOwner());
-        } else if (pName.equals("editing")
+        if (pName.equals("editing")
                 && Boolean.FALSE.equals(pve.getNewValue())) {
 	    LOG.debug("finished editing");
             try {
@@ -928,8 +926,8 @@ public abstract class FigNodeModelElement
      *
      * It is also possible to alter the text to be edited
      * already here, e.g. by adding the stereotype in front of the name,
-     * by calling
-     * <code>notationProviderName.putValue("fullyHandleStereotypes",
+     * by calling 
+     * <code>notationProviderName.putValue("fullyHandleStereotypes", 
      * true);</code>, but that seems not user-friendly. See issue 3838.
      *
      * @param ft the FigText that will be edited and contains the start-text
@@ -1026,18 +1024,6 @@ public abstract class FigNodeModelElement
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {
-        if (!editable) {
-            return;
-        }
-        if (!readyToEdit) {
-            if (Model.getFacade().isAModelElement(getOwner())) {
-                Model.getCoreHelper().setName(getOwner(), "");
-                readyToEdit = true;
-            } else {
-                LOG.debug("not ready to edit name");
-                return;
-            }
-        }
         if (ke.isConsumed() || getOwner() == null) {
             return;
         }
@@ -1048,18 +1034,6 @@ public abstract class FigNodeModelElement
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
     public void keyReleased(KeyEvent ke) {
-        if (!editable) {
-            return;
-        }
-        if (!readyToEdit) {
-            if (Model.getFacade().isAModelElement(getOwner())) {
-                Model.getCoreHelper().setName(getOwner(), "");
-                readyToEdit = true;
-            } else {
-                LOG.debug("not ready to edit name");
-                return;
-            }
-        }
         if (ke.isConsumed() || getOwner() == null) {
             return;
         }
@@ -1115,12 +1089,10 @@ public abstract class FigNodeModelElement
         if ((mee.getSource() == getOwner()
                 && mee.getPropertyName().equals("stereotype"))) {
             if (mee.getOldValue() != null) {
-                Model.getPump().removeModelEventListener(this,
-                        mee.getOldValue(), "name");
+                removeElementListener(mee.getOldValue());
             }
             if (mee.getNewValue() != null) {
-                Model.getPump().addModelEventListener(this,
-                        mee.getNewValue(), "name");
+                addElementListener(mee.getNewValue(), "name");
             }
             updateStereotypeText();
             damage();
@@ -1129,7 +1101,7 @@ public abstract class FigNodeModelElement
 
 
     /**
-     * Create a new "feature" in the owner fig.
+     * Create a new feature in the owner fig.
      *
      * must be overridden to make sense
      * (I didn't want to make it abstract because it might not be required)
@@ -1201,24 +1173,20 @@ public abstract class FigNodeModelElement
 
     /**
      * In ArgoUML, for every Fig, this setOwner() function
-     * may only be called twice: Once after the fig is created,
+     * may only be called twice: Once after the fig is created, 
      * with a non-null argument, and once at end-of-life of the Fig,
-     * with a null argument. It is not allowed in ArgoUML to change
+     * with a null argument. It is not allowed in ArgoUML to change 
      * the owner of a fig in any other way. <p>
-     *
-     * Hence, during the lifetime of this Fig object,
-     * the owner shall go from null to some UML object, and to null again.
-     *
+     * 
+     * Hence, during the lifetime of this Fig object, 
+     * the owner shall go from null to some UML object, and to null again. 
+     * 
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object own) {
         updateListeners(own);
         super.setOwner(own);
         initNotationProviders(own);
-        if (Model.getFacade().isAModelElement(own)
-                && UUIDHelper.getUUID(own) == null) {
-            Model.getCoreHelper().setUUID(own, UUIDHelper.getNewUUID());
-        }
         readyToEdit = true;
         if (own != null) {
             renderingChanged();
@@ -1318,32 +1286,36 @@ public abstract class FigNodeModelElement
      * as listening to events fired by the owner itself. But for, for example,
      * FigClass the fig must also register for events fired by the operations
      * and attributes of the owner. <p>
-     *
-     * An explanation of the original
+     * 
+     * An explanation of the original 
      * purpose of this method is given in issue 1321.<p>
-     *
-     * This function is used in UMLDiagram, which removes all listeners
+     * 
+     * This function is used in UMLDiagram, which removes all listeners 
      * to all Figs when a diagram is not displayed, and restore them
      * when it becomes visible again. <p>
-     *
-     * In this case, it is not imperative that indeed ALL listeners are
+     * 
+     * In this case, it is not imperative that indeed ALL listeners are 
      * updated, as long as the ones removed get added again and vice versa. <p>
-     *
+     * 
      * Additionally, this function may be used by the modelChanged()
      * function.<p>
-     *
+     * 
      * In this case, it IS imperative that all listeners get removed / added.
-     *
+     * 
      * @param newOwner the new owner for the listeners
      */
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
+        if (newOwner == oldOwner) {
+            return;
+        }
         if (oldOwner != null) {
-            Model.getPump().removeModelEventListener(this, oldOwner);
+            removeElementListener(oldOwner);
         }
         if (newOwner != null) {
-            Model.getPump().addModelEventListener(this, newOwner);
+            addElementListener(newOwner);
         }
+
     }
 
     /**
@@ -1435,57 +1407,6 @@ public abstract class FigNodeModelElement
         checkSize = flag;
     }
 
-//    /**
-//     * Returns the new size of the FigGroup (either attributes or
-//     * operations) after calculation new bounds for all sub-figs,
-//     * considering their minimal sizes; FigGroup need not be
-//     * displayed; no update event is fired.<p>
-//     *
-//     * This method has side effects that are sometimes used.
-//     *
-//     * @param fg the FigGroup to be updated
-//     * @param x x
-//     * @param y y
-//     * @param w w
-//     * @param h h
-//     * @return the new dimension
-//     */
-//    protected Dimension updateFigGroupSize(
-//				       FigGroup fg,
-//				       int x,
-//				       int y,
-//				       int w,
-//				       int h) {
-//        int newW = w;
-//        int n = fg.getFigs().size() - 1;
-//        int newH = checkSize ? Math.max(h, ROWHEIGHT * Math.max(1, n) + 2) : h;
-//        int step = (n > 0) ? (newH - 1) / n : 0;
-//        // width step between FigText objects int maxA =
-//        //Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT).getMaxAscent();
-//
-//        //set new bounds for all included figs
-//        Iterator figs = fg.iterator();
-//        Fig myBigPort = (Fig) figs.next();
-//        Fig fi;
-//        int fw, yy = y;
-//        while (figs.hasNext()) {
-//            fi = (Fig) figs.next();
-//            fw = fi.getMinimumSize().width;
-//            if (!checkSize && fw > newW - 2) {
-//                fw = newW - 2;
-//            }
-//            fi.setBounds(x + 1, yy + 1, fw, Math.min(ROWHEIGHT, step) - 2);
-//            if (checkSize && newW < fw + 2) {
-//                newW = fw + 2;
-//            }
-//            yy += step;
-//        }
-//        myBigPort.setBounds(x, y, newW, newH);
-//        // rectangle containing all following FigText objects
-//        fg.calcBounds();
-//        return new Dimension(newW, newH);
-//    }
-
     /**
      * @param size the new shadow size
      * TODO: Move the shadow stuff into GEF
@@ -1521,33 +1442,10 @@ public abstract class FigNodeModelElement
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     public void removeFromDiagram() {
-        if (this instanceof ArgoEventListener) {
-            ArgoEventPump.removeListener(this);
-        }
+        ArgoEventPump.removeListener(this);
         Object own = getOwner();
-        if (Model.getFacade().isAClassifier(own)) {
-            Iterator it = Model.getFacade().getFeatures(own).iterator();
-            while (it.hasNext()) {
-                Object feature = it.next();
-                if (Model.getFacade().isAOperation(feature)) {
-                    Iterator it2 =
-			Model.getFacade().getParameters(feature).iterator();
-                    while (it2.hasNext()) {
-                        Model.getPump().removeModelEventListener(this,
-                                it2.next());
-                    }
-                }
-                Model.getPump().removeModelEventListener(this, feature);
-            }
-        }
-        if (Model.getFacade().isABase(own)) {
-            Model.getPump().removeModelEventListener(this, own);
-        }
+        removeAllElementListeners();
         shadowSize = 0;
-
-        // This partly solves issue 3042.
-//        Layer l = this.getLayer();
-//        if (l != null) l.remove(this);
 
         super.removeFromDiagram();
     }
@@ -1565,10 +1463,8 @@ public abstract class FigNodeModelElement
      */
     public void postLoad() {
         super.postLoad();
-        if (this instanceof ArgoEventListener) {
-            ArgoEventPump.removeListener(this);
-            ArgoEventPump.addListener(this);
-        }
+        ArgoEventPump.removeListener(this);
+        ArgoEventPump.addListener(this);
         Iterator it = getFigs().iterator();
         while (it.hasNext()) {
             Fig fig = (Fig) it.next();
@@ -1582,15 +1478,6 @@ public abstract class FigNodeModelElement
         }
     }
 
-//    /**
-//     * Set the Fig containing the stereotype.
-//     *
-//     * @param fig the stereotype Fig
-//     */
-//    protected void setStereotypeFig(Fig fig) {
-//        stereo = (FigStereotypeText)fig;
-//    }
-//
     /**
      * Get the Fig containing the stereotype.
      *
@@ -1718,8 +1605,8 @@ public abstract class FigNodeModelElement
         forceRepaint = true;
     }
 
-    public void setDiElement(DiElement diElement) {
-        this.diElement = diElement;
+    public void setDiElement(DiElement element) {
+        this.diElement = element;
     }
 
     public DiElement getDiElement() {
@@ -1735,7 +1622,7 @@ public abstract class FigNodeModelElement
 
     /**
      * Determine if this node can be edited.
-     * @return
+     * @return editable state
      */
     public boolean isEditable() {
         return editable;
@@ -1746,15 +1633,92 @@ public abstract class FigNodeModelElement
      * that node and starting to type.
      * Should a subclass of FigNodeModelElement not desire this behaviour
      * then it should call setEditable(false) in its constructor.
+     * 
+     * @param editable new state, false = editing disabled.
      */
     protected void setEditable(boolean editable) {
         this.editable = editable;
     }
 
+    /**
+     * Add an element listener and remember the registration.
+     * 
+     * @param element
+     *            element to listen for changes on
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
+     */
+    protected void addElementListener(Object element) {
+        listeners.add(new Object[] {element, null});
+        Model.getPump().addModelEventListener(this, element);
+    }
+    
+    /**
+     * Add a listener for a given property name and remember the registration.
+     * 
+     * @param element
+     *            element to listen for changes on
+     * @param property
+     *            name of property to listen for changes of
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener,
+     *      Object, String)
+     */
+    protected void addElementListener(Object element, String property) {
+        listeners.add(new Object[] {element, property});
+        Model.getPump().addModelEventListener(this, element, property);
+    }
+
+    /**
+     * Add a listener for an array of property names and remember the
+     * registration.
+     * 
+     * @param element
+     *            element to listen for changes on
+     * @param property
+     *            array of property names (Strings) to listen for changes of
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener,
+     *      Object, String)
+     */
+    protected void addElementListener(Object element, String[] property) {
+        listeners.add(new Object[] {element, property});
+        Model.getPump().addModelEventListener(this, element, property);
+    }
+    
+    /**
+     * Add an element listener and remember the registration.
+     * 
+     * @param element
+     *            element to listen for changes on
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
+     */
+    protected void removeElementListener(Object element) {
+        listeners.remove(new Object[] {element, null});
+        Model.getPump().removeModelEventListener(this, element);
+    }
+    
+    /**
+     * Unregister all listeners registered through addElementListener
+     * @see #addElementListener(Object, String)
+     */
+    protected void removeAllElementListeners() {
+        for (Iterator iter = listeners.iterator(); iter.hasNext();) {
+            Object[] l = (Object[]) iter.next();
+            Object property = l[1];
+            if (property == null) {
+                Model.getPump().removeModelEventListener(this, l[0]);
+            } else if (property instanceof String[]) {
+                Model.getPump().removeModelEventListener(this, l[0],
+                        (String[]) property);
+            } else if (property instanceof String) {
+                Model.getPump().removeModelEventListener(this, l[0],
+                        (String) property);
+            } else {
+                throw new RuntimeException(
+                        "Internal error in removeAllElementListeners");
+            }
+        }
+        listeners.clear();
+    }
+
+
+
 } /* end class FigNodeModelElement */
-
-
-/**
- * Action to add a stero type to the model element represented by this Fig.
- * @author Bob Tarling
- */
