@@ -80,11 +80,13 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             throw new IllegalArgumentException();
         }
         if (target != t) {
-            if (target != null)
+            if (target != null) {
                 Model.getPump().removeModelEventListener(this, target);
+            }
             target = t;
-            if (t != null)
+            if (t != null) {
                 Model.getPump().addModelEventListener(this, t);
+            }
         }
         // always fire changes in the case something has changed in the
         // composition of the taggedValues collection.
