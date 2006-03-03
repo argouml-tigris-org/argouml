@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -99,7 +99,7 @@ public class FigAssociation extends FigEdgeModelElement {
     public FigAssociation() {
         super();
 
-        // lets use groups to construct the different text sections at
+        // let's use groups to construct the different text sections at
         // the association
         middleGroup.addFig(getNameFig());
         middleGroup.addFig(getStereotypeFig());
@@ -225,20 +225,17 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     public void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
+        if (newOwner == oldOwner) {
+            return;
+        }
         if (oldOwner != null) {
-            Model.getPump().removeModelEventListener(this, oldOwner);
-            if (Model.getFacade().isAAssociation(oldOwner)) {
-                Collection oldConns = associatedElements(oldOwner);
-                for (Iterator i = oldConns.iterator(); i.hasNext();) {
-                    Model.getPump().removeModelEventListener(this, i.next());
-                }
-            }
+            removeAllElementListeners();
         }
         if (Model.getFacade().isAAssociation(newOwner)) {
-            Model.getPump().addModelEventListener(this, newOwner);
+            addElementListener(newOwner);
             Collection newConns = associatedElements(newOwner);
             for (Iterator i = newConns.iterator(); i.hasNext();) {
-                Model.getPump().addModelEventListener(this, i.next());
+                addElementListener(i.next());
             }
         }
     }
@@ -367,8 +364,9 @@ public class FigAssociation extends FigEdgeModelElement {
             }
             stereoString += Model.getFacade().getName(stereo);
         }
-        if (stereoString.length() > 0) stereoString += 
-            NotationHelper.getRightGuillemot() + " ";
+        if (stereoString.length() > 0) {
+            stereoString += NotationHelper.getRightGuillemot() + " ";
+        }
 
 	multiToUpdate.setText(Notation.generate(this, multi));
 	orderingToUpdate.setText(getOrderingName(order));
@@ -383,9 +381,9 @@ public class FigAssociation extends FigEdgeModelElement {
     public void propertyChange(PropertyChangeEvent e) {
         if ("stereotype".equals(e.getPropertyName()) && middleGroup != null) {
             if (e instanceof AddAssociationEvent) {
-                Model.getPump().addModelEventListener(this, e.getNewValue());
+                addElementListener(e.getNewValue());
             } else if (e instanceof RemoveAssociationEvent) {
-                Model.getPump().removeModelEventListener(this, e.getOldValue());
+                removeElementListener(e.getOldValue());
             }
         }
         super.propertyChange(e);
@@ -655,7 +653,7 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     public void paint(Graphics g) {
         if (sourceArrowHead == null || destArrowHead == null) {
-	    modelChanged(null);
+	    renderingChanged();
         }
         if (sourceArrowHead != null && destArrowHead != null) {
 	    sourceArrowHead.setLineColor(getLineColor());

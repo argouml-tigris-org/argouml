@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,8 +26,6 @@ package org.argouml.uml.diagram.sequence.ui;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-
-import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 
 import org.argouml.model.Model;
@@ -35,11 +33,9 @@ import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
 import org.argouml.uml.ui.ActionRESequenceDiagram;
-
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Selection;
-
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.Handle;
 
@@ -110,17 +106,7 @@ public abstract class FigMessage
     }
 
     /**
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    public void setOwner(Object newOwner) {
-        super.setOwner(newOwner);
-        if (Model.getFacade().isAMessage(newOwner)) {
-            Model.getPump().addModelEventListener(this, newOwner, "name");
-        }
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.FigEdge#getSourcePortFig
+     * @see org.tigris.gef.presentation.FigEdge#getSourcePortFig()
      */
     public Fig getSourcePortFig() {
         Fig result = super.getSourcePortFig();
@@ -135,7 +121,7 @@ public abstract class FigMessage
     }
 
     /**
-     * @see org.tigris.gef.presentation.FigEdge#getDestPortFig
+     * @see org.tigris.gef.presentation.FigEdge#getDestPortFig()
      */
     public Fig getDestPortFig() {
         Fig result = super.getDestPortFig();
@@ -200,10 +186,16 @@ public abstract class FigMessage
         }
     }
 
+    /**
+     * @return the node for the source port fig
+     */
     public MessageNode getSourceMessageNode() {
         return ((FigMessagePort) getSourcePortFig()).getNode();
     }
 
+    /**
+     * @return the node for the destination port fig
+     */
     public MessageNode getDestMessageNode() {
         return ((FigMessagePort) getDestPortFig()).getNode();
     }
@@ -256,10 +248,22 @@ public abstract class FigMessage
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     * Call superclass to update text then recalculate group bounds
+     * 
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateNameText()
      */
-    public void modelChanged(PropertyChangeEvent pce) {
-        super.modelChanged(pce);
+    protected void updateNameText() {
+        super.updateNameText();
+        textGroup.calcBounds();
+    }
+    
+    /**
+     * Call superclass to update text then recalculate group bounds
+     * 
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateStereotypeText()
+     */
+    protected void updateStereotypeText() {
+        super.updateStereotypeText();
         textGroup.calcBounds();
     }
 
@@ -280,7 +284,7 @@ public abstract class FigMessage
     /**
      * This won't work, so this implementation does nothing.
      *
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateClassifiers
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateClassifiers()
      */
     protected boolean updateClassifiers() {
         return true;

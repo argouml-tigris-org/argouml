@@ -30,6 +30,8 @@ import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
@@ -108,7 +110,7 @@ public abstract class FigState extends FigStateVertex {
      */
     public void setOwner(Object newOwner) {
         super.setOwner(newOwner);
-        updateInternal();
+        renderingChanged();
     }
 
     /**
@@ -128,9 +130,12 @@ public abstract class FigState extends FigStateVertex {
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        updateInternal();
-        updateListeners(getOwner());
-        damage();
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            renderingChanged();
+            updateListeners(getOwner());
+            damage();
+        }
     }
 
     /**
@@ -140,19 +145,11 @@ public abstract class FigState extends FigStateVertex {
         // this takes care of the listeners on the state itself:
         super.updateListeners(newOwner);
         Object oldOwner = getOwner();
+        if (newOwner == oldOwner) {
+            return;
+        }
         if (oldOwner != null) {
-            // lets remove all registered listeners for the body text
-            Iterator it =
-                Model.getFacade().getInternalTransitions(oldOwner).iterator();
-            while (it.hasNext()) {
-                removeListenersForTransition(it.next());
-            }
-            Object doActivity = Model.getFacade().getDoActivity(oldOwner);
-            removeListenersForAction(doActivity);
-            Object entryAction = Model.getFacade().getEntry(oldOwner);
-            removeListenersForAction(entryAction);
-            Object exitAction = Model.getFacade().getEntry(oldOwner);
-            removeListenersForAction(exitAction);
+            removeAllElementListeners();
         }
         if (newOwner != null) {
             // register for events from all modelelements
@@ -172,25 +169,10 @@ public abstract class FigState extends FigStateVertex {
         }
     }
 
-    private void removeListenersForAction(Object action) {
-        if (action != null) {
-            Model.getPump().removeModelEventListener(this, action,
-                    new String[] {
-                        "script", "actualArgument",
-                    });
-            Collection args = Model.getFacade().getActualArguments(action);
-            Iterator i = args.iterator();
-            while (i.hasNext()) {
-                Object argument = i.next();
-                Model.getPump().removeModelEventListener(this, argument,
-                       "value");
-            }
-        }
-    }
 
     private void addListenersForAction(Object action) {
         if (action != null) {
-            Model.getPump().addModelEventListener(this, action,
+            addElementListener(action,
                     new String[] {
                         "script", "actualArgument",
                     });
@@ -198,29 +180,14 @@ public abstract class FigState extends FigStateVertex {
             Iterator i = args.iterator();
             while (i.hasNext()) {
                 Object argument = i.next();
-                Model.getPump().addModelEventListener(this, argument, "value");
-            }
-        }
-    }
-    
-    private void removeListenersForEvent(Object event) {
-        if (event != null) {
-            Model.getPump().removeModelEventListener(this, event,
-                    new String[] {
-                        "parameter", "name",
-                    });
-            Collection prms = Model.getFacade().getParameters(event);
-            Iterator i = prms.iterator();
-            while (i.hasNext()) {
-                Object parameter = i.next();
-                Model.getPump().removeModelEventListener(this, parameter);
+                addElementListener(argument, "value");
             }
         }
     }
 
     private void addListenersForEvent(Object event) {
         if (event != null) {
-            Model.getPump().addModelEventListener(this, event,
+            addElementListener(event,
                     new String[] {
                         "parameter", "name",
                     });
@@ -228,35 +195,18 @@ public abstract class FigState extends FigStateVertex {
             Iterator i = prms.iterator();
             while (i.hasNext()) {
                 Object parameter = i.next();
-                Model.getPump().addModelEventListener(this, parameter);
+                addElementListener(parameter);
             }
         }
     }
     
-    
-    private void removeListenersForTransition(Object transition) {
-        Model.getPump().removeModelEventListener(this, transition, 
-                new String[] {"guard", "trigger", "effect"});
-
-        Object guard = Model.getFacade().getGuard(transition);
-        if (guard != null) {
-            Model.getPump().removeModelEventListener(this, guard, "expression");
-        }
-
-        Object trigger = Model.getFacade().getTrigger(transition);
-        removeListenersForEvent(trigger);
-
-        Object effect = Model.getFacade().getEffect(transition);
-        removeListenersForAction(effect);
-    }
-
     private void addListenersForTransition(Object transition) {
-        Model.getPump().addModelEventListener(this, transition, 
+        addElementListener(transition, 
                 new String[] {"guard", "trigger", "effect"});
 
         Object guard = Model.getFacade().getGuard(transition);
         if (guard != null) {
-            Model.getPump().addModelEventListener(this, guard, "expression");
+            addElementListener(guard, "expression");
         }
 
         Object trigger = Model.getFacade().getTrigger(transition);
@@ -266,10 +216,11 @@ public abstract class FigState extends FigStateVertex {
         addListenersForAction(effect);
     }    
     
+
     /**
-     * Updates the text inside the state.
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
-    protected void updateInternal() {
+    public void renderingChanged() {
         Object state = getOwner();
         if (state == null) {
             return;

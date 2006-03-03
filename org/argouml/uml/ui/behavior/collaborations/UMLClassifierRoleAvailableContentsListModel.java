@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2005 The Regents of the University of California. All
+// Copyright (c) 2002-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,7 +36,8 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * Binary relation list model for available con between classifierroles
+ * List model which implements allAvailableContents operation for a
+ * ClassifierRole as described in the well formedness rules.
  *
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -55,15 +56,17 @@ public class UMLClassifierRoleAvailableContentsListModel
      */
     protected void buildModelList() {
         setAllElements(
-            Model.getCollaborationsHelper().allAvailableContents(
-	       /*(MClassifierRole)*/ getTarget()));
+            Model.getCollaborationsHelper().allAvailableContents(getTarget()));
     }
 
+    /**
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
     public void propertyChange(PropertyChangeEvent e) {
         if (e instanceof AddAssociationEvent) {
             if (e.getPropertyName().equals("base")
                     && e.getSource() == getTarget()) {
-                Object clazz = /*(MClassifier)*/ getChangedElement(e);
+                Object clazz = getChangedElement(e);
                 addAll(Model.getFacade().getOwnedElements(clazz));
                 Model.getPump().addModelEventListener(
                                       this,
@@ -78,7 +81,7 @@ public class UMLClassifierRoleAvailableContentsListModel
         } else if (e instanceof RemoveAssociationEvent) {
             if (e.getPropertyName().equals("base")
                     && e.getSource() == getTarget()) {
-                Object clazz = /*(MClassifier)*/ getChangedElement(e);
+                Object clazz = getChangedElement(e);
                 Model.getPump().removeModelEventListener(
                         this,
                         clazz,
@@ -90,15 +93,12 @@ public class UMLClassifierRoleAvailableContentsListModel
                 removeElement(getChangedElement(e));
             }
         } else {
-                super.propertyChange(e);
+            super.propertyChange(e);
         }
     }
 
     /**
-     * TODO: Why this function that the other models do not need?
-     *
-     * @see
-     * org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
     public void setTarget(Object theNewTarget) {
         theNewTarget = theNewTarget instanceof Fig
@@ -109,7 +109,7 @@ public class UMLClassifierRoleAvailableContentsListModel
                 Collection bases = Model.getFacade().getBases(getTarget());
                 Iterator it = bases.iterator();
                 while (it.hasNext()) {
-                    Object base = /*(MBase)*/ it.next();
+                    Object base = it.next();
                     Model.getPump().removeModelEventListener(
                         this,
                         base,
@@ -117,7 +117,7 @@ public class UMLClassifierRoleAvailableContentsListModel
                 }
                 Model.getPump().removeModelEventListener(
                     this,
-                    /*(MBase)*/ getTarget(),
+                    getTarget(),
                     "base");
             }
             setListTarget(theNewTarget);
@@ -134,7 +134,7 @@ public class UMLClassifierRoleAvailableContentsListModel
                 // make sure we know it when a classifier is added as a base
                 Model.getPump().addModelEventListener(
                     this,
-                    /*(MBase)*/ getTarget(),
+                    getTarget(),
                     "base");
             }
             if (getTarget() != null) {
@@ -152,7 +152,7 @@ public class UMLClassifierRoleAvailableContentsListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return false;
     }
 }

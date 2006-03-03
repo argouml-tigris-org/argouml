@@ -624,8 +624,20 @@ public class FigClass extends FigClassifierBox
     }
 
     /**
-     * Handles changes of the model. Takes into account the event that
-     * occured. If you need to update the whole fig, consider using
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
+     */
+    public void renderingChanged() {
+        if (getOwner() != null) {
+            updateAttributes();
+            updateOperations();
+//            updateAbstract();
+        }
+        super.renderingChanged();
+    }
+    
+    /**
+     * Handles changes to the model. Takes into account the event that
+     * occurred. If you need to update the whole fig, consider using
      * renderingChanged.
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
@@ -634,64 +646,60 @@ public class FigClass extends FigClassifierBox
         if (getOwner() == null) {
             return;
         }
-        Object source = null;
-        if (mee != null) {
-            source = mee.getSource();
-        } else {
-            LOG.warn("ModelChanged called with no event. "
-                    + "Please javadoc the situation in which this can happen");
+        if (mee == null) {
+            throw new RuntimeException(
+                    "FigClass model changed called with null parameter");
         }
+        Object source = mee.getSource();
+
 
         // attributes
-        if (mee == null
-                || Model.getFacade().isAAttribute(source)
+        if (Model.getFacade().isAAttribute(source)
                 || (source == getOwner()
                 && mee.getPropertyName().equals("feature"))) {
             updateAttributes();
             damage();
         }
         // operations
-        if (mee == null
-                || Model.getFacade().isAOperation(source)
+        if (Model.getFacade().isAOperation(source)
                 || Model.getFacade().isAParameter(source)
                 || (source == getOwner()
                         && mee.getPropertyName().equals("feature"))) {
             updateOperations();
             damage();
         }
-        if (mee != null && mee.getPropertyName().equals("parameter")
+        if (mee.getPropertyName().equals("parameter")
                 && Model.getFacade().isAOperation(source)) {
             if (mee instanceof AddAssociationEvent) {
                 AddAssociationEvent aae = (AddAssociationEvent) mee;
                 /* Ensure we will get an event for the name change of
                  * the newly created attribute:
                  */
-                Model.getPump().addModelEventListener(
-                        this,
-                        aae.getChangedValue(),
+                addElementListener(aae.getChangedValue(),
                         new String[] {"name", "kind", "type", "defaultValue"});
                 damage();
                 return;
             } else if (mee instanceof RemoveAssociationEvent) {
                 RemoveAssociationEvent rae = (RemoveAssociationEvent) mee;
-                Model.getPump().removeModelEventListener(this,
-                        rae.getChangedValue());
+                removeElementListener(rae.getChangedValue());
                 damage();
                 return;
             }
         }
-        if (mee == null || mee.getPropertyName().equals("isAbstract")) {
+        // TODO: stereotypes & isAbstract should be moved up to super
+        if (mee.getPropertyName().equals("isAbstract") 
+                && source == getOwner()) {
             updateAbstract();
             damage();
         }
-        if (mee == null || mee.getPropertyName().equals("stereotype")) {
+        if (mee.getPropertyName().equals("stereotype")) {
             updateListeners(getOwner());
             updateStereotypeText();
             updateAttributes();
             updateOperations();
             damage();
         }
-        if (mee != null && Model.getFacade().isAStereotype(source)) {
+        if (Model.getFacade().isAStereotype(source)) {
             if (Model.getFacade().getStereotypes(getOwner())
                     .contains(source)) {
                 updateStereotypeText();
@@ -785,6 +793,8 @@ public class FigClass extends FigClassifierBox
      * @param w  Desired width of the FigClass
      *
      * @param h  Desired height of the FigClass
+     * 
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(final int x, final int y,
             final int w, final int h) {
@@ -889,17 +899,7 @@ public class FigClass extends FigClassifierBox
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
-    /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
-     */
-    public void renderingChanged() {
-        if (getOwner() != null) {
-            updateAttributes();
-            updateOperations();
-            updateAbstract();
-        }
-        super.renderingChanged();
-    }
+
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
@@ -912,6 +912,7 @@ public class FigClass extends FigClassifierBox
 
     /**
      * Updates the name if modelchanged receives an "isAbstract" event.
+     * TODO: Move up to ClassifierBox (should be GeneralizableElement)
      */
     protected void updateAbstract() {
         Rectangle rect = getBounds();
@@ -935,24 +936,9 @@ public class FigClass extends FigClassifierBox
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
         if (oldOwner != null && oldOwner != newOwner) {
-	    // remove the listeners if the owner is changed
-            Iterator it = Model.getFacade().getFeatures(oldOwner).iterator();
-            while (it.hasNext()) {
-                Object feat = it.next();
-                Model.getPump().removeModelEventListener(this, feat);
-                Collection c =
-                    new ArrayList(Model.getFacade().getStereotypes(feat));
-                if (Model.getFacade().isAOperation(feat)) {
-                    c.addAll(Model.getFacade().getParameters(feat));
-                }
-                Iterator it2 = c.iterator();
-                while (it2.hasNext()) {
-                    Object obj = it2.next();
-                    Model.getPump().removeModelEventListener(this, obj);
-                }
-            }
+            removeAllElementListeners();
         }
-        if (newOwner != null) {
+        if (newOwner != null && newOwner != oldOwner) {
             // add the listeners to the newOwner
             Iterator it = Model.getFacade().getFeatures(newOwner).iterator();
             while (it.hasNext()) {
@@ -965,8 +951,7 @@ public class FigClass extends FigClassifierBox
                 }
                 Iterator it2 = c.iterator();
                 while (it2.hasNext()) {
-                    Object obj = it2.next();
-                    Model.getPump().addModelEventListener(this, obj);
+                    addElementListener(it2.next());
                 }
             }
         }

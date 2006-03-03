@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,6 +38,8 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLAssociationRoleBaseComboBoxModel() {
         super("base", true);
+        // TODO: This is listening to all namespace changes *everywhere*
+        // in the model - do we really need something so heavy? - tfm
         Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getNamespace(), "ownedElement");
     }

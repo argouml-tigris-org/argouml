@@ -38,7 +38,6 @@ import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelEventPump;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
@@ -240,6 +239,9 @@ public class FigClassifierRole extends FigNodeModelElement
         return fmp;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
+     */
     public String getTipString(MouseEvent me) {
         int portCount = 0;
         Iterator it = getFigs().iterator();
@@ -305,7 +307,7 @@ public class FigClassifierRole extends FigNodeModelElement
      * name text box and the stereo text box are moved to a correct
      * position.
      *
-     * @see Fig#setBounds(int, int, int, int)
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     public void setBoundsImpl(int x, int y, int w, int h) {
         y = 50;
@@ -314,7 +316,8 @@ public class FigClassifierRole extends FigNodeModelElement
         headFig.setBounds(x, y, w, headFig.getMinimumSize().height);
         int yy = y;
         if (getStereotypeFig().isVisible()) {
-            getStereotypeFig().setBounds(x, yy, w, getStereotypeFig().getMinimumSize().height);
+            getStereotypeFig().setBounds(x, yy, w, 
+                    getStereotypeFig().getMinimumSize().height);
             yy += getStereotypeFig().getMinimumSize().height;
         }
         getNameFig().setLocation(x, yy);
@@ -328,15 +331,17 @@ public class FigClassifierRole extends FigNodeModelElement
             Fig fig = (Fig) figIt.next();
             if (activationFigs.contains(fig)) {
                 fig.setBounds(
-                        headFig.getX() + headFig.getWidth() / 2 - fig.getWidth() / 2,
+                        headFig.getX() + headFig.getWidth() / 2
+                        - fig.getWidth() / 2,
                         y - oldBounds.y + fig.getY(),
                         fig.getWidth(),
                         fig.getHeight());
             }
             if (fig instanceof FigMessagePort) {
-                FigMessagePort fmp = (FigMessagePort)fig;
+                FigMessagePort fmp = (FigMessagePort) fig;
                 fmp.setBounds(
-                        headFig.getX() + headFig.getWidth() / 2 - fig.getWidth() / 2,
+                        headFig.getX() + headFig.getWidth() / 2
+                        - fig.getWidth() / 2,
                         y - oldBounds.y + fig.getY(),
                         fig.getWidth(),
                         fig.getHeight());
@@ -541,8 +546,8 @@ public class FigClassifierRole extends FigNodeModelElement
                         if (callerIndex != -1) {
                             for (int backNodeIndex = i - 1;
                                   backNodeIndex > 0
-                                 && ((MessageNode) linkPositions
-                                 .get(backNodeIndex))
+                                  && ((MessageNode) linkPositions
+                                          .get(backNodeIndex))
                                  .matchingCallerList(caller, callerIndex);
                                   --backNodeIndex) {
                                 ;
@@ -868,30 +873,19 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
-        ModelEventPump pump = Model.getPump();
+        if (newOwner == oldOwner) {
+            return;
+        }
         if (oldOwner != null) {
-            pump.removeModelEventListener(this, oldOwner);
-            Iterator it = Model.getFacade().getBases(oldOwner).iterator();
-            while (it.hasNext()) {
-                pump.removeModelEventListener(this, it.next());
-            }
+            removeAllElementListeners();
         }
         if (newOwner != null) {
-            pump.addModelEventListener(this,
-                    newOwner,
-                    new String[] {
-                        "name",
-                        "stereotype",
-                        "base",
-                    });
+            addElementListener(newOwner, new String[] {"name", "stereotype",
+                                                       "base",});
             Iterator it = Model.getFacade().getBases(newOwner).iterator();
-            String[] names = new String[] {
-                "name",
-            };
             while (it.hasNext()) {
                 Object base = it.next();
-                pump.removeModelEventListener(this, base);
-                pump.addModelEventListener(this, base, names);
+                addElementListener(base, "name");
             }
         }
     }
@@ -1384,10 +1378,10 @@ public class FigClassifierRole extends FigNodeModelElement
 
         int h = MIN_HEAD_HEIGHT;
         List figs = getLayer().getContents();
-        for (Iterator i=figs.iterator(); i.hasNext(); ) {
+        for (Iterator i = figs.iterator(); i.hasNext();) {
             Object o = i.next();
             if (o instanceof FigClassifierRole) {
-                FigClassifierRole other = (FigClassifierRole)o;
+                FigClassifierRole other = (FigClassifierRole) o;
                 int otherHeight = other.headFig.getMinimumHeight();
                 if (otherHeight > h) {
                     h = otherHeight;
@@ -1395,17 +1389,17 @@ public class FigClassifierRole extends FigNodeModelElement
             }
         }
         
-        for (Iterator i=figs.iterator(); i.hasNext(); ) {
+        for (Iterator i = figs.iterator(); i.hasNext();) {
             Object o = i.next();
             if (o instanceof FigClassifierRole) {
-                FigClassifierRole other = (FigClassifierRole)o;
+                FigClassifierRole other = (FigClassifierRole) o;
                 other.headFig.setHeight(h);
                 other.headFig.calcBounds();
             }
         }
         
     }
-
+    
     /**
      * The UID.
      */

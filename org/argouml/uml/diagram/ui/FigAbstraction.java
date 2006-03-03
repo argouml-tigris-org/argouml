@@ -24,21 +24,41 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+
+import org.tigris.gef.presentation.ArrowHeadTriangle;
 
 /**
- * Fig for a UML Realization.
+ * Fig representing a UML Abstraction.
  * <p>
- * Implementation has been moved to FigAbstraction for alignment
- * with UML spec and to allow reuse for other abstractions such
- * as Derivation, Refinement, or Trace.
+ * Implementation was copied here from FigRealization and parent type changed
+ * from FigEdgeModelElement to FigDependency to align better with UML spec and
+ * to allow reuse for other abstractions such as Derivation, Refinement, or
+ * Trace. FigRealization is just a shell for backward compatibility.
+ * <p>
+ * Graphical representation is a dashed line and a triangle arrow-head.
+ * 
+ * @author agauthie
  */
-public class FigRealization extends FigAbstraction {
+public class FigAbstraction extends FigDependency {
+
+    private ArrowHeadTriangle endArrow;
+    
+    /*
+     * Text group to contain name & stereotypes
+     */
+    private FigTextGroup middleGroup = new FigTextGroup();
+
     /**
      * The constructor.
      *
      */
-    public FigRealization() {
+    public FigAbstraction() {
         super();
+        endArrow = new ArrowHeadTriangle();
+        endArrow.setFillColor(Color.white);
+        setDestArrowHead(endArrow);
     }
 
     /**
@@ -46,10 +66,33 @@ public class FigRealization extends FigAbstraction {
      *
      * @param edge the owning UML element
      */
-    public FigRealization(Object edge) {
-        super(edge);
+    public FigAbstraction(Object edge) {
+        this();
+        setOwner(edge);
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
+     */
+    public void renderingChanged() {
+        updateStereotypeText();
+        super.renderingChanged();
+        middleGroup.calcBounds();
     }
     
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */
+    public void modelChanged(PropertyChangeEvent e) {
+        super.modelChanged(e);
+        middleGroup.calcBounds();
+    }
+
     /**
      * The UID.
      */
