@@ -1,0 +1,222 @@
+Copyright 1997-1999, DSTC (Cooperative Research Centre for Enterprise Distributed Systems 
+Technology)
+Copyright 1997-1999, Electronic Data Systems
+Copyright 1997-1999, IBM Corporation
+Copyright 1997-1999, International Computers Limited
+Copyright 1997-1999, Objectivity Inc.
+Copyright 2000-2001, Object Management Group
+Copyright 1997-1999, Oracle Corporation
+Copyright 1997-1999, Platinum Technology Inc.
+Copyright 1997-1999, Rational Software Corporation
+Copyright 1997-1999, System Software Associates
+Copyright 1997-1999, Unisys Corporation
+
+The companies listed above have granted to the Object Management Group, Inc.
+(OMG) a nonexclusive, royalty-free, paid up, worldwide license to copy and distribute
+this document and to modify this document and distribute copies of the modified
+version. Each of the copyright holders listed above has agreed that no person shall be
+deemed to have infringed the copyright in the included material of any such copyright
+holder by reason of having used the specification set forth herein or having conformed
+any computer software to the specification.
+
+PATENT
+The attention of adopters is directed to the possibility that compliance with or adoption
+of OMG specifications may require use of an invention covered by patent rights.
+OMG shall not be responsible for identifying patents for which a license may be
+required by any OMG specification, or for conducting legal inquiries into the legal
+validity or scope of those patents that are brought to its attention. OMG specifications
+are prospective and advisory only. Prospective users are responsible for protecting
+themselves against liability for infringement of patents.
+
+NOTICE
+
+The information contained in this document is subject to change without notice. The
+material in this document details an Object Management Group specification in
+accordance with the license and notices set forth on this page. This document does
+not represent a commitment to implement any portion of this specification 
+in any company's products.
+WHILE THE INFORMATION IN THIS PUBLICATION IS BELIEVED TO BE
+ACCURATE, THE OBJECT MANAGEMENT GROUP AND THE COMPANIES
+LISTED ABOVE MAKE NO WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, WITH REGARD TO THIS MATERIAL INCLUDING, BUT NOT LIM-ITED
+TO ANY WARRANTY OF TITLE OR OWNERSHIP, IMPLIED WAR-RANTY
+OF MERCHANTABILITY OR WARRANTY OF FITNESS FOR
+
+PARTICULAR PURPOSE OR USE. In no event shall The Object Management Group 
+or any of the companies listed above be liable for errors contained herein or for
+indirect, incidental, special, consequential, reliance or cover damages, including loss
+of profits, revenue, data or use, incurred by any user or any third party. The copyright
+holders listed above acknowledge that the Object Management Group (acting itself or
+through its designees) is and shall at all times be the sole entity that may authorize
+developers, suppliers and sellers of computer software to use certification marks,
+trademarks or other special designations to indicate compliance with these 
+materials.
+This document contains information which is protected by copyright. All Rights
+Reserved. No part of this work covered by copyright herein may be reproduced or
+used in any form or by any means--graphic, electronic, or mechanical, including 
+pho-tocopying, recording, taping, or information storage and retrieval systems--without
+permission of the copyright owner.
+
+RESTRICTED RIGHTS LEGEND. Use, duplication, or disclosure by government is
+subject to restrictions as set forth in subdivision (c) (1) (ii) of the Right in Technical
+Data and Computer Software Clause at DFARS 252.227.7013 OMG and Object
+Management are registered trademarks of the Object Management Group, Inc. Object
+Request Broker, OMG IDL, ORB, CORBA, CORBAfacilities, CORBAservices,
+COSS, and IIOP are trademarks of the Object Management Group, Inc. X/Open is a
+trademark of X/Open Company Ltd.
+
+The UML logo is a trademark of Rational Software Corp.
+
+ISSUE REPORTING
+All OMG specifications are subject to continuous review and improvement. As part of
+this process we encourage readers to report any ambiguities, inconsistencies, or inaccuracies
+they may find by completing the issue reporting form at 
+http://www.omg.org/technology/issuesform.htm
+(LFI #1143)
+
+-----
+
+Sun Microsystems, Inc. 
+Software License Agreement
+
+READ THE TERMS OF THIS AGREEMENT AND ANY PROVIDED SUPPLEMENTAL LICENSE TERMS 
+(COLLECTIVELY "AGREEMENT") CAREFULLY BEFORE OPENING THE SOFTWARE MEDIA PACKAGE.  
+BY OPENING THE SOFTWARE MEDIA PACKAGE, YOU AGREE TO THE TERMS OF THIS AGREEMENT.  
+IF YOU ARE ACCESSING THE SOFTWARE ELECTRONICALLY, INDICATE YOUR ACCEPTANCE 
+OF THESE TERMS BY SELECTING THE "ACCEPT" BUTTON AT THE END OF THIS AGREEMENT.  
+IF YOU DO NOT AGREE TO ALL THESE TERMS, PROMPTLY RETURN THE UNUSED SOFTWARE 
+TO YOUR PLACE OF PURCHASE FOR A REFUND OR, IF THE SOFTWARE IS ACCESSED ELECTRONICALLY, 
+SELECT THE "DECLINE" BUTTON AT THE END OF THIS AGREEMENT. 
+
+1. LICENSE TO USE.  Sun grants you a non-exclusive and non-transferable license 
+for the internal use only of the accompanying software and documentation and any 
+error corrections provided by Sun (collectively "Software"), by the number of users 
+and the class of computer hardware for which the corresponding fee has been paid. 
+
+2. RESTRICTIONS.  Software is confidential and copyrighted. Title to Software and all 
+associated intellectual property rights is retained by Sun and/or its licensors.  
+Except as specifically authorized in any Supplemental License Terms, you may not make 
+copies of Software, other than a single copy of Software for archival purposes.  
+Unless enforcement is prohibited by applicable law, you may not modify, decompile, 
+or reverse engineer Software.  Licensee acknowledges that Licensed Software is not 
+designed or intended for use in the design, construction, operation or maintenance 
+of any nuclear facility. Sun Microsystems, Inc. disclaims any express or implied 
+warranty of fitness for such uses.   No right, title or interest in or to any trademark,
+service mark, logo or trade name of Sun or its licensors is granted under this Agreement. 
+
+3. LIMITED WARRANTY.  Sun warrants to you that for a period of ninety (90) days 
+from the date of purchase, as evidenced by a copy of the receipt, the media on which 
+Software is furnished (if any) will be free of defects in materials and workmanship 
+under normal use.  Except for the foregoing, Software is provided "AS IS".  
+Your exclusive remedy and Sun's entire liability under this limited warranty will be 
+at Sun's option to replace Software media or refund the fee paid for Software. 
+
+4. DISCLAIMER OF WARRANTY.  UNLESS SPECIFIED IN THIS AGREEMENT, ALL EXPRESS OR IMPLIED 
+CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY IMPLIED WARRANTY 
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT ARE DISCLAIMED, 
+EXCEPT TO THE EXTENT THAT THESE DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. 
+
+5. LIMITATION OF LIABILITY.  TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL 
+SUN OR ITS LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR SPECIAL, 
+INDIRECT, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED REGARDLESS 
+OF THE THEORY OF LIABILITY, ARISING OUT OF OR RELATED TO THE USE OF OR INABILITY TO USE 
+SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.  
+In no event will Sun's liability to you, whether in contract, tort (including negligence), 
+or otherwise, exceed the amount paid by you for Software under this Agreement.  
+The foregoing limitations will apply even if the above stated warranty fails of its 
+essential purpose. 
+
+6. Termination.  This Agreement is effective until terminated.  You may terminate 
+this Agreement at any time by destroying all copies of Software.  This Agreement will 
+terminate immediately without notice from Sun if you fail to comply with any provision 
+of this Agreement.  Upon Termination, you must destroy all copies of Software. 
+
+7. Export Regulations. All Software and technical data delivered under this Agreement 
+are subject to US export control laws and may be subject to export or import regulations 
+in other countries.  You agree to comply strictly with all such laws and regulations 
+and acknowledge that you have the responsibility to obtain such licenses to export, 
+re-export, or import as may be required after delivery to you. 
+
+8. U.S. Government Restricted Rights.  If Software is being acquired by or on behalf 
+of the U.S. Government or by a U.S. Government prime contractor or subcontractor 
+(at any tier), then the Government's rights in Software and accompanying documentation 
+will be only as set forth in this Agreement; this is in accordance with 48 CFR 227.7201 
+through 227.7202-4 (for Department of Defense (DOD) acquisitions) and with 48 CFR 2.101 
+and 12.212 (for non-DOD acquisitions). 
+
+9. Governing Law.  Any action related to this Agreement will be governed by California 
+law and controlling U.S. federal law.  No choice of law rules of any jurisdiction 
+will apply. 
+
+10. Severability. If any provision of this Agreement is held to be unenforceable, 
+this Agreement will remain in effect with the provision omitted, unless omission would 
+frustrate the intent of the parties, in which case this Agreement will immediately terminate. 
+
+11. Integration.  This Agreement is the entire agreement between you and Sun relating 
+to its subject matter.  It supersedes all prior or contemporaneous oral or written 
+communications, proposals, representations and warranties and prevails over any conflicting 
+or additional terms of any quote, order, acknowledgment, or other communication between 
+the parties relating to its subject matter during the term of this Agreement.  
+No modification of this Agreement will be binding, unless in writing and signed by 
+an authorized representative of each party. 
+
+JAVATM INTERFACE CLASSES
+JAVA METADATA INTERFACE ("JMI"), VERSION 1.0, SAMPLE CLASS INTERFACES 
+SUPPLEMENTAL LICENSE TERMS
+
+These supplemental license terms ("Supplemental Terms") add to or modify the terms 
+of the Software License Agreement (collectively, the "Agreement"). Capitalized terms 
+not defined in these Supplemental Terms shall have the same meanings ascribed to them 
+in the Agreement. These Supplemental Terms shall supersede any inconsistent or conflicting 
+terms in the Agreement, or in any license contained within the Software. 
+
+1. Software Internal Use and Development License Grant. Subject to the terms and conditions 
+of this Agreement, including, but not limited to Section 3 (Java Technology Restrictions) 
+of these Supplemental Terms, Sun grants you a non-exclusive, non-transferable, limited 
+license to reproduce internally and use internally the Software, complete and unmodified, 
+for the sole purpose of designing, developing, testing and running your Java applets 
+and applications. For clarification, the Software will be considered unmodified if you have 
+compiled the Software using a compliant Java compiler.
+
+2. License to Distribute Software.  In addition to the license granted in Section 1 
+(Software Internal Use and Development License Grant) of these Supplemental Terms, 
+subject to the terms and conditions of this Agreement, including but not limited 
+to Section 3 (Java Technology Restrictions), Sun grants you a non-exclusive, 
+non-transferable, limited license to reproduce and distribute the Software provided 
+that you (i) distribute the Software complete and unmodified and only bundled as part 
+of your Programs, (ii) do not distribute additional software intended to replace any 
+component(s) of the Software, (iii) do not remove or alter any proprietary legends 
+or notices contained in the Software, (iv) only distribute the Software subject to a license 
+agreement that protects Sun's interests consistent with the terms contained 
+in this Agreement, and (v) agree to defend and indemnify Sun and its licensors from 
+and against any damages, costs, liabilities, settlement amounts and/or expenses (including 
+attorneys' fees) incurred in connection with any claim, lawsuit or action by any third 
+party that arises or results from the use or distribution of any and all Programs and/or 
+Software. 
+
+3. Java Technology Restrictions. You may not modify the Java Platform Interface 
+("JPI", identified as classes contained within the "java" package or any subpackages of 
+the "java" package), by creating additional classes within the JPI or otherwise causing 
+the addition to or modification of the classes in the JPI. In the event that you create 
+an additional class and associated API(s) which (i) extends the functionality of the Java 
+Platform, and (ii) is exposed to third party software developers for the purpose 
+of developing additional software which invokes such additional API, you must promptly 
+publish broadly an accurate specification for such API for free use by all developers. 
+You may not create, or authorize your licensees to create additional classes, interfaces, 
+or subpackages that are in any way identified as "java", "javax", "sun" or similar 
+convention as specified by Sun in any naming convention designation. 
+
+4. Trademarks and Logos. You acknowledge and agree as between you and Sun that Sun owns 
+the SUN, SOLARIS, JAVA, JINI, FORTE, and iPLANET trademarks and all SUN, SOLARIS, JAVA, 
+JINI, FORTE, and iPLANET-related trademarks, service marks, logos and other brand 
+designations ("Sun Marks"), and you agree to comply with the Sun Trademark and Logo Usage 
+Requirements currently located at http://www.sun.com/policies/trademarks. Any use you 
+make of the Sun Marks inures to Sun's benefit. 
+
+5. Termination for Infringement. Either party may terminate this Agreement immediately 
+should any Software become, or in either party's opinion be likely to become, the subject 
+of a claim of infringement of any intellectual property right. 
+
+For inquiries please contact: 
+Sun Microsystems, Inc. 4150 Network Circle, Santa Clara, California 95054. 
+(LFI#115025/Form ID#011801)

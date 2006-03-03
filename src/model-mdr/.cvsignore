@@ -1,1 +1,4 @@
 bin
+build
+build-eclipse
+argouml.log
