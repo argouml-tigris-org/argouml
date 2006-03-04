@@ -1,6 +1,6 @@
-#Wed Mar 01 01:52:00 EST 2006
+#Sat Mar 04 15:02:51 EST 2006
 filenames.properties=/argouml-core-tools/checkstyle/checkstyle.properties
-enabled=true
+enabled=false
 projectclassloader=false
 filenames.config=/argouml-core-tools/checkstyle/checkstyle_argouml.xml
 filenames.filter=/argouml-core-tools/checkstyle/checkclipse.filefilters
