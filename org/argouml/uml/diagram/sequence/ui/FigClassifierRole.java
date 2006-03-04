@@ -30,10 +30,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
@@ -131,11 +129,6 @@ public class FigClassifierRole extends FigNodeModelElement
     private String classifierRoleName = "";
 
     /**
-     * The set of activation figs.
-     */
-    private Set activationFigs;
-
-    /**
      * Default constructor. Constructs the object rectangle, the lifeline,
      * the name box and the stereotype box.
      */
@@ -173,7 +166,6 @@ public class FigClassifierRole extends FigNodeModelElement
         addFig(headFig);
         addFig(getStereotypeFig());
         addFig(getNameFig());
-        activationFigs = new HashSet();
     }
 
     /**
@@ -324,13 +316,6 @@ public class FigClassifierRole extends FigNodeModelElement
                 h - headFig.getHeight());
         for (Iterator figIt = getFigs().iterator(); figIt.hasNext();) {
             Fig fig = (Fig) figIt.next();
-            if (activationFigs.contains(fig)) {
-                fig.setBounds(
-                        lifeLine.getX(),
-                        y - oldBounds.y + fig.getY(),
-                        fig.getWidth(),
-                        fig.getHeight());
-            }
             if (fig instanceof FigMessagePort) {
                 FigMessagePort fmp = (FigMessagePort) fig;
                 fmp.setBounds(
@@ -596,22 +581,6 @@ public class FigClassifierRole extends FigNodeModelElement
         }
     }
 
-    private void removeActivations() {
-        List activations = new ArrayList(activationFigs);
-        activationFigs.clear();
-        for (Iterator it = activations.iterator();
-              it.hasNext();
-	     ) {
-            removeFig((Fig) it.next());
-	}
-        calcBounds();
-    }
-
-    private void addActivationFig(Fig f) {
-        addFig(f);
-        activationFigs.add(f);
-    }
-
     private void addActivations() {
         MessageNode startActivationNode = null;
         MessageNode endActivationNode = null;
@@ -632,17 +601,17 @@ public class FigClassifierRole extends FigNodeModelElement
 				SequenceDiagramLayout.LINK_DISTANCE / 4);
                 birthFig.setFilled(true);
                 birthFig.setFillColor(Color.BLACK);
-                addActivationFig(birthFig);
+                lifeLine.addActivationFig(birthFig);
             }
             if (lastState != nextState && nextState == MessageNode.DESTROYED) {
                 int y =
 		    getYCoordinate(i) - SequenceDiagramLayout.LINK_DISTANCE / 2;
-                addActivationFig(
+                lifeLine.addActivationFig(
 			new FigLine(x,
 				    y + SequenceDiagramLayout.LINK_DISTANCE / 2,
 				    x + WIDTH,
 				    y + SequenceDiagramLayout.LINK_DISTANCE));
-                addActivationFig(
+                lifeLine.addActivationFig(
 			new FigLine(x,
 				    y + SequenceDiagramLayout.LINK_DISTANCE,
 				    x + WIDTH,
@@ -697,7 +666,7 @@ public class FigClassifierRole extends FigNodeModelElement
                     if (endFull) {
                         y2 += SequenceDiagramLayout.LINK_DISTANCE / 2;
                     }
-                    addActivationFig(new FigRect(x, y1, WIDTH, y2 - y1));
+                    lifeLine.addActivationFig(new FigRect(x, y1, WIDTH, y2 - y1));
                 }
                 startActivationNode = null;
 		endActivationNode = null;
@@ -716,11 +685,11 @@ public class FigClassifierRole extends FigNodeModelElement
             if (endFull) {
                 y2 += SequenceDiagramLayout.LINK_DISTANCE / 2;
             }
-            addActivationFig(new FigRect(x, y1, WIDTH, y2 - y1));
+            lifeLine.addActivationFig(new FigRect(x, y1, WIDTH, y2 - y1));
             startActivationNode = null;
-	    endActivationNode = null;
+            endActivationNode = null;
             startFull = false;
-	    endFull = false;
+            endFull = false;
         }
     }
 
@@ -729,7 +698,7 @@ public class FigClassifierRole extends FigNodeModelElement
      * to the figobject depending on the state of the nodes.
      */
     public void updateActivations() {
-        removeActivations();
+        lifeLine.removeActivations();
         addActivations();
     }
 
@@ -1175,18 +1144,6 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     public MessageNode getClassifierRoleNode() {
         return (MessageNode) linkPositions.get(0);
-    }
-
-    /**
-     * Removes the fig from both the figs list as from the
-     * activationFigs set.  This insures
-     * that removal will indeed remove all 'pointers' to the object.<p>
-     *
-     * @see org.tigris.gef.presentation.FigGroup#removeFig(Fig)
-     */
-    public void removeFig(Fig f) {
-        super.removeFig(f);
-        activationFigs.remove(f);
     }
 
     /**
