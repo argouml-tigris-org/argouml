@@ -354,12 +354,6 @@ Property files to be searched:
         <include name="JavaTokenTypes.java"/>
         <include name="JavaTokenTypes.txt"/>
       </fileset>
-      <fileset dir="../modules/cpp/src/org/argouml/language/cpp/reveng">
-        <include name="CPPLexer.java"/>
-        <include name="CPPParser.java"/>
-        <include name="STDCTokenTypes.java"/>
-        <include name="STDCTokenTypes.txt"/>
-      </fileset>
     </delete>
   </target>
 
