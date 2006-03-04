@@ -60,7 +60,7 @@ etc.
     <property name="deprecation" value="yes"/>
     <property name="optimize" value="yes"/>
 
-    <property name="argo.root.dir" value="../argouml"/>
+    <property name="argo.root.dir" value="../.."/>
     <property name="argo.build.dir" value="${argo.root.dir}/build"/>
 
     <property name="result.jar" value="argouml-mdr.jar"/>
@@ -281,8 +281,6 @@ etc.
       <fileset dir="${build.dir}" includes="*.jar"/>
       <fileset dir="${lib.dir}" includes="*.jar"/>
     </copy>
-    <copy file="argouml-mdr.bat" tofile="${argo.build.dir}/argouml.bat"/>
-    <copy file="argouml-mdr.sh"  tofile="${argo.build.dir}/argouml.sh"/>
   </target>
 
   <!-- =================================================================== -->
