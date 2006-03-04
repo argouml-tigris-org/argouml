@@ -1085,9 +1085,8 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <!-- =================================================================== -->
   <target name="delete-generated-for-checkstyle" depends="init">
     <echo>      
-Deleting some files that are actually in the cvs repository so
-if this is run by misstake your changes to these files are lost and
-you will have to resurrect them using cvs update.
+Deleting some files that we are not interested in running checkstyle on
+because they are generated.
     </echo>
     <antcall target="cleanparser"/>
 
@@ -1098,6 +1097,12 @@ you will have to resurrect them using cvs update.
         <include name="ClassfileTokenTypes.java"/>
         <include name="ClassfileTreeParser.java"/>
         <include name="ClassfileTreeParserTokenTypes.java"/>
+      </fileset>
+      <fileset dir="../modules/cpp/src/org/argouml/language/cpp/reveng">
+        <include name="CPPLexer.java"/>
+        <include name="CPPParser.java"/>
+        <include name="STDCTokenTypes.java"/>
+        <include name="STDCTokenTypes.txt"/>
       </fileset>
     </delete>
   </target>
