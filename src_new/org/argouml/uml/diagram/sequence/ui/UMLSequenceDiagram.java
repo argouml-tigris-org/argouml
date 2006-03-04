@@ -220,7 +220,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
      */
     public boolean relocate(Object base) {
-	return false;
+        return false;
     }
 
 } /* end class UMLSequenceDiagram */
