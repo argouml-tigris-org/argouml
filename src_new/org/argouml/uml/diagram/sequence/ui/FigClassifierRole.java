@@ -112,7 +112,7 @@ public class FigClassifierRole extends FigNodeModelElement
      * The lifeline (dashed line under the object box to which activations are
      * attached).
      */
-    private FigLine lifeLine;
+    private FigLifeLine lifeLine;
 
     /**
      * The list where the nodes to which links can be attached are stored.
@@ -161,14 +161,8 @@ public class FigClassifierRole extends FigNodeModelElement
         getNameFig().setEditable(false);
         getNameFig().setFilled(false);
         getNameFig().setLineWidth(0);
-        lifeLine =
-            new FigLine(
-                MIN_HEAD_WIDTH / 2,
-                MIN_HEAD_HEIGHT,
-                MIN_HEAD_WIDTH / 2,
-                1000,
-                Color.black);
-        lifeLine.setDashed(true);
+        lifeLine = 
+            new FigLifeLine(MIN_HEAD_WIDTH / 2 - WIDTH / 2 ,MIN_HEAD_HEIGHT);
         linkPositions.add(new MessageNode(this));
         for (int i = 0;
             i <= lifeLine.getHeight() / SequenceDiagramLayout.LINK_DISTANCE;
@@ -321,18 +315,18 @@ public class FigClassifierRole extends FigNodeModelElement
             yy += getStereotypeFig().getMinimumSize().height;
         }
         getNameFig().setLocation(x, yy);
+        yy += getNameFig().getHeight();
         
         lifeLine.setBounds(
-                headFig.getX() + headFig.getWidth() / 2,
-                headFig.getY() + headFig.getHeight(),
-                0,
+                (x + w / 2) - WIDTH / 2,
+                yy,
+                WIDTH,
                 h - headFig.getHeight());
         for (Iterator figIt = getFigs().iterator(); figIt.hasNext();) {
             Fig fig = (Fig) figIt.next();
             if (activationFigs.contains(fig)) {
                 fig.setBounds(
-                        headFig.getX() + headFig.getWidth() / 2
-                        - fig.getWidth() / 2,
+                        lifeLine.getX(),
                         y - oldBounds.y + fig.getY(),
                         fig.getWidth(),
                         fig.getHeight());
@@ -340,8 +334,7 @@ public class FigClassifierRole extends FigNodeModelElement
             if (fig instanceof FigMessagePort) {
                 FigMessagePort fmp = (FigMessagePort) fig;
                 fmp.setBounds(
-                        headFig.getX() + headFig.getWidth() / 2
-                        - fig.getWidth() / 2,
+                        lifeLine.getX(),
                         y - oldBounds.y + fig.getY(),
                         fig.getWidth(),
                         fig.getHeight());
@@ -626,13 +619,13 @@ public class FigClassifierRole extends FigNodeModelElement
         boolean startFull = false;
         boolean endFull = false;
         int nodeCount = linkPositions.size();
-        int x = lifeLine.getX() - WIDTH / 2;
+        int x = lifeLine.getX();
         for (int i = 0; i < nodeCount; ++i) {
             MessageNode node = (MessageNode) linkPositions.get(i);
             int nextState = node.getState();
             if (lastState != nextState && nextState == MessageNode.CREATED) {
                 FigRect birthFig =
-		    new FigRect(lifeLine.getX() - WIDTH / 2,
+		    new FigRect(lifeLine.getX(),
 				getYCoordinate(i)
 				- SequenceDiagramLayout.LINK_DISTANCE / 4,
 				WIDTH,
@@ -1110,13 +1103,6 @@ public class FigClassifierRole extends FigNodeModelElement
     }
 
     /**
-     * @return the lifeline Fig
-     */
-    public FigLine getLifeLine() {
-        return lifeLine;
-    }
-
-    /**
      * Returns the index of a given node.
      *
      * @param node is the given node
@@ -1176,9 +1162,9 @@ public class FigClassifierRole extends FigNodeModelElement
             return ((MessageNode) messageNode).getFigMessagePort();
         }
         return new TempFig(
-                messageNode, lifeLine.getX() - WIDTH / 2,
+                messageNode, lifeLine.getX(),
                 getYCoordinate((MessageNode) messageNode),
-                lifeLine.getX() + WIDTH / 2);
+                lifeLine.getX() + WIDTH);
     }
 
     /**
