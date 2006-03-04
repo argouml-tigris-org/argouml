@@ -31,10 +31,10 @@ This is the build file for building the Model subsystem interfaces.
   <!-- Initialization target                                               -->
   <!-- =================================================================== -->
   <target name="init">
- 	<property name="build.dir" value="build"/>
- 	<property name="build.classes" value="build/classes"/>
+    <property name="build.dir" value="./build"/>
+    <property name="build.classes" value="${build.dir}/classes"/>
 
- 	<!-- ============================================================= -->
+    <!-- ============================================================= -->
     <!-- when executed using target "dist-release", the properties     -->
     <!-- "local.build.properties" and "user.build.properties"          -->
     <!-- are set to "build.properties" so that there can be no         -->
@@ -50,10 +50,10 @@ This is the build file for building the Model subsystem interfaces.
     <property name="argo.build.dir" value="../../build"/>
     <property name="argo.lib.dir" value="../../lib"/>
     <property name="log4j.jar.path" value="${argo.lib.dir}/log4j-1.2.6.jar"/>
- 	
+
     <!-- All file references in these imports are messed up
  	 because they assume that we are in src_new. -->
-    <property file="../../src_new/default.properties"/>
+    <property file="${argo.src.dir}/default.properties"/>
 
     <property name="name" value="argouml-model"/>
   
@@ -96,9 +96,10 @@ This is the build file for building the Model subsystem interfaces.
   <!-- =================================================================== -->
   <target name="install" depends="jar"
           description="Copy the ${name}.jar file to the ArgoUML directory.">
-	<copy todir="${argo.build.dir}">
-	  <fileset dir="${build.dir}" includes="${name}.jar"/>
-	</copy>
+    <echo message="Copying ${name}.jar to ${argo.build.dir}"/>
+    <copy todir="${argo.build.dir}">
+      <fileset dir="${build.dir}" includes="${name}.jar"/>
+    </copy>
   </target>
 
 
