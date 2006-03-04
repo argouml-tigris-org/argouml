@@ -11,7 +11,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/nbmdr.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/openide-util.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-lib"/>
-	<classpathentry kind="lib" path="build/java-interfaces.jar"/>
+	<classpathentry exported="true" kind="lib" path="build/java-interfaces.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-tools"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>
