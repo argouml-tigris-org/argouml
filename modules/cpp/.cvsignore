@@ -3,3 +3,4 @@ local-*.sh
 local-*.bat
 build.properties
 *.zargo
+build-eclipse

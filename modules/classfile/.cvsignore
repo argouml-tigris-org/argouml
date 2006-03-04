@@ -3,3 +3,4 @@ local-*.sh
 local-*.bat
 build.properties
 argouml.log
+build-eclipse
