@@ -159,14 +159,14 @@ Property files to be searched:
       -->
     <path id="argo.runtime.classpath">
       <path refid="argo.compile.classpath"/>
-      <pathelement location="../../argouml-mdr/build/java-interfaces.jar"/>
-      <pathelement location="../../argouml-mdr/build/argouml-mdr.jar"/>
-      <pathelement location="../../argouml-mdr/lib/mof.jar"/>
-      <pathelement location="../../argouml-mdr/lib/jmi.jar"/>
-      <pathelement location="../../argouml-mdr/lib/mdrapi.jar"/>
-      <pathelement location="../../argouml-mdr/lib/nbmdr.jar"/>
-      <pathelement location="../../argouml-mdr/lib/jmiutils.jar"/>
-      <pathelement location="../../argouml-mdr/lib/openide-util.jar"/>
+      <pathelement location="${argo.mdr.dir}/build/java-interfaces.jar"/>
+      <pathelement location="${argo.mdr.dir}/build/argouml-mdr.jar"/>
+      <pathelement location="${argo.mdr.dir}/lib/mof.jar"/>
+      <pathelement location="${argo.mdr.dir}/lib/jmi.jar"/>
+      <pathelement location="${argo.mdr.dir}/lib/mdrapi.jar"/>
+      <pathelement location="${argo.mdr.dir}/lib/nbmdr.jar"/>
+      <pathelement location="${argo.mdr.dir}/lib/jmiutils.jar"/>
+      <pathelement location="${argo.mdr.dir}/lib/openide-util.jar"/>
     </path>
 
     <!-- In order to use ant optional tasks which use jars that are not -->
@@ -606,7 +606,7 @@ Property files to be searched:
           description="Clean out all built files.">
 
     <ant dir="../src/model" inheritAll="false" target="clean"/>
-    <ant dir="../../argouml-mdr" inheritAll="false" target="clean"/>
+    <ant dir="${argo.mdr.dir}" inheritAll="false" target="clean"/>
     <delete dir="${argo.build.dir}/tests"/>
     <delete dir="${argo.build.dir}/src_new"/>
     <delete dir="${argo.build.dir}/classes"/>
@@ -811,7 +811,7 @@ Property files to be searched:
                    delete it immediately afterward.
      -->
     <mkdir dir="build/java"/>
-    <ant dir="../../argouml-mdr" target="install" inheritAll="false" />
+    <ant dir="${argo.mdr.dir}" target="install" inheritAll="false" />
     <!-- delete temp files from mdrant task in argouml-mdr build -->
     <delete dir="build/java"/>
   </target>
@@ -1056,6 +1056,9 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <param name="source.dir" value="${argo.root.dir}/src/model/src"/>
     </antcall>
     <antcall target="checkstyle-main">
+      <param name="source.dir" value="${argo.root.dir}/src/model-mdr/src"/>
+    </antcall>
+    <antcall target="checkstyle-main">
       <param name="source.dir" value="${argo.src.dir}/org"/>
     </antcall>
     <antcall target="checkstyle-main">
@@ -1065,9 +1068,6 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <param name="source.dir" value="${argo.root.dir}/modules"/>
     </antcall>
 
-    <antcall target="checkstyle-cond">
-      <param name="source.dir" value="${argo.root.dir}/../argouml-mdr/src"/>
-    </antcall>
     <antcall target="checkstyle-cond">
       <param name="source.dir" value="${argo.root.dir}/../argouml-emf/src"/>
     </antcall>
