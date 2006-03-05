@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.argouml.uml.diagram.sequence.MessageNode;
+import org.argouml.uml.diagram.sequence.ui.FigClassifierRole.TempFig;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigLine;
@@ -53,6 +55,9 @@ class FigLifeLine extends FigGroup {
             if (activationFigs.contains(fig)) {
                 fig.setLocation(getX(), y - getY() + fig.getY());
             }
+            if (fig instanceof FigMessagePort) {
+                fig.setLocation(getX(), y - getY() + fig.getY());
+            }
         }
         calcBounds();
     }
@@ -91,8 +96,30 @@ class FigLifeLine extends FigGroup {
      *
      * @see org.tigris.gef.presentation.FigGroup#removeFig(Fig)
      */
-    public void removeFig(Fig f) {
+    final public void removeFig(Fig f) {
         super.removeFig(f);
         activationFigs.remove(f);
+    }
+    
+    /**
+     * Change a node to point to an actual FigMessagePort.
+     */
+    final FigMessagePort createFigMessagePort(Object message, TempFig tempFig) {
+        final MessageNode node = (MessageNode) tempFig.getOwner();
+        final FigMessagePort fmp =
+            new FigMessagePort(message, tempFig.getX1(), tempFig.getY1(),
+                   tempFig.getX2());
+        node.setFigMessagePort(fmp);
+        fmp.setNode(node);
+        addFig(fmp);
+
+        return fmp;
+    }
+    
+    final int getYCoordinate(int nodeIndex) {
+        return
+            nodeIndex * SequenceDiagramLayout.LINK_DISTANCE
+                + getY()
+                + SequenceDiagramLayout.LINK_DISTANCE / 2;
     }
 }
