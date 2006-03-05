@@ -428,14 +428,7 @@ Property files to be searched:
     <mkdir dir="${argo.build.classes}"/>
   	
     <!-- compile Model subsystem -->
-    <ant dir="${argo.model.dir}" inheritAll="false" target="install">
-      <!-- give it a relocated build dir relative to its location -->
-      <!-- It would be better to just copy build/argouml-model.jar ourselves -->
-      <property name="argo.build.dir" value="../argouml/${argo.build.dir}"/>
-      <!-- Explicitly pass in Log4J path so it can't be redefined -->
-      <property name="log4j.jar.path" value="../argouml/${argo.lib.dir}/log4j-1.2.6.jar"/>
-    </ant>
-
+    <ant dir="../src/model" inheritAll="false" target="install"/>  	
 
     <!-- remove obsolete classes before compiling -->
     <delete file="${argo.build.classes}/org/argouml/model/uml/ModelListener.class"/>
@@ -450,10 +443,10 @@ Property files to be searched:
     	   srcdir="${argo.src.dir}"
     	   source="1.4"
     	   target="1.4">
-      <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
-      <classpath>
-        <path refid="argo.compile.classpath"/>
-      </classpath>
+    	 <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+    	<classpath>
+	  <path refid="argo.compile.classpath"/>
+       </classpath>
     </javac>
 
     <available file="${argo.tests.src}" type="dir" property="has.tests"/>
@@ -517,8 +510,7 @@ Property files to be searched:
              windowtitle="ArgoUML Javadoc for internal use">
       <sourcepath>
         <pathelement location="${argo.src.dir}"/>
-        <pathelement location="${argo.model.dir}/src"/>
-      	<!-- TODO: The following paths need to be better parameterized -->
+        <pathelement location="${argo.src.dir}/../src/model/src"/>
         <pathelement location="${argo.src.dir}/../modules/cpp/src"/>
         <pathelement location="${argo.src.dir}/../modules/csharp/src"/>
         <pathelement location="${argo.src.dir}/../modules/classfile/src"/>
@@ -526,7 +518,7 @@ Property files to be searched:
       </sourcepath>
 
       <classpath>
-        <path refid="argo.compile.classpath"/>
+	  <path refid="argo.compile.classpath"/>
       </classpath>
 
       <!-- Links allow reference to external classes from within
@@ -572,8 +564,7 @@ Property files to be searched:
              windowtitle="ArgoUML Javadoc for ArgoUML Module Developers">
       <sourcepath>
         <pathelement location="${argo.src.dir}"/>
-        <pathelement location="${argo.model.dir}/src"/>
-      	<!-- TODO: The following paths need to be better parameterized -->
+        <pathelement location="${argo.src.dir}/../src/model/src"/>
         <pathelement location="${argo.src.dir}/../modules/cpp/src"/>
         <pathelement location="${argo.src.dir}/../modules/csharp/src"/>
         <pathelement location="${argo.src.dir}/../modules/classfile/src"/>
@@ -581,7 +572,7 @@ Property files to be searched:
       </sourcepath>
 
       <classpath>
-        <path refid="argo.compile.classpath"/>
+	  <path refid="argo.compile.classpath"/>
       </classpath>
 
       <!-- Links allow reference to external classes from within
@@ -614,11 +605,11 @@ Property files to be searched:
   <target name="clean" depends="init"
           description="Clean out all built files.">
 
-    <ant dir="${argo.model.dir}" inheritAll="true" target="clean"/>
-    <ant dir="${argo.mdr.dir}" inheritAll="true" target="clean"/>
+    <ant dir="../src/model" inheritAll="false" target="clean"/>
+    <ant dir="${argo.mdr.dir}" inheritAll="false" target="clean"/>
     <delete dir="${argo.build.dir}/tests"/>
     <delete dir="${argo.build.dir}/src_new"/>
-    <delete dir="${argo.build.classes}"/>
+    <delete dir="${argo.build.dir}/classes"/>
     <delete dir="${argo.build.dir}/bin"/>
     <delete file="${argo.src.dir}/${version.package}/ArgoVersion.java"/>
 
@@ -646,12 +637,12 @@ Property files to be searched:
           fork="yes"
           taskname="argouml"
     	  maxmemory="500M">
-      <sysproperty key="log4j.configuration"
+        <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/error_console.lcf"/>
-      <classpath>
-        <pathelement location="${argo.build.classes}"/>
-        <path refid="argo.runtime.classpath"/>
-      </classpath>
+        <classpath>
+	  <pathelement location="${argo.build.classes}"/>
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
     </java>
   </target>
 
@@ -665,8 +656,8 @@ Property files to be searched:
         <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/full_console.lcf"/>
         <classpath>
-          <pathelement location="${argo.build.classes}"/>
-          <path refid="argo.runtime.classpath"/>
+	  <pathelement location="${argo.build.classes}"/>
+	  <path refid="argo.runtime.classpath"/>
         </classpath>
     </java>
   </target>
@@ -678,12 +669,12 @@ Property files to be searched:
           fork="yes"
           taskname="argouml"
     	  maxmemory="500M">
-      <sysproperty key="log4j.configuration"
+        <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/info_console.lcf"/>
-      <classpath>
-        <pathelement location="${argo.build.classes}"/>
-        <path refid="argo.runtime.classpath"/>
-      </classpath>
+        <classpath>
+	  <pathelement location="${argo.build.classes}"/>
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
     </java>
   </target>
 
@@ -757,9 +748,9 @@ Property files to be searched:
       <classpath>
         <pathelement location="${argo.build.classes}"/>
         <pathelement location="${junit.jar.path}"/>
-        <path refid="argo.compile.classpath"/>
+	<path refid="argo.compile.classpath"/>
       </classpath>
-    </javac>
+     </javac>
 
     <!-- We want debug, optimize, deprecation to be non-modifiable here -->
     <javac debug="true" 
@@ -771,7 +762,7 @@ Property files to be searched:
       <classpath>
         <pathelement location="${argo.build.classes}"/>
         <pathelement location="${junit.jar.path}"/>
-        <path refid="argo.compile.classpath"/>
+	<path refid="argo.compile.classpath"/>
       </classpath>
     </javac>
   </target>
@@ -820,11 +811,7 @@ Property files to be searched:
                    delete it immediately afterward.
      -->
     <mkdir dir="build/java"/>
-    <ant dir="${argo.mdr.dir}" target="install" inheritAll="false">
-      <!-- Explicitly pass in Junit path so it can't be redefined -->
-      <property name="junit.jar.path" value="${junit.jar.path}"/>
-      <property name="argo.build.dir" value="${argo.build.dir}"/>
-    </ant>
+    <ant dir="${argo.mdr.dir}" target="install" inheritAll="false" />
     <!-- delete temp files from mdrant task in argouml-mdr build -->
     <delete dir="build/java"/>
   </target>
@@ -856,12 +843,12 @@ Property files to be searched:
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
 	<sysproperty key="argouml.model.implementation" 
                      value="org.argouml.model.mdr.MDRModelImplementation"/>
-      <classpath>
-        <pathelement location="${argo.build.classes}"/>
-        <pathelement location="${argo.tests.classes}"/>
-        <path refid="argo.runtime.classpath"/>
-      </classpath>
-      <formatter type="xml"/>
+        <classpath>
+            <pathelement location="${argo.build.classes}"/>
+            <pathelement location="${argo.tests.classes}"/>
+            <path refid="argo.runtime.classpath"/>
+        </classpath>
+        <formatter type="xml"/>
       <batchtest todir="${argo.tests.reports}/junit/output">
         <fileset dir="${argo.tests.src}">
           <include name="org/argouml/**/Test*.java"/>
@@ -924,24 +911,24 @@ Property files to be searched:
     <!-- Don't do anything. -->
     <java classname="org.argouml.application.Main" 
           fork="yes">
-      <classpath>
-        <pathelement location="${argo.build.classes}"/>
-        <path refid="argo.runtime.classpath"/>
-      </classpath>
-      <arg value="-batch"/>
+        <classpath>
+	  <pathelement location="${argo.build.classes}"/>
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
+        <arg value="-batch"/>
     </java>
 
     <!-- Exit. -->
     <java classname="org.argouml.application.Main" 
           fork="yes">
-      <classpath>
-        <pathelement location="${argo.build.classes}"/>
-       <path refid="argo.runtime.classpath"/>
-      </classpath>
-      <arg value="-nosplash"/>
-      <arg value="-batch"/>
-      <arg value="-command"/>
-      <arg value="org.argouml.uml.ui.ActionExit"/>
+        <classpath>
+	  <pathelement location="${argo.build.classes}"/>
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
+        <arg value="-nosplash"/>
+        <arg value="-batch"/>
+        <arg value="-command"/>
+        <arg value="org.argouml.uml.ui.ActionExit"/>
     </java>
 
   </target>
@@ -960,13 +947,13 @@ Property files to be searched:
           description="Start the TestRunner with all test cases from ../tests loaded.">
     <echo message="--- Executing ${Name} ---"/>
     <java classname="junit.swingui.TestRunner" fork="yes" taskname="argouml">
-      <classpath>
-        <pathelement location="${argo.build.dir}/argo_junit_tests.jar"/>
-        <pathelement location="${argo.tests.classes}"/>
-        <pathelement location="${argo.build.classes}"/>
-        <pathelement location="${junit.jar.path}"/>
-        <path refid="argo.runtime.classpath"/>
-      </classpath>
+        <classpath>
+	  <pathelement location="${argo.build.dir}/argo_junit_tests.jar"/>
+          <pathelement location="${argo.tests.classes}"/>
+	  <pathelement location="${argo.build.classes}"/>
+          <pathelement location="${junit.jar.path}"/>
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
     </java>
   </target>
 
@@ -996,7 +983,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
     <java classname="jdepend.swingui.JDepend" failonerror="true" fork="true">
       <arg value="."/> 
       <classpath>
-        <path refid="ant.optional.classpath"/>
+	<path refid="ant.optional.classpath"/>
       </classpath>
     </java>
   </target>
@@ -1013,7 +1000,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <sysproperty key="outdir" value="../build/javasrc"/>
       <sysproperty key="verbose" value="yes"/>
       <classpath>
-        <pathelement location="${javasrc.jar.path}"/>
+	<pathelement location="${javasrc.jar.path}"/>
         <pathelement location="${antlrall.jar.path}"/>
       </classpath>
       <arg value="."/>
@@ -1024,8 +1011,8 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <sysproperty key="outdir" value="../build/javasrc"/>
       <sysproperty key="verbose" value="yes"/>
       <classpath>
-        <pathelement location="${javasrc.jar.path}"/>
-        <pathelement location="${antlrall.jar.path}"/>
+	<pathelement location="${javasrc.jar.path}"/>
+	<pathelement location="${antlrall.jar.path}"/>
       </classpath>
       <arg value="../build/javasrc"/>
     </java>
@@ -1066,10 +1053,10 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <target name="checkstyle" depends="init,cleanparser"
           description="Run checkstyle on all source.">
     <antcall target="checkstyle-main">
-      <param name="source.dir" value="${argo.model.dir}/src"/>
+      <param name="source.dir" value="${argo.root.dir}/src/model/src"/>
     </antcall>
     <antcall target="checkstyle-main">
-      <param name="source.dir" value="${argo.mdr.dir}/src"/>
+      <param name="source.dir" value="${argo.root.dir}/src/model-mdr/src"/>
     </antcall>
     <antcall target="checkstyle-main">
       <param name="source.dir" value="${argo.src.dir}/org"/>
@@ -1081,7 +1068,6 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <param name="source.dir" value="${argo.root.dir}/modules"/>
     </antcall>
 
-    <!-- TODO: The following paths need to be better parameterized -->
     <antcall target="checkstyle-cond">
       <param name="source.dir" value="${argo.root.dir}/../argouml-emf/src"/>
     </antcall>
@@ -1138,7 +1124,6 @@ because they are generated.
           description="Scans through all source files and find all tags that are not in the corresponding properties files.">
     <exec executable="sh">
       <arg value="-c"/>
-        <!-- TODO: The following paths need to be better parameterized -->
       <arg value="../tools/bin/i18n-find-undeclared-tags.sh"/>
     </exec>
   </target>
