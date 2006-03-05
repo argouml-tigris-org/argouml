@@ -88,7 +88,7 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
      *
      * @param feme the given Fig
      */
-    public SelectionRerouteEdge(FigEdgeModelElement feme) {
+    public SelectionRerouteEdge(FigGraphEdge feme) {
 
         super(feme);
 
