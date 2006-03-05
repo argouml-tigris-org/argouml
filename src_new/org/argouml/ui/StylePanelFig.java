@@ -39,9 +39,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
-import org.argouml.application.events.ArgoEventPump;
-import org.argouml.application.events.ArgoEventTypes;
-import org.argouml.application.events.ArgoProjectSaveEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;

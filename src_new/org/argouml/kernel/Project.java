@@ -42,9 +42,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
-import org.argouml.application.events.ArgoEventPump;
-import org.argouml.application.events.ArgoEventTypes;
-import org.argouml.application.events.ArgoProjectSaveEvent;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoDiagram;
@@ -1023,8 +1020,6 @@ public class Project implements java.io.Serializable, TargetListener {
         if (needSave) {
             ProjectManager.getManager().setSaveEnabled(true);
         }
-        else
-            ArgoEventPump.fireEvent(new ArgoProjectSaveEvent(ArgoEventTypes.ISSAVED_PROJECTSAVE_EVENT, this));
     }
 
     private Collection collectAllEnclosedFigsRecursively(Fig f) {
