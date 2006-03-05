@@ -207,8 +207,7 @@ public class ModeCreateMessage extends ModeCreate {
                 Fig destPortFig = destFigClassifierRole.getPortFig(foundPort);
                 Object edgeType = getArg("edgeClass");
                 if (edgeType != null) {
-                    message =
-                        mgm.connect(startPort, foundPort, edgeType);
+                    message = mgm.connect(startPort, foundPort, edgeType);
                 } else {
                     message = mgm.connect(startPort, foundPort);
                 }

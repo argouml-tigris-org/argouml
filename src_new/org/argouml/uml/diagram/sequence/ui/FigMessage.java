@@ -111,10 +111,10 @@ public abstract class FigMessage
     public Fig getSourcePortFig() {
         Fig result = super.getSourcePortFig();
         if (result instanceof FigClassifierRole.TempFig
-	    && getOwner() != null) {
-	    result =
-		getSourceFigClassifierRole().createFigMessagePort(getOwner(),
-							       result);
+                && getOwner() != null) {
+            result =
+                getSourceFigClassifierRole().createFigMessagePort(getOwner(),
+                        (FigClassifierRole.TempFig)result);
             setSourcePortFig(result);
         }
         return result;
@@ -126,10 +126,10 @@ public abstract class FigMessage
     public Fig getDestPortFig() {
         Fig result = super.getDestPortFig();
         if (result instanceof FigClassifierRole.TempFig
-	    && getOwner() != null) {
-	    result =
-		getDestFigClassifierRole().createFigMessagePort(getOwner(),
-								result);
+                && getOwner() != null) {
+            result =
+                getDestFigClassifierRole().createFigMessagePort(getOwner(),
+            						(FigClassifierRole.TempFig)result);
             setDestPortFig(result);
         }
         return result;
@@ -144,7 +144,7 @@ public abstract class FigMessage
      *
      * @see org.tigris.gef.presentation.FigEdge#computeRoute()
      */
-    public void computeRoute() {
+    public void computeRouteImpl() {
         Fig sourceFig = getSourcePortFig();
         Fig destFig = getDestPortFig();
         if (sourceFig instanceof FigMessagePort
@@ -154,8 +154,7 @@ public abstract class FigMessage
             Point startPoint = sourceFig.connectionPoint(destMP.getCenter());
             Point endPoint = destFig.connectionPoint(srcMP.getCenter());
             // If it is a self-message
-            if (srcMP.getNode().getFigClassifierRole()
-                    == destMP.getNode().getFigClassifierRole()) {
+            if (isSelfMessage()) {
                 if (startPoint.x < sourceFig.getCenter().x) {
                     startPoint.x += sourceFig.getWidth();
                 }
@@ -184,6 +183,13 @@ public abstract class FigMessage
             calcBounds();
             layoutEdge();
         }
+    }
+    
+    private boolean isSelfMessage() {
+        FigMessagePort srcMP = (FigMessagePort) getSourcePortFig();
+        FigMessagePort destMP = (FigMessagePort) getDestPortFig();
+        return (srcMP.getNode().getFigClassifierRole()
+                == destMP.getNode().getFigClassifierRole());
     }
 
     /**
@@ -215,12 +221,11 @@ public abstract class FigMessage
      */
     protected void layoutEdge() {
         if (getSourcePortFig() instanceof FigMessagePort
-                && getDestPortFig() instanceof FigMessagePort) {
-            if (((FigMessagePort) getSourcePortFig()).getNode() != null
-                    && ((FigMessagePort) getDestPortFig()).getNode() != null) {
-                ((SequenceDiagramLayout) getLayer()).updateActivations();
-                Globals.curEditor().damageAll();
-            }
+                && getDestPortFig() instanceof FigMessagePort
+                && ((FigMessagePort) getSourcePortFig()).getNode() != null
+                && ((FigMessagePort) getDestPortFig()).getNode() != null) {
+            ((SequenceDiagramLayout) getLayer()).updateActivations();
+            Globals.curEditor().damageAll();
         }
     }
 

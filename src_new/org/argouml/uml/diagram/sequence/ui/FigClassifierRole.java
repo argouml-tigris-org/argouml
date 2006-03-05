@@ -48,7 +48,6 @@ import org.tigris.gef.persistence.pgml.HandlerFactory;
 import org.tigris.gef.persistence.pgml.HandlerStack;
 import org.tigris.gef.persistence.pgml.PGMLStackParser;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -135,22 +134,12 @@ public class FigClassifierRole extends FigNodeModelElement
     public FigClassifierRole() {
         super();
         headFig = new FigHead(getStereotypeFig(), getNameFig());
-        headFig.setFilled(true);
-        headFig.setLineWidth(1);
         getStereotypeFig().setBounds(MIN_HEAD_WIDTH / 2,
 				     ROWHEIGHT + ROWDISTANCE,
 				     0,
 				     0);
         getStereotypeFig().setFilled(false);
         getStereotypeFig().setLineWidth(0);
-        setNameFig(new FigText(MIN_HEAD_WIDTH / 2,
-			       2 * ROWDISTANCE + STEREOHEIGHT + ROWHEIGHT,
-			       0,
-			       0,
-			       Color.black,
-			       "Dialog",
-			       12,
-			       false));
         getNameFig().setEditable(false);
         getNameFig().setFilled(false);
         getNameFig().setLineWidth(0);
@@ -164,8 +153,6 @@ public class FigClassifierRole extends FigNodeModelElement
         }
         addFig(lifeLine);
         addFig(headFig);
-        addFig(getStereotypeFig());
-        addFig(getNameFig());
     }
 
     /**
@@ -196,60 +183,35 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     protected void updateNameText() {
         String nameText =
-            (classifierRoleName + ":" + baseNames)
-                .trim();
+            (classifierRoleName + ":" + baseNames).trim();
         getNameFig().setText(nameText);
-        center(getNameFig());
         damage();
     }
 
     public int getNodeCount() {
         return linkPositions.size();
     }
-
+    
     /**
      * Change a node to point to an actual FigMessagePort.
      */
-    FigMessagePort createFigMessagePort(Object owner, Fig fig) {
-        TempFig tempFig = (TempFig) fig;
-        MessageNode node = (MessageNode) fig.getOwner();
-        FigMessagePort fmp =
-	    new FigMessagePort(tempFig.getX1(), tempFig.getY1(),
-			       tempFig.getX2());
-        node.setFigMessagePort(fmp);
-        fmp.setNode(node);
-        fmp.setOwner(owner);
-        addFig(fmp);
+    Fig createFigMessagePort(Object message, TempFig tempFig) {
+        Fig fmp = lifeLine.createFigMessagePort(message, tempFig);
         updateNodeStates();
-
         return fmp;
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
-     */
-    public String getTipString(MouseEvent me) {
-        int portCount = 0;
-        Iterator it = getFigs().iterator();
-        while (it.hasNext()) {
-            if (it.next() instanceof FigMessagePort) {
-                portCount++;
-            }
-        }
-        return linkPositions.size() + ":" + portCount;
     }
 
     /**
      * Connect a FigMessagePort with a MessageNode by position.
      */
     void setMatchingNode(FigMessagePort fmp) {
-        while (getYCoordinate(getNodeCount() - 1) < fmp.getY1()) {
+        while (lifeLine.getYCoordinate(getNodeCount() - 1) < fmp.getY1()) {
             growToSize(getNodeCount() + 10);
-	}
+        }
         int i = 0;
         for (Iterator it = linkPositions.iterator(); it.hasNext(); ++i) {
             MessageNode node = (MessageNode) it.next();
-            if (getYCoordinate(i) == fmp.getY1()) {
+            if (lifeLine.getYCoordinate(i) == fmp.getY1()) {
                 node.setFigMessagePort(fmp);
                 fmp.setNode(node);
                 updateNodeStates();
@@ -264,7 +226,7 @@ public class FigClassifierRole extends FigNodeModelElement
     private void setMatchingFig(MessageNode messageNode) {
         if (messageNode.getFigMessagePort() == null) {
             int y = getYCoordinate(messageNode);
-            for (Iterator it = getFigs().iterator(); it.hasNext();) {
+            for (Iterator it = lifeLine.getFigs().iterator(); it.hasNext();) {
                 Fig fig = (Fig) it.next();
                 if (fig instanceof FigMessagePort) {
                     FigMessagePort messagePortFig = (FigMessagePort) fig;
@@ -299,32 +261,15 @@ public class FigClassifierRole extends FigNodeModelElement
         y = 50;
         Rectangle oldBounds = getBounds();
         w = headFig.getMinimumSize().width;
+        
         headFig.setBounds(x, y, w, headFig.getMinimumSize().height);
-        int yy = y;
-        if (getStereotypeFig().isVisible()) {
-            getStereotypeFig().setBounds(x, yy, w, 
-                    getStereotypeFig().getMinimumSize().height);
-            yy += getStereotypeFig().getMinimumSize().height;
-        }
-        getNameFig().setLocation(x, yy);
-        yy += getNameFig().getHeight();
         
         lifeLine.setBounds(
                 (x + w / 2) - WIDTH / 2,
-                yy,
+                y + headFig.getHeight(),
                 WIDTH,
                 h - headFig.getHeight());
-        for (Iterator figIt = getFigs().iterator(); figIt.hasNext();) {
-            Fig fig = (Fig) figIt.next();
-            if (fig instanceof FigMessagePort) {
-                FigMessagePort fmp = (FigMessagePort) fig;
-                fmp.setBounds(
-                        lifeLine.getX(),
-                        y - oldBounds.y + fig.getY(),
-                        fig.getWidth(),
-                        fig.getHeight());
-            }
-        }
+        
         this.updateEdges(); //???
         growToSize(
                 lifeLine.getHeight() / SequenceDiagramLayout.LINK_DISTANCE
@@ -459,16 +404,16 @@ public class FigClassifierRole extends FigNodeModelElement
 
         for (int i = 0; i < nodeCount; ++i) {
             MessageNode node = (MessageNode) linkPositions.get(i);
-            FigMessagePort fmp = node.getFigMessagePort();
+            FigMessagePort figMessagePort = node.getFigMessagePort();
             // If the node has a FigMessagePort
-            if (fmp != null) {
-                fmpBounds = fmp.getBounds(fmpBounds);
-                int fmpY = getYCoordinate(i);
+            if (figMessagePort != null) {
+                fmpBounds = figMessagePort.getBounds(fmpBounds);
+                int fmpY = lifeLine.getYCoordinate(i);
                 if (fmpBounds.y != fmpY) {
                     fmpBounds.y = fmpY;
-                    fmp.setBounds(fmpBounds);
+                    figMessagePort.setBounds(fmpBounds);
                 }
-                Object message = fmp.getOwner();
+                Object message = figMessagePort.getOwner();
                 boolean selfMessage =
                     (Model.getFacade().isAMessage(message)
                      && (Model.getFacade().getSender(message)
@@ -595,65 +540,65 @@ public class FigClassifierRole extends FigNodeModelElement
             if (lastState != nextState && nextState == MessageNode.CREATED) {
                 FigRect birthFig =
 		    new FigRect(lifeLine.getX(),
-				getYCoordinate(i)
-				- SequenceDiagramLayout.LINK_DISTANCE / 4,
-				WIDTH,
+                    lifeLine.getYCoordinate(i)
+                    - SequenceDiagramLayout.LINK_DISTANCE / 4,
+                    WIDTH,
 				SequenceDiagramLayout.LINK_DISTANCE / 4);
                 birthFig.setFilled(true);
                 birthFig.setFillColor(Color.BLACK);
                 lifeLine.addActivationFig(birthFig);
-            }
-            if (lastState != nextState && nextState == MessageNode.DESTROYED) {
+            } if (lastState != nextState && nextState == MessageNode.DESTROYED) {
                 int y =
-		    getYCoordinate(i) - SequenceDiagramLayout.LINK_DISTANCE / 2;
+                    lifeLine.getYCoordinate(i) 
+                    - SequenceDiagramLayout.LINK_DISTANCE / 2;
                 lifeLine.addActivationFig(
-			new FigLine(x,
-				    y + SequenceDiagramLayout.LINK_DISTANCE / 2,
-				    x + WIDTH,
-				    y + SequenceDiagramLayout.LINK_DISTANCE));
+                    new FigLine(x,
+                    	    y + SequenceDiagramLayout.LINK_DISTANCE / 2,
+                    	    x + WIDTH,
+                    	    y + SequenceDiagramLayout.LINK_DISTANCE));
                 lifeLine.addActivationFig(
-			new FigLine(x,
-				    y + SequenceDiagramLayout.LINK_DISTANCE,
-				    x + WIDTH,
-				    y
-				    + SequenceDiagramLayout.LINK_DISTANCE / 2));
+                    new FigLine(x,
+                    	    y + SequenceDiagramLayout.LINK_DISTANCE,
+                    	    x + WIDTH,
+                    	    y
+                    	    + SequenceDiagramLayout.LINK_DISTANCE / 2));
             }
             if (startActivationNode == null) {
                 switch (nextState) {
-		case MessageNode.DONE_SOMETHING_NO_CALL:
-		    startActivationNode = node;
-		    startFull = true;
-		    break;
-		case MessageNode.CALLED:
-		case MessageNode.CREATED:
-		    startActivationNode = node;
-		    startFull = false;
+                case MessageNode.DONE_SOMETHING_NO_CALL:
+                    startActivationNode = node;
+                    startFull = true;
+                    break;
+                case MessageNode.CALLED:
+                case MessageNode.CREATED:
+                    startActivationNode = node;
+                    startFull = false;
+                        default:
+                        }
+                    } else {
+                        switch (nextState) {
+                case MessageNode.DESTROYED :
+                case MessageNode.RETURNED :
+                    endActivationNode = node;
+                    endFull = false;
+                    break;
+                case MessageNode.IMPLICIT_RETURNED :
+                case MessageNode.IMPLICIT_CREATED :
+                    endActivationNode = (MessageNode) linkPositions.get(i - 1);
+                    endFull = true;
+                    break;
+                case MessageNode.CALLED :
+                    if (lastState == MessageNode.CREATED) {
+                	endActivationNode =
+                	    (MessageNode) linkPositions.get(i - 1);
+                	endFull = false;
+                	--i;
+                	nextState = lastState;
+                    }
+                    break;
                 default:
-                }
-            } else {
-                switch (nextState) {
-		case MessageNode.DESTROYED :
-		case MessageNode.RETURNED :
-		    endActivationNode = node;
-		    endFull = false;
-		    break;
-		case MessageNode.IMPLICIT_RETURNED :
-		case MessageNode.IMPLICIT_CREATED :
-		    endActivationNode = (MessageNode) linkPositions.get(i - 1);
-		    endFull = true;
-		    break;
-		case MessageNode.CALLED :
-		    if (lastState == MessageNode.CREATED) {
-			endActivationNode =
-			    (MessageNode) linkPositions.get(i - 1);
-			endFull = false;
-			--i;
-			nextState = lastState;
-		    }
-		    break;
-		default:
-                }
-            }
+                        }
+                    }
             lastState = nextState;
             if (startActivationNode != null && endActivationNode != null) {
                 if (startActivationNode != endActivationNode
@@ -883,7 +828,7 @@ public class FigClassifierRole extends FigNodeModelElement
             	updateClassifierRoleName();
             } else {
             	updateBaseNames();
-	    }
+            }
             nameChanged = true;
         } else if (mee.getPropertyName().equals("stereotype")) {
             updateStereotypeText();
@@ -903,7 +848,7 @@ public class FigClassifierRole extends FigNodeModelElement
     void removeFigMessagePort(FigMessagePort fmp) {
         fmp.getNode().setFigMessagePort(null);
         fmp.setNode(null);
-        removeFig(fmp);
+        lifeLine.removeFig(fmp);
         updateNodeStates();
     }
 
@@ -918,9 +863,9 @@ public class FigClassifierRole extends FigNodeModelElement
     void updateEmptyNodeArray(int start, boolean[] emptyNodes) {
         for (int i = 0; i < emptyNodes.length; ++i) {
             if (((MessageNode) linkPositions.get(i + start)).getFigMessagePort()
-		!= null) {
+                    != null) {
                 emptyNodes[i] = false;
-	    }
+            }
         }
     }
 
@@ -995,10 +940,10 @@ public class FigClassifierRole extends FigNodeModelElement
         if (lifeLine.intersects(rect)) {
             for (int i = 0; i < linkPositions.size(); i++) {
                 MessageNode node = (MessageNode) linkPositions.get(i);
-                int position = getYCoordinate(i);
+                int position = lifeLine.getYCoordinate(i);
                 if (i < linkPositions.size() - 1) {
                     int nextPosition =
-                        getYCoordinate(i + 1);
+                        lifeLine.getYCoordinate(i + 1);
                     if (nextPosition >= y && position <= y) {
                         if ((y - position) <= (nextPosition - y)) {
                             foundNode = node;
@@ -1009,19 +954,17 @@ public class FigClassifierRole extends FigNodeModelElement
                     }
                 } else {
                     foundNode =
-                        (MessageNode) linkPositions
-			.get(linkPositions.size() - 1);
+                        (MessageNode) linkPositions.get(linkPositions.size() - 1);
                     MessageNode nextNode;
-		    nextNode = new MessageNode(this);
+                    nextNode = new MessageNode(this);
                     linkPositions.add(nextNode);
-                    int nextPosition = getYCoordinate(i + 1);
+                    int nextPosition = lifeLine.getYCoordinate(i + 1);
                     if ((y - position) >= (nextPosition - y)) {
                         foundNode = nextNode;
-		    }
+                    }
                     break;
                 }
             }
-
         } else if (headFig.intersects(rect)) {
             foundNode = getClassifierRoleNode();
         } else {
@@ -1032,15 +975,7 @@ public class FigClassifierRole extends FigNodeModelElement
     }
 
     private int getYCoordinate(MessageNode node) {
-        return getYCoordinate(linkPositions.indexOf(node));
-    }
-
-    private int getYCoordinate(int nodeIndex) {
-        return
-            nodeIndex * SequenceDiagramLayout.LINK_DISTANCE
-                + getY()
-                + headFig.getHeight()
-                + SequenceDiagramLayout.LINK_DISTANCE / 2;
+        return lifeLine.getYCoordinate(linkPositions.indexOf(node));
     }
 
     /**
@@ -1049,26 +984,6 @@ public class FigClassifierRole extends FigNodeModelElement
     public void setOwner(Object own) {
         super.setOwner(own);
         bindPort(own, headFig);
-    }
-
-    /**
-     * Gets the {@link FigMessage} that is attached to the given
-     * {@link FigMessagePort}.
-     *
-     * @param portFig the given port
-     * @return the {@link FigMessage} that is attached.
-     */
-    public FigMessage getFigMessage(FigMessagePort portFig) {
-        Iterator it = getFigEdges(null).iterator();
-        while (it.hasNext()) {
-            FigEdge figEdge = (FigEdge) it.next();
-            if (figEdge instanceof FigMessage
-                && (figEdge.getSourcePortFig() == portFig
-                    || figEdge.getDestPortFig() == portFig)) {
-                return (FigMessage) figEdge;
-            }
-        }
-        return null;
     }
 
     /**
@@ -1110,10 +1025,6 @@ public class FigClassifierRole extends FigNodeModelElement
      * @see org.tigris.gef.presentation.FigNode#getPortFig(java.lang.Object)
      */
     public Fig getPortFig(Object messageNode) {
-        if (messageNode == null) {
-            return null;
-        }
-
         if (Model.getFacade().isAClassifierRole(messageNode)) {
             LOG.warn("Got a ClassifierRole - only legal on load");
             return null;
@@ -1257,18 +1168,13 @@ public class FigClassifierRole extends FigNodeModelElement
                     && ((description = attributes.getValue("description"))
                             != null)
                     && description.startsWith(FigMessagePort.class.getName())) {
-                FigMessagePort fmp = new FigMessagePort();
+                PGMLStackParser parser = (PGMLStackParser) stack;
+                String ownerRef = attributes.getValue("href");
+                Object owner = parser.findOwner(ownerRef);
+                FigMessagePort fmp = new FigMessagePort(owner);
                 ((FigGroupHandler) container).getFigGroup().addFig(fmp);
                 result = new FigGroupHandler((PGMLStackParser) stack, fmp);
-                PGMLStackParser parser = (PGMLStackParser) stack;
                 PGMLStackParser.setCommonAttrs(fmp, attributes);
-                String ownerRef = attributes.getValue("href");
-                if (ownerRef != null) {
-                    Object owner = parser.findOwner(ownerRef);
-                    if (owner != null) {
-                        fmp.setOwner(owner);
-		    }
-                }
                 parser.registerFig(fmp, attributes.getValue("name"));
             } else {
                 result =
