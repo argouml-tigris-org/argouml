@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,15 +24,29 @@
 
 package org.argouml.notation;
 
+import java.beans.PropertyChangeEvent;
+
 import org.argouml.application.api.Configuration;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.application.events.ArgoNotationEventListener;
 
 /**
- * A helper for notation related functions. Currently, it only contains
- * 2 functions to obtain the guillemet characters or
+ * A helper for notation related functions. <p>
+ * 
+ * This helper provides: <p>
+ * 
+ * 2 Functions to obtain the guillemet characters or
  * their double bracket alternative,
- * based on the choice made by the user in the Settings menu.
+ * based on the choice made by the user in the Settings menu. <p>
+ * 
+ * A default NotationContext implementation that listens to notation changes.
  */
 public final class NotationHelper {
+    
+    private static DefaultNC nc;
+
     /**
      * The constructor.
      */
@@ -58,4 +72,76 @@ public final class NotationHelper {
 	    : ">>";
     }
 
+    public static NotationContext getDefaultNotationContext() {
+        if (nc == null) nc = new DefaultNC();
+        return nc;
+    }
+    
+    static class DefaultNC implements NotationContext, ArgoNotationEventListener {
+
+        private NotationName currentNotationName;
+        
+        /**
+         * Constructor.
+         */
+        public DefaultNC() {
+            ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+            currentNotationName = Notation.getConfigueredNotation();
+        }
+
+        /**
+         * @see org.argouml.notation.NotationContext#getContextNotation()
+         */
+        public NotationName getContextNotation() {
+            return currentNotationName;
+        }
+
+        /**
+         * @see org.argouml.notation.NotationContext#setContextNotation(org.argouml.notation.NotationName)
+         */
+        public void setContextNotation(NotationName nn) {
+            currentNotationName = nn;
+        }
+
+        /**
+         * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
+         */
+        public void notationChanged(ArgoNotationEvent event) {
+            PropertyChangeEvent changeEvent =
+                (PropertyChangeEvent) event.getSource();
+            if (changeEvent.getPropertyName().equals("argo.notation.only.uml")) {
+                if (changeEvent.getNewValue().equals("true")) {
+                    setContextNotation(Notation.getConfigueredNotation());
+                }
+            } else {
+                setContextNotation(
+                    Notation.findNotation((String) changeEvent.getNewValue()));
+            }
+        }
+
+        /**
+         * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
+         */
+        public void notationAdded(ArgoNotationEvent event) {
+        }
+
+        /**
+         * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
+         */
+        public void notationRemoved(ArgoNotationEvent event) {
+        }
+
+        /**
+         * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
+         */
+        public void notationProviderAdded(ArgoNotationEvent event) {
+        }
+
+        /**
+         * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
+         */
+        public void notationProviderRemoved(ArgoNotationEvent event) {
+        }
+
+    }
 } /* end class NotationHelper */

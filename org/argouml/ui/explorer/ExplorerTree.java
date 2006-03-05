@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,6 +48,9 @@ import org.argouml.application.api.Configuration;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
+import org.argouml.notation.NotationHelper;
+import org.argouml.notation.NotationProvider4;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -235,27 +238,21 @@ public class ExplorerTree
             String name = null;
 
             // Jeremy Bennett patch
-            if (Model.getFacade().isATransition(value)
-		    || Model.getFacade().isAExtensionPoint(value)) {
-                name = GeneratorDisplay.getInstance().generate(value);
+            if (Model.getFacade().isATransition(value)) {
+                NotationProvider4 notationProvider =
+                    NotationProviderFactory2.getInstance().getNotationProvider(
+                            NotationProviderFactory2.TYPE_TRANSITION, 
+                            NotationHelper.getDefaultNotationContext(), 
+                            value);
+                name = notationProvider.toString();
+            } else if (Model.getFacade().isAExtensionPoint(value)) {
+                name = GeneratorDisplay.getInstance().generateExtensionPoint(value);
             } else if (Model.getFacade().isAComment(value)) {
                 /*
-                 * Changing the label in case of comments.
-             * This is necessary in UML 1.3 since the name of the comment 
-             * is the same as the content of the comment (called "body" 
-             * in UML 1.4), causing the total comment to be
-                 * displayed in the perspective.
+                 * From UML 1.4 onwards, the text of the comment 
+                 * is stored in the "body". 
                  */
-                name = Model.getFacade().getName(value);
-
-                if (name != null
-		    && name.indexOf("\n") < 80
-		    && name.indexOf("\n") > -1) {
-
-                    name = name.substring(0, name.indexOf("\n")) + "...";
-                } else if (name != null && name.length() > 80) {
-                    name = name.substring(0, 80) + "...";
-                }
+                name = (String) Model.getFacade().getBody(value);
             } else {
                 name = Model.getFacade().getName(value);
             }
@@ -263,6 +260,17 @@ public class ExplorerTree
             if (name == null || name.equals("")) {
                 name = 
                     "(anon " + Model.getFacade().getUMLClassName(value) + ")";
+            }
+            /*
+             *  If the name is too long or multi-line (e.g. for comments)
+             * then we reduce to the first line or 80 chars. 
+             */
+            if (name != null
+                    && name.indexOf("\n") < 80
+                    && name.indexOf("\n") > -1) {
+                name = name.substring(0, name.indexOf("\n")) + "...";
+            } else if (name != null && name.length() > 80) {
+                name = name.substring(0, 80) + "...";
             }
 
             // Look for stereotype
