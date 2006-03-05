@@ -94,6 +94,7 @@ public class ArgoDiagram extends Diagram {
     }
 
     /**
+     * USED BY pgml.tee!!
      * @return the item UID
      */
     public ItemUID getItemUID() {

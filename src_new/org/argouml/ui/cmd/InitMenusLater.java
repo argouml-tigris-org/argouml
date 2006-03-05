@@ -32,9 +32,9 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import org.tigris.gef.base.AlignAction;
-import org.tigris.gef.base.CmdDistribute;
-import org.tigris.gef.base.CmdNudge;
+import org.tigris.gef.base.NudgeAction;
 import org.tigris.gef.base.CmdReorder;
+import org.tigris.gef.base.DistributeAction;
 
 /**
  * Thread to initialize the submenus of the main menu of argouml (only
@@ -160,22 +160,22 @@ class InitMenusLater implements Runnable {
 	GenericArgoMenuBar.setMnemonic(alignToGrid, "align to grid");
 
         JMenuItem distributeHSpacing =
-	    distribute.add(new CmdDistribute(CmdDistribute.H_SPACING));
+	    distribute.add(new DistributeAction(DistributeAction.H_SPACING));
 	GenericArgoMenuBar.setMnemonic(distributeHSpacing,
 				       "distribute horizontal spacing");
 
         JMenuItem distributeHCenters =
-	    distribute.add(new CmdDistribute(CmdDistribute.H_CENTERS));
+	    distribute.add(new DistributeAction(DistributeAction.H_CENTERS));
 	GenericArgoMenuBar.setMnemonic(distributeHCenters,
 				       "distribute horizontal centers");
 
         JMenuItem distributeVSpacing =
-	    distribute.add(new CmdDistribute(CmdDistribute.V_SPACING));
+	    distribute.add(new DistributeAction(DistributeAction.V_SPACING));
 	GenericArgoMenuBar.setMnemonic(distributeVSpacing,
 				       "distribute vertical spacing");
 
         JMenuItem distributeVCenters =
-	    distribute.add(new CmdDistribute(CmdDistribute.V_CENTERS));
+	    distribute.add(new DistributeAction(DistributeAction.V_CENTERS));
 	GenericArgoMenuBar.setMnemonic(distributeVCenters,
 				       "distribute vertical centers");
 
@@ -202,16 +202,16 @@ class InitMenusLater implements Runnable {
 
         }
         
-        JMenuItem nudgeLeft = nudge.add(new CmdNudge(CmdNudge.LEFT));
+        JMenuItem nudgeLeft = nudge.add(new NudgeAction(NudgeAction.LEFT));
 	GenericArgoMenuBar.setMnemonic(nudgeLeft, "nudge left");
 
-        JMenuItem nudgeRight = nudge.add(new CmdNudge(CmdNudge.RIGHT));
+        JMenuItem nudgeRight = nudge.add(new NudgeAction(NudgeAction.RIGHT));
 	GenericArgoMenuBar.setMnemonic(nudgeRight, "nudge right");
 
-        JMenuItem nudgeUp = nudge.add(new CmdNudge(CmdNudge.UP));
+        JMenuItem nudgeUp = nudge.add(new NudgeAction(NudgeAction.UP));
 	GenericArgoMenuBar.setMnemonic(nudgeUp, "nudge up");
 
-        JMenuItem nudgeDown = nudge.add(new CmdNudge(CmdNudge.DOWN));
+        JMenuItem nudgeDown = nudge.add(new NudgeAction(NudgeAction.DOWN));
 	GenericArgoMenuBar.setMnemonic(nudgeDown, "nudge down");
     }
 } /* end class InitMenusLater */
