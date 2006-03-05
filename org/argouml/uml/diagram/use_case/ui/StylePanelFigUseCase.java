@@ -28,9 +28,6 @@ import java.awt.event.ItemEvent;
 
 import javax.swing.JCheckBox;
 
-import org.argouml.application.events.ArgoEventPump;
-import org.argouml.application.events.ArgoEventTypes;
-import org.argouml.application.events.ArgoProjectSaveEvent;
 import org.argouml.ui.StylePanelFigNodeModelElement;
 
 /**
