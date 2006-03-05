@@ -76,7 +76,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     private static final int PADDING = 8;
     private static final int OFFSET = 10;
     private static final int WIDTH = 70;
-    private static final int HEIGHT = 40;
+    private static final int HEIGHT = 50;
 
     private NotationProvider4 notationProviderType;
     private NotationProvider4 notationProviderState;
@@ -134,12 +134,16 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
-        notationProviderType =
-            NotationProviderFactory2.getInstance().getNotationProvider(
-                NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_TYPE, this, own);
-        notationProviderState =
-            NotationProviderFactory2.getInstance().getNotationProvider(
-                NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_STATE, this, own);
+        if (Model.getFacade().isAModelElement(own)) {
+            notationProviderType =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_TYPE, 
+                        this, own);
+            notationProviderState =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_STATE,
+                        this, own);
+        }
     }
 
     /**
