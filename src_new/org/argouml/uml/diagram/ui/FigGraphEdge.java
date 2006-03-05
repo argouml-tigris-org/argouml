@@ -59,25 +59,18 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.AddAssociationEvent;
-import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
 import org.argouml.model.Model;
-import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationContext;
 import org.argouml.notation.NotationName;
-import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.ui.ActionDeleteModelElements;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Selection;
@@ -239,28 +232,6 @@ public abstract class FigGraphEdge
      */
     public ItemUID getItemUID() {
         return itemUid;
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
-     */
-    public String getTipString(MouseEvent me) {
-        ToDoItem item = hitClarifier(me.getX(), me.getY());
-        String tip = "";
-        if (item != null
-            && Globals.curEditor().getSelectionManager().containsFig(this)) {
-            tip = item.getHeadline();
-        } else if (getOwner() != null 
-                && Model.getFacade().isAModelElement(getOwner())) {
-            tip = Model.getFacade().getTipString(getOwner());
-        } else {
-            tip = toString();
-        }
-
-        if (tip != null && tip.length() > 0 && !tip.endsWith(" ")) {
-            tip += " ";
-        }
-        return tip;
     }
 
     /**
@@ -489,57 +460,6 @@ public abstract class FigGraphEdge
     }
 
     /**
-     * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
-     */
-    public void delayedVetoableChange(PropertyChangeEvent pce) {
-        // update any text, colors, fonts, etc.
-        renderingChanged();
-        // update the relative sizes and positions of internel Figs
-        Rectangle bbox = getBounds();
-        setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-        endTrans();
-    }
-
-    /**
-     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-     */
-    public void propertyChange(PropertyChangeEvent pve) {
-        Object src = pve.getSource();
-        String pName = pve.getPropertyName();
-        // We handle and consume editing events
-        if (pName.equals("editing")
-            && Boolean.FALSE.equals(pve.getNewValue())) {
-            LOG.debug("finished editing");
-            textEdited((FigText) src);
-            calcBounds();
-            endTrans();
-        } else if (pName.equals("editing")
-                && Boolean.TRUE.equals(pve.getNewValue())) {
-            textEditStarted((FigText) src);
-        } else {
-            // Add/remove name change listeners for applied stereotypes
-            if (src == getOwner()
-                    && "stereotype".equals(pName)) {
-                if (pve instanceof RemoveAssociationEvent) {
-                    removeElementListener(pve.getOldValue());
-                } else if (pve instanceof AddAssociationEvent) {
-                    addElementListener(pve.getNewValue(), "name");
-                }
-            }
-            // Pass everything except editing events to superclass
-            super.propertyChange(pve);
-        }
-
-        if (Model.getFacade().isAModelElement(src)) {
-            /* If the source of the event is an UML object,
-             * then the UML model has been changed.*/
-            modelChanged(pve);
-        }
-        damage();  // TODO: (MVW) Is this required?
-        // After all these events? I doubt it...
-    }
-
-    /**
      * This method is called when the user doubleclicked on the text field,
      * and starts editing. Subclasses should overrule this field to e.g.
      * supply help to the user about the used format. <p>
@@ -663,108 +583,8 @@ public abstract class FigGraphEdge
     }
 
 
-    /**
-     * Rerenders the fig if needed. This functionality was originally
-     * the functionality of modelChanged but modelChanged takes the
-     * event now into account.<p>
-     * 
-     * NOTE: If you override this method you probably also want to 
-     * override the modelChanged() method
-     */
-    public void renderingChanged() {
-        // updateAnnotationPositions();
-        updateClassifiers();
-        updateNameText();
-        updateStereotypeText();
-        damage();
-    }
-    
     ////////////////////////////////////////////////////////////////
     // internal methods
-
-    /**
-     * This is called after any part of the UML ModelElement has
-     * changed. This method automatically updates the name FigText.
-     * Subclasses should override and update other parts.<p>
-     * 
-     * NOTE: If you override this method you probably also want to 
-     * override the modelChanged() method
-     *
-     * @param e the event
-     */
-    // TODO: Merge so there's only a single place to deal with
-    protected void modelChanged(PropertyChangeEvent e) {
-        if (e instanceof DeleteInstanceEvent) {
-            // No need to update if model element went away
-            return;
-        }
-        if (e.getSource() == getOwner()
-                && "name".equals(e.getPropertyName())) {
-            updateNameText();
-        }
-
-        updateStereotypeText();
-
-        if (ActionAutoResize.isAutoResizable()) {
-            CmdSetPreferredSize cmdSPS =
-                new CmdSetPreferredSize(CmdSetPreferredSize.MINIMUM_SIZE);
-            cmdSPS.setFigToResize(this);
-            cmdSPS.doIt();
-        }
-
-        // Update attached node figures
-        updateClassifiers();
-    }
-    
-
-
-
-    /**
-     * generate the notation for the modelelement and stuff it into the text Fig
-     */
-    protected void updateNameText() {
-
-        if ((getOwner() == null) || (getOwner() instanceof CommentEdge))
-            return;
-        String nameStr =
-	    Notation.generate(this, Model.getFacade().getName(getOwner()));
-        name.setText(nameStr);
-        calcBounds();
-        setBounds(getBounds());
-    }
-
-    /**
-     * generate the notation for the stereotype and stuff it into the text Fig
-     */
-    protected void updateStereotypeText() {
-        if ((getOwner() == null) || (getOwner() instanceof CommentEdge)) {
-            return;
-        }
-        Object modelElement = getOwner();
-        stereotypeFig.setOwner(modelElement);
-        ((FigStereotypesCompartment) stereotypeFig).populate();
-    }
-
-    /**
-     * In ArgoUML, for every Fig, this setOwner() function
-     * may only be called twice: Once after the fig is created, 
-     * with a non-null argument, and once at end-of-life of the Fig,
-     * with a null argument. It is not allowed in ArgoUML to change 
-     * the owner of a fig in any other way. <p>
-     * 
-     * Hence, during the lifetime of this Fig object, 
-     * the owner shall go from null to some UML object, and to null again.
-     * 
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    public void setOwner(Object newOwner) {
-        updateListeners(newOwner);
-        super.setOwner(newOwner);
-        initNotationProviders(newOwner);
-        if (newOwner != null) {
-            renderingChanged();
-        }
-    }
 
     /**
      * Create the NotationProviders.
@@ -775,37 +595,6 @@ public abstract class FigGraphEdge
         /* Do nothing by default. */
     }
     
-    /**
-     * Implementations of this method should register/unregister the fig for all
-     * (model)events. For FigEdgeModelElement only the fig itself is registered
-     * as listening to events fired by the owner itself. But for, for example,
-     * FigAssociation the fig must also register for events fired by the
-     * stereotypes of the owner. <p>
-     * 
-     * This function is used in UMLDiagram, which removes all listeners 
-     * to all Figs when a diagram is not displayed, and restore them
-     * when it becomes visible again. <p>
-     * 
-     * In this case, it is not imperative that indeed ALL listeners are 
-     * updated, as long as the ones removed get added again and vice versa. <p>
-     * 
-     * Additionally, this function may be used by the modelChanged() function.
-     * <p>
-     * 
-     * In this case, it IS imperative that all listeners get removed / added.
-     * 
-     * @param newOwner the new owner for the listeners
-     */
-    protected void updateListeners(Object newOwner) {
-        Object oldOwner = getOwner();
-        if (oldOwner != null && Model.getFacade().isAModelElement(oldOwner)) {
-            removeElementListener(oldOwner);
-        }
-        if (newOwner != null && Model.getFacade().isAModelElement(newOwner)) {
-            addElementListener(newOwner);
-        }
-    }
-
     /**
      * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
      */
@@ -843,24 +632,6 @@ public abstract class FigGraphEdge
      */
     public void setContextNotation(NotationName nn) {
         currentNotationName = nn;
-    }
-
-    /**
-     * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
-     */
-    public void notationChanged(ArgoNotationEvent event) {
-        PropertyChangeEvent changeEvent =
-            (PropertyChangeEvent) event.getSource();
-        if (changeEvent.getPropertyName().equals("argo.notation.only.uml")) {
-            if (changeEvent.getNewValue().equals("true")) {
-                setContextNotation(Notation.getConfigueredNotation());
-            }
-        } else {
-            setContextNotation(
-                Notation.findNotation((String) changeEvent.getNewValue()));
-        }
-        renderingChanged();
-        damage();
     }
 
     /**
@@ -904,47 +675,30 @@ public abstract class FigGraphEdge
     }
 
     /**
-     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
-     */
-    public void removeFromDiagram() {
-        Object o = getOwner();
-        if (Model.getFacade().isAModelElement(o)) {
-            removeElementListener(o);
-        }
-        ArgoEventPump.removeListener(this);
-
-        Iterator it = getPathItemFigs().iterator();
-        while (it.hasNext()) {
-            Fig fig = (Fig) it.next();
-            fig.removeFromDiagram();
-        }
-
-        /* TODO: MVW: Why the next action?
-         * Deleting a fig from 1 diagram should not influence others!
-         * */
-        // GEF does not take into account the multiple diagrams we have
-        // therefore we loop through our diagrams and delete each and every
-        // occurence on our own
-        it =
-	    ProjectManager.getManager().getCurrentProject()
-	        .getDiagrams().iterator();
-        while (it.hasNext()) {
-            ArgoDiagram diagram = (ArgoDiagram) it.next();
-            diagram.damage();
-        }
-
-        super.removeFromDiagram();
-
-    }
-
-    /**
      * @see org.tigris.gef.presentation.Fig#damage()
      */
     public void damage() {
         super.damage();
         getFig().damage();
     }
+    
+    /**
+     * Returns the source of the edge. The source is the owner of the
+     * node the edge travels from in a binary relationship. For
+     * instance: for a classifierrole, this is the sender.
+     * @return The model element
+     */
+    abstract protected Object getSource();
 
+    /**
+     * Returns the destination of the edge. The destination is the
+     * owner of the node the edge travels to in a binary
+     * relationship. For instance: for a classifierrole, this is the
+     * receiver.
+     * @return Object
+     */
+    abstract protected Object getDestination();
+    
     /**
      * <p>Updates the classifiers the edge is attached to.  <p>Calls a
      * helper method (layoutThisToSelf) to avoid this edge
@@ -1040,40 +794,6 @@ public abstract class FigGraphEdge
         edgeShape.setFilled(false);
         edgeShape.setComplete(true);
         this.setFig(edgeShape);
-    }
-
-    /**
-     * Returns the source of the edge. The source is the owner of the
-     * node the edge travels from in a binary relationship. For
-     * instance: for a classifierrole, this is the sender.
-     * @return MModelElement
-     */
-    protected Object getSource() {
-        Object owner = getOwner();
-        if (owner != null) {
-            if (owner instanceof CommentEdge) {
-                return ((CommentEdge) owner).getSource();
-            }
-            return Model.getCoreHelper().getSource(owner);
-        }
-        return null;
-    }
-    /**
-     * Returns the destination of the edge. The destination is the
-     * owner of the node the edge travels to in a binary
-     * relationship. For instance: for a classifierrole, this is the
-     * receiver.
-     * @return Object
-     */
-    protected Object getDestination() {
-        Object owner = getOwner();
-        if (owner != null) {
-            if (owner instanceof CommentEdge) {
-                return ((CommentEdge) owner).getDestination();
-            }
-            return Model.getCoreHelper().getDestination(owner);
-        }
-        return null;
     }
 
     /**
