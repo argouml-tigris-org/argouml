@@ -60,8 +60,8 @@ public class UMLObjectFlowStateClassifierComboBoxModel
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return Model.getFacade().isAClassifier(o) 
-            && !Model.getFacade().isAClassifierInState(o);
+        return Model.getFacade().isAClassifier(o) /* 
+            && !Model.getFacade().isAClassifierInState(o)*/;
     }
 
     /**
@@ -77,17 +77,17 @@ public class UMLObjectFlowStateClassifierComboBoxModel
         Iterator i = c.iterator();
         while (i.hasNext()) {
             Object classifier = i.next();
-            if (!Model.getFacade().isAClassifierInState(classifier)) {
+//            if (!Model.getFacade().isAClassifierInState(classifier)) {
                 newList.add(classifier);
-            }
+//            }
         }
         // get the current type - normally we won't need this, but who knows?
         if (getTarget() != null) {
             Object type = Model.getFacade().getType(getTarget());
-            if (Model.getFacade().isAClassifierInState(type)) {
-                // get the Classifier
-                type = Model.getFacade().getType(type);
-            }
+//            if (Model.getFacade().isAClassifierInState(type)) {
+//                // get the Classifier
+//                type = Model.getFacade().getType(type);
+//            }
             if (type != null)
                 if (!newList.contains(type)) newList.add(type);
         }
@@ -100,10 +100,10 @@ public class UMLObjectFlowStateClassifierComboBoxModel
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
             Object type = Model.getFacade().getType(getTarget());
-            if (Model.getFacade().isAClassifierInState(type)) {
-                // get the Classifier
-                type = Model.getFacade().getType(type);
-            }
+//            if (Model.getFacade().isAClassifierInState(type)) {
+//                // get the Classifier
+//                type = Model.getFacade().getType(type);
+//            }
             return type; // a Classifier that is not a ClassifierInState
         }
         return null;

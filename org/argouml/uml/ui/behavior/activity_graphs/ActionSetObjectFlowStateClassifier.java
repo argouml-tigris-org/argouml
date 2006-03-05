@@ -26,29 +26,21 @@ package org.argouml.uml.ui.behavior.activity_graphs;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
 * @since Aug 11, 2004
 * @author mvw
-* @stereotype singleton
 */
-public class ActionSetObjectFlowStateClassifier extends UMLAction {
-
-    /**
-     * <code>SINGLETON</code>.
-     */
-    public static final ActionSetObjectFlowStateClassifier SINGLETON =
-        new ActionSetObjectFlowStateClassifier();
+public class ActionSetObjectFlowStateClassifier extends UndoableAction {
 
     /**
      * Constructor for ActionSetObjectFlowStateClassifier.
      */
-    protected ActionSetObjectFlowStateClassifier() {
-        super(Translator.localize("Set"), false, NO_ICON);
+    public ActionSetObjectFlowStateClassifier() {
+        super();
     }
 
     /**

@@ -39,10 +39,12 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLSearchableComboBox;
@@ -78,13 +80,18 @@ public class PropPanelClassifierInState extends PropPanelClassifier {
         addSeperator();
         
         addField(Translator.localize("label.type"),
-                getClassifierInStateTypeSelector());
+                new UMLComboBoxNavigator(
+                        this,
+                        Translator.localize("label.class.navigate.tooltip"),
+                getClassifierInStateTypeSelector()));
         
         // field for States
-        AbstractActionAddModelElement action = 
+        AbstractActionAddModelElement actionAdd = 
             new ActionAddCISState();
+        AbstractActionRemoveElement actionRemove = 
+            new ActionRemoveCISState();
         UMLMutableLinkedList list = new UMLMutableLinkedList(
-                new UMLCISStateListModel(), action, null, null, true);
+                new UMLCISStateListModel(), actionAdd, null, actionRemove, true);
         statesScroll = new JScrollPane(list);
         addField(Translator.localize("label.instate"),
                 statesScroll);
@@ -272,6 +279,32 @@ class ActionAddCISState extends AbstractActionAddModelElement {
         }
         return new Vector();
     }
+}
+
+class ActionRemoveCISState extends AbstractActionRemoveElement {
+
+    public ActionRemoveCISState() {
+        super(Translator.localize("menu.popup.remove"));
+    }
+
+    /**
+     * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        Object state = getObjectToRemove(); 
+        if (state != null) {
+            Object cis = getTarget();
+            if (Model.getFacade().isAClassifierInState(cis)) {
+                Collection states = new ArrayList(
+                        Model.getFacade().getInStates(cis));
+                states.remove(state);
+                Model.getActivityGraphsHelper().setInStates(cis, states);
+            }
+            
+        }
+    }
+    
 }
 
 class UMLCISStateListModel extends UMLModelElementListModel2 {
