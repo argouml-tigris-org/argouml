@@ -101,13 +101,6 @@ public class FigCompositeState extends FigState {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    public String placeString() {
-        return "new MCompositeState";
-    }
-
-    /**
      * @see java.lang.Object#clone()
      */
     public Object clone() {
