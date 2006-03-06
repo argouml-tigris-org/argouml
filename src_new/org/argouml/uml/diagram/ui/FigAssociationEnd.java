@@ -121,7 +121,6 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         if (Model.getFacade().isAAssociationEnd(edge)) {
             addElementListener(edge);
         }
-        modelChanged(null);
     }
 
     /** Returns the name of the OrderingKind.
