@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -57,7 +57,7 @@ import org.omg.uml.foundation.datatypes.TimeExpression;
 
 /**
  * The State Machines Helper Implementation for MDR.
- * <p>
+ *
  * @since ARGO0.19.5
  * @author Ludovic Maître
  * @author Tom Morris
@@ -67,7 +67,8 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     private MDRModelImplementation implementation;
 
     /**
-     * Constructor
+     * Constructor.
+     *
      * @param impl The ModelImplementation
      */
     public StateMachinesHelperMDRImpl(MDRModelImplementation impl) {
@@ -106,15 +107,19 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      */
     public Object getStateMachine(Object handle) {
         if (handle != null) {
-            Object container= implementation.getFacade().getModelElementContainer(handle);
+            Object container =
+                implementation.getFacade().getModelElementContainer(handle);
             while (container != null) {
-                if (Model.getFacade().isAStateMachine(container)){
+                if (Model.getFacade().isAStateMachine(container)) {
                     return container;
                 }
-                container= implementation.getFacade().getModelElementContainer(container);
+                container =
+                    implementation.getFacade()
+                        .getModelElementContainer(container);
             }
-            /* In this case, either the container was not set, 
-             * or it was not contained in a statemachine.*/
+            /* In this case, either the container was not set,
+             * or it was not contained in a statemachine.
+             */
             return null;
         }
         throw new IllegalArgumentException("bad argument to "
@@ -141,7 +146,7 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      * @see org.argouml.model.StateMachinesHelper#isAddingStatemachineAllowed(java.lang.Object)
      */
     public boolean isAddingStatemachineAllowed(Object context) {
-        return (context instanceof BehavioralFeature 
+        return (context instanceof BehavioralFeature
                 || context instanceof Classifier);
     }
 
@@ -163,7 +168,8 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     public Collection getAllPossibleStatemachines(Object model,
             Object oSubmachineState) {
         if (oSubmachineState instanceof SubmachineState) {
-            Collection statemachines = Model.getModelManagementHelper().
+            Collection statemachines =
+                Model.getModelManagementHelper().
                     getAllModelElementsOfKind(model, StateMachine.class);
             statemachines.remove(getStateMachine(oSubmachineState));
             return statemachines;
@@ -177,13 +183,14 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      */
     public Collection getAllPossibleSubvertices(Object oState) {
         ArrayList v = new ArrayList();
-        ArrayList v2 = new ArrayList();
+        List v2 = new ArrayList();
         if (oState instanceof CompositeState) {
             v.addAll(((CompositeState) oState).getSubvertex());
             v2 = (ArrayList) v.clone();
             Iterator it = v2.iterator();
-            while (it.hasNext())
+            while (it.hasNext()) {
                 v.addAll(getAllPossibleSubvertices(it.next()));
+            }
         }
         return v;
     }
@@ -265,8 +272,8 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     public Collection getAllSubStates(Object compState) {
         if (compState instanceof CompositeState) {
             List retList = new ArrayList();
-            Iterator it = Model.getFacade().getSubvertices(compState).
-                    iterator();
+            Iterator it =
+                Model.getFacade().getSubvertices(compState).iterator();
             while (it.hasNext()) {
                 Object subState = it.next();
                 if (subState instanceof CompositeState) {
@@ -340,7 +347,7 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      */
     public void setContainer(Object handle, Object compositeState) {
         if (handle instanceof StateVertex
-                && (compositeState == null 
+                && (compositeState == null
                         || compositeState instanceof CompositeState)) {
             ((StateVertex) handle).
                     setContainer((CompositeState) compositeState);
@@ -452,19 +459,21 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      */
     public void setInternalTransitions(Object handle, Collection intTrans) {
         if (handle instanceof State) {
-            Collection internalTransitions = Model.getFacade().
-                    getInternalTransitions(handle);
+            Collection internalTransitions =
+                Model.getFacade().getInternalTransitions(handle);
             if (!internalTransitions.isEmpty()) {
                 Vector verts = new Vector();
                 verts.addAll(internalTransitions);
                 Iterator toRemove = verts.iterator();
-                while (toRemove.hasNext())
+                while (toRemove.hasNext()) {
                     removeTransition(handle, toRemove.next());
+                }
             }
             if (!intTrans.isEmpty()) {
                 Iterator toAdd = intTrans.iterator();
-                while (toAdd.hasNext())
+                while (toAdd.hasNext()) {
                     addTransition(handle, toAdd.next());
+                }
             }
             return;
         }
@@ -553,13 +562,15 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 Vector verts = new Vector();
                 verts.addAll(vertices);
                 Iterator toRemove = verts.iterator();
-                while (toRemove.hasNext())
+                while (toRemove.hasNext()) {
                     removeSubvertex(handle, toRemove.next());
+                }
             }
             if (!subvertices.isEmpty()) {
                 Iterator toAdd = subvertices.iterator();
-                while (toAdd.hasNext())
+                while (toAdd.hasNext()) {
                     addSubvertex(handle, toAdd.next());
+                }
             }
             return;
         }
@@ -623,17 +634,19 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
 
             Iterator it = getAllPossibleSubvertices(container).iterator();
             int index = path.lastIndexOf("::");
-            if (index != -1)
+            if (index != -1) {
                 index += 2;
-            else
+            } else {
                 index += 1;
+            }
 
             path = path.substring(index);
             while (it.hasNext()) {
                 Object o = it.next();
                 Object oName = Model.getFacade().getName(o);
-                if (oName != null && oName.equals(path))
+                if (oName != null && oName.equals(path)) {
                     return o;
+                }
             }
         }
         return null;
@@ -657,7 +670,7 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      * package it appears in and may be used in state diagrams for classes that
      * have visibility inside the package. An event is not local to a single
      * class."
-     * 
+     *
      * @param trans
      *            the transition of which the event is a trigger
      * @param model
@@ -665,8 +678,8 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      * @return the enclosing namespace for the event
      */
     public Object findNamespaceForEvent(Object trans, Object model) {
-        Object enclosing = Model.getStateMachinesHelper().
-                getStateMachine(trans);
+        Object enclosing =
+            Model.getStateMachinesHelper().getStateMachine(trans);
         while ((!Model.getFacade().isAPackage(enclosing))
                 && (enclosing != null)) {
             enclosing = Model.getFacade().getNamespace(enclosing);
@@ -688,7 +701,7 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
             return;
         }
         throw new IllegalArgumentException("handle: " + state + " or evt: "
-                + deferrableEvent);    
+                + deferrableEvent);
     }
     /**
      * @see org.argouml.model.StateMachinesHelper#removeDeferrableEvent(java.lang.Object, java.lang.Object)
@@ -701,7 +714,7 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
             return;
         }
         throw new IllegalArgumentException("handle: " + state + " or evt: "
-                + deferrableEvent);    
+                + deferrableEvent);
     }
 
     /**
@@ -712,7 +725,7 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 && modelElement instanceof ModelElement) {
             ((StateMachine) statemachine)
                     .setContext((ModelElement) modelElement);
-            return;            
+            return;
         }
         throw new IllegalArgumentException("handle: " + statemachine
                 + " or me: " + modelElement);

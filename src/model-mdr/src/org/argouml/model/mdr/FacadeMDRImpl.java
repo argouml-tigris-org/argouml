@@ -166,19 +166,19 @@ import org.omg.uml.modelmanagement.UmlPackage;
 class FacadeMDRImpl implements Facade {
 
     /**
-     * logger
+     * Logger.
      */
     private static final Logger LOG = Logger.getLogger(FacadeMDRImpl.class);
 
     private MDRModelImplementation implementation;
 
     // Shorthand notation for convenience
-    static final javax.jmi.model.AggregationKindEnum MOF_COMPOSITE = 
+    static final javax.jmi.model.AggregationKindEnum MOF_COMPOSITE =
         javax.jmi.model.AggregationKindEnum.COMPOSITE;
 
     /**
      * Constructor.
-     * 
+     *
      * @param impl
      *            The model implementation
      */
@@ -1010,13 +1010,13 @@ class FacadeMDRImpl implements Facade {
      */
     public boolean isChangeable(Object handle) {
         if (handle != null && handle instanceof StructuralFeature) {
-            ChangeableKind changeability = ((StructuralFeature) handle)
-                    .getChangeability();
+            ChangeableKind changeability =
+                ((StructuralFeature) handle).getChangeability();
             return ChangeableKindEnum.CK_CHANGEABLE.equals(changeability);
 
         } else if (handle != null && handle instanceof AssociationEnd) {
-            ChangeableKind changeability = ((AssociationEnd) handle)
-                    .getChangeability();
+            ChangeableKind changeability =
+                ((AssociationEnd) handle).getChangeability();
             return ChangeableKindEnum.CK_CHANGEABLE.equals(changeability);
         }
         throw new IllegalArgumentException(
@@ -1238,7 +1238,8 @@ class FacadeMDRImpl implements Facade {
      */
     public boolean isPrimaryObject(Object handle) {
         if (handle instanceof ModelElement) {
-            Collection c = implementation.getUmlPackage().getCore()
+            Collection c =
+                implementation.getUmlPackage().getCore()
                     .getAReferenceValueReferenceTag().getReferenceTag(
                             (ModelElement) handle);
             for (Iterator i = c.iterator(); i.hasNext();) {
@@ -1253,7 +1254,7 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentBoolean(handle);
     }
 
-    /*
+    /**
      * @see org.argouml.model.Facade#isPackage(java.lang.Object)
      */
     public boolean isPackage(Object handle) {
@@ -1360,8 +1361,9 @@ class FacadeMDRImpl implements Facade {
             Stereotype stereotype;
             while (it.hasNext()) {
                 stereotype = (Stereotype) it.next();
-                if (stereotypeName.equals(stereotype.getName()))
+                if (stereotypeName.equals(stereotype.getName())) {
                     return true;
+                }
             }
             return false;
         }
@@ -1458,10 +1460,9 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * @see org.argouml.model.Facade#getAttributes(java.lang.Object)
-     */
-    /**
+     *
      * The list of Attributes.
-     * 
+     *
      * @param handle
      *            classifier to examine.
      * @return iterator with attributes.
@@ -1476,16 +1477,17 @@ class FacadeMDRImpl implements Facade {
     }
 
     /**
-     * @see org.argouml.model.Facade#getBaseClass(java.lang.Object) 
+     * @see org.argouml.model.Facade#getBaseClass(java.lang.Object)
      * TODO: delete this method and replace with getBaseClasses
      */
     public Object getBaseClass(Object handle) {
         if (isAStereotype(handle)) {
             Collection stereos = ((Stereotype) handle).getBaseClass();
             if (!stereos.isEmpty()) {
-                if (stereos.size() > 1)
+                if (stereos.size() > 1) {
                     LOG.warn("There is more than one stereotype defined,"
                             + " returning the first");
+                }
                 return stereos.iterator().next();
             }
             return null;
@@ -2147,8 +2149,8 @@ class FacadeMDRImpl implements Facade {
     }
 
     /**
-     * Get Successors to the given message
-     * 
+     * Get Successors to the given message.
+     *
      * @see org.argouml.model.Facade#getMessages3(java.lang.Object)
      */
     public Collection getMessages3(Object handle) {
@@ -2161,7 +2163,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Get the messages that are activated by the given message.
-     * 
+     *
      * @see org.argouml.model.Facade#getMessages4(java.lang.Object)
      */
     public Collection getMessages4(Object handle) {
@@ -2174,7 +2176,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the messages received by the given classifier role.
-     * 
+     *
      * @see org.argouml.model.Facade#getMessages1(java.lang.Object)
      */
     public Collection getMessages1(Object handle) {
@@ -2187,7 +2189,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the messages send by the given classifier role.
-     * 
+     *
      * @see org.argouml.model.Facade#getMessages2(java.lang.Object)
      */
     public Collection getMessages2(Object handle) {
@@ -2200,7 +2202,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Return the model for this object.
-     * 
+     *
      * @see org.argouml.model.Facade#getModel(java.lang.Object)
      */
     public Object getModel(Object handle) {
@@ -2211,7 +2213,7 @@ class FacadeMDRImpl implements Facade {
             return illegalArgumentObject(handle);
         }
         // If we can't find a model, return the outermost
-        // containing model element 
+        // containing model element
         if (getModelElementContainer(handle) == null) {
             return handle;
         } else {
@@ -2383,7 +2385,7 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentObject(handle);
     }
 
-    /*
+    /**
      * @see org.argouml.model.Facade#getModelElementContents(java.lang.Object)
      */
     public List getModelElementContents(Object handle) {
@@ -2491,16 +2493,19 @@ class FacadeMDRImpl implements Facade {
             contents.addAll(((UmlPackage) handle).getElementImport());
         }
 
-        // If debug level logging is enabled, compare results 
+        // If debug level logging is enabled, compare results
         // from old and new algorithms and log any differences
         if (LOG.isDebugEnabled()) {
             if (!results.containsAll(contents)) {
                 Collection diffs = new ArrayList(contents);
                 diffs.removeAll(results);
                 // Remove all nulls - why are they there?
-                while (diffs.remove(null)) {};
+                while (diffs.remove(null)) {
+                    /* Remove nulls. */
+                }
                 if (!diffs.isEmpty()) {
-                    LOG.debug("*Old getModelElementContents returned more results "
+                    LOG.debug("*Old getModelElementContents returned "
+                            + "more results "
                             + handle);
                     LOG.debug("    differences :  " + diffs);
                 }
@@ -2508,48 +2513,49 @@ class FacadeMDRImpl implements Facade {
             if (!contents.containsAll(results)) {
                 Collection diffs = new ArrayList(results);
                 diffs.removeAll(contents);
-                ArrayList primitives = new ArrayList();
+                List primitives = new ArrayList();
                 for (Iterator it4 = diffs.iterator(); it4.hasNext();) {
                     Object o4 = it4.next();
-                    if (o4 instanceof Expression 
+                    if (o4 instanceof Expression
                             || o4 instanceof Multiplicity) {
                         primitives.add(o4);
                     }
                 }
                 diffs.removeAll(primitives);
                 if (!diffs.isEmpty()) {
-                    LOG.debug("New getModelElementContents returned more results "
+                    LOG.debug("New getModelElementContents returned "
+                            + "more results "
                             + handle);
                     LOG.debug("    differences :  " + diffs);
                 }
             }
         }
-        
+
         // return new results from new algorithm
         return results;
     }
 
-    /*
+    /**
      * @see org.argouml.model.Facade#getModelElementAssociated(java.lang.Object)
      */
     public List getModelElementAssociated(Object handle) {
         return getModelElementAssociated(handle, false);
     }
 
-    /*
+    /**
      * Return all model elements associated with the given model element,
-     * optionally excluding associations which are not composite.
-     * <p>
+     * optionally excluding associations which are not composite.<p>
+     *
      * NOTE: The current implementation only follows associations which
      * are navigable FROM the model element, so it's possible that there
      * are additional associated elements which would be too resource
-     * intensive to search for.
-     * <p>
+     * intensive to search for.<p>
+     *
      * Implementation queries the metamodel to find all attributes/references
      * for the metatype of the given object and uses that set of names
      * to query the object using the JMI reflective interface.
      */
-    private List getModelElementAssociated(Object handle, 
+    private List getModelElementAssociated(Object handle,
             boolean contentsOnly) {
         List results = new ArrayList();
 
@@ -2565,7 +2571,7 @@ class FacadeMDRImpl implements Facade {
                     "Element doesn't appear to be a MOF element :" + handle);
         }
         MofClass metaclass = (MofClass) metaobject;
-        ArrayList types = new ArrayList(metaclass.allSupertypes());
+        List types = new ArrayList(metaclass.allSupertypes());
         types.add(metaclass);
         for (Iterator it = types.iterator(); it.hasNext();) {
             MofClass s = (MofClass) it.next();
@@ -2578,20 +2584,20 @@ class FacadeMDRImpl implements Facade {
         return results;
     }
 
-    /*
+    /**
      * Helper function to add the value(s) of an Attribute or Reference to the
      * given collection.
      */
     private void getReferenceOrAttribute(RefFeatured parent, Object element,
             Collection returns, boolean contentsOnly) {
-        
-        if (!(element instanceof javax.jmi.model.Attribute 
+
+        if (!(element instanceof javax.jmi.model.Attribute
                 || element instanceof Reference)) {
             return;
         }
         if (element instanceof Reference) {
-            javax.jmi.model.AggregationKind ak = ((Reference) element)
-                    .getExposedEnd().getAggregation();
+            javax.jmi.model.AggregationKind ak =
+                ((Reference) element).getExposedEnd().getAggregation();
             if (contentsOnly && ak != MOF_COMPOSITE) {
                 return;
             }
@@ -2620,7 +2626,7 @@ class FacadeMDRImpl implements Facade {
             }
         }
     }
-    
+
     /**
      * @see org.argouml.model.Facade#getContainer(java.lang.Object)
      */
@@ -2635,8 +2641,9 @@ class FacadeMDRImpl implements Facade {
                 Iterator it = getTransitions(handle).iterator();
                 while (it.hasNext()) {
                     container = getContainer(it.next());
-                    if (container != null)
+                    if (container != null) {
                         return container;
+                    }
                 }
             }
             if (handle instanceof StateVertex) {
@@ -2918,17 +2925,20 @@ class FacadeMDRImpl implements Facade {
      */
     public Object getOppositeEnd(Object handle) {
         if (handle instanceof AssociationEnd) {
-            List assocEnds = (((AssociationEnd) handle).getAssociation())
+            List assocEnds =
+                (((AssociationEnd) handle).getAssociation())
                     .getConnection();
-            if (assocEnds.size() > 2)
+            if (assocEnds.size() > 2) {
                 LOG.warn("There are more than 2 associations ends, "
                         + "returning the first non-self end");
+            }
             Object opposite = null;
             Iterator it = assocEnds.iterator();
             while (it.hasNext()) {
                 opposite = it.next();
-                if (opposite != handle)
+                if (opposite != handle) {
                     break;
+                }
             }
             return opposite;
         }
@@ -3005,7 +3015,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Get the list of Link Ends connected to this link end.
-     * 
+     *
      * @param handle
      *            link end to start from
      * @return Iterator with all connected link ends.
@@ -3420,7 +3430,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the stimuli belonging to some given link.
-     * 
+     *
      * @see org.argouml.model.Facade#getStimuli(java.lang.Object)
      */
     public Collection getStimuli(Object handle) {
@@ -3437,7 +3447,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the Stimuli that are received by the given Instance.
-     * 
+     *
      * @param handle
      *            the Instance
      * @return the collection of stimuli
@@ -3452,7 +3462,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the Stimuli that are sent by the given Instance.
-     * 
+     *
      * @see org.argouml.model.Facade#getStimuli3(java.lang.Object)
      */
     public Collection getStimuli3(Object handle) {
@@ -3637,7 +3647,7 @@ class FacadeMDRImpl implements Facade {
         }
         if (isAMultiplicity(handle)) {
             Multiplicity up = (Multiplicity) handle;
-            ArrayList ranges = new ArrayList(up.getRange());
+            List ranges = new ArrayList(up.getRange());
             // TODO: this assumes ranges are sorted. Is this true? - tfm
             return getUpper(ranges.get(ranges.size() - 1));
         }
@@ -3673,7 +3683,7 @@ class FacadeMDRImpl implements Facade {
         }
         if (isAMultiplicity(handle)) {
             Multiplicity low = (Multiplicity) handle;
-            ArrayList ranges = new ArrayList(low.getRange());
+            List ranges = new ArrayList(low.getRange());
             // TODO: this assumes ranges are sorted. Is this true? - tfm
             return getLower(ranges.get(0));
         }
@@ -3893,7 +3903,8 @@ class FacadeMDRImpl implements Facade {
                     int pos = 0;
                     boolean fixed = false;
                     while ((pos = name.indexOf(0xffff)) >= 0) {
-                        name = name.substring(0, pos)
+                        name =
+                            name.substring(0, pos)
                                 + name.substring(pos + 1, name.length());
                         fixed = true;
                     }
@@ -3947,8 +3958,9 @@ class FacadeMDRImpl implements Facade {
     public String getTag(Object handle) {
         if (handle instanceof TaggedValue) {
             TagDefinition td = ((TaggedValue) handle).getType();
-            if (td != null)
+            if (td != null) {
                 return td.getName();
+            }
             return null;
         }
         return illegalArgumentString(handle);
@@ -3995,7 +4007,7 @@ class FacadeMDRImpl implements Facade {
             Iterator i = me.getTaggedValue().iterator();
             while (i.hasNext()) {
                 TaggedValue tv = (TaggedValue) i.next();
-                if (tv.getType() != null 
+                if (tv.getType() != null
                         && name.equals(tv.getType().getName())) {
                     return tv;
                 }
@@ -4099,9 +4111,10 @@ class FacadeMDRImpl implements Facade {
                 return "";
             }
             // TODO: Implement support for multiple TaggedValues
-            if (values.size() > 1)
+            if (values.size() > 1) {
                 LOG.warn("Don't know how to manage multiple values "
                         + "for a TaggedValue, returning first value");
+            }
             Object value = values.iterator().next();
             if (value instanceof String) {
                 return (String) value;
@@ -4220,7 +4233,9 @@ class FacadeMDRImpl implements Facade {
         } else if (modelElement instanceof ModelElement) {
             return getUMLClassName(modelElement) + ": " + getName(modelElement);
         }
-        if (modelElement == null) return "";
+        if (modelElement == null) {
+            return "";
+        }
         return modelElement.toString();
     }
 
@@ -4242,9 +4257,8 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Method that throws an error when a method is called with an incorrect
-     * argument.
-     * <p>
-     * 
+     * argument.<p>
+     *
      * @param arg
      *            is the incorrect argument.
      * @return Object for use in the return statement.
@@ -4256,9 +4270,8 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Method that throws an error when a method is called with an incorrect
-     * argument.
-     * <p>
-     * 
+     * argument.<p>
+     *
      * @param arg
      *            is the incorrect argument.
      * @return String for use in the return statement.
@@ -4271,7 +4284,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.
-     * 
+     *
      * @param arg
      *            is the incorrect argument.
      */
@@ -4301,9 +4314,8 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Method that throws an error when a method is called with an incorrect
-     * argument.
-     * <p>
-     * 
+     * argument.<p>
+     *
      * @param arg
      *            is the incorrect argument.
      * @return Collection for use in the return statement.
@@ -4315,9 +4327,8 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Method that throws an error when a method is called with an incorrect
-     * argument.
-     * <p>
-     * 
+     * argument.<p>
+     *
      * @param arg
      *            is the incorrect argument.
      * @return a boolean for use in the return statement.
@@ -4329,9 +4340,8 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Method that throws an error when a method is called with an incorrect
-     * argument.
-     * <p>
-     * 
+     * argument.<p>
+     *
      * @param arg
      *            is the incorrect argument.
      * @return Int for use in the return statement.
@@ -4350,12 +4360,13 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Notice that the Enumeration are ordered.
-     * 
+     *
      * @see org.argouml.model.Facade#getEnumerationLiterals(java.lang.Object)
      */
     public List getEnumerationLiterals(Object handle) {
-        if (!isAEnumeration(handle))
+        if (!isAEnumeration(handle)) {
             throw new IllegalArgumentException("handle: " + handle);
+        }
         return ((Enumeration) handle).getLiteral();
     }
 
