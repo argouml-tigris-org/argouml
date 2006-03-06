@@ -98,11 +98,6 @@ public class FigSimpleState extends FigState {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    public String placeString() { return "new State"; }
-
-    /**
      * @see java.lang.Object#clone()
      */
     public Object clone() {
