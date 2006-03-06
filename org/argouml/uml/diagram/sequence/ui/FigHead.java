@@ -108,7 +108,6 @@ class FigHead extends FigGroup {
         nameFig.setFilled(false);
         nameFig.setLineWidth(0);
         nameFig.setTextColor(Color.black);
-        nameFig.setText("kjhkjh");
         nameFig.setBounds(x, yy, w, nameFig.getHeight());
         _x = x;
         _y = y;

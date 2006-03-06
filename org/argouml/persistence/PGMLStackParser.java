@@ -109,8 +109,9 @@ public class PGMLStackParser
     /**
      * @see org.argouml.gef.PGMLStackParser#setAttrs(
      *         org.tigris.gef.presentation.Fig, org.xml.sax.Attributes)
+     * TODO: Change to protected here and in GEF
      */
-    public void setAttrs(Fig f, Attributes attrList) throws SAXException {
+    final public void setAttrs(Fig f, Attributes attrList) throws SAXException {
         if (f instanceof FigGroup) {
             FigGroup group = (FigGroup) f;
             String clsNameBounds = attrList.getValue("description");
