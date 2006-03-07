@@ -117,36 +117,11 @@ This is designed to work in two different environments:
 
 
   <!-- =================================================================== -->
-  <!-- Generate the interfaces                                             -->
+  <!-- Generate, compile, & package the JMI interfaces                     -->
   <!-- =================================================================== -->
-  <target name="generate" depends="init,generate-needed,generate-skipped" 
+  <target name="generate" depends="generate-internal" 
       description="Generate the JMI interfaces for a UML metamodel."
       unless="generate.notRequired">
-    <!-- create directories -->
-    <mkdir dir="${build.dir}"/>
-    <delete dir="${build.javas}"/>
-    <mkdir dir="${build.javas}"/>
-
-    <!-- NOTE: The MDR task needs an absolute path for storageFile or it will
-               put it in the caller's directory when called from argouml build
-    -->
-    <echo message="Generating JMI interfaces from ${xmi.file}"/>
-    <mdr storageFile="${basedir}/${build.javas}/mymdr">
-      <instantiate name="mof4models" /> 
-      <readXMI file="${xmi.file}.xml" extent="mof4models" /> 
-      <mapJava dir="${build.javas}" extent="mof4models" /> 
-      
-      <!-- not sure this is correct, but try to generate a DTD -->
-      <instantiate name="uml" extent="mof4models" package="UML"/> 
-      <writeDTD file="${build.dir}/UML14.dtd" extent="uml"/>
-
-      <!-- Other functions available
-      <writeXMI file="${storageDir}/${model}/xmi/${xmi.file}.xml" extent="mof4models" xmiVersion="1.2"/>
-      <writeDTD file="${storageDir}/${model}/xmi/${xmi.file}.dtd" extent="mof4models"/>
-      <mapClass dir="${build.javas}" extent="mof4models" /> 
-      <printExtentNames/>
-      -->
-    </mdr>
 
     <javac srcdir="${build.javas}" source="1.4" target="1.4">
       <classpath>
@@ -172,7 +147,40 @@ This is designed to work in two different environments:
   <target name="generate-skipped" if="generate.notRequired">
     <echo message="${build.dir}/${javainterfaces.jar} is up to date"/>
   </target>
-  
+
+  <!-- =================================================================== -->
+  <!-- Generate Java files for JMI interface from UML model in XMI         -->
+  <!-- =================================================================== -->
+  <target name="generate-internal" depends="init,generate-needed,generate-skipped" 
+      unless="generate.notRequired">
+    <!-- create directories -->
+    <mkdir dir="${build.dir}"/>
+    <delete dir="${build.javas}"/>
+    <mkdir dir="${build.javas}"/>
+
+    <!-- NOTE: The MDR task needs an absolute path for storageFile or it will
+               put it in the caller's directory when called from argouml build
+    -->
+    <echo message="Generating JMI interfaces from ${xmi.file}"/>
+    <mdr storageFile="${basedir}/${build.javas}/mymdr">
+      <instantiate name="mof4models" /> 
+      <readXMI file="${xmi.file}.xml" extent="mof4models" /> 
+      <mapJava dir="${build.javas}" extent="mof4models" /> 
+      
+      <!-- not sure this is correct, but try to generate a DTD -->
+      <instantiate name="uml" extent="mof4models" package="UML"/> 
+      <writeDTD file="${build.dir}/UML14.dtd" extent="uml"/>
+	
+      <!-- Other functions available
+      <writeXMI file="${storageDir}/${model}/xmi/${xmi.file}.xml" 
+          extent="mof4models" xmiVersion="1.2"/>
+      <writeDTD file="${storageDir}/${model}/xmi/${xmi.file}.dtd" 
+          extent="mof4models"/>
+      <mapClass dir="${build.javas}" extent="mof4models" /> 
+      <printExtentNames/>
+      -->
+    </mdr>
+  </target>
   
   <!-- =================================================================== -->
   <!-- Run from classes                                                    -->
