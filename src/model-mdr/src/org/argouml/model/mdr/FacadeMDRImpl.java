@@ -53,7 +53,6 @@ import org.omg.uml.behavioralelements.collaborations.AssociationEndRole;
 import org.omg.uml.behavioralelements.collaborations.AssociationRole;
 import org.omg.uml.behavioralelements.collaborations.ClassifierRole;
 import org.omg.uml.behavioralelements.collaborations.Collaboration;
-import org.omg.uml.behavioralelements.collaborations.CollaborationInstanceSet;
 import org.omg.uml.behavioralelements.collaborations.Interaction;
 import org.omg.uml.behavioralelements.collaborations.Message;
 import org.omg.uml.behavioralelements.commonbehavior.Action;
@@ -103,7 +102,6 @@ import org.omg.uml.foundation.core.AssociationClass;
 import org.omg.uml.foundation.core.AssociationEnd;
 import org.omg.uml.foundation.core.Attribute;
 import org.omg.uml.foundation.core.BehavioralFeature;
-import org.omg.uml.foundation.core.Binding;
 import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.Comment;
 import org.omg.uml.foundation.core.Component;
@@ -173,12 +171,12 @@ class FacadeMDRImpl implements Facade {
     private MDRModelImplementation implementation;
 
     // Shorthand notation for convenience
-    static final javax.jmi.model.AggregationKindEnum MOF_COMPOSITE = 
+    static final javax.jmi.model.AggregationKindEnum MOF_COMPOSITE =
         javax.jmi.model.AggregationKindEnum.COMPOSITE;
 
     /**
      * Constructor.
-     * 
+     *
      * @param impl
      *            The model implementation
      */
@@ -719,7 +717,8 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isAObject(java.lang.Object)
      */
     public boolean isAObject(Object handle) {
-        return handle instanceof org.omg.uml.behavioralelements.commonbehavior.Object;
+        return handle
+            instanceof org.omg.uml.behavioralelements.commonbehavior.Object;
     }
 
     /**
@@ -1363,7 +1362,7 @@ class FacadeMDRImpl implements Facade {
                 stereotype = (Stereotype) it.next();
                 if (stereotypeName.equals(stereotype.getName())) {
                     return true;
-            }
+                }
             }
             return false;
         }
@@ -1462,7 +1461,7 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getAttributes(java.lang.Object)
      *
      * The list of Attributes.
-     * 
+     *
      * @param handle
      *            classifier to examine.
      * @return iterator with attributes.
@@ -1477,7 +1476,7 @@ class FacadeMDRImpl implements Facade {
     }
 
     /**
-     * @see org.argouml.model.Facade#getBaseClass(java.lang.Object) 
+     * @see org.argouml.model.Facade#getBaseClass(java.lang.Object)
      * TODO: delete this method and replace with getBaseClasses
      */
     public Object getBaseClass(Object handle) {
@@ -2150,7 +2149,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Get Successors to the given message.
-     * 
+     *
      * @see org.argouml.model.Facade#getMessages3(java.lang.Object)
      */
     public Collection getMessages3(Object handle) {
@@ -2163,7 +2162,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Get the messages that are activated by the given message.
-     * 
+     *
      * @see org.argouml.model.Facade#getMessages4(java.lang.Object)
      */
     public Collection getMessages4(Object handle) {
@@ -2176,7 +2175,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the messages received by the given classifier role.
-     * 
+     *
      * @see org.argouml.model.Facade#getMessages1(java.lang.Object)
      */
     public Collection getMessages1(Object handle) {
@@ -2189,7 +2188,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the messages send by the given classifier role.
-     * 
+     *
      * @see org.argouml.model.Facade#getMessages2(java.lang.Object)
      */
     public Collection getMessages2(Object handle) {
@@ -2202,7 +2201,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Return the model for this object.
-     * 
+     *
      * @see org.argouml.model.Facade#getModel(java.lang.Object)
      */
     public Object getModel(Object handle) {
@@ -2213,7 +2212,7 @@ class FacadeMDRImpl implements Facade {
             return illegalArgumentObject(handle);
         }
         // If we can't find a model, return the outermost
-        // containing model element 
+        // containing model element
         if (getModelElementContainer(handle) == null) {
             return handle;
         } else {
@@ -2413,7 +2412,7 @@ class FacadeMDRImpl implements Facade {
      * for the metatype of the given object and uses that set of names
      * to query the object using the JMI reflective interface.
      */
-    private List getModelElementAssociated(Object handle, 
+    private List getModelElementAssociated(Object handle,
             boolean contentsOnly) {
         List results = new ArrayList();
 
@@ -2448,8 +2447,8 @@ class FacadeMDRImpl implements Facade {
      */
     private void getReferenceOrAttribute(RefFeatured parent, Object element,
             Collection returns, boolean contentsOnly) {
-        
-        if (!(element instanceof javax.jmi.model.Attribute 
+
+        if (!(element instanceof javax.jmi.model.Attribute
                 || element instanceof Reference)) {
             return;
         }
@@ -2484,7 +2483,7 @@ class FacadeMDRImpl implements Facade {
             }
         }
     }
-    
+
     /**
      * @see org.argouml.model.Facade#getContainer(java.lang.Object)
      */
@@ -2501,8 +2500,8 @@ class FacadeMDRImpl implements Facade {
                     container = getContainer(it.next());
                     if (container != null) {
                         return container;
+                    }
                 }
-            }
             }
             if (handle instanceof StateVertex) {
                 return ((StateVertex) handle).getContainer();
@@ -2796,7 +2795,7 @@ class FacadeMDRImpl implements Facade {
                 opposite = it.next();
                 if (opposite != handle) {
                     break;
-            }
+                }
             }
             return opposite;
         }
@@ -2873,7 +2872,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Get the list of Link Ends connected to this link end.
-     * 
+     *
      * @param handle
      *            link end to start from
      * @return Iterator with all connected link ends.
@@ -3172,8 +3171,9 @@ class FacadeMDRImpl implements Facade {
         }
         if (isAComponent(handle)) {
             Collection residents = new ArrayList();
-            for (Iterator it = ((Component) handle).getResidentElement()
-                    .iterator(); it.hasNext();) {
+            for (Iterator it =
+                    ((Component) handle).getResidentElement().iterator();
+                    it.hasNext();) {
                 residents.add(((ElementResidence) it.next()).getResident());
             }
             return residents;
@@ -3288,7 +3288,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the stimuli belonging to some given link.
-     * 
+     *
      * @see org.argouml.model.Facade#getStimuli(java.lang.Object)
      */
     public Collection getStimuli(Object handle) {
@@ -3305,7 +3305,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the Stimuli that are received by the given Instance.
-     * 
+     *
      * @param handle
      *            the Instance
      * @return the collection of stimuli
@@ -3320,7 +3320,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the Stimuli that are sent by the given Instance.
-     * 
+     *
      * @see org.argouml.model.Facade#getStimuli3(java.lang.Object)
      */
     public Collection getStimuli3(Object handle) {
@@ -3865,7 +3865,7 @@ class FacadeMDRImpl implements Facade {
             Iterator i = me.getTaggedValue().iterator();
             while (i.hasNext()) {
                 TaggedValue tv = (TaggedValue) i.next();
-                if (tv.getType() != null 
+                if (tv.getType() != null
                         && name.equals(tv.getType().getName())) {
                     return tv;
                 }
@@ -4116,7 +4116,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.<p>
-     * 
+     *
      * @param arg
      *            is the incorrect argument.
      * @return Object for use in the return statement.
@@ -4129,7 +4129,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.<p>
-     * 
+     *
      * @param arg
      *            is the incorrect argument.
      * @return String for use in the return statement.
@@ -4142,7 +4142,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.
-     * 
+     *
      * @param arg
      *            is the incorrect argument.
      */
@@ -4173,7 +4173,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.<p>
-     * 
+     *
      * @param arg
      *            is the incorrect argument.
      * @return Collection for use in the return statement.
@@ -4186,7 +4186,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.<p>
-     * 
+     *
      * @param arg
      *            is the incorrect argument.
      * @return a boolean for use in the return statement.
@@ -4199,7 +4199,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.<p>
-     * 
+     *
      * @param arg
      *            is the incorrect argument.
      * @return Int for use in the return statement.
@@ -4218,7 +4218,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Notice that the Enumeration are ordered.
-     * 
+     *
      * @see org.argouml.model.Facade#getEnumerationLiterals(java.lang.Object)
      */
     public List getEnumerationLiterals(Object handle) {
