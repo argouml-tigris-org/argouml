@@ -30,13 +30,13 @@ fi
 #
 # build.sh always calls the version of ant distributed with ArgoUML
 #
-ANT_HOME=`pwd`/../tools/ant-1.6.2
+ANT_HOME=`pwd`/../argouml-core-tools/ant-1.6.2
 
 echo ANT_HOME is: $ANT_HOME
 echo
 echo Starting Ant...
 echo
 
-$ANT_HOME/bin/ant $*
+$ANT_HOME/bin/ant -Doverride.build.properties=eclipse-ant-build.properties $*
 
 #exit
