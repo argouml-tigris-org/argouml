@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,13 +42,30 @@ import org.netbeans.api.xmi.XMIInputConfig;
 import org.netbeans.lib.jmi.xmi.XmiContext;
 
 /**
- * Custom 'resolver' to use with XMI reader.
- *
- * All it really does is record the xmi.id's as they come in and then delegate
- * to the default MDR implementation for the actual resolution.
- *
+ * Custom resolver to use with XMI reader.
+ * <p>
+ * 
+ * This provides two functions:
+ * <nl>
+ * <li>Records the mapping of <code>xmi.id</code>'s to MDR's object as they
+ * are resolved so that the map can be used to lookup objects by xmi.id later
+ * (used by diagram subsystem to associated GEF/PGML objects with model
+ * elements).
+ * <li>Resolves a System ID to a fully specified URL which can be used by MDR
+ * to open and read the referenced content. The standard MDR resolver is
+ * extended to support that "jar:" protocol for URLs, allowing it to handle
+ * multi-file Zip/jar archives contained a set of models. The method
+ * <code>toUrl</code> and supporting methods and fields was copied from the
+ * AndroMDA 3.1 implementation
+ * (org.andromda.repositories.mdr.MDRXmiReferenceResolverContext) by Ludo
+ * (rastaman).
+ * </nl>
+ * <p>
+ * NOTE: This is not a standalone implementation of the reference resolver since
+ * it depends on extending the specific MDR implementation.
+ * 
  * @author Tom Morris
- *
+ * 
  */
 public class XmiReferenceResolverImpl extends XmiContext {
 
@@ -63,70 +80,33 @@ public class XmiReferenceResolverImpl extends XmiContext {
     /**
      * The array of paths in which the models references in other models will be
      * searched.
-     * Come from AndroMDA 3.1
-     * @see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     * Copied from AndroMDA 3.1 by Ludo (rastaman).
+     * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
      */
     private static List modulesPath = new Vector();
 
     /**
-     * Come from AndroMDA 3.1.
-     *
-     * @see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     * Module to URL map to cache things we've already found.
+     * Copied from AndroMDA 3.1 by Ludo (rastaman).
+     * 
+     * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
      */
     private static Map urlMap = new HashMap();
-
+    
     /**
      * Constructor.
-     *
-     * @see org.netbeans.api.xmi.XMIReferenceResolver
+     * @see org.netbeans.lib.jmi.xmi.XmiContext#XmiContext(javax.jmi.reflect.RefPackage[], org.netbeans.api.xmi.XMIInputConfig)
+     * (see also {link org.netbeans.api.xmi.XMIReferenceResolver})
      */
-    public XmiReferenceResolverImpl(RefPackage[] extents,
+    public XmiReferenceResolverImpl(RefPackage[] extents, 
             XMIInputConfig config) {
         super(extents, config);
-        // TODO: Replace by something elegant (i.e in the Model, or anything
-        // accessible by the components of ArgoUML base and this class).
-        String path =
-            System.getProperty("org.argouml.model.modules_search_path");
-        if (path != null) {
-            String[] paths = path.split(",");
-            for (int i = 0; i < paths.length; i++) {
-                addModuleSearchPath(paths[i]);
-            }
-        }
-    }
-
-    /**
-     * Return the module search paths as a String array.
-     *
-     * @return String[] An array with all the module search paths
-     */
-    public static String[] getModuleSearchPath() {
-        return (String[]) modulesPath.toArray(new String[modulesPath.size()]);
-    }
-
-    /**
-     * Add a path to module search path. Can be used by modules
-     * to register new paths to metamodels facades / profiles.
-     *
-     * @param path The path to add to the module search paths
-     */
-    public static void addModuleSearchPath(String path) {
-        if (!modulesPath.contains(path)) {
-            modulesPath.add(path);
-        }
-    }
-
-    /**
-     * Remove a path from the list of modules search paths.
-     * @param path The path to remove
-     */
-    public static void removeModuleSearchPath(String path) {
-        modulesPath.remove(path);
+        registerSearchPath();
     }
 
     /**
      * Save registered ID in our object map.
-     *
+     * 
      * @param systemId
      *            URL of XMI field
      * @param xmiId
@@ -136,24 +116,79 @@ public class XmiReferenceResolverImpl extends XmiContext {
      */
     public void register(String systemId, String xmiId, RefObject object) {
         super.register(systemId, xmiId, object);
+        // TODO: This needs to include the SystemID as well - tfm
         if (!idToObjects.containsKey(xmiId)) {
             idToObjects.put(xmiId, object);
         }
     }
 
     /**
-     * Return complete map for all registered objects.
-     *
+     * Return complete map of all registered objects.
+     * 
      * @return map of xmi.id to RefObject correspondances
      */
     public Map getIdToObjectMap() {
         return idToObjects;
     }
 
+    /*
+     * Set up module search path to be used by AndroMDA URL resolver.
+     * The path is retrieved from shared state (a system property) which
+     * is set up externally (currently by 
+     * @link org.argouml.uml.ProfileJava#loadProfile() which is probably
+     * the wrong place for it)
+     */
+    private void registerSearchPath() {
+        //TODO: Replace by something elegant (i.e in the Model, or anything 
+        //accessible by the components of ArgoUML base and this class).
+        String path = 
+            System.getProperty("org.argouml.model.modules_search_path");
+        if (path != null) {
+            String[] paths = path.split(",");
+            for (int i = 0; i < paths.length; i++) {
+                addModuleSearchPath(paths[i]);
+            }
+        }
+    }
+    
+    /////////////////////////////////////////////////////
+    ////////// Begin AndroMDA Code //////////////////////
+    /////////////////////////////////////////////////////
+
     /**
-     * Come from AndroMDA 3.1.
-     *
-     * @see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     * Return the module search paths as a String array.
+     * @return String[] An array with all the module search paths
+     */
+    public static String[] getModuleSearchPath() {
+        return (String[]) modulesPath.toArray(new String[modulesPath.size()]);
+    }
+    
+    /**
+     * Add a path to module search path. Can be used by modules to register new
+     * paths to metamodels facades / profiles.
+     * 
+     * @param path
+     *            The path to add to the module search paths
+     */
+    public static void addModuleSearchPath(String path) {
+        if (!modulesPath.contains(path)) {
+            modulesPath.add(path);
+        }
+    }
+    
+    /**
+     * Remove a path from the list of modules search paths.
+     * 
+     * @param path The path to remove
+     */
+    public static void removeModuleSearchPath(String path) {
+        modulesPath.remove(path);
+    }
+
+    /**
+     * Convert a System ID from an HREF (typically filespec-like) to a URL.
+     * Copied from AndroMDA 3.1 by Ludo (rastaman)
+     * see @link org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
      * @see org.netbeans.lib.jmi.xmi.XmiContext#toURL(java.lang.String)
      */
     public URL toURL(String systemId) {
@@ -176,7 +211,7 @@ public class XmiReferenceResolverImpl extends XmiContext {
             if (modelUrl == null) {
                 // Try to find suffix in module list.
                 String modelUrlAsString = findModuleURL(suffix);
-                if (!(modelUrlAsString == null
+                if (!(modelUrlAsString == null 
                         || "".equals(modelUrlAsString))) {
                     modelUrl = getValidURL(modelUrlAsString);
                 }
@@ -201,18 +236,20 @@ public class XmiReferenceResolverImpl extends XmiContext {
     }
 
     /**
-     * Finds a module in the module search path.
-     * Come from AndroMDA 3.1
-     *
-     * @see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
-     * @param moduleName the name of the module without any path
-     * @return the complete URL string of the module if found
-     *         (null if not found)
+     * Finds a module in the module search path. 
+     * <p>
+     * Copied from AndroMDA 3.1 by Ludo (rastaman).
+     * 
+     * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     * @param moduleName
+     *            the name of the module without any path
+     * @return the complete URL string of the module if found (null if not
+     *         found)
      */
     private String findModuleURL(String moduleName) {
-
+        
         String[] moduleSearchPath = getModuleSearchPath();
-
+        
         if (moduleSearchPath == null || moduleSearchPath.length == 0) {
             return null;
         }
@@ -223,10 +260,9 @@ public class XmiReferenceResolverImpl extends XmiContext {
         }
         for (int i = 0; i < moduleSearchPath.length; i++) {
             File candidate = new File(moduleSearchPath[i], moduleName);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("candidate '" + candidate.toString()
-                        + "' exists=" + candidate.exists());
-            }
+            if (LOG.isDebugEnabled())
+                LOG.debug("candidate '" + candidate.toString() + "' exists="
+                        + candidate.exists());
             if (candidate.exists()) {
                 String urlString;
                 try {
@@ -235,11 +271,10 @@ public class XmiReferenceResolverImpl extends XmiContext {
                     return null;
                 }
 
-                if (moduleName.endsWith(".zip")
+                if (moduleName.endsWith(".zip") 
                         || moduleName.endsWith(".jar")) {
                     // typical case for MagicDraw
-                    urlString =
-                        "jar:" + urlString + "!/"
+                    urlString = "jar:" + urlString + "!/"
                             + moduleName.substring(0, moduleName.length() - 4);
                 }
                 return urlString;
@@ -249,11 +284,11 @@ public class XmiReferenceResolverImpl extends XmiContext {
     }
 
     /**
-     * Gets the suffix of the <code>systemId</code>.
-     * Come from AndroMDA 3.1.
-     *
-     * @see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
-     * @param systemId the system identifier.
+     * Gets the suffix of the <code>systemId</code>.<p>
+     * Copied from AndroMDA 3.1 by Ludo (rastaman).
+     * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     * @param systemId
+     *            the system identifier.
      * @return the suffix as a String.
      */
     private String getSuffix(String systemId) {
@@ -266,47 +301,46 @@ public class XmiReferenceResolverImpl extends XmiContext {
     }
 
     /**
-     * The suffixes to use when searching for referenced models on
-     * the classpath.
-     * Come from AndroMDA 3.1.
-     *
-     * @see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     * The suffixes to use when searching for referenced models on the
+     * classpath.
+     * <p>
+     * Copied from AndroMDA 3.1 by Ludo (rastaman).
+     * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
      */
-    protected static final String[] CLASSPATH_MODEL_SUFFIXES =
-        new String[]{"xml", "xmi", };
+    protected static final String[] CLASSPATH_MODEL_SUFFIXES = 
+        new String[] {"xml", "xmi", };
 
     /**
      * Searches for the model URL on the classpath.
-     * Come from AndroMDA 3.1
-     *
-     * @see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
-     * @param systemId the system identifier.
+     * <p>
+     * Copied from AndroMDA 3.1 by Ludo (rastaman).
+     * 
+     * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     * 
+     * @param systemId
+     *            the system identifier.
      * @return the suffix as a String.
      */
     private URL findModelUrlOnClasspath(String systemId) {
-        String modelName =
-            systemId.substring(systemId.lastIndexOf("/") + 1,
-                    systemId.length());
+        String modelName = systemId.substring(systemId.lastIndexOf("/") + 1,
+                systemId.length());
         String dot = ".";
         // remove the first prefix because it may be an archive
         // (like magicdraw)
         modelName = modelName.substring(0, modelName.lastIndexOf(dot));
 
-        URL modelUrl =
-            Thread.currentThread().getContextClassLoader()
+        URL modelUrl = Thread.currentThread().getContextClassLoader()
                 .getResource(modelName);
         if (modelUrl == null) {
             if (CLASSPATH_MODEL_SUFFIXES != null
                     && CLASSPATH_MODEL_SUFFIXES.length > 0) {
                 int suffixNum = CLASSPATH_MODEL_SUFFIXES.length;
                 for (int ctr = 0; ctr < suffixNum; ctr++) {
-                    if (LOG.isDebugEnabled()) {
+                    if (LOG.isDebugEnabled())
                         LOG.debug("searching for model reference --> '"
                                 + modelUrl + "'");
-                    }
                     String suffix = CLASSPATH_MODEL_SUFFIXES[ctr];
-                    modelUrl =
-                        Thread.currentThread().getContextClassLoader()
+                    modelUrl = Thread.currentThread().getContextClassLoader()
                             .getResource(modelName + dot + suffix);
                     if (modelUrl != null) {
                         break;
@@ -318,13 +352,15 @@ public class XmiReferenceResolverImpl extends XmiContext {
     }
 
     /**
-     * Returns a URL if the systemId is valid. Returns null otherwise.
-     * Catches exceptions as necessary.
-     * Come from AndroMDA 3.1.
-     *
-     * @see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
-     * @param systemId the system id
-     * @return the URL (if valid)
+     * Returns a URL if the systemId is valid. Returns null otherwise. Catches
+     * exceptions as necessary.
+     * <p>
+     * Copied from AndroMDA 3.1 by Ludo (rastaman). See
+     * org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     * 
+     * @param systemId
+     *            the system id
+     * @return the URL (if valid) or null
      */
     private URL getValidURL(String systemId) {
         InputStream stream = null;
@@ -339,5 +375,10 @@ public class XmiReferenceResolverImpl extends XmiContext {
             stream = null;
         }
         return url;
-    }
+    }    
+
+    /////////////////////////////////////////////////////
+    ////////// End AndroMDA Code //////////////////////
+    /////////////////////////////////////////////////////
+
 }
