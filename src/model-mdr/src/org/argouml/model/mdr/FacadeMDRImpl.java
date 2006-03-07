@@ -173,12 +173,12 @@ class FacadeMDRImpl implements Facade {
     private MDRModelImplementation implementation;
 
     // Shorthand notation for convenience
-    static final javax.jmi.model.AggregationKindEnum MOF_COMPOSITE =
+    static final javax.jmi.model.AggregationKindEnum MOF_COMPOSITE = 
         javax.jmi.model.AggregationKindEnum.COMPOSITE;
 
     /**
      * Constructor.
-     *
+     * 
      * @param impl
      *            The model implementation
      */
@@ -1363,7 +1363,7 @@ class FacadeMDRImpl implements Facade {
                 stereotype = (Stereotype) it.next();
                 if (stereotypeName.equals(stereotype.getName())) {
                     return true;
-                }
+            }
             }
             return false;
         }
@@ -1462,7 +1462,7 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getAttributes(java.lang.Object)
      *
      * The list of Attributes.
-     *
+     * 
      * @param handle
      *            classifier to examine.
      * @return iterator with attributes.
@@ -1477,7 +1477,7 @@ class FacadeMDRImpl implements Facade {
     }
 
     /**
-     * @see org.argouml.model.Facade#getBaseClass(java.lang.Object)
+     * @see org.argouml.model.Facade#getBaseClass(java.lang.Object) 
      * TODO: delete this method and replace with getBaseClasses
      */
     public Object getBaseClass(Object handle) {
@@ -2150,7 +2150,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Get Successors to the given message.
-     *
+     * 
      * @see org.argouml.model.Facade#getMessages3(java.lang.Object)
      */
     public Collection getMessages3(Object handle) {
@@ -2163,7 +2163,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Get the messages that are activated by the given message.
-     *
+     * 
      * @see org.argouml.model.Facade#getMessages4(java.lang.Object)
      */
     public Collection getMessages4(Object handle) {
@@ -2176,7 +2176,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the messages received by the given classifier role.
-     *
+     * 
      * @see org.argouml.model.Facade#getMessages1(java.lang.Object)
      */
     public Collection getMessages1(Object handle) {
@@ -2189,7 +2189,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the messages send by the given classifier role.
-     *
+     * 
      * @see org.argouml.model.Facade#getMessages2(java.lang.Object)
      */
     public Collection getMessages2(Object handle) {
@@ -2202,7 +2202,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Return the model for this object.
-     *
+     * 
      * @see org.argouml.model.Facade#getModel(java.lang.Object)
      */
     public Object getModel(Object handle) {
@@ -2213,7 +2213,7 @@ class FacadeMDRImpl implements Facade {
             return illegalArgumentObject(handle);
         }
         // If we can't find a model, return the outermost
-        // containing model element
+        // containing model element 
         if (getModelElementContainer(handle) == null) {
             return handle;
         } else {
@@ -2390,148 +2390,6 @@ class FacadeMDRImpl implements Facade {
      */
     public List getModelElementContents(Object handle) {
         List results = getModelElementAssociated(handle, true);
-
-        /*
-         * Old algorithm - preserved temporarily for cross checking - tfm -
-         * 20060214
-         * TODO: remove
-         */
-
-        List contents = new ArrayList();
-        if (handle instanceof Namespace) {
-            contents.addAll(((Namespace) handle).getOwnedElement());
-        }
-        if (handle instanceof Classifier) {
-            contents.addAll(((Classifier) handle).getFeature());
-        }
-        if (handle instanceof BehavioralFeature) {
-            contents.addAll(((BehavioralFeature) handle).getParameter());
-        }
-        if (handle instanceof UmlAssociation) {
-            contents.addAll(((UmlAssociation) handle).getConnection());
-        }
-        if (handle instanceof AssociationEnd) {
-            contents.addAll(((AssociationEnd) handle).getQualifier());
-        }
-        if (handle instanceof Component) {
-            contents.addAll(((Component) handle).getResidentElement());
-        }
-        if (handle instanceof Enumeration) {
-            contents.addAll(((Enumeration) handle).getLiteral());
-        }
-        if (handle instanceof TemplateParameter) {
-            contents.add(((TemplateParameter) handle).getParameter());
-        }
-        if (handle instanceof ModelElement) {
-            contents.addAll(((ModelElement) handle).getTemplateParameter());
-            contents.addAll(((ModelElement) handle).getTaggedValue());
-        }
-        if (handle instanceof Binding) {
-            contents.addAll(((Binding) handle).getArgument());
-        }
-        if (handle instanceof Stereotype) {
-            contents.addAll(((Stereotype) handle).getDefinedTag());
-            contents.addAll(((Stereotype) handle).getStereotypeConstraint());
-        }
-        if (handle instanceof Multiplicity) {
-            contents.addAll(((Multiplicity) handle).getRange());
-        }
-        if (handle instanceof ActionSequence) {
-            contents.addAll(((ActionSequence) handle).getAction());
-        }
-        if (handle instanceof Action) {
-            contents.addAll(((Action) handle).getActualArgument());
-        }
-        if (handle instanceof Instance) {
-            contents.addAll(((Instance) handle).getOwnedInstance());
-            contents.addAll(((Instance) handle).getSlot());
-            contents.addAll(((Instance) handle).getOwnedLink());
-        }
-        if (handle instanceof Link) {
-            contents.addAll(((Link) handle).getConnection());
-        }
-        if (handle instanceof LinkEnd) {
-            contents.addAll(((LinkEnd) handle).getQualifiedValue());
-        }
-        if (handle instanceof Collaboration) {
-            contents.addAll(((Collaboration) handle).getInteraction());
-        }
-        if (handle instanceof Interaction) {
-            contents.addAll(((Interaction) handle).getMessage());
-        }
-        if (handle instanceof CollaborationInstanceSet) {
-            contents.addAll(((CollaborationInstanceSet) handle)
-                    .getInteractionInstanceSet());
-        }
-        if (handle instanceof UseCase) {
-            contents.addAll(((UseCase) handle).getExtensionPoint());
-        }
-        if (handle instanceof StateMachine) {
-            contents.add(((StateMachine) handle).getTop());
-            contents.addAll(((StateMachine) handle).getTransitions());
-        }
-        if (handle instanceof Transition) {
-            contents.add(((Transition) handle).getGuard());
-            contents.add(((Transition) handle).getEffect());
-        }
-        if (handle instanceof State) {
-            contents.addAll(((State) handle).getInternalTransition());
-            contents.add(((State) handle).getEntry());
-            contents.add(((State) handle).getExit());
-            contents.add(((State) handle).getDoActivity());
-        }
-        if (handle instanceof CompositeState) {
-            contents.addAll(((CompositeState) handle).getSubvertex());
-        }
-        if (handle instanceof Event) {
-            contents.addAll(((Event) handle).getParameter());
-        }
-        if (handle instanceof ActivityGraph) {
-            contents.addAll(((ActivityGraph) handle).getPartition());
-        }
-        if (handle instanceof UmlPackage) {
-            contents.addAll(((UmlPackage) handle).getElementImport());
-        }
-
-        // If debug level logging is enabled, compare results
-        // from old and new algorithms and log any differences
-        if (LOG.isDebugEnabled()) {
-            if (!results.containsAll(contents)) {
-                Collection diffs = new ArrayList(contents);
-                diffs.removeAll(results);
-                // Remove all nulls - why are they there?
-                while (diffs.remove(null)) {
-                    /* Remove nulls. */
-                }
-                if (!diffs.isEmpty()) {
-                    LOG.debug("*Old getModelElementContents returned "
-                            + "more results "
-                            + handle);
-                    LOG.debug("    differences :  " + diffs);
-                }
-            }
-            if (!contents.containsAll(results)) {
-                Collection diffs = new ArrayList(results);
-                diffs.removeAll(contents);
-                List primitives = new ArrayList();
-                for (Iterator it4 = diffs.iterator(); it4.hasNext();) {
-                    Object o4 = it4.next();
-                    if (o4 instanceof Expression
-                            || o4 instanceof Multiplicity) {
-                        primitives.add(o4);
-                    }
-                }
-                diffs.removeAll(primitives);
-                if (!diffs.isEmpty()) {
-                    LOG.debug("New getModelElementContents returned "
-                            + "more results "
-                            + handle);
-                    LOG.debug("    differences :  " + diffs);
-                }
-            }
-        }
-
-        // return new results from new algorithm
         return results;
     }
 
@@ -2555,7 +2413,7 @@ class FacadeMDRImpl implements Facade {
      * for the metatype of the given object and uses that set of names
      * to query the object using the JMI reflective interface.
      */
-    private List getModelElementAssociated(Object handle,
+    private List getModelElementAssociated(Object handle, 
             boolean contentsOnly) {
         List results = new ArrayList();
 
@@ -2590,8 +2448,8 @@ class FacadeMDRImpl implements Facade {
      */
     private void getReferenceOrAttribute(RefFeatured parent, Object element,
             Collection returns, boolean contentsOnly) {
-
-        if (!(element instanceof javax.jmi.model.Attribute
+        
+        if (!(element instanceof javax.jmi.model.Attribute 
                 || element instanceof Reference)) {
             return;
         }
@@ -2626,7 +2484,7 @@ class FacadeMDRImpl implements Facade {
             }
         }
     }
-
+    
     /**
      * @see org.argouml.model.Facade#getContainer(java.lang.Object)
      */
@@ -2643,8 +2501,8 @@ class FacadeMDRImpl implements Facade {
                     container = getContainer(it.next());
                     if (container != null) {
                         return container;
-                    }
                 }
+            }
             }
             if (handle instanceof StateVertex) {
                 return ((StateVertex) handle).getContainer();
@@ -2938,7 +2796,7 @@ class FacadeMDRImpl implements Facade {
                 opposite = it.next();
                 if (opposite != handle) {
                     break;
-                }
+            }
             }
             return opposite;
         }
@@ -3015,7 +2873,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Get the list of Link Ends connected to this link end.
-     *
+     * 
      * @param handle
      *            link end to start from
      * @return Iterator with all connected link ends.
@@ -3430,7 +3288,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the stimuli belonging to some given link.
-     *
+     * 
      * @see org.argouml.model.Facade#getStimuli(java.lang.Object)
      */
     public Collection getStimuli(Object handle) {
@@ -3447,7 +3305,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the Stimuli that are received by the given Instance.
-     *
+     * 
      * @param handle
      *            the Instance
      * @return the collection of stimuli
@@ -3462,7 +3320,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Returns the Stimuli that are sent by the given Instance.
-     *
+     * 
      * @see org.argouml.model.Facade#getStimuli3(java.lang.Object)
      */
     public Collection getStimuli3(Object handle) {
@@ -4007,7 +3865,7 @@ class FacadeMDRImpl implements Facade {
             Iterator i = me.getTaggedValue().iterator();
             while (i.hasNext()) {
                 TaggedValue tv = (TaggedValue) i.next();
-                if (tv.getType() != null
+                if (tv.getType() != null 
                         && name.equals(tv.getType().getName())) {
                     return tv;
                 }
@@ -4258,7 +4116,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.<p>
-     *
+     * 
      * @param arg
      *            is the incorrect argument.
      * @return Object for use in the return statement.
@@ -4271,7 +4129,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.<p>
-     *
+     * 
      * @param arg
      *            is the incorrect argument.
      * @return String for use in the return statement.
@@ -4284,7 +4142,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.
-     *
+     * 
      * @param arg
      *            is the incorrect argument.
      */
@@ -4315,7 +4173,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.<p>
-     *
+     * 
      * @param arg
      *            is the incorrect argument.
      * @return Collection for use in the return statement.
@@ -4328,7 +4186,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.<p>
-     *
+     * 
      * @param arg
      *            is the incorrect argument.
      * @return a boolean for use in the return statement.
@@ -4341,7 +4199,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.<p>
-     *
+     * 
      * @param arg
      *            is the incorrect argument.
      * @return Int for use in the return statement.
@@ -4360,7 +4218,7 @@ class FacadeMDRImpl implements Facade {
 
     /**
      * Notice that the Enumeration are ordered.
-     *
+     * 
      * @see org.argouml.model.Facade#getEnumerationLiterals(java.lang.Object)
      */
     public List getEnumerationLiterals(Object handle) {
