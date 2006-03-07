@@ -228,6 +228,7 @@ public abstract class FigState extends FigStateVertex {
         if (notationProviderBody != null) {
             internal.setText(notationProviderBody.toString());
         }
+        super.renderingChanged();
         calcBounds();
         setBounds(getBounds());
     }
