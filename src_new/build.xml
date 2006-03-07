@@ -119,7 +119,7 @@ Property files to be searched:
   <!-- Initialization target                                               -->
   <!-- =================================================================== -->
 
- <target name="init">
+  <target name="init">
 
     <tstamp>
         <format pattern="yyyy" property="year"/>
@@ -130,11 +130,16 @@ Property files to be searched:
     <property name="local.build.properties" value="build.properties"/>
     <property name="user.build.properties" 
               value="${user.home}/argouml.build.properties"/>
-
     <property file="${local.build.properties}"/>
     <property file="${user.build.properties}"/>
+       
+    <!-- we really need an absolute path for argo.root.dir -->
+    <!-- if it is set in a property file before now, it must be absolute -->
+    <property name="argo.root.dir" value="${basedir}/.." />
+    <property file="${override.build.properties}"/>
     <property file="default.properties"/>
-  
+    
+
     <path id="java.tools.classpath">
       <pathelement path="${JAVA_HOME}/lib/tools.jar"/>
     </path>
@@ -216,6 +221,15 @@ Property files to be searched:
     <!-- If it is not set, it defaults to argo.bin.dir, and               -->
     <!-- "build install"  will not do anything.                           -->
     <property name="developer.bin.dir" value="${argo.bin.dir}"/>
+    
+    <!-- Set of properties with fixed paths that we pass to subtasks -->
+    <propertyset id="absolute-properties" dynamic="false">
+      <propertyref name="argo.root.dir" />
+      <propertyref name="argo.lib.dir" />
+      <propertyref name="argo.tools.dir" />
+      <propertyref name="argo.model.dir" />
+      <propertyref name="argo.mdr.dir" />
+    </propertyset>
 
   </target>
 
@@ -260,8 +274,8 @@ Property files to be searched:
     <echo message="Preparing the build directories"/>
     <mkdir dir="${argo.build.dir}"/>
     <mkdir dir="${argo.build.dir}/ext"/>
-    <mkdir dir="${argo.build.dir}"/>
-
+    <mkdir dir="${argo.build.classes}"/>
+ 
     <copy todir="${argo.build.classes}/org/argouml/Images">
       <fileset dir="${argo.src.dir}/org/argouml/Images" excludes="CVS/**" includes="**/**"/>
     </copy>
@@ -418,21 +432,20 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
+  <target name="build-model" depends="prepare">
+    <echo message="Building Model API"/>
+    <ant dir="${argo.model.dir}" inheritAll="false" target="install">
+      <propertyset dynamic="false"> 
+        <propertyset refid="absolute-properties"/>
+      </propertyset> 
+    </ant>
+  </target>
+  
   <target name="compile"
-          depends="prepare,prerequisites,update-version,generateparser"
-          description="Compile the sources.">
+      depends="prepare,prerequisites,update-version,generateparser,build-model"
+      description="Compile the sources.">
 
     <echo message="Compiling the sources"/>
-
-    <!-- create directories -->
-    <mkdir dir="${argo.build.classes}"/>
-  	
-    <!-- compile Model subsystem -->
-    <ant dir="../src/model" inheritAll="false" target="install"/>  	
-
-    <!-- remove obsolete classes before compiling -->
-    <delete file="${argo.build.classes}/org/argouml/model/uml/ModelListener.class"/>
-    <delete file="${argo.build.classes}/org/argouml/model/uml/AbstractModelFactory.class"/>
 
     <javac debug="${debug}" 
     	   deprecation="${deprecation}"
@@ -488,7 +501,7 @@ Property files to be searched:
 
 
   <!-- =================================================================== -->
-  <!-- Prepares the docs                                                   -->
+  <!-- Prepares the Javadoc                                                -->
   <!-- =================================================================== -->
   <target name="prepare-docs" depends="init, javadocs, javadocs-api"
           description="Build javadocs.">
@@ -605,8 +618,16 @@ Property files to be searched:
   <target name="clean" depends="init"
           description="Clean out all built files.">
 
-    <ant dir="../src/model" inheritAll="false" target="clean"/>
-    <ant dir="${argo.mdr.dir}" inheritAll="false" target="clean"/>
+    <ant dir="${argo.model.dir}" inheritAll="false" target="clean">
+      <propertyset dynamic="false"> 
+        <propertyset refid="absolute-properties"/>
+      </propertyset> 
+    </ant>
+    <ant dir="${argo.mdr.dir}" inheritAll="false" target="clean">
+      <propertyset dynamic="false"> 
+        <propertyset refid="absolute-properties"/>
+      </propertyset> 
+    </ant>
     <delete dir="${argo.build.dir}/tests"/>
     <delete dir="${argo.build.dir}/src_new"/>
     <delete dir="${argo.build.dir}/classes"/>
@@ -682,45 +703,6 @@ Property files to be searched:
   <!-- Section with tests.                                                 -->
   <!-- ################################################################### -->
 
-  <!-- =================================================================== -->
-  <!-- Initialize for the junit tests.                                     -->
-  <!-- =================================================================== -->
-  <target depends="init" name="junit-fetch-init">
-    <!-- UML 1.3 metamodel 
-    <property name="metamodel.doc" value="01-12-02.xml"/>
-    -->
-    <!-- UML 1.4 metamodel -->
-    <property name="metamodel.doc" value="01-02-15.xml"/>
-    <property name="metamodel.url" 
-      value="http://www.omg.org/cgi-bin/apps/doc?ad/${metamodel.doc}" />
-    <property name="metamodel.file" value="tests/testmodels/${metamodel.doc}"/>
-    <available file="${metamodel.file}" property="metamodel.file.available"/>  
-  </target>
-
-    <!-- =================================================================== -->
-    <!-- Get the UML metamodel if necessary                                  -->
-    <!-- TODO: When argouml-mdr is merged, just use our copy of metamodel    -->
-    <!-- =================================================================== -->
-    <target name="junit-get-model-internal"
-            depends="junit-fetch-init"
-            unless="metamodel.file.available">
-
-      <get dest="${metamodel.file}"
-           ignoreerrors="true"
-           src="${metamodel.url}"
-           usetimestamp="true"
-           verbose="false"/>
-
-       <!-- Check availability again - if the get worked, it will be there. -->
-       <available file="${metamodel.file}" property="metamodel.file.available"/>
-    </target>
-
-  <!-- =================================================================== -->
-  <!-- Get the UML model if necessary                                      -->
-  <!-- =================================================================== -->
-  <target name="junit-get-model"
-          depends="junit-get-model-internal"
-          description="Gets the UML model from OMG site for testing."/>
 
   <!-- =================================================================== -->
   <!-- Compiles the tests                                                  -->
@@ -800,27 +782,23 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Build MDR library - internal target which calls argouml-mdr build.  -->
   <!-- =================================================================== -->
-  <target name="build-mdr" depends="init">
+  <target name="build-mdr" depends="init,build-model">
     <!-- We build unconditionally because only the MDR build itself knows if
          everything is up to date -->
     <echo message="=== Calling MDR build ==="/>
     <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
-    <!-- HUGE HACK: mdrant gets confused about where to put its temp files
-                   and tries to write relative to the home of the *original*
-                   ant task.  We create a directory where it expects and then
-                   delete it immediately afterward.
-     -->
-    <mkdir dir="build/java"/>
-    <ant dir="${argo.mdr.dir}" target="install" inheritAll="false" />
-    <!-- delete temp files from mdrant task in argouml-mdr build -->
-    <delete dir="build/java"/>
+    <ant dir="${argo.mdr.dir}" target="install" inheritAll="false" >
+      <propertyset dynamic="false"> 
+        <propertyset refid="absolute-properties"/>
+      </propertyset> 
+    </ant>
   </target>
 
   <!-- =================================================================== -->
   <!-- Run the junit tests.                                                -->
   <!-- =================================================================== -->
   <target name="tests"
-          depends="compile,junit-fetch-init,junit-setup,junit-report-clean,
+          depends="compile,junit-setup,junit-report-clean,
                    ant.optional.init,build-mdr"
           description="Run all tests that don't require any GUI components in headleass mode.">
     <!-- ant 1.4 uses printsummary="true"                          -->
@@ -836,13 +814,11 @@ Property files to be searched:
     <junit errorproperty="junit.failure" failureproperty="junit.failure" 
            fork="yes" haltonfailure="false"
            maxmemory="48M" printsummary="true">
-        <!-- TODO: this property name should be made generic -->
-	<sysproperty key="test.model.uml" value="${metamodel.file}"/>
+        <sysproperty key="test.model.uml" 
+            value="${argo.model.dir}/src/org/argouml/model/mdr/mof/01-02-15.xml"/>
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="java.awt.headless" value="true"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
-	<sysproperty key="argouml.model.implementation" 
-                     value="org.argouml.model.mdr.MDRModelImplementation"/>
         <classpath>
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
@@ -865,7 +841,7 @@ Property files to be searched:
   <!-- Run the junit tests, the ones that include GUI stuff.               -->
   <!-- =================================================================== -->
   <target name="guitests"
-          depends="compile,junit-fetch-init,junit-setup,junit-report-clean,
+          depends="compile,junit-setup,junit-report-clean,
                    ant.optional.init,build-mdr"
           description="Run all tests that require the GUI components.">
     <!-- ant 1.4 uses printsummary="true"                          -->

@@ -1,52 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
-// Rights Reserved. Permission to use, copy, modify, and distribute this
-// software and its documentation without fee, and without a written
-// agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
-// documentation are copyrighted by The Regents of the University of
-// California. The software program and documentation are supplied "AS
-// IS", without any accompanying services from The Regents. The Regents
-// does not warrant that the operation of the program will be
-// uninterrupted or error-free. The end-user understands that the program
-// was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
-// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-This is the build file for building the MDR version of the Model subsystem.
+Build file for the MDR implementation of the Model subsystem.
 
-For this file to work you need to have argouml either checked out alongside
-this directory and built using the package target or downloaded a release
-and unpacked in a directory argouml/build alongside this one. Like this:
+This is designed to work in two different environments:
+  - in a subdirectory of argouml, as stored in CVS
+    (ie argouml/src/model-mdr)
+  - in a peer directory of argouml, as checked out for Eclipse
+    (ie argouml-core-model-mdr)
+    
+-->
 
-argouml-mdr/build.xml <- This file.
-argouml/build/argouml-model.jar
-argouml/build/log4j.jar
-argouml/build/xml-apis.jar
-argouml/build/xercesImpl.jar
-etc.
-  -->
-
-<project basedir="." default="compile" name="ArgoUML MDR Model subsystem">
+<project default="compile" name="ArgoUML MDR Model subsystem">
   <!-- =================================================================== -->
   <!-- Initialization target                                               -->
   <!-- =================================================================== -->
   <target name="init">
-    <!-- TODO: This should inherit more from the argouml project (compile
-         settings, JUnit version, etc), but since they are supposed to get
-         merged we won't clean up now - tfm
-      -->
     <tstamp/>
+
+    <!-- argo.root.dir should be passed in to make sure it is correct -->
+    <property name="argo.root.dir" value="../.."/>
+    <property name="argo.build.dir" value="${argo.root.dir}/build"/>
+
     <property name="build.dir" value="build"/>
     <property name="build.classes" value="${build.dir}/classes"/>
     <property name="build.javas" value="${build.dir}/java"/>
@@ -59,9 +34,6 @@ etc.
     <property name="debug" value="yes"/>
     <property name="deprecation" value="yes"/>
     <property name="optimize" value="yes"/>
-
-    <property name="argo.root.dir" value="../.."/>
-    <property name="argo.build.dir" value="${argo.root.dir}/build"/>
 
     <property name="result.jar" value="argouml-mdr.jar"/>
     <property name="javainterfaces.jar" value="java-interfaces.jar"/>
@@ -99,38 +71,36 @@ etc.
       <path refid="mdr.compile.classpath"/>
     </path>
 
-    <property name="junit.jar.path"
-              value="${argo.root.dir}/tools/junit-3.8.1/junit.jar"/> 
 
+    <!-- Define a few places we can find Junit -->
     <path id="junit.classpath">
-      <pathelement location="${build.classes}"/>
       <pathelement location="${junit.jar.path}"/>
-      <path refid="compile.classpath"/>
+      <pathelement location="${argo.tools.dir}/junit-3.8.1/junit.jar"/>
+      <pathelement location="${argo.root.dir}/tools/junit-3.8.1/junit.jar"/>
     </path>
 
     <path id="run.classpath">
       <fileset dir="${argo.build.dir}" includes="*.jar"/>
       <path refid="mdr.run.classpath"/>
     </path>
-
-    <property name="xmi-file.path" value="org/argouml/model/mdr/mof"/>
-        
+  
     <!-- Implementation classes for UML 1.4 are generated from this file -->
     <!-- When changing to a different UML metamodel, be sure to use the 
          _Diff file which adds the Java specific tags for JMI, not the
          base OMG file
       -->
-    <property name="xmi-file" value="src/${xmi-file.path}/01-02-15_Diff" /> 
+    <property name="xmi.file.path" value="org/argouml/model/mdr/mof"/>
+    <property name="xmi.file" value="src/${xmi.file.path}/01-02-15_Diff" /> 
 
     <taskdef name="mdr" classname="org.netbeans.mdrant.MdrTask">
       <classpath>
         <path refid="mdr.generate.classpath" />
       </classpath>
     </taskdef>
-        
+    
     <path id="ant.optional.classpath">
       <pathelement location="${ant.home}/libopt/ant-junit.jar"/>
-      <pathelement location="${junit.jar.path}"/>
+      <path refid="junit.classpath"/>
     </path>
         
     <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" name="junit">
@@ -164,10 +134,10 @@ etc.
                doesn't exist in the main argouml project.  Typical error is
                DebugException: leave() without enter()
     -->
-    <echo message="Generating JMI interfaces from ${xmi-file}"/>
-    <mdr storageFile="${build.javas}/mymdr">
+    <echo message="Generating JMI interfaces from ${xmi.file}"/>
+    <mdr storageFile="${basedir}/${build.javas}/mymdr">
       <instantiate name="mof4models" /> 
-      <readXMI file="${xmi-file}.xml" extent="mof4models" /> 
+      <readXMI file="${xmi.file}.xml" extent="mof4models" /> 
       <mapJava dir="${build.javas}" extent="mof4models" /> 
       
       <!-- not sure this is correct, but try to generate a DTD -->
@@ -175,8 +145,8 @@ etc.
       <writeDTD file="${build.dir}/UML14.dtd" extent="uml"/>
 
       <!-- Other functions available
-      <writeXMI file="${storageDir}/${model}/xmi/${xmi-file}.xml" extent="mof4models" xmiVersion="1.2"/>
-      <writeDTD file="${storageDir}/${model}/xmi/${xmi-file}.dtd" extent="mof4models"/>
+      <writeXMI file="${storageDir}/${model}/xmi/${xmi.file}.xml" extent="mof4models" xmiVersion="1.2"/>
+      <writeDTD file="${storageDir}/${model}/xmi/${xmi.file}.dtd" extent="mof4models"/>
       <mapClass dir="${build.javas}" extent="mof4models" /> 
       <printExtentNames/>
       -->
@@ -195,7 +165,7 @@ etc.
 
   <target name="generate-needed" depends="init">
     <uptodate property="generate.notRequired" 
-      srcfile="${xmi-file}.xml"
+      srcfile="${xmi.file}.xml"
       targetfile="${build.dir}/${javainterfaces.jar}" >
     </uptodate>
 
@@ -204,6 +174,7 @@ etc.
   <target name="generate-skipped" if="generate.notRequired">
     <echo message="${build.dir}/${javainterfaces.jar} is up to date"/>
   </target>
+  
   
   <!-- =================================================================== -->
   <!-- Run from classes                                                    -->
@@ -227,8 +198,6 @@ etc.
       </classpath>
     </java>
   </target>
-        
-
 
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
@@ -256,7 +225,7 @@ etc.
     <copy todir="${build.classes}">
       <fileset dir="src">
         <include name="**/*.xsl"/>
-        <include name="${xmi-file.path}/**"/>
+        <include name="${xmi.file.path}/**"/>
       </fileset>
     </copy>
   </target>
