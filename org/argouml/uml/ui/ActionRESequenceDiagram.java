@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,16 +28,18 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.swing.AbstractAction;
+
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.sequence.ui.FigMessage;
 import org.argouml.uml.reveng.ui.RESequenceDiagramDialog;
-import org.argouml.ui.targetmanager.TargetManager;
-
 
 /**
  * Action to reverse engineer a sequence diagram from the operation bodies.
  */
-public class ActionRESequenceDiagram extends UMLAction {
+public class ActionRESequenceDiagram extends AbstractAction {
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -50,8 +52,8 @@ public class ActionRESequenceDiagram extends UMLAction {
      * @param fig the figure the action is performed on
      */
     public ActionRESequenceDiagram(Object fig) {
-        super("action.reverse-engineer-sequence-diagram", false, NO_ICON);
-		_messageFig = fig;
+        super(Translator.localize("action.reverse-engineer-sequence-diagram"));
+        messageFig = fig;
     }
 
     /**
@@ -72,56 +74,75 @@ public class ActionRESequenceDiagram extends UMLAction {
         if (Model.getFacade().isAOperation(obj)) {
             RESequenceDiagramDialog dialog = new RESequenceDiagramDialog(obj);
             dialog.setVisible(true);
-        } else if (Model.getFacade().isAMessage(obj) && _messageFig != null) {
+        } else if (Model.getFacade().isAMessage(obj) && messageFig != null) {
             Object ac = Model.getFacade().getAction(obj);
-	        Object op = Model.getFacade().isACallAction(ac) ? Model.getFacade().getOperation(ac) : null;
+            Object op =
+                Model.getFacade().isACallAction(ac)
+                ? Model.getFacade().getOperation(ac)
+                        : null;
             if (op != null) {
-                // it is highly desirable that the message action already knows it's operation
+                // it is highly desirable that the message action
+                // already knows it's operation
                 RESequenceDiagramDialog dialog =
-                    new RESequenceDiagramDialog(op, (FigMessage)_messageFig);
+                    new RESequenceDiagramDialog(op, (FigMessage) messageFig);
                 dialog.setVisible(true);
             } else {
-                // the hard way: try to determine the operation from the message name
-				Object receiver = Model.getFacade().getReceiver(obj);
-                Collection c = receiver != null ? Model.getFacade().getBases(receiver) : null;
-                Object cls = c != null && !c.isEmpty() ? c.iterator().next() : null;
-				if (cls != null && Model.getFacade().isAClassifier(cls)) {
-                    // too primitive (just gets the first method with matching name)
-					String opName = Model.getFacade().getName(obj);
-					int pos1 = opName.lastIndexOf(".");
-					int pos2 = opName.lastIndexOf("(");
+                // the hard way: try to determine the operation
+                // from the message name
+                Object receiver = Model.getFacade().getReceiver(obj);
+                Collection c =
+                    receiver != null
+                    ? Model.getFacade().getBases(receiver)
+                            : null;
+                Object cls =
+                    c != null && !c.isEmpty() ? c.iterator().next() : null;
+                if (cls != null && Model.getFacade().isAClassifier(cls)) {
+                    // too primitive (just gets the first method
+                    // with matching name)
+                    String opName = Model.getFacade().getName(obj);
+                    int pos1 = opName.lastIndexOf(".");
+                    int pos2 = opName.lastIndexOf("(");
                     if (pos1 == -1) {
                         pos1 = opName.lastIndexOf("new ");
                         pos1 = pos1 != -1 ? pos1 + 4 : 0;
                     } else {
                         pos1++;
                     }
-					pos2 = pos2 != -1 ? pos2 : opName.length();
-					opName = opName.substring(pos1, pos2);
-					c = Model.getCoreHelper().getOperationsInh(cls);
-					Iterator iter = c != null ? c.iterator() : null;
-					while (iter != null && iter.hasNext()) {
-						op = iter.next();
-						if (opName.equals(Model.getFacade().getName(op))) {
-				            RESequenceDiagramDialog dialog =
-                                new RESequenceDiagramDialog(op, (FigMessage)_messageFig);
-				            dialog.setVisible(true);
+                    pos2 = pos2 != -1 ? pos2 : opName.length();
+                    opName = opName.substring(pos1, pos2);
+                    c = Model.getCoreHelper().getOperationsInh(cls);
+                    Iterator iter = c != null ? c.iterator() : null;
+                    while (iter != null && iter.hasNext()) {
+                        op = iter.next();
+                        if (opName.equals(Model.getFacade().getName(op))) {
+                            RESequenceDiagramDialog dialog =
+                                new RESequenceDiagramDialog(op,
+                                        (FigMessage) messageFig);
+                            dialog.setVisible(true);
                             break;
-						}
-					}
-				}
-			}
-			//Model.getCoreHelper().setName(((org.argouml.uml.diagram.ui.FigEdgeModelElement)_messageFig).getOwner(), "Hello World");
+                        }
+                    }
+                }
+            }
+            // Model.getCoreHelper().setName(
+            //     ((FigEdgeModelElement) messageFig).getOwner(),
+            //     "Hello World");
         }
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @see javax.swing.Action#isEnabled()
      */
-    public boolean shouldBeEnabled() {
+    public boolean isEnabled() {
         Object target = TargetManager.getInstance().getModelTarget();
-        return Model.getFacade().isAOperation(target) || Model.getFacade().isAMessage(target);
+        return Model.getFacade().isAOperation(target)
+            || Model.getFacade().isAMessage(target);
     }
 
-	private Object _messageFig = null;
+    private Object messageFig;
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2915509413708666273L;
 } /* end class ActionRESequenceDiagram */
