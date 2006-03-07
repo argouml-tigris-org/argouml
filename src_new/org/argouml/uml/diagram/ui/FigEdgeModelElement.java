@@ -75,12 +75,10 @@ import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
-import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdgePoly;
 import org.tigris.gef.presentation.FigNode;
@@ -251,8 +249,7 @@ public abstract class FigEdgeModelElement
         if (item != null
             && Globals.curEditor().getSelectionManager().containsFig(this)) {
             tip = item.getHeadline();
-        } else if (getOwner() != null 
-                && Model.getFacade().isAModelElement(getOwner())) {
+        } else if (getOwner() != null) {
             tip = Model.getFacade().getTipString(getOwner());
         } else {
             tip = toString();
@@ -707,18 +704,16 @@ public abstract class FigEdgeModelElement
         updateClassifiers();
     }
     
-
-
-
     /**
      * generate the notation for the modelelement and stuff it into the text Fig
      */
     protected void updateNameText() {
 
-        if ((getOwner() == null) || (getOwner() instanceof CommentEdge))
+        if (getOwner() == null) {
             return;
+        }
         String nameStr =
-	    Notation.generate(this, Model.getFacade().getName(getOwner()));
+            Notation.generate(this, Model.getFacade().getName(getOwner()));
         name.setText(nameStr);
         calcBounds();
         setBounds(getBounds());
@@ -728,7 +723,7 @@ public abstract class FigEdgeModelElement
      * generate the notation for the stereotype and stuff it into the text Fig
      */
     protected void updateStereotypeText() {
-        if ((getOwner() == null) || (getOwner() instanceof CommentEdge)) {
+        if (getOwner() == null) {
             return;
         }
         Object modelElement = getOwner();
@@ -749,6 +744,11 @@ public abstract class FigEdgeModelElement
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object newOwner) {
+        if (newOwner != null && !Model.getFacade().isAModelElement(newOwner)) {
+            throw new IllegalArgumentException(
+                    "The owner must be a model element - got a "
+                    + newOwner.getClass().getName());
+        }
         updateListeners(newOwner);
         super.setOwner(newOwner);
         initNotationProviders(newOwner);
@@ -789,10 +789,10 @@ public abstract class FigEdgeModelElement
      */
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
-        if (oldOwner != null && Model.getFacade().isAModelElement(oldOwner)) {
+        if (oldOwner != null) {
             removeElementListener(oldOwner);
         }
-        if (newOwner != null && Model.getFacade().isAModelElement(newOwner)) {
+        if (newOwner != null) {
             addElementListener(newOwner);
         }
     }
@@ -899,7 +899,7 @@ public abstract class FigEdgeModelElement
      */
     public void removeFromDiagram() {
         Object o = getOwner();
-        if (Model.getFacade().isAModelElement(o)) {
+        if (o != null) {
             removeElementListener(o);
         }
         ArgoEventPump.removeListener(this);
@@ -926,6 +926,10 @@ public abstract class FigEdgeModelElement
 
         super.removeFromDiagram();
 
+    }
+    
+    protected void superRemoveFromDiagram() {
+        super.removeFromDiagram();
     }
 
     /**
@@ -1037,14 +1041,11 @@ public abstract class FigEdgeModelElement
      * Returns the source of the edge. The source is the owner of the
      * node the edge travels from in a binary relationship. For
      * instance: for a classifierrole, this is the sender.
-     * @return MModelElement
+     * @return a model element
      */
     protected Object getSource() {
         Object owner = getOwner();
         if (owner != null) {
-            if (owner instanceof CommentEdge) {
-                return ((CommentEdge) owner).getSource();
-            }
             return Model.getCoreHelper().getSource(owner);
         }
         return null;
@@ -1054,14 +1055,11 @@ public abstract class FigEdgeModelElement
      * owner of the node the edge travels to in a binary
      * relationship. For instance: for a classifierrole, this is the
      * receiver.
-     * @return Object
+     * @return a model element
      */
     protected Object getDestination() {
         Object owner = getOwner();
         if (owner != null) {
-            if (owner instanceof CommentEdge) {
-                return ((CommentEdge) owner).getDestination();
-            }
             return Model.getCoreHelper().getDestination(owner);
         }
         return null;
