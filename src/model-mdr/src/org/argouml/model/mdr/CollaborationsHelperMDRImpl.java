@@ -432,7 +432,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             if (arole instanceof ClassifierRole) {
                 List returnList = new ArrayList();
                 ClassifierRole role = (ClassifierRole) arole;
-                Iterator it = Model.getFacade().getGeneralizations(role).iterator();
+                Iterator it = 
+                    Model.getFacade().getGeneralizations(role).iterator();
                 while (it.hasNext()) {
                     Object genElem = it.next();
                     if (genElem instanceof ClassifierRole) {
@@ -441,7 +442,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 }
                 it = role.getBase().iterator();
                 while (it.hasNext()) {
-                    returnList.addAll(((Classifier) it.next()).getOwnedElement());
+                    returnList.addAll(
+                            ((Classifier) it.next()).getOwnedElement());
                 }
                 return returnList;
             }

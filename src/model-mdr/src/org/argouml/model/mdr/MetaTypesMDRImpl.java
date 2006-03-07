@@ -150,6 +150,7 @@ public final class MetaTypesMDRImpl implements MetaTypes {
      * Constructor that forbids to instantiate.
      */
     MetaTypesMDRImpl() {
+        // forbid instantiation
     }
 
     /**

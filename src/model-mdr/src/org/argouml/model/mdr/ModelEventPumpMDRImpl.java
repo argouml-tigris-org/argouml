@@ -929,7 +929,8 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                     LOG.error("Property '" + attributes[i]
                              + "' for class '"
                              + metaclass.getName()
-                     + "' doesn't exist in metamodel (possible false warning)");
+                             + "' doesn't exist in metamodel" 
+                             + " (possible false warning)");
 //                  throw new IllegalArgumentException("Property '"
 //                            + attributes[i] + "' doesn't exist in metamodel");
                 }

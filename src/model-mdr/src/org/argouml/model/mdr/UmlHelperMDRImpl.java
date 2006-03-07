@@ -76,6 +76,7 @@ class UmlHelperMDRImpl implements UmlHelper {
      *            the UML model
      */
     public void addListenersToModel(Object model) {
+        // Nothing to do - we get all events automatically
     }
 
     /**

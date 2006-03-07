@@ -551,7 +551,8 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
     public void setInstantiation(Object createaction, Object instantiation) {
         if (createaction instanceof CreateAction) {
             if (instantiation instanceof Classifier) {
-                ((CreateAction) createaction).setInstantiation((Classifier) instantiation);
+                ((CreateAction) createaction).setInstantiation(
+                        (Classifier) instantiation);
                 return;
             }
             if (instantiation == null)

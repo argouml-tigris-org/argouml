@@ -227,8 +227,8 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.CommonBehaviorFactory#createObject()
      */
     public Object createObject() {
-        org.omg.uml.behavioralelements.commonbehavior.Object myObject = cbPackage
-                .getObject().createObject();
+        org.omg.uml.behavioralelements.commonbehavior.Object myObject = 
+                cbPackage.getObject().createObject();
         super.initialize(myObject);
         return myObject;
     }

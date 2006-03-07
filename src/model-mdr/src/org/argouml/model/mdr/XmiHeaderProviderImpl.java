@@ -52,7 +52,7 @@ public class XmiHeaderProviderImpl implements XMIHeaderProvider {
         super();
     }
 
-    /*
+    /**
      * @see org.netbeans.lib.jmi.xmi.XMIHeaderProvider#writeHeader(java.io.Writer)
      */
     public void writeHeader (Writer ps) {
