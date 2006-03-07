@@ -50,7 +50,7 @@ import org.omg.uml.modelmanagement.Subsystem;
  * UseCase Helper for MDR ModelImplementation.
  * <p>
  * @since ARGO0.19.5
- * @author Ludovic Maitre
+ * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
 
  */

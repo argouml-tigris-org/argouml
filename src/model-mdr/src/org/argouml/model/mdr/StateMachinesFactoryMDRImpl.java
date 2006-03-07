@@ -67,7 +67,7 @@ import org.omg.uml.foundation.datatypes.TimeExpression;
  *
  * @since ARGO0.19.3
  * @author Bob Tarling
- * @author Ludovic Maître
+ * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
  */
 public class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR

@@ -44,7 +44,7 @@ import org.omg.uml.modelmanagement.UmlPackage;
 /**
  * Class to implement ActivityGraphsHelper.
  * @since ARGO0.19.5
- * @author Ludovic Maître
+ * @author Ludovic Ma&icirc;tre
  * Derived from NSUML implementation
  */
 class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {

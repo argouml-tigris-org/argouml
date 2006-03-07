@@ -76,7 +76,7 @@ import org.netbeans.api.mdr.events.TransactionEvent;
  * who have requested them.
  * <p>
  * @since ARGO0.19.5
- * @author Ludovic Maître
+ * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
  */
 class ModelEventPumpMDRImpl extends AbstractModelEventPump implements

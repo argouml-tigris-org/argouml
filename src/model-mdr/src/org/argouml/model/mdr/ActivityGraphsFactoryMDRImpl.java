@@ -48,7 +48,7 @@ import org.omg.uml.foundation.core.Namespace;
  * TODO: Change visibility to package after reflection problem solved.
  * <p>
  * @since ARGO0.19.5
- * @author Ludovic Maître
+ * @author Ludovic Ma&icirc;tre
  * Derived from NSUML implementation by:
  * @author Thierry Lach
  */

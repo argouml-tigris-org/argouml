@@ -61,7 +61,7 @@ import org.omg.uml.foundation.core.UmlAssociation;
  * Helper class for UML BehavioralElements::Collaborations Package.
  * <p>
  * @since ARGO0.19.5
- * @author Ludovic Maitre
+ * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
  * Derived from NSUML implementation by: 
  * @author Thierry Lach

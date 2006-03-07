@@ -49,7 +49,7 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * Helper class for UML Foundation::ExtensionMechanisms Package.
  * <p>
  * @since ARGO0.19.5
- * @author Ludovic Ma�tre
+ * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
  * derived from NSUML implementation by:
  * @author Thierry Lach

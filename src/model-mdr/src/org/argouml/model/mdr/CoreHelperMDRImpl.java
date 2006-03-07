@@ -123,7 +123,7 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * The Core Helper implementation for MDR.<p>
  *
  * @since ARGO0.19.5
- * @author Ludovic Maitre
+ * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
  * derived from NSUML implementation by:
  * @author Linus Tolke

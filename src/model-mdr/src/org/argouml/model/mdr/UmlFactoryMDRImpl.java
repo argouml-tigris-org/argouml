@@ -144,7 +144,7 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * Root factory for UML model element instance creation.
  * <p>
  * @since ARGO0.19.5
- * @author Ludovic Ma�tre
+ * @author Ludovic Ma&icirc;tre
  * based on NSUML implementation by:
  * @author Thierry Lach
  */

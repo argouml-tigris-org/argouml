@@ -50,7 +50,7 @@ import org.omg.uml.modelmanagement.Subsystem;
  * <p>
  * 
  * @since ARGO0.19.5
- * @author Ludovic Maître
+ * @author Ludovic Ma&icirc;tre
  * <p>
  * derived from NSUML implementation by:
  * @author Thierry Lach

@@ -38,7 +38,7 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * The ModelManagementFactory.
  * <p>
  * @since ARGO0.19.5
- * @author Ludovic Maître
+ * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
  * derived from NSUML implementation by:
  * @author Linus Tolke

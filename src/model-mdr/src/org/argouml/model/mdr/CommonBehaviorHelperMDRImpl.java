@@ -64,7 +64,7 @@ import org.omg.uml.foundation.datatypes.ObjectSetExpression;
  * The CommonBehaviorHelper for the MDR ModelImplementation.
  * <p>
  * @since ARGO0.19.5
- * @author Ludovic Maître
+ * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
  * 
  */

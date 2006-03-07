@@ -59,7 +59,7 @@ import org.omg.uml.foundation.datatypes.TimeExpression;
  * The State Machines Helper Implementation for MDR.
  *
  * @since ARGO0.19.5
- * @author Ludovic Maître
+ * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
  */
 public class StateMachinesHelperMDRImpl implements StateMachinesHelper {

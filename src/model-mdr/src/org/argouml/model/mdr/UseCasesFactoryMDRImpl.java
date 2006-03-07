@@ -41,7 +41,7 @@ import org.omg.uml.foundation.core.Namespace;
  * <p>
  * @since ARGO0.19.3
  * @author Thierry Lach & Bob Tarling
- * @author Ludovic Maître
+ * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
  */
 public class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
