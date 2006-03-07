@@ -1,8 +1,7 @@
 @echo off
 
-rem
-rem build.bat always calls the version of ant distributed with ArgoUML
-rem
+:: Build file configured for Eclipse project directory structure
+:: build.bat always calls the version of ant distributed with ArgoUML
 
 setlocal
 set ANT_HOME=..\argouml-core-tools\ant-1.6.2
