@@ -2,6 +2,8 @@
 # $Id$
 #
 
+# This variant of the build is configured for the Eclipse project directories
+
 # OS specific support.
 darwin=false
 
