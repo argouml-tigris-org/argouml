@@ -25,13 +25,12 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
-
 import javax.swing.Action;
-
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedVChangeListener;
@@ -179,6 +178,14 @@ public class FigEdgeNote
     }
     
     /**
+     * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
+     */
+    public String getTipString(MouseEvent me) {
+        return "Comment Edge"; // TODO get tip string from comment
+    }
+
+    
+    /**
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object newOwner) {
@@ -216,6 +223,68 @@ public class FigEdgeNote
         o.setDestination(getDestFigNode().getOwner());
         o.setSource(getSourceFigNode().getOwner());
     }
+    
+    /**
+     * generate the notation for the modelelement and stuff it into the text Fig
+     */
+    protected void updateNameText() {
+        return;
+    }
+    
+    /**
+     * generate the notation for the stereotype and stuff it into the text Fig
+     */
+    protected void updateStereotypeText() {
+        return;
+    }
+    
+    protected void updateListeners(Object newOwner) {
+    }
+    
+    /**
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent pve) {
+        super.propertyChange(pve);
+    }
+
+    
+    /**
+     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
+     */
+    public void removeFromDiagram() {
+        superRemoveFromDiagram();
+    }
+    
+
+    /**
+     * Returns the source of the edge. The source is the owner of the
+     * node the edge travels from in a binary relationship. For
+     * instance: for a classifierrole, this is the sender.
+     * @return MModelElement
+     */
+    protected Object getSource() {
+        Object owner = getOwner();
+        if (owner != null) {
+            return ((CommentEdge) owner).getSource();
+        }
+        return null;
+    }
+    /**
+     * Returns the destination of the edge. The destination is the
+     * owner of the node the edge travels to in a binary
+     * relationship. For instance: for a classifierrole, this is the
+     * receiver.
+     * @return Object
+     */
+    protected Object getDestination() {
+        Object owner = getOwner();
+        if (owner != null) {
+            return ((CommentEdge) owner).getDestination();
+        }
+        return null;
+    }
+
 
     /**
      * The UID.
