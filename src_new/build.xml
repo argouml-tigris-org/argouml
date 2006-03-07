@@ -336,8 +336,10 @@ Property files to be searched:
     </delete>
     <echo message="Antlr classpath is ${antlrall.jar.path}"/>
     <java classname="antlr.Tool" classpath="${antlrall.jar.path}" fork="yes"
-          maxmemory="32M">
-          <arg line="-o ${argo.src.dir}/org/argouml/uml/reveng/java  ${argo.src.dir}/org/argouml/uml/reveng/java/java.g"/>
+        maxmemory="32M">
+      <arg value="-o"/>
+      <arg file="${argo.src.dir}/org/argouml/uml/reveng/java"/>
+      <arg file="${argo.src.dir}/org/argouml/uml/reveng/java/java.g"/>
     </java>
   </target>
 
@@ -348,8 +350,10 @@ Property files to be searched:
       </fileset>
     </delete>
     <java classname="antlr.Tool" classpath="${antlrall.jar.path}" fork="yes"
-          maxmemory="32M">
-          <arg line="-o ${argo.src.dir}/org/argouml/language/java/generator  ${argo.src.dir}/org/argouml/language/java/generator/java.g"/>
+        maxmemory="32M">
+      <arg value="-o"/>
+      <arg file="${argo.src.dir}/org/argouml/language/java/generator"/>
+      <arg file="${argo.src.dir}/org/argouml/language/java/generator/java.g"/>
     </java>
   </target>
 
