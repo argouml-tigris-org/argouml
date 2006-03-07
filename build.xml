@@ -815,7 +815,7 @@ Property files to be searched:
            fork="yes" haltonfailure="false"
            maxmemory="48M" printsummary="true">
         <sysproperty key="test.model.uml" 
-            value="${argo.model.dir}/src/org/argouml/model/mdr/mof/01-02-15.xml"/>
+            value="${argo.mdr.dir}/src/org/argouml/model/mdr/mof/01-02-15.xml"/>
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="java.awt.headless" value="true"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
