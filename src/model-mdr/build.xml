@@ -127,12 +127,8 @@ This is designed to work in two different environments:
     <delete dir="${build.javas}"/>
     <mkdir dir="${build.javas}"/>
 
-    <!-- NOTE: When called from the main argouml build.xml, the storage
-               file (but not any of the others) will be generated relative
-               to that root, not our current directory.  This will cause
-               obscure build failures if the corresponding directory
-               doesn't exist in the main argouml project.  Typical error is
-               DebugException: leave() without enter()
+    <!-- NOTE: The MDR task needs an absolute path for storageFile or it will
+               put it in the caller's directory when called from argouml build
     -->
     <echo message="Generating JMI interfaces from ${xmi.file}"/>
     <mdr storageFile="${basedir}/${build.javas}/mymdr">
@@ -166,7 +162,9 @@ This is designed to work in two different environments:
   <target name="generate-needed" depends="init">
     <uptodate property="generate.notRequired" 
       srcfile="${xmi.file}.xml"
+    	
       targetfile="${build.dir}/${javainterfaces.jar}" >
+    	
     </uptodate>
 
   </target>
