@@ -120,8 +120,8 @@ import org.omg.uml.modelmanagement.UmlPackage;
 
 
 /**
- * The Core Helper implementation for MDR.
- * <p>
+ * The Core Helper implementation for MDR.<p>
+ *
  * @since ARGO0.19.5
  * @author Ludovic Maitre
  * @author Tom Morris
@@ -142,7 +142,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
 
     /**
      * Constructor.
-     * 
+     *
      * @param theModelImpl
      *            The MDRModelImplementation.
      */
@@ -154,7 +154,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
     /**
      * Return the first item from a collection using the most efficient method
      * possible. Returns null for an empty collection.
-     * 
+     *
      * @param c
      *            The Collection.
      * @return the first element of a Collection.
@@ -170,7 +170,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#isSubType( java.lang.Object,
+     * @see org.argouml.model.CoreHelper#isSubType(java.lang.Object,
      *      java.lang.Object)
      */
     public boolean isSubType(Object type, Object subType) {
@@ -197,8 +197,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
             Collection newAdd = new HashSet();
             Iterator addIter = add.iterator();
             while (addIter.hasNext()) {
-                GeneralizableElement next = (GeneralizableElement) addIter.
-                        next();
+                GeneralizableElement next =
+                    (GeneralizableElement) addIter.next();
                 if (next instanceof Classifier) {
                     newAdd.addAll(getSupertypes(next));
                 }
@@ -216,7 +216,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
     public Collection getSupertypes(Object ogeneralizableelement) {
         Collection result = new HashSet();
         if (ogeneralizableelement instanceof GeneralizableElement) {
-            Iterator genIterator = modelImpl.getFacade().getGeneralizations(
+            Iterator genIterator =
+                modelImpl.getFacade().getGeneralizations(
                     ogeneralizableelement).iterator();
             while (genIterator.hasNext()) {
                 Generalization next = (Generalization) genIterator.next();
@@ -248,8 +249,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
 
         Collection result = new ArrayList();
         result.addAll(getAssociateEnds(classifier));
-        Collection generalizations = Model.getFacade().getGeneralizations(
-                classifier);
+        Collection generalizations =
+            Model.getFacade().getGeneralizations(classifier);
         Iterator genIter = generalizations.iterator();
         while (genIter.hasNext()) {
             Object parent = Model.getFacade().getParent(genIter.next());
@@ -497,7 +498,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         if (!(element instanceof ModelElement)) {
             throw new IllegalArgumentException();
         }
-        ArrayList contents = new ArrayList();
+        List contents = new ArrayList();
         contents.addAll(Model.getFacade().getTaggedValuesCollection(element));
         contents.addAll(((ModelElement) element).getTemplateParameter());
         Iterator it = contents.iterator();
@@ -634,8 +635,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
         if (clazz == null) {
             return new ArrayList();
         }
-        Iterator it = modelImpl.getFacade().getGeneralizations(clazz).
-                iterator();
+        Iterator it =
+            modelImpl.getFacade().getGeneralizations(clazz).iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             Generalization gen = (Generalization) it.next();
@@ -657,8 +658,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
         if (child == null || parent == null) {
             return null;
         }
-        Iterator it = modelImpl.getFacade().getGeneralizations(child).
-                iterator();
+        Iterator it =
+            modelImpl.getFacade().getGeneralizations(child).iterator();
         while (it.hasNext()) {
             Generalization gen = (Generalization) it.next();
             if (gen.getParent() == parent) {
@@ -676,7 +677,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
             /*
              * In UML 1.3, the name is the only place to store text.
              * In UML 1.4, there is a body as well, but some tools
-             * still seem to use name. 
+             * still seem to use name.
              */
             return ((Comment) comment).getBody();
         }
@@ -717,13 +718,13 @@ public class CoreHelperMDRImpl implements CoreHelper {
         if (clazz == null) {
             return new ArrayList();
         }
-        Iterator it = modelImpl.getFacade().getSpecializations(clazz).
-                iterator();
+        Iterator it =
+            modelImpl.getFacade().getSpecializations(clazz).iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             Generalization gen = (Generalization) it.next();
-            GeneralizableElement client = (GeneralizableElement) modelImpl.
-                    getFacade().getChild(gen);
+            GeneralizableElement client =
+                (GeneralizableElement) modelImpl.getFacade().getChild(gen);
             if (client != null) {
                 list.add(client);
             }
@@ -742,8 +743,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
         if (!(clazz instanceof Classifier)) {
             throw new IllegalArgumentException();
         }
-        Collection specializations = Model.getFacade().
-                getSpecializations(clazz);
+        Collection specializations =
+            Model.getFacade().getSpecializations(clazz);
         Iterator it = specializations.iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
@@ -841,8 +842,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
             return new ArrayList();
         }
         List list = new ArrayList();
-        Iterator it = Model.getFacade().getAssociationEnds(classifier).
-                iterator();
+        Iterator it =
+            Model.getFacade().getAssociationEnds(classifier).iterator();
         while (it.hasNext()) {
             AssociationEnd end = (AssociationEnd) it.next();
             UmlAssociation assoc = end.getAssociation();
@@ -911,8 +912,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
         Collection col = new ArrayList();
         if (oclassifier instanceof Classifier) {
             Classifier classifier = (Classifier) oclassifier;
-            Iterator it = Model.getFacade().getAssociationEnds(classifier).
-                    iterator();
+            Iterator it =
+                Model.getFacade().getAssociationEnds(classifier).iterator();
             while (it.hasNext()) {
                 col.add(((AssociationEnd) it.next()).getAssociation());
             }
@@ -1005,7 +1006,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException();
         }
-        
+
         List list = new ArrayList();
         Iterator it = ((Namespace) ns).getOwnedElement().iterator();
         while (it.hasNext()) {
@@ -1030,8 +1031,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
 
         }
         if (relationship instanceof Link) {
-            Iterator it = modelImpl.getFacade().getConnections(relationship).
-                    iterator();
+            Iterator it =
+                modelImpl.getFacade().getConnections(relationship).iterator();
             if (it.hasNext()) {
                 return modelImpl.getFacade().getInstance(it.next());
             } else {
@@ -1092,8 +1093,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
                     + "a relationship");
         }
         if (relationship instanceof Link) {
-            Iterator it = modelImpl.getFacade().getConnections(relationship).
-                    iterator();
+            Iterator it =
+                modelImpl.getFacade().getConnections(relationship).iterator();
             if (it.hasNext()) {
                 it.next();
                 if (it.hasNext()) {
@@ -1164,8 +1165,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
 
         List ret = new ArrayList();
         Collection clientDependencies = client.getClientDependency();
-        Iterator it = Model.getFacade().getSupplierDependencies(supplier).
-                iterator();
+        Iterator it =
+            Model.getFacade().getSupplierDependencies(supplier).iterator();
         while (it.hasNext()) {
             Dependency dep = (Dependency) it.next();
             if (clientDependencies.contains(dep)) {
@@ -1229,24 +1230,25 @@ public class CoreHelperMDRImpl implements CoreHelper {
                     modelElement)) {
                 return false;
             }
-    
+
             if (modelElement == ns) {
                 return false;
             }
             if (modelElement instanceof Namespace
-                    && modelElement == getFirstSharedNamespace(modelElement, ns)) {
+                    && modelElement
+                            == getFirstSharedNamespace(modelElement, ns)) {
                 return false;
             }
             if (ns instanceof Interface || ns instanceof Actor
                     || ns instanceof UseCase) {
                 return false;
             } else if (ns instanceof Component) {
-                return (modelElement instanceof Component 
+                return (modelElement instanceof Component
                         && modelElement != ns);
             } else if (ns instanceof Collaboration) {
                 if (!(modelElement instanceof ClassifierRole
                         || modelElement instanceof AssociationRole
-                        || modelElement instanceof Generalization 
+                        || modelElement instanceof Generalization
                         || modelElement instanceof Constraint)) {
                     return false;
                 }
@@ -1258,7 +1260,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                         || modelElement instanceof Dependency
                         || modelElement instanceof Constraint
                         || modelElement instanceof Collaboration
-                        || modelElement instanceof StateMachine 
+                        || modelElement instanceof StateMachine
                         || modelElement instanceof Stereotype)) {
                     return false;
                 }
@@ -1270,7 +1272,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                         || modelElement instanceof Constraint
                         || modelElement instanceof Dependency
                         || modelElement instanceof Collaboration
-                        || modelElement instanceof DataType 
+                        || modelElement instanceof DataType
                         || modelElement instanceof Interface)) {
                     return false;
                 }
@@ -1286,7 +1288,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
                     return false;
                 }
             } else if (modelElement instanceof GeneralizableElement) {
-                if (!isValidNamespace((GeneralizableElement) modelElement, ns)) {
+                GeneralizableElement ge = (GeneralizableElement) modelElement;
+                if (!isValidNamespace(ge, ns)) {
                     return false;
                 }
             } else if (modelElement instanceof Generalization) {
@@ -1378,8 +1381,9 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
     private boolean isValidNamespace(GeneralizableElement gen, Namespace ns) {
-        Iterator it = modelImpl.getUmlPackage().getCore()
-            .getAChildGeneralization().getGeneralization(gen).iterator();
+        Iterator it =
+            modelImpl.getUmlPackage().getCore()
+                .getAChildGeneralization().getGeneralization(gen).iterator();
         while (it.hasNext()) {
             Generalization gen2 = (Generalization) it.next();
             if (!ns.getOwnedElement().contains(gen2.getParent())) {
@@ -1428,7 +1432,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
      * @see org.argouml.model.CoreHelper#getAllPossibleNamespaces(
      *      java.lang.Object, java.lang.Object)
      */
-    public Collection getAllPossibleNamespaces(Object modelElement, 
+    public Collection getAllPossibleNamespaces(Object modelElement,
             Object model) {
         ModelElement m = (ModelElement) modelElement;
         List ret = new ArrayList();
@@ -1438,8 +1442,9 @@ public class CoreHelperMDRImpl implements CoreHelper {
         if (isValidNamespace(m, model)) {
             ret.add(model);
         }
-        Iterator it = modelImpl.getModelManagementHelper().
-                getAllModelElementsOfKind(model, Namespace.class).iterator();
+        Iterator it =
+            modelImpl.getModelManagementHelper()
+                .getAllModelElementsOfKind(model, Namespace.class).iterator();
         while (it.hasNext()) {
             Namespace ns = (Namespace) it.next();
             if (isValidNamespace(m, ns)) {
@@ -1457,8 +1462,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
             Collection col = new ArrayList();
             Collection generalizations = new ArrayList();
             if (o instanceof GeneralizableElement) {
-                Iterator it = Model.getFacade().getSpecializations(o).
-                        iterator();
+                Iterator it =
+                    Model.getFacade().getSpecializations(o).iterator();
                 while (it.hasNext()) {
                     getChildren(col, (Generalization) it.next(),
                             generalizations);
@@ -1473,7 +1478,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
      * Adds all children recursively to the Collection in the first argument.
      * The algorithm assumes that there is a cycle when a node has been visited
      * twice using already known generalizations.
-     * 
+     *
      * @param currentChildren
      *            collection to collect them in.
      * @param gen
@@ -1510,7 +1515,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
 
     /**
      * Helper method for getAllRealizedInterfaces.
-     * 
+     *
      * @param o
      * @param col
      * @param visited
@@ -1526,8 +1531,9 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 Iterator it = supDependencies.iterator();
                 while (it.hasNext()) {
                     Dependency dependency = (Dependency) it.next();
-                    Stereotype stereo = (Stereotype) getFirstItemOrNull(
-                            dependency.getStereotype());
+                    Stereotype stereo =
+                        (Stereotype) getFirstItemOrNull(
+                                dependency.getStereotype());
                     if (dependency instanceof Abstraction && stereo != null
                             && "realize".equals(stereo.getName())
                             && "Abstraction".equals(stereo.getBaseClass())) {
@@ -1611,7 +1617,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         if (handle instanceof ModelElement && dep instanceof Dependency) {
             ModelElement me = (ModelElement) handle;
             Collection deps = me.getClientDependency();
-            if ( deps != null && deps.contains(dep)) {
+            if (deps != null && deps.contains(dep)) {
                 deps.remove(dep);
             }
             return;
@@ -1724,9 +1730,10 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public void removeTaggedValue(Object handle, String name) {
         Object taggedValue = Model.getFacade().getTaggedValue(handle, name);
-        if (taggedValue != null)
+        if (taggedValue != null) {
             modelImpl.getExtensionMechanismsHelper().removeTaggedValue(handle,
                     taggedValue);
+        }
     }
 
     /**
@@ -1774,7 +1781,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public void addClientDependency(Object handle, Object dependency) {
-        if (handle instanceof ModelElement 
+        if (handle instanceof ModelElement
                 && dependency instanceof Dependency) {
             ((ModelElement) handle).getClientDependency().add(dependency);
             return;
@@ -1846,7 +1853,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
     public void addElementResidence(Object handle, Object node) {
         // TODO: This is ambiguous as to whether it should be adding a container
         // or resident.
-        if (handle instanceof ModelElement 
+        if (handle instanceof ModelElement
                 && node instanceof ElementResidence) {
             ((ElementResidence) node).setResident((ModelElement) handle);
             return;
@@ -1860,7 +1867,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public void removeElementResidence(Object handle, Object node) {
-        if (handle instanceof ModelElement 
+        if (handle instanceof ModelElement
                 && node instanceof ElementResidence) {
             ((ElementResidence) node).setResident(null);
             return;
@@ -1871,12 +1878,12 @@ public class CoreHelperMDRImpl implements CoreHelper {
 
     /**
      * Get ElementResidences.
-     * 
+     *
      * TODO: Unused.  Should be added to Facade? - tfm
-     * 
+     *
      * @param handle A modelElement
      * @return Collection The ElementResidence for this model element
-     */    
+     */
     public Collection getElementResidence(Object handle) {
         if (handle instanceof ModelElement) {
             return modelImpl.getUmlPackage().getCore().
@@ -2247,7 +2254,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      boolean)
      */
     public void setChangeable(Object handle, boolean flag) {
-        ChangeableKindEnum changeable = flag ? ChangeableKindEnum.CK_CHANGEABLE
+        ChangeableKindEnum changeable =
+            flag ? ChangeableKindEnum.CK_CHANGEABLE
                 : ChangeableKindEnum.CK_FROZEN;
         if (handle instanceof StructuralFeature) {
             ((StructuralFeature) handle).setChangeability(changeable);
@@ -2482,7 +2490,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 && container instanceof Collaboration) {
             ((Interaction) handle).setContext((Collaboration) container);
         } else if (handle instanceof ElementResidence
-                && (container instanceof Component || container == null) ) {
+                && (container instanceof Component || container == null)) {
             ElementResidence er = (ElementResidence) handle;
             er.setContainer((Component) container);
         } else if (handle instanceof AttributeLink
@@ -2513,13 +2521,13 @@ public class CoreHelperMDRImpl implements CoreHelper {
             ((ElementImport) handle).setUmlPackage((UmlPackage) container);
         } else if (handle instanceof Transition && container instanceof State) {
             ((State) container).getInternalTransition().add(handle);
-        } else if (handle instanceof State 
+        } else if (handle instanceof State
                 && container instanceof StateMachine) {
             ((State) handle).setStateMachine((StateMachine) container);
         } else if (handle instanceof Transition
                 && container instanceof StateMachine) {
             ((Transition) handle).setStateMachine((StateMachine) container);
-        } else if (handle instanceof Action 
+        } else if (handle instanceof Action
                 && container instanceof Transition) {
             ((Transition) container).setEffect((Action) handle);
         } else if (handle instanceof Guard && container instanceof Transition) {
@@ -2543,7 +2551,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
             // these should be consolidated. This form is used by
             // org.argouml.uml.reveng
             if ("1_N".equals(arg)) {
-                arg = modelImpl.getDataTypesFactory().createMultiplicity(1, -1);
+                arg =
+                    modelImpl.getDataTypesFactory().createMultiplicity(1, -1);
             } else {
                 arg = modelImpl.getDataTypesFactory().createMultiplicity(1, 1);
             }
@@ -2579,7 +2588,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setName( java.lang.Object,
+     * @see org.argouml.model.CoreHelper#setName(java.lang.Object,
      *      java.lang.String)
      */
     public void setName(Object handle, String name) {
@@ -2592,7 +2601,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setBody( java.lang.Object,
+     * @see org.argouml.model.CoreHelper#setBody(java.lang.Object,
      *      java.lang.String)
      */
     public void setBody(Object handle, String body) {
@@ -2658,11 +2667,13 @@ public class CoreHelperMDRImpl implements CoreHelper {
             ((Feature) handle).setOwner((Classifier) owner);
             return;
         }
-        if (handle instanceof TagDefinition 
+        if (handle instanceof TagDefinition
                 && (owner == null || owner instanceof Stereotype)) {
             setNamespace(handle, null);
             ((TagDefinition) handle).setOwner((Stereotype) owner);
-            if (owner != null) ((Stereotype) owner).getDefinedTag().add(handle);
+            if (owner != null) {
+                ((Stereotype) owner).getDefinedTag().add(handle);
+            }
             return;
         }
         throw new IllegalArgumentException("handle: " + handle + " or owner: "
@@ -2696,13 +2707,15 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 Vector actualParams = new Vector();
                 actualParams.addAll(params);
                 Iterator toRemove = actualParams.iterator();
-                while (toRemove.hasNext())
+                while (toRemove.hasNext()) {
                     removeParameter(handle, toRemove.next());
+                }
             }
             if (!parameters.isEmpty()) {
                 Iterator toAdd = parameters.iterator();
-                while (toAdd.hasNext())
+                while (toAdd.hasNext()) {
                     addParameter(handle, toAdd.next());
+                }
             }
             return;
         }
@@ -2853,7 +2866,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
             ((Method) method).setSpecification((Operation) specification);
             return;
         }
-        throw new IllegalArgumentException("method: " + method 
+        throw new IllegalArgumentException("method: " + method
                 + " or operation: " + specification);
     }
 
@@ -2875,10 +2888,12 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public void setTaggedValue(Object handle, String tag, String value) {
         if (handle instanceof ModelElement) {
-            TaggedValue tv = (TaggedValue) modelImpl.getFacade().
+            TaggedValue tv =
+                (TaggedValue) modelImpl.getFacade().
                     getTaggedValue(handle, tag);
             if (tv == null) {
-                tv = (TaggedValue) modelImpl.getExtensionMechanismsFactory().
+                tv =
+                    (TaggedValue) modelImpl.getExtensionMechanismsFactory().
                         buildTaggedValue(tag, value);
                 ((ModelElement) handle).getTaggedValue().add(tv);
             } else {
@@ -2996,7 +3011,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle + " or node: "
                 + node);
     }
-    
+
     /**
      * @see org.argouml.model.CoreHelper#addStereotype(java.lang.Object,
      * java.lang.Object)
@@ -3014,7 +3029,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + modelElement
                 + " or stereo: " + stereo);
     }
-    
+
 
     /**
      * @see org.argouml.model.CoreHelper#addAllStereotypes(java.lang.Object, java.util.Collection)
@@ -3028,7 +3043,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + modelElement
                 + " or stereos: " + stereos);
     }
-    
+
     /**
      * @see org.argouml.model.CoreHelper#removeStereotype(java.lang.Object,
      *      java.lang.Object)
@@ -3040,7 +3055,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
             ModelElement me = (ModelElement) modelElement;
             Stereotype stereotype = (Stereotype) stereo;
 
-            if ( me.getStereotype().contains(stereo)) {
+            if (me.getStereotype().contains(stereo)) {
                 me.getStereotype().remove(stereotype);
             }
             return;
@@ -3049,7 +3064,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or stereo: " + stereo);
     }
 
-    
+
     /**
      * @see org.argouml.model.CoreHelper#clearStereotypes(java.lang.Object)
      */
@@ -3076,19 +3091,19 @@ public class CoreHelperMDRImpl implements CoreHelper {
      * @see org.argouml.model.CoreHelper#getAllMetatypeNames()
      */
     public Collection getAllMetatypeNames() {
-        ArrayList names = new ArrayList();
+        List names = new ArrayList();
         for (Iterator iter = modelImpl.getModelPackage().getMofClass()
                 .refAllOfClass().iterator(); iter.hasNext();) {
-            String name = 
+            String name =
                 ((javax.jmi.model.ModelElement) iter.next()).getName();
             if (names.contains(name)) {
                 LOG.error("Found duplicate class " + name + " in metamodel");
             } else {
                 names.add(name);
-                LOG.debug(" Class " + name );
+                LOG.debug(" Class " + name);
             }
         }
         return names;
     }
-    
+
 }

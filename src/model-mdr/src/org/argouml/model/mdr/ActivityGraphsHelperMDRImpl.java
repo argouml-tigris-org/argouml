@@ -45,7 +45,7 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * Class to implement ActivityGraphsHelper.
  * @since ARGO0.19.5
  * @author Ludovic Maître
- * Derived from NSUML implementation 
+ * Derived from NSUML implementation
  */
 class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
 
@@ -147,7 +147,7 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
             throw new IllegalArgumentException(
                     "classifierInState: " + classifierInState
                     + " or state: " + state);
-        }        
+        }
     }
 
     /**
@@ -183,7 +183,7 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
         } else {
             throw new IllegalArgumentException(
                     "classifierInState: " + classifierInState);
-        }        
+        }
     }
 
 }

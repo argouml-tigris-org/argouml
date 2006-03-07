@@ -38,7 +38,7 @@ import org.omg.uml.modelmanagement.UmlPackage;
 
 /**
  * Utility class to facilitate copying model elements.
- * 
+ *
  * @author Michael Stockman
  * @since 0.13.2
  */
@@ -51,7 +51,7 @@ final class CopyHelper implements org.argouml.model.CopyHelper {
 
     /**
      * Constructor to forbid creation of this object.
-     * 
+     *
      * @param implementation
      *            To get other helpers and factories.
      */
@@ -61,25 +61,24 @@ final class CopyHelper implements org.argouml.model.CopyHelper {
 
     /**
      * @see org.argouml.model.CopyHelper#copy(java.lang.Object, java.lang.Object)
-     * 
-     * Make a copy of element in the given namespace.
-     * <p>
+     *
+     * Make a copy of element in the given namespace.<p>
+     *
      * This function is a dispatcher that calls the
-     * copyElement(Element,Namespace) function from XXXFactory.
-     * <p>
-     * 
+     * copyElement(Element,Namespace) function from XXXFactory.<p>
+     *
      * This function may fail and return null for any of the following reasons:
      * <ol>
      * <li>No copy function is known for element's type.
      * <li>The copy function fails or throws.
      * </ol>
-     * 
+     *
      * @param anelement
      *            is the element to copy.
      * @param ans
      *            the namespace
      * @return a copy of element, or null.
-     * 
+     *
      * @throws IllegalArgumentException
      *             if element is null.
      */
@@ -106,15 +105,15 @@ final class CopyHelper implements org.argouml.model.CopyHelper {
         }
         if (element instanceof TagDefinition) {
             return nsmodel.getExtensionMechanismsFactory().copyTagDefinition(
-                    element, ns);            
+                    element, ns);
         }
         throw new IllegalArgumentException("anelement:" + anelement + ", ans: "
                 + ans);
     }
 
     /**
-     * Copy an element and its children into a namespace
-     * 
+     * Copy an element and its children into a namespace.
+     *
      * @param anelement element to be copied
      * @param ans namespace to copy into
      * @return Object copy of given element and its children

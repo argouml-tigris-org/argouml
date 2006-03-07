@@ -32,14 +32,16 @@ import org.netbeans.api.xmi.XMIReferenceProvider;
 
 /**
  * Custom reference provider for MDR XMI Writer.
- * 
+ *
  * Returns our internal ID to be used when writing the xmi.id field
- * 
+ *
  * @author Tom Morris
- * 
  */
 public class XmiReferenceProviderImpl implements XMIReferenceProvider {
-    
+
+    /**
+     * The document for the objects.
+     */
     private final String systemId = null;
 
     /**
