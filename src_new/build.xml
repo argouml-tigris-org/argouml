@@ -137,7 +137,7 @@ Property files to be searched:
     <!-- if it is set in a property file before now, it must be absolute -->
     <property name="argo.root.dir" value="${basedir}/.." />
     <property file="${override.build.properties}"/>
-    <property file="${argo.src.dir}/default.properties"/>
+    <property file="default.properties"/>
 
     <path id="java.tools.classpath">
       <pathelement path="${JAVA_HOME}/lib/tools.jar"/>
@@ -284,16 +284,23 @@ Property files to be searched:
     </copy>
 
     <copy todir="${argo.build.classes}/org/argouml/resource">
-      <fileset dir="${argo.src.dir}/org/argouml/resource" excludes="CVS/**" includes="**/**"/>
+      <fileset dir="${argo.src.dir}/org/argouml/resource" 
+        excludes="CVS/**" 
+        includes="**/**"/>
     </copy>
   	<!-- this should copy across all .tee files, dtds and xslt  for persistence mechanism -->
     <copy todir="${argo.build.classes}/org/argouml/persistence">
-      <fileset dir="${argo.src.dir}/org/argouml/persistence" excludes="CVS/**" includes="**/**"/>
+      <fileset dir="${argo.src.dir}/org/argouml/persistence" 
+        excludes="CVS/**" 
+        includes="**/**"/>
     </copy>
   	
-    <copy file="${argo.src.dir}/org/argouml/argo.ini" tofile="${argo.build.classes}/org/argouml/argo.ini"/>
-    <copy file="${argo.src.dir}/org/argouml/default.xmi" tofile="${argo.build.classes}/org/argouml/default.xmi"/>
-    <copy file="${argo.src.dir}/org/argouml/registry.xml" tofile="${argo.build.classes}/org/argouml/registry.xml"/>
+    <copy file="${argo.src.dir}/org/argouml/argo.ini" 
+      tofile="${argo.build.classes}/org/argouml/argo.ini"/>
+    <copy file="${argo.src.dir}/org/argouml/default.xmi" 
+      tofile="${argo.build.classes}/org/argouml/default.xmi"/>
+    <copy file="${argo.src.dir}/org/argouml/registry.xml" 
+      tofile="${argo.build.classes}/org/argouml/registry.xml"/>
  	
   	<!-- copy test files -->
     <copy todir="${argo.tests.classes}/testmodels">
@@ -429,7 +436,8 @@ Property files to be searched:
   <target depends="check-version" name="update-version" unless="version.is.current">
     <echo message="Creating ArgoVersion.java for version ${argo.build.version}"/>
     <filter token="ARGO_RELEASE_VERSION" value="${argo.build.version}"/>
-    <copy file="${argo.src.dir}/templates/ArgoVersion.template" filtering="on" overwrite="on" tofile="${argo.src.dir}/${version.package}/ArgoVersion.java"/>
+    <copy file="${argo.src.dir}/templates/ArgoVersion.template" filtering="on" 
+      overwrite="on" tofile="${argo.src.dir}/${version.package}/ArgoVersion.java"/>
   </target>
 
   <!-- =================================================================== -->
@@ -445,7 +453,7 @@ Property files to be searched:
   </target>
   
   <target name="compile"
-      depends="prepare,prerequisites,update-version,generateparser,build-model"
+      depends="prepare,prerequisites,update-version,generateparser,build-model,build-mdr"
       description="Compile the sources.">
 
     <echo message="Compiling the sources"/>
@@ -475,8 +483,11 @@ Property files to be searched:
   <target name="jar" depends="compile"
           description="Build the main jar file.">
     <filter token="version" value="${argo.build.version}"/>
-    <copy file="${argo.src.dir}/templates/manifest.template" filtering="on" overwrite="on" tofile="${argo.build.manifest}"/>
-    <jar basedir="${argo.build.classes}" excludes="*.txt,*.bat,*.xml,*.sh" includes="org/argouml/**" jarfile="${argo.build.dir}/${name}.jar" manifest="${argo.build.manifest}"/>
+    <copy file="${argo.src.dir}/templates/manifest.template" filtering="on" 
+      overwrite="on" tofile="${argo.build.manifest}"/>
+    <jar basedir="${argo.build.classes}" excludes="*.txt,*.bat,*.xml,*.sh" 
+      includes="org/argouml/**" jarfile="${argo.build.dir}/${name}.jar" 
+      manifest="${argo.build.manifest}"/>
   </target>
 
   <!-- =================================================================== -->
@@ -654,7 +665,7 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Run ArgoUML from compiled sources                                   -->
   <!-- =================================================================== -->
-  <target name="run" depends="compile,build-mdr"
+  <target name="run" depends="compile"
           description="Run the newly compiled ArgoUML.">
     <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
@@ -670,7 +681,7 @@ Property files to be searched:
     </java>
   </target>
 
-  <target name="debug" depends="compile,build-mdr"
+  <target name="debug" depends="compile"
           description="Run ArgoUML with debug level logging.">
     <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
@@ -686,7 +697,7 @@ Property files to be searched:
     </java>
   </target>
 
-  <target name="info" depends="compile,build-mdr"
+  <target name="info" depends="compile"
           description="Run ArgoUML with info level logging.">
     <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
@@ -802,7 +813,7 @@ Property files to be searched:
   <!-- =================================================================== -->
   <target name="tests"
           depends="compile,junit-setup,junit-report-clean,
-                   ant.optional.init,build-mdr"
+                   ant.optional.init"
           description="Run all tests that don't require any GUI components in headleass mode.">
     <!-- ant 1.4 uses printsummary="true"                          -->
     <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
@@ -845,7 +856,7 @@ Property files to be searched:
   <!-- =================================================================== -->
   <target name="guitests"
           depends="compile,junit-setup,junit-report-clean,
-                   ant.optional.init,build-mdr"
+                   ant.optional.init"
           description="Run all tests that require the GUI components.">
     <!-- ant 1.4 uses printsummary="true"                          -->
     <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
@@ -884,7 +895,7 @@ Property files to be searched:
   <!-- JUnit test cases. Instead, if they hang or exit with error they     -->
   <!-- have failed.                                                        -->
   <!-- =================================================================== -->
-  <target name="clitests" depends="compile,build-mdr" 
+  <target name="clitests" depends="compile" 
           description="Run tests that test the command line stuff.">
 
     <!-- Don't do anything. -->
