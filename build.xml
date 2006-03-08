@@ -137,8 +137,7 @@ Property files to be searched:
     <!-- if it is set in a property file before now, it must be absolute -->
     <property name="argo.root.dir" value="${basedir}/.." />
     <property file="${override.build.properties}"/>
-    <property file="default.properties"/>
-    
+    <property file="${argo.src.dir}/default.properties"/>
 
     <path id="java.tools.classpath">
       <pathelement path="${JAVA_HOME}/lib/tools.jar"/>
