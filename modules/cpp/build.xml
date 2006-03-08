@@ -35,7 +35,7 @@ Building instructions
 =====================
 
 First you must be capable of building ArgoUML. Look in the cookbook for 
-instructions. Them, its just more of the same, now with this Ant script and its 
+instructions. Then, its just more of the same, now with this Ant script and its 
 specific targets.
 
 Property Settings
@@ -51,23 +51,8 @@ Build targets
 
 run build with the option -projecthelp
 
-====================================== FAQ =====================================
-
-1) Why some of the classes present in the original jar are not built any more?
-
-The ArgoUML build system is very flexible: if a module requires a package that
-is not present in the classpath at build time, the module is skipped but
-the build process is not stopped.
-
-2) I see a lot of warnings starting like this: "Warning: file modified in the future:"
-Sometimes ant gives out this warnings, but the build is finished without any problems
-
-3) "ant run" doesn't work, XML classes are not found, what's wrong?
-Maybe you have hard-coded your ANT_HOME variable in the ant start-script. This way it
-doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
-
-
-============================================================================ -->
+===========================================================================
+-->
 
 <project name="argouml-cpp-module" default="install" basedir=".">
 
@@ -96,21 +81,14 @@ round-trip engineering for C++ projects.
     <property name="Name" value="ArgoModule-${argo.module.name}"/>
     <property name="name" value="argomodule-${argo.module.name}"/>
 
-    <property name="argo.root" value="../.."/>
-
-    <property name="module.root" value="${argo.root}/modules/${argo.module.name}"/>
-    <property name="argo.src.dir" value="${argo.root}/src_new"/>
+     <property name="module.root" value="${basedir}"/>
     <property name="module.src.dir" value="${module.root}/src"/>
     <property name="module.tests.src" value="${module.root}/tests"/>
-
-    <property name="argo.build.dir" value="${argo.root}/build"/>
-    <property name="argo.build.src" value="${argo.root}/src_new"/>
 
     <property name="module.lib.dir" value="${module.root}/lib"/>
     
     <property name="commons-io.jar.path" value="${module.lib.dir}/commons-io-1.0.jar"/>
     <property name="easymock.jar.path" value="${module.lib.dir}/easymock-1.1.jar"/>
-    <property name="junit.jar.path" value="${argo.root}/tools/junit-3.8.1/junit.jar"/>
 
     <property name="manifest" value="manifest.mf"/>
     <property name="manifest.src" value="${module.src.dir}/org/${manifest}"/>
@@ -139,8 +117,12 @@ round-trip engineering for C++ projects.
     <property name="developer.lib.dir" value="${argo.build.dir}"/>
 
     <!-- Load ArgoUML properties, including the version -->
-    <property name="argo.root.dir" value="${argo.root}"/>
+    <!-- we really need an absolute path for argo.root.dir -->
+    <!-- if it is set in a property file before now, it must be absolute -->
+    <property name="argo.root.dir" value="${basedir}/../.."/>
+    <property file="${override.build.properties}"/>
     <property file="${argo.src.dir}/default.properties"/>
+
     <property name="module.version" value="${argo.core.version}-${DSTAMP}-${TSTAMP}"/>
 
     <path id="module.compile.classpath">
@@ -221,18 +203,19 @@ round-trip engineering for C++ projects.
    
   <target name="generateparser_internal" unless="parser.is.current" 
           depends="prepare">
-    <java classname="antlr.Tool" classpath="${module.antlr-genparser.classpath}" 
-          fork="yes" maxmemory="32M">
+    <java classname="antlr.Tool" fork="yes" maxmemory="32M">
       <!-- For debugging the parser or lexer you may want to use the options 
       -traceParser or / and -traceLexer. -->
-      <arg line="-o ${module.src.dir}/org/argouml/language/cpp/reveng ${module.src.dir}/org/argouml/language/cpp/reveng/CppParser4Java.g"/>
+      <arg value="-o"/>
+      <arg file="${module.src.dir}/org/argouml/language/cpp/reveng"/>
+      <arg file="${module.src.dir}/org/argouml/language/cpp/reveng/CppParser4Java.g"/>
       <classpath>
         <path refid="module.antlr-genparser.classpath"/>
       </classpath>
     </java>
   </target>
   
-  <target name="cleanparser">
+  <target name="cleanparser" depends="init">
     <delete>
     	<fileset dir="${module.src.dir}/org/argouml/language/cpp/reveng">
         <include name="STDCTokenTypes.txt"/> 
