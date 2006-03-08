@@ -304,11 +304,11 @@ public final class TargetManager {
 
         private void removeHistoryTarget(Object o) {
             if (o instanceof Diagram) {
-                Iterator it = ((Diagram) o).getEdges(null).iterator();
+                Iterator it = ((Diagram) o).getEdges().iterator();
                 while (it.hasNext()) {
                     removeHistoryTarget(it.next());
                 }
-                it = ((Diagram) o).getNodes(null).iterator();
+                it = ((Diagram) o).getNodes().iterator();
                 while (it.hasNext()) {
                     removeHistoryTarget(it.next());
                 }

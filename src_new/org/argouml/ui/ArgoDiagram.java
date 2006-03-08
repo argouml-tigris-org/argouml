@@ -27,6 +27,7 @@ package org.argouml.ui;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.ProjectManager;
@@ -172,23 +173,27 @@ public class ArgoDiagram extends Diagram {
     }
 
     /**
-     * @see Diagram#getEdges(Collection)
+     * Get all the model elements in this diagram that are represented
+     * by a FigEdge
+     * @see Diagram#getEdges()
      */
-    public Collection getEdges(Collection c) {
+    public List getEdges() {
         if (getGraphModel() != null) {
             return getGraphModel().getEdges();
         }
-        return super.getEdges(null);
+        return super.getEdges();
     }
 
     /**
-     * @see Diagram#getNodes(Collection)
+     * Get all the model elements in this diagram that are represented
+     * by a FigNode
+     * @see Diagram#getNodes()
      */
-    public Collection getNodes(Collection c) {
+    public List getNodes() {
         if (getGraphModel() != null) {
             return getGraphModel().getNodes();
         }
-        return super.getNodes(c);
+        return super.getNodes();
     }
 
     /**
