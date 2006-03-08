@@ -218,6 +218,9 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
         if (e instanceof AssociationChangeEvent) {
             return ((AssociationChangeEvent) e).getChangedValue();
         }
+        if (e instanceof AttributeChangeEvent) {
+          return ((AttributeChangeEvent) e).getSource();
+        }
         return e.getNewValue();
     }
 
@@ -255,12 +258,16 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
             if (Model.getFacade().isAModelElement(listTarget)) {
                 Model.getPump().removeModelEventListener(this, listTarget,
                         eventName);
+                // Allow listening to other elements:
+                removeOtherModelEventListeners(listTarget);
             }
 
             if (Model.getFacade().isAModelElement(theNewTarget)) {
                 listTarget = theNewTarget;
                 Model.getPump().addModelEventListener(this, listTarget,
                         eventName);
+                // Allow listening to other elements:
+                addOtherModelEventListeners(listTarget);
 
                 removeAllElements();
                 buildingModel = true;
@@ -275,6 +282,26 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
             }
 
         }
+    }
+
+    /**
+     * This function allows subclasses to listen to more modelelements.
+     * The given target is guaranteed to be a UML modelelement.
+     * 
+     * @param oldTarget the UML modelelement
+     */
+    protected void removeOtherModelEventListeners(Object oldTarget) {
+        /* Do nothing by default. */
+    }
+
+    /**
+     * This function allows subclasses to listen to more modelelements.
+     * The given target is guaranteed to be a UML modelelement.
+     * 
+     * @param newTarget the UML modelelement
+     */
+    protected void addOtherModelEventListeners(Object newTarget) {
+        /* Do nothing by default. */
     }
 
     /**
@@ -299,7 +326,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
     protected boolean isValidEvent(PropertyChangeEvent e) {
         boolean valid = false;
         if (!(getChangedElement(e) instanceof Collection)) {
-            valid = isValidElement(/*(MBase)*/getChangedElement(e));
+            valid = isValidElement(getChangedElement(e));
             if (!valid && e.getNewValue() == null && e.getOldValue() != null) {
                 valid = true; // we tried to remove a value
             }
