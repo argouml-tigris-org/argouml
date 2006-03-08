@@ -47,10 +47,10 @@ public class GoDiagramToEdge extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (parent instanceof Diagram) {
-	    return ((Diagram) parent).getEdges(null);
-	}
-	return null;
+        if (parent instanceof Diagram) {
+            return ((Diagram) parent).getEdges();
+        }
+        return null;
     }
 
     /**

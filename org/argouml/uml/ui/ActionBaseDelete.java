@@ -27,6 +27,7 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -203,8 +204,8 @@ public abstract class ActionBaseDelete extends UMLAction {
         } else if (target instanceof UMLDiagram) {
             // lets see if this diagram has some figs on it
             UMLDiagram diagram = (UMLDiagram) target;
-            Collection nodes = diagram.getNodes(new Vector());
-            Collection edges = diagram.getNodes(new Vector());
+            List nodes = diagram.getNodes();
+            List edges = diagram.getNodes();
             if ((nodes.size() + edges.size()) > 0) {
                 // the diagram contains figs so lets ask the user if
                 // he/she is sure

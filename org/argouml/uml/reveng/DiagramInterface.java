@@ -166,7 +166,7 @@ public class DiagramInterface {
 	if (currentDiagram == null) {
             return false;
         } else {
-            return currentDiagram.getNodes(null).contains(p);
+            return currentDiagram.getNodes().contains(p);
         }
     }
 

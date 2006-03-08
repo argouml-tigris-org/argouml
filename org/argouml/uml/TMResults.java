@@ -204,8 +204,8 @@ public class TMResults extends AbstractTableModel {
      * @return a string which says it all
      */
     private Object countNodesAndEdges(Diagram d) {
-        int numNodes = d.getNodes(null).size();
-        int numEdges = d.getEdges(null).size();
+        int numNodes = d.getNodes().size();
+        int numEdges = d.getEdges().size();
         Object[] msgArgs = {new Integer(numNodes),
                             new Integer(numEdges),
 	};

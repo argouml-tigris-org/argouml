@@ -48,7 +48,7 @@ public class GoDiagramToNode extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
 	if (parent instanceof Diagram) {
-	    return ((Diagram) parent).getNodes(null);
+	    return ((Diagram) parent).getNodes();
 	}
 	return null;
     }
