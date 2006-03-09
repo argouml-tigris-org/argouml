@@ -33,6 +33,7 @@ import org.argouml.uml.diagram.ui.ActionAddMessage;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelAssociation;
 import org.argouml.util.ConfigLoader;
@@ -60,7 +61,11 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
         JComboBox baseComboBox =
 	    new UMLComboBox2(new UMLAssociationRoleBaseComboBoxModel(),
                 ActionSetAssociationRoleBase.getInstance());
-        addField(Translator.localize("label.base"), baseComboBox);
+        addField(Translator.localize("label.base"), 
+            new UMLComboBoxNavigator(
+                this,
+                Translator.localize("label.association.navigate.tooltip"), 
+                baseComboBox));
 
         addSeperator();
 
