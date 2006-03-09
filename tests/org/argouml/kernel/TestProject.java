@@ -215,7 +215,7 @@ public class TestProject extends TestCase {
 
     /**
      * Test deleting a class that contains a Class.
-     * The class should be deleted, too.
+     * The inner class should be deleted, too.
      */
     public void testDeleteClassWithInnerClass() {
         Project p = ProjectManager.getManager().getCurrentProject();
