@@ -38,10 +38,6 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLAssociationRoleBaseComboBoxModel() {
         super("base", true);
-        // TODO: This is listening to all namespace changes *everywhere*
-        // in the model - do we really need something so heavy? - tfm
-        Model.getPump().addClassModelEventListener(this,
-                Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
     /**
