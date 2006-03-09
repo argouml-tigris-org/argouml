@@ -28,6 +28,9 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
+ * The combo box model for the base of an association-role.
+ * The base is clearable, since the UML standard indicates multiplicity 0..1.
+ * 
  * @since Oct 4, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
