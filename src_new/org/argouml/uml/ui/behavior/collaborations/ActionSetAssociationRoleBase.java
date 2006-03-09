@@ -27,26 +27,23 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
+ * The action to set the base of an associationrole.
+ * 
  * @since Oct 4, 2002
  * @author jaap.branderhorst@xs4all.nl
- * @stereotype singleton
  */
-public class ActionSetAssociationRoleBase extends UMLAction {
-
-    private static final ActionSetAssociationRoleBase SINGLETON =
-	new ActionSetAssociationRoleBase();
+public class ActionSetAssociationRoleBase extends UndoableAction {
 
     /**
      * Constructor for ActionSetAssociationRoleBase.
      */
-    protected ActionSetAssociationRoleBase() {
-        super(Translator.localize("Set"), false, NO_ICON);
+    public ActionSetAssociationRoleBase() {
+        super();
     }
 
     /**
@@ -66,13 +63,6 @@ public class ActionSetAssociationRoleBase extends UMLAction {
                     .setBase(source.getTarget(), selected);
             }
         }
-    }
-
-    /**
-     * @return Returns the sINGLETON.
-     */
-    public static ActionSetAssociationRoleBase getInstance() {
-        return SINGLETON;
     }
 
 }
