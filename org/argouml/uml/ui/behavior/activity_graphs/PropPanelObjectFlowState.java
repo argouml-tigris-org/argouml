@@ -58,7 +58,7 @@ import org.tigris.gef.undo.UndoableAction;
 public class PropPanelObjectFlowState extends AbstractPropPanelState {
 
     private JComboBox classifierComboBox;
-    protected JScrollPane statesScroll;
+    private JScrollPane statesScroll;
     
     private ActionNewClassifierInState actionNewCIS;
 
@@ -81,10 +81,10 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
 
         // field for Classifier(not InState)
         addField(Translator.localize("label.type"),
-                new UMLComboBoxNavigator(
-                        this,
-                        Translator.localize("label.classifierinstate.navigate.tooltip"),
-                        getClassifierComboBox()));
+            new UMLComboBoxNavigator(
+                this,
+                Translator.localize("label.classifierinstate.navigate.tooltip"),
+                getClassifierComboBox()));
 
         // field for States
         AbstractActionAddModelElement actionAdd = 
@@ -92,7 +92,11 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
         AbstractActionRemoveElement actionRemove = 
             new ActionRemoveOFSState();
         UMLMutableLinkedList list = new UMLMutableLinkedList(
-                new UMLOFSStateListModel(), actionAdd, null, actionRemove, true);
+                new UMLOFSStateListModel(), 
+                actionAdd, 
+                null, 
+                actionRemove, 
+                true);
         statesScroll = new JScrollPane(list);
         addField(Translator.localize("label.instate"),
                 statesScroll);
@@ -239,7 +243,8 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
                 } else if (Model.getFacade().isAClassifier(type) 
                         && (selected != null) 
                         && (selected.size() > 0)) {
-                    /* So, we found a Classifier that is not a ClassifierInState.
+                    /* So, we found a Classifier 
+                     * that is not a ClassifierInState.
                      * And at least one state has been selected. 
                      * Well, let's correct that: */
                     Object cis = Model.getActivityGraphsFactory()
@@ -262,7 +267,8 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
                 }
                 if (Model.getFacade().isAClassifier(classifier)) {
                     ret.addAll(Model.getModelManagementHelper()
-                            .getAllModelElementsOfKindWithModel(classifier, choiceClass));
+                            .getAllModelElementsOfKindWithModel(classifier, 
+                                    choiceClass));
                 }
                 removeTopStateFrom(ret);
             }
@@ -311,7 +317,8 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
                         Collection states = new ArrayList(
                                 Model.getFacade().getInStates(type));
                         states.remove(state);
-                        Model.getActivityGraphsHelper().setInStates(type, states);
+                        Model.getActivityGraphsHelper()
+                                .setInStates(type, states);
                     }
                 }
             }
@@ -363,7 +370,8 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
                 if (Model.getFacade().isAClassifier(type)) {
                     if (!Model.getFacade().isAClassifierInState(type)) {
                         Collection states = Model.getModelManagementHelper()
-                            .getAllModelElementsOfKindWithModel(type, choiceClass);
+                            .getAllModelElementsOfKindWithModel(type, 
+                                    choiceClass);
                         if (states.size() > 0) {
                             enabled = true;
                         }
