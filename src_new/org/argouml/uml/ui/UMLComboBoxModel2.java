@@ -324,12 +324,14 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
             if (comboBoxTarget != null) {
                 buildingModel = true;
                 buildModelList();
-                buildingModel = false;
+                // Do not set buildingModel = false already here, 
+                // otherwise the action for selection is performed.
                 setSelectedItem(getSelectedModelElement());
+                buildingModel = false;
+
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
                 }
-
             }
             if (getSelectedItem() != null && isClearable) {
                 addElement(""); // makes sure we can select 'none'
