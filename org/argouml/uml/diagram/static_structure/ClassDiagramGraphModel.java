@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -218,9 +218,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             return true;
         }
     	if (containsNode(node)) {
-            LOG.error("Addition of node of type " +
-                    node.getClass().getName() +
-                    " rejected because its already in the graph model");
+            LOG.error("Addition of node of type "
+                    + node.getClass().getName()
+                    + " rejected because its already in the graph model");
     	    return false;
     	}
         if (Model.getFacade().isAAssociation(node)) {
@@ -232,10 +232,10 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
                 Object classifier =
                     Model.getFacade().getClassifier(iter.next());
                 if (!containsNode(classifier)) {
-                    LOG.error("Addition of node of type " +
-                            node.getClass().getName() +
-                            " rejected because it is connected to a " +
-                            "classifier that is not in the diagram");
+                    LOG.error("Addition of node of type "
+                            + node.getClass().getName()
+                            + " rejected because it is connected to a "
+                            + "classifier that is not in the diagram");
                     return false;
                 }
             }
@@ -244,7 +244,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
         // TODO: This logic may well be worth moving into the model component.
         // Provide a similar grid to the connectionsGrid
-        if (Model.getFacade().isAModel(node)) return false; // issue 3774
+        if (Model.getFacade().isAModel(node)) {
+            return false; // issue 3774
+        }
         return Model.getFacade().isAClass(node)
             || Model.getFacade().isAInterface(node)
             || Model.getFacade().isAPackage(node);
@@ -287,7 +289,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
                 return false;
             }
 
-            if (!containsEdge(sourceModelElement) && !containsNode(sourceModelElement)) {
+            if (!containsEdge(sourceModelElement)
+                    && !containsNode(sourceModelElement)) {
                 LOG.error("Association end rejected. The source model element ("
                         + sourceModelElement.getClass().getName()
                         + ") must be on the diagram");
@@ -295,7 +298,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             }
 
             if (!containsNode(destModelElement)) {
-                LOG.error("Association end rejected. The destination model element must be on the diagram");
+                LOG.error("Association end rejected. "
+                        + "The destination model element must be "
+                        + "on the diagram.");
                 return false;
             }
 
@@ -335,16 +340,16 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
         if (!containsNode(sourceModelElement)
                 && !containsEdge(sourceModelElement)) {
-            LOG.error("Edge rejected. Its source end is attached to " +
-                    sourceModelElement +
-                    " but this is not in the graph model");
+            LOG.error("Edge rejected. Its source end is attached to "
+                    + sourceModelElement
+                    + " but this is not in the graph model");
             return false;
         }
         if (!containsNode(destModelElement)
                 && !containsEdge(destModelElement)) {
-            LOG.error("Edge rejected. Its destination end is attached to " +
-                    destModelElement +
-                    " but this is not in the graph model");
+            LOG.error("Edge rejected. Its destination end is attached to "
+                    + destModelElement
+                    + " but this is not in the graph model");
             return false;
         }
 
@@ -510,23 +515,25 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 		if (Model.getFacade().isAGeneralization(modelElement)) {
 		    removeEdge(modelElement);
 		}
-	    }
-	    else {
+	    } else {
 		LOG.debug("model added " + modelElement);
 	    }
 	}
     }
 
 
+    /**
+     * The UID.
+     */
     static final long serialVersionUID = -2638688086415040146L;
 
 
     /**
      * When rerouting an edge, this is the first method to
      * be called by SelectionRerouteEdge, in order to determine
-     * whether the graphmodel will allow the change.
+     * whether the graphmodel will allow the change.<p>
      *
-     * <p>restricted to class<->association changes for now.
+     * Restricted to class-association changes for now.
      *
      * @param newNode this is the new node that one of the ends is dragged to.
      * @param oldNode this is the existing node that is already connected.
@@ -538,8 +545,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 					  Object edge) {
 
 	// prevent no changes...
-	if (newNode == oldNode)
-	    return false;
+	if (newNode == oldNode) {
+            return false;
+        }
 
 	// check parameter types:
 	if (!(Model.getFacade().isAClass(newNode)
@@ -565,26 +573,28 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     public void changeConnectedNode(Object newNode, Object oldNode,
 				    Object edge, boolean isSource) {
-	if (Model.getFacade().isAAssociation(edge))
-	    rerouteAssociation(newNode,  oldNode,  edge,  isSource);
-	else if (Model.getFacade().isAGeneralization(edge))
-	    rerouteGeneralization(newNode,  oldNode,  edge,  isSource);
-	else if (Model.getFacade().isADependency(edge))
-	    rerouteDependency(newNode,  oldNode,  edge,  isSource);
-	else if (Model.getFacade().isALink(edge))
-	    rerouteLink(newNode,  oldNode,  edge,  isSource);
+	if (Model.getFacade().isAAssociation(edge)) {
+            rerouteAssociation(newNode,  oldNode,  edge,  isSource);
+        } else if (Model.getFacade().isAGeneralization(edge)) {
+            rerouteGeneralization(newNode,  oldNode,  edge,  isSource);
+        } else if (Model.getFacade().isADependency(edge)) {
+            rerouteDependency(newNode,  oldNode,  edge,  isSource);
+        } else if (Model.getFacade().isALink(edge)) {
+            rerouteLink(newNode,  oldNode,  edge,  isSource);
+        }
     }
 
     /**
-     * helper method for changeConnectedNode
+     * helper method for changeConnectedNode.
      */
     private void rerouteAssociation(Object newNode, Object oldNode,
 				    Object edge, boolean isSource) {
 	// check param types: only some connections are legal uml connections:
 
 	if (!(Model.getFacade().isAClassifier(newNode))
-	    || !(Model.getFacade().isAClassifier(oldNode)))
-	    return;
+	    || !(Model.getFacade().isAClassifier(oldNode))) {
+            return;
+        }
 
 	// can't have a connection between 2 interfaces:
 	// get the 'other' end type
@@ -593,15 +603,15 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (isSource) {
 	    otherNode =
 		Model.getCoreHelper().getDestination(/*(MRelationship)*/ edge);
-	}
-	else {
+	} else {
 	    otherNode =
 		Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
 	}
 
 	if (Model.getFacade().isAInterface(newNode)
-	        && Model.getFacade().isAInterface(otherNode))
-	    return;
+	        && Model.getFacade().isAInterface(otherNode)) {
+            return;
+        }
 
         // cast the params
 	Object /*MAssociation*/ edgeAssoc = edge;
@@ -636,8 +646,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     }
 
     /**
-     * helper method for changeConnectedNode
-     * <p>empty at the moment
+     * helper method for changeConnectedNode.<p>
+     *
+     * empty at the moment
      */
     private void rerouteGeneralization(Object newNode, Object oldNode,
 				       Object edge, boolean isSource) {
@@ -645,8 +656,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     }
 
     /**
-     * helper method for changeConnectedNode
-     * <p>empty at the moment
+     * Helper method for changeConnectedNode.<p>
+     *
+     * empty at the moment
      */
     private void rerouteDependency(Object newNode, Object oldNode,
 				   Object edge, boolean isSource) {
@@ -654,8 +666,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     }
 
     /**
-     * helper method for changeConnectedNode
-     * <p>empty at the moment
+     * helper method for changeConnectedNode.<p>
+     *
+     * Empty at the moment
      */
     private void rerouteLink(Object newNode, Object oldNode,
 			     Object edge, boolean isSource) {
