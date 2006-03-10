@@ -52,15 +52,18 @@ public class ActionSetAssociationRoleBase extends UndoableAction {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        Object selected = null;
         if (e.getSource() instanceof UMLComboBox2) {
             UMLComboBox2 source = (UMLComboBox2) e.getSource();
-            selected = source.getSelectedItem();
-            if (Model.getFacade().isAAssociation(selected)
-                    && Model.getFacade().isAAssociationRole(
-                            source.getTarget())) {
-                Model.getCollaborationsHelper()
-                    .setBase(source.getTarget(), selected);
+            Object assoc = source.getSelectedItem();
+            Object ar = source.getTarget();
+            if (Model.getFacade().getBase(ar) == assoc) {
+                return; // base is already set to this assoc...
+                /* This check is needed, otherwise the setbase()
+                 *  below gives an exception.*/
+            }
+            if (Model.getFacade().isAAssociation(assoc)
+                    && Model.getFacade().isAAssociationRole(ar)) {
+                Model.getCollaborationsHelper().setBase(ar, assoc);
             }
         }
     }

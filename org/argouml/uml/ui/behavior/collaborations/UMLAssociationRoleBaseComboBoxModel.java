@@ -24,6 +24,9 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import java.beans.PropertyChangeEvent;
+import java.util.Collection;
+
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -48,16 +51,23 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        setElements(Model.getCollaborationsHelper().getAllPossibleBases(
-                /*(MAssociationRole)*/ getTarget()));
+        Object ar = getTarget();
+        Object base = Model.getFacade().getBase(ar);
+        if (Model.getFacade().isAAssociationRole(ar)) {
+            setElements(
+                    Model.getCollaborationsHelper().getAllPossibleBases(ar));
+        }
+        if (base != null) addElement(base);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        if (getTarget() != null) {
-            return Model.getFacade().getBase(getTarget());
+        Object ar = getTarget();
+        if (Model.getFacade().isAAssociationRole(ar)) {
+            Object base = Model.getFacade().getBase(ar);
+            if (base != null) return base;
         }
         return null;
     }
@@ -66,8 +76,23 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return Model.getCollaborationsHelper().getAllPossibleBases(
-                /*(MAssociationRole)*/ getTarget()).contains(element);
+        Object ar = getTarget();
+        if (Model.getFacade().isAAssociationRole(ar)) {
+            Object base = Model.getFacade().getBase(ar);
+            if (element == base) return true;
+            Collection b = 
+                Model.getCollaborationsHelper().getAllPossibleBases(ar);
+            return b.contains(element);
+        }
+        return false;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        /* The list may only change when the target changes.
+         * Hence do nothing by design. */
     }
 
 }
