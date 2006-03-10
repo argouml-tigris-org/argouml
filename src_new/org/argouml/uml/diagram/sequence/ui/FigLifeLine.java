@@ -1,6 +1,27 @@
-/**
- * 
- */
+// $Id$
+// Copyright (c) 2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.awt.Color;
@@ -30,33 +51,46 @@ import org.xml.sax.helpers.DefaultHandler;
 
 class FigLifeLine extends FigGroup implements HandlerFactory {
 
-    final static int WIDTH = 20;
-    final static int HEIGHT = 1000;
-    
+    static final int WIDTH = 20;
+    static final int HEIGHT = 1000;
+
     private FigRect rect;
     private FigLine line;
-    
+
     /**
      * The set of activation figs.
      */
     private Set activationFigs;
-    
+
+    /**
+     * Constructor.
+     *
+     * @param x
+     * @param y
+     */
     FigLifeLine(int x, int y) {
         super();
         rect = new FigRect(x, y, WIDTH, HEIGHT);
         rect.setFilled(false);
         rect.setLineWidth(0);
-        line = new FigLine(x + WIDTH / 2, y, x+ WIDTH / 2, HEIGHT, Color.black);
+        line =
+            new FigLine(x + WIDTH / 2, y, x + WIDTH / 2, HEIGHT, Color.black);
         line.setDashed(true);
         addFig(rect);
         addFig(line);
         activationFigs = new HashSet();
     }
-    
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
     public Dimension getMinimumSize() {
         return new Dimension(20, 100);
     }
-    
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     */
     public void setBoundsImpl(int x, int y, int w, int h) {
         rect.setBounds(x, y, WIDTH, h);
         line.setLocation(x + w / 2, y);
@@ -71,7 +105,7 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
         }
         calcBounds();
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#calcBounds()
      */
@@ -87,10 +121,9 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
         List activations = new ArrayList(activationFigs);
         activationFigs.clear();
         for (Iterator it = activations.iterator();
-              it.hasNext();
-         ) {
+              it.hasNext();) {
             removeFig((Fig) it.next());
-    }
+        }
         calcBounds();
     }
 
@@ -106,11 +139,11 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
      *
      * @see org.tigris.gef.presentation.FigGroup#removeFig(Fig)
      */
-    final public void removeFig(Fig f) {
+    public final void removeFig(Fig f) {
         super.removeFig(f);
         activationFigs.remove(f);
     }
-    
+
     /**
      * Change a node to point to an actual FigMessagePort.
      */
@@ -125,14 +158,14 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
 
         return fmp;
     }
-    
+
     final int getYCoordinate(int nodeIndex) {
         return
             nodeIndex * SequenceDiagramLayout.LINK_DISTANCE
                 + getY()
                 + SequenceDiagramLayout.LINK_DISTANCE / 2;
     }
-    
+
     /**
      * @see org.tigris.gef.persistence.pgml.HandlerFactory#getHandler(
      * org.tigris.gef.persistence.pgml.HandlerStack, java.lang.Object,
@@ -145,11 +178,11 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
                                String localname,
                                String qname,
                                Attributes attributes)
-    throws SAXException {
+        throws SAXException {
 
         PGMLStackParser parser = (PGMLStackParser) stack;
         StringTokenizer st =
-        new StringTokenizer(attributes.getValue("description"), ",;[] ");
+            new StringTokenizer(attributes.getValue("description"), ",;[] ");
         if (st.hasMoreElements()) {
             st.nextToken();
         }
@@ -182,7 +215,7 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
         ((Container) container).addObject(this);
         return new FigLifeLineHandler(parser, this);
     }
-    
+
     static class FigLifeLineHandler extends FigGroupHandler {
         /**
          * Constructor.
@@ -230,4 +263,9 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
             return result;
         }
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1242239243040698287L;
 }

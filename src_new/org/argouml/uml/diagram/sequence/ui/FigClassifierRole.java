@@ -100,7 +100,7 @@ public class FigClassifierRole extends FigNodeModelElement
      * The defaultwidth of the object rectangle.
      */
     public static final int MIN_HEAD_WIDTH = 3 * MIN_HEAD_HEIGHT / 2;
-    
+
     /**
      * The filled box for the object box (object fig without lifeline).
      */
@@ -144,8 +144,8 @@ public class FigClassifierRole extends FigNodeModelElement
         getNameFig().setEditable(false);
         getNameFig().setFilled(false);
         getNameFig().setLineWidth(0);
-        lifeLine = 
-            new FigLifeLine(MIN_HEAD_WIDTH / 2 - WIDTH / 2 ,MIN_HEAD_HEIGHT);
+        lifeLine =
+            new FigLifeLine(MIN_HEAD_WIDTH / 2 - WIDTH / 2, MIN_HEAD_HEIGHT);
         linkPositions.add(new MessageNode(this));
         for (int i = 0;
             i <= lifeLine.getHeight() / SequenceDiagramLayout.LINK_DISTANCE;
@@ -192,7 +192,7 @@ public class FigClassifierRole extends FigNodeModelElement
     public int getNodeCount() {
         return linkPositions.size();
     }
-    
+
     /**
      * Change a node to point to an actual FigMessagePort.
      */
@@ -201,7 +201,7 @@ public class FigClassifierRole extends FigNodeModelElement
         updateNodeStates();
         return fmp;
     }
-    
+
     void addFigMessagePort(FigMessagePort messagePortFig) {
         lifeLine.addFig(messagePortFig);
     }
@@ -266,15 +266,15 @@ public class FigClassifierRole extends FigNodeModelElement
         y = 50;
         Rectangle oldBounds = getBounds();
         w = headFig.getMinimumSize().width;
-        
+
         headFig.setBounds(x, y, w, headFig.getMinimumSize().height);
-        
+
         lifeLine.setBounds(
                 (x + w / 2) - WIDTH / 2,
                 y + headFig.getHeight(),
                 WIDTH,
                 h - headFig.getHeight());
-        
+
         this.updateEdges(); //???
         growToSize(
                 lifeLine.getHeight() / SequenceDiagramLayout.LINK_DISTANCE
@@ -471,9 +471,10 @@ public class FigClassifierRole extends FigNodeModelElement
                         if (callerIndex != -1) {
                             for (int backNodeIndex = i - 1;
                                   backNodeIndex > 0
-                                  && ((MessageNode) linkPositions
-                                          .get(backNodeIndex))
-                                 .matchingCallerList(caller, callerIndex);
+                                    && ((MessageNode) linkPositions
+                                            .get(backNodeIndex))
+                                            .matchingCallerList(caller,
+                                                    callerIndex);
                                   --backNodeIndex) {
                                 ;
                             }
@@ -542,16 +543,19 @@ public class FigClassifierRole extends FigNodeModelElement
             if (lastState != nextState && nextState == MessageNode.CREATED) {
                 FigRect birthFig =
 		    new FigRect(lifeLine.getX(),
-                    lifeLine.getYCoordinate(i)
-                    - SequenceDiagramLayout.LINK_DISTANCE / 4,
-                    WIDTH,
-				SequenceDiagramLayout.LINK_DISTANCE / 4);
+		            lifeLine.getYCoordinate(i)
+		            - SequenceDiagramLayout.LINK_DISTANCE / 4,
+                            WIDTH,
+                            SequenceDiagramLayout.LINK_DISTANCE / 4);
                 birthFig.setFilled(true);
                 birthFig.setFillColor(Color.BLACK);
                 lifeLine.addActivationFig(birthFig);
-            } if (lastState != nextState && nextState == MessageNode.DESTROYED) {
+            }
+
+            if (lastState != nextState
+                    && nextState == MessageNode.DESTROYED) {
                 int y =
-                    lifeLine.getYCoordinate(i) 
+                    lifeLine.getYCoordinate(i)
                     - SequenceDiagramLayout.LINK_DISTANCE / 2;
                 lifeLine.addActivationFig(
                     new FigLine(x,
@@ -575,10 +579,10 @@ public class FigClassifierRole extends FigNodeModelElement
                 case MessageNode.CREATED:
                     startActivationNode = node;
                     startFull = false;
-                        default:
-                        }
-                    } else {
-                        switch (nextState) {
+                default:
+                }
+            } else {
+                switch (nextState) {
                 case MessageNode.DESTROYED :
                 case MessageNode.RETURNED :
                     endActivationNode = node;
@@ -599,8 +603,8 @@ public class FigClassifierRole extends FigNodeModelElement
                     }
                     break;
                 default:
-                        }
-                    }
+                }
+            }
             lastState = nextState;
             if (startActivationNode != null && endActivationNode != null) {
                 if (startActivationNode != endActivationNode
@@ -613,7 +617,8 @@ public class FigClassifierRole extends FigNodeModelElement
                     if (endFull) {
                         y2 += SequenceDiagramLayout.LINK_DISTANCE / 2;
                     }
-                    lifeLine.addActivationFig(new FigRect(x, y1, WIDTH, y2 - y1));
+                    lifeLine.addActivationFig(
+                            new FigRect(x, y1, WIDTH, y2 - y1));
                 }
                 startActivationNode = null;
 		endActivationNode = null;
@@ -776,7 +781,7 @@ public class FigClassifierRole extends FigNodeModelElement
     public int getLineWidth() {
         return headFig.getLineWidth();
     }
-    
+
     private FigLifeLine getLifeLineFig() {
         return lifeLine;
     }
@@ -793,8 +798,12 @@ public class FigClassifierRole extends FigNodeModelElement
             removeAllElementListeners();
         }
         if (newOwner != null) {
-            addElementListener(newOwner, new String[] {"name", "stereotype",
-                                                       "base",});
+            addElementListener(newOwner,
+                    new String[] {
+                        "name",
+                        "stereotype",
+                        "base",
+                    });
             Iterator it = Model.getFacade().getBases(newOwner).iterator();
             while (it.hasNext()) {
                 Object base = it.next();
@@ -850,6 +859,8 @@ public class FigClassifierRole extends FigNodeModelElement
 
     /**
      * Remove a FigMessagePort that's associated with a removed FigMessage.
+     *
+     * @param fmp The FigMessagePort.
      */
     void removeFigMessagePort(FigMessagePort fmp) {
         fmp.getNode().setFigMessagePort(null);
@@ -960,7 +971,8 @@ public class FigClassifierRole extends FigNodeModelElement
                     }
                 } else {
                     foundNode =
-                        (MessageNode) linkPositions.get(linkPositions.size() - 1);
+                        (MessageNode)
+                            linkPositions.get(linkPositions.size() - 1);
                     MessageNode nextNode;
                     nextNode = new MessageNode(this);
                     linkPositions.add(nextNode);
@@ -1172,13 +1184,19 @@ public class FigClassifierRole extends FigNodeModelElement
             if (qname.equals("group")
                     && description != null
                     && description.startsWith(FigLifeLine.class.getName())) {
-                PGMLStackParser parser = (PGMLStackParser) stack;
-                FigClassifierRole fcr = (FigClassifierRole)((FigGroupHandler) container).getFigGroup();
-                result = new FigLifeLineHandler((PGMLStackParser) stack, fcr.getLifeLineFig());
+                FigClassifierRole fcr =
+                    (FigClassifierRole)
+                        ((FigGroupHandler) container).getFigGroup();
+                result =
+                    new FigLifeLineHandler(
+                            (PGMLStackParser) stack,
+                            fcr.getLifeLineFig());
             } else if (qname.equals("group")
                         && description != null
-                        && description.startsWith(FigMessagePort.class.getName())) {
-                // TODO This if-else-block exists in order to load sequence diagrams
+                        && description.startsWith(
+                                FigMessagePort.class.getName())) {
+                // TODO: This if-else-block exists in order
+                // to load sequence diagrams
                 // from 0.20. It must exist until -
                 // http://argouml.tigris.org/issues/show_bug.cgi?id=4039
                 PGMLStackParser parser = (PGMLStackParser) stack;
@@ -1186,7 +1204,8 @@ public class FigClassifierRole extends FigNodeModelElement
                 Object owner = parser.findOwner(ownerRef);
                 FigMessagePort fmp = new FigMessagePort(owner);
                 FigClassifierRole fcr =
-                    (FigClassifierRole)((FigGroupHandler) container).getFigGroup();
+                    (FigClassifierRole)
+                        ((FigGroupHandler) container).getFigGroup();
                 fcr.getLifeLineFig().addFig(fmp);
                 result = new FigGroupHandler((PGMLStackParser) stack, fmp);
                 PGMLStackParser.setCommonAttrs(fmp, attributes);
@@ -1203,7 +1222,7 @@ public class FigClassifierRole extends FigNodeModelElement
             return result;
         }
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
@@ -1252,7 +1271,7 @@ public class FigClassifierRole extends FigNodeModelElement
                 }
             }
         }
-        
+
         for (Iterator i = figs.iterator(); i.hasNext();) {
             Object o = i.next();
             if (o instanceof FigClassifierRole) {
@@ -1261,9 +1280,9 @@ public class FigClassifierRole extends FigNodeModelElement
                 other.headFig.calcBounds();
             }
         }
-        
+
     }
-    
+
     /**
      * The UID.
      */

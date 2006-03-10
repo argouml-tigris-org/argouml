@@ -164,8 +164,11 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
 
     /**
      * Return the node index at a certain y point.
+     *
+     * @param y The point.
+     * @return The node index.
      */
-    static public int getNodeIndex(int y) {
+    public static int getNodeIndex(int y) {
         y -= DIAGRAM_TOP_MARGE + FigClassifierRole.MIN_HEAD_HEIGHT;
         if (y < 0) {
             y = 0;
