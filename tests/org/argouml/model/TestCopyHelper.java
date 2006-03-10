@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,9 +39,8 @@ public class TestCopyHelper extends TestCase {
      */
     public TestCopyHelper(String name) {
 	super(name);
-	
     }
-    
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
@@ -64,7 +63,7 @@ public class TestCopyHelper extends TestCase {
     public void compileTestPublicMembers() {
 	CopyHelper h = Model.getCopyHelper();
 
-	h.copy(Model.getCoreFactory().createComment(), 
+	h.copy(Model.getCoreFactory().createComment(),
 			Model.getModelManagementFactory().createPackage());
     }
 
@@ -113,9 +112,9 @@ public class TestCopyHelper extends TestCase {
         Model.getCoreHelper().setSpecification(k, false);
         Model.getCoreHelper().setTaggedValue(k, "TVKey", "TVNewValue");
         Model.getCoreHelper().setActive(k, true);
-        Model.getExtensionMechanismsHelper().addCopyStereotype(k, st);		
+        Model.getExtensionMechanismsHelper().addCopyStereotype(k, st);
 	assertEquals("TestClass", Model.getFacade().getName(c));
-	assertTrue(Model.getFacade().getVisibility(c) 
+	assertTrue(Model.getFacade().getVisibility(c)
                 == Model.getVisibilityKind().getPublic());
 	assertTrue(Model.getFacade().isSpecification(c));
 	assertTrue(!Model.getFacade().isActive(c));
@@ -164,7 +163,7 @@ public class TestCopyHelper extends TestCase {
         Model.getCoreHelper().setVisibility(d,
                 Model.getVisibilityKind().getPublic());
         Model.getCoreHelper().setSpecification(d, true);
-        Model.getCoreHelper().setTaggedValue(d, "TVKey", "TVValue");	
+        Model.getCoreHelper().setTaggedValue(d, "TVKey", "TVValue");
 	c = helper.copy(d, m2);
 	checkDataTypeCopy(d, c);
 
@@ -174,9 +173,9 @@ public class TestCopyHelper extends TestCase {
                 Model.getVisibilityKind().getProtected());
         Model.getCoreHelper().setSpecification(d, false);
         Model.getCoreHelper().setTaggedValue(d, "TVKey", "TVNewValue");
-        Model.getExtensionMechanismsHelper().addCopyStereotype(d, st);	
+        Model.getExtensionMechanismsHelper().addCopyStereotype(d, st);
 	assertEquals("TestDataType", Model.getFacade().getName(c));
-	assertTrue(Model.getFacade().getVisibility(c) 
+	assertTrue(Model.getFacade().getVisibility(c)
                 == Model.getVisibilityKind().getPublic());
 	assertTrue(Model.getFacade().isSpecification(c));
 	assertEquals("TVValue", Model.getFacade().getValueOfTag(
@@ -235,9 +234,9 @@ public class TestCopyHelper extends TestCase {
                 Model.getVisibilityKind().getProtected());
         Model.getCoreHelper().setSpecification(i, false);
         Model.getCoreHelper().setTaggedValue(i, "TVKey", "TVNewValue");
-        Model.getExtensionMechanismsHelper().addCopyStereotype(i, st);	
+        Model.getExtensionMechanismsHelper().addCopyStereotype(i, st);
 	assertEquals("TestInterface", Model.getFacade().getName(c));
-	assertTrue(Model.getFacade().getVisibility(c) 
+	assertTrue(Model.getFacade().getVisibility(c)
                 == Model.getVisibilityKind().getPublic());
 	assertTrue(Model.getFacade().isSpecification(c));
 	assertEquals("TVValue", Model.getFacade().getValueOfTag(
@@ -295,9 +294,9 @@ public class TestCopyHelper extends TestCase {
                 Model.getVisibilityKind().getProtected());
         Model.getCoreHelper().setSpecification(p, false);
         Model.getCoreHelper().setTaggedValue(p, "TVKey", "TVNewValue");
-        Model.getExtensionMechanismsHelper().addCopyStereotype(p, st);	
+        Model.getExtensionMechanismsHelper().addCopyStereotype(p, st);
 	assertEquals("TestPackage", Model.getFacade().getName(c));
-	assertTrue(Model.getFacade().getVisibility(c)  
+	assertTrue(Model.getFacade().getVisibility(c)
                 == Model.getVisibilityKind().getPublic());
 	assertTrue(Model.getFacade().isSpecification(c));
 	assertEquals("TVValue", Model.getFacade().getValueOfTag(
@@ -329,7 +328,8 @@ public class TestCopyHelper extends TestCase {
 	s = Model.getExtensionMechanismsFactory().buildStereotype(null, m1);
         Model.getCoreHelper().addOwnedElement(m1, s);
 
-        st = Model.getExtensionMechanismsFactory()
+        st =
+            Model.getExtensionMechanismsFactory()
                 .buildStereotype("sttStT", m1);
         Model.getCoreHelper().addOwnedElement(m1, st);
 
@@ -404,7 +404,7 @@ public class TestCopyHelper extends TestCase {
 
 	assertTrue(Model.getFacade().isAbstract(e1) == Model.getFacade()
                 .isAbstract(e2));
-        assertTrue(Model.getFacade().isLeaf(e1) 
+        assertTrue(Model.getFacade().isLeaf(e1)
                 == Model.getFacade().isLeaf(e2));
         assertTrue(Model.getFacade().isRoot(e1)
                 == Model.getFacade().isRoot(e2));
@@ -427,19 +427,20 @@ public class TestCopyHelper extends TestCase {
                      Model.getFacade().getVisibility(e2));
         assertEquals(Model.getFacade().isSpecification(e1),
                      Model.getFacade().isSpecification(e2));
-        assertEquals(Model.getFacade().getTaggedValuesCollection(e1).size(), 
+        assertEquals(Model.getFacade().getTaggedValuesCollection(e1).size(),
                      Model.getFacade().getTaggedValuesCollection(e2).size());
-        
+
 	Iterator it = Model.getFacade().getTaggedValues(e1);
 	while (it.hasNext()) {
 	    Object tv = it.next();
 	    //TODO: not sure if we must use getTag here
-	    Object e2Tv = Model.getFacade().getTaggedValue(e2,
+	    Object e2Tv =
+                Model.getFacade().getTaggedValue(e2,
                     Model.getFacade().getTag(tv));
             if (Model.getFacade().getValueOfTag(tv) == null) {
 	        assertNull(Model.getFacade().getValueOfTag(e2Tv));
 	    } else {
-	        assertEquals(Model.getFacade().getValueOfTag(tv), 
+	        assertEquals(Model.getFacade().getValueOfTag(tv),
 	        		Model.getFacade().getValueOfTag(e2Tv));
 	    }
 	}
@@ -450,10 +451,10 @@ public class TestCopyHelper extends TestCase {
 	    assertTrue(Model.getFacade().getStereotypes(e2).isEmpty());
 	} else {
 	    assertTrue(!Model.getFacade().getStereotypes(e2).isEmpty());
-	    Object firstStereoOfe1 = Model.getFacade().getStereotypes(e1)
-                    .iterator().next();
-            Object firstStereoOfe2 = Model.getFacade().getStereotypes(e2)
-                    .iterator().next();
+	    Object firstStereoOfe1 =
+                Model.getFacade().getStereotypes(e1).iterator().next();
+            Object firstStereoOfe2 =
+                Model.getFacade().getStereotypes(e2).iterator().next();
 	    assertNotNull(Model.getFacade().getName(firstStereoOfe2));
 	    assertEquals(Model.getFacade().getName(firstStereoOfe1),
 	    		Model.getFacade().getName(firstStereoOfe2));

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,12 +54,14 @@ public class TestDetailsPane extends TestCase {
      */
     public void testTargetSet() {
         DetailsPane pane = new DetailsPane("detail", Horizontal.getInstance());
-        JPanel todoPane = pane.getNamedTab(Translator.localize("tab.todo-item"));
-        JPanel propertyPane = pane.getNamedTab(Translator.localize("tab.properties"));
-        
+        JPanel todoPane =
+            pane.getNamedTab(Translator.localize("tab.todo-item"));
+        JPanel propertyPane =
+            pane.getNamedTab(Translator.localize("tab.properties"));
+
         assertNotNull(todoPane);
         assertNotNull(propertyPane);
-        
+
         Object o = new Object();
         TargetEvent e =
             new TargetEvent(
@@ -74,7 +76,8 @@ public class TestDetailsPane extends TestCase {
         pane.targetSet(e);
         assertEquals("1:", todoPane, pane.getTabs().getSelectedComponent());
         UMLDiagram diagram = new UMLClassDiagram();
-        e = new TargetEvent(
+        e =
+            new TargetEvent(
 			    this,
 			    TargetEvent.TARGET_SET,
 			    new Object[] {
@@ -88,7 +91,8 @@ public class TestDetailsPane extends TestCase {
         pane.targetSet(e);
         assertEquals("2:", propertyPane, pane.getTabs().getSelectedComponent());
         Object clazz = Model.getCoreFactory().createClass();
-        e = new TargetEvent(this,
+        e =
+            new TargetEvent(this,
 			    TargetEvent.TARGET_SET,
 			    new Object[] {
 				diagram,

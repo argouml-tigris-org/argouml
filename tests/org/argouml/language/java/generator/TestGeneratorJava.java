@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,21 +33,21 @@ import junit.framework.TestCase;
  */
 public class TestGeneratorJava extends TestCase {
 
-    Object namespace;
+    private Object namespace;
 
-    Object class1;
+    private Object class1;
 
-    Object innerClass;
+    private Object innerClass;
 
-    Object inter1;
+    private Object inter1;
 
     /**
      * Constructor for TestGeneratorJava.
-     * 
-     * @param arg0
+     *
+     * @param name The name.
      */
-    public TestGeneratorJava(String arg0) {
-        super(arg0);
+    public TestGeneratorJava(String name) {
+        super(name);
     }
 
     /**
@@ -63,13 +63,6 @@ public class TestGeneratorJava extends TestCase {
         innerClass = Model.getCoreFactory().buildClass("InnerClass", class1);
         inter1 = Model.getCoreFactory().buildInterface("Inter1", namespace);
 
-    }
-
-    /*
-     * @see TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
-        super.tearDown();
     }
 
     /**
@@ -94,7 +87,7 @@ public class TestGeneratorJava extends TestCase {
         result = GeneratorJava.getInstance().generateClassifierStart(class1);
         assertTrue("A class should not have protected in its specification",
                 result.indexOf("protected") == -1);
-        
+
         Model.getCoreHelper().setVisibility(class1,
                 Model.getVisibilityKind().getPackage());
         assertTrue(Model.getFacade().isAPackage(
@@ -109,7 +102,8 @@ public class TestGeneratorJava extends TestCase {
     }
 
     /**
-     * check the Java Code Generator does not generate a protected interface ....
+     * Check the Java Code Generator does not generate
+     * a protected interface ....
      */
     public void testGenerateClassifierStart2() {
         StringBuffer result;
@@ -130,7 +124,7 @@ public class TestGeneratorJava extends TestCase {
         assertTrue(
                 "A interface should not have protected in its specification",
                 result.indexOf("protected") == -1);
-        
+
         Model.getCoreHelper().setVisibility(inter1,
                 Model.getVisibilityKind().getPackage());
         result = GeneratorJava.getInstance().generateClassifierStart(inter1);
@@ -155,27 +149,30 @@ public class TestGeneratorJava extends TestCase {
 
         Model.getCoreHelper().setVisibility(innerClass,
                 Model.getVisibilityKind().getPublic());
-        result = GeneratorJava.getInstance()
+        result =
+            GeneratorJava.getInstance()
                 .generateClassifierStart(innerClass);
         assertTrue(Model.getFacade().isAClass(
                 Model.getFacade().getNamespace(innerClass)));
-        assertTrue("A class should have public in its specification", 
+        assertTrue("A class should have public in its specification",
                 result.indexOf("public") == 0);
 
         Model.getCoreHelper().setVisibility(innerClass,
                 Model.getVisibilityKind().getProtected());
         assertTrue(Model.getFacade().isAClass(
                 Model.getFacade().getNamespace(innerClass)));
-        result = GeneratorJava.getInstance()
+        result =
+            GeneratorJava.getInstance()
                 .generateClassifierStart(innerClass);
         assertTrue("A class should have protected in its specification",
                 result.indexOf("protected") == 0);
-        
+
         Model.getCoreHelper().setVisibility(innerClass,
                 Model.getVisibilityKind().getPackage());
         assertTrue(Model.getFacade().isAClass(
                 Model.getFacade().getNamespace(innerClass)));
-        result = GeneratorJava.getInstance()
+        result =
+            GeneratorJava.getInstance()
                 .generateClassifierStart(innerClass);
         assertTrue("A inner class with package (default) visibility should not"
                 + " have protected in its specification",

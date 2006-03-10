@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,7 @@ import junit.framework.TestCase;
  * TODO: This is currently just a mechanical merge of the tests in
  * from the generic Model test and the NSUML tests.  They need to be
  * reviewed & merged.
- * 
+ *
  * @author euluis
  * @since 0.19.2
  * @version 0.00
@@ -51,7 +51,7 @@ public class TestExtensionMechanismsHelper extends TestCase {
 
     /**
      * The constructor.
-     * 
+     *
      * @param n the name
      */
     public TestExtensionMechanismsHelper(String n) {
@@ -64,12 +64,14 @@ public class TestExtensionMechanismsHelper extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         model = Model.getModelManagementFactory().createModel();
-        pack = Model.getModelManagementFactory().buildPackage("pack",
+        pack =
+            Model.getModelManagementFactory().buildPackage("pack",
                 UUIDManager.getInstance().getNewUUID());
         Model.getCoreHelper().setNamespace(pack, model);
 
         theClass = Model.getCoreFactory().buildClass("TheClass", pack);
-        theStereotype = Model.getExtensionMechanismsFactory().buildStereotype(
+        theStereotype =
+            Model.getExtensionMechanismsFactory().buildStereotype(
                 theClass, "containedStereotype", pack);
         models = new ArrayList();
         models.add(model);
@@ -79,8 +81,10 @@ public class TestExtensionMechanismsHelper extends TestCase {
      * This method tests the working of getAllPossibleStereotypes when the
      * stereotype is contained within the same package as the model element.
      */
-    public void testGetAllPossibleStereotypesStereotypeAndMEContainedInSubPackage() {
-        Collection stereotypes = Model.getExtensionMechanismsHelper()
+    public void
+    testGetAllPossibleStereotypesStereotypeAndMEContainedInSubPackage() {
+        Collection stereotypes =
+            Model.getExtensionMechanismsHelper()
                 .getAllPossibleStereotypes(models, theClass);
         assertTrue("The \"" + theStereotype
                 + "\" isn't returned, but is possible.", stereotypes
@@ -92,12 +96,14 @@ public class TestExtensionMechanismsHelper extends TestCase {
      * where the model element is, is applicable to the model element.
      */
     public void testGetAllPossibleStereotypesStereotypeInContainingPackage() {
-        Object subpack = Model.getModelManagementFactory().buildPackage(
+        Object subpack =
+            Model.getModelManagementFactory().buildPackage(
                 "subpack", UUIDManager.getInstance().getNewUUID());
         Model.getCoreHelper().setNamespace(subpack, pack);
-        theClass = Model.getCoreFactory().buildClass("TheClassInSubpack",
-                subpack);
-        Collection stereotypes = Model.getExtensionMechanismsHelper()
+        theClass =
+            Model.getCoreFactory().buildClass("TheClassInSubpack", subpack);
+        Collection stereotypes =
+            Model.getExtensionMechanismsHelper()
                 .getAllPossibleStereotypes(models, theClass);
         assertTrue("The \"" + theStereotype
                 + "\" isn't returned, but is possible.", stereotypes
@@ -122,9 +128,9 @@ public class TestExtensionMechanismsHelper extends TestCase {
                 Model.getExtensionMechanismsFactory(),
                 TestExtensionMechanismsFactory.getAllModelElements());
     }
-    
+
     /**
-     * Test multiple base class support
+     * Test multiple base class support.
      */
     public void testMultipleBaseClasses() {
         String classType = (String) Model.getMetaTypes().getName(theClass);

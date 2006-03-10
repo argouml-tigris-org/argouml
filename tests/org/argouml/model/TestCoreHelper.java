@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -89,32 +89,32 @@ public class TestCoreHelper extends TestCase {
         CoreFactory coreFactory = Model.getCoreFactory();
         // Create a generalizable element with an element without children.
         Object ge = coreFactory.createClass();
-        
+
         assertTrue(Model.getCoreHelper().getChildren(ge).size() == 0);
-        
+
         // Add one child.
         Object g1 = coreFactory.createGeneralization();
         Model.getCoreHelper().setParent(g1, ge);
         Model.getCoreHelper().setChild(g1, coreFactory.createClass());
-        
+
         assertTrue(Model.getCoreHelper().getChildren(ge).size() == 1);
-        
+
         // Add another child.
         Object g2 = coreFactory.createGeneralization();
         Model.getCoreHelper().setParent(g2, ge);
         Object ge2 = coreFactory.createClass();
         Model.getCoreHelper().setChild(g2, ge2);
-        
+
         assertTrue(Model.getCoreHelper().getChildren(ge).size() == 2);
-        
+
         // Add grandchild.
         Object g3 = coreFactory.createGeneralization();
         Model.getCoreHelper().setParent(g3, ge2);
         Model.getCoreHelper().setChild(g3, coreFactory.createClass());
-        
+
         assertTrue(Model.getCoreHelper().getChildren(ge).size() == 3);
     }
-    
+
     /**
      * Test if adding a client to a binary dependency
      * actually increases the client count.

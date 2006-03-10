@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -76,18 +76,23 @@ public class TestProject extends TestCase {
         Object cls3 = Model.getCoreFactory().buildClass(package1);
         Object cls4 = Model.getCoreFactory().buildClass(p.getRoot());
         Collection c1 = Model.getFacade().getOwnedElements(p.getRoot());
+        assertTrue(c1 instanceof Collection);
         // Let's make it a bit more difficult by setting the target:
         TargetManager.getInstance().setTarget(cls2);
         p.moveToTrash(package1);
-        //TODO: We should also test that the object have been removed from their namespace.
+        //TODO: We should also test that the object
+        //have been removed from their namespace.
         //Collection c = Model.getFacade().getOwnedElements(p.getRoot());
         assertTrue("Package not in trash", p.isInTrash(package1));
-        assertTrue("Package not deleted", 
+        assertTrue("Package not deleted",
                 Model.getUmlFactory().isRemoved(package1));
-        assertTrue("Class 1 not deleted", Model.getUmlFactory().isRemoved(cls1));
-        assertTrue("Class 2 not deleted", Model.getUmlFactory().isRemoved(cls2));
-        assertTrue("Class 3 not deleted", Model.getUmlFactory().isRemoved(cls3));
-        assertTrue("Class 4 has been deleted", 
+        assertTrue("Class 1 not deleted",
+                Model.getUmlFactory().isRemoved(cls1));
+        assertTrue("Class 2 not deleted",
+                Model.getUmlFactory().isRemoved(cls2));
+        assertTrue("Class 3 not deleted",
+                Model.getUmlFactory().isRemoved(cls3));
+        assertTrue("Class 4 has been deleted",
                 !Model.getUmlFactory().isRemoved(cls4));
     }
 
@@ -105,16 +110,22 @@ public class TestProject extends TestCase {
         Object oper2a =
             Model.getCoreFactory().buildOperation(
                     cls2, p.getRoot(), cls3, new ArrayList());
+        assertNotNull(oper2a);
         Object oper2b =
             Model.getCoreFactory().buildOperation(
                     cls2, p.getRoot(), typ, new ArrayList());
+        assertNotNull(oper2b);
         p.moveToTrash(aClass);
         //Collection c = Model.getFacade().getOwnedElements(p.getRoot());
         assertTrue("Package not in trash", p.isInTrash(aClass));
-        assertTrue("Package not deleted", Model.getUmlFactory().isRemoved(aClass));
-        assertTrue("Class 1 not deleted", Model.getUmlFactory().isRemoved(cls1));
-        assertTrue("Class 2 not deleted", Model.getUmlFactory().isRemoved(cls2));
-        assertTrue("Class 3 not deleted", Model.getUmlFactory().isRemoved(cls3));
+        assertTrue("Package not deleted",
+                Model.getUmlFactory().isRemoved(aClass));
+        assertTrue("Class 1 not deleted",
+                Model.getUmlFactory().isRemoved(cls1));
+        assertTrue("Class 2 not deleted",
+                Model.getUmlFactory().isRemoved(cls2));
+        assertTrue("Class 3 not deleted",
+                Model.getUmlFactory().isRemoved(cls3));
     }
 
 
@@ -135,6 +146,7 @@ public class TestProject extends TestCase {
         // test with a class and class diagram
         Object package1 =
             Model.getModelManagementFactory().buildPackage("test1", null);
+        assertNotNull(package1);
         Object package2 =
             Model.getModelManagementFactory().buildPackage("test2", null);
 

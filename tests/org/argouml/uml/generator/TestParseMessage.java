@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,14 +44,15 @@ public class TestParseMessage extends TestCase {
     public TestParseMessage(String str) {
         super(str);
     }
-    
+
     /**
      * Static test of the signature.
      *
      * @throws ParseException if the parsing fails.
      */
     public void compileTestParseMessage() throws ParseException {
-        ParserDisplay.SINGLETON.parseMessage(Model.getCollaborationsFactory().createMessage(), "hej");
+        ParserDisplay.SINGLETON.parseMessage(
+                Model.getCollaborationsFactory().createMessage(), "hej");
     }
 
     /**
@@ -105,7 +106,7 @@ public class TestParseMessage extends TestCase {
         assertTrue(
             action == null || Model.getFacade().getRecurrence(action) == null);
         assertTrue(Model.getFacade().getPredecessors(m1).size() == 0);
-        Model.getCoreHelper().setName(m1,"m1");
+        Model.getCoreHelper().setName(m1, "m1");
 
         Object m2 =
              Model.getCollaborationsFactory()
@@ -117,7 +118,7 @@ public class TestParseMessage extends TestCase {
         assertTrue(
             action == null || Model.getFacade().getRecurrence(action) == null);
         assertTrue(Model.getFacade().getPredecessors(m2).size() == 0);
-        Model.getCoreHelper().setName(m2,"m2");
+        Model.getCoreHelper().setName(m2, "m2");
 
         Object m3 =
              Model.getCollaborationsFactory()
@@ -126,7 +127,7 @@ public class TestParseMessage extends TestCase {
         assertTrue(
             Model.getFacade().getPredecessors(m3).iterator().next() == m2
                 && Model.getFacade().getPredecessors(m3).size() == 1);
-        Model.getCoreHelper().setName(m3,"m3");        
+        Model.getCoreHelper().setName(m3, "m3");
 
         /* TRY MOVING IN A SIMPLE MANER */
 
@@ -184,7 +185,8 @@ public class TestParseMessage extends TestCase {
         assertTrue(Model.getFacade().getSender(m7) == cl1);
         assertTrue(Model.getFacade().getReceiver(m7) == cl3);
         assertNull(Model.getFacade().getActivator(m7));
-        assertTrue(Model.getFacade().getPredecessors(m7).iterator().next() == m1);
+        assertTrue(Model.getFacade().getPredecessors(m7).iterator().next()
+                == m1);
         assertTrue(Model.getFacade().getPredecessors(m7).size() == 1);
 
         parseMessage(m7, "1.2.1.1.1.1:");
@@ -220,7 +222,8 @@ public class TestParseMessage extends TestCase {
         assertTrue(Model.getFacade().getPredecessors(m3).size() == 1);
 
         parseMessage(m7, "1.2.1 / 1.2.1.1.1.1:");
-        assertTrue(Model.getFacade().getPredecessors(m7).iterator().next() == m4);
+        assertTrue(Model.getFacade().getPredecessors(m7).iterator().next()
+                == m4);
         assertTrue(Model.getFacade().getPredecessors(m7).size() == 1);
 
         parseMessage(m7, "1.2.1, 1.2.1.1 / 1.2.1.1.1.1:");
@@ -280,44 +283,46 @@ public class TestParseMessage extends TestCase {
      * @throws ParseException if the parser found a syntax error
      */
     private void tryTheActions(Object m3) throws ParseException {
-    	
+
         parseMessage(m3, " 1.2 : func() ");
-        Object script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
+        Object script =
+            Model.getFacade().getScript(Model.getFacade().getAction(m3));
         Object body = Model.getFacade().getBody(script);
         assertEquals("func", body);
-        
+
         parseMessage(m3, " 1.2 ");
         script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
-        body = Model.getFacade().getBody(script);        
+        body = Model.getFacade().getBody(script);
         assertEquals("func", body);
-        
+
         parseMessage(m3, " 1.2 : ");
         script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
-        body = Model.getFacade().getBody(script);        
+        body = Model.getFacade().getBody(script);
         assertEquals("", body);
 
         parseMessage(m3, " 1.2 : var := func() ");
         script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
-        body = Model.getFacade().getBody(script);        
+        body = Model.getFacade().getBody(script);
         assertEquals("var := func", body);
 
         parseMessage(m3, " 1.2 : var = func() ");
         script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
-        body = Model.getFacade().getBody(script);        
+        body = Model.getFacade().getBody(script);
         assertEquals("var := func", body);
 
         parseMessage(m3, "1.2:var2:=func2()");
         script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
-        body = Model.getFacade().getBody(script);        
+        body = Model.getFacade().getBody(script);
         assertEquals("var2 := func2", body);
 
         parseMessage(m3, " 1.2 : var, var2, var3 := func() ");
         script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
-        body = Model.getFacade().getBody(script);        
-        assertEquals("var, var2, var3 := func",body);
+        body = Model.getFacade().getBody(script);
+        assertEquals("var, var2, var3 := func", body);
 
         parseMessage(m3, "1.2 : load_the_accumulating_taxes");
-        //TODO: Why there is not test here ? It's just for resetting the message body ?
+        //TODO: Why there is not test here ?
+        //It's just for resetting the message body ?
     }
 
     /**
@@ -341,7 +346,7 @@ public class TestParseMessage extends TestCase {
      */
     private void tryGuardAndIteratorSyntax(Object m3) throws ParseException {
         parseMessage(m3, " 1.2 [ x < 5 ] : ");
-        Object action = Model.getFacade().getAction(m3);        
+        Object action = Model.getFacade().getAction(m3);
         assertNotNull(action);
         Object recurrence = Model.getFacade().getRecurrence(action);
         Object body = Model.getFacade().getBody(recurrence);
@@ -349,27 +354,27 @@ public class TestParseMessage extends TestCase {
         assertTrue("[x < 5]".equals(body));
 
         parseMessage(m3, " 1.2 * [ i = 1..10 ] : ");
-        action = Model.getFacade().getAction(m3);        
+        action = Model.getFacade().getAction(m3);
         recurrence = Model.getFacade().getRecurrence(action);
         body = Model.getFacade().getBody(recurrence);
         assertEquals("*[i = 1..10]", body);
 
         parseMessage(m3, " 1.2 *// : ");
-        action = Model.getFacade().getAction(m3);        
+        action = Model.getFacade().getAction(m3);
         recurrence = Model.getFacade().getRecurrence(action);
-        body = Model.getFacade().getBody(recurrence);        
+        body = Model.getFacade().getBody(recurrence);
         assertEquals("*[i = 1..10]", body);
 
         parseMessage(m3, " * // [i=1..] 1.2 : ");
-        action = Model.getFacade().getAction(m3);        
+        action = Model.getFacade().getAction(m3);
         recurrence = Model.getFacade().getRecurrence(action);
-        body = Model.getFacade().getBody(recurrence);        
+        body = Model.getFacade().getBody(recurrence);
         assertEquals("*//[i=1..]", body);
 
         parseMessage(m3, " 1.2 : ");
-        action = Model.getFacade().getAction(m3);        
+        action = Model.getFacade().getAction(m3);
         recurrence = Model.getFacade().getRecurrence(action);
-        body = Model.getFacade().getBody(recurrence);        
+        body = Model.getFacade().getBody(recurrence);
         assertEquals("*//[i=1..]", body);
     }
 
