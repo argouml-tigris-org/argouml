@@ -183,6 +183,17 @@ public class ArgoDiagram extends Diagram {
         }
         return super.getEdges();
     }
+    
+    /**
+     * @see Diagram#getEdges(Collection)
+     * TODO: This method can be deleted after GEF 0.11.3M6
+     */
+    public Collection getEdges(Collection c) {
+        if (getGraphModel() != null) {
+            return getGraphModel().getEdges();
+        }
+        return getEdges();
+    }
 
     /**
      * Get all the model elements in this diagram that are represented
@@ -195,7 +206,18 @@ public class ArgoDiagram extends Diagram {
         }
         return super.getNodes();
     }
-
+    
+    /**
+     * @see Diagram#getEdges(Collection)
+     * TODO: This method can be deleted after GEF 0.11.3M6
+     */
+    public Collection getNodes(Collection c) {
+        if (getGraphModel() != null) {
+            return getGraphModel().getNodes();
+        }
+        return getNodes();
+    }
+    
     /**
      * @see java.lang.Object#toString()
      */
