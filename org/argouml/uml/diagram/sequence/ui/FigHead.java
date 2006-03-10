@@ -41,39 +41,51 @@ class FigHead extends FigGroup {
     private final Fig stereotypeFig;
     private final FigRect rectFig;
 
+    /**
+     * Constructor.
+     *
+     * @param stereotypeFig
+     * @param nameFig
+     */
     FigHead(Fig stereotypeFig, FigText nameFig) {
         this.stereotypeFig = stereotypeFig;
         this.nameFig = nameFig;
-        rectFig = new FigRect(0, 0, 
-                FigClassifierRole.MIN_HEAD_WIDTH, FigClassifierRole.MIN_HEAD_HEIGHT, 
+        rectFig =
+            new FigRect(0, 0,
+                FigClassifierRole.MIN_HEAD_WIDTH,
+                FigClassifierRole.MIN_HEAD_HEIGHT,
                 Color.black, Color.white);
         addFig(rectFig);
         addFig(nameFig);
         addFig(stereotypeFig);
     }
-    
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
     public Dimension getMinimumSize() {
-        
+
         int h = FigClassifierRole.MIN_HEAD_HEIGHT;
-        
+
         Layer layer = this.getGroup().getLayer();
-        
+
         if (layer == null) {
-            return new Dimension(FigClassifierRole.MIN_HEAD_WIDTH, FigClassifierRole.MIN_HEAD_HEIGHT);
+            return new Dimension(FigClassifierRole.MIN_HEAD_WIDTH,
+                    FigClassifierRole.MIN_HEAD_HEIGHT);
         }
-        
+
         List figs = layer.getContents();
-        for (Iterator i=figs.iterator(); i.hasNext(); ) {
+        for (Iterator i = figs.iterator(); i.hasNext();) {
             Object o = i.next();
             if (o instanceof FigClassifierRole) {
-                FigClassifierRole other = (FigClassifierRole)o;
+                FigClassifierRole other = (FigClassifierRole) o;
                 int otherHeight = other.headFig.getMinimumHeight();
                 if (otherHeight > h) {
                     h = otherHeight;
                 }
             }
         }
-        
+
         int w = nameFig.getMinimumSize().width;
         if (stereotypeFig.isVisible()) {
             if (stereotypeFig.getMinimumSize().width > w) {
@@ -85,9 +97,9 @@ class FigHead extends FigGroup {
         }
         return new Dimension(w, h);
     }
-    
+
     public int getMinimumHeight() {
-        
+
         int h = nameFig.getMinimumHeight();
         if (stereotypeFig.isVisible()) {
             h += stereotypeFig.getMinimumSize().height;
@@ -97,12 +109,16 @@ class FigHead extends FigGroup {
         }
         return h;
     }
-    
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     */
     public void setBoundsImpl(int x, int y, int w, int h) {
         rectFig.setBounds(x, y, w, h);
         int yy = y;
         if (stereotypeFig.isVisible()) {
-            stereotypeFig.setBounds(x, yy, w, stereotypeFig.getMinimumSize().height);
+            stereotypeFig.setBounds(x, yy, w,
+                    stereotypeFig.getMinimumSize().height);
             yy += stereotypeFig.getMinimumSize().height;
         }
         nameFig.setFilled(false);
@@ -114,12 +130,23 @@ class FigHead extends FigGroup {
         _w = w;
         _h = h;
     }
-    
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
     public void setFilled(boolean b) {
-        
+
     }
-    
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
     public void setLineWidth(int i) {
-        
+
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2970745558193935791L;
 }
