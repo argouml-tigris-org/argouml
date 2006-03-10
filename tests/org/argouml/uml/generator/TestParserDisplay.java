@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,7 +68,7 @@ public class TestParserDisplay extends TestCase {
     private static final String ATTR12 = "+ name : String = a << 5";
     private static final String ATTR13 =
         "<<attrstereo1,attrstereo2>> +name : String = a[15]";
-    
+
     private static final String NATTR01 = "too many string in an attribute";
     private static final String NATTR02 = "+vis name";
     private static final String NATTR03 = "vis name : type : type";
@@ -93,7 +93,7 @@ public class TestParserDisplay extends TestCase {
         + "{leaf,query} : String";
     private static final String OPER04 = "<<>> # name2()";
     private static final String OPER05 = "<< opstereo1, opstereo2 >>  name5()";
-    
+
     private static final String NOPER01 = "name(";
     private static final String NOPER02 = "\"name\"()";
     private static final String NOPER03 = "\"vis\" name()";
@@ -104,7 +104,7 @@ public class TestParserDisplay extends TestCase {
     private static final String NOPER08 = "name() : \"type\"";
     private static final String NOPER09 = "name() : \'type\'";
     private static final String NOPER10 = "name() : (type)";
-    
+
     /**
      * The constructor.
      *
@@ -127,11 +127,11 @@ public class TestParserDisplay extends TestCase {
      */
     public void testClassifierRoleName() {
         Object cr;
-        
+
         cr = Model.getCollaborationsFactory().createClassifierRole();
         checkNameClassifierRole(cr, clro01, "roname");
         checkNameClassifierRole(cr, clro02, "roname2");
-        
+
         cr = Model.getCollaborationsFactory().createClassifierRole();
         checkNameClassifierRole(cr, clro03, "roname");
     }
@@ -242,7 +242,7 @@ public class TestParserDisplay extends TestCase {
 	    assertTrue(text + " threw unexpectedly: " + e, false);
 	}
     }
-    
+
     /**
      * Test the parsing of an attribute name.
      *
@@ -252,7 +252,7 @@ public class TestParserDisplay extends TestCase {
         throws ParseException {
         Object attr;
 
-        Object ns = 
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
@@ -390,7 +390,7 @@ public class TestParserDisplay extends TestCase {
             null,
         };
 
-        Object ns =  
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
@@ -419,7 +419,7 @@ public class TestParserDisplay extends TestCase {
     public void testAttributeMultiplicity() throws ParseException {
         Object attr;
 
-        Object ns =  
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
@@ -427,19 +427,19 @@ public class TestParserDisplay extends TestCase {
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
-        checkMultiplicity(attr, ATTR04,  
+        checkMultiplicity(attr, ATTR04,
                 Model.getDataTypesFactory().createMultiplicity("1..1"));
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
-        checkMultiplicity(attr, ATTR05,  
+        checkMultiplicity(attr, ATTR05,
                 Model.getDataTypesFactory().createMultiplicity("1..*"));
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
-        checkMultiplicity(attr, ATTR06,  
+        checkMultiplicity(attr, ATTR06,
                 Model.getDataTypesFactory().createMultiplicity("*..*"));
     }
 
@@ -449,7 +449,7 @@ public class TestParserDisplay extends TestCase {
     public void testAttributeParseExceptions() {
         Object attr;
 
-        Object ns =  
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
@@ -480,7 +480,7 @@ public class TestParserDisplay extends TestCase {
     public void testAttributeValue() throws ParseException {
         Object attr;
 
-        Object ns =  
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
@@ -523,11 +523,11 @@ public class TestParserDisplay extends TestCase {
         checkValue(attr, ATTR12, "a << 5");
     }
 
-    /*
-     * Add stereotype to a model element if it doesn't already have it
+    /**
+     * Add stereotype to a model element if it doesn't already have it.
      */
     private void softAddStereotype(String name, Object elem) {
-        Object ns =  
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
 
         Iterator it =
@@ -554,7 +554,7 @@ public class TestParserDisplay extends TestCase {
     public void testAttributeStereotype() throws ParseException {
         Object attr;
 
-        Object ns =  
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
@@ -579,12 +579,12 @@ public class TestParserDisplay extends TestCase {
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkStereotype(attr, ATTR11, new String[] {"attrstereo2"});
-        
+
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkStereotype(attr, ATTR13, new String[] {"attrstereo1",
-                                                    "attrstereo2"});
+                                                    "attrstereo2", });
     }
 
     /**
@@ -596,7 +596,7 @@ public class TestParserDisplay extends TestCase {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
 
-        Object ns =  
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
         Collection propertyChangeListeners =
             ProjectManager.getManager().getCurrentProject()
@@ -631,7 +631,7 @@ public class TestParserDisplay extends TestCase {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
 
-        Object ns =  
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
         Collection propertyChangeListeners =
             ProjectManager.getManager().getCurrentProject()
@@ -666,7 +666,7 @@ public class TestParserDisplay extends TestCase {
     public void testOperationVisibility() throws ParseException {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
-        Object ns =  
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
         Collection propertyChangeListeners =
             ProjectManager.getManager().getCurrentProject()
@@ -707,7 +707,7 @@ public class TestParserDisplay extends TestCase {
     public void testOperationParameters() throws ParseException {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
-        Object ns =  
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
         Collection propertyChangeListeners =
             ProjectManager.getManager().getCurrentProject()
@@ -759,7 +759,7 @@ public class TestParserDisplay extends TestCase {
     public void testOperationProperties() throws ParseException {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
-        Object ns =  
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
         Collection propertyChangeListeners =
             ProjectManager.getManager().getCurrentProject()
@@ -806,7 +806,7 @@ public class TestParserDisplay extends TestCase {
 
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
-        Object ns =  
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
 
         Model.getCoreHelper().setNamespace(cl, ns);
@@ -846,7 +846,7 @@ public class TestParserDisplay extends TestCase {
     public void testOperationParseExceptions() {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
-        Object ns =  
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
 
         Model.getCoreHelper().setNamespace(cl, ns);
@@ -890,7 +890,7 @@ public class TestParserDisplay extends TestCase {
         } else if (Model.getFacade().isAClassifierRole(element)) {
             ParserDisplay.SINGLETON.parseClassifierRole(element, text);
             assertTrue(text
-                       + " gave wrong name: " 
+                       + " gave wrong name: "
                        + Model.getFacade().getName(element)
                        + " != " + name,
                        name.equals(Model.getFacade().getName(element)));
@@ -927,7 +927,7 @@ public class TestParserDisplay extends TestCase {
                 assertTrue(
                        text + " gave wrong return",
                        (type == null && pType == null)
-                       || (type != null 
+                       || (type != null
                            && type.equals(Model.getFacade().getName(pType))));
             }
             assertTrue(text + " gave extra return value", !it.hasNext());
@@ -1021,10 +1021,10 @@ public class TestParserDisplay extends TestCase {
                             Model.getFacade().getTaggedValue(feature, props[i])
                             == null);
                 } else {
-                    Object tv = 
+                    Object tv =
                         Model.getFacade().getTaggedValue(feature, props[i]);
                     Object tvValue = Model.getFacade().getValueOfTag(tv);
-                    
+
                     assertTrue(
                             "TaggedValue " + props[i] + " wrong!",
                             props[i + 1].equals(tvValue)
@@ -1042,7 +1042,7 @@ public class TestParserDisplay extends TestCase {
                             Model.getFacade().getTaggedValue(feature, props[i])
                             == null);
                 } else {
-                    Object tv = 
+                    Object tv =
                         Model.getFacade().getTaggedValue(feature, props[i]);
                     Object tvValue = Model.getFacade().getValueOfTag(tv);
                     assertTrue(
@@ -1077,9 +1077,9 @@ public class TestParserDisplay extends TestCase {
                        ? "(null)"
                        : Model.getFacade().toString(Model.getFacade().
                                getMultiplicity(attr))),
-                       Model.getFacade().toString(mult).equals(
-                               Model.getFacade().toString(
-                                       Model.getFacade().getMultiplicity(attr))));
+                    Model.getFacade().toString(mult).equals(
+                            Model.getFacade().toString(
+                                    Model.getFacade().getMultiplicity(attr))));
         }
     }
 
@@ -1161,7 +1161,7 @@ public class TestParserDisplay extends TestCase {
         } else {
             fail("Unknown feature type " + feature);
         }
-        
+
         Collection stereos = Model.getFacade().getStereotypes(feature);
         ArrayList stereoNames = new ArrayList();
         for (Iterator i = stereos.iterator(); i.hasNext();) {
@@ -1175,7 +1175,7 @@ public class TestParserDisplay extends TestCase {
         }
         assertTrue(
                text + " gave wrong stereotype " + stereos.toArray(),
-                  val.length == stereos.size() 
+                  val.length == stereos.size()
                   && stereosMatch);
     }
 
