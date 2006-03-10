@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -154,16 +154,19 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         if (containsNode(node)) {
             return false;
         }
-        
-        /* The next solves issue 3665: 
-         * Do not allow to add an element to a statemachine that is contained 
-         * by another statemachine then the one represented by this diagram.*/
-        Object nodeMachine = 
+
+        /* The next solves issue 3665:
+         * Do not allow to add an element to a statemachine that is contained
+         * by another statemachine then the one represented by this diagram.
+         */
+        Object nodeMachine =
             Model.getStateMachinesHelper().getStateMachine(node);
-        if (nodeMachine != null) if(nodeMachine != getMachine()){
-            return false;
+        if (nodeMachine != null) {
+            if (nodeMachine != getMachine()) {
+                return false;
+            }
         }
-        
+
         return (Model.getFacade().isAStateVertex(node)
                 || Model.getFacade().isAPartition(node)
                 || Model.getFacade().isAComment(node));
@@ -207,22 +210,22 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
             LOG.error("Edge rejected. Its ends are not attached to anything");
             return false;
         }
-        
+
         if (!containsNode(end0)
                 && !containsEdge(end0)) {
-            LOG.error("Edge rejected. Its source end is attached to " +
-                    end0 +
-                    " but this is not in the graph model");
+            LOG.error("Edge rejected. Its source end is attached to "
+                    + end0
+                    + " but this is not in the graph model");
             return false;
         }
         if (!containsNode(end1)
                 && !containsEdge(end1)) {
-            LOG.error("Edge rejected. Its destination end is attached to " +
-                    end1 +
-                    " but this is not in the graph model");
+            LOG.error("Edge rejected. Its destination end is attached to "
+                    + end1
+                    + " but this is not in the graph model");
             return false;
         }
-        
+
         return true;
     }
 
@@ -346,10 +349,11 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
             return tr;
         } else if (edgeClass == CommentEdge.class) {
             try {
-                Object connection = buildConnection(
-                    edgeClass, fromPort, null, toPort, null, null,
-                    ProjectManager.getManager().getCurrentProject()
-                        .getModel());
+                Object connection =
+                    buildConnection(
+                            edgeClass, fromPort, null, toPort, null, null,
+                            ProjectManager.getManager().getCurrentProject()
+                            .getModel());
                 addEdge(connection);
                 return connection;
             } catch (Exception ex) {
@@ -393,6 +397,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         }
     }
 
+    /**
+     * The UID.
+     */
     static final long serialVersionUID = -8056507319026044174L;
 
     /**
@@ -462,19 +469,25 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      */
     public boolean isRemoveFromDiagramAllowed(Collection figs) {
         /* If nothing is selected, then not allowed to remove it. */
-        if (figs.isEmpty()) return false;
+        if (figs.isEmpty()) {
+            return false;
+        }
         Iterator i = figs.iterator();
         while (i.hasNext()) {
             Object obj = i.next();
-            if (!(obj instanceof Fig)) return false;
+            if (!(obj instanceof Fig)) {
+                return false;
+            }
             Object uml = ((Fig) obj).getOwner();
             /* If a UML object is found, you can not remove selected elms. */
-            if (uml != null) return false;
+            if (uml != null) {
+                return false;
+            }
         }
         /* If only Figs without owner are selected, then you can remove them! */
         return true;
     }
-    
-    
+
+
 
 } /* end class StateDiagramGraphModel */
