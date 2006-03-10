@@ -166,6 +166,10 @@ public interface CollaborationsHelper {
     Collection allAvailableContents(Object arole);
 
     /**
+     * Returns all possible bases for the given element. <p>
+     * TODO: Beware: this function does not return the actual base! 
+     * Is that by design or a bug?
+     * 
      * @param role the given classifierrole or associationrole
      * @return all available bases
      */

@@ -475,6 +475,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      * Returns all possible bases for some AssociationRole taking into account
      * the wellformednessrules as defined in section 2.10.3 of the UML 1.3 spec.
      * <p>
+     * TODO: Beware: this function does not return the actual base! 
+     * Is that by design or a bug?
      * 
      * @param role
      *            the given associationrole
