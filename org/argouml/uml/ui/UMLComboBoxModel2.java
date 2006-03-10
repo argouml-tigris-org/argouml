@@ -40,7 +40,6 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
-import org.argouml.model.ModelEventPump;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -133,8 +132,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
 
     /**
      * If the property that this comboboxmodel depicts is changed in the UML
-     * model, this method will make sure that it is changed in the comboboxmodel
-     * too.
+     * model, this method will make sure that the changes will be 
+     * done in the combobox-model equally. <p>
      * TODO: This function is not yet completely written!
      *
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
@@ -290,48 +289,58 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         if (e instanceof AssociationChangeEvent) {
             return ((AssociationChangeEvent) e).getChangedValue();
         }
+        if (e instanceof AttributeChangeEvent) {
+            return ((AttributeChangeEvent) e).getSource();
+        }
         return e.getNewValue();
     }
 
     /**
-     * Sets the target. If the old target is instanceof MBase, it also removes
+     * Sets the target. If the old target is a ModelElement, it also removes
      * the model from the element listener list of the target. If the new target
-     * is instanceof MBase, the model is added as element listener to the new
-     * target.
-     * @param target the target
+     * is a ModelElement, the model is added as element listener to the new
+     * target. <p>
+     * 
+     * This function looks a lot like the one in UMLModelElementListModel2.
+     * 
+     * @param theNewTarget the target
      */
-    protected void setTarget(Object target) {
-        LOG.debug("setTarget target :  " + target);
-        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (Model.getFacade().isAModelElement(target) 
-                || target instanceof Diagram) {
-            ModelEventPump eventPump = Model.getPump();
+    protected void setTarget(Object theNewTarget) {
+        LOG.debug("setTarget target :  " + theNewTarget);
+        theNewTarget = theNewTarget instanceof Fig 
+            ? ((Fig) theNewTarget).getOwner() : theNewTarget;
+        if (Model.getFacade().isAModelElement(theNewTarget) 
+                || theNewTarget instanceof Diagram) {
             if (Model.getFacade().isAModelElement(comboBoxTarget)) {
-                eventPump.removeModelEventListener(this, comboBoxTarget,
-						   propertySetName);
+                Model.getPump().removeModelEventListener(this, comboBoxTarget,
+                        propertySetName);
             }
 
-            if (Model.getFacade().isAModelElement(target)) {
-                comboBoxTarget = target;
-                eventPump.addModelEventListener(this, comboBoxTarget,
-						propertySetName);
-            } else {
-                comboBoxTarget = null;
-            }
-            fireListEvents = false;
-            removeAllElements();
-            fireListEvents = true;
-            if (comboBoxTarget != null) {
+            if (Model.getFacade().isAModelElement(theNewTarget)) {
+                comboBoxTarget = theNewTarget;
+                Model.getPump().addModelEventListener(this, comboBoxTarget,
+                        propertySetName);
+                
+                fireListEvents = false;
+                removeAllElements();
+                fireListEvents = true;
+
                 buildingModel = true;
                 buildModelList();
                 // Do not set buildingModel = false already here, 
                 // otherwise the action for selection is performed.
                 setSelectedItem(getSelectedModelElement());
                 buildingModel = false;
-
+                
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
                 }
+            } else {
+                comboBoxTarget = null;
+                
+                fireListEvents = false;
+                removeAllElements();
+                fireListEvents = true;
             }
             if (getSelectedItem() != null && isClearable) {
                 addElement(""); // makes sure we can select 'none'
@@ -401,12 +410,14 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     public void removeElement(Object o) {
         int index = objects.indexOf(o);
         if (getElementAt(index) == selectedObject) {
-            if (index == 0) {
-                setSelectedItem(getSize() == 1
-				? null
-				: getElementAt(index + 1));
-            } else {
-                setSelectedItem(getElementAt(index - 1));
+            if (!isClearable) {
+                if (index == 0) {
+                    setSelectedItem(getSize() == 1
+                                    ? null
+                                    : getElementAt(index + 1));
+                } else {
+                    setSelectedItem(getElementAt(index - 1));
+                }
             }
         }
         if (index >= 0) {
