@@ -62,8 +62,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
         // Dirty hack to remove the trash the Diagram constructor leaves
         SequenceDiagramGraphModel gm =
             new SequenceDiagramGraphModel();
-        SequenceDiagramLayout lay =
-            new SequenceDiagramLayout(this.getName(), gm);
+        SequenceDiagramLayer lay =
+            new SequenceDiagramLayer(this.getName(), gm);
         SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
         lay.setGraphEdgeRenderer(rend);
         lay.setGraphNodeRenderer(rend);

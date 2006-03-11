@@ -45,7 +45,7 @@ import org.tigris.gef.presentation.FigEdge;
  *
  * @author : jaap.branderhorst@xs4all.nl
  */
-public class SequenceDiagramLayout extends LayerPerspectiveMutable {
+public class SequenceDiagramLayer extends LayerPerspectiveMutable {
     /**
      * The distance between two objects on the sequence diagram.
      */
@@ -79,7 +79,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
      * @param name the name
      * @param gm the graph model
      */
-    public SequenceDiagramLayout(String name, MutableGraphModel gm) {
+    public SequenceDiagramLayer(String name, MutableGraphModel gm) {
         super(name, gm);
 
     }

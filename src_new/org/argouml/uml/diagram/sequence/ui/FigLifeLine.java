@@ -161,9 +161,9 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
 
     final int getYCoordinate(int nodeIndex) {
         return
-            nodeIndex * SequenceDiagramLayout.LINK_DISTANCE
+            nodeIndex * SequenceDiagramLayer.LINK_DISTANCE
                 + getY()
-                + SequenceDiagramLayout.LINK_DISTANCE / 2;
+                + SequenceDiagramLayer.LINK_DISTANCE / 2;
     }
 
     /**
