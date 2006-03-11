@@ -164,13 +164,13 @@ public abstract class FigMessage
                 // have 2 points, add the middle point
                 if (getNumPoints() <= 2) {
                     insertPoint(0, startPoint.x
-                            + SequenceDiagramLayout.OBJECT_DISTANCE / 3,
+                            + SequenceDiagramLayer.OBJECT_DISTANCE / 3,
                                 (startPoint.y + endPoint.y) / 2);
                 } else {
                     // Otherwise, move the middle point
                     int middleX =
                         startPoint.x
-                        + SequenceDiagramLayout.OBJECT_DISTANCE / 3;
+                        + SequenceDiagramLayer.OBJECT_DISTANCE / 3;
                     int middleY = (startPoint.y + endPoint.y) / 2;
                     Point p = getPoint(1);
                     if (p.x != middleX || p.y != middleY) {
@@ -224,7 +224,7 @@ public abstract class FigMessage
                 && getDestPortFig() instanceof FigMessagePort
                 && ((FigMessagePort) getSourcePortFig()).getNode() != null
                 && ((FigMessagePort) getDestPortFig()).getNode() != null) {
-            ((SequenceDiagramLayout) getLayer()).updateActivations();
+            ((SequenceDiagramLayer) getLayer()).updateActivations();
             Globals.curEditor().damageAll();
         }
     }

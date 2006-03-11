@@ -146,7 +146,7 @@ public class FigClassifierRole extends FigNodeModelElement
             new FigLifeLine(MIN_HEAD_WIDTH / 2 - WIDTH / 2, MIN_HEAD_HEIGHT);
         linkPositions.add(new MessageNode(this));
         for (int i = 0;
-            i <= lifeLine.getHeight() / SequenceDiagramLayout.LINK_DISTANCE;
+            i <= lifeLine.getHeight() / SequenceDiagramLayer.LINK_DISTANCE;
             i++) {
             linkPositions.add(new MessageNode(this));
         }
@@ -170,8 +170,8 @@ public class FigClassifierRole extends FigNodeModelElement
     public void mouseReleased(MouseEvent me) {
         super.mouseReleased(me);
         Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();
-        if (lay instanceof SequenceDiagramLayout) {
-            ((SequenceDiagramLayout) lay).putInPosition(this);
+        if (lay instanceof SequenceDiagramLayer) {
+            ((SequenceDiagramLayer) lay).putInPosition(this);
         }
     }
 
@@ -267,7 +267,7 @@ public class FigClassifierRole extends FigNodeModelElement
 
         this.updateEdges(); //???
         growToSize(
-                lifeLine.getHeight() / SequenceDiagramLayout.LINK_DISTANCE
+                lifeLine.getHeight() / SequenceDiagramLayer.LINK_DISTANCE
                 + 2);
         calcBounds(); //_x = x; _height = y; _w = w; _h = h;
         firePropChange("bounds", oldBounds, getBounds());
@@ -538,18 +538,18 @@ public class FigClassifierRole extends FigNodeModelElement
             } if (lastState != nextState && nextState == MessageNode.DESTROYED) {
                 int y =
                     lifeLine.getYCoordinate(i)
-                    - SequenceDiagramLayout.LINK_DISTANCE / 2;
+                    - SequenceDiagramLayer.LINK_DISTANCE / 2;
                 lifeLine.addActivationFig(
                     new FigLine(x,
-                    	    y + SequenceDiagramLayout.LINK_DISTANCE / 2,
+                    	    y + SequenceDiagramLayer.LINK_DISTANCE / 2,
                     	    x + WIDTH,
-                    	    y + SequenceDiagramLayout.LINK_DISTANCE));
+                    	    y + SequenceDiagramLayer.LINK_DISTANCE));
                 lifeLine.addActivationFig(
                     new FigLine(x,
-                    	    y + SequenceDiagramLayout.LINK_DISTANCE,
+                    	    y + SequenceDiagramLayer.LINK_DISTANCE,
                     	    x + WIDTH,
                     	    y
-                    	    + SequenceDiagramLayout.LINK_DISTANCE / 2));
+                    	    + SequenceDiagramLayer.LINK_DISTANCE / 2));
             }
             if (startActivationNode == null) {
                 switch (nextState) {
@@ -592,11 +592,11 @@ public class FigClassifierRole extends FigNodeModelElement
                 if (startActivationNode != endActivationNode || startFull || endFull) {
                     int y1 = getYCoordinate(startActivationNode);
                     if (startFull) {
-                        y1 -= SequenceDiagramLayout.LINK_DISTANCE / 2;
+                        y1 -= SequenceDiagramLayer.LINK_DISTANCE / 2;
                     }
                     int y2 = getYCoordinate(endActivationNode);
                     if (endFull) {
-                        y2 += SequenceDiagramLayout.LINK_DISTANCE / 2;
+                        y2 += SequenceDiagramLayer.LINK_DISTANCE / 2;
                     }
                     lifeLine.addActivationFig(new FigActivation(x, y1, WIDTH, y2 - y1));
                 }
@@ -611,11 +611,11 @@ public class FigClassifierRole extends FigNodeModelElement
             endFull = true;
             int y1 = getYCoordinate(startActivationNode);
             if (startFull) {
-                y1 -= SequenceDiagramLayout.LINK_DISTANCE / 2;
+                y1 -= SequenceDiagramLayer.LINK_DISTANCE / 2;
             }
             int y2 = getYCoordinate(endActivationNode);
             if (endFull) {
-                y2 += SequenceDiagramLayout.LINK_DISTANCE / 2;
+                y2 += SequenceDiagramLayer.LINK_DISTANCE / 2;
             }
             lifeLine.addActivationFig(new FigActivation(x, y1, WIDTH, y2 - y1));
             startActivationNode = null;
@@ -630,6 +630,7 @@ public class FigClassifierRole extends FigNodeModelElement
      * to the figobject depending on the state of the nodes.
      */
     public void updateActivations() {
+        LOG.info("Updating activations");
         lifeLine.removeActivations();
         addActivations();
     }
@@ -806,7 +807,7 @@ public class FigClassifierRole extends FigNodeModelElement
         if (count > 0) {
             updateNodeStates();
             Rectangle r = getBounds();
-            r.height += count * SequenceDiagramLayout.LINK_DISTANCE;
+            r.height += count * SequenceDiagramLayer.LINK_DISTANCE;
             setBounds(r);
             updateEdges();
         }
@@ -891,7 +892,7 @@ public class FigClassifierRole extends FigNodeModelElement
         if (contracted > 0) {
             updateNodeStates();
             Rectangle r = getBounds();
-            r.height -= contracted * SequenceDiagramLayout.LINK_DISTANCE;
+            r.height -= contracted * SequenceDiagramLayer.LINK_DISTANCE;
             updateEdges();
             setBounds(r);
         }
@@ -1075,7 +1076,7 @@ public class FigClassifierRole extends FigNodeModelElement
                 if (figMessagePort != null) {
                     figMessagePort.setY(
                         figMessagePort.getY()
-                            + SequenceDiagramLayout.LINK_DISTANCE);
+                            + SequenceDiagramLayer.LINK_DISTANCE);
                 }
             }
         }

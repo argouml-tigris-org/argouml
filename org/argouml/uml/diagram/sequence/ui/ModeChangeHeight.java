@@ -82,29 +82,29 @@ public class ModeChangeHeight extends FigModifyingModeImpl {
             return;
 	}
 
-        SequenceDiagramLayout layout =
-	    (SequenceDiagramLayout) Globals.curEditor().getLayerManager()
+        SequenceDiagramLayer layout =
+	    (SequenceDiagramLayer) Globals.curEditor().getLayerManager()
 	        .getActiveLayer();
         int endY = me.getY();
         if (isContract()) {
-            int startOffset = SequenceDiagramLayout.getNodeIndex(startY);
+            int startOffset = SequenceDiagramLayer.getNodeIndex(startY);
             int endOffset;
             if (startY > endY) {
                 endOffset = startOffset;
-                startOffset = SequenceDiagramLayout.getNodeIndex(endY);
+                startOffset = SequenceDiagramLayer.getNodeIndex(endY);
             } else {
-                endOffset = SequenceDiagramLayout.getNodeIndex(endY);
+                endOffset = SequenceDiagramLayer.getNodeIndex(endY);
 	    }
             int diff = endOffset - startOffset;
             if (diff > 0) {
                 layout.contractDiagram(startOffset, diff);
             }
         } else {
-            int startOffset = SequenceDiagramLayout.getNodeIndex(startY);
+            int startOffset = SequenceDiagramLayer.getNodeIndex(startY);
             if (startOffset > 0 && endY < startY) {
                 startOffset--;
 	    }
-            int diff = SequenceDiagramLayout.getNodeIndex(endY) - startOffset;
+            int diff = SequenceDiagramLayer.getNodeIndex(endY) - startOffset;
             if (diff < 0) {
                 diff = -diff;
 	    }
