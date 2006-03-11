@@ -30,6 +30,7 @@ import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JTabbedPane;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManagerPanel;
 import org.argouml.dev.figinspector.FigInspectorPanel;
 import org.argouml.moduleloader.ModuleInterface;
 import org.tigris.gef.undo.UndoLogPanel;
