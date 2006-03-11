@@ -79,7 +79,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
         addField(Translator.localize("label.container"),
                 getContainerScroll());
 
-        // field for Classifier(not InState)
+        // field for Type (Classifier)
         addField(Translator.localize("label.type"),
             new UMLComboBoxNavigator(
                 this,
@@ -354,6 +354,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
                     removeTopStateFrom(states);
                     
                     if (states.size() < 1) return;
+                    super.actionPerformed(e);
                     Object cis = Model.getActivityGraphsFactory()
                         .buildClassifierInState(type, states);
                     Model.getCoreHelper().setType(ofs, cis);
