@@ -50,16 +50,16 @@ import org.tigris.swidgets.FlexiGridLayout;
 public class PropPanelStereotype extends PropPanelModelElement {
 
     private static UMLGeneralizableElementSpecializationListModel
-    specializationListModel =
-        new UMLGeneralizableElementSpecializationListModel();
+        specializationListModel =
+            new UMLGeneralizableElementSpecializationListModel();
 
     private static UMLGeneralizableElementGeneralizationListModel
         generalizationListModel =
             new UMLGeneralizableElementGeneralizationListModel();
 
     private static UMLTagDefinitionListModel
-    tagDefinitionListModel =
-        new UMLTagDefinitionListModel();
+        tagDefinitionListModel =
+            new UMLTagDefinitionListModel();
 
     private JScrollPane generalizationScroll;
 
@@ -93,6 +93,8 @@ public class PropPanelStereotype extends PropPanelModelElement {
         modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
         modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
         add(modifiersPanel);
+        
+        add(getNamespaceVisibilityPanel());
 
         addSeperator();
 
