@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,9 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
 
+import org.argouml.model.Facade;
 import org.argouml.model.Model;
+import org.argouml.model.StateMachinesHelper;
 import org.argouml.uml.diagram.ui.SelectionMoveClarifiers;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -38,7 +40,7 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * Class to display graphics for a UML MStubState in a diagram.
+ * Class to display graphics for a UML StubState in a diagram.
  *
  * @author pepargouml@yahoo.es
  */
@@ -57,6 +59,9 @@ public class FigStubState extends FigStateVertex {
     // instance variables
     private FigText referenceFig;
     private FigLine stubline;
+    
+    private Facade facade;
+    private StateMachinesHelper stateMHelper;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -66,7 +71,9 @@ public class FigStubState extends FigStateVertex {
      */
     public FigStubState() {
         super();
-
+        
+        facade = Model.getFacade();
+        stateMHelper = Model.getStateMachinesHelper();
         setBigPort(new FigRect(x, y, width, height));
         getBigPort().setLineWidth(0);
         getBigPort().setFilled(false);
@@ -94,8 +101,7 @@ public class FigStubState extends FigStateVertex {
         addFig(stubline);
 
         setShadowSize(0);
-        setBlinkPorts(false); //make port invisble unless mouse enters
-        Rectangle r = getBounds();
+        setBlinkPorts(false); //make port invisible unless mouse enters
     }
 
     /**
@@ -114,7 +120,7 @@ public class FigStubState extends FigStateVertex {
      */
     public void setOwner(Object node) {
         super.setOwner(node);
-        updateReference();
+        renderingChanged();
     }
 
     /**
@@ -205,7 +211,7 @@ public class FigStubState extends FigStateVertex {
     }
 
     /**
-     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(int theX, int theY, int theW, int theH) {
         Rectangle oldBounds = getBounds();
@@ -238,102 +244,91 @@ public class FigStubState extends FigStateVertex {
         }
         Object top = null;
         Object oldRef = null;
-        Object container = Model.getFacade().getContainer(getOwner());
+        Object container = facade.getContainer(getOwner());
 
         //The event source is the owner stub state
         if ((mee.getSource().equals(getOwner()))) {
             if (mee.getPropertyName().equals("referenceState")) {
-                updateReference();
-                if (container != null
-                        && Model.getFacade().isASubmachineState(container)
-                        && Model.getFacade().getSubmachine(container) != null) {
-                    top =
-                        Model.getFacade()
-                            .getTop(Model.getFacade().getSubmachine(container));
-                    oldRef =
-                        Model.getStateMachinesHelper()
-                            .getStatebyName((String) mee.getOldValue(), top);
+                updateReferenceText();
+                if (container != null && facade.isASubmachineState(container)
+                        && facade.getSubmachine(container) != null) {
+                    top = facade.getTop(facade.getSubmachine(container));
+                    oldRef = stateMHelper.getStatebyName(
+                            (String) mee.getOldValue(), top);
                 }
-                if (oldRef != null) {
-                    updateListeners(getOwner(), oldRef);
-                } else {
-                    updateListeners(getOwner());
-                }
+                updateListeners(getOwner(), oldRef);
             } else if ((mee.getPropertyName().equals("container")
-                    && Model.getFacade().isASubmachineState(container))) {
-                updateListeners(null);
+                    && facade.isASubmachineState(container))) {
+                removeListeners();
                 Object o = mee.getOldValue();
-                if (o != null
-                        && Model.getFacade().isASubmachineState(o)) {
-                    Model.getPump().removeModelEventListener(this, o);
-
+                if (o != null && facade.isASubmachineState(o)) {
+                    removeElementListener(o);
                 }
-                Model.getStateMachinesHelper()
-                        .setReferenceState(getOwner(), null);
+                stateMHelper.setReferenceState(getOwner(), null);
                 updateListeners(getOwner());
-                updateReference();
+                updateReferenceText();
             }
         } else {
             /*The event source is the submachine state*/
             if (container != null
                     && mee.getSource().equals(container)
-                    && Model.getFacade().isASubmachineState(container)
-                    && Model.getFacade().getSubmachine(container) != null) {
+                    && facade.isASubmachineState(container)
+                    && facade.getSubmachine(container) != null) {
                 /* The submachine has got a new name*/
+                // This indicates a change in association, not name - tfm
                 if (mee.getPropertyName().equals("submachine")) {
                     if (mee.getOldValue() != null) {
-                        top = Model.getFacade().getTop(mee.getOldValue());
-                        oldRef =
-                            Model.getStateMachinesHelper()
-                                .getStatebyName(Model.getFacade()
-                                        .getReferenceState(getOwner()), top);
+                        top = facade.getTop(mee.getOldValue());
+                        oldRef = stateMHelper.getStatebyName(facade
+                                .getReferenceState(getOwner()), top);
                     }
-                    Model.getStateMachinesHelper()
-                            .setReferenceState(getOwner(), null);
+                    stateMHelper.setReferenceState(getOwner(), null);
                     updateListeners(getOwner(), oldRef);
-                    updateReference();
+                    updateReferenceText();
                 }
 
             } else {
                 // The event source is the stub state's referenced state
                 // or one of the referenced state's path.
-                if (Model.getFacade().getSubmachine(container) != null) {
-                    top =
-                        Model.getFacade()
-                            .getTop(Model.getFacade()
-                                    .getSubmachine(container));
+                if (facade.getSubmachine(container) != null) {
+                    top = facade.getTop(facade.getSubmachine(container));
                 }
-                String path = Model.getFacade().getReferenceState(getOwner());
-                Object refObject =
-                    Model.getStateMachinesHelper().getStatebyName(path, top);
+                String path = facade.getReferenceState(getOwner());
+                Object refObject = stateMHelper.getStatebyName(path, top);
                 String ref;
                 if (refObject == null) {
                     // The source was the referenced state that has got
                     // a new name.
-                    ref =
-                        Model.getStateMachinesHelper().getPath(mee.getSource());
+                    ref = stateMHelper.getPath(mee.getSource());
                 } else {
                     //The source was one of the referenced state's path which
                     // has got a new name.
-                    ref =
-                        Model.getStateMachinesHelper().getPath(refObject);
+                    ref = stateMHelper.getPath(refObject);
                 }
                 // The Referenced State or one of his path's states has got
                 // a new name
-                Model.getStateMachinesHelper()
-                        .setReferenceState(getOwner(), ref);
-                updateReference();
+                stateMHelper.setReferenceState(getOwner(), ref);
+                updateReferenceText();
             }
         }
     }
 
     /**
+     * Rerender the whole figure.
+     * Call superclass then add reference text
+     */
+    public void renderingChanged() {
+        super.renderingChanged();
+        updateReferenceText();
+    }
+    
+    /**
      * Update the reference text.
      */
-    protected void updateReference() {
+    public void updateReferenceText() {
         Object text = null;
         try {
-            text = Model.getFacade().getReferenceState(getOwner());
+            text = facade.getReferenceState(getOwner());
         } catch (Exception e) {
         }
         if (text != null) {
@@ -341,7 +336,6 @@ public class FigStubState extends FigStateVertex {
         } else {
             referenceFig.setText("");
         }
-
         calcBounds();
         setBounds(getBounds());
         damage();
@@ -352,102 +346,99 @@ public class FigStubState extends FigStateVertex {
      */
     protected void updateListeners(Object newOwner) {
         super.updateListeners(newOwner);
-        Object container = null;
-        Object top = null;
-        Object reference = null;
-
-        if (newOwner != null) {
-            container = Model.getFacade().getContainer(newOwner);
-            //The new submachine container is added as listener
-            if (container != null
-                    && Model.getFacade().isASubmachineState(container)) {
-                Model.getPump().addModelEventListener(this, container);
-            }
-
-            //All states in the new reference state's path are added
-            // as listeners
-            if (container != null
-                    && Model.getFacade().isASubmachineState(container)
-                    && Model.getFacade().getSubmachine(container) != null) {
-                top =
-                    Model.getFacade().
-                        getTop(Model.getFacade()
-                                .getSubmachine(container));
-                reference =
-                    Model.getStateMachinesHelper()
-                        .getStatebyName(Model.getFacade()
-                                .getReferenceState(newOwner), top);
-                if (reference != null) {
-                    Model.getPump()
-                            .addModelEventListener(this, reference);
-                    container = Model.getFacade().getContainer(reference);
-                    while (container != null
-                            && !Model.getFacade().isTop(container)) {
-
-                        Model.getPump()
-                                .addModelEventListener(this, container);
-                        container = Model.getFacade().getContainer(container);
-                    }
-                }
-            }
+        if (newOwner == getOwner()) {
+            return;
+        }
+        if (newOwner == null) {
+            removeListeners();
         } else {
-            Object oldOwner = getOwner();
-            if (oldOwner != null) {
-                container = Model.getFacade().getContainer(oldOwner);
-                //The old submachine container is deleted as listener
-                if (container != null
-                        && Model.getFacade().isASubmachineState(container)) {
-                    Model.getPump().removeModelEventListener(this, container);
-                }
-                //All states in the old reference state's path are deleted
-                // as listeners
-                if (container != null
-                        && Model.getFacade().isASubmachineState(container)
-                        && Model.getFacade().getSubmachine(container) != null) {
+            addListeners(newOwner);
+        }
+    }
 
-                    top =
-                        Model.getFacade().
-                            getTop(Model.getFacade().
-                                    getSubmachine(container));
-                    reference =
-                        Model.getStateMachinesHelper()
-                            .getStatebyName(Model.getFacade()
-                                    .getReferenceState(oldOwner), top);
-                    if (reference != null) {
-                        Model.getPump()
-                                .removeModelEventListener(this, reference);
+    /**
+     * @param newOwner
+     */
+    private void addListeners(Object newOwner) {
+        Object container;
+        Object top;
+        Object reference;
+        container = facade.getContainer(newOwner);
+        //The new submachine container is added as listener
+        if (container != null
+                && facade.isASubmachineState(container)) {
+            addElementListener(container);
+        }
+        
+        //All states in the new reference state's path are added
+        // as listeners
+        if (container != null
+                && facade.isASubmachineState(container)
+                && facade.getSubmachine(container) != null) {
+            top = facade.getTop(facade.getSubmachine(container));
+            reference = stateMHelper.getStatebyName(facade
+                    .getReferenceState(newOwner), top);
+            String[] properties = {"name", "container"};
+            container = reference;
+            while (container != null
+                    && !container.equals(top)) {
+                addElementListener(container);
+                container = facade.getContainer(container);
+            }
+        }
+    }
 
-                        container =
-                                Model.getFacade().getContainer(reference);
-                        while (container != null
-                                && !Model.getFacade().isTop(container)) {
-
-                            Model.getPump()
-                                    .removeModelEventListener(this, container);
-                            container =
-                                    Model.getFacade().getContainer(container);
-                        }
-                    }
+    /**
+     * Remove all the existing listeners
+     */
+    private void removeListeners() {
+        Object container;
+        Object top;
+        Object reference;
+        Object owner = getOwner();
+        if (owner == null) {
+            return;
+        }
+        container = facade.getContainer(owner);
+        //The old submachine container is deleted as listener
+        if (container != null
+                && facade.isASubmachineState(container)) {
+            removeElementListener(container);
+        }
+        //All states in the old reference state's path are deleted
+        // as listeners
+        if (container != null
+                && facade.isASubmachineState(container)
+                && facade.getSubmachine(container) != null) {
+            
+            top = facade.getTop(facade.getSubmachine(container));
+            reference = stateMHelper.getStatebyName(facade
+                    .getReferenceState(owner), top);
+            if (reference != null) {
+                removeElementListener(reference);
+                container = facade.getContainer(reference);
+                while (container != null && !facade.isTop(container)) {
+                    removeElementListener(container);
+                    container = facade.getContainer(container);
                 }
             }
         }
     }
 
     /**
-     * @param newOwner the new owner UML object
-     * @param oldV the old owner UML object
+     * @param newOwner
+     *            the new owner UML object
+     * @param oldV
+     *            the old owner UML object
      */
     protected void updateListeners(Object newOwner, Object oldV) {
         Object container = null;
         if (oldV != null) {
-            Model.getPump()
-                    .removeModelEventListener(this, oldV);
-            container = Model.getFacade().getContainer(oldV);
-            while (container != null
-                    && !Model.getFacade().isTop(container)) {
-                Model.getPump()
-                        .removeModelEventListener(this, container);
-                container = Model.getFacade().getContainer(container);
+            removeElementListener(oldV);
+            container = facade.getContainer(oldV);
+            while (container != null && !facade.isTop(container)) {
+                removeElementListener(container);
+                container = facade.getContainer(container);
             }
         }
         updateListeners(newOwner);
