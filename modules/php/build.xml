@@ -28,12 +28,10 @@
     <!-- if it is set in a property file before now, it must be absolute -->
     <property name="argo.root.dir" value="${basedir}/../.." />
     <property file="${override.build.properties}"/>
-    <property file="${argo.src.dir}/default.properties"/>
+    <property file="${argo.root.dir}/src_new/default.properties"/>
 
     <property name="module.root" value="${basedir}"/>
     <property name="module.src.dir" value="${module.root}/src"/>
-
-    <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp.jar:${ANT_HOME}/lib/parser.jar"/>
 
     <property name="packages" value="org.argouml.*"/>
     <property name="manifest" value="manifest.mf"/>
