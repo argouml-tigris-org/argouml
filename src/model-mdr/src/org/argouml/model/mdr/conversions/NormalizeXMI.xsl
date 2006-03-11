@@ -11,11 +11,8 @@
     exclude-result-prefixes = "xalan saxon date"
     version = "1.0" >
 
-<!--
   <xsl:output method="xml" indent="yes" 
   		xalan:indent-amount="2" saxon:indent-spaces="2"/>
-  <xsl:strip-space elements="*"/>
--->
   <xsl:preserve-space elements="*"/>
                
 <!-- _______________________________________________________________ -->
