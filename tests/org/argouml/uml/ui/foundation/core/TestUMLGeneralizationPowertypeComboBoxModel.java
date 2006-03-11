@@ -116,6 +116,14 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
         LOG.info("Setting powertype");
         Model.getCoreHelper().setPowertype(elem, types[0]);
         Model.getPump().flushModelEvents();
+        // One can only do this by changing target, 
+        // so let's simulate that:
+        model.targetSet(new TargetEvent(this,
+                TargetEvent.TARGET_SET,
+                new Object[0],
+                new Object[] {
+                elem,
+        }));
         assertTrue(model.getSelectedItem() == types[0]);
         LOG.info("Powertype set");
     }
@@ -127,6 +135,14 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
         Model.getCoreHelper().setPowertype(elem, types[0]);
         Model.getCoreHelper().setPowertype(elem, null);
         Model.getPump().flushModelEvents();
+        // One can only do this by changing target, 
+        // so let's simulate that:
+        model.targetSet(new TargetEvent(this,
+                TargetEvent.TARGET_SET,
+                new Object[0],
+                new Object[] {
+                elem,
+        }));
         assertNull(model.getSelectedItem());
     }
 

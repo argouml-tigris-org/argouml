@@ -100,6 +100,14 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
     public void testSetActivator() {
         Model.getCollaborationsHelper().setActivator(elem, activators[0]);
         Model.getPump().flushModelEvents();
+        // One can only do this by changing target, 
+        // so let's simulate that:
+        model.targetSet(new TargetEvent(this,
+                TargetEvent.TARGET_SET,
+                new Object[0],
+                new Object[] {
+                elem,
+        }));
         assertTrue(model.getSelectedItem() == activators[0]);
     }
 

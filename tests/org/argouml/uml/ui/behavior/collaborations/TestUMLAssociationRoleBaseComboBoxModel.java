@@ -116,6 +116,14 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
     public void testSetBase() {
         Model.getCollaborationsHelper().setBase(elem, bases[0]);
         Model.getPump().flushModelEvents();
+        // One can only delete a assoc by changing target, 
+        // so let's simulate that:
+        model.targetSet(new TargetEvent(this,
+                TargetEvent.TARGET_SET,
+                new Object[0],
+                new Object[] {
+                elem,
+        }));
         assertTrue(model.getSelectedItem() == bases[0]);
     }
 
