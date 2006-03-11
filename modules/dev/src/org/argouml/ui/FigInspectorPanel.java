@@ -59,8 +59,12 @@ public class FigInspectorPanel extends JPanel implements GraphSelectionListener 
     private String getDescr(Fig f) {
         String className = f.getClass().getName();
         String descr = className.substring(className.lastIndexOf(".") + 1);
+        descr += " [" + f.getX() + "," + 
+                        f.getY() + "," + 
+                        f.getWidth() + "," + 
+                        f.getHeight() + "]";
         if (f instanceof FigText) {
-            descr += " [" + ((FigText)f).getText() + "]";
+            descr += " \"" + ((FigText)f).getText() + "\"";
         }
         return descr;
     }
