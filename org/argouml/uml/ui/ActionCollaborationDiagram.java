@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,6 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -34,7 +35,9 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  * Action to trigger creation of new collaboration diagram.
  */
 public class ActionCollaborationDiagram extends ActionAddDiagram {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(ActionCollaborationDiagram.class);
 
@@ -58,13 +61,15 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
         Object target = TargetManager.getInstance().getModelTarget();
         Object collaboration = null;
         if (Model.getFacade().isAOperation(target)) {
-            collaboration = Model.getCollaborationsFactory()
-                            .buildCollaboration(namespace, target);
+            collaboration =
+                Model.getCollaborationsFactory()
+                        .buildCollaboration(namespace, target);
         } else if (Model.getFacade().isAClassifier(target)) {
-            collaboration = Model.getCollaborationsFactory()
-                            .buildCollaboration(namespace, target);
+            collaboration =
+                Model.getCollaborationsFactory()
+                        .buildCollaboration(namespace, target);
         }
-        return (UMLDiagram)DiagramFactory.getInstance().createDiagram(
+        return (UMLDiagram) DiagramFactory.getInstance().createDiagram(
                 UMLCollaborationDiagram.class,
                 collaboration,
                 null);
@@ -89,13 +94,18 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
      */
     public boolean shouldBeEnabled() {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (Model.getFacade().isAOperation(target))
+        if (Model.getFacade().isAOperation(target)) {
             return super.shouldBeEnabled()
                 && Model.getCollaborationsHelper()
                     .isAddingCollaborationAllowed(target);
-        else if (Model.getFacade().isANamespace(target))
-                return super.shouldBeEnabled() && isValidNamespace(target);
+        } else if (Model.getFacade().isANamespace(target)) {
+            return super.shouldBeEnabled() && isValidNamespace(target);
+        }
         return false;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1089352213298998155L;
 } /* end class ActionCollaborationDiagram */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,30 +51,31 @@ import org.argouml.uml.diagram.ui.StereotypeUtility;
 import org.argouml.uml.ui.foundation.core.UMLModelElementStereotypeListModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.Horizontal;
-import org.tigris.swidgets.LabelledLayout;
 import org.tigris.swidgets.Vertical;
 
 /**
  * This the tab in the details pane for displaying the stereotypes applied to a
  * model element and allowing adding and removal of stereotypes to that list.<p>
- * 
- * The code for the 2 lists and the buttons to move items 
+ *
+ * The code for the 2 lists and the buttons to move items
  * from one side to the other is based on the PerspectiveConfigurator class.
  */
 public class TabStereotype extends PropPanel {
+
     /**
      * Insets in pixels.
      */
     private static final int INSET_PX = 3;
 
-    private static String orientation = Configuration.getString(Configuration
+    private static String orientation =
+        Configuration.getString(Configuration
             .makeKey("layout", "tabstereotype"));
 
     private Object target;
 
     private UMLModelElementListModel2 selectedListModel;
     private UMLModelElementListModel2 availableListModel;
-    
+
     private JScrollPane selectedScroll;
     private JScrollPane availableScroll;
     private JPanel panel;
@@ -83,7 +84,7 @@ public class TabStereotype extends PropPanel {
     private JPanel xferButtons;
     private JList selectedList;
     private JList availableList;
-    
+
     /**
      * Construct new Stereotype tab.
      */
@@ -93,26 +94,28 @@ public class TabStereotype extends PropPanel {
                 .getInstance() : Horizontal.getInstance());
         setLayout(new BorderLayout());
         remove(getTitleLabel()); // no title looks better
-        
+
         panel = makePanel();
         add(panel);
     }
 
     /**
-     * Create a JPanel with everything on it. 
+     * Create a JPanel with everything on it.
+     *
+     * @return a newly created JPanel.
      */
     private JPanel makePanel() {
         // make lists
         selectedListModel = new UMLModelElementStereotypeListModel();
-        selectedList = new UMLLinkedList(selectedListModel); 
+        selectedList = new UMLLinkedList(selectedListModel);
         selectedScroll = new JScrollPane(selectedList);
         selectedScroll.setBorder(BorderFactory.createEmptyBorder(
                 INSET_PX, INSET_PX, INSET_PX, INSET_PX));
         selectedScroll.setColumnHeaderView(new JLabel(
                 Translator.localize("label.applied-stereotypes")));
-        
+
         availableListModel = new UMLModelStereotypeListModel();
-        availableList = new UMLLinkedList(availableListModel); 
+        availableList = new UMLLinkedList(availableListModel);
         availableScroll = new JScrollPane(availableList);
         availableScroll.setBorder(BorderFactory.createEmptyBorder(
                 INSET_PX, INSET_PX, INSET_PX, INSET_PX));
@@ -131,7 +134,7 @@ public class TabStereotype extends PropPanel {
         removeStButton.setMargin(new Insets(2, 15, 2, 15));
         addStButton.setPreferredSize(addStButton.getMinimumSize());
         removeStButton.setPreferredSize(removeStButton.getMinimumSize());
-        
+
         // make buttons layout
         BoxLayout box;
         xferButtons = new JPanel();
@@ -157,12 +160,12 @@ public class TabStereotype extends PropPanel {
         JPanel thePanel = new JPanel();
         thePanel.setLayout(new BoxLayout(thePanel, BoxLayout.X_AXIS));
         thePanel.setBorder(BorderFactory.createEmptyBorder(
-                INSET_PX, INSET_PX, INSET_PX, INSET_PX));        
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
         thePanel.add(availableScroll);
         thePanel.add(xferButtons);
-        thePanel.add(Box.createRigidArea(new Dimension(5,1)));
+        thePanel.add(Box.createRigidArea(new Dimension(5, 1)));
         thePanel.add(selectedScroll);
-        
+
         return thePanel;
     }
 
@@ -174,20 +177,23 @@ public class TabStereotype extends PropPanel {
      * @return true if this tab should be enabled, otherwise false.
      */
     public boolean shouldBeEnabled() {
-        Object target = getTarget();
-        if (target instanceof Fig) target = ((Fig) target).getOwner();
-        return Model.getFacade().isAModelElement(target);
+        Object tgt = getTarget();
+        if (tgt instanceof Fig) {
+            tgt = ((Fig) tgt).getOwner();
+        }
+        return Model.getFacade().isAModelElement(tgt);
     }
 
     /**
      * TODO: This does not seem to get called...
-     * 
+     *
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
     public void setTarget(Object theTarget) {
 
-        Object t = (theTarget instanceof Fig)
-                    ? ((Fig) theTarget).getOwner() : theTarget;
+        Object t =
+            (theTarget instanceof Fig)
+            ? ((Fig) theTarget).getOwner() : theTarget;
         if (!(Model.getFacade().isAModelElement(t))) {
             target = null;
             return;
@@ -198,7 +204,7 @@ public class TabStereotype extends PropPanel {
 
         validate();
     }
-    
+
     /**
      * Add the currently selected stereotype from the library
      * to the modelelement.
@@ -206,11 +212,14 @@ public class TabStereotype extends PropPanel {
     private void doAddStereotype() {
         Object stereotype = availableList.getSelectedValue();
         Object modelElement = TargetManager.getInstance().getModelTarget();
-        if (modelElement == null) return;
-        
-        Object stereo = Model.getModelManagementHelper()
-            .getCorrespondingElement(stereotype, 
-                Model.getFacade().getModel(modelElement), true);
+        if (modelElement == null) {
+            return;
+        }
+
+        Object stereo =
+            Model.getModelManagementHelper()
+                .getCorrespondingElement(stereotype,
+                        Model.getFacade().getModel(modelElement), true);
         Model.getCoreHelper().addStereotype(modelElement, stereo);
     }
 
@@ -221,34 +230,37 @@ public class TabStereotype extends PropPanel {
     private void doRemoveStereotype() {
         Object stereotype = selectedList.getSelectedValue();
         Object modelElement = TargetManager.getInstance().getModelTarget();
-        if (modelElement == null) return;
-        
-        if (Model.getFacade().getStereotypes(modelElement).contains(stereotype)) {
+        if (modelElement == null) {
+            return;
+        }
+
+        if (Model.getFacade().getStereotypes(modelElement)
+                .contains(stereotype)) {
             Model.getCoreHelper().removeStereotype(modelElement, stereotype);
         }
     }
-        
+
     /**
      * The list model for all stereotypes available in all the models - except
      * the ones already applied.
      */
     private class UMLModelStereotypeListModel
         extends UMLModelElementListModel2 {
-        
+
         /**
          * Constructor for UMLModelElementNamespaceListModel.
          */
         public UMLModelStereotypeListModel() {
             super("stereotype");
         }
-        
+
         /**
          * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
          */
         protected void buildModelList() {
             removeAllElements();
             if (getTarget() != null) {
-                Collection s; 
+                Collection s;
                 s = StereotypeUtility.getAvailableStereotypes(getTarget());
                 // now remove the ones already applied.
                 s.removeAll(Model.getFacade().getStereotypes(getTarget()));
@@ -262,15 +274,23 @@ public class TabStereotype extends PropPanel {
         protected boolean isValidElement(Object element) {
             return Model.getFacade().isAStereotype(element);
         }
-        
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 7247425177890724453L;
     }
-    
+
     /**
      * Handles pressing the ">>" or "<<" buttons.
      */
     private class AddRemoveListener implements ActionListener {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *         java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e) {
-            
+
             Object src = e.getSource();
             if (src == addStButton) {
                 doAddStereotype();
@@ -279,11 +299,11 @@ public class TabStereotype extends PropPanel {
             }
         }
     }
-    
+
     /**
      * Handles selection changes in the available stereotypes list.
      */
-    private class AvailableListSelectionListener 
+    private class AvailableListSelectionListener
         implements ListSelectionListener {
         /**
          * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
@@ -301,7 +321,8 @@ public class TabStereotype extends PropPanel {
     /**
      * Handles selection changes in the stereotypes list.
      */
-    private class SelectedListSelectionListener implements ListSelectionListener {
+    private class SelectedListSelectionListener
+        implements ListSelectionListener {
         /**
          * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
          */
@@ -314,4 +335,9 @@ public class TabStereotype extends PropPanel {
             removeStButton.setEnabled(selRule != null);
         }
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -4741653225927138553L;
 }

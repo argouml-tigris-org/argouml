@@ -63,7 +63,7 @@ import org.tigris.gef.persistence.PostscriptWriter;
  *
  * @author mvw@tigris.org
  */
-public class SaveGraphicsManager {
+public final class SaveGraphicsManager {
 
     /**
      * The configuration key for the preferred graphics format.
@@ -90,12 +90,12 @@ public class SaveGraphicsManager {
         Configuration.makeKey("graphics", "export", "resolution");
 
     /**
-     * the default file format
+     * The default file format.
      */
     private SuffixFilter defaultFilter;
 
     /**
-     * the list of other file formats
+     * The list of other file formats.
      */
     private List otherFilters = new ArrayList();
 
@@ -146,10 +146,14 @@ public class SaveGraphicsManager {
                 f.getSuffix());
 
         Collections.sort(otherFilters, new Comparator() {
+            /**
+             * @see java.util.Comparator#compare(T, T)
+             */
             public int compare(Object arg0, Object arg1) {
-                return ((SuffixFilter)arg0).getSuffix().compareToIgnoreCase(
-                        ((SuffixFilter)arg1).getSuffix());
-            }});
+                return ((SuffixFilter) arg0).getSuffix().compareToIgnoreCase(
+                        ((SuffixFilter) arg1).getSuffix());
+            }
+        });
     }
 
     /**
@@ -175,7 +179,8 @@ public class SaveGraphicsManager {
     /**
      * @param chooser the filechooser of which the filters will be set
      */
-    public void setFileChooserFilters(JFileChooser chooser, String defaultName) {
+    public void setFileChooserFilters(
+            JFileChooser chooser, String defaultName) {
         chooser.addChoosableFileFilter(defaultFilter);
         Iterator iter = otherFilters.iterator();
         while (iter.hasNext()) {
@@ -202,6 +207,12 @@ public class SaveGraphicsManager {
     class FileFilterChangedListener implements PropertyChangeListener {
         JFileChooser chooser;
         String defaultName;
+
+        /**
+         * Constructor.
+         * @param c
+         * @param name
+         */
         public FileFilterChangedListener(JFileChooser c, String name) {
             chooser = c;
             defaultName = name;
@@ -221,9 +232,18 @@ public class SaveGraphicsManager {
 
         class Anonymous1 implements Runnable {
             private String fileName;
-            Anonymous1(String fn){
+            /**
+             * Constructor.
+             *
+             * @param fn The filename.
+             */
+            Anonymous1(String fn) {
                 fileName = fn;
             }
+
+            /**
+             * @see java.lang.Runnable#run()
+             */
             public void run() {
                 chooser.setSelectedFile(new File(fileName));
             }
@@ -315,6 +335,11 @@ public class SaveGraphicsManager {
  * The old comment was: override gef default to cope with scaling.
  */
 class ActionSaveGraphicsCmdSaveEPS extends CmdSaveEPS {
+    /**
+     * @see org.tigris.gef.base.CmdSaveGraphics#saveGraphics(
+     *         java.io.OutputStream, org.tigris.gef.base.Editor,
+     *         java.awt.Rectangle)
+     */
     protected void saveGraphics(OutputStream s, Editor ce,
                                 Rectangle drawingArea)
         throws IOException {
@@ -333,5 +358,10 @@ class ActionSaveGraphicsCmdSaveEPS extends CmdSaveEPS {
         ce.print(ps);
         ps.dispose();
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2859279843998315644L;
 }
 

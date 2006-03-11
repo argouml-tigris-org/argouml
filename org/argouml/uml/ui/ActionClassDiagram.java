@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,12 +38,18 @@ public class ActionClassDiagram extends ActionAddDiagram {
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
                 Logger.getLogger(ActionClassDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Constructor.
+     */
     public ActionClassDiagram() {
         super("action.class-diagram");
     }
@@ -53,7 +59,7 @@ public class ActionClassDiagram extends ActionAddDiagram {
      */
     public UMLDiagram createDiagram(Object ns) {
         if (Model.getFacade().isANamespace(ns)) {
-            return (UMLDiagram)DiagramFactory.getInstance().createDiagram(
+            return (UMLDiagram) DiagramFactory.getInstance().createDiagram(
                     UMLClassDiagram.class,
                     ns,
                     null);
@@ -76,4 +82,9 @@ public class ActionClassDiagram extends ActionAddDiagram {
         }
         return true;
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2415943949021223859L;
 } /* end class ActionClassDiagram */

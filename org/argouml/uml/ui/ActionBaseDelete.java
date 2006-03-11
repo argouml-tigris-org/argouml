@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -67,7 +67,8 @@ public abstract class ActionBaseDelete extends UMLAction {
      */
     public ActionBaseDelete() {
         super("action.delete-from-model", true, HAS_ICON);
-        putValue(Action.SMALL_ICON, ResourceLoaderWrapper.lookupIcon("Delete"));
+        putValue(Action.SMALL_ICON,
+                ResourceLoaderWrapper.lookupIcon("Delete"));
     }
 
 
@@ -181,7 +182,7 @@ public abstract class ActionBaseDelete extends UMLAction {
                 }
             }
         } else if (target instanceof CommentEdge) {
-            newTarget = ((CommentEdge)target).getSource();
+            newTarget = ((CommentEdge) target).getSource();
         } else {
             newTarget = p.getRoot();
         }

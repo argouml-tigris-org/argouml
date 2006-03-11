@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,13 +38,18 @@ public class ActionStateDiagram extends ActionAddDiagram {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(ActionStateDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Constructor.
+     */
     public ActionStateDiagram() {
         super("action.state-diagram");
     }
@@ -56,7 +61,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
         Object target = TargetManager.getInstance().getModelTarget();
         Object/*MStateMachine*/ machine =
             Model.getStateMachinesFactory().buildStateMachine(target);
-        return (UMLDiagram)DiagramFactory.getInstance().createDiagram(
+        return (UMLDiagram) DiagramFactory.getInstance().createDiagram(
                 UMLStateDiagram.class,
                 Model.getFacade().getNamespace(machine),
                 machine);
@@ -87,4 +92,8 @@ public class ActionStateDiagram extends ActionAddDiagram {
             .isAddingStatemachineAllowed(handle);
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5197718695001757808L;
 } /* end class ActionStateDiagram */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,19 +25,10 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.net.URL;
-
-import javax.swing.JFileChooser;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Configuration;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.persistence.AbstractFilePersister;
-import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ProjectBrowser;
 
 /**
@@ -46,7 +37,6 @@ import org.argouml.ui.ProjectBrowser;
  * @stereotype singleton
  */
 public class ActionSaveProjectAs extends ActionSaveProject {
-
     /**
      * Logger.
      */
@@ -71,4 +61,9 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         LOG.info("Performing saveas action");
         ProjectBrowser.getInstance().trySaveAs(false);
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1209396991311217989L;
 } /* end class ActionSaveProjectAs */
