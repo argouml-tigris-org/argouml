@@ -42,7 +42,7 @@ package org.argouml.ui.explorer;
  * }
  * </pre>
  *
- * <p>About subsumtion:
+ * <p>About subsumption:
  * <ul>
  * <li>Weak nodes must not rely on that the Explorer preserves the oldest one.
  * <li>The Explorer will not check if several PerspectiveRules has returned
