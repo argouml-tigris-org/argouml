@@ -121,7 +121,7 @@ round-trip engineering for C++ projects.
     <!-- if it is set in a property file before now, it must be absolute -->
     <property name="argo.root.dir" value="${basedir}/../.."/>
     <property file="${override.build.properties}"/>
-    <property file="${argo.src.dir}/default.properties"/>
+    <property file="${argo.root.dir}/src_new/default.properties"/>
 
     <property name="module.version" value="${argo.core.version}-${DSTAMP}-${TSTAMP}"/>
 
