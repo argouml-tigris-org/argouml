@@ -38,7 +38,6 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
@@ -73,12 +72,11 @@ public class FigClass extends FigClassifierBox
     /**
      * Logger.
      */
-    private static final Logger LOG =
-        Logger.getLogger(FigClass.class);
+    //private static final Logger LOG = Logger.getLogger(FigClass.class);
 
-    FigAttributesCompartment attributesFigCompartment;
+    private FigAttributesCompartment attributesFigCompartment;
 
-    Fig borderFig;
+    private Fig borderFig;
 
     /**
      * Text highlighted by mouse actions on the diagram.<p>
@@ -216,13 +214,6 @@ public class FigClass extends FigClassifierBox
         return figClone;
     }
 
-
-    /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    public String placeString() {
-        return "new Class";
-    }
 
     ////////////////////////////////////////////////////////////////
     // accessors

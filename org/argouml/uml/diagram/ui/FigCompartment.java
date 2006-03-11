@@ -92,9 +92,11 @@ public abstract class FigCompartment extends FigGroup {
         return new Dimension(minWidth, minHeight);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     */
     protected void setBoundsImpl(int x, int y, int w, int h) {
         int newW = w;
-        int n = getFigs().size() - 1;
         int newH = h;
 
         Iterator figs = iterator();

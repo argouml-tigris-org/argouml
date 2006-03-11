@@ -110,9 +110,6 @@ public abstract class FigClassifierBox extends FigNodeModelElement
         operationsFig.populate();
         Fig operPort = operationsFig.getBigPort();
 
-        int xpos = operPort.getX();
-        int ypos = operPort.getY();
-
         Rectangle rect = getBounds();
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
@@ -217,6 +214,13 @@ public abstract class FigClassifierBox extends FigNodeModelElement
         return unhighlight(operationsFig);
     }
 
+    /**
+     * Search the given compartment for a highlighted CompartmentFigText
+     * and unhighlight it.
+     * 
+     * @param fc compartment to search for highlight item
+     * @return item that was unhighlighted or null if no action was taken
+     */
     protected final CompartmentFigText unhighlight(FigFeaturesCompartment fc) {
         Fig ft;
         for (int i = 1; i < fc.getFigs().size(); i++) {

@@ -64,7 +64,7 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
      * @return the vertical offset
      */
     public int getVerticalOffset() {
-        return (int) (getVGap() / 2) - 10 + getOffset();
+        return (getVGap() / 2) - 10 + getOffset();
     }
 
     /**
