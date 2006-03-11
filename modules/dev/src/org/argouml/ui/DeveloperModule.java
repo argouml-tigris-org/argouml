@@ -28,12 +28,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.JComponent;
 import javax.swing.JMenu;
-import javax.swing.JPanel;
-
-import org.apache.log4j.Logger;
-
+import javax.swing.JTabbedPane;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.moduleloader.ModuleInterface;
 import org.tigris.gef.undo.UndoLogPanel;
 import org.tigris.gef.undo.UndoManager;
@@ -48,11 +44,6 @@ public final class DeveloperModule implements ModuleInterface {
     /**
      * Logger.
      */
-    private static final Logger LOG =
-        Logger.getLogger(DeveloperModule.class);
-
-    private JPanel undoLogPanel;
-
     UndoManagerWrapper um = new UndoManagerWrapper();
     
     /**
@@ -71,17 +62,20 @@ public final class DeveloperModule implements ModuleInterface {
         // TODO: Add a checkbox menu item to hide/show undo panel
         
         UndoManager.setInstance(um);
-        // Hack into the edit menu and make the 
-        GenericArgoMenuBar menubar =
-            (GenericArgoMenuBar) ProjectBrowser.getInstance().getJMenuBar();
         JMenu editMenu = ProjectBrowser.getInstance().getJMenuBar().getMenu(1);
-        
         editMenu.getMenuComponent(0).setVisible(true);
         editMenu.getMenuComponent(1).setVisible(true);
         UndoManager.getInstance().setUndoMax(10);
         
+        JTabbedPane devPanel = new JTabbedPane();
+        
         JComponent undoLogPanel = UndoLogPanel.getInstance();
-        ProjectBrowser.getInstance().addPanel(undoLogPanel, BorderLayout.EAST);
+        devPanel.addTab("Undo Stack", undoLogPanel);
+        
+        JComponent inspectorPanel = FigInspectorPanel.getInstance();
+        devPanel.add("Fig Inspector", inspectorPanel);
+        
+        ProjectBrowser.getInstance().addPanel(devPanel, BorderLayout.EAST);
         
         return true;
     }
@@ -93,8 +87,6 @@ public final class DeveloperModule implements ModuleInterface {
      * we don't care.
      */
     public boolean disable() {
-        GenericArgoMenuBar menubar =
-            (GenericArgoMenuBar) ProjectBrowser.getInstance().getJMenuBar();
         JMenu editMenu = ProjectBrowser.getInstance().getJMenuBar().getMenu(1);
         
         editMenu.getMenuComponent(0).setVisible(false);
