@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,50 +31,61 @@ import org.tigris.gef.base.Geometry;
 import org.tigris.gef.presentation.FigRect;
 
 /**
- * The bigport needs to overrule the getClosestPoint, 
+ * The bigport needs to overrule the getClosestPoint,
  * because it is the port of this FigNode(Instance).
- * 
+ *
  * @author mvw@tigris.org
  */
 class CubePortFigRect extends FigRect {
     private int d;
+
     /**
      * The constructor.
-     * 
+     *
      * @param x the x
      * @param y the y
      * @param w the width
-     * @param h the hight
+     * @param h the height
+     * @param depth the depth
      */
     public CubePortFigRect(int x, int y, int w, int h, int depth) {
         super(x, y, w, h);
-        this.d = depth;
+        d = depth;
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
-        int xs[] = {r.x,     
-                r.x + d, 
-                r.x + r.width, 
-                r.x + r.width,
-                r.x + r.width - d,  
-                r.x,            
-                r.x};
-        int ys[] = {r.y + d, 
-                r.y,
-                r.y, 
-                r.y + r.height - d,
-                r.y + r.height, 
-                r.y + r.height,
-                r.y + d};
-        Point p = Geometry.ptClosestTo(
-                xs, 
+        int[] xs = {
+            r.x,
+            r.x + d,
+            r.x + r.width,
+            r.x + r.width,
+            r.x + r.width - d,
+            r.x,
+            r.x,
+        };
+        int[] ys = {
+            r.y + d,
+            r.y,
+            r.y,
+            r.y + r.height - d,
+            r.y + r.height,
+            r.y + r.height,
+            r.y + d,
+        };
+        Point p =
+            Geometry.ptClosestTo(
+                xs,
                 ys,
                 7 , anotherPt);
         return p;
     }
-    
-}    
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -136360467045533658L;
+}
