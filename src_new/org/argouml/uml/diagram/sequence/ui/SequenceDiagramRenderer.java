@@ -47,6 +47,9 @@ import org.tigris.gef.presentation.FigNode;
  * @author 5eichler
  */
 public class SequenceDiagramRenderer extends UmlDiagramRenderer {
+    
+    private static final long serialVersionUID = -5460387717430613088L;
+    
     /**
      * Logger.
      */

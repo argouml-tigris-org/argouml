@@ -50,8 +50,6 @@ import org.tigris.gef.persistence.pgml.HandlerStack;
 import org.tigris.gef.persistence.pgml.PGMLStackParser;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
-import org.tigris.gef.presentation.FigRect;
-import org.tigris.gef.presentation.FigText;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -242,14 +240,6 @@ public class FigClassifierRole extends FigNodeModelElement
                     }
                 }
             }
-        }
-    }
-
-    private void center(FigText figText) {
-        int newX = this.getX() + this.getWidth() / 2 - figText.getWidth() / 2;
-        if (figText.getX() != newX) {
-            figText.setX(newX);
-            updateBounds();
         }
     }
 
@@ -541,19 +531,11 @@ public class FigClassifierRole extends FigNodeModelElement
             MessageNode node = (MessageNode) linkPositions.get(i);
             int nextState = node.getState();
             if (lastState != nextState && nextState == MessageNode.CREATED) {
-                FigRect birthFig =
-		    new FigRect(lifeLine.getX(),
-		            lifeLine.getYCoordinate(i)
-		            - SequenceDiagramLayout.LINK_DISTANCE / 4,
-                            WIDTH,
-                            SequenceDiagramLayout.LINK_DISTANCE / 4);
-                birthFig.setFilled(true);
-                birthFig.setFillColor(Color.BLACK);
-                lifeLine.addActivationFig(birthFig);
-            }
-
-            if (lastState != nextState
-                    && nextState == MessageNode.DESTROYED) {
+                lifeLine.addActivationFig(
+                        new FigBirthActivation(
+                                lifeLine.getX(),
+                                lifeLine.getYCoordinate(i)));
+            } if (lastState != nextState && nextState == MessageNode.DESTROYED) {
                 int y =
                     lifeLine.getYCoordinate(i)
                     - SequenceDiagramLayout.LINK_DISTANCE / 2;
@@ -607,8 +589,7 @@ public class FigClassifierRole extends FigNodeModelElement
             }
             lastState = nextState;
             if (startActivationNode != null && endActivationNode != null) {
-                if (startActivationNode != endActivationNode
-		    || startFull || endFull) {
+                if (startActivationNode != endActivationNode || startFull || endFull) {
                     int y1 = getYCoordinate(startActivationNode);
                     if (startFull) {
                         y1 -= SequenceDiagramLayout.LINK_DISTANCE / 2;
@@ -617,13 +598,12 @@ public class FigClassifierRole extends FigNodeModelElement
                     if (endFull) {
                         y2 += SequenceDiagramLayout.LINK_DISTANCE / 2;
                     }
-                    lifeLine.addActivationFig(
-                            new FigRect(x, y1, WIDTH, y2 - y1));
+                    lifeLine.addActivationFig(new FigActivation(x, y1, WIDTH, y2 - y1));
                 }
                 startActivationNode = null;
-		endActivationNode = null;
+                endActivationNode = null;
                 startFull = false;
-		endFull = false;
+                endFull = false;
             }
         }
         if (startActivationNode != null) {
@@ -637,7 +617,7 @@ public class FigClassifierRole extends FigNodeModelElement
             if (endFull) {
                 y2 += SequenceDiagramLayout.LINK_DISTANCE / 2;
             }
-            lifeLine.addActivationFig(new FigRect(x, y1, WIDTH, y2 - y1));
+            lifeLine.addActivationFig(new FigActivation(x, y1, WIDTH, y2 - y1));
             startActivationNode = null;
             endActivationNode = null;
             startFull = false;
@@ -992,7 +972,7 @@ public class FigClassifierRole extends FigNodeModelElement
         return foundNode;
     }
 
-    private int getYCoordinate(MessageNode node) {
+    int getYCoordinate(MessageNode node) {
         return lifeLine.getYCoordinate(linkPositions.indexOf(node));
     }
 
@@ -1071,7 +1051,7 @@ public class FigClassifierRole extends FigNodeModelElement
      *
      * @return the ClassifierRoleNode.
      */
-    public MessageNode getClassifierRoleNode() {
+    private MessageNode getClassifierRoleNode() {
         return (MessageNode) linkPositions.get(0);
     }
 
@@ -1184,13 +1164,8 @@ public class FigClassifierRole extends FigNodeModelElement
             if (qname.equals("group")
                     && description != null
                     && description.startsWith(FigLifeLine.class.getName())) {
-                FigClassifierRole fcr =
-                    (FigClassifierRole)
-                        ((FigGroupHandler) container).getFigGroup();
-                result =
-                    new FigLifeLineHandler(
-                            (PGMLStackParser) stack,
-                            fcr.getLifeLineFig());
+                FigClassifierRole fcr = (FigClassifierRole)((FigGroupHandler) container).getFigGroup();
+                result = new FigLifeLineHandler((PGMLStackParser) stack, fcr.getLifeLineFig());
             } else if (qname.equals("group")
                         && description != null
                         && description.startsWith(

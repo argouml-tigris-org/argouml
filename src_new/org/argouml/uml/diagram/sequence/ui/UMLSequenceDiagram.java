@@ -46,6 +46,8 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  */
 public class UMLSequenceDiagram extends UMLDiagram {
 
+    private static final long serialVersionUID = 4143700589122465301L;
+    
     private Object[] actions;
     static final String SEQUENCE_CONTRACT_BUTTON = "button.sequence-contract";
     static final String SEQUENCE_EXPAND_BUTTON = "button.sequence-expand";

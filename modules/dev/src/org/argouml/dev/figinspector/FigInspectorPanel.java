@@ -1,11 +1,13 @@
-package org.argouml.ui;
+package org.argouml.dev.figinspector;
 
 import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
-import javax.swing.JTree;
+import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.argouml.uml.diagram.sequence.ui.FigClassifierRole;
+import org.argouml.uml.diagram.sequence.ui.MessageNodeBuilder;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.event.GraphSelectionEvent;
 import org.tigris.gef.event.GraphSelectionListener;
@@ -40,8 +42,14 @@ public class FigInspectorPanel extends JPanel implements GraphSelectionListener 
             Fig selectedFig = (Fig)selectionEvent.getSelections().get(0);
             DefaultMutableTreeNode tn = new DefaultMutableTreeNode(getDescr(selectedFig));
             buildTree(selectedFig, tn);
-            JTree tree = new JTree(tn);
-            add(tree);
+            if (selectedFig instanceof FigClassifierRole) {
+                MessageNodeBuilder.addNodeTree(tn, (FigClassifierRole)selectedFig);
+            }
+            FigTree tree = new FigTree(tn);
+            tree.expandAll();
+            
+            JScrollPane scroller = new JScrollPane(tree);
+            add(scroller);
         }
     }
     
@@ -59,12 +67,12 @@ public class FigInspectorPanel extends JPanel implements GraphSelectionListener 
     private String getDescr(Fig f) {
         String className = f.getClass().getName();
         String descr = className.substring(className.lastIndexOf(".") + 1);
-        descr += " [" + f.getX() + "," + 
-                        f.getY() + "," + 
-                        f.getWidth() + "," + 
-                        f.getHeight() + "]";
+        descr += " " + f.getBounds().toString();
         if (f instanceof FigText) {
             descr += " \"" + ((FigText)f).getText() + "\"";
+        }
+        if (!f.isVisible()) {
+            descr += " - INVISIBLE";
         }
         return descr;
     }
