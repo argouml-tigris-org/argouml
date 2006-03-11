@@ -25,13 +25,11 @@
 package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.ImageIcon;
-import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ScrollList;
-import org.argouml.uml.ui.UMLLinkedList;
 import org.tigris.swidgets.Orientation;
 
 /**

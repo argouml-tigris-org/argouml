@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,8 +38,9 @@ import org.tigris.gef.presentation.FigNode;
 
 /**
  * This class represents a node in the classdiagram (a class, interface or
- * package).<p>
- *
+ * package).
+ * <p>
+ * 
  * Things a node has to know:
  * <ul>
  * <li>Up- and downlinks for positioning in the hierarchy
@@ -122,7 +123,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Operation ClassdiagramNode creates a new ClassdiagramNode.
-     *
+     * 
      * @param f
      *            represents the figure in the diagram, that peers this layout
      *            node.
@@ -133,7 +134,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Operation setDownlinks changes the value of the attribute _downlinks.
-     *
+     * 
      * @param newDownlink
      *            Represents the new value of _downlinks.
      */
@@ -143,7 +144,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Add a constant to the rank of this node.
-     *
+     * 
      * @param n
      *            The value to add.
      */
@@ -153,7 +154,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Add an uplink to this node.
-     *
+     * 
      * @param newUplink
      *            represents the new uplinks.
      */
@@ -162,13 +163,12 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     }
 
     /**
-     * Calculate the weight of this node. The function distinguishes
-     * between note-nodes and standard-nodes, because a note shall be
-     * positioned to the right of its first related node, if it
-     * exists. Therefor the weight is a function of the weight of the
-     * related node. For standard-nodes the weight is a function of
-     * up-/downlinks, column and uplink factor.
-     *
+     * Calculate the weight of this node. The function distinguishes between
+     * note-nodes and standard-nodes, because a note shall be positioned to the
+     * right of its first related node, if it exists. Therefor the weight is a
+     * function of the weight of the related node. For standard-nodes the weight
+     * is a function of up-/downlinks, column and uplink factor.
+     * 
      * @return The weight of this node.
      */
     public float calculateWeight() {
@@ -177,14 +177,13 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
         if (!uplinks.isEmpty()) {
             for (Iterator iter = uplinks.iterator(); iter.hasNext();) {
                 ClassdiagramNode node = (ClassdiagramNode) iter.next();
-                weight =
-                    Math.max(weight,
-                         node.getWeight() * UPLINK_FACTOR
-                         * (1 + 1 / (float) Math.max(1, node.getColumn()
-							 + UPLINK_FACTOR)));
+                weight = Math.max(weight, node.getWeight()
+                        * UPLINK_FACTOR
+                        * (1 + 1 / Math
+                                .max(1, node.getColumn() + UPLINK_FACTOR)));
             }
         }
-        weight += w + 1 / (float) Math.max(1, getColumn() + UPLINK_FACTOR);
+        weight += w + 1 / Math.max(1, getColumn() + UPLINK_FACTOR);
         return weight;
     }
 
@@ -199,7 +198,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
      * <li>name of model object
      * <li>increasing hashcode (for uniqueness)
      * </ul>
-     *
+     * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Object arg0) {
@@ -212,7 +211,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
         } // else result = 0;
         // Java 1.5:
         // result = Boolean.valueOf(node.isStandalone()).compareTo(
-        //      Boolean.valueOf(isStandalone()));
+        // Boolean.valueOf(isStandalone()));
         if (result == 0) {
             result = this.getTypeOrderNumer() - node.getTypeOrderNumer();
         }
@@ -230,19 +229,19 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
             // result = (int) Math.signum(node.getWeight() - this.getWeight());
         }
         if (result == 0) {
-            result =
-		String.valueOf(this.getFigure().getOwner())
-			.compareTo(String.valueOf(node.getFigure().getOwner()));
+            result = String.valueOf(this.getFigure().getOwner()).compareTo(
+                    String.valueOf(node.getFigure().getOwner()));
         }
         if (result == 0) {
             result = node.hashCode() - this.hashCode();
         }
+        //System.out.println(result + " node1: " + this + ", node2 " + node);
         return result;
     }
 
     /**
      * Operation getColumn returns the value of the attribute _column.
-     *
+     * 
      * @return The value of the attribute _column.
      */
     public int getColumn() {
@@ -251,7 +250,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Get the downlinks of this node.
-     *
+     * 
      * @return The downlinks of this node.
      */
     public Vector getDownlinks() {
@@ -259,9 +258,8 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     }
 
     /**
-     * Get the offset which shall be used for edges with this node as
-     * parent.
-     *
+     * Get the offset which shall be used for edges with this node as parent.
+     * 
      * @return The offset
      */
     public int getEdgeOffset() {
@@ -270,7 +268,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Get the underlying figure of this node.
-     *
+     * 
      * @return The figure.
      */
     public FigNode getFigure() {
@@ -279,22 +277,22 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Get the level in the inheritance hierarchy for this node.
-     *
+     * 
      * @return The level.
      */
     public int getLevel() {
         int result = 0;
         for (Iterator iter = uplinks.iterator(); iter.hasNext();) {
             ClassdiagramNode node = (ClassdiagramNode) iter.next();
-            result =
-		(node == this) ? result : Math.max(node.getLevel() + 1, result);
+            result = (node == this) ? result : Math.max(node.getLevel() + 1,
+                    result);
         }
         return result;
     }
 
     /**
      * Get the location of the underlying figure in the diagram.
-     *
+     * 
      * @return The location.
      */
     public Point getLocation() {
@@ -302,8 +300,8 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     }
 
     /**
-     * Get the current placementhint.
-     *
+     * Get the current placement hint.
+     * 
      * @return The placementhint for this node.
      */
     public int getPlacementHint() {
@@ -312,7 +310,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Get the rank of this node.
-     *
+     * 
      * @return The rank for this node.
      */
     public int getRank() {
@@ -322,7 +320,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     /**
      * Operation getSize returns the size of the figure associated with this
      * layout node.
-     *
+     * 
      * @return The size of the associated figure.
      */
     public Dimension getSize() {
@@ -332,7 +330,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     /**
      * Get the weight of the subtree defined by this node. Impact on weight is
      * decreasing with increasing hierarchical distance
-     *
+     * 
      * @return The weight of the subtree.
      */
     private float getSubtreeWeight() {
@@ -340,7 +338,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
         float w = 1;
         for (Iterator iter = downlinks.iterator(); iter.hasNext();) {
             w += ((ClassdiagramNode) iter.next()).getSubtreeWeight()
-                    / (float) UPLINK_FACTOR;
+                    / UPLINK_FACTOR;
         }
         return w;
     }
@@ -348,22 +346,22 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     /**
      * Get the type order number of this node. This number may be used to
      * influence the sort order of ClassdiagramNodes.
-     *
+     * 
      * @return Type order number.
      */
     public int getTypeOrderNumer() {
         int result = 99;
         if (getFigure() instanceof FigPackage) {
             result = 0;
-	} else if (getFigure() instanceof FigInterface) {
+        } else if (getFigure() instanceof FigInterface) {
             result = 1;
-	}
+        }
         return result;
     }
 
     /**
      * Get the uplinks of this node.
-     *
+     * 
      * @return The uplinks of this node.
      */
     public Vector getUplinks() {
@@ -372,7 +370,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Return the weight of this node, which is used for positioning in a row.
-     *
+     * 
      * @return The weight of this node.
      */
     public float getWeight() {
@@ -381,7 +379,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Check if this node is associated with a note.
-     *
+     * 
      * @return Result of test.
      */
     public boolean isComment() {
@@ -390,7 +388,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Check if this node is associated with a package.
-     *
+     * 
      * @return Result of test.
      */
     public boolean isPackage() {
@@ -399,9 +397,9 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Test whether this node has no connection to other nodes. Return
-     * <code>true</code> if node has no connections,
-     * <code>false</code> otherwise.
-     *
+     * <code>true</code> if node has no connections, <code>false</code>
+     * otherwise.
+     * 
      * @return Result of test.
      */
     public boolean isStandalone() {
@@ -409,11 +407,11 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     }
 
     /**
-     * Set the column of this node. A re-calculation of the weight is
-     * performed, because the column is an input parameter for the
-     * weight.
-     *
-     * @param newColumn The new column.
+     * Set the column of this node. A re-calculation of the weight is performed,
+     * because the column is an input parameter for the weight.
+     * 
+     * @param newColumn
+     *            The new column.
      */
     public void setColumn(int newColumn) {
         column = newColumn;
@@ -422,8 +420,9 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Set the offset for edges to this node.
-     *
-     * @param newOffset Offset for edges with this node as one endpoint.
+     * 
+     * @param newOffset
+     *            Offset for edges with this node as one endpoint.
      */
     public void setEdgeOffset(int newOffset) {
         edgeOffset = newOffset;
@@ -431,7 +430,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Operation setFigure changes the value of the attribute _figure.
-     *
+     * 
      * @param newFigure
      *            represents the new value of _figure.
      */
@@ -442,7 +441,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     /**
      * Operation setLocation set the new location of the associated figure in
      * the diagram.
-     *
+     * 
      * @param newLocation
      *            represents the new location for this figure.
      */
@@ -462,7 +461,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
      * A placementhint gives an indication where it might be feasible to place
      * this node. It is used by the layouter, and there is no guarantee that it
      * will be used.
-     *
+     * 
      * @param hint
      *            x coordinate of the desired placement
      */
@@ -472,7 +471,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Operation setRank changes the value of the attribute _rank.
-     *
+     * 
      * @param newRank
      *            represents the new value of _rank.
      */
@@ -482,8 +481,9 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Set the weight for this node.
-     *
-     * @param w The new weight of this node.
+     * 
+     * @param w
+     *            The new weight of this node.
      */
     public void setWeight(float w) {
         weight = w;

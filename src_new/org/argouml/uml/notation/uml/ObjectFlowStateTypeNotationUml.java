@@ -51,7 +51,7 @@ public class ObjectFlowStateTypeNotationUml
      */
     public String parse(String text) {
         try {
-                parseObjectFlowState1(myObjectFlowState, text);
+            parseObjectFlowState1(myObjectFlowState, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.objectflowstate";
             Object[] args = {
@@ -80,7 +80,8 @@ public class ObjectFlowStateTypeNotationUml
         if (c != null) {
             Model.getCoreHelper().setType(objectFlowState, c);
         } else {
-            throw new ParseException("Classifier with name " + s + " not found", 0);
+            throw new ParseException(
+                    "Classifier with name " + s + " not found", 0);
         }
         return objectFlowState;
     }

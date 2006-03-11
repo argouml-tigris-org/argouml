@@ -75,10 +75,10 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
 
     private static UMLGeneralizableElementGeneralizationListModel
         generalizationListModel =
-        new UMLGeneralizableElementGeneralizationListModel();
+            new UMLGeneralizableElementGeneralizationListModel();
     private static UMLGeneralizableElementSpecializationListModel
         specializationListModel =
-        new UMLGeneralizableElementSpecializationListModel();
+            new UMLGeneralizableElementSpecializationListModel();
     private static UMLClassifierFeatureListModel featureListModel =
         new UMLClassifierFeatureListModel();
     private static UMLClassifierParticipantListModel participantListModel =
@@ -91,24 +91,24 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
         new UMLClassifierCollaborationListModel();
     private static UMLClassifierClassifierRoleListModel
         classifierRoleListModel =
-        new UMLClassifierClassifierRoleListModel();
+            new UMLClassifierClassifierRoleListModel();
     private static UMLClassifierClassifierInStateListModel
         classifierInStateListModel =
-        new UMLClassifierClassifierInStateListModel();
+            new UMLClassifierClassifierInStateListModel();
     private static UMLClassifierObjectFlowStateListModel
         objectFlowStateListModel =
-        new UMLClassifierObjectFlowStateListModel();
+            new UMLClassifierObjectFlowStateListModel();
     private static UMLClassifierPowertypeRangeListModel
         powertypeRangeListModel =
-        new UMLClassifierPowertypeRangeListModel();
+            new UMLClassifierPowertypeRangeListModel();
     private static UMLClassifierAssociationEndListModel
         associationEndListModel =
-        new UMLClassifierAssociationEndListModel();
+            new UMLClassifierAssociationEndListModel();
     private static UMLClassifierParameterListModel parameterListModel =
         new UMLClassifierParameterListModel();
     private static UMLClassifierStructuralFeatureListModel
         structuralFeatureListModel =
-        new UMLClassifierStructuralFeatureListModel();
+            new UMLClassifierStructuralFeatureListModel();
 
     /**
      * The constructor.
@@ -223,7 +223,8 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getClassifierInStateScroll() {
         if (classifierInStateScroll == null) {
-            classifierInStateScroll = new ScrollList(classifierInStateListModel);
+            classifierInStateScroll = 
+                new ScrollList(classifierInStateListModel);
         }
         return classifierInStateScroll;
     }
@@ -356,7 +357,8 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getStructuralFeatureScroll() {
         if (structuralFeatureScroll == null) {
-            structuralFeatureScroll = new ScrollList(structuralFeatureListModel);
+            structuralFeatureScroll = 
+                new ScrollList(structuralFeatureListModel);
         }
         return structuralFeatureScroll;
     }

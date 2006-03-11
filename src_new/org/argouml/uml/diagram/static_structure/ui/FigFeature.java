@@ -36,6 +36,10 @@ import org.tigris.gef.presentation.Handle;
 
 /**
  * Fig to show features in class or interface like attributes or operations.
+ * 
+ * TODO: This doesn't have any behavior specific to Features.  It's really
+ * just an item for a ListCompartment and should probably have a better name
+ * tfm - 20060310
  *
  * @since Dec 1, 2002
  * @author jaap.branderhorst@xs4all.nl
