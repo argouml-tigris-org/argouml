@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,7 +38,9 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(ActionDeploymentDiagram.class);
 
@@ -58,10 +60,11 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
-    public UMLDiagram createDiagram(Object handle) {
+    public UMLDiagram createDiagram(Object notUsedHandle) {
         // a deployment diagram shows something about the whole model
         // according to the uml spec
-	handle = ProjectManager.getManager().getCurrentProject().getRoot();
+	Object handle =
+            ProjectManager.getManager().getCurrentProject().getRoot();
         if (!Model.getFacade().isANamespace(handle)) {
             LOG.error("No namespace as argument");
             LOG.error(handle);
@@ -69,7 +72,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
 					       "The argument " + handle
 					       + "is not a namespace.");
         }
-        return (UMLDiagram)DiagramFactory.getInstance().createDiagram(
+        return (UMLDiagram) DiagramFactory.getInstance().createDiagram(
                 UMLDeploymentDiagram.class,
                 handle,
                 null);
@@ -78,10 +81,11 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(Object)
      */
-    public boolean isValidNamespace(Object handle) {
+    public boolean isValidNamespace(Object notUsedHandle) {
         // a deployment diagram shows something about the whole model
         // according to the uml spec
-        handle = ProjectManager.getManager().getCurrentProject().getRoot();
+        Object handle =
+            ProjectManager.getManager().getCurrentProject().getRoot();
         if (!Model.getFacade().isANamespace(handle)) {
             LOG.error("No namespace as argument");
             LOG.error(handle);
@@ -90,9 +94,18 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
 					       + "is not a namespace.");
         }
         // may only occur as child of the model or in a package
-        return (
-		handle == ProjectManager.getManager().getCurrentProject().getModel()
-                || Model.getFacade().isAPackage(handle));
+        if (handle
+                == ProjectManager.getManager().getCurrentProject().getModel()) {
+            return true;
+        }
+        if (Model.getFacade().isAPackage(handle)) {
+            return true;
+        }
+        return false;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 9027235104963895167L;
 } /* end class ActionDeploymentDiagram */

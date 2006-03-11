@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -72,13 +72,15 @@ public final class ActionSequenceDiagram extends UMLAction {
         } else if (Model.getFacade().isAOperation(target)) {
             owner = Model.getFacade().getOwner(target);
         }
-        if (owner == null) return; // The UML allows for this. We don't.
+        if (owner == null) {
+            return; // The UML allows for this. We don't.
+        }
         Object collaboration =
             Model.getCollaborationsFactory().buildCollaboration(
                 owner,
                 target);
         UMLDiagram diagram =
-            (UMLDiagram)DiagramFactory.getInstance().createDiagram(
+            (UMLDiagram) DiagramFactory.getInstance().createDiagram(
                 UMLSequenceDiagram.class,
                 collaboration,
                 null);
