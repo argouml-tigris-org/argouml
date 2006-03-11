@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2005 The Regents of the University of California. All
+// Copyright (c) 2002-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,22 +24,14 @@
 
 package org.argouml.ui.targetmanager;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
-import javax.swing.JDialog;
-import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
@@ -47,7 +39,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.Actions;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
@@ -423,18 +414,6 @@ public final class TargetManager {
     }
 
     /**
-     * Only for debugging.
-     */
-    public void debugTM() {
-        if (dtm == null) {
-//            dtm = new DebugTMDialog(targets);
-//            dtm.setVisible(true);
-            ;
-        }
-    }
-    private DebugTMDialog dtm;
-
-    /**
      * Sets the targets to the single given object. If there are targets at the
      * moment of calling this method, these will be removed as targets. To
      * all interested targetlisteners, a TargetEvent will be fired. If the
@@ -467,8 +446,6 @@ public final class TargetManager {
 	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
 
         endTargetTransaction();
-
-        debugTM();
     }
 
     private void internalOnSetTarget(String eventName, Object[] oldTargets) {
@@ -744,7 +721,7 @@ public final class TargetManager {
         int i = 0;
         Iterator iter = getTargets().iterator();
         while (iter.hasNext()) {
-            if(determineModelTarget(iter.next()) != null) {
+            if (determineModelTarget(iter.next()) != null) {
                 i++;
             }
             if (i > 1) {
@@ -1026,67 +1003,4 @@ public final class TargetManager {
         historyManager.checkForRemovedModelElements();
     }
 
-}
-
-class DebugTMDialog extends JDialog
-    implements TargetListener {
-
-    private DefaultListModel lm = new DefaultListModel();
-    private JList lst;
-
-        /**
-         * The constructor.
-         */
-    public DebugTMDialog(Collection t) {
-            super(ProjectBrowser.getInstance(), "TargetManager Debug",
-                    false);
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        getContentPane().add(mainPanel);
-
-        lst = new JList(lm);
-        lst.setPreferredSize(new Dimension(400, 200));
-        setTarget(t);
-        mainPanel.add(lst, BorderLayout.CENTER);
-        lst.setBorder(BorderFactory.createEmptyBorder(7, 7, 7, 7));
-        TargetManager.getInstance().addTargetListener(this);
-    }
-
-    /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetAdded(TargetEvent e) {
-        setTarget(e.getNewTargets());
-    }
-
-    /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTargets());
-    }
-
-    /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTargets());
-    }
-
-    private void setTarget(Object[] t) {
-        Collection c = new ArrayList(Arrays.asList(t));
-        setTarget(c);
-    }
-
-    private void setTarget(Collection c) {
-        lm.clear();
-        Iterator i = c.iterator();
-        while (i.hasNext()) {
-            lm.addElement(i.next());
-        }
-    }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 5689661623411068387L;
 }
