@@ -32,7 +32,6 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.LayerManager;
 import org.tigris.gef.base.ModeCreate;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
@@ -218,7 +217,6 @@ public class ModeCreateMessage extends ModeCreate {
                 // (determined by the GraphEdgeRenderer).
 
                 if (null != message) {
-                    LayerManager lm = ce.getLayerManager();
                     ce.damaged(_newItem);
                     sourceFigClassifierRole.damage();
                     destFigClassifierRole.damage();

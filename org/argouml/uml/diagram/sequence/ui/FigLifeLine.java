@@ -51,9 +51,10 @@ import org.xml.sax.helpers.DefaultHandler;
 
 class FigLifeLine extends FigGroup implements HandlerFactory {
 
-    static final int WIDTH = 20;
-    static final int HEIGHT = 1000;
-
+    private static final long serialVersionUID = -1242239243040698287L;
+    
+    final static int WIDTH = 20;
+    final static int HEIGHT = 1000;
     private FigRect rect;
     private FigLine line;
 
@@ -120,8 +121,7 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
     final void removeActivations() {
         List activations = new ArrayList(activationFigs);
         activationFigs.clear();
-        for (Iterator it = activations.iterator();
-              it.hasNext();) {
+        for (Iterator it = activations.iterator(); it.hasNext(); ) {
             removeFig((Fig) it.next());
         }
         calcBounds();
@@ -263,9 +263,4 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
             return result;
         }
     }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -1242239243040698287L;
 }
