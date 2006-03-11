@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -253,28 +253,28 @@ public class DeploymentDiagramGraphModel
             end0 = ((CommentEdge) edge).getSource();
             end1 = ((CommentEdge) edge).getDestination();
         }
-        
+
         // Both ends must be defined and nodes that are on the graph already.
         if (end0 == null || end1 == null) {
             LOG.error("Edge rejected. Its ends are not attached to anything");
             return false;
         }
-        
+
         if (!containsNode(end0)
                 && !containsEdge(end0)) {
-            LOG.error("Edge rejected. Its source end is attached to " +
-                    end0 +
-                    " but this is not in the graph model");
+            LOG.error("Edge rejected. Its source end is attached to "
+                    + end0
+                    + " but this is not in the graph model");
             return false;
         }
         if (!containsNode(end1)
                 && !containsEdge(end1)) {
-            LOG.error("Edge rejected. Its destination end is attached to " +
-                    end1 +
-                    " but this is not in the graph model");
+            LOG.error("Edge rejected. Its destination end is attached to "
+                    + end1
+                    + " but this is not in the graph model");
             return false;
         }
-        
+
         return true;
     }
 
