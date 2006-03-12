@@ -11,8 +11,12 @@ public class MessageNodeBuilder {
         int nodeCount = fcr.getNodeCount();
         for (int i=0; i < nodeCount; ++i) {
             MessageNode mn = fcr.getNode(i);
-            mn.getFigMessagePort();
-            DefaultMutableTreeNode tn = new DefaultMutableTreeNode("MessageNode y=" + fcr.getYCoordinate(mn));
+            String descr = "MessageNode y=" + fcr.getYCoordinate(mn);
+            FigMessagePort fmp = mn.getFigMessagePort();
+            if (fmp != null) {
+                descr += " FigMessagePort registered";
+            }
+            DefaultMutableTreeNode tn = new DefaultMutableTreeNode(descr);
             treeNode.add(tn);
         }
     }
