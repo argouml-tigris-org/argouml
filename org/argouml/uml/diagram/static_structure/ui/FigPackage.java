@@ -36,10 +36,12 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -55,7 +57,6 @@ import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.diagram.ui.StereotypeContainer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.VisibilityContainer;
-import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Globals;
@@ -210,10 +211,8 @@ public class FigPackage extends FigNodeModelElement
     public Object clone() {
         FigPackage figClone = (FigPackage) super.clone();
         Iterator thisIter = this.getFigs().iterator();
-        Iterator cloneIter = figClone.getFigs().iterator();
         while (thisIter.hasNext()) {
             Fig thisFig = (Fig) thisIter.next();
-            Fig cloneFig = (Fig) cloneIter.next();
             if (thisFig == stereoLineBlinder) {
                 figClone.stereoLineBlinder = (FigRect) thisFig;
             }
@@ -569,83 +568,19 @@ public class FigPackage extends FigNodeModelElement
         }
 
         if (sOn) {
-            showMenu.add(new UMLAction(
-                    Translator.localize("menu.popup.show.hide-stereotype"),
-                        UMLAction.NO_ICON) {
-                /**
-                 * @see java.awt.event.ActionListener#actionPerformed(
-                 *         java.awt.event.ActionEvent)
-                 */
-                public void actionPerformed(ActionEvent ae) {
-                    doStereotype(false);
-                }
-
-                /**
-                 * The UID.
-                 */
-                private static final long serialVersionUID =
-                    1999499813643610674L;
-            });
+            showMenu.add(new HideStereotypeAction());
         }
 
         if (sOff) {
-            showMenu.add(new UMLAction(
-                    Translator.localize("menu.popup.show.show-stereotype"),
-                        UMLAction.NO_ICON) {
-                /**
-                 * @see java.awt.event.ActionListener#actionPerformed(
-                 *         java.awt.event.ActionEvent)
-                 */
-                public void actionPerformed(ActionEvent ae) {
-                    doStereotype(true);
-                }
-
-                /**
-                 * The UID.
-                 */
-                private static final long serialVersionUID =
-                    -4327161642276705610L;
-            });
+            showMenu.add(new ShowStereotypeAction());
         }
 
         if (vOn) {
-            showMenu.add(new UMLAction(
-                    Translator.localize("menu.popup.show.hide-visibility"),
-                        UMLAction.NO_ICON) {
-                /**
-                 * @see java.awt.event.ActionListener#actionPerformed(
-                 *         java.awt.event.ActionEvent)
-                 */
-                public void actionPerformed(ActionEvent ae) {
-                    doVisibility(false);
-                }
-
-                /**
-                 * The UID.
-                 */
-                private static final long serialVersionUID =
-                    8574809709777267866L;
-            });
+            showMenu.add(new HideVisibilityAction());
         }
 
         if (vOff) {
-            showMenu.add(new UMLAction(
-                Translator.localize("menu.popup.show.show-visibility"),
-                    UMLAction.NO_ICON) {
-                /**
-                 * @see java.awt.event.ActionListener#actionPerformed(
-                 *         java.awt.event.ActionEvent)
-                 */
-                public void actionPerformed(ActionEvent ae) {
-                    doVisibility(true);
-                }
-
-                /**
-                 * The UID.
-                 */
-                private static final long serialVersionUID =
-                    7722093402948975834L;
-            });
+            showMenu.add(new ShowVisibilityAction());
         }
 
         popUpActions.insertElementAt(showMenu,
@@ -913,6 +848,87 @@ public class FigPackage extends FigNodeModelElement
      * The UID.
      */
     private static final long serialVersionUID = 3617092272529451041L;
+    
+    private class HideStereotypeAction extends AbstractAction {
+        HideStereotypeAction() {
+            super(Translator.localize("menu.popup.show.hide-stereotype"),
+                    ResourceLoaderWrapper.lookupIcon("menu.popup.show.hide-stereotype"));
+        }
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *         java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent ae) {
+            doStereotype(false);
+        }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID =
+            1999499813643610674L;
+    }
+    
+    private class ShowStereotypeAction extends AbstractAction {
+        ShowStereotypeAction() {
+            super(Translator.localize("menu.popup.show.show-stereotype"),
+                    ResourceLoaderWrapper.lookupIcon("menu.popup.show.show-stereotype"));
+        }
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *         java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent ae) {
+            doStereotype(true);
+        }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID =
+            -4327161642276705610L;
+    }
+    
+    private class HideVisibilityAction extends AbstractAction {
+        HideVisibilityAction() {
+            super(Translator.localize("menu.popup.show.hide-visibility"),
+                    ResourceLoaderWrapper.lookupIcon("menu.popup.show.hide-visibility"));
+        }
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *         java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent ae) {
+            doVisibility(false);
+        }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID =
+            8574809709777267866L;
+    }
+    
+    private class ShowVisibilityAction extends AbstractAction {
+        ShowVisibilityAction() {
+            super(Translator.localize("menu.popup.show.show-visibility"),
+                    ResourceLoaderWrapper.lookupIcon("menu.popup.show.show-visibility"));
+        }
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *         java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent ae) {
+            doVisibility(true);
+        }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID =
+            7722093402948975834L;
+    }
+    
 } /* end class FigPackage */
 
 /**
@@ -965,4 +981,5 @@ class PackagePortFigRect extends FigRect {
      * The UID.
      */
     private static final long serialVersionUID = -7083102131363598065L;
+    
 }
