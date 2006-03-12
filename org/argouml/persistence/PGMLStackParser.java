@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer;
@@ -52,6 +53,11 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class PGMLStackParser
     extends org.tigris.gef.persistence.pgml.PGMLStackParser {
+
+    private static final Logger LOG =
+        Logger.getLogger(PGMLStackParser.class);
+
+    
     /**
      * Constructor.
      * @param modelElementsByUuid a map of model elements indexed
@@ -160,7 +166,11 @@ public class PGMLStackParser
             if (modelElement == null) {
                 throw new SAXException("Found href of " + owner + " with no matching element in model");
             }
-            f.setOwner(modelElement);
+            if (f.getOwner() != modelElement) {
+                f.setOwner(modelElement);
+            } else {
+                LOG.info("Ignoring href on " + f.getClass().getName() + " as it's already set");
+            }
         }
     }
 
