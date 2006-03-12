@@ -33,21 +33,34 @@
           <xsl:otherwise><xsl:value-of select="Foundation.Extension_Mechanisms.TaggedValue.value"/></xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-
       <!-- (1) Ignore TaggedValues starting with "RationalRose:Tool#" -->
       <!--     This tag is on the Model element in Rose exports -->
       <!-- (2) Ignore TaggedValues with empty values -->
       <!--     This is useful for Visio, which creates an empty 'documentation' tag for every ModelElement -->
-
       <xsl:if test="not(starts-with($tag, 'RationalRose:Tool#'))
       				and string-length($value) > 0">
-          <Foundation.Extension_Mechanisms.TaggedValue xmi.id="{@xmi.id}">
-            <Foundation.Extension_Mechanisms.TaggedValue.tag><xsl:value-of select="$tag"/></Foundation.Extension_Mechanisms.TaggedValue.tag>
-            <Foundation.Extension_Mechanisms.TaggedValue.value><xsl:value-of select="$value"/></Foundation.Extension_Mechanisms.TaggedValue.value>
-            <Foundation.Extension_Mechanisms.TaggedValue.modelElement>
-              <Foundation.Core.ModelElement xmi.idref="{*/*/@xmi.idref}"/>
-            </Foundation.Extension_Mechanisms.TaggedValue.modelElement>
-          </Foundation.Extension_Mechanisms.TaggedValue>
+        <xsl:choose>
+          <!-- xmi.id is not mandatory, so check to see if it exists -->
+          <xsl:when test="@xmi.id">
+            <Foundation.Extension_Mechanisms.TaggedValue xmi.id="@xmi.id"> 
+              <Foundation.Extension_Mechanisms.TaggedValue.tag><xsl:value-of select="$tag"/></Foundation.Extension_Mechanisms.TaggedValue.tag>
+              <Foundation.Extension_Mechanisms.TaggedValue.value><xsl:value-of select="$value"/></Foundation.Extension_Mechanisms.TaggedValue.value>
+              <Foundation.Extension_Mechanisms.TaggedValue.modelElement>
+                <Foundation.Core.ModelElement xmi.idref="{*/*/@xmi.idref}"/>
+              </Foundation.Extension_Mechanisms.TaggedValue.modelElement>
+            </Foundation.Extension_Mechanisms.TaggedValue>
+          </xsl:when>
+          <xsl:otherwise>
+            <Foundation.Extension_Mechanisms.TaggedValue>
+              <Foundation.Extension_Mechanisms.TaggedValue.tag><xsl:value-of select="$tag"/></Foundation.Extension_Mechanisms.TaggedValue.tag>
+              <Foundation.Extension_Mechanisms.TaggedValue.value><xsl:value-of select="$value"/></Foundation.Extension_Mechanisms.TaggedValue.value>
+              <Foundation.Extension_Mechanisms.TaggedValue.modelElement>
+                <Foundation.Core.ModelElement xmi.idref="{*/*/@xmi.idref}"/>
+              </Foundation.Extension_Mechanisms.TaggedValue.modelElement>
+            </Foundation.Extension_Mechanisms.TaggedValue>
+          </xsl:otherwise>
+        </xsl:choose>
+
       </xsl:if>
       
     </xsl:for-each>
