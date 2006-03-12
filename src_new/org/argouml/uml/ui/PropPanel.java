@@ -275,10 +275,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * Set the target to be associated with a particular property panel.
      * <p>
      * This involves resetting the third party listeners.
-     * <p>
-     *
-     * @deprecated As Of Argouml version 0.13.5, This will change visibility
-     *             from release 0.16
+     * 
      * @param t
      *            The object to be set as a target.
      */
@@ -320,7 +317,10 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         // update the titleLabel
         // MVW: This overrules the icon set initiallly... Why do we need this?
         if (titleLabel != null) {
-            Icon icon = ResourceLoaderWrapper.getInstance().lookupIcon(t);
+            Icon icon = null;
+            if (t != null) { 
+                icon = ResourceLoaderWrapper.getInstance().lookupIcon(t);
+            }
             if (icon != null) {
                 titleLabel.setIcon(icon);
             }
@@ -470,6 +470,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         // we can neglect this, the TabProps allways selects the first target
         // in a set of targets. The first target can only be
         // changed in a targetRemoved or a TargetSet event
+        /* TODO: MVW What if deselect, then reselect? We need this! */
         if (listenerList == null) {
             listenerList = registrateTargetListeners(this);
         }
