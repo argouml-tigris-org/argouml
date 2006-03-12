@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -72,7 +72,6 @@ import org.argouml.uml.ui.ActionPaste;
 import org.argouml.uml.ui.ActionRevertToSaved;
 import org.argouml.uml.ui.ActionSaveAllGraphics;
 import org.argouml.uml.ui.ActionSaveGraphics;
-import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
@@ -111,6 +110,11 @@ import org.tigris.toolbar.ToolBar;
  */
 public class GenericArgoMenuBar extends JMenuBar
     implements ArgoModuleEventListener {
+
+    /**
+     * The zooming factor.
+     */
+    private static final double ZOOM_FACTOR = 0.9;
 
     /**
      * Name and prepareKey-Strings of/for the i18n
@@ -418,7 +422,8 @@ public class GenericArgoMenuBar extends JMenuBar
         fileToolbar.add(new ActionOpenProject());
         file.addSeparator();
 
-        JMenuItem saveProjectItem = file.add(ProjectBrowser.getInstance().getSaveAction());
+        JMenuItem saveProjectItem =
+            file.add(ProjectBrowser.getInstance().getSaveAction());
         setMnemonic(saveProjectItem, "Save");
         setAccelerator(saveProjectItem, ctrlS);
         fileToolbar.add((ProjectBrowser.getInstance().getSaveAction()));
@@ -580,14 +585,14 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenu zoom = (JMenu) view.add(new JMenu(menuLocalize("Zoom")));
         setMnemonic(zoom, "Zoom");
 
-        JMenuItem zoomOut = zoom.add(new CmdZoom(0.9));
+        JMenuItem zoomOut = zoom.add(new CmdZoom(ZOOM_FACTOR));
         setMnemonic(zoomOut, "Zoom Out");
         zoomOut.setAccelerator(ctrlMinus);
 
         JMenuItem zoomReset = zoom.add(new CmdZoom(0.0));
 	setMnemonic(zoomReset, "Zoom Reset");
 
-        JMenuItem zoomIn = zoom.add(new CmdZoom((1.0) / (0.9)));
+        JMenuItem zoomIn = zoom.add(new CmdZoom((1.0) / (ZOOM_FACTOR)));
 	setMnemonic(zoomIn, "Zoom In");
         zoomIn.setAccelerator(ctrlEquals);
 
@@ -675,7 +680,7 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenu distribute =
 	    (JMenu) arrange.add(new JMenu(menuLocalize("Distribute")));
 	setMnemonic(distribute, "Distribute");
-    JMenu reorder = null;
+	JMenu reorder = null;
     // TODO: Uncomment these 2 lines after after 0.20.
     // This is a hack that removes the ordering menu according to issue 3645
 
