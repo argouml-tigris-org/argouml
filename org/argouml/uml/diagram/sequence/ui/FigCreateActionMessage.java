@@ -31,6 +31,8 @@ import org.tigris.gef.presentation.ArrowHeadGreater;
  */
 public class FigCreateActionMessage extends FigMessage {
 
+    private static final long serialVersionUID = -2607959442732866191L;
+
     /**
      * @param owner the owner object
      */

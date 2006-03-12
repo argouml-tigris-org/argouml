@@ -53,6 +53,7 @@ import org.tigris.gef.base.ModeManager;
 public class SequenceDiagramGraphModel
     extends UMLMutableGraphSupport
     implements VetoableChangeListener {
+    
     /**
      * Logger.
      */

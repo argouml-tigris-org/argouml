@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.graph.GraphEvent;
 import org.tigris.gef.graph.MutableGraphModel;
@@ -46,6 +47,13 @@ import org.tigris.gef.presentation.FigEdge;
  * @author : jaap.branderhorst@xs4all.nl
  */
 public class SequenceDiagramLayer extends LayerPerspectiveMutable {
+    
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(SequenceDiagramLayer.class);
+
     /**
      * The distance between two objects on the sequence diagram.
      */
@@ -280,11 +288,14 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
      */
     public void remove(Fig f) {
         if (f instanceof FigMessage) {
+            LOG.info("Removing a FigMessage");
             FigMessage fm = (FigMessage) f;
             ((FigMessagePort) fm.getSourcePortFig()).clearNode();
             ((FigMessagePort) fm.getDestPortFig()).clearNode();
         }
         super.remove(f);
+        
+        LOG.info("A Fig has been removed, updating activations");
         updateActivations();
     }
 

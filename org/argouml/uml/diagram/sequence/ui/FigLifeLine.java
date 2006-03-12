@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.sequence.ui.FigClassifierRole.TempFig;
 import org.tigris.gef.persistence.pgml.Container;
@@ -53,6 +54,12 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
 
     private static final long serialVersionUID = -1242239243040698287L;
     
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(FigLifeLine.class);
+
     final static int WIDTH = 20;
     final static int HEIGHT = 1000;
     private FigRect rect;
@@ -140,6 +147,7 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
      * @see org.tigris.gef.presentation.FigGroup#removeFig(Fig)
      */
     public final void removeFig(Fig f) {
+        LOG.info("Removing " + f.getClass().getName());
         super.removeFig(f);
         activationFigs.remove(f);
     }

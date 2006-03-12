@@ -39,6 +39,8 @@ import org.tigris.gef.graph.GraphModel;
  */
 public class ActionAddClassifierRole extends CmdCreateNode {
 
+    private static final long serialVersionUID = 1824497910678123381L;
+
     /**
      * The constructor.
      */

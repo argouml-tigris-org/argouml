@@ -42,6 +42,8 @@ import org.tigris.gef.presentation.FigLine;
  */
 public class FigMessagePort extends FigGroup {
 
+    private static final long serialVersionUID = -7805833566723101923L;
+    
     private MessageNode node;
 
     /**
@@ -126,10 +128,10 @@ public class FigMessagePort extends FigGroup {
     }
 
     void clearNode() {
-        Fig owner = getGroup();
-        if (owner instanceof FigClassifierRole) {
-            ((FigClassifierRole) owner).removeFigMessagePort(this);
-	}
+        Fig parent = getGroup();
+        if (parent instanceof FigLifeLine) {
+            ((FigClassifierRole) parent.getGroup()).removeFigMessagePort(this);
+        }
     }
 
     void setNode(MessageNode n) {
@@ -138,7 +140,7 @@ public class FigMessagePort extends FigGroup {
 
     // TODO: Question - how does this differ to getY?
     public int getY1() {
-	return getMyLine().getY1();
+        return getMyLine().getY1();
     }
 
     private FigLine getMyLine() {
