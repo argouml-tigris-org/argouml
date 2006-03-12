@@ -42,7 +42,7 @@
         <xsl:choose>
           <!-- xmi.id is not mandatory, so check if it exists - issue 4074 -->
           <xsl:when test="@xmi.id">
-            <Foundation.Extension_Mechanisms.TaggedValue xmi.id="@xmi.id"> 
+            <Foundation.Extension_Mechanisms.TaggedValue xmi.id="{@xmi.id}"> 
               <Foundation.Extension_Mechanisms.TaggedValue.tag><xsl:value-of select="$tag"/></Foundation.Extension_Mechanisms.TaggedValue.tag>
               <Foundation.Extension_Mechanisms.TaggedValue.value><xsl:value-of select="$value"/></Foundation.Extension_Mechanisms.TaggedValue.value>
               <Foundation.Extension_Mechanisms.TaggedValue.modelElement>
