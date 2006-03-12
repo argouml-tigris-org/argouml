@@ -136,6 +136,9 @@ public class ExplorerTree
         }
 
         /**
+         * @see java.awt.event.MouseListener#mousePressed(
+         *         java.awt.event.MouseEvent)
+         *
          * Brings up the pop-up menu.
          */
         public void mousePressed(MouseEvent me) {
@@ -146,7 +149,10 @@ public class ExplorerTree
         }
 
         /**
-	 * Brings up the pop-up menu.
+         * @see java.awt.event.MouseListener#mouseReleased(
+         *         java.awt.event.MouseEvent)
+         *
+         * Brings up the pop-up menu.
          *
          * On Windows and Motif platforms, the user brings up a popup menu
          * by releasing the right mouse button while the cursor is over a
@@ -160,6 +166,9 @@ public class ExplorerTree
         }
 
         /**
+         * @see java.awt.event.MouseListener#mouseClicked(
+         *         java.awt.event.MouseEvent)
+         *
          * Brings up the pop-up menu.
          */
         public void mouseClicked(MouseEvent me) {
@@ -171,9 +180,9 @@ public class ExplorerTree
                 myDoubleClick();
             }
         }
-        
+
         /**
-         * Double-clicking on an item attempts 
+         * Double-clicking on an item attempts
          * to show the item in a diagram.
          */
         private void myDoubleClick() {
@@ -192,20 +201,20 @@ public class ExplorerTree
          */
         public void showPopupMenu(MouseEvent me) {
 
-            TreePath path = getPathForLocation( me.getX(), me.getY() );
-            if ( path == null ) {
+            TreePath path = getPathForLocation(me.getX(), me.getY());
+            if (path == null) {
                 return;
             }
-            
+
             /*
              * We preserve the current (multiple) selection,
              * if we are over part of it ...
              */
-            if ( !isPathSelected( path ) ) {
+            if (!isPathSelected(path)) {
                 /* ... otherwise we select the item below the mousepointer. */
-                getSelectionModel().setSelectionPath( path );
+                getSelectionModel().setSelectionPath(path);
             }
-            
+
             Object selectedItem =
                 ((DefaultMutableTreeNode) path.getLastPathComponent())
                         .getUserObject();
@@ -241,16 +250,18 @@ public class ExplorerTree
             if (Model.getFacade().isATransition(value)) {
                 NotationProvider4 notationProvider =
                     NotationProviderFactory2.getInstance().getNotationProvider(
-                            NotationProviderFactory2.TYPE_TRANSITION, 
-                            NotationHelper.getDefaultNotationContext(), 
+                            NotationProviderFactory2.TYPE_TRANSITION,
+                            NotationHelper.getDefaultNotationContext(),
                             value);
                 name = notationProvider.toString();
             } else if (Model.getFacade().isAExtensionPoint(value)) {
-                name = GeneratorDisplay.getInstance().generateExtensionPoint(value);
+                name =
+                    GeneratorDisplay.getInstance()
+                        .generateExtensionPoint(value);
             } else if (Model.getFacade().isAComment(value)) {
                 /*
-                 * From UML 1.4 onwards, the text of the comment 
-                 * is stored in the "body". 
+                 * From UML 1.4 onwards, the text of the comment
+                 * is stored in the "body".
                  */
                 name = (String) Model.getFacade().getBody(value);
             } else {
@@ -258,12 +269,12 @@ public class ExplorerTree
             }
 
             if (name == null || name.equals("")) {
-                name = 
+                name =
                     "(anon " + Model.getFacade().getUMLClassName(value) + ")";
             }
             /*
-             *  If the name is too long or multi-line (e.g. for comments)
-             * then we reduce to the first line or 80 chars. 
+             * If the name is too long or multi-line (e.g. for comments)
+             * then we reduce to the first line or 80 chars.
              */
             if (name != null
                     && name.indexOf("\n") < 80
@@ -277,10 +288,10 @@ public class ExplorerTree
             if (showStereotype) {
                 Iterator i = Model.getFacade().getStereotypes(value).iterator();
                 Object stereo;
-                while(i.hasNext()) {
+                while (i.hasNext()) {
                     stereo = i.next();
-                    name += " " 
-                        + GeneratorDisplay.getInstance().generate(stereo);
+                    name +=
+                        " " + GeneratorDisplay.getInstance().generate(stereo);
                 }
                 if (name != null && name.length() > 80) {
                     name = name.substring(0, 80) + "...";
@@ -343,12 +354,17 @@ public class ExplorerTree
     class ExplorerTreeExpansionListener implements TreeExpansionListener {
 
         /**
+         * @see javax.swing.event.TreeExpansionListener#treeCollapsed(
+         *         javax.swing.event.TreeExpansionEvent)
+         *
          * Does nothing.
          */
         public void treeCollapsed(TreeExpansionEvent event) {
         }
 
         /**
+         * @see javax.swing.event.TreeExpansionListener#treeExpanded(
+         *         javax.swing.event.TreeExpansionEvent)
          * Updates the selection state.
          */
         public void treeExpanded(TreeExpansionEvent event) {
@@ -369,7 +385,7 @@ public class ExplorerTree
         setSelection(targets.toArray());
         updatingSelectionViaTreeSelection = false;
     }
-    
+
     /**
      * Sets the selection state for a given set of targets.
      */
@@ -380,7 +396,7 @@ public class ExplorerTree
         int rows = getRowCount();
         for (int i = 0; i < targets.length; i++) {
             Object target = targets[i];
-            if(target instanceof Fig) {
+            if (target instanceof Fig) {
                 target = ((Fig) target).getOwner();
             }
             for (int j = 0; j < rows; j++) {
@@ -393,7 +409,7 @@ public class ExplorerTree
             }
         }
         updatingSelectionViaTreeSelection = false;
-        
+
         if (this.getSelectionCount() > 0) {
             scrollRowToVisible(this.getSelectionRows()[0]);
         }
@@ -406,6 +422,9 @@ public class ExplorerTree
     class ExplorerTreeSelectionListener implements TreeSelectionListener {
 
         /**
+         * @see javax.swing.event.TreeSelectionListener#valueChanged(
+         *         javax.swing.event.TreeSelectionEvent)
+         *
          * Change in explorer tree selection -> set target in target manager.
          */
         public void valueChanged(TreeSelectionEvent e) {
@@ -526,13 +545,13 @@ public class ExplorerTree
                 int rows = getRowCount();
                 for (int i = 0; i < targets.length; i++) {
                     Object target = targets[i];
-                    if(target instanceof Fig) {
+                    if (target instanceof Fig) {
                         target = ((Fig) target).getOwner();
                     }
                     for (int j = 0; j < rows; j++) {
                         Object rowItem =
                             ((DefaultMutableTreeNode)
-                            getPathForRow(j).getLastPathComponent())
+                                    getPathForRow(j).getLastPathComponent())
                             .getUserObject();
                         if (rowItem == target) {
                             updatingSelectionViaTreeSelection = true;
@@ -563,14 +582,14 @@ public class ExplorerTree
                 int rows = getRowCount();
                 for (int i = 0; i < targets.length; i++) {
                     Object target = targets[i];
-                    if(target instanceof Fig) {
+                    if (target instanceof Fig) {
                         target = ((Fig) target).getOwner();
                     }
                     for (int j = 0; j < rows; j++) {
                         Object rowItem =
                             ((DefaultMutableTreeNode)
-                            getPathForRow(j).getLastPathComponent())
-                                .getUserObject();
+                                    getPathForRow(j).getLastPathComponent())
+                            .getUserObject();
                         if (rowItem == target) {
                             updatingSelectionViaTreeSelection = true;
                             removeSelectionRow(j);
@@ -600,6 +619,9 @@ public class ExplorerTree
     class ProjectPropertyChangeListener implements PropertyChangeListener {
 
         /**
+         * @see java.beans.PropertyChangeListener#propertyChange(
+         *         java.beans.PropertyChangeEvent)
+         *
          * Listens to events coming from the project manager,
          * i.e. when the current project changes,
          * in order to expand the root node by default.
