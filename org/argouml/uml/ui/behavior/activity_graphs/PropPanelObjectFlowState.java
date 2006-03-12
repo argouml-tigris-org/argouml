@@ -39,7 +39,6 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -48,7 +47,6 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState;
 import org.argouml.util.ConfigLoader;
-import org.tigris.gef.undo.UndoableAction;
 
 /**
  * The properties panel for an ObjectFlowState.
@@ -124,6 +122,16 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
         addAction(actionNewCIS);
     }
 
+    // TODO: Make this work, i.s.o. the next 3 functions:
+//    /**
+//     * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
+//     */
+//    public void setTarget(Object t) {
+//        super.setTarget(t);
+//        actionNewCIS.setEnabled(actionNewCIS.isEnabled());
+//    }
+
+
     /**
      * @see org.argouml.uml.ui.PropPanel#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
@@ -150,7 +158,6 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
         actionNewCIS.setEnabled(actionNewCIS.isEnabled());
     }
 
-
     /**
      * @return the combo box for the type (Classifier or ClassifierInState)
      */
@@ -165,17 +172,23 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
     }
     
 
-    private void removeTopStateFrom(Collection ret) {
+    /**
+     * Utility function to remove the top states 
+     * from a given collection of states.
+     * 
+     * @param ret a collection of states
+     */
+    static void removeTopStateFrom(Collection ret) {
         Iterator i = ret.iterator();
-        Object top = null;
+        Collection tops = new ArrayList();
         while (i.hasNext()) {
             Object state = i.next();
-            if (Model.getFacade().isTop(state)) {
-                top = state;
-                break;
+            if (Model.getFacade().isACompositeState(state) 
+                    && Model.getFacade().isTop(state)) {
+                tops.add(state);
             }
         }
-        if (top != null) ret.remove(top);
+        ret.removeAll(tops);
     }
     
     
@@ -322,64 +335,6 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
                     }
                 }
             }
-        }
-        
-    }
-    
-    class ActionNewClassifierInState extends UndoableAction {
-        
-        private Object choiceClass = Model.getMetaTypes().getState();
-        
-        /**
-         * Constructor.
-         */
-        public ActionNewClassifierInState() {
-            super();
-        }
-        
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            Object ofs = TargetManager.getInstance().getModelTarget();
-            if (Model.getFacade().isAObjectFlowState(ofs)) {
-                Object type = Model.getFacade().getType(ofs);
-                if (Model.getFacade().isAClassifierInState(type)) {
-                    type = Model.getFacade().getType(type);
-                }
-                if (Model.getFacade().isAClassifier(type)) {
-                    Collection c = Model.getModelManagementHelper()
-                        .getAllModelElementsOfKindWithModel(type, choiceClass);
-                    Collection states = new ArrayList(c);
-                    removeTopStateFrom(states);
-                    
-                    if (states.size() < 1) return;
-                    super.actionPerformed(e);
-                    Object cis = Model.getActivityGraphsFactory()
-                        .buildClassifierInState(type, states);
-                    Model.getCoreHelper().setType(ofs, cis);
-                    TargetManager.getInstance().setTarget(cis);
-                }
-            }
-        }
-        
-        public boolean isEnabled() {
-            boolean enabled = false;
-            Object t = TargetManager.getInstance().getModelTarget();
-            if (Model.getFacade().isAObjectFlowState(t)) {
-                Object type = Model.getFacade().getType(t);
-                if (Model.getFacade().isAClassifier(type)) {
-                    if (!Model.getFacade().isAClassifierInState(type)) {
-                        Collection states = Model.getModelManagementHelper()
-                            .getAllModelElementsOfKindWithModel(type, 
-                                    choiceClass);
-                        if (states.size() > 0) {
-                            enabled = true;
-                        }
-                    }
-                }
-            }
-            return enabled;
         }
         
     }
