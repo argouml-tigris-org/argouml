@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,11 +37,15 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
  * This action binds Instances to one  Classifiers,
  * which declare its structure and behaviour.
  */
-public class ActionAddCreateActionInstantiation extends AbstractActionAddModelElement {
+public class ActionAddCreateActionInstantiation
+    extends AbstractActionAddModelElement {
 
     private Object choiceClass = Model.getMetaTypes().getClassifier();
 
 
+    /**
+     * Constructor.
+     */
     public ActionAddCreateActionInstantiation() {
         super();
         setMultiSelect(false);
@@ -52,10 +56,13 @@ public class ActionAddCreateActionInstantiation extends AbstractActionAddModelEl
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
-        if (selected != null && selected.size()>=1)
-        Model.getCommonBehaviorHelper().setInstantiation(getTarget(), selected.get(0));
-        else
-            Model.getCommonBehaviorHelper().setInstantiation(getTarget(), null);
+        if (selected != null && selected.size() >= 1) {
+            Model.getCommonBehaviorHelper().setInstantiation(getTarget(),
+                    selected.get(0));
+        } else {
+            Model.getCommonBehaviorHelper().setInstantiation(getTarget(),
+                    null);
+        }
     }
 
     /**
@@ -84,8 +91,16 @@ public class ActionAddCreateActionInstantiation extends AbstractActionAddModelEl
      */
     protected Vector getSelected() {
         Vector ret = new Vector();
-        Object instantiation = Model.getCommonBehaviorHelper().getInstantiation(getTarget());
-        if (instantiation != null) ret.add(instantiation);
+        Object instantiation =
+            Model.getCommonBehaviorHelper().getInstantiation(getTarget());
+        if (instantiation != null) {
+            ret.add(instantiation);
+        }
         return ret;
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -7108663482184056359L;
 }

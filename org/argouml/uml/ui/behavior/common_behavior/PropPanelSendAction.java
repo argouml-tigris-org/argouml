@@ -40,7 +40,7 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 /**
  * The properties panel for a SendAction.
  *
- * TODO: this property panel needs a field to select the Signal, 
+ * TODO: this property panel needs a field to select the Signal,
  * similar to the one on the PropPanelCreateAction.
  */
 public class PropPanelSendAction extends PropPanelAction {
@@ -51,10 +51,11 @@ public class PropPanelSendAction extends PropPanelAction {
      */
     public PropPanelSendAction() {
         super("SendAction", lookupIcon("SendAction"));
-        
-        AbstractActionAddModelElement action = 
+
+        AbstractActionAddModelElement action =
             new ActionAddSendActionSignal();
-        UMLMutableLinkedList list = new UMLMutableLinkedList(
+        UMLMutableLinkedList list =
+            new UMLMutableLinkedList(
                 new UMLSendActionSignalListModel(), action, null, null, true);
         list.setVisibleRowCount(1);
         JScrollPane instantiationScroll = new JScrollPane(list);
@@ -63,6 +64,10 @@ public class PropPanelSendAction extends PropPanelAction {
                 argumentsScroll);
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -6002902665554123820L;
 }
 
 /**
@@ -70,26 +75,33 @@ public class PropPanelSendAction extends PropPanelAction {
  * which declare its structure and behaviour.
  */
 class ActionAddSendActionSignal extends AbstractActionAddModelElement {
-    
+
     private Object choiceClass = Model.getMetaTypes().getSignal();
-    
-    
+
+
+    /**
+     * Constructor.
+     */
     public ActionAddSendActionSignal() {
         super();
         setMultiSelect(false);
     }
-    
-    
+
+
     /**
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(
+     *         java.util.Vector)
      */
     protected void doIt(Vector selected) {
-        if (selected != null && selected.size()>=1)
-            Model.getCommonBehaviorHelper().setSignal(getTarget(), selected.get(0));
-        else
+        if (selected != null && selected.size() >= 1) {
+            Model.getCommonBehaviorHelper().setSignal(
+                    getTarget(),
+                    selected.get(0));
+        } else {
             Model.getCommonBehaviorHelper().setSignal(getTarget(), null);
+        }
     }
-    
+
     /**
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
@@ -103,23 +115,30 @@ class ActionAddSendActionSignal extends AbstractActionAddModelElement {
         }
         return ret;
     }
-    
+
     /**
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-signal");
     }
-    
+
     /**
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
     protected Vector getSelected() {
         Vector ret = new Vector();
         Object signal = Model.getFacade().getSignal(getTarget());
-        if (signal != null) ret.add(signal);
+        if (signal != null) {
+            ret.add(signal);
+        }
         return ret;
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -6172250439307650139L;
 }
 
 class UMLSendActionSignalListModel extends UMLModelElementListModel2 {
@@ -130,7 +149,7 @@ class UMLSendActionSignalListModel extends UMLModelElementListModel2 {
     public UMLSendActionSignalListModel() {
         super("signal");
     }
-    
+
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
@@ -138,7 +157,7 @@ class UMLSendActionSignalListModel extends UMLModelElementListModel2 {
         removeAllElements();
         addElement(Model.getFacade().getSignal(getTarget()));
     }
-    
+
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
      */
@@ -146,5 +165,10 @@ class UMLSendActionSignalListModel extends UMLModelElementListModel2 {
         return Model.getFacade().isASignal(elem)
             && Model.getFacade().getSignal(getTarget()) == elem;
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8126377938452286169L;
 }
 

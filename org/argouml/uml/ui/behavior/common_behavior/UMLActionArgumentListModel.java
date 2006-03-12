@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,20 +27,37 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
+/**
+ * Model for action's actual argument list.
+ */
 public class UMLActionArgumentListModel extends UMLModelElementListModel2 {
 
+    /**
+     * Constructor.
+     */
     public UMLActionArgumentListModel() {
         super("actualArgument");
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
     protected void buildModelList() {
         if (getTarget() != null) {
             setAllElements(Model.getFacade().getActualArguments(getTarget()));
         }
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
+     */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAArgument(element);
     }
 
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -3265997785192090331L;
 }
