@@ -32,6 +32,8 @@ import org.tigris.gef.presentation.Fig;
  */
 public class FigReturnActionMessage extends FigMessage {
 
+    private static final long serialVersionUID = -6620833059472736152L;
+
     /**
      * @param owner The owner of the link.
      */
