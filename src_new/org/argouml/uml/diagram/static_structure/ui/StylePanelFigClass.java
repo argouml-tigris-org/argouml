@@ -29,6 +29,7 @@ import java.beans.PropertyChangeEvent;
 
 import javax.swing.JCheckBox;
 
+import org.argouml.i18n.Translator;
 import org.argouml.ui.StylePanelFigNodeModelElement;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
@@ -43,9 +44,9 @@ import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 public class StylePanelFigClass extends StylePanelFigNodeModelElement {
 
     /* TODO: i18n */
-    private JCheckBox attrCheckBox = new JCheckBox("Attributes");
+    private JCheckBox attrCheckBox = new JCheckBox(Translator.localize("checkbox.attributes"));
 
-    private JCheckBox operCheckBox = new JCheckBox("Operations");
+    private JCheckBox operCheckBox = new JCheckBox(Translator.localize("checkbox.operations"));
 
     /**
      * Flag to indicate that a refresh is going on.
