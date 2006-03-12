@@ -51,6 +51,7 @@ public class TargetManagerPanel extends JPanel implements TargetListener {
     
     private DefaultListModel lm = new DefaultListModel();
     private JList lst;
+    private String lastEvent;
     
     private static TargetManagerPanel INSTANCE = new TargetManagerPanel();
     
@@ -75,6 +76,7 @@ public class TargetManagerPanel extends JPanel implements TargetListener {
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
+        lastEvent = "targetAdded";
         setTarget(e.getNewTargets());
     }
 
@@ -82,6 +84,7 @@ public class TargetManagerPanel extends JPanel implements TargetListener {
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
+        lastEvent = "targetRemoved";
         setTarget(e.getNewTargets());
     }
 
@@ -89,6 +92,7 @@ public class TargetManagerPanel extends JPanel implements TargetListener {
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
+        lastEvent = "targetSet";
         setTarget(e.getNewTargets());
     }
 
@@ -99,6 +103,7 @@ public class TargetManagerPanel extends JPanel implements TargetListener {
 
     private void setTarget(Collection c) {
         lm.clear();
+        lm.addElement("Last event: " + lastEvent);
         Iterator i = c.iterator();
         while (i.hasNext()) {
             lm.addElement(i.next());
