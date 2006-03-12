@@ -36,6 +36,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -62,7 +63,10 @@ public class PropPanelCallAction extends PropPanelAction {
             new UMLCallActionOperationComboBox2(
                 new UMLCallActionOperationComboBoxModel());
         addFieldBefore(Translator.localize("label.operation"),
-                operationComboBox,
+                new UMLComboBoxNavigator(
+                        this,
+                        Translator.localize("label.operation.navigate.tooltip"),
+                        operationComboBox),
                 argumentsScroll);
     }
 
