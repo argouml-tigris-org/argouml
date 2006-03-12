@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,10 +39,13 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  * @author jaap.branderhorst@xs4all.nl, alexb
  */
 public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
-    
+
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(UMLModelElementNamespaceComboBoxModel.class);
-    
+
     /**
      * Constructor for UMLModelElementNamespaceComboBoxModel.
      */
@@ -70,14 +73,16 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         Object t = getTarget();
         Collection c = Model.getCoreHelper().getAllPossibleNamespaces(t, model);
 
-        /* These next lines for the case that the current namespace 
-         * is not a valid one... Which ofcourse should not happen, 
-         * but it does - see the project attached to issue 3772. */
+        /* These next lines for the case that the current namespace
+         * is not a valid one... Which ofcourse should not happen,
+         * but it does - see the project attached to issue 3772.
+         */
         /* TODO: Enhance the isValidNamespace function so
-         * that this never happens. */
+         * that this never happens.
+         */
         if (t != null) {
             Object namespace = Model.getFacade().getNamespace(t);
-            if (!c.contains(namespace)) { 
+            if (!c.contains(namespace)) {
                 c.add(namespace);
                 LOG.warn("The current namespace is not a valid one!");
             }
@@ -103,15 +108,21 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
          * Rebuild the list from scratch to be sure it's correct.
          */
         Object t = getTarget();
-        if (t != null 
+        if (t != null
                 && evt.getSource() == t
                 && evt.getNewValue() != null) {
 //            setTarget(t); // this fixes issue 3780, but causes issue 3832.
             buildModelList();
             /* In some cases (se issue 3780) the list remains the same, but
-             * the selected item differs. Without the next step, 
-             * the combo would not be refreshed.*/
+             * the selected item differs. Without the next step,
+             * the combo would not be refreshed.
+             */
             setSelectedItem(getSelectedModelElement());
         }
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -775116993155949065L;
 }
