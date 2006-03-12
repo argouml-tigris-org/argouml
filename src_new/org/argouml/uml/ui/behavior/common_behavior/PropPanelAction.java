@@ -52,19 +52,19 @@ import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.GridLayout2;
 
 /**
- * An abstract representatation of the properties panel of an Action. 
+ * An abstract representatation of the properties panel of an Action.
  */
 public abstract class PropPanelAction extends PropPanelModelElement {
-    
+
     protected JScrollPane argumentsScroll;
-    
+
     /**
      * The constructor.
      */
     public PropPanelAction() {
         this("Action", null);
     }
-    
+
     /**
      * The constructor.
      *
@@ -77,33 +77,35 @@ public abstract class PropPanelAction extends PropPanelModelElement {
         super(name, icon, ConfigLoader.getTabPropsOrientation());
         initialize();
     }
-    
+
     /**
      * The initialization of the panel with its fields and stuff.
      */
     public void initialize() {
-        
+
         addField(Translator.localize("label.name"), getNameTextField());
-        
+
         add(new UMLActionAsynchronousCheckBox());
-        
-        UMLExpressionModel2 scriptModel = new UMLScriptExpressionModel(
+
+        UMLExpressionModel2 scriptModel =
+            new UMLScriptExpressionModel(
                 this, "script");
-        
+
         JPanel scriptPanel = new JPanel(new GridLayout2());
         scriptPanel.setBorder(new TitledBorder(Translator
                 .localize("label.script")));
-        
+
         scriptPanel.add(new JScrollPane(new UMLExpressionBodyField(
                 scriptModel, true)));
         scriptPanel.add(new UMLExpressionLanguageField(scriptModel,
                 false));
-        
+
         add(scriptPanel);
-        
-        UMLExpressionModel2 recurrenceModel = new UMLRecurrenceExpressionModel(
+
+        UMLExpressionModel2 recurrenceModel =
+            new UMLRecurrenceExpressionModel(
                 this, "recurrence");
-        
+
         JPanel recurrencePanel = new JPanel(new GridLayout2());
         recurrencePanel.setBorder(new TitledBorder(Translator
                 .localize("label.recurrence")));
@@ -111,12 +113,13 @@ public abstract class PropPanelAction extends PropPanelModelElement {
                 recurrenceModel, true)));
         recurrencePanel.add(new UMLExpressionLanguageField(
                 recurrenceModel, false));
-        
+
         add(recurrencePanel);
-        
+
         addSeperator();
-        
-        JList argumentsList = new UMLMutableLinkedList(
+
+        JList argumentsList =
+            new UMLMutableLinkedList(
                 new UMLActionArgumentListModel(), null,
                 new ActionNewArgument(),
                 new ActionRemoveArgument(), true);
@@ -124,14 +127,14 @@ public abstract class PropPanelAction extends PropPanelModelElement {
         argumentsScroll = new JScrollPane(argumentsList);
         addField(Translator.localize("label.arguments"),
                 argumentsScroll);
-        
+
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionCreateArgument());
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());
-        
+
     }
-    
+
 }
 
 class ActionCreateArgument extends AbstractActionNewModelElement {
@@ -141,9 +144,9 @@ class ActionCreateArgument extends AbstractActionNewModelElement {
      */
     public ActionCreateArgument() {
         super("button.new-argument");
-        putValue(Action.NAME, 
+        putValue(Action.NAME,
                 Translator.localize("button.new-argument"));
-        putValue(Action.SMALL_ICON, 
+        putValue(Action.SMALL_ICON,
                 ResourceLoaderWrapper.lookupIcon("NewParameter"));
     }
 
@@ -158,4 +161,9 @@ class ActionCreateArgument extends AbstractActionNewModelElement {
             TargetManager.getInstance().setTarget(argument);
         }
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -3455108052199995234L;
 }

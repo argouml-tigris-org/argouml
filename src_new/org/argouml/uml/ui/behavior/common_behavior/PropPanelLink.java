@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -95,22 +95,28 @@ public class PropPanelLink extends PropPanelModelElement {
      */
     protected JComponent getAssociationSelector() {
         if (associationSelector == null) {
-            associationSelector = new UMLSearchableComboBox(
+            associationSelector =
+                new UMLSearchableComboBox(
                     associationComboBoxModel,
                     new ActionSetLinkAssociation(), true);
         }
         return associationSelector;
 
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 8861148331491989705L;
 } /* end class PropPanelLink */
 
 /**
  * The model for the combobox to show the Association of the Link.
- * 
+ *
  * @author Michiel
  */
 class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel2 {
-    
+
     /**
      * Constructor for UMLModelElementNamespaceComboBoxModel.
      */
@@ -126,22 +132,22 @@ class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel2 {
     }
 
     /**
-     * To simplify implementation, we list all associations 
-     * found with any of the Classifiers 
+     * To simplify implementation, we list all associations
+     * found with any of the Classifiers
      * represented by the linked Instances. <p>
-     * 
+     *
      * TODO: Make a foolproof algorithm that only allows selecting associations
-     * that create a correct model. Also take into account n-ary associations 
+     * that create a correct model. Also take into account n-ary associations
      * and associationclasses. This algo best goes in the model subsystem, e.g.
      * in a method getAllPossibleAssociationsForALink().
-     * 
+     *
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
         Collection linkEnds;
         Collection associations = new HashSet();
         Object t = getTarget();
-        if (Model.getFacade().isALink(t)) { 
+        if (Model.getFacade().isALink(t)) {
             linkEnds = Model.getFacade().getConnections(t);
             Iterator ile = linkEnds.iterator();
             while (ile.hasNext()) {
@@ -150,11 +156,12 @@ class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel2 {
                 Iterator ic = c.iterator();
                 while (ic.hasNext()) {
                     Object classifier = ic.next();
-                    Collection ae = Model.getFacade().getAssociationEnds(classifier);
+                    Collection ae =
+                        Model.getFacade().getAssociationEnds(classifier);
                     Iterator iae = ae.iterator();
                     while (iae.hasNext()) {
                         Object associationEnd = iae.next();
-                        Object association = 
+                        Object association =
                             Model.getFacade().getAssociation(associationEnd);
                         associations.add(association);
                     }
@@ -182,16 +189,22 @@ class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel2 {
          * Rebuild the list from scratch to be sure it's correct.
          */
         Object t = getTarget();
-        if (t != null 
+        if (t != null
                 && evt.getSource() == t
                 && evt.getNewValue() != null) {
             buildModelList();
             /* In some cases (se issue 3780) the list remains the same, but
-             * the selected item differs. Without the next step, 
-             * the combo would not be refreshed.*/
+             * the selected item differs. Without the next step,
+             * the combo would not be refreshed.
+             */
             setSelectedItem(getSelectedModelElement());
         }
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 3232437122889409351L;
 }
 
 class ActionSetLinkAssociation extends UMLAction {
@@ -229,4 +242,8 @@ class ActionSetLinkAssociation extends UMLAction {
         }
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 6168167355078835252L;
 }

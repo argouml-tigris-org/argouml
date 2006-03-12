@@ -57,17 +57,17 @@ public class PropPanelCallAction extends PropPanelAction {
      */
     public void initialize() {
         super.initialize();
-        
+
         UMLSearchableComboBox operationComboBox =
             new UMLCallActionOperationComboBox2(
                 new UMLCallActionOperationComboBoxModel());
-        addFieldBefore(Translator.localize("label.operation"), 
-                operationComboBox, 
+        addFieldBefore(Translator.localize("label.operation"),
+                operationComboBox,
                 argumentsScroll);
     }
 
 
-    private class UMLCallActionOperationComboBox2 
+    private class UMLCallActionOperationComboBox2
         extends UMLSearchableComboBox {
         /**
          * The constructor.
@@ -78,10 +78,15 @@ public class PropPanelCallAction extends PropPanelAction {
             super(arg0, new SetActionOperationAction());
             setEditable(false);
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 1453984990567492914L;
     }
-    
+
     private class SetActionOperationAction extends UndoableAction {
-        
+
         /**
          * The constructor.
          */
@@ -98,7 +103,7 @@ public class PropPanelCallAction extends PropPanelAction {
             if (source instanceof UMLComboBox2) {
                 Object selected = ((UMLComboBox2) source).getSelectedItem();
                 Object target = ((UMLComboBox2) source).getTarget();
-                if (Model.getFacade().isACallAction(target) 
+                if (Model.getFacade().isACallAction(target)
                     && Model.getFacade().isAOperation(selected)) {
                     if (Model.getFacade().getOperation(target) != selected) {
                         Model.getCommonBehaviorHelper()
@@ -107,9 +112,14 @@ public class PropPanelCallAction extends PropPanelAction {
                 }
             }
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -3574312020866131632L;
     }
-    
-    private class UMLCallActionOperationComboBoxModel 
+
+    private class UMLCallActionOperationComboBoxModel
         extends UMLComboBoxModel2 {
         /**
          * The constructor.
@@ -117,14 +127,15 @@ public class PropPanelCallAction extends PropPanelAction {
         public UMLCallActionOperationComboBoxModel() {
             super("operation", true);
         }
-        
+
         /**
-         * The list of operations shall contain 
-         * all operations of all classifiers 
+         * The list of operations shall contain
+         * all operations of all classifiers
          * contained in the same package as the callaction itself. <p>
-         * 
-         * TODO: In fact, we also should include operations of imported clasifiers.
-         * 
+         *
+         * TODO: In fact, we also should include operations of imported
+         * clasifiers.
+         *
          * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
          */
         protected void buildModelList() {
@@ -134,11 +145,14 @@ public class PropPanelCallAction extends PropPanelAction {
                 Object ns = Model.getFacade().getModelElementContainer(target);
                 while (!Model.getFacade().isAPackage(ns)) {
                     ns = Model.getFacade().getModelElementContainer(ns);
-                    if (ns == null) break;
+                    if (ns == null) {
+                        break;
+                    }
                 }
                 if (Model.getFacade().isANamespace(ns)) {
-                    Collection c = Model.getModelManagementHelper()
-                        .getAllModelElementsOfKind(
+                    Collection c =
+                        Model.getModelManagementHelper()
+                            .getAllModelElementsOfKind(
                                 ns,
                                 Model.getMetaTypes().getClassifier());
                     Iterator i = c.iterator();
@@ -146,11 +160,13 @@ public class PropPanelCallAction extends PropPanelAction {
                         ops.addAll(Model.getFacade().getOperations(i.next()));
                     }
                 }
-                /* To be really sure, let's add the operation 
-                 * that is linked to the action in the model, 
+                /* To be really sure, let's add the operation
+                 * that is linked to the action in the model,
                  * too - if it is not listed yet.
-                 * We need this, incase an operation is moved out of the package,  
-                 * or maybe with imported XMI... */
+                 * We need this, incase an operation is moved
+                 * out of the package,
+                 * or maybe with imported XMI...
+                 */
                 Object current = Model.getFacade().getOperation(target);
                 if (Model.getFacade().isAOperation(current)) {
                     if (!ops.contains(current)) {
@@ -160,7 +176,7 @@ public class PropPanelCallAction extends PropPanelAction {
             }
             setElements(ops);
         }
-        
+
         /**
          * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
          */
@@ -171,7 +187,7 @@ public class PropPanelCallAction extends PropPanelAction {
             }
             return null;
         }
-        
+
         /**
          * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(java.lang.Object)
          */
@@ -184,16 +200,16 @@ public class PropPanelCallAction extends PropPanelAction {
         }
 
         /**
-         * The function in the parent removes items from the list 
+         * The function in the parent removes items from the list
          * when deselected. We do not need that here. <p>
-         * 
+         *
          *  This function is only needed when another operation is connected to
          *  the action in the model, to select it in the combo. <p>
-         *  
-         *  It is e.g. not usefull to update the combo for removed operations, 
+         *
+         *  It is e.g. not usefull to update the combo for removed operations,
          *  since you can only remove operations by changing the target,
          *  and selecting the action again re-generates the complete list.
-         * 
+         *
          * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
          */
         public void propertyChange(PropertyChangeEvent evt) {
@@ -208,6 +224,14 @@ public class PropPanelCallAction extends PropPanelAction {
             }
         }
 
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 7752478921939209157L;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 6998109319912301992L;
 } /* end class PropPanelCallAction */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,7 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 /**
- * 
+ *
  * @since aug 10, 2003
  * @author Decki, Endi, Yayan. Polytechnic of Bandung Indonesia, Computer
  *         Engineering Departement
@@ -48,18 +48,22 @@ public class PropPanelArgument extends PropPanelModelElement {
 
     // //////////////////////////////////////////////////////////////
     // contructors
+    /**
+     * Constructor.
+     */
     public PropPanelArgument() {
 
         super("Argument", ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"), getNameTextField());
 
-        UMLExpressionModel2 expressionModel = new UMLExpressionExpressionModel(
+        UMLExpressionModel2 expressionModel =
+            new UMLExpressionExpressionModel(
                 this, "expression");
         JTextArea ebf = new UMLExpressionBodyField(expressionModel, true);
         ebf.setFont(LookAndFeelMgr.getInstance().getSmallFont());
         ebf.setRows(3); // make it take up all remaining height
-        addField(Translator.localize("label.value"), 
+        addField(Translator.localize("label.value"),
                 new JScrollPane(ebf));
         addField(Translator.localize("label.language"),
                 new UMLExpressionLanguageField(expressionModel, true));
@@ -68,4 +72,9 @@ public class PropPanelArgument extends PropPanelModelElement {
         addAction(new ActionDeleteSingleModelElement());
 
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 6737211630130267264L;
 }

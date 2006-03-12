@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,6 +38,9 @@ import org.argouml.uml.ui.UMLCheckBox2;
  */
 public class ActionSetActionAsynchronous extends UMLAction {
 
+    /**
+     * The instance.
+     */
     private static final ActionSetActionAsynchronous SINGLETON =
 	new ActionSetActionAsynchronous();
 
@@ -58,7 +61,9 @@ public class ActionSetActionAsynchronous extends UMLAction {
             Object target = source.getTarget();
             if (Model.getFacade().isAAction(target)) {
                 Object m = target;
-                Model.getCommonBehaviorHelper().setAsynchronous(m, source.isSelected());
+                Model.getCommonBehaviorHelper().setAsynchronous(
+                        m,
+                        source.isSelected());
             }
         }
     }
@@ -69,4 +74,9 @@ public class ActionSetActionAsynchronous extends UMLAction {
     public static ActionSetActionAsynchronous getInstance() {
         return SINGLETON;
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 1683440096488846000L;
 }

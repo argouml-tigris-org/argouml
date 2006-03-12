@@ -42,10 +42,12 @@ public class PropPanelCreateAction extends PropPanelAction {
     public PropPanelCreateAction() {
         super("CreateAction", lookupIcon("CreateAction"));
 
-        AbstractActionAddModelElement action = 
+        AbstractActionAddModelElement action =
             new ActionAddCreateActionInstantiation();
-        UMLMutableLinkedList list = new UMLMutableLinkedList(
-                new UMLCreateActionClassifierListModel(), action, null, null, true);
+        UMLMutableLinkedList list =
+            new UMLMutableLinkedList(
+                new UMLCreateActionClassifierListModel(),
+                action, null, null, true);
         list.setVisibleRowCount(1);
         JScrollPane instantiationScroll = new JScrollPane(list);
         addFieldBefore(Translator.localize("label.instantiation"),
@@ -54,4 +56,8 @@ public class PropPanelCreateAction extends PropPanelAction {
 
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 6909604490593418840L;
 }
