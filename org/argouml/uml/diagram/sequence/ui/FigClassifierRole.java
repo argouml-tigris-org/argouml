@@ -1207,30 +1207,21 @@ public class FigClassifierRole extends FigNodeModelElement
 
         Rectangle rect = headFig.getBounds();
 
-        int stereotypeHeight = 0;
-        if (getStereotypeFig().isVisible()) {
-            stereotypeHeight = getStereotypeFig().getHeight();
-        }
-        int heightWithoutStereo = headFig.getHeight() - stereotypeHeight;
-
         getStereotypeFig().setOwner(getOwner());
         ((FigStereotypesCompartment) getStereotypeFig()).populate();
-
-        stereotypeHeight = 0;
-        if (getStereotypeFig().isVisible()) {
-            stereotypeHeight = getStereotypeFig().getHeight();
-        }
 
         int minWidth = headFig.getMinimumSize().width;
         if (minWidth > rect.width) {
             rect.width = minWidth;
         }
+        
+        int headHeight = headFig.getMinimumSize().height;
 
         headFig.setBounds(
                 rect.x,
                 rect.y,
                 rect.width,
-                heightWithoutStereo + stereotypeHeight);
+                headHeight);
 
         if (getLayer() == null) {
             return;
@@ -1258,6 +1249,8 @@ public class FigClassifierRole extends FigNodeModelElement
             }
         }
 
+        calcBounds();
+        damage();
     }
 
     /**
