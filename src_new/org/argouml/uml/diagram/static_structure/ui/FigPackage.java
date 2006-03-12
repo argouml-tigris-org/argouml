@@ -857,6 +857,7 @@ public class FigPackage extends FigNodeModelElement
          *         java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent ae) {
+            super.actionPerformed(ae);
             doStereotype(false);
         }
 
@@ -877,6 +878,7 @@ public class FigPackage extends FigNodeModelElement
          *         java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent ae) {
+            super.actionPerformed(ae);
             doStereotype(true);
         }
 
@@ -897,6 +899,7 @@ public class FigPackage extends FigNodeModelElement
          *         java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent ae) {
+            super.actionPerformed(ae);
             doVisibility(false);
         }
 
@@ -917,6 +920,7 @@ public class FigPackage extends FigNodeModelElement
          *         java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent ae) {
+            super.actionPerformed(ae);
             doVisibility(true);
         }
 
