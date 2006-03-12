@@ -27,10 +27,14 @@ package org.argouml.ui.explorer.rules;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.argouml.model.Model;
 
+/**
+ * Rule for Stereotype -> TagDefinition.
+ */
 public class GoStereotypeToTagDefinition extends AbstractPerspectiveRule {
 
     /**
@@ -45,7 +49,7 @@ public class GoStereotypeToTagDefinition extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
         if (Model.getFacade().isAStereotype(parent)) {
-            ArrayList list = new ArrayList();
+            List list = new ArrayList();
 
             if (Model.getFacade().getTagDefinitions(parent) != null
                     && Model.getFacade().getTagDefinitions(parent).size() > 0) {
