@@ -75,11 +75,14 @@ public class TestProject extends TestCase {
         Object cls2 = Model.getCoreFactory().buildClass(package1);
         Object cls3 = Model.getCoreFactory().buildClass(package1);
         Object cls4 = Model.getCoreFactory().buildClass(p.getRoot());
-        Collection c1 = Model.getFacade().getOwnedElements(p.getRoot());
+        Object c1 = Model.getFacade().getOwnedElements(p.getRoot());
         assertTrue(c1 instanceof Collection);
         // Let's make it a bit more difficult by setting the target:
         TargetManager.getInstance().setTarget(cls2);
+        
         p.moveToTrash(package1);
+        Model.getPump().flushModelEvents();
+        
         //TODO: We should also test that the object
         //have been removed from their namespace.
         //Collection c = Model.getFacade().getOwnedElements(p.getRoot());
@@ -115,7 +118,10 @@ public class TestProject extends TestCase {
             Model.getCoreFactory().buildOperation(
                     cls2, p.getRoot(), typ, new ArrayList());
         assertNotNull(oper2b);
+        
         p.moveToTrash(aClass);
+        Model.getPump().flushModelEvents();
+        
         //Collection c = Model.getFacade().getOwnedElements(p.getRoot());
         assertTrue("Package not in trash", p.isInTrash(aClass));
         assertTrue("Package not deleted",
@@ -155,6 +161,8 @@ public class TestProject extends TestCase {
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
         p.moveToTrash(package2);
+        Model.getPump().flushModelEvents();
+        
         assertEquals(sizeDiagrams, p.getDiagrams().size());
         assertEquals(sizeMembers, p.getMembers().size());
     }
@@ -187,6 +195,8 @@ public class TestProject extends TestCase {
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
         p.moveToTrash(aClass);
+        Model.getPump().flushModelEvents();
+        
         assertTrue("Statemachine not in trash", p.isInTrash(machine));
         assertTrue("Class not in trash", p.isInTrash(aClass));
         assertEquals(sizeDiagrams, p.getDiagrams().size());
@@ -220,6 +230,8 @@ public class TestProject extends TestCase {
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
         p.moveToTrash(d);
+        Model.getPump().flushModelEvents();
+        
         assertTrue("Statediagram not in trash", p.isInTrash(d));
         assertEquals(sizeDiagrams, p.getDiagrams().size());
         assertEquals(sizeMembers, p.getMembers().size());
@@ -238,7 +250,8 @@ public class TestProject extends TestCase {
         Object bClass = Model.getCoreFactory().buildClass(aClass);
 
         p.moveToTrash(aClass);
-
+        Model.getPump().flushModelEvents();
+        
         assertTrue("Class not in trash", p.isInTrash(aClass));
         assertTrue("Inner Class not in trash",
                 Model.getUmlFactory().isRemoved(bClass));
@@ -258,7 +271,8 @@ public class TestProject extends TestCase {
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
         p.moveToTrash(package1);
-
+        Model.getPump().flushModelEvents();
+        
         assertTrue("Class not in trash",
                 Model.getUmlFactory().isRemoved(aClass));
     }
@@ -291,7 +305,10 @@ public class TestProject extends TestCase {
         p.addMember(d);
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
+        
         p.moveToTrash(package1);
+        Model.getPump().flushModelEvents();
+        
         assertTrue("Class not in trash",
                 Model.getUmlFactory().isRemoved(aClass));
         assertTrue("Statemachine not in trash",
@@ -338,6 +355,7 @@ public class TestProject extends TestCase {
         assertEquals(sizeMembers + 1, p.getMembers().size());
 
         p.moveToTrash(oper);
+        Model.getPump().flushModelEvents();
 
         assertTrue("Operation not in trash", p.isInTrash(oper));
         assertTrue("Statemachine not in trash",
@@ -375,6 +393,7 @@ public class TestProject extends TestCase {
         assertEquals(sizeMembers + 1, p.getMembers().size());
 
         p.moveToTrash(package1);
+        Model.getPump().flushModelEvents();
 
         assertTrue("Class not in trash",
                 Model.getUmlFactory().isRemoved(aClass));
@@ -415,7 +434,8 @@ public class TestProject extends TestCase {
         assertEquals(sizeMembers + 1, p.getMembers().size());
 
         p.moveToTrash(package1);
-
+        Model.getPump().flushModelEvents();
+        
         assertTrue("Package 2 not in trash",
                 Model.getUmlFactory().isRemoved(package2));
         assertTrue("ActivityGraph not in trash",
