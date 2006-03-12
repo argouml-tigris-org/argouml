@@ -534,7 +534,8 @@ public class FigClassifierRole extends FigNodeModelElement
                 lifeLine.addActivationFig(
                         new FigBirthActivation(
                                 lifeLine.getX(),
-                                lifeLine.getYCoordinate(i)));
+                                lifeLine.getYCoordinate(i)
+                                - SequenceDiagramLayer.LINK_DISTANCE / 4));
             } if (lastState != nextState && nextState == MessageNode.DESTROYED) {
                 int y =
                     lifeLine.getYCoordinate(i)
