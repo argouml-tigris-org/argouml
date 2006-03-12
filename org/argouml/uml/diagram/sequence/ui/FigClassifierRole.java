@@ -302,6 +302,7 @@ public class FigClassifierRole extends FigNodeModelElement
      * @see FigNodeModelElement#calcBounds()
      */
     public void calcBounds() {
+        lifeLine.setY(headFig.getHeight() + headFig.getY());
         Rectangle bounds = headFig.getBounds();
         bounds.add(lifeLine.getBounds());
         _x = bounds.x;
