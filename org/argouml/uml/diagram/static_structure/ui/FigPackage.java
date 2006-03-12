@@ -35,10 +35,7 @@ import java.beans.PropertyVetoException;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
-
-import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
-
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
@@ -64,6 +61,7 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Class to display graphics for a UML package in a class diagram.
@@ -849,7 +847,7 @@ public class FigPackage extends FigNodeModelElement
      */
     private static final long serialVersionUID = 3617092272529451041L;
     
-    private class HideStereotypeAction extends AbstractAction {
+    private class HideStereotypeAction extends UndoableAction {
         HideStereotypeAction() {
             super(Translator.localize("menu.popup.show.hide-stereotype"),
                     ResourceLoaderWrapper.lookupIcon("menu.popup.show.hide-stereotype"));
@@ -869,7 +867,7 @@ public class FigPackage extends FigNodeModelElement
             1999499813643610674L;
     }
     
-    private class ShowStereotypeAction extends AbstractAction {
+    private class ShowStereotypeAction extends UndoableAction {
         ShowStereotypeAction() {
             super(Translator.localize("menu.popup.show.show-stereotype"),
                     ResourceLoaderWrapper.lookupIcon("menu.popup.show.show-stereotype"));
@@ -889,7 +887,7 @@ public class FigPackage extends FigNodeModelElement
             -4327161642276705610L;
     }
     
-    private class HideVisibilityAction extends AbstractAction {
+    private class HideVisibilityAction extends UndoableAction {
         HideVisibilityAction() {
             super(Translator.localize("menu.popup.show.hide-visibility"),
                     ResourceLoaderWrapper.lookupIcon("menu.popup.show.hide-visibility"));
@@ -909,7 +907,7 @@ public class FigPackage extends FigNodeModelElement
             8574809709777267866L;
     }
     
-    private class ShowVisibilityAction extends AbstractAction {
+    private class ShowVisibilityAction extends UndoableAction {
         ShowVisibilityAction() {
             super(Translator.localize("menu.popup.show.show-visibility"),
                     ResourceLoaderWrapper.lookupIcon("menu.popup.show.show-visibility"));
