@@ -30,12 +30,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.api.Configuration;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -50,29 +52,24 @@ import org.tigris.gef.util.Util;
 /**
  * Wraps a CmdSaveGIF or CmdSave(E)PS to allow selection of an output file.
  */
-public class ActionSaveGraphics
-        extends UMLAction
+public class ActionSaveGraphics extends AbstractAction
         implements CommandLineInterface {
 
+    private static final long serialVersionUID = 3062674953320109889L;
+    
     private static final Logger LOG =
         Logger.getLogger(ActionSaveGraphics.class);
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Constructor for this action.
      */
     public ActionSaveGraphics() {
-        super("action.save-graphics", NO_ICON);
+        super(Translator.localize("action.save-graphics"),
+                ResourceLoaderWrapper.lookupIcon("action.save-graphics"));
     }
 
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
     /**
-     * @see UMLAction#actionPerformed(ActionEvent)
+     * @see AbstractAction#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
         trySave(); //TODO: what to do with the return value?
@@ -237,5 +234,3 @@ public class ActionSaveGraphics
 	return false;
     }
 } /* end class ActionSaveGraphics */
-
-

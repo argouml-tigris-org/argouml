@@ -26,32 +26,30 @@ package org.argouml.ui.cmd;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+
 import org.argouml.application.api.CommandLineInterface;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.UMLAction;
 
 /**
  * Action to exit ArgoUML.
  * If the project is dirty, then ask the user if he wants to save first.
  */
-public class ActionExit extends UMLAction
+public class ActionExit extends AbstractAction
     implements CommandLineInterface {
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The constructor.
      */
     public ActionExit() {
-        super ("action.exit", NO_ICON);
+        super(Translator.localize("action.exit"),
+                ResourceLoaderWrapper.lookupIcon("action.exit"));
     }
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
     /**
-     * See ProjectBrowser.askConfirmationAndSave() for a very similar procedure!
-     *
+     * Asks the ProjectBrowser to exit.
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
