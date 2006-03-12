@@ -96,7 +96,8 @@ public class FigStereotypesCompartment extends FigCompartment {
 
         Object modelElement = getOwner();
         if (modelElement == null) {
-            LOG.warn("Cannot populate the stereotype compartment "
+            // TODO: This block can be removed after issue 4075 is tackled
+            LOG.debug("Cannot populate the stereotype compartment "
                      + "unless the parent has an owner.");
             return;
         }
