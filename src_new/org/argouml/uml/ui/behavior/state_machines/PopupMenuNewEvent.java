@@ -52,11 +52,21 @@ public class PopupMenuNewEvent extends JPopupMenu {
     public PopupMenuNewEvent(String role, UMLMutableLinkedList list) {
         super();
 
-        JMenu select = new JMenu();
-        select.setText(Translator.localize("action.select"));
-        ActionAddEventAsTrigger.SINGLETON.setTarget(list.getTarget());
-        select.add(ActionAddEventAsTrigger.SINGLETON);
-        add(select);
+        if (role == ActionNewEvent.Roles.DEFERRABLE_EVENT
+                || role == ActionNewEvent.Roles.TRIGGER) {
+            JMenu select = new JMenu();
+            select.setText(Translator.localize("action.select"));
+            if (role == ActionNewEvent.Roles.DEFERRABLE_EVENT) {
+                ActionAddEventAsDeferrableEvent.SINGLETON.setTarget(list
+                        .getTarget());
+                select.add(ActionAddEventAsDeferrableEvent.SINGLETON);
+            } else if (role == ActionNewEvent.Roles.TRIGGER) {
+                ActionAddEventAsTrigger.SINGLETON.setTarget(list.getTarget());
+                select.add(ActionAddEventAsTrigger.SINGLETON);
+            }
+            add(select);
+        }
+        
         JMenu newMenu = new JMenu();
         newMenu.setText(Translator.localize("action.new"));
         newMenu.add(ActionNewCallEvent.getSingleton());
