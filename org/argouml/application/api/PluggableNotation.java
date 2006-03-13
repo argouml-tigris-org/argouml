@@ -31,6 +31,12 @@ package org.argouml.application.api;
  *
  * @author Thierry Lach
  * @since 0.9.4
+ * @deprecated by Linus Tolke (March 2006).
+ *         Register with
+ *         {@link org.argouml.uml.generator.GeneratorManager#addGenerator(
+ *         Language, CodeGenerator}
+ *         from
+ *         {@link org.argouml.moduleloader.ModuleInterface#enable()}.
  */
 public interface PluggableNotation extends Pluggable {
 

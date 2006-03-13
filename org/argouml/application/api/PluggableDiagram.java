@@ -32,6 +32,10 @@ import javax.swing.JMenuItem;
  *
  * @author Thomas Neustupny
  * @since 0.9.5
+ * @deprecated by Linus Tolke (March 2006).
+ *         Call registration in the appropriate subsystem from
+ *         {@link org.argouml.moduleloader.ModuleInterface#enable()}.
+ *         The needed registration is not currently available. Add it first!
  */
 public interface PluggableDiagram extends Pluggable {
     /**

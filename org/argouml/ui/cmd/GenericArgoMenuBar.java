@@ -107,6 +107,10 @@ import org.tigris.toolbar.ToolBar;
  * mnemonics of menuitems:  [file].[flag for item].[name of menuitem].mnemonic
  *  e.g:                    menu.item.new.mnemonic
  * </pre>
+ *
+ * TODO: Add registration for new menu items.
+ * TODO: Once the old module loader is removed from ArgoUML, the
+ *       {@link ArgoModuleEventListener} can be removed.
  */
 public class GenericArgoMenuBar extends JMenuBar
     implements ArgoModuleEventListener {

@@ -62,6 +62,8 @@ import org.argouml.i18n.Translator;
  * @author  Will Howery
  * @author  Thierry Lach
  * @since   0.9.4
+ * @deprecated by Linus Tolke (March 2006).
+ *         Use {@link org.argouml.moduleloader.ModuleLoader2}.
  */
 public class ModuleLoader {
     /**

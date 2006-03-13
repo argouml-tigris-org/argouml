@@ -34,6 +34,9 @@ import org.tigris.gef.util.Localizer;
  *
  * @author Thierry Lach
  * @since  0.9.4
+ * @deprecated by Linus Tolke (March 2006).
+ *         I can't find that this class is ever used. If that is the case it
+ *         is better to remove it then to update it for the new ModuleLoader.
  */
 public abstract class ResourceBundleHelper extends ListResourceBundle
     implements PluggableResourceBundle {

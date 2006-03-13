@@ -48,6 +48,8 @@ import org.argouml.util.Tools;
 /**
  * This is what you see after you activate the "Help->About ArgoUML" menu-item.
  *
+ * TODO: Add registration for new AboutBox tabs 
+ * (instead of {@link org.argouml.application.api.PluggableAboutTab}).
  */
 public class AboutBox extends JDialog {
 
