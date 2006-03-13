@@ -25,6 +25,8 @@
 package org.argouml.uml.ui.behavior.activity_graphs;
 
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -53,7 +55,8 @@ import org.argouml.util.ConfigLoader;
  *
  * @author mkl
  */
-public class PropPanelObjectFlowState extends AbstractPropPanelState {
+public class PropPanelObjectFlowState extends AbstractPropPanelState 
+    implements PropertyChangeListener{
 
     private JComboBox classifierComboBox;
     private JScrollPane statesScroll;
@@ -122,39 +125,25 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState {
         addAction(actionNewCIS);
     }
 
-    // TODO: Make this work, i.s.o. the next 3 functions:
-//    /**
-//     * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
-//     */
-//    public void setTarget(Object t) {
-//        super.setTarget(t);
-//        actionNewCIS.setEnabled(actionNewCIS.isEnabled());
-//    }
-
-
     /**
-     * @see org.argouml.uml.ui.PropPanel#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
      */
-    public void targetAdded(TargetEvent e) {
-        super.targetAdded(e);
+    public void setTarget(Object t) {
+        Object oldTarget = getTarget();
+        super.setTarget(t);
         actionNewCIS.setEnabled(actionNewCIS.isEnabled());
+        if (Model.getFacade().isAObjectFlowState(oldTarget)) {
+            Model.getPump().removeModelEventListener(this, oldTarget, "type");
+        }
+        if (Model.getFacade().isAObjectFlowState(t)) {
+            Model.getPump().addModelEventListener(this, t, "type");
+        }
     }
 
-
     /**
-     * @see org.argouml.uml.ui.PropPanel#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
-    public void targetRemoved(TargetEvent e) {
-        super.targetRemoved(e);
-        actionNewCIS.setEnabled(actionNewCIS.isEnabled());
-    }
-
-
-    /**
-     * @see org.argouml.uml.ui.PropPanel#targetSet(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetSet(TargetEvent e) {
-        super.targetSet(e);
+    public void propertyChange(PropertyChangeEvent evt) {
         actionNewCIS.setEnabled(actionNewCIS.isEnabled());
     }
 
