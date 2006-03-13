@@ -31,6 +31,9 @@ import org.argouml.application.api.ArgoModule;
 /**
  * This class serves as a template of modules external to ArgoUML.
  *
+ * @deprecated by Linus Tolke (March 2006).
+ *         I can't find that this class is ever used. If that is the case it
+ *         is better to remove it then to update it for the new ModuleLoader.
  */
 public abstract class ModuleHelper
     implements ArgoModule {

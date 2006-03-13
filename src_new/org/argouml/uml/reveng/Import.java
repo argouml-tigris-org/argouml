@@ -96,6 +96,8 @@ import org.tigris.gef.base.Globals;
  *   <li> 2 - full import, feature detail (ie. operations with methods)
  * </ol>
  *
+ * TODO: Add registration methods for new languages.
+ *
  * @author Andreas Rueckert a_rueckert@gmx.net
  */
 public class Import {

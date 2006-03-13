@@ -48,6 +48,10 @@ package org.argouml.application.api;
  *
  *   @author Thierry Lach
  *   @since  0.9.4
+ *   @deprecated by Linus Tolke (March 2006).
+ *         Call registration in the appropriate subsystem from
+ *         {@link org.argouml.moduleloader.ModuleInterface#enable()}.
+ *         If the needed registration is not available, add it!
  */
 public interface Pluggable extends ArgoModule {
 

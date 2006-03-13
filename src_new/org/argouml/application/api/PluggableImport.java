@@ -42,6 +42,10 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  *
  * @author Alexander Lepekhine
  * @since 0.13.4
+ * @deprecated by Linus Tolke (March 2006).
+ *         Call registration in {@link org.argouml.uml.reveng.Import} from
+ *         {@link org.argouml.moduleloader.ModuleInterface#enable()}.
+ *         The needed registration is not currently available. Add it first!
  */
 public interface PluggableImport extends Pluggable {
 

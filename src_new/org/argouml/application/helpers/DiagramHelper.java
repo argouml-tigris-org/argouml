@@ -35,8 +35,13 @@ import org.argouml.ui.ArgoDiagram;
 /**
  * Helper object for Diagrams.
  *
+ * TODO: This seems not to be used. Can we remove it? 
+ *
  * @author Thomas Neustupny
  * @since 0.9.5
+ * @deprecated by Linus Tolke (March 2006).
+ *         I can't find that this class is ever used. If that is the case it
+ *         is better to remove it then to update it for the new ModuleLoader.
  */
 public abstract class DiagramHelper extends ArgoDiagram
     implements PluggableDiagram {

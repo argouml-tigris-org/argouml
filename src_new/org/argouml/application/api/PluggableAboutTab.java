@@ -30,6 +30,10 @@ package org.argouml.application.api;
  *
  * @author Andreas Rueckert
  * @since 0.13.2
+ * @deprecated by Linus Tolke (March 2006).
+ *         Call registration in the appropriate subsystem from
+ *         {@link org.argouml.moduleloader.ModuleInterface#enable()}.
+ *         The needed registration is not currently available. Add it first!
  */
 public interface PluggableAboutTab extends Pluggable {
 

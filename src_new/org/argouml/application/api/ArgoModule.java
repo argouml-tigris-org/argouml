@@ -33,6 +33,8 @@ import java.util.Vector;
  * @author  Will Howery
  * @author  Thierry Lach
  * @since 0.9.4
+ * @deprecated by Linus Tolke (March 2006).
+ *         Use {@link org.argouml.moduleloader.ModuleInterface} instead.
  */
 public interface ArgoModule {
     /**

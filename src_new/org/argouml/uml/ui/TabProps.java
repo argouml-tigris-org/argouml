@@ -154,6 +154,10 @@ import org.tigris.swidgets.Orientation;
  * They are not registered with TargetManager
  * but with this class to prevent race-conditions while firing TargetEvents from
  * TargetManager.
+ *
+ * TODO: Once the old module loader is removed from ArgoUML the
+ * {@link org.argouml.application.events.ArgoModuleEventListener}
+ * interface can be removed.
  */
 public class TabProps
     extends AbstractArgoJPanel
@@ -727,6 +731,8 @@ public class TabProps
 
     /**
      * @see org.argouml.application.events.ArgoModuleEventListener#moduleLoaded(org.argouml.application.events.ArgoModuleEvent)
+     *
+     * TODO: Replace by another registration procedure.
      */
     public void moduleLoaded(ArgoModuleEvent event) {
         if (event.getSource() instanceof PluggablePropertyPanel) {

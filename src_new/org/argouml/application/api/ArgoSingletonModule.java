@@ -33,6 +33,9 @@ package org.argouml.application.api;
  * @author Will Howery
  * @author Thierry Lach
  * @since  0.9.4
+ * @deprecated by Linus Tolke (March 2006).
+ *         Use {@link org.argouml.moduleloader.ModuleInterface} instead even
+ *         though it doesn't have a specific handling for Singleton modules.
  */
 public interface ArgoSingletonModule extends ArgoModule {
 

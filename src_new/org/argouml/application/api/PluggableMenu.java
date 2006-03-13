@@ -35,6 +35,10 @@ import javax.swing.JMenuItem;
  *
  * @author Thierry Lach
  * @since 0.9.4
+ * @deprecated by Linus Tolke (March 2006).
+ *         Call registration in {@link org.argouml.ui.cmd.GenericArgoMenuBar}
+ *         from {@link org.argouml.moduleloader.ModuleInterface#enable()}.
+ *         The needed registration is not currently available. Add it first!
  */
 public interface PluggableMenu extends Pluggable {
 
