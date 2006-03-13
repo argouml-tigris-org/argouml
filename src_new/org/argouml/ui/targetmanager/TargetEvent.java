@@ -32,8 +32,9 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A targetevent indicating that the target of ArgoUML has changed
- * from the _oldTargets to _newTargets.
+ * An event indicating that the target of ArgoUML has changed
+ * from the old set of Targets to the new set of Targets.
+ * 
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TargetEvent extends EventObject {
