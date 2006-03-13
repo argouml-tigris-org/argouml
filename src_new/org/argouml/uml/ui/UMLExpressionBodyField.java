@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,6 +31,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
+import org.argouml.ui.LookAndFeelMgr;
 
 /**
  * This text field shows the body of a UML expression.
@@ -61,6 +63,8 @@ public class UMLExpressionBodyField extends JTextArea
         model = m;
         notifyModel = n;
         getDocument().addDocumentListener(this);
+        setToolTipText(Translator.localize("label.body.tooltip"));
+        setFont(LookAndFeelMgr.getInstance().getSmallFont());
     }
 
     /**
