@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -72,17 +72,17 @@ public class ModuleLoader {
     private static final Logger LOG = Logger.getLogger(ModuleLoader.class);
 
     /**
-     * Class file suffix
+     * Class file suffix.
      */
     public static final String CLASS_SUFFIX = ".class";
 
     // String mModulePropertyFile=null;
-    private static ModuleLoader singleton = null;
+    private static ModuleLoader singleton;
 
-    private ArrayList moduleClasses = null;
-    private static Hashtable singletons = null;
-    private static String argoRoot = null;
-    private static String argoHome = null;
+    private ArrayList moduleClasses;
+    private static Hashtable singletons;
+    private static String argoRoot;
+    private static String argoHome;
 
     /**
      * Make sure the module loader cannot be instantiated from outside.
@@ -95,8 +95,9 @@ public class ModuleLoader {
         String extForm =
 	    org.argouml.application.Main.class.getResource(Argo.ARGOINI)
 	        .toExternalForm();
-	argoRoot = extForm.substring(0,
-				     extForm.length() - Argo.ARGOINI.length());
+	argoRoot =
+            extForm.substring(0,
+                              extForm.length() - Argo.ARGOINI.length());
 
 	// If it's a jar, clean it up and make it look like a file url
 	if (argoRoot.startsWith("jar:")) {
@@ -108,8 +109,9 @@ public class ModuleLoader {
 	if (argoRoot != null) {
 	    LOG.info("argoRoot is " + argoRoot);
 	    if (argoRoot.startsWith("file:")) {
-	        argoHome = new File(argoRoot.substring(5)).getAbsoluteFile()
-		    .getParent();
+	        argoHome =
+                    new File(argoRoot.substring(5)).getAbsoluteFile()
+                        .getParent();
 	    } else {
 	        argoHome = new File(argoRoot).getAbsoluteFile().getParent();
 	    }
@@ -143,7 +145,57 @@ public class ModuleLoader {
      * Load the internal modules.
      */
     public void initialize() {
-	loadInternalModules(getClass(), "standard.modules");
+        // TODO: Move to specific registration.
+        loadClassFromLoader(getClass().getClassLoader(),
+                "module.settings.preferences",
+                "org.argouml.ui.SettingsTabPreferences",
+                true);
+        // TODO: Move to specific registration.
+        loadClassFromLoader(getClass().getClassLoader(),
+                "module.settings.environment",
+                "org.argouml.ui.SettingsTabEnvironment",
+                true);
+        // TODO: Move to specific registration.
+        loadClassFromLoader(getClass().getClassLoader(),
+                "module.settings.user",
+                "org.argouml.ui.SettingsTabUser",
+                true);
+        // TODO: Move to specific registration.
+        loadClassFromLoader(getClass().getClassLoader(),
+                "module.settings.notation",
+                "org.argouml.notation.ui.SettingsTabNotation",
+                true);
+        // TODO: Move to specific registration.
+        loadClassFromLoader(getClass().getClassLoader(),
+                "module.settings.appearance",
+                "org.argouml.ui.SettingsTabAppearance",
+                true);
+        // TODO: Move to specific registration.
+        loadClassFromLoader(getClass().getClassLoader(),
+                "module.settings.modules",
+                "org.argouml.moduleloader.SettingsTabModules",
+                true);
+        // TODO: Move to specific registration.
+        loadClassFromLoader(getClass().getClassLoader(),
+                "module.language.uml.generator",
+                "org.argouml.uml.generator.GeneratorDisplay",
+                true);
+        // TODO: Move to specific registration.
+        loadClassFromLoader(getClass().getClassLoader(),
+                "module.language.java.generator",
+                "org.argouml.language.java.generator.GeneratorJava",
+                true);
+        // TODO: Move to specific registration.
+        loadClassFromLoader(getClass().getClassLoader(),
+                "module.import.java-files",
+                "org.argouml.uml.reveng.java.JavaImport",
+                true);
+        // TODO: Move to specific registration.
+        loadClassFromLoader(getClass().getClassLoader(),
+                "module.menu.file.export.xmi",
+                "org.argouml.ui.ActionExportXMI",
+                true);
+
 	loadModulesFromExtensionDir();
 	loadModulesFromClassPathJars();
 	loadModulesFromPredefinedLists();
@@ -316,7 +368,7 @@ public class ModuleLoader {
     }
 
     /**
-     * Load modules from jars in the class path
+     * Load modules from jars in the class path.
      */
     public void loadModulesFromClassPathJars() {
 	StringTokenizer st;
@@ -334,21 +386,6 @@ public class ModuleLoader {
 
 	}
 
-    }
-
-    /**
-     * Load modules listed in Argo resources.
-     *
-     * @param loaderClass class to retrieve classloader from
-     * @param rsrcName resource name to load
-     * @return false if the resource is not found
-     */
-    public boolean loadInternalModules(Class loaderClass, String rsrcName) {
-	LOG.info("Loading modules from " + rsrcName);
-	// Load the internal modules
-	InputStream is =
-	    loaderClass.getResourceAsStream(Argo.RESOURCEDIR + rsrcName);
-	return (is == null) ? false : loadModules(is, rsrcName);
     }
 
     /**
@@ -678,7 +715,7 @@ public class ModuleLoader {
 		// if (pluggable.isModuleType(pluginType))
 		if (context == null) {
 		    return pluggable;
-		} 
+		}
 		if (pluggable.inContext(context)) {
 		    return pluggable;
 		}
@@ -826,6 +863,9 @@ public class ModuleLoader {
     }
 
     class JarFileFilter implements FileFilter {
+	/**
+	 * @see java.io.FileFilter#accept(java.io.File)
+	 */
 	public boolean accept(File pathname) {
 	    return (pathname.canRead()
 		    && pathname.isFile()
