@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,6 +45,11 @@ import org.tigris.gef.presentation.Fig;
  */
 public class ActionRemoveFromDiagram extends AbstractAction {
 
+    /**
+     * The constructor.
+     * 
+     * @param name the localised (!) name
+     */
     public ActionRemoveFromDiagram(String name) {
         super(name, ResourceLoaderWrapper.lookupIcon("RemoveFromDiagram"));
         String localMnemonic =
@@ -53,6 +58,8 @@ public class ActionRemoveFromDiagram extends AbstractAction {
             putValue(Action.MNEMONIC_KEY,
 		     new Integer(localMnemonic.charAt(0)));
         }
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, name);
     }
 
     /**
