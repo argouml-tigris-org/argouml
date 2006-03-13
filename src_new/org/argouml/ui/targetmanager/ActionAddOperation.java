@@ -27,6 +27,8 @@ package org.argouml.ui.targetmanager;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 
+import javax.swing.Action;
+
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -47,6 +49,9 @@ class ActionAddOperation extends UndoableAction {
     ActionAddOperation() {
         super(Translator.localize("button.new-operation"),
                 ResourceLoaderWrapper.lookupIcon("button.new-operation"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("button.new-operation"));
     }
 
     ////////////////////////////////////////////////////////////////

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
@@ -68,6 +69,9 @@ public class ActionOpenProject extends AbstractAction
     public ActionOpenProject() {
         super(Translator.localize("action.open-project"),
                 ResourceLoaderWrapper.lookupIcon("action.open-project"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.open-project"));
     }
 
     ////////////////////////////////////////////////////////////////
@@ -129,7 +133,8 @@ public class ActionOpenProject extends AbstractAction
                     /* Try adding the extension from the chosen filter. */
                     FileFilter ffilter = chooser.getFileFilter();
                     if (ffilter instanceof AbstractFilePersister) {
-                        AbstractFilePersister afp = (AbstractFilePersister) ffilter;
+                        AbstractFilePersister afp = 
+                            (AbstractFilePersister) ffilter;
                         File m =
                             new File(theFile.getPath() + "."
                                     + afp.getExtension());
@@ -152,7 +157,8 @@ public class ActionOpenProject extends AbstractAction
                             PersistenceManager.KEY_OPEN_PROJECT_PATH,
                             theFile.getPath());
 
-                    if (ProjectBrowser.getInstance().loadProject(theFile, true)) {
+                    if (ProjectBrowser.getInstance()
+                            .loadProject(theFile, true)) {
                         // notification of menu bar
                         GenericArgoMenuBar menuBar =
                             (GenericArgoMenuBar) pb.getJMenuBar();
@@ -173,7 +179,8 @@ public class ActionOpenProject extends AbstractAction
      * @return true if it is OK.
      */
     public boolean doCommand(String argument) {
-        return ProjectBrowser.getInstance().loadProject(new File(argument), false);
+        return ProjectBrowser.getInstance()
+            .loadProject(new File(argument), false);
     }
 
 } /* end class ActionOpenProject */

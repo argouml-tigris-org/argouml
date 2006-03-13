@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,6 +27,7 @@ package org.argouml.ui.cmd;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
@@ -48,8 +49,12 @@ class ActionNew extends AbstractAction {
      * The constructor.
      */
     public ActionNew() {
+        // Set the name and icon:
         super(Translator.localize("action.new"),
                 ResourceLoaderWrapper.lookupIcon("action.new"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.new"));
     }
 
     ////////////////////////////////////////////////////////////////
