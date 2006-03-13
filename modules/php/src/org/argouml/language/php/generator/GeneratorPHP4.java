@@ -28,7 +28,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.rmi.server.UID;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -48,10 +47,13 @@ import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
 
 /**
- * Generator class for PHP 4.x source code
- *
+ * Generator class for PHP 4.x & 5.x source code.
+ * 
+ * This class supports both PHP 4 & 5 conditionalized by the variable
+ * iLanguageMajorVersion. Look for it to find where behavior differs.
+ * 
  * @author Kai Schr&ouml;der
- * @since  ArgoUML 0.15.5
+ * @since ArgoUML 0.15.5
  */
 public class GeneratorPHP4
     extends Generator2
@@ -409,7 +411,7 @@ public class GeneratorPHP4
             } finally {
                 if (sTypeHint != null && sTypeHint != "" && convertType(
                     Model.getFacade().getType(modelElement)) == null) {
-                    sParameter += " - " + sTypeHint + " ";
+                    sParameter += " " + sTypeHint + " ";
                 }
             }
         }
@@ -909,12 +911,12 @@ public class GeneratorPHP4
     }
 
     /**
-     * Gets version of this module
-     *
+     * Get version of this module.
+     * We use the CVS revision so that we get nominal updating.
      * @return current version of this module
      */
     public String getModuleVersion() {
-        return "0.0.1";
+        return "0.0.$Revision$";
     }
 
     /**
