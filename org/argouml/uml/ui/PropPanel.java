@@ -467,13 +467,10 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        // we can neglect this, the TabProps allways selects the first target
-        // in a set of targets. The first target can only be
-        // changed in a targetRemoved or a TargetSet event
-        /* TODO: MVW What if deselect, then reselect? We need this! */
         if (listenerList == null) {
             listenerList = registrateTargetListeners(this);
         }
+        setTarget(e.getNewTarget());
         fireTargetAdded(e);
     }
 
@@ -481,11 +478,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        // how to handle empty target lists?
-        // probably the TabProps should only show an empty pane in that case
+        setTarget(e.getNewTarget());
         fireTargetRemoved(e);
-        // setTarget(e.getNewTarget());
-
     }
 
     /**
@@ -494,7 +488,6 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());
         fireTargetSet(e);
-
     }
 
     private void fireTargetSet(TargetEvent targetEvent) {
