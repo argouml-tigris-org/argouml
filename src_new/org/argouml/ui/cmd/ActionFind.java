@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,17 +26,40 @@ package org.argouml.ui.cmd;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+import javax.swing.Icon;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.ui.FindDialog;
-import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.undo.UndoableAction;
 
 ////////////////////////////////////////////////////////////////
 // items on view menu
 
-class ActionFind extends UMLAction {
+/**
+ * This action starts the Find dialog. <p>
+ * 
+ * It is present in the View menu, 
+ * and has a tool on the toolbar. <p>
+ * 
+ * The Find function is never downlighted.
+ * 
+ * @author michiel
+ */
+class ActionFind extends UndoableAction {
 
+    private String name;
+    
     public ActionFind() {
-        // this is not a "global" action, since it is never downlighted...
-        super("action.find", HAS_ICON);
+        // Set the name:
+        super(Translator.localize("action.find"));
+        name = "action.find";
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, Translator.localize(name));
+        // Set the icon:
+        Icon icon = ResourceLoaderWrapper.lookupIcon(name);
+        putValue(Action.SMALL_ICON, icon);
     }
 
     /**
