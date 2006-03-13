@@ -41,7 +41,6 @@ import javax.jmi.reflect.RefObject;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Facade;
-import org.argouml.model.UmlException;
 import org.omg.uml.behavioralelements.activitygraphs.ActionState;
 import org.omg.uml.behavioralelements.activitygraphs.ActivityGraph;
 import org.omg.uml.behavioralelements.activitygraphs.CallState;
@@ -3749,43 +3748,13 @@ class FacadeMDRImpl implements Facade {
             }
             if (handle instanceof ModelElement) {
                 ModelElement me = (ModelElement) handle;
-                String name = me.getName();
-
-                if (name != null && name.indexOf(0xffff) > -1) {
-                    // The following code is a workaround for issue
-                    // http://argouml.tigris.org/issues/show_bug.cgi?id=2847.
-                    // The cause is
-                    // not known and the best fix available for the moment is to
-                    // remove
-                    // the corruptions as they are found.
-                    int pos = 0;
-                    boolean fixed = false;
-                    while ((pos = name.indexOf(0xffff)) >= 0) {
-                        name =
-                            name.substring(0, pos)
-                                + name.substring(pos + 1, name.length());
-                        fixed = true;
-                    }
-                    if (fixed) {
-                        try {
-                            throw new UmlException(
-                                    "Illegal character stripped out"
-                                            + " of element name");
-                        } catch (UmlException e) {
-                            LOG.warn("0xFFFF detected in element name", e);
-                        }
-                        implementation.getCoreHelper().setName(handle, name);
-                    }
-                }
-                return name;
-
+                return me.getName();
             }
             if (handle instanceof Multiplicity) {
                 return implementation.getDataTypesHelper()
                         .multiplicityToString(handle);
             }
         } catch (InvalidObjectException e) {
-            // LOG.warn("Attempting to get name of deleted object" + handle);
             return null;
         }
         throw new IllegalArgumentException(
