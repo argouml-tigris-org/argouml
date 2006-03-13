@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,9 +27,10 @@ package org.argouml.ui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
@@ -38,10 +39,8 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggableSettingsTab;
 import org.argouml.application.api.SettingsTabPanel;
-import org.argouml.application.events.ArgoModuleEvent;
-import org.argouml.application.events.ArgoModuleEventListener;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.UMLAction;
 
 /**
  * Action for starting the Argo settings window.
@@ -50,8 +49,7 @@ import org.argouml.uml.ui.UMLAction;
  * @author Thierry Lach
  * @since 0.9.4
  */
-public class ActionSettings extends UMLAction
-	implements ArgoModuleEventListener {
+public class ActionSettings extends AbstractAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -63,17 +61,18 @@ public class ActionSettings extends UMLAction
 
     ////////////////////////////////////////////////////////////////
     // constructors
-    private JButton applyButton = null;
+    private JButton applyButton;
 
-    private JTabbedPane tabs = null;
+    private JTabbedPane tabs;
 
-    private ArgoDialog dialog = null;
+    private ArgoDialog dialog;
 
     /**
      * Constructor.
      */
     public ActionSettings() {
-        super("action.settings", HAS_ICON);
+        super(localize("action.settings"),
+                ResourceLoaderWrapper.lookupIcon("action.settings"));
     }
 
     /**
@@ -82,7 +81,7 @@ public class ActionSettings extends UMLAction
      * @param key The key to localize.
      * @return The localized String.
      */
-    private String localize(String key) {
+    private static String localize(String key) {
         return Translator.localize(key);
     }
 
@@ -102,6 +101,10 @@ public class ActionSettings extends UMLAction
                     new ArgoDialog(pb, localize("dialog.settings"),
                         ArgoDialog.OK_CANCEL_OPTION, true) {
 
+                    /**
+                     * @see java.awt.event.ActionListener#actionPerformed(
+                     *         java.awt.event.ActionEvent)
+                     */
                     public void actionPerformed(ActionEvent ev) {
                         super.actionPerformed(ev);
                         if (ev.getSource() == getOkButton()) {
@@ -126,7 +129,7 @@ public class ActionSettings extends UMLAction
                 });
                 dialog.addButton(applyButton);
 
-                ArrayList list = Argo.getPlugins(PluggableSettingsTab.class);
+                List list = Argo.getPlugins(PluggableSettingsTab.class);
                 ListIterator iterator = list.listIterator();
                 while (iterator.hasNext()) {
                     Object o = iterator.next();
@@ -156,30 +159,6 @@ public class ActionSettings extends UMLAction
         handleRefresh();
         dialog.toFront();
         dialog.setVisible(true);
-    }
-
-    /**
-     * @see org.argouml.application.events.ArgoModuleEventListener#moduleLoaded(org.argouml.application.events.ArgoModuleEvent)
-     */
-    public void moduleLoaded(ArgoModuleEvent event) {
-    }
-
-    /**
-     * @see org.argouml.application.events.ArgoModuleEventListener#moduleUnloaded(org.argouml.application.events.ArgoModuleEvent)
-     */
-    public void moduleUnloaded(ArgoModuleEvent event) {
-    }
-
-    /**
-     * @see org.argouml.application.events.ArgoModuleEventListener#moduleEnabled(org.argouml.application.events.ArgoModuleEvent)
-     */
-    public void moduleEnabled(ArgoModuleEvent event) {
-    }
-
-    /**
-     * @see org.argouml.application.events.ArgoModuleEventListener#moduleDisabled(org.argouml.application.events.ArgoModuleEvent)
-     */
-    public void moduleDisabled(ArgoModuleEvent event) {
     }
 
     /**
