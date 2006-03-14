@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -299,12 +299,14 @@ public class ZargoFilePersister extends UmlFilePersister {
             while ((currentEntry = sub.getNextEntry()) != null) {
                 if (currentEntry.getName().endsWith(".pgml")) {
 
-                    reader = new BufferedReader(
+                    reader =
+                        new BufferedReader(
                         	new InputStreamReader(sub, encoding));
                     // Skip the 2 lines
                     //<?xml version="1.0" encoding="UTF-8" ?>
                     //<!DOCTYPE pgml SYSTEM "pgml.dtd">
-                    // TODO: This could be made more robust, these 2 lines should be
+                    // TODO: This could be made more robust, 
+                    // these 2 lines should be
                     // there but what if they don't exist?
                     reader.readLine();
                     reader.readLine();
@@ -332,7 +334,7 @@ public class ZargoFilePersister extends UmlFilePersister {
 
             zis.close();
             reader.close();
-            
+
             writer.println("</uml>");
             writer.close();
             LOG.info("Complated combining files");
@@ -382,7 +384,7 @@ public class ZargoFilePersister extends UmlFilePersister {
     /**
      * A stream of input streams for reading the Zipped file.
      */
-    private class SubInputStream extends FilterInputStream {
+    private static class SubInputStream extends FilterInputStream {
         private ZipInputStream in;
 
         /**

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,10 +40,10 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
  * A ComboBox that contains the set of possible Shadow Width values.
  *
  * @author Jeremy Jones
-**/
+ */
 public class ShadowComboBox extends JComboBox {
 
-    private static ShadowFig[]  shadowFigs = null;
+    private static ShadowFig[]  shadowFigs;
 
     /**
      * The constructor.
@@ -68,17 +68,24 @@ public class ShadowComboBox extends JComboBox {
     /**
      * Renders each combo box entry as a shadowed diagram figure with the
      * associated level of shadow.
-    **/
+     */
     private class ShadowRenderer
 	extends JComponent
 	implements ListCellRenderer {
 
-        private ShadowFig  currentFig = null;
+        private ShadowFig  currentFig;
 
+        /**
+         * Constructor.
+         */
         public ShadowRenderer() {
             super();
         }
 
+        /**
+         * @see javax.swing.ListCellRenderer#getListCellRendererComponent(
+         *         javax.swing.JList, java.lang.Object, int, boolean, boolean)
+         */
         public Component getListCellRendererComponent(
             JList list,
             Object value,
@@ -99,8 +106,7 @@ public class ShadowComboBox extends JComboBox {
 
             if (isSelected) {
                 setBackground(list.getSelectionBackground());
-            }
-            else {
+            } else {
                 setBackground(list.getBackground());
             }
 
@@ -118,14 +124,16 @@ public class ShadowComboBox extends JComboBox {
                 setPreferredSize(new Dimension(
                     currentFig.getWidth() + figIndex + 4,
                     currentFig.getHeight() + figIndex + 2));
-            }
-            else {
+            } else {
                 currentFig = null;
             }
 
             return this;
         }
 
+        /**
+         * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+         */
         protected void paintComponent(Graphics g) {
             g.setColor(getBackground());
             g.fillRect(0, 0, getWidth(), getHeight());
@@ -134,13 +142,31 @@ public class ShadowComboBox extends JComboBox {
                 currentFig.paint(g);
             }
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 5939340501470674464L;
     }
 
-    private class ShadowFig extends FigNodeModelElement {
+    private static class ShadowFig extends FigNodeModelElement {
+        /**
+         * Constructor.
+         */
         public ShadowFig() {
             super();
             addFig(getBigPort());
             addFig(getNameFig());
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 4999132551417131227L;
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 3440806802523267746L;
 }

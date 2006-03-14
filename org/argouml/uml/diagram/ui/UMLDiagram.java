@@ -433,7 +433,7 @@ public abstract class UMLDiagram
         }
     }
 
-    class PopupActionsListener implements PropertyChangeListener {
+    static class PopupActionsListener implements PropertyChangeListener {
         private boolean blockEvents;
         private ConfigurationKey key;
 

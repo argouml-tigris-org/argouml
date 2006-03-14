@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -112,6 +112,9 @@ import org.tigris.gef.presentation.FigText;
 public class FigUseCase extends FigNodeModelElement
     implements ExtensionsCompartmentContainer {
 
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(FigUseCase.class);
 
     ///////////////////////////////////////////////////////////////////////////
@@ -172,7 +175,7 @@ public class FigUseCase extends FigNodeModelElement
      * Text highlighted by mouse actions on the diagram. Assumed to
      * belong to the extension point compartment.<p>
      */
-    private CompartmentFigText highlightedFigText = null;
+    private CompartmentFigText highlightedFigText;
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -385,7 +388,9 @@ public class FigUseCase extends FigNodeModelElement
         // so the "Properties" entry is always last.
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
 
-        if (!ms) addMenu.add(ActionAddExtensionPoint.singleton());
+        if (!ms) {
+            addMenu.add(ActionAddExtensionPoint.singleton());
+        }
         addMenu.add(new ActionAddNote());
 
         popUpActions.insertElementAt(addMenu,
@@ -478,12 +483,9 @@ public class FigUseCase extends FigNodeModelElement
 		      oldBounds.width,
 		      oldBounds.height);
             endTrans();
-        }
-
-        // Second case is where the extension points are not currently
-        // displayed and we are asked to turn them on.
-
-        else if ((!epVec.isVisible()) && isVisible) {
+        } else if ((!epVec.isVisible()) && isVisible) {
+            // Second case is where the extension points are not currently
+            // displayed and we are asked to turn them on.
 
             // Tell GEF that we are starting to make a change. Loop through the
             // epVec marking each element as visible.
@@ -727,8 +729,7 @@ public class FigUseCase extends FigNodeModelElement
      * after calculation new bounds for all sub-figs, considering their minimal
      * sizes; FigGroup need not be displayed; no update event is fired.
      * TODO: This is a duplicate method from FigFeaturesCompartment
-     * it should just be in one place.
-     * <p>
+     * it should just be in one place.<p>
      *
      * This method has side effects that are sometimes used.
      *
@@ -748,11 +749,13 @@ public class FigUseCase extends FigNodeModelElement
             int h) {
         int newW = w;
         int n = fg.getFigs().size() - 1;
-        int newH = isCheckSize() ? Math.max(h, ROWHEIGHT * Math.max(1, n) + 2)
+        int newH =
+            isCheckSize() ? Math.max(h, ROWHEIGHT * Math.max(1, n) + 2)
                 : h;
         int step = (n > 0) ? (newH - 1) / n : 0;
         // width step between FigText objects int maxA =
-        // Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT).getMaxAscent();
+        // Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT)
+        // .getMaxAscent();
 
         // set new bounds for all included figs
         Iterator figs = fg.iterator();
@@ -891,7 +894,7 @@ public class FigUseCase extends FigNodeModelElement
      * FigMyCircle is a FigCircle with corrected connectionPoint method:
      *   this methods calculates where a connected edge ends.<p>
      */
-    public class FigMyCircle extends FigCircle {
+    public static class FigMyCircle extends FigCircle {
         /**
          * Constructor just invokes the parent constructor.<p>
          *
@@ -940,6 +943,11 @@ public class FigUseCase extends FigNodeModelElement
             LOG.debug("    returns " + res.x + ',' + res.y + ')');
             return res;
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 2616728355472635182L;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -1087,100 +1095,6 @@ public class FigUseCase extends FigNodeModelElement
         } else if (epVec.getFigs().contains(ft)) {
             showHelp("parsing.help.fig-extensionpoint");
         }
-    }
-
-    /**
-     * Private method to find the previous visible feature to highlight.<p>
-     *
-     * We're passed in a group (which will be the extension point vector)
-     *   and the currently highlighted fig (a member of that vector).<p>
-     *
-     * @param fgVec  A fig group (invariably the extension point vector) in
-     *               which to seek the previous visible feature.
-     *
-     * @param i      The index of the currently selected entry in
-     *               <code>fgVec</code>.
-     *
-     * @return       The new fig to use.
-     */
-
-    private CompartmentFigText getPreviousVisibleFeature(FigGroup fgVec,
-							 int i) {
-
-        // Give up if the index we don't have a vector, or the index is less
-        // than 1 (the 0th entry is the bigPort surrounding all entries)
-
-        if ((fgVec == null) || (i < 1)) {
-            return null;
-        }
-
-        // Give up if we are off the top of the vector, or the indentified
-        // element is not displayed
-
-        // TODO: in future version of GEF call getFigs returning array
-        Vector v = new Vector(fgVec.getFigs());
-
-        if ((i >= v.size()) || (!((FigText) v.elementAt(i)).isVisible())) {
-            return null;
-        }
-
-        // Loop backwards through until we find an entry that is displayed. We
-        // know this will terminate, since the current element is displayed
-
-        CompartmentFigText cft = null;
-
-        do {
-            i = (i <= 1) ? i - 1 : v.size() - 1;
-            cft = (CompartmentFigText) v.elementAt(i);
-        } while (!cft.isVisible());
-
-        return cft;
-    }
-
-    /**
-     * Private method to find the next visible feature to highlight.<p>
-     *
-     * We're passed in a group (which will be the extension point vector)
-     *   and the currently highlighted fig (a member of that vector).<p>
-     *
-     * @param fgVec  A fig group (invariably the extension point vector) in
-     *               which to seek the next visible feature.
-     *
-     * @param i      The index of the currently selected entry in
-     *               <code>fgVec</code>.
-     *
-     * @return       The new fig to use.
-     */
-
-    private CompartmentFigText getNextVisibleFeature(FigGroup fgVec, int i) {
-
-        // Give up if the index we don't have a vector, or the index is less
-        // than 1 (the 0th entry is the bigPort surrounding all entries)
-
-        if ((fgVec == null) || (i < 1)) {
-            return null;
-        }
-
-        // Give up if we are off the top of the vector, or the indentified
-        // element is not displayed
-
-        Vector v = new Vector(fgVec.getFigs());
-
-        if ((i >= v.size()) || (!((FigText) v.elementAt(i)).isVisible())) {
-            return null;
-        }
-
-        // Loop forwards through until we find an entry that is displayed. We
-        // know this will terminate, since the current element is displayed
-
-        CompartmentFigText cft = null;
-
-        do {
-            i = (i >= (v.size() - 1)) ? 1 : i + 1;
-            cft = (CompartmentFigText) v.elementAt(i);
-        } while (!cft.isVisible());
-
-        return cft;
     }
 
     /**
@@ -1450,4 +1364,8 @@ public class FigUseCase extends FigNodeModelElement
         damage();
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -4018623737124023696L;
 } /* end class FigUseCase */
