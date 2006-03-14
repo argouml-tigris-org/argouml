@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,7 +47,7 @@ public final class ArgoEventPump {
      *
      * It is a list of {@link Pair}.
      */
-    private ArrayList listeners = null;
+    private List listeners;
 
     /**
      * The singleton.
@@ -308,7 +308,7 @@ public final class ArgoEventPump {
     /**
      * Data structure handling listener registrations.
      */
-    class Pair {
+    static class Pair {
         private int eventType;
         private ArgoEventListener listener;
 
@@ -323,10 +323,16 @@ public final class ArgoEventPump {
             listener = myListener;
         }
 
+        /**
+         * @return The event type.
+         */
         int getEventType() {
             return eventType;
         }
 
+        /**
+         * @return The listener.
+         */
         ArgoEventListener getListener() {
             return listener;
         }

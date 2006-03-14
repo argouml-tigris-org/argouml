@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -246,8 +246,9 @@ public class FigActor extends FigNodeModelElement {
         Point point = null;
         for (int i = 0; i < maxPoints; i++) {
             double angle = 2 * Math.PI / maxPoints * i;
-            point = new Point((int) (cx + Math.cos(angle) * radiusx),
-			      (int) (cy + Math.sin(angle) * radiusy));
+            point =
+                new Point((int) (cx + Math.cos(angle) * radiusx),
+                          (int) (cy + Math.sin(angle) * radiusy));
             ret.add(point);
         }
         ret.add(new Point(((FigLine) getFigAt(LEFT_LEG_POSN)).getX2(),
@@ -357,12 +358,7 @@ public class FigActor extends FigNodeModelElement {
      *
      * @author mvw@tigris.org
      */
-    class ActorPortFigRect extends FigRect {
-
-        /**
-         * The serial version - Eclise generated for Rev. 1.40
-         */
-        private static final long serialVersionUID = 5973857118854162659L;
+    static class ActorPortFigRect extends FigRect {
         /**
          * the parent fig, i.e. the Actor
          */
@@ -389,6 +385,11 @@ public class FigActor extends FigNodeModelElement {
         public List getGravityPoints() {
             return parent.getGravityPoints();
         }
+
+        /**
+         * The serial version - Eclise generated for Rev. 1.40
+         */
+        private static final long serialVersionUID = 5973857118854162659L;
     }
 
 } /* end class FigActor */

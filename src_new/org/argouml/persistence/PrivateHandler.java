@@ -116,6 +116,8 @@ public class PrivateHandler
 
     /**
      * Determine if the string contains an ItemUID.
+     *
+     * @return a newly created ItemUID (or <code>null</code>).
      */
     private ItemUID getItemUID(String privateContents) {
         StringTokenizer st = new StringTokenizer(privateContents, "\n");
@@ -141,7 +143,7 @@ public class PrivateHandler
     /**
      * Utility class to pair a name and a value String together.
      */
-    class NameVal {
+    static class NameVal {
         private String name;
         private String value;
 

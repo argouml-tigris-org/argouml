@@ -193,7 +193,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
     /**
      * Fig representing separator for compartment.
      */
-    protected class FigSeperator extends FigLine {
+    protected static class FigSeperator extends FigLine {
         /**
          * Constructor.
          *
