@@ -92,6 +92,7 @@ class FigHead extends FigGroup {
                 w = stereotypeFig.getMinimumSize().width;
             }
         }
+        
         if (w < FigClassifierRole.MIN_HEAD_WIDTH) {
             w = FigClassifierRole.MIN_HEAD_WIDTH;
         }
@@ -104,6 +105,9 @@ class FigHead extends FigGroup {
         if (stereotypeFig.isVisible()) {
             h += stereotypeFig.getMinimumSize().height;
         }
+        
+        h += 4;
+
         if (h < FigClassifierRole.MIN_HEAD_HEIGHT) {
             h = FigClassifierRole.MIN_HEAD_HEIGHT;
         }
