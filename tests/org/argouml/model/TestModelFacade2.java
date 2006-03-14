@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,14 +68,9 @@ public class TestModelFacade2 extends TestCase {
      */
     public void testSetName() {
         Object ob = Model.getCoreFactory().buildClass("initial");
-        Model.getCoreHelper().setName(ob, "correct");
-        Model.getCoreHelper().setName(ob, new String(new char[] {
-            'i', 'n', 'c', 'o', 'r', 'r', 'e', 'c', 't', ':',
-            Character.MAX_VALUE,
-        }));
-        assertTrue("0xFFFF is not filtered out of the name of a modelelement",
-                Model.getFacade().getName(ob).indexOf(Character.MAX_VALUE)
-                == -1);
+        final String correctValue = "correct";
+        Model.getCoreHelper().setName(ob, correctValue);
+        assertEquals(correctValue, Model.getFacade().getName(ob));
     }
 
 
@@ -94,7 +89,7 @@ public class TestModelFacade2 extends TestCase {
         assertTrue(container.equals(Model.getFacade().getModelElementContainer(
                 partition)));
     }
-    
+
     /**
      * Test getModelElementContainer.
      */
@@ -108,8 +103,8 @@ public class TestModelFacade2 extends TestCase {
         helper.setStateMachine(state, stateMachine);
         helper.setEntry(state, action);
 
-        Object parentComposite = Model.getFacade().getModelElementContainer(
-                action);
+        Object parentComposite =
+            Model.getFacade().getModelElementContainer(action);
         assertTrue(state.equals(parentComposite));
         assertTrue(stateMachine.equals(Model.getFacade()
                 .getModelElementContainer(parentComposite)));
@@ -141,16 +136,16 @@ public class TestModelFacade2 extends TestCase {
         		Model.getModelManagementFactory().createPackage());
         Collection coll1 = Model.getFacade().getStereotypes(cls);
         assertEquals(0, coll1.size());
-        
+
         Object stereotype =
             Model.getExtensionMechanismsFactory().buildStereotype(
                     "TestStereotype",
                     Model.getFacade().getNamespace(cls));
-        
+
         Model.getCoreHelper().addStereotype(cls, stereotype);
-        
+
         Collection coll2 = Model.getFacade().getStereotypes(cls);
-        
+
         assertEquals(1, coll2.size());
         assertTrue(coll2.contains(stereotype));
     }
