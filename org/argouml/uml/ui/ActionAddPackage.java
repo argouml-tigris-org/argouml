@@ -53,6 +53,7 @@ public class ActionAddPackage  extends UndoableAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
         Object namespace =
             TargetManager.getInstance().getModelTarget();
         Model.getCoreHelper().addOwnedElement(namespace,

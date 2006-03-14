@@ -75,7 +75,7 @@ public class ActionAddAllClassesFromModel extends UndoableAction {
      * Smart Information Flow Technologies.
      */
     public void actionPerformed(ActionEvent ae) {
-
+        super.actionPerformed(ae);
 	if (object instanceof UMLClassDiagram) {
 
 	    // Use DiagramInterface to add classes to diagram
