@@ -41,9 +41,6 @@ import org.argouml.util.ConfigLoader;
 /**
  * The properties panel for a Stimulus.
  *
- * TODO: this property panel needs refactoring to remove dependency on
- *       old gui components.
- *
  * @author agauthie
  */
 public class PropPanelStimulus extends PropPanelModelElement {
