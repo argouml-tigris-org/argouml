@@ -110,12 +110,11 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
      * differences between NSUML and MDR - tfm - 20060302
      */
     public void propertyChange(PropertyChangeEvent e) {
+        buildingModel = true;
         if (e instanceof AttributeChangeEvent) {
             if (isValidEvent(e)) {
                 removeAllElements();
-                buildingModel = true;
                 buildModelList();
-                buildingModel = false;
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
                 }
@@ -163,6 +162,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
                 }
             }
         }
+        buildingModel = false;
     }
 
     /**
@@ -247,10 +247,19 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
      * Sets the target. If the old target is a ModelElement, it also removes
      * the model from the element listener list of the target. If the new target
      * is instanceof ModelElement, the model is added as element listener to the
-     * new target.
+     * new target. <p>
+     *      
+     * This function is called when the user changes the target. 
+     * Hence, this shall not result in any UML model changes.
+     * Hence, we block firing list events completely by setting 
+     * buildingModel to true for the duration of this function. <p>
+     * 
+     * This function looks a lot like the one in UMLComboBoxModel2.
+     * 
      * @param theNewTarget the new target
      */
     public void setTarget(Object theNewTarget) {
+        buildingModel = true;
         theNewTarget = theNewTarget instanceof Fig
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
         if (Model.getFacade().isAModelElement(theNewTarget)
@@ -270,9 +279,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
                 addOtherModelEventListeners(listTarget);
 
                 removeAllElements();
-                buildingModel = true;
                 buildModelList();
-                buildingModel = false;
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
                 }
@@ -282,6 +289,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
             }
 
         }
+        buildingModel = false;
     }
 
     /**

@@ -100,7 +100,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     /**
      * Flag to indicate whether the model is being build.
      */
-    private boolean buildingModel = false;
+    protected boolean buildingModel = false;
 
     /**
      * Constructs a model for a combobox. The container given is used
@@ -139,7 +139,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-
+        buildingModel = true;
         if (evt instanceof AttributeChangeEvent) {
             if (evt.getPropertyName().equals(propertySetName)) {
                 if (evt.getSource() == getTarget()
@@ -167,6 +167,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 removeElement(o);
             }
         }
+        buildingModel = false;
     }
 
     /**
@@ -289,9 +290,6 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         if (e instanceof AssociationChangeEvent) {
             return ((AssociationChangeEvent) e).getChangedValue();
         }
-        if (e instanceof AttributeChangeEvent) {
-            return ((AttributeChangeEvent) e).getSource();
-        }
         return e.getNewValue();
     }
 
@@ -301,11 +299,17 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * is a ModelElement, the model is added as element listener to the new
      * target. <p>
      * 
+     * This function is called when the user changes the target. 
+     * Hence, this shall not result in any UML model changes.
+     * Hence, we block firing list events completely by setting 
+     * buildingModel to true for the duration of this function. <p>
+     * 
      * This function looks a lot like the one in UMLModelElementListModel2.
      * 
      * @param theNewTarget the target
      */
     protected void setTarget(Object theNewTarget) {
+        buildingModel = true;
         LOG.debug("setTarget target :  " + theNewTarget);
         theNewTarget = theNewTarget instanceof Fig 
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
@@ -321,16 +325,12 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 Model.getPump().addModelEventListener(this, comboBoxTarget,
                         propertySetName);
                 
-                fireListEvents = false;
                 removeAllElements();
-                fireListEvents = true;
 
-                buildingModel = true;
                 buildModelList();
-                // Do not set buildingModel = false already here, 
+                // Do not set buildingModel = false here, 
                 // otherwise the action for selection is performed.
                 setSelectedItem(getSelectedModelElement());
-                buildingModel = false;
                 
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
@@ -338,14 +338,13 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
             } else {
                 comboBoxTarget = null;
                 
-                fireListEvents = false;
                 removeAllElements();
-                fireListEvents = true;
             }
             if (getSelectedItem() != null && isClearable) {
                 addElement(""); // makes sure we can select 'none'
             }
         }
+        buildingModel = false;
     }
 
     /**
