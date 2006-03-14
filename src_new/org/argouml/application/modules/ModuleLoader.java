@@ -62,7 +62,7 @@ import org.argouml.i18n.Translator;
  * @author  Will Howery
  * @author  Thierry Lach
  * @since   0.9.4
- * @deprecated by Linus Tolke (March 2006).
+ * @deprecated by Linus Tolke (0.21.1 March 2006).
  *         Use {@link org.argouml.moduleloader.ModuleLoader2}.
  */
 public class ModuleLoader {
@@ -346,7 +346,7 @@ public class ModuleLoader {
 		    if (jarfile != null) {
 	                ClassLoader classloader =
 			    new URLClassLoader(new URL[] {
-				file[i].toURL()
+				file[i].toURL(),
 			    });
 			Translator.addClassLoader(classloader);
 	                processJarFile(classloader, file[i]);

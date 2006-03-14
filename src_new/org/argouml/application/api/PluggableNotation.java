@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,7 +31,7 @@ package org.argouml.application.api;
  *
  * @author Thierry Lach
  * @since 0.9.4
- * @deprecated by Linus Tolke (March 2006).
+ * @deprecated by Linus Tolke (0.21.1 March 2006).
  *         Register with
  *         {@link org.argouml.uml.generator.GeneratorManager#addGenerator(
  *         Language, CodeGenerator}
