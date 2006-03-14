@@ -98,11 +98,13 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
             if ("ownedElement".equals(evt.getPropertyName())) {
                 Object o = getChangedElement(evt);
                 if (contains(o)) {
+                    buildingModel = true;
                     if (o instanceof Collection) {
                         removeAll((Collection) o);
                     } else {
                         removeElement(o);
                     }
+                    buildingModel = false;
                 }
             }
         } else {

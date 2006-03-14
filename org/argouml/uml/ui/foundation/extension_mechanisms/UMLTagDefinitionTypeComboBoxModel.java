@@ -163,9 +163,11 @@ public class UMLTagDefinitionTypeComboBoxModel extends UMLComboBoxModel2 {
          */
         if (evt instanceof AddAssociationEvent
                 || evt instanceof RemoveAssociationEvent) {
+            buildingModel = true;
             if ("ownedElement".equals(evt.getPropertyName())) {
                 buildModelList();
             }
+            buildingModel = false;
         } else {
             super.propertyChange(evt);
         }
