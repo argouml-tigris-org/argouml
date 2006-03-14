@@ -73,6 +73,7 @@ public class ActionAddExistingNode extends UndoableAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+        super.actionPerformed(ae);
         AddExistingNodeCommand cmd = new AddExistingNodeCommand(object);
         cmd.execute();
     }
