@@ -77,11 +77,13 @@ public class FigComment
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private int x;
-    private int y;
     private int width = 80;
     private int height = 60;
-    private int dogear = 10; // a dog-ear = a bent corner in a book
+
+    /**
+     * A dog-ear is a bent corner in a book.
+     */
+    private int dogear = 10;
 
     private boolean readyToEdit = true;
 
@@ -92,7 +94,11 @@ public class FigComment
     private FigText bodyTextFig;
 
     private FigPoly outlineFig;
-    private FigPoly urCorner; // the upper right corner
+
+    /**
+     * The upper right corner.
+     */
+    private FigPoly urCorner;
 
     /**
      * Flag to indicate that we have just been created. This is to fix the
@@ -110,31 +116,31 @@ public class FigComment
     public FigComment() {
 
         outlineFig = new FigPoly(Color.black, Color.white);
-        outlineFig.addPoint(x, y);
-        outlineFig.addPoint(x + width - 1 - dogear, y);
-        outlineFig.addPoint(x + width - 1, y + dogear);
-        outlineFig.addPoint(x + width - 1, y + height - 1);
-        outlineFig.addPoint(x, y + height - 1);
-        outlineFig.addPoint(x, y);
+        outlineFig.addPoint(0, 0);
+        outlineFig.addPoint(width - 1 - dogear, 0);
+        outlineFig.addPoint(width - 1, dogear);
+        outlineFig.addPoint(width - 1, height - 1);
+        outlineFig.addPoint(0, height - 1);
+        outlineFig.addPoint(0, 0);
         outlineFig.setFilled(true);
         outlineFig.setLineWidth(1);
 
         urCorner = new FigPoly(Color.black, Color.white);
-        urCorner.addPoint(x + width - 1 - dogear, y);
-        urCorner.addPoint(x + width - 1, y + dogear);
-        urCorner.addPoint(x + width - 1 - dogear, y + dogear);
-        urCorner.addPoint(x + width - 1 - dogear, y);
+        urCorner.addPoint(width - 1 - dogear, 0);
+        urCorner.addPoint(width - 1, dogear);
+        urCorner.addPoint(width - 1 - dogear, dogear);
+        urCorner.addPoint(width - 1 - dogear, 0);
         urCorner.setFilled(true);
         Color col = outlineFig.getFillColor();
         urCorner.setFillColor(col.darker());
         urCorner.setLineWidth(1);
 
-        setBigPort(new FigRect(x, y, width, height, null, null));
+        setBigPort(new FigRect(0, 0, width, height, null, null));
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
 
         bodyTextFig =
-            new FigMultiLineText(x + 2, y + 2,
+            new FigMultiLineText(2, 2,
                                  width - 2 - dogear, height - 4, true);
 
         // add Figs to the FigNode in back-to-front order
