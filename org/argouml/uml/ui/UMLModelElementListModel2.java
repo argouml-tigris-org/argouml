@@ -259,7 +259,6 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
      * @param theNewTarget the new target
      */
     public void setTarget(Object theNewTarget) {
-        buildingModel = true;
         theNewTarget = theNewTarget instanceof Fig
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
         if (Model.getFacade().isAModelElement(theNewTarget)
@@ -279,7 +278,9 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
                 addOtherModelEventListeners(listTarget);
 
                 removeAllElements();
+                buildingModel = true;
                 buildModelList();
+                buildingModel = false;
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
                 }
@@ -287,9 +288,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
                 listTarget = null;
                 removeAllElements();
             }
-
         }
-        buildingModel = false;
     }
 
     /**
