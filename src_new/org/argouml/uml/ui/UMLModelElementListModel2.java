@@ -110,11 +110,12 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
      * differences between NSUML and MDR - tfm - 20060302
      */
     public void propertyChange(PropertyChangeEvent e) {
-        buildingModel = true;
         if (e instanceof AttributeChangeEvent) {
             if (isValidEvent(e)) {
                 removeAllElements();
+                buildingModel = true;
                 buildModelList();
+                buildingModel = false;
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
                 }
@@ -162,7 +163,6 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
                 }
             }
         }
-        buildingModel = false;
     }
 
     /**
