@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -71,12 +71,10 @@ public class UMLStimulusActionTextProperty  {
 		        Model.getFacade().getDispatchAction(stimulus);
 		    Model.getCoreHelper().setName(action, newValue);
 		    // to rupdate the diagram set the stimulus name again
-		    String dummyStr =
-		        new String(Model.getFacade().getName(stimulus));
+                    // TODO: Explain that this really works also in the
+                    // MDR case. Linus is a sceptic.
+		    String dummyStr = Model.getFacade().getName(stimulus);
 		    Model.getCoreHelper().setName(stimulus, dummyStr);
-
-
-
 		}
 	    }
 	}
@@ -91,7 +89,9 @@ public class UMLStimulusActionTextProperty  {
 	Object/*MStimulus*/ stimulus = container.getTarget();
 	if (stimulus != null) {
 	    Object action = Model.getFacade().getDispatchAction(stimulus);
-	    if (action != null) value = Model.getFacade().getName(action);
+	    if (action != null) {
+                value = Model.getFacade().getName(action);
+            }
 	}
         return value;
     }
@@ -103,6 +103,9 @@ public class UMLStimulusActionTextProperty  {
                 || sourceName.equals(thePropertyName));
     }
 
+    /**
+     * Called when the target has changed.
+     */
     void targetChanged() {
     }
 }
