@@ -78,14 +78,16 @@ public class FigPackage extends FigNodeModelElement
 
     private static final int MIN_HEIGHT = 21;
 
-    private int x;
-    private int y;
     private int width = 140;
     private int height = 100;
     private int indentX = 50;
     //private int indentY = 20;
     private int textH = 20;
-    private int tabHeight = 20; // the total height of the tab
+
+    /**
+     * The total height of the tab.
+     */
+    private int tabHeight = 20;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -115,16 +117,16 @@ public class FigPackage extends FigNodeModelElement
      */
     public FigPackage() {
         setBigPort(
-            new PackagePortFigRect(x, y, width, height, indentX, tabHeight));
+            new PackagePortFigRect(0, 0, width, height, indentX, tabHeight));
 
         //
         // Create a Body that reacts to double-clicks and jumps to a diagram.
         //
-        body = new FigPackageFigText(x, y + textH, width, height - textH);
+        body = new FigPackageFigText(0, textH, width, height - textH);
 
         body.setEditable(false);
 
-        getNameFig().setBounds(x, y, width - indentX, textH + 2);
+        getNameFig().setBounds(0, 0, width - indentX, textH + 2);
         getNameFig().setJustification(FigText.JUSTIFY_LEFT);
 
         getBigPort().setFilled(false);
@@ -846,11 +848,20 @@ public class FigPackage extends FigNodeModelElement
      * The UID.
      */
     private static final long serialVersionUID = 3617092272529451041L;
-    
+
     private class HideStereotypeAction extends UndoableAction {
+        /**
+         * The key for the action name.
+         */
+        private static final String ACTION_KEY =
+            "menu.popup.show.hide-stereotype";
+
+        /**
+         * Constructor.
+         */
         HideStereotypeAction() {
-            super(Translator.localize("menu.popup.show.hide-stereotype"),
-                    ResourceLoaderWrapper.lookupIcon("menu.popup.show.hide-stereotype"));
+            super(Translator.localize(ACTION_KEY),
+                    ResourceLoaderWrapper.lookupIcon(ACTION_KEY));
         }
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
@@ -867,11 +878,20 @@ public class FigPackage extends FigNodeModelElement
         private static final long serialVersionUID =
             1999499813643610674L;
     }
-    
+
     private class ShowStereotypeAction extends UndoableAction {
+        /**
+         * The key for the action name.
+         */
+        private static final String ACTION_KEY =
+            "menu.popup.show.show-stereotype";
+
+        /**
+         * Constructor.
+         */
         ShowStereotypeAction() {
-            super(Translator.localize("menu.popup.show.show-stereotype"),
-                    ResourceLoaderWrapper.lookupIcon("menu.popup.show.show-stereotype"));
+            super(Translator.localize(ACTION_KEY),
+                    ResourceLoaderWrapper.lookupIcon(ACTION_KEY));
         }
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
@@ -888,11 +908,20 @@ public class FigPackage extends FigNodeModelElement
         private static final long serialVersionUID =
             -4327161642276705610L;
     }
-    
+
     private class HideVisibilityAction extends UndoableAction {
+        /**
+         * The key for the action name.
+         */
+        private static final String ACTION_KEY =
+            "menu.popup.show.hide-visibility";
+
+        /**
+         * Constructor.
+         */
         HideVisibilityAction() {
-            super(Translator.localize("menu.popup.show.hide-visibility"),
-                    ResourceLoaderWrapper.lookupIcon("menu.popup.show.hide-visibility"));
+            super(Translator.localize(ACTION_KEY),
+                    ResourceLoaderWrapper.lookupIcon(ACTION_KEY));
         }
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
@@ -909,11 +938,20 @@ public class FigPackage extends FigNodeModelElement
         private static final long serialVersionUID =
             8574809709777267866L;
     }
-    
+
     private class ShowVisibilityAction extends UndoableAction {
+        /**
+         * The key for the action name.
+         */
+        private static final String ACTION_KEY =
+            "menu.popup.show.show-visibility";
+
+        /**
+         * Constructor.
+         */
         ShowVisibilityAction() {
-            super(Translator.localize("menu.popup.show.show-visibility"),
-                    ResourceLoaderWrapper.lookupIcon("menu.popup.show.show-visibility"));
+            super(Translator.localize(ACTION_KEY),
+                    ResourceLoaderWrapper.lookupIcon(ACTION_KEY));
         }
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
@@ -930,7 +968,7 @@ public class FigPackage extends FigNodeModelElement
         private static final long serialVersionUID =
             7722093402948975834L;
     }
-    
+
 } /* end class FigPackage */
 
 /**
@@ -946,10 +984,12 @@ class PackagePortFigRect extends FigRect {
     /**
      * The constructor.
      *
-     * @param x the x
-     * @param y the y
-     * @param w the width
-     * @param h the hight
+     * @param x The x.
+     * @param y The y.
+     * @param w The width.
+     * @param h The height.
+     * @param ix The indent.
+     * @param th The tab height.
      */
     public PackagePortFigRect(int x, int y, int w, int h, int ix, int th) {
         super(x, y, w, h, null, null);
@@ -983,5 +1023,4 @@ class PackagePortFigRect extends FigRect {
      * The UID.
      */
     private static final long serialVersionUID = -7083102131363598065L;
-    
 }
