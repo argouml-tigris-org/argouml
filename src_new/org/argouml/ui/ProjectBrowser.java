@@ -185,7 +185,7 @@ public final class ProjectBrowser
     /**
      * The action to save the current project.
      */
-    private final Action saveAction;
+    private Action saveAction;
 
     /**
      * The action to redo the last undone action.
@@ -529,7 +529,7 @@ public final class ProjectBrowser
     public void setTitle(final String titleArg) {
         title = titleArg;
         String changeIndicator = "";
-        if (saveAction.isEnabled()) {
+        if (saveAction != null && saveAction.isEnabled()) {
             changeIndicator = " *";
         }
         super.setTitle(titleArg + changeIndicator);
@@ -885,7 +885,7 @@ public final class ProjectBrowser
      * save and exit, exit without saving or cancel the exit operation.
      */
     public void tryExit() {
-        if (saveAction.isEnabled()) {
+        if (saveAction != null && saveAction.isEnabled()) {
             Project p = ProjectManager.getManager().getCurrentProject();
 
             String t =
@@ -1211,6 +1211,11 @@ public final class ProjectBrowser
             Designer.enableCritiquing();
             success = false;
         } else {
+            // Hide save action during load. Otherwise we get the
+            // * appearing in title bar as models are updated
+            Action saveAction = this.saveAction;
+            this.saveAction = null;
+            ProjectManager.getManager().setSaveAction(null);
             try {
                 ProjectFilePersister persister =
                     pm.getPersisterFromFileName(file.getName());
@@ -1273,6 +1278,10 @@ public final class ProjectBrowser
                     showUI, ex);
                 p = oldProject;
             } finally {
+                // Make sure save action is always reinstated
+                this.saveAction = saveAction;
+                ProjectManager.getManager().setSaveAction(saveAction);
+                
                 if (!LastLoadInfo.getInstance().getLastLoadStatus()) {
                     p = oldProject;
                     success = false;
