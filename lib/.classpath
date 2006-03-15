@@ -5,8 +5,8 @@
 	<classpathentry exported="true" kind="lib" path="commons-logging-1.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="log4j-1.2.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="ocl-argo-1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="toolbar-1.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="swidgets-0.1.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="gef-0.11.3M7.jar"/>
+	<classpathentry exported="true" sourcepath="/toolbar/src" kind="lib" path="toolbar-1.2.jar"/>
+	<classpathentry exported="true" sourcepath="/swidgets/src" kind="lib" path="swidgets-0.1.4.jar"/>
+	<classpathentry exported="true" sourcepath="/GEF/src" kind="lib" path="gef-0.11.3M7.jar"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>
