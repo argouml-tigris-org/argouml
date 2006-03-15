@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 
 import org.apache.log4j.Logger;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -40,6 +39,9 @@ import org.tigris.gef.presentation.Fig;
  * @author thn
  */
 public class CompartmentFigText extends FigSingleLineText {
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
 	Logger.getLogger(CompartmentFigText.class);
 
@@ -59,19 +61,6 @@ public class CompartmentFigText extends FigSingleLineText {
      * Record whether we are currently highlighted.<p>
      */
     private boolean       isHighlighted;
-
-
-    /**
-     * The model element with which we are associated.<p>
-     */
-    private Object modelElement;
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // constructors
-    //
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * Build a new compartment figText of the given dimensions, within
@@ -139,10 +128,10 @@ public class CompartmentFigText extends FigSingleLineText {
      */
     public void setHighlighted(boolean flag) {
         isHighlighted = flag;
-        super.setLineWidth(isHighlighted ? 1 : 0);
-
-        if (flag && (modelElement != null)) {
-            TargetManager.getInstance().setTarget(modelElement);
+        if (isHighlighted) {
+            super.setLineWidth(1);
+        } else {
+            super.setLineWidth(0);
         }
     }
 
@@ -157,5 +146,8 @@ public class CompartmentFigText extends FigSingleLineText {
         return isHighlighted;
     }
 
-
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 3830572062785308980L;
 } /* End of class CompartmentFigText */
