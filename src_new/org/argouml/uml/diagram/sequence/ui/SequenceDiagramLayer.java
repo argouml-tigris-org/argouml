@@ -63,13 +63,13 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
      * The distance between the left side of the diagram and the first
      * {@link FigClassifierRole}.
      */
-    public static final int DIAGRAM_LEFT_MARGE = 50;
+    public static final int DIAGRAM_LEFT_MARGIN = 50;
 
     /**
      * The distance between the top side of the diagram and the top of
      * the highest {@link FigClassifierRole}.
      */
-    public static final int DIAGRAM_TOP_MARGE = 50;
+    public static final int DIAGRAM_TOP_MARGIN = 50;
 
     /**
      * The vertical distance between two links.
@@ -116,7 +116,7 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
             figObjectsX.subList(listPosition, figObjectsX.size()).iterator();
         int positionX =
             listPosition == 0
-                ? DIAGRAM_LEFT_MARGE
+                ? DIAGRAM_LEFT_MARGIN
                 : (((Fig) figObjectsX.get(listPosition - 1)).getX()
                     + ((Fig) figObjectsX.get(listPosition - 1)).getWidth()
                     + OBJECT_DISTANCE);
@@ -125,8 +125,8 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
             Rectangle r = fig.getBounds();
             if (r.x < positionX) {
                 r.x = positionX;
-	    }
-            r.y = DIAGRAM_TOP_MARGE;
+            }
+            r.y = DIAGRAM_TOP_MARGIN;
             fig.setBounds(r);
             fig.updateEdges();
             positionX = (fig.getX() + fig.getWidth() + OBJECT_DISTANCE);
@@ -177,7 +177,7 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
      * @return The node index.
      */
     public static int getNodeIndex(int y) {
-        y -= DIAGRAM_TOP_MARGE + FigClassifierRole.MIN_HEAD_HEIGHT;
+        y -= DIAGRAM_TOP_MARGIN + FigClassifierRole.MIN_HEAD_HEIGHT;
         if (y < 0) {
             y = 0;
 	}
@@ -243,6 +243,7 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
      * Add nodes to.
      *
      * TODO: Linus doesn't understand this comment. Please elaborate!
+     * Bob doesn't either. What hope do we have.
      */
     private void reshuffleFigClassifierRolesX(Fig f) {
         figObjectsX.remove(f);
