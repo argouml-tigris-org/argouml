@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -70,14 +70,20 @@ public class PropPanelSubsystem extends PropPanelPackage {
      *
      * @author mvw@tigris.org
      */
-    private class ActionNewOperation extends AbstractActionNewModelElement {
+    private static class ActionNewOperation
+        extends AbstractActionNewModelElement {
+
+        /**
+         * The key for the action name.
+         */
+        private static final String ACTION_KEY = "button.new-operation";
 
         /**
          * The constructor.
          */
         public ActionNewOperation() {
-            super("button.new-operation");
-            putValue(Action.NAME, Translator.localize("button.new-operation"));
+            super(ACTION_KEY);
+            putValue(Action.NAME, Translator.localize(ACTION_KEY));
         }
 
         /**
@@ -90,12 +96,18 @@ public class PropPanelSubsystem extends PropPanelPackage {
                 Collection pCListeners = p.findFigsForMember(target);
                 Object model = p.getModel();
                 Object voidType = p.findType("void");
-                Object newOper = Model.getCoreFactory()
-                    .buildOperation(target, model, voidType, pCListeners);
+                Object newOper =
+                    Model.getCoreFactory()
+                        .buildOperation(target, model, voidType, pCListeners);
                 TargetManager.getInstance().setTarget(newOper);
                 super.actionPerformed(e);
             }
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -5149342278246959597L;
     }
 
     /**
@@ -111,4 +123,8 @@ public class PropPanelSubsystem extends PropPanelPackage {
         return featureScroll;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8616239241648089917L;
 } /* end class PropPanelSubsystem */
