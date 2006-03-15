@@ -66,8 +66,8 @@ public class ActionSetObjectFlowStateClassifier extends UndoableAction {
         if (newClassifier != oldClassifier
                 && m != null
                 && newClassifier != null) {
-            Model.getCoreHelper().setType(m, newClassifier);
             super.actionPerformed(e);
+            Model.getCoreHelper().setType(m, newClassifier);
         }
     }
 
