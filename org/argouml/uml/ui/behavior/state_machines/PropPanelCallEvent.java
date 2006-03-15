@@ -35,6 +35,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.ActionNewParameter;
 import org.argouml.util.ConfigLoader;
@@ -64,7 +65,11 @@ public class PropPanelCallEvent extends PropPanelEvent {
         UMLSearchableComboBox operationComboBox =
             new UMLCallEventOperationComboBox2(
                 new UMLCallEventOperationComboBoxModel());
-        addField(Translator.localize("label.operations"), operationComboBox);
+        addField(Translator.localize("label.operations"),
+                new UMLComboBoxNavigator(
+                        this,
+                        Translator.localize("label.operation.navigate.tooltip"),
+                        operationComboBox));
 
         addAction(new ActionNewParameter());
         addAction(new ActionDeleteSingleModelElement());
