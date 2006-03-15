@@ -96,6 +96,9 @@ public class UMLObjectFlowStateClassifierComboBoxModel
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        /* Do nothing by design. */
+        buildingModel = true;
+        buildModelList();
+        buildingModel = false;
+        setSelectedItem(getSelectedModelElement());
     }
 }
