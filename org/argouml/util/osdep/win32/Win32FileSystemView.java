@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -95,8 +95,9 @@ public class Win32FileSystemView extends FileSystemView {
         newFolder = createFileObject(containingDir, "New Folder");
         int i = 2;
         while (newFolder.exists() && (i < 100)) {
-            newFolder = createFileObject(containingDir,
-	                                 "New Folder (" + i + ")");
+            newFolder =
+                createFileObject(containingDir,
+                                 "New Folder (" + i + ")");
             i++;
         }
 
@@ -154,13 +155,26 @@ public class Win32FileSystemView extends FileSystemView {
         return roots;
     }
 
-    class FileSystemRoot extends File {
+    static class FileSystemRoot extends File {
+        /**
+         * Constructor.
+         *
+         * @param s The String to create the file from.
+         */
         public FileSystemRoot(String s) {
             super(s);
         }
 
+        /**
+         * @see java.io.File#isDirectory()
+         */
         public boolean isDirectory() {
             return true;
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -4639018030180783658L;
     }
 }
