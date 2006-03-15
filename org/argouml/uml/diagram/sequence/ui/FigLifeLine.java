@@ -234,7 +234,6 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
         FigLifeLineHandler(PGMLStackParser parser,
                 FigLifeLine lifeLine) {
             super(parser, lifeLine);
-            System.out.println("Creating a FigLifeLineHandler");
         }
 
         /**
