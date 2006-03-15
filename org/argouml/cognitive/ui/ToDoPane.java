@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -57,7 +57,6 @@ import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.PerspectiveSupport;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
-import org.tigris.gef.ui.ToolBar;
 
 /**
  * The lower-left pane of the main ArgoUML window, which shows the list
@@ -71,10 +70,10 @@ import org.tigris.gef.ui.ToolBar;
  *
  * Perspectives are now built here. <p>
  *
- * Future plans may involve:<br>
- * 1)DecisionModelListener implementation<br>
- * 2)GoalListener implementation<br>
- * ? <p>
+ * Future plans may involve:<ol>
+ * <li> DecisionModelListener implementation
+ * <li> GoalListener implementation
+ * </ol>
  *
  *<pre>
  * possible future additions:
@@ -88,6 +87,9 @@ public class ToDoPane extends JPanel
         MouseListener,
         ToDoListListener,
         QuadrantPanel {
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(ToDoPane.class);
 
     ////////////////////////////////////////////////////////////////
@@ -106,18 +108,17 @@ public class ToDoPane extends JPanel
     // instance variables
 
     private JTree tree;
-    private ToolBar toolbar;
     private JComboBox combo;
 
-    /** vector of TreeModels */
+    /**
+     * Vector of TreeModels.
+     */
     private Vector perspectives;
     private ToDoPerspective curPerspective;
 
     private ToDoList root;
     private JLabel countLabel;
     private Object lastSel;
-    private int oldSize;
-    private char dir; //TODO: make use of this!
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -133,7 +134,6 @@ public class ToDoPane extends JPanel
 
         combo = new JComboBox();
         tree = new DisplayTextTree();
-        toolbar = new ToolBar();
 
         perspectives = new Vector();
 
@@ -164,9 +164,6 @@ public class ToDoPane extends JPanel
         }
 
         setPerspectives(buildPerspectives());
-
-        oldSize = 0;
-        dir = ' ';
 
         setMinimumSize(new Dimension(120, 100));
 
@@ -406,7 +403,7 @@ public class ToDoPane extends JPanel
     ////////////////////////////////////////////////////////////////
     // other methods
 
-    /* TODO: Make use of the "dir" to indicate the direction! */
+    /* TODO: Indicate the direction! */
     private static String formatCountLabel(int size) {
         switch (size) {
 	case 0:
@@ -431,13 +428,6 @@ public class ToDoPane extends JPanel
      */
     public void updateCountLabel() {
         int size = Designer.theDesigner().getToDoList().size();
-        if (size > oldSize) {
-	    dir = '+';
-	}
-        if (size < oldSize) {
-	    dir = '-';
-	}
-        oldSize = size;
         countLabel.setText(formatCountLabel(size));
         countLabel.setOpaque(size > WARN_THRESHOLD);
         countLabel.setBackground((size >= ALARM_THRESHOLD) ? ALARM_COLOR
@@ -542,4 +532,8 @@ public class ToDoPane extends JPanel
         return perspectives;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 1911401582875302996L;
 } /* end class ToDoPane */
