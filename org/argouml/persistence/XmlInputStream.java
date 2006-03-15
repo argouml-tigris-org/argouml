@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,7 +55,6 @@ public class XmlInputStream extends BufferedInputStream {
     private String endTagName;
     private Map attributes;
     private boolean childOnly;
-    private int instanceRequired;
     private int instanceCount;
     private EventListenerList listenerList = new EventListenerList();
 
@@ -273,7 +272,7 @@ public class XmlInputStream extends BufferedInputStream {
             }
 
             if (found) {
-                if (instanceCount < instanceRequired) {
+                if (instanceCount < 0) {
                     found = false;
                     ++instanceCount;
                 }
@@ -286,7 +285,7 @@ public class XmlInputStream extends BufferedInputStream {
                     // back to that child tag.
                     mark(1000);
                     while (realRead() != '<') {
-                            /* do nothing */ ;
+                        /* do nothing */ ;
 		    }
                     tagName = "";
                     char ch = (char) realRead();
@@ -316,7 +315,7 @@ public class XmlInputStream extends BufferedInputStream {
      * @throws IOException
      */
     private Map readAttributes() throws IOException {
-        HashMap attributesFound = new HashMap();
+        Map attributesFound = new HashMap();
         int character;
         while ((character = realRead()) != '>') {
             if (!Character.isWhitespace((char) character)) {
