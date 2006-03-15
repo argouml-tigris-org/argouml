@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,16 +51,18 @@ public class PropPanelDataType extends PropPanelClassifier {
 
     private JScrollPane operationScroll;
 
-    private static UMLClassAttributeListModel attributeListModel =
-        new UMLClassAttributeListModel();
-
-    private static UMLEnumerationLiteralsListModel literalsListModel =
-        new UMLEnumerationLiteralsListModel();
-
     private static UMLClassOperationListModel operationListModel =
         new UMLClassOperationListModel();
 
-    public PropPanelDataType(String title, ImageIcon icon, Orientation orientation) {
+    /**
+     * Constructor.
+     *
+     * @param title
+     * @param icon
+     * @param orientation
+     */
+    public PropPanelDataType(String title, ImageIcon icon,
+            Orientation orientation) {
         super(title, icon, orientation);
 
         addField(Translator.localize("label.name"),
@@ -95,7 +97,7 @@ public class PropPanelDataType extends PropPanelClassifier {
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());
     }
-    
+
     /**
      * Override this to add more buttons.
      */
@@ -111,7 +113,7 @@ public class PropPanelDataType extends PropPanelClassifier {
                 ConfigLoader.getTabPropsOrientation());
     }
 
-    private class ActionAddQueryOperation
+    private static class ActionAddQueryOperation
         extends AbstractActionNewModelElement {
 
         /**
@@ -147,6 +149,11 @@ public class PropPanelDataType extends PropPanelClassifier {
                 super.actionPerformed(e);
             }
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -3393730108010236394L;
     }
 
     /**
@@ -161,4 +168,9 @@ public class PropPanelDataType extends PropPanelClassifier {
         }
         return operationScroll;
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8752986130386737802L;
 }

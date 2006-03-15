@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -57,7 +57,8 @@ public class PropPanelMethod extends PropPanelFeature {
 
     private JTextField languageTextField;
     private UMLComboBox2 specificationComboBox;
-    private static UMLMethodSpecificationComboBoxModel specificationComboBoxModel;
+    private static UMLMethodSpecificationComboBoxModel
+        specificationComboBoxModel;
     private UMLModelElementLanguageDocument languageDocument =
         new UMLModelElementLanguageDocument();
 
@@ -76,7 +77,7 @@ public class PropPanelMethod extends PropPanelFeature {
 
         addField(Translator.localize("label.owner"),
                 getOwnerScroll());
-        
+
         /* The specification field shows the Operation: */
         addField(Translator.localize("label.specification"),
                 new UMLComboBoxNavigator(
@@ -86,15 +87,16 @@ public class PropPanelMethod extends PropPanelFeature {
                         getSpecificationComboBox()));
 
         add(getVisibilityPanel());
-        
-        JPanel modifiersPanel = new JPanel(new GridLayout2(0, 3,
+
+        JPanel modifiersPanel =
+            new JPanel(new GridLayout2(0, 3,
                 GridLayout2.ROWCOLPREFERRED));
         modifiersPanel.setBorder(new TitledBorder(Translator.localize(
                 "label.modifiers")));
         modifiersPanel.add(new UMLBehavioralFeatureQueryCheckBox());
         modifiersPanel.add(new UMLFeatureOwnerScopeCheckBox());
         add(modifiersPanel);
-        
+
         addSeperator();
 
         addField(Translator.localize("label.language"),
@@ -138,18 +140,30 @@ public class PropPanelMethod extends PropPanelFeature {
         return specificationComboBox;
     }
 
-    private class UMLMethodSpecificationComboBoxModel extends UMLComboBoxModel2 {
-
+    private static class UMLMethodSpecificationComboBoxModel
+        extends UMLComboBoxModel2 {
+        /**
+         * Constructor.
+         */
         public UMLMethodSpecificationComboBoxModel() {
             super("specification", false);
             Model.getPump().addClassModelEventListener(this,
                     Model.getMetaTypes().getOperation(), "method");
         }
 
+        /**
+         * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(
+         *         java.lang.Object)
+         */
         protected boolean isValidElement(Object element) {
-            return Model.getCoreHelper().getSpecification(getTarget()) == element;
+            Object specification =
+                Model.getCoreHelper().getSpecification(getTarget());
+            return specification == element;
         }
 
+        /**
+         * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+         */
         protected void buildModelList() {
             if (getTarget() != null) {
                 removeAllElements();
@@ -158,10 +172,17 @@ public class PropPanelMethod extends PropPanelFeature {
             }
         }
 
+        /**
+         * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+         */
         protected Object getSelectedModelElement() {
             return Model.getCoreHelper().getSpecification(getTarget());
         }
-        
+
+        /**
+         * @see java.beans.PropertyChangeListener#propertyChange(
+         *         java.beans.PropertyChangeEvent)
+         */
         public void propertyChange(PropertyChangeEvent evt) {
             if (evt instanceof AttributeChangeEvent) {
                 if (evt.getPropertyName().equals("specification")) {
@@ -173,9 +194,14 @@ public class PropPanelMethod extends PropPanelFeature {
                 }
             }
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -7439424794380015022L;
     }
 
-    private class ActionSetMethodSpecification extends UMLAction {
+    private static class ActionSetMethodSpecification extends UMLAction {
 
         /**
          * Constructor for ActionSetStructuralFeatureType.
@@ -198,8 +224,8 @@ public class PropPanelMethod extends PropPanelFeature {
                 Object o = box.getTarget(); // the method
                 if (Model.getFacade().isAMethod(o)) {
                     method = o;
-                    oldOperation = Model.getCoreHelper().getSpecification(
-                            method);
+                    oldOperation =
+                        Model.getCoreHelper().getSpecification(method);
                 }
                 o = box.getSelectedItem(); // the selected operation
                 if (Model.getFacade().isAOperation(o)) {
@@ -212,8 +238,8 @@ public class PropPanelMethod extends PropPanelFeature {
         }
     }
 
-    private class UMLModelElementLanguageDocument extends UMLPlainTextDocument {
-
+    private static class UMLModelElementLanguageDocument
+        extends UMLPlainTextDocument {
         /**
          * Constructor for UMLModelElementNameDocument.
          */
@@ -250,9 +276,13 @@ public class PropPanelMethod extends PropPanelFeature {
             }
         }
 
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -2004931253036454061L;
     }
 
-    private class UMLMethodBodyDocument extends UMLPlainTextDocument {
+    private static class UMLMethodBodyDocument extends UMLPlainTextDocument {
         /**
          * Constructor for UMLMethodBodyDocument.
          */
@@ -298,6 +328,15 @@ public class PropPanelMethod extends PropPanelFeature {
                 return (String) Model.getFacade().getBody(expr);
             }
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -4797010104885972301L;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -6443549338375514393L;
 } /* end class PropPanelMethod */
