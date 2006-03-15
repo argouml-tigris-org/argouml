@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,8 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.application.configuration;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
@@ -75,12 +75,6 @@ public abstract class ConfigurationHandler {
      * Configuration rules allow a single load, whether manual or automatic.
      */
     private boolean loaded;
-
-    /**
-     * Internal flag indicating whether the configuration has been modified
-     * after it was loaded.
-     */
-    private boolean changed;
 
     /**
      * Internal worker for property change.
@@ -199,13 +193,6 @@ public abstract class ConfigurationHandler {
      * @return true if the configuration can be saved.
      */
     public final boolean isChangeable() { return changeable; }
-
-    /**
-     * Indicates whether the configuration can be saved.
-     *
-     * @return true if the configuration has been changed after load.
-     */
-    public final boolean isChanged() { return changed; }
 
     /**
      * Indicates whether the configuration has been loaded.
