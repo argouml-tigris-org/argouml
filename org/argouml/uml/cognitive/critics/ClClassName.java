@@ -27,6 +27,8 @@ package org.argouml.uml.cognitive.critics;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Rectangle;
+
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.ui.Clarifier;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
@@ -65,39 +67,42 @@ public class ClClassName implements Clarifier {
      * int, int)
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
-	FigText ft = null;
-	if (fig instanceof FigNodeModelElement) {
-	    FigNodeModelElement fnme = (FigNodeModelElement) fig;
-	    ft = fnme.getNameFig();
-	}
-	if (fig instanceof FigEdgeModelElement) {
-	    FigEdgeModelElement feme = (FigEdgeModelElement) fig;
-	    ft = feme.getNameFig();
-	}
-	if (ft != null) {
-	    int left  = ft.getX() + 6;
-	    int height = ft.getY() + ft.getHeight() - 4;
-	    int right = ft.getX() + ft.getWidth() - 6;
-	    g.setColor(Color.red);
-	    int i = left;
-	    while (true) {
-		g.drawLine(i, height, i + WAVE_LENGTH, height + WAVE_HEIGHT);
-		i += WAVE_LENGTH;
-		if (i >= right) break;
-		g.drawLine(i, height + WAVE_HEIGHT, i + WAVE_LENGTH, height);
-		i += WAVE_LENGTH;
-		if (i >= right) break;
-		g.drawLine(i, height, i + WAVE_LENGTH,
-			   height + WAVE_HEIGHT / 2);
-		i += WAVE_LENGTH;
-		if (i >= right) break;
-		g.drawLine(i, height + WAVE_HEIGHT / 2, i + WAVE_LENGTH,
-			   height);
-		i += WAVE_LENGTH;
-		if (i >= right) break;
-	    }
-	    fig = null;
-	}
+        Rectangle rect = null;
+        if (fig instanceof FigNodeModelElement) {
+            FigNodeModelElement fnme = (FigNodeModelElement) fig;
+            FigText ft = fnme.getNameFig();
+            if (ft != null) {
+                rect = ft.getBounds();
+            }
+        }
+        if (fig instanceof FigEdgeModelElement) {
+            FigEdgeModelElement feme = (FigEdgeModelElement) fig;
+            rect = feme.getNameBounds();
+        }
+        if (rect != null) {
+            int left  = rect.x + 6;
+            int height = rect.y + rect.height - 4;
+            int right = rect.x + rect.width - 6;
+            g.setColor(Color.red);
+            int i = left;
+            while (true) {
+        	g.drawLine(i, height, i + WAVE_LENGTH, height + WAVE_HEIGHT);
+        	i += WAVE_LENGTH;
+        	if (i >= right) break;
+        	g.drawLine(i, height + WAVE_HEIGHT, i + WAVE_LENGTH, height);
+        	i += WAVE_LENGTH;
+        	if (i >= right) break;
+        	g.drawLine(i, height, i + WAVE_LENGTH,
+        		   height + WAVE_HEIGHT / 2);
+        	i += WAVE_LENGTH;
+        	if (i >= right) break;
+        	g.drawLine(i, height + WAVE_HEIGHT / 2, i + WAVE_LENGTH,
+        		   height);
+        	i += WAVE_LENGTH;
+        	if (i >= right) break;
+            }
+            fig = null;
+        }
     }
 
     /**
@@ -114,18 +119,23 @@ public class ClClassName implements Clarifier {
      * @see org.argouml.ui.Clarifier#hit(int, int)
      */
     public boolean hit(int x, int y) {
-	FigText ft = null;
-	if (fig instanceof FigNodeModelElement) {
-	    FigNodeModelElement fnme = (FigNodeModelElement) fig;
-	    ft = fnme.getNameFig();
-	}
-	if (fig instanceof FigEdgeModelElement) {
-	    FigEdgeModelElement feme = (FigEdgeModelElement) fig;
-	    ft = feme.getNameFig();
-	}
-	fig = null;
-	return (ft != null) && ft.contains(x, y);
+        Rectangle rect = null;
+        if (fig instanceof FigNodeModelElement) {
+            FigNodeModelElement fnme = (FigNodeModelElement) fig;
+            FigText ft = fnme.getNameFig();
+            if (ft != null) {
+                rect = ft.getBounds();
+            }
+        }
+        if (fig instanceof FigEdgeModelElement) {
+            FigEdgeModelElement feme = (FigEdgeModelElement) fig;
+            rect = feme.getNameBounds();
+        }
+        fig = null;
+        return (rect != null) && rect.contains(x, y);
     }
+    
+    
 
     /**
      * @return Returns the theInstance.

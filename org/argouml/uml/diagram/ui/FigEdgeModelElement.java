@@ -136,7 +136,7 @@ public abstract class FigEdgeModelElement
      * The Fig that displays the name of this model element.
      * Use getNameFig(), no setter should be required.
      */
-    private FigText name;
+    private FigText nameFig;
 
     /**
      * Use getStereotypeFig(), no setter should be required.
@@ -166,15 +166,15 @@ public abstract class FigEdgeModelElement
      *  itself as a listener. */
     public FigEdgeModelElement() {
 
-        name = new FigText(10, 30, 90, 20);
-        name.setFont(LABEL_FONT);
-        name.setTextColor(Color.black);
-        name.setTextFilled(false);
-        name.setFilled(false);
-        name.setLineWidth(0);
-        name.setExpandOnly(false);
-        name.setReturnAction(FigText.END_EDITING);
-        name.setTabAction(FigText.END_EDITING);
+        nameFig = new FigText(10, 30, 90, 20);
+        nameFig.setFont(LABEL_FONT);
+        nameFig.setTextColor(Color.black);
+        nameFig.setTextFilled(false);
+        nameFig.setFilled(false);
+        nameFig.setLineWidth(0);
+        nameFig.setExpandOnly(false);
+        nameFig.setReturnAction(FigText.END_EDITING);
+        nameFig.setTabAction(FigText.END_EDITING);
 
         stereotypeFig = new FigStereotypesCompartment(10, 10, 90, 15);
 
@@ -452,15 +452,23 @@ public abstract class FigEdgeModelElement
      * Getter for name, the name Fig
      * @return the nameFig
      */
-    public FigText getNameFig() {
-        return name;
+    protected FigText getNameFig() {
+        return nameFig;
+    }
+    
+    public Rectangle getNameBounds() {
+        return nameFig.getBounds();
+    }
+    
+    public String getName() {
+        return nameFig.getText();
     }
 
     /**
      * Getter for stereo, the stereotype Fig
      * @return the stereo Fig
      */
-    public Fig getStereotypeFig() {
+    protected Fig getStereotypeFig() {
         return stereotypeFig;
     }
 
@@ -568,7 +576,7 @@ public abstract class FigEdgeModelElement
      * @param ft the text Fig that has been edited
      */
     protected void textEdited(FigText ft) {
-        if (ft == name) {
+        if (ft == nameFig) {
             if (getOwner() == null)
                 return;
             Model.getCoreHelper().setName(getOwner(), ft.getText());
@@ -646,8 +654,8 @@ public abstract class FigEdgeModelElement
     public void keyTyped(KeyEvent ke) {
         if (ke.isConsumed())
             return;
-        if (name != null && canEdit(name))
-            name.keyTyped(ke);
+        if (nameFig != null && canEdit(nameFig))
+            nameFig.keyTyped(ke);
     }
 
 
@@ -714,7 +722,7 @@ public abstract class FigEdgeModelElement
         }
         String nameStr =
             Notation.generate(this, Model.getFacade().getName(getOwner()));
-        name.setText(nameStr);
+        nameFig.setText(nameStr);
         calcBounds();
         setBounds(getBounds());
     }
