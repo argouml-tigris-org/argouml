@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -200,6 +200,23 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
     }
 
     /**
+     * Add a Reception to a Signal.
+     * 
+     * @param handle The signal
+     * @param rec The Reception 
+     */
+    private void addReception(Object handle, Object rec) {
+        if (handle instanceof Signal
+                && rec instanceof Reception) {
+            modelImpl.getUmlPackage().getCommonBehavior().
+                    getASignalReception().add(
+                            (Signal) handle,
+                            (Reception) rec);
+            return;
+        }
+    }
+
+    /**
      * @see org.argouml.model.CommonBehaviorHelper#addStimulus(java.lang.Object,
      *      java.lang.Object)
      */
@@ -394,6 +411,30 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         }
         throw new IllegalArgumentException("handle: " + handle
                 + " or receiver: " + receiver);
+    }
+
+    /**
+     * @see org.argouml.model.CommonBehaviorHelper#setReception(java.lang.Object, 
+     * java.util.Collection)
+     */
+    public void setReception(Object handle, Collection c) {
+        if (handle instanceof Signal) {
+            Collection actualReceptions = Model.getFacade().getReceptions(handle);
+            if (!actualReceptions.isEmpty()) {
+                Vector receptions = new Vector();
+                receptions.addAll(actualReceptions);
+                Iterator toRemove = receptions.iterator();
+                while (toRemove.hasNext())
+                    removeReception(handle, toRemove.next());
+            }
+            if (!c.isEmpty()) {
+                Iterator toAdd = c.iterator();
+                while (toAdd.hasNext())
+                    addReception(handle, toAdd.next());
+            }
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
     }
 
     /**
