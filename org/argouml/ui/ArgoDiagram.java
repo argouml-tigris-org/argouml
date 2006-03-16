@@ -25,6 +25,7 @@
 package org.argouml.ui;
 
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -32,10 +33,15 @@ import java.util.List;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
 
 /**
  * This class represents all Diagrams within ArgoUML.
@@ -223,6 +229,62 @@ public class ArgoDiagram extends Diagram {
      */
     public String toString() {
         return "Diagram: " + getName();
+    }
+    
+    /**
+     * We hang our heads in shame. There are still bugs in ArgoUML
+     * and/or GEF that cause corruptions in the model.
+     * Before a save takes place we repair the model in order to
+     * be as certain as possible that the saved file will reload.
+     */
+    public String repair() {
+        String report = "";
+        
+        List figs = new ArrayList(getLayer().getContents());
+        for (Iterator i = figs.iterator(); i.hasNext(); ) {
+            Fig f = (Fig)i.next();
+            
+            // 1. Make sure all Figs in the Diagrams layer refer back to
+            // that layer.
+            if (!getLayer().equals(f.getLayer())) {
+                // The report
+                if (f.getLayer() == null) {
+                    report += "Fixed: " + figDescription(f) + " layer was null\n";
+                } else {
+                    report += "Fixed: " + figDescription(f) + " refered to wrong layer\n";
+                }
+                // The fix
+                f.setLayer(getLayer());
+            }
+            
+            // 2. Make sure all FigNodes and FigEdges have an valid owner
+            if (f instanceof FigNode || f instanceof FigEdge) {
+                // The report
+                Object owner = f.getOwner();
+                if (owner == null) {
+                    report += "Removed: " + figDescription(f) + " owner was null\n";
+//                } else if (Model.getFacade().isRemoved(owner)) {
+//                    report += "Removed: " + figDescription(f) + " model element no longer in the repository\n";
+                }
+                // The fix
+                f.removeFromDiagram();
+            }
+            
+        }
+        
+        return report;
+    }
+    
+    private String figDescription(Fig f) {
+        String description = f.getClass().getName();
+        if (f instanceof FigComment) {
+            description += ((FigComment)f).getBody();
+        } else if (f instanceof FigNodeModelElement) {
+            description += ((FigNodeModelElement)f).getName();
+        } else if (f instanceof FigEdgeModelElement) {
+            description += ((FigEdgeModelElement)f).getName();
+        }
+        return description;
     }
 
 } /* end class ArgoDiagram */
