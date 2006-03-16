@@ -263,8 +263,8 @@ public class ArgoDiagram extends Diagram {
                 Object owner = f.getOwner();
                 if (owner == null) {
                     report += "Removed: " + figDescription(f) + " owner was null\n";
-//                } else if (Model.getFacade().isRemoved(owner)) {
-//                    report += "Removed: " + figDescription(f) + " model element no longer in the repository\n";
+                } else if (Model.getUmlFactory().isRemoved(owner)) {
+                    report += "Removed: " + figDescription(f) + " model element no longer in the repository\n";
                 }
                 // The fix
                 f.removeFromDiagram();
