@@ -650,6 +650,10 @@ public class FigComment
         // flag. Then set the bounds for the rectangle we have defined.
         newlyCreated = false;
     }
+    
+    public String getBody() {
+        return bodyTextFig.getText();
+    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
