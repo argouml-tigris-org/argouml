@@ -104,6 +104,8 @@ public interface CoreHelper {
      *
      * @param o object
      * @return true if it's a method, false if not
+     * @deprecated by Bob in 0.21.1.
+     * There is a duplicate method Model.getFacade().isAMethod(Object)
      */
     boolean isMethod(Object o);
 
@@ -112,6 +114,8 @@ public interface CoreHelper {
      *
      * @param o object
      * @return true if it's an operation, false if not
+     * @deprecated by Bob in 0.21.1.
+     * There is a duplicate method Model.getFacade().isAOperation(Object)
      */
     boolean isOperation(Object o);
 

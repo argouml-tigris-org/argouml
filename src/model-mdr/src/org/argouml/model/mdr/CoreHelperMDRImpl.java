@@ -281,6 +281,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
 
     /**
      * @see org.argouml.model.CoreHelper#isMethod(java.lang.Object)
+     * There is a duplicate method Model.getFacade().isAMethod(Object)
      */
     public boolean isMethod(Object o) {
         return (o instanceof Method);
@@ -288,6 +289,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
 
     /**
      * @see org.argouml.model.CoreHelper#isOperation(java.lang.Object)
+     * There is a duplicate method Model.getFacade().isAOperation(Object)
      */
     public boolean isOperation(Object o) {
         return (o instanceof Operation);
