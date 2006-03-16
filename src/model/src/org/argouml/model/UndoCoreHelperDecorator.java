@@ -398,7 +398,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
             public void set(Object value) {
                 getComponent().setSpecification(handle, value);
             }
-        }, specification, Model.getFacade().getSpecification(handle));
+        }, specification, Model.getCoreHelper().getSpecification(handle));
     }
 
     /**
