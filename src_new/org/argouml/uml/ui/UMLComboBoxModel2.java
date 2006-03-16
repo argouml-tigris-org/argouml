@@ -309,7 +309,6 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @param theNewTarget the target
      */
     protected void setTarget(Object theNewTarget) {
-        buildingModel = true;
         LOG.debug("setTarget target :  " + theNewTarget);
         theNewTarget = theNewTarget instanceof Fig 
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
@@ -325,12 +324,12 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 Model.getPump().addModelEventListener(this, comboBoxTarget,
                         propertySetName);
                 
-                removeAllElements();
-
+                buildingModel = true;
                 buildModelList();
                 // Do not set buildingModel = false here, 
                 // otherwise the action for selection is performed.
                 setSelectedItem(getSelectedModelElement());
+                buildingModel = false;
                 
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
@@ -344,7 +343,6 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 addElement(""); // makes sure we can select 'none'
             }
         }
-        buildingModel = false;
     }
 
     /**

@@ -158,19 +158,9 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         /*
          * The default behavior for super implementation is
          * to add/remove elements from the list, but it isn't
-         * that simple here, because we'll receive these events
-         * on a simple type change.
+         * that complex here, because there is no need to
+         * change the list on a simple type change.
          */
-        buildingModel = true;
-        if (evt instanceof AddAssociationEvent
-                || evt instanceof RemoveAssociationEvent) {
-            if ("ownedElement".equals(evt.getPropertyName())) {
-                buildModelList();
-            }
-        } else {
-            super.propertyChange(evt);
-        }
-        buildingModel = true;
     }
 
 }
