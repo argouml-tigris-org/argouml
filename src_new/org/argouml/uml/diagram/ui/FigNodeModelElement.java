@@ -402,10 +402,17 @@ public abstract class FigNodeModelElement
      *
      * @return the name Fig
      */
-    public FigText getNameFig() {
+    protected FigText getNameFig() {
         return nameFig;
     }
-
+    
+    /**
+     * Get the Rectangle in which the model elements name is displayed
+     */
+    public Rectangle getNameBounds() {
+        return nameFig.getBounds();
+    }
+    
     /**
      * Set the Fig that displays the model element name.
      *

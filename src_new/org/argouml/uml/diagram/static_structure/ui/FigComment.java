@@ -483,6 +483,13 @@ public class FigComment
     public boolean getUseTrapRect() {
         return true;
     }
+    
+    /**
+     * Always returns null as the FigComment does not display its name.
+     */
+    public Rectangle getNameBounds() {
+        return null;
+    }
 
     /**
      * Get the minimum size for the note figure.
