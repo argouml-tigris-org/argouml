@@ -99,7 +99,7 @@ public class ShadowComboBox extends JComboBox {
                 for (int i = 0; i < shadowFigs.length; ++i) {
                     shadowFigs[i] = new ShadowFig();
                     shadowFigs[i].setShadowSize(i);
-                    shadowFigs[i].getNameFig().setText(
+                    shadowFigs[i].setName(
                         (String) ShadowComboBox.this.getItemAt(i));
                 }
             }
@@ -157,6 +157,10 @@ public class ShadowComboBox extends JComboBox {
             super();
             addFig(getBigPort());
             addFig(getNameFig());
+        }
+        
+        public void setName(String text) {
+            getNameFig().setText(text);
         }
 
         /**
