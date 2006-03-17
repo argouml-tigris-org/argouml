@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui.behavior.state_machines;
+package org.argouml.uml.ui.behavior.activity_graphs;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
@@ -35,18 +35,17 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
- * Listmodel for the context of a statemachine.
- *
- * @since Dec 6, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * Listmodel for the Context of an ActivityGraph.
+ * 
+ * @author Michiel
  */
-public class UMLStateMachineContextComboBoxModel
+class UMLActivityGraphContextComboBoxModel
     extends  UMLComboBoxModel2  {
-
+    
     /**
      * Constructor for UMLStateMachineContextListModel.
      */
-    public UMLStateMachineContextComboBoxModel() {
+    public UMLActivityGraphContextComboBoxModel() {
         super("context", false);
     }
 
@@ -67,6 +66,9 @@ public class UMLStateMachineContextComboBoxModel
             elements.addAll(Model
                     .getModelManagementHelper().getAllModelElementsOfKind(
                             model, Model.getMetaTypes().getBehavioralFeature()));
+            elements.addAll(Model
+                    .getModelManagementHelper().getAllModelElementsOfKind(
+                            model, Model.getMetaTypes().getPackage()));
         }
 
         setElements(elements);
@@ -79,9 +81,13 @@ public class UMLStateMachineContextComboBoxModel
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAClassifier(element)
-                || Model.getFacade().isABehavioralFeature(element);
+            || Model.getFacade().isABehavioralFeature(element)
+            || Model.getFacade().isAPackage(element);
     }
-
+    
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
     protected Object getSelectedModelElement() {
         return Model.getFacade().getContext(getTarget());
     }
