@@ -72,6 +72,7 @@ import org.omg.uml.foundation.core.Abstraction;
 import org.omg.uml.foundation.core.AssociationClass;
 import org.omg.uml.foundation.core.AssociationEnd;
 import org.omg.uml.foundation.core.Attribute;
+import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.Comment;
 import org.omg.uml.foundation.core.Component;
@@ -235,6 +236,13 @@ public final class MetaTypesMDRImpl implements MetaTypes {
      */
     public Object getAttribute() {
         return Attribute.class;
+    }
+
+    /**
+     * @see org.argouml.model.MetaTypes#getBehavioralFeature()
+     */
+    public Object getBehavioralFeature() {
+        return BehavioralFeature.class;    
     }
 
     /**

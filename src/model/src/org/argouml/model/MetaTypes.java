@@ -103,6 +103,11 @@ public interface MetaTypes {
     Object getAttribute();
 
     /**
+     * @return Returns the BehavioralFeature.
+     */
+    Object getBehavioralFeature();
+
+    /**
      * @return Returns the BooleanExpression.
      */
     Object getBooleanExpression();

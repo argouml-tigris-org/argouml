@@ -24,12 +24,25 @@
 
 package org.argouml.uml.ui.behavior.activity_graphs;
 
+import java.beans.PropertyChangeEvent;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelStateMachine;
 import org.argouml.util.ConfigLoader;
-import org.argouml.uml.ui.behavior.state_machines.*;
 
 /**
- * PropertyPanel for Activitygraphs. Currently it just inherits everything from
+ * PropertyPanel for Activitygraphs. It inherits almost everything from
  * PropPanelStateMachine.
+ * 
  * TODO: implement partitions
  */
 public class PropPanelActivityGraph extends PropPanelStateMachine {
@@ -41,5 +54,100 @@ public class PropPanelActivityGraph extends PropPanelStateMachine {
     public PropPanelActivityGraph() {
         super("ActivityGraph", ConfigLoader.getTabPropsOrientation());
     }
+    
+    protected UMLComboBoxModel2 getContextComboBoxModel() {
+        return new UMLActivityGraphContextComboBoxModel();
+    }
 }
 
+class UMLActivityGraphContextComboBoxModel
+    extends  UMLComboBoxModel2  {
+    
+    /**
+     * Constructor for UMLStateMachineContextListModel.
+     */
+    public UMLActivityGraphContextComboBoxModel() {
+        super("context", false);
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        Set paths = new HashSet();
+        Set elements = new TreeSet(new Comparator() {
+            public int compare(Object o1, Object o2) {
+                try {
+                    String name1 = Model.getFacade().getName(o1);
+                    String name2 = Model.getFacade().getName(o2);
+                    name1 = (name1 != null ? name1 : "");
+                    name2 = (name2 != null ? name2 : "");
+                    
+                    return name1.compareTo(name2);
+                } catch (Exception e) {
+                    throw new ClassCastException(e.getMessage());
+                }
+            }
+        });
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Iterator it = p.getUserDefinedModels().iterator();
+        
+        while (it.hasNext()) {
+            Object model = /* (MModel) */it.next();
+            
+            addAllUniqueModelElementsFrom(elements, paths, Model
+                    .getModelManagementHelper().getAllModelElementsOfKind(
+                            model, Model.getMetaTypes().getClassifier()));
+            addAllUniqueModelElementsFrom(elements, paths, Model
+                    .getModelManagementHelper().getAllModelElementsOfKind(
+                            model, Model.getMetaTypes().getBehavioralFeature()));
+            addAllUniqueModelElementsFrom(elements, paths, Model
+                    .getModelManagementHelper().getAllModelElementsOfKind(
+                            model, Model.getMetaTypes().getPackage()));
+        }
+        
+        addAll(elements);
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     */
+    protected boolean isValidElement(Object element) {
+        return Model.getFacade().isAClass(element)
+        || Model.getFacade().isAUseCase(element);
+    }
+    
+    /**
+     * Helper method for buildModelList.
+     * <p>
+     * Adds those elements from source that do not have the same path as any
+     * path in paths to elements, and its path to paths. Thus elements will
+     * never contain two objects with the same path, unless they are added by
+     * other means.
+     */
+    private static void addAllUniqueModelElementsFrom(Set elements, Set paths,
+            Collection source) {
+        Iterator it2 = source.iterator();
+        
+        while (it2.hasNext()) {
+            Object obj = it2.next();
+            Object path = Model.getModelManagementHelper().getPath(obj);
+            if (!paths.contains(path)) {
+                paths.add(path);
+                elements.add(obj);
+            }
+        }
+    }
+    
+    protected Object getSelectedModelElement() {
+        return Model.getFacade().getContext(getTarget());
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        /* Do nothing by design. */
+    }
+
+}

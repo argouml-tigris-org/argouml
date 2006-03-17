@@ -32,6 +32,7 @@ import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -75,16 +76,19 @@ public class PropPanelStateMachine extends PropPanelModelElement {
         addField(Translator.localize("label.stereotype"),
                 getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
-                getNamespaceScroll());
+                getNamespaceSelector());
 
         // the context in which the statemachine resides
-        UMLComboBoxModel2 contextComboBoxModel = new UMLStateMachineContextComboBoxModel();
         UMLComboBox2 contextComboBox =
             new UMLComboBox2(
-                     contextComboBoxModel,
+                     getContextComboBoxModel(),
                      ActionSetContextStateMachine.getInstance());
-        addField(Translator.localize("label.represented-modelelement"),
-                contextComboBox);
+        addField(Translator.localize("label.context"),
+                new UMLComboBoxNavigator(
+                        this,
+                        Translator.localize("label.context.navigate.tooltip"),
+                        contextComboBox));
+        
         // the top state
         JList topList = new UMLLinkedList(new UMLStateMachineTopListModel());
         addField(Translator.localize("label.top-state"),
@@ -111,4 +115,9 @@ public class PropPanelStateMachine extends PropPanelModelElement {
         addAction(new ActionDeleteSingleModelElement());
     }
 
+    protected UMLComboBoxModel2 getContextComboBoxModel() {
+        return new UMLStateMachineContextComboBoxModel();
+    }
+    
+    
 }

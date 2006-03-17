@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
+import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -49,7 +50,7 @@ public class UMLStateMachineContextComboBoxModel
      * Constructor for UMLStateMachineContextListModel.
      */
     public UMLStateMachineContextComboBoxModel() {
-        super("context",false);
+        super("context", false);
     }
 
     /**
@@ -80,6 +81,9 @@ public class UMLStateMachineContextComboBoxModel
             addAllUniqueModelElementsFrom(elements, paths, Model
                     .getModelManagementHelper().getAllModelElementsOfKind(
                             model, Model.getMetaTypes().getClassifier()));
+            addAllUniqueModelElementsFrom(elements, paths, Model
+                    .getModelManagementHelper().getAllModelElementsOfKind(
+                            model, Model.getMetaTypes().getBehavioralFeature()));
         }
 
         addAll(elements);
@@ -120,4 +124,12 @@ public class UMLStateMachineContextComboBoxModel
     protected Object getSelectedModelElement() {
         return Model.getFacade().getContext(getTarget());
     }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        /* Do nothing by design. */
+    }
+
 }
