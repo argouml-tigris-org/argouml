@@ -35,9 +35,7 @@ import java.util.TreeSet;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
-import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -53,8 +51,10 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLStructuralFeatureTypeComboBoxModel() {
         super("type", false);
-        Model.getPump().addClassModelEventListener(this,
-                Model.getMetaTypes().getNamespace(), "ownedElement");
+        /* TODO: Investigate if the following is needed, and if so, adapt the
+         * propertyChange() below.  */
+//        Model.getPump().addClassModelEventListener(this,
+//                Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
     /**
@@ -73,6 +73,10 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
      * path in paths to elements, and its path to paths. Thus elements will
      * never contain two objects with the same path, unless they are added by
      * other means.
+     *
+     * @param elements the Set with the results
+     * @param paths the Set with the paths
+     * @param source a Collection with elements to add
      */
     private static void addAllUniqueModelElementsFrom(Set elements, Set paths,
             Collection source) {
@@ -107,8 +111,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
                 }
             }
         });
-        //Object model =
-        //    ProjectManager.getManager().getCurrentProject().getRoot();
+
         Project p = ProjectManager.getManager().getCurrentProject();
         if (p == null) {
             return;
