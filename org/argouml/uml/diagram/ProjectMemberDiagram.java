@@ -87,5 +87,12 @@ public class ProjectMemberDiagram extends AbstractProjectMember {
     protected void setDiagram(ArgoDiagram d) {
         diagram = d;
     }
+    
+    /**
+     * @see org.argouml.kernel.ProjectMember#repair()
+     */
+    public String repair() {
+        return diagram.repair();
+    }
 
 } /* end class ProjectMemberDiagram */

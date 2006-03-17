@@ -62,4 +62,10 @@ public interface ProjectMember {
      * @return the file extension string
      */
     String getZipFileExtension();
+    
+    /**
+     * Repair any corruptions in the project member. Executed before a save in
+     * order to ensure persistence is robust.
+     */
+    String repair();
 }
