@@ -127,4 +127,14 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
     	}
     	return out;
     }
+    
+    /**
+     * There is not yet any repair task for the ToDo model but this is open to
+     * implement as and when any problems areas are discovered.
+     * @see org.argouml.kernel.ProjectMember#repair()
+     */
+    public String repair() {
+        return "";
+    }
+
 }
