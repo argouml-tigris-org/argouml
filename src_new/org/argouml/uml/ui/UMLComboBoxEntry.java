@@ -28,13 +28,18 @@ import java.util.Iterator;
 
 import org.argouml.model.Model;
 import org.argouml.uml.Profile;
-import org.argouml.util.CollectionUtil;
 
 /**
- * A combobox entry.
+ * A combobox entry. <p>
  *
  * TODO: What is a Phantom element? Document it.
- *
+ * MVW: I think it is an entry in the list, 
+ * that when selected, deletes the
+ * UML model-association, just like the "" 
+ * in the comboboxes currently. <p>
+ * 
+ *  This class does not seem to be in use currently. 
+ *  Is it a good idea to complete this? Or shall we remove?
  */
 public class UMLComboBoxEntry implements Comparable {
     private Object/*MModelElement*/ element;
