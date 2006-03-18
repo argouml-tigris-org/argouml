@@ -53,9 +53,10 @@ public class ActionStateNotationUml extends ActionStateNotation {
                 Model.getCommonBehaviorFactory()
                         .buildUninterpretedAction(myActionState);
         } else {
-            language =
-                Model.getDataTypesHelper().getLanguage(
-                        Model.getFacade().getScript(entry));
+            Object script = Model.getFacade().getScript(entry);
+            if (script != null) {
+                language = Model.getDataTypesHelper().getLanguage(script);
+            }
         }
         Object actionExpression =
             Model.getDataTypesFactory().createActionExpression(language, text);
