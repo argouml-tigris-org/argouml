@@ -859,7 +859,6 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         if (handle instanceof AssociationEnd) {
             AssociationEnd assend = (AssociationEnd) handle;
             assend.getQualifier().add(attr);
-            attr.setOwner(assend.getParticipant());
         }
         // we set the listeners to the figs here too
         // it would be better to do that in the figs themselves
