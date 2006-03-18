@@ -395,6 +395,30 @@ Change it while changing the paragraphs.
     </itemizedlist>
   </sect1>
 
+  <!-- Conventions relating to use of eclipse -->
+
+  <sect1>
+    <title>For Eclipse Users</title>
+
+    <para>If you use the Eclipse, then the XML editor that comes
+      with the Eclipse <emphasis>Tools Platform (WTP)</emphasis>
+      project allows comfortable editing.
+    </para>
+    
+    <para>Regretfully, the docbook-validation of this editor 
+      (as any other suitable editor that has been evaluated)
+      currently does not support the way the cookbook
+      and quickguide are divided in 
+      seperate XML files. 
+      The manual 
+      consists of one single XML file, 
+      so it does not have this problem.
+    </para>
+    
+    <para></para>
+
+  </sect1>
+  
   <!-- Conventions relating to use of emacs -->
 
   <sect1>
