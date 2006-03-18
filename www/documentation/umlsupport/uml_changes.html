@@ -31,9 +31,14 @@ the ArgoUML JAR or in CVS
 <a
   href="http://argouml.tigris.org/source/browse/*checkout*/argouml-mdr/src/org/argouml/model/mdr/conversions/uml13touml14.xsl">here</a>
 . A summary done by the OMG of the changes between the two versions can
-be found at http://www.omg.org/docs/ad/01-02-11.pdf. The most
+be found at 
+<a href="http://www.omg.org/docs/ad/01-02-11.pdf">
+http://www.omg.org/docs/ad/01-02-11.pdf</a>.
+The most
 comprehensive documentation of the changes is the changebarred version
-of the UML 1.4 specification available from the OMG at
+of the UML 1.4 specification available as document  
+<a href="http://www.omg.org/cgi-bin/doc?formal/01-09-67">01-09-67</a>
+on the OMG web site..
 <ul>
   <li>Visible changes to model
   <ul>
@@ -41,14 +46,10 @@ of the UML 1.4 specification available from the OMG at
     changed to abstract in UML 1.4)</li>
     <li>Pseudostate.kind <i>branch</i> mapped to <i>choice</i></li>
     <li>Comment text is copied from Comment.name to Comment.body (which
-    is new in UML 1.4) <b>Note:</b>Some modelling tools which support
+    is new in UML 1.4) <br><b>Note:</b>Some modelling tools which support
     UML 1.4 still use the name attribute instead of the body attribute
     to store the text of the comment. The conversion process will not
     fix these (since no conversion gets run on UML 1.4 files).</li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
   </ul>
   </li>
   <li>New features in UML 1.4:
@@ -63,7 +64,6 @@ of the UML 1.4 specification available from the OMG at
     and a related type EnumerationLiteral.</li>
   </ul>
   </li>
-  <hr>
 
   <li>New features in UML 1.4 not yet implemented by ArgoUML:
   <ul>
@@ -78,10 +78,6 @@ of the UML 1.4 specification available from the OMG at
     <li>InteractionInstanceSet and CollaborationInstanceSet have been
     added for use in Collaborations.</li>
     <li>The attribute isSpecification has been added to ElementImport.</li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
   </ul>
   </li>
   <li>Internal changes to XMI file:
