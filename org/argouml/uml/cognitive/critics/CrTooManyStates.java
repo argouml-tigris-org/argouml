@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,14 +35,14 @@ import org.argouml.uml.cognitive.UMLDecision;
  * many subvertices.
  */
 public class CrTooManyStates extends AbstractCrTooMany {
+
     /**
-     * Threshold.
+     * The initial threshold.
      */
     private static final int STATES_THRESHOLD = 20;
 
     /**
      * The constructor.
-     *
      */
     public CrTooManyStates() {
         setupHeadAndDesc();
@@ -59,9 +59,8 @@ public class CrTooManyStates extends AbstractCrTooMany {
 	if (!(Model.getFacade().isACompositeState(dm))) {
             return NO_PROBLEM;
         }
-	Object cs = /*(MCompositeState)*/ dm;
 
-	Collection subs = Model.getFacade().getSubvertices(cs);
+	Collection subs = Model.getFacade().getSubvertices(dm);
 	if (subs.size() <= getThreshold()) {
             return NO_PROBLEM;
         }
@@ -72,4 +71,5 @@ public class CrTooManyStates extends AbstractCrTooMany {
      * The UID.
      */
     private static final long serialVersionUID = -7320341818814870066L;
+
 } /* end class CrTooManyStates */
