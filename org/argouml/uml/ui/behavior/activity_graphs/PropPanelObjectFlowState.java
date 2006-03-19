@@ -40,7 +40,6 @@ import javax.swing.JScrollPane;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
