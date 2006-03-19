@@ -50,10 +50,13 @@ public class GoTransitiontoEffect extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (Model.getFacade().isATransition(parent)) {
-            Collection col = new ArrayList();
-            col.add(Model.getFacade().getEffect(parent));
-            return col;
+        if (Model.getFacade().isATransition(parent)) { 
+                Object effect = Model.getFacade().getEffect(parent);
+                if (effect != null) {
+                    Collection col = new ArrayList();
+                    col.add(effect);
+                    return col;
+                }
         }
         return null;
     }
