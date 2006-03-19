@@ -361,6 +361,7 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-operation", "New Operation");
         images.put("button.new-package", "Package");
         images.put("button.new-parameter", "New Parameter");
+        images.put("button.new-partition", "Partition");
         images.put("button.new-permission", "Permission");
         images.put("button.new-raised-signal", "New Raised Signal");
         images.put("button.new-reception", "New Reception");
