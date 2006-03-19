@@ -15325,6 +15325,18 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           classes it may become very difficult for humans to 
           understand. Defining an understandable set of class diagrams 
           is an important part of your design.</para>
+          
+          <para>The Wizard of this critic allows setting of the treshold, 
+          i.e. the maximum number of classes
+          allowed before this critic fires.  </para>
+
+          <caution>
+            <para>This number is not stored persistently, and
+            there is no way to reduce it after it has been set higher,
+            except by creating more classes until the critic fires again.
+            Restarting ArgoUML resets this number to its default: 20.
+            </para>
+          </caution>
 
         </sect2>
 
@@ -15707,6 +15719,18 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>Suggestion that the class has too many attributes for a 
           good design, and is at risk of becoming a design 
           bottleneck.</para>
+          
+          <para>The Wizard of this critic allows setting of the treshold, 
+          i.e. the maximum number of attributes 
+          allowed before this critic fires.  </para>
+
+          <caution>
+            <para>This number is not stored persistently, and
+            there is no way to reduce it after it has been set higher,
+            except by creating more attributes until the critic fires again.
+            Restarting ArgoUML resets this number to its default: 7.
+            </para>
+          </caution>
 
         </sect2>
 
@@ -15782,6 +15806,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>Suggestion given state is involved in so many 
           transitions it may be a maintenance bottleneck.</para>
+                    
+          <para>The Wizard of this critic allows setting of the treshold, 
+          i.e. the maximum number of transitions 
+          allowed before this critic fires.  </para>
+
+          <caution>
+            <para>This number is not stored persistently, and
+            there is no way to reduce it after it has been set higher,
+            except by creating more transition until the critic fires again.
+            Restarting ArgoUML resets this number to its default: 10.
+            </para>
+          </caution>
+          
 
         </sect2>
 
@@ -15793,6 +15830,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           states as to be confusing and should be simplified (perhaps 
           by breaking into several machines, or using a 
           hierarchy).</para>
+                    
+          <para>The Wizard of this critic allows setting of the treshold, 
+          i.e. the maximum number of states 
+          allowed before this critic fires.  </para>
+
+          <caution>
+            <para>This number is not stored persistently, and
+            there is no way to reduce it after it has been set higher,
+            except by creating more states until the critic fires again.
+            Restarting ArgoUML resets this number to its default: 20.
+            </para>
+          </caution>
+          
 
         </sect2>
 
@@ -16300,6 +16350,18 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>Suggestion that the given artifact (actor, use case, 
           class or interface) has so many associations it may be a 
           maintenance bottleneck.</para>
+          
+          <para>The Wizard of this critic allows setting of the treshold, 
+          i.e. the maximum number of associations 
+          allowed before this critic fires.  </para>
+
+          <caution>
+            <para>This number is not stored persistently, and
+            there is no way to reduce it after it has been set higher,
+            except by creating more associations until the critic fires again.
+            Restarting ArgoUML resets this number to its default: 7.
+            </para>
+          </caution>
 
         </sect2>
 
@@ -16452,6 +16514,18 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>Suggestion that the artifact (class or interface) has 
           too many operations for a good design, and is at risk of 
           becoming a design bottleneck.</para>
+          
+          <para>The Wizard of this critic allows setting of the treshold, 
+          i.e. the maximum number of operations 
+          allowed before this critic fires.  </para>
+
+          <caution>
+            <para>This number is not stored persistently, and
+            there is no way to reduce it after it has been set higher,
+            except by creating more operations until the critic fires again.
+            Restarting ArgoUML resets this number to its default: 20.
+            </para>
+          </caution>
 
         </sect2>
 

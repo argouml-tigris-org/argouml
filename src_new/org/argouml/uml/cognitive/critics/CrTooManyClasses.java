@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,15 +35,15 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
  * This critic should be rewritten to work with namespaces.
  */
 public class CrTooManyClasses extends AbstractCrTooMany {
+
     /**
-     * Threshold.
+     * The initial threshold.
      */
     private static final int CLASS_THRESHOLD = 20;
 
     /**
      * The constructor.
-     *
-     */
+      */
     public CrTooManyClasses() {
 	// TODO: <ocl>self.name</ocl> is not expanded for diagram objects
         setupHeadAndDesc();
@@ -67,10 +67,10 @@ public class CrTooManyClasses extends AbstractCrTooMany {
 	return PROBLEM_FOUND;
     }
 
-
     /**
      * The UID.
      */
     private static final long serialVersionUID = -3270186791825482658L;
+
 } /* end class CrTooManyClasses */
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,10 +29,14 @@ import javax.swing.JPanel;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ui.WizStepTextField;
 
-/** A wizard which adjust the threshold for critics.
+/** 
+ * A wizard which adjust the threshold for critics. <p>
+ * 
+ * TODO: Make the treshold setting adjustable without using the wizard, 
+ * and make it persistent. 
+ * Maybe by using the "Configure" button on the Browse Critics dialog.
  *
  * @see org.argouml.uml.cognitive.critics.AbstractCrTooMany
- *
  * @author mkl
  *
  */
@@ -49,7 +53,6 @@ public class WizTooMany extends UMLWizard {
      */
     public WizTooMany() {
         super();
-        // TODO: Auto-generated constructor stub
     }
 
     /**

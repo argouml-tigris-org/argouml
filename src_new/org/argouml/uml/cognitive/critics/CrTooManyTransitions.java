@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,10 +60,9 @@ public class CrTooManyTransitions extends AbstractCrTooMany {
 	if (!(Model.getFacade().isAStateVertex(dm))) {
             return NO_PROBLEM;
         }
-	Object sv = /*(MStateVertex)*/ dm;
 
-	Collection in = Model.getFacade().getIncomings(sv);
-	Collection out = Model.getFacade().getOutgoings(sv);
+	Collection in = Model.getFacade().getIncomings(dm);
+	Collection out = Model.getFacade().getOutgoings(dm);
 	int inSize = (in == null) ? 0 : in.size();
 	int outSize = (out == null) ? 0 : out.size();
 	if (inSize + outSize <= getThreshold()) {
@@ -76,4 +75,5 @@ public class CrTooManyTransitions extends AbstractCrTooMany {
      * The UID.
      */
     private static final long serialVersionUID = -5732942378849267065L;
+
 } /* end class CrTooManyTransitions */

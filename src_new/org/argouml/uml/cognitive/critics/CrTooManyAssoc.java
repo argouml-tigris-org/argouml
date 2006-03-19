@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,13 +35,17 @@ import org.argouml.uml.cognitive.UMLDecision;
 public class CrTooManyAssoc extends AbstractCrTooMany {
 
     /**
+     * The initial threshold.
+     */
+    private static final int ASSOCIATIONS_THRESHOLD = 7;
+
+    /**
      * The constructor.
-     *
      */
     public CrTooManyAssoc() {
         setupHeadAndDesc();
 	addSupportedDecision(UMLDecision.RELATIONSHIPS);
-	setThreshold(7);
+	setThreshold(ASSOCIATIONS_THRESHOLD);
 	addTrigger("associationEnd");
     }
 
@@ -51,11 +55,11 @@ public class CrTooManyAssoc extends AbstractCrTooMany {
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAClassifier(dm))) return NO_PROBLEM;
-	Object cls = /*(MClassifier)*/ dm;
+
 	// TODO: consider inherited associations?
 	// TODO: self loops are double counted
 	int threshold = getThreshold();
-	Collection aes = Model.getFacade().getAssociationEnds(cls);
+	Collection aes = Model.getFacade().getAssociationEnds(dm);
 	if (aes == null || aes.size() <= threshold) return NO_PROBLEM;
 	return PROBLEM_FOUND;
     }
