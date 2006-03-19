@@ -312,7 +312,7 @@ public class UMLActivityDiagram extends UMLDiagram {
         if (actionNewSwimlane == null) {
             actionNewSwimlane =
                 new CmdCreateNode(Model.getMetaTypes().getPartition(),
-                        	  "Create a new swimlane");
+                        	  "button.new-partition");
         }
         return actionNewSwimlane;
     }
