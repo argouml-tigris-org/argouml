@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.activity_graphs;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -69,8 +70,13 @@ class ActionNewClassifierInState extends UndoableAction {
                     .getAllModelElementsOfKindWithModel(type, choiceClass);
                 Collection states = new ArrayList(c);
                 PropPanelObjectFlowState.removeTopStateFrom(states);
-                
+
                 if (states.size() < 1) return;
+                Object state = pickNicestStateFrom(states);
+                if (state != null) {
+                    states.clear();
+                    states.add(state);
+                }
                 super.actionPerformed(e);
                 Object cis = Model.getActivityGraphsFactory()
                     .buildClassifierInState(type, states);
@@ -99,4 +105,59 @@ class ActionNewClassifierInState extends UndoableAction {
         return enabled;
     }
     
+    /**
+     * Pick the "nicest" state from the collection. <p>
+     * 
+     * We distinct between the following levels of "nice": <ul>
+     * <li> named simple state (excluding objectflowstate)
+     * <li> named composite state (excluding submachinestate) 
+     * <li> unnamed simple state (excluding objectflowstate)
+     * <li> unnamed composite state (excluding submachinestate)
+     * <li> any other
+     * 
+     * @param states the collection with states
+     * @return the nicest state
+     */
+    private Object pickNicestStateFrom(Collection states) {
+        if (states.size() < 2) return states.iterator().next();
+        Collection simples = new ArrayList();
+        Collection composites = new ArrayList();
+        Iterator i;
+
+        i = states.iterator();
+        while (i.hasNext()) {
+            Object st = i.next();
+            String name = Model.getFacade().getName(st);
+            if (Model.getFacade().isASimpleState(st)
+                    && !Model.getFacade().isAObjectFlowState(st)) {
+                simples.add(st);
+                if (name != null
+                        && (name.length() > 0)) {
+                    return st;
+                }
+            }
+        }
+
+        i = states.iterator();
+        while (i.hasNext()) {
+            Object st = i.next();
+            String name = Model.getFacade().getName(st);
+            if (Model.getFacade().isACompositeState(st)
+                    && !Model.getFacade().isASubmachineState(st)) {
+                composites.add(st);
+                if (name != null
+                        && (name.length() > 0)) {
+                    return st;
+                }
+            }
+        }
+
+        if(simples.size() > 0) {
+            return simples.iterator().next();
+        }
+        if(composites.size() > 0) {
+            return composites.iterator().next();
+        }
+        return states.iterator().next();
+    }
 }
