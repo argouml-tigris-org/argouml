@@ -38,8 +38,10 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.state.ui.SelectionState;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
+import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -398,6 +400,10 @@ public class FigObjectFlowState extends FigNodeModelElement {
         if (ft == state) {
             showHelp(notationProviderState.getParsingHelp());
         }
+    }
+
+    public Selection makeSelection() {
+        return new SelectionActionState(this);
     }
 
 } /* end class FigObjectFlowState */
