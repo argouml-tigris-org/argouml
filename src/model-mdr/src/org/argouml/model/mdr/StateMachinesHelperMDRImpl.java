@@ -607,6 +607,20 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     }
 
     /**
+     * @see org.argouml.model.StateMachinesHelper#setChangeExpression(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setChangeExpression(Object handle, Object value) {
+        if (handle instanceof ChangeEvent
+                && (value == null || value instanceof BooleanExpression)) {
+            ((ChangeEvent) handle).setChangeExpression((BooleanExpression) value);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle + " or value: "
+                + value);
+    }
+
+    /**
      * @see org.argouml.model.StateMachinesHelper#getPath(java.lang.Object)
      */
     public String getPath(Object o) {

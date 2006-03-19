@@ -305,11 +305,19 @@ public interface StateMachinesHelper {
     /**
      * Sets the time-expression for a TimeEvent.
      *
-     * @param handle Object (MTimeEvent)
-     * @param value Object (MTimeExpression)
+     * @param handle Object (TimeEvent)
+     * @param value Object (TimeExpression)
      */
     void setWhen(Object handle, Object value);
 
+    /**
+     * Sets the change-expression for a ChangeEvent.
+     *
+     * @param handle Object (ChangeEvent)
+     * @param value Object (BooleanExpression)
+     */
+    void setChangeExpression(Object handle, Object value);
+    
     /**
      * Returns the path of a state vertex.
      * @param o the StateVertex

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,12 +24,20 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.TitledBorder;
+
+import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
+import org.argouml.uml.ui.UMLExpressionBodyField;
+import org.argouml.uml.ui.UMLExpressionLanguageField;
+import org.argouml.uml.ui.UMLExpressionModel2;
 import org.argouml.util.ConfigLoader;
+import org.tigris.swidgets.GridLayout2;
 
 /**
  * The properties panel for a ChangeEvent.
- *
  *
  * @author oliver.heyden
  */
@@ -50,9 +58,18 @@ public class PropPanelChangeEvent extends PropPanelEvent {
     public void initialize() {
         super.initialize();
 
+        UMLExpressionModel2 changeModel = new UMLChangeExpressionModel(
+                this, "changeExpression");
+        JPanel changePanel = new JPanel(new GridLayout2());
+        changePanel.setBorder(new TitledBorder(Translator
+                .localize("label.change")));
+        changePanel.add(new JScrollPane(new UMLExpressionBodyField(
+                changeModel, true)));
+        changePanel.add(new UMLExpressionLanguageField(changeModel,
+                false));
+        add(changePanel);
+        
         addAction(new ActionDeleteSingleModelElement());;
     }
 
 }
-
-

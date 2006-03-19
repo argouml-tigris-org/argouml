@@ -2750,6 +2750,12 @@ public interface Facade {
     Object getWhen(Object target);
 
     /**
+     * @param target The ChangeEvent.
+     * @return BooleanExpression
+     */
+    Object getChangeExpression(Object target);
+
+    /**
      * Recognizer for TagDefinition. Implemented only in UML 1.4+ metamodels.
      *
      * @param handle candidate

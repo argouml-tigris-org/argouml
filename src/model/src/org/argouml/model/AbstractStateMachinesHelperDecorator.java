@@ -325,6 +325,15 @@ public abstract class AbstractStateMachinesHelperDecorator
     }
 
     /**
+     * @see org.argouml.model.StateMachinesHelper#setChangeExpression(
+     *         java.lang.Object,
+     *         java.lang.Object)
+     */
+    public void setChangeExpression(Object handle, Object value) {
+        impl.setChangeExpression(handle, value);
+    }
+
+    /**
      * @see org.argouml.model.StateMachinesHelper#getPath(
      *         java.lang.Object)
      */

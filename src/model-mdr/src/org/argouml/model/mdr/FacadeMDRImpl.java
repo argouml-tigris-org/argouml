@@ -3990,6 +3990,16 @@ class FacadeMDRImpl implements Facade {
     }
 
     /**
+     * @see org.argouml.model.Facade#getChangeExpression(java.lang.Object)
+     */
+    public Object getChangeExpression(Object target) {
+        if (isAChangeEvent(target)) {
+            return ((ChangeEvent) target).getChangeExpression();
+        }
+        return illegalArgumentObject(target);
+    }
+
+    /**
      * @see org.argouml.model.Facade#getPartitions(java.lang.Object)
      */
     public Collection getPartitions(Object container) {
