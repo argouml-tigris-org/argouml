@@ -1032,53 +1032,58 @@ public class CoreHelperMDRImpl implements CoreHelper {
                     + relationship.toString() + " is not " + "a relationship");
 
         }
-        if (relationship instanceof Link) {
-            Iterator it =
-                modelImpl.getFacade().getConnections(relationship).iterator();
-            if (it.hasNext()) {
-                return modelImpl.getFacade().getInstance(it.next());
-            } else {
-                return null;
+        try {
+            if (relationship instanceof Link) {
+                Iterator it = modelImpl.getFacade()
+                        .getConnections(relationship).iterator();
+                if (it.hasNext()) {
+                    return modelImpl.getFacade().getInstance(it.next());
+                } else {
+                    return null;
+                }
             }
-        }
-        if (relationship instanceof UmlAssociation) {
-            UmlAssociation assoc = (UmlAssociation) relationship;
-            List conns = assoc.getConnection();
-            if (conns == null || conns.isEmpty()) {
-                return null;
+            if (relationship instanceof UmlAssociation) {
+                UmlAssociation assoc = (UmlAssociation) relationship;
+                List conns = assoc.getConnection();
+                if (conns == null || conns.isEmpty()) {
+                    return null;
+                }
+                return ((AssociationEnd) conns.get(0)).getParticipant();
             }
-            return ((AssociationEnd) conns.get(0)).getParticipant();
-        }
-        if (relationship instanceof Generalization) {
-            Generalization gen = (Generalization) relationship;
-            return gen.getChild();
-        }
-        if (relationship instanceof Dependency) {
-            Dependency dep = (Dependency) relationship;
-            Collection col = dep.getClient();
-            if (col.isEmpty()) {
-                return null;
+            if (relationship instanceof Generalization) {
+                Generalization gen = (Generalization) relationship;
+                return gen.getChild();
             }
-            return (ModelElement) (col.toArray())[0];
-        }
-        if (relationship instanceof Flow) {
-            Flow flow = (Flow) relationship;
-            Collection col = flow.getSource();
-            if (col.isEmpty()) {
-                return null;
+            if (relationship instanceof Dependency) {
+                Dependency dep = (Dependency) relationship;
+                Collection col = dep.getClient();
+                if (col.isEmpty()) {
+                    return null;
+                }
+                return (ModelElement) (col.toArray())[0];
             }
-            return (ModelElement) (col.toArray())[0];
-        }
-        if (relationship instanceof Extend) {
-            Extend extend = (Extend) relationship;
-            return extend.getExtension(); // we have to follow the arrows..
-        }
-        if (relationship instanceof Include) {
-            Include include = (Include) relationship;
-            return modelImpl.getFacade().getBase(include);
-        }
-        if (relationship instanceof AssociationEnd) {
-            return ((AssociationEnd) relationship).getAssociation();
+            if (relationship instanceof Flow) {
+                Flow flow = (Flow) relationship;
+                Collection col = flow.getSource();
+                if (col.isEmpty()) {
+                    return null;
+                }
+                return (ModelElement) (col.toArray())[0];
+            }
+            if (relationship instanceof Extend) {
+                Extend extend = (Extend) relationship;
+                return extend.getExtension(); // we have to follow the
+                                                // arrows..
+            }
+            if (relationship instanceof Include) {
+                Include include = (Include) relationship;
+                return modelImpl.getFacade().getBase(include);
+            }
+            if (relationship instanceof AssociationEnd) {
+                return ((AssociationEnd) relationship).getAssociation();
+            }
+        } catch (InvalidObjectException e) {
+            return null;
         }
         return null;
     }
