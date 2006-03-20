@@ -90,9 +90,15 @@ public final class NotationProviderFactory2 {
 
     /**
      * TYPE_OBJECTFLOWSTATE_STATE the text shown on a 
-     * objectflowsate's state.
+     * objectflowstate's state.
      */
     public static final int TYPE_OBJECTFLOWSTATE_STATE = 11;
+
+    /**
+     * TYPE_CALLSTATE the text shown on a 
+     * callstate's state.
+     */
+    public static final int TYPE_CALLSTATE = 12;
 
     /**
      * defaultLanguage the Notation language used by default, i.e. UML

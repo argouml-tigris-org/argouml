@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,17 +24,40 @@
 
 package org.argouml.uml.ui.behavior.activity_graphs;
 
-import javax.swing.ImageIcon;
+import java.awt.event.ActionEvent;
 
-import org.tigris.swidgets.Orientation;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.ActionRemoveModelElement;
+import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewCallAction;
+import org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState;
+import org.argouml.uml.ui.behavior.state_machines.UMLStateEntryListModel;
 import org.argouml.util.ConfigLoader;
+import org.tigris.gef.undo.UndoableAction;
+import org.tigris.swidgets.Orientation;
 
 /**
+ * The properties panel for a CallState.
  *
  * @author mkl
- *
  */
-public class PropPanelCallState extends PropPanelActionState {
+public class PropPanelCallState extends AbstractPropPanelState {
+
+    private JScrollPane callActionEntryScroll;
+    private JList callActionEntryList;
 
     /**
      * The constructor.
@@ -52,8 +75,56 @@ public class PropPanelCallState extends PropPanelActionState {
      */
     public PropPanelCallState(String name, ImageIcon icon,
             Orientation orientation) {
-        super(name, icon, orientation);
 
+        super(name, icon, orientation);
+        
+        callActionEntryList = new UMLCallStateEntryList(
+                new UMLStateEntryListModel());
+        callActionEntryList.setVisibleRowCount(1);
+        callActionEntryScroll = new JScrollPane(callActionEntryList);
+
+        addField(Translator.localize("label.name"),
+                getNameTextField());
+        addField(Translator.localize("label.stereotype"),
+                getStereotypeSelector());
+        addField(Translator.localize("label.container"),
+                getContainerScroll());
+        addField(Translator.localize("label.entry"),
+                getCallActionEntryScroll());
+
+        addField(Translator.localize("label.deferrable"),
+                getDeferrableEventsScroll());
+
+        addSeperator();
+
+        addField(Translator.localize("label.incoming"),
+                getIncomingScroll());
+        addField(Translator.localize("label.outgoing"),
+                getOutgoingScroll());
+    }
+    
+    /**
+     * Let's add a buttun to create a CallAction:
+     * 
+     * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex#addExtraButtons()
+     */
+    protected void addExtraButtons() {
+        Action a = new ActionNewEntryCallAction(); 
+        a.putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("button.new-callaction"));
+        Icon icon = ResourceLoaderWrapper.lookupIcon("CallAction");
+        a.putValue(Action.SMALL_ICON, icon);
+        addAction(a);
+    }
+
+    /**
+     * @return Returns the entryScroll.
+     */
+    protected JScrollPane getCallActionEntryScroll() {
+        return callActionEntryScroll;
     }
 
 }
+
+
+
