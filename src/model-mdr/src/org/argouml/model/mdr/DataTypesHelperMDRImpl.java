@@ -215,10 +215,10 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
      */
     private String multiplicityRangeToString(MultiplicityRange range) {
         if (range.getLower() == range.getUpper())
-            return DataTypesFactoryMDRImpl.b2s(range.getLower());
+            return DataTypesFactoryMDRImpl.boundToString(range.getLower());
         else
-            return DataTypesFactoryMDRImpl.b2s(range.getLower()) + ".."
-                    + DataTypesFactoryMDRImpl.b2s(range.getUpper());
+            return DataTypesFactoryMDRImpl.boundToString(range.getLower()) + ".."
+                    + DataTypesFactoryMDRImpl.boundToString(range.getUpper());
     }
 
     /**

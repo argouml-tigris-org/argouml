@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.DataTypesFactory;
 import org.omg.uml.foundation.datatypes.ActionExpression;
 import org.omg.uml.foundation.datatypes.ArgListsExpression;
@@ -67,7 +66,8 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(CoreHelperMDRImpl.class);
+//    private static final Logger LOG = 
+//        Logger.getLogger(CoreHelperMDRImpl.class);
 
     /**
      * Don't allow instantiation.
@@ -238,19 +238,16 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return rc;
     }
 
+
     /**
-     * Create a MultiplicityRange from a string.
-     * TODO: Needs to be added to Model interface
-     * @since UML 1.4
-     * @param str the string definition of the range
-     * @return MultiplicityRange A multiplicity range
+     * @see org.argouml.model.DataTypesFactory#createMultiplicityRange(java.lang.String)
      */
-    public MultiplicityRange createMultiplicityRange(String str) {
+    public Object createMultiplicityRange(String str) {
         StringTokenizer stk = new StringTokenizer(str, ". ");
         if (!stk.hasMoreTokens()) {
             throw new IllegalArgumentException("empty multiplicity range");
         }
-        int lower = s2b(stk.nextToken());
+        int lower = stringToBound(stk.nextToken());
         int upper = 0;
         if (!stk.hasMoreTokens()) {
             upper = lower;
@@ -259,7 +256,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 lower = 0;
             }
         } else {
-            upper = s2b(stk.nextToken());
+            upper = stringToBound(stk.nextToken());
             if (stk.hasMoreTokens()) {
                 throw new IllegalArgumentException(
                         "illegal range specification");
@@ -268,40 +265,47 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return createMultiplicityRange(lower, upper);
     }
     
+
     /**
-     * Create a MultiplicityRange from a pair of integers.
-     * 
-     * TODO: Needs to be added to Model interface
-     * 
-     * @since UML 1.4
-     * @param lower
-     *            the lower bound of the range
-     * @param upper
-     *            the upper bound of the range
-     * @return MultiplictyRange A multiplicity range
+     * @see org.argouml.model.DataTypesFactory#createMultiplicityRange(int, int)
      */
-    public MultiplicityRange createMultiplicityRange(int lower, int upper) {
+    public Object createMultiplicityRange(int lower, int upper) {
         MultiplicityRange range = 
             modelImpl.getUmlPackage().getDataTypes().getMultiplicityRange()
                 .createMultiplicityRange(lower, upper);
         return range;
     }
 
-    static String b2s(int i) {
-        if (i == -1)
+    /**
+     * Convert an integer to a string using MultiplicityRange notation.
+     * 
+     * @param i integer to convert
+     * @return String version of integer or "*" for unlimited (-1)
+     */
+    static String boundToString(int i) {
+        if (i == -1) {
             return "*";
-        else
+        } else {
             return "" + i;
+        }
     }
 
-    static int s2b(String b) {
+    /**
+     * Convert a MultiplicityRange bound string to an integer.
+     * 
+     * @param b String containing a single MultiplicityRange bound
+     * @return integer representation
+     */
+    private static int stringToBound(String b) {
         try {
-            if (b.equals("n") || b.equals("*"))
+            if (b.equals("n") || b.equals("*")) {
                 return -1;
-            else
+            } else {
                 return Integer.parseInt(b);
+            }
         } catch (Exception ex) {
-            throw new IllegalArgumentException("illegal range bound");
+            throw new IllegalArgumentException("illegal range bound : "
+                    + (b == null ? "null" : b));
         }
     }
 }
