@@ -1692,7 +1692,7 @@ public abstract class FigNodeModelElement
     }
     
     /**
-     * Add an element listener and remember the registration.
+     * Remove an element listener and remember the registration.
      * 
      * @param element
      *            element to listen for changes on
