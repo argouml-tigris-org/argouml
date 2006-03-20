@@ -206,18 +206,27 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * <li>The existence of a 4th column indicates that the connection is valid
      * in one direction only.
      * </ul>
+     * NOTE: This encodes not only what is legal in UML, but also what ArgoUML
+     * knows how to create, so not all legal connections are included.  Probably
+     * should be split into two pieces: 1) legal UML (here) and 2) supported
+     * (in ArgoUML application someplace) - tfm
      */
     // TODO: This should be built by reflection from the metamodel - tfm
     //       Update for UML 1.4 metamodel if not replaced by reflection
     private static final Object[][] VALID_CONNECTIONS = {
-        {Generalization.class,   ClassifierRole.class, },
-        {Generalization.class,   UmlClass.class, },
-        {Generalization.class,   Interface.class, },
-        {Generalization.class,   UmlPackage.class, },
-        {Generalization.class,   UseCase.class, },
-        {Generalization.class,   Actor.class, },
-        {Generalization.class,   Node.class, },
-        {Generalization.class,   Component.class, },
+        {Generalization.class,   GeneralizableElement.class, },
+//        {Generalization.class,   ClassifierRole.class, },
+//        {Generalization.class,   UmlClass.class, },
+//        {Generalization.class,   Interface.class, },
+//        {Generalization.class,   UmlPackage.class, },
+//        {Generalization.class,   UseCase.class, },
+//        {Generalization.class,   Actor.class, },
+//        {Generalization.class,   Node.class, },
+//        {Generalization.class,   Component.class, },
+//        {Generalization.class,   Artifact.class, },
+//        {Generalization.class,   DataType.class, },
+//        {Generalization.class,   Stereotype.class, },
+        {Dependency.class,       ModelElement.class, },
         {Dependency.class,       Package.class, },
         {Dependency.class,       UmlClass.class, },
         {Dependency.class,       Interface.class, },
@@ -1042,4 +1051,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
     }
 
+    /**
+     * @see org.argouml.model.UmlFactory#deleteAll()
+     */
+    public void deleteAll() {
+        instancesDeleted.clear();
+        instancesToBeDeleted.clear();
+        nsmodel.clearModelExtent();
+    }
 }

@@ -113,6 +113,12 @@ public interface UmlFactory {
      * @param elem The element to be deleted
      */
     void delete(Object elem);
+    
+    /**
+     * Delete all model data in the model subsystem.
+     * Reinitializes everything to the startup state.
+     */
+    void deleteAll();
 
     /**
      * The Project may check if a certain model element has been removed.
