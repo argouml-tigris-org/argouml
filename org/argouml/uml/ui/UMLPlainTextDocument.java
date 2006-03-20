@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,6 @@
 package org.argouml.uml.ui;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -35,7 +34,6 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.ModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -53,7 +51,7 @@ import org.tigris.gef.presentation.Fig;
  */
 public abstract class UMLPlainTextDocument
     extends PlainDocument
-    implements PropertyChangeListener, TargetListener {
+    implements UMLDocument {
 
     private static final Logger LOG =
         Logger.getLogger(UMLPlainTextDocument.class);
@@ -111,14 +109,17 @@ public abstract class UMLPlainTextDocument
      */
     public final void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (Model.getFacade().isABase(target)) {
-            ModelEventPump eventPump = Model.getPump();
-            if (panelTarget != null) {
-                eventPump.removeModelEventListener(this, panelTarget,
-						   getEventName());
+        if (Model.getFacade().isAModelElement(target)) {
+            if (target != panelTarget) {
+                ModelEventPump eventPump = Model.getPump();
+                if (panelTarget != null) {
+                    eventPump.removeModelEventListener(this, panelTarget,
+                            getEventName());
+                }
+                panelTarget = target;
+                eventPump.addModelEventListener(this, panelTarget,
+                        getEventName());
             }
-            panelTarget = target;
-            eventPump.addModelEventListener(this, panelTarget, getEventName());
             handleEvent();
         }
     }
@@ -130,6 +131,9 @@ public abstract class UMLPlainTextDocument
     public void insertString(int offset, String str, AttributeSet a)
         throws BadLocationException {
         super.insertString(offset, str, a);
+        // TODO: This is updating model on a per character basis as
+        // well as unregistering/reregistering event listeners every
+        // character - very wasteful - tfm
         if (isFiring()) {
             setFiring(false);
             setProperty(getText(0, getLength()));
@@ -144,6 +148,9 @@ public abstract class UMLPlainTextDocument
      */
     public void remove(int offs, int len) throws BadLocationException {
         super.remove(offs, len);
+        // TODO: This is updating model on a per character basis as
+        // well as unregistering/reregistering event listeners every
+        // character - very wasteful - tfm
         if (isFiring()) {
             setFiring(false);
             setProperty(getText(0, getLength()));

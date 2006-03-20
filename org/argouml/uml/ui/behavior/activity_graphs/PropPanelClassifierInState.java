@@ -176,7 +176,8 @@ class UMLClassifierInStateTypeComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         Object model =
             ProjectManager.getManager().getCurrentProject().getModel();
-        Collection c = new ArrayList(Model.getCoreHelper().getAllClassifiers(model));
+        Collection c = 
+            new ArrayList(Model.getCoreHelper().getAllClassifiers(model));
         Collection newList = new ArrayList();
         Iterator i = c.iterator();
         while (i.hasNext()) {
@@ -257,7 +258,8 @@ class ActionAddCISState extends AbstractActionAddModelElement {
         Object classifier = Model.getFacade().getType(cis);
         if (Model.getFacade().isAClassifier(classifier)) {
             ret.addAll(Model.getModelManagementHelper()
-                    .getAllModelElementsOfKindWithModel(classifier, choiceClass));
+                    .getAllModelElementsOfKindWithModel(classifier,
+                            choiceClass));
         }
         return ret;
     }
