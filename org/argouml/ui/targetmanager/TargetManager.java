@@ -399,6 +399,9 @@ public final class TargetManager {
 
     private Action addOperationAction = new ActionAddOperation();
 
+    private Action addEnumerationLiteralAction = 
+        new ActionAddEnumerationLiteral();
+
     /**
      * Singleton retrieval method.
      * @return the targetmanager
@@ -880,6 +883,16 @@ public final class TargetManager {
     }
 
     /**
+     * Get the Action class for creating and adding a new EnumerationLiteral for
+     * the single selected target (or its owner).
+     * 
+     * @return the action
+     */
+    public Action getAddEnumerationLiteralAction() {
+        return addEnumerationLiteralAction;
+    }
+
+    /**
      * Convenience method to return the target as fig. If the current
      * target (retrieved by getTarget) is either a fig itself or the
      * owner of a fig this fig will be returned. Otherwise null will
@@ -1004,3 +1017,4 @@ public final class TargetManager {
     }
 
 }
+

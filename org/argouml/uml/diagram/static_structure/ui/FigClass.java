@@ -51,7 +51,6 @@ import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
-import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Editor;
@@ -76,16 +75,10 @@ public class FigClass extends FigClassifierBox
 
     private FigAttributesCompartment attributesFigCompartment;
 
-    private Fig borderFig;
-
-    /**
-     * Text highlighted by mouse actions on the diagram.<p>
-     */
-    private CompartmentFigText highlightedFigText;
-
     /**
      * Manages residency of a class within a component on a deployment
      * diagram.
+     * TODO: This belongs in ModelElement, not Class - tfm
      */
     private Object resident =
             Model.getCoreFactory().createElementResidence();
@@ -141,30 +134,11 @@ public class FigClass extends FigClassifierBox
      * maintained.<p>
      */
     public FigClass() {
-
-        getBigPort().setLineWidth(0);
-        getBigPort().setFillColor(Color.white);
-
+        super();
+        
         // Attributes inside. First one is the attribute box itself.
         attributesFigCompartment =
             new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
-
-        // The operations compartment is built in the ancestor FigClassifierBox
-
-        // Set properties of the stereotype box. Make it 1 pixel higher than
-        // before, so it overlaps the name box, and the blanking takes out both
-        // lines. Initially not set to be displayed, but this will be changed
-        // when we try to render it, if we find we have a stereotype.
-        getStereotypeFig().setFilled(false);
-        getStereotypeFig().setHeight(STEREOHEIGHT + 1);
-        // +1 to have 1 pixel overlap with getNameFig()
-        getStereotypeFig().setVisible(true);
-
-        borderFig = new FigEmptyRect(10, 10, 0, 0);
-        borderFig.setLineWidth(1);
-        borderFig.setLineColor(Color.black);
-
-        getStereotypeFig().setLineWidth(0);
 
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.
@@ -194,7 +168,6 @@ public class FigClass extends FigClassifierBox
         this();
         setOwner(node);
         enableSizeChecking(true);
-
     }
 
     /**
@@ -601,17 +574,6 @@ public class FigClass extends FigClassifierBox
             }
         } while (ft2 == null);
         return ft2;
-    }
-
-    /**
-     * @return the compartment
-     */
-    protected CompartmentFigText unhighlight() {
-        CompartmentFigText fc = super.unhighlight();
-        if (fc == null) {
-            fc = unhighlight(getAttributesFig());
-        }
-        return fc;
     }
 
     /**

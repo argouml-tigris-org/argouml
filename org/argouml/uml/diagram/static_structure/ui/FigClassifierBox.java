@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
@@ -32,6 +33,7 @@ import java.util.List;
 
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
+import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigFeaturesCompartment;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
@@ -61,10 +63,13 @@ public abstract class FigClassifierBox extends FigNodeModelElement
      */
     protected CompartmentFigText highlightedFigText;
 
+    protected Fig borderFig;
+    
     /**
      * Constructor.
      */
     FigClassifierBox() {
+
         // this rectangle marks the operation section; all operations
         // are inside it
         operationsFig =
@@ -79,6 +84,13 @@ public abstract class FigClassifierBox extends FigNodeModelElement
         getStereotypeFig().setLineWidth(1);
         // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
+
+        borderFig = new FigEmptyRect(10, 10, 0, 0);
+        borderFig.setLineWidth(1);
+        borderFig.setLineColor(Color.black);
+
+        getBigPort().setLineWidth(0);
+        getBigPort().setFillColor(Color.white);
 
     }
 
@@ -211,7 +223,19 @@ public abstract class FigClassifierBox extends FigNodeModelElement
      * @return the FigText that had highlight removed
      */
     protected CompartmentFigText unhighlight() {
-        return unhighlight(operationsFig);
+        Fig fc;
+        // Search all feature compartments for a text fig to unhighlight
+        for (int i = 1; i < getFigs().size(); i++) {
+            fc = getFigAt(i);
+            if (fc instanceof FigFeaturesCompartment) {
+                CompartmentFigText ft = 
+                    unhighlight((FigFeaturesCompartment) fc);
+                if (ft != null) {
+                    return ft;
+                }
+            }
+        }
+        return null;
     }
 
     /**

@@ -62,7 +62,7 @@ public class FigStereotypesCompartment extends FigCompartment {
      * One UML keyword is allowed. These are not strictly stereotypes but are
      * displayed as such. e.g. &lt;&lt;interface&gt;&gt;
      */
-    String keyword;
+    private String keyword;
 
     /**
      * The constructor.
