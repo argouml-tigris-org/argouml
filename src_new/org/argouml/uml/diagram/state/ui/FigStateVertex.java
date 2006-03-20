@@ -37,6 +37,8 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigNode;
 
 /**
  * Abstract class to with common behavior for nestable nodes in UML Statechart
@@ -103,15 +105,18 @@ public abstract class FigStateVertex extends FigNodeModelElement {
             LayerDiagram lay =
                 ((LayerDiagram) editor.getLayerManager().getActiveLayer());
             for (int i = 0; i < getEnclosedFigs().size(); i++) {
-                FigStateVertex f =
-                    ((FigStateVertex) getEnclosedFigs().elementAt(i));
+                Fig f = ((Fig) getEnclosedFigs().elementAt(i));
                 lay.bringInFrontOf(f, this);
-                Collection col = null;
-                Iterator it = f.getFigEdges(col).iterator();
-                while (it.hasNext()) {
-                    lay.bringInFrontOf(((FigEdge) it.next()), this);
+                if (f instanceof FigNode) {
+                    FigNode fn = (FigNode)f;
+                    Iterator it = fn.getFigEdges().iterator();
+                    while (it.hasNext()) {
+                        lay.bringInFrontOf(((FigEdge) it.next()), this);
+                    }
+                    if (fn instanceof FigStateVertex) {
+                        ((FigStateVertex)fn).redrawEnclosedFigs();
+                    }
                 }
-                f.redrawEnclosedFigs();
             }
         }
     }
