@@ -36,6 +36,10 @@ import org.tigris.gef.presentation.FigLine;
  * Presentation logic which is common to both an operations
  * compartment and an attributes compartment.<p>
  *
+ * TODO: This is really just a generic list compartment.  It doesn't have
+ * any behavior specific to features.  Rename to something more appropriate and
+ * create a named list compartment variant. - tfm - 20060313
+ * 
  * TODO: Investigate if this could be renamed to AbstractFigFeaturesCompartment?
  * @author Bob Tarling
  */
@@ -143,7 +147,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
 
     /**
      * The minimum width is the minimum width of the widest child feature.
-     * The minium height is the total minimum height of all child figs but no
+     * The minimum height is the total minimum height of all child figs but no
      * less than 21 pixels.
      * @return the minimum width
      */

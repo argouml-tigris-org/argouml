@@ -73,6 +73,8 @@ import org.tigris.gef.presentation.FigNode;
  *  AssociationClass ---  FigAssociationClass
  *  Dependency       ---  FigDependency
  *  Link             ---  FigLink
+ *  DataType         ---  FigDataType
+ *  Stereotype       ---  FigStereotypeDeclaration
  * </pre>
  *
  * @author jrobbins
@@ -115,6 +117,12 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             figNode = new FigComment(gm, node);
         } else if (Model.getFacade().isAAssociation(node)) {
             figNode = new FigNodeAssociation(gm, node);
+        } else if (Model.getFacade().isAEnumeration(node)) {
+            figNode = new FigEnumeration(gm, node);
+        } else if (Model.getFacade().isADataType(node)) {
+            figNode = new FigDataType(gm, node);
+        } else if (Model.getFacade().isAStereotype(node)) {
+            figNode = new FigStereotypeDeclaration(gm, node);
         } else {
             LOG.error("TODO: ClassDiagramRenderer getFigNodeFor " + node);
             throw new IllegalArgumentException(

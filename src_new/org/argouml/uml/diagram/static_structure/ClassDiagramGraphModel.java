@@ -73,6 +73,12 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (Model.getFacade().isAModel(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
 	}
+        if (Model.getFacade().isADataType(nodeOrEdge)) {
+            res.addElement(nodeOrEdge);
+        }
+        if (Model.getFacade().isAStereotype(nodeOrEdge)) {
+            res.addElement(nodeOrEdge);
+        }
 	return res;
     }
 
@@ -218,7 +224,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             return true;
         }
     	if (containsNode(node)) {
-            LOG.error("Addition of node of type "
+            LOG.error("Addition of node of type " 
                     + node.getClass().getName()
                     + " rejected because its already in the graph model");
     	    return false;
@@ -249,7 +255,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         }
         return Model.getFacade().isAClass(node)
             || Model.getFacade().isAInterface(node)
-            || Model.getFacade().isAPackage(node);
+            || Model.getFacade().isAPackage(node)
+            || Model.getFacade().isADataType(node)
+            || Model.getFacade().isAStereotype(node);
     }
 
     /**
@@ -289,7 +297,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
                 return false;
             }
 
-            if (!containsEdge(sourceModelElement)
+            if (!containsEdge(sourceModelElement) 
                     && !containsNode(sourceModelElement)) {
                 LOG.error("Association end rejected. The source model element ("
                         + sourceModelElement.getClass().getName()
@@ -348,7 +356,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         if (!containsNode(destModelElement)
                 && !containsEdge(destModelElement)) {
             LOG.error("Edge rejected. Its destination end is attached to "
-                    + destModelElement
+                    + destModelElement 
                     + " but this is not in the graph model");
             return false;
         }
@@ -546,7 +554,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
 	// prevent no changes...
 	if (newNode == oldNode) {
-            return false;
+	    return false;
         }
 
 	// check parameter types:
@@ -574,14 +582,14 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     public void changeConnectedNode(Object newNode, Object oldNode,
 				    Object edge, boolean isSource) {
 	if (Model.getFacade().isAAssociation(edge)) {
-            rerouteAssociation(newNode,  oldNode,  edge,  isSource);
+	    rerouteAssociation(newNode,  oldNode,  edge,  isSource);
         } else if (Model.getFacade().isAGeneralization(edge)) {
-            rerouteGeneralization(newNode,  oldNode,  edge,  isSource);
+	    rerouteGeneralization(newNode,  oldNode,  edge,  isSource);
         } else if (Model.getFacade().isADependency(edge)) {
-            rerouteDependency(newNode,  oldNode,  edge,  isSource);
+	    rerouteDependency(newNode,  oldNode,  edge,  isSource);
         } else if (Model.getFacade().isALink(edge)) {
-            rerouteLink(newNode,  oldNode,  edge,  isSource);
-        }
+	    rerouteLink(newNode,  oldNode,  edge,  isSource);
+    }
     }
 
     /**
@@ -593,7 +601,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
 	if (!(Model.getFacade().isAClassifier(newNode))
 	    || !(Model.getFacade().isAClassifier(oldNode))) {
-            return;
+	    return;
         }
 
 	// can't have a connection between 2 interfaces:
@@ -610,7 +618,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
 	if (Model.getFacade().isAInterface(newNode)
 	        && Model.getFacade().isAInterface(otherNode)) {
-            return;
+	    return;
         }
 
         // cast the params

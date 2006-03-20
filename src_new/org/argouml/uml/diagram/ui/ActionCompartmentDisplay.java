@@ -30,12 +30,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.use_case.ui.FigUseCase;
-import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.undo.UndoableAction;
 
 
 /**
@@ -48,7 +49,7 @@ import org.tigris.gef.presentation.Fig;
  * The class declares a number of static instances, each with an
  * actionPerformed method that performs the required action.
  */
-public class ActionCompartmentDisplay extends UMLAction {
+public class ActionCompartmentDisplay extends UndoableAction {
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -64,13 +65,17 @@ public class ActionCompartmentDisplay extends UMLAction {
     private boolean display = false;
 
     /**
-     * The compartment type:<p>
-     * 0: attribute
-     * 1: operation
-     * 2: attribute and operation
-     * 3: extensionpoint
+     * Compartment type(s) field.
+     * Bitfield of flags with a bit for each compartment type
      */
     private int cType;
+
+    private static final int COMPARTMENT_ATTRIBUTE = 1;
+    private static final int COMPARTMENT_OPERATION = 2;
+    private static final int COMPARTMENT_EXTENSIONPOINT = 4;
+    private static final int COMPARTMENT_ENUMLITERAL = 8;
+
+
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -81,59 +86,84 @@ public class ActionCompartmentDisplay extends UMLAction {
     /**
      * Static instance to show the attribute compartment of a class.
      */
-    private static final UMLAction SHOW_ATTR_COMPARTMENT =
+    private static final UndoableAction SHOW_ATTR_COMPARTMENT =
         new ActionCompartmentDisplay(true,
-                "action.show-attribute-compartment", 0);
+                "action.show-attribute-compartment", COMPARTMENT_ATTRIBUTE);
 
     /**
      * Static instance to hide the attribute compartment of a class.
      */
-    private static final UMLAction HIDE_ATTR_COMPARTMENT =
+    private static final UndoableAction HIDE_ATTR_COMPARTMENT =
         new ActionCompartmentDisplay(false,
-                "action.hide-attribute-compartment", 0);
+                "action.hide-attribute-compartment", COMPARTMENT_ATTRIBUTE);
 
     /**
      * Static instance to show the operation compartment of a class.
      */
-    private static final UMLAction SHOW_OPER_COMPARTMENT =
+    private static final UndoableAction SHOW_OPER_COMPARTMENT =
         new ActionCompartmentDisplay(true,
-                "action.show-operation-compartment", 1);
+                "action.show-operation-compartment", COMPARTMENT_OPERATION);
 
     /**
      * Static instance to hide the operation compartment of a class.
      */
-    private static final UMLAction HIDE_OPER_COMPARTMENT =
+    private static final UndoableAction HIDE_OPER_COMPARTMENT =
         new ActionCompartmentDisplay(false,
-		"action.hide-operation-compartment", 1);
+		"action.hide-operation-compartment", COMPARTMENT_OPERATION);
 
     /**
      * Static instance to show the extension point compartment of a use
      * case.
      */
-    private static final UMLAction SHOW_EXTPOINT_COMPARTMENT =
+    private static final UndoableAction SHOW_EXTPOINT_COMPARTMENT =
         new ActionCompartmentDisplay(true,
-                "action.show-extension-point-compartment", 3);
+                "action.show-extension-point-compartment", 
+                COMPARTMENT_EXTENSIONPOINT);
 
     /**
      * Static instance to hide the extension point compartment of a use
-     *   case.
+     * case.
      */
-    private static final UMLAction HIDE_EXTPOINT_COMPARTMENT =
+    private static final UndoableAction HIDE_EXTPOINT_COMPARTMENT =
         new ActionCompartmentDisplay(false,
-                "action.hide-extension-point-compartment", 3);
+                "action.hide-extension-point-compartment", 
+                COMPARTMENT_EXTENSIONPOINT);
 
     /**
-     * Static instance to show both compartments of a class.
+     * Static instance to show both compartments of a class or enumeration.
      */
-    private static final UMLAction SHOW_ALL_COMPARTMENTS =
-        new ActionCompartmentDisplay(true, "action.show-all-compartments", 2);
+    private static final UndoableAction SHOW_ALL_COMPARTMENTS =
+        new ActionCompartmentDisplay(true, "action.show-all-compartments", 
+                COMPARTMENT_ATTRIBUTE 
+                | COMPARTMENT_OPERATION 
+                | COMPARTMENT_ENUMLITERAL);
 
     /**
-     * Static instance to hide both compartments of a class.
+     * Static instance to hide both compartments of a class or enumeration.
      */
-    private static final UMLAction HIDE_ALL_COMPARTMENTS =
-        new ActionCompartmentDisplay(false, "action.hide-all-compartments", 2);
+    private static final UndoableAction HIDE_ALL_COMPARTMENTS =
+        new ActionCompartmentDisplay(false, "action.hide-all-compartments", 
+                COMPARTMENT_ATTRIBUTE 
+                | COMPARTMENT_OPERATION
+                | COMPARTMENT_ENUMLITERAL);
 
+    /**
+     * Static instance to show the enumeration literals compartment of an
+     * enumeration.
+     */
+    private static final UndoableAction SHOW_ENUMLITERAL_COMPARTMENT =
+        new ActionCompartmentDisplay(true,
+                "action.show-enumeration-literal-compartment", 
+                COMPARTMENT_ENUMLITERAL);
+
+    /**
+     * Static instance to hide the enumeration literals compartment of an
+     * enumeration.
+     */
+    private static final UndoableAction HIDE_ENUMLITERAL_COMPARTMENT =
+        new ActionCompartmentDisplay(false,
+                "action.hide-enumeration-literal-compartment", 
+                COMPARTMENT_ENUMLITERAL);
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -152,11 +182,7 @@ public class ActionCompartmentDisplay extends UMLAction {
      * @param type the type of compartment. See definition at {@link #cType}
      */
     protected ActionCompartmentDisplay(boolean d, String c, int type) {
-
-        // Invoke the parent constructor
-	super(c, true, NO_ICON);
-
-        // Save copies of the parameters
+	super(Translator.localize(c));
 	display = d;
         cType = type;
     }
@@ -179,57 +205,104 @@ public class ActionCompartmentDisplay extends UMLAction {
         Editor ce = Globals.curEditor();
         Vector figs = ce.getSelectionManager().getFigs();
         Iterator i = figs.iterator();
-        boolean aOn = false;
-        boolean aOff = false;
-        boolean oOn = false;
-        boolean oOff = false;
-        boolean eOn = false;
-        boolean eOff = false;
+        
+        int present = 0;
+        int visible = 0;
+        
+        boolean operPresent = false;
+        boolean operVisible = false;
+        
+        boolean attrPresent = false;
+        boolean attrVisible = false;
+        
+        boolean epPresent = false;
+        boolean epVisible = false;
+        
+        boolean enumPresent = false;
+        boolean enumVisible = false;
+
         while (i.hasNext()) {
             Fig f = (Fig) i.next();
+            
             if (f instanceof AttributesCompartmentContainer) {
-                boolean v =
+                present++;
+                attrPresent = true;
+                attrVisible = 
                     ((AttributesCompartmentContainer) f).isAttributesVisible();
-                if (v) aOn = true;
-                else aOff = true;
+                if (attrVisible) {
+                    visible++;
+                }
             }
             if (f instanceof OperationsCompartmentContainer) {
-                boolean v =
+                present++;
+                operPresent = true;
+                operVisible =
                     ((OperationsCompartmentContainer) f).isOperationsVisible();
-                if (v) oOn = true;
-                else oOff = true;
+                if (operVisible) {
+                    visible++;
+                }
             }
             if (f instanceof ExtensionsCompartmentContainer) {
-                boolean v =
+                present++;
+                epPresent = true;
+                epVisible =
                     ((ExtensionsCompartmentContainer) f).isExtensionPointVisible();
-                if (v) eOn = true;
-                else eOff = true;
+                if (epVisible) {
+                    visible++;
+                }
+            }
+            if (f instanceof EnumLiteralsCompartmentContainer) {
+                present++;
+                enumPresent = true;
+                enumVisible =
+                    ((EnumLiteralsCompartmentContainer) f).isEnumLiteralsVisible();
+                if (enumVisible) {
+                    visible++;
+                }
             }
         }
 
-        if ((aOn || oOn) && (aOn || aOff)) {
-            actions.add(HIDE_ALL_COMPARTMENTS);
+        // Set up hide all / show all
+        if (present > 1) {
+            if (visible > 0) {
+                actions.add(HIDE_ALL_COMPARTMENTS);
+            }
+            if (present - visible > 0) {
+                actions.add(SHOW_ALL_COMPARTMENTS);
+            }
         }
-        if ((aOff || oOff) && (aOn || aOff)) {
-            actions.add(SHOW_ALL_COMPARTMENTS);
+
+        if (attrPresent) {
+            if (attrVisible) {
+                actions.add(HIDE_ATTR_COMPARTMENT);                
+            } else {
+                actions.add(SHOW_ATTR_COMPARTMENT);               
+            }
         }
-        if (aOn) {
-            actions.add(HIDE_ATTR_COMPARTMENT);
+
+        if (enumPresent) {
+            if (enumVisible) {
+                actions.add(HIDE_ENUMLITERAL_COMPARTMENT);
+            } else {
+                actions.add(SHOW_ENUMLITERAL_COMPARTMENT);
+            }
         }
-        if (aOff) {
-            actions.add(SHOW_ATTR_COMPARTMENT);
+        
+        if (operPresent) {
+            if (operVisible) {
+                actions.add(HIDE_OPER_COMPARTMENT);                
+            } else {
+                actions.add(SHOW_OPER_COMPARTMENT);               
+            }
         }
-        if (oOn) {
-            actions.add(HIDE_OPER_COMPARTMENT);
-        }
-        if (oOff) {
-            actions.add(SHOW_OPER_COMPARTMENT);
-        }
-        if (eOn) {
-            actions.add(HIDE_EXTPOINT_COMPARTMENT);
-        }
-        if (eOff) {
-            actions.add(SHOW_EXTPOINT_COMPARTMENT);
+
+
+        if (epPresent) {
+            if (epVisible) {
+                actions.add(HIDE_EXTPOINT_COMPARTMENT);
+            } else {
+                actions.add(SHOW_EXTPOINT_COMPARTMENT);               
+            }
         }
 
         return actions;
@@ -253,18 +326,26 @@ public class ActionCompartmentDisplay extends UMLAction {
 	    Fig       f   = sel.getContent();
 
             // Perform the action
-            if ((cType == 0) || (cType == 2)) {
+            if ((cType & COMPARTMENT_ATTRIBUTE) != 0) {
 		if (f instanceof AttributesCompartmentContainer)
 		    ((AttributesCompartmentContainer) f)
                         .setAttributesVisible(display);
             }
-            if ((cType == 1) || (cType == 2)) {
+            if ((cType & COMPARTMENT_OPERATION) != 0) {
 		if (f instanceof OperationsCompartmentContainer)
 		    ((OperationsCompartmentContainer) f)
                         .setOperationsVisible(display);
             }
-            if (cType == 3) {
-		((FigUseCase) f).setExtensionPointVisible(display);
+
+            if ((cType & COMPARTMENT_EXTENSIONPOINT) != 0) {
+                if (f instanceof FigUseCase) {
+                    ((FigUseCase) f).setExtensionPointVisible(display);
+                }
+            }
+            if ((cType & COMPARTMENT_ENUMLITERAL) != 0) {
+                if (f instanceof EnumLiteralsCompartmentContainer) {
+                    ((EnumLiteralsCompartmentContainer) f).setEnumLiteralsVisible(display);
+                }
             }
 	}
     }

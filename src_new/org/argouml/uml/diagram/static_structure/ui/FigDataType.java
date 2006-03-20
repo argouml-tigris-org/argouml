@@ -32,7 +32,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -58,32 +57,20 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * Class to display graphics for a UML Interface in a diagram.
+ * Class to display graphics for a UML DataType in a diagram.
+ * (cloned from FigInterface - perhaps they should both specialize
+ * a common supertype)
  */
-public class FigInterface extends FigClassifierBox {
+public class FigDataType extends FigClassifierBox {
 
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(FigInterface.class);
+    private static final Logger LOG = Logger.getLogger(FigDataType.class);
+
 
     /**
-     * Manages residency of an interface within a component on a deployment
-     * diagram. Not clear why it is an instance
-     * variable (rather than local to the method).<p>
-     * 
-     * TODO: This is creating a new residence element each time there is
-     * a new instantiation.  This is going to pollute the model with unused
-     * elements. - tfm - 20060310
-     */
-    private Object resident =
-            Model.getCoreFactory().createElementResidence();
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    /**
-     * Main constructor for a {@link FigInterface}.
+     * Main constructor for a {@link FigDataType}.
      *
      * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
      * will have created the main box {@link #getBigPort()} and
@@ -93,11 +80,7 @@ public class FigInterface extends FigClassifierBox {
      *
      * The properties of all these graphic elements are adjusted
      * appropriately. The main boxes are all filled and have outlines.<p>
-     *
-     * For reasons I don't understand the stereotype is created in a box
-     * with lines. So we have to created a blanking rectangle to overlay the
-     * bottom line, and avoid three compartments showing.<p>
-     *
+     * 
      * <em>Warning</em>. Much of the graphics positioning is hard coded. The
      * overall figure is placed at location (10,10). The name compartment (in
      * the parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
@@ -111,11 +94,11 @@ public class FigInterface extends FigClassifierBox {
      * This is because this constructor is the only one called when loading
      * a project. In this case, the parsed size must be maintained.<p>
      */
-    public FigInterface() {
+    public FigDataType() {
 
         FigStereotypesCompartment fsc =
             (FigStereotypesCompartment) getStereotypeFig();
-        fsc.setKeyword("interface");
+        fsc.setKeyword("datatype");
 
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.
@@ -142,11 +125,24 @@ public class FigInterface extends FigClassifierBox {
      *
      * @param node The UML object being placed.
      */
-    public FigInterface(GraphModel gm, Object node) {
+    public FigDataType(GraphModel gm, Object node) {
         this();
         setOwner(node);
         enableSizeChecking(true);
     }
+
+    /**
+     * Constructor that allows specification of keyword to be used for figure.
+     * 
+     * @param gm unused
+     * @param node node to be placed
+     * @param keyword string to be placed in guillemots at top of figure
+     */
+    public FigDataType(GraphModel gm, Object node, String keyword) {
+        this(gm, node);        
+        ((FigStereotypesCompartment) getStereotypeFig()).setKeyword(keyword);
+    }
+    
 
     /**
      * @see org.tigris.gef.presentation.Fig#makeSelection()
@@ -227,7 +223,7 @@ public class FigInterface extends FigClassifierBox {
     }
 
     /**
-     * Gets the minimum size permitted for an interface on the diagram.<p>
+     * Gets the minimum size permitted for a datatype on the diagram.<p>
      *
      * Parts of this are hardcoded, notably the fact that the name
      * compartment has a minimum height of 21 pixels.<p>
@@ -263,11 +259,12 @@ public class FigInterface extends FigClassifierBox {
             aSize.height += operMin.height;
         }
 
-        // we want to maintain a minimum width for Interfaces
-        aSize.width = Math.max(60, aSize.width);
+        // we want to maintain a minimum width for datatypes
+        aSize.width = Math.max(40, aSize.width);
 
         return aSize;
     }
+
 
     /**
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
@@ -315,7 +312,7 @@ public class FigInterface extends FigClassifierBox {
         if  (!isVisible()) {
             return;
         }
-        Object me = /*(MModelElement)*/ getOwner();
+        Object me = getOwner();
         Object m = null;
 
         try {
@@ -323,8 +320,7 @@ public class FigInterface extends FigClassifierBox {
             if (encloser != null
                     && oldEncloser != encloser
                     && Model.getFacade().isAPackage(encloser.getOwner())) {
-                Model.getCoreHelper().setNamespace(me,
-                        /*(MNamespace)*/ encloser.getOwner());
+                Model.getCoreHelper().setNamespace(me, encloser.getOwner());
             }
 
             // If default Namespace is not already set
@@ -341,23 +337,7 @@ public class FigInterface extends FigClassifierBox {
                     + "' at " + encloser, e);
         }
 
-        // The next if-clause is important for the Deployment-diagram
-        // it detects if the enclosing fig is a component, in this case
-        // the container will be set for the owning Interface
-        if (encloser != null
-                && (Model.getFacade().isAComponent(encloser.getOwner()))) {
-            Object component = /*(MComponent)*/ encloser.getOwner();
-            Object in = /*(MInterface)*/ getOwner();
-            Model.getCoreHelper().setContainer(resident, component);
-            Model.getCoreHelper().setResident(resident, in);
-        } else {
-            Model.getCoreHelper().setContainer(resident, null);
-            Model.getCoreHelper().setResident(resident, null);
-        }
     }
-
-    ////////////////////////////////////////////////////////////////
-    // internal methods
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
@@ -402,59 +382,6 @@ public class FigInterface extends FigClassifierBox {
         }
     }
 
-    /**
-     * @param ft the figtext holding the feature
-     * @param i the index (?)
-     * @return the figtext
-     */
-    protected FigText getPreviousVisibleFeature(FigText ft, int i) {
-        FigText ft2 = null;
-        List figs = operationsFig.getFigs();
-        if (i < 1 || i >= figs.size()
-                || !((FigText) figs.get(i)).isVisible()) {
-            return null;
-        }
-
-        do {
-            i--;
-            if (i < 1) {
-                i = figs.size() - 1;
-            }
-            ft2 = (FigText) figs.get(i);
-            if (!ft2.isVisible()) {
-                ft2 = null;
-            }
-        } while (ft2 == null);
-
-        return ft2;
-    }
-
-    /**
-     * @param ft the figtext holding the feature
-     * @param i the index (?)
-     * @return the figtext
-     */
-    protected FigText getNextVisibleFeature(FigText ft, int i) {
-        FigText ft2 = null;
-        Vector v = new Vector(operationsFig.getFigs());
-        if (i < 1 || i >= v.size()
-                || !((FigText) v.elementAt(i)).isVisible()) {
-            return null;
-        }
-
-        do {
-            i++;
-            if (i >= v.size()) {
-                i = 1;
-            }
-            ft2 = (FigText) v.elementAt(i);
-            if (!ft2.isVisible()) {
-                ft2 = null;
-            }
-        } while (ft2 == null);
-
-        return ft2;
-    }
 
     /**
      * USED BY PGML.tee.
@@ -484,11 +411,7 @@ public class FigInterface extends FigClassifierBox {
             updateOperations();
             damage = true;
         }
-        if (mee != null && Model.getFacade().getStereotypes(getOwner())
-                .contains(mee.getSource())) {
-            updateStereotypeText();
-            damage = true;
-        }
+
         if (damage) {
             damage();
         }
@@ -518,9 +441,10 @@ public class FigInterface extends FigClassifierBox {
      *
      * @param y  Desired Y coordinate of upper left corner
      *
-     * @param w  Desired width of the FigInterface
+     * @param w  Desired width of the figure
      *
-     * @param h  Desired height of the FigInterface
+     * @param h  Desired height of the figure
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(final int x, final int y, final int w,
             final int h) {
@@ -575,6 +499,7 @@ public class FigInterface extends FigClassifierBox {
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
     }
+
 
     /**
      * The UID.
