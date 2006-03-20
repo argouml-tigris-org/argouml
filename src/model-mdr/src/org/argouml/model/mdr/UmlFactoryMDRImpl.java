@@ -1051,12 +1051,4 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
     }
 
-    /**
-     * @see org.argouml.model.UmlFactory#deleteAll()
-     */
-    public void deleteAll() {
-        instancesDeleted.clear();
-        instancesToBeDeleted.clear();
-        nsmodel.clearModelExtent();
-    }
 }
