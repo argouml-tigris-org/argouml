@@ -419,11 +419,13 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     private void updateEnds(Object association) {
         Object[] ends = 
-            Model.getFacade().getConnections(association).toArray(); 
-        Object ae0 = ends[0];
-        Object ae1 = ends[1];
-        updateEnd(srcMult, srcRole, srcOrdering, ae0);
-        updateEnd(destMult, destRole, destOrdering, ae1);
+            Model.getFacade().getConnections(association).toArray();
+        if (ends.length >= 2) {
+            Object ae0 = ends[0];
+            Object ae1 = ends[1];
+            updateEnd(srcMult, srcRole, srcOrdering, ae0);
+            updateEnd(destMult, destRole, destOrdering, ae1);
+        }
     }
 
     /**
