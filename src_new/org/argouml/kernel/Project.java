@@ -1353,4 +1353,18 @@ public class Project implements java.io.Serializable, TargetListener {
     public Profile getProfile() {
         return profile;
     }
+    
+    /**
+     * Repair all parts of the project before a save takes place.
+     * @return a report of any fixes
+     */
+    public String repair() {
+        String report = "";
+        Iterator it = members.iterator();
+        while (it.hasNext()) {
+            ProjectMember member = (ProjectMember)it.next();
+            report += member.repair();
+        }
+        return report;
+    }
 } /* end class Project */
