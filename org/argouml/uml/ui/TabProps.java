@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -426,6 +426,9 @@ public class TabProps
         if (Model.getFacade().isAAbstraction(modelElement)) {
             return new PropPanelAbstraction();
         }
+        if (Model.getFacade().isACallState(modelElement)) {
+            return new PropPanelCallState();
+        }
         if (Model.getFacade().isAActionState(modelElement)) {
             return new PropPanelActionState();
         }
@@ -458,9 +461,6 @@ public class TabProps
         }
         if (Model.getFacade().isACallAction(modelElement)) {
             return new PropPanelCallAction();
-        }
-        if (Model.getFacade().isACallState(modelElement)) {
-            return new PropPanelCallState();
         }
         if (Model.getFacade().isAClassifierInState(modelElement)) {
             return new PropPanelClassifierInState();

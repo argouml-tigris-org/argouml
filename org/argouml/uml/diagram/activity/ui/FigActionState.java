@@ -61,7 +61,7 @@ public class FigActionState extends FigStateVertex {
 
     private FigRRect cover;
 
-    private NotationProvider4 notationProvider;
+    protected NotationProvider4 notationProvider;
 
     ////////////////////////////////////////////////////////////////
     // constructors

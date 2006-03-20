@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,10 +24,14 @@
 
 package org.argouml.uml.diagram.activity.ui;
 
-import java.beans.PropertyVetoException;
+import java.beans.PropertyChangeEvent;
+import java.util.Iterator;
 
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.Model;
+import org.argouml.notation.NotationProviderFactory2;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.FigText;
 
 
 /**
@@ -64,6 +68,65 @@ public class FigCallState extends FigActionState {
     }
 
     /**
+     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
+     */
+    protected void initNotationProviders(Object own) {
+        super.initNotationProviders(own);
+        if (Model.getFacade().isACallState(own)) {
+            notationProvider =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                    NotationProviderFactory2.TYPE_CALLSTATE, this, own);
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */
+    protected void modelChanged(PropertyChangeEvent mee) {
+        super.modelChanged(mee);
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            renderingChanged();
+            updateListeners(getOwner());
+            damage();
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
+    protected void updateListeners(Object newOwner) {
+        // this takes care of the listeners on the state itself:
+        super.updateListeners(newOwner);
+
+        Object oldOwner = getOwner();
+        if (oldOwner != null) {
+            removeAllElementListeners();
+        }
+        if (newOwner != null) {
+            // register for events from all modelelements
+            // that change the body text
+            // i.e. when the CallAction is replaced:
+            addElementListener(newOwner, "entry");
+            Object entryAction = Model.getFacade().getEntry(newOwner);
+            if (Model.getFacade().isACallAction(entryAction)) {
+                // and when the Operation is replaced:
+                addElementListener(entryAction, "operation");
+                Object operation = Model.getFacade().getOperation(entryAction);
+                if (operation != null) {
+                    // and when the owner is replaced (unlikely for operations),
+                    // and when the operation changes name:
+                    addElementListener(operation, 
+                            new String[] {"owner", "name"});
+                    Object classifier = Model.getFacade().getOwner(operation);
+                    // and when the class changes name:
+                    addElementListener(classifier, "name");
+                }
+            }
+        }
+    }
+
+    /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() {
@@ -78,15 +141,4 @@ public class FigCallState extends FigActionState {
         return figClone;
     }
 
-    /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
-     */
-    protected void textEdited(FigText ft) throws PropertyVetoException {
-        /*if (ft == getNameFig() && this.getOwner() != null) {
-            //TODO: Write this function in ParserDisplay. Uncomment then.
-            ParserDisplay.SINGLETON.parseCallActionState(ft.getText(),
-                    this.getOwner());
-        } else*/
-        super.textEdited(ft);
-    }
 } /* end class FigCallState */
