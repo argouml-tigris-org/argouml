@@ -1083,6 +1083,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 return ((AssociationEnd) relationship).getAssociation();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
         return null;

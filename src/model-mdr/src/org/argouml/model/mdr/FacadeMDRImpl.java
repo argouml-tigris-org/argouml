@@ -166,6 +166,10 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * threads, this could occur when trying to update a diagram while handling
  * another MDR event.  All methods really need to be protected by try/catch blocks,
  * not just the ones which have been demonstrated to cause problems. - tfm
+ * IMO it should be part of the contract that the passed object is valid. If not
+ * we should throw an IllegalArgumentException. Returning null simply changes
+ * the danger to us getting a NullPointerException. I've introduced error
+ * logging for now until we can track down the areas of misuse - Bob
  */
 class FacadeMDRImpl implements Facade {
 
@@ -791,6 +795,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Parameter) handle).getKind();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
         return illegalArgumentObject(handle);
@@ -1539,6 +1544,7 @@ class FacadeMDRImpl implements Facade {
                 return ((ClassifierRole) handle).getBase();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         return illegalArgumentCollection(handle);
@@ -1555,6 +1561,7 @@ class FacadeMDRImpl implements Facade {
                                 (ModelElement) handle);
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
         return illegalArgumentCollection(handle);
@@ -1593,6 +1600,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentObject(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
     }
@@ -1654,6 +1662,7 @@ class FacadeMDRImpl implements Facade {
                                 (Classifier) handle);
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         return illegalArgumentCollection(handle);
@@ -1668,6 +1677,7 @@ class FacadeMDRImpl implements Facade {
                 return ((AssociationEnd) handle).getParticipant();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
         return illegalArgumentObject(handle);
@@ -1722,6 +1732,7 @@ class FacadeMDRImpl implements Facade {
                                 (ModelElement) handle);
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         throw new IllegalArgumentException("Expected a ModelElement. Got a "
@@ -1760,6 +1771,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Link) handle).getConnection();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         return illegalArgumentCollection(handle);
@@ -1808,6 +1820,7 @@ class FacadeMDRImpl implements Facade {
             try {
                 return ((State) handle).getEntry();
             } catch (InvalidObjectException e) {
+                LOG.error("Queried a removed model element", e);
                 return null;
             }
         }
@@ -1834,6 +1847,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentObject(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
     }
@@ -1871,6 +1885,7 @@ class FacadeMDRImpl implements Facade {
                                 (ExtensionPoint) handle);
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         return illegalArgumentCollection(handle);
@@ -1919,6 +1934,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Extend) handle).getExtensionPoint();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         return illegalArgumentCollection(handle);
@@ -1933,6 +1949,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Classifier) handle).getFeature();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         return illegalArgumentCollection(handle);
@@ -1966,6 +1983,7 @@ class FacadeMDRImpl implements Facade {
                 return ((GeneralizableElement) handle).getGeneralization();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         throw new IllegalArgumentException(
@@ -2009,6 +2027,7 @@ class FacadeMDRImpl implements Facade {
                 return ((UseCase) handle).getInclude();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         return illegalArgumentCollection(handle);
@@ -2049,6 +2068,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Transition) handle).getSource().getIncoming();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         return illegalArgumentCollection(handle);
@@ -2107,6 +2127,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Message) handle).getInteraction();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
         return illegalArgumentObject(handle);
@@ -2121,6 +2142,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Collaboration) handle).getInteraction();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         return illegalArgumentCollection(handle);
@@ -2135,6 +2157,7 @@ class FacadeMDRImpl implements Facade {
                 return ((State) handle).getInternalTransition();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         return illegalArgumentCollection(handle);
@@ -2156,6 +2179,7 @@ class FacadeMDRImpl implements Facade {
                         .getAActionMessage().getMessage(((Action) handle));
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
         return illegalArgumentCollection(handle);
@@ -2287,6 +2311,7 @@ class FacadeMDRImpl implements Facade {
                 return ((ModelElement) handle).getComment();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         return illegalArgumentCollection(handle);
@@ -2393,6 +2418,7 @@ class FacadeMDRImpl implements Facade {
                 return ((RefObject) handle).refImmediateComposite();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
         return illegalArgumentObject(handle);
@@ -2529,6 +2555,7 @@ class FacadeMDRImpl implements Facade {
                 return ((ElementResidence) handle).getContainer();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
         return illegalArgumentObject(handle);
@@ -2556,6 +2583,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Interaction) handle).getContext();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
         return illegalArgumentObject(handle);
@@ -2710,6 +2738,7 @@ class FacadeMDRImpl implements Facade {
         try {
             return ((ModelElement) handle).getNamespace();
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
     }
@@ -2785,6 +2814,7 @@ class FacadeMDRImpl implements Facade {
                 }
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
 
@@ -2852,6 +2882,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Transition) handle).getTarget().getOutgoing();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         return illegalArgumentCollection(handle);
@@ -2931,6 +2962,7 @@ class FacadeMDRImpl implements Facade {
             }
             return ((Namespace) handle).getOwnedElement();
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
     }
@@ -2954,6 +2986,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Generalization) handle).getPowertype();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
         return illegalArgumentObject(handle);
@@ -2978,6 +3011,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Message) handle).getPredecessor();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         return illegalArgumentCollection(handle);
@@ -3045,6 +3079,7 @@ class FacadeMDRImpl implements Facade {
                                 (Classifier) handle);
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         return illegalArgumentCollection(handle);
@@ -3173,6 +3208,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3200,6 +3236,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3213,6 +3250,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Transition) handle).getSource();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
         return illegalArgumentObject(handle);
@@ -3228,6 +3266,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3242,6 +3281,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3260,6 +3300,7 @@ class FacadeMDRImpl implements Facade {
                     "Can only get Specializations of a GenerizableElement. "
                     + "Got a " + handle.getClass().getName());
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3300,6 +3341,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3321,6 +3363,7 @@ class FacadeMDRImpl implements Facade {
         try {
             return ((ModelElement) handle).getStereotype();
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
     }
@@ -3344,6 +3387,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3363,6 +3407,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3380,6 +3425,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3394,6 +3440,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3418,6 +3465,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3433,6 +3481,7 @@ class FacadeMDRImpl implements Facade {
                         .getSupplierDependency((ModelElement) handle);
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         throw new IllegalArgumentException("Expected a ModelElement. Got a "
@@ -3448,6 +3497,7 @@ class FacadeMDRImpl implements Facade {
                 return ((StateMachine) handle).getTop();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
         return illegalArgumentObject(handle);
@@ -3477,6 +3527,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentObject(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3520,6 +3571,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3533,6 +3585,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Transition) handle).getTarget();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
         return illegalArgumentObject(handle);
@@ -3561,6 +3614,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3642,6 +3696,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3671,6 +3726,7 @@ class FacadeMDRImpl implements Facade {
             }
             return result;
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3709,6 +3765,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3722,6 +3779,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Dependency) handle).getSupplier();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
         throw new IllegalArgumentException("Expected a Dependency. Got a "
@@ -3762,6 +3820,7 @@ class FacadeMDRImpl implements Facade {
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
         }
     }
@@ -3847,6 +3906,7 @@ class FacadeMDRImpl implements Facade {
                         .multiplicityToString(handle);
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return null;
         }
         throw new IllegalArgumentException(
@@ -3894,6 +3954,7 @@ class FacadeMDRImpl implements Facade {
                 return getTaggedValuesCollection(handle).iterator();
             }
         } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST)
                     .iterator();
         }
