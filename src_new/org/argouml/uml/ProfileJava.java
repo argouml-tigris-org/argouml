@@ -407,7 +407,7 @@ public class ProfileJava extends Profile {
                 XmiReader xmiReader = Model.getXmiReader();
                 InputSource inputSource = new InputSource(is);
                 LOG.info("Loaded profile '" + modelFilename + "'");
-                Collection elements = xmiReader.parse(inputSource);
+                Collection elements = xmiReader.parse(inputSource, true);
                 if (elements.size() != 1) {
                     LOG.error("Error loading profile '" + modelFilename
                             + "' expected 1 top level element" + " found "

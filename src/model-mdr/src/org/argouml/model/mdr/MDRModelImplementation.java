@@ -31,6 +31,7 @@ import java.util.Iterator;
 
 import javax.jmi.model.ModelPackage;
 import javax.jmi.model.MofPackage;
+import javax.jmi.reflect.RefObject;
 import javax.jmi.xmi.MalformedXMIException;
 
 import org.apache.log4j.Logger;
@@ -139,16 +140,34 @@ public class MDRModelImplementation implements ModelImplementation {
     
     private MDRepository repository;
 
-    private UmlPackage umlPackage;
+    /*
+     * Package containing user UML model.
+     * Package visibility because it's shared across the implementation.
+     */
+    UmlPackage umlPackage;
 
+    /*
+     * MOF Package containing UML metamodel (M2)
+     */
     private MofPackage mofPackage;
     
+    /*
+     * Top level MOF extent.
+     */
     private ModelPackage mofExtent;
+    
+    /*
+     * Top level model element containingg profile. This state is shared between
+     * the XMI reader and writer. Elements which are read as part of a profile
+     * (as indicated by the calling application) will be treated specially and
+     * will not be written back out with the rest of the model data.
+     */
+    private RefObject profileModel;
 
     private MementoCreationObserver mementoCreationObserver;
 
     /**
-     * @return Returns the extent.
+     * @return Returns the root UML Factory package for user model.
      */
     UmlPackage getUmlPackage() {
         return umlPackage;
@@ -166,9 +185,9 @@ public class MDRModelImplementation implements ModelImplementation {
         return repository;
     }
 
-    static final String MOF_EXTENT_NAME = "metamodel extent";
+    static final String MOF_EXTENT_NAME = "MOF Extent";
 
-    static final String EXTENT_NAME = "model extent";
+    static final String MODEL_EXTENT_NAME = "model extent";
 
     // UML 1.4 metamodel definition in XMI format
     static final String METAMODEL_URL = "mof/01-02-15_Diff.xml";
@@ -216,9 +235,9 @@ public class MDRModelImplementation implements ModelImplementation {
         }
 
         // Create an extent for the uml data
-        umlPackage = (UmlPackage) repository.getExtent(EXTENT_NAME);
+        umlPackage = (UmlPackage) repository.getExtent(MODEL_EXTENT_NAME);
         if (umlPackage == null) {
-            umlPackage = (UmlPackage) repository.createExtent(EXTENT_NAME,
+            umlPackage = (UmlPackage) repository.createExtent(MODEL_EXTENT_NAME,
                     mofPackage);
         }
 
@@ -264,7 +283,7 @@ public class MDRModelImplementation implements ModelImplementation {
         theCoreFactory = new CoreFactoryMDRImpl(this);
 
     }
-    
+
     /**
      * Shutdown repository in a graceful fashion
      * (currently unused)
@@ -512,7 +531,7 @@ public class MDRModelImplementation implements ModelImplementation {
      * @see org.argouml.model.ModelImplementation#getXmiReader()
      */
     public XmiReader getXmiReader() throws UmlException {
-        XmiReader reader = new XmiReaderImpl(this, mofPackage);
+        XmiReader reader = new XmiReaderImpl(this, umlPackage);
         return reader;
     }
 
@@ -544,6 +563,21 @@ public class MDRModelImplementation implements ModelImplementation {
      */
     public MementoCreationObserver getMementoCreationObserver() {
         return mementoCreationObserver;
+    }
+
+    /**
+     * @return the collection of model elements which make up the profile.
+     */
+    protected RefObject getProfileModel() {
+        return profileModel;
+    }
+
+    /**
+     * Save the given elements as belonging to the profile.
+     * @param element collection of model elements.
+     */
+    protected void setProfileModel(RefObject element) {
+        this.profileModel = element;
     }
 
 }

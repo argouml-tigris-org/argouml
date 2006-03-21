@@ -27,7 +27,10 @@ package org.argouml.model.mdr;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.jmi.reflect.RefObject;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.UmlException;
@@ -35,6 +38,7 @@ import org.argouml.model.XmiWriter;
 import org.netbeans.api.xmi.XMIWriter;
 import org.netbeans.api.xmi.XMIWriterFactory;
 import org.netbeans.lib.jmi.xmi.OutputConfig;
+import org.omg.uml.UmlPackage;
 import org.omg.uml.modelmanagement.Model;
 
 /**
@@ -58,18 +62,26 @@ public class XmiWriterMDRImpl implements XmiWriter {
     private MDRModelImplementation parent;
 
     private Object model;
-
+    
     private OutputConfig config;
 
     private Writer writer;
     
     private static final String ENCODING = "UTF-8";
+    
     private static final String XMI_VERSION = "1.2";
 
+    /*
+     * If true, change write semantics to write all top level model elements
+     * except for the profile model(s), ignoring the model specified by the 
+     * caller.
+     */
+    private static final boolean WRITE_ALL = true;
+
     /**
-     * Constructor.
+     * Create an XMI writer for the given model or extent.
      * @param theParent The ModelImplementation
-     * @param theModel The Model to write
+     * @param theModel The Model to write.  If null, write all top-level model elements.
      * @param theWriter The writer to write to
      */
     public XmiWriterMDRImpl(MDRModelImplementation theParent, Object theModel,
@@ -90,18 +102,30 @@ public class XmiWriterMDRImpl implements XmiWriter {
         XMIWriter xmiWriter = XMIWriterFactory.getDefault().createXMIWriter(
                 config);
         try {
-            Vector toSerialize = new Vector();
-            // Model
-            Model m = (Model) model;
-            toSerialize.add(model);
-            LOG.info("Saving model '" + m.getName() + "'");
-            // Write
-            xmiWriter.write(new WriterOuputStream(writer), toSerialize,
-                    XMI_VERSION);
+            ArrayList elements = new ArrayList();
+            if (model != null && !WRITE_ALL) {
+                elements.add(model);
+                LOG.info("Saving model '" + ((Model) model).getName() + "'");
+            } else {
+                RefObject profile = parent.getProfileModel();
+                UmlPackage pkg = parent.getUmlPackage();
+                for (Iterator it = pkg.getCore().getElement().refAllOfType()
+                        .iterator(); it.hasNext();) {
+                    RefObject obj = (RefObject) it.next();
+                    // Find top level objects which aren't part of profile
+                    if (obj.refImmediateComposite() == null ) {
+                        if (!obj.equals(profile)) {
+                            elements.add(obj);
+                        }
+                    }
+                }
+                LOG.info("Saving " + elements.size() + " top level model elements");
+            }
+     
+            xmiWriter.write(new WriterOuputStream(writer), elements, XMI_VERSION);
         } catch (IOException e) {
             throw new UmlException(e);
         }
-
     }
 
     /**

@@ -34,7 +34,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.jmi.model.MofPackage;
+import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 import javax.jmi.xmi.MalformedXMIException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -52,9 +52,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.log4j.Logger;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
-import org.netbeans.api.mdr.CreationFailedException;
-import org.netbeans.api.mdr.MDRManager;
-import org.netbeans.api.mdr.MDRepository;
 import org.netbeans.api.xmi.XMIReader;
 import org.netbeans.api.xmi.XMIReaderFactory;
 import org.netbeans.lib.jmi.xmi.InputConfig;
@@ -79,8 +76,8 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
 
     private XmiReferenceResolverImpl resolver;
 
-    private MofPackage metaModel;
-    
+    private RefPackage modelPackage;
+ 
     /*
      * Flag indicating unknown element was found in XMI file
      */
@@ -111,13 +108,13 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
     /**
      * Constructor for XMIReader.
      * @param parentModelImplementation The ModelImplementation
-     * @param mofModel The Mof metamodel which will be used for reading
+     * @param modelPackage extent to read user models into
      */
     public XmiReaderImpl(MDRModelImplementation parentModelImplementation,
-            MofPackage mofModel) {
+            RefPackage modelPackage) {
 
         this.parent = parentModelImplementation;
-        this.metaModel = mofModel;
+        this.modelPackage = modelPackage;
     }
 
     /**
@@ -130,21 +127,27 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
      *             if there is a problem
      */
     public Collection parse(InputSource pIs) throws UmlException {
+        return parse(pIs, false);
+    }
 
-        RefPackage extent = null;
-        MDRepository repository = MDRManager.getDefault().
-                getDefaultRepository();
-
+    /**
+     * Parses a given inputsource as an XMI file conforming to our metamodel.
+     * 
+     * @param pIs
+     *            The input source for parsing.
+     * @param profile
+     *            true if the model is a profile model. This will be read into a
+     *            separate extent.
+     * @return a collection of top level ModelElements
+     * @throws UmlException
+     *             if there is a problem
+     */
+    public Collection parse(InputSource pIs, boolean profile) throws UmlException {
         Collection newElements = null;
-        String extentName = MDRModelImplementation.EXTENT_NAME;
+        RefPackage extent = modelPackage;
 
         try {
-            LOG.info("Loading '" + pIs.getSystemId() + "' in extent '"
-                    + extentName + "'");
-            if (repository.getExtent(extentName) != null)
-                extent = repository.getExtent(extentName);
-            else
-                extent = repository.createExtent(extentName, metaModel);
+            LOG.info("Loading '" + pIs.getSystemId() + "'");
 
             InputConfig config = new InputConfig();
             config.setUnknownElementsListener(this);
@@ -155,8 +158,8 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
 
             config.setReferenceResolver(resolver);
 
-            XMIReader xmiReader = XMIReaderFactory.getDefault().
-                    createXMIReader(config);
+            XMIReader xmiReader = XMIReaderFactory.getDefault()
+                    .createXMIReader(config);
 
             // Copy stream to a file to be sure it can be repositioned. 
             // TODO: find a way to remove this, since this *always* alterate the
@@ -215,9 +218,7 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                 LOG.warn("Ignored one or more elements from list "
                         + ignoredElements);
             }
-            
-        } catch (CreationFailedException e) {
-            throw new UmlException(e);
+
         } catch (MalformedXMIException e) {
             throw new UmlException(e);
         } catch (IOException e) {
@@ -225,6 +226,17 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         }
         LOG.info("Loaded total of " + newElements.size() 
                 + " model element(s).");
+        if (profile) {
+            if (newElements.size() != 1) {
+                LOG.error("Unexpected number of profile model elements (must be 1) : "
+                        + newElements.size());
+            } else {
+                RefObject model = (RefObject) newElements.iterator().next();
+                LOG.info("**Saving profile with MofID : " + model.refMofId());
+                parent.setProfileModel(model);
+            }
+
+        }
         return newElements;
     }
     

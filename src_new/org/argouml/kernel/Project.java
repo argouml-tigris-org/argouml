@@ -1296,7 +1296,20 @@ public class Project implements java.io.Serializable, TargetListener {
         }
 
         if (models != null) {
+            for (Iterator it = models.iterator(); it.hasNext();) {
+                Object model = it.next();
+                LOG.debug("Deleting project model " 
+                        + Model.getFacade().getName(model));
+                Model.getUmlFactory().delete(model);
+            }
             models.clear();
+        }
+        
+        if (defaultModel != null) {
+            LOG.debug("Deleting profile model " 
+                    + Model.getFacade().getName(defaultModel));
+            Model.getUmlFactory().delete(defaultModel);
+            defaultModel = null;
         }
 
         if (diagrams != null) {
