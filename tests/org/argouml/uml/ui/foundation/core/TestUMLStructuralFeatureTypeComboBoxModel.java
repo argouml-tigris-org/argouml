@@ -92,6 +92,14 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      */
     public void testSetUp() {
         Model.getPump().flushModelEvents();
+        // One can only do this by changing target, 
+        // so let's simulate that:
+        model.targetSet(new TargetEvent(this,
+                TargetEvent.TARGET_SET,
+                new Object[0],
+                new Object[] {
+                elem,
+        }));
         assertTrue(model.contains(types[5]));
         assertTrue(model.contains(types[0]));
         assertTrue(model.contains(types[9]));
