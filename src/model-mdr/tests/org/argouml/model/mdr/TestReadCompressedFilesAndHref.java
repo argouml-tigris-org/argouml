@@ -27,6 +27,8 @@ package org.argouml.model.mdr;
 import java.io.File;
 import java.io.FileInputStream;
 
+import javax.jmi.reflect.RefPackage;
+
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 /**
@@ -61,7 +63,7 @@ public class TestReadCompressedFilesAndHref extends
             //     org.argouml.persistence.PersistenceManager
             //         .getInstance().getPersisterFromFileName(testModel);
             XmiReaderImpl reader = new XmiReaderImpl(modelImplementation,
-                    modelImplementation.getMofPackage());
+                    (RefPackage) modelImplementation.getMofPackage());
             try {
                 //persister.doLoad(new File(testModel));
                 reader.parseToModel(new InputSource(new FileInputStream(
