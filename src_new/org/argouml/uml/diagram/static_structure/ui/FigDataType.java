@@ -148,7 +148,7 @@ public class FigDataType extends FigClassifierBox {
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
-        return new SelectionInterface(this);
+        return new SelectionDataType(this);
     }
 
     /**
