@@ -1309,11 +1309,14 @@ public final class ProjectBrowser
                                 + " members in the old project");
                         LOG.info("There are " + p.getMembers().size()
                                 + " members in the new project");
+                        // Set new project before removing old so we always have
+                        // a valid current project
+                        ProjectManager.getManager().setCurrentProject(p);
                         ProjectManager.getManager().removeProject(oldProject);
                         saveAction.setEnabled(false);
-                    }
+                    } 
                 }
-                ProjectManager.getManager().setCurrentProject(p);
+
                 if (p == null) {
                     LOG.info("The current project is null");
                 } else {
@@ -1464,13 +1467,6 @@ public final class ProjectBrowser
 
         chooser.setAcceptAllFileFilterUsed(false);
         PersistenceManager.getInstance().setSaveFileChooserFilters(chooser);
-
-        String fn =
-            Configuration.getString(PersistenceManager.KEY_PROJECT_NAME_PATH);
-        if (fn.length() > 0) {
-            fn = PersistenceManager.getInstance().getBaseName(fn);
-            chooser.setSelectedFile(new File(fn));
-        }
 
         int retval = chooser.showSaveDialog(pb);
         if (retval == JFileChooser.APPROVE_OPTION) {
