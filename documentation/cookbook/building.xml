@@ -2142,6 +2142,213 @@ Make sure it is set to
 Here are the steps to be done when one actually does a release:
 </para>
 
+    <sect2>
+      <title>New (from 0.21.1) way of doing the release </title>
+    <para>
+      <orderedlist>
+	<listitem>
+	  <para>Set the <methodname>argo.core.version</methodname>
+to not include the "PRE-" part.
+</para>
+          <para>
+This is done in the <filename>default.properties</filename>-file
+in <filename>src_new</filename>
+and <filename>documentation</filename>
+and then, commit the files.
+</para>
+        </listitem>
+ 
+	<listitem>
+	  <para>Tag the CVS repository with the freeze tag!</para>
+	  <para>
+Normally this tag is "VERSION_<replaceable>X_Y_Z</replaceable>_F",
+e.g. VERSION_0_9_7_F.
+The according command line CVS command is 
+<command>argouml/tools/bin/do-for-projects.sh cvs tag VERSION_<replaceable>X_Y_Z</replaceable>_F</command>.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Open the repository for commits toward the next version.
+</para>
+	  <para>
+This is done by setting the <methodname>argo.core.version</methodname>
+in <filename>default.properties</filename>
+in <filename>src_new</filename>
+and <filename>documentation</filename>
+to PRE-<replaceable>Number of next release</replaceable>, committing
+and telling everyone on the developers mailing list.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Create the directory where the release will recide.
+</para>
+          <para>
+<command>mkdir VERSION_<replaceable>X_Y_Z</replaceable>_F</command>
+</para>
+        </listitem>
+
+	<listitem>
+	  <para>
+Check out the source in a new directory.
+<programlisting>
+cd VERSION_<replaceable>X_Y_Z</replaceable>_F
+argouml/tools/bin/do-for-projects.sh --checkout VERSION_<replaceable>X_Y_Z</replaceable>_F
+</programlisting>
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Make the <command>ant</command> executable.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Build the core ArgoUML.
+</para>
+	  <para>
+This is done in the
+<filename class="directory">argouml/src_new</filename>
+directory of the newly created copy
+by using the <command>package</command> ant target!
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Build the sub-projects and modules to be included in the release.
+</para>
+          <para>
+This is done using the command
+<programlisting>
+argouml/tools/bin/do-for-projects.sh `pwd`/argouml/tools/ant-1.6.2/bin/ant install
+</programlisting>
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Run the tests. Both automatic and manual.
+</para>
+	</listitem>
+
+        <listitem>
+	  <para>
+Set the release tag.
+</para>
+	  <para>
+The following command will do it for you:
+<programlisting>
+argouml/tools/bin/do-for-projects.sh cvs tag VERSION_<replaceable>X_Y_Z</replaceable>
+</programlisting>
+</para>
+        </listitem>
+
+	<listitem id="issuezilla_release_maintenance">
+	  <para>
+Go through Issuezilla and check things.
+</para>
+	  <para>
+Things to check are:
+</para>
+	  <orderedlist>
+	    <listitem>
+	      <para>
+That there is a Version created in Issuezilla for the newly created release.
+</para>
+	      <para>
+The purpose of this is to make it possible for everyone 
+to report bugs on the new release.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Make sure that the upcoming releases have 
+target milestones created for them.
+This needs to be done for all components that has the same
+release scheme.
+Also see that the numbering is the same in all components and
+that it is in the correct chronological order
+except for the not yet done releases that come before the already completed.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Change the target milestones of all the not yet resolved issues 
+for this release to ---.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Change the target milestones of
+any fixed issue
+in component argouml
+with target milestone ---
+to that of the current release.
+</para>
+	      <para>
+This is probably some developer that has fixed an issue but forgotten to
+set the target milestone correctly.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Move all issues reported on 'current' to this release
+(for the component argouml).
+</para>
+	      <para>
+These items were reported between the previous version and this version.
+Since 'current' will be reused for the next release, they need to be
+locked to the closest release to where they were found.
+</para>
+	    </listitem>
+	    <listitem id="reopen_remind_and_later">
+	      <para>Reopen RESOLVED/REMIND</para>
+	      <para>
+This can also be a good time to change all 
+RESOLVED/REMIND.
+Search for them and Reopen them.
+</para>
+	    </listitem>
+	    <listitem id="check_for_later">
+	      <para>Check RESOLVED/LATER</para>
+	      <para>
+It could also be good to check that all
+RESOLVED/LATER has a valid target milestone (must be an upcoming milestone).
+Search for them and Reopen the ones that haven't.
+Also, if the milestone denotes or is going to be resolved in
+the upcoming release, Reopen them with a comment that they are now
+active.
+</para>
+	    </listitem>
+	  </orderedlist>
+	</listitem>
+	  
+	<listitem>
+	  <para>Notify persons responsible for installers</para>
+	  <para>
+This is done by sending a mail on the
+<ulink url="mailto:dev@argoumlinstallers.tigris.org">
+  installers mailing list
+</ulink>.
+</para>
+   	</listitem>
+      </orderedlist>
+</para>
+      <para>
+After this, the work continues with the installers.
+For 0.21.1, the installers are not in place so
+the old pack-release.sh and parts of build-release.sh will be used.
+</para>
+</sect2>
+
+    <sect2>
+      <title>Old (until 0.20) way of doing the release</title>
     <para>
       <orderedlist>
 	<listitem>
@@ -2489,7 +2696,7 @@ svn commit -m'Upload the release <replaceable>VERSION</replaceable>'
 </para>
 	</listitem>
 
-	<listitem id="issuezilla_release_maintenance">
+	<listitem>
 	  <para>
 Go through Issuezilla and check things.
 </para>
@@ -2547,7 +2754,7 @@ Since 'current' will be reused for the next release, they need to be
 locked to the closest release to where they were found.
 </para>
 	    </listitem>
-	    <listitem id="reopen_remind_and_later">
+	    <listitem>
 	      <para>Reopen RESOLVED/REMIND</para>
 	      <para>
 This can also be a good time to change all 
@@ -2555,7 +2762,7 @@ RESOLVED/REMIND.
 Search for them and Reopen them.
 </para>
 	    </listitem>
-	    <listitem id="check_for_later">
+	    <listitem>
 	      <para>Check RESOLVED/LATER</para>
 	      <para>
 It could also be good to check that all
@@ -2622,6 +2829,7 @@ which require a login so just inform him.
 	</listitem>
       </orderedlist>
 </para>
+</sect2>
 
       <sect2 id="release_process_test_failed">
 	<title>The release did not work</title>
