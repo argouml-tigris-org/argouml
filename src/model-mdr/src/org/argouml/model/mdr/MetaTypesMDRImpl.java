@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -78,6 +78,7 @@ import org.omg.uml.foundation.core.Comment;
 import org.omg.uml.foundation.core.Component;
 import org.omg.uml.foundation.core.DataType;
 import org.omg.uml.foundation.core.Dependency;
+import org.omg.uml.foundation.core.Enumeration;
 import org.omg.uml.foundation.core.GeneralizableElement;
 import org.omg.uml.foundation.core.Generalization;
 import org.omg.uml.foundation.core.Interface;
@@ -358,6 +359,13 @@ public final class MetaTypesMDRImpl implements MetaTypes {
      */
     public Object getDestroyAction() {
         return DestroyAction.class;
+    }
+
+    /**
+     * @see org.argouml.model.MetaTypes#getEnumeration()
+     */
+    public Object getEnumeration() {
+        return Enumeration.class;
     }
 
     /**
