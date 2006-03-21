@@ -333,6 +333,7 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-deephistory", "DeepHistory");
         images.put("button.new-dependency", "Dependency");
         images.put("button.new-destroyaction", "DestroyAction");
+        images.put("button.new-enumeration", "Enumeration");
         images.put("button.new-extension-point", "New Extension Point");
         images.put("button.new-extend", "Extend");
     }

@@ -71,6 +71,9 @@ public class UMLClassDiagram extends UMLDiagram {
     private Action actionUniComposition;
     private Action actionAttribute;
     private Action actionOperation;
+    private Action actionDataType;
+    private Action actionEnumeration;
+    private Action actionStereotype;
 
     /**
      * Constructor.
@@ -155,8 +158,22 @@ public class UMLClassDiagram extends UMLDiagram {
             getActionAttribute(),
             getActionOperation(),
             getActionAssociationClass(),
+//            null, // uncomment this to test
+//            getDataTypeActions(), // uncomment this to test
         };
 
+        return actions;
+    }
+
+    // To enable models and subsystems,
+    // add getDataTypeActions() above.
+    private Object[] getDataTypeActions() {
+        Object[] actions = {
+            getActionDataType(),
+            getActionEnumeration(),
+            getActionStereotype(),
+        };
+        manageDefault(actions, "diagram.class.datatype");
         return actions;
     }
 
@@ -506,6 +523,42 @@ public class UMLClassDiagram extends UMLDiagram {
                 TargetManager.getInstance().getAddOperationAction();
         }
         return actionOperation;
+    }
+
+    /**
+     * @return Returns the actionDataType.
+     */
+    private Action getActionDataType() {
+        if (actionDataType == null) {
+            actionDataType =
+                makeCreateNodeAction(Model.getMetaTypes().getDataType(),
+             "button.new-datatype");
+        }
+        return actionDataType;
+    }
+
+    /**
+     * @return Returns the actionEnumeration.
+     */
+    private Action getActionEnumeration() {
+        if (actionEnumeration == null) {
+            actionEnumeration =
+                makeCreateNodeAction(Model.getMetaTypes().getEnumeration(),
+             "button.new-enumeration");
+        }
+        return actionEnumeration;
+    }
+
+    /**
+     * @return Returns the actionStereotype.
+     */
+    private Action getActionStereotype() {
+        if (actionStereotype == null) {
+            actionStereotype =
+                makeCreateNodeAction(Model.getMetaTypes().getStereotype(),
+             "button.new-stereotype");
+        }
+        return actionStereotype;
     }
 
     /**
