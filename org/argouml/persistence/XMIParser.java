@@ -153,7 +153,7 @@ public class XMIParser {
             }
             
             curModel = null;
-            elementsRead = reader.parse(source);
+            elementsRead = reader.parse(source, false);
             if (elementsRead != null && !elementsRead.isEmpty()) {
                 Facade facade = Model.getFacade();
                 Object current;
@@ -210,8 +210,8 @@ public class XMIParser {
         while (it.hasNext()) {
             Object element = it.next();
             if (facade.isAModel(element)) {
-                diagramsElement.addAll(Model.getModelManagementHelper().
-                        getAllModelElementsOfKind(element,
+                diagramsElement.addAll(Model.getModelManagementHelper()
+                        .getAllModelElementsOfKind(element,
                                 Model.getMetaTypes().getStateMachine()));
             } else if (facade.isAStateMachine(element)) {
                 diagramsElement.add(element);
