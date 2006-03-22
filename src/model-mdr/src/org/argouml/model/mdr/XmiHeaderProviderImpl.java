@@ -56,9 +56,9 @@ public class XmiHeaderProviderImpl implements XMIHeaderProvider {
      * @see org.netbeans.lib.jmi.xmi.XMIHeaderProvider#writeHeader(java.io.Writer)
      */
     public void writeHeader (Writer ps) {
+        // NOTE: The <XMI.header></XMI.header> is provided for us
         String header =
-              "  <XMI.header>\n"
-            + "    <XMI.documentation>\n"
+              "    <XMI.documentation>\n"
             + "      <XMI.exporter>ArgoUML"
                     + " (using "  + WriterBase.EXPORTER_NAME 
                     + " version " + WriterBase.EXPORTER_VERSION 
@@ -67,8 +67,7 @@ public class XmiHeaderProviderImpl implements XMIHeaderProvider {
                     + "</XMI.exporterVersion>\n"
             + "    </XMI.documentation>\n"
             + "    <XMI.metamodel xmi.name=\"UML\" xmi.version=\""
-                    + UML_VERSION + "\"/>"
-            + "  </XMI.header>\n";
+                    + UML_VERSION + "\"/>";
         
         try {
             ps.write(header);
