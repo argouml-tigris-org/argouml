@@ -185,6 +185,18 @@ public class PropPanelOperation extends PropPanelFeature {
             Icon icon = ResourceLoaderWrapper.lookupIcon("Method");
             putValue(Action.SMALL_ICON, icon);
         }
+        
+        public boolean shouldBeEnabled() {
+        	Object target = TargetManager.getInstance().getModelTarget();
+        	boolean result = true;
+        	if (Model.getFacade().isAOperation(target)) {
+        		Object owner = Model.getFacade().getOwner(target);
+        		if (owner == null || Model.getFacade().isAInterface(owner)) {
+        			result = false;
+        		}
+        	}
+        	return super.shouldBeEnabled() && result;
+        }
 
         /**
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
