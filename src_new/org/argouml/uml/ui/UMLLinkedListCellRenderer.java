@@ -25,6 +25,9 @@
 // $Id$
 package org.argouml.uml.ui;
 import java.awt.Component;
+import java.awt.Font;
+import java.awt.font.TextAttribute;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -54,18 +57,8 @@ public class UMLLinkedListCellRenderer extends UMLListCellRenderer2 {
             int index, boolean isSelected, boolean cellHasFocus) {
         JLabel label = (JLabel) super.getListCellRendererComponent(
                 list, value, index, isSelected, cellHasFocus);
-        /*
-        label.setBackground(list.getBackground());
-        label.setForeground(list.getForeground());
-        label.setBorder(BorderFactory.createEmptyBorder());
-        if (isSelected) {
-            Font font = label.getFont();
-            Map textattributes = font.getAttributes();
-            textattributes.put(TextAttribute.WEIGHT,
-                TextAttribute.WEIGHT_EXTRABOLD);
-            label.setFont(font.deriveFont(textattributes));
-        }
-        */
+      
+        label.setText("<html><u>"+label.getText()+"</html>");        
         return label;
     }
 
