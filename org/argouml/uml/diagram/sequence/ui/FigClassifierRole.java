@@ -764,9 +764,6 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
-        if (newOwner == oldOwner) {
-            return;
-        }
         if (oldOwner != null) {
             removeAllElementListeners();
         }

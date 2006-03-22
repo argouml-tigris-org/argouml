@@ -888,11 +888,12 @@ public class FigClass extends FigClassifierBox
      */
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
-        if (oldOwner != null && oldOwner != newOwner) {
+        if (oldOwner != null) {
             removeAllElementListeners();
         }
-        if (newOwner != null && newOwner != oldOwner) {
+        if (newOwner != null) {
             // add the listeners to the newOwner
+            addElementListener(newOwner);
             Iterator it = Model.getFacade().getFeatures(newOwner).iterator();
             while (it.hasNext()) {
                 Object feat = it.next();
@@ -908,7 +909,6 @@ public class FigClass extends FigClassifierBox
                 }
             }
         }
-        super.updateListeners(newOwner);
     }
 
     /**

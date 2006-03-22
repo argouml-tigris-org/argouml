@@ -96,18 +96,16 @@ public class FigCallState extends FigActionState {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object newOwner) {
-        // this takes care of the listeners on the state itself:
-        super.updateListeners(newOwner);
-
         Object oldOwner = getOwner();
         if (oldOwner != null) {
             removeAllElementListeners();
         }
+
         if (newOwner != null) {
             // register for events from all modelelements
-            // that change the body text
+            // that change the name and body text
             // i.e. when the CallAction is replaced:
-            addElementListener(newOwner, "entry");
+            addElementListener(newOwner, new String[] {"entry", "name"});
             Object entryAction = Model.getFacade().getEntry(newOwner);
             if (Model.getFacade().isACallAction(entryAction)) {
                 // and when the Operation is replaced:

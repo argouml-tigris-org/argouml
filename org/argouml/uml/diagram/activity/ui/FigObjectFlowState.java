@@ -161,46 +161,29 @@ public class FigObjectFlowState extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object newOwner) {
-        /* Let's NOT do this: super.updateListeners(newOwner); 
-         * We only need to listen to its "type". */
         Object oldOwner = getOwner();
         if (oldOwner != null) {
-            Model.getPump().removeModelEventListener(this, oldOwner, "type");
-            // lets remove all registered listeners for the type
-            Object type = Model.getFacade().getType(oldOwner);
-            if (Model.getFacade().isAClassifier(type)) {
-                if (Model.getFacade().isAClassifierInState(type)) {
-                    Object classifier = Model.getFacade().getType(type);
-                    Model.getPump().removeModelEventListener(this, classifier, "name");
-                    Model.getPump().removeModelEventListener(this, type, "inState");
-                    Collection states = Model.getFacade().getInStates(type);
-                    Iterator i = states.iterator();
-                    while (i.hasNext()) {
-                        Model.getPump().removeModelEventListener(this, i.next(), 
-                                "name");
-                    }
-                } else {
-                    Model.getPump().removeModelEventListener(this, type, "name");    
-                }
-            }
+            removeAllElementListeners();
         }
         if (newOwner != null) {
-            Model.getPump().addModelEventListener(this, newOwner, "type");
+            /* Let's NOT do this: addElementListener(newOwner); 
+             * We only need to listen to its "type". */
+            addElementListener(newOwner, "type");
             // register for events from the type
             Object type = Model.getFacade().getType(newOwner);
             if (Model.getFacade().isAClassifier(type)) {
                 if (Model.getFacade().isAClassifierInState(type)) {
                     Object classifier = Model.getFacade().getType(type);
-                    Model.getPump().addModelEventListener(this, classifier, "name");
-                    Model.getPump().addModelEventListener(this, type, "inState");
+                    addElementListener(classifier, "name");
+                    addElementListener(type, "inState");
                     Collection states = Model.getFacade().getInStates(type);
                     Iterator i = states.iterator();
                     while (i.hasNext()) {
-                        Model.getPump().addModelEventListener(this, i.next(), 
+                        addElementListener(i.next(), 
                                 "name");
                     }
                 } else {
-                    Model.getPump().addModelEventListener(this, type, "name");    
+                    addElementListener(type, "name");    
                 }
             }
         }
