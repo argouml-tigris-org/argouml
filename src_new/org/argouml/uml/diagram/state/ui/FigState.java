@@ -142,18 +142,18 @@ public abstract class FigState extends FigStateVertex {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object newOwner) {
-        // this takes care of the listeners on the state itself:
-        super.updateListeners(newOwner);
         Object oldOwner = getOwner();
-        if (newOwner == oldOwner) {
-            return;
-        }
         if (oldOwner != null) {
             removeAllElementListeners();
         }
+        /* Now, let's register for events from all modelelements
+         * that change the name or body text: 
+         */
         if (newOwner != null) {
-            // register for events from all modelelements
-            // that change the body text
+            /* Many different event types are needed, 
+             * so let's register for them all: */
+            addElementListener(newOwner);
+            // register for internal transitions:
             Iterator it =
                 Model.getFacade().getInternalTransitions(newOwner).iterator();
             while (it.hasNext()) {
