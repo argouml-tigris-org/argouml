@@ -529,7 +529,7 @@ public abstract class FigEdgeModelElement
             super.propertyChange(pve);
         }
 
-        if (Model.getFacade().isAModelElement(src)) {
+        if (Model.getFacade().isAModelElement(src) && !Model.getUmlFactory().isRemoved(getOwner())) {
             /* If the source of the event is an UML object,
              * then the UML model has been changed.*/
             modelChanged(pve);
@@ -960,8 +960,9 @@ public abstract class FigEdgeModelElement
      */
     protected boolean updateClassifiers() {
         Object owner = getOwner();
-        if (owner == null || getLayer() == null)
+        if (owner == null || getLayer() == null) {
             return false;
+        }
 
         Object newSource = getSource();
         Object newDest = getDestination();

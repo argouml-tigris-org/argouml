@@ -917,7 +917,7 @@ public abstract class FigNodeModelElement
         } else {
             super.propertyChange(pve);
         }
-        if (Model.getFacade().isAModelElement(src)) {
+        if (Model.getFacade().isAModelElement(src) && !Model.getUmlFactory().isRemoved(getOwner())) {
             /* If the source of the event is an UML object,
              * e.g. the owner of this Fig (but not always only the owner
              * is shown, e.g. for a class, also its attributes are shown),
