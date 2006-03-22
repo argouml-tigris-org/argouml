@@ -337,6 +337,9 @@ public class StylePanelFig
                 res.height = 6000 - res.y;
                 changed = true;
             }
+            if (res.x<0 || res.y<0 || res.width<0 || res.height<0) {
+                throw new IllegalArgumentException();
+            }
             if (changed) {
                 StringBuffer sb = new StringBuffer();
                 sb.append(Integer.toString(res.x));
@@ -349,9 +352,14 @@ public class StylePanelFig
                 bboxField.setText(sb.toString());
             }
         } catch (NumberFormatException ex) {
+            bboxField.setBackground(Color.RED);
             return null;
         }
-
+        catch (IllegalArgumentException iae) {
+            bboxField.setBackground(Color.RED);
+            return null;
+        }
+        bboxField.setBackground(null);
         return res;
     }
 
