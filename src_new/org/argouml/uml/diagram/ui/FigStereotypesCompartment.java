@@ -93,7 +93,7 @@ public class FigStereotypesCompartment extends FigCompartment {
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#populate()
      */
     public void populate() {
-
+        
         Object modelElement = getOwner();
         if (modelElement == null) {
             // TODO: This block can be removed after issue 4075 is tackled
@@ -101,6 +101,9 @@ public class FigStereotypesCompartment extends FigCompartment {
                      + "unless the parent has an owner.");
             return;
         }
+        
+        LOG.info("Populating stereotypes compartment for " + Model.getFacade().getName(modelElement));
+        
         int acounter = 1;
         Fig bigPort = this.getBigPort();
         int xpos = bigPort.getX();
