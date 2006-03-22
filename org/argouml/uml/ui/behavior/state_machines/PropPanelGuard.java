@@ -25,8 +25,10 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.LookAndFeelMgr;
@@ -40,53 +42,52 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
+import org.tigris.swidgets.GridLayout2;
 
 /**
- * A property panel for Guards. Rewrote this class to comply to
- * Bob Tarling's layout mechanism and to include all valid
- * properties as defined in the UML 1.3 spec.
+ * A property panel for Guards. Rewrote this class to comply to Bob Tarling's
+ * layout mechanism and to include all valid properties as defined in the UML
+ * 1.3 spec.
  * 
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class PropPanelGuard extends PropPanelModelElement {
 
-    /**
-     * The constructor.
-     *
-     */
-    public PropPanelGuard() {
-        super("Guard", ConfigLoader.getTabPropsOrientation());
+	/**
+	 * The constructor.
+	 * 
+	 */
+	public PropPanelGuard() {
+		super("Guard", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
+		addField(Translator.localize("label.name"), getNameTextField());
+		addField(Translator.localize("label.stereotype"),
+				getStereotypeSelector());
 
-        JList transitionList =
-            new UMLLinkedList(
-                new UMLGuardTransitionListModel());
-        transitionList.setVisibleRowCount(1);
-        addField(Translator.localize("label.transition"),
-                new JScrollPane(transitionList));
+		JList transitionList = new UMLLinkedList(
+				new UMLGuardTransitionListModel());
+		transitionList.setVisibleRowCount(1);
+		addField(Translator.localize("label.transition"), new JScrollPane(
+				transitionList));
 
-        addSeperator();
+		addSeperator();
 
-        UMLExpressionModel2 expressionModel =
-            new UMLExpressionExpressionModel(this, "expression");
-        JTextArea ebf = new UMLExpressionBodyField(expressionModel, true);
-        ebf.setFont(LookAndFeelMgr.getInstance().getSmallFont());
-        ebf.setRows(3); // make it take up all remaining height
-        addField(Translator.localize("label.expression"),
-            new JScrollPane(ebf));
-        addField(Translator.localize("label.language"),
-                new UMLExpressionLanguageField(expressionModel, true));
+		JPanel exprPanel = new JPanel(new GridLayout2());
+		exprPanel.setBorder(new TitledBorder(Translator
+				.localize("label.expression")));
+		UMLExpressionModel2 expressionModel = new UMLExpressionExpressionModel(
+				this, "expression");
+		JTextArea ebf = new UMLExpressionBodyField(expressionModel, true);
+		ebf.setFont(LookAndFeelMgr.getInstance().getSmallFont());
+		ebf.setRows(1);
+		exprPanel.add(new JScrollPane(ebf));
+		exprPanel.add(new UMLExpressionLanguageField(expressionModel, true));
 
-
-	addAction(new ActionNavigateTransition());
-	addAction(new ActionNewStereotype());
-	addAction(new ActionDeleteSingleModelElement());
-    }
+		add(exprPanel);
+		addAction(new ActionNavigateTransition());
+		addAction(new ActionNewStereotype());
+		addAction(new ActionDeleteSingleModelElement());
+	}
 
 } /* end class PropPanelGuard */
-
