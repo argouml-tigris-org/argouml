@@ -50,6 +50,7 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.explorer.rules.PerspectiveRule;
+import org.argouml.util.MyTokenizer;
 
 /**
  * The model for the Explorer tree view of the uml model.
@@ -732,6 +733,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	    order = (Comparator) e.getItem();
 	}
 	structureChanged();
+	tree.expandPath(tree.getPathForRow(0));
     }
 
     /**
