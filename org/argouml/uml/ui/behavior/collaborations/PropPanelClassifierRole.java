@@ -76,7 +76,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 		ActionAddClassifierRoleBase.SINGLETON,
 		null,
 		ActionRemoveClassifierRoleBase.getInstance(),
-		false);
+		true);
 	addField(Translator.localize("label.base"),
 		new JScrollPane(baseList));
 
