@@ -69,7 +69,7 @@ public class PropPanelOperation extends PropPanelFeature {
 
         add(getVisibilityPanel());
 
-        JPanel modifiersPanel = new JPanel(new GridLayout2(0, 3,
+        JPanel modifiersPanel = new JPanel(new GridLayout2(0, 5,
                 GridLayout2.ROWCOLPREFERRED));
         modifiersPanel.setBorder(new TitledBorder(Translator.localize(
                 "label.modifiers")));
