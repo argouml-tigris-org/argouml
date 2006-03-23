@@ -26,6 +26,7 @@ package org.argouml.ui;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JTree;
@@ -33,9 +34,17 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Configuration;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
+import org.argouml.model.Model;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationHelper;
+import org.argouml.notation.NotationProvider4;
+import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.generator.GeneratorDisplay;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
+import org.tigris.gef.base.Diagram;
 
 /**
  * This is the JTree that is the GUI component view of the UML model
@@ -58,6 +67,8 @@ public class DisplayTextTree extends JTree {
     private Hashtable expandedPathsInModel;
 
     private boolean reexpanding;
+    
+    protected boolean showStereotype;
 
     /**
      * Sets the label renderer, line style angled, enable tooltips,
@@ -67,6 +78,7 @@ public class DisplayTextTree extends JTree {
 
         super();
 
+        setFont(LookAndFeelMgr.getInstance().getSmallFont());
         setCellRenderer(new UMLTreeCellRenderer());
         putClientProperty("JTree.lineStyle", "Angled");
         setRootVisible(false);
@@ -74,9 +86,11 @@ public class DisplayTextTree extends JTree {
         setToolTipText("Tree"); // Enables tooltips for tree. Won't be shown.
 
         this.setRowHeight(18);
-
+        
         expandedPathsInModel = new Hashtable();
         reexpanding = false;
+        showStereotype =
+    	    Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
     }
 
     // ------------ methods that override JTree methods ---------
@@ -102,31 +116,101 @@ public class DisplayTextTree extends JTree {
      * @see javax.swing.JTree#convertValueToText(java.lang.Object,
      * boolean, boolean, boolean, int, boolean)
      */
-    public String convertValueToText(
-        Object value,
-        boolean selected,
-        boolean expanded,
-        boolean leaf,
-        int row,
-        boolean hasFocus) {
+    public String convertValueToText(Object value, boolean selected,
+			boolean expanded, boolean leaf, int row, boolean hasFocus) {
 
-	if (value instanceof ToDoItem) {
-            return ((ToDoItem) value).getHeadline();
+		if (value instanceof ToDoItem) {
+			return ((ToDoItem) value).getHeadline();
+		}
+		if (value instanceof ToDoList) {
+			return "ToDoList";
+		}
+		
+//		 do model elements first
+        if (Model.getFacade().isAModelElement(value)) {
+
+            String name = null;
+
+            // Jeremy Bennett patch
+            if (Model.getFacade().isATransition(value)) {
+                NotationProvider4 notationProvider =
+                    NotationProviderFactory2.getInstance().getNotationProvider(
+                            NotationProviderFactory2.TYPE_TRANSITION,
+                            NotationHelper.getDefaultNotationContext(),
+                            value);
+                name = notationProvider.toString();
+            } else if (Model.getFacade().isAExtensionPoint(value)) {
+                name =
+                    GeneratorDisplay.getInstance()
+                        .generateExtensionPoint(value);
+            } else if (Model.getFacade().isAComment(value)) {
+                /*
+                 * From UML 1.4 onwards, the text of the comment
+                 * is stored in the "body".
+                 */
+                name = (String) Model.getFacade().getBody(value);
+            } else {
+                name = Model.getFacade().getName(value);
+            }
+
+            if (name == null || name.equals("")) {
+                name =
+                    "(anon " + Model.getFacade().getUMLClassName(value) + ")";
+            }
+            /*
+             * If the name is too long or multi-line (e.g. for comments)
+             * then we reduce to the first line or 80 chars.
+             */
+            if (name != null
+                    && name.indexOf("\n") < 80
+                    && name.indexOf("\n") > -1) {
+                name = name.substring(0, name.indexOf("\n")) + "...";
+            } else if (name != null && name.length() > 80) {
+                name = name.substring(0, 80) + "...";
+            }
+
+            // Look for stereotype
+            if (showStereotype) {
+                Iterator i = Model.getFacade().getStereotypes(value).iterator();
+                Object stereo;
+                while (i.hasNext()) {
+                    stereo = i.next();
+                    name +=
+                        " " + GeneratorDisplay.getInstance().generate(stereo);
+                }
+                if (name != null && name.length() > 80) {
+                    name = name.substring(0, 80) + "...";
+                }
+            }
+
+            return name;
         }
-        if (value instanceof ToDoList) {
-            return "ToDoList";
+        
+        if (Model.getFacade().isATaggedValue(value)) {
+            String tagName = Model.getFacade().getTagOfTag(value);
+            if (tagName == null || tagName.equals("")) {
+                tagName = "(anon)";
+            }
+            return ("1-" + tagName);
         }
-        if (value != null) {
-            return value.toString();
+        
+        if (value instanceof Diagram) {
+            return ((Diagram) value).getName();
         }
-        return "-";
-    }
+
+		if (value != null) {
+			return value.toString();
+		}
+		return "-";
+	}
 
     /**
-     * Tree MModel Expansion notification.<p>
-     *
-     * @param path a Tree node insertion event
-     */
+	 * Tree MModel Expansion notification.
+	 * <p>
+	 * 
+	 * @param path
+	 *            a Tree node insertion event
+	 */
     public void fireTreeExpanded(TreePath path) {
 
         super.fireTreeExpanded(path);
