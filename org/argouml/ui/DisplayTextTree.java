@@ -155,7 +155,7 @@ public class DisplayTextTree extends JTree {
 
             if (name == null || name.equals("")) {
                 name =
-                    "(anon " + Model.getFacade().getUMLClassName(value) + ")";
+                    "(unnamed " + Model.getFacade().getUMLClassName(value) + ")";
             }
             /*
              * If the name is too long or multi-line (e.g. for comments)
@@ -189,7 +189,7 @@ public class DisplayTextTree extends JTree {
         if (Model.getFacade().isATaggedValue(value)) {
             String tagName = Model.getFacade().getTagOfTag(value);
             if (tagName == null || tagName.equals("")) {
-                tagName = "(anon)";
+                tagName = "(unnamed)";
             }
             return ("1-" + tagName);
         }

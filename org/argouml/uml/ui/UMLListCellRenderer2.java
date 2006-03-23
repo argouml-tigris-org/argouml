@@ -141,7 +141,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
             Object type = Model.getFacade().getType(value);
             name = Model.getFacade().getName(value);
             if (name == null || name.equals("")) {
-                name = "(anon " + makeTypeName(value) + ")";
+                name = "(unnamed " + makeTypeName(value) + ")";
             }
             String typeName = null;
             if (type != null) typeName = Model.getFacade().getName(type);
@@ -154,7 +154,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
             Object/* MModelElement */elem = value;
             name = Model.getFacade().getName(elem);
             if (name == null || name.equals("")) {
-                name = "(anon " + makeTypeName(elem) + ")";
+                name = "(unnamed " + makeTypeName(elem) + ")";
             }
             if (Model.getFacade().isAStereotype(value)) {
                 Object b = Model.getFacade().getBaseClass(value);
