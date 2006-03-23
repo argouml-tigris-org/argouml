@@ -35,13 +35,16 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.AbstractArgoJPanel;
@@ -52,6 +55,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.ui.targetmanager.TargettableModelView;
 import org.argouml.uml.Profile;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.LabelledLayout;
 import org.tigris.swidgets.Orientation;
 import org.tigris.swidgets.Vertical;
@@ -87,7 +91,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     private JLabel titleLabel;
 
-    private Font smallFont = LookAndFeelMgr.getInstance().getSmallFont();
+    private static Font smallFont = LookAndFeelMgr.getInstance().getSmallFont();
 
     /**
      * Construct new PropPanel using LabelledLayout.
@@ -109,9 +113,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         setLayout(new LabelledLayout(orientation == Vertical.getInstance()));
 
         if (icon != null) {
-            titleLabel = new JLabel(title, icon, SwingConstants.LEFT);
+            setTitleLabel(new JLabel(title, icon, SwingConstants.LEFT));
         } else {
-            titleLabel = new JLabel(title);
+            setTitleLabel(new JLabel(title));
         }
         titleLabel.setLabelFor(buttonPanel);
         add(titleLabel);
@@ -536,6 +540,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     protected void setTitleLabel(JLabel theTitleLabel) {
         this.titleLabel = theTitleLabel;
+        titleLabel.setFont(smallFont);
     }
 
     /**
@@ -543,6 +548,14 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     protected JLabel getTitleLabel() {
         return titleLabel;
+    }
+    
+    protected JPanel createBorderPanel(String title) {
+    	JPanel panel = new JPanel(new GridLayout2());
+    	TitledBorder border = new TitledBorder(title);
+    	border.setTitleFont(smallFont);
+    	panel.setBorder(border);
+    	return panel;
     }
 
     /**

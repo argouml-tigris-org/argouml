@@ -61,9 +61,8 @@ public class PropPanelTimeEvent extends PropPanelEvent {
         UMLExpressionModel2 whenModel = new UMLTimeExpressionModel(
                 this, "when");
 
-        JPanel whenPanel = new JPanel(new GridLayout2());
-        whenPanel.setBorder(new TitledBorder(Translator
-                .localize("label.when")));
+        JPanel whenPanel = createBorderPanel(Translator
+                .localize("label.when"));
         whenPanel.add(new JScrollPane(new UMLExpressionBodyField(
                 whenModel, true)));
         whenPanel.add(new UMLExpressionLanguageField(whenModel,

@@ -85,10 +85,8 @@ public class PropPanelStereotype extends PropPanelModelElement {
                  getNamespaceSelector());
 
 
-        JPanel modifiersPanel = new JPanel(new FlexiGridLayout(0, 3,
-                FlexiGridLayout.ROWCOLPREFERRED));
-        modifiersPanel.setBorder(new TitledBorder(
-                Translator.localize("label.modifiers")));
+        JPanel modifiersPanel = createBorderPanel(
+                Translator.localize("label.modifiers"));
         modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
         modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
         modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());

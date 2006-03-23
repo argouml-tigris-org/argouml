@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -57,6 +58,8 @@ import org.tigris.gef.presentation.Fig;
 public abstract class UMLRadioButtonPanel
     extends JPanel
     implements TargetListener, PropertyChangeListener {
+
+	private static Font smallFont = LookAndFeelMgr.getInstance().getSmallFont();
 
     /**
      * The target object of which some attribute is shown via this panel.
@@ -98,8 +101,11 @@ public abstract class UMLRadioButtonPanel
         super(isDoubleBuffered);
         setLayout(horizontal ? new GridLayout() : new GridLayout(0, 1));
         setDoubleBuffered(true);
-        if (title != null)
-            setBorder(new TitledBorder(title));
+        if (title != null) {
+        	TitledBorder border = new TitledBorder(title);
+        	border.setTitleFont(smallFont);
+            setBorder(border);
+        }
         setButtons(labeltextsActioncommands, setAction);
         setPropertySetName(thePropertySetName);
     }

@@ -60,9 +60,8 @@ public class PropPanelChangeEvent extends PropPanelEvent {
 
         UMLExpressionModel2 changeModel = new UMLChangeExpressionModel(
                 this, "changeExpression");
-        JPanel changePanel = new JPanel(new GridLayout2());
-        changePanel.setBorder(new TitledBorder(Translator
-                .localize("label.change")));
+        JPanel changePanel = createBorderPanel(Translator
+                .localize("label.change"));
         changePanel.add(new JScrollPane(new UMLExpressionBodyField(
                 changeModel, true)));
         changePanel.add(new UMLExpressionLanguageField(changeModel,

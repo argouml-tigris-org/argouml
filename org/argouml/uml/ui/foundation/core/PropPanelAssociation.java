@@ -122,9 +122,8 @@ public class PropPanelAssociation extends PropPanelRelationship {
 
     private void initialize() {
 
-        modifiersPanel = new JPanel(new GridLayout2());
-        modifiersPanel.setBorder(new TitledBorder(
-                Translator.localize("label.modifiers")));
+        modifiersPanel = createBorderPanel(
+                Translator.localize("label.modifiers"));
         modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
         modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
         modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());

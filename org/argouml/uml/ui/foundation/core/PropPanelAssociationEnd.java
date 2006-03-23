@@ -201,12 +201,11 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
         addSeperator();
 
-        JPanel panel = new JPanel(new GridLayout2());
+        JPanel panel = createBorderPanel(Translator.localize(
+                "label.modifiers"));
         panel.add(navigabilityCheckBox);
         panel.add(orderingCheckBox);
         panel.add(targetScopeCheckBox);
-        panel.setBorder(new TitledBorder(Translator.localize(
-                "label.modifiers")));
         panel.setVisible(true);
         add(panel);
         addField(Translator.localize("label.specification"),
