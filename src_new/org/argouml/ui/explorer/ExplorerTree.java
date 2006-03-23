@@ -46,18 +46,12 @@ import javax.swing.tree.TreePath;
 
 import org.argouml.application.api.Configuration;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.Model;
 import org.argouml.notation.Notation;
-import org.argouml.notation.NotationHelper;
-import org.argouml.notation.NotationProvider4;
-import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.generator.GeneratorDisplay;
-import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -73,11 +67,6 @@ import org.tigris.gef.presentation.Fig;
 public class ExplorerTree
     extends DisplayTextTree {
 
-    /**
-     * Holds state info about whether to display stereotypes in the
-     * explorer pane.
-     */
-    private boolean showStereotype;
 
     /**
      * Prevents target event cycles between this and the TargetManager.
@@ -112,10 +101,6 @@ public class ExplorerTree
 
         TargetManager.getInstance()
 	    .addTargetListener(new ExplorerTargetListener());
-
-        showStereotype =
-	    Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
-
     }
 
     /**
@@ -227,96 +212,6 @@ public class ExplorerTree
 
     } /* end class ExplorerMouseListener */
 
-    /**
-     * Override default JTree implementation to display the
-     * appropriate text for any object that will be displayed in
-     * the Nav pane.
-     *
-     * @see javax.swing.JTree#convertValueToText(java.lang.Object, boolean, boolean, boolean, int, boolean)
-     */
-    public String convertValueToText(Object value,
-				     boolean selected,
-				     boolean expanded,
-				     boolean leaf,
-				     int row,
-				     boolean hasFocus) {
-
-        // do model elements first
-        if (Model.getFacade().isAModelElement(value)) {
-
-            String name = null;
-
-            // Jeremy Bennett patch
-            if (Model.getFacade().isATransition(value)) {
-                NotationProvider4 notationProvider =
-                    NotationProviderFactory2.getInstance().getNotationProvider(
-                            NotationProviderFactory2.TYPE_TRANSITION,
-                            NotationHelper.getDefaultNotationContext(),
-                            value);
-                name = notationProvider.toString();
-            } else if (Model.getFacade().isAExtensionPoint(value)) {
-                name =
-                    GeneratorDisplay.getInstance()
-                        .generateExtensionPoint(value);
-            } else if (Model.getFacade().isAComment(value)) {
-                /*
-                 * From UML 1.4 onwards, the text of the comment
-                 * is stored in the "body".
-                 */
-                name = (String) Model.getFacade().getBody(value);
-            } else {
-                name = Model.getFacade().getName(value);
-            }
-
-            if (name == null || name.equals("")) {
-                name =
-                    "(anon " + Model.getFacade().getUMLClassName(value) + ")";
-            }
-            /*
-             * If the name is too long or multi-line (e.g. for comments)
-             * then we reduce to the first line or 80 chars.
-             */
-            if (name != null
-                    && name.indexOf("\n") < 80
-                    && name.indexOf("\n") > -1) {
-                name = name.substring(0, name.indexOf("\n")) + "...";
-            } else if (name != null && name.length() > 80) {
-                name = name.substring(0, 80) + "...";
-            }
-
-            // Look for stereotype
-            if (showStereotype) {
-                Iterator i = Model.getFacade().getStereotypes(value).iterator();
-                Object stereo;
-                while (i.hasNext()) {
-                    stereo = i.next();
-                    name +=
-                        " " + GeneratorDisplay.getInstance().generate(stereo);
-                }
-                if (name != null && name.length() > 80) {
-                    name = name.substring(0, 80) + "...";
-                }
-            }
-
-            return name;
-        }
-
-        if (Model.getFacade().isATaggedValue(value)) {
-            String tagName = Model.getFacade().getTagOfTag(value);
-            if (tagName == null || tagName.equals("")) {
-                tagName = "(anon)";
-            }
-            return ("1-" + tagName);
-        }
-
-        if (value instanceof Diagram) {
-            return ((Diagram) value).getName();
-        }
-        if (value != null) {
-            return value.toString();
-        }
-        return "-";
-    }
 
     /**
      * Helps prepare state before a node is expanded.
@@ -344,7 +239,6 @@ public class ExplorerTree
 
                 ((ExplorerTreeModel) getModel()).updateChildren(tee.getPath());
             }
-
         }
     }
 
@@ -372,7 +266,6 @@ public class ExplorerTree
             // need to update the selection state.
             setSelection(TargetManager.getInstance().getTargets().toArray());
         }
-
     }
 
     /**
