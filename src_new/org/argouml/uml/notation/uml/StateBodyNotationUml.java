@@ -59,8 +59,8 @@ public class StateBodyNotationUml extends StateBodyNotation {
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.statebody";
             Object[] args = {
-                    pe.getLocalizedMessage(),
-                    new Integer(pe.getErrorOffset()),
+                pe.getLocalizedMessage(),
+                new Integer(pe.getErrorOffset()),
             };
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
@@ -103,7 +103,8 @@ public class StateBodyNotationUml extends StateBodyNotation {
             }
             s.append("exit /").append(exitStr);
         }
-        Collection internaltrans = Model.getFacade().getInternalTransitions(myState);
+        Collection internaltrans =
+            Model.getFacade().getInternalTransitions(myState);
         if (internaltrans != null) {
             Iterator iter = internaltrans.iterator();
             while (iter.hasNext()) {
@@ -178,9 +179,10 @@ public class StateBodyNotationUml extends StateBodyNotation {
                      * do we do with the remainder of the
                      * parsed/to be parsed lines?
                      */
-                    /* TODO: Is this a good way of handling nested notation? 
+                    /* TODO: Is this a good way of handling nested notation?
                      * The following fails the tests:
-                     * new TransitionNotationUml(t).parse(line);*/
+                     * new TransitionNotationUml(t).parse(line);
+                     */
                     new TransitionNotationUml(t).parseTransition(t, line);
                     /* Add this new one, and mark it to be retained: */
                     internalsInfo.add(t, true);
@@ -228,7 +230,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
         class InfoItem {
             private TransitionNotationUml generator;
             private Object umlObject;
-            private boolean retainIt = false;
+            private boolean retainIt;
 
             /**
              * The constructor.
@@ -238,6 +240,13 @@ public class StateBodyNotationUml extends StateBodyNotation {
                 umlObject = obj;
                 generator = new TransitionNotationUml(obj);
             }
+
+            /**
+             * The constructor.
+             *
+             * @param obj the uml object.
+             * @param r
+             */
             InfoItem(Object obj, boolean r) {
                 this(obj);
                 retainIt = r;
@@ -507,11 +516,12 @@ public class StateBodyNotationUml extends StateBodyNotation {
     }
 
     public String generateExpression(Object expr) {
-        if (Model.getFacade().isAExpression(expr))
+        if (Model.getFacade().isAExpression(expr)) {
             return generateUninterpreted(
                     (String) Model.getFacade().getBody(expr));
-        else if (Model.getFacade().isAConstraint(expr))
+        } else if (Model.getFacade().isAConstraint(expr)) {
             return generateExpression(Model.getFacade().getBody(expr));
+        }
         return "";
     }
 
@@ -524,8 +534,9 @@ public class StateBodyNotationUml extends StateBodyNotation {
      * @return a non-null string.
      */
     public String generateUninterpreted(String un) {
-        if (un == null)
+        if (un == null) {
             return "";
+        }
         return un;
     }
 }

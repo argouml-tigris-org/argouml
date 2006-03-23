@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,9 +37,9 @@ import org.argouml.util.MyTokenizer;
 
 /**
  * This class is a utility for the UML notation. <p>
- * 
+ *
  * TODO: No need to make this class public.
- * 
+ *
  * @author mvw@tigris.org
  */
 public final class NotationUtilityUml {
@@ -49,24 +49,24 @@ public final class NotationUtilityUml {
      */
     private NotationUtilityUml() {
     }
-    
+
     /**
-     * This function shall replace the previous set of stereotypes 
-     * of the given modelelement with a new set, 
+     * This function shall replace the previous set of stereotypes
+     * of the given modelelement with a new set,
      * given in the form of a "," seperated string of stereotype names.
-     * 
+     *
      * @param umlobject the UML element to adapt
      * @param stereotype comma seperated stereotype names
-     * @param full false if stereotypes are only added, 
+     * @param full false if stereotypes are only added,
      *             true if removal should be done, too.
      */
-    public static void dealWithStereotypes(Object umlobject, String stereotype, 
+    public static void dealWithStereotypes(Object umlobject, String stereotype,
             boolean full) {
         String token;
         MyTokenizer mst;
         Collection stereotypes = new ArrayList();
-        
-        /* Convert the string (e.g. "aaa,bbb,ccc") 
+
+        /* Convert the string (e.g. "aaa,bbb,ccc")
          * into seperate stereotype-names (e.g. "aaa", "bbb", "ccc").
          */
         if (stereotype != null) {
@@ -78,22 +78,22 @@ public final class NotationUtilityUml {
                 }
             }
         }
-        
+
         if (full) {
             // collect the to be removed stereotypes
             Collection toBeRemoved = new ArrayList();
             Iterator i = Model.getFacade().getStereotypes(umlobject).iterator();
             while (i.hasNext()) {
                 String stereotypename = Model.getFacade().getName(i.next());
-                if (stereotypename != null 
+                if (stereotypename != null
                         && !stereotypes.contains(stereotypename)) {
                     toBeRemoved.add(getStereotype(umlobject, stereotypename));
                 }
             }
-        
+
             // and now remove them
             i = toBeRemoved.iterator();
-            while(i.hasNext()) {
+            while (i.hasNext()) {
                 Model.getCoreHelper().removeStereotype(umlobject, i.next());
             }
         }
@@ -148,13 +148,14 @@ public final class NotationUtilityUml {
         }
 
         if (root != null && name.length() > 0) {
-            stereo = Model.getExtensionMechanismsFactory().buildStereotype(
+            stereo =
+                Model.getExtensionMechanismsFactory().buildStereotype(
                     obj, name, root);
         }
 
         return stereo;
     }
-    
+
     /**
      * Recursively search a hive of a model for a stereotype with the name given
      * in name.
@@ -167,7 +168,8 @@ public final class NotationUtilityUml {
      *            The name of the stereotype to search for.
      * @return An stereotype named name, or null if none is found.
      */
-    private static Object recFindStereotype(Object obj, Object root, String name) {
+    private static Object recFindStereotype(
+            Object obj, Object root, String name) {
         Object stereo;
 
         if (root == null) {

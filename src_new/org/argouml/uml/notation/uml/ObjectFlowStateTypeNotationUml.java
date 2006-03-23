@@ -34,12 +34,12 @@ import org.argouml.uml.notation.ObjectFlowStateTypeNotation;
 /**
  * @author Michiel
  */
-public class ObjectFlowStateTypeNotationUml 
+public class ObjectFlowStateTypeNotationUml
     extends ObjectFlowStateTypeNotation {
 
     /**
      * The constructor.
-     * 
+     *
      * @param objectflowstate the ObjectFlowState represented by this notation
      */
     public ObjectFlowStateTypeNotationUml(Object objectflowstate) {
@@ -63,14 +63,14 @@ public class ObjectFlowStateTypeNotationUml
         }
         return toString();
     }
-    
+
     /**
      * Do the actual parsing.
-     * 
+     *
      * @param objectFlowState the given element to be altered
      * @param s the new string
      * @return the altered ObjectFlowState
-     * @throws ParseException when the given text was rejected 
+     * @throws ParseException when the given text was rejected
      */
     protected Object parseObjectFlowState1(Object objectFlowState, String s)
         throws ParseException {
@@ -99,13 +99,15 @@ public class ObjectFlowStateTypeNotationUml
     public String toString() {
         Object classifier = Model.getFacade().getType(myObjectFlowState);
         if (Model.getFacade().isAClassifierInState(classifier)) {
-            classifier = Model.getFacade().getType(classifier); 
+            classifier = Model.getFacade().getType(classifier);
         }
         if (classifier == null) {
             return "";
         }
         String name = Model.getFacade().getName(classifier);
-        if (name == null) name = "";
+        if (name == null) {
+            name = "";
+        }
         return name;
     }
 
