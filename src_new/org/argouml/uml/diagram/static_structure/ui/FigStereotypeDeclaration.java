@@ -34,39 +34,22 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
-import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 
 /**
- * Class to display a Stereotype declaration figure using 
+ * Class to display a Stereotype declaration figure using
  * Classifier box notation.<p>
- * 
+ *
  * TODO: This is just a placeholder right now! - tfm
  */
 public class FigStereotypeDeclaration extends FigClassifierBox {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(FigStereotypeDeclaration.class);
-
-    FigAttributesCompartment tagsFigCompartment;
-    FigAttributesCompartment constraintsFigCompartment;
-
-    /**
-     * Text highlighted by mouse actions on the diagram.<p>
-     */
-    private CompartmentFigText highlightedFigText;
-
 
     /**
      * Create a new Fig for a stereotype declaration.
@@ -83,11 +66,11 @@ public class FigStereotypeDeclaration extends FigClassifierBox {
         addFig(getBigPort());
         addFig(getStereotypeFig());
         addFig(getNameFig());
-        
+
         // TODO: Need named Tags and Constraints compartments here
 //        addFig(tagsFig);
 //        addFig(constraintsFig);
-        
+
         addFig(borderFig);
 
         setSuppressCalcBounds(false);
@@ -107,9 +90,9 @@ public class FigStereotypeDeclaration extends FigClassifierBox {
         this();
         setOwner(node);
         enableSizeChecking(true);
-        }
+    }
 
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
@@ -117,7 +100,7 @@ public class FigStereotypeDeclaration extends FigClassifierBox {
         return new SelectionClass(this);
     }
 
-    
+
     /**
      * Build a collection of menu items relevant for a right-click
      * popup menu on a Class.
@@ -152,7 +135,7 @@ public class FigStereotypeDeclaration extends FigClassifierBox {
 
         // Modifiers ...
         popUpActions.insertElementAt(
-                buildModifierPopUp(ABSTRACT | LEAF | ROOT ),
+                buildModifierPopUp(ABSTRACT | LEAF | ROOT),
                 popUpActions.size() - getPopupAddOffset());
 
         // Visibility ...
@@ -202,7 +185,7 @@ public class FigStereotypeDeclaration extends FigClassifierBox {
      * @param w  Desired width of the FigClass
      *
      * @param h  Desired height of the FigClass
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(final int x, final int y,
@@ -217,7 +200,7 @@ public class FigStereotypeDeclaration extends FigClassifierBox {
         // info. "whitespace" will be used to maintain a running calculation
         // of our size at various points.
 
-        final int whitespace = h - getMinimumSize().height;
+        // final int whitespace = h - getMinimumSize().height;
 
         getNameFig().setLineWidth(0);
         getNameFig().setLineColor(Color.red);
@@ -271,7 +254,7 @@ public class FigStereotypeDeclaration extends FigClassifierBox {
         }
         super.renderingChanged();
     }
-    
+
     /**
      * Handles changes to the model. Takes into account the event that
      * occurred. If you need to update the whole fig, consider using
@@ -288,11 +271,19 @@ public class FigStereotypeDeclaration extends FigClassifierBox {
 
 
 
-    // TODO: This needs to be generalized.  
-    // Map to Constraints compartment until then.
+    /**
+     * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#setOperationsVisible(boolean)
+     *
+     * TODO: This needs to be generalized.
+     * Map to Constraints compartment until then.
+     */
     public void setOperationsVisible(boolean visible) {
-        // TODO Auto-generated method stub
-        
+        // TODO: Auto-generated method stub
+
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -2702539988691983863L;
 } /* end class FigClass */
