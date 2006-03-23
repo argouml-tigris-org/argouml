@@ -65,6 +65,12 @@ public class PropPanelOperation extends PropPanelFeature {
         addField(Translator.localize("label.owner"),
                 getOwnerScroll());
 
+        addField(Translator.localize("label.parameters"),
+                new JScrollPane(new UMLLinkedList(
+                new UMLClassifierParameterListModel())));
+        
+        addSeperator();
+        
         add(getVisibilityPanel());
 
         JPanel modifiersPanel = createBorderPanel(Translator.localize(
@@ -76,14 +82,8 @@ public class PropPanelOperation extends PropPanelFeature {
         modifiersPanel.add(new UMLFeatureOwnerScopeCheckBox());
         add(modifiersPanel);
 
-        addSeperator();
-
         add(new UMLOperationConcurrencyRadioButtonPanel(
                 Translator.localize("label.concurrency"), true));
-
-        addField(Translator.localize("label.parameters"),
-                new JScrollPane(new UMLLinkedList(
-                new UMLClassifierParameterListModel())));
 
         addSeperator();
 
