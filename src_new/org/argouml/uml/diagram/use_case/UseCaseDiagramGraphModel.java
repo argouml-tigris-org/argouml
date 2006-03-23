@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -82,7 +82,8 @@ public class UseCaseDiagramGraphModel
     }
 
 
-    /** Return the node or edge that owns the given port.<p>
+    /**
+     * Return the node or edge that owns the given port.<p>
      *
      * In our implementation the only objects with ports, use
      * themselves as the port, so are there own owner.<p>
@@ -130,11 +131,9 @@ public class UseCaseDiagramGraphModel
                 Object ae = /*(MAssociationEnd)*/ endEnum.nextElement();
                 res.addElement(Model.getFacade().getAssociation(ae));
             }
-        }
+        } else if (Model.getFacade().isAUseCase(port)) {
+            // The use case
 
-        // The use case
-
-        else if (Model.getFacade().isAUseCase(port)) {
             Object use  = /*(MUseCase)*/ port;
             Vector ends = new Vector(Model.getFacade().getAssociationEnds(use));
 
@@ -199,7 +198,9 @@ public class UseCaseDiagramGraphModel
      *              this graph, <code>false</code> otherwise.
      */
     public boolean canAddNode(Object node) {
-        if (super.canAddNode(node)) return true;
+        if (super.canAddNode(node)) {
+            return true;
+        }
         if (containsNode(node)) {
 	    return false;
 	}
@@ -258,21 +259,17 @@ public class UseCaseDiagramGraphModel
 
             sourceModelElement = Model.getFacade().getType(associationEnd0);
             destModelElement = Model.getFacade().getType(associationEnd1);
-        }
-        else if (Model.getFacade().isAGeneralization(edge)) {
+        } else if (Model.getFacade().isAGeneralization(edge)) {
             sourceModelElement = Model.getFacade().getChild(edge);
             destModelElement = Model.getFacade().getParent(edge);
-        }
-        else if (Model.getFacade().isAExtend(edge)) {
+        } else if (Model.getFacade().isAExtend(edge)) {
             sourceModelElement = Model.getFacade().getBase(edge);
             destModelElement = Model.getFacade().getExtension(edge);
-        }
-        else if (Model.getFacade().isAInclude(edge)) {
+        } else if (Model.getFacade().isAInclude(edge)) {
 
             sourceModelElement = Model.getFacade().getBase(edge);
             destModelElement = Model.getFacade().getAddition(edge);
-        }
-        else if (Model.getFacade().isADependency(edge)) {
+        } else if (Model.getFacade().isADependency(edge)) {
 
             // A dependency potentially has many clients and suppliers. We only
             // consider the first of each (not clear that we should really
@@ -302,16 +299,16 @@ public class UseCaseDiagramGraphModel
 
         if (!containsNode(sourceModelElement)
                 && !containsEdge(sourceModelElement)) {
-            LOG.error("Edge rejected. Its source end is attached to " +
-                    sourceModelElement +
-                    " but this is not in the graph model");
+            LOG.error("Edge rejected. Its source end is attached to "
+                    + sourceModelElement
+                    + " but this is not in the graph model");
             return false;
         }
         if (!containsNode(destModelElement)
                 && !containsEdge(destModelElement)) {
-            LOG.error("Edge rejected. Its destination end is attached to " +
-                    destModelElement +
-                    " but this is not in the graph model");
+            LOG.error("Edge rejected. Its destination end is attached to "
+                    + destModelElement
+                    + " but this is not in the graph model");
             return false;
         }
 
@@ -343,7 +340,9 @@ public class UseCaseDiagramGraphModel
         // Give up if we are already on the graph. This is a bit inconistent
         // with canAddNode above.
 
-        if (!canAddNode(node)) return;
+        if (!canAddNode(node)) {
+            return;
+        }
 
         // Add the node, check that it is an actor or use case and add it to
         // the model namespace.
@@ -603,27 +602,24 @@ public class UseCaseDiagramGraphModel
 		    || (Model.getFacade().isAUseCase(me))) {
 
                     removeNode(me);
-                }
-
-                // Remove an edge
-
-                else if ((Model.getFacade().isAAssociation(me))
+                } else if ((Model.getFacade().isAAssociation(me))
 			 || (Model.getFacade().isAGeneralization(me))
 			 || (Model.getFacade().isAExtend(me))
 			 || (Model.getFacade().isAInclude(me))
 			 || (Model.getFacade().isADependency(me))) {
-
+                    // Remove an edge
                     removeEdge(me);
                 }
-            }
-
-            // Something was added - nothing for us to worry about
-            else {
+            } else {
+                // Something was added - nothing for us to worry about
                 LOG.debug("model added " + me);
             }
         }
     }
 
+    /**
+     * The UID.
+     */
     static final long serialVersionUID = -8516841965639203796L;
 
 } /* end class UseCaseDiagramGraphModel */

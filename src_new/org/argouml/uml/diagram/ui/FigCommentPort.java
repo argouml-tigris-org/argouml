@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,47 +33,77 @@ import org.tigris.gef.presentation.FigCircle;
 /**
  * The T juntion joining the dashed edge to a solid edge of an association
  * class.
+ *
  * @author Bob Tarling
  */
-
 public class FigCommentPort extends FigNodeModelElement {
     private FigCircle bigPort;
+
+    /**
+     * Constructor.
+     */
     public FigCommentPort() {
         bigPort = new FigCircle(0, 0, 10, 10, Color.black, Color.white);
         addFig(bigPort);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#hit(java.awt.Rectangle)
+     */
     public boolean hit(Rectangle r) {
         return false;
     }
-    
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
     public void setOwner(Object own) {
         bigPort.setOwner(own);
         super.setOwner(own);
     }
 
     /**
-     * @deprecated in 0.11.1 use org.tigris.gef.persistence.pgml.PgmlUtility.getClassNameAndBounds(Fig)
+     * @see org.tigris.gef.presentation.Fig#classNameAndBounds()
+     * @deprecated in 0.11.1 use
+     * org.tigris.gef.persistence.pgml.PgmlUtility.getClassNameAndBounds(Fig)
      */
     // USED BY PGML.tee
     public String classNameAndBounds() {
-        return getClass().getName() + "[" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + "]";
+        return getClass().getName()
+            + "[" + getX() + ", " + getY() + ", "
+            + getWidth() + ", " + getHeight() + "]";
     }
 
+    /**
+     * @see org.tigris.gef.presentation.FigNode#hitPort(int, int)
+     */
     public Object hitPort(int x, int y) {
         return null;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.FigGroup#hitFig(java.awt.Rectangle)
+     */
     public Fig hitFig(Rectangle r) {
         return null;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#isSelectable()
+     */
     public boolean isSelectable() {
         return false;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.FigNode#getPortFig(java.lang.Object)
+     */
     public Fig getPortFig(Object port) {
         return bigPort;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 3091219503512470458L;
 }

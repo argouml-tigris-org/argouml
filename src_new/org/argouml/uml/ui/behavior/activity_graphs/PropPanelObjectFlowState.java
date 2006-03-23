@@ -54,19 +54,19 @@ import org.argouml.util.ConfigLoader;
  *
  * @author mkl
  */
-public class PropPanelObjectFlowState extends AbstractPropPanelState 
-    implements PropertyChangeListener{
+public class PropPanelObjectFlowState extends AbstractPropPanelState
+    implements PropertyChangeListener {
 
     private JComboBox classifierComboBox;
     private JScrollPane statesScroll;
-    
+
     private ActionNewClassifierInState actionNewCIS;
 
     private UMLObjectFlowStateClassifierComboBoxModel classifierComboBoxModel =
         new UMLObjectFlowStateClassifierComboBoxModel();
 
     /**
-     * Constructor
+     * Constructor.
      */
     public PropPanelObjectFlowState() {
         super("ObjectFlowState", lookupIcon("ObjectFlowState"), ConfigLoader
@@ -87,15 +87,16 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
                 getClassifierComboBox()));
 
         // field for States
-        AbstractActionAddModelElement actionAdd = 
+        AbstractActionAddModelElement actionAdd =
             new ActionAddOFSState();
-        AbstractActionRemoveElement actionRemove = 
+        AbstractActionRemoveElement actionRemove =
             new ActionRemoveOFSState();
-        UMLMutableLinkedList list = new UMLMutableLinkedList(
-                new UMLOFSStateListModel(), 
-                actionAdd, 
-                null, 
-                actionRemove, 
+        UMLMutableLinkedList list =
+            new UMLMutableLinkedList(
+                new UMLOFSStateListModel(),
+                actionAdd,
+                null,
+                actionRemove,
                 true);
         statesScroll = new JScrollPane(list);
         addField(Translator.localize("label.instate"),
@@ -115,9 +116,9 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
      */
     protected void addExtraButtons() {
         /* We do not want the Internal Transitions button here. */
-        
-        actionNewCIS = new ActionNewClassifierInState(); 
-        actionNewCIS.putValue(Action.SHORT_DESCRIPTION, 
+
+        actionNewCIS = new ActionNewClassifierInState();
+        actionNewCIS.putValue(Action.SHORT_DESCRIPTION,
                 Translator.localize("button.new-classifierinstate"));
         Icon icon = ResourceLoaderWrapper.lookupIcon("ClassifierInState");
         actionNewCIS.putValue(Action.SMALL_ICON, icon);
@@ -151,19 +152,20 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
      */
     protected JComboBox getClassifierComboBox() {
         if (classifierComboBox == null) {
-            classifierComboBox = new UMLSearchableComboBox(
+            classifierComboBox =
+                new UMLSearchableComboBox(
                     classifierComboBoxModel,
                     new ActionSetObjectFlowStateClassifier(), true);
         }
         return classifierComboBox;
 
     }
-    
+
 
     /**
-     * Utility function to remove the top states 
+     * Utility function to remove the top states
      * from a given collection of states.
-     * 
+     *
      * @param ret a collection of states
      */
     static void removeTopStateFrom(Collection ret) {
@@ -171,24 +173,25 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         Collection tops = new ArrayList();
         while (i.hasNext()) {
             Object state = i.next();
-            if (Model.getFacade().isACompositeState(state) 
+            if (Model.getFacade().isACompositeState(state)
                     && Model.getFacade().isTop(state)) {
                 tops.add(state);
             }
         }
         ret.removeAll(tops);
     }
-    
-    
+
+
     class UMLOFSStateListModel extends UMLModelElementListModel2 {
-        
+
         /**
          * Constructor for UMLOFSStateListModel.
          */
         public UMLOFSStateListModel() {
-            /* TODO: This needs work... 
-             * We also need to listen to addition/removal 
-             * of states to/from a ClassifierInState. */
+            /* TODO: This needs work...
+             * We also need to listen to addition/removal
+             * of states to/from a ClassifierInState.
+             */
             super("type");
         }
 
@@ -204,36 +207,46 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
                 }
             }
         }
-        
+
         /**
          * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
          */
         protected boolean isValidElement(Object elem) {
             Object t = getTarget();
-            if (Model.getFacade().isAState(elem) 
+            if (Model.getFacade().isAState(elem)
                     && Model.getFacade().isAObjectFlowState(t)) {
                 Object type = Model.getFacade().getType(t);
                 if (Model.getFacade().isAClassifierInState(type)) {
                     Collection c = Model.getFacade().getInStates(type);
-                    if (c.contains(elem)) return true;
+                    if (c.contains(elem)) {
+                        return true;
+                    }
                 }
             }
             return false;
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -7742772495832660119L;
     }
-    
+
     class ActionAddOFSState extends AbstractActionAddModelElement {
-        
         private Object choiceClass = Model.getMetaTypes().getState();
-        
-        
+
+
+        /**
+         * The constructor.
+         */
         public ActionAddOFSState() {
             super();
             this.setMultiSelect(true);
         }
-        
+
         /**
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
+         * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(
+         *         java.util.Vector)
          */
         protected void doIt(Vector selected) {
             Object t = getTarget();
@@ -241,20 +254,22 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
                 Object type = Model.getFacade().getType(t);
                 if (Model.getFacade().isAClassifierInState(type)) {
                     Model.getActivityGraphsHelper().setInStates(type, selected);
-                } else if (Model.getFacade().isAClassifier(type) 
-                        && (selected != null) 
+                } else if (Model.getFacade().isAClassifier(type)
+                        && (selected != null)
                         && (selected.size() > 0)) {
-                    /* So, we found a Classifier 
+                    /* So, we found a Classifier
                      * that is not a ClassifierInState.
-                     * And at least one state has been selected. 
-                     * Well, let's correct that: */
-                    Object cis = Model.getActivityGraphsFactory()
-                        .buildClassifierInState(type, selected);
+                     * And at least one state has been selected.
+                     * Well, let's correct that:
+                     */
+                    Object cis =
+                        Model.getActivityGraphsFactory()
+                            .buildClassifierInState(type, selected);
                     Model.getCoreHelper().setType(t, cis);
                 }
             }
         }
-        
+
         /**
          * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
          */
@@ -268,21 +283,21 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
                 }
                 if (Model.getFacade().isAClassifier(classifier)) {
                     ret.addAll(Model.getModelManagementHelper()
-                            .getAllModelElementsOfKindWithModel(classifier, 
+                            .getAllModelElementsOfKindWithModel(classifier,
                                     choiceClass));
                 }
                 removeTopStateFrom(ret);
             }
             return ret;
         }
-        
+
         /**
          * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
          */
         protected String getDialogTitle() {
             return Translator.localize("dialog.title.add-state");
         }
-        
+
         /**
          * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
          */
@@ -296,26 +311,35 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             }
             return new Vector();
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 7266495601719117169L;
     }
-    
+
     class ActionRemoveOFSState extends AbstractActionRemoveElement {
-        
+
+        /**
+         * Constructor.
+         */
         public ActionRemoveOFSState() {
             super(Translator.localize("menu.popup.remove"));
         }
-        
+
         /**
          * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            Object state = getObjectToRemove(); 
+            Object state = getObjectToRemove();
             if (state != null) {
                 Object t = getTarget();
                 if (Model.getFacade().isAObjectFlowState(t)) {
                     Object type = Model.getFacade().getType(t);
                     if (Model.getFacade().isAClassifierInState(type)) {
-                        Collection states = new ArrayList(
+                        Collection states =
+                            new ArrayList(
                                 Model.getFacade().getInStates(type));
                         states.remove(state);
                         Model.getActivityGraphsHelper()
@@ -324,7 +348,15 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
                 }
             }
         }
-        
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -5113809512624883836L;
     }
-    
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -3484756765780298846L;
 }

@@ -37,27 +37,35 @@ import org.tigris.gef.presentation.Fig;
  *
  * @author abonner@ics.uci.edu
  */
-
 public class PathConvPercent2 extends PathConv {
 
+    /**
+     * The item Fig.
+     */
     private Fig itemFig;
 
+    /**
+     * The percent.
+     */
     private int percent;
 
+    /**
+     * The offset.
+     */
     private int offset;
 
     /**
      * Constructor.
      *
-     * @param theFig
-     * @param itemFig
-     * @param newPercent
-     * @param newOffset
+     * @param theFig The Fig.
+     * @param theItemFig The item Fig.
+     * @param newPercent The percent.
+     * @param newOffset The offset.
      */
-    public PathConvPercent2(Fig theFig, Fig itemFig, int newPercent,
+    public PathConvPercent2(Fig theFig, Fig theItemFig, int newPercent,
             int newOffset) {
         super(theFig);
-        this.itemFig = itemFig;
+        itemFig = theItemFig;
         setPercentOffset(newPercent, newOffset);
     }
 
@@ -78,6 +86,12 @@ public class PathConvPercent2 extends PathConv {
                 _pathFigure.pointAlongPerimeter(pointToGet - 5), offset, res);
     }
 
+    /**
+     * Set the percent and offset again.
+     *
+     * @param newPercent The new percent.
+     * @param newOffset The new offset.
+     */
     public void setPercentOffset(int newPercent, int newOffset) {
         percent = newPercent;
         offset = newOffset;
@@ -89,9 +103,12 @@ public class PathConvPercent2 extends PathConv {
     public void setClosestPoint(Point newPoint) {
     }
 
+    /**
+     * @see org.tigris.gef.base.PathConv#applyOffsetAmount(java.awt.Point, java.awt.Point, int, java.awt.Point)
+     */
     protected void applyOffsetAmount(
             Point p1, Point p2,
-            int offset, Point res) {
+            int theOffset, Point res) {
         // slope of the line we're finding the normal to
         // is slope, and the normal is the negative reciprocal
         // slope is (p1.y - p2.y) / (p1.x - p2.x)
@@ -110,8 +127,8 @@ public class PathConvPercent2 extends PathConv {
         double len =
             Math.sqrt(recipnumerator * recipnumerator
                 + recipdenominator * recipdenominator);
-        int dx = (int) ((recipdenominator * offset) / len);
-        int dy = (int) ((recipnumerator * offset) / len);
+        int dx = (int) ((recipdenominator * theOffset) / len);
+        int dy = (int) ((recipnumerator * theOffset) / len);
 
         res.x += Math.abs(dx);
         res.y -= Math.abs(dy);
@@ -131,11 +148,16 @@ public class PathConvPercent2 extends PathConv {
     /**
      * Calculate the tangens hyperbolicus.
      *
-     * @param x
+     * @param x The argument.
      * @return tangens hyberbolicus
      */
     private double tanh(double x) {
         return ((Math.exp(x) - Math.exp(-x)) / 2)
             / ((Math.exp(x) + Math.exp(-x)) / 2);
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8079350336685789199L;
 }
