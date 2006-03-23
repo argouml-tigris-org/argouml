@@ -155,7 +155,7 @@ public class TestItemUID extends TestCase {
         FigInstance figinstance = new FigInstance();
         FigInterface figinterface = new FigInterface();
         FigLink figlink = new FigLink();
-        FigPackage figpackage = new FigPackage();
+//        FigPackage figpackage = new FigPackage();
 
         FigActor figactor = new FigActor();
         FigExtend figextend = new FigExtend();
@@ -199,7 +199,7 @@ public class TestItemUID extends TestCase {
         checkAssignIDToObject(figinstance, true, true);
         checkAssignIDToObject(figinterface, true, true);
         checkAssignIDToObject(figlink, true, true);
-        checkAssignIDToObject(figpackage, true, true);
+        //checkAssignIDToObject(figpackage, true, true);
 
         checkAssignIDToObject(figactor, true, true);
         checkAssignIDToObject(figextend, true, true);
