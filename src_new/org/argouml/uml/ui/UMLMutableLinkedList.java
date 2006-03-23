@@ -128,7 +128,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
     public UMLMutableLinkedList(UMLModelElementListModel2 dataModel,
             AbstractActionAddModelElement theAddAction,
             AbstractActionNewModelElement theNewAction) {
-        this(dataModel, theAddAction, theNewAction, null, false);
+        this(dataModel, theAddAction, theNewAction, null, true);
     }
 
     /**
@@ -139,7 +139,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
      */
     public UMLMutableLinkedList(UMLModelElementListModel2 dataModel,
             AbstractActionAddModelElement theAddAction) {
-        this(dataModel, theAddAction, null, null, false);
+        this(dataModel, theAddAction, null, null, true);
     }
 
     /**
@@ -150,7 +150,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
      */
     public UMLMutableLinkedList(UMLModelElementListModel2 dataModel,
             AbstractActionNewModelElement theNewAction) {
-        this(dataModel, null, theNewAction, null, false);
+        this(dataModel, null, theNewAction, null, true);
     }
 
     /**
@@ -159,7 +159,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
      * @param dataModel the data model
      */
     protected UMLMutableLinkedList(UMLModelElementListModel2 dataModel) {
-        this(dataModel, null, null, null, false);
+        this(dataModel, null, null, null, true);
         setDelete(false);
         setDeleteAction(null);
     }
