@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,23 +42,37 @@ import org.apache.log4j.Logger;
  * @author Jason Robbins
  */
 public class SnoozeOrder implements Serializable {
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(SnoozeOrder.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
-    /** The initial sleeping time. */
-    private final long initialIntervalMS = 1000 * 60 * 10; /* ten minutes */
+    /**
+     * The initial sleeping time.
+     *
+     * Ten minutes.
+     */
+    private static final long INITIAL_INTERVAL_MS = 1000 * 60 * 10;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** Critic should sleep until this time. */
+    /**
+     * Critic should sleep until this time.
+     */
     private Date snoozeUntil;
-    /** Ifthe designer snoozees the critics again before this time, then
-     * go to sleep for even longer. */
+
+    /**
+     * If the designer snoozees the critics again before this time, then
+     * go to sleep for even longer.
+     */
     private Date snoozeAgain;
-    /** The sleeping time, including the effects of repeated snoozeing. */
+
+    /**
+     * The sleeping time, including the effects of repeated snoozeing.
+     */
     private long interval;
 
     private Date now = new Date();
@@ -108,11 +122,11 @@ public class SnoozeOrder implements Serializable {
 	if (snoozeAgain.after(getNow())) {
 	    interval = nextInterval(interval);
 	} else {
-	    interval = initialIntervalMS;
+	    interval = INITIAL_INTERVAL_MS;
 	}
 	long n = (getNow()).getTime();
 	snoozeUntil.setTime(n + interval);
-	snoozeAgain.setTime(n + interval + initialIntervalMS);
+	snoozeAgain.setTime(n + interval + INITIAL_INTERVAL_MS);
 	LOG.info("Setting snooze order to: " + snoozeUntil.toString());
     }
 
@@ -133,4 +147,8 @@ public class SnoozeOrder implements Serializable {
 	return last * 2;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -7133285313405407967L;
 } /* end class SnoozeOrder */

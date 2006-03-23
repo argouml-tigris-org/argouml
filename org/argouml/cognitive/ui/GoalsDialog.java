@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,8 +55,8 @@ import org.argouml.ui.ArgoDialog;
 public class GoalsDialog extends ArgoDialog implements ChangeListener {
     ////////////////////////////////////////////////////////////////
     // constants
-    private final int width = 320;
-    private final int height = 400;
+    private static final int WIDTH = 320;
+    private static final int HEIGHT = 400;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -78,7 +78,7 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener {
 	initMainPanel();
 
 	JScrollPane scroll = new JScrollPane(mainPanel);
-	scroll.setPreferredSize(new Dimension(width, height));
+	scroll.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
 	setContent(scroll);
     }
@@ -149,8 +149,9 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener {
 	    Goal d = (Goal) elems.nextElement();
 	    JLabel decLabel = new JLabel(d.getName());
 	    JLabel valueLabel = new JLabel("    " + d.getPriority());
-	    JSlider decSlide = new JSlider(SwingConstants.HORIZONTAL,
-					   0, 5, d.getPriority());
+	    JSlider decSlide =
+                new JSlider(SwingConstants.HORIZONTAL,
+                            0, 5, d.getPriority());
 	    decSlide.setPaintTicks(true);
 	    decSlide.setPaintLabels(true);
 	    decSlide.addChangeListener(this);
@@ -206,6 +207,10 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener {
 	}
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1871200638199122363L;
 } /* end class DesignIssuesDialog */
 
 
