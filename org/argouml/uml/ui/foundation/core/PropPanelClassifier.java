@@ -29,7 +29,6 @@ import java.util.Collection;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
@@ -37,7 +36,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewReception;
-import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Orientation;
 
 /**

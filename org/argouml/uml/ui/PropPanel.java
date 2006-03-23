@@ -44,7 +44,6 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.AbstractArgoJPanel;
