@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,7 @@ import org.argouml.uml.ui.ActionReopenProject;
 import java.io.File;
 
 /**
- * menu extension for last recently used files menu
+ * Menu extension for last recently used files menu.<p>
  *
  * functionality:
  * it is created with a link to the (file-)menu,
@@ -50,42 +50,43 @@ import java.io.File;
 public class LastRecentlyUsedMenuList {
 
     /**
-     * default value for maxcount if there is no configuration
+     * Default value for maxcount if there is no configuration.
      */
-    private final int maxCountDefault = 4;
+    private static final int MAX_COUNT_DEFAULT = 4;
 
     /**
-     * menu where the list is bound to
+     * Menu where the list is bound to.
      */
-    private JMenu fileMenu = null;
+    private JMenu fileMenu;
 
     /**
-     * recent loaded count
+     * Recent loaded count.
      */
-    private int lruCount = 0;
+    private int lruCount;
 
     /**
-     * maxcount read from configuration
+     * Maxcount read from configuration.
      */
-    private int maxCount = maxCountDefault;
+    private int maxCount = MAX_COUNT_DEFAULT;
 
     /**
-     * index where the menu entries should be inserted
-     * -1 to be sure (adds at end)
+     * Index where the menu entries should be inserted
+     * -1 to be sure (adds at end).
      */
     private int menuIndex = -1;
 
-    /**     * menuitems actually created and added to menu
+    /**
+     * Menuitems actually created and added to menu.
      */
     private JMenuItem[] menuItems;
 
     /**
-     * Array of conf keys for accessing the stored entries
+     * Array of conf keys for accessing the stored entries.
      */
     private ConfigurationKey[] confKeys;
 
     /**
-     * Adds the eventhandler to the menu and renames the entry
+     * Adds the eventhandler to the menu and renames the entry.
      */
     private JMenuItem addEventHandler(String filename, int addAt) {
         // the text is used by the event handler for opening the project
@@ -96,8 +97,9 @@ public class LastRecentlyUsedMenuList {
 
         // set maximum length of menu entry
         String entryName = f.getName();
-        if (entryName.length() > 40)
+        if (entryName.length() > 40) {
             entryName = entryName.substring(0, 40) + "...";
+        }
 
         // text is short, tooltip is long
         item.setText(entryName);
@@ -108,7 +110,8 @@ public class LastRecentlyUsedMenuList {
 
     /**
      * Creates a new instance of LastRecentlyUsedMenuList with respect
-     * to the menu where the lru is bound to
+     * to the menu where the lru is bound to.
+     *
      * @param filemenu at this menu the lru is bound after last entry
      * it is added with a separator
      *
@@ -124,8 +127,9 @@ public class LastRecentlyUsedMenuList {
 
         // init from config
         // read number, write result as new default and prepare keys
-        maxCount = Configuration.getInteger(Argo.KEY_NUMBER_LAST_RECENT_USED,
-					     maxCountDefault);
+        maxCount =
+            Configuration.getInteger(Argo.KEY_NUMBER_LAST_RECENT_USED,
+                                     MAX_COUNT_DEFAULT);
         Configuration.setInteger(Argo.KEY_NUMBER_LAST_RECENT_USED, maxCount);
         confKeys = new ConfigurationKey[maxCount];
         menuItems = new JMenuItem[maxCount];
@@ -146,9 +150,9 @@ public class LastRecentlyUsedMenuList {
             if (newName.length() > 0) {
                 menuItems[i] = addEventHandler(newName, menuIndex + i);
                 i++;
-            }
-            else
+            } else {
                 readOK = false; // empty entry stops reading --> last line!
+            }
         }
 
         // this is the recent count
@@ -157,7 +161,7 @@ public class LastRecentlyUsedMenuList {
 
     /**
      * Adds a new entry to lru list and removes the last one if
-     * if it increases maxCount
+     * if it increases maxCount.
      *
      * @param filename name of link which is to be used to represent
      * _and_ reopen the file
@@ -174,8 +178,9 @@ public class LastRecentlyUsedMenuList {
         }
 
         // delete all existing entries
-        for (int i = 0; i < lruCount; i++)
+        for (int i = 0; i < lruCount; i++) {
             fileMenu.remove(menuItems[i]);
+        }
 
         // add new entry as first entry
         menuItems[0] = addEventHandler(filename, menuIndex);
