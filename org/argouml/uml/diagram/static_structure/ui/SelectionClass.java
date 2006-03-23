@@ -236,6 +236,8 @@ public class SelectionClass extends SelectionNodeClarifiers {
             ModeCreateEdgeAndNode m =
                 new ModeCreateEdgeAndNode(ce,
                         edgeType, nodeType, useComposite);
+            // This will fix issue 2400, once we have the new GEF:
+//                      edgeType, useComposite, this);
             m.setup((FigNode) getContent(), getContent().getOwner(),
                     bx, by, reverse);
             ce.pushMode(m);
