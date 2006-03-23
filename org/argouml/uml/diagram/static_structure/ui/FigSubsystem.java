@@ -42,8 +42,8 @@ public class FigSubsystem extends FigPackage {
     /**
      * The main Constructor.
      */
-    public FigSubsystem() {
-        super();
+    public FigSubsystem(Object modelElement, int x, int y) {
+        super(modelElement, x, y);
 
         int[] xpoints = {125, 125, 130, 130, 130, 135, 135};
         int[] ypoints = {45, 40, 40, 35, 40, 40, 45};
@@ -62,8 +62,7 @@ public class FigSubsystem extends FigPackage {
      * @param node the UML element
      */
     public FigSubsystem(GraphModel gm, Object node) {
-        this();
-        setOwner(node);
+        this(node, 0, 0);
     }
 
     /**

@@ -323,6 +323,15 @@ public abstract class FigNodeModelElement
         //ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
+    public FigNodeModelElement(Object node, int x, int y) {
+        this();
+        setOwner(node);
+        nameFig.setText(placeString());
+        readyToEdit = false;
+        setLocation(x, y);
+        //ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
+    }
+
     /**
      * @see java.lang.Object#finalize()
      */

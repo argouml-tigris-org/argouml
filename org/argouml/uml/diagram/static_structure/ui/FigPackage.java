@@ -115,7 +115,7 @@ public class FigPackage extends FigNodeModelElement
     /**
      * The main constructor.
      */
-    public FigPackage() {
+    public FigPackage(Object node, int x, int y) {
         setBigPort(
             new PackagePortFigRect(0, 0, width, height, indentX, tabHeight));
 
@@ -147,18 +147,11 @@ public class FigPackage extends FigNodeModelElement
         // thickness, so the rectangle does not need to be filled. Whether to
         // display is linked to whether to display the stereotype.
 
+        // TODO: Do we really still need this? - Bob
         stereoLineBlinder =
             new FigRect(11, 10 + STEREOHEIGHT, 58, 2, Color.white, Color.white);
         stereoLineBlinder.setLineWidth(1);
         stereoLineBlinder.setVisible(false);
-
-        // Mark this as newly created. This is to get round the problem with
-        // creating figs for loaded classes that had stereotypes. They are
-        // saved with their dimensions INCLUDING the stereotype, but since we
-        // pretend the stereotype is not visible, we add height the first time
-        // we render such a class. This is a complete fudge, and really we
-        // ought to address how class objects with stereotypes are saved. But
-        // that will be hard work.
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
@@ -168,12 +161,18 @@ public class FigPackage extends FigNodeModelElement
         addFig(body);
 
         setBlinkPorts(false); //make port invisble unless mouse enters
+        
+        setLocation(x, y);
+        
+        // TODO: Why do we need to do this? - Bob
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
+        
         updateEdges();
 
         visibilityVisible =
                 Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY);
+        setOwner(node);
     }
 
     /**
@@ -183,8 +182,7 @@ public class FigPackage extends FigNodeModelElement
      * @param node the UML element
      */
     public FigPackage(GraphModel gm, Object node) {
-        this();
-        setOwner(node);
+        this(node, 0, 0);
     }
 
     /**

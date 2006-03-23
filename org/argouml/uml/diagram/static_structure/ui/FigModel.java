@@ -42,8 +42,8 @@ public class FigModel extends FigPackage {
     /**
      * Constructor
      */
-    public FigModel() {
-        super();
+    public FigModel(Object modelElement, int x, int y) {
+        super(modelElement, x, y);
 
         int[] xpoints = {125, 130, 135, 125};
         int[] ypoints = {45, 40, 45, 45};
@@ -63,8 +63,7 @@ public class FigModel extends FigPackage {
      * @param node the UMl element
      */
     public FigModel(GraphModel gm, Object node) {
-        this();
-        setOwner(node);
+        this(node, 0, 0);
     }
 
     /**

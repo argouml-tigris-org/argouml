@@ -106,7 +106,7 @@ public abstract class UmlDiagramRenderer
     /**
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(java.lang.Object, java.util.Map)
      */
-    public FigNode getFigNodeFor(Object node, Map styleAttributes) {
+    public FigNode getFigNodeFor(Object node, int x, int y, Map styleAttributes) {
         if (node == null) {
             throw new IllegalArgumentException(
                     "A model element must be supplied");
@@ -131,11 +131,11 @@ public abstract class UmlDiagramRenderer
         } else if (Model.getFacade().isAInstance(node)) {
             figNode = new FigInstance();
         } else if (Model.getFacade().isAModel(node)) {
-            figNode = new FigModel();
+            figNode = new FigModel(node, x, y);
         } else if (Model.getFacade().isASubsystem(node)) {
-            figNode = new FigSubsystem();
+            figNode = new FigSubsystem(node, x, y);
         } else if (Model.getFacade().isAPackage(node)) {
-            figNode = new FigPackage();
+            figNode = new FigPackage(node, x, y);
         } else if (Model.getFacade().isAAssociation(node)) {
             figNode = new FigNodeAssociation();
         } else if (Model.getFacade().isAActor(node)) {
