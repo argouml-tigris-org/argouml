@@ -61,7 +61,15 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         addField(Translator.localize("label.multiplicity"),
                 getMultiplicityComboBox());
 
+        addSeperator();
+        
         add(getVisibilityPanel());
+        add(getChangeabilityRadioButtonPanel());
+
+        JPanel modifiersPanel = createBorderPanel(
+                Translator.localize("label.modifiers"));
+        modifiersPanel.add(getOwnerScopeCheckbox());
+        add(modifiersPanel);
         
         addSeperator();
 
@@ -81,14 +89,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         addField(Translator.localize("label.initial-value"),
                 new UMLInitialValueComboBox(this));
 
-        add(getChangeabilityRadioButtonPanel());
-
-        JPanel modifiersPanel = new JPanel(new FlexiGridLayout(0, 3,
-                FlexiGridLayout.ROWCOLPREFERRED));
-        modifiersPanel.setBorder(new TitledBorder(
-                Translator.localize("label.modifiers")));
-        modifiersPanel.add(getOwnerScopeCheckbox());
-        add(modifiersPanel);
+        
 
 
         addAction(new ActionNavigateContainerElement());

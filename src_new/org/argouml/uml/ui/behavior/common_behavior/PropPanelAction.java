@@ -91,9 +91,8 @@ public abstract class PropPanelAction extends PropPanelModelElement {
             new UMLScriptExpressionModel(
                 this, "script");
 
-        JPanel scriptPanel = new JPanel(new GridLayout2());
-        scriptPanel.setBorder(new TitledBorder(Translator
-                .localize("label.script")));
+        JPanel scriptPanel = createBorderPanel(Translator
+                .localize("label.script"));
 
         scriptPanel.add(new JScrollPane(new UMLExpressionBodyField(
                 scriptModel, true)));
@@ -106,9 +105,8 @@ public abstract class PropPanelAction extends PropPanelModelElement {
             new UMLRecurrenceExpressionModel(
                 this, "recurrence");
 
-        JPanel recurrencePanel = new JPanel(new GridLayout2());
-        recurrencePanel.setBorder(new TitledBorder(Translator
-                .localize("label.recurrence")));
+        JPanel recurrencePanel = createBorderPanel(Translator
+                .localize("label.recurrence"));
         recurrencePanel.add(new JScrollPane(new UMLExpressionBodyField(
                 recurrenceModel, true)));
         recurrencePanel.add(new UMLExpressionLanguageField(

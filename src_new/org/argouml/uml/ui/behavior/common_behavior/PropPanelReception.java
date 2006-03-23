@@ -63,11 +63,8 @@ public class PropPanelReception extends PropPanelModelElement {
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
-        modifiersPanel =
-            new JPanel(new GridLayout2());
-        modifiersPanel.setBorder(
-            new TitledBorder(Translator.localize(
-                    "label.modifiers")));
+        modifiersPanel = createBorderPanel(Translator.localize(
+                    "label.modifiers"));
 
         modifiersPanel.add(
                             new UMLGeneralizableElementAbstractCheckBox());

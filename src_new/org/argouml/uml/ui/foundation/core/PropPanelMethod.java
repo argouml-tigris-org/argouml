@@ -88,11 +88,8 @@ public class PropPanelMethod extends PropPanelFeature {
 
         add(getVisibilityPanel());
 
-        JPanel modifiersPanel =
-            new JPanel(new GridLayout2(0, 3,
-                GridLayout2.ROWCOLPREFERRED));
-        modifiersPanel.setBorder(new TitledBorder(Translator.localize(
-                "label.modifiers")));
+        JPanel modifiersPanel = createBorderPanel(Translator.localize(
+                "label.modifiers"));
         modifiersPanel.add(new UMLBehavioralFeatureQueryCheckBox());
         modifiersPanel.add(new UMLFeatureOwnerScopeCheckBox());
         add(modifiersPanel);

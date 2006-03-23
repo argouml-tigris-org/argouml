@@ -73,9 +73,8 @@ public class PropPanelGuard extends PropPanelModelElement {
 
 		addSeperator();
 
-		JPanel exprPanel = new JPanel(new GridLayout2());
-		exprPanel.setBorder(new TitledBorder(Translator
-				.localize("label.expression")));
+		JPanel exprPanel = createBorderPanel(Translator
+				.localize("label.expression"));
 		UMLExpressionModel2 expressionModel = new UMLExpressionExpressionModel(
 				this, "expression");
 		JTextArea ebf = new UMLExpressionBodyField(expressionModel, true);
