@@ -252,6 +252,8 @@ public class SelectionActionState extends SelectionNodeClarifiers {
 	if (edgeType != null && nodeType != null) {
 	    ModeCreateEdgeAndNode m =
 	        new ModeCreateEdgeAndNode(ce, edgeType, nodeType, false);
+                //This will fix issue 2400, once we have the new GEF:
+//              new ModeCreateEdgeAndNode(ce, edgeType, false, this);
 	    m.setup((FigNode) getContent(), getContent().getOwner(),
 	            bx, by, reverse);
 	    ce.pushMode(m);
