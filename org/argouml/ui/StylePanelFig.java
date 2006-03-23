@@ -42,6 +42,7 @@ import javax.swing.text.Document;
 import org.argouml.i18n.Translator;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.ColorRenderer;
 
 /**
@@ -191,8 +192,8 @@ public class StylePanelFig
      * have not changed.<p>
      */
     public void refresh() {
-
-        if (getPanelTarget() instanceof FigEdgeModelElement) {
+    	Fig target = getPanelTarget();
+        if (target instanceof FigEdgeModelElement) {
             hasEditableBoundingBox(false);
         } else {
             hasEditableBoundingBox(true);
@@ -203,7 +204,7 @@ public class StylePanelFig
         // boundary box style field (null if we don't have anything
         // valid)
 
-        Rectangle figBounds = getPanelTarget().getBounds();
+        Rectangle figBounds = target.getBounds();
         Rectangle styleBounds = parseBBox();
 
         // Only reset the text if the two are not the same (i.e the fig
@@ -221,8 +222,8 @@ public class StylePanelFig
 
         // Change the fill colour
 
-        if (getPanelTarget().getFilled()) {
-            Color c = getPanelTarget().getFillColor();
+        if (target.getFilled()) {
+            Color c = target.getFillColor();
             fillField.setSelectedItem(c);
             if (c != null && !fillField.getSelectedItem().equals(c)) {
                 fillField.insertItemAt(c, fillField.getItemCount() - 1);
@@ -234,8 +235,8 @@ public class StylePanelFig
 
         // Change the line colour
 
-        if (getPanelTarget().getLineWidth() > 0) {
-            Color c = getPanelTarget().getLineColor();
+        if (target.getLineWidth() > 0) {
+            Color c = target.getLineColor();
             lineField.setSelectedItem(c);
             if (c != null && !lineField.getSelectedItem().equals(c)) {
                 lineField.insertItemAt(c, lineField.getItemCount() - 1);
@@ -260,8 +261,9 @@ public class StylePanelFig
      * could ever be.
      */
     protected void setTargetBBox() {
+    	Fig target = getPanelTarget();
         // Can't do anything if we don't have a fig.
-        if (getPanelTarget() == null) { return; }
+        if (target == null) { return; }
         // Parse the boundary box text. Null is
         // returned if it is empty or
         // invalid, which causes no change. Otherwise we tell
@@ -271,10 +273,10 @@ public class StylePanelFig
         Rectangle bounds = parseBBox();
         if (bounds == null) { return; }
 
-        if (!getPanelTarget().getBounds().equals(bounds)) {
-            getPanelTarget().setBounds(bounds.x, bounds.y, bounds.width,
+        if (!target.getBounds().equals(bounds)) {
+            target.setBounds(bounds.x, bounds.y, bounds.width,
                     bounds.height);
-            getPanelTarget().endTrans();
+            target.endTrans();
         }
     }
 
@@ -294,6 +296,7 @@ public class StylePanelFig
      *         is empty or invalid.
      */
     protected Rectangle parseBBox() {
+    	Fig target = getPanelTarget();
         // Get the text in the field, and don't do anything if the
         // field is
         // empty.
@@ -308,19 +311,19 @@ public class StylePanelFig
         try {
             boolean changed = false;
             if (!st.hasMoreTokens()) {
-                return getPanelTarget().getBounds();
+                return target.getBounds();
             }
             res.x = Integer.parseInt(st.nextToken());
             if (!st.hasMoreTokens()) {
-                res.y = getPanelTarget().getBounds().y;
-                res.width = getPanelTarget().getBounds().width;
-                res.height = getPanelTarget().getBounds().height;
+                res.y = target.getBounds().y;
+                res.width = target.getBounds().width;
+                res.height = target.getBounds().height;
                 return res;
             }
             res.y = Integer.parseInt(st.nextToken());
             if (!st.hasMoreTokens()) {
-                res.width = getPanelTarget().getBounds().width;
-                res.height = getPanelTarget().getBounds().height;
+                res.width = target.getBounds().width;
+                res.height = target.getBounds().height;
                 return res;
             }
             res.width = Integer.parseInt(st.nextToken());
@@ -329,7 +332,7 @@ public class StylePanelFig
                 changed = true;
             }
             if (!st.hasMoreTokens()) {
-                res.width = getPanelTarget().getBounds().width;
+                res.width = target.getBounds().width;
                 return res;
             }
             res.height = Integer.parseInt(st.nextToken());
@@ -388,32 +391,34 @@ public class StylePanelFig
      * Change the fill.
      */
     public void setTargetFill() {
+    	Fig target = getPanelTarget();
         Object c = fillField.getSelectedItem();
-        if (getPanelTarget() == null || c == null) {
+        if (target == null || c == null) {
             return;
         }
-        Color oldColor = getPanelTarget().getFillColor();
+        Color oldColor = target.getFillColor();
         if (c instanceof Color) {
-            getPanelTarget().setFillColor((Color) c);
+            target.setFillColor((Color) c);
         }
-        getPanelTarget().setFilled(c instanceof Color);
-        getPanelTarget().endTrans();
+        target.setFilled(c instanceof Color);
+        target.endTrans();
     }
 
     /**
      * Change the line.
      */
     public void setTargetLine() {
+    	Fig target = getPanelTarget();
         Object c = lineField.getSelectedItem();
-        if (getPanelTarget() == null || c == null) {
+        if (target == null || c == null) {
             return;
         }
-        Color oldColor = getPanelTarget().getLineColor();
+        Color oldColor = target.getLineColor();
         if (c instanceof Color) {
-            getPanelTarget().setLineColor((Color) c);
+            target.setLineColor((Color) c);
         }
-        getPanelTarget().setLineWidth((c instanceof Color) ? 1 : 0);
-        getPanelTarget().endTrans();
+        target.setLineWidth((c instanceof Color) ? 1 : 0);
+        target.endTrans();
     }
 
     /**
@@ -421,18 +426,19 @@ public class StylePanelFig
      */
     public void itemStateChanged(ItemEvent e) {
         Object src = e.getSource();
+        Fig target = getPanelTarget();
         if (e.getStateChange() == ItemEvent.SELECTED
-                && getPanelTarget() != null) {
+                && target != null) {
             if (src == fillField) {
                 if (e.getItem() == CUSTOM_ITEM) {
                     handleCustomColor(fillField, "Custom Fill Color",
-                            getPanelTarget().getFillColor());
+                            target.getFillColor());
                 }
                 setTargetFill();
             } else if (src == lineField) {
                 if (e.getItem() == CUSTOM_ITEM) {
                     handleCustomColor(lineField, "Custom Line Color",
-                            getPanelTarget().getLineColor());
+                            target.getLineColor());
                 }
                 setTargetLine();
             }
