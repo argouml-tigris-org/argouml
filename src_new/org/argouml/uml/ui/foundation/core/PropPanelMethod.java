@@ -30,7 +30,6 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.AttributeChangeEvent;
@@ -46,7 +45,6 @@ import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
-import org.tigris.swidgets.GridLayout2;
 
 /**
  * A property panel for methods.

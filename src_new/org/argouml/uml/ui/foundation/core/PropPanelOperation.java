@@ -30,7 +30,6 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.TitledBorder;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
@@ -42,7 +41,6 @@ import org.argouml.uml.ui.ActionNavigateOwner;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
-import org.tigris.swidgets.GridLayout2;
 
 /**
  * A property panel for operations.

@@ -29,7 +29,6 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -43,7 +42,6 @@ import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
-import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Orientation;
 
 /**
