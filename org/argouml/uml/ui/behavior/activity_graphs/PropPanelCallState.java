@@ -24,29 +24,17 @@
 
 package org.argouml.uml.ui.behavior.activity_graphs;
 
-import java.awt.event.ActionEvent;
-
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.ActionRemoveModelElement;
-import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.argouml.uml.ui.behavior.common_behavior.ActionNewAction;
-import org.argouml.uml.ui.behavior.common_behavior.ActionNewCallAction;
 import org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState;
 import org.argouml.uml.ui.behavior.state_machines.UMLStateEntryListModel;
 import org.argouml.util.ConfigLoader;
-import org.tigris.gef.undo.UndoableAction;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -77,8 +65,9 @@ public class PropPanelCallState extends AbstractPropPanelState {
             Orientation orientation) {
 
         super(name, icon, orientation);
-        
-        callActionEntryList = new UMLCallStateEntryList(
+
+        callActionEntryList =
+            new UMLCallStateEntryList(
                 new UMLStateEntryListModel());
         callActionEntryList.setVisibleRowCount(1);
         callActionEntryScroll = new JScrollPane(callActionEntryList);
@@ -102,15 +91,15 @@ public class PropPanelCallState extends AbstractPropPanelState {
         addField(Translator.localize("label.outgoing"),
                 getOutgoingScroll());
     }
-    
+
     /**
-     * Let's add a buttun to create a CallAction:
-     * 
+     * Let's add a buttun to create a CallAction.
+     *
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex#addExtraButtons()
      */
     protected void addExtraButtons() {
-        Action a = new ActionNewEntryCallAction(); 
-        a.putValue(Action.SHORT_DESCRIPTION, 
+        Action a = new ActionNewEntryCallAction();
+        a.putValue(Action.SHORT_DESCRIPTION,
                 Translator.localize("button.new-callaction"));
         Icon icon = ResourceLoaderWrapper.lookupIcon("CallAction");
         a.putValue(Action.SMALL_ICON, icon);
@@ -124,6 +113,10 @@ public class PropPanelCallState extends AbstractPropPanelState {
         return callActionEntryScroll;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8830997687737785261L;
 }
 
 
