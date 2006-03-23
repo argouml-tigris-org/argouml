@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,7 @@ public class NodeInstanceNotationUml extends NodeInstanceNotation {
 
     /**
      * The constructor.
-     * 
+     *
      * @param nodeInstance the UML nodeInstance
      */
     public NodeInstanceNotationUml(Object nodeInstance) {
@@ -48,7 +48,7 @@ public class NodeInstanceNotationUml extends NodeInstanceNotation {
 
     /**
      * Parse a line of the form: "name : base-node".
-     * 
+     *
      * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
      */
     public String parse(String text) {
@@ -88,7 +88,7 @@ public class NodeInstanceNotationUml extends NodeInstanceNotation {
 
         Model.getCommonBehaviorHelper().setClassifiers(myNodeInstance, v);
         Model.getCoreHelper().setName(myNodeInstance, name);
-        
+
         return toString();
     }
 

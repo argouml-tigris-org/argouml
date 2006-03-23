@@ -69,8 +69,10 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
             parseModelElement(myModelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.node-modelelement";
-            Object[] args = {pe.getLocalizedMessage(),
-                             new Integer(pe.getErrorOffset())};
+            Object[] args = {
+                pe.getLocalizedMessage(),
+                new Integer(pe.getErrorOffset()),
+            };
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                 Translator.messageFormat(msg, args));
         }
@@ -93,10 +95,14 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
     public String toString() {
         String name = Model.getFacade().getName(myModelElement);
         StringBuffer sb = new StringBuffer("");
-        if (isValue("fullyHandleStereotypes")) sb.append(generateStereotypes());
+        if (isValue("fullyHandleStereotypes")) {
+            sb.append(generateStereotypes());
+        }
         sb.append(generateVisibility());
         sb.append(generatePath());
-        if (name != null) sb.append(name);
+        if (name != null) {
+            sb.append(name);
+        }
         return sb.toString();
     }
 
@@ -107,7 +113,9 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
         boolean first = true;
         while (i.hasNext()) {
             Object o = i.next();
-            if (!first) sb.append(',');
+            if (!first) {
+                sb.append(',');
+            }
             if (o != null) {
                 sb.append(Model.getFacade().getName(o));
                 first = false;
@@ -117,7 +125,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
             + sb.toString()
             + NotationHelper.getRightGuillemot();
     }
-    
+
     /**
      *
      * @return a string which represents the path
@@ -152,11 +160,14 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
             Object v = Model.getFacade().getVisibility(myModelElement);
             if (v == null) {
                 /* Initially, the visibility is not set in the model.
-                 * Still, we want to show the default, i.e. public.*/
+                 * Still, we want to show the default, i.e. public.
+                 */
                 v = Model.getVisibilityKind().getPublic();
             }
             s = GeneratorDisplay.getInstance().generateVisibility(v);
-            if (s.length() > 0) s = s + " ";
+            if (s.length() > 0) {
+                s = s + " ";
+            }
             /* This for when nothing is generated: omit the space. */
         }
         return s;
@@ -187,7 +198,8 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
                 if ("<<".equals(token) || "\u00AB".equals(token)) {
                     if (stereotype != null) {
                         throw new ParseException("Element cannot have "
-                                + "two groups of stereotypes", st.getTokenIndex());
+                                + "two groups of stereotypes",
+                                st.getTokenIndex());
                     }
 
                     stereotype = "";
@@ -264,7 +276,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
             Model.getCoreHelper().setName(me, name);
         }
 
-        NotationUtilityUml.dealWithStereotypes(me, stereotype, 
+        NotationUtilityUml.dealWithStereotypes(me, stereotype,
                 isValue("fullyHandleStereotypes"));
 
         if (path != null) {

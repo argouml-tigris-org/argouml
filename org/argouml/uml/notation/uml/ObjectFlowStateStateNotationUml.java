@@ -38,14 +38,14 @@ import org.argouml.uml.notation.ObjectFlowStateStateNotation;
 
 /**
  * @author Michiel
- * 
+ *
  */
 public class ObjectFlowStateStateNotationUml extends
         ObjectFlowStateStateNotation {
 
     /**
      * The constructor.
-     * 
+     *
      * @param objectflowstate
      *            the ObjectFlowState represented by this notation
      */
@@ -78,7 +78,7 @@ public class ObjectFlowStateStateNotationUml extends
 
     /**
      * Do the actual parsing.
-     * 
+     *
      * @param objectFlowState
      *            the given element to be altered
      * @param s
@@ -88,11 +88,15 @@ public class ObjectFlowStateStateNotationUml extends
      *             when the given text was rejected
      */
     protected Object parseObjectFlowState2(Object objectFlowState, String s)
-            throws ParseException {
+        throws ParseException {
         s = s.trim();
         /* Let's not be picky about the brackets - just remove them: */
-        if (s.startsWith("[")) s = s.substring(1);
-        if (s.endsWith("]")) s = s.substring(0, s.length() - 1);
+        if (s.startsWith("[")) {
+            s = s.substring(1);
+        }
+        if (s.endsWith("]")) {
+            s = s.substring(0, s.length() - 1);
+        }
         s = s.trim();
         Object c = Model.getFacade().getType(objectFlowState); // get the
                                                                 // classifier
@@ -107,7 +111,8 @@ public class ObjectFlowStateStateNotationUml extends
                     Model.getCoreHelper().setType(objectFlowState, classifier);
                     return objectFlowState; // the model is changed - job done
                 }
-                Collection states = new ArrayList(Model.getFacade()
+                Collection states =
+                    new ArrayList(Model.getFacade()
                         .getInStates(c));
                 Collection statesToBeRemoved = new ArrayList(states);
                 Collection namesToBeAdded = new ArrayList(); // Strings
@@ -123,7 +128,9 @@ public class ObjectFlowStateStateNotationUml extends
                             statesToBeRemoved.remove(state);
                         }
                     }
-                    if (!found) namesToBeAdded.add(nextToken);
+                    if (!found) {
+                        namesToBeAdded.add(nextToken);
+                    }
                 }
                 /* Remove the states that did not match. */
                 states.removeAll(statesToBeRemoved);
@@ -136,7 +143,8 @@ public class ObjectFlowStateStateNotationUml extends
                      * classifier is named [name]. If so, then we only have to
                      * link the state to c.
                      */
-                    Object state = Model.getActivityGraphsHelper()
+                    Object state =
+                        Model.getActivityGraphsHelper()
                             .findStateByName(classifier, name);
                     if (state != null) {
                         states.add(state);
@@ -158,7 +166,8 @@ public class ObjectFlowStateStateNotationUml extends
                 StringTokenizer tokenizer = new StringTokenizer(s, ",");
                 while (tokenizer.hasMoreTokens()) {
                     String nextToken = tokenizer.nextToken().trim();
-                    Object state = Model.getActivityGraphsHelper()
+                    Object state =
+                        Model.getActivityGraphsHelper()
                             .findStateByName(c, nextToken);
                     if (state != null) {
                         statesToBeAdded.add(state);
@@ -171,7 +180,8 @@ public class ObjectFlowStateStateNotationUml extends
                 }
 
                 // let's create a new ClassifierInState with the correct links
-                Object cis = Model.getActivityGraphsFactory()
+                Object cis =
+                    Model.getActivityGraphsFactory()
                         .buildClassifierInState(c, statesToBeAdded);
                 Model.getCoreHelper().setType(myObjectFlowState, cis);
                 // the model is changed - our job is done
@@ -186,7 +196,7 @@ public class ObjectFlowStateStateNotationUml extends
 
     /**
      * This deletes modelelements, and swallows null without barking.
-     * 
+     *
      * @author mvw@tigris.org
      * @param obj
      *            the modelelement to be deleted
@@ -209,7 +219,9 @@ public class ObjectFlowStateStateNotationUml extends
             Iterator i = states.iterator();
             boolean first = true;
             while (i.hasNext()) {
-                if (!first) theNewText.append(", ");
+                if (!first) {
+                    theNewText.append(", ");
+                }
                 first = false;
                 Object state = i.next();
                 theNewText.append(Model.getFacade().getName(state));

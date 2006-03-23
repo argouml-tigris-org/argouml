@@ -33,7 +33,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesFactory;
-import org.argouml.notation.NotationProvider2;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.notation.TransitionNotation;
@@ -61,15 +60,15 @@ public class TransitionNotationUml extends TransitionNotation {
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.transition";
             Object[] args = {
-                    pe.getLocalizedMessage(),
-                    new Integer(pe.getErrorOffset()),
+                pe.getLocalizedMessage(),
+                new Integer(pe.getErrorOffset()),
             };
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
         }
         return toString();
     }
-    
+
     /**
      * Parse a transition description line of the form:<pre>
      *    "event-signature [guard-condition] / action-expression".
@@ -143,7 +142,7 @@ public class TransitionNotationUml extends TransitionNotation {
         }
 
         if (guardCondition != null) {
-            parseGuard(trans, 
+            parseGuard(trans,
                     guardCondition.substring(guardCondition.indexOf('[') + 1));
         }
 
@@ -152,7 +151,7 @@ public class TransitionNotationUml extends TransitionNotation {
         }
         return trans;
     }
-    
+
     /**
      * Parse the Event that is the trigger of the given transition.
      *
@@ -189,10 +188,11 @@ public class TransitionNotationUml extends TransitionNotation {
                 signalEvent = true;
             }
         }
-        if (timeEvent || changeEvent || callEvent)
+        if (timeEvent || changeEvent || callEvent) {
             if (tokenizer.hasMoreTokens()) {
                 s = tokenizer.nextToken().trim();
             } // else the empty s will do
+        }
 
         /*
          * We can distinguish between 4 cases:
@@ -210,8 +210,9 @@ public class TransitionNotationUml extends TransitionNotation {
         Object evt = Model.getFacade().getTrigger(trans);
         Object model =
                 ProjectManager.getManager().getCurrentProject().getModel();
-        Object ns = Model.getStateMachinesHelper()
-                        .findNamespaceForEvent(trans, model);
+        Object ns =
+            Model.getStateMachinesHelper()
+                .findNamespaceForEvent(trans, model);
         StateMachinesFactory sMFactory =
                 Model.getStateMachinesFactory();
         boolean createdEvent = false;
@@ -226,7 +227,8 @@ public class TransitionNotationUml extends TransitionNotation {
                     evt = sMFactory.buildChangeEvent(s, ns);
                 }
                 if (callEvent) { // operation(paramlist)
-                    String triggerName = trigger.indexOf("(") > 0
+                    String triggerName =
+                        trigger.indexOf("(") > 0
                         ? trigger.substring(0, trigger.indexOf("(")).trim()
                         : trigger;
                     evt = sMFactory.buildCallEvent(trans, triggerName, ns);
@@ -283,21 +285,21 @@ public class TransitionNotationUml extends TransitionNotation {
     /**
      * Handle the Guard of a Transition.<p>
      *
-     * We can distinct between 4 cases:<ul>
-     * <li>1. A guard is given. None exists yet.
-     * <li>2. The expression of the guard was present, but is altered.
-     * <li>3. A guard is not given. None exists yet.
-     * <li>4. The expression of the guard was present, but is removed.
+     * We can distinct between 4 cases:<ol>
+     * <li>A guard is given. None exists yet.
+     * <li>The expression of the guard was present, but is altered.
+     * <li>A guard is not given. None exists yet.
+     * <li>The expression of the guard was present, but is removed.
      * </ol>
      *
      * The reaction in these cases should be:<ol>
-     * <li>1. Create a new guard, set its name, language & expression,
+     * <li>Create a new guard, set its name, language & expression,
      *     and hook it to the transition.
-     * <li>2. Change the guard's expression. Leave the name & language
+     * <li>Change the guard's expression. Leave the name & language
      *     untouched. See also issue 2742.
-     * <li>3. Nop.
-     * <li>4. Unhook and erase the existing guard.
-     * </ul>
+     * <li>Nop.
+     * <li>Unhook and erase the existing guard.
+     * </ol>
      *
      * @param trans the UML element transition
      * @param guard the string that represents the guard expression
@@ -377,8 +379,9 @@ public class TransitionNotationUml extends TransitionNotation {
         Object effect = Model.getFacade().getEffect(trans);
         if (actions.length() > 0) {
             if (effect == null) { // case 1
-                effect = Model.getCommonBehaviorFactory()
-                    .createCallAction();
+                effect =
+                    Model.getCommonBehaviorFactory()
+                        .createCallAction();
                 Model.getCommonBehaviorHelper().setScript(effect,
                         Model.getDataTypesFactory()
                                 .createActionExpression(""/*language*/,
@@ -402,7 +405,7 @@ public class TransitionNotationUml extends TransitionNotation {
             }
         }
     }
-    
+
     /**
      * This deletes modelelements, and swallows null without barking.
      *
@@ -451,7 +454,9 @@ public class TransitionNotationUml extends TransitionNotation {
      * @see org.argouml.notation.NotationProvider2#generateEvent(java.lang.Object)
      */
     private String generateEvent(Object m) {
-        if (m==null) return "";
+        if (m == null) {
+            return "";
+        }
         StringBuffer event = new StringBuffer();
         if (Model.getFacade().isAChangeEvent(m)) {
             event.append("when(");
@@ -471,7 +476,7 @@ public class TransitionNotationUml extends TransitionNotation {
         }
         return event.toString();
     }
-    
+
     /**
      * @see org.argouml.notation.NotationProvider2#generateGuard(java.lang.Object)
      */
@@ -483,15 +488,17 @@ public class TransitionNotationUml extends TransitionNotation {
         }
         return "";
     }
-    
+
     public String generateAction(Object m) {
         Collection c;
         Iterator it;
         String s;
         String p;
         boolean first;
-        if (m==null) return "";
-        
+        if (m == null) {
+            return "";
+        }
+
         Object script = Model.getFacade().getScript(m);
 
         if ((script != null) && (Model.getFacade().getBody(script) != null)) {
@@ -567,12 +574,13 @@ public class TransitionNotationUml extends TransitionNotation {
     private String generateExpression(Object expr) {
         if (Model.getFacade().isAExpression(expr)) {
             Object body = Model.getFacade().getBody(expr);
-            if (body != null) 
+            if (body != null) {
                 return (String) body;
+            }
         }
         return "";
     }
-    
+
     /**
      * Generates the representation of a parameter on the display
      * (diagram). The string to be returned will have the following
@@ -585,7 +593,9 @@ public class TransitionNotationUml extends TransitionNotation {
     public String generateParameter(Object parameter) {
         StringBuffer s = new StringBuffer();
         s.append(generateKind(Model.getFacade().getKind(parameter)));
-        if (s.length() > 0) s.append(" ");
+        if (s.length() > 0) {
+            s.append(" ");
+        }
         s.append(Model.getFacade().getName(parameter));
         String classRef =
             generateClassifierRef(Model.getFacade().getType(parameter));
@@ -601,7 +611,7 @@ public class TransitionNotationUml extends TransitionNotation {
         }
         return s.toString();
     }
-    
+
     private String generateKind(Object /*Parameter etc.*/ kind) {
         StringBuffer s = new StringBuffer();
         if (kind == null /* "in" is the default */
@@ -616,13 +626,14 @@ public class TransitionNotationUml extends TransitionNotation {
         }
         return s.toString();
     }
-    
+
     /**
-     * @see NotationProvider2#generateClassifierRef(Object)
+     * @see org.argouml.notation.NotationProvider2#generateClassifierRef(Object)
      */
     private String generateClassifierRef(Object cls) {
-        if (cls == null)
+        if (cls == null) {
             return "";
+        }
         return Model.getFacade().getName(cls);
     }
 }
