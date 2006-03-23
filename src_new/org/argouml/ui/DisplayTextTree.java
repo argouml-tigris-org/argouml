@@ -133,12 +133,18 @@ public class DisplayTextTree extends JTree {
 
             // Jeremy Bennett patch
             if (Model.getFacade().isATransition(value)) {
+                name = Model.getFacade().getName(value);
                 NotationProvider4 notationProvider =
                     NotationProviderFactory2.getInstance().getNotationProvider(
                             NotationProviderFactory2.TYPE_TRANSITION,
                             NotationHelper.getDefaultNotationContext(),
                             value);
-                name = notationProvider.toString();
+                String signature = notationProvider.toString();
+                if (name != null && name.length() > 0) {
+                    name += ": " + signature;
+                } else {
+                    name = signature;
+                }
             } else if (Model.getFacade().isAExtensionPoint(value)) {
                 name =
                     GeneratorDisplay.getInstance()
