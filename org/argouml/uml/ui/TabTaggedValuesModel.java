@@ -21,6 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.uml.ui;
 
 import java.beans.PropertyChangeEvent;
@@ -46,14 +47,25 @@ import org.argouml.model.Model;
 public class TabTaggedValuesModel extends AbstractTableModel implements
         VetoableChangeListener, DelayedVChangeListener, PropertyChangeListener {
 
-    private Logger LOG = Logger.getLogger(TabTaggedValuesModel.class);
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(TabTaggedValuesModel.class);
 
     // //////////////
     // instance varables
+    /**
+     * The ModelElement.
+     */
+    // TODO: Is this javadoc correct?
     private Object target;
 
-    // ModelElement
-    private TabTaggedValues tab = null;
+    /**
+     * The ModelElement.
+     */
+    // TODO: Is this javadoc correct?
+    private TabTaggedValues tab;
 
     // //////////////
     // constructor
@@ -74,8 +86,9 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
      *            the target modelelement
      */
     public void setTarget(Object t) {
-        if (LOG.isDebugEnabled())
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Set target to " + t);
+        }
         if (!Model.getFacade().isAModelElement(t)) {
             throw new IllegalArgumentException();
         }
@@ -120,10 +133,12 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
     public Class getColumnClass(int c) {
-        if (c == 0)
+        if (c == 0) {
             return (Class) Model.getMetaTypes().getTagDefinition();
-        if (c == 1)
+        }
+        if (c == 1) {
             return String.class;
+        }
         return null;
     }
 
@@ -150,8 +165,8 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
      * @see javax.swing.table.TableModel#getValueAt(int, int)
      */
     public Object getValueAt(int row, int col) {
-        Vector tvs = new Vector(Model.getFacade().getTaggedValuesCollection(
-                target));
+        Vector tvs =
+            new Vector(Model.getFacade().getTaggedValuesCollection(target));
         // if (tvs == null) return "";
         if (row == tvs.size()) {
             return ""; // blank line allows addition
@@ -191,10 +206,11 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             aValue = "";
         }
 
-        Vector tvs = new Vector(Model.getFacade().getTaggedValuesCollection(
-                target));
+        Vector tvs =
+            new Vector(Model.getFacade().getTaggedValuesCollection(target));
         if (tvs.size() <= rowIndex) {
-            Object tv = Model.getExtensionMechanismsFactory()
+            Object tv =
+                Model.getExtensionMechanismsFactory()
                     .createTaggedValue();
             Model.getExtensionMechanismsHelper().addTaggedValue(target, tv);
             if (columnIndex == 0) {
@@ -208,11 +224,13 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             }
             tvs.addElement(tv);
 
-            mEvent = new TableModelEvent(this, tvs.size(), tvs.size(),
+            mEvent =
+                new TableModelEvent(this, tvs.size(), tvs.size(),
                     TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT);
         } else if ("".equals(aValue) && columnIndex == 0) {
             tvs.removeElementAt(rowIndex);
-            mEvent = new TableModelEvent(this, rowIndex, rowIndex,
+            mEvent =
+                new TableModelEvent(this, rowIndex, rowIndex,
                     TableModelEvent.ALL_COLUMNS, TableModelEvent.DELETE);
         } else {
             Object tv = tvs.elementAt(rowIndex);
@@ -259,4 +277,8 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         tab.resizeColumns();
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5711005901444956345L;
 } /* end class TableModelTaggedValues */
