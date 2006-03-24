@@ -39,7 +39,7 @@ public class UMLGeneralizableElementRootCheckBox extends UMLCheckBox2 {
      * Constructor for UMLGeneralizableElementRootCheckBox.
      */
     public UMLGeneralizableElementRootCheckBox() {
-        super(Translator.localize("label.root"),
+        super(Translator.localize("checkbox.root-lc"),
                 ActionSetGeneralizableElementRoot.getInstance(), "isRoot");
     }
 
