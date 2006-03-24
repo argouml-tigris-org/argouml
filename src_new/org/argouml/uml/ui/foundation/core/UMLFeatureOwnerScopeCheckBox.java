@@ -38,7 +38,7 @@ public class UMLFeatureOwnerScopeCheckBox extends UMLCheckBox2 {
      * Constructor for UMLFeatureOwnerScopeCheckBox.
      */
     public UMLFeatureOwnerScopeCheckBox() {
-        super(Translator.localize("label.static"),
+        super(Translator.localize("checkbox.static-lc"),
                 ActionSetFeatureOwnerScope.getInstance(), "ownerScope");
     }
 
