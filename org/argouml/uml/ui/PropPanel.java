@@ -90,7 +90,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     private JLabel titleLabel;
 
-    private static Font smallFont = LookAndFeelMgr.getInstance().getSmallFont();
+    protected static Font smallFont = LookAndFeelMgr.getInstance().getSmallFont();
 
     /**
      * Construct new PropPanel using LabelledLayout.
@@ -109,7 +109,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         buttonPanel = new ToolBar();
         buttonPanel.setFloatable(false);
 
-        setLayout(new LabelledLayout(orientation == Vertical.getInstance()));
+        LabelledLayout layout = new LabelledLayout(orientation == Vertical.getInstance());
+        layout.setHgap(5);
+        setLayout(layout);
 
         if (icon != null) {
             setTitleLabel(new JLabel(title, icon, SwingConstants.LEFT));
