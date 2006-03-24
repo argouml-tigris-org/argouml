@@ -365,6 +365,8 @@ public class ProfileJava extends Profile {
         //
         try {
             File modelFile = new File(modelFilename);
+            // TODO: This is in the wrong place.  It's not profile specific.
+            // It needs to be moved to main XMI reading code. - tfm 20060326
             if (modelFilename.endsWith("zip")) {
                 String filename = modelFile.getName();
                 String extension =
