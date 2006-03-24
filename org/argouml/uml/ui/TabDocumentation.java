@@ -29,7 +29,6 @@ import javax.swing.JScrollPane;
 import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.LabelledLayout;
