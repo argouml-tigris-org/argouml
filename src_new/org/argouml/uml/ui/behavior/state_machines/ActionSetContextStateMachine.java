@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.event.ActionEvent;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLAction;
@@ -37,9 +36,9 @@ import org.argouml.uml.ui.UMLComboBox2;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class ActionSetContextStateMachine extends UMLAction {
-
-    private Logger LOG = Logger.getLogger(ActionSetContextStateMachine.class);
-
+    /**
+     * The Instance.
+     */
     private static final ActionSetContextStateMachine SINGLETON =
 	new ActionSetContextStateMachine();
 
@@ -58,7 +57,8 @@ public class ActionSetContextStateMachine extends UMLAction {
         if (e.getSource() instanceof UMLComboBox2) {
             UMLComboBox2 source = (UMLComboBox2) e.getSource();
             Object target = source.getTarget();
-            if (Model.getFacade().getContext(target)!=source.getSelectedItem()) {
+            if (Model.getFacade().getContext(target)
+                    != source.getSelectedItem()) {
                 Model.getStateMachinesHelper().setContext(
                         target, source.getSelectedItem());
             }
@@ -72,4 +72,8 @@ public class ActionSetContextStateMachine extends UMLAction {
         return SINGLETON;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8118983979324112900L;
 }
