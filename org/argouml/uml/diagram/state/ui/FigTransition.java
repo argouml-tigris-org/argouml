@@ -128,19 +128,6 @@ public class FigTransition extends FigEdgeModelElement {
     }
 
     /**
-     * The constructor that hooks the Fig into an existing UML element.
-     *
-     * @param edge the UML element
-     */
-    public FigTransition(Object edge) {
-        this(edge, ProjectManager.getManager().getCurrentProject()
-                .getActiveDiagram().getLayer());
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // event handlers
-
-    /**
      * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
      */
     public void setFig(Fig f) {
