@@ -24,8 +24,9 @@
 
 
 package org.argouml.uml.ui;
-import org.argouml.uml.*;
-import java.util.*;
+import java.util.Iterator;
+
+import org.argouml.uml.Profile;
 
 /**
  * Interface supported by any container of UML user interface components.

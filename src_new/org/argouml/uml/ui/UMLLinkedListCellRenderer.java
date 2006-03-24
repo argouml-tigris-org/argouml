@@ -25,9 +25,6 @@
 // $Id$
 package org.argouml.uml.ui;
 import java.awt.Component;
-import java.awt.Font;
-import java.awt.font.TextAttribute;
-import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JList;

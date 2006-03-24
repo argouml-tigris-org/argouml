@@ -26,8 +26,8 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
 import org.argouml.uml.reveng.Import;
 
 

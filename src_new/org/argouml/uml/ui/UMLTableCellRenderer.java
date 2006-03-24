@@ -26,7 +26,6 @@ package org.argouml.uml.ui;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 
 public class UMLTableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
