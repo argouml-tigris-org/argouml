@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,8 +39,11 @@ import org.argouml.uml.ui.UMLComboBox2;
  *
  */
 public class ActionSetTagDefinitionOwner extends UMLAction {
-
-    private Logger LOG = Logger.getLogger(ActionSetTagDefinitionOwner.class);
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(ActionSetTagDefinitionOwner.class);
 
     /**
      * The Singleton.
@@ -71,10 +74,11 @@ public class ActionSetTagDefinitionOwner extends UMLAction {
             LOG.info("Set owner to " + o);
             if (Model.getFacade().isAStereotype(o)
                     && Model.getFacade().isATagDefinition(tagDefinition)) {
-                Object model = 
+                Object model =
                     ProjectManager.getManager().getCurrentProject().getModel();
-                final Object stereo = Model.getModelManagementHelper()
-                    .getCorrespondingElement(o, model, true);
+                final Object stereo =
+                    Model.getModelManagementHelper()
+                        .getCorrespondingElement(o, model, true);
                 // TODO: Why was this next code here? Is it save to remove it?
 //                SwingUtilities.invokeLater(new Runnable() {
 //                    public void run() {
@@ -84,4 +88,9 @@ public class ActionSetTagDefinitionOwner extends UMLAction {
             }
         }
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5230402929326015086L;
 }
