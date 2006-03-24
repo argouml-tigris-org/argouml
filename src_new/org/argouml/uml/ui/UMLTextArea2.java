@@ -30,6 +30,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JTextArea;
 
+import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
 
@@ -48,6 +49,7 @@ public class UMLTextArea2 extends JTextArea
      */
     public UMLTextArea2(UMLPlainTextDocument doc) {
         super(doc);
+        setFont(LookAndFeelMgr.getInstance().getSmallFont());
         addCaretListener(ActionCopy.getInstance());
         addCaretListener(ActionCut.getInstance());
         addCaretListener(ActionPaste.getInstance());
