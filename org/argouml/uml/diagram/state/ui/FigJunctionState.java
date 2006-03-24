@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,7 @@ import java.util.Iterator;
 
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.FigDiamond;
 
 /**
  * Class to display graphics for a UML Junction State
@@ -42,38 +42,22 @@ import org.tigris.gef.presentation.FigPoly;
  */
 public class FigJunctionState extends FigStateVertex {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-
     private static final int X = 0;
     private static final int Y = 0;
     private static final int WIDTH = 32;
     private static final int HEIGHT = 32;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    private FigDiamond head;
 
-    private FigPoly head;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
     /**
-     * Constructor.
+     * The constructor.
      */
     public FigJunctionState() {
         setEditable(false);
-        setBigPort(new FigPoly(Color.cyan, Color.cyan));
-        head = new FigPoly(Color.black, Color.white);
-        getBigPort().addPoint(X, Y);
-        getBigPort().addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
-        getBigPort().addPoint(X, Y + HEIGHT);
-        getBigPort().addPoint(X - WIDTH / 2, Y + HEIGHT / 2);
-
-        head.addPoint(X, Y);
-        head.addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
-        head.addPoint(X, Y + HEIGHT);
-        head.addPoint(X - WIDTH / 2, Y + HEIGHT / 2);
-        head.addPoint(X, Y);
+        setBigPort(new FigDiamond(X, Y, WIDTH, HEIGHT, false, 
+                Color.cyan, Color.cyan));
+        head = new FigDiamond(X, Y, WIDTH, HEIGHT, false, 
+                Color.black, Color.white);
 
         addFig(getBigPort());
         addFig(head);
@@ -98,8 +82,8 @@ public class FigJunctionState extends FigStateVertex {
     public Object clone() {
 	FigJunctionState figClone = (FigJunctionState) super.clone();
 	Iterator it = figClone.getFigs().iterator();
-	figClone.setBigPort((FigPoly) it.next());
-	figClone.head = (FigPoly) it.next();
+	figClone.setBigPort((FigDiamond) it.next());
+	figClone.head = (FigDiamond) it.next();
 	return figClone;
     }
 
