@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,7 @@
 package org.argouml.uml.cognitive;
 
 import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.cognitive.Designer;
@@ -104,7 +104,7 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
      * @return Vector conaining the resolved critics list
      */
     public Vector getResolvedCriticsList() {
-    	LinkedHashSet in;
+    	Set in;
         Vector out;
     	ResolvedCritic rci;
     	Designer dsgr;
@@ -127,7 +127,7 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
     	}
     	return out;
     }
-    
+
     /**
      * There is not yet any repair task for the ToDo model but this is open to
      * implement as and when any problems areas are discovered.

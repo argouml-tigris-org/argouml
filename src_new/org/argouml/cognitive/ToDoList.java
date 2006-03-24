@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,15 +24,16 @@
 
 package org.argouml.cognitive;
 
-import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Observable;
+import java.util.Set;
 import java.util.Vector;
-import javax.swing.event.EventListenerList;
-import org.apache.log4j.Logger;
 
+import javax.swing.event.EventListenerList;
+
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.critics.Critic;
 
 
@@ -69,7 +70,7 @@ import org.argouml.cognitive.critics.Critic;
  * @see Designer#nondisruptivelyWarn
  * @author Jason Robbins
  */
-public class ToDoList extends Observable implements Runnable, Serializable {
+public class ToDoList extends Observable implements Runnable {
     /**
      * Logger.
      */
@@ -336,7 +337,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     /**
      * @return the resolved items
      */
-    public LinkedHashSet getResolvedItems() { return resolvedItems; }
+    public Set getResolvedItems() { return resolvedItems; }
 
     /**
      * @return the set of offenders
@@ -753,7 +754,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     }
 
     /**
-     * The UID. 
+     * The UID.
      */
-    private static final long serialVersionUID = -1288801672594900893L;
+    // private static final long serialVersionUID = -1288801672594900893L;
 } /* end class ToDoList */
