@@ -41,6 +41,7 @@ import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -49,7 +50,7 @@ import org.argouml.util.ConfigLoader;
  * The properties panel of a Signal.
  *
  */
-public class PropPanelSignal extends PropPanelModelElement {
+public class PropPanelSignal extends PropPanelClassifier {
 
     /**
      * The constructor.
@@ -64,8 +65,19 @@ public class PropPanelSignal extends PropPanelModelElement {
                 getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
-
-        AbstractActionAddModelElement actionAddContext =
+        add(getNamespaceVisibilityPanel());
+		add(getModifiersPanel());
+		
+        addSeperator();
+        
+        addField(Translator.localize("label.generalizations"),
+				getGeneralizationScroll());
+		addField(Translator.localize("label.specializations"),
+				getSpecializationScroll());
+		
+		addSeperator();
+		
+		AbstractActionAddModelElement actionAddContext =
             new ActionAddContextSignal();
         AbstractActionRemoveElement actionRemoveContext =
             new ActionRemoveContextSignal();
@@ -74,11 +86,8 @@ public class PropPanelSignal extends PropPanelModelElement {
                         new UMLSignalContextListModel(),
                         actionAddContext, null, 
                         actionRemoveContext, true));
-        addField(Translator.localize("label.contexts"),
-                operationScroll);
-
-        addSeperator();
-
+		addField(Translator.localize("label.contexts"),
+                operationScroll);		
         AbstractActionAddModelElement actionAddReception =
             new ActionAddReceptionSignal();
         AbstractActionRemoveElement actionRemoveReception =
