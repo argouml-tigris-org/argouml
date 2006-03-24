@@ -3,14 +3,14 @@
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies. This software program and
+// and this paragraph appear in all copies.  This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -24,51 +24,40 @@
 
 package org.argouml.model.mdr;
 
-import java.util.Map;
+class XmiReference {
+    final String systemId;
 
-import javax.jmi.reflect.RefObject;
+    final String xmiId;
 
-import org.netbeans.api.xmi.XMIReferenceProvider;
-
-/**
- * Custom reference provider for MDR XMI Writer.
- *
- * Returns our internal ID to be used when writing the xmi.id field
- *
- * @author Tom Morris
- */
-class XmiReferenceProviderImpl implements XMIReferenceProvider {
-    
-    private Map mofIdToXmiId;
-    
     /**
-     * Create a new reference provider which uses the given map for its lookups.
+     * Create a XMI id reference object.
      * 
-     * @param idMap
+     * @param system
+     *            system ID
+     * @param xmi
+     *            XMI id
      */
-    XmiReferenceProviderImpl(Map idMap) {
-        mofIdToXmiId = idMap;
+    XmiReference(String system, String xmi) {
+        systemId = system;
+        xmiId = xmi;
     }
 
     /**
-     * The document for the objects.
+     * Get the system ID (typically a file name) for the given XMI reference.
+     * 
+     * @return the systemID value (string containing filename)
      */
-    private final String systemId = null;
+    String getSystemId() {
+        return systemId;
+    }
 
     /**
-     * @see org.netbeans.api.xmi.XMIReferenceProvider#getReference(javax.jmi.reflect.RefObject)
+     * Get the xmi.id for the reference. This must be unique within the given
+     * XMI file (system ID), but is not guaranteed to be globally unique.
+     * 
+     * @return the xmi.id value
      */
-    public XMIReferenceProvider.XMIReference getReference(RefObject object) {
-        String mofId = object.refMofId();
-        
-        // Look for an existing reference matching our MofID
-        XmiReference ref = ((XmiReference) mofIdToXmiId.get(mofId));
-
-        // Create a new ref if none found, otherwise create one with our sysID
-        if (ref == null) {
-            return new XMIReferenceProvider.XMIReference(systemId, mofId);
-        } else {
-            return new XMIReferenceProvider.XMIReference(systemId, ref.getXmiId());
-        }
+    String getXmiId() {
+        return xmiId;
     }
 }

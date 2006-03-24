@@ -76,7 +76,7 @@ public class XmiWriterMDRImpl implements XmiWriter {
      * except for the profile model(s), ignoring the model specified by the 
      * caller.
      */
-    private static final boolean WRITE_ALL = true;
+    private static final boolean WRITE_ALL = false;
 
     /**
      * Create an XMI writer for the given model or extent.
@@ -91,7 +91,7 @@ public class XmiWriterMDRImpl implements XmiWriter {
         this.writer = theWriter;
         config = new OutputConfig();
         config.setEncoding(ENCODING);
-        config.setReferenceProvider(new XmiReferenceProviderImpl());
+        config.setReferenceProvider(new XmiReferenceProviderImpl(parent.getObjectToId()));
         config.setHeaderProvider(new XmiHeaderProviderImpl());
     }
 

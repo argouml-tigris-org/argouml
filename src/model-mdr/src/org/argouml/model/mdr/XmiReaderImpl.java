@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -56,6 +57,8 @@ import org.netbeans.api.xmi.XMIReader;
 import org.netbeans.api.xmi.XMIReaderFactory;
 import org.netbeans.lib.jmi.xmi.InputConfig;
 import org.netbeans.lib.jmi.xmi.UnknownElementsListener;
+import org.omg.uml.UmlPackage;
+import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.modelmanagement.Model;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -146,6 +149,7 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         Collection newElements = null;
         RefPackage extent = modelPackage;
 
+
         try {
             LOG.info("Loading '" + pIs.getSystemId() + "'");
 
@@ -153,8 +157,8 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             config.setUnknownElementsListener(this);
             config.setUnknownElementsIgnored(true);
             
-            resolver = new XmiReferenceResolverImpl(
-                    new RefPackage[] {extent }, config);
+            resolver = new XmiReferenceResolverImpl(new RefPackage[] {extent},
+                    config, parent.getObjectToId());
 
             config.setReferenceResolver(resolver);
 
@@ -181,13 +185,29 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
 
             // Disable event delivery during model load
             parent.getModelEventPump().stopPumpingEvents();
+
             
+            Collection startTopElements = getTopLevelElements();
+            int numElements = startTopElements.size();
+            LOG.debug("Number of top level elements before import: " + numElements);
+
             try {
                 newElements = 
                     xmiReader.read(tmpFile.toURI().toString(), extent);
                 
                 // If a UML 1.3 file, attempt to upgrade it to UML 1.4
                 if (uml13) {
+                    // First delete model data from our first attempt
+                    Collection toDelete = new ArrayList();
+                    toDelete.addAll(newElements);
+                    for (Iterator it = toDelete.iterator(); it.hasNext();) {
+                        ((RefObject) it.next()).refDelete();
+                    }
+                    
+                    // Clear the associated ID maps & reset starting collection
+                    resolver.clearIdMaps();
+                    startTopElements = getTopLevelElements();
+                    
                     LOG.info("XMI file doesn't appear to be UML 1.4 - "
                             + "attempting UML 1.3->UML 1.4 conversion");
                     final String[] transformFiles = 
@@ -203,6 +223,30 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                             new InputSource(new FileInputStream(tmpFile)));
                     newElements = xmiReader.read(xformedInput.getByteStream(),
                             xformedInput.getSystemId(), extent);
+                }
+                
+                numElements = getTopLevelElements().size() - numElements;
+
+                // This indicates a malformed XMI file.  Log the error.
+                if (newElements.size() != numElements) {
+                    LOG.error("Mismatch between number of elements returned by XMIReader ("
+                            + newElements.size()
+                            + ") and number of new top level elements found ("
+                            + numElements + ")");
+                }
+                
+                // ArgoUML only deals correctly with a single top level model.
+                // If we got more elements, force them to be contained by top.
+                // TODO:  This is a workaround for more general support.
+                if (numElements > 1) {
+                    LOG.warn("Forcing all model elements to be contained by" 
+                            + " top level Model");
+                    Collection newTopElements = getTopLevelElements();
+                    newTopElements.removeAll(startTopElements);
+                    forceContainment(newTopElements);
+                    // Return our element list (of 1) rather than XMIreader's
+                    newElements = getTopLevelElements();
+                    newElements.removeAll(startTopElements);
                 }
                 
             } finally {
@@ -224,20 +268,74 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         } catch (IOException e) {
             throw new UmlException(e);
         }
-        LOG.info("Loaded total of " + newElements.size() 
-                + " model element(s).");
+
         if (profile) {
             if (newElements.size() != 1) {
                 LOG.error("Unexpected number of profile model elements (must be 1) : "
                         + newElements.size());
+                return null;
             } else {
                 RefObject model = (RefObject) newElements.iterator().next();
-                LOG.info("**Saving profile with MofID : " + model.refMofId());
-                parent.setProfileModel(model);
+                if (!(model instanceof Model)) {
+                    LOG.error("Profile XMI doesn't contain Model as top level element.");
+                    return null;
+                } else {
+                    LOG.debug("Saving profile with MofID : " + model.refMofId());
+                    parent.setProfileModel(model);
+                }
             }
 
         }
         return newElements;
+    }
+
+    /**
+     * Force containment of all elements by the first Model that is found.
+     * ArgoUML doesn't know how to deal with anything else.
+     * @param elements collection of elements
+     */
+    private void forceContainment(Collection elements) {
+        Model model = null;
+        for (Iterator it = elements.iterator(); it.hasNext();) {
+            Object o = it.next();
+            if (o instanceof Model) {
+                model = (Model) o;
+                break;
+            }
+        }
+        if (model == null) {
+            LOG.error("Collection of objects  doesn't contain" 
+                    + " any elements of type Model");
+            return;
+        }
+        for (Iterator it = elements.iterator(); it.hasNext();) {
+            Object o = it.next();
+            if (!o.equals(model)) {
+                if (o instanceof ModelElement) {
+                    ((ModelElement) o).setNamespace(model);
+                } else {
+                    LOG.warn("Skipping setting namespace of element of type"
+                            + o.getClass().getName());
+                }
+            }
+        }
+    }
+    
+    /*
+     * Returns a collection of all objects which are Elements or one of
+     * its subclasses and which are not contained in another object.
+     */
+    private Collection getTopLevelElements() {
+        Collection elements = new ArrayList();
+        UmlPackage pkg = parent.getUmlPackage();
+        for (Iterator it = pkg.getCore().getElement().refAllOfType()
+                .iterator(); it.hasNext();) {
+            RefObject obj = (RefObject) it.next();
+            if (obj.refImmediateComposite() == null ) {
+                elements.add(obj);
+            }
+        }
+        return elements;
     }
     
     /**

@@ -4126,7 +4126,15 @@ class FacadeMDRImpl implements Facade {
      */
     public String getUUID(Object base) {
         if (base instanceof RefBaseObject) {
-            return ((RefBaseObject) base).refMofId();
+            String mofId = ((RefBaseObject) base).refMofId();
+            // Look for an existing reference matching our MofID
+            XmiReference ref = ((XmiReference) implementation.getObjectToId()
+                    .get(mofId));
+            if (ref == null) {
+                return mofId;
+            } else {
+                return ref.getXmiId();
+            }
         }
         return illegalArgumentString(base);
     }

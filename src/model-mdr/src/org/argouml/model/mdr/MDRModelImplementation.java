@@ -27,7 +27,10 @@ package org.argouml.model.mdr;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.jmi.model.ModelPackage;
 import javax.jmi.model.MofPackage;
@@ -65,6 +68,7 @@ import org.argouml.model.PseudostateKind;
 import org.argouml.model.ScopeKind;
 import org.argouml.model.StateMachinesFactory;
 import org.argouml.model.StateMachinesHelper;
+import org.argouml.model.UUIDManager;
 import org.argouml.model.UmlException;
 import org.argouml.model.UmlFactory;
 import org.argouml.model.UmlHelper;
@@ -157,12 +161,18 @@ public class MDRModelImplementation implements ModelImplementation {
     private ModelPackage mofExtent;
     
     /*
-     * Top level model element containingg profile. This state is shared between
+     * Top level model element containing profile. This state is shared between
      * the XMI reader and writer. Elements which are read as part of a profile
      * (as indicated by the calling application) will be treated specially and
      * will not be written back out with the rest of the model data.
      */
     private RefObject profileModel;
+    
+    /*
+     * Map of model elements to xmi.ids used to keep xmi.ids stable
+     * across read/write cycles.
+     */
+    private Map objectToId = Collections.synchronizedMap(new HashMap());
 
     private MementoCreationObserver mementoCreationObserver;
 
@@ -208,13 +218,24 @@ public class MDRModelImplementation implements ModelImplementation {
         System.setProperty("org.netbeans.mdr.storagemodel.StorageFactoryClassName",
                 storageImplementation);
 
+        /*
+         * Set the storage id for our repository so that MofIds will be unique
+         * (they are composed as <storageId>:<serialNumber>). NOTE: The storage
+         * manager only looks for a few property names such as the
+         * StorageFactoryClassName. Everything else needs to be prefixed with
+         * "MDRStorageProperty." which gets deleted from the property name
+         * before it and its associated value are copied to an *internal*
+         * property table separate from the system property table.
+         */
+        System.setProperty("MDRStorageProperty.org.netbeans.mdr.persistence.memoryimpl.id",
+                UUIDManager.getInstance().getNewUUID());
+        
         // Connect to the repository
         repository = MDRManager.getDefault().getDefaultRepository();
 
-        mofExtent = (ModelPackage) repository.
-                getExtent(MOF_EXTENT_NAME);
+        mofExtent = (ModelPackage) repository.getExtent(MOF_EXTENT_NAME);
 
-        // Create an extent and read in our metamodel (M2 model) 
+        // Create an extent and read in our metamodel (M2 model)
         if (mofExtent == null) {
             mofExtent = (ModelPackage) repository.createExtent(MOF_EXTENT_NAME);
             XMIReader reader = XMIReaderFactory.getDefault().createXMIReader();
@@ -578,6 +599,15 @@ public class MDRModelImplementation implements ModelImplementation {
      */
     protected void setProfileModel(RefObject element) {
         this.profileModel = element;
+    }
+
+    /**
+     * Return the Object to ID Map
+     * 
+     * @return the map
+     */
+    protected Map getObjectToId() {
+        return objectToId;
     }
 
 }

@@ -67,9 +67,11 @@ import org.netbeans.lib.jmi.xmi.XmiContext;
  * @author Tom Morris
  * 
  */
-public class XmiReferenceResolverImpl extends XmiContext {
+class XmiReferenceResolverImpl extends XmiContext {
 
     private Map idToObjects = Collections.synchronizedMap(new HashMap());
+
+    private Map objectsToId;
 
     /**
      * Logger.
@@ -98,10 +100,11 @@ public class XmiReferenceResolverImpl extends XmiContext {
      * @see org.netbeans.lib.jmi.xmi.XmiContext#XmiContext(javax.jmi.reflect.RefPackage[], org.netbeans.api.xmi.XMIInputConfig)
      * (see also {link org.netbeans.api.xmi.XMIReferenceResolver})
      */
-    public XmiReferenceResolverImpl(RefPackage[] extents, 
-            XMIInputConfig config) {
+    XmiReferenceResolverImpl(RefPackage[] extents, 
+            XMIInputConfig config, Map objectToIdMap) {
         super(extents, config);
         registerSearchPath();
+        objectsToId = objectToIdMap;
     }
 
     /**
@@ -116,9 +119,14 @@ public class XmiReferenceResolverImpl extends XmiContext {
      */
     public void register(String systemId, String xmiId, RefObject object) {
         super.register(systemId, xmiId, object);
-        // TODO: This needs to include the SystemID as well - tfm
         if (!idToObjects.containsKey(xmiId)) {
+            // TODO: This needs to include the SystemID as well - tfm
             idToObjects.put(xmiId, object);
+            objectsToId.put(object.refMofId(),
+                    new XmiReference(systemId, xmiId));
+        } else {
+            LOG.error("Collision - multiple elements with same xmi.id : " 
+                    + xmiId);
         }
     }
 
@@ -131,6 +139,14 @@ public class XmiReferenceResolverImpl extends XmiContext {
         return idToObjects;
     }
 
+    /**
+     * Reinitialize the object id maps to the empty state.
+     */
+    public void clearIdMaps() {
+        idToObjects.clear();
+        objectsToId.clear();
+    }
+    
     /*
      * Set up module search path to be used by AndroMDA URL resolver.
      * The path is retrieved from shared state (a system property) which
