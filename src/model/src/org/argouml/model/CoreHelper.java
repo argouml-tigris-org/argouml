@@ -106,6 +106,7 @@ public interface CoreHelper {
      * @return true if it's a method, false if not
      * @deprecated by Bob in 0.21.1.
      * There is a duplicate method Model.getFacade().isAMethod(Object)
+     * @see Facade#isAMethod(Object)
      */
     boolean isMethod(Object o);
 
@@ -116,6 +117,7 @@ public interface CoreHelper {
      * @return true if it's an operation, false if not
      * @deprecated by Bob in 0.21.1.
      * There is a duplicate method Model.getFacade().isAOperation(Object)
+     * @see Facade#isAOperation(Object)
      */
     boolean isOperation(Object o);
 
@@ -931,7 +933,8 @@ public interface CoreHelper {
      *
      * @param handle the ElementResidence
      * @param component the Component
-     * @deprecated UML 1.3 only - use setContainer
+     * @deprecated by tfmorris before 0.20 - use setContainer
+     * @see #setContainer(Object, Object)
      */
     void setImplementationLocation(Object handle, Object component);
 
