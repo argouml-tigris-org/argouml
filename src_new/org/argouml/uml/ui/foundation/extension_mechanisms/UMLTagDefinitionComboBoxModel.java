@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -45,8 +44,6 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  * @since Jan 5, 2003
  */
 public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
-
-    private Logger LOG = Logger.getLogger(UMLTagDefinitionComboBoxModel.class);
 
     /**
      * Constructor for UMLTagDefinitionComboBoxModel.
@@ -115,7 +112,8 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
         while (it.hasNext()) {
             addAllUniqueModelElementsFrom(availableTagDefs, paths,
                     Model.getModelManagementHelper().getAllModelElementsOfKind(
-                            it.next(), Model.getMetaTypes().getTagDefinition()));
+                            it.next(),
+                            Model.getMetaTypes().getTagDefinition()));
         }
         addAllUniqueModelElementsFrom(availableTagDefs, paths,
                 Model.getModelManagementHelper().getAllModelElementsOfKind(
@@ -126,16 +124,17 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
         while (it.hasNext()) {
             Object tagDef = it.next();
             Object owner = Model.getFacade().getOwner(tagDef);
-            if (owner != null && !stereotypes.contains(owner))
+            if (owner != null && !stereotypes.contains(owner)) {
                 notValids.add(tagDef);
+            }
         }
         availableTagDefs.removeAll(notValids);
         return availableTagDefs;
     }
 
     /**
-     * Helper method for buildModelList.
-     * <p>
+     * Helper method for buildModelList.<p>
+     *
      * Adds those elements from source that do not have the same path as any
      * path in paths to elements, and its path to paths. Thus elements will
      * never contain two objects with the same path, unless they are added by
@@ -155,4 +154,8 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
         }
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -4194727034416788372L;
 }
