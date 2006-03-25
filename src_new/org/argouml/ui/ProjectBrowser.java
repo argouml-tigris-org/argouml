@@ -66,7 +66,6 @@ import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.InvalidXmiException;
 import org.argouml.model.Model;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.LastLoadInfo;
