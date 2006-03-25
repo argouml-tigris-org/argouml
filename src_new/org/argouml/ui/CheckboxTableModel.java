@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,8 +37,15 @@ import javax.swing.table.AbstractTableModel;
 public class CheckboxTableModel extends AbstractTableModel {
     /**
      * Constructor.
+     *
+     * @param labels The labels to show in column 1 in the table.
+     * @param data The data connected to each line.
+     * @param colName1 The header of the first column.
+     * @param colName2 The header of the second column.
      */
-    public CheckboxTableModel(Object[] labels, Object[] data, String colName1, String colName2) {
+    public CheckboxTableModel(
+            Object[] labels, Object[] data,
+            String colName1, String colName2) {
         elements = new Object[labels.length][3];
         for (int i = 0; i < elements.length; i++) {
             elements[i][0] = labels[i];
@@ -121,4 +128,9 @@ public class CheckboxTableModel extends AbstractTableModel {
 
     private Object[][] elements;
     private String columnName1, columnName2;
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 111532940880908401L;
 }
