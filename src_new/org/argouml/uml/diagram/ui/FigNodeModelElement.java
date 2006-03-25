@@ -400,7 +400,6 @@ public abstract class FigNodeModelElement
      */
     public void setItemUID(ItemUID id) {
         itemUid = id;
-        throw new UnsupportedOperationException("Trying to prove this is ever called");
     }
 
     /**
