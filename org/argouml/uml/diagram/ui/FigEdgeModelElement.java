@@ -232,7 +232,6 @@ public abstract class FigEdgeModelElement
      */
     public void setItemUID(ItemUID newId) {
         itemUid = newId;
-        throw new UnsupportedOperationException("Trying to prove this is ever called");
     }
 
     /**
