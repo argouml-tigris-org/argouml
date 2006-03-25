@@ -400,7 +400,7 @@ You use your Tigris login and Tigris password.
 
       <para>
         If you use one of the CVS clients with a graphical user interface,
-        (like WinCVS, GruntSpud, ...),
+        (like WinCVS, TortoiseCVS, ...),
         or an IDE with a built-in CVS client (like Eclipse or NetBeans)
         then configuration will be done by filling in fields. These fields mean
         the following:
