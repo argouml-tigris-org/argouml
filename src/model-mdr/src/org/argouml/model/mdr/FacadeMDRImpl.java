@@ -320,10 +320,6 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isAbstract(java.lang.Object)
      */
     public boolean isAbstract(Object handle) {
-        if (handle == null) {
-            throw new IllegalArgumentException(
-                    "Cannot get the abstract property of a null object");
-        }
         if (handle instanceof Operation) {
             return ((Operation) handle).isAbstract();
         }
@@ -336,10 +332,7 @@ class FacadeMDRImpl implements Facade {
         if (handle instanceof Reception) {
             return ((Reception) handle).isAbstract();
         }
-        throw new IllegalArgumentException(
-                "Can only get the abstract property of an Operation, "
-                        + "GeneralizableElement, Association or Reception."
-                        + "Got a " + handle.getClass().getName());
+        return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1010,28 +1003,24 @@ class FacadeMDRImpl implements Facade {
         if (handle instanceof UmlClass) {
             return ((UmlClass) handle).isActive();
         }
-        throw new IllegalArgumentException(
-                "Can't determine the active state of a "
-                        + handle.getClass().getName());
+        return illegalArgumentBoolean(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#isChangeable(java.lang.Object)
      */
     public boolean isChangeable(Object handle) {
-        if (handle != null && handle instanceof StructuralFeature) {
+        if (handle instanceof StructuralFeature) {
             ChangeableKind changeability =
                 ((StructuralFeature) handle).getChangeability();
             return ChangeableKindEnum.CK_CHANGEABLE.equals(changeability);
-
-        } else if (handle != null && handle instanceof AssociationEnd) {
+        }
+        if (handle instanceof AssociationEnd) {
             ChangeableKind changeability =
                 ((AssociationEnd) handle).getChangeability();
             return ChangeableKindEnum.CK_CHANGEABLE.equals(changeability);
         }
-        throw new IllegalArgumentException(
-                "Can't determine the changeability of a "
-                        + handle.getClass().getName());
+        return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1183,11 +1172,6 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isLeaf(java.lang.Object)
      */
     public boolean isLeaf(Object handle) {
-        if (handle == null) {
-            throw new IllegalArgumentException(
-                    "Can't determine if a null object is a leaf");
-        }
-
         if (handle instanceof GeneralizableElement) {
             return ((GeneralizableElement) handle).isLeaf();
         }
@@ -1197,10 +1181,7 @@ class FacadeMDRImpl implements Facade {
         if (handle instanceof Reception) {
             return ((Reception) handle).isLeaf();
         }
-
-        throw new IllegalArgumentException(
-                "Expected a GeneralizableElement, Operation or Reception. "
-                        + "Got a " + handle.getClass().getName());
+        return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1216,9 +1197,7 @@ class FacadeMDRImpl implements Facade {
         if (handle instanceof Reception) {
             return ((Reception) handle).isRoot();
         }
-        throw new IllegalArgumentException(
-                "Expected a GeneralizableElement, Operation or Reception. "
-                        + "Got a " + handle.getClass().getName());
+        return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1268,39 +1247,33 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isPackage(java.lang.Object)
      */
     public boolean isPackage(Object handle) {
-        if (handle == null || !(handle instanceof ModelElement)) {
-            throw new IllegalArgumentException(
-                    "Expecting a ModelElement. Got a "
-                            + handle.getClass().getName());
+        if (handle instanceof ModelElement) {
+            ModelElement element = (ModelElement) handle;
+            return VisibilityKindEnum.VK_PACKAGE.equals(element.getVisibility());
         }
-        ModelElement element = (ModelElement) handle;
-        return VisibilityKindEnum.VK_PACKAGE.equals(element.getVisibility());
+        return illegalArgumentBoolean(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#isPrivate(java.lang.Object)
      */
     public boolean isPrivate(Object handle) {
-        if (handle == null || !(handle instanceof ModelElement)) {
-            throw new IllegalArgumentException(
-                    "Expecting a ModelElement. Got a "
-                            + handle.getClass().getName());
+        if (handle instanceof ModelElement) {
+            ModelElement elem = (ModelElement) handle;
+            return VisibilityKindEnum.VK_PRIVATE.equals(elem.getVisibility());
         }
-        ModelElement element = (ModelElement) handle;
-        return VisibilityKindEnum.VK_PRIVATE.equals(element.getVisibility());
+        return illegalArgumentBoolean(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#isPublic(java.lang.Object)
      */
     public boolean isPublic(Object handle) {
-        if (handle == null || !(handle instanceof ModelElement)) {
-            throw new IllegalArgumentException(
-                    "Expecting a ModelElement. Got a "
-                            + handle.getClass().getName());
+        if (handle instanceof ModelElement) {
+            ModelElement elem = (ModelElement) handle;
+            return VisibilityKindEnum.VK_PUBLIC.equals(elem.getVisibility());
         }
-        ModelElement element = (ModelElement) handle;
-        return VisibilityKindEnum.VK_PUBLIC.equals(element.getVisibility());
+        return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1310,22 +1283,18 @@ class FacadeMDRImpl implements Facade {
         if (handle instanceof BehavioralFeature) {
             return ((BehavioralFeature) handle).isQuery();
         }
-        throw new IllegalArgumentException(
-                "Expected a BehavioralFeature. Got a "
-                        + handle.getClass().getName());
+        return illegalArgumentBoolean(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#isProtected(java.lang.Object)
      */
     public boolean isProtected(Object handle) {
-        if (handle == null || !(handle instanceof ModelElement)) {
-            throw new IllegalArgumentException(
-                    "Expecting a ModelElement. Got a "
-                            + handle.getClass().getName());
+        if (handle instanceof ModelElement) {
+            ModelElement elem = (ModelElement) handle;
+            return VisibilityKindEnum.VK_PROTECTED.equals(elem.getVisibility());
         }
-        ModelElement element = (ModelElement) handle;
-        return VisibilityKindEnum.VK_PROTECTED.equals(element.getVisibility());
+        return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1339,18 +1308,11 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isReturn(java.lang.Object)
      */
     public boolean isReturn(Object handle) {
-        if (handle == null) {
-            throw new IllegalArgumentException(
-                    "Can't determine if a null object is a return parameter");
-        }
-
         if (handle instanceof Parameter) {
             return ParameterDirectionKindEnum.PDK_RETURN
                     .equals(((Parameter) handle).getKind());
         }
-        throw new IllegalArgumentException(
-                "Expected a GeneralizableElement, Operation or Reception. "
-                        + "Got a " + handle.getClass().getName());
+        return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1481,9 +1443,7 @@ class FacadeMDRImpl implements Facade {
         if (handle instanceof Classifier) {
             return getStructuralFeatures(handle);
         }
-        throw new IllegalArgumentException(
-                "Can only get the Attributes of a Classifier. Got a "
-                        + handle.getClass().getName());
+        return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1635,8 +1595,7 @@ class FacadeMDRImpl implements Facade {
         if (handle instanceof Generalization) {
             return ((Generalization) handle).getChild();
         }
-        throw new IllegalArgumentException("Expected a Generalization. Got a "
-                + handle.getClass().getName());
+        return illegalArgumentObject(handle);
     }
 
     /**
@@ -1717,8 +1676,7 @@ class FacadeMDRImpl implements Facade {
         if (isADependency(handle)) {
             return ((Dependency) handle).getClient();
         }
-        throw new IllegalArgumentException("Expected a Dependency. Got a "
-                + handle.getClass().getName());
+        return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1986,9 +1944,7 @@ class FacadeMDRImpl implements Facade {
             LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
-        throw new IllegalArgumentException(
-                "Can only get Generalizations of a GenerizableElement. Got a "
-                        + handle.getClass().getName());
+        return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2405,8 +2361,7 @@ class FacadeMDRImpl implements Facade {
         if (handle instanceof ModelElement) {
             return ((ModelElement) handle).getConstraint();
         }
-        throw new IllegalArgumentException("Expected a ModelElement. Got a "
-                + handle.getClass().getName());
+        return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2639,7 +2594,7 @@ class FacadeMDRImpl implements Facade {
         if (handle instanceof Component) {
             return ((Component) handle).getDeploymentLocation();
         }
-        throw new IllegalArgumentException("handle: " + handle);
+        return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2725,15 +2680,8 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getNamespace(java.lang.Object)
      */
     public Object getNamespace(Object handle) {
-        if (handle == null) {
-            throw new IllegalArgumentException(
-                    "Can't get the namespace of a null object");
-        }
-
         if (!(handle instanceof ModelElement)) {
-            throw new IllegalArgumentException(
-                    "Expected a ModelElement. Got a "
-                            + handle.getClass().getName());
+            return illegalArgumentObject(handle);
         }
         try {
             return ((ModelElement) handle).getNamespace();
@@ -2796,12 +2744,8 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getOperations(java.lang.Object)
      */
     public Collection getOperations(Object handle) {
-        if (handle == null) {
-            throw new IllegalArgumentException("A null Operation is invalid");
-        }
         if (!(handle instanceof Classifier)) {
-            throw new IllegalArgumentException("Expected a Classifier. Got a "
-                    + handle.getClass().getName());
+            return illegalArgumentCollection(handle);
         }
         Classifier mclassifier = (Classifier) handle;
         Collection result = new ArrayList();
@@ -2950,16 +2894,10 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getOwnedElements(java.lang.Object)
      */
     public Collection getOwnedElements(Object handle) {
+        if (!(handle instanceof Namespace)) {
+            return illegalArgumentCollection(handle);
+        }
         try {
-            if (handle == null) {
-                throw new IllegalArgumentException(
-                        "Can't get the owned elements of a null object");
-            }
-            if (!(handle instanceof Namespace)) {
-                throw new IllegalArgumentException(
-                        "Can't get the owned elements of a "
-                                + handle.getClass().getName());
-            }
             return ((Namespace) handle).getOwnedElement();
         } catch (InvalidObjectException e) {
             LOG.error("Queried a removed model element", e);
@@ -3092,8 +3030,7 @@ class FacadeMDRImpl implements Facade {
         if (handle instanceof Generalization) {
             return ((Generalization) handle).getParent();
         }
-        throw new IllegalArgumentException("Expected a Generalization. Got a "
-                + handle.getClass().getName());
+        return illegalArgumentObject(handle);
     }
 
     /**
@@ -3290,15 +3227,13 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getSpecializations(java.lang.Object)
      */
     public Collection getSpecializations(Object handle) {
+        if (!(handle instanceof GeneralizableElement)) {
+            return illegalArgumentCollection(handle);
+        }
         try {
-            if (handle instanceof GeneralizableElement) {
-                return implementation.getUmlPackage().getCore()
-                .getAParentSpecialization().getSpecialization(
-                        (GeneralizableElement) handle);
-            }
-            throw new IllegalArgumentException(
-                    "Can only get Specializations of a GenerizableElement. "
-                    + "Got a " + handle.getClass().getName());
+            return implementation.getUmlPackage().getCore()
+                    .getAParentSpecialization().getSpecialization(
+                            (GeneralizableElement) handle);
         } catch (InvalidObjectException e) {
             LOG.error("Queried a removed model element", e);
             return Collections.EMPTY_LIST;
@@ -3350,15 +3285,8 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getStereotypes(java.lang.Object)
      */
     public Collection getStereotypes(Object handle) {
-        if (handle == null) {
-            throw new IllegalArgumentException(
-                    "Can't get the stereotypes of a null object");
-        }
-
         if (!(handle instanceof ModelElement)) {
-            throw new IllegalArgumentException(
-                    "Expected a ModelElement. Got a "
-                            + handle.getClass().getName());
+            return illegalArgumentCollection(handle);
         }
         try {
             return ((ModelElement) handle).getStereotype();
@@ -3369,8 +3297,6 @@ class FacadeMDRImpl implements Facade {
     }
 
     /**
-     * Returns the stimuli belonging to some given link.
-     *
      * @see org.argouml.model.Facade#getStimuli(java.lang.Object)
      */
     public Collection getStimuli(Object handle) {
@@ -3393,11 +3319,7 @@ class FacadeMDRImpl implements Facade {
     }
 
     /**
-     * Returns the Stimuli that are received by the given Instance.
-     *
-     * @param handle
-     *            the Instance
-     * @return the collection of stimuli
+     * @see org.argouml.model.Facade#getStimuli2(java.lang.Object)
      */
     public Collection getStimuli2(Object handle) {
         try {
@@ -3484,8 +3406,7 @@ class FacadeMDRImpl implements Facade {
             LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
-        throw new IllegalArgumentException("Expected a ModelElement. Got a "
-                + handle.getClass().getName());
+        return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3705,13 +3626,8 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getStructuralFeatures(java.lang.Object)
      */
     public Collection getStructuralFeatures(Object handle) {
-        if (handle == null) {
-            throw new IllegalArgumentException("A null classifier is invalid");
-        }
         if (!(handle instanceof Classifier)) {
-            throw new IllegalArgumentException(
-                    "A Classifier must be supplied. We got "
-                            + handle.getClass().getName());
+            return illegalArgumentCollection(handle);
         }
         Collection result = new ArrayList();
         Classifier mclassifier = (Classifier) handle;
@@ -3782,9 +3698,9 @@ class FacadeMDRImpl implements Facade {
             LOG.error("Queried a removed model element", e);
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
-        throw new IllegalArgumentException("Expected a Dependency. Got a "
-                + handle.getClass().getName());
+        return illegalArgumentCollection(handle);
     }
+
 
     /**
      * @see org.argouml.model.Facade#getAction(java.lang.Object)
@@ -3973,8 +3889,7 @@ class FacadeMDRImpl implements Facade {
         } catch (InvalidObjectException e) {
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
-        throw new IllegalArgumentException("Expected a ModelElement. Got a "
-                + handle.getClass().getName());
+        return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3994,8 +3909,7 @@ class FacadeMDRImpl implements Facade {
             }
             return null;
         }
-        throw new IllegalArgumentException("Expected a ModelElement. Got a "
-                + handle.getClass().getName());
+        return illegalArgumentObject(handle);
     }
 
     /**
@@ -4024,7 +3938,7 @@ class FacadeMDRImpl implements Facade {
         if (handle instanceof TaggedValue) {
             return ((TaggedValue) handle).getType();
         }
-        throw new IllegalArgumentException("Not a tagged value: " + handle);
+        return illegalArgumentObject(handle);
     }
 
     /**
@@ -4034,7 +3948,7 @@ class FacadeMDRImpl implements Facade {
         if (handle instanceof Stereotype) {
             return ((Stereotype) handle).getDefinedTag();
         }
-        throw new IllegalArgumentException("Not a stereotype: " + handle);
+        return illegalArgumentCollection(handle);
     }
 
     /**
@@ -4149,8 +4063,7 @@ class FacadeMDRImpl implements Facade {
         if (handle instanceof ElementResidence) {
             return ((ElementResidence) handle).getVisibility();
         }
-        throw new IllegalArgumentException("Can't get visibility of a "
-                + handle.getClass().getName());
+        return illegalArgumentObject(handle);
     }
 
     /**
@@ -4260,8 +4173,7 @@ class FacadeMDRImpl implements Facade {
                 && !(handle instanceof ElementImport)
                 && !(handle instanceof ElementResidence)
                 && !(handle instanceof TemplateParameter)) {
-            throw new IllegalArgumentException(
-                    "Expected a ModelElement, got a " + handle);
+            return illegalArgumentString(handle);
         }
         return implementation.getMetaTypes().getName(handle);
     }

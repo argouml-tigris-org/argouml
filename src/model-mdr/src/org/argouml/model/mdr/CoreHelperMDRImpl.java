@@ -276,7 +276,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         if (o != null && o instanceof Feature) {
             return ((Feature) o).getName();
         }
-        return null;
+        throw new IllegalArgumentException("Not a feature");
     }
 
     /**
@@ -458,7 +458,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public Object getSpecification(Object object) {
         if (!(object instanceof Method)) {
-            return null;
+            throw new IllegalArgumentException("Not a method : " + object);
         }
         return ((Method) object).getSpecification();
     }
@@ -655,11 +655,12 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public Object getGeneralization(Object achild, Object aparent) {
+        if (!(achild instanceof GeneralizableElement) 
+                || !(aparent instanceof GeneralizableElement)) {
+            throw new IllegalArgumentException();
+        }
         GeneralizableElement child = (GeneralizableElement) achild;
         GeneralizableElement parent = (GeneralizableElement) aparent;
-        if (child == null || parent == null) {
-            return null;
-        }
         Iterator it =
             modelImpl.getFacade().getGeneralizations(child).iterator();
         while (it.hasNext()) {
@@ -691,9 +692,6 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public Collection getFlows(Object source, Object target) {
-        if (source == null || target == null) {
-            return null;
-        }
         if (!(source instanceof ModelElement)) {
             throw new IllegalArgumentException("source");
         }
@@ -866,10 +864,10 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public Collection getAssociations(Object/* Classifier */from,
             Object/* Classifier */to) {
-        Set ret = new HashSet();
-        if (from == null || to == null) {
-            return ret;
+        if (!(from instanceof Classifier) || !(to instanceof Classifier)) {
+            throw new IllegalArgumentException();
         }
+        Set ret = new HashSet();
         Iterator it = modelImpl.getFacade().getAssociationEnds(from).iterator();
         while (it.hasNext()) {
             AssociationEnd end = (AssociationEnd) it.next();
@@ -890,7 +888,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public Collection getAllClassifiers(Object namespace) {
         if (namespace == null) {
-            return new ArrayList();
+            throw new IllegalArgumentException();
         }
         Namespace ns = (Namespace) namespace;
         Iterator it = ns.getOwnedElement().iterator();
@@ -928,9 +926,6 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public Object getAssociationEnd(Object type, Object assoc) {
-        if (type == null || assoc == null) {
-            return null;
-        }
         if (!(type instanceof Classifier)) {
             throw new IllegalArgumentException();
         }
@@ -1165,7 +1160,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
 
         if (!(supplierObj instanceof ModelElement)
                 || !(clientObj instanceof ModelElement)) {
-            return null;
+            throw new IllegalArgumentException("null argument");
         }
 
         ModelElement supplier = (ModelElement) supplierObj;
@@ -1190,9 +1185,6 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public Collection getRelationships(Object source, Object dest) {
         Set ret = new HashSet();
-        if (source == null || dest == null) {
-            return ret;
-        }
         if (!(source instanceof ModelElement)) {
             throw new IllegalArgumentException("source");
         }
@@ -1407,7 +1399,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public Object getFirstSharedNamespace(Object ns1, Object ns2) {
         if (ns1 == null || ns2 == null) {
-            return null;
+            throw new IllegalArgumentException("null argument");
         }
         if (ns1 == ns2) {
             return ns1;

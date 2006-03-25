@@ -131,7 +131,7 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      *      java.lang.Object)
      */
     public void setEventAsTrigger(Object transition, Object event) {
-        if (transition == null || !(transition instanceof Transition)) {
+        if (!(transition instanceof Transition)) {
             throw new IllegalArgumentException("Transition either null or not "
                     + "an instance of MTransition");
         }
@@ -174,8 +174,8 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
             statemachines.remove(getStateMachine(oSubmachineState));
             return statemachines;
         }
-        return null;
-
+        throw new IllegalArgumentException(
+                "Argument must be a SubmachineState");
     }
 
     /**
@@ -239,7 +239,8 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
             }
             return col;
         }
-        return null;
+        throw new IllegalArgumentException(
+                "Argument must be a StateVertex");
     }
 
     /**
@@ -283,7 +284,8 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
             }
             return retList;
         }
-        throw new IllegalArgumentException("Argument is not a composite state");
+        throw new IllegalArgumentException(
+                "Argument is not a composite state");
     }
 
     /**
@@ -613,7 +615,8 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     public void setChangeExpression(Object handle, Object value) {
         if (handle instanceof ChangeEvent
                 && (value == null || value instanceof BooleanExpression)) {
-            ((ChangeEvent) handle).setChangeExpression((BooleanExpression) value);
+            ((ChangeEvent) handle)
+                    .setChangeExpression((BooleanExpression) value);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle + " or value: "
@@ -635,7 +638,8 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
             }
             return path;
         }
-        return null;
+        throw new IllegalArgumentException(
+                "Argument must be a StateVertex");
     }
 
     /**

@@ -112,11 +112,11 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      * @see org.argouml.model.ExtensionMechanismsHelper#getStereotype(java.lang.Object, java.lang.Object)
      */
     public Object getStereotype(Object ns, Object stereo) {
-        if (ns == null || !(ns instanceof Namespace)) {
+        if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException("namespace");
         }
 
-        if (ns == null || !(stereo instanceof Stereotype)) {
+        if (!(stereo instanceof Stereotype)) {
             throw new IllegalArgumentException("stereotype");
         }
 
@@ -145,7 +145,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      */
     public Object getStereotype(Collection models, Object stereo) {
         if (stereo == null) {
-            return null;
+            throw new IllegalArgumentException("null argument");
         }
         if (!(stereo instanceof Stereotype)) {
             throw new IllegalArgumentException("stereotype");
@@ -181,14 +181,11 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      * @see org.argouml.model.ExtensionMechanismsHelper#getMetaModelName(java.lang.Object)
      */
     public String getMetaModelName(Object m) {
-        if (m == null) {
-            return null;
+        if (m instanceof ModelElement) {
+            return getMetaModelName(m.getClass());
         }
-        if (!(m instanceof ModelElement)) {
-            throw new IllegalArgumentException();
-        }
+        throw new IllegalArgumentException("Not a ModelElement");
 
-        return getMetaModelName(m.getClass());
     }
 
     /**
@@ -232,8 +229,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      * @return true if the stereotype may be applied
      */
     private boolean isValidStereoType(Class clazz, Object stereo) {
-        if (clazz == null || stereo == null 
-                || !(stereo instanceof Stereotype)) {
+        if (clazz == null || !(stereo instanceof Stereotype)) {
             return false;
         }
 
@@ -338,7 +334,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      * @see org.argouml.model.ExtensionMechanismsHelper#isStereotype(java.lang.Object, java.lang.String, java.lang.String)
      */
     public boolean isStereotype(Object object, String name, String base) {
-        if (object == null || !(object instanceof Stereotype)) {
+        if (!(object instanceof Stereotype)) {
             return false;
         }
 
@@ -357,7 +353,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      * @see org.argouml.model.ExtensionMechanismsHelper#isStereotypeInh(java.lang.Object, java.lang.String, java.lang.String)
      */
     public boolean isStereotypeInh(Object object, String name, String base) {
-        if (object == null || !(object instanceof Stereotype)) {
+        if (!(object instanceof Stereotype)) {
             return false;
         }
         if (isStereotype(object, name, base)) {

@@ -162,13 +162,13 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
     /**
      * @see org.argouml.model.UseCasesHelper#getExtends(java.lang.Object, java.lang.Object)
      */
-    public Object getExtends(Object/* UseCase */abase,
-            Object/* UseCase */anextension) {
+    public Object getExtends(Object abase, Object anextension) {
+        if (!(abase instanceof UseCase) 
+                || !(anextension instanceof UseCase)) {
+            throw new IllegalArgumentException();
+        }
         UseCase base = (UseCase) abase;
         UseCase extension = (UseCase) anextension;
-        if (base == null || extension == null) {
-            return null;
-        }
         Iterator it = extension.getExtend().iterator();
         while (it.hasNext()) {
             Extend extend = (Extend) it.next();
@@ -182,9 +182,9 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
     /**
      * @see org.argouml.model.UseCasesHelper#getIncludedUseCases(java.lang.Object)
      */
-    public Collection getIncludedUseCases(Object/* UseCase */ausecase) {
-        if (ausecase == null) {
-            return new ArrayList();
+    public Collection getIncludedUseCases(Object ausecase) {
+        if(!(ausecase instanceof UseCase)) {
+            throw new IllegalArgumentException();            
         }
         UseCase usecase = (UseCase) ausecase;
         Iterator it = usecase.getInclude().iterator();
@@ -201,11 +201,12 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
      * @see org.argouml.model.UseCasesHelper#getIncludes(java.lang.Object, java.lang.Object)
      */
     public Object getIncludes(Object abase, Object aninclusion) {
+        if (!(abase instanceof UseCase) 
+                || !(aninclusion instanceof UseCase)) {
+            throw new IllegalArgumentException();
+        }
         UseCase base = (UseCase) abase;
         UseCase inclusion = (UseCase) aninclusion;
-        if (base == null || inclusion == null) {
-            return null;
-        }
         Iterator it = inclusion.getInclude().iterator();
         while (it.hasNext()) {
             Include include = (Include) it.next();

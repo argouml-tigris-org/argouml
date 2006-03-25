@@ -419,7 +419,8 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
      */
     public void setReception(Object handle, Collection c) {
         if (handle instanceof Signal) {
-            Collection actualReceptions = Model.getFacade().getReceptions(handle);
+            Collection actualReceptions = 
+                Model.getFacade().getReceptions(handle);
             if (!actualReceptions.isEmpty()) {
                 Vector receptions = new Vector();
                 receptions.addAll(actualReceptions);
@@ -609,8 +610,9 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
      * @see org.argouml.model.CommonBehaviorHelper#getActionOwner(java.lang.Object)
      */
     public Object getActionOwner(Object action) {
-        if (!(Model.getFacade().isAAction(action)))
-            return null;
+        if (!(Model.getFacade().isAAction(action))) {
+            throw new IllegalArgumentException();
+        }
 
         if (Model.getFacade().getStimuli(action) != null) {
             Iterator iter = Model.getFacade().getStimuli(action).iterator();
