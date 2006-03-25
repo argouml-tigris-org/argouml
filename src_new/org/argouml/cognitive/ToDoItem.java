@@ -34,9 +34,6 @@ import org.argouml.model.Model;
 import org.argouml.util.CollectionUtil;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.ui.Highlightable;
-
-
 
 /**
  * This class defines the feedback items that can be placed on the
@@ -141,6 +138,8 @@ public class ToDoItem implements Serializable, WizardItem {
                 && !Model.getFacade().isAModelElement(offender)
                 && !(offender instanceof Fig)
                 && !(offender instanceof Diagram)) {
+            //TODO: The cognotive system should not be aware of any other
+            // system. Find a better way to do this.
             throw new IllegalArgumentException(
                     "The first offender must be a model element, "
                     + "a Fig or a Diagram");
@@ -151,6 +150,8 @@ public class ToDoItem implements Serializable, WizardItem {
             if (!Model.getFacade().isAModelElement(offender)
                     && !(offender instanceof Fig)
                     && !(offender instanceof Diagram)) {
+                //TODO: The cognotive system should not be aware of any other
+                // system. Find a better way to do this.
                 throw new IllegalArgumentException(
                         "The second offender must be a model element, "
                         + "a Fig or a Diagram");
@@ -196,6 +197,8 @@ public class ToDoItem implements Serializable, WizardItem {
         if (!Model.getFacade().isAModelElement(dm)
                 && !(dm instanceof Fig)
                 && !(dm instanceof Diagram)) {
+            //TODO: The cognotive system should not be aware of any other
+            // system. Find a better way to do this.
             throw new IllegalArgumentException(
                     "The offender must be a model element, "
                     + "a Fig or a Diagram");
@@ -227,6 +230,8 @@ public class ToDoItem implements Serializable, WizardItem {
                 && !Model.getFacade().isAModelElement(offender)
                 && !(offender instanceof Fig)
                 && !(offender instanceof Diagram)) {
+            //TODO: The cognotive system should not be aware of any other
+            // system. Find a better way to do this.
             throw new IllegalArgumentException(
                     "The first offender must be a model element, "
                     + "a Fig or a Diagram");
@@ -237,6 +242,8 @@ public class ToDoItem implements Serializable, WizardItem {
             if (!Model.getFacade().isAModelElement(offender)
                     && !(offender instanceof Fig)
                     && !(offender instanceof Diagram)) {
+                //TODO: The cognotive system should not be aware of any other
+                // system. Find a better way to do this.
                 throw new IllegalArgumentException(
                         "The second offender must be a model element, "
                         + "a Fig or a Diagram");
@@ -355,6 +362,9 @@ public class ToDoItem implements Serializable, WizardItem {
      */
     public ListSet getOffenders() {
         assert theOffenders != null;
+        //TODO: The cognotive system should not be aware of any other
+        // system. Find a better way to do this. We should not use
+        // assert on public methods.
         assert theOffenders.size() <= 0
         	|| Model.getFacade().isAModelElement(theOffenders.elementAt(0))
         	|| theOffenders.elementAt(0) instanceof Fig

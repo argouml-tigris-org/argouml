@@ -52,6 +52,7 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.Highlightable;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
@@ -98,7 +99,8 @@ public abstract class FigEdgeModelElement
         KeyListener,
         PropertyChangeListener,
         NotationContext,
-        ArgoNotationEventListener {
+        ArgoNotationEventListener,
+        Highlightable {
 
     private static final Logger LOG =
         Logger.getLogger(FigEdgeModelElement.class);
