@@ -59,11 +59,10 @@ public interface ExtensionMechanismsFactory extends Factory {
      */
     /*
      * TODO: MVW: This needs rethinking/rework! I have the following questions:
-     * Why does it not search for a stereotype in the namespace using properties
-     * and only create a new stereotype if it will actually be used? Ie, why is
-     * there not a getStereotype(String name, String baseClass)? (edited by
-     * d00mst)
-     * 
+     * Why does it not search for a stereotype in the namespace using 
+     * properties and only create a new stereotype if it will actually be used?
+     * Ie, why is there not a getStereotype(String name, String baseClass)? 
+     * (edited by d00mst)
      */
     Object buildStereotype(Object theModelElementObject,
             Object theName,

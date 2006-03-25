@@ -42,7 +42,7 @@ class XmiReferenceProviderImpl implements XMIReferenceProvider {
     private Map mofIdToXmiId;
     
     /**
-     * Create a new reference provider which uses the given map for its lookups.
+     * Create a new reference provider which uses the given map for lookups.
      * 
      * @param idMap
      */
@@ -68,7 +68,8 @@ class XmiReferenceProviderImpl implements XMIReferenceProvider {
         if (ref == null) {
             return new XMIReferenceProvider.XMIReference(systemId, mofId);
         } else {
-            return new XMIReferenceProvider.XMIReference(systemId, ref.getXmiId());
+            return new XMIReferenceProvider.XMIReference(systemId, 
+                    ref.getXmiId());
         }
     }
 }

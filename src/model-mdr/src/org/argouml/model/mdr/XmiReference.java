@@ -25,9 +25,9 @@
 package org.argouml.model.mdr;
 
 class XmiReference {
-    final String systemId;
+    private final String systemId;
 
-    final String xmiId;
+    private final String xmiId;
 
     /**
      * Create a XMI id reference object.

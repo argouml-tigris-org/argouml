@@ -214,11 +214,14 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
      * @return string representing multiplicity range
      */
     private String multiplicityRangeToString(MultiplicityRange range) {
-        if (range.getLower() == range.getUpper())
+        if (range.getLower() == range.getUpper()) {
             return DataTypesFactoryMDRImpl.boundToString(range.getLower());
-        else
-            return DataTypesFactoryMDRImpl.boundToString(range.getLower()) + ".."
+        } else {
+            return DataTypesFactoryMDRImpl.boundToString(
+                    range.getLower())
+                    + ".."
                     + DataTypesFactoryMDRImpl.boundToString(range.getUpper());
+        }
     }
 
     /**

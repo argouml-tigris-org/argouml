@@ -70,7 +70,7 @@ public interface DataTypesHelper {
     /**
      * @param kind the pseudostate kind (Choice)
      * @return if this is a branch-choice kind
-     * @deprecated UML 1.3 only - use Choice
+     * @deprecated before 0.20 by tfmorris - UML 1.3 only - use Choice
      */
     boolean equalsBRANCHKind(Object kind);
 

@@ -80,9 +80,14 @@ public class XmiWriterMDRImpl implements XmiWriter {
 
     /**
      * Create an XMI writer for the given model or extent.
-     * @param theParent The ModelImplementation
-     * @param theModel The Model to write.  If null, write all top-level model elements.
-     * @param theWriter The writer to write to
+     * 
+     * @param theParent
+     *            The ModelImplementation
+     * @param theModel
+     *            The Model to write. If null, write all top-level model
+     *            elements.
+     * @param theWriter
+     *            The writer to write to
      */
     public XmiWriterMDRImpl(MDRModelImplementation theParent, Object theModel,
             Writer theWriter) {
@@ -91,7 +96,8 @@ public class XmiWriterMDRImpl implements XmiWriter {
         this.writer = theWriter;
         config = new OutputConfig();
         config.setEncoding(ENCODING);
-        config.setReferenceProvider(new XmiReferenceProviderImpl(parent.getObjectToId()));
+        config.setReferenceProvider(new XmiReferenceProviderImpl(parent
+                .getObjectToId()));
         config.setHeaderProvider(new XmiHeaderProviderImpl());
     }
 
@@ -119,10 +125,12 @@ public class XmiWriterMDRImpl implements XmiWriter {
                         }
                     }
                 }
-                LOG.info("Saving " + elements.size() + " top level model elements");
+                LOG.info("Saving " + elements.size() 
+                        + " top level model elements");
             }
      
-            xmiWriter.write(new WriterOuputStream(writer), elements, XMI_VERSION);
+            xmiWriter.write(
+                    new WriterOuputStream(writer), elements, XMI_VERSION);
         } catch (IOException e) {
             throw new UmlException(e);
         }

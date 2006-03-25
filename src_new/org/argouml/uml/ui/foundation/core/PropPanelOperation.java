@@ -182,6 +182,9 @@ public class PropPanelOperation extends PropPanelFeature {
             putValue(Action.SMALL_ICON, icon);
         }
         
+        /**
+         * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+         */
         public boolean shouldBeEnabled() {
         	Object target = TargetManager.getInstance().getModelTarget();
         	boolean result = true;

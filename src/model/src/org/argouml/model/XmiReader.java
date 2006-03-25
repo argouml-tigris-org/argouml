@@ -89,6 +89,7 @@ public interface XmiReader {
      * return false if unsupported.
      * 
      * @param elementNames array of element names which reader should ignore
+     * @return returns false if the operation is unsupported
      */
     public boolean setIgnoredElements(String[] elementNames);
     
