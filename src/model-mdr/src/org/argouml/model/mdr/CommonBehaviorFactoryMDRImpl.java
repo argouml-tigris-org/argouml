@@ -377,7 +377,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      */
     public Object buildSignal(Object feature) {
         if (!(feature instanceof BehavioralFeature)) {
-            return null;
+            throw new IllegalArgumentException();
         }
         
         Signal signal = (Signal) createSignal();

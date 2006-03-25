@@ -206,27 +206,26 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                     + "by a collaboration");
         }
 
-        if (!(representedElement instanceof Classifier 
-                || representedElement instanceof Operation)) {
-            throw new IllegalArgumentException();
-        }
+        if (representedElement instanceof Classifier 
+                || representedElement instanceof Operation) {
 
-        Collaboration collaboration = (Collaboration) 
+            Collaboration collaboration = (Collaboration) 
             buildCollaboration(namespace);
-        if (representedElement instanceof Classifier) {
-            collaboration.
+            if (representedElement instanceof Classifier) {
+                collaboration.
                 setRepresentedClassifier((Classifier) representedElement);
-    
-            return collaboration;
-        }
-        if (representedElement instanceof Operation) {
-            collaboration.
+                
+                return collaboration;
+            }
+            if (representedElement instanceof Operation) {
+                collaboration.
                 setRepresentedOperation((Operation) representedElement);
-    
-            return collaboration;
+                
+                return collaboration;
+            }
         }
-        // Not reached.
-        return null;
+        throw new IllegalArgumentException("Represented element must be"
+                + " Collaboration or Operation");
     }
 
     /**
@@ -253,8 +252,8 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException();
         }
 
-        AssociationEndRole end = (AssociationEndRole) 
-            createAssociationEndRole();
+        AssociationEndRole end = 
+            (AssociationEndRole) createAssociationEndRole();
         end.setParticipant((ClassifierRole) atype);
 
         return end;
@@ -272,10 +271,10 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException("to");
         }
 
-        Collaboration colFrom = (Collaboration) ((ClassifierRole) from).
-            getNamespace();
-        Collaboration colTo = (Collaboration) ((ClassifierRole) to).
-            getNamespace();
+        Collaboration colFrom = (Collaboration) ((ClassifierRole) from)
+                .getNamespace();
+        Collaboration colTo = (Collaboration) ((ClassifierRole) to)
+                .getNamespace();
         if (colFrom != null && colFrom.equals(colTo)) {
             AssociationRole role = (AssociationRole) createAssociationRole();
             // we do not create on basis of associations between the
@@ -286,7 +285,8 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     
             return role;
         }
-        return null;
+        throw new IllegalArgumentException("Collaborations must be in" 
+                + " same non-null namespace");
     }
 
     /**
@@ -343,7 +343,8 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             colFrom.getOwnedElement().add(role);
             return role;
         }
-        return null;
+        throw new IllegalArgumentException("Collaborations must be in" 
+                + " same non-null namespace");
     }
 
     /**
@@ -393,7 +394,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     private Message buildMessageInteraction(Interaction inter,
             AssociationRole role) {
         if (inter == null || role == null) {
-            return null;
+            throw new IllegalArgumentException();
         }
 
         Message message = (Message) createMessage();
@@ -502,10 +503,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *      java.lang.Object)
      */
     public Object buildActivator(Object owner, Object interaction) {
-        if (owner == null) {
-            return null;
-        }
-        if (!(owner instanceof Message)) {
+        if (owner == null || !(owner instanceof Message)) {
             throw new IllegalArgumentException();
         }
 
@@ -513,7 +511,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             interaction = ((Message) owner).getInteraction();
         }
         if (interaction == null) {
-            return null;
+            throw new IllegalArgumentException();
         }
         if (!(interaction instanceof Interaction)) {
             throw new IllegalArgumentException();
@@ -613,7 +611,12 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (!(elem instanceof Message)) {
             throw new IllegalArgumentException();
         }
-        // TODO: delete Interactions where this is the only message
-    }
+        // If this is the only message contained in the Interaction
+        // we delete the Interaction
+        Interaction i = ((Message) elem).getInteraction();
+        if (i != null && i.getMessage().size() == 1) {
+            nsmodel.getUmlFactory().delete(i);
+        }
+     }
 
 }

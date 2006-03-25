@@ -233,7 +233,7 @@ public class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (actor instanceof Actor) {
             return buildActor(((Actor) actor).getNamespace(), model);
         }
-        return null;
+        throw new IllegalArgumentException();
     }
 
     /**
