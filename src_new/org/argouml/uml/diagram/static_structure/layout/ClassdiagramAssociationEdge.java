@@ -48,6 +48,9 @@ public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
      * @see org.argouml.uml.diagram.layout.LayoutedEdge#layout()
      */
     public void layout() {
+        // TODO: Multiple associations between the same pair of elements
+        // need to be special cased so that they don't overlap - tfm - 20060228
+        
         // self associations are special cases. No need to let the maze
         // runner find the way.
         if (getDestFigNode() == getSourceFigNode()) {

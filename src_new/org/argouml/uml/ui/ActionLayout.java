@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,16 +26,19 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
-import java.util.Iterator;
 
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.diagram.activity.layout.ActivityDiagramLayouter;
+import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
+import org.argouml.uml.diagram.layout.Layouter;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.SelectionManager;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * Action to automatically lay out a diagram.
@@ -59,46 +62,61 @@ public class ActionLayout extends UMLAction {
     /**
      * Check whether we deal with a supported diagram type
      * (currently only UMLClassDiagram).
-     * Incremental Layout is not implemented for any diagram type,
-     * so it is greyed out.
      * @see org.argouml.ui.ProjectBrowser
      */
     public boolean shouldBeEnabled() {
-        return (super.shouldBeEnabled()
-            && (ProjectManager.getManager().getCurrentProject()
-                    .getActiveDiagram() instanceof UMLClassDiagram));
+        if (!super.shouldBeEnabled()) {
+            return false;
+        }
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p == null) {
+            return false;
+        }
+        ArgoDiagram d = p.getActiveDiagram();
+        if (d instanceof UMLClassDiagram 
+                || d instanceof UMLActivityDiagram) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
-     * This action performs the layout and triggers a redraw
-     * of the editor pane.
-     *
+     * This action performs the layout and triggers a redraw of the editor pane.
+     * 
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        ClassdiagramLayouter layouter =
-            new ClassdiagramLayouter(
-				     (UMLDiagram) ProjectManager.getManager()
-				         .getCurrentProject()
-				             .getActiveDiagram());
-
-        Editor ce = Globals.curEditor();
-        SelectionManager sm = ce.getSelectionManager();
-
-        // Get all the figures from the diagram.
-        Collection nodes =
-            ((UMLClassDiagram) ProjectManager.getManager().getCurrentProject()
-	             .getActiveDiagram())
-	        .getLayer().getContents();
-        Iterator it = nodes.iterator();
-        while (it.hasNext()) {
-            sm.select((Fig) (it.next()));
-            // Select all the figures in the diagram.
+        ArgoDiagram diagram = ProjectManager.getManager()
+                .getCurrentProject().getActiveDiagram();
+        Layouter layouter;
+        if (diagram instanceof UMLClassDiagram) {
+             layouter = new ClassdiagramLayouter((UMLClassDiagram) diagram);
+        } else if (diagram instanceof UMLActivityDiagram) {
+             layouter = 
+                 new ActivityDiagramLayouter((UMLActivityDiagram) diagram);
+        } else {
+            return;
         }
 
-        // Notify the selection manager that selected figures will be moved now.
-        layouter.layout(); // Compute a new layout.
-        sm.endTrans(); // Finish the transition.
-        sm.deselectAll(); // Deselect all figures.
+        // Using the selection manager to force a repaint seems like a
+        // heavyweight way to do this - tfm
+        
+        // Create a selection containing all figures in diagram
+        Editor ce = Globals.curEditor();
+        SelectionManager sm = ce.getSelectionManager();
+        Collection nodes =
+            ((UMLDiagram) ProjectManager.getManager().getCurrentProject()
+                    .getActiveDiagram())
+                    .getLayer().getContents();                    
+        sm.select(nodes);
+
+        // Rearrange the diagram layout
+        layouter.layout();
+        
+        // Tell the selection manager we're done and deselect everything
+        // This will force a repaint.
+        sm.endTrans(); 
+        sm.deselectAll();
     }
 } /* end class ActionLayout */

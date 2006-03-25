@@ -717,7 +717,7 @@ public class Import {
                 ProjectBrowser.getInstance().showStatus("Import done");
 
                 // Layout the modified diagrams.
-                if (doLayout) {
+                if (!isCancelled() && doLayout) {
                     st.mark("layout");
                     if (diagramInterface != null) {
                         for (int i = 0; i < diagramInterface
@@ -926,7 +926,8 @@ public class Import {
         }
 
         public void disposeDialog() {
-            setVisible(false); dispose();
+            setVisible(false); 
+            dispose();
         }
 
         /**
@@ -1117,7 +1118,7 @@ class ImportClasspathDialog extends JDialog {
                         }
                     } else if (e.getActionCommand().equals(
                             JFileChooser.CANCEL_SELECTION)) {
-                        ;// TODO: What shall we do here?
+                        // TODO: What shall we do here?
                     }
                 }
             });
