@@ -69,6 +69,15 @@ public interface CollaborationsHelper {
      * @param ato the second classifierrole
      * @return MAssociationRole the association between them, or null if none
      */
+    Object getAssociationRole(Object afrom, Object ato);
+    
+    /**
+     * @param afrom 
+     * @param ato 
+     * @return associationrole
+     * @deprecated for 0.21.2 by tfmorris, use getAssociationRole
+     * @see #getAssociationRole(Object, Object)
+     */
     Object getAssocationRole(Object afrom, Object ato);
 
     /**

@@ -164,12 +164,12 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
     }
 
     /**
-     * @see org.argouml.model.CollaborationsHelper#getAssocationRole(java.lang.Object,
+     * @see org.argouml.model.CollaborationsHelper#getAssociationRole(java.lang.Object,
      *      java.lang.Object)
      */
-    public Object getAssocationRole(Object afrom, Object ato) {
+    public Object getAssociationRole(Object afrom, Object ato) {
         if (afrom == null || ato == null) {
-            return null;
+            throw new IllegalArgumentException();
         }
         ClassifierRole from = (ClassifierRole) afrom;
         ClassifierRole to = (ClassifierRole) ato;
@@ -190,6 +190,13 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             }
         }
         return null;
+    }
+    
+    /**
+     * @see org.argouml.model.CollaborationsHelper#getAssocationRole(java.lang.Object, java.lang.Object)
+     */
+    public Object getAssocationRole(Object afrom, Object ato) {
+        return getAssociationRole(afrom, ato);
     }
 
     /**
