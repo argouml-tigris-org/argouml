@@ -575,6 +575,11 @@ public abstract class UMLDiagram
         }
     }
 
+    /**
+     * Get the selected action.
+     * 
+     * @return the selected action
+     */
     public Action getSelectedAction() {
         return selectedAction;
     }
@@ -698,12 +703,12 @@ public abstract class UMLDiagram
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.Relocatable#isRelocationAllowed(java.lang.Object)
+     * @see org.argouml.ui.explorer.Relocatable#isRelocationAllowed(java.lang.Object)
      */
     public abstract boolean isRelocationAllowed(Object base);
 
     /**
-     * @see org.argouml.uml.diagram.ui.Relocatable#relocate(java.lang.Object)
+     * @see org.argouml.ui.explorer.Relocatable#relocate(java.lang.Object)
      */
     public abstract boolean relocate(Object base);
 
