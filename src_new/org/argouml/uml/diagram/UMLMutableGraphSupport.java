@@ -371,7 +371,8 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             return isConnectionValid(CommentEdge.class,
                     ce.getSource(),
                     ce.getDestination());
-        } else if (edge != null) {
+        } else if (edge != null 
+                && Model.getUmlFactory().isConnectionType(edge)) {
             return isConnectionValid(edge.getClass(),
                 Model.getUmlHelper().getSource(edge),
                 Model.getUmlHelper().getDestination(edge));

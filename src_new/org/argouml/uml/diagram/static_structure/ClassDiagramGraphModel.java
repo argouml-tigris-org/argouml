@@ -339,6 +339,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         } else if (edge instanceof CommentEdge) {
             sourceModelElement = ((CommentEdge) edge).getSource();
             destModelElement = ((CommentEdge) edge).getDestination();
+        } else {
+            return false;
         }
 
         if (sourceModelElement == null || destModelElement == null) {

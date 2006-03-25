@@ -184,7 +184,10 @@ public class SequenceDiagramGraphModel
         } else if (edge instanceof CommentEdge) {
             end0 = ((CommentEdge) edge).getSource();
             end1 = ((CommentEdge) edge).getDestination();
+        } else {
+            return false;
         }
+        
         // Both ends must be defined and nodes that are on the graph already.
         if (end0 == null || end1 == null) {
             LOG.error("Edge rejected. Its ends are not attached to anything");
@@ -204,7 +207,6 @@ public class SequenceDiagramGraphModel
             return false;
         }
 
-        System.out.println("We can add " + edge);
         return true;
     }
 
@@ -292,7 +294,7 @@ public class SequenceDiagramGraphModel
 
         Editor curEditor = Globals.curEditor();
         ModeManager modeManager = curEditor.getModeManager();
-        Mode mode = (Mode) modeManager.top();
+        Mode mode = modeManager.top();
         Hashtable args = mode.getArgs();
         Object actionType = args.get("action");
         if (Model.getMetaTypes().getCallAction().equals(actionType)) {
@@ -328,7 +330,7 @@ public class SequenceDiagramGraphModel
             return null;
         }
         if (edgeType == CommentEdge.class) {
-            return super.connect(fromPort, toPort, (Object) edgeType);
+            return super.connect(fromPort, toPort, edgeType);
         }
         Object edge = null;
         Object fromObject = null;
@@ -383,15 +385,15 @@ public class SequenceDiagramGraphModel
                 }
             } else if (Model.getMetaTypes().getSendAction()
                     .equals(actionType)) {
-                ;// no implementation, not of importance to sequence diagrams
+                // no implementation, not of importance to sequence diagrams
             } else if (Model.getMetaTypes().getTerminateAction()
                     .equals(actionType)) {
-                ;// not implemented yet
+                // not implemented yet
             }
         }
         if (fromObject != null && toObject != null && action != null) {
             Object associationRole =
-                Model.getCollaborationsHelper().getAssocationRole(
+                Model.getCollaborationsHelper().getAssociationRole(
                     fromObject,
                     toObject);
             if (associationRole == null) {

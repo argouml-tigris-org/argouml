@@ -26,10 +26,11 @@ package org.argouml.uml.diagram.state;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
@@ -92,12 +93,12 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * @param nodeOrEdge The node or the edge.
      */
     public List getPorts(Object nodeOrEdge) {
-        Vector res = new Vector(); //wasteful!
+        List res = new ArrayList();
         if (Model.getFacade().isAState(nodeOrEdge)) {
-	    res.addElement(nodeOrEdge);
+	    res.add(nodeOrEdge);
 	}
         if (Model.getFacade().isAPseudostate(nodeOrEdge)) {
-	    res.addElement(nodeOrEdge);
+	    res.add(nodeOrEdge);
 	}
         return res;
     }
@@ -120,10 +121,10 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      */
     public List getInEdges(Object port) {
         if (Model.getFacade().isAStateVertex(port)) {
-	    return new Vector(Model.getFacade().getIncomings(port));
+	    return new ArrayList(Model.getFacade().getIncomings(port));
 	}
         LOG.debug("TODO: getInEdges of MState");
-        return new Vector(); //wasteful!
+        return Collections.EMPTY_LIST;
     }
 
     /**
@@ -133,10 +134,10 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      */
     public List getOutEdges(Object port) {
         if (Model.getFacade().isAStateVertex(port)) {
-	    return new Vector(Model.getFacade().getOutgoings(port));
+	    return new ArrayList(Model.getFacade().getOutgoings(port));
 	}
         LOG.debug("TODO: getOutEdges of MState");
-        return new Vector(); //wasteful!
+        return Collections.EMPTY_LIST;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -187,10 +188,11 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         if (containsEdge(edge)) {
             return false;
         }
-        Object end0 = null, end1 = null, state = null;
+        
+        Object end0 = null;
+        Object end1 = null;
 
         if (Model.getFacade().isATransition(edge)) {
-            state = Model.getFacade().getState(edge);
             end0 = Model.getFacade().getSource(edge);
             end1 = Model.getFacade().getTarget(edge);
             // it's not allowed to directly draw a transition
@@ -203,6 +205,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         } else if (edge instanceof CommentEdge) {
             end0 = ((CommentEdge) edge).getSource();
             end1 = ((CommentEdge) edge).getDestination();
+        } else {
+            return false;
         }
 
         // Both ends must be defined and nodes that are on the graph already.
@@ -275,7 +279,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         super.addNodeRelatedEdges(node);
 
         if (Model.getFacade().isAStateVertex(node)) {
-            Vector transen = new Vector(Model.getFacade().getOutgoings(node));
+            Collection transen = new ArrayList(Model.getFacade().getOutgoings(node));
             transen.addAll(Model.getFacade().getIncomings(node));
             Iterator iter = transen.iterator();
             while (iter.hasNext()) {
@@ -377,7 +381,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         //throws PropertyVetoException
 
         if ("ownedElement".equals(pce.getPropertyName())) {
-            Vector oldOwned = (Vector) pce.getOldValue();
+            Collection oldOwned = (Collection) pce.getOldValue();
             Object eo = /* (MElementImport) */pce.getNewValue();
             Object me = Model.getFacade().getModelElement(eo);
             if (oldOwned.contains(eo)) {
@@ -465,7 +469,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     }
 
     /**
-     * @see org.argouml.uml.diagram.UMLMutableGraphSupport#isRemoveFromDiagramAllowed()
+     * @see org.argouml.uml.diagram.UMLMutableGraphSupport#isRemoveFromDiagramAllowed(Collection)
      */
     public boolean isRemoveFromDiagramAllowed(Collection figs) {
         /* If nothing is selected, then not allowed to remove it. */
@@ -487,7 +491,6 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         /* If only Figs without owner are selected, then you can remove them! */
         return true;
     }
-
 
 
 } /* end class StateDiagramGraphModel */
