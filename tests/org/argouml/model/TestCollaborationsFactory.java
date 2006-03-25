@@ -24,8 +24,6 @@
 
 package org.argouml.model;
 
-import java.lang.ref.WeakReference;
-
 import junit.framework.TestCase;
 
 
@@ -107,27 +105,28 @@ public class TestCollaborationsFactory extends TestCase {
 	    Model.getCollaborationsFactory().buildCollaboration(model);
         Object cr1 = Model.getCollaborationsFactory().createClassifierRole();
         Object cr2 = Model.getCollaborationsFactory().createClassifierRole();
+        // Set namespace so buildAssocationRole works
+        Model.getCoreHelper().setNamespace(cr1, collab);
+        Model.getCoreHelper().setNamespace(cr2, collab);
         Object role =
 	    Model.getCollaborationsFactory().buildAssociationRole(cr1, cr2);
+        assertNotNull("Failed to create role", role);
         Object inter =
 	    Model.getCollaborationsFactory().buildInteraction(collab);
-        Object mes = Model.getCollaborationsFactory().buildMessage(inter, role);
-
-        WeakReference cr1wr = new WeakReference(cr1);
-        WeakReference rolewr = new WeakReference(role);
-        WeakReference interwr = new WeakReference(inter);
-        WeakReference meswr = new WeakReference(mes);
+        assertNotNull("Failed to build interaction", inter);
+        Object message = 
+            Model.getCollaborationsFactory().buildMessage(inter, role);
+        assertNotNull("Failed to build message", message);
 
         Model.getUmlFactory().delete(cr1);
         Model.getPump().flushModelEvents();
-        cr1 = null;
-        role = null;
-        inter = null;
-        mes = null;
-        System.gc();
-        assertNull("ClassifierRole not removed", cr1wr.get());
-        assertNull("AssociationRole not removed", rolewr.get());
-        assertNull("Message not removed", meswr.get());
+
+        assertTrue("ClassifierRole not removed", 
+                Model.getUmlFactory().isRemoved(cr1));
+        assertTrue("AssociationRole not removed", 
+                Model.getUmlFactory().isRemoved(role));
+        assertTrue("Message not removed", 
+                Model.getUmlFactory().isRemoved(message));
         /*
          * This comment was included in a previous version (before 1/2005)
          * of the test which had this assertion commented out:
@@ -142,7 +141,8 @@ public class TestCollaborationsFactory extends TestCase {
          * doing the right thing by removing it in this case where we only
          * have a single message, which then gets deleted. - tfm
          */
-        assertNull("Interaction not removed", interwr.get());
+        assertTrue("Interaction not removed", 
+                Model.getUmlFactory().isRemoved(inter));
     }
 
     /**
