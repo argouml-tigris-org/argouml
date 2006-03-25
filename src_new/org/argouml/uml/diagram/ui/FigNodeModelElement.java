@@ -49,6 +49,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.naming.OperationNotSupportedException;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JSeparator;
@@ -399,6 +400,7 @@ public abstract class FigNodeModelElement
      */
     public void setItemUID(ItemUID id) {
         itemUid = id;
+        throw new UnsupportedOperationException("Trying to prove this is ever called");
     }
 
     /**
