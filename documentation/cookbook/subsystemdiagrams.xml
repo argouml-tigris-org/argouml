@@ -188,7 +188,7 @@ object.
 </para>
 
 	<sect3>
-	  <title>Adding to the tool-bar</title>
+	  <title>Adding to the tool-bar of the diagram</title>
 
 	    <para>
 Find the diagram object in
@@ -202,7 +202,7 @@ This will be a subclass of UMLDiagram (in
 </para>
 
 	    <para>
-Each tool-bar action is declared as a protected static field of class
+Each tool-bar action is declared as a private static field of class
 <classname>Action</classname>, initiated as a 
 <literal>new CmdCreateNode</literal> (for nodal UML elements) or a
 <literal>new CmdSetMode</literal> (for behavior, or creation of line
@@ -217,44 +217,39 @@ Use Case nodes.
 </para>
 
 	    <para><programlisting>
-protected static Action _actionUseCase =
-    new CmdCreateNode(ModelFacade.USE_CASE, "UseCase");
+private static Action actionUseCase; 
+</programlisting>
+which is then created as follows:
+<programlisting>
+    protected Action getActionUseCase() {
+        if (actionUseCase == null) {
+            actionUseCase = new RadioAction(new CmdCreateNode(
+                    Model.getMetaTypes().getUseCase(), "button.new-usecase"));
+        }
+        return actionUseCase;
+    }
 </programlisting>
 </para>
 
 	    <para>
-The first argument is the class of the node to create from 
+The first argument of the CmdCreateNode() function
+ is the class of the node to create from 
 the Model subsystem Metatypes interface, the
 second a textual tool tip.
 </para>
 
-	    <para>For creating associations we have:</para>
-	    <para><programlisting>
-protected static Action _actionAssoc =
-      new CmdSetMode(ModeCreatePolyEdge.class,
-	   	     "edgeClass", Model.getMetaTypes().getAssociation(),
-		     "Association");
-</programlisting>
-</para>
-
-	    <para>
-The first argument is a GEF class that defines the type of behavior
-wanted (in this case creating a poly-edge). The second and third
-arguments are a named parameter used by
-<classname>ModeCreatePolyEdge</classname> ("edgeClass") and its value
-(<literal>MAssociationImpl.class</literal>). The final argument is a
-tooltip.
-</para>
 
 	    <para>
 The tool-bar is actually created by defining a method,
-<methodname>initToolBar()</methodname> which adds the tools in turn to the
-tool-bar (a protected member named <literal>_toolBar</literal>).
+<methodname>UMLDiagram.initToolBar()</methodname> 
+which adds the tools in turn to the
+tool-bar (a private member named <literal>toolBar</literal>).
 </para>
 
 	    <para>
-The default constructor for the diagram is declared private, since it
-must not be called directly. The desired constructor takes a name-space
+The default constructor for the diagram is declared public, despite that it
+must not be called directly - it is needed for loading projects from files. 
+The desired constructor takes a name-space
 as an argument, and sets up a graph model
 (<classname>UseCaseDiagramGraphModel</classname>), layer perspective and
 renderer (<classname>UseCaseDigramRenderer</classname>) for nodes and
@@ -323,12 +318,13 @@ uses them.
 </para>
 
 	    <para>
-The implementation must provide constructors for both a generic fig,
+The implementation of a Fig must provide constructors for both a generic fig,
+(i.e. without setting the owner - which is used for loading from files)
 and one representing a specific Model subsystem object. It should provide a
 setFig() method to set a particular figure as the representation. It
 should provide a method canEdit() to indicate whether the Fig can be
 edited. It should provide an event handler modelChanged() to cope with
-advice that the model has changed.
+advice that the UML model has changed.
 </para>
 	</sect3>
 
@@ -378,7 +374,7 @@ See <methodname>setOwner</methodname> of
               <listitem>
                 <para>
 Create an overridden method 
-<methodname>protected void modelChanged()</methodname>.
+<methodname>protected void modelChanged(PropertyChangeEvent e)</methodname>.
 This method must be called (and is if you implement the fig correctly)
 if the owner changes.
 In this method you update the fig if the model is changed. 
@@ -389,14 +385,12 @@ See <classname>FigAssociation</classname> and
               <listitem>
                 <para>
 If you have text that can be edited, override the method
+<methodname>textEditStarted(FigText text)</methodname> and
 <methodname>textEdited(FigText text)</methodname>.
+This latter method is called AFTER the user edited the text.
 In this method the edited text is parsed. 
 If the parsing is simple and not Notation specific, just do it in textEdited.
-But for most cases: delegate to ParserDisplay. 
-See the method <methodname>parseAttribute</methodname>
-in ParserDisplay for an example. 
-Stick to the Notation you are using to have the right parsing scheme.
-There is work to be done here but please don't make it an even bigger mess :)
+But for most cases: use the Notation subsystem. 
 </para>
               </listitem>
               <listitem>
@@ -454,9 +448,8 @@ will want a button too, so add it to the PropPanel of the parent.
 In case of the diagrams, add it in 
 <filename>UML<replaceable>diagram</replaceable>.java</filename>, 
 so in <classname>UMLClassDiagram</classname> if it belongs there. 
-In case of the <classname>PropPanel</classname>s, most of them don't use actions,
-they implement them directly as methods in the PropPanel themselves.
-Please don't do that but use an action so we have one place of definition.
+In case of the <classname>PropPanel</classname>s, 
+use <classname>UndoableAction</classname>.
 </para>
               </listitem>
 	    </orderedlist>
