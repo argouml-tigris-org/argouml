@@ -66,6 +66,7 @@ import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InvalidXmiException;
 import org.argouml.model.Model;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.LastLoadInfo;
@@ -73,6 +74,7 @@ import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFilePersister;
 import org.argouml.persistence.VersionException;
+import org.argouml.persistence.XMIParser;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -1264,18 +1266,24 @@ public final class ProjectBrowser
                     + "Rerun ArgoUML with the heap size increased.",
                     showUI);
             } catch (Exception ex) {
-                LOG.error("Exception while loading project", ex);
+                
+                String knownError = XMIParser.getSingleton().getErrorMessage();
+                if (knownError != null) {
+                    reportError(knownError, showUI);
+                } else {
+                    LOG.error("Exception while loading project", ex);
+                    reportError(
+                        "load a project.",
+                        "Could not load the project "
+                        + file.getName()
+                        + " some error was found.\n"
+                        + "Please try loading with the latest version of ArgoUML "
+                        + "which you can download from http://argouml.tigris.org\n"
+                        + "If you have no further success then please report the "
+                        + "exception below.",
+                        showUI, ex);
+                }
                 success = false;
-                reportError(
-                    "load a project.",
-                    "Could not load the project "
-                    + file.getName()
-                    + " some error was found.\n"
-                    + "Please try loading with the latest version of ArgoUML "
-                    + "which you can download from http://argouml.tigris.org\n"
-                    + "If you have no further success then please report the "
-                    + "exception below.",
-                    showUI, ex);
                 p = oldProject;
             } finally {
                 // Make sure save action is always reinstated

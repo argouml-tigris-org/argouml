@@ -233,7 +233,6 @@ public class DismissToDoItemDialog extends ArgoDialog {
     }
 
     private void explain(ActionEvent e) {
-        //cat.debug("I can explain!");
         //TODO: make a new history item
         ToDoList list = Designer.theDesigner().getToDoList();
         try {
@@ -242,7 +241,7 @@ public class DismissToDoItemDialog extends ArgoDialog {
                     Designer.MODEL_TODOITEM_DISMISSED, null, null);
         }
         catch (UnresolvableException ure) {
-            LOG.error("Resolve failed (ure): " + ure);
+            LOG.error("Resolve failed (ure): ", ure);
             // TODO: Should be internationalized
             JOptionPane.showMessageDialog(
 		    this,
