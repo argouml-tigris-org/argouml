@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,21 +33,27 @@ import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.tigris.gef.base.Layer;
 
 /**
- * Utility class for use by pgml.tee
+ * Utility class for use by pgml.tee.
+ *
  * @author Bob Tarling
  */
-public class PgmlUtility {
+public final class PgmlUtility {
 
+    /**
+     * Constructor.
+     */
     private PgmlUtility() {
     }
 
     /**
      * Return just the comment edges for a specific layer.
-     * @param lay
+     *
+     * @param lay The {@link Layer}.
+     * @return a {@link List} with the edges.
      */
     public static List getCommentEdges(Layer lay) {
         Collection edges = lay.getContentsEdgesOnly();
-        ArrayList comments = new ArrayList(edges.size());
+        List comments = new ArrayList(edges.size());
         Iterator it = edges.iterator();
         while (it.hasNext()) {
             Object o = it.next();
@@ -57,15 +63,17 @@ public class PgmlUtility {
         }
         return comments;
     }
-    
+
 
     /**
-     * Return just the edges for a specific layer that are not comment edges
-     * @param lay
+     * Return just the edges for a specific layer that are not comment edges.
+     *
+     * @param lay The {@link Layer}.
+     * @return a {@link List} with the edges.
      */
     public static List getNonCommentEdges(Layer lay) {
         Collection edges = lay.getContentsEdgesOnly();
-        ArrayList nonComments = new ArrayList(edges.size());
+        List nonComments = new ArrayList(edges.size());
         Iterator it = edges.iterator();
         while (it.hasNext()) {
             Object o = it.next();
@@ -75,5 +83,5 @@ public class PgmlUtility {
         }
         return nonComments;
     }
-    
+
 }
