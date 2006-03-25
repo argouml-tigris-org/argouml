@@ -212,7 +212,7 @@ public class SelectionActionState extends SelectionNodeClarifiers {
 	int cx = getContent().getX(), cy = getContent().getY();
 	int cw = getContent().getWidth(), ch = getContent().getHeight();
 	Object edgeType = null;
-	Object nodeType = Model.getMetaTypes().getActionState();
+        Object nodeType = getNewNodeType(hand.index);
 
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
@@ -258,6 +258,16 @@ public class SelectionActionState extends SelectionNodeClarifiers {
 	            bx, by, reverse);
 	    ce.pushMode(m);
 	}
+    }
+
+    /**
+     * Overrule this for other kinds.
+     * 
+     * @param buttonCode unused
+     * @return the meta type class to be created when dragged and released
+     */
+    protected Object getNewNodeType(int buttonCode) {
+        return Model.getMetaTypes().getActionState();
     }
 
     /**

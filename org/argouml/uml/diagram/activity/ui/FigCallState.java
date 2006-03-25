@@ -31,7 +31,9 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
+import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
 
 
 /**
@@ -137,6 +139,13 @@ public class FigCallState extends FigActionState {
     public Object clone() {
         FigCallState figClone = (FigCallState) super.clone();
         return figClone;
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#makeSelection()
+     */
+    public Selection makeSelection() {
+        return new SelectionCallState(this);
     }
 
 } /* end class FigCallState */
