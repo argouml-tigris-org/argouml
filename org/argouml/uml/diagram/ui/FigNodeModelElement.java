@@ -62,6 +62,7 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.Highlightable;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
@@ -112,7 +113,8 @@ public abstract class FigNodeModelElement
         PropertyChangeListener,
         NotationContext,
         PathContainer,
-        ArgoNotationEventListener {
+        ArgoNotationEventListener,
+        Highlightable {
 
     /**
      * Logger.
