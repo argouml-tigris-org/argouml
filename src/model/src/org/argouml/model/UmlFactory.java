@@ -70,6 +70,15 @@ public interface UmlFactory {
 
     /**
      * Checks if some type of UML model element is valid to
+     * connect other UML model elements.<p>
+     *
+     * @param connectionType  the UML object type of the connection
+     * @return true if valid
+     */
+    boolean isConnectionType(Object connectionType);
+    
+    /**
+     * Checks if some type of UML model element is valid to
      * connect two other existing UML model elements.<p>
      * 
      * This only works for UML elements. If a diagram contains
