@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,10 +30,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.FileChooserFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 
@@ -74,7 +71,6 @@ public class ActionSetSourcePath extends UMLAction {
      * @return the new source path directory
      */
     protected File getNewDirectory() {
-	Project p = ProjectManager.getManager().getCurrentProject();
 	Object obj = TargetManager.getInstance().getTarget();
 	String name = null;
 	String type = null;
@@ -82,14 +78,17 @@ public class ActionSetSourcePath extends UMLAction {
 	if (Model.getFacade().isAModelElement(obj)) {
 	    name = Model.getFacade().getName(obj);
             Object tv = Model.getFacade().getTaggedValue(obj, "src_path");
-            if (tv != null)
+            if (tv != null) {
                 path = Model.getFacade().getValueOfTag(tv);
-	    if (Model.getFacade().isAPackage(obj))
-		type = "Package";
-	    else if (Model.getFacade().isAClass(obj))
-		type = "Class";
-	    if (Model.getFacade().isAInterface(obj))
-		type = "Interface";
+            }
+	    if (Model.getFacade().isAPackage(obj)) {
+                type = "Package";
+            } else if (Model.getFacade().isAClass(obj)) {
+                type = "Class";
+            }
+	    if (Model.getFacade().isAInterface(obj)) {
+                type = "Interface";
+            }
 	} else {
 	    return null;
 	}
@@ -100,10 +99,10 @@ public class ActionSetSourcePath extends UMLAction {
 	    f = new File(path);
 	}
 	if ((f != null) && (f.getPath().length() > 0)) {
-	    chooser  = FileChooserFactory.getFileChooser(f.getPath());
+	    chooser = new JFileChooser(f.getPath());
 	}
 	if (chooser == null) {
-	    chooser  = FileChooserFactory.getFileChooser();
+	    chooser = new JFileChooser();
 	}
 	if (f != null) {
 	    chooser.setSelectedFile(f);
@@ -111,15 +110,18 @@ public class ActionSetSourcePath extends UMLAction {
 
 	String sChooserTitle =
 	    Translator.localize("action.set-source-path");
-	if (type != null)
-	    sChooserTitle += ' ' + type;
-	if (name != null)
-	    sChooserTitle += ' ' + name;
+	if (type != null) {
+            sChooserTitle += ' ' + type;
+        }
+	if (name != null) {
+            sChooserTitle += ' ' + name;
+        }
 	chooser.setDialogTitle(sChooserTitle);
 	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-	int retval = chooser.showDialog(ProjectBrowser.getInstance(),
-            Translator.localize("dialog.button.ok"));
+	int retval =
+            chooser.showDialog(ProjectBrowser.getInstance(),
+                    Translator.localize("dialog.button.ok"));
 	if (retval == JFileChooser.APPROVE_OPTION) {
 	    return chooser.getSelectedFile();
 	} else {
@@ -127,4 +129,8 @@ public class ActionSetSourcePath extends UMLAction {
 	}
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -6455209886706784094L;
 } /* end class ActionSetSourcePath */
