@@ -252,6 +252,8 @@ public class DeploymentDiagramGraphModel
         } else if (edge instanceof CommentEdge) {
             end0 = ((CommentEdge) edge).getSource();
             end1 = ((CommentEdge) edge).getDestination();
+        } else {
+            return false;
         }
 
         // Both ends must be defined and nodes that are on the graph already.

@@ -289,6 +289,8 @@ public class UseCaseDiagramGraphModel
         } else if (edge instanceof CommentEdge) {
             sourceModelElement = ((CommentEdge) edge).getSource();
             destModelElement = ((CommentEdge) edge).getDestination();
+        } else {
+            return false;
         }
 
         // Both ends must be defined and nodes that are on the graph already.
