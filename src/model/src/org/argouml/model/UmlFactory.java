@@ -70,7 +70,8 @@ public interface UmlFactory {
 
     /**
      * Checks if some type of UML model element is valid to
-     * connect two other existing UML model elements.
+     * connect two other existing UML model elements.<p>
+     * 
      * This only works for UML elements. If a diagram contains
      * elements of another type then it is the responsibility
      * of the diagram to filter those out before calling this
@@ -85,37 +86,26 @@ public interface UmlFactory {
             Object toElement);
 
     /**
-     * Deletes a model element. It calls the remove method of the
-     * model element but also does 'cascading deletes' that are not
-     * provided for in the remove method of the model element
-     * itself. For example: this delete method also removes the binary
-     * associations that a class has if the class is deleted. In this
-     * way, it is not longer possible that illegal states exist in the
-     * model.<p>
-     *
-     * The actual deletion is delegated to delete methods in the rest of the
-     * factories. For example: a method deleteClass exists on CoreHelper.
-     * Delete methods as deleteClass should only do those extra actions that are
-     * necessary for the deletion of the modelelement itself. I.e. deleteClass
-     * should only take care of things specific to class.<p>
-     *
-     * The implementation of this method uses a quite complicated if then else
-     * tree. This is done to provide optimal performance and full compliance to
-     * the UML 1.3 model. The last remark refers to the fact that the UML 1.3
-     * model knows multiple inheritance in several places. This has to be taken
-     * into account.<p>
-     *
-     * Extensions and its children are not taken into account
-     * here. They do not require extra cleanup actions. Not in the
-     * form of a call to the remove method as is normal for all
-     * model elements and not in the form of other behaviour we
-     * want to implement via this operation.
+     * Delete a model element. This will do a a 'cascading deletes' 
+     * which recursively deletes any model elements which would no
+     * longer be valid after this element is deleted. For example, a binary
+     * association which has one end deleted will also be deleted because
+     * it no longer meets the minimum multiplicity constraint.
+     * <p>
+     * Callers who are interested in receiving notification of all elements
+     * which were deleted should register an event listener to receive 
+     * delete events.
+     * 
      * @param elem The element to be deleted
      */
     void delete(Object elem);
 
     /**
-     * The Project may check if a certain model element has been removed.
+     * Check whether a model element has been deleted.
+     * <p>
+     * <em>Note</em> that without external synchronization that there's no
+     * guarantee that the element won't be deleted by another after this method
+     * returns, but before the caller can do anything with it.
      *
      * @param o the object to be checked
      * @return true if removed

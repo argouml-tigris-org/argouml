@@ -30,7 +30,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.ModelEventPump;
 import org.omg.uml.behavioralelements.statemachines.Event;
@@ -109,12 +108,6 @@ import org.omg.uml.modelmanagement.Model;
  */
 public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         CoreFactory {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger
-            .getLogger(CoreFactoryMDRImpl.class);
 
     /**
      * The model implementation.
@@ -848,7 +841,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             Collection propertyChangeListeners) {
         if (!(handle instanceof Classifier)
                 && !(handle instanceof AssociationEnd)) {
-            return null;
+            throw new IllegalArgumentException();
         }
         Attribute attr = (Attribute) buildAttribute(model, intType);
         if (handle instanceof Classifier) {
@@ -1055,7 +1048,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         if (child == null || parent == null
                 || !(child instanceof GeneralizableElement)
                 || !(parent instanceof GeneralizableElement)) {
-            return null;
+            throw new IllegalArgumentException();
         }
         Object gen = buildGeneralization(child, parent);
         if (gen != null) {
@@ -1084,7 +1077,8 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         while (it.hasNext()) {
             Generalization gen = (Generalization) it.next();
             if (gen.getParent().equals(child)) {
-                return null;
+                throw new IllegalArgumentException("Generalization exists" 
+                        + " in opposite direction");
             }
         }
 
@@ -1237,7 +1231,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             }
             return res;
         } else {
-            return null;
+            throw new IllegalArgumentException("Unsupported object type");
         }
     }
 
@@ -1707,6 +1701,9 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
 
         List ownedElements = new ArrayList();
+        // TODO: This is a composite association, so these will get deleted
+        // automatically.  The only thing we need to do is check for any
+        // additional elements that need to be deleted as a result.
         ownedElements.addAll(((Namespace) elem).getOwnedElement());
         Iterator it = ownedElements.iterator();
         while (it.hasNext()) {

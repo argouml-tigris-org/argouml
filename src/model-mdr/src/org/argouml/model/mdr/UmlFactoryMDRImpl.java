@@ -25,17 +25,13 @@
 package org.argouml.model.mdr;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
 
 import javax.jmi.reflect.InvalidObjectException;
+import javax.jmi.reflect.RefBaseObject;
 import javax.jmi.reflect.RefObject;
 
 import org.apache.log4j.Logger;
@@ -171,17 +167,16 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * builds this from the data in the VALID_CONNECTIONS array
      */
     private Map validConnectionMap = new HashMap();
-
-    /**
-     * The instances that have been already deleted.
-     */
-    private Set instancesDeleted = Collections.synchronizedSet(new HashSet());
-    
+ 
     /**
      * The instance that we are deleting.
      */
-    private Map instancesToBeDeleted = Collections.
-            synchronizedMap(new HashMap());
+    private Map elementsToBeDeleted = new HashMap();
+    
+    /**
+     * Ordered list of elements to be deleted
+     */
+    private List elementsInDeletionOrder = new ArrayList();
 
     /**
      * The top object is the first object given to the UmlFactory when calling
@@ -215,17 +210,6 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     //       Update for UML 1.4 metamodel if not replaced by reflection
     private static final Object[][] VALID_CONNECTIONS = {
         {Generalization.class,   GeneralizableElement.class, },
-//        {Generalization.class,   ClassifierRole.class, },
-//        {Generalization.class,   UmlClass.class, },
-//        {Generalization.class,   Interface.class, },
-//        {Generalization.class,   UmlPackage.class, },
-//        {Generalization.class,   UseCase.class, },
-//        {Generalization.class,   Actor.class, },
-//        {Generalization.class,   Node.class, },
-//        {Generalization.class,   Component.class, },
-//        {Generalization.class,   Artifact.class, },
-//        {Generalization.class,   DataType.class, },
-//        {Generalization.class,   Stereotype.class, },
         {Dependency.class,       ModelElement.class, },
         {Dependency.class,       Package.class, },
         {Dependency.class,       UmlClass.class, },
@@ -330,34 +314,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
     }
 
-
     /**
-     * Creates a UML model element of the given type and uses this to connect
-     * two other existing UML model elements. This only works for UML elements.
-     * If a diagram contains elements of another type then it is the
-     * responsibility of the diagram to manage those items and not call this
-     * method. It also only works for UML model elements that are represented in
-     * diagrams by an edge, hence the requirement to state the connecting ends.
-     *
-     * @param elementType
-     *            the UML object type of the connection
-     * @param fromElement
-     *            the UML object for the "from" element
-     * @param fromStyle
-     *            the aggregationkind for the connection in case of an
-     *            association
-     * @param toElement
-     *            the UML object for the "to" element
-     * @param toStyle
-     *            the aggregationkind for the connection in case of an
-     *            association
-     * @param unidirectional
-     *            for association and associationrole
-     * @param namespace
-     *            the namespace to use if it can't be determined
-     * @return               the newly build connection (UML object)
-     * @throws IllegalModelElementConnectionException
-     *             if the connection is not a valid thing to do
+     * @see org.argouml.model.UmlFactory#buildConnection(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object buildConnection(Object elementType, Object fromElement,
             Object fromStyle, Object toElement, Object toStyle,
@@ -510,19 +468,9 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return modelElement;
     }
 
+
     /**
-     * Checks if some type of UML model element is valid to connect two other
-     * existing UML model elements. This only works for UML elements. If a
-     * diagram contains elements of another type then it is the responsibility
-     * of the diagram to filter those out before calling this method.
-     *
-     * @param connectionType
-     *            the UML object type of the connection
-     * @param fromElement
-     *            the UML object type of the "from"
-     * @param toElement
-     *            the UML object type of the "to"
-     * @return true if valid
+     * @see org.argouml.model.UmlFactory#isConnectionValid(java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public boolean isConnectionValid(Object connectionType, Object fromElement,
             Object toElement) {
@@ -560,7 +508,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *
      * @return the Core factory instance.
      */
-    public CoreFactoryMDRImpl getCore() {
+    private CoreFactoryMDRImpl getCore() {
         return (CoreFactoryMDRImpl) nsmodel.getCoreFactory();
     }
 
@@ -570,7 +518,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *
      * @return the CommonBehavior factory instance.
      */
-    public CommonBehaviorFactoryMDRImpl getCommonBehavior() {
+    private CommonBehaviorFactoryMDRImpl getCommonBehavior() {
         return (CommonBehaviorFactoryMDRImpl) nsmodel.
                 getCommonBehaviorFactory();
     }
@@ -581,7 +529,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *
      * @return the UseCases factory instance.
      */
-    public UseCasesFactoryMDRImpl getUseCases() {
+    private UseCasesFactoryMDRImpl getUseCases() {
         return (UseCasesFactoryMDRImpl) nsmodel.getUseCasesFactory();
     }
 
@@ -591,7 +539,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *
      * @return the StateMachines factory instance.
      */
-    public StateMachinesFactoryMDRImpl getStateMachines() {
+    private StateMachinesFactoryMDRImpl getStateMachines() {
         return (StateMachinesFactoryMDRImpl) nsmodel.getStateMachinesFactory();
     }
 
@@ -601,7 +549,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *
      * @return the Collaborations factory instance.
      */
-    public CollaborationsFactoryMDRImpl getCollaborations() {
+    private CollaborationsFactoryMDRImpl getCollaborations() {
         return (CollaborationsFactoryMDRImpl) nsmodel.
                 getCollaborationsFactory();
     }
@@ -622,18 +570,14 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *
      * @return the ModelManagement factory instance.
      */
-    public ModelManagementFactoryMDRImpl getModelManagement() {
+    private ModelManagementFactoryMDRImpl getModelManagement() {
         return (ModelManagementFactoryMDRImpl) nsmodel.
                 getModelManagementFactory();
     }
 
-    /**
-     * Deletes a modelelement. It calls the remove method of the modelelement
-     * but also does 'cascading deletes' that are not provided for in the remove
-     * method of the modelelement itself. For example: this delete method also
-     * removes the binary associations that a class has if the class is deleted.
-     * In this way, illegal states are prevented from existing in the
-     * nsmodel.
+    /*
+     * Delete a model element.  Implements 'cascading delete' to make sure 
+     * model is still valid after element has been deleted.
      * <p>
      *
      * The actual deletion is delegated to delete methods in the rest of the
@@ -659,7 +603,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * TODO: The requirements of the metamodel could probably be better 
      * determined by reflection on the metamodel.  Then each association
      * that a deleted element participates in could be reviewed to make sure
-     * that it meets the requirements and, if not, be deleted.
+     * that it meets the requirements and, if not, be deleted. - tfm
      * <p>
      *
      * Extensions and its children are not taken into account here. They do not
@@ -670,22 +614,25 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @param elem
      *            The element to be deleted
      */
+    /**
+     * @see org.argouml.model.UmlFactory#delete(java.lang.Object)
+     */
     public void delete(Object elem) {
         if (elem == null) {
             throw new IllegalArgumentException("Element may not be null "
                     + "in delete");
         }
 
-        Object key = elem.getClass() + ":" + elem.hashCode();
+        Object key = ((RefBaseObject) elem).refMofId();
+        // TODO: Hold lock for entire recursive traversal?
         synchronized (lock) {
-            if (instancesDeleted.contains(key)
-                    || instancesToBeDeleted.containsKey(key)) {
+            if (elementsToBeDeleted.containsKey(key)) {
                 return;
             }
             if (top == null) {
                 top = elem;
             }
-            instancesToBeDeleted.put(key, elem);
+            elementsToBeDeleted.put(key, elem);
         }
 
         if (LOG.isInfoEnabled()) {
@@ -790,48 +737,43 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 deleteNamespace((Namespace) elem);
             }
         } catch (InvalidObjectException e) {
-            // we probably tried to delete something twice, just log for now
-            // When we get here it indicates a problem in the delete code
-            // it's probably calling MDR delete methods directly which it
-            // shouldn't do - tfm
             LOG.error("Attempted deletion of deleted object " + elem);
         }
 
-        if (elem instanceof RefObject && elem == top) {
-            synchronized (lock) {
-                Collection toDelete = new Vector();
-                toDelete.addAll(instancesToBeDeleted.keySet());
-                Iterator itDelete = toDelete.iterator();
+        synchronized (lock) {
+            elementsInDeletionOrder.add(elem);
+
+            if (elem == top) {
+                Iterator itDelete = elementsInDeletionOrder.iterator();
                 while (itDelete.hasNext()) {
-                    String theKey = (String) itDelete.next();
-                    RefObject deleted = (RefObject) instancesToBeDeleted
-                            .remove(theKey);
+                    RefObject o = ((RefObject) itDelete.next());
                     try {
-                        deleted.refDelete();
+                        o.refDelete();
                     } catch (InvalidObjectException e) {
-                        LOG.warn("Object already deleted " + deleted);
+                        LOG.warn("Object already deleted " + o);
                     }
-                    instancesDeleted.add(theKey);
                 }
                 top = null;
+                elementsInDeletionOrder.clear();
+                assert elementsToBeDeleted.isEmpty();
             }
         }
     }
 
     /**
-     * The Project may check if a certain Base has been removed.
-     * 
-     * @param o
-     *            the object to be checked
-     * @return true if removed
+     * @see org.argouml.model.UmlFactory#isRemoved(java.lang.Object)
      */
     public boolean isRemoved(Object o) {
-        Object key = o.getClass() + ":" + o.hashCode();
-        synchronized (lock) {
-            // TODO: We should clear the set when we change of project.
-            // (or at another times).
-            return instancesDeleted.contains(key)
-                    || instancesToBeDeleted.containsKey(key);
+        if (!(o instanceof RefObject)) {
+            throw new IllegalArgumentException(
+                    "Expected JMI RefObject, received " + o);
+        }
+        try {
+            // We don't care about the value - just want to see if it throws
+            ((RefObject)o).refImmediateComposite();
+            return false;
+        } catch (InvalidObjectException e) {
+            return true;
         }
     }
 
