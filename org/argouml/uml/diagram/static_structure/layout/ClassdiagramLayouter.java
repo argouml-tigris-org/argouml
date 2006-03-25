@@ -96,7 +96,7 @@ public class ClassdiagramLayouter implements Layouter {
         }
 
         /**
-         * Splittable are packages and stanalone-nodes. A split is performed,
+         * Splittable are packages and standalone-nodes. A split is performed,
          * if the maximum width is reached or when a type change occurs (from
          * package to not-package, from standalone to not-standalone).
 	 *
@@ -107,7 +107,7 @@ public class ClassdiagramLayouter implements Layouter {
 	 *
          * Split this row into two, if
          * <ul>
-         * <li>at least one standalone node is availabe
+         * <li>at least one standalone node is available
          * <li>and the given maximum row width is exceeded
          * <li>or a non-standalone element is detected.
          * </ul>
@@ -550,6 +550,9 @@ public class ClassdiagramLayouter implements Layouter {
             if (diaRow != null) {
                 nodeRows.add(row, diaRow);
             }
+            
+            // TODO:  Add another pass to try and make diagram
+            // as square as possible? (Rather than too wide)
         }
     }
     /**
