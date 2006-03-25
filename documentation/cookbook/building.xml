@@ -445,13 +445,29 @@ remembers this.
 Then you do the actual checking out.
 <command>cvs checkout <replaceable>directory</replaceable></command>.
 </para>
+
       <para>
-The CVS repository directories you need to check out to work with ArgoUML are
+The easiest thing to do now, is
+just check out the top-level 
+<parameter>argouml</parameter> project.  
+</para>
+<para>This triples the size of the download, 
+mainly due to the images in the
+<filename class="directory">argouml/documentation</filename>
+and
+<filename class="directory">argouml/www</filename>,
+but minimizes the number of separate CVS commands.
+<!-- TODO: MVW: Instead of the details above, it is better to advise 
+to check out "argouml" completely. 
+Describe the details as: "If you want to limit the download size,..." -->
+</para>
+
+      <para>Alternatively, if you want to limit the download size,
+the CVS repository directories you need to check out to work with ArgoUML are
 <filename class="directory">argouml/lib</filename>,
 <filename class="directory">argouml/tools</filename>,
 <filename class="directory">argouml/src_new</filename>,
 <filename class="directory">argouml/src</filename>,
-<filename class="directory">argouml-mdr</filename>,
 and
 <filename class="directory">argouml/tests</filename>.
 </para>
@@ -463,26 +479,11 @@ and
 <filename class="directory">argouml/documentation</filename>.
 </para>
       <para>
-If you want to work with any of the web sites you check out 
+If you want to work with the web site you check out 
 the corresponding directory
-<parameter>argouml/www</parameter>, or
-<parameter>argouml-mdr/www</parameter>.
+<parameter>argouml/www</parameter>.
 </para>
-      <para>
-If you value your time more than bandwidth and diskspace,
-just check out the top-level 
-<parameter>argouml</parameter> project and the mandatory
-<parameter>argouml-mdr</parameter> sub-project.  This
-triples the size of the download, mainly due to the images
-in the
-<filename class="directory">argouml/documentation</filename>
-and
-<filename class="directory">argouml/www</filename>,
-but minimizes the number of separate CVS commands.
-<!-- TODO: MVW: Instead of the details above, it is better to advise 
-to check out "argouml" and "argouml-mdr" completely. 
-Describe the details as: "If you want to limit the download size,..." -->
-</para>
+
       <para>
 If you don't want to acquire a Tigris login to do this you can use the
 "guest" account with the password "guest".
@@ -524,7 +525,6 @@ The rule file is named <filename>build.xml</filename>.
 There is one of those in every separate build directory
 (<filename class="directory">argouml/src_new</filename>,
 <filename class="directory">argouml/src/<replaceable>whatever</replaceable></filename>,
-<filename class="directory">argouml-mdr</filename>,
 <filename class="directory">argouml/documentation</filename>, and
 <filename class="directory">argouml/modules/<replaceable>whatever</replaceable></filename>).
 </para>
@@ -571,36 +571,6 @@ Also, you must execute
 <command>/where/ever/you/placed/your/new/ant <replaceable>target</replaceable></command>
 rather than
 <command>build <replaceable>target</replaceable></command>.
-</para>
-
-      <para>
-ArgoUML is currently spread over two projects,
-the argouml project and
-the argouml-mdr project.
-They depend on each other in that the argouml-mdr project requires log4j and 
-argouml-model.jar from the argouml project to build and
-the argouml project needs the argouml-mdr project to run using the default
-settings (targets run, info, debug, tests-using-mdr).
-There are also the java interfaces in the argouml-mdr project that
-don't depend on anything from the argouml project.
-</para>
-      <para>
-To get this set up you need to
-<itemizedlist>
-	  <listitem>
-	    <para>
-build the package target in the argouml project (argouml/src_new)
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-build the install target in the argouml-mdr project
-</para>
-	    <para>
-This copies all needed libraries to the argouml/build directory.
-</para>
-	  </listitem>
-	</itemizedlist>
 </para>
 
 	<sect3>
@@ -650,37 +620,7 @@ Change the current directory to the directory you are building
           <para> <command>./build.sh</command></para>
 	    </listitem>
 	    <listitem>
-      	      <para>
-Compile, create jar files, and copy them so that argouml-mdr can be compiled
-using 
-<command>./build.sh package</command>.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-Change to the <filename>argouml-mdr</filename> directory using
-<command>cd ../../argouml-mdr</command>.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-Compile, create jar files, and copy them so that they are available in the
-argouml project using
-<command>./build.sh install</command>.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-Change back to the <filename>argouml/src_new</filename> directory using
-<command>cd ../argouml/src_new</command>.
-</para>
-	  </listitem>
-
-
-	    <listitem>
+      	      
       	      <para>
               <indexterm>
                 <primary>Ant target</primary>
@@ -700,14 +640,10 @@ and run.
 </para>
 
 	<para>
-If something is changed in the argouml project
-that affects the argouml-mdr project
-or if something is change in the argouml-mdr project
-you need to go through this again,
-possibly using the clean target in 
-either the <filename>argouml/src_new</filename>-directory
-or the <filename>argouml-mdr</filename>-directory
-or both directories
+In certain cases when
+something is changed in the argouml project
+you need to use the clean target
+to re-compile everything,
 since we have not set up dependencies correctly.
 </para>
 	</sect3>
@@ -755,37 +691,7 @@ Change the current directory to the directory you are building
 	      <para><command>build -p</command></para>
 	    </listitem>
 	    <listitem>
-	      <para>
-Compile, create jar files, and copy them so that argouml-mdr can be compiled
-using 
-<command>build package</command>.
-</para>
-	  </listitem>
 
-	  <listitem>
-	      <para>
-Change to the <filename>argouml-mdr</filename> directory using
-<command>cd ..\..\argouml-mdr</command>.
-</para>
-	    </listitem>
-
-	  <listitem>
-	  <para>
-Compile, create jar files, and copy them so that they are available in the
-argouml project using
-<command>build install</command>.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-Change back to the <filename>argouml\src_new</filename> directory using
-<command>cd ..\argouml\src_new</command>.
-</para>
-	  </listitem>
-
-
-	    <listitem>
       	      <para>
 Run ArgoUML using <command>build run</command>
 </para>
@@ -2101,7 +2007,7 @@ CVS access to the argouml project (to set tags).
 </para>
 	  <para>
 You also need CVS access to the included sub-projects to set the tags there:
-(argouml-mdr, argouml-csharp, argouml-nb, ... and this list will probably grow).
+(argouml-csharp, argouml-nb, ... and this list will probably grow).
 </para>
 	</listitem>
 	<listitem>
@@ -2389,7 +2295,7 @@ and run the command
 You also need to set the tag in the sub-projects so the following command
 is more like it:
 <programlisting>
-for proj in argouml argouml-mdr argouml-csharp argouml-de argouml-en-gb argouml-es argouml-fr argouml-ru argouml-nb argouml-i18n-zh
+for proj in argouml argouml-csharp argouml-de argouml-en-gb argouml-es argouml-fr argouml-ru argouml-nb argouml-i18n-zh
 do
     ( cd &dollar;proj &amp;&amp; cvs tag VERSION_<replaceable>X_Y_Z</replaceable>_F )
 done
