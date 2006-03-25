@@ -24,7 +24,6 @@
 
 package org.argouml.model;
 
-import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Vector;
 
@@ -157,15 +156,11 @@ public class TestCoreFactory extends TestCase {
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object class2 = Model.getCoreFactory().buildClass(model);
         Object assoc = Model.getCoreFactory().buildAssociation(class1, class2);
-        WeakReference class1wr = new WeakReference(class1);
-        WeakReference assocwr = new WeakReference(assoc);
         Model.getUmlFactory().delete(class1);
         Model.getPump().flushModelEvents();
-        class1 = null;
-        assoc = null;
-        System.gc();
-        assertNull("class not removed", class1wr.get());
-        assertNull("binary association not removed", assocwr.get());
+
+        assertTrue("class not removed", Model.getUmlFactory().isRemoved(class1));
+        assertTrue("binary association not removed", Model.getUmlFactory().isRemoved(assoc));
     }
 
     /**
@@ -180,12 +175,9 @@ public class TestCoreFactory extends TestCase {
         Object assoc = Model.getCoreFactory().buildAssociation(class1, class2);
         Model.getCoreHelper().addConnection(assoc,
                 Model.getCoreFactory().createAssociationEnd());
-        WeakReference class1wr = new WeakReference(class1);
         Model.getUmlFactory().delete(class1);
         Model.getPump().flushModelEvents();
-        class1 = null;
-        System.gc();
-        assertNull("class not removed", class1wr.get());
+        assertTrue("class not removed", Model.getUmlFactory().isRemoved(class1));
         // Check to see if association still exists
         Collection ends = Model.getFacade().getAssociationEnds(class2);
         assertEquals(1, ends.size());
@@ -207,12 +199,11 @@ public class TestCoreFactory extends TestCase {
                 1, Model.getFacade().getClientDependencies(class1).size());
         assertEquals("supplier dependency invalid",
                 1, Model.getFacade().getSupplierDependencies(class2).size());
-        WeakReference class1wr = new WeakReference(class1);
+
         Model.getUmlFactory().delete(class1);
         Model.getPump().flushModelEvents();
-        class1 = null;
-        System.gc();
-        assertNull("class not removed", class1wr.get());
+
+        assertTrue("class not removed", Model.getUmlFactory().isRemoved(class1));
         assertEquals("invalid supplier dependency not removed",
                 0, Model.getFacade().getSupplierDependencies(class2).size());
     }
@@ -246,13 +237,11 @@ public class TestCoreFactory extends TestCase {
                 "supplier dependency invalid",
                 1,
                 Model.getFacade().getSupplierDependencies(class2).size());
-        WeakReference class1wr = new WeakReference(class1);
+
         Model.getUmlFactory().delete(class1);
         Model.getPump().flushModelEvents();
-        class1 = null;
-        dep = null;
-        System.gc();
-        assertNull("class not removed", class1wr.get());
+
+        assertTrue("class not removed", Model.getUmlFactory().isRemoved(class1));
         assertEquals("valid client dependency removed",
                 1, Model.getFacade().getClientDependencies(class3).size());
         assertEquals("valid supplier dependency removed",
@@ -275,13 +264,11 @@ public class TestCoreFactory extends TestCase {
         Object dep = Model.getCoreFactory().buildDependency(class1, class2);
         Object class3 = Model.getCoreFactory().buildClass(model);
         Model.getCoreHelper().addClient(dep, class3);
-        WeakReference class2wr = new WeakReference(class2);
+
         Model.getUmlFactory().delete(class2);
         Model.getPump().flushModelEvents();
-        class2 = null;
-        dep = null;
-        System.gc();
-        assertNull("class not removed", class2wr.get());
+
+        assertTrue("class not removed", Model.getUmlFactory().isRemoved(class2));
         assertTrue("Invalid dependency not removed",
                 Model.getFacade().getClientDependencies(class3).isEmpty());
         assertTrue("Invalid dependency not removed",
@@ -305,13 +292,11 @@ public class TestCoreFactory extends TestCase {
         Object dep = Model.getCoreFactory().buildDependency(class1, class2);
         Object class3 = Model.getCoreFactory().buildClass(model);
         Model.getCoreHelper().addSupplier(dep, class3);
-        WeakReference class1wr = new WeakReference(class1);
+
         Model.getUmlFactory().delete(class1);
         Model.getPump().flushModelEvents();
-        class1 = null;
-        dep = null;
-        System.gc();
-        assertNull("class not removed", class1wr.get());
+
+        assertTrue("class not removed", Model.getUmlFactory().isRemoved(class1));
         assertEquals(
                 "Invalid dependency not removed",
                 0,
@@ -339,13 +324,11 @@ public class TestCoreFactory extends TestCase {
         Object dep = Model.getCoreFactory().buildDependency(class1, class2);
         Object class3 = Model.getCoreFactory().buildClass(model);
         Model.getCoreHelper().addSupplier(dep, class3);
-        WeakReference class2wr = new WeakReference(class2);
+
         Model.getUmlFactory().delete(class2);
         Model.getPump().flushModelEvents();
-        class2 = null;
-        dep = null;
-        System.gc();
-        assertNull("class not removed", class2wr.get());
+
+        assertTrue("class not removed", Model.getUmlFactory().isRemoved(class2));
         assertEquals(
                 "Invalid dependency not removed",
                 1,
@@ -365,18 +348,12 @@ public class TestCoreFactory extends TestCase {
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object assoc1 = Model.getCoreFactory().buildAssociation(class1, class1);
         Object assoc2 = Model.getCoreFactory().buildAssociation(class1, class1);
-        WeakReference class1wr = new WeakReference(class1);
-        WeakReference assoc1wr = new WeakReference(assoc1);
-        WeakReference assoc2wr = new WeakReference(assoc2);
         Model.getUmlFactory().delete(class1);
         Model.getPump().flushModelEvents();
-        class1 = null;
-        assoc1 = null;
-        assoc2 = null;
-        System.gc();
-        assertNull("class not removed", class1wr.get());
-        assertNull("assoc1 not removed", assoc1wr.get());
-        assertNull("assoc2 not removed", assoc2wr.get());
+
+        assertTrue("class not removed", Model.getUmlFactory().isRemoved(class1));
+        assertTrue("assoc1 not removed", Model.getUmlFactory().isRemoved(assoc1));
+        assertTrue("assoc2 not removed", Model.getUmlFactory().isRemoved(assoc2));
     }
 
     /**

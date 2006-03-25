@@ -26,7 +26,6 @@ package org.argouml.model;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.lang.ref.WeakReference;
 
 import junit.framework.TestCase;
 
@@ -98,20 +97,6 @@ public class TestModelEventPump extends TestCase {
             Model.getUmlFactory().delete(elem);
         }
         listener = null;
-    }
-
-
-    /**
-     * Tests if the association from a modelelement to the pump is thrown away
-     * after deletion of the element.
-     */
-    public void testCreateDelete() {
-        WeakReference ref = new WeakReference(elem);
-        Model.getUmlFactory().delete(elem);
-        Model.getPump().flushModelEvents();
-        elem = null;
-        System.gc();
-        assertNull(ref.get());
     }
 
     /**
