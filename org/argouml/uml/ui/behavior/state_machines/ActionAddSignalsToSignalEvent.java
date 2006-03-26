@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,17 +31,19 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**
- * Provide a dialog which helps the user to select one event out of an existing list,
+ * Provide a dialog which helps the user to select one event
+ * out of an existing list,
  * which will be used as the trigger of the transition.
+ *
  * @author MarkusK
  *
  */
 class ActionAddSignalsToSignalEvent extends AbstractActionAddModelElement {
-
     /**
      * The one and only instance of this class.
      */
-    public static final ActionAddSignalsToSignalEvent SINGLETON = new ActionAddSignalsToSignalEvent();
+    public static final ActionAddSignalsToSignalEvent SINGLETON =
+        new ActionAddSignalsToSignalEvent();
 
     /**
      * Constructor for ActionAddClassifierRoleBase.
@@ -57,8 +59,9 @@ class ActionAddSignalsToSignalEvent extends AbstractActionAddModelElement {
     protected Vector getChoices() {
         Vector vec = new Vector();
 
-      vec.addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(
-      Model.getFacade().getModel(getTarget()), Model.getMetaTypes().getSignal()));
+        vec.addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(
+                Model.getFacade().getModel(getTarget()),
+                Model.getMetaTypes().getSignal()));
 
         return vec;
     }
@@ -69,8 +72,9 @@ class ActionAddSignalsToSignalEvent extends AbstractActionAddModelElement {
     protected Vector getSelected() {
         Vector vec = new Vector();
         Object signal = Model.getFacade().getSignal(getTarget());
-        if (signal != null)
+        if (signal != null) {
             vec.add(signal);
+        }
         return vec;
     }
 
@@ -94,4 +98,8 @@ class ActionAddSignalsToSignalEvent extends AbstractActionAddModelElement {
         }
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 6890869588365483936L;
 }
