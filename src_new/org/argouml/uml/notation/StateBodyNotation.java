@@ -38,6 +38,8 @@ public abstract class StateBodyNotation extends ValueHandler {
 
     /**
      * The constructor.
+     *
+     * @param state The state.
      */
     public StateBodyNotation(Object state) {
         if (!Model.getFacade().isAState(state)) {

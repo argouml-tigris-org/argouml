@@ -40,6 +40,8 @@ public abstract class OperationNotation extends ValueHandler {
 
     /**
      * The constructor.
+     *
+     * @param operation The operation.
      */
     public OperationNotation(Object operation) {
         if (!Model.getFacade().isAOperation(operation)) {
