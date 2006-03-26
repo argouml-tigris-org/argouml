@@ -525,9 +525,11 @@ public abstract class UMLDiagram
              */
             if (fig instanceof FigNodeModelElement) {
                 ((FigNodeModelElement) fig).updateListeners(owner);
+                ((FigNodeModelElement) fig).renderingChanged();
             }
             if (fig instanceof FigEdgeModelElement) {
                 ((FigEdgeModelElement) fig).updateListeners(owner);
+                ((FigEdgeModelElement) fig).renderingChanged();
             }
         }
     }
