@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
@@ -311,14 +313,37 @@ public class FigMNodeInstance extends FigNodeModelElement {
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        Object nodeInst =  getOwner();
-        if (nodeInst == null) {
-            return;
-        }
-        if ("classifier".equals(mee.getPropertyName())
-                && mee.getSource() == nodeInst) {
-            updateNameText();
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            renderingChanged();
+            updateListeners(getOwner());
             damage();
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
+    protected void updateListeners(Object newOwner) {
+        Object oldOwner = getOwner();
+        if (oldOwner != null) {
+            removeAllElementListeners();
+        }
+        if (newOwner != null) {
+            // add the listeners to the newOwner
+            addElementListener(newOwner);
+            Collection c = Model.getFacade().getStereotypes(newOwner);
+            Iterator i = c.iterator();
+            while (i.hasNext()) {
+                Object st = i.next();
+                addElementListener(st, "name");
+            }
+            c = Model.getFacade().getClassifiers(newOwner);
+            i = c.iterator();
+            while (i.hasNext()) {
+                Object st = i.next();
+                addElementListener(st, "name");
+            }
         }
     }
 
