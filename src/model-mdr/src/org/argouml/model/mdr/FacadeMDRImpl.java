@@ -2598,6 +2598,16 @@ class FacadeMDRImpl implements Facade {
     }
 
     /**
+     * @see org.argouml.model.Facade#getDeployedComponents(java.lang.Object)
+     */
+    public Collection getDeployedComponents(Object handle) {
+        if (handle instanceof Node) {
+            return ((Node) handle).getDeployedComponent();
+        }
+        return illegalArgumentCollection(handle);
+    }
+
+    /**
      * @see org.argouml.model.Facade#getDiscriminator(java.lang.Object)
      */
     public Object getDiscriminator(Object handle) {

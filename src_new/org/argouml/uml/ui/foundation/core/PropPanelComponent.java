@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,10 +35,7 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
- * PropPanel for a UML component.<p>
- *
- * TODO: this property panel needs refactoring to remove dependency on
- *       old gui components.
+ * PropPanel for a UML Component.
  *
  * @author 5eichler@informatik.uni-hamburg.de
  */
@@ -46,7 +43,6 @@ public class PropPanelComponent extends PropPanelClassifier {
 
     /**
      * The constructor.
-     *
      */
     public PropPanelComponent() {
         super("Component",

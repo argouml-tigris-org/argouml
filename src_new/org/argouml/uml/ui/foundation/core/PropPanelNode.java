@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,9 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -34,6 +36,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
@@ -71,8 +74,9 @@ public class PropPanelNode extends PropPanelClassifier {
 
         addSeperator();
 
-        JList resList = new UMLLinkedList(new UMLContainerResidentListModel());
-        addField(Translator.localize("label.residents"),
+        JList resList = new UMLLinkedList(
+                new UMLNodeDeployedComponentListModel());
+        addField(Translator.localize("label.deployedcomponents"),
                 new JScrollPane(resList));
 
         addAction(new ActionNavigateContainerElement());
@@ -81,25 +85,34 @@ public class PropPanelNode extends PropPanelClassifier {
         addAction(new ActionDeleteSingleModelElement());
     }
 
-    /**
-     * @return the residents of this node
-     */
-    public Collection getResidents() {
-        Collection components = null;
-        Object target = getTarget();
-        if (Model.getFacade().isANode(target)) {
-            components = Model.getFacade().getResidents(target);
-        }
-        return components;
-    }
 
+} /* end class PropPanelNode */
+
+class UMLNodeDeployedComponentListModel
+extends UMLModelElementListModel2 {
+    
     /**
-     * @param components set the residents of this node
+     * Constructor.
      */
-    public void setResidents(Collection components) {
-        Object target = getTarget();
-        if (Model.getFacade().isANode(target)) {
-            Model.getCoreHelper().setResidents(target, components);
+    public UMLNodeDeployedComponentListModel() {
+        super("deployedComponent");
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        if (Model.getFacade().isANode(getTarget())) {
+            setAllElements(
+                    Model.getFacade().getDeployedComponents(getTarget()));
         }
     }
-} /* end class PropPanelNode */
+    
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
+     */
+    protected boolean isValidElement(Object o) {
+        return (Model.getFacade().isAComponent(o));
+    }
+    
+}

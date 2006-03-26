@@ -1909,6 +1909,15 @@ public interface Facade {
     Collection getDeferrableEvents(Object handle);
 
     /**
+     * Returns the collection of components that are
+     * deployed inside the given node.
+     * 
+     * @param handle the given node
+     * @return collection of components
+     */
+    Collection getDeployedComponents(Object handle);
+
+    /**
      * Returns the context of some given statemachine or the context
      * of some given interaction.
      *
