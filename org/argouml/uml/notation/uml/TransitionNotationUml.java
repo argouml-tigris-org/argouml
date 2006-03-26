@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,7 +34,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesFactory;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.notation.TransitionNotation;
 
 /**
@@ -233,7 +232,7 @@ public class TransitionNotationUml extends TransitionNotation {
                         : trigger;
                     evt = sMFactory.buildCallEvent(trans, triggerName, ns);
                     // and parse the parameter list
-                    ParserDisplay.SINGLETON.parseParamList(evt, s, 0);
+                    NotationUtilityUml.parseParamList(evt, s, 0);
                 }
                 if (signalEvent) { // signalname
                     evt = sMFactory.buildSignalEvent(trigger, ns);
@@ -257,7 +256,7 @@ public class TransitionNotationUml extends TransitionNotation {
                         delete(evt);
                         evt = sMFactory.buildCallEvent(trans, trigger, ns);
                         // and parse the parameter list
-                        ParserDisplay.SINGLETON.parseParamList(evt, s, 0);
+                        NotationUtilityUml.parseParamList(evt, s, 0);
                         createdEvent = true;
                     }
                     if (signalEvent
