@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,7 +60,7 @@ public class PropPanelMessage extends PropPanelModelElement {
                 getNameTextField());
         addField(Translator.localize("label.stereotype"),
                 getStereotypeSelector());
-       JList interactionList =
+        JList interactionList =
             new UMLLinkedList(new UMLMessageInteractionListModel());
         interactionList.setVisibleRowCount(1);
         addField(Translator.localize("label.interaction"),
@@ -91,20 +91,22 @@ public class PropPanelMessage extends PropPanelModelElement {
         JScrollPane actionScroll = new JScrollPane(actionList);
         addField(Translator.localize("label.action"), actionScroll);
 
-        JScrollPane predecessorScroll = new JScrollPane(
+        JScrollPane predecessorScroll =
+                new JScrollPane(
                 new UMLMutableLinkedList(new UMLMessagePredecessorListModel(),
         	ActionAddMessagePredecessor.getInstance(),
         	null));
         addField(Translator.localize("label.predecessor"),
         	 predecessorScroll);
 
-            addAction(new ActionNavigateContainerElement());
-            addAction(new ActionToolNewAction());
-            addAction(new ActionNewStereotype());
-            addAction(new ActionDeleteSingleModelElement());
+        addAction(new ActionNavigateContainerElement());
+        addAction(new ActionToolNewAction());
+        addAction(new ActionNewStereotype());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
-    private class ActionToolNewAction extends AbstractActionNewModelElement {
+    private static class ActionToolNewAction
+        extends AbstractActionNewModelElement {
 
         /**
          * The constructor.
@@ -117,7 +119,8 @@ public class PropPanelMessage extends PropPanelModelElement {
         }
 
         /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *         java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
@@ -126,6 +129,15 @@ public class PropPanelMessage extends PropPanelModelElement {
                 super.actionPerformed(e);
             }
         }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -6588197204256288453L;
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8433911715875762175L;
 } /* end class PropPanelMessage */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,17 +32,21 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**
- * Provide a dialog which helps the user to select one event out of an existing list,
+ * Provide a dialog which helps the user to select one event
+ * out of an existing list,
  * which will be used as the trigger of the transition.
+ *
  * @author MarkusK
  *
  */
-public class ActionAddEventAsDeferrableEvent extends AbstractActionAddModelElement {
+public class ActionAddEventAsDeferrableEvent
+    extends AbstractActionAddModelElement {
 
     /**
      * The one and only instance of this class.
      */
-    public static final ActionAddEventAsDeferrableEvent SINGLETON = new ActionAddEventAsDeferrableEvent();
+    public static final ActionAddEventAsDeferrableEvent SINGLETON =
+        new ActionAddEventAsDeferrableEvent();
 
     /**
      * Constructor for ActionAddClassifierRoleBase.
@@ -57,12 +61,16 @@ public class ActionAddEventAsDeferrableEvent extends AbstractActionAddModelEleme
      */
     protected Vector getChoices() {
         Vector vec = new Vector();
-        // TODO: the namespace of created events is currently the model. I think this is wrong, they should be
+        // TODO: the namespace of created events is currently the model.
+        // I think this is wrong, they should be
         // in the namespace of the activitygraph!
-//        vec.addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(
-//                Model.getFacade().getNamespace(getTarget()), Model.getMetaTypes().getEvent()));
-      vec.addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(
-      Model.getFacade().getModel(getTarget()), Model.getMetaTypes().getEvent()));
+//        vec.addAll(
+//                Model.getModelManagementHelper().getAllModelElementsOfKind(
+//                        Model.getFacade().getNamespace(getTarget()),
+//                        Model.getMetaTypes().getEvent()));
+        vec.addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(
+                Model.getFacade().getModel(getTarget()),
+                Model.getMetaTypes().getEvent()));
 
         return vec;
     }
@@ -73,8 +81,9 @@ public class ActionAddEventAsDeferrableEvent extends AbstractActionAddModelEleme
     protected Vector getSelected() {
         Vector vec = new Vector();
         Collection events = Model.getFacade().getDeferrableEvents(getTarget());
-        if (events != null)
+        if (events != null) {
             vec.addAll(events);
+        }
         return vec;
     }
 
@@ -86,7 +95,8 @@ public class ActionAddEventAsDeferrableEvent extends AbstractActionAddModelEleme
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(
+     *         java.util.Vector)
      */
     protected void doIt(Vector selected) {
         Object state = getTarget();
@@ -96,4 +106,8 @@ public class ActionAddEventAsDeferrableEvent extends AbstractActionAddModelEleme
         }
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 1815648968597093974L;
 }
