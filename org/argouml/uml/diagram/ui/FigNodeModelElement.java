@@ -362,7 +362,7 @@ public abstract class FigNodeModelElement
                 clone.setBigPort(cloneFig);
             }
             if (thisFig == nameFig) {
-                clone.nameFig = (FigText) thisFig;
+                clone.nameFig = (FigSingleLineText) thisFig;
             }
             if (thisFig == stereotypeFig) {
                 clone.stereotypeFig = thisFig;
