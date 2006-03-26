@@ -24,13 +24,17 @@
 
 package org.argouml.uml.notation.uml;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Vector;
 
+import org.argouml.application.api.Configuration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileException;
 import org.argouml.util.MyTokenizer;
@@ -45,10 +49,20 @@ import org.argouml.util.MyTokenizer;
 public final class NotationUtilityUml {
 
     /**
+     * The vector of CustomSeparators to use when tokenizing parameters.
+     */
+    private static Vector parameterCustomSep;
+
+    /**
      * The constructor.
      */
     private NotationUtilityUml() {
+        parameterCustomSep = new Vector();
+        parameterCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+        parameterCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+        parameterCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
     }
+
 
     /**
      * This function shall replace the previous set of stereotypes
@@ -206,5 +220,278 @@ public final class NotationUtilityUml {
         }
         return null;
     }
+
+    /**
+     * Returns a visibility String eihter for a MVisibilityKind (according to
+     * the definition in NotationProvider2), but also for a model element.
+     * @see org.argouml.notation.NotationProvider2#generateVisibility(java.lang.Object)
+     */
+    public static String generateVisibility(Object o) {
+        if (o == null) {
+            return "";
+        }
+        if (!Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY, true)) {
+            return "";
+        }
+        if (Model.getFacade().isAModelElement(o)) {
+            if (Model.getFacade().isPublic(o)) {
+                return "+";
+            }
+            if (Model.getFacade().isPrivate(o)) {
+                return "-";
+            }
+            if (Model.getFacade().isProtected(o)) {
+                return "#";
+            }
+            if (Model.getFacade().isPackage(o)) {
+                return "~";
+            }
+        }
+        if (Model.getFacade().isAVisibilityKind(o)) {
+            if (Model.getVisibilityKind().getPublic().equals(o)) {
+                return "+";
+            }
+            if (Model.getVisibilityKind().getPrivate().equals(o)) {
+                return "-";
+            }
+            if (Model.getVisibilityKind().getProtected().equals(o)) {
+                return "#";
+            }
+            if (Model.getVisibilityKind().getPackage().equals(o)) {
+                return "~";
+            }
+        }
+        return "";
+    }
+
+    /**
+     * Parses a parameter list and aligns the parameter list in op to that
+     * specified in param. A parameter list generally has the following syntax:
+     *
+     * <pre>
+     * param := [inout] [name] [: type] [= initial value]
+     * list := [param] [, param]*
+     * </pre>
+     *
+     * <code>inout</code> is optional and if omitted the old value preserved.
+     * If no value has been assigned, then <code>in </code> is assumed.<p>
+     *
+     * <code>name</code>, <code>type</code> and <code>initial value</code>
+     * are optional and if omitted the old value preserved.<p>
+     *
+     * <code>type</code> and <code>initial value</code> can be given
+     * in any order.<p>
+     *
+     * Unspecified properties is carried over by position, so if a parameter is
+     * inserted into the list, then it will inherit properties from the
+     * parameter that was there before for unspecified properties.<p>
+     *
+     * This syntax is compatible with the UML 1.3 specification.
+     *
+     * @param op
+     *            The operation the parameter list belongs to.
+     * @param param
+     *            The parameter list, without enclosing parentheses.
+     * @param paramOffset
+     *            The offset to the beginning of the parameter list. Used for
+     *            error reports.
+     * @throws java.text.ParseException
+     *             when it detects an error in the attribute string. See also
+     *             ParseError.getErrorOffset().
+     */
+    public static void parseParamList(Object op, String param, int paramOffset)
+        throws ParseException {
+        MyTokenizer st =
+            new MyTokenizer(param, " ,\t,:,=,\\,", parameterCustomSep);
+        // Copy returned parameters because it will be a live collection for MDR
+        Collection origParam = new ArrayList(Model.getFacade().getParameters(op));
+        Object ns = Model.getFacade().getModel(op);
+        if (Model.getFacade().isAOperation(op)) {
+            Object ow = Model.getFacade().getOwner(op);
+
+            if (ow != null && Model.getFacade().getNamespace(ow) != null) {
+                ns = Model.getFacade().getNamespace(ow);
+            }
+        }
+
+        Iterator it = origParam.iterator();
+        while (st.hasMoreTokens()) {
+            String kind = null;
+            String name = null;
+            String tok;
+            String type = null;
+            String value = null;
+            Object p = null;
+            boolean hasColon = false;
+            boolean hasEq = false;
+
+            while (it.hasNext() && p == null) {
+                p = it.next();
+                if (Model.getFacade().isReturn(p)) {
+                    p = null;
+                }
+            }
+
+            while (st.hasMoreTokens()) {
+                tok = st.nextToken();
+
+                if (",".equals(tok)) {
+                    break;
+                } else if (" ".equals(tok) || "\t".equals(tok)) {
+                    if (hasEq) {
+                        value += tok;
+                    }
+                } else if (":".equals(tok)) {
+                    hasColon = true;
+                    hasEq = false;
+                } else if ("=".equals(tok)) {
+                    if (value != null) {
+                        throw new ParseException("Parameters cannot have two "
+                                + "default values", paramOffset
+                                + st.getTokenIndex());
+                    }
+                    hasEq = true;
+                    hasColon = false;
+                    value = "";
+                } else if (hasColon) {
+                    if (type != null) {
+                        throw new ParseException("Parameters cannot have two "
+                                + "types", paramOffset + st.getTokenIndex());
+                    }
+
+                    if (tok.charAt(0) == '\'' || tok.charAt(0) == '\"') {
+                        throw new ParseException("Parameter type cannot be "
+                                + "quoted", paramOffset + st.getTokenIndex());
+                    }
+
+                    if (tok.charAt(0) == '(') {
+                        throw new ParseException("Parameter type cannot be an "
+                                + "expression", paramOffset
+                                + st.getTokenIndex());
+                    }
+
+                    type = tok;
+                } else if (hasEq) {
+                    value += tok;
+                } else {
+                    if (name != null && kind != null) {
+                        throw new ParseException("Extra text in parameter",
+                                paramOffset + st.getTokenIndex());
+                    }
+
+                    if (tok.charAt(0) == '\'' || tok.charAt(0) == '\"') {
+                        throw new ParseException(
+                                "Parameter name/kind cannot be" + " quoted",
+                                paramOffset + st.getTokenIndex());
+                    }
+
+                    if (tok.charAt(0) == '(') {
+                        throw new ParseException(
+                                "Parameter name/kind cannot be"
+                                        + " an expression", paramOffset
+                                        + st.getTokenIndex());
+                    }
+
+                    kind = name;
+                    name = tok;
+                }
+            }
+
+            if (p == null) {
+                Object model =
+                    ProjectManager.getManager().getCurrentProject().getModel();
+                Object voidType =
+                    ProjectManager.getManager()
+                        .getCurrentProject().findType("void");
+                Collection propertyChangeListeners =
+                    ProjectManager.getManager()
+                        .getCurrentProject().findFigsForMember(op);
+                p =
+                    Model.getCoreFactory().buildParameter(
+                            op,
+                            model,
+                            voidType,
+                            propertyChangeListeners);
+                // op.addParameter(p);
+            }
+
+            if (name != null) {
+                Model.getCoreHelper().setName(p, name.trim());
+            }
+
+            if (kind != null) {
+                setParamKind(p, kind.trim());
+            }
+
+            if (type != null) {
+                Model.getCoreHelper().setType(p, getType(type.trim(), ns));
+            }
+
+            if (value != null) {
+                Object initExpr =
+                    Model.getDataTypesFactory()
+                        .createExpression(
+                                Notation.getConfigueredNotation().toString(),
+                                value.trim());
+                Model.getCoreHelper().setDefaultValue(p, initExpr);
+            }
+        }
+
+        while (it.hasNext()) {
+            Object p = it.next();
+            if (!Model.getFacade().isReturn(p)) {
+                Model.getCoreHelper().removeParameter(op, p);
+            }
+        }
+    }
+
+    /**
+     * Set a parameters kind according to a string description of
+     * that kind.
+     * @param parameter the parameter
+     * @param description the string description
+     */
+    private static void setParamKind(Object parameter, String description) {
+        Object kind;
+        if ("out".equalsIgnoreCase(description)) {
+            kind = Model.getDirectionKind().getOutParameter();
+        } else if ("inout".equalsIgnoreCase(description)) {
+            kind = Model.getDirectionKind().getInOutParameter();
+        } else {
+            kind = Model.getDirectionKind().getInParameter();
+        }
+        Model.getCoreHelper().setKind(parameter, kind);
+    }
+
+    /**
+     * Finds the classifier associated with the type named in name.
+     * 
+     * TODO: Make private.
+     *
+     * @param name
+     *            The name of the type to get.
+     * @param defaultSpace
+     *            The default name-space to place the type in.
+     * @return The classifier associated with the name.
+     */
+    public static Object getType(String name, Object defaultSpace) {
+        Object type = null;
+        Project p = ProjectManager.getManager().getCurrentProject();
+        // Should we be getting this from the GUI? BT 11 aug 2002
+        type = p.findType(name, false);
+        if (type == null) { // no type defined yet
+            type = Model.getCoreFactory().buildClass(name,
+                    defaultSpace);
+        }
+        if (Model.getFacade().getModel(type) != p.getModel()
+                && !Model.getModelManagementHelper().getAllNamespaces(
+                       p.getModel()).contains(
+                               Model.getFacade().getNamespace(type))) {
+            type = Model.getModelManagementHelper().getCorrespondingElement(
+                    type, Model.getFacade().getModel(defaultSpace));
+        }
+        return type;
+    }
+
 
 }

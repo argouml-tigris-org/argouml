@@ -33,6 +33,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
+import org.argouml.uml.notation.uml.NotationUtilityUml;
 
 /**
  * Generator2 subclass to generate notation for display in diagrams in
@@ -129,7 +130,7 @@ public class GeneratorDisplay extends Generator2 {
         String stereoStr =
             generateStereotype(Model.getFacade().getStereotypes(op));
         String visStr =
-	    generateVisibility(op);
+            NotationUtilityUml.generateVisibility(op);
         String nameStr = generateName(Model.getFacade().getName(op));
 
         // the parameters
@@ -251,7 +252,7 @@ public class GeneratorDisplay extends Generator2 {
      *          Object, boolean)
      */
     public String generateAttribute(Object attr, boolean documented) {
-        String visibility = generateVisibility(attr);
+        String visibility = NotationUtilityUml.generateVisibility(attr);
         // generateStereotype accepts a collection, despite its name
         String stereo =
             generateStereotype(Model.getFacade().getStereotypes(attr));
@@ -354,7 +355,7 @@ public class GeneratorDisplay extends Generator2 {
     public String generatePackage(Object p) {
         String s = generateStereotype( Model.getFacade().getStereotypes(p));
         s += " ";
-        s += generateVisibility(Model.getFacade().getVisibility(p));
+        s += NotationUtilityUml.generateVisibility(Model.getFacade().getVisibility(p));
         s += generateName(Model.getFacade().getName(p));
         return s.trim();
     }
@@ -373,7 +374,7 @@ public class GeneratorDisplay extends Generator2 {
             return ""; // actors and use cases
         }
         String s = "";
-        s += generateVisibility(cls);
+        s += NotationUtilityUml.generateVisibility(cls);
         if (Model.getFacade().isAbstract(cls)) {
             s += "abstract ";
         }
@@ -849,8 +850,11 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * Returns a visibility String eihter for a MVisibilityKind (according to
+     * Returns a visibility String eihter for a VisibilityKind (according to
      * the definition in NotationProvider2), but also for a model element.
+     * 
+     * TODO: This function is replaced. Do not use it. 
+     * 
      * @see org.argouml.notation.NotationProvider2#generateVisibility(java.lang.Object)
      */
     public String generateVisibility(Object o) {
