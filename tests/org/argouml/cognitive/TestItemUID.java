@@ -150,7 +150,7 @@ public class TestItemUID extends TestCase {
         //FigState figstate = new FigState();
         FigTransition figtransition = new FigTransition();
 
-        FigClass figclass = new FigClass();
+//        FigClass figclass = new FigClass();
         FigEdgeNote figedgenote = new FigEdgeNote();
         FigInstance figinstance = new FigInstance();
         FigInterface figinterface = new FigInterface();
@@ -194,7 +194,7 @@ public class TestItemUID extends TestCase {
         //checkAssignIDToObject(figstate, true, true);
         checkAssignIDToObject(figtransition, true, true);
 
-        checkAssignIDToObject(figclass, true, true);
+//        checkAssignIDToObject(figclass, true, true);
         checkAssignIDToObject(figedgenote, true, true);
         checkAssignIDToObject(figinstance, true, true);
         checkAssignIDToObject(figinterface, true, true);
