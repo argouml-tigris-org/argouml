@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
 
 import org.tigris.gef.presentation.FigText;
 
@@ -42,6 +43,13 @@ import org.tigris.gef.presentation.FigText;
  * @author Bob Tarling
  */
 public class FigSingleLineText extends FigText {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5611216741181499679L;
+
+
 
     /**
      * @see FigText(int, int, int, int, boolean)
@@ -75,11 +83,19 @@ public class FigSingleLineText extends FigText {
         } else {
             maxH = getFontMetrics().getHeight();
         }
-        int maxDescent = 0;
         int overallH = (maxH + getTopMargin() + getBotMargin());
         int overallW = maxW + getLeftMargin() + getRightMargin();
         d.width = overallW;
         d.height = overallH;
         return d;
+    }
+
+    protected boolean isStartEditingKey(KeyEvent ke) {
+        if ((ke.getModifiers() &
+                (KeyEvent.META_MASK | KeyEvent.ALT_MASK)) == 0) {
+            return super.isStartEditingKey(ke);
+        } else {
+            return false;
+        }
     }
 }
