@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,9 +27,13 @@ package org.argouml.uml.diagram.deployment.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
+import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
@@ -120,9 +124,45 @@ public class FigObject extends FigNodeModelElement {
         return figClone;
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */
+    protected void modelChanged(PropertyChangeEvent mee) {
+        super.modelChanged(mee);
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            renderingChanged();
+            updateListeners(getOwner());
+            damage();
+        }
+    }
 
-    ////////////////////////////////////////////////////////////////
-    // Fig accessors
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
+    protected void updateListeners(Object newOwner) {
+        Object oldOwner = getOwner();
+        if (oldOwner != null) {
+            removeAllElementListeners();
+        }
+        if (newOwner != null) {
+            // add the listeners to the newOwner
+            addElementListener(newOwner);
+            // Add the following once we show stereotypes:
+//            Collection c = Model.getFacade().getStereotypes(newOwner);
+//            Iterator i = c.iterator();
+//            while (i.hasNext()) {
+//                Object st = i.next();
+//                addElementListener(st, "name");
+//            }
+            Collection c = Model.getFacade().getClassifiers(newOwner);
+            Iterator i = c.iterator();
+            while (i.hasNext()) {
+                Object st = i.next();
+                addElementListener(st, "name");
+            }
+        }
+    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)

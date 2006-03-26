@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,11 +29,14 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -120,9 +123,38 @@ public class FigMNode extends FigNodeModelElement {
 	return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // acessors
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */
+    protected void modelChanged(PropertyChangeEvent mee) {
+        super.modelChanged(mee);
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            renderingChanged();
+            updateListeners(getOwner());
+            damage();
+        }
+    }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
+    protected void updateListeners(Object newOwner) {
+        Object oldOwner = getOwner();
+        if (oldOwner != null) {
+            removeAllElementListeners();
+        }
+        if (newOwner != null) {
+            // add the listeners to the newOwner
+            addElementListener(newOwner);
+            Collection c = Model.getFacade().getStereotypes(newOwner);
+            Iterator i = c.iterator();
+            while (i.hasNext()) {
+                Object st = i.next();
+                addElementListener(st, "name");
+            }
+        }
+    }
 
     /**
      * Build a collection of menu items relevant for a right-click popup menu.
