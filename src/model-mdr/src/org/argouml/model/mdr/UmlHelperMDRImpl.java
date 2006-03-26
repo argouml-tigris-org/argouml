@@ -27,19 +27,9 @@ package org.argouml.model.mdr;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.argouml.model.ActivityGraphsHelper;
-import org.argouml.model.CollaborationsHelper;
-import org.argouml.model.CommonBehaviorHelper;
-import org.argouml.model.CoreHelper;
-import org.argouml.model.DataTypesHelper;
-import org.argouml.model.ExtensionMechanismsHelper;
-import org.argouml.model.ModelManagementHelper;
-import org.argouml.model.StateMachinesHelper;
 import org.argouml.model.UmlHelper;
-import org.argouml.model.UseCasesHelper;
 import org.omg.uml.behavioralelements.statemachines.Transition;
 import org.omg.uml.foundation.core.AssociationEnd;
-import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Relationship;
 
 /**
@@ -80,125 +70,14 @@ class UmlHelperMDRImpl implements UmlHelper {
     }
 
     /**
-     * Returns the package helper for the UML package
-     * Foundation::ExtensionMechanisms.
-     * 
-     * @return the ExtensionMechanisms helper instance.
+     * @see org.argouml.model.UmlHelper#getOwner(java.lang.Object)
      */
-    public ExtensionMechanismsHelper getExtensionMechanisms() {
-        return nsmodel.getExtensionMechanismsHelper();
-    }
-
-    /**
-     * Returns the package helper for the UML package Foundation::DataTypes.
-     * 
-     * @return the DataTypes helper instance.
-     */
-    public DataTypesHelper getDataTypes() {
-        return nsmodel.getDataTypesHelper();
-    }
-
-    /**
-     * Returns the package helper for the UML package Foundation::Core.
-     * 
-     * @return the Core helper instance.
-     */
-    public CoreHelper getCore() {
-        return nsmodel.getCoreHelper();
-    }
-
-    /**
-     * Returns the package helper for the UML package
-     * BehavioralElements::CommonBehavior.
-     * 
-     * @return the CommonBehavior helper instance.
-     */
-    public CommonBehaviorHelper getCommonBehavior() {
-        return nsmodel.getCommonBehaviorHelper();
-    }
-
-    /**
-     * Returns the package helper for the UML package
-     * BehavioralElements::UseCases.
-     * 
-     * @return the UseCases helper instance.
-     */
-    public UseCasesHelper getUseCases() {
-        return nsmodel.getUseCasesHelper();
-    }
-
-    /**
-     * Returns the package helper for the UML package
-     * BehavioralElements::StateMachines.
-     * 
-     * @return the StateMachines helper instance.
-     */
-    public StateMachinesHelper getStateMachines() {
-        return nsmodel.getStateMachinesHelper();
-    }
-
-    /**
-     * Returns the package helper for the UML package
-     * BehavioralElements::Collaborations.
-     * 
-     * @return the Collaborations helper instance.
-     */
-    public CollaborationsHelper getCollaborations() {
-        return nsmodel.getCollaborationsHelper();
-    }
-
-    /**
-     * Returns the package helper for the UML package
-     * BehavioralElements::ActivityGraphs.
-     * 
-     * @return the ActivityGraphs helper instance.
-     */
-    public ActivityGraphsHelper getActivityGraphs() {
-        return nsmodel.getActivityGraphsHelper();
-    }
-
-    /**
-     * Returns the package helper for the UML package ModelManagement.
-     * 
-     * @return the ModelManagement helper instance.
-     */
-    public ModelManagementHelper getModelManagement() {
-        return nsmodel.getModelManagementHelper();
-    }
-
-    /**
-     * Returns the owner of some modelelement object. In most cases this will be
-     * the owning namespace but in some cases it will be null (the root model)
-     * or for instance the owning class with an attribute.
-     * 
-     * @param handle
-     *            the modelelement
-     * @return Object the owner
-     */
-    // TODO: Delete?  Redundant with getModelElementContainer
     public Object getOwner(Object handle) {
-        // TODO: Not yet implemented
-        throw new RuntimeException("Not yet implemented");
-//        if (handle instanceof Attribute) {
-//            return ((Attribute) handle).getOwner();
-//        }
-//        if (handle instanceof ModelElement) {
-//            return ((ModelElement) handle).getNamespace();
-//        }
-//        if (handle instanceof Attribute) {
-//            return ((Attribute) handle).getOwner();
-//        }
-//        return null;
+        throw new RuntimeException("Not implemented");
     }
 
     /**
-     * Utility method to quickly delete a collection of modelelements. This
-     * method should only be called from within the model component. The only
-     * reason it is public is that the other helpers/factories are in other
-     * packages and therefore cannot see this method if it is not public.
-     * 
-     * @param col
-     *            a collection of modelelements
+     * @see org.argouml.model.UmlHelper#deleteCollection(java.util.Collection)
      */
     public void deleteCollection(Collection col) {
         Iterator it = col.iterator();
@@ -208,72 +87,40 @@ class UmlHelperMDRImpl implements UmlHelper {
     }
 
     /**
-     * Returns the source of some relationship. This is the element in binary
-     * relations from which a relation 'departs'.
-     * 
-     * @param relationShip
-     *            the relationship to be tested
-     * @return the source of the relationship
+     * @see org.argouml.model.UmlHelper#getSource(java.lang.Object)
      */
-    public Object getSource(Object relationShip) {
-        if (relationShip == null) {
-            throw new IllegalArgumentException("Argument relationship is null");
-        }
-        if (!(relationShip instanceof ModelElement)) {
-            throw new IllegalArgumentException(
-                    "Argument relationship of class "
-                            + relationShip.getClass().toString()
-                            + " is not a valid relationship");
-        }
-        if (relationShip instanceof Relationship) {
+    public Object getSource(Object relationship) {
+        if (relationship instanceof Relationship) {
             // handles all children of relationship including extend and
             // include which are not members of core
-            return nsmodel.getCoreHelper().getSource(relationShip);
+            return nsmodel.getCoreHelper().getSource(relationship);
         }
-        if (relationShip instanceof Transition) {
-            return nsmodel.getStateMachinesHelper().getSource(relationShip);
+        if (relationship instanceof Transition) {
+            return nsmodel.getStateMachinesHelper().getSource(relationship);
         }
-        if (relationShip instanceof AssociationEnd) {
-            return nsmodel.getCoreHelper().getSource(relationShip);
+        if (relationship instanceof AssociationEnd) {
+            return nsmodel.getCoreHelper().getSource(relationship);
         }
-        return null;
+        throw new IllegalArgumentException();
     }
 
     /**
-     * Returns the destination of some relationship. This is the element in
-     * binary relations at which a relation 'arrives'.
-     * 
-     * @param relationShip
-     *            the relationship to be tested
-     * @return the destination of the relationship
+     * @see org.argouml.model.UmlHelper#getDestination(java.lang.Object)
      */
     public Object getDestination(Object relationShip) {
-        if (relationShip == null) {
-            throw new IllegalArgumentException("Argument relationship is null");
-        }
-
-        if (!(relationShip instanceof ModelElement)) {
-            throw new IllegalArgumentException(
-                    "Argument relationship of class "
-                            + relationShip.getClass().toString()
-                            + " is not a valid relationship");
-        }
-
         if (relationShip instanceof Relationship) {
             // handles all children of relationship including extend and
             // include which are not members of core
             return nsmodel.getCoreHelper().getDestination(relationShip);
         }
-
         if (relationShip instanceof Transition) {
             return nsmodel.getStateMachinesHelper().
                     getDestination(relationShip);
         }
-
         if (relationShip instanceof AssociationEnd) {
             return nsmodel.getCoreHelper().getDestination(relationShip);
         }
-        return null;
+        throw new IllegalArgumentException();
     }
 
 }
