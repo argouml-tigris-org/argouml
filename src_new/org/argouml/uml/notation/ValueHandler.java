@@ -25,17 +25,21 @@
 package org.argouml.uml.notation;
 
 import java.util.HashMap;
-
-import javax.swing.Action;
+import java.util.Map;
 
 import org.argouml.notation.NotationProvider4;
 
 /**
  * @author mvw@tigris.org
  */
-public abstract class ValueHandler implements NotationProvider4{
+public abstract class ValueHandler implements NotationProvider4 {
 
-    protected HashMap keyTable;
+    /**
+     * The register of remembered values.
+     *
+     * String key => Object values.
+     */
+    private Map keyTable;
 
     /**
      * @see org.argouml.notation.NotationProvider4#putValue(java.lang.String, java.lang.Object)
@@ -49,7 +53,7 @@ public abstract class ValueHandler implements NotationProvider4{
         if (newValue == null) {
             keyTable.remove(key);
         } else {
-            keyTable.put(key,newValue);
+            keyTable.put(key, newValue);
         }
 
     }
@@ -60,7 +64,7 @@ public abstract class ValueHandler implements NotationProvider4{
      * @param key a string containing the specified <code>key</code>
      * @return the binding <code>Object</code> stored with this key; if there
      *          are no keys, it will return <code>null</code>
-     * @see Action#getValue
+     * @see javax.swing.Action#getValue(String)
      */
     public Object getValue(String key) {
         if (keyTable == null) {
@@ -82,7 +86,9 @@ public abstract class ValueHandler implements NotationProvider4{
      */
     public boolean isValue(String key) {
         Object o = this.getValue(key);
-        if (!(o instanceof Boolean)) return false;
+        if (!(o instanceof Boolean)) {
+            return false;
+        }
         return ((Boolean) o).booleanValue();
     }
 
