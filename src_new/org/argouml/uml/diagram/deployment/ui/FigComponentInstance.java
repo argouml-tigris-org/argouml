@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,9 +31,12 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
@@ -53,6 +56,7 @@ import org.tigris.gef.presentation.FigText;
  * @author 5eichler
  */
 public class FigComponentInstance extends FigNodeModelElement {
+
     /**
      * The distance between the left edge of the fig and the left edge of the
      * main rectangle.
@@ -60,16 +64,13 @@ public class FigComponentInstance extends FigNodeModelElement {
      */
     private static final int BX = 10;
 
-    private static final int OVERLAP = 4;
+    private static final int OVERLAP = 0;
 
     private FigRect cover;
     private FigRect upperRect;
     private FigRect lowerRect;
 
     private NotationProvider4 notationProvider;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Constructor.
@@ -144,8 +145,44 @@ public class FigComponentInstance extends FigNodeModelElement {
         return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // acessors
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */
+    protected void modelChanged(PropertyChangeEvent mee) {
+        super.modelChanged(mee);
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            renderingChanged();
+            updateListeners(getOwner());
+            damage();
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
+    protected void updateListeners(Object newOwner) {
+        Object oldOwner = getOwner();
+        if (oldOwner != null) {
+            removeAllElementListeners();
+        }
+        if (newOwner != null) {
+            // add the listeners to the newOwner
+            addElementListener(newOwner);
+            Collection c = Model.getFacade().getStereotypes(newOwner);
+            Iterator i = c.iterator();
+            while (i.hasNext()) {
+                Object st = i.next();
+                addElementListener(st, "name");
+            }
+            c = Model.getFacade().getClassifiers(newOwner);
+            i = c.iterator();
+            while (i.hasNext()) {
+                Object st = i.next();
+                addElementListener(st, "name");
+            }
+        }
+    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
@@ -218,9 +255,6 @@ public class FigComponentInstance extends FigNodeModelElement {
         updateEdges();
     }
 
-    ////////////////////////////////////////////////////////////////
-    // user interaction methods
-
     /**
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
@@ -291,32 +325,9 @@ public class FigComponentInstance extends FigNodeModelElement {
                             .setComponentInstance(comp, null);
                 }
                 super.setEnclosingFig(encloser);
-                /*if (getEnclosingFig() instanceof FigNodeModelElement)
-                ((FigNodeModelElement) getEnclosingFig())
-                .getEnclosedFigs()
-                .removeElement(
-                this);
-                _encloser = null;*/
             }
         }
     }
-
-//    /**
-//     * TODO: This is not used anywhere. Can we remove it?
-//     * @param figures ?
-//     */
-//    public void setNode(Vector figures) {
-//        int size = figures.size();
-//        if (size > 0) {
-//            for (int i = 0; i < size; i++) {
-//                Object o = figures.elementAt(i);
-//                if (o instanceof FigComponentInstance) {
-//                    FigComponentInstance figcomp = (FigComponentInstance) o;
-//                    figcomp.setEnclosingFig(this);
-//                }
-//            }
-//        }
-//    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
@@ -324,9 +335,6 @@ public class FigComponentInstance extends FigNodeModelElement {
     public boolean getUseTrapRect() {
         return true;
     }
-
-    ////////////////////////////////////////////////////////////////
-    // internal methods
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
@@ -351,22 +359,6 @@ public class FigComponentInstance extends FigNodeModelElement {
      */
     protected void updateStereotypeText() {
         getStereotypeFig().setOwner(getOwner());
-    }
-
-    /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    protected void modelChanged(PropertyChangeEvent mee) {
-        super.modelChanged(mee);
-        Object compInst =  getOwner();
-        if (compInst == null) {
-            return;
-        }
-        if ("classifier".equals(mee.getPropertyName())
-                && mee.getSource() == compInst) {
-            updateNameText();
-            damage();
-        }
     }
 
     /**
@@ -407,4 +399,5 @@ public class FigComponentInstance extends FigNodeModelElement {
      * The UID.
      */
     static final long serialVersionUID = 1647392857462847651L;
+
 } /* end class FigComponentInstance */
