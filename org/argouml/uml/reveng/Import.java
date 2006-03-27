@@ -605,7 +605,7 @@ public class Import {
             countFiles = filesLeft.size();
             countFilesThisPass = countFiles;
             nextPassFiles = new Vector();
-            st = new SimpleTimer("ImportRun");
+            st = new SimpleTimer();
             st.mark("start");
             cancelled = false;
             criticThreadWasOn = Designer.theDesigner().getAutoCritique();
