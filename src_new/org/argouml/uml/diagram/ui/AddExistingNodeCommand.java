@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -57,7 +57,7 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
     private Object object;
 
     /**
-     * the DropTargetDropEvent that caused this action
+     * the DropTargetDropEvent that caused this action.
      */
     private DropTargetDropEvent dropEvent;
 
@@ -82,8 +82,8 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
      * @param o the UML modelelement to be added
      * @param event the DropTargetDropEvent that caused this.
      *              Also <code>null</code> is acceptable
-     * @param count 0 if this is the 1st element dropped here,
-     *              n if this is the (n+1)-th element dropped here.
+     * @param cnt 0 if this is the 1st element dropped here,
+     *            n if this is the (n+1)-th element dropped here.
      */
     public AddExistingNodeCommand(Object o, DropTargetDropEvent event,
             int cnt) {
@@ -101,14 +101,18 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
     public void execute() {
         Editor ce = Globals.curEditor();
         GraphModel gm = ce.getGraphModel();
-        if (!(gm instanceof MutableGraphModel)) return;
+        if (!(gm instanceof MutableGraphModel)) {
+            return;
+        }
 
         String instructions = null;
         if (object != null) {
             instructions =
                 Translator.localize(
                     "misc.message.click-on-diagram-to-add",
-                    new Object[] { Model.getFacade().toString(object) });
+                    new Object[] {
+                            Model.getFacade().toString(object),
+                    });
             Globals.showStatus(instructions);
         }
         ModePlace placeMode = new ModePlace(this, instructions);
@@ -118,17 +122,21 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
             Globals.mode(placeMode, false);
         } else {
             /* Calculate the drop location, and place every n-th element
-             * at an offset proportional to n. */
-            Point p = new Point(
+             * at an offset proportional to n.
+             */
+            Point p =
+                new Point(
                     dropEvent.getLocation().x + (count * 100),
                     dropEvent.getLocation().y);
             /* Take canvas scrolling into account.
              * The implementation below does place the element correctly
-             * when the canvas has been scrolled. */
+             * when the canvas has been scrolled.
+             */
             Rectangle r = ce.getJComponent().getVisibleRect();
             p.translate(r.x, r.y);
             /* Simulate a press of the mouse above the calculated point: */
-            MouseEvent me = new MouseEvent(
+            MouseEvent me =
+                new MouseEvent(
                     ce.getJComponent(),
                     0,
                     0,
@@ -139,7 +147,8 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
                     false);
             placeMode.mousePressed(me);
             /* Simulate a release of the mouse: */
-            me = new MouseEvent(
+            me =
+                new MouseEvent(
                     ce.getJComponent(),
                     0,
                     0,
@@ -153,9 +162,11 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
             /* Set the size of the object's fig to minimum.
              * See issue 3410.
              * This binds the use of this Command to the
-             * current diagram of the current project! */
-            ArgoDiagram diagram = ProjectManager.getManager()
-                .getCurrentProject().getActiveDiagram();
+             * current diagram of the current project!
+             */
+            ArgoDiagram diagram =
+                ProjectManager.getManager()
+                    .getCurrentProject().getActiveDiagram();
             Fig aFig = diagram.presentationFor(object);
             aFig.setSize(aFig.getPreferredSize());
         }
