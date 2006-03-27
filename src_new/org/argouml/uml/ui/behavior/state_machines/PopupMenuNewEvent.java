@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -52,13 +52,15 @@ public class PopupMenuNewEvent extends JPopupMenu {
     public PopupMenuNewEvent(String role, UMLMutableLinkedList list) {
         super();
 
-        if (role == ActionNewEvent.Roles.DEFERRABLE_EVENT
-                || role == ActionNewEvent.Roles.TRIGGER) {
+        assert role != null;
+
+        if (role.equals(ActionNewEvent.Roles.DEFERRABLE_EVENT)
+                || role.equals(ActionNewEvent.Roles.TRIGGER)) {
             JMenu select = new JMenu();
             select.setText(Translator.localize("action.select"));
             if (role == ActionNewEvent.Roles.DEFERRABLE_EVENT) {
-                ActionAddEventAsDeferrableEvent.SINGLETON.setTarget(list
-                        .getTarget());
+                ActionAddEventAsDeferrableEvent.SINGLETON.setTarget(
+                        list.getTarget());
                 select.add(ActionAddEventAsDeferrableEvent.SINGLETON);
             } else if (role == ActionNewEvent.Roles.TRIGGER) {
                 ActionAddEventAsTrigger.SINGLETON.setTarget(list.getTarget());
@@ -66,7 +68,7 @@ public class PopupMenuNewEvent extends JPopupMenu {
             }
             add(select);
         }
-        
+
         JMenu newMenu = new JMenu();
         newMenu.setText(Translator.localize("action.new"));
         newMenu.add(ActionNewCallEvent.getSingleton());
@@ -85,10 +87,14 @@ public class PopupMenuNewEvent extends JPopupMenu {
 
         addSeparator();
 
-        ActionRemoveModelElement.SINGLETON.setObjectToRemove(ActionNewEvent
-                .getAction(role, list.getTarget()));
+        ActionRemoveModelElement.SINGLETON.setObjectToRemove(
+                ActionNewEvent.getAction(role, list.getTarget()));
         add(ActionRemoveModelElement.SINGLETON);
 
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -7624618103144695448L;
 }
