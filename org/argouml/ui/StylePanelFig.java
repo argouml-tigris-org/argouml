@@ -198,6 +198,7 @@ public class StylePanelFig
         } else {
             hasEditableBoundingBox(true);
         }
+        if (target == null) return;
 
         // The boundary box as held in the target fig, and as listed in
         // the
