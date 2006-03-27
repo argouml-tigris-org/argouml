@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,17 +34,13 @@ import java.util.Vector;
  * @author Linus Tolke
  */
 public class SimpleTimer {
-    private String name = null;
     private Vector points = new Vector();
     private Vector labels = new Vector();
 
     /**
-     * The constructor. Creates a simple timer with given name.
-     *
-     * @param n the name
+     * The constructor. Creates a simple timer.
      */
-    public SimpleTimer(String n) {
-	name = n;
+    public SimpleTimer() {
     }
 
     /**
@@ -72,44 +68,61 @@ public class SimpleTimer {
      */
     public Enumeration result() {
 	mark();
-	return new Enumeration() {
-	    private int count = 1;
+	return new SimpleTimerEnumeration();
+    }
 
-	    public boolean hasMoreElements() {
-		return count <= points.size();
-	    }
+    /**
+     * An enumeration to walk through all entries.<p>
+     *
+     * This allows us to get a summary at the end.
+     *
+     * @author Linus Tolke
+     */
+    class SimpleTimerEnumeration implements Enumeration {
+        /**
+         * Keep track of where we are in the list.
+         */
+        private int count = 1;
 
-	    public Object nextElement() {
-		StringBuffer res = new StringBuffer();
-		synchronized (points) {
-		    if (count < points.size()) {
-			if (labels.get(count - 1) == null) {
-			    res.append("phase ").append(count);
-			} else {
-			    res.append(labels.get(count - 1));
-			}
-			res.append("                            ");
-			res.append("                            ");
-			res.setLength(60);
-			res.append((((Long) points.elementAt(count)).
-				    longValue()
-				    - ((Long) points.elementAt(count - 1))
-				    .longValue()));
-		    }
-		    else if (count == points.size()) {
-			res.append("Total                      ");
-			res.setLength(18);
-			res.append((((Long) points.
-				     elementAt(points.size() - 1))
-				    .longValue()
-				    - ((Long) points.
-				       elementAt(0)).longValue()));
-		    }
-		}
-		count++;
-		return res.toString();
-	    }
-	};
+        /**
+         * @see java.util.Enumeration#hasMoreElements()
+         */
+        public boolean hasMoreElements() {
+            return count <= points.size();
+        }
+
+        /**
+         * @see java.util.Enumeration#nextElement()
+         */
+        public Object nextElement() {
+            StringBuffer res = new StringBuffer();
+            synchronized (points) {
+                if (count < points.size()) {
+                    if (labels.get(count - 1) == null) {
+                        res.append("phase ").append(count);
+                    } else {
+                        res.append(labels.get(count - 1));
+                    }
+                    res.append("                            ");
+                    res.append("                            ");
+                    res.setLength(60);
+    		    res.append((((Long) points.elementAt(count)).
+    		            longValue()
+    		            - ((Long) points.elementAt(count - 1))
+    		            .longValue()));
+                } else if (count == points.size()) {
+                    res.append("Total                      ");
+                    res.setLength(18);
+                    res.append((((Long) points.
+                            elementAt(points.size() - 1))
+                            .longValue()
+                            - ((Long) points.
+                                    elementAt(0)).longValue()));
+                }
+            }
+            count++;
+            return res.toString();
+        }
     }
 
     /**
