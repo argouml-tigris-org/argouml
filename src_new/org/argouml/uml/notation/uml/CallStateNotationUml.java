@@ -37,7 +37,7 @@ import org.argouml.uml.notation.CallStateNotation;
 
 /**
  * The UML notation for a CallState.
- * 
+ *
  * @author mvw@tigris.org
  */
 public class CallStateNotationUml extends CallStateNotation {
@@ -65,19 +65,19 @@ public class CallStateNotationUml extends CallStateNotation {
                     Translator.messageFormat(msg, args));
         }
         return toString();
-        
     }
-    
-    protected Object parseCallState(Object callState, String s)
-    throws ParseException {
-        s = s.trim();
-        
+
+    private Object parseCallState(Object callState, String s1)
+        throws ParseException {
+
+        String s = s1.trim();
+
         int a = s.indexOf("(");
         int b = s.indexOf(")");
         if (((a < 0) && (b >= 0)) || ((b < 0) && (a >= 0)) || (b < a)) {
             throw new ParseException("No matching brackets [] found.", 0);
         }
-        
+
         String newClassName = null;
         String newOperationName = null;
         StringTokenizer tokenizer = new StringTokenizer(s, "(");
@@ -103,26 +103,25 @@ public class CallStateNotationUml extends CallStateNotation {
                 oldClassName = Model.getFacade().getName(clazz);
             }
         }
-        
-        if (oldClassName.equals(newClassName)) {
-            if (oldOperationName.equals(newOperationName)) {
-                // Nothing was changed.
-            } else {
+
+        if (oldClassName != null && oldClassName.equals(newClassName)) {
+            if (!(oldOperationName != null
+                    && oldOperationName.equals(newOperationName))) {
                 // Same class, other operation
                 Collection c = Model.getFacade().getOperations(clazz);
                 Iterator i = c.iterator();
                 while (i.hasNext()) {
                     Object op = i.next();
-                    if (newOperationName.equals(Model.getFacade().getName(op))) {
+                    if (newOperationName.equals(
+                            Model.getFacade().getName(op))) {
                         Model.getCommonBehaviorHelper().setOperation(entry, op);
                         break;
                     }
                 }
             }
-        } else {
-            // Other class
-            
+            // else nothing was changed.
         }
+        // TODO: else Other class
 
         return callState;
     }
@@ -144,13 +143,22 @@ public class CallStateNotationUml extends CallStateNotation {
             Object operation = Model.getFacade().getOperation(action);
             if (operation != null) {
                 Object n = Model.getFacade().getName(operation);
-                if (n != null) ret = (String) n;
-                n = Model.getFacade().getName(
+                if (n != null) {
+                    ret = (String) n;
+                }
+                n =
+                    Model.getFacade().getName(
                         Model.getFacade().getOwner(operation));
-                if (n != null && n != "") ret += "\n(" + (String) n + ")";
+                if (n != null && n.equals("")) {
+                    ret += "\n(" + (String) n + ")";
+                }
             }
         }
-        return (ret == null) ? "" : ret;
+
+        if (ret == null) {
+            return "";
+        }
+        return ret;
     }
 
 }
