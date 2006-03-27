@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,17 +29,16 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.text.ParseException;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
-import org.argouml.i18n.Translator;
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.notation.NotationProvider4;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
-import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -78,7 +77,8 @@ public class FigClassifierRole extends FigNodeModelElement {
     // Instance variables
     //
     ///////////////////////////////////////////////////////////////////////////
-
+    
+    private NotationProvider4 notationProvider;
 
     /**
      * The fig that is used for the complete classifier role.
@@ -135,7 +135,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         Dimension nameMin = getNameFig().getMinimumSize();
 
         getNameFig().setLineWidth(0);
-        getNameFig().setReturnAction(FigText.INSERT);
+        getNameFig().setReturnAction(FigText.END_EDITING);
         getNameFig().setFilled(false);
         getNameFig().setUnderline(true);
 
@@ -171,6 +171,17 @@ public class FigClassifierRole extends FigNodeModelElement {
         setOwner(node);
     }
 
+    /**
+     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
+     */
+    protected void initNotationProviders(Object own) {
+        super.initNotationProviders(own);
+        if (Model.getFacade().isAClassifierRole(own)) {
+            notationProvider =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                    NotationProviderFactory2.TYPE_CLASSIFIERROLE, this, own);
+        }
+    }
 
     /**
      * Return the default name to use for this classifier role.<p>
@@ -410,23 +421,8 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-
-        Object cls = /*(MClassifierRole)*/ getOwner();
-
         if (ft == getNameFig()) {
-            String s = ft.getText();
-	    try {
-		ParserDisplay.SINGLETON.parseClassifierRole(cls, s);
-		ProjectBrowser.getInstance().getStatusBar().showStatus("");
-	    } catch (ParseException pe) {
-                String msg = "statusmsg.bar.error.parsing.classifierrole";
-                Object[] args = {
-                    pe.getLocalizedMessage(),
-                    new Integer(pe.getErrorOffset()),
-                };
-                ProjectBrowser.getInstance().getStatusBar().showStatus(
-                        Translator.messageFormat(msg, args));
-	    }
+            ft.setText(notationProvider.parse(ft.getText()));
         }
     }
 
@@ -435,7 +431,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      */
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
-            showHelp("parsing.help.fig-classifierrole");
+            showHelp(notationProvider.getParsingHelp());
         }
     }
 
@@ -448,57 +444,43 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        Object own = getOwner();
-        if (own == null) {
-            return;
+        if (notationProvider != null) {
+            getNameFig().setText(notationProvider.toString());
         }
-        Object cr = /*(MClassifierRole)*/ own;
-        // We only use the notation generator for the name itself. We ought to
-        // do the whole thing.
-
-        String nameStr =
-	    Notation.generate(this, Model.getFacade().getName(cr)).trim();
-        String baseString = "";
-
-        // Loop through all base classes, building a comma separated list
-
-        if (Model.getFacade().getBases(cr) != null
-	        && Model.getFacade().getBases(cr).size() > 0) {
-            Vector bases = new Vector(Model.getFacade().getBases(cr));
-            baseString += Model.getFacade().getName(bases.elementAt(0));
-
-            for (int i = 1; i < bases.size(); i++) {
-                baseString +=
-                    ", " + Model.getFacade().getName(bases.elementAt(i));
-            }
-        }
-
-        // Build the final string and set it as the name text.
-
-        if (isReadyToEdit()) {
-            if (nameStr.length() == 0 && baseString.length() == 0) {
-                getNameFig().setText("");
-            } else {
-                getNameFig().setText("/" + nameStr.trim() + " : " + baseString);
-            }
-        }
-        Rectangle rect = getBounds();
-        setBounds(rect.x, rect.y, rect.width, rect.height);
-        damage();
     }
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
-        // base should get it's own figtext and it's own update method
-        // TODO: remove the mee == null as soon as everything is migrated
-        if (mee == null
-	    || mee.getPropertyName().equals("base")
-	    && mee.getSource() == getOwner()) {
-            updateNameText();
-        } else {
-            super.modelChanged(mee);
+        super.modelChanged(mee);
+        if (mee instanceof AddAssociationEvent
+                || mee instanceof AttributeChangeEvent) {
+            renderingChanged();
+            updateListeners(getOwner());
+            damage();
+        }
+    }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
+    protected void updateListeners(Object newOwner) {
+        Object oldOwner = getOwner();
+        if (oldOwner != null) {
+            removeAllElementListeners();
+        }
+        /* Now, let's register for all events from all modelelements
+         * that may change the text: 
+         */
+        if (newOwner != null) {
+            addElementListener(newOwner, new String[] { "name", "base"});
+            Collection bases = Model.getFacade().getBases(newOwner);
+            Iterator i = bases.iterator();
+            while (i.hasNext()) {
+                Object base = i.next();
+                addElementListener(base, "name");
+            }
         }
     }
 
