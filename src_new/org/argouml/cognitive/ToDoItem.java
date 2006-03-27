@@ -129,36 +129,7 @@ public class ToDoItem implements Serializable, WizardItem {
      */
     public ToDoItem(Poster poster, String h, int p, String d, String m,
 		    ListSet offs) {
-        if (offs == null) {
-            throw new IllegalArgumentException(
-                    "A ListSet of offenders must be supplied.");
-        }
-        Object offender = CollectionUtil.getFirstItemOrNull(offs);
-        if (offender != null
-                && !Model.getFacade().isAModelElement(offender)
-                && !(offender instanceof Fig)
-                && !(offender instanceof Diagram)) {
-            //TODO: The cognotive system should not be aware of any other
-            // system. Find a better way to do this.
-            throw new IllegalArgumentException(
-                    "The first offender must be a model element, "
-                    + "a Fig or a Diagram");
-        }
-
-        if (offs.size() >= 2) {
-            offender = offs.elementAt(1);
-            if (!Model.getFacade().isAModelElement(offender)
-                    && !(offender instanceof Fig)
-                    && !(offender instanceof Diagram)) {
-                //TODO: The cognotive system should not be aware of any other
-                // system. Find a better way to do this.
-                throw new IllegalArgumentException(
-                        "The second offender must be a model element, "
-                        + "a Fig or a Diagram");
-            }
-        }
-        // TODO: Why do we only care about checking the first
-        // 2 offenders above?
+        checkOffs(offs);
 
         thePoster = poster;
         theHeadline = h;
@@ -221,6 +192,42 @@ public class ToDoItem implements Serializable, WizardItem {
      * @param dsgr the designer
      */
     public ToDoItem(Critic c, ListSet offs, Designer dsgr) {
+        checkOffs(offs);
+
+        thePoster = c;
+        theHeadline = c.getHeadline(offs, dsgr);
+        theOffenders = offs;
+        thePriority = c.getPriority(theOffenders, dsgr);
+        theDescription = c.getDescription(theOffenders, dsgr);
+        theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);
+        theWizard = c.makeWizard(this);
+    }
+
+    /**
+     * The constructor.
+     *
+     * @param c the poster (critic)
+     */
+    public ToDoItem(Critic c) {
+	thePoster = c;
+	theHeadline = c.getHeadline();
+	theOffenders = new ListSet();
+	thePriority = c.getPriority(null, null);
+	theDescription = c.getDescription(null, null);
+	theMoreInfoURL = c.getMoreInfoURL(null, null);
+	theWizard = c.makeWizard(this);
+    }
+
+
+    /**
+     * Check the offenders.<p>
+     *
+     * This is called from the constructors where the offenders are given.
+     *
+     * TODO: Why do we only care about checking the first 2 offenders above?
+     * @param offs The offenders.
+     */
+    private void checkOffs(ListSet offs) {
         if (offs == null) {
             throw new IllegalArgumentException(
                     "A ListSet of offenders must be supplied.");
@@ -249,35 +256,7 @@ public class ToDoItem implements Serializable, WizardItem {
                         + "a Fig or a Diagram");
             }
         }
-        // TODO: Why do we only care about checking the first
-        // 2 offenders above?
-
-        thePoster = c;
-        theHeadline = c.getHeadline(offs, dsgr);
-        theOffenders = offs;
-        thePriority = c.getPriority(theOffenders, dsgr);
-        theDescription = c.getDescription(theOffenders, dsgr);
-        theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);
-        theWizard = c.makeWizard(this);
     }
-
-
-
-    /**
-     * The constructor.
-     *
-     * @param c the poster (critic)
-     */
-    public ToDoItem(Critic c) {
-	thePoster = c;
-	theHeadline = c.getHeadline();
-	theOffenders = new ListSet();
-	thePriority = c.getPriority(null, null);
-	theDescription = c.getDescription(null, null);
-	theMoreInfoURL = c.getMoreInfoURL(null, null);
-	theWizard = c.makeWizard(this);
-    }
-
 
     // Cached expansions
     private String cachedExpandedHeadline;
