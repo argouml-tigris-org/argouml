@@ -128,7 +128,7 @@ public class Main {
         // then, print out some version info for debuggers...
         org.argouml.util.Tools.logVersionInfo();
 
-        SimpleTimer st = new SimpleTimer("Main.main");
+        SimpleTimer st = new SimpleTimer();
         st.mark("arguments");
 
         /* set properties for application behaviour */
