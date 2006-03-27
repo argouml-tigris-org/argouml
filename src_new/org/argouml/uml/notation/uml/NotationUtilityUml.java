@@ -56,7 +56,9 @@ public final class NotationUtilityUml {
     /**
      * The constructor.
      */
-    private NotationUtilityUml() {
+    private NotationUtilityUml() {}
+    
+    static {
         parameterCustomSep = new Vector();
         parameterCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
         parameterCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
