@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
@@ -48,12 +49,20 @@ import org.tigris.gef.presentation.FigPoly;
 /**
  * Action to add a note aka comment. This action adds a Comment to 0..*
  * modelelements. <p>
- * 
+ *
  * The modelelements that are present on the current diagram, are connected
  * graphically. All others are only annotated in the model.
  */
 public class ActionAddNote extends UMLAction {
 
+    /**
+     * The default position (x and y) of the new fig.
+     */
+    private static final int DEFAULT_POS = 20;
+
+    /**
+     * The distance (x and y) from other figs where we place this.
+     */
     private static final int DISTANCE = 80;
 
     /**
@@ -68,15 +77,6 @@ public class ActionAddNote extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    private boolean containsAModelElement(Collection c) {
-        Iterator i = c.iterator();
-        while (i.hasNext()) {
-            if (Model.getFacade().isAModelElement(i.next()))
-                return true;
-        }
-        return false;
-    }
-
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -84,9 +84,10 @@ public class ActionAddNote extends UMLAction {
         Collection targets = TargetManager.getInstance().getModelTargets();
 
         //Let's build the comment first, unlinked.
-        Diagram diagram = ProjectManager.getManager().getCurrentProject()
-            .getActiveDiagram();
-        Object comment = Model.getCoreFactory().buildComment(null,
+        Diagram diagram =
+            ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+        Object comment =
+            Model.getCoreFactory().buildComment(null,
                 ((UMLDiagram) diagram).getNamespace());
         MutableGraphModel mgm = (MutableGraphModel) diagram.getGraphModel();
 
@@ -104,7 +105,9 @@ public class ActionAddNote extends UMLAction {
             }
             if (Model.getFacade().isAModelElement(obj)
                     && (!(Model.getFacade().isAComment(obj)))) {
-                if (firstTarget == null) firstTarget = obj;
+                if (firstTarget == null) {
+                    firstTarget = obj;
+                }
                 /* Prevent e.g. AssociationClasses from being added trice: */
                 if (!Model.getFacade().getAnnotatedElements(comment)
                         .contains(obj)) {
@@ -112,10 +115,11 @@ public class ActionAddNote extends UMLAction {
                 }
             }
         }
-        
+
         //Create the Node Fig for the comment itself and draw it
         mgm.addNode(comment);
-        Fig noteFig = diagram.presentationFor(comment); // remember the fig for later
+        // remember the fig for later
+        Fig noteFig = diagram.presentationFor(comment);
 
         //Create the comment links and draw them
         i = Model.getFacade().getAnnotatedElements(comment).iterator();
@@ -130,45 +134,70 @@ public class ActionAddNote extends UMLAction {
             }
         }
 
-        //Calculate the position of the comment, based on the 1st target only
-        int x = 20;
-        int y = 20;
-        if (firstTarget != null) {
-            Fig elemFig = diagram.presentationFor(firstTarget);
-            if (elemFig != null) {
-                if (elemFig instanceof FigEdgeModelElement) {
-                    elemFig = ((FigEdgeModelElement) elemFig).getCommentPort();
-                }
-                if (elemFig instanceof FigNode) {
-                    // TODO: We need a better algorithm.
-                    x = elemFig.getX() + elemFig.getWidth() + DISTANCE;
-                    y = elemFig.getY();
-                    Rectangle drawingArea =
-                        ProjectBrowser.getInstance().getEditorPane().getBounds();
-                    if (x + noteFig.getWidth() > drawingArea.getX()) {
-                        x = elemFig.getX() - noteFig.getWidth() - DISTANCE;
-                        if (x < 0) {
-                            x = elemFig.getX();
-                            y = elemFig.getY() - noteFig.getHeight() - DISTANCE;
-                            if (y < 0) {
-                                y = elemFig.getY() + elemFig.getHeight() + DISTANCE;
-                                if (y + noteFig.getHeight() > drawingArea.getHeight()) {
-                                    x = 0;
-                                    y = 0;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         //Place the comment Fig on the nicest spot on the diagram
-        noteFig.setLocation(x, y);
+        noteFig.setLocation(calculateLocation(diagram, firstTarget, noteFig));
 
         //Select the new comment as target
         TargetManager.getInstance().setTarget(noteFig.getOwner());
         super.actionPerformed(ae); //update all tools' enabled status
     }
 
+    /**
+     * Calculate the position of the comment, based on the 1st target only.
+     *
+     * @param diagram The Diagram that we are working in.
+     * @param firstTarget The object element of the first found comment.
+     * @param noteFig The Fig for the comment.
+     * @return The position where it should be placed.
+     */
+    private Point calculateLocation(
+            Diagram diagram, Object firstTarget, Fig noteFig) {
+        Point point = new Point(DEFAULT_POS, DEFAULT_POS);
+
+        if (firstTarget == null) {
+            return point;
+        }
+
+        Fig elemFig = diagram.presentationFor(firstTarget);
+        if (elemFig == null) {
+            return point;
+        }
+
+        if (elemFig instanceof FigEdgeModelElement) {
+            elemFig = ((FigEdgeModelElement) elemFig).getCommentPort();
+        }
+
+        if (elemFig instanceof FigNode) {
+            // TODO: We need a better algorithm.
+            point.x = elemFig.getX() + elemFig.getWidth() + DISTANCE;
+            point.y = elemFig.getY();
+            Rectangle drawingArea =
+                ProjectBrowser.getInstance().getEditorPane().getBounds();
+            if (point.x + noteFig.getWidth() > drawingArea.getX()) {
+                point.x = elemFig.getX() - noteFig.getWidth() - DISTANCE;
+
+                if (point.x >= 0) {
+                    return point;
+                }
+
+                point.x = elemFig.getX();
+                point.y = elemFig.getY() - noteFig.getHeight() - DISTANCE;
+                if (point.y >= 0) {
+                    return point;
+                }
+
+                point.y = elemFig.getY() + elemFig.getHeight() + DISTANCE;
+                if (point.y + noteFig.getHeight() > drawingArea.getHeight()) {
+                    return new Point(0, 0);
+                }
+            }
+        }
+
+        return point;
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 6502515091619480472L;
 } /* end class ActionAddNote */
