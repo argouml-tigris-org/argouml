@@ -101,6 +101,12 @@ public final class NotationProviderFactory2 {
     public static final int TYPE_CALLSTATE = 12;
 
     /**
+     * TYPE_CLASSIFIERROLE the text shown on a 
+     * classifierrole.
+     */
+    public static final int TYPE_CLASSIFIERROLE = 13;
+
+    /**
      * defaultLanguage the Notation language used by default, i.e. UML
      */
     private NotationName defaultLanguage;

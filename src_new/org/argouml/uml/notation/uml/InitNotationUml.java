@@ -68,7 +68,8 @@ public class InitNotationUml {
                 name, ObjectFlowStateStateNotationUml.class);
         npf.addNotationProvider(NotationProviderFactory2.TYPE_CALLSTATE,
                 name, CallStateNotationUml.class);
-
+        npf.addNotationProvider(NotationProviderFactory2.TYPE_CLASSIFIERROLE,
+                name, ClassifierRoleNotationUml.class);
 
         NotationProviderFactory2.getInstance().setDefaultNotation(name);
     }
