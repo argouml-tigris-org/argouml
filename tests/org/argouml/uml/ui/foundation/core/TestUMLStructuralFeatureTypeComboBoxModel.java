@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,8 +36,24 @@ import org.argouml.ui.targetmanager.TargetEvent;
  */
 public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
 
+    /**
+     * The number of elements in the test.
+     */
+    private static final int NO_OF_ELEMENTS = 10;
+
+    /**
+     * The list of elements.
+     */
     private Object[] types;
+
+    /**
+     * The model tested.
+     */
     private UMLStructuralFeatureTypeComboBoxModel model;
+
+    /**
+     * The element.
+     */
     private Object elem;
 
     /**
@@ -61,11 +77,11 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
         model = new UMLStructuralFeatureTypeComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
-        types = new Object[10];
+        types = new Object[NO_OF_ELEMENTS];
         Object m = Model.getModelManagementFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
         Model.getCoreHelper().setNamespace(elem, m);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < NO_OF_ELEMENTS; i++) {
             types[i] = Model.getCoreFactory().createClass();
             // give them unique names so they don't get merged
             Model.getCoreHelper().setName(types[i], "type" + i);
@@ -81,7 +97,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < NO_OF_ELEMENTS; i++) {
             Model.getUmlFactory().delete(types[i]);
         }
         model = null;
@@ -92,17 +108,17 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      */
     public void testSetUp() {
         Model.getPump().flushModelEvents();
-        // One can only do this by changing target, 
+        // One can only do this by changing target,
         // so let's simulate that:
         model.targetSet(new TargetEvent(this,
                 TargetEvent.TARGET_SET,
                 new Object[0],
                 new Object[] {
-                elem,
-        }));
-        assertTrue(model.contains(types[5]));
+                    elem,
+                }));
+        assertTrue(model.contains(types[NO_OF_ELEMENTS / 2]));
         assertTrue(model.contains(types[0]));
-        assertTrue(model.contains(types[9]));
+        assertTrue(model.contains(types[NO_OF_ELEMENTS - 1]));
     }
 
     /**
@@ -111,14 +127,14 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
     public void testSetType() {
         Model.getCoreHelper().setType(elem, types[0]);
         Model.getPump().flushModelEvents();
-        // One can only do this by changing target, 
+        // One can only do this by changing target,
         // so let's simulate that:
         model.targetSet(new TargetEvent(this,
                 TargetEvent.TARGET_SET,
                 new Object[0],
                 new Object[] {
-                elem,
-        }));
+                    elem,
+                }));
         assertTrue(model.getSelectedItem() == types[0]);
     }
 
@@ -139,9 +155,9 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      * The test for removing types.
      */
     public void testRemoveType() {
-        Model.getUmlFactory().delete(types[9]);
+        Model.getUmlFactory().delete(types[NO_OF_ELEMENTS - 1]);
         Model.getPump().flushModelEvents();
-        assertTrue(!model.contains(types[9]));
+        assertTrue(!model.contains(types[NO_OF_ELEMENTS - 1]));
     }
 
 

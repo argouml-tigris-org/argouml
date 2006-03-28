@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2005 The Regents of the University of California. All
+// Copyright (c) 2002-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.CoreHelper;
 import org.argouml.model.Model;
 
 /**
@@ -35,10 +34,16 @@ import org.argouml.model.Model;
  */
 public class TestUMLModelElementElementResidenceListModel extends TestCase {
 
+    /**
+     * The element.
+     */
     private Object elem;
+
+    /**
+     * The model that we test.
+     */
     private UMLModelElementElementResidenceListModel list;
 
-    private CoreHelper helper;
     /**
      * Constructor for TestUMLModelElementElementResidenceListModel.
      * @param arg0 is the name of the test case.
@@ -52,8 +57,8 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        helper = Model.getCoreHelper();        
-        elem = Model.getUmlFactory().buildNode(
+        elem =
+            Model.getUmlFactory().buildNode(
                 Model.getMetaTypes().getUMLClass());
         list = new UMLModelElementElementResidenceListModel();
         list.setTarget(elem);
@@ -76,7 +81,7 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
      */
     public void testElementAdded() {
         Object res = Model.getCoreFactory().createElementResidence();
-        helper.addElementResidence(elem, res);
+        Model.getCoreHelper().addElementResidence(elem, res);
         Model.getPump().flushModelEvents();
         assertTrue(list.getSize() == 1);
         assertTrue(list.getElementAt(0) == res);
@@ -87,11 +92,11 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
      */
     public void testElementRemoved() {
         Object res = Model.getCoreFactory().createElementResidence();
-        helper.addElementResidence(elem, res);
+        Model.getCoreHelper().addElementResidence(elem, res);
         Model.getPump().flushModelEvents();
         assertTrue(list.getSize() == 1);
         assertTrue(list.getElementAt(0) == res);
-        helper.removeElementResidence(elem, res);
+        Model.getCoreHelper().removeElementResidence(elem, res);
         Model.getPump().flushModelEvents();
         assertTrue(list.getSize() == 0);
     }
@@ -104,8 +109,9 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
         try {
             list.getElementAt(0);
             fail();
+        } catch (ArrayIndexOutOfBoundsException a) {
+            // The correct exception is thrown.
         }
-        catch (ArrayIndexOutOfBoundsException a) { }
         assertTrue(list.size() == 0);
         assertTrue(Model.getFacade().getElementResidences(elem).isEmpty());
     }

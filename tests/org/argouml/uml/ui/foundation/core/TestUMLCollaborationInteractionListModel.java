@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,6 +36,11 @@ public class TestUMLCollaborationInteractionListModel
     extends AbstractUMLModelElementListModel2Test {
 
     /**
+     * The number of elements in the test.
+     */
+    private static final int NO_OF_ELEMENTS = 10;
+
+    /**
      * Constructor for TestUMLCollaborationInteractionListModel.
      * @param arg0 is the name of the test case.
      */
@@ -61,8 +66,8 @@ public class TestUMLCollaborationInteractionListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
     protected Object[] fillModel() {
-        Object[] inter = new Object[10];
-        for (int i = 0; i < 10; i++) {
+        Object[] inter = new Object[NO_OF_ELEMENTS];
+        for (int i = 0; i < NO_OF_ELEMENTS; i++) {
             inter[i] = Model.getCollaborationsFactory().createInteraction();
             Model.getCollaborationsHelper().setContext(inter[i], getElem());
         }
@@ -73,7 +78,7 @@ public class TestUMLCollaborationInteractionListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(Object[])
      */
     protected void removeHalfModel(Object[] elements) {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < NO_OF_ELEMENTS / 2; i++) {
             Model.getCollaborationsHelper().removeInteraction(getElem(),
                     elements[i]);
         }

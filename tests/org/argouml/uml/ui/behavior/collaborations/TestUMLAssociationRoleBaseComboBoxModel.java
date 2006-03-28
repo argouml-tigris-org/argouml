@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,8 +37,24 @@ import org.argouml.ui.targetmanager.TargetEvent;
  */
 public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
 
+    /**
+     * The count of elements that we create in this test.
+     */
+    private static final int NO_ELEMENTS_IN_TEST = 10;
+
+    /**
+     * The element that we work on.
+     */
     private Object elem;
+
+    /**
+     * The model that we work on.
+     */
     private UMLAssociationRoleBaseComboBoxModel model;
+
+    /**
+     * The list of bases that we use for the test.
+     */
     private Object[] bases;
 
     /**
@@ -63,8 +79,8 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         p.setRoot(m);
         Model.getCoreHelper().setNamespace(class1, m);
         Model.getCoreHelper().setNamespace(class2, m);
-        bases = new Object[10];
-        for (int i = 0; i < 10; i++) {
+        bases = new Object[NO_ELEMENTS_IN_TEST];
+        for (int i = 0; i < NO_ELEMENTS_IN_TEST; i++) {
             bases[i] =
 		Model.getCoreFactory().buildAssociation(class1, class2);
         }
@@ -104,10 +120,13 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
     public void testSetUp() {
         // there is one extra element due to the empty element that
         // the user can select
-        assertEquals(10 + 1, model.getSize());
-        assertTrue(model.contains(bases[5]));
+        assertEquals(NO_ELEMENTS_IN_TEST + 1, model.getSize());
+
+        // Somewhere in the middle
+        assertTrue(model.contains(bases[NO_ELEMENTS_IN_TEST / 2]));
+
         assertTrue(model.contains(bases[0]));
-        assertTrue(model.contains(bases[9]));
+        assertTrue(model.contains(bases[NO_ELEMENTS_IN_TEST - 1]));
     }
 
     /**
@@ -116,14 +135,14 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
     public void testSetBase() {
         Model.getCollaborationsHelper().setBase(elem, bases[0]);
         Model.getPump().flushModelEvents();
-        // One can only delete a assoc by changing target, 
+        // One can only delete a assoc by changing target,
         // so let's simulate that:
         model.targetSet(new TargetEvent(this,
                 TargetEvent.TARGET_SET,
                 new Object[0],
                 new Object[] {
-                elem,
-        }));
+                    elem,
+                }));
         assertTrue(model.getSelectedItem() == bases[0]);
     }
 
@@ -141,8 +160,8 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
      * Test removing the Base.
      */
     public void testRemoveBase() {
-        Model.getUmlFactory().delete(bases[9]);
-        // One can only delete a assoc by changing target, 
+        Model.getUmlFactory().delete(bases[NO_ELEMENTS_IN_TEST - 1]);
+        // One can only delete a assoc by changing target,
         // so let's simulate that:
         model.targetSet(new TargetEvent(this,
                 TargetEvent.TARGET_SET,
@@ -152,8 +171,8 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
                 }));
         // there is one extra element since removal of the base is allowed.
         Model.getPump().flushModelEvents();
-        assertEquals(9 + 1, model.getSize());
-        assertTrue(!model.contains(bases[9]));
+        assertEquals(NO_ELEMENTS_IN_TEST + 1 - 1, model.getSize());
+        assertTrue(!model.contains(bases[NO_ELEMENTS_IN_TEST - 1]));
     }
 
 }

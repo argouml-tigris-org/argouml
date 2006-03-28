@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,8 +37,19 @@ import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
  */
 public class TestUMLModelElementNameDocument extends TestCase {
 
-    private Object elem = null;
+    /**
+     * The element.
+     */
+    private Object elem;
+
+    /**
+     * The model to test.
+     */
     private UMLModelElementNameDocument model;
+
+    /**
+     * The uml model / namespace the element reside in.
+     */
     private Object ns;
 
     /**

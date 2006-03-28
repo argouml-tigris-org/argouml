@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,8 +34,24 @@ import org.argouml.model.Model;
  */
 public class TestUMLModelElementClientDependencyListModel extends TestCase {
 
-    private Object elem = null;
+    /**
+     * The number of elements used in the tests.
+     */
+    private static final int NO_OF_ELEMENTS = 10;
+
+    /**
+     * The element.
+     */
+    private Object elem;
+
+    /**
+     * The model that we test.
+     */
     private UMLModelElementClientDependencyListModel model;
+
+    /**
+     * The uml model / namespace where the element resists.
+     */
     private Object ns;
 
     /**
@@ -72,36 +88,40 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
      * Tests the programmatically adding of multiple elements to the list.
      */
     public void testAddMultiple() {
-        Object[] suppliers = new Object[10];
-        Object[] dependencies = new Object[10];
-        for (int i = 0; i < 10; i++) {
+        Object[] suppliers = new Object[NO_OF_ELEMENTS];
+        Object[] dependencies = new Object[NO_OF_ELEMENTS];
+        for (int i = 0; i < NO_OF_ELEMENTS; i++) {
             suppliers[i] = Model.getCoreFactory().buildClass(ns);
             dependencies[i] =
                 Model.getCoreFactory().buildDependency(elem, suppliers[i]);
         }
         Model.getPump().flushModelEvents();
-        assertEquals(10, model.getSize());
-        assertEquals(model.getElementAt(5), dependencies[5]);
+        assertEquals(NO_OF_ELEMENTS, model.getSize());
+        assertEquals(
+                model.getElementAt(NO_OF_ELEMENTS / 2),
+                dependencies[NO_OF_ELEMENTS / 2]);
         assertEquals(model.getElementAt(0), dependencies[0]);
-        assertEquals(model.getElementAt(9), dependencies[9]);
+        assertEquals(
+                model.getElementAt(NO_OF_ELEMENTS - 1),
+                dependencies[NO_OF_ELEMENTS - 1]);
     }
 
     /**
      * Test the removal of several elements from the list.
      */
     public void testRemoveMultiple() {
-        Object[] suppliers = new Object[10];
-        Object[] dependencies = new Object[10];
-        for (int i = 0; i < 10; i++) {
+        Object[] suppliers = new Object[NO_OF_ELEMENTS];
+        Object[] dependencies = new Object[NO_OF_ELEMENTS];
+        for (int i = 0; i < NO_OF_ELEMENTS; i++) {
             suppliers[i] = Model.getCoreFactory().buildClass(ns);
             dependencies[i] =
                 Model.getCoreFactory().buildDependency(elem, suppliers[i]);
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < NO_OF_ELEMENTS / 2; i++) {
             Model.getCoreHelper().removeClientDependency(elem, dependencies[i]);
         }
         Model.getPump().flushModelEvents();
-        assertEquals(5, model.getSize());
-        assertEquals(dependencies[5], model.getElementAt(0));
+        assertEquals(NO_OF_ELEMENTS - (NO_OF_ELEMENTS / 2), model.getSize());
+        assertEquals(dependencies[NO_OF_ELEMENTS / 2], model.getElementAt(0));
     }
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,8 +35,24 @@ import org.argouml.ui.targetmanager.TargetEvent;
  */
 public class TestUMLMessageActivatorComboBoxModel extends TestCase {
 
+    /**
+     * The number of elements that we use for the test.
+     */
+    private static final int NO_OF_ELEMENTS = 10;
+
+    /**
+     * The list of elements that we use for the test.
+     */
     private Object[] activators;
+
+    /**
+     * The model that we test.
+     */
     private UMLMessageActivatorComboBoxModel model;
+
+    /**
+     * The element that we test.
+     */
     private Object elem;
 
     /**
@@ -53,7 +69,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getCollaborationsFactory().createMessage();
-        activators = new Object[10];
+        activators = new Object[NO_OF_ELEMENTS];
         Object m = Model.getModelManagementFactory().createModel();
         Object inter =
             Model.getCollaborationsFactory().createInteraction();
@@ -62,7 +78,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
         Model.getCollaborationsHelper().setContext(inter, col);
         Model.getCoreHelper().setNamespace(col, m);
         Model.getCollaborationsHelper().addMessage(inter, elem);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < NO_OF_ELEMENTS; i++) {
             activators[i] = Model.getCollaborationsFactory().createMessage();
             Model.getCollaborationsHelper().addMessage(inter, activators[i]);
         }
@@ -78,7 +94,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < NO_OF_ELEMENTS; i++) {
             Model.getUmlFactory().delete(activators[i]);
         }
         model = null;
@@ -88,10 +104,10 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
      * Test setup.
      */
     public void testSetUp() {
-        assertEquals(10, model.getSize());
-        assertTrue(model.contains(activators[5]));
+        assertEquals(NO_OF_ELEMENTS, model.getSize());
+        assertTrue(model.contains(activators[NO_OF_ELEMENTS / 2]));
         assertTrue(model.contains(activators[0]));
-        assertTrue(model.contains(activators[9]));
+        assertTrue(model.contains(activators[NO_OF_ELEMENTS - 1]));
     }
 
     /**
@@ -100,14 +116,14 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
     public void testSetActivator() {
         Model.getCollaborationsHelper().setActivator(elem, activators[0]);
         Model.getPump().flushModelEvents();
-        // One can only do this by changing target, 
+        // One can only do this by changing target,
         // so let's simulate that:
         model.targetSet(new TargetEvent(this,
                 TargetEvent.TARGET_SET,
                 new Object[0],
                 new Object[] {
-                elem,
-        }));
+                    elem,
+                }));
         assertTrue(model.getSelectedItem() == activators[0]);
     }
 
@@ -115,10 +131,10 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
      * Test removing.
      */
     public void testRemoveBase() {
-        Model.getUmlFactory().delete(activators[9]);
+        Model.getUmlFactory().delete(activators[NO_OF_ELEMENTS - 1]);
         Model.getPump().flushModelEvents();
-        assertEquals(9, model.getSize());
-        assertTrue(!model.contains(activators[9]));
+        assertEquals(NO_OF_ELEMENTS - 1, model.getSize());
+        assertTrue(!model.contains(activators[NO_OF_ELEMENTS - 1]));
     }
 
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,13 +37,44 @@ import org.argouml.ui.targetmanager.TargetEvent;
  */
 public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
 
+    /**
+     * The number of elements used in the tests.
+     */
+    private static final int NO_OF_ELEMENTS = 10;
+
+    /**
+     * The list of elements.
+     */
     private Object[] types;
+
+    /**
+     * The model tested.
+     */
     private UMLGeneralizationPowertypeComboBoxModel model;
+
+    /**
+     * The element tested.
+     */
     private Object elem;
+
+    /**
+     * The child of the element tested (a class).
+     */
     private Object child;
+
+    /**
+     * The parent of the element tested (a class).
+     */
     private Object parent;
+
+    /**
+     * The namespace of the element.
+     */
     private Object namespace;
 
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(TestUMLGeneralizationPowertypeComboBoxModel.class);
 
@@ -73,11 +104,11 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
 					"set",
 					new Object[0],
 					new Object[] {elem}));
-        types = new Object[10];
+        types = new Object[NO_OF_ELEMENTS];
         Object m = Model.getModelManagementFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
         Model.getCoreHelper().setNamespace(elem, m);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < NO_OF_ELEMENTS; i++) {
             types[i] = Model.getCoreFactory().createClass();
             Model.getCoreHelper().addOwnedElement(m, types[i]);
         }
@@ -93,7 +124,7 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
         Model.getUmlFactory().delete(child);
         Model.getUmlFactory().delete(parent);
         Model.getUmlFactory().delete(namespace);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < NO_OF_ELEMENTS; i++) {
             Model.getUmlFactory().delete(types[i]);
         }
         model = null;
@@ -104,9 +135,9 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
      */
     public void testSetUp() {
         Model.getPump().flushModelEvents();
-        assertTrue(model.contains(types[5]));
+        assertTrue(model.contains(types[NO_OF_ELEMENTS / 2]));
         assertTrue(model.contains(types[0]));
-        assertTrue(model.contains(types[9]));
+        assertTrue(model.contains(types[NO_OF_ELEMENTS - 1]));
     }
 
     /**
@@ -116,14 +147,14 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
         LOG.info("Setting powertype");
         Model.getCoreHelper().setPowertype(elem, types[0]);
         Model.getPump().flushModelEvents();
-        // One can only do this by changing target, 
+        // One can only do this by changing target,
         // so let's simulate that:
         model.targetSet(new TargetEvent(this,
                 TargetEvent.TARGET_SET,
                 new Object[0],
                 new Object[] {
-                elem,
-        }));
+                    elem,
+                }));
         assertTrue(model.getSelectedItem() == types[0]);
         LOG.info("Powertype set");
     }
@@ -135,14 +166,14 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
         Model.getCoreHelper().setPowertype(elem, types[0]);
         Model.getCoreHelper().setPowertype(elem, null);
         Model.getPump().flushModelEvents();
-        // One can only do this by changing target, 
+        // One can only do this by changing target,
         // so let's simulate that:
         model.targetSet(new TargetEvent(this,
                 TargetEvent.TARGET_SET,
                 new Object[0],
                 new Object[] {
-                elem,
-        }));
+                    elem,
+                }));
         assertNull(model.getSelectedItem());
     }
 
@@ -150,9 +181,9 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
      * Test deletion.
      */
     public void testRemovePowertype() {
-        Model.getUmlFactory().delete(types[9]);
+        Model.getUmlFactory().delete(types[NO_OF_ELEMENTS - 1]);
         Model.getPump().flushModelEvents();
-        assertTrue(!model.contains(types[9]));
+        assertTrue(!model.contains(types[NO_OF_ELEMENTS - 1]));
     }
 
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2005 The Regents of the University of California. All
+// Copyright (c) 2002-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,12 +49,10 @@ import org.argouml.uml.diagram.state.ui.FigJoinState;
 import org.argouml.uml.diagram.state.ui.FigShallowHistoryState;
 import org.argouml.uml.diagram.state.ui.FigTransition;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.static_structure.ui.FigInstance;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigLink;
-import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.FigActor;
 import org.argouml.uml.diagram.use_case.ui.FigExtend;
@@ -82,11 +80,11 @@ public class TestItemUID extends TestCase {
      * Test the constructors.
      */
     public void testConstructors() {
-	String strs[] = {
-	    "a", "b", "c", "d", "e"
+	String[] strs = {
+	    "a", "b", "c", "d", "e",
 	};
-	ItemUID uids[] = new ItemUID[10];
-	ItemUID uids2[] = new ItemUID[strs.length];
+	ItemUID[] uids = new ItemUID[10];
+	ItemUID[] uids2 = new ItemUID[strs.length];
 	int i, j;
 
 	for (i = 0; i < uids.length; i++) {

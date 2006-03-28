@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,8 +34,24 @@ import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 public class TestUMLModelElementSupplierDependencyListModel
     extends AbstractUMLModelElementListModel2Test {
 
+    /**
+     * The number of elements used in the tests.
+     */
+    private static final int NO_OF_ELEMENTS = 10;
+
+    /**
+     * The object that the dependency is going from. A class.
+     */
     private Object from;
+
+    /**
+     * The object that the dependency is going to. A class.
+     */
     private Object to;
+
+    /**
+     * The namespace of the elements.
+     */
     private Object namespace;
 
     /**
@@ -87,8 +103,8 @@ public class TestUMLModelElementSupplierDependencyListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
     protected Object[] fillModel() {
-        Object[] ext = new Object[10];
-        for (int i = 0; i < 10; i++) {
+        Object[] ext = new Object[NO_OF_ELEMENTS];
+        for (int i = 0; i < NO_OF_ELEMENTS; i++) {
             ext[i] = Model.getCoreFactory().buildDependency(from, to);
             Model.getCoreHelper().addSupplierDependency(getElem(), ext[i]);
         }
@@ -99,7 +115,7 @@ public class TestUMLModelElementSupplierDependencyListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(Object[])
      */
     protected void removeHalfModel(Object[] elements) {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < NO_OF_ELEMENTS / 2; i++) {
             Model.getCoreHelper().removeSupplierDependency(
                     getElem(),
                     elements[i]);
