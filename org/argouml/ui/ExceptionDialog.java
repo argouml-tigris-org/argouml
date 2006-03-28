@@ -27,12 +27,17 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -51,7 +56,9 @@ import org.argouml.i18n.Translator;
 public class ExceptionDialog extends JDialog implements ActionListener {
 
     private JButton closeButton;
+    private JButton copyButton;
     private JLabel northLabel;
+    private JEditorPane textArea;
 
     /**
      * The constructor.
@@ -60,7 +67,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
      * @param e the exception
      */
     public ExceptionDialog(Frame f, Throwable e) {
-        this(f, "An error has occured.", e);
+        this(f, Translator.localize("dialog.exception.unknown.error"), e);
     }
 
     /**
@@ -89,27 +96,32 @@ public class ExceptionDialog extends JDialog implements ActionListener {
     public ExceptionDialog(Frame f, String message, Throwable e,
             boolean highlightCause) {
         super(f);
-        message += "\n" + "Please copy and paste the stack trace below "
-                + "and report an issue at http://www.argouml.org";
         setResizable(true);
         setModal(false);
-        setTitle("Error");
+        setTitle(Translator.localize("dialog.exception.title"));
 
         Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
         getContentPane().setLayout(new BorderLayout(0, 0));
 
         // the introducing label
-        northLabel = new JLabel(message);
+        northLabel = new JLabel(Translator.localize("dialog.exception.message"));
         northLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         getContentPane().add(northLabel, BorderLayout.NORTH);
 
         // the text box containing the problem messages
-        JEditorPane textArea = new JEditorPane();
+        textArea = new JEditorPane();
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
+        
         if (highlightCause && e.getCause() != null) {
-            pw.print("Cause : ");
+            // Repeat the instructions so they can click on the link
+            pw.print(Translator.localize("dialog.exception.link.report"));
+            // This text is for the developers.  It doesn't need to be localized.
+            pw.print("\n" + message);
+            pw.print("\n\nSystem Info:\n" + SystemInfoDialog.getInfo());
+            pw.print("\nError occurred at :" + new Date().toGMTString());
+            pw.print("\n  Cause : ");
             e.getCause().printStackTrace(pw);
             pw.print("-------\nFull exception : ");
         }
@@ -120,17 +132,24 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         textArea.setCaretPosition(0);
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(new JScrollPane(textArea));
-        centerPanel.setPreferredSize(new Dimension(300, 200));
+        centerPanel.setPreferredSize(new Dimension(500, 200));
         getContentPane().add(centerPanel);
 
-        // close button
+        copyButton = new JButton(Translator.localize("button.copy-to-clipboard"));
+        copyButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                copyActionPerformed(evt);
+            }
+        });
+
         closeButton = new JButton(Translator.localize("button.close"));
+        closeButton.addActionListener(this);
         JPanel bottomPanel = new JPanel();
+        
+        bottomPanel.add(copyButton);
         bottomPanel.add(closeButton);
         getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 
-        // listeners
-        closeButton.addActionListener(this);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent evt) {
                 disposeDialog();
@@ -150,13 +169,35 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         disposeDialog();
     }
 
+    /**
+     * Copy the textpane's contents to the clipboard.
+     * 
+     * @param e the action
+     */
+    private void copyActionPerformed(ActionEvent e) {
+        assert e.getSource() == copyButton;
+        String infoText = textArea.getText();
+        StringSelection contents = new StringSelection(infoText);
+        Clipboard clipboard = getToolkit().getSystemClipboard();
+        clipboard.setContents(contents, defaultClipboardOwner);
+    } // end copy_actionPerformed()
+    
     private void disposeDialog() {
         setVisible(false);
         dispose();
     }
 
+    private static ClipboardOwner defaultClipboardOwner =
+        new ClipboardObserver();
+
+    static class ClipboardObserver implements ClipboardOwner {
+        public void lostOwnership(Clipboard clipboard, Transferable contents) {
+        }
+    }
+    
     /**
      * The UID.
      */
     private static final long serialVersionUID = -2773182347529547418L;
+
 }
