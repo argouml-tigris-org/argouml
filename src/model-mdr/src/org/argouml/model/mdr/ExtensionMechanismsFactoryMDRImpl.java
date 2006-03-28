@@ -402,6 +402,16 @@ public class ExtensionMechanismsFactoryMDRImpl extends
         super.initialize(td);
         return td;
     }
+    
+    /**
+     * @see org.argouml.model.ExtensionMechanismsFactory#createStereotype()
+     */
+    public Object createStereotype() {
+        Stereotype st = nsmodel.getUmlPackage().getCore().getStereotype()
+            .createStereotype();
+        super.initialize(st);
+        return st;
+    }
 
     /**
      * @see org.argouml.model.ExtensionMechanismsFactory#copyTagDefinition(java.lang.Object, java.lang.Object)

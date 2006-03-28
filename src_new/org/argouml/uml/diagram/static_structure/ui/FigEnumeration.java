@@ -39,6 +39,7 @@ import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.EnumLiteralsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEnumLiteralsCompartment;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
+import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
@@ -95,6 +96,13 @@ public class FigEnumeration extends FigDataType
         setEnumLiteralsVisible(true);
         literalsCompartment.populate();
         setBounds(getBounds());
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#makeSelection()
+     */
+    public Selection makeSelection() {
+        return new SelectionEnumeration(this);
     }
 
     /**

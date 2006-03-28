@@ -473,6 +473,10 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new RuntimeException("Attempt to instantiate abstract type");
         } else if (elementType == metaTypes.getOperation()) {
             return getCore().createOperation();
+        } else if (elementType == metaTypes.getEnumeration()) {
+            return getCore().createEnumeration();
+        } else if (elementType == metaTypes.getStereotype()) {
+            return getExtensionMechanisms().createStereotype();
         }
         return modelElement;
     }
