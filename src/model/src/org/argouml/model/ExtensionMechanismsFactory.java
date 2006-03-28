@@ -124,6 +124,8 @@ public interface ExtensionMechanismsFactory extends Factory {
     Object createTagDefinition();
 
     /**
+     * Create an empty Stereotype element.
+     * 
      * @return a Stereotype
      */
     Object createStereotype();
