@@ -158,15 +158,13 @@ public class UMLClassDiagram extends UMLDiagram {
             getActionAttribute(),
             getActionOperation(),
             getActionAssociationClass(),
-//            null, // uncomment this to test
-//            getDataTypeActions(), // uncomment this to test
+            null,
+            getDataTypeActions(),
         };
 
         return actions;
     }
 
-    // To enable models and subsystems,
-    // add getDataTypeActions() above.
     private Object[] getDataTypeActions() {
         Object[] actions = {
             getActionDataType(),
