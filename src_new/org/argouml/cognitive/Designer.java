@@ -388,6 +388,11 @@ public final class Designer
         if (!userWorking) {
 	    return;
 	}
+        // TODO: Should we be doing anything on deleted elements?
+        // This throws an exception on remove events. - skip for now - tfm
+        if ("remove".equals(reason)) {
+            return;
+        }
         LOG.debug("critiqueASAP:" + dm);
         int addQueueIndex = addQueue.indexOf(dm);
         if (addQueueIndex == -1) {
@@ -696,9 +701,9 @@ public final class Designer
     }
 
     /**
-     * Reply this Designer's ToDoList, a list of pending problems and
+     * @return this Designer's ToDoList, a list of pending problems and
      * issues that the designer might be interested in.
-     *
+     * 
      * @see ToDoList
      */
     public ToDoList getToDoList() {
