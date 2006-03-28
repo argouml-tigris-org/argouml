@@ -46,21 +46,20 @@ import org.argouml.uml.ui.SaveGraphicsManager;
 import org.tigris.gef.base.CmdSaveGIF;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 
 /**
- * This class copies a diagram to the system clipboard, this functionality
- * will only work with Java1.4, but it will compile with 1.3. It can be put into
- * GEF as it is rather generic.
- *
+ * This class copies a diagram to the system clipboard, this functionality will
+ * only work with Java1.4, but it will compile with 1.3. It can be put into GEF
+ * as it is rather generic.
+ * 
  * @see <a href="http://java.sun.com/docs/books/tutorial/uiswing/misc/dnd.html">
- * Swing Drag and Drop
- * </a>
- * @author  alexb
+ *      Swing Drag and Drop </a>
+ * @author alexb
  * @since argoUML version 0.15.2, Created on 19 October 2003, 08:36
  */
-public class ActionSaveDiagramToClipboard
-    extends AbstractAction
-    implements ClipboardOwner {
+public class ActionSaveDiagramToClipboard extends AbstractAction implements
+        ClipboardOwner {
 
     /**
      * The constructor.
@@ -70,8 +69,9 @@ public class ActionSaveDiagramToClipboard
                 ResourceLoaderWrapper.lookupIcon("action.copy"));
     }
 
-    /** get diagram image and put in system clipboard.
-     *
+    /**
+     * get diagram image and put in system clipboard.
+     * 
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent actionEvent) {
@@ -94,28 +94,25 @@ public class ActionSaveDiagramToClipboard
                 SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 1);
 
         Editor ce = Globals.curEditor();
-        Rectangle drawingArea =
-	    ce.getLayerManager().getActiveLayer().calcDrawingArea();
+        Rectangle drawingArea = ce.getLayerManager().getActiveLayer()
+                .calcDrawingArea();
 
         // avoid GEF calcDrawingArea bug when nothing in a diagram.
-        if (drawingArea.x < 0
-	    || drawingArea.y < 0
-	    || drawingArea.width <= 0
-	    || drawingArea.height <= 0) {
+        if (drawingArea.x < 0 || drawingArea.y < 0 || drawingArea.width <= 0
+                || drawingArea.height <= 0) {
             return null;
         }
 
         boolean isGridHidden = ce.getGridHidden();
         ce.setGridHidden(true); // hide grid, otherwise can't see anything
-        Image diagramGifImage =
-	    ce.createImage(drawingArea.width * scale,
-                    drawingArea.height * scale);
+        Image diagramGifImage = ce.createImage(drawingArea.width * scale,
+                drawingArea.height * scale);
         Graphics g = diagramGifImage.getGraphics();
         if (g instanceof Graphics2D) {
             ((Graphics2D) g).scale(scale, scale);
         }
 
-	// background color.
+        // background color.
         g.setColor(new Color(CmdSaveGIF.TRANSPARENT_BG_COLOR));
         g.fillRect(0, 0, drawingArea.width * scale, drawingArea.height * scale);
         g.translate(-drawingArea.x, -drawingArea.y);
@@ -125,10 +122,11 @@ public class ActionSaveDiagramToClipboard
         return diagramGifImage;
     }
 
-    /** do nothing
-     *
+    /**
+     * do nothing
+     * 
      * @see java.awt.datatransfer.ClipboardOwner#lostOwnership(
-     * java.awt.datatransfer.Clipboard, java.awt.datatransfer.Transferable)
+     *      java.awt.datatransfer.Clipboard, java.awt.datatransfer.Transferable)
      */
     public void lostOwnership(Clipboard clipboard, Transferable transferable) {
     }
@@ -138,14 +136,17 @@ public class ActionSaveDiagramToClipboard
      */
     public boolean isEnabled() {
         Editor ce = Globals.curEditor();
-        Rectangle drawingArea =
-            ce.getLayerManager().getActiveLayer().calcDrawingArea();
+        if (ce == null || ce.getLayerManager() == null
+                || ce.getLayerManager().getActiveLayer() == null)
+            return false;
+        Layer layer = ce.getLayerManager().getActiveLayer();
+        if (layer == null)
+            return false;
+        Rectangle drawingArea = layer.calcDrawingArea();
 
         // avoid GEF calcDrawingArea bug when nothing in a diagram.
-        if (drawingArea.x < 0
-            || drawingArea.y < 0
-            || drawingArea.width <= 0
-            || drawingArea.height <= 0) {
+        if (drawingArea.x < 0 || drawingArea.y < 0 || drawingArea.width <= 0
+                || drawingArea.height <= 0) {
             return false;
         }
         return super.isEnabled();
@@ -157,7 +158,7 @@ public class ActionSaveDiagramToClipboard
  */
 class ImageSelection implements Transferable {
 
-    private DataFlavor [] supportedFlavors = {DataFlavor.imageFlavor};
+    private DataFlavor[] supportedFlavors = { DataFlavor.imageFlavor };
 
     // the diagram image data
     private Image diagramImage;
@@ -167,7 +168,7 @@ class ImageSelection implements Transferable {
         diagramImage = newDiagramImage;
     }
 
-    public synchronized DataFlavor [] getTransferDataFlavors() {
+    public synchronized DataFlavor[] getTransferDataFlavors() {
 
         return (supportedFlavors);
     }
@@ -175,15 +176,15 @@ class ImageSelection implements Transferable {
     public boolean isDataFlavorSupported(DataFlavor parFlavor) {
 
         // hack in order to be able to compile in java1.3
-        return (parFlavor.getMimeType().
-                    equals(DataFlavor.imageFlavor.getMimeType())
-            && parFlavor.getHumanPresentableName()
-                   .equals(DataFlavor.imageFlavor.getHumanPresentableName()));
+        return (parFlavor.getMimeType().equals(
+                DataFlavor.imageFlavor.getMimeType()) && parFlavor
+                .getHumanPresentableName().equals(
+                        DataFlavor.imageFlavor.getHumanPresentableName()));
 
     }
 
     public synchronized Object getTransferData(DataFlavor parFlavor)
-	throws UnsupportedFlavorException {
+            throws UnsupportedFlavorException {
 
         if (isDataFlavorSupported(parFlavor)) {
             return (diagramImage);
