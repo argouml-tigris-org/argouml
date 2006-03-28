@@ -26,22 +26,19 @@ package org.argouml.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.QuadrantPanel;
-import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.ui.explorer.ActionPerspectiveConfig;
 import org.argouml.ui.explorer.DnDExplorerTree;
 import org.argouml.ui.explorer.ExplorerTree;
 import org.argouml.ui.explorer.ExplorerTreeModel;
 import org.argouml.ui.explorer.NameOrder;
 import org.argouml.ui.explorer.PerspectiveComboBox;
-import org.argouml.ui.explorer.PerspectiveConfigurator;
 import org.argouml.ui.explorer.PerspectiveManager;
 import org.argouml.ui.explorer.TypeThenNameOrder;
 import org.tigris.toolbar.ToolBar;
@@ -128,32 +125,6 @@ class NavigatorPane
      */
     public int getQuadrant() {
         return Q_TOP_LEFT;
-    }
-
-    static class ActionPerspectiveConfig extends AbstractAction {
-        /**
-         * The constructor.
-         */
-        public ActionPerspectiveConfig() {
-            // this is not a "global" action, since it is never downlighted...
-	    super(Translator.localize("action.configure-perspectives"),
-                    ResourceLoaderWrapper.lookupIcon(
-                            "action.configure-perspectives"));
-	}
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent ae) {
-            PerspectiveConfigurator ncd =
-		new PerspectiveConfigurator(ProjectBrowser.getInstance());
-            ncd.setVisible(true);
-        }
-
-        /**
-         * The UID.
-         */
-        private static final long serialVersionUID = -8175160679969551440L;
     }
 
     /**
