@@ -855,6 +855,7 @@ public class GeneratorDisplay extends Generator2 {
      * 
      * TODO: This function is replaced. Do not use it. 
      * 
+     * @deprecated by MVW before 0.21.2 use the following:
      * @see org.argouml.notation.NotationProvider2#generateVisibility(java.lang.Object)
      */
     public String generateVisibility(Object o) {
