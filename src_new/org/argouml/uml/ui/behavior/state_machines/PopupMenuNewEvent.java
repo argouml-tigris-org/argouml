@@ -58,7 +58,7 @@ public class PopupMenuNewEvent extends JPopupMenu {
                 || role.equals(ActionNewEvent.Roles.TRIGGER)) {
             JMenu select = new JMenu();
             select.setText(Translator.localize("action.select"));
-            if (role == ActionNewEvent.Roles.DEFERRABLE_EVENT) {
+            if (role.equals(ActionNewEvent.Roles.DEFERRABLE_EVENT)) {
                 ActionAddEventAsDeferrableEvent.SINGLETON.setTarget(
                         list.getTarget());
                 select.add(ActionAddEventAsDeferrableEvent.SINGLETON);
