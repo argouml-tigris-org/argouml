@@ -2447,9 +2447,12 @@ public interface Facade {
 
     /**
      * Returns the upper bound of the multiplicity of the given element
-     * (AssociationEnd, Multiplicity or MultiplicityRange).
-     *
-     * @param handle is the model element
+     * (AssociationEnd, Multiplicity or MultiplicityRange). A value of -1
+     * corresponds to the special UML value 'unlimited' represented graphically
+     * by '*'.
+     * 
+     * @param handle
+     *            is the model element
      * @return int
      */
     int getUpper(Object handle);
