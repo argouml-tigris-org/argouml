@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -93,21 +93,25 @@ public class UMLStateDiagram extends UMLDiagram {
      * Constructor.
      *
      * @param namespace the NameSpace for the new diagram
-     * @param sm the StateMachine
+     * @param machine the StateMachine
      */
-    public UMLStateDiagram(Object namespace, Object sm) {
+    public UMLStateDiagram(Object namespace, Object machine) {
         this();
 
-        if (!Model.getFacade().isAStateMachine(sm)) {
+        if (!Model.getFacade().isAStateMachine(machine)) {
             throw new IllegalArgumentException();
         }
 
-        if (sm != null && namespace == null) {
-            Object context = Model.getFacade().getContext(sm);
+        if (machine != null && namespace == null) {
+            Object context = Model.getFacade().getContext(machine);
             if (Model.getFacade().isAClassifier(context)) {
                 namespace = context;
             } else if (Model.getFacade().isABehavioralFeature(context)) {
                 namespace = Model.getFacade().getOwner(context);
+                // TODO: Find out if this would help:
+//            } else {
+//                namespace = 
+//                    ProjectManager.getManager().getCurrentProject().getRoot();
             }
         }
 
@@ -127,7 +131,7 @@ public class UMLStateDiagram extends UMLDiagram {
             }
         }
         if (namespace != null) {
-            setup(namespace, sm);
+            setup(namespace, machine);
         }
     }
 

@@ -82,37 +82,38 @@ public final class DiagramFactory {
      * Factory method to create a new instance of a Class Diagram.
      *
      * @param type The class of rendering diagram to create
-     * @param model The model that this class diagram represents
-     * @param owningElement The modelElement which own this diagram
-     *                      (can be the model)
+     * @param namespace The namespace that (in)directly 
+     *                        owns the elements on the diagram
+     * @param context The context for the diagram
+     *                         (only: statemachine - activitygraph)
      * @return the newly instantiated class diagram
      */
-    public ArgoDiagram createDiagram(Class type, Object model,
-            Object owningElement) {
+    public ArgoDiagram createDiagram(Class type, Object namespace,
+            Object context) {
 
         ArgoDiagram diagram = null;
         Class diType = null;
 
         if (type == UMLClassDiagram.class) {
-            diagram = new UMLClassDiagram(model);
+            diagram = new UMLClassDiagram(namespace);
             diType = ClassDiagram.class;
         } else if (type == UMLUseCaseDiagram.class) {
-            diagram = new UMLUseCaseDiagram(model);
+            diagram = new UMLUseCaseDiagram(namespace);
             diType = UseCaseDiagram.class;
         } else if (type == UMLStateDiagram.class) {
-            diagram = new UMLStateDiagram(model, owningElement);
+            diagram = new UMLStateDiagram(namespace, context);
             diType = StateDiagram.class;
         } else if (type == UMLDeploymentDiagram.class) {
-            diagram = new UMLDeploymentDiagram(model);
+            diagram = new UMLDeploymentDiagram(namespace);
             diType = DeploymentDiagram.class;
         } else if (type == UMLCollaborationDiagram.class) {
-            diagram = new UMLCollaborationDiagram(model);
+            diagram = new UMLCollaborationDiagram(namespace);
             diType = CollaborationDiagram.class;
         } else if (type == UMLActivityDiagram.class) {
-            diagram = new UMLActivityDiagram(model, owningElement);
+            diagram = new UMLActivityDiagram(namespace, context);
             diType = ActivityDiagram.class;
         } else if (type == UMLSequenceDiagram.class) {
-            diagram = new UMLSequenceDiagram(model);
+            diagram = new UMLSequenceDiagram(namespace);
             diType = SequenceDiagram.class;
         }
 
@@ -128,7 +129,7 @@ public final class DiagramFactory {
              * in this first implementation.
              */
             DiDiagram dd =
-                GraphChangeAdapter.getInstance().createDiagram(diType, model);
+                GraphChangeAdapter.getInstance().createDiagram(diType, namespace);
             ((UMLMutableGraphSupport) diagram.getGraphModel()).setDiDiagram(dd);
         }
 
