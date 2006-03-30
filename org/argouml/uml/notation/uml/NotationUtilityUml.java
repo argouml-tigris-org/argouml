@@ -129,9 +129,7 @@ public final class NotationUtilityUml {
 
     /**
      * Finds a stereotype named name either in the subtree of the model rooted
-     * at root, or in the the ProfileJava model.<p>
-     *
-     * TODO: Should create the stereotype under root if it isn't found.
+     * at root, or in the the ProfileJava model.
      *
      * @param obj
      *            A ModelElement to find a suitable stereotype for.
