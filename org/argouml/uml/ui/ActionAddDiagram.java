@@ -66,14 +66,13 @@ public abstract class ActionAddDiagram extends UMLAction {
         Object ns = findNamespace();
 
         if (ns != null && isValidNamespace(ns)) {
+            super.actionPerformed(e);
             UMLDiagram diagram = createDiagram(ns);
             p.addMember(diagram);
             //TODO: make the explorer listen to project member property
             //changes...  to eliminate coupling on gui.
             ExplorerEventAdaptor.getInstance().modelElementAdded(ns);
             TargetManager.getInstance().setTarget(diagram);
-
-            super.actionPerformed(e);
         } else {
             LOG.error("No valid namespace found");
             throw new IllegalStateException("No valid namespace found");
