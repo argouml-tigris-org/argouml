@@ -114,7 +114,6 @@ round-trip engineering for C++ projects.
     <property name="debug" value="on"/>
     <property name="optimize" value="on"/>
     <property name="deprecation" value="on"/>
-    <property name="developer.lib.dir" value="${argo.build.dir}"/>
 
     <!-- Load ArgoUML properties, including the version -->
     <!-- we really need an absolute path for argo.root.dir -->
@@ -122,6 +121,7 @@ round-trip engineering for C++ projects.
     <property name="argo.root.dir" value="${basedir}/../.."/>
     <property file="${override.build.properties}"/>
     <property file="${argo.root.dir}/src_new/default.properties"/>
+    <property name="developer.lib.dir" value="${argo.build.dir}"/>
 
     <property name="module.version" value="${argo.core.version}-${DSTAMP}-${TSTAMP}"/>
 
@@ -147,14 +147,14 @@ round-trip engineering for C++ projects.
     
     <path id="module.antlr-genparser.classpath">
       <pathelement location="${antlrall.jar.path}"/>
-    </path> 
+    </path>
+ 	
+ 	<property name="argo.ant.home" value="${argo.tools.dir}/ant-1.6.2"/>
     
     <path id="ant.optional.classpath">
-      <pathelement location="${ant.home}/optional.jar"/>
-      <pathelement location="${ant.home}/libopt/ant-junit.jar"/>
+      <pathelement location="${argo.ant.home}/libopt/ant-junit.jar"/>
       <pathelement location="${junit.jar.path}"/>
       <pathelement location="${jdepend.jar.path}"/>
-      <pathelement location="${bsf.jar.path}"/>
       <pathelement location="${javasrc.jar.path}"/>
     </path>
 
@@ -203,15 +203,12 @@ round-trip engineering for C++ projects.
    
   <target name="generateparser_internal" unless="parser.is.current" 
           depends="prepare">
-    <java classname="antlr.Tool" fork="yes" maxmemory="32M">
+    <java classname="antlr.Tool" fork="yes" maxmemory="32M"  classpath="${antlrall.jar.path}">
       <!-- For debugging the parser or lexer you may want to use the options 
       -traceParser or / and -traceLexer. -->
       <arg value="-o"/>
       <arg file="${module.src.dir}/org/argouml/language/cpp/reveng"/>
       <arg file="${module.src.dir}/org/argouml/language/cpp/reveng/CppParser4Java.g"/>
-      <classpath>
-        <path refid="module.antlr-genparser.classpath"/>
-      </classpath>
     </java>
   </target>
   
@@ -231,8 +228,10 @@ round-trip engineering for C++ projects.
   <!-- =================================================================== -->
   <target name="compile" depends="generateparser" 
           description="compiles the module source code"> 
-
-    <echo message="Compiling the sources"/>
+  	
+    <available file="${argo.build.dir}/argouml.jar" property="argo.is.packaged"/>
+    <fail unless="argo.is.packaged" 
+      message="You must package ArgoUML first, e.g., argouml/src_new> ant package"/>
 
     <javac srcdir="${module.src.dir}"
            destdir="${module.build.dest}"
@@ -247,7 +246,6 @@ round-trip engineering for C++ projects.
         </classpath>
      </javac>
   </target>
-
 
   <!-- =================================================================== -->
   <!-- Creates the class package                                           -->

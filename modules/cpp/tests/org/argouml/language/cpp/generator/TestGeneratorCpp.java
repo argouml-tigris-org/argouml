@@ -76,9 +76,6 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
     /** The AInterface interface */
     private Object aInterface;
 
-    /** The AInterface::foo() operation */
-    private Object aInterfaceFooOp;
-
     /** AClass realize AInterface realization */
     private Object aRealization;
 
@@ -111,7 +108,7 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
         aInterface = getFactory().buildInterface("AInterface");
         Object voidType = ProjectManager.getManager().getCurrentProject()
                 .findType("void");
-        aInterfaceFooOp = buildOperation(aInterface, voidType, "foo");
+        buildOperation(aInterface, voidType, "foo");
     }
 
     private void setUpAExtended() {

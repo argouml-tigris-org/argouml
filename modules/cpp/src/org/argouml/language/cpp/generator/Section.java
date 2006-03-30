@@ -33,9 +33,13 @@ import org.argouml.uml.generator.AbstractSection;
  */
 public class Section extends AbstractSection {
 
+	/** No section. */
     public static final int SECT_NONE = 0;
+	/** Normal section. */
     public static final int SECT_NORMAL = 1;
+	/** Brief section. */
     public static final int SECT_BRIEF = 2;
+	/** The section to use according to user settings. */
     private static int useSections = SECT_NORMAL;
 
     static void setUseSect(int use) {
