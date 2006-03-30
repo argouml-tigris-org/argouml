@@ -99,8 +99,7 @@ public class FigStereotypeDeclaration extends FigClassifierBox {
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
-        // TODO: Make a selectionclass.
-        return null;
+        return new SelectionStereotype(this);
     }
 
     /**
