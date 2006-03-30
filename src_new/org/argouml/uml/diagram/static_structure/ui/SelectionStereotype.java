@@ -1,4 +1,4 @@
-// $Id$$
+// $Id$
 // Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -62,7 +62,7 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(SelectionDataType.class);
+        Logger.getLogger(SelectionStereotype.class);
 
     private static Icon inherit =
         ResourceLoaderWrapper.lookupIconResource("Generalization");
