@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -59,6 +59,9 @@ import org.argouml.ui.explorer.rules.GoInteractionToMessages;
 import org.argouml.ui.explorer.rules.GoLinkToStimuli;
 import org.argouml.ui.explorer.rules.GoMessageToAction;
 import org.argouml.ui.explorer.rules.GoModelElementToComment;
+import org.argouml.ui.explorer.rules.GoModelElementToContainedDiagrams;
+import org.argouml.ui.explorer.rules.GoModelElementToContainedLostElements;
+import org.argouml.ui.explorer.rules.GoModelElementToContents;
 import org.argouml.ui.explorer.rules.GoModelToBaseElements;
 import org.argouml.ui.explorer.rules.GoModelToCollaboration;
 import org.argouml.ui.explorer.rules.GoModelToDiagrams;
@@ -361,7 +364,6 @@ public final class PerspectiveManager {
          * packagePerspective.addRule(new GoOperationToCollaborationDiagram());
          */
         packagePerspective.addRule(new GoBehavioralFeatureToStateMachine());
-        packagePerspective.addRule(new GoBehavioralFeatureToStateDiagram());
         // works for both statediagram as activitygraph
         packagePerspective.addRule(new GoStatemachineToDiagram());
         packagePerspective.addRule(new GoStateMachineToState());
@@ -378,6 +380,7 @@ public final class PerspectiveManager {
         packagePerspective.addRule(new GoSubmachineStateToStateMachine());
         packagePerspective.addRule(new GoStereotypeToTagDefinition());
         packagePerspective.addRule(new GoClassifierToStateMachine());
+        packagePerspective.addRule(new GoModelElementToContainedLostElements());
 
         ExplorerPerspective diagramPerspective =
             new ExplorerPerspective(
@@ -437,6 +440,13 @@ public final class PerspectiveManager {
         transitionsPerspective.addRule(new GoTransitiontoEffect());
         transitionsPerspective.addRule(new GoTransitionToGuard());
 
+        ExplorerPerspective compositionPerspective =
+            new ExplorerPerspective(
+                "combobox.item.composite-centric");
+        compositionPerspective.addRule(new GoProjectToModel());
+        compositionPerspective.addRule(new GoModelElementToContents());
+        compositionPerspective.addRule(new GoModelElementToContainedDiagrams());
+
         Collection c = new ArrayList();
         c.add(packagePerspective);
         c.add(classPerspective);
@@ -446,6 +456,7 @@ public final class PerspectiveManager {
         c.add(residencePerspective);
         c.add(statePerspective);
         c.add(transitionsPerspective);
+        c.add(compositionPerspective);
         return c;
     }
 
@@ -478,6 +489,9 @@ public final class PerspectiveManager {
             new GoGeneralizableElementToSpecialized(),
             new GoInteractionToMessages(), new GoLinkToStimuli(),
             new GoMessageToAction(), new GoModelElementToComment(),
+            new GoModelElementToContents(),
+            new GoModelElementToContainedDiagrams(),
+            new GoModelElementToContainedLostElements(),
             new GoModelToBaseElements(), new GoModelToCollaboration(),
             new GoModelToDiagrams(), new GoModelToElements(),
             new GoModelToNode(), new GoNamespaceToClassifierAndPackage(),
@@ -503,7 +517,8 @@ public final class PerspectiveManager {
             new GoTransitionToSource(), new GoTransitionToTarget(),
             new GoTransitiontoEffect(), new GoTransitionToGuard(),
             new GoUseCaseToExtensionPoint(),
-            new GoSubmachineStateToStateMachine(), };
+            new GoSubmachineStateToStateMachine(),
+        };
 
         rules = Arrays.asList(ruleNamesArray);
     }
