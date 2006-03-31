@@ -24,43 +24,66 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Logger;
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Action to create a new statechart diagram.
  */
-public class ActionStateDiagram extends ActionAddDiagram {
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(ActionStateDiagram.class);
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
+public class ActionStateDiagram extends UndoableAction {
 
     /**
      * Constructor.
      */
     public ActionStateDiagram() {
-        super("action.state-diagram");
+        super(Translator.localize("action.state-diagram"),
+                ResourceLoaderWrapper.lookupIcon("action.state-diagram"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.state-diagram"));
     }
 
-    /**
-     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
-     */
-    public UMLDiagram createDiagram(Object handle) {
-        Object target = TargetManager.getInstance().getModelTarget();
-        Object/*MStateMachine*/ machine =
-            Model.getStateMachinesFactory().buildStateMachine(target);
+    public void actionPerformed(ActionEvent e) {
+        Project p = ProjectManager.getManager().getCurrentProject();
+
+        super.actionPerformed(e);
+        UMLDiagram diagram = createDiagram();
+        p.addMember(diagram);
+        //TODO: make the explorer listen to project member property
+        //changes...  to eliminate coupling on gui.
+        ExplorerEventAdaptor.getInstance().modelElementAdded(
+                diagram.getNamespace());
+        TargetManager.getInstance().setTarget(diagram);
+    }
+
+    private UMLDiagram createDiagram() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Object context = TargetManager.getInstance().getModelTarget();
+        Object machine = null;
+        Object model = p.getRoot();
+        if (Model.getStateMachinesHelper().isAddingStatemachineAllowed(
+              context)) {
+            machine = Model.getStateMachinesFactory().buildStateMachine(context);
+        } else {
+            machine = Model.getStateMachinesFactory().createStateMachine();
+            Model.getCoreHelper().setNamespace(machine, model);
+            Model.getStateMachinesFactory()
+                    .buildCompositeStateOnStateMachine(machine);
+        }
+        
         return (UMLDiagram) DiagramFactory.getInstance().createDiagram(
                 UMLStateDiagram.class,
                 Model.getFacade().getNamespace(machine),
@@ -68,32 +91,8 @@ public class ActionStateDiagram extends ActionAddDiagram {
     }
 
     /**
-     * Overriden since it should only be possible to add statediagrams and
-     * activitydiagrams to classifiers and behavioral features.
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() {
-        return super.shouldBeEnabled()
-            && Model.getStateMachinesHelper().isAddingStatemachineAllowed(
-                    TargetManager.getInstance().getModelTarget());
-    }
-
-    /**
-     * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(Object)
-     */
-    public boolean isValidNamespace(Object handle) {
-        if (!Model.getFacade().isANamespace(handle)) {
-            LOG.error("No namespace as argument");
-            LOG.error(handle);
-            throw new IllegalArgumentException(
-                "The argument " + handle + "is not a namespace.");
-        }
-        return Model.getStateMachinesHelper()
-            .isAddingStatemachineAllowed(handle);
-    }
-
-    /**
      * The UID.
      */
     private static final long serialVersionUID = -5197718695001757808L;
+
 } /* end class ActionStateDiagram */
