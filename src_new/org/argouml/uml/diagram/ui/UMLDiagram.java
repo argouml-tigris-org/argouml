@@ -78,10 +78,12 @@ import org.tigris.toolbar.toolbutton.ToolButton;
  * An element containing an array results in a dropdown toolbar button
  * being created which contains all the items in that array. <p>
  *
- * The "owner" of the UMLDiagram needs to be set to the one and only
+ * The "owner" of the UMLDiagram needs to be set to the
  * UML modelelement of which the diagram depends.
- * E.g. for a class diagram is that its namespace,
- * and for a collaboration diagram is that the Collaboration UML object.
+ * For a class diagram is that its namespace.
+ * For a collaboration diagram is that the Collaboration UML object.
+ * For a statechart diagram is that the statemachine.
+ * For a activitydiagram is that the activitygraph.
  * Override the getOwner method to return the owner. <p>
  *
  * TODO: MVW: I am not sure of the following:<p>
@@ -92,9 +94,13 @@ import org.tigris.toolbar.toolbutton.ToolButton;
  * MVW: I am sure about the following: <p>
  * The "namespace" of the diagram is e.g. used to register a listener
  * to the UML model, to be notified if this element is removed;
- * which will imply that this diagram has to be deleted, too.
+ * which will imply that this diagram has to be deleted, too. <p>
+ * 
  * Hence the namespace of e.g. a collaboration diagram should be the
- * represented classifier or, in case of a represented operation, its owner.
+ * represented classifier or, in case of a represented operation, the
+ * classifier that owns this operation.
+ * And the namespace of the statechart diagram should be 
+ * the namespace of its statemachine.
  */
 public abstract class UMLDiagram
     extends ArgoDiagram
@@ -250,7 +256,6 @@ public abstract class UMLDiagram
         // add the diagram as a listener to the namspace so
         // that when the namespace is removed the diagram is deleted also.
         /* Listening only to "remove" events does not work... */
-        // TODO: Check if this works now with new event pump - tfm
         Model.getPump().addModelEventListener(this, namespace);
     }
 
