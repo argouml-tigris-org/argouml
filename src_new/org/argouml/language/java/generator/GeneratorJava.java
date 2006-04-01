@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -262,7 +262,7 @@ public class GeneratorJava
     private String generateImports(Object cls, String packagePath) {
         // TODO: check also generalizations
         StringBuffer sb = new StringBuffer(80);
-        java.util.HashSet importSet = new java.util.HashSet();
+        HashSet importSet = new java.util.HashSet();
         String ftype;
         Iterator j;
         Collection c = Model.getFacade().getFeatures(cls);
@@ -271,8 +271,9 @@ public class GeneratorJava
             for (j = c.iterator(); j.hasNext();) {
                 Object mFeature = /*(MFeature)*/ j.next();
                 if (Model.getFacade().isAAttribute(mFeature)) {
-                    if ((ftype = generateImportType(Model.getFacade()
-                            .getType(mFeature), packagePath))
+                    if ((ftype =
+			    generateImportType(Model.getFacade()
+				.getType(mFeature), packagePath))
                             != null) {
                         importSet.add(ftype);
                     }
@@ -282,7 +283,8 @@ public class GeneratorJava
 			Model.getFacade().getParameters(mFeature).iterator();
                     while (it.hasNext()) {
                         Object parameter = it.next();
-			ftype = generateImportType(Model.getFacade()
+			ftype =
+			    generateImportType(Model.getFacade()
 			        .getType(parameter), packagePath);
 			if (ftype != null) {
                             importSet.add(ftype);
@@ -296,7 +298,8 @@ public class GeneratorJava
 			            .iterator();
                     while (it.hasNext()) {
                         Object parameter = it.next();
-			ftype = generateImportType(Model.getFacade()
+			ftype =
+			    generateImportType(Model.getFacade()
 			        .getType(parameter), packagePath);
                         if (ftype != null) {
                             importSet.add(ftype);
@@ -312,7 +315,8 @@ public class GeneratorJava
 			    continue;
 			}
 
-			ftype = generateImportType(Model.getFacade()
+			ftype =
+			    generateImportType(Model.getFacade()
 			        .getType(signal), packagePath);
 			if (ftype != null) {
 			    importSet.add(ftype);
@@ -458,9 +462,11 @@ public class GeneratorJava
         while (its.hasNext()) {
             Object o = its.next();
             name = Model.getFacade().getName(o);
-            if ("create".equals(name)) break;
+            if ("create".equals(name)) {
+		break;
+	    }
         }
-        if("create".equals(name)) {
+        if ("create".equals(name)) {
             // constructor
             nameStr =
                 generateName(Model.getFacade().getName(
@@ -476,9 +482,10 @@ public class GeneratorJava
         if (documented) {
             String s =
                 generateConstraintEnrichedDocComment(op, documented, INDENT);
-            if (s != null && s.trim().length() > 0)
+            if (s != null && s.trim().length() > 0) {
 		// should starts as the code piece
                 sb.append(s).append(INDENT);
+	    }
         }
 
         // 2002-07-14
@@ -498,7 +505,7 @@ public class GeneratorJava
             rp = null;
         } else {
             rp = returnParams.iterator().next();
-        } 
+        }
         if (returnParams.size() > 1)  {
             LOG.warn("Java generator only handles one return parameter"
                     + " - Found " + returnParams.size()
@@ -560,14 +567,16 @@ public class GeneratorJava
      *         java.lang.Object, boolean)
      */
     public String generateAttribute(Object attr, boolean documented) {
-        if (isFileGeneration)
+        if (isFileGeneration) {
             documented = true; // always "documented" if we generate file.
+	}
         StringBuffer sb = new StringBuffer(80);
         if (documented) {
             String s =
                 generateConstraintEnrichedDocComment(attr, documented, INDENT);
-            if (s != null && s.trim().length() > 0)
+            if (s != null && s.trim().length() > 0) {
                 sb.append(s).append(INDENT);
+	    }
         }
         //sb.append(INDENT); fixed issue 1505
         sb.append(generateCoreAttribute(attr));
@@ -587,7 +596,7 @@ public class GeneratorJava
         // actually the API of generator is buggy since to generate
         // multiplicity correctly we need the attribute too
         if (type != null && multi != null) {
-            if (Model.getFacade().getUpper(multi) == 1 ) {
+            if (Model.getFacade().getUpper(multi) == 1) {
                 sb.append(generateClassifierRef(type)).append(' ');
             } else if (Model.getFacade().isADataType(type)) {
                 sb.append(generateClassifierRef(type)).append("[] ");
@@ -600,8 +609,9 @@ public class GeneratorJava
         Object/*MExpression*/ init = Model.getFacade().getInitialValue(attr);
         if (init != null) {
             String initStr = generateExpression(init).trim();
-            if (initStr.length() > 0)
+            if (initStr.length() > 0) {
                 sb.append(" = ").append(initStr);
+	    }
         }
 
         return sb.toString();
@@ -676,8 +686,9 @@ public class GeneratorJava
         sb.append(generateConstraintEnrichedDocComment(cls, true, ""));
 
         // Now add visibility, but not for non public top level classifiers
-        if (Model.getFacade().isPublic(cls) 
-                || Model.getFacade().isAClassifier(Model.getFacade().getNamespace(cls))) {
+        if (Model.getFacade().isPublic(cls)
+                || Model.getFacade().isAClassifier(
+			Model.getFacade().getNamespace(cls))) {
             sb.append(generateVisibility(Model.getFacade().getVisibility(cls)));
         }
 
@@ -826,8 +837,9 @@ public class GeneratorJava
                     Object structuralFeature =
 			/*(MStructuralFeature)*/ strEnum.next();
 
-		    if (!first)
+		    if (!first) {
 			sb.append(LINE_SEPARATOR);
+		    }
 		    sb.append(INDENT);
                     sb.append(generate(structuralFeature));
 
@@ -997,14 +1009,14 @@ public class GeneratorJava
             }
 
             // pick out return type
-            Collection returnParams = Model.getCoreHelper()
-                    .getReturnParameters(op);
+            Collection returnParams =
+		Model.getCoreHelper().getReturnParameters(op);
             Object rp;
             if (returnParams.size() == 0) {
                 rp = null;
             } else {
                 rp = returnParams.iterator().next();
-            } 
+            }
             if (returnParams.size() > 1)  {
                 LOG.warn("Java generator only handles one return parameter"
                         + " - Found " + returnParams.size()
@@ -1053,11 +1065,13 @@ public class GeneratorJava
     }
 
     private String generateTaggedValues(Object e) {
-        if (isInUpdateMode)
+        if (isInUpdateMode) {
             return ""; // no tagged values are generated in update mode.
+	}
         Iterator iter = Model.getFacade().getTaggedValues(e);
-        if (iter == null)
+        if (iter == null) {
             return "";
+	}
         boolean first = true;
         StringBuffer buf = new StringBuffer();
         String s = null;
@@ -1107,8 +1121,9 @@ public class GeneratorJava
          *
          * which caused problems with new-lines in tagged values.
          */
-        if (!first)
+        if (!first) {
             buf.append("}*/").append(LINE_SEPARATOR);
+	}
 
         return buf.toString();
     }
@@ -1117,14 +1132,17 @@ public class GeneratorJava
      * @see org.argouml.notation.NotationProvider2#generateTaggedValue(java.lang.Object)
      */
     public String generateTaggedValue(Object tv) {
-        if (tv == null)
+        if (tv == null) {
             return "";
+	}
         String s = generateUninterpreted(Model.getFacade().getValueOfTag(tv));
-        if (s == null || s.length() == 0 || s.equals("/** */"))
+        if (s == null || s.length() == 0 || s.equals("/** */")) {
             return "";
+	}
         String t = Model.getFacade().getTagOfTag(tv);
-        if ("documentation".equals(t))
+        if ("documentation".equals(t)) {
             return "";
+	}
         return generateName(t) + "=" + s;
     }
 
@@ -1255,7 +1273,7 @@ public class GeneratorJava
         class TagExtractor extends DepthFirstAdapter {
             private LinkedList llsTags = new LinkedList();
             private String constraintName;
-            private int constraintID = 0;
+            private int constraintID;
 
             /**
              * Constructor.
@@ -1586,7 +1604,6 @@ public class GeneratorJava
      *
      * @param m the Multiplicity.
      * @return a human readable String.
-     * @see #generateMultiplicityRange(Object)
      */
     public String generateMultiplicity(Object m) {
         if (m == null || "1".equals(Model.getFacade().toString(m))) {

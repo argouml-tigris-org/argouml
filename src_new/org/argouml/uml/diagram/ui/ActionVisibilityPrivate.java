@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,7 +31,6 @@ class ActionVisibilityPrivate extends AbstractActionRadioMenuItem {
      * The constructor.
      *
      * @param o the target
-     * @param element TODO:
      */
     public ActionVisibilityPrivate(Object o) {
         super("checkbox.visibility.private-uc", NO_ICON);
@@ -41,7 +40,7 @@ class ActionVisibilityPrivate extends AbstractActionRadioMenuItem {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement.AbstractActionRadioMenuItem#toggleValueOfTarget(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.AbstractActionRadioMenuItem#toggleValueOfTarget(java.lang.Object)
      */
     void toggleValueOfTarget(Object t) {
         Model.getCoreHelper().setVisibility(t,
@@ -52,7 +51,7 @@ class ActionVisibilityPrivate extends AbstractActionRadioMenuItem {
      * Make use of the default visibility, which is public...
      * TODO: centralise this knowledge.
      *
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement.AbstractActionRadioMenuItem#valueOfTarget(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.AbstractActionRadioMenuItem#valueOfTarget(java.lang.Object)
      */
     Object valueOfTarget(Object t) {
         Object v = Model.getFacade().getVisibility(t);

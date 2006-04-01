@@ -54,10 +54,12 @@ import org.xml.sax.helpers.DefaultHandler;
 public class PGMLStackParser
     extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(PGMLStackParser.class);
 
-    
     /**
      * Constructor.
      * @param modelElementsByUuid a map of model elements indexed
@@ -75,7 +77,7 @@ public class PGMLStackParser
     }
 
     /**
-     * @see org.argouml.gef.HandlerFactory#getHandler(
+     * @see org.tigris.gef.persistence.pgml.HandlerFactory#getHandler(
      *         HandlerStack, Object, String, String, String, Attributes)
      */
     public DefaultHandler getHandler(HandlerStack stack,
@@ -113,11 +115,11 @@ public class PGMLStackParser
     }
 
     /**
-     * @see org.argouml.gef.PGMLStackParser#setAttrs(
+     * @see org.tigris.gef.persistence.pgml.PGMLStackParser#setAttrs(
      *         org.tigris.gef.presentation.Fig, org.xml.sax.Attributes)
      * TODO: Change to protected here and in GEF
      */
-    final public void setAttrs(Fig f, Attributes attrList) throws SAXException {
+    public final void setAttrs(Fig f, Attributes attrList) throws SAXException {
         if (f instanceof FigGroup) {
             FigGroup group = (FigGroup) f;
             String clsNameBounds = attrList.getValue("description");
@@ -145,31 +147,34 @@ public class PGMLStackParser
                 setStyleAttributes(group, attributeMap);
             }
         }
-        
-        // TODO Code within these comments should be removed and replaced with
+
+        // TODO: Code within these comments should be removed and replaced with
         // the commented out line once issue
         // http://argouml.tigris.org/issues/show_bug.cgi?id=4020 and
-        // http://argouml.tigris.org/issues/show_bug.cgi?id=4021 have been resolved
-        
+        // http://argouml.tigris.org/issues/show_bug.cgi?id=4021 have been
+	// resolved
+
         //super.setAttrs(f, attrList);
-        
+
         String name = attrList.getValue("name");
         if (name != null && !name.equals("")) {
             registerFig(f, name);
         }
-        
+
         setCommonAttrs(f, attrList);
-        
+
         String owner = attrList.getValue("href");
         if (owner != null && !owner.equals("") && !(f instanceof FigEdgeNote)) {
             Object modelElement = findOwner(owner);
             if (modelElement == null) {
-                throw new SAXException("Found href of " + owner + " with no matching element in model");
+                throw new SAXException("Found href of " + owner
+				       + " with no matching element in model");
             }
             if (f.getOwner() != modelElement) {
                 f.setOwner(modelElement);
             } else {
-                LOG.info("Ignoring href on " + f.getClass().getName() + " as it's already set");
+                LOG.info("Ignoring href on " + f.getClass().getName()
+			 + " as it's already set");
             }
         }
     }

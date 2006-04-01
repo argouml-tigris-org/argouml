@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,7 +49,7 @@ public class UMLComboBox2
     /**
      * Constructor for UMLComboBox2.
      * @deprecated As of ArgoUml version unknown (before 0.13.5),
-     * replaced by {@link #UMLComboBox2(UMLComboBoxModel2, UMLAction, boolean)}
+     * replaced by {@link #UMLComboBox2(UMLComboBoxModel2, Action, boolean)}
      * @param arg0 the ComboBoxModel
      */
     protected UMLComboBox2(UMLComboBoxModel2 arg0) {
@@ -103,7 +103,8 @@ public class UMLComboBox2
     protected void doIt(ActionEvent event) { }
 
     /**
-     * Utility method to get the current target
+     * Utility method to get the current target.
+     *
      * @return Object
      */
     public Object getTarget() {

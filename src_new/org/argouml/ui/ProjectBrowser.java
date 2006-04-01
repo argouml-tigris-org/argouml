@@ -116,7 +116,7 @@ public final class ProjectBrowser
      * Default height.
      */
     public static final int DEFAULT_COMPONENTHEIGHT = 200;
-    
+
     /**
      * Logger.
      */
@@ -224,10 +224,10 @@ public final class ProjectBrowser
     private ProjectBrowser(String applicationName, SplashScreen splash) {
         super(applicationName);
         theInstance = this;
-        
+
         saveAction = new ActionSaveProject();
         ProjectManager.getManager().setSaveAction(saveAction);
-        
+
         if (splash != null) {
 	    splash.getStatusBar().showStatus(
 	        Translator.localize("statusmsg.bar.making-project-browser"));
@@ -1265,7 +1265,7 @@ public final class ProjectBrowser
                     + "Rerun ArgoUML with the heap size increased.",
                     showUI);
             } catch (Exception ex) {
-                
+
                 String knownError = XMIParser.getSingleton().getErrorMessage();
                 if (knownError != null) {
                     reportError(knownError, showUI);
@@ -1276,10 +1276,11 @@ public final class ProjectBrowser
                         "Could not load the project "
                         + file.getName()
                         + " some error was found.\n"
-                        + "Please try loading with the latest version of ArgoUML "
-                        + "which you can download from http://argouml.tigris.org\n"
-                        + "If you have no further success then please report the "
-                        + "exception below.",
+                        + "Please try loading with the latest version of "
+                        + "ArgoUML which you can download from "
+			+ "http://argouml.tigris.org\n"
+                        + "If you have no further success then please report "
+                        + "the exception below.",
                         showUI, ex);
                 }
                 success = false;
@@ -1288,7 +1289,7 @@ public final class ProjectBrowser
                 // Make sure save action is always reinstated
                 this.saveAction = saveAction;
                 ProjectManager.getManager().setSaveAction(saveAction);
-                
+
                 if (!LastLoadInfo.getInstance().getLastLoadStatus()) {
                     p = oldProject;
                     success = false;
@@ -1321,7 +1322,7 @@ public final class ProjectBrowser
                         ProjectManager.getManager().setCurrentProject(p);
                         ProjectManager.getManager().removeProject(oldProject);
                         saveAction.setEnabled(false);
-                    } 
+                    }
                 }
 
                 if (p == null) {
@@ -1432,7 +1433,7 @@ public final class ProjectBrowser
     }
 
     /**
-     * @see org.argouml.uml.ui.ActionSaveProject#trySave(boolean)
+     * @see #trySave(boolean)
      */
     public boolean trySaveAs(boolean overwrite) {
         File f = getNewFile();

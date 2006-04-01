@@ -232,7 +232,6 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
          * Constructor.
          *
          * @param parser
-         * @param classifierRole
          */
         FigLifeLineHandler(PGMLStackParser parser,
                 FigLifeLine lifeLine) {

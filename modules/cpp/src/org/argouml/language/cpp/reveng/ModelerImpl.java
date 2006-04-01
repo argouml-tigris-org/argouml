@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,6 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.language.cpp.reveng;
 
 import java.util.Collection;
@@ -39,7 +40,7 @@ import org.argouml.model.UUIDManager;
  * implements part and delegates the rest of the implementation that transforms
  * the parsed information from a C++ translation unit into UML model elements
  * and updating the model with it.
- * 
+ *
  * @author euluis
  * @since 0.19.3
  */
@@ -68,6 +69,9 @@ public class ModelerImpl implements Modeler {
 
     private boolean ignoreableFunctionDefinition;
 
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(ModelerImpl.class);
 
     /**
@@ -92,8 +96,10 @@ public class ModelerImpl implements Modeler {
             Object parentNs = getCurrentNamespace();
             Object ns = findNamespace(nsName, parentNs);
             if (ns == null) {
-                ns = Model.getModelManagementFactory().buildPackage(nsName,
-                    UUIDManager.getInstance().getNewUUID());
+                ns =
+		    Model.getModelManagementFactory().buildPackage(
+			    nsName,
+			    UUIDManager.getInstance().getNewUUID());
                 Model.getCoreHelper().setNamespace(ns, parentNs);
             }
             contextStack.push(ns);
@@ -103,7 +109,7 @@ public class ModelerImpl implements Modeler {
     /**
      * Get the current namespace from the {@link #contextStack contextStack}or
      * the model.
-     * 
+     *
      * @return the parent namespace
      */
     private Object getCurrentNamespace() {
@@ -120,14 +126,14 @@ public class ModelerImpl implements Modeler {
     /**
      * Find the namespace with the given name which parent is
      * <code>parentNs</code>.
-     * 
+     *
      * @param nsName namespace name
      * @param parentNs the parent namespace of the namespace to get
      * @return the namespace if it exists, <code>null</code> otherwise.
      */
     private static Object findNamespace(String nsName, Object parentNs) {
-        Collection nss = Model.getModelManagementHelper().getAllNamespaces(
-            getModel());
+        Collection nss =
+	    Model.getModelManagementHelper().getAllNamespaces(getModel());
         Iterator it = nss.iterator();
         Object ns = null;
         while (it.hasNext()) {
@@ -195,7 +201,8 @@ public class ModelerImpl implements Modeler {
                 contextAccessSpecifier = Model.getVisibilityKind().getPrivate();
             } else if (CPPvariables.OT_STRUCT.equals(oType)) {
                 contextAccessSpecifier = Model.getVisibilityKind().getPublic();
-                Object classSpecifierTV = Model.getExtensionMechanismsFactory()
+                Object classSpecifierTV =
+		    Model.getExtensionMechanismsFactory()
                         .buildTaggedValue(ProfileCpp.TV_NAME_CLASS_SPECIFIER,
                             "struct");
                 Model.getCoreHelper().addTaggedValue(cls, classSpecifierTV);
@@ -203,8 +210,8 @@ public class ModelerImpl implements Modeler {
                 // TODO: implement union specifics.
                 ;
             } else {
-                assert false 
-                : "Not expecting any other oType than class, struct and " 
+                assert false
+                : "Not expecting any other oType than class, struct and "
                     + "union!";
             }
         }
@@ -212,7 +219,7 @@ public class ModelerImpl implements Modeler {
 
     /**
      * Find a class within the given namespace that has the given identifier.
-     * 
+     *
      * @param identifier the class identifier
      * @param ns namespace to look in
      * @return the class if found, null otherwise
@@ -246,7 +253,7 @@ public class ModelerImpl implements Modeler {
      * won't work. This must be implemented in a stack scheme, where the
      * constructs that can work with access specifiers will need to manage the
      * stack.
-     * 
+     *
      * @see org.argouml.language.cpp.reveng.Modeler#accessSpecifier(java.lang.String)
      */
     public void accessSpecifier(String accessSpec) {
@@ -254,8 +261,8 @@ public class ModelerImpl implements Modeler {
             if ("public".equals(accessSpec)) {
                 contextAccessSpecifier = Model.getVisibilityKind().getPublic();
             } else if ("protected".equals(accessSpec)) {
-                contextAccessSpecifier = Model.getVisibilityKind()
-                        .getProtected();
+                contextAccessSpecifier =
+		    Model.getVisibilityKind().getProtected();
             } else if ("private".equals(accessSpec)) {
                 contextAccessSpecifier = Model.getVisibilityKind().getPrivate();
             } else {
@@ -274,9 +281,10 @@ public class ModelerImpl implements Modeler {
             // here.
             Object returnType = getVoid();
             Object oper = buildOperation(contextStack.peek(), returnType);
-            if (contextAccessSpecifier != null)
+            if (contextAccessSpecifier != null) {
                 Model.getCoreHelper().setVisibility(oper,
                     contextAccessSpecifier);
+	    }
             contextStack.push(oper);
         }
     }
@@ -290,7 +298,7 @@ public class ModelerImpl implements Modeler {
 
     /**
      * Create a operation in the given model element.
-     * 
+     *
      * @param me the model element for which to build the operation
      * @param returnType the operation return type
      * @return the operation
@@ -303,7 +311,7 @@ public class ModelerImpl implements Modeler {
 
     /**
      * Retrieve the property change listeners for the given model element.
-     * 
+     *
      * @param me the model element
      * @return property change listeners for me
      */
@@ -327,7 +335,7 @@ public class ModelerImpl implements Modeler {
     /**
      * Check if the given operation is a duplicate of other already existing
      * operation and if so remove it.
-     * 
+     *
      * @param oper the operation to be checked
      */
     private void removeOperationIfDuplicate(Object oper) {
@@ -350,13 +358,13 @@ public class ModelerImpl implements Modeler {
 
     /**
      * Compare the parameters of two operations.
-     * 
+     *
      * @param oper1 left hand side operation
      * @param oper2 right hand side operation
      * @return true if the parameters are equal - the same types given in the
      *         same order
      */
-    private boolean equalParameters(Object oper, Object oper2) {
+    private boolean equalParameters(Object oper1, Object oper2) {
         // TODO: implementation.
         return true;
     }
@@ -376,25 +384,29 @@ public class ModelerImpl implements Modeler {
         if (!ignore()) {
             StringBuffer stsString = new StringBuffer();
             Iterator i = sts.iterator();
-            while (i.hasNext())
+            while (i.hasNext()) {
                 stsString.append(i.next().toString()).append(" ");
+	    }
             Object theType = findOrCreateType(stsString.toString().trim());
             // now, depending on the context, this might be the return type of a
             // function declaration or an attribute of a class or a variable
             // declaration; of course, this is rather incomplete(!)
             if (Model.getFacade().isAOperation(contextStack.peek())) {
                 // set the operation return type
-                Object rv = Model.getCoreHelper().getReturnParameter(
-                    contextStack.peek());
+                Object rv =
+		    Model.getCoreHelper().getReturnParameter(
+			contextStack.peek());
                 Model.getCoreHelper().setType(rv, theType);
 
             } else if (Model.getFacade().isAClass(contextStack.peek())) {
-                Object attr = Model.getCoreFactory().buildAttribute(
-                    contextStack.peek(), getModel(), theType,
-                    getPropertyChangeListeners(contextStack.peek()));
-                if (contextAccessSpecifier != null)
+                Object attr =
+		    Model.getCoreFactory().buildAttribute(
+			    contextStack.peek(), getModel(), theType,
+			    getPropertyChangeListeners(contextStack.peek()));
+                if (contextAccessSpecifier != null) {
                     Model.getCoreHelper().setVisibility(attr,
                         contextAccessSpecifier);
+		}
                 contextStack.push(attr);
             } else if (Model.getFacade().isAParameter(contextStack.peek())) {
                 Model.getCoreHelper().setType(contextStack.peek(), theType);
@@ -403,11 +415,12 @@ public class ModelerImpl implements Modeler {
     }
 
     /**
-     * Finds or creates a type with the given name. This method delegates the
-     * call to ArgoUML helper method, but, first takes care of C++ specific
-     * issues, such as pointer and reference stripping and buit-in types which
-     * shouldn't be created as classes (the way ArgoUML does), but, as DataType.
-     * 
+     * Finds or creates a type with the given name. This method
+     * delegates the call to ArgoUML helper method, but, first takes
+     * care of C++ specific issues, such as pointer and reference
+     * stripping and buit-in types which shouldn't be created as
+     * classes (the way ArgoUML does), but, as DataType.
+     *
      * @param typeName the name of the type
      * @return A model element that represents the given type
      */
@@ -418,17 +431,18 @@ public class ModelerImpl implements Modeler {
         if (ProfileCpp.isBuiltIn(typeName)) {
             theType = ProfileCpp.getBuiltIn(typeName);
         } else {
-            theType = ProjectManager.getManager().getCurrentProject().findType(
-                typeName.toString(), true);
+            theType =
+		ProjectManager.getManager().getCurrentProject().findType(
+			typeName.toString(), true);
         }
         return theType;
     }
 
     /**
-     * Process a type specification by stripping pointer operators from the type
-     * name and processing them to tagged values that are added to the provide
-     * list.
-     * 
+     * Process a type specification by stripping pointer operators
+     * from the type name and processing them to tagged values that
+     * are added to the provide list.
+     *
      * @param typeName unprocessed C++ type name
      * @param taggedValues list of tagged values where any processing result is
      *            added to
@@ -455,13 +469,13 @@ public class ModelerImpl implements Modeler {
     /**
      * Check if the given attribute is a duplicate of other already existing
      * attribute and if so remove it.
-     * 
-     * FIXME: this method is very similar to the
-     * {@link #removeOperationIfDuplicate(Object) removeOperationIfDuplicate}
-     * method. Both are related to the removal of a Feature from a Classifier if
-     * the Feature is duplicated in the Classifier. I think this may be
-     * refactored in the future...
-     * 
+     *
+     * FIXME: this method is very similar to the {@link
+     * #removeOperationIfDuplicate(Object) removeOperationIfDuplicate}
+     * method. Both are related to the removal of a Feature from a
+     * Classifier if the Feature is duplicated in the Classifier. I
+     * think this may be refactored in the future...
+     *
      * @param attr the attribute to be checked and possibly removed
      */
     private void removeAttributeIfDuplicate(Object attr) {
@@ -558,9 +572,11 @@ public class ModelerImpl implements Modeler {
             Object oper = contextStack.peek();
             if (Model.getFacade().isAOperation(oper)) {
                 // create a parameter within the operation
-                Object param = Model.getCoreFactory().buildParameter(oper,
-                    getModel(), getVoid(),
-                    getPropertyChangeListeners(contextStack.peek()));
+                Object param =
+		    Model.getCoreFactory().buildParameter(
+			    oper,
+			    getModel(), getVoid(),
+			    getPropertyChangeListeners(contextStack.peek()));
                 // add the created parameter to the stack
                 contextStack.push(param);
             }
@@ -646,7 +662,8 @@ public class ModelerImpl implements Modeler {
      */
     public void beginPtrOperator() {
         if (!ignore()) {
-            Object ptrTV = Model.getExtensionMechanismsFactory()
+            Object ptrTV =
+		Model.getExtensionMechanismsFactory()
                     .buildTaggedValue("dummy", "");
             contextStack.push(ptrTV);
         }
@@ -674,7 +691,8 @@ public class ModelerImpl implements Modeler {
                 Object discardedTV = contextStack.pop();
                 assert Model.getFacade().isATaggedValue(discardedTV);
 
-                Object refTV = Model.getExtensionMechanismsFactory()
+                Object refTV =
+		    Model.getExtensionMechanismsFactory()
                         .buildTaggedValue("reference", "true");
                 contextStack.push(refTV);
 
@@ -683,7 +701,8 @@ public class ModelerImpl implements Modeler {
                 Object discardedTV = contextStack.pop();
                 assert Model.getFacade().isATaggedValue(discardedTV);
 
-                Object ptrTV = Model.getExtensionMechanismsFactory()
+                Object ptrTV =
+		    Model.getExtensionMechanismsFactory()
                         .buildTaggedValue("pointer", "true");
                 contextStack.push(ptrTV);
             } else {
@@ -709,8 +728,9 @@ public class ModelerImpl implements Modeler {
      * @see org.argouml.language.cpp.reveng.Modeler#beginBaseSpecifier()
      */
     public void beginBaseSpecifier() {
-        if (!ignore())
+        if (!ignore()) {
             baseSpecifierModeler = new BaseSpecifierModeler();
+	}
     }
 
     /**
@@ -728,8 +748,9 @@ public class ModelerImpl implements Modeler {
      *      boolean)
      */
     public void baseSpecifier(String identifier, boolean isVirtual) {
-        if (!ignore())
+        if (!ignore()) {
             baseSpecifierModeler.baseSpecifier(identifier, isVirtual);
+	}
     }
 
     /**
@@ -753,15 +774,15 @@ public class ModelerImpl implements Modeler {
         }
 
         /**
-         * 
+         *
          * @param identifier the base class identifier
          * @param isVirtual flags virtual inheritance
          */
         void baseSpecifier(String identifier, boolean isVirtual) {
             // create a generalization for the current class
             Object parent = findOrCreateType(identifier);
-            generalization = findOrCreateGeneralization(parent, contextStack
-                    .peek());
+            generalization =
+		findOrCreateGeneralization(parent, contextStack.peek());
             Model.getCoreHelper().setTaggedValue(generalization,
                 ProfileCpp.TV_VIRTUAL_INHERITANCE, Boolean.toString(isVirtual));
         }
@@ -786,19 +807,20 @@ public class ModelerImpl implements Modeler {
     /**
      * Find or create a Generalization between the given parent and child
      * Classifiers.
-     * 
+     *
      * @param parent the parent Classifier
      * @param child the child Classifier
      * @return the found Generalization model element if found, otherwise a
      *         newly created
      */
-    private static Object findOrCreateGeneralization(Object parent, 
+    private static Object findOrCreateGeneralization(Object parent,
             Object child) {
-        Object generalization = Model.getFacade().getGeneralization(child,
-            parent);
-        if (generalization == null)
-            generalization = Model.getCoreFactory().buildGeneralization(child,
-                parent);
+        Object generalization =
+	    Model.getFacade().getGeneralization(child, parent);
+        if (generalization == null) {
+            generalization =
+		Model.getCoreFactory().buildGeneralization(child, parent);
+	}
         return generalization;
     }
 
@@ -818,19 +840,21 @@ public class ModelerImpl implements Modeler {
     }
 
     /**
-     * Helper method that gets a stereotype for the given model element with the
-     * given name.
-     * 
+     * Helper method that gets a stereotype for the given model
+     * element with the given name.
+     *
      * TODO: this might be a performance bottleneck. If so, caching of
      * stereotypes for model elements by their stereotypes names could fix it.
-     * 
-     * @param modelElement the model element for which to look for the
+     *
+     * @param modelElement The model element for which to look for the
      *            stereotype with the given name
+     * @param stereotypeName The name of the stereotype.
      * @return the stereotype model element or null if not found.
      */
     private Object getStereotype(Object modelElement, String stereotypeName) {
         Object stereotype = null;
-        Collection stereotypes = Model
+        Collection stereotypes =
+	    Model
                 .getExtensionMechanismsHelper()
                 .getAllPossibleStereotypes(
                     ProjectManager.getManager().getCurrentProject().getModels(),
@@ -850,8 +874,9 @@ public class ModelerImpl implements Modeler {
      * @see org.argouml.language.cpp.reveng.Modeler#endCtorDefinition()
      */
     public void endCtorDefinition() {
-        if (!ignore())
+        if (!ignore()) {
             ctorModeler.finish();
+	}
     }
 
     /**
@@ -872,7 +897,7 @@ public class ModelerImpl implements Modeler {
         /**
          * Initializes the XtorModeler with the stereotypeName, creates the
          * operation in the class and sets the stereotype with the given name.
-         * 
+         *
          * @param stereotypeName "create" for ctors and "destroy" for dtors.
          */
         XtorModeler(String stereotypeName) {
@@ -888,7 +913,7 @@ public class ModelerImpl implements Modeler {
         /**
          * Checks if the given operation is the xtor (e.g. the modeled
          * constructor or destructor).
-         * 
+         *
          * @param oper the operation to check
          * @return true if the oper is the modeled xtor
          */
@@ -919,7 +944,7 @@ public class ModelerImpl implements Modeler {
 
         /**
          * Sets the name of the ctor operation to the identifier.
-         * 
+         *
          * @param identifier
          */
         void qualifiedCtorId(String identifier) {

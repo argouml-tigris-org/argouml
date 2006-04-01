@@ -41,7 +41,7 @@ import org.argouml.uml.ui.PropPanel;
  *         Call registration in the Details Tabs subsystem from
  *         {@link org.argouml.moduleloader.ModuleInterface#enable()}.
  *         The needed registration is not currently available. Add it first!
- *         See {@link org.argouml.uml.ui.TabProps.moduleLoaded(
+ *         See {@link org.argouml.uml.ui.TabProps#moduleLoaded(
  *         ArgoModuleEvent event)}
  */
 public interface PluggablePropertyPanel extends Pluggable {
