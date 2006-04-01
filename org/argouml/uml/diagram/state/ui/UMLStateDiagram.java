@@ -93,29 +93,23 @@ public class UMLStateDiagram extends UMLDiagram {
      * Constructor.
      *
      * @param namespace the NameSpace for the new diagram
-     * @param machine the StateMachine
+     * @param machine the StateMachine for the new diagram
      */
     public UMLStateDiagram(Object namespace, Object machine) {
         this();
 
         if (!Model.getFacade().isAStateMachine(machine)) {
+            throw new IllegalStateException(
+                "No StateMachine given to create a Statechart diagram");
+        }
+        if (namespace == null) {
+            namespace = getNamespaceFromMachine(machine);
+        }
+        if (!Model.getFacade().isANamespace(namespace)) {
             throw new IllegalArgumentException();
         }
 
-        if (machine != null && namespace == null) {
-            Object context = Model.getFacade().getContext(machine);
-            if (Model.getFacade().isAClassifier(context)) {
-                namespace = context;
-            } else if (Model.getFacade().isABehavioralFeature(context)) {
-                namespace = Model.getFacade().getOwner(context);
-                // TODO: Find out if this would help:
-//            } else {
-//                namespace = 
-//                    ProjectManager.getManager().getCurrentProject().getRoot();
-            }
-        }
-
-        if (namespace != null && Model.getFacade().getName(namespace) != null) {
+        if (Model.getFacade().getName(namespace) != null) {
             if (!Model.getFacade().getName(namespace).trim().equals("")) {
                 String name = null;
                 String diagramName = Model.getFacade().getName(namespace);
@@ -130,13 +124,46 @@ public class UMLStateDiagram extends UMLDiagram {
                 } catch (PropertyVetoException pve) { }
             }
         }
-        if (namespace != null) {
-            setup(namespace, machine);
-        }
+        setup(namespace, machine);
     }
 
     /**
-     * The owner of a statechart diagram is the statechart diagram
+     * From a given StateMachine, find the Namespace. 
+     * Guaranteed to give a non-null result.
+     * 
+     * @param machine the given StateMachine. 
+     *          If not a StateMachine: throws exception
+     * @return the best possible namespace to be deducted
+     */
+    private Object getNamespaceFromMachine(Object machine) {
+        if (!Model.getFacade().isAStateMachine(machine)) {
+            throw new IllegalStateException(
+            "No StateMachine given to create a Statechart diagram");
+        }
+        
+        Object namespace = Model.getFacade().getNamespace(machine);
+        if (namespace != null) return namespace;
+        
+        Object context = Model.getFacade().getContext(machine);
+        if (Model.getFacade().isAClassifier(context)) {
+            namespace = context;
+        } else if (Model.getFacade().isABehavioralFeature(context)) {
+            namespace = Model.getFacade().getNamespace( // or just the owner?
+                    Model.getFacade().getOwner(context));
+        }
+        if (namespace == null) {
+            namespace = 
+                ProjectManager.getManager().getCurrentProject().getRoot();
+        }
+        if (namespace == null || !Model.getFacade().isANamespace(namespace)) {
+            throw new IllegalStateException(
+                    "Can not deduce a Namespace from a StateMachine");
+        }
+        return namespace;
+    }
+
+    /**
+     * The owner of a statechart diagram is the statemachine
      * it's showing.
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
      */
@@ -154,21 +181,13 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     public void initialize(Object o) {
         if (Model.getFacade().isAStateMachine(o)) {
-            Object sm = /*(MStateMachine)*/ o;
-            Object context = Model.getFacade().getContext(sm);
-            Object contextNamespace = null;
-            if (Model.getFacade().isAClassifier(context)) {
-                contextNamespace = context;
-            } else if (Model.getFacade().isABehavioralFeature(context)) {
-                contextNamespace = Model.getFacade().getNamespace(
-                        Model.getFacade().getOwner(context));
-            }
-            if (contextNamespace != null) {
-                setup(contextNamespace, sm);
-            }
+            Object machine = o;
+            Object contextNamespace = getNamespaceFromMachine(machine);
+
+            setup(contextNamespace, machine);
         } else {
             throw new IllegalStateException(
-                "Cannot find context namespace "
+                "Cannot find namespace "
                     + "while initializing "
                     + "statechart diagram");
         }
@@ -189,11 +208,10 @@ public class UMLStateDiagram extends UMLDiagram {
      *
      * @param namespace Class from the UML model...connects the class to
      * the Statechart diagram.
-     * @param sm StateMachine from the UML model
+     * @param machine StateMachine from the UML model
      * @author psager@tigris.org Jan. 24, 2oo2
      */
-    public void setup(Object namespace,
-		      Object /*MStateMachine*/ sm) {
+    public void setup(Object namespace, Object machine) {
         setNamespace(namespace);
 
         // add the diagram as a listener to the statemachine so
@@ -201,12 +219,12 @@ public class UMLStateDiagram extends UMLDiagram {
         // Remark MVW: It also works without the next line.... So why?
         // UmlModelEventPump.getPump().addModelEventListener(this, sm);
 
-        theStateMachine = sm;
+        theStateMachine = machine;
 
         StateDiagramGraphModel gm = new StateDiagramGraphModel();
         gm.setHomeModel(namespace);
-        if (sm != null) {
-            gm.setMachine(sm);
+        if (machine != null) {
+            gm.setMachine(machine);
         }
         StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
 
@@ -216,14 +234,16 @@ public class UMLStateDiagram extends UMLDiagram {
         lay.setGraphEdgeRenderer(rend);
         setLayer(lay);
 
+        /* TODO: Listen to machine namespace changes, 
+         * to adapt the namespace of the diagram. */
+//        Model.getPump().addModelEventListener(this, machine, "namespace");
     }
 
     /**
      * @return the StateMachine belonging to this diagram
      */
     public Object getStateMachine() {
-        return /*(MStateMachine)*/
-         ((StateDiagramGraphModel) getGraphModel()).getMachine();
+        return ((StateDiagramGraphModel) getGraphModel()).getMachine();
     }
 
     /**
@@ -232,7 +252,7 @@ public class UMLStateDiagram extends UMLDiagram {
     public void setStateMachine(Object sm) {
 
         if (!Model.getFacade().isAStateMachine(sm)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("This is not a StateMachine");
         }
 
         ((StateDiagramGraphModel) getGraphModel()).setMachine(sm);
@@ -256,7 +276,7 @@ public class UMLStateDiagram extends UMLDiagram {
 	    getActionStartPseudoState(),
 	    getActionFinalPseudoState(),
 	    getActionJunctionPseudoState(),
-	    getActionBranchPseudoState(),
+            getActionChoicePseudoState(),
 	    getActionForkPseudoState(),
 	    getActionJoinPseudoState(),
 	    getActionShallowHistoryPseudoState(),
@@ -481,10 +501,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (Model.getUmlFactory().isRemoved(getNamespace())) {
             return true;
         }
-        Object context = Model.getFacade().getContext(theStateMachine);
-        if (context == null) {
-            return true;
-        }
+        /* Removal of the context is NOT a reason to delete this diagram! */
         return false;
     }
 
