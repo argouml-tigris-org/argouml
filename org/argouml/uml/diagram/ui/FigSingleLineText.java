@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,25 +34,27 @@ import org.tigris.gef.presentation.FigText;
 /**
  * A SingleLine FigText to provide consistency across Figs displaying single
  * lines of text.<ul>
- * <li>The display area is transparent</li>
- * <li>Text is center justified</li>
- * <li>There is no line border</li>
- * <li>There is space below the line for a "Clarifier", 
- * i.e. a red squiggly line.</li></ul>
- * 
+ * <li>The display area is transparent
+ * <li>Text is center justified
+ * <li>There is no line border
+ * <li>There is space below the line for a "Clarifier",
+ * i.e. a red squiggly line.
+ * </ul>
+ *
  * @author Bob Tarling
  */
 public class FigSingleLineText extends FigText {
 
     /**
-     * 
+     * The UID.
      */
     private static final long serialVersionUID = -5611216741181499679L;
 
 
 
     /**
-     * @see FigText(int, int, int, int, boolean)
+     * @see org.tigris.gef.presentation.FigText#FigText(
+     *         int, int, int, int, boolean)
      */
     public FigSingleLineText(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h, expandOnly);
@@ -91,8 +93,8 @@ public class FigSingleLineText extends FigText {
     }
 
     protected boolean isStartEditingKey(KeyEvent ke) {
-        if ((ke.getModifiers() &
-                (KeyEvent.META_MASK | KeyEvent.ALT_MASK)) == 0) {
+        if ((ke.getModifiers()
+	     & (KeyEvent.META_MASK | KeyEvent.ALT_MASK)) == 0) {
             return super.isStartEditingKey(ke);
         } else {
             return false;

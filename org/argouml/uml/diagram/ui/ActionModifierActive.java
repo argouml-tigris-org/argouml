@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,14 +38,14 @@ class ActionModifierActive extends AbstractActionCheckBoxMenuItem {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement.AbstractActionCheckBoxMenuItem#toggleValueOfTarget(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.AbstractActionCheckBoxMenuItem#toggleValueOfTarget(java.lang.Object)
      */
     void toggleValueOfTarget(Object t) {
         Model.getCoreHelper().setActive(t, !Model.getFacade().isActive(t));
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement.AbstractActionCheckBoxMenuItem#valueOfTarget(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.AbstractActionCheckBoxMenuItem#valueOfTarget(java.lang.Object)
      */
     boolean valueOfTarget(Object t) {
         return Model.getFacade().isActive(t);

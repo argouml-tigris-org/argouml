@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -96,17 +96,22 @@ import org.tigris.gef.presentation.FigNode;
  * Factory methods to create Figs based an model elements with supplementary
  * data provided by a map of name value pairs.<p>
  *
- * Provides {@link #getFigNodeFor(Object, Map)} to implement the
- * {@link GraphNodeRenderer} interface and {@link #getFigEdgeFor(Object, Map)}
+ * Provides {@link org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
+ * Object, int, int, Map)} to implement the {@link GraphNodeRenderer}
+ * interface and {@link
+ * org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(Object, Map)}
  * to implement the {@link GraphEdgeRenderer} interface.
  */
 public abstract class UmlDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer {
 
     /**
-     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(java.lang.Object, java.util.Map)
+     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
+     *         java.lang.Object, int, int, java.util.Map)
      */
-    public FigNode getFigNodeFor(Object node, int x, int y, Map styleAttributes) {
+    public FigNode getFigNodeFor(
+	    Object node, int x, int y,
+	    Map styleAttributes) {
         if (node == null) {
             throw new IllegalArgumentException(
                     "A model element must be supplied");
@@ -215,6 +220,7 @@ public abstract class UmlDiagramRenderer
 
     /**
      * Set the fig style according to attributes.
+     *
      * @param fig the fig to style.
      * @param attributeMap a map of name value pairs
      */
@@ -266,7 +272,9 @@ public abstract class UmlDiagramRenderer
             while (i.hasNext()) {
                 Object o = i.next();
                 name = Model.getFacade().getName(o);
-                if ("realize".equals(name)) break;
+                if ("realize".equals(name)) {
+		    break;
+		}
             }
             if ("realize".equals(name)) {
                 newEdge = new FigRealization();

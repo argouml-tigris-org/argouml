@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,16 +33,19 @@ import org.tigris.gef.presentation.FigText;
  * lines of text.
  * By default -
  * <ul>
- * <li>Text is black</li>
- * <li>The display area is transparent</li>
- * <li>Text is left justified</li>
- * <li>There is no line border</li>
+ * <li>Text is black
+ * <li>The display area is transparent
+ * <li>Text is left justified
+ * <li>There is no line border
+ * </ul>
+ *
  * @author Bob Tarling
  */
 public class FigMultiLineText extends FigText {
 
     /**
-     * @see FigText(int, int, int, int, boolean)
+     * @see org.tigris.gef.presentation.FigText#FigText(
+     *         int, int, int, int, boolean)
      */
     public FigMultiLineText(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h, expandOnly);
