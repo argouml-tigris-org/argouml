@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -84,12 +84,12 @@ public final class DiagramFactory {
      * @param type The class of rendering diagram to create
      * @param namespace The namespace that (in)directly 
      *                        owns the elements on the diagram
-     * @param context The context for the diagram
+     * @param machine The StateMachine for the diagram
      *                         (only: statemachine - activitygraph)
      * @return the newly instantiated class diagram
      */
     public ArgoDiagram createDiagram(Class type, Object namespace,
-            Object context) {
+            Object machine) {
 
         ArgoDiagram diagram = null;
         Class diType = null;
@@ -101,7 +101,7 @@ public final class DiagramFactory {
             diagram = new UMLUseCaseDiagram(namespace);
             diType = UseCaseDiagram.class;
         } else if (type == UMLStateDiagram.class) {
-            diagram = new UMLStateDiagram(namespace, context);
+            diagram = new UMLStateDiagram(namespace, machine);
             diType = StateDiagram.class;
         } else if (type == UMLDeploymentDiagram.class) {
             diagram = new UMLDeploymentDiagram(namespace);
@@ -110,7 +110,7 @@ public final class DiagramFactory {
             diagram = new UMLCollaborationDiagram(namespace);
             diType = CollaborationDiagram.class;
         } else if (type == UMLActivityDiagram.class) {
-            diagram = new UMLActivityDiagram(namespace, context);
+            diagram = new UMLActivityDiagram(namespace, machine);
             diType = ActivityDiagram.class;
         } else if (type == UMLSequenceDiagram.class) {
             diagram = new UMLSequenceDiagram(namespace);
