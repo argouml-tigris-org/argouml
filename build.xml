@@ -583,7 +583,7 @@ Property files to be searched:
              destdir="${argo.api.dir}"
              maxmemory="128M"
              overview="org/argouml/overview-api.html"
-             packagenames="org.argouml.model,org.argouml.cognitive,org.argouml.uml.reveng,org.argouml.application,org.argouml.i18n,org.argouml.ui.explorer,org.argouml.application.api,org.argouml.application.modules,org.argouml.ocl,org.argouml.moduleloader"
+             packagenames="org.argouml.model,org.argouml.cognitive,org.argouml.uml.reveng,org.argouml.application,org.argouml.i18n,org.argouml.ui.explorer,org.argouml.application.api,org.argouml.ocl,org.argouml.moduleloader"
              source="1.4"
              private="false"
              splitindex="${javadoc.splitindex}"
