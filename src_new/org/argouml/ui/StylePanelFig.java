@@ -341,7 +341,7 @@ public class StylePanelFig
                 res.height = 6000 - res.y;
                 changed = true;
             }
-            if (res.x<0 || res.y<0 || res.width<0 || res.height<0) {
+            if (res.x < 0 || res.y < 0 || res.width < 0 || res.height < 0) {
                 throw new IllegalArgumentException();
             }
             if (changed) {

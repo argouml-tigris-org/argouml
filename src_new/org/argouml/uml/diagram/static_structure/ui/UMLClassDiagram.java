@@ -530,7 +530,7 @@ public class UMLClassDiagram extends UMLDiagram {
         if (actionDataType == null) {
             actionDataType =
                 makeCreateNodeAction(Model.getMetaTypes().getDataType(),
-             "button.new-datatype");
+                    "button.new-datatype");
         }
         return actionDataType;
     }
@@ -542,7 +542,7 @@ public class UMLClassDiagram extends UMLDiagram {
         if (actionEnumeration == null) {
             actionEnumeration =
                 makeCreateNodeAction(Model.getMetaTypes().getEnumeration(),
-             "button.new-enumeration");
+                    "button.new-enumeration");
         }
         return actionEnumeration;
     }
@@ -554,7 +554,7 @@ public class UMLClassDiagram extends UMLDiagram {
         if (actionStereotype == null) {
             actionStereotype =
                 makeCreateNodeAction(Model.getMetaTypes().getStereotype(),
-             "button.new-stereotype");
+                    "button.new-stereotype");
         }
         return actionStereotype;
     }

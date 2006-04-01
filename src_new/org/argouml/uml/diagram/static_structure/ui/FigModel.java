@@ -33,14 +33,19 @@ import java.awt.Rectangle;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigPoly;
 
-/** Class to display graphics for a UML model in a class diagram. */
-
+/** 
+ * Class to display graphics for a UML model in a class diagram. 
+ */
 public class FigModel extends FigPackage {
 
     private FigPoly figPoly = new FigPoly(Color.black, Color.black);
 
     /**
-     * Constructor
+     * The Constructor.
+     *
+     * @param modelElement the UML model
+     * @param x the x coordinate of the location
+     * @param y the y coordinate of the location
      */
     public FigModel(Object modelElement, int x, int y) {
         super(modelElement, x, y);

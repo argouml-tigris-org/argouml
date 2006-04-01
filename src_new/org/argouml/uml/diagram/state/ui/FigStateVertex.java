@@ -106,13 +106,13 @@ public abstract class FigStateVertex extends FigNodeModelElement {
                 Fig f = ((Fig) getEnclosedFigs().elementAt(i));
                 lay.bringInFrontOf(f, this);
                 if (f instanceof FigNode) {
-                    FigNode fn = (FigNode)f;
+                    FigNode fn = (FigNode) f;
                     Iterator it = fn.getFigEdges().iterator();
                     while (it.hasNext()) {
                         lay.bringInFrontOf(((FigEdge) it.next()), this);
                     }
                     if (fn instanceof FigStateVertex) {
-                        ((FigStateVertex)fn).redrawEnclosedFigs();
+                        ((FigStateVertex) fn).redrawEnclosedFigs();
                     }
                 }
             }
