@@ -83,7 +83,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             throw new IllegalArgumentException();
         }
 
-        if (namespace != null && Model.getFacade().getName(namespace) != null) {
+        if (Model.getFacade().getName(namespace) != null) {
             if (!Model.getFacade().getName(namespace).trim().equals("")) {
                 String name =
                     Model.getFacade().getName(namespace)
@@ -94,11 +94,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                 } catch (PropertyVetoException pve) { }
             }
         }
-        if (namespace != null) {
-            setup(namespace, agraph);
-        } else {
-            throw new NullPointerException("Namespace may not be null");
-        }
+        setup(namespace, agraph);
     }
 
     /**
