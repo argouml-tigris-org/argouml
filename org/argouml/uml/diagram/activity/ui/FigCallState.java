@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.activity.ui;
 
 import java.beans.PropertyChangeEvent;
-import java.util.Iterator;
 
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -33,7 +32,6 @@ import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.Fig;
 
 
 /**
@@ -86,7 +84,7 @@ public class FigCallState extends FigActionState {
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (mee instanceof AssociationChangeEvent 
+        if (mee instanceof AssociationChangeEvent
                 || mee instanceof AttributeChangeEvent) {
             renderingChanged();
             updateListeners(getOwner());
@@ -116,7 +114,7 @@ public class FigCallState extends FigActionState {
                 if (operation != null) {
                     // and when the owner is replaced (unlikely for operations),
                     // and when the operation changes name:
-                    addElementListener(operation, 
+                    addElementListener(operation,
                             new String[] {"owner", "name"});
                     Object classifier = Model.getFacade().getOwner(operation);
                     // and when the class changes name:

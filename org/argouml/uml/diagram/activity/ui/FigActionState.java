@@ -34,7 +34,6 @@ import java.util.Iterator;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
@@ -61,6 +60,9 @@ public class FigActionState extends FigStateVertex {
 
     private FigRRect cover;
 
+    /**
+     * The notation provider for the textfield.
+     */
     protected NotationProvider4 notationProvider;
 
     ////////////////////////////////////////////////////////////////

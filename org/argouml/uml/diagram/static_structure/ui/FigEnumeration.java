@@ -110,7 +110,7 @@ public class FigEnumeration extends FigDataType
      * TODO: Is this actually needed? - tfm
      */
     public Object clone() {
-        FigEnumeration clone = (FigEnumeration)super.clone();
+        FigEnumeration clone = (FigEnumeration) super.clone();
         clone.literalsCompartment = 
             (FigEnumLiteralsCompartment) literalsCompartment.clone();
         return clone;
@@ -162,6 +162,9 @@ public class FigEnumeration extends FigDataType
         updateEnumLiterals();
     }
     
+    /**
+     * Update (i.e. redraw) the compartment with the literals.
+     */
     protected void updateEnumLiterals() {
         if (!literalsCompartment.isVisible()) {
             return;
@@ -257,7 +260,8 @@ public class FigEnumeration extends FigDataType
         currentHeight += nameHeight;
 
         if (getLiteralsCompartment().isVisible()) {
-            int literalsHeight = getLiteralsCompartment().getMinimumSize().height;
+            int literalsHeight = 
+                getLiteralsCompartment().getMinimumSize().height;
             literalsHeight += whitespace / 2;
             getLiteralsCompartment().setBounds(
                     x,

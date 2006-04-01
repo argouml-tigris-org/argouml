@@ -209,13 +209,18 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
             NotationUtilityUml.dealWithStereotypes(clazz, "metaclass", false);
             return clazz;
         case 11:
-            Object st = Model.getExtensionMechanismsFactory().createStereotype();
+            Object st = 
+                Model.getExtensionMechanismsFactory().createStereotype();
             Model.getCoreHelper().setNamespace(st, ns);
             return st;
         }
         return null;
     }
 
+    /**
+     * @param buttonCode the code for the pressed button
+     * @return the new object type
+     */
     protected Object getNewNodeType(int buttonCode) {
         switch (buttonCode) {
         case 10:

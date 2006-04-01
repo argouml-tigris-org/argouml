@@ -35,7 +35,9 @@ import java.beans.PropertyVetoException;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
+
 import javax.swing.JOptionPane;
+
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
@@ -114,6 +116,10 @@ public class FigPackage extends FigNodeModelElement
 
     /**
      * The main constructor.
+     *
+     * @param node the UML package
+     * @param x the x coordinate of the location
+     * @param y the y coordinate of the location
      */
     public FigPackage(Object node, int x, int y) {
         setBigPort(

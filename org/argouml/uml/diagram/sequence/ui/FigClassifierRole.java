@@ -233,7 +233,8 @@ public class FigClassifierRole extends FigNodeModelElement
     private void setMatchingFig(MessageNode messageNode) {
         if (messageNode.getFigMessagePort() == null) {
             int y = getYCoordinate(messageNode);
-            for (Iterator it = lifeLineFig.getFigs().iterator(); it.hasNext();) {
+            for (Iterator it = lifeLineFig.getFigs().iterator();
+                                it.hasNext();) {
                 Fig fig = (Fig) it.next();
                 if (fig instanceof FigMessagePort) {
                     FigMessagePort messagePortFig = (FigMessagePort) fig;
@@ -394,7 +395,8 @@ public class FigClassifierRole extends FigNodeModelElement
             if (figMessagePort != null) {
                 int fmpY = lifeLineFig.getYCoordinate(i);
                 if (figMessagePort.getY() != fmpY) {
-                    figMessagePort.setBounds(lifeLineFig.getX(), fmpY, WIDTH, 1);
+                    figMessagePort.setBounds(lifeLineFig.getX(), 
+                            fmpY, WIDTH, 1);
                 }
                 Object message = figMessagePort.getOwner();
                 boolean selfMessage =
@@ -527,7 +529,9 @@ public class FigClassifierRole extends FigNodeModelElement
                                 lifeLineFig.getX(),
                                 lifeLineFig.getYCoordinate(i)
                                 - SequenceDiagramLayer.LINK_DISTANCE / 4));
-            } if (lastState != nextState && nextState == MessageNode.DESTROYED) {
+            } 
+            if (lastState != nextState 
+                    && nextState == MessageNode.DESTROYED) {
                 int y =
                     lifeLineFig.getYCoordinate(i)
                     - SequenceDiagramLayer.LINK_DISTANCE / 2;
@@ -581,7 +585,8 @@ public class FigClassifierRole extends FigNodeModelElement
             }
             lastState = nextState;
             if (startActivationNode != null && endActivationNode != null) {
-                if (startActivationNode != endActivationNode || startFull || endFull) {
+                if (startActivationNode != endActivationNode 
+                        || startFull || endFull) {
                     int y1 = getYCoordinate(startActivationNode);
                     if (startFull) {
                         y1 -= SequenceDiagramLayer.LINK_DISTANCE / 2;
@@ -590,7 +595,8 @@ public class FigClassifierRole extends FigNodeModelElement
                     if (endFull) {
                         y2 += SequenceDiagramLayer.LINK_DISTANCE / 2;
                     }
-                    lifeLineFig.addActivationFig(new FigActivation(x, y1, WIDTH, y2 - y1));
+                    lifeLineFig.addActivationFig(
+                            new FigActivation(x, y1, WIDTH, y2 - y1));
                 }
                 startActivationNode = null;
                 endActivationNode = null;
@@ -609,7 +615,8 @@ public class FigClassifierRole extends FigNodeModelElement
             if (endFull) {
                 y2 += SequenceDiagramLayer.LINK_DISTANCE / 2;
             }
-            lifeLineFig.addActivationFig(new FigActivation(x, y1, WIDTH, y2 - y1));
+            lifeLineFig.addActivationFig(
+                    new FigActivation(x, y1, WIDTH, y2 - y1));
             startActivationNode = null;
             endActivationNode = null;
             startFull = false;
@@ -1154,8 +1161,10 @@ public class FigClassifierRole extends FigNodeModelElement
             if (qname.equals("group")
                     && description != null
                     && description.startsWith(FigLifeLine.class.getName())) {
-                FigClassifierRole fcr = (FigClassifierRole)((FigGroupHandler) container).getFigGroup();
-                result = new FigLifeLineHandler((PGMLStackParser) stack, fcr.getLifeLineFig());
+                FigClassifierRole fcr = (FigClassifierRole)
+                    ((FigGroupHandler) container).getFigGroup();
+                result = new FigLifeLineHandler(
+                            (PGMLStackParser) stack, fcr.getLifeLineFig());
             } else if (qname.equals("group")
                         && description != null
                         && description.startsWith(

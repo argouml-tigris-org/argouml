@@ -38,7 +38,6 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.uml.diagram.state.ui.SelectionState;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
 import org.tigris.gef.base.Selection;
@@ -51,14 +50,15 @@ import org.tigris.gef.presentation.FigText;
  * Class to display graphics for a UML ObjectFlowState in a diagram.<p>
  *
  * The Fig of this modelelement may either represent the following UMLelements:
- * <p> 
- * (1) an ObjectFlowState with a Classifier as type, or <p> 
+ * <p>
+ * (1) an ObjectFlowState with a Classifier as type, or <p>
  * (2) an ObjectFlowState with a ClassifierInState as type. <p>
- * 
- * In both cases (1) and (2), the Fig shows the underlined name of the Classifier,
- * and in the latter case (2), it shows also the names of the states 
+ *
+ * In both cases (1) and (2), the Fig shows
+ * the underlined name of the Classifier,
+ * and in the latter case (2), it shows also the names of the states
  * of the ClassifierInState. <p>
- * 
+ *
  * In the examples in the UML standard, this is written like<pre>
  *      PurchaseOrder
  *       [approved]
@@ -139,7 +139,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         if (Model.getFacade().isAModelElement(own)) {
             notationProviderType =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_TYPE, 
+                        NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_TYPE,
                         this, own);
             notationProviderState =
                 NotationProviderFactory2.getInstance().getNotationProvider(
@@ -166,7 +166,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
             removeAllElementListeners();
         }
         if (newOwner != null) {
-            /* Let's NOT do this: addElementListener(newOwner); 
+            /* Let's NOT do this: addElementListener(newOwner);
              * We only need to listen to its "type". */
             addElementListener(newOwner, "type");
             // register for events from the type
@@ -179,11 +179,11 @@ public class FigObjectFlowState extends FigNodeModelElement {
                     Collection states = Model.getFacade().getInStates(type);
                     Iterator i = states.iterator();
                     while (i.hasNext()) {
-                        addElementListener(i.next(), 
+                        addElementListener(i.next(),
                                 "name");
                     }
                 } else {
-                    addElementListener(type, "name");    
+                    addElementListener(type, "name");
                 }
             }
         }
@@ -365,7 +365,6 @@ public class FigObjectFlowState extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-        
         if (ft == getNameFig()) {
             ft.setText(notationProviderType.parse(ft.getText()));
         } else if (ft == state) {
@@ -385,6 +384,9 @@ public class FigObjectFlowState extends FigNodeModelElement {
         }
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#makeSelection()
+     */
     public Selection makeSelection() {
         return new SelectionActionState(this);
     }
