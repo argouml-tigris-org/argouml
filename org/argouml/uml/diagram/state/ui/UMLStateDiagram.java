@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.state.ui;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
@@ -34,6 +35,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -234,9 +236,27 @@ public class UMLStateDiagram extends UMLDiagram {
         lay.setGraphEdgeRenderer(rend);
         setLayer(lay);
 
-        /* TODO: Listen to machine namespace changes, 
+        /* Listen to machine namespace changes, 
          * to adapt the namespace of the diagram. */
-//        Model.getPump().addModelEventListener(this, machine, "namespace");
+        Model.getPump().addModelEventListener(this, theStateMachine, "namespace");
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        // TODO Auto-generated method stub
+        super.propertyChange(evt);
+        if (evt.getSource() == theStateMachine) {
+            Object newNamespace = 
+                Model.getFacade().getNamespace(theStateMachine);
+            if (getNamespace() != newNamespace) {
+                /* The namespace of the statemachine is changed! */
+                setNamespace(newNamespace);
+                ((UMLMutableGraphSupport)getGraphModel())
+                                .setHomeModel(newNamespace);
+            }
+        }
     }
 
     /**
