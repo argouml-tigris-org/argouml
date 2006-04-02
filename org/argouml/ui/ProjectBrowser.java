@@ -732,16 +732,18 @@ public final class ProjectBrowser
     }
 
     /**
-     * Given a list of offenders, displays the according diagram.
-     * This method jumps to the diagram showing the offender,
+     * Given a list of targets, displays the according diagram.
+     * This method jumps to the diagram showing the targets,
      * and scrolls to make it visible.
      *
-     * @param dms vector of offenders
+     * @param targets Collection of targets to show
      */
-    public void jumpToDiagramShowing(Vector dms) {
-        if (dms.size() == 0) {
+    public void jumpToDiagramShowing(Collection targets) {
+    
+        if (targets == null || targets.size() == 0) {
             return;
         }
+        Vector dms = new Vector(targets);
         Object first = dms.elementAt(0);
         if (first instanceof Diagram && dms.size() > 1) {
             setTarget(first);
