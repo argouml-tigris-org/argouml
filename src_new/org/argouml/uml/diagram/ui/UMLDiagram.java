@@ -249,13 +249,15 @@ public abstract class UMLDiagram
             LOG.error(ns);
             throw new IllegalArgumentException("Given object not a namespace");
         }
-        if (namespace != ns) {
+        if ((namespace != null) && (namespace != ns)) {
             Model.getPump().removeModelEventListener(this, namespace);
         }
         namespace = ns;
-        // add the diagram as a listener to the namspace so
+        // Add the diagram as a listener to the namespace so
         // that when the namespace is removed the diagram is deleted also.
-        /* Listening only to "remove" events does not work... */
+        /* Listening only to "remove" events does not work... 
+         * TODO: Check if this works now with new event pump - tfm 
+         */
         Model.getPump().addModelEventListener(this, namespace);
     }
 
