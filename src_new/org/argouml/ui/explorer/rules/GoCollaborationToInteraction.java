@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,16 +45,19 @@ public class GoCollaborationToInteraction extends AbstractPerspectiveRule {
     }
 
     /**
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(
+     *         java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (!Model.getFacade().isACollaboration(parent))
-	    return null;
+	if (!Model.getFacade().isACollaboration(parent)) {
+            return null;
+        }
 	return Model.getFacade().getInteractions(parent);
     }
 
     /**
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(
+     *         java.lang.Object)
      */
     public Set getDependencies(Object parent) {
         if (Model.getFacade().isACollaboration(parent)) {

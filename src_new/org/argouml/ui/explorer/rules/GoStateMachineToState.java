@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,7 +49,8 @@ public class GoStateMachineToState extends AbstractPerspectiveRule {
     }
 
     /**
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(
+     *         java.lang.Object)
      */
     public Collection getChildren(Object parent) {
 
@@ -63,14 +64,16 @@ public class GoStateMachineToState extends AbstractPerspectiveRule {
     }
 
     /**
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(
+     *         java.lang.Object)
      */
     public Set getDependencies(Object parent) {
         if (Model.getFacade().isAStateMachine(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
-	    if (Model.getFacade().getTop(parent) != null)
-		set.add(Model.getFacade().getTop(parent));
+	    if (Model.getFacade().getTop(parent) != null) {
+                set.add(Model.getFacade().getTop(parent));
+            }
 	    return set;
 	}
 	return null;

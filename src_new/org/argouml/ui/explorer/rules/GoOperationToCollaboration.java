@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,6 +35,7 @@ import org.argouml.model.Model;
  * Rule for Operation->Collaboration.<p>
  * Go rule for navigation in the navpane from an operation to the collaboration
  * representing it.
+ *
  * @since Oct 1, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -48,7 +49,8 @@ public class GoOperationToCollaboration extends AbstractPerspectiveRule {
     }
 
     /**
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(
+     *         java.lang.Object)
      */
     public Collection getChildren(Object parent) {
         if (Model.getFacade().isAOperation(parent)) {
@@ -58,14 +60,16 @@ public class GoOperationToCollaboration extends AbstractPerspectiveRule {
     }
 
     /**
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(
+     *         java.lang.Object)
      */
     public Set getDependencies(Object parent) {
         if (Model.getFacade().isAOperation(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
-	    if (Model.getFacade().getOwner(parent) != null)
-		set.add(Model.getFacade().getOwner(parent));
+	    if (Model.getFacade().getOwner(parent) != null) {
+                set.add(Model.getFacade().getOwner(parent));
+            }
 	    return set;
 	}
 	return null;

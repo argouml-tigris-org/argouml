@@ -33,12 +33,12 @@ import org.argouml.model.Model;
 
 /**
  * Rule for ModelElement -> Contents. <p>
- * 
- * The Contents = all the elements which, in the metamodel, 
+ *
+ * The Contents are all the elements which, in the metamodel,
  * are connected by a composite association.
- * This means, these are the elements that are deleted as a side-effect 
+ * This means, these are the elements that are deleted as a side-effect
  * when the parent gets deleted.
- * 
+ *
  * @author michiel
  */
 public class GoModelElementToContents extends AbstractPerspectiveRule {
