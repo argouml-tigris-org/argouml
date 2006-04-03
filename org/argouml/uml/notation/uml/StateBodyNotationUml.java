@@ -135,7 +135,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
      * @throws ParseException when there is a syntax problem,
      *         e.g. non-matching brackets () or []
      */
-    public void parseStateBody(Object st, String s) throws ParseException {
+    protected void parseStateBody(Object st, String s) throws ParseException {
         boolean foundEntry = false;
         boolean foundExit = false;
         boolean foundDo = false;
@@ -466,7 +466,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
         }
     }
 
-    public String generateAction(Object m) {
+    protected String generateAction(Object m) {
         Collection c;
         Iterator it;
         String s;
