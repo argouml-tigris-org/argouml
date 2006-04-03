@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,13 +27,15 @@ package org.argouml.ui.explorer.rules;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
 /**
- * Go rule to navigate from some message to it's corresponding action
+ * Go rule to navigate from some message to it's corresponding action.
+ *
  * @author jaap.branderhorst
  */
 public class GoMessageToAction extends AbstractPerspectiveRule {
@@ -46,14 +48,15 @@ public class GoMessageToAction extends AbstractPerspectiveRule {
     }
 
     /**
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(
+     *         java.lang.Object)
      */
     public Collection getChildren(Object parent) {
 	if (Model.getFacade().isAMessage(parent)) {
 	    Object action = Model.getFacade().getAction(parent);
 
 	    if (action != null) {
-		ArrayList children = new ArrayList();
+		List children = new ArrayList();
 		children.add(action);
 		return children;
 	    }
@@ -63,7 +66,8 @@ public class GoMessageToAction extends AbstractPerspectiveRule {
     }
 
     /**
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(
+     *         java.lang.Object)
      */
     public Set getDependencies(Object parent) {
         if (Model.getFacade().isAMessage(parent)) {
