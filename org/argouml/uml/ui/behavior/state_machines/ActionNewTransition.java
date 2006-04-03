@@ -77,4 +77,15 @@ public class ActionNewTransition extends AbstractActionNewModelElement {
         }
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
+    public boolean shouldBeEnabled() {
+        Object target = TargetManager.getInstance().getModelTarget();
+        return super.shouldBeEnabled() 
+            && !Model.getStateMachinesHelper().isTopState(target);
+    }
+    
+    
+
 }
