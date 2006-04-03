@@ -58,7 +58,7 @@ import org.tigris.gef.base.Diagram;
 
 /**
  * PopUp for extra functionality for the Explorer.
- * 
+ *
  * @author alexb
  * @since 0.15.2
  */
@@ -68,7 +68,7 @@ public class ExplorerPopup extends JPopupMenu {
 
     /**
      * Creates a new instance of ExplorerPopup.
-     * 
+     *
      * @param selectedItem
      *            is the item that we are pointing at.
      * @param me
@@ -80,8 +80,8 @@ public class ExplorerPopup extends JPopupMenu {
         /* Check if multiple items are selected. */
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
 
-        final Project currentProject = ProjectManager.getManager()
-                .getCurrentProject();
+        final Project currentProject =
+            ProjectManager.getManager().getCurrentProject();
         final Diagram activeDiagram = currentProject.getActiveDiagram();
 
         // TODO: I've made some attempt to rationalize the conditions here
@@ -108,56 +108,71 @@ public class ExplorerPopup extends JPopupMenu {
         }
 
         final Object projectModel = currentProject.getModel();
-        final boolean modelElementSelected = Model.getFacade().isAModelElement(
-                selectedItem);
+        final boolean modelElementSelected =
+            Model.getFacade().isAModelElement(selectedItem);
 
         if (modelElementSelected) {
-            final boolean nAryAssociationSelected = Model.getFacade()
-                    .isANaryAssociation(selectedItem);
-            final boolean classifierAndRelationShipSelected = Model.getFacade()
-                    .isAClassifierAndARelationship(selectedItem);
-            final boolean classifierSelected = Model.getFacade().isAClassifier(
-                    selectedItem);
-            final boolean dataTypeSelected = Model.getFacade().isADataType(
-                    selectedItem);
-            final boolean packageSelected = Model.getFacade().isAPackage(
-                    selectedItem);
-            final boolean commentSelected = Model.getFacade().isAComment(
-                    selectedItem);
-            final boolean stateVertexSelected = Model.getFacade()
-                    .isAStateVertex(selectedItem);
-            final boolean instanceSelected = Model.getFacade().isAInstance(
-                    selectedItem);
-            final boolean dataValueSelected = Model.getFacade().isADataValue(
-                    selectedItem);
-            final boolean relationshipSelected = Model.getFacade()
-                    .isARelationship(selectedItem);
-            final boolean flowSelected = Model.getFacade()
-                    .isAFlow(selectedItem);
-            final boolean linkSelected = Model.getFacade()
-                    .isALink(selectedItem);
-            final boolean transitionSelected = Model.getFacade().isATransition(
-                    selectedItem);
-            final boolean activityDiagramActive = activeDiagram instanceof UMLActivityDiagram;
-            final boolean sequenceDiagramActive = activeDiagram instanceof UMLSequenceDiagram;
-            final boolean stateDiagramActive = activeDiagram instanceof UMLStateDiagram;
-            final Object selectedStateMachine = (stateVertexSelected) ? Model
+            final boolean nAryAssociationSelected =
+                Model.getFacade().isANaryAssociation(selectedItem);
+            final boolean classifierAndRelationShipSelected =
+                Model.getFacade().isAClassifierAndARelationship(selectedItem);
+            final boolean classifierSelected =
+                Model.getFacade().isAClassifier(selectedItem);
+            final boolean dataTypeSelected =
+                Model.getFacade().isADataType(selectedItem);
+            final boolean packageSelected =
+                Model.getFacade().isAPackage(selectedItem);
+            final boolean commentSelected =
+                Model.getFacade().isAComment(selectedItem);
+            final boolean stateVertexSelected =
+                Model.getFacade().isAStateVertex(selectedItem);
+            final boolean instanceSelected =
+                Model.getFacade().isAInstance(selectedItem);
+            final boolean dataValueSelected =
+                Model.getFacade().isADataValue(selectedItem);
+            final boolean relationshipSelected =
+                Model.getFacade().isARelationship(selectedItem);
+            final boolean flowSelected =
+                Model.getFacade().isAFlow(selectedItem);
+            final boolean linkSelected =
+                Model.getFacade().isALink(selectedItem);
+            final boolean transitionSelected =
+                Model.getFacade().isATransition(selectedItem);
+            final boolean activityDiagramActive =
+                activeDiagram instanceof UMLActivityDiagram;
+            final boolean sequenceDiagramActive =
+                activeDiagram instanceof UMLSequenceDiagram;
+            final boolean stateDiagramActive =
+                activeDiagram instanceof UMLStateDiagram;
+            final Object selectedStateMachine =
+                (stateVertexSelected) ? Model
                     .getStateMachinesHelper().getStateMachine(selectedItem)
                     : null;
-            final Object diagramStateMachine = (stateDiagramActive) ? ((UMLStateDiagram) activeDiagram)
+            final Object diagramStateMachine =
+                (stateDiagramActive) ? ((UMLStateDiagram) activeDiagram)
                     .getStateMachine()
                     : null;
-            final Object diagramActivity = (activityDiagramActive) ? ((UMLActivityDiagram) activeDiagram)
-                    .getStateMachine()
+            final Object diagramActivity =
+                (activityDiagramActive)
+                    ? ((UMLActivityDiagram) activeDiagram).getStateMachine()
                     : null;
             if (!ms) {
-                if ((classifierSelected && !dataTypeSelected && !classifierAndRelationShipSelected)
+                if ((classifierSelected
+                        && !dataTypeSelected
+                        && !classifierAndRelationShipSelected)
                         || (packageSelected && selectedItem != projectModel)
-                        || (stateVertexSelected && activityDiagramActive && diagramActivity == selectedStateMachine)
-                        || (stateVertexSelected && stateDiagramActive && diagramStateMachine == selectedStateMachine)
-                        || (instanceSelected && !dataValueSelected && !sequenceDiagramActive)
+                        || (stateVertexSelected
+                                && activityDiagramActive
+                                && diagramActivity == selectedStateMachine)
+                        || (stateVertexSelected
+                                && stateDiagramActive
+                                && diagramStateMachine == selectedStateMachine)
+                        || (instanceSelected
+                                && !dataValueSelected
+                                && !sequenceDiagramActive)
                         || nAryAssociationSelected || commentSelected) {
-                    Action action = new ActionAddExistingNode(
+                    Action action =
+                        new ActionAddExistingNode(
                             menuLocalize("menu.popup.add-to-diagram"),
                             selectedItem);
                     this.add(action);
@@ -165,11 +180,14 @@ public class ExplorerPopup extends JPopupMenu {
             }
 
             if (!ms) {
-                if ((relationshipSelected && !flowSelected && !nAryAssociationSelected)
+                if ((relationshipSelected
+                        && !flowSelected
+                        && !nAryAssociationSelected)
                         || (linkSelected && !sequenceDiagramActive)
                         || transitionSelected) {
 
-                    Action action = new ActionAddExistingEdge(
+                    Action action =
+                        new ActionAddExistingEdge(
                             menuLocalize("menu.popup.add-to-diagram"),
                             selectedItem);
                     this.add(action);
@@ -204,7 +222,8 @@ public class ExplorerPopup extends JPopupMenu {
         // condition -tml
         if (!ms) {
             if (selectedItem instanceof UMLClassDiagram) {
-                Action action = new ActionAddAllClassesFromModel(
+                Action action =
+                    new ActionAddAllClassesFromModel(
                         menuLocalize("menu.popup.add-all-classes-to-diagram"),
                         selectedItem);
                 this.add(action);
@@ -220,7 +239,7 @@ public class ExplorerPopup extends JPopupMenu {
 
     /**
      * initialize the menu for diagram construction in the explorer popup menu.
-     * 
+     *
      */
     private void initMenuCreate() {
         createDiagrams.add(new ActionUseCaseDiagram());
@@ -240,7 +259,7 @@ public class ExplorerPopup extends JPopupMenu {
 
     /**
      * Locale a popup menu item in the navigator pane.
-     * 
+     *
      * @param key
      *            The key for the string to localize.
      * @return The localized string.

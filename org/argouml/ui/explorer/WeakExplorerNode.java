@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,7 +42,7 @@ package org.argouml.ui.explorer;
  * }
  * </pre>
  *
- * <p>About subsumption:
+ * About subsumption:
  * <ul>
  * <li>Weak nodes must not rely on that the Explorer preserves the oldest one.
  * <li>The Explorer will not check if several PerspectiveRules has returned
@@ -68,21 +68,21 @@ public interface WeakExplorerNode {
     /**
      * This method is called by ExplorerTreeModel to check if this
      * WeakExplorerNode subsumes another WeakExplorerNode, ie if this
-     * node should be preserved rather than adding the other node.
+     * node should be preserved rather than adding the other node.<p>
      *
-     * <p>This relation should be reflexive, so that if <code>a</code>
-     * is a WeakExplorerNode then <code>a.subsumes(a) == true</code>.
+     * This relation should be reflexive, so that if <code>a</code>
+     * is a WeakExplorerNode then <code>a.subsumes(a) == true</code>.<p>
      *
-     * <p>This relation should be symmetric, so that if a and b are
+     * This relation should be symmetric, so that if a and b are
      * WeakExplorerNodes and <code>a.subsumes(b) == true</code> then
-     * <code>b.subsumes(a) == true</code>.
+     * <code>b.subsumes(a) == true</code>.<p>
      *
-     * <p>This relation should be transitive, so that if a, b and c are
+     * This relation should be transitive, so that if a, b and c are
      * WeakExplorerNodes, <code>a.subsumes(b) == true</code> and
      * <code>b.subsumes(c) == true</code> then
-     * <code>a.subsumes(c) == true</code>.
+     * <code>a.subsumes(c) == true</code>.<p>
      *
-     * <p>Note: While this means that only other WeakExplorerNodes can be
+     * Note: While this means that only other WeakExplorerNodes can be
      * subsumed, the argument is still of Object type. This is just since
      * there is no particular point in getting a WeakExplorerNode reference,
      * you would either have to down-cast it further or wouldn't use it more
@@ -91,6 +91,6 @@ public interface WeakExplorerNode {
      * @param obj another WeakExplorerNode
      * @return true if this node subsumes obj, otherwise false.
      */
-    public boolean subsumes(Object obj);
+    boolean subsumes(Object obj);
 }
 
