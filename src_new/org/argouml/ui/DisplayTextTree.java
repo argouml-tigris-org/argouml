@@ -59,15 +59,15 @@ public class DisplayTextTree extends JTree {
     /**
      * A Map helping the tree maintain a consistent expanded paths state.
      *
-     *<pre>
-     * keys = the current TreeModel of this Tree
-     * values = Vector of currently expanded paths.
-     *</pre>
+     * <pre>
+     * keys are the current TreeModel of this Tree
+     * values are Vector of currently expanded paths.
+     * </pre>
      */
     private Hashtable expandedPathsInModel;
 
     private boolean reexpanding;
-    
+
     protected boolean showStereotype;
 
     /**
@@ -86,7 +86,7 @@ public class DisplayTextTree extends JTree {
         setToolTipText("Tree"); // Enables tooltips for tree. Won't be shown.
 
         this.setRowHeight(18);
-        
+
         expandedPathsInModel = new Hashtable();
         reexpanding = false;
         showStereotype =
@@ -117,15 +117,15 @@ public class DisplayTextTree extends JTree {
      * boolean, boolean, boolean, int, boolean)
      */
     public String convertValueToText(Object value, boolean selected,
-			boolean expanded, boolean leaf, int row, boolean hasFocus) {
+            boolean expanded, boolean leaf, int row, boolean hasFocus) {
 
-		if (value instanceof ToDoItem) {
-			return ((ToDoItem) value).getHeadline();
-		}
-		if (value instanceof ToDoList) {
-			return "ToDoList";
-		}
-		
+        if (value instanceof ToDoItem) {
+            return ((ToDoItem) value).getHeadline();
+        }
+        if (value instanceof ToDoList) {
+            return "ToDoList";
+        }
+
 //		 do model elements first
         if (Model.getFacade().isAModelElement(value)) {
 
@@ -161,7 +161,8 @@ public class DisplayTextTree extends JTree {
 
             if (name == null || name.equals("")) {
                 name =
-                    "(unnamed " + Model.getFacade().getUMLClassName(value) + ")";
+                    "(unnamed " + Model.getFacade().getUMLClassName(value)
+                    + ")";
             }
             /*
              * If the name is too long or multi-line (e.g. for comments)
@@ -191,7 +192,7 @@ public class DisplayTextTree extends JTree {
 
             return name;
         }
-        
+
         if (Model.getFacade().isATaggedValue(value)) {
             String tagName = Model.getFacade().getTagOfTag(value);
             if (tagName == null || tagName.equals("")) {
@@ -199,24 +200,23 @@ public class DisplayTextTree extends JTree {
             }
             return ("1-" + tagName);
         }
-        
+
         if (value instanceof Diagram) {
             return ((Diagram) value).getName();
         }
 
-		if (value != null) {
-			return value.toString();
-		}
-		return "-";
-	}
+        if (value != null) {
+            return value.toString();
+        }
+        return "-";
+    }
 
     /**
-	 * Tree MModel Expansion notification.
-	 * <p>
-	 * 
-	 * @param path
-	 *            a Tree node insertion event
-	 */
+     * Tree MModel Expansion notification.<p>
+     *
+     * @param path
+     *            a Tree node insertion event
+     */
     public void fireTreeExpanded(TreePath path) {
 
         super.fireTreeExpanded(path);

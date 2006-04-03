@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -180,7 +180,7 @@ public class ArgoDiagram extends Diagram {
 
     /**
      * Get all the model elements in this diagram that are represented
-     * by a FigEdge
+     * by a FigEdge.
      * @see Diagram#getEdges()
      */
     public List getEdges() {
@@ -189,7 +189,7 @@ public class ArgoDiagram extends Diagram {
         }
         return super.getEdges();
     }
-    
+
     /**
      * @see Diagram#getEdges(Collection)
      * TODO: This method can be deleted after GEF 0.11.3M6
@@ -203,7 +203,7 @@ public class ArgoDiagram extends Diagram {
 
     /**
      * Get all the model elements in this diagram that are represented
-     * by a FigNode
+     * by a FigNode.
      * @see Diagram#getNodes()
      */
     public List getNodes() {
@@ -212,7 +212,7 @@ public class ArgoDiagram extends Diagram {
         }
         return super.getNodes();
     }
-    
+
     /**
      * @see Diagram#getEdges(Collection)
      * TODO: This method can be deleted after GEF 0.11.3M6
@@ -223,14 +223,14 @@ public class ArgoDiagram extends Diagram {
         }
         return getNodes();
     }
-    
+
     /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
         return "Diagram: " + getName();
     }
-    
+
     /**
      * We hang our heads in shame. There are still bugs in ArgoUML
      * and/or GEF that cause corruptions in the model.
@@ -239,50 +239,56 @@ public class ArgoDiagram extends Diagram {
      */
     public String repair() {
         String report = "";
-        
+
         List figs = new ArrayList(getLayer().getContents());
-        for (Iterator i = figs.iterator(); i.hasNext(); ) {
-            Fig f = (Fig)i.next();
-            
+        for (Iterator i = figs.iterator(); i.hasNext();) {
+            Fig f = (Fig) i.next();
+
             // 1. Make sure all Figs in the Diagrams layer refer back to
             // that layer.
             if (!getLayer().equals(f.getLayer())) {
                 // The report
                 if (f.getLayer() == null) {
-                    report += "Fixed: " + figDescription(f) + " layer was null\n";
+                    report +=
+                        "Fixed: " + figDescription(f) + " layer was null\n";
                 } else {
-                    report += "Fixed: " + figDescription(f) + " refered to wrong layer\n";
+                    report +=
+                        "Fixed: " + figDescription(f)
+                        + " refered to wrong layer\n";
                 }
                 // The fix
                 f.setLayer(getLayer());
             }
-            
+
             // 2. Make sure all FigNodes and FigEdges have an valid owner
             if (f instanceof FigNode || f instanceof FigEdge) {
                 // The report
                 Object owner = f.getOwner();
                 if (owner == null) {
-                    report += "Removed: " + figDescription(f) + " owner was null\n";
+                    report +=
+                        "Removed: " + figDescription(f) + " owner was null\n";
                 } else if (Model.getUmlFactory().isRemoved(owner)) {
-                    report += "Removed: " + figDescription(f) + " model element no longer in the repository\n";
+                    report +=
+                        "Removed: " + figDescription(f)
+                        + " model element no longer in the repository\n";
                 }
                 // The fix
                 f.removeFromDiagram();
             }
-            
+
         }
-        
+
         return report;
     }
-    
+
     private String figDescription(Fig f) {
         String description = f.getClass().getName();
         if (f instanceof FigComment) {
-            description += ((FigComment)f).getBody();
+            description += ((FigComment) f).getBody();
         } else if (f instanceof FigNodeModelElement) {
-            description += ((FigNodeModelElement)f).getName();
+            description += ((FigNodeModelElement) f).getName();
         } else if (f instanceof FigEdgeModelElement) {
-            description += ((FigEdgeModelElement)f).getName();
+            description += ((FigEdgeModelElement) f).getName();
         }
         return description;
     }

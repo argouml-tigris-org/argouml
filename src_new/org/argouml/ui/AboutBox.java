@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,7 +48,7 @@ import org.argouml.util.Tools;
 /**
  * This is what you see after you activate the "Help->About ArgoUML" menu-item.
  *
- * TODO: Add registration for new AboutBox tabs 
+ * TODO: Add registration for new AboutBox tabs
  * (instead of {@link org.argouml.application.api.PluggableAboutTab}).
  */
 public class AboutBox extends JDialog {
@@ -234,7 +234,8 @@ public class AboutBox extends JDialog {
         buf.append("+ Localization German: Harald Braun\n");
         buf.append("+ Localization Spanish: Stewart Munoz\n");
         buf.append("+ Localization British English: Alex Bagehot\n");
-        buf.append("+ Localization Norwegian (bokm\u00E5l): Hans Fredrik Nordhaug\n");
+        buf.append("+ Localization Norwegian (bokm\u00E5l): "
+                + "Hans Fredrik Nordhaug\n");
         buf.append("+ Localization Chinese: Jeff Liu\n\n");
 
         buf.append(Translator.messageFormat(
@@ -327,4 +328,9 @@ public class AboutBox extends JDialog {
         buf.append("+ ICS 125 teams Spring 1998\n");
         return buf.toString();
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -3647983226617303893L;
 } /* end class AboutBox */
