@@ -21,6 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
@@ -104,7 +105,8 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         getContentPane().setLayout(new BorderLayout(0, 0));
 
         // the introducing label
-        northLabel = new JLabel(Translator.localize("dialog.exception.message"));
+        northLabel =
+            new JLabel(Translator.localize("dialog.exception.message"));
         northLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         getContentPane().add(northLabel, BorderLayout.NORTH);
 
@@ -113,11 +115,12 @@ public class ExceptionDialog extends JDialog implements ActionListener {
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
-        
+
         if (highlightCause && e.getCause() != null) {
             // Repeat the instructions so they can click on the link
             pw.print(Translator.localize("dialog.exception.link.report"));
-            // This text is for the developers.  It doesn't need to be localized.
+            // This text is for the developers.
+            // It doesn't need to be localized.
             pw.print("\n" + message);
             pw.print("\n\nSystem Info:\n" + SystemInfoDialog.getInfo());
             pw.print("\nError occurred at :" + new Date().toGMTString());
@@ -135,7 +138,8 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         centerPanel.setPreferredSize(new Dimension(500, 200));
         getContentPane().add(centerPanel);
 
-        copyButton = new JButton(Translator.localize("button.copy-to-clipboard"));
+        copyButton =
+            new JButton(Translator.localize("button.copy-to-clipboard"));
         copyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 copyActionPerformed(evt);
@@ -145,7 +149,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         closeButton = new JButton(Translator.localize("button.close"));
         closeButton.addActionListener(this);
         JPanel bottomPanel = new JPanel();
-        
+
         bottomPanel.add(copyButton);
         bottomPanel.add(closeButton);
         getContentPane().add(bottomPanel, BorderLayout.SOUTH);
@@ -171,7 +175,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
 
     /**
      * Copy the textpane's contents to the clipboard.
-     * 
+     *
      * @param e the action
      */
     private void copyActionPerformed(ActionEvent e) {
@@ -181,7 +185,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         Clipboard clipboard = getToolkit().getSystemClipboard();
         clipboard.setContents(contents, defaultClipboardOwner);
     } // end copy_actionPerformed()
-    
+
     private void disposeDialog() {
         setVisible(false);
         dispose();
@@ -191,10 +195,15 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         new ClipboardObserver();
 
     static class ClipboardObserver implements ClipboardOwner {
+        /**
+         * @see java.awt.datatransfer.ClipboardOwner#lostOwnership(
+         *         java.awt.datatransfer.Clipboard,
+         *         java.awt.datatransfer.Transferable)
+         */
         public void lostOwnership(Clipboard clipboard, Transferable contents) {
         }
     }
-    
+
     /**
      * The UID.
      */
