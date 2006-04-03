@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,10 +36,10 @@ public interface PerspectiveManagerListener {
     /**
      * @param perspective the perspective to be added
      */
-    public void addPerspective(Object perspective);
+    void addPerspective(Object perspective);
 
     /**
      * @param perspective the perspective to be removed
      */
-    public void removePerspective(Object perspective);
+    void removePerspective(Object perspective);
 }

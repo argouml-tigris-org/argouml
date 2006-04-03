@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,8 +51,13 @@ public class ActionPerspectiveConfig extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        PerspectiveConfigurator ncd = new PerspectiveConfigurator(
-                ProjectBrowser.getInstance());
+        PerspectiveConfigurator ncd =
+            new PerspectiveConfigurator(ProjectBrowser.getInstance());
         ncd.setVisible(true);
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -708783262437452872L;
 }
