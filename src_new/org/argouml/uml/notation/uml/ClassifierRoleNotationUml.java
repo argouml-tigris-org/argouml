@@ -25,14 +25,17 @@
 package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Vector;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.notation.ClassifierRoleNotation;
+import org.argouml.util.MyTokenizer;
 
 /**
  * The UML notation for a ClassifierRole. <p>
@@ -86,12 +89,163 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
         return toString();
     }
     
-    private Object parseClassifierRole(Object classifierRole, String s)
-    throws ParseException {
+    /**
+     * Parses a ClassifierRole represented by the following line of the format:
+     *
+     * <pre>
+     * baselist := [base] [, base]*
+     * classifierRole := [name] [/ role] [: baselist]
+     * </pre>
+     *
+     * <code>role </code> and <code>baselist</code> can be given in
+     * any order.<p>
+     *
+     * This syntax is compatible with the UML 1.3 specification.
+     *
+     * (formerly: "name: base" )
+     *
+     * @param cls the classifier role to apply any changes to
+     * @param s the String to parse
+     * @return the classifier role with the applied changes
+     * @throws ParseException when it detects an error in the attribute string. 
+     *                  See also ParseError.getErrorOffset().
+     */
+    protected Object parseClassifierRole(Object cls, String s)
+        throws ParseException {
         
-        ParserDisplay.SINGLETON.parseClassifierRole(classifierRole, s);
+        String name = null;
+        String token;
+        String role = null;
+        String base = null;
+        Vector bases = null;
+        boolean hasColon = false;
+        boolean hasSlash = false;
+
+        try {
+            MyTokenizer st = new MyTokenizer(s, " ,\t,/,:,\\,");
+
+            while (st.hasMoreTokens()) {
+                token = st.nextToken();
+                if (" ".equals(token) || "\t".equals(token)) {
+                    /* Do nothing. */
+                } else if ("/".equals(token)) {
+                    hasSlash = true;
+                    hasColon = false;
+
+                    if (base != null) {
+                        if (bases == null) {
+                            bases = new Vector();
+                        }
+                        bases.add(base);
+                    }
+                    base = null;
+                } else if (":".equals(token)) {
+                    hasColon = true;
+                    hasSlash = false;
+
+                    if (bases == null) {
+                        bases = new Vector();
+                    }
+                    if (base != null) {
+                        bases.add(base);
+                    }
+                    base = null;
+                } else if (",".equals(token)) {
+                    if (base != null) {
+                        if (bases == null) {
+                            bases = new Vector();
+                        }
+                        bases.add(base);
+                    }
+                    base = null;
+                } else if (hasColon) {
+                    if (base != null) {
+                        throw new ParseException(
+                                "Extra text in Classifier Role", st
+                                        .getTokenIndex());
+                    }
+
+                    base = token;
+                } else if (hasSlash) {
+                    if (role != null) {
+                        throw new ParseException(
+                                "Extra text in Classifier Role", st
+                                        .getTokenIndex());
+                    }
+
+                    role = token;
+                } else {
+                    if (name != null) {
+                        throw new ParseException(
+                                "Extra text in Classifier Role", st
+                                        .getTokenIndex());
+                    }
+
+                    name = token;
+                }
+            }
+        } catch (NoSuchElementException nsee) {
+            throw new ParseException("Unexpected end of attribute", s.length());
+        }
+
+        if (base != null) {
+            if (bases == null) {
+                bases = new Vector();
+            }
+            bases.add(base);
+        }
+
+        // TODO: What to do about object name???
+        //    if (name != null)
+        //      ;
+
+        if (role != null) {
+            Model.getCoreHelper().setName(cls, role.trim());
+        }
+
+        if (bases != null) {
+            // Remove bases that aren't there anymore
+
+            // copy - can't iterate modify live collection while iterating it
+            Collection b = new ArrayList(Model.getFacade().getBases(cls));
+            Iterator it = b.iterator();
+            Object c;
+            Object ns = Model.getFacade().getNamespace(cls);
+            if (ns != null && Model.getFacade().getNamespace(ns) != null) {
+                ns = Model.getFacade().getNamespace(ns);
+            } else {
+                ns = Model.getFacade().getModel(cls);
+            }
+
+            while (it.hasNext()) {
+                c = it.next();
+                if (!bases.contains(Model.getFacade().getName(c))) {
+                    Model.getCollaborationsHelper().removeBase(cls, c);
+                }
+            }
+
+            it = bases.iterator();
+        addBases:
+            while (it.hasNext()) {
+                String d = ((String) it.next()).trim();
+
+                Iterator it2 = b.iterator();
+                while (it2.hasNext()) {
+                    c = it2.next();
+                    if (d.equals(Model.getFacade().getName(c))) {
+                        continue addBases;
+                    }
+                }
+                c = NotationUtilityUml.getType(d, ns);
+                if (Model.getFacade().isACollaboration(
+                        Model.getFacade().getNamespace(c))) {
+                    Model.getCoreHelper().setNamespace(c, ns);
+                }
+                Model.getCollaborationsHelper().addBase(cls, c);
+            }
+        }
         
-        return classifierRole;
+        return cls;
     }
 
     /**
