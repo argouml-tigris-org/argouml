@@ -90,6 +90,7 @@ public class ActionAddConcurrentRegion extends UndoableAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+        super.actionPerformed(ae);
         try {
             /*Here the actions to divide a region*/
             Fig f = (Fig) TargetManager.getInstance().getFigTarget();

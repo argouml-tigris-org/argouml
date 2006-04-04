@@ -89,6 +89,7 @@ public class ActionDeleteConcurrentRegion extends UndoableAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+        super.actionPerformed(ae);
         try {
             /*Here the actions to delete a region.
             We assume the only figs enclosed in a concurrent composite state
