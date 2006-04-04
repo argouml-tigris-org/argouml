@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,27 +30,31 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.util.Vector;
 
+import javax.swing.Action;
+
 import org.apache.log4j.Logger;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
 import org.argouml.uml.diagram.state.ui.FigConcurrentRegion;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
-import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Add a concurrent region to a concurrent composite state
  *
  * @author pepargouml@yahoo.es
  */
-public class ActionAddConcurrentRegion extends UMLAction {
+public class ActionAddConcurrentRegion extends UndoableAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -59,32 +63,27 @@ public class ActionAddConcurrentRegion extends UMLAction {
     private static final Logger LOG =
         Logger.getLogger(ActionAddConcurrentRegion.class);
 
-    private static ActionAddConcurrentRegion singleton =
-        new ActionAddConcurrentRegion();
-
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    private ActionAddConcurrentRegion() {
-        super("action.add-concurrent-region", true, true);
+    public ActionAddConcurrentRegion() {
+        super(Translator.localize("action.add-concurrent-region"),
+                ResourceLoaderWrapper.lookupIcon("action.add-concurrent-region"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.add-concurrent-region"));
     }
 
     ////////////////////////////////////////////////////////////////
     // main methods
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @see javax.swing.Action#isEnabled()
      */
-    public boolean shouldBeEnabled() {
-        int size = 0;
-        try {
-            Editor ce = Globals.curEditor();
-            Vector figs = ce.getSelectionManager().getFigs();
-            size = figs.size();
-        } catch (Exception e) {
-        }
-        return super.shouldBeEnabled() && (size > 0)
-            && (TargetManager.getInstance().getModelTargets().size() < 2);
+    public boolean isEnabled() {
+        Object target = TargetManager.getInstance().getModelTarget();
+        if (Model.getStateMachinesHelper().isTopState(target)) return false;
+        return TargetManager.getInstance().getModelTargets().size() < 2;
     }
 
     /**
@@ -170,13 +169,6 @@ public class ActionAddConcurrentRegion extends UMLAction {
         } catch (Exception ex) {
             LOG.error(ex);
         }
-    }
-
-    /**
-     * @return Returns the singleton.
-     */
-    public static ActionAddConcurrentRegion getSingleton() {
-        return singleton;
     }
 
 }

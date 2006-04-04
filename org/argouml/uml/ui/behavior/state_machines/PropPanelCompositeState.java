@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,15 +24,16 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
+import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
 import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
@@ -44,6 +45,8 @@ import org.tigris.swidgets.Orientation;
 public class PropPanelCompositeState extends AbstractPropPanelState {
 
     private JList subverticesList = null;
+    private Action addConcurrentRegion;
+    private Action deleteConcurrentRegion;
 
     /**
      * Constructor for PropPanelCompositeState.
@@ -101,7 +104,10 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
      */
     protected void addExtraButtons() {
         super.addExtraButtons();
-        addAction(ActionAddConcurrentRegion.getSingleton());
+        addConcurrentRegion = new ActionAddConcurrentRegion();
+        addAction(addConcurrentRegion);
+        deleteConcurrentRegion = new ActionDeleteConcurrentRegion();
+        addAction(deleteConcurrentRegion);
     }
 
     /**
@@ -115,26 +121,21 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
      */
-    public void targetSet(TargetEvent e) {
-        if (e != null) {
-            Object source = e.getSource();
-            if (source != null
-                    && source instanceof TargetManager) {
-                Object target =
-                    ((TargetManager) e.getSource()).getModelTarget();
-                if (Model.getFacade().isAConcurrentRegion(target)) {
-                    getTitleLabel().setText("Concurrent Region");
-                } else if (Model.getFacade().isConcurrent(target)) {
-                    getTitleLabel().setText("Concurrent Composite State");
-                } else {
-                    getTitleLabel().setText("Composite State");
-                }
-            }
+    public void setTarget(Object t) {
+        super.setTarget(t);
+        addConcurrentRegion.setEnabled(addConcurrentRegion.isEnabled());
+        deleteConcurrentRegion.setEnabled(deleteConcurrentRegion.isEnabled());
+        Object target = TargetManager.getInstance().getModelTarget();
+        if (Model.getFacade().isAConcurrentRegion(target)) {
+            getTitleLabel().setText("Concurrent Region");
+        } else if (Model.getFacade().isConcurrent(target)) {
+            getTitleLabel().setText("Concurrent Composite State");
+        } else {
+            getTitleLabel().setText("Composite State");
         }
-        super.targetSet(e);
-    }
+     }
 
 } /* end class PropPanelCompositeState */
 
