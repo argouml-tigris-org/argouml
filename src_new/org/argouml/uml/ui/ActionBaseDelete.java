@@ -141,7 +141,7 @@ public abstract class ActionBaseDelete extends UMLAction {
                 }
                 newTarget = getNewTarget(target);
                 if (Model.getFacade().isAConcurrentRegion(target)) {
-                    ActionDeleteConcurrentRegion.getSingleton()
+                    new ActionDeleteConcurrentRegion()
                         .actionPerformed(ae);
                 } else {
                     p.moveToTrash(target);

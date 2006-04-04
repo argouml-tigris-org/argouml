@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,16 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.util.Vector;
+
+import javax.swing.Action;
+
 import org.apache.log4j.Logger;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -33,21 +42,15 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
 import org.argouml.uml.diagram.state.ui.FigConcurrentRegion;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
-import org.argouml.uml.ui.UMLAction;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.Vector;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Delete a concurrent region of a concurrent composite state
  *
  * @author pepargouml@yahoo.es
  */
-public class ActionDeleteConcurrentRegion extends UMLAction {
+public class ActionDeleteConcurrentRegion extends UndoableAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -56,32 +59,30 @@ public class ActionDeleteConcurrentRegion extends UMLAction {
     private static final Logger LOG =
         Logger.getLogger(ActionDeleteConcurrentRegion.class);
 
-    private static ActionDeleteConcurrentRegion singleton =
-        new ActionDeleteConcurrentRegion();
-
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    private ActionDeleteConcurrentRegion() {
-        super("action.delete-concurrent-region");
+    public ActionDeleteConcurrentRegion() {
+        super(Translator.localize("action.delete-concurrent-region"),
+                ResourceLoaderWrapper.lookupIcon("action.delete-concurrent-region"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.delete-concurrent-region"));
     }
 
     ////////////////////////////////////////////////////////////////
     // main methods
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @see javax.swing.Action#isEnabled()
      */
-    public boolean shouldBeEnabled() {
-        super.shouldBeEnabled();
-        int size = 0;
-        try {
-            Editor ce = Globals.curEditor();
-            Vector figs = ce.getSelectionManager().getFigs();
-            size = figs.size();
-        } catch (Exception e) {
+    public boolean isEnabled() {
+        Object target = TargetManager.getInstance().getModelTarget();
+        if (Model.getStateMachinesHelper().isTopState(target)) return false;
+        if (Model.getFacade().isAConcurrentRegion(target)) {
+            return TargetManager.getInstance().getModelTargets().size() < 2;
         }
-        return size > 0;
+        return false;
     }
 
     /**
@@ -150,13 +151,6 @@ public class ActionDeleteConcurrentRegion extends UMLAction {
             LOG.error(
                 ex);
         }
-    }
-
-    /**
-     * @return Returns the singleton.
-     */
-    public static ActionDeleteConcurrentRegion getSingleton() {
-        return singleton;
     }
 
 }

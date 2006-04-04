@@ -260,7 +260,7 @@ public class FigCompositeState extends FigState {
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
         if (!ms) {
             popUpActions.insertElementAt(
-                ActionAddConcurrentRegion.getSingleton(),
+                new ActionAddConcurrentRegion(),
                                          (popUpActions.size()
                                           - getPopupAddOffset()));
         }
