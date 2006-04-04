@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+
+import org.argouml.i18n.Translator;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * This class resembles UMLModelElementListModel2, but is for those
@@ -98,12 +101,11 @@ public abstract class UMLModelElementOrderedListModel2
 
 
 /**
- * TODO: Once finished, this class may be extracted in a seperate file,
- * for use in other places.
- *
+ * The action to move an item in the list one place up.
+ * 
  * @author mvw@tigris.org
  */
-class MoveUpAction extends UMLAction {
+class MoveUpAction extends UndoableAction {
     private UMLModelElementOrderedListModel2 model;
     private int index;
 
@@ -112,7 +114,7 @@ class MoveUpAction extends UMLAction {
      */
     public MoveUpAction(UMLModelElementOrderedListModel2 theModel,
             int theIndex) {
-        super("menu.popup.moveup", NO_ICON);
+        super(Translator.localize("menu.popup.moveup"));
         model = theModel;
         index = theIndex;
     }
@@ -121,6 +123,7 @@ class MoveUpAction extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
         model.swap(index - 1, index);
     }
     /**
@@ -132,12 +135,11 @@ class MoveUpAction extends UMLAction {
 }
 
 /**
- * TODO: Once finished, this class may be extracted in a seperate file,
- * for use in other places.
+ * The action to move an item in the list one place down.
  *
  * @author mvw@tigris.org
  */
-class MoveDownAction extends UMLAction {
+class MoveDownAction extends UndoableAction {
     private UMLModelElementOrderedListModel2 model;
     private int index;
 
@@ -146,7 +148,7 @@ class MoveDownAction extends UMLAction {
      */
     public MoveDownAction(UMLModelElementOrderedListModel2 theModel,
             int theIndex) {
-        super("menu.popup.movedown", NO_ICON);
+        super(Translator.localize("menu.popup.movedown"));
         model = theModel;
         index = theIndex;
     }
@@ -155,6 +157,7 @@ class MoveDownAction extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
         model.swap(index, index + 1);
     }
     /**

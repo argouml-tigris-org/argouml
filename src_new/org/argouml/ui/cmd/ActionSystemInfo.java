@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,19 +27,26 @@ package org.argouml.ui.cmd;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JFrame;
 
-import org.tigris.swidgets.ActionUtilities;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.ui.SystemInfoDialog;
-import org.argouml.uml.ui.UMLAction;
+import org.tigris.swidgets.ActionUtilities;
 
 /**
  * System information dialog.
  */
-class ActionSystemInfo extends UMLAction {
+class ActionSystemInfo extends AbstractAction {
 
     public ActionSystemInfo() {
-        super("action.system-information", HAS_ICON);
+        super(Translator.localize("action.system-information"),
+                ResourceLoaderWrapper.lookupIcon("action.system-information"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.system-information"));
     }
 
     /**
