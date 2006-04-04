@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2005 The Regents of the University of California. All
+// Copyright (c) 2002-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,51 +21,48 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-package org.argouml.ui.targetmanager;
+package org.argouml.ui.cmd;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.uml.ui.UMLAction;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  * Navigates the target one target forward in history.
  *
  * @author jaap.branderhorst@xs4all.nl
  */
-public class NavigateTargetForwardAction extends UMLAction {
+ class NavigateTargetForwardAction extends AbstractAction {
 
-    private static NavigateTargetForwardAction instance;
-
-    /**
-     * @return the instance (singleton)
-     */
-    public static NavigateTargetForwardAction getInstance() {
-        if (instance == null) {
-            instance = new NavigateTargetForwardAction();
-        }
-        return instance;
-    }
-
-    private NavigateTargetForwardAction() {
-        super("action.navigate-forward", true, HAS_ICON);
-    }
-
-    /**
-     * @see
-     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e) {
-        TargetManager.getInstance().navigateForward();
-    }
-
-    /**
-     * Action is possible only if navigateForwardPossible on targetManager
-     * returns true.
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() {
-        return super.shouldBeEnabled()
-            && TargetManager.getInstance().navigateForwardPossible();
-    }
-
-}
+     public NavigateTargetForwardAction() {
+         super(Translator.localize("action.navigate-forward"),
+                 ResourceLoaderWrapper.lookupIcon("action.navigate-forward"));
+         // Set the tooltip string:
+         putValue(Action.SHORT_DESCRIPTION, 
+                 Translator.localize("action.navigate-forward"));
+     }
+     
+     /**
+      * @see
+      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+      */
+     public void actionPerformed(ActionEvent e) {
+         TargetManager.getInstance().navigateForward();
+     }
+     
+     /**
+      * Action is possible only if navigateForwardPossible on targetManager
+      * returns true.
+      * 
+      * @see javax.swing.Action#isEnabled()
+      */
+     public boolean isEnabled() {
+         return TargetManager.getInstance().navigateForwardPossible();
+     }
+     
+ }

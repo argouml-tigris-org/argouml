@@ -55,8 +55,9 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.ZoomSliderButton;
 import org.argouml.ui.explorer.ActionPerspectiveConfig;
-import org.argouml.ui.targetmanager.NavigateTargetBackAction;
-import org.argouml.ui.targetmanager.NavigateTargetForwardAction;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
@@ -116,6 +117,7 @@ import org.tigris.toolbar.ToolBar;
  * is removed from ArgoUML, the {@link ArgoModuleEventListener} can be removed.
  */
 public class GenericArgoMenuBar extends JMenuBar implements
+        TargetListener,
         ArgoModuleEventListener {
 
     /**
@@ -197,14 +199,23 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * basic improvement.
      */
     private JMenu help;
+    
+    private Action navigateTargetForwardAction;
+    private Action navigateTargetBackAction;
 
     /**
      * The constructor.
      */
     public GenericArgoMenuBar() {
+        initActions();
         initMenus();
     }
 
+    private void initActions() {
+        navigateTargetForwardAction = new NavigateTargetForwardAction();
+        navigateTargetBackAction = new NavigateTargetBackAction();
+        TargetManager.getInstance().addTargetListener(this);
+    }
     /**
      * This should be a user specified option. New laws for handicapped people
      * who cannot use the mouse require software developers in US to make all
@@ -507,11 +518,10 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setMnemonic(selectAllItem, "Select All");
         setAccelerator(selectAllItem, ctrlA);
         select.addSeparator();
-        JMenuItem backItem = select.add(NavigateTargetBackAction.getInstance());
+        JMenuItem backItem = select.add(navigateTargetBackAction);
         setMnemonic(backItem, "Navigate Back");
         // setAccelerator(backItem,altLeft);
-        JMenuItem forwardItem = select.add(NavigateTargetForwardAction
-                .getInstance());
+        JMenuItem forwardItem = select.add(navigateTargetForwardAction);
         setMnemonic(forwardItem, "Navigate Forward");
         // setAccelerator(forwardItem,altRight);
         select.addSeparator();
@@ -795,8 +805,8 @@ public class GenericArgoMenuBar extends JMenuBar implements
             editToolbar.addFocusListener(ActionPaste.getInstance());
             editToolbar.add(ProjectBrowser.getInstance()
                     .getRemoveFromDiagramAction());
-            editToolbar.add(NavigateTargetBackAction.getInstance());
-            editToolbar.add(NavigateTargetForwardAction.getInstance());
+            editToolbar.add(navigateTargetBackAction);
+            editToolbar.add(navigateTargetForwardAction);
         }
         return editToolbar;
     }
@@ -868,4 +878,35 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * The UID.
      */
     private static final long serialVersionUID = 2904074534530273119L;
+    
+    /**
+     * Target changed - update the actions that depend on the target.
+     */
+    private void setTarget() {
+        navigateTargetForwardAction.setEnabled(
+                navigateTargetForwardAction.isEnabled());
+        navigateTargetBackAction.setEnabled(
+                navigateTargetBackAction.isEnabled());
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        setTarget();
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        setTarget();
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        setTarget();
+    }
 }
