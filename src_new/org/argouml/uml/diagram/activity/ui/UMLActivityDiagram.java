@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.activity.ui;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
@@ -33,6 +34,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
 import org.argouml.uml.diagram.state.ui.ActionCreatePseudostate;
 import org.argouml.uml.diagram.ui.RadioAction;
@@ -44,7 +46,7 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 /**
  * The Activity diagram.<p>
  *
- * TODO: Finish the work on swimlanes, callstates, subactivity states.
+ * TODO: Finish the work on swimlanes, subactivity states.
  */
 public class UMLActivityDiagram extends UMLDiagram {
     private Action actionState;
@@ -159,6 +161,26 @@ public class UMLActivityDiagram extends UMLDiagram {
 
         setLayer(lay);
 
+        /* Listen to activitygraph namespace changes, 
+         * to adapt the namespace of the diagram. */
+        Model.getPump().addModelEventListener(this, agraph, "namespace");
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        super.propertyChange(evt);
+        if (evt.getSource() == getStateMachine()) {
+            Object newNamespace = 
+                Model.getFacade().getNamespace(getStateMachine());
+            if (getNamespace() != newNamespace) {
+                /* The namespace of the activitygraph is changed! */
+                setNamespace(newNamespace);
+                ((UMLMutableGraphSupport)getGraphModel())
+                                .setHomeModel(newNamespace);
+            }
+        }
     }
 
     /**
