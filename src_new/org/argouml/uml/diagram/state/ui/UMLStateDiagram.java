@@ -45,8 +45,10 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 
 
 /**
- * The correct name for this class is "UMLStatechartDiagram". See issue 2306.
- *
+ * The UML Statechart diagram. <p>
+ * 
+ * The correct name for this class would be 
+ * "UMLStatechartDiagram". See issue 2306.
  */
 public class UMLStateDiagram extends UMLDiagram {
     /**
@@ -245,7 +247,6 @@ public class UMLStateDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        // TODO Auto-generated method stub
         super.propertyChange(evt);
         if (evt.getSource() == theStateMachine) {
             Object newNamespace = 
