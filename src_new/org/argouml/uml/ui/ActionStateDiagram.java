@@ -24,52 +24,30 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.Action;
-
-import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Action to create a new statechart diagram.
  */
-public class ActionStateDiagram extends UndoableAction {
+public class ActionStateDiagram extends ActionNewDiagram {
 
     /**
      * Constructor.
      */
     public ActionStateDiagram() {
-        super(Translator.localize("action.state-diagram"),
-                ResourceLoaderWrapper.lookupIcon("action.state-diagram"));
-        // Set the tooltip string:
-        putValue(Action.SHORT_DESCRIPTION, 
-                Translator.localize("action.state-diagram"));
+        super("action.state-diagram");
     }
 
-    public void actionPerformed(ActionEvent e) {
-        Project p = ProjectManager.getManager().getCurrentProject();
-
-        super.actionPerformed(e);
-        UMLDiagram diagram = createDiagram();
-        p.addMember(diagram);
-        //TODO: make the explorer listen to project member property
-        //changes...  to eliminate coupling on gui.
-        ExplorerEventAdaptor.getInstance().modelElementAdded(
-                diagram.getNamespace());
-        TargetManager.getInstance().setTarget(diagram);
-    }
-
-    private UMLDiagram createDiagram() {
+    /**
+     * @see org.argouml.uml.ui.ActionNewDiagram#createDiagram()
+     */
+    protected UMLDiagram createDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
         Object target = TargetManager.getInstance().getModelTarget();
         Object machine = null;
