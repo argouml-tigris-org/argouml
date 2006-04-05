@@ -24,7 +24,8 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramFactory;
@@ -33,17 +34,16 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
  * Action to trigger creation of a new activity diagram.<p>
- *
- * This used to extend the ActionStateDiagram, but lead to problems
- * implementing shouldBeEnabled() and isValidNamespace().
+ * 
+ * An ActivityGraph specifies the dynamics of<ul>
+ * <li> a Package, or
+ * <li> a Classifier (including UseCase), or
+ * <li> a BehavioralFeature.
+ * </ul>
+ * 
+ * @author michiel
  */
-public class ActionActivityDiagram extends ActionAddDiagram {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(ActionStateDiagram.class);
+public class ActionActivityDiagram extends ActionNewDiagram {
 
     /**
      * Constructor.
@@ -53,55 +53,36 @@ public class ActionActivityDiagram extends ActionAddDiagram {
     }
 
     /**
-     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(java.lang.Object)
+     * Create the diagram.
      */
-    public UMLDiagram createDiagram(Object ns) {
+    protected UMLDiagram createDiagram() {
+        Project p = ProjectManager.getManager().getCurrentProject();
         Object target = TargetManager.getInstance().getModelTarget();
-        Object/*MActivityGraph*/ graph =
-	    Model.getActivityGraphsFactory().buildActivityGraph(target);
-        /*if (Model.getFacade().isABehavioralFeature(target)) {
-            ns = Model.getFacade().getNamespace(target);
-            // this fails always, see issue 1817
-        }*/
+        Object graph = null;
+        Object namespace = p.getRoot(); // the root model
+        if (Model.getActivityGraphsHelper().isAddingActivityGraphAllowed(
+                target)) {
+            /* The target is a valid context */
+            graph = Model.getActivityGraphsFactory().buildActivityGraph(target);
+        } else {
+            graph = Model.getActivityGraphsFactory().createActivityGraph();
+            if (Model.getFacade().isANamespace(target)) {
+                namespace = target;
+            }
+            Model.getCoreHelper().setNamespace(graph, namespace);
+            Model.getStateMachinesFactory()
+                .buildCompositeStateOnStateMachine(graph);
+        }
+
         return (UMLDiagram) DiagramFactory.getInstance().createDiagram(
                 UMLActivityDiagram.class,
-                ns,
+                Model.getFacade().getNamespace(graph),
                 graph);
-    }
-
-    /**
-     * An ActivityGraph specifies the dynamics of<ul>
-     * <li> a Package, or
-     * <li> a Classifier (including UseCase), or
-     * <li> a BehavioralFeature.
-     * </ul>
-     *
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() {
-        Object obj = TargetManager.getInstance().getModelTarget();
-        return super.shouldBeEnabled()
-            && Model.getActivityGraphsHelper()
-                .isAddingActivityGraphAllowed(obj);
-    }
-
-
-    /**
-     * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(java.lang.Object)
-     */
-    public boolean isValidNamespace(Object handle) {
-        if (!Model.getFacade().isANamespace(handle)) {
-            LOG.error("No namespace as argument");
-            LOG.error(handle);
-            throw new IllegalArgumentException(
-                "The argument " + handle + "is not a namespace.");
-        }
-        return Model.getActivityGraphsHelper()
-            .isAddingActivityGraphAllowed(handle);
     }
 
     /**
      * The UID.
      */
     private static final long serialVersionUID = -28844322376391273L;
+
 } /* end class ActionActivityDiagram */
