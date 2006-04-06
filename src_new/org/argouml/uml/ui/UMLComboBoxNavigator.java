@@ -27,6 +27,8 @@ package org.argouml.uml.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -37,62 +39,56 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.ui.targetmanager.TargetManager;
 
 /**
- *   This class implements a panel that adds a navigation button
- *   to the right of the combo box
- *
- *   @author Curt Arnold
- *   @since 0.9
+ * This class implements a panel that adds a navigation button to the right of
+ * the combo box
+ * 
+ * @author Curt Arnold
+ * @since 0.9
  */
-public class UMLComboBoxNavigator extends JPanel implements ActionListener {
+public class UMLComboBoxNavigator extends JPanel implements ActionListener,
+        ItemListener {
 
-    private static ImageIcon icon =
-        ResourceLoaderWrapper.lookupIconResource(
-            "ComboNav");
+    private static ImageIcon icon = ResourceLoaderWrapper
+            .lookupIconResource("ComboNav");
+
     private UMLUserInterfaceContainer theContainer;
+
     private JComboBox theComboBox;
+
     private JButton theButton;
 
     /**
-     *  Constructor
-     *  @param container Container, typically a PropPanel
-     *  @param tooltip Tooltip key for button
-     *  @param box Associated combo box
+     * Constructor
+     * 
+     * @param container
+     *            Container, typically a PropPanel
+     * @param tooltip
+     *            Tooltip key for button
+     * @param box
+     *            Associated combo box
      */
-    public UMLComboBoxNavigator(
-            UMLUserInterfaceContainer container,
-            String tooltip,
-            JComboBox box) {
+    public UMLComboBoxNavigator(UMLUserInterfaceContainer container,
+            String tooltip, JComboBox box) {
         super(new BorderLayout());
         theButton = new JButton(icon);
         theContainer = container;
         theComboBox = box;
-        theButton.setPreferredSize(
-            new Dimension(icon.getIconWidth() + 6, icon.getIconHeight() + 6));
+        theButton.setPreferredSize(new Dimension(icon.getIconWidth() + 6, icon
+                .getIconHeight() + 6));
         theButton.setToolTipText(tooltip);
         theButton.addActionListener(this);
         box.addActionListener(this);
+        box.addItemListener(this);
         add(theComboBox, BorderLayout.CENTER);
         add(theButton, BorderLayout.EAST);
         Object item = theComboBox.getSelectedItem();
-        if (item instanceof UMLComboBoxEntry) {
-            UMLComboBoxEntry entry = (UMLComboBoxEntry) item;
-            if (!entry.isPhantom()) {
-                Object/*MModelElement*/ target = entry.getElement(null);
-                if (target != null) {
-                    theButton.setEnabled(true);
-                } else
-                    theButton.setEnabled(false);
-            }
-        } else if (item != null)
-            theButton.setEnabled(true);
-        else
-            theButton.setEnabled(false);
+        setButtonEnabled(item);
     }
 
     /**
-     * Fired when the button is pushed.  Navigates to the currently
-     * selected item in the combo box.
-     *
+     * Fired when the button is pushed. Navigates to the currently selected item
+     * in the combo box.
+     * 
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(final java.awt.event.ActionEvent event) {
@@ -102,30 +98,44 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener {
             if (item instanceof UMLComboBoxEntry) {
                 UMLComboBoxEntry entry = (UMLComboBoxEntry) item;
                 if (!entry.isPhantom()) {
-                    Object/*MModelElement*/ target = entry.getElement(null);
+                    Object/* MModelElement */target = entry.getElement(null);
                     if (target != null) {
                         TargetManager.getInstance().setTarget(target);
                     }
                 }
-            } else if (item != null)
+            } else if (item != null) {
                 TargetManager.getInstance().setTarget(item);
+            }
+
         }
         if (event.getSource() == theComboBox) {
             Object item = theComboBox.getSelectedItem();
-            if (item instanceof UMLComboBoxEntry) {
-                UMLComboBoxEntry entry = (UMLComboBoxEntry) item;
-                if (!entry.isPhantom()) {
-                    Object/*MModelElement*/ target = entry.getElement(null);
-                    if (target != null) {
-                        theButton.setEnabled(true);
-                    } else
-                        theButton.setEnabled(false);
-                }
-            } else if (item != null)
-                theButton.setEnabled(true);
-            else
-                theButton.setEnabled(false);
+            setButtonEnabled(item);
         }
+    }
 
+    public void itemStateChanged(ItemEvent event) {
+        if (event.getSource() == theComboBox) {
+            Object item = theComboBox.getSelectedItem();
+            setButtonEnabled(item);
+
+        }
+    }
+
+    private void setButtonEnabled(Object item) {
+        if (item instanceof UMLComboBoxEntry) {
+            UMLComboBoxEntry entry = (UMLComboBoxEntry) item;
+            if (!entry.isPhantom()) {
+                Object/* MModelElement */target = entry.getElement(null);
+                if (target != null) {
+                    theButton.setEnabled(true);
+                } else
+                    theButton.setEnabled(false);
+            }
+        } else if (item != null) {
+            theButton.setEnabled(true);
+        } else {
+            theButton.setEnabled(false);
+        }
     }
 }
