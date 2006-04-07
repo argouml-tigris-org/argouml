@@ -25,7 +25,7 @@ package org.argouml.persistence;
 
 import java.util.StringTokenizer;
 
-import org.argouml.uml.diagram.ui.FigCommentPort;
+import org.argouml.uml.diagram.ui.FigEdgePort;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.persistence.pgml.PGMLStackParser;
 import org.tigris.gef.presentation.Fig;
@@ -148,8 +148,8 @@ public class FigEdgeHandler
         if (edge == null) {
             throw new IllegalStateException("Can't find a FigNode with id " + figId);
         }
-        edge.makeCommentPort();
-        return edge.getCommentPort();
+        edge.makeEdgePort();
+        return edge.getEdgePort();
     }
 
 
@@ -160,7 +160,7 @@ public class FigEdgeHandler
      * @return the Fig that is the port on the given FigNode
      */
     private Fig getPortFig(FigNode figNode) {
-        if (figNode instanceof FigCommentPort) {
+        if (figNode instanceof FigEdgePort) {
             // TODO: Can we just do this every time, no need for else - Bob
             return figNode;
         } else {

@@ -82,8 +82,8 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
             // If we're drawing from an edge
 
             FigEdgeModelElement sourceEdge = (FigEdgeModelElement) underMouse;
-            sourceEdge.makeCommentPort();
-            FigCommentPort commentPort = sourceEdge.getCommentPort();
+            sourceEdge.makeEdgePort();
+            FigEdgePort commentPort = sourceEdge.getEdgePort();
             sourceEdge.computeRoute();
 
             underMouse = commentPort;
@@ -137,8 +137,8 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
                 && Model.getFacade().isAComment(sourceModelElement)
                 && !(destFig instanceof FigEdgeNote)) {
             FigEdgeModelElement destEdge = (FigEdgeModelElement) destFig;
-            destEdge.makeCommentPort();
-            destFig = destEdge.getCommentPort();
+            destEdge.makeEdgePort();
+            destFig = destEdge.getEdgePort();
             destEdge.computeRoute();
         }
 

@@ -99,8 +99,8 @@ public class ActionAddNote extends UMLAction {
             Fig destFig = diagram.presentationFor(obj);
             if (destFig instanceof FigEdgeModelElement) {
                 FigEdgeModelElement destEdge = (FigEdgeModelElement) destFig;
-                destEdge.makeCommentPort();
-                destFig = destEdge.getCommentPort();
+                destEdge.makeEdgePort();
+                destFig = destEdge.getEdgePort();
                 destEdge.calcBounds();
             }
             if (Model.getFacade().isAModelElement(obj)
@@ -164,7 +164,7 @@ public class ActionAddNote extends UMLAction {
         }
 
         if (elemFig instanceof FigEdgeModelElement) {
-            elemFig = ((FigEdgeModelElement) elemFig).getCommentPort();
+            elemFig = ((FigEdgeModelElement) elemFig).getEdgePort();
         }
 
         if (elemFig instanceof FigNode) {

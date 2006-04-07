@@ -34,12 +34,15 @@ import org.argouml.model.Model;
 import org.argouml.ui.CmdSetMode;
 
 /**
- * An extension of CmdSetMode to set the parameters for an association.
+ * An extension of CmdSetMode to create all the parts of an association
+ * class.
  *
  * @author Bob Tarling
  */
 
 public class ActionSetAddAssociationEndMode extends CmdSetMode {
+
+    private static final long serialVersionUID = 2908695768709766241L;
 
     /**
      * Construct a new ActionSetAddAssociationEndMode.<p>
