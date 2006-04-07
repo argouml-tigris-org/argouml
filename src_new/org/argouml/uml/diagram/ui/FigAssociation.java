@@ -665,7 +665,11 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     public void paint(Graphics g) {
         if (sourceArrowHead == null || destArrowHead == null) {
-	    chooseArrowHeads(getOwner()); 
+            if (getOwner() == null ) {
+                LOG.error("Trying to paint a FigAssociation without an owner. ");
+            } else {
+                chooseArrowHeads(getOwner()); 
+            }
         }
         if (sourceArrowHead != null && destArrowHead != null) {
 	    sourceArrowHead.setLineColor(getLineColor());
