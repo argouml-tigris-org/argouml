@@ -102,7 +102,7 @@ public abstract class FigEdgeModelElement
         ArgoNotationEventListener,
         Highlightable {
 
-    private static final Logger LOG =
+    protected static final Logger LOG =
         Logger.getLogger(FigEdgeModelElement.class);
 
     private DiElement diElement = null;
