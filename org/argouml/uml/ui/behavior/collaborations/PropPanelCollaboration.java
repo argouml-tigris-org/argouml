@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,7 +56,7 @@ public class PropPanelCollaboration extends PropPanelNamespace {
         addField(Translator.localize("label.stereotype"),
                 getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
-               getNamespaceScroll());
+                getNamespaceSelector());
 
         UMLLinkedList classifierList =
 	    new UMLLinkedList(
@@ -86,8 +86,12 @@ public class PropPanelCollaboration extends PropPanelNamespace {
         addField(Translator.localize("label.constraining-elements"),
             new JScrollPane(constrainingList));
 
-        // we do not add the owned-elements since they are not of real interest
+        addSeperator();
 
+        // add the owned-elements field with ClassifierRoles and AssociationRoles
+        addField(Translator.localize("label.owned-elements"),
+                getOwnedElementsScroll());
+        
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());
