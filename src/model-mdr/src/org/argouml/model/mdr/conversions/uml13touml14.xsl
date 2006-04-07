@@ -113,6 +113,7 @@
   <xsl:template match="Foundation.Core.ModelElement.templateParameter3"/>
   <xsl:template match="Foundation.Core.ModelElement.binding"/>
   <xsl:template match="Foundation.Core.GeneralizableElement.specialization"/>
+  <xsl:template match="Foundation.Core.Classifier.associationEnd"/>
   <xsl:template match="Foundation.Core.Classifier.participant"/>
   <xsl:template match="Foundation.Core.Operation.method"/>
   <xsl:template match="Foundation.Extension_Mechanisms.Stereotype.extendedElement"/>
@@ -253,8 +254,6 @@
         <xsl:when test="$qualifiedName = 'ModelElement.templateParameter3'">ModelElement.defaultedParameter</xsl:when>
         <xsl:when test="$qualifiedName = 'Classifier.structuralFeature'">Classifier.typedFeature</xsl:when>
         <xsl:when test="$qualifiedName = 'Classifier.parameter'">Classifier.typedParameter</xsl:when>
-        <xsl:when test="$qualifiedName = 'Classifier.associationEnd'">Classifier.association</xsl:when>
-        <xsl:when test="$qualifiedName = 'Classifier.participant'">Classifier.specifiedEnd</xsl:when>
         <xsl:when test="$qualifiedName = 'AssociationEnd.type'">AssociationEnd.participant</xsl:when>
         <xsl:when test="$qualifiedName = 'Node.resident'">Node.deployedComponent</xsl:when>
         <xsl:when test="$qualifiedName = 'ElementResidence.implementationLocation'">ElementResidence.container</xsl:when>
