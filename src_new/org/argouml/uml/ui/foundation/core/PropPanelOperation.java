@@ -39,6 +39,7 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateOwner;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
@@ -68,9 +69,13 @@ public class PropPanelOperation extends PropPanelFeature {
         addField(Translator.localize("label.parameters"),
                 new JScrollPane(new UMLLinkedList(
                 new UMLClassifierParameterListModel())));
-        
+
+        addField(Translator.localize("label.specification"), 
+                new JScrollPane(new UMLTextArea2(
+                        new UMLOperationSpecificationDocument())));
+
         addSeperator();
-        
+
         add(getVisibilityPanel());
 
         JPanel modifiersPanel = createBorderPanel(Translator.localize(
