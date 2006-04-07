@@ -163,11 +163,12 @@ public class PGMLStackParser
 
         setCommonAttrs(f, attrList);
 
-        String owner = attrList.getValue("href");
-        if (owner != null && !owner.equals("") && !(f instanceof FigEdgeNote)) {
-            Object modelElement = findOwner(owner);
+        String href = attrList.getValue("href");
+        if (href != null && !href.equals("") && !(f instanceof FigEdgeNote)) {
+            Object modelElement = findOwner(href);
             if (modelElement == null) {
-                throw new SAXException("Found href of " + owner
+                LOG.error("Can't find href of " + href);
+                throw new SAXException("Found href of " + href
 				       + " with no matching element in model");
             }
             if (f.getOwner() != modelElement) {

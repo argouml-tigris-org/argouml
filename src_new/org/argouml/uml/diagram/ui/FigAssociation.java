@@ -217,7 +217,7 @@ public class FigAssociation extends FigEdgeModelElement {
                 }
             }
         }
-	super.setOwner(newOwner);
+        super.setOwner(newOwner);
     }
 
     /**
@@ -434,6 +434,7 @@ public class FigAssociation extends FigEdgeModelElement {
      * @param association
      */
     private void chooseArrowHeads(Object association) {
+        assert association != null;
         Object[] ends = 
             Model.getFacade().getConnections(association).toArray(); 
         Object ae0 = ends[0];

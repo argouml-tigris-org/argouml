@@ -122,9 +122,9 @@ public abstract class UmlDiagramRenderer
         } else if (Model.getFacade().isAStubState(node)) {
             return new FigStubState();
         } else if (Model.getFacade().isAAssociationClass(node)) {
-            figNode = new FigClassAssociationClass();
+            figNode = new FigClassAssociationClass(node, x, y, 10, 10);
         } else if (Model.getFacade().isAClass(node)) {
-            figNode = new FigClass();
+            figNode = new FigClass(node, x, y, 10, 10);
         } else if (Model.getFacade().isAInterface(node)) {
             figNode = new FigInterface();
         } else if (Model.getFacade().isAEnumeration(node)) {

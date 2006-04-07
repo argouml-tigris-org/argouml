@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,68 +22,36 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+/*
+ * ActionAddAssociation.java
+ *
+ * Created on 15 February 2003, 01:01
+ */
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
-import java.awt.Rectangle;
 
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigCircle;
+import org.argouml.model.Model;
+import org.argouml.ui.CmdSetMode;
 
 /**
- * The T juntion joining the dashed edge to a solid edge of an association
- * class.
+ * An extension of CmdSetMode to set the parameters for an association.
+ *
  * @author Bob Tarling
  */
 
-public class FigAssociationClassTee extends FigNodeModelElement {
-    private FigCircle bigPort;
+public class ActionSetAddAssociationClassMode extends CmdSetMode {
+
+    private static final long serialVersionUID = -884044085661992872L;
 
     /**
-     * Constructor.
+     * Construct a new ActionSetAddAssociationEndMode.<p>
+     *
+     * @param name the action description
      */
-    public FigAssociationClassTee() {
-        bigPort = new FigCircle(0, 0, 10, 10, Color.black, Color.white);
-        addFig(bigPort);
+    public ActionSetAddAssociationClassMode(String name) {
+        super(ModeCreateAssociationClass.class, "edgeClass",
+              Model.getMetaTypes().getAssociationClass(), name);
     }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#hit(java.awt.Rectangle)
-     */
-    public boolean hit(Rectangle r) {
-        return false;
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.FigNode#deepHitPort(int, int)
-     */
-    public Object deepHitPort(int x, int y) {
-        return null;
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.FigNode#hitPort(int, int)
-     */
-    public Object hitPort(int x, int y) {
-        return null;
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.FigGroup#hitFig(java.awt.Rectangle)
-     */
-    public Fig hitFig(Rectangle r) {
-        return null;
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#isSelectable()
-     */
-    public boolean isSelectable() {
-        return false;
-    }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -8228475519110321183L;
 }
+
+

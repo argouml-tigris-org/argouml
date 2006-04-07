@@ -87,7 +87,7 @@ public class FigClass extends FigClassifierBox
     // constructors
 
     /**
-     * Main constructor for a {@link FigClass}.<p>
+     * Constructor for a {@link FigClass} during file load.<p>
      *
      * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
      * will have created the main box {@link #getBigPort()} and its
@@ -99,24 +99,32 @@ public class FigClass extends FigClassifierBox
      * appropriately. The main boxes are all filled and have
      * outlines.<p>
      *
-     * For reasons I don't understand the stereotype is created in a
-     * box with lines. So we have to created a blanking rectangle to
-     * overlay the bottom line, and avoid four compartments
-     * showing.<p>
+     * <em>Warning</em>. Much of the graphics positioning is hard
+     * coded. The overall figure is placed at location (10,10). The
+     * name compartment (in the parent
+     * {@link org.argouml.uml.diagram.ui.FigNodeModelElement} is
+     * 21 pixels high. The stereotype compartment is created 15 pixels
+     * high in the parent, but we change it to 19 pixels, 1 more than
+     * ({@link #STEREOHEIGHT} here. The attribute and operations boxes
+     * are created at 19 pixels, 2 more than {@link #ROWHEIGHT}.<p>
+     */
+    public FigClass(Object modelElement, int x, int y, int w, int h) {
+        this(null, modelElement);
+        setBounds(x, y, w, h);
+    }
+
+    /**
+     * Constructor for a {@link FigClass} by diagram interaction.<p>
      *
-     * There is some complex logic to allow for the possibility that
-     * stereotypes may not be displayed (unlike operations and
-     * attributes this is not a standard thing for UML). Some care is
-     * needed to ensure that additional space is not added, each time
-     * a stereotyped class is loaded.<p>
+     * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
+     * will have created the main box {@link #getBigPort()} and its
+     * name {@link #getNameFig()} and stereotype
+     * (@link #getStereotypeFig()}. This constructor
+     * creates a box for the attributes and operations.<p>
      *
-     * There is a particular problem when loading diagrams with
-     * stereotyped classes. Because we create a FigClass indicating
-     * the stereotype is not displayed, we then add extra space for
-     * such classes when they are first rendered. This ought to be
-     * fixed by correctly saving the class dimensions, but that needs
-     * more work. The solution here is to use a simple flag to
-     * indicate the FigClass has just been created.<p>
+     * The properties of all these graphic elements are adjusted
+     * appropriately. The main boxes are all filled and have
+     * outlines.<p>
      *
      * <em>Warning</em>. Much of the graphics positioning is hard
      * coded. The overall figure is placed at location (10,10). The
@@ -127,47 +135,21 @@ public class FigClass extends FigClassifierBox
      * ({@link #STEREOHEIGHT} here. The attribute and operations boxes
      * are created at 19 pixels, 2 more than {@link #ROWHEIGHT}.<p>
      *
-     * CAUTION: This constructor (with no arguments) is the only one
-     * that does enableSizeChecking(false), all others must set it
-     * true.  This is because this constructor is the only one called
-     * when loading a project. In this case, the parsed size must be
-     * maintained.<p>
+     * @param gm   Not actually used in the current implementation
+     *
+     * @param node The UML object being placed.
      */
-    public FigClass() {
+    public FigClass(GraphModel gm, Object node) {
         super();
-        
-        // Attributes inside. First one is the attribute box itself.
         attributesFigCompartment =
             new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
-
-        // Put all the bits together, suppressing bounds calculations until
-        // we're all done for efficiency.
-        enableSizeChecking(false);
-        setSuppressCalcBounds(true);
         addFig(getBigPort());
         addFig(getStereotypeFig());
         addFig(getNameFig());
         addFig(operationsFig);
         addFig(attributesFigCompartment);
         addFig(borderFig);
-
-        setSuppressCalcBounds(false);
-        // Set the bounds of the figure to the total of the above (hardcoded)
-        setBounds(10, 10, 60, 22 + 2 * ROWHEIGHT);
-    }
-
-    /**
-     * Constructor for use if this figure is created for an existing class
-     * node in the metamodel.
-     *
-     * @param gm   Not actually used in the current implementation
-     *
-     * @param node The UML object being placed.
-     */
-    public FigClass(GraphModel gm, Object node) {
-        this();
         setOwner(node);
-        enableSizeChecking(true);
     }
 
     /**

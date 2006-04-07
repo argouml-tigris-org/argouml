@@ -116,7 +116,7 @@ public class FigEdgeNote
 
         Fig destFig = theLayer.presentationFor(toNode);
         if (destFig instanceof FigEdgeModelElement) {
-            destFig = ((FigEdgeModelElement) destFig).getCommentPort();
+            destFig = ((FigEdgeModelElement) destFig).getEdgePort();
         }
         if (!(destFig instanceof FigNodeModelElement)) {
             throw new IllegalArgumentException(
@@ -126,7 +126,7 @@ public class FigEdgeNote
 
         Fig sourceFig = theLayer.presentationFor(fromNode);
         if (sourceFig instanceof FigEdgeModelElement) {
-            sourceFig = ((FigEdgeModelElement) sourceFig).getCommentPort();
+            sourceFig = ((FigEdgeModelElement) sourceFig).getEdgePort();
         }
         if (!(sourceFig instanceof FigNodeModelElement)) {
             throw new IllegalArgumentException(

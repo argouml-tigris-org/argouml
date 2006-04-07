@@ -46,8 +46,8 @@ public class FigClassAssociationClass
     /**
      * The constructor.
      */
-    public FigClassAssociationClass() {
-        super();
+    public FigClassAssociationClass(Object owner, int x, int y, int w, int h) {
+        super(owner, x, y, w, h);
         enableSizeChecking(true);
     }
 
@@ -57,7 +57,7 @@ public class FigClassAssociationClass
      * @param ownerFig the owner fig
      */
     public FigClassAssociationClass(FigAssociationClass ownerFig) {
-        this();
+        super(null, ownerFig.getOwner());
         mainFig = ownerFig;
     }
 
@@ -75,17 +75,17 @@ public class FigClassAssociationClass
         mainFig = f;
     }
 
-    /**
-     * It not only damages itself but also its
-     * associated FigAssociationClass
-     */
-    public void damage() {
-        if (mainFig != null) {
-            mainFig.figDamaged();
-        }
-        super.damage();
-    }
-
+//    /**
+//     * It not only damages itself but also its
+//     * associated FigAssociationClass
+//     */
+//    public void damage() {
+//        if (mainFig != null) {
+//            mainFig.figDamaged();
+//        }
+//        super.damage();
+//    }
+//
     /**
      * It not only removes itself but also its
      * associated FigAssociationClass

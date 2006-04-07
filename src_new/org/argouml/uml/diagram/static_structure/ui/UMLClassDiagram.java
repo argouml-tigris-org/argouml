@@ -175,9 +175,10 @@ public class UMLClassDiagram extends UMLDiagram {
         return actions;
     }
 
-    // To enable models and subsystems,
+    // TODO: To enable models and subsystems,
     // replace getActionPackage() in the function getUmlActions() above
-    // with getPackageActions().
+    // with getPackageActions(). Work started by Markus I believe
+    // where does this stand? - Bob.
     private Object[] getPackageActions() {
         Object[] actions = {
             getActionPackage(),
@@ -313,9 +314,8 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionAssociationClass() {
         if (actionAssociationClass == null) {
             actionAssociationClass =
-                makeCreateEdgeAction(
-                    Model.getMetaTypes().getAssociationClass(),
-                    "button.new-associationclass");
+                makeCreateAssociationClassAction(
+                        "button.new-associationclass");
         }
         return actionAssociationClass;
     }

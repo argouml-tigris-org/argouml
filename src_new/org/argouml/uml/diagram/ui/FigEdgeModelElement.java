@@ -145,7 +145,7 @@ public abstract class FigEdgeModelElement
      */
     private Fig stereotypeFig;
 
-    private FigCommentPort commentPort;
+    private FigEdgePort edgePort;
 
     private ItemUID itemUid;
 
@@ -199,12 +199,12 @@ public abstract class FigEdgeModelElement
     /**
      * Create a FigCommentPort if needed
      */
-    public void makeCommentPort() {
-        if (commentPort == null) {
-            commentPort = new FigCommentPort();
-            commentPort.setOwner(getOwner());
-            commentPort.setVisible(false);
-            addPathItem(commentPort,
+    public void makeEdgePort() {
+        if (edgePort == null) {
+            edgePort = new FigEdgePort();
+            edgePort.setOwner(getOwner());
+            edgePort.setVisible(false);
+            addPathItem(edgePort,
                     new PathConvPercent(this, 50, 0));
         }
     }
@@ -212,8 +212,8 @@ public abstract class FigEdgeModelElement
     /**
      * @return the FigCommentPort
      */
-    public FigCommentPort getCommentPort() {
-        return commentPort;
+    public FigEdgePort getEdgePort() {
+        return edgePort;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -1076,7 +1076,7 @@ public abstract class FigEdgeModelElement
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
     public void postLoad() {
-        super.postLoad();
+        setOwner(getOwner());
         ArgoEventPump.removeListener(this);
         ArgoEventPump.addListener(this);
     }

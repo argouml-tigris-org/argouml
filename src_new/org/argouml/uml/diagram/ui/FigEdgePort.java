@@ -36,13 +36,13 @@ import org.tigris.gef.presentation.FigCircle;
  *
  * @author Bob Tarling
  */
-public class FigCommentPort extends FigNodeModelElement {
+public class FigEdgePort extends FigNodeModelElement {
     private FigCircle bigPort;
 
     /**
      * Constructor.
      */
-    public FigCommentPort() {
+    public FigEdgePort() {
         bigPort = new FigCircle(0, 0, 10, 10, Color.black, Color.white);
         addFig(bigPort);
     }

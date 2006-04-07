@@ -672,6 +672,18 @@ public abstract class UMLDiagram
     }
 
     /**
+     * Factory method to build an Action for creating an edge in the
+     * diagram.
+     *
+     * @param modelElement identifies the model element type to make
+     * @param descr the description to give this action.
+     * @return The action to create a new node.
+     */
+    protected Action makeCreateAssociationClassAction(String descr) {
+        return new RadioAction(new ActionSetAddAssociationClassMode(descr));
+    }
+
+    /**
      * Reset the diagram serial counter to the initial value.
      * This should e.g. be done when the menuitem File->New is activated.
      */

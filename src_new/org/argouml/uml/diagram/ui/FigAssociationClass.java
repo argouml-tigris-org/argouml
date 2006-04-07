@@ -24,25 +24,16 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Rectangle;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
-import java.util.Iterator;
-
-import javax.swing.SwingUtilities;
-
 import org.argouml.kernel.DelayedVChangeListener;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.base.PathConvPercent;
-import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 
@@ -53,8 +44,6 @@ import org.tigris.gef.presentation.FigPoly;
  * an Association Class. It must be associated with a FigEdgeAssociationClass
  * and a FigClassAssociationClass. <p>
  *
- * This implementation is GEF-independent: Without changing GEF features,
- * it is an edge and a node at the same time.
  * The Association Class is composed of a FigAssociationClass (edge),
  * a FigEdgeAssociationClass (linking edge) and
  * a FigClassAssociationClass (node).
@@ -77,12 +66,9 @@ public class FigAssociationClass
         KeyListener,
         PropertyChangeListener {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-    private static final int DISTANCE = 80;
+    private static final long serialVersionUID = 3643715304027095083L;
 
-    private FigAssociationClassTee tee;
-    private FigEdgeAssociationClass edge;
+    private FigEdgeAssociationClass dashedEdge;
     private FigClassAssociationClass figNode;
     private int oldMin = -1;
     private int oldMax = -1;
@@ -100,111 +86,112 @@ public class FigAssociationClass
         setBetweenNearestPoints(true);
         ((FigPoly) getFig()).setRectilinear(false);
         setDashed(false);
-
-        SwingUtilities.invokeLater(new RunFigAssociation(this));
+        // Remove this and the inner class
+        // Build all the figs and connect them in ModeCreateAssociationClass
+//        SwingUtilities.invokeLater(new RunFigAssociation(this));
     }
 
-    /**
-     * Class to finish the initialization of this fig.
-     */
-    class RunFigAssociation implements Runnable {
-        /**
-         * The fig to initialize.
-         */
-        private FigAssociationClass thisFig;
-
-        /**
-         * Constructor.
-         *
-         * @param fac The fig to initialize.
-         */
-        RunFigAssociation(FigAssociationClass fac) {
-            thisFig = fac;
-        }
-
-        /**
-         * @see java.lang.Runnable#run()
-         */
-        public void run() {
-            Layer lay = thisFig.getLayer();
-
-            Editor editor = Globals.curEditor();
-
-            if (thisFig.getOwner() == null) {
-                thisFig.removeFromDiagram();
-                lay.remove(thisFig);
-                editor.remove(thisFig);
-            } else {
-                thisFig.removePathItem(getMiddleGroup());
-
-                GraphModel graphModel = editor.getGraphModel();
-
-                MutableGraphModel mutableGraphModel =
-                    (MutableGraphModel) graphModel;
-                mutableGraphModel.addNode(thisFig.getOwner());
-
-                Rectangle drawingArea =
-                    ProjectBrowser.getInstance()
-                    	.getEditorPane().getBounds();
-                Iterator nodes = lay.getContents().iterator();
-                while (nodes.hasNext()) {
-                    Fig auxFig = (Fig) nodes.next();
-                    if (thisFig.getOwner().equals(auxFig.getOwner())) {
-                        if (auxFig instanceof FigClassAssociationClass) {
-                            figNode = (FigClassAssociationClass) auxFig;
-                            figNode.setMainFig(thisFig);
-                        } else if (auxFig instanceof FigAssociationClassTee) {
-                            tee = (FigAssociationClassTee) auxFig;
-                            addPathItem(tee,
-                                    new PathConvPercent(thisFig, 50, 0));
-                        } else if (auxFig instanceof FigEdgeAssociationClass) {
-                            edge = (FigEdgeAssociationClass) auxFig;
-                            edge.setMainFig(thisFig);
-                            // addPathItem(tee,
-                            //         new PathConvPercent(thisFig, 50, 0));
-                        }
-                        if (tee != null && figNode != null && edge != null) {
-                            break;
-                        }
-                    }
-                }
-
-                if (tee == null) {
-                    tee = new FigAssociationClassTee();
-                    lay.add(tee);
-                    tee.setOwner(thisFig.getOwner());
-                    addPathItem(tee, new PathConvPercent(thisFig, 50, 0));
-                    thisFig.calcBounds();
-                }
-
-                int x = tee.getX();
-                int y = tee.getY();
-
-                if (figNode == null) {
-                    figNode = new FigClassAssociationClass(thisFig);
-                    figNode.setOwner(thisFig.getOwner());
-                    y = y - DISTANCE;
-                    if (y < 0) {
-                        y = tee.getY() + figNode.getHeight() + DISTANCE;
-                    }
-                    if (x + figNode.getWidth() > drawingArea.getWidth()) {
-                        x = tee.getX() - DISTANCE;
-                    }
-                    figNode.setLocation(x, y);
-                    lay.add(figNode);
-                }
-
-                if (edge == null) {
-                    edge = new FigEdgeAssociationClass(tee, figNode, thisFig);
-                    edge.setOwner(thisFig.getOwner());
-                    lay.add(edge);
-                }
-
-                edge.damage();
-                figNode.damage();
-            }
-        }
-    }
+//    /**
+//     * Class to finish the initialization of this fig.
+//     */
+//    class RunFigAssociation implements Runnable {
+//        /**
+//         * The fig to initialize.
+//         */
+//        private FigAssociationClass thisFig;
+//
+//        /**
+//         * Constructor.
+//         *
+//         * @param fac The fig to initialize.
+//         */
+//        RunFigAssociation(FigAssociationClass fac) {
+//            thisFig = fac;
+//        }
+//
+//        /**
+//         * @see java.lang.Runnable#run()
+//         */
+//        public void run() {
+//            Layer lay = thisFig.getLayer();
+//
+//            Editor editor = Globals.curEditor();
+//
+//            if (thisFig.getOwner() == null) {
+//                thisFig.removeFromDiagram();
+//                lay.remove(thisFig);
+//                editor.remove(thisFig);
+//            } else {
+//                thisFig.removePathItem(getMiddleGroup());
+//
+//                GraphModel graphModel = editor.getGraphModel();
+//
+//                MutableGraphModel mutableGraphModel =
+//                    (MutableGraphModel) graphModel;
+//                mutableGraphModel.addNode(thisFig.getOwner());
+//
+//                Rectangle drawingArea =
+//                    ProjectBrowser.getInstance()
+//                    	.getEditorPane().getBounds();
+//                Iterator nodes = lay.getContents().iterator();
+//                while (nodes.hasNext()) {
+//                    Fig auxFig = (Fig) nodes.next();
+//                    if (thisFig.getOwner().equals(auxFig.getOwner())) {
+//                        if (auxFig instanceof FigClassAssociationClass) {
+//                            figNode = (FigClassAssociationClass) auxFig;
+//                            figNode.setMainFig(thisFig);
+//                        } else if (auxFig instanceof FigAssociationClassTee) {
+//                            tee = (FigAssociationClassTee) auxFig;
+//                            addPathItem(tee,
+//                                    new PathConvPercent(thisFig, 50, 0));
+//                        } else if (auxFig instanceof FigEdgeAssociationClass) {
+//                            dashedEdge = (FigEdgeAssociationClass) auxFig;
+//                            dashedEdge.setMainFig(thisFig);
+//                            // addPathItem(tee,
+//                            //         new PathConvPercent(thisFig, 50, 0));
+//                        }
+//                        if (tee != null && figNode != null && dashedEdge != null) {
+//                            break;
+//                        }
+//                    }
+//                }
+//
+//                if (tee == null) {
+//                    tee = new FigAssociationClassTee();
+//                    lay.add(tee);
+//                    tee.setOwner(thisFig.getOwner());
+//                    addPathItem(tee, new PathConvPercent(thisFig, 50, 0));
+//                    thisFig.calcBounds();
+//                }
+//
+//                int x = tee.getX();
+//                int y = tee.getY();
+//
+//                if (figNode == null) {
+//                    figNode = new FigClassAssociationClass(thisFig);
+//                    figNode.setOwner(thisFig.getOwner());
+//                    y = y - DISTANCE;
+//                    if (y < 0) {
+//                        y = tee.getY() + figNode.getHeight() + DISTANCE;
+//                    }
+//                    if (x + figNode.getWidth() > drawingArea.getWidth()) {
+//                        x = tee.getX() - DISTANCE;
+//                    }
+//                    figNode.setLocation(x, y);
+//                    lay.add(figNode);
+//                }
+//
+//                if (dashedEdge == null) {
+//                    dashedEdge = new FigEdgeAssociationClass(tee, figNode, thisFig);
+//                    dashedEdge.setOwner(thisFig.getOwner());
+//                    lay.add(dashedEdge);
+//                }
+//
+//                dashedEdge.damage();
+//                figNode.damage();
+//            }
+//        }
+//    }
 
     /**
      * Construct a new AssociationClass. Use the same layout as for
@@ -244,136 +231,132 @@ public class FigAssociationClass
      */
     public void calcBounds() {
         super.calcBounds();
-        if (edge != null) {
-            edge.computeRoute();
-            edge.damage();
+        if (dashedEdge != null) {
+            dashedEdge.computeRoute();
+            dashedEdge.damage();
         }
     }
 
-    /**
-     * @see org.tigris.gef.presentation.Fig#damage()
-     */
-    public void damage() {
-        figDamaged();
-        super.damage();
-    }
-
-    /**
-     * This method should be called whenever a FigAssociationClass
-     * or a FigClassAssociationClass or a
-     * FigEdgeAssociationClass is damaged. It changes the position
-     * of these three Figs so that the
-     * FigClassAssociationClass is the first in the Editor's layer.
-     * Then the FigAssociationClass and finally the FigEdgeAssociationClass.
-     */
-    public void figDamaged() {
-        if (!damageLock) {
-            damageLock = true;
-
-            Editor editor = Globals.curEditor();
-            Layer lay = editor.getLayerManager().getActiveLayer();
-            if (!lay.equals(null)
-                    && lay instanceof LayerPerspective
-                    && figNode != null && edge != null
-                    && lay.equals(figNode.getLayer())
-                    && lay.equals(edge.getLayer())) {
-                LayerPerspective layP = (LayerPerspective) lay;
-                int classFigIndex = layP.indexOf(figNode);
-                int myIndex = layP.indexOf(this);
-                int edgeFigIndex = layP.indexOf(edge);
-                int minIndex =
-                    Math.min(Math.min(myIndex, classFigIndex), edgeFigIndex);
-                int maxIndex =
-                    Math.max(Math.max(myIndex, classFigIndex), edgeFigIndex);
-                /* The figs have been just created */
-                if (oldMin == -1 && oldMax == -1) {
-                    layP.insertAt(figNode, minIndex);
-                    oldMin = minIndex;
-                    oldMax = minIndex + 2;
-                } else if (myIndex == -1
-                        || edgeFigIndex == -1
-                        || classFigIndex == -1) {
-                    ;
-                } else if (classFigIndex == (myIndex - 1)
-                        && classFigIndex == (edgeFigIndex - 2)) {
-                    /* Everything is fine*/
-                    oldMin = minIndex;
-                    oldMax = maxIndex;
-                } else if (classFigIndex < myIndex
-                        && classFigIndex < edgeFigIndex
-                        && classFigIndex == oldMin) {
-                    /* Class is lower but one of the edges has been moved up */
-                    int aux = Math.max(myIndex, edgeFigIndex);
-                    if (aux == (layP.getContents().size() - 1)) {
-                        layP.add(edge);
-                    } else {
-                        layP.insertAt(edge, aux);
-                    }
-                    layP.insertAt(this, aux - 1);
-                    layP.insertAt(tee, aux - 2);
-                    layP.insertAt(figNode, aux - 3);
-                    oldMin = aux;
-                    oldMax = aux + 2;
-                } else if (classFigIndex < myIndex
-                        && classFigIndex < edgeFigIndex
-                        && classFigIndex < oldMin) {
-                    /* Class has been moved down */
-                    layP.insertAt(edge, classFigIndex + 1);
-                    layP.insertAt(this, classFigIndex + 1);
-                    layP.insertAt(tee, classFigIndex + 1);
-                    oldMin = classFigIndex;
-                    oldMax = classFigIndex + 2;
-                } else if ((classFigIndex > myIndex
-                        || classFigIndex > edgeFigIndex)
-                        && minIndex == oldMin
-                        && classFigIndex <= oldMax) {
-                    /* They have changed their positions */
-                    layP.insertAt(edge, minIndex);
-                    layP.insertAt(this, minIndex);
-                    layP.insertAt(tee, minIndex);
-                    layP.insertAt(figNode, minIndex);
-                } else if ((classFigIndex > myIndex
-                        || classFigIndex > edgeFigIndex)
-                        && minIndex == oldMin
-                        && classFigIndex > oldMax) {
-                    /* Class has been moved up */
-                    if (classFigIndex == (layP.getContents().size() - 1)) {
-                        layP.add(edge);
-                    } else {
-                        layP.insertAt(edge, classFigIndex + 1);
-                    }
-                    layP.insertAt(this, classFigIndex);
-                    oldMin = classFigIndex;
-                    oldMax = classFigIndex + 2;
-                } else if ((classFigIndex > myIndex
-                        || classFigIndex > edgeFigIndex)
-                        && minIndex < oldMin) {
-                    /* Any edge has been moved deeper than the class */
-                    layP.insertAt(edge, minIndex);
-                    layP.insertAt(this, minIndex);
-                    layP.insertAt(tee, minIndex);
-                    layP.insertAt(figNode, minIndex);
-                    oldMin = minIndex;
-                    oldMax = minIndex + 2;
-                }
-            }
-            damageLock = false;
-        }
-    }
+//    /**
+//     * @see org.tigris.gef.presentation.Fig#damage()
+//     */
+//    public void damage() {
+//        figDamaged();
+//        super.damage();
+//    }
+//
+//    /**
+//     * This method should be called whenever a FigAssociationClass
+//     * or a FigClassAssociationClass or a
+//     * FigEdgeAssociationClass is damaged. It changes the position
+//     * of these three Figs so that the
+//     * FigClassAssociationClass is the first in the Editor's layer.
+//     * Then the FigAssociationClass and finally the FigEdgeAssociationClass.
+//     */
+//    public void figDamaged() {
+//        if (!damageLock) {
+//            damageLock = true;
+//
+//            Editor editor = Globals.curEditor();
+//            Layer lay = editor.getLayerManager().getActiveLayer();
+//            if (!lay.equals(null)
+//                    && lay instanceof LayerPerspective
+//                    && figNode != null && dashedEdge != null
+//                    && lay.equals(figNode.getLayer())
+//                    && lay.equals(dashedEdge.getLayer())) {
+//                LayerPerspective layP = (LayerPerspective) lay;
+//                int classFigIndex = layP.indexOf(figNode);
+//                int myIndex = layP.indexOf(this);
+//                int edgeFigIndex = layP.indexOf(dashedEdge);
+//                int minIndex =
+//                    Math.min(Math.min(myIndex, classFigIndex), edgeFigIndex);
+//                int maxIndex =
+//                    Math.max(Math.max(myIndex, classFigIndex), edgeFigIndex);
+//                /* The figs have been just created */
+//                if (oldMin == -1 && oldMax == -1) {
+//                    layP.insertAt(figNode, minIndex);
+//                    oldMin = minIndex;
+//                    oldMax = minIndex + 2;
+//                } else if (myIndex == -1
+//                        || edgeFigIndex == -1
+//                        || classFigIndex == -1) {
+//                    ;
+//                } else if (classFigIndex == (myIndex - 1)
+//                        && classFigIndex == (edgeFigIndex - 2)) {
+//                    /* Everything is fine*/
+//                    oldMin = minIndex;
+//                    oldMax = maxIndex;
+//                } else if (classFigIndex < myIndex
+//                        && classFigIndex < edgeFigIndex
+//                        && classFigIndex == oldMin) {
+//                    /* Class is lower but one of the edges has been moved up */
+//                    int aux = Math.max(myIndex, edgeFigIndex);
+//                    if (aux == (layP.getContents().size() - 1)) {
+//                        layP.add(dashedEdge);
+//                    } else {
+//                        layP.insertAt(dashedEdge, aux);
+//                    }
+//                    layP.insertAt(this, aux - 1);
+//                    layP.insertAt(tee, aux - 2);
+//                    layP.insertAt(figNode, aux - 3);
+//                    oldMin = aux;
+//                    oldMax = aux + 2;
+//                } else if (classFigIndex < myIndex
+//                        && classFigIndex < edgeFigIndex
+//                        && classFigIndex < oldMin) {
+//                    /* Class has been moved down */
+//                    layP.insertAt(dashedEdge, classFigIndex + 1);
+//                    layP.insertAt(this, classFigIndex + 1);
+//                    layP.insertAt(tee, classFigIndex + 1);
+//                    oldMin = classFigIndex;
+//                    oldMax = classFigIndex + 2;
+//                } else if ((classFigIndex > myIndex
+//                        || classFigIndex > edgeFigIndex)
+//                        && minIndex == oldMin
+//                        && classFigIndex <= oldMax) {
+//                    /* They have changed their positions */
+//                    layP.insertAt(dashedEdge, minIndex);
+//                    layP.insertAt(this, minIndex);
+//                    layP.insertAt(tee, minIndex);
+//                    layP.insertAt(figNode, minIndex);
+//                } else if ((classFigIndex > myIndex
+//                        || classFigIndex > edgeFigIndex)
+//                        && minIndex == oldMin
+//                        && classFigIndex > oldMax) {
+//                    /* Class has been moved up */
+//                    if (classFigIndex == (layP.getContents().size() - 1)) {
+//                        layP.add(dashedEdge);
+//                    } else {
+//                        layP.insertAt(dashedEdge, classFigIndex + 1);
+//                    }
+//                    layP.insertAt(this, classFigIndex);
+//                    oldMin = classFigIndex;
+//                    oldMax = classFigIndex + 2;
+//                } else if ((classFigIndex > myIndex
+//                        || classFigIndex > edgeFigIndex)
+//                        && minIndex < oldMin) {
+//                    /* Any edge has been moved deeper than the class */
+//                    layP.insertAt(dashedEdge, minIndex);
+//                    layP.insertAt(this, minIndex);
+//                    layP.insertAt(tee, minIndex);
+//                    layP.insertAt(figNode, minIndex);
+//                    oldMin = minIndex;
+//                    oldMax = minIndex + 2;
+//                }
+//            }
+//            damageLock = false;
+//        }
+//    }
 
     /**
      *It is used to remove itself and also its associated figs.
      */
     public void removeFromDiagram() {
-        if (edge != null) {
-            edge.removeThisFromDiagram();
+        if (dashedEdge != null) {
+            dashedEdge.removeThisFromDiagram();
         }
         if (figNode != null) {
             figNode.removeThisFromDiagram();
-        }
-        if (tee != null) {
-            tee.removeFromDiagram();
-            TargetManager.getInstance().removeHistoryElement(tee);
         }
         Editor ce = Globals.curEditor();
         ce.getSelectionManager().deselect(this);
