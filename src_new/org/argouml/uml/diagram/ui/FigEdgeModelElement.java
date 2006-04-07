@@ -168,15 +168,8 @@ public abstract class FigEdgeModelElement
      *  itself as a listener. */
     public FigEdgeModelElement() {
 
-        nameFig = new FigText(10, 30, 90, 20);
-        nameFig.setFont(LABEL_FONT);
-        nameFig.setTextColor(Color.black);
+        nameFig = new FigSingleLineText(10, 30, 90, 20, false);
         nameFig.setTextFilled(false);
-        nameFig.setFilled(false);
-        nameFig.setLineWidth(0);
-        nameFig.setExpandOnly(false);
-        nameFig.setReturnAction(FigText.END_EDITING);
-        nameFig.setTabAction(FigText.END_EDITING);
 
         stereotypeFig = new FigStereotypesCompartment(10, 10, 90, 15);
 
