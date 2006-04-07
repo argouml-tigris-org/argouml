@@ -1239,8 +1239,10 @@ public class CoreHelperMDRImpl implements CoreHelper {
                             == getFirstSharedNamespace(modelElement, ns)) {
                 return false;
             }
-            if (ns instanceof Interface || ns instanceof Actor
-                    || ns instanceof UseCase) {
+            if (ns instanceof Interface || ns instanceof Actor) {
+                return false;
+            }else if (ns instanceof UseCase 
+                    && modelElement instanceof Classifier) {
                 return false;
             } else if (ns instanceof Component) {
                 return (modelElement instanceof Component
