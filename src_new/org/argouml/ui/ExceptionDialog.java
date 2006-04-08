@@ -21,17 +21,12 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -47,8 +42,11 @@ import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 import org.argouml.i18n.Translator;
+import org.argouml.util.osdep.StartBrowser;
 
 /**
  * A window that displays an exception to the user if we can't handle it
@@ -62,7 +60,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
     private JEditorPane textArea;
 
     /**
-     * The constructor.
+     * Construct an exception dialog for the given frame and throwable.
      *
      * @param f the <code>Frame</code> from which the dialog is displayed
      * @param e the exception
@@ -72,7 +70,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     * The constructor.
+     * Construct an exception dialog with the given parameters.
      *
      * @param f the <code>Frame</code> from which the dialog is displayed
      * @param message the message
@@ -83,7 +81,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     * The constructor.
+     * Construct an exception dialog with the given parameters.
      *
      * @param f   the <code>Frame</code> from which the dialog is displayed
      * @param message
@@ -112,27 +110,34 @@ public class ExceptionDialog extends JDialog implements ActionListener {
 
         // the text box containing the problem messages
         textArea = new JEditorPane();
+        textArea.setContentType("text/html");
+        textArea.setEditable(false);
+        textArea.addHyperlinkListener(new HyperlinkListener() {
+            public void hyperlinkUpdate(HyperlinkEvent hle) {
+                linkEvent(hle);
+            }
+        });
 
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-
+        PrintWriter pw = new PrintWriter(new StringWriter());
+        
         if (highlightCause && e.getCause() != null) {
-            // Repeat the instructions so they can click on the link
+            // Instructions with clickable link for user
             pw.print(Translator.localize("dialog.exception.link.report"));
-            // This text is for the developers.
-            // It doesn't need to be localized.
-            pw.print("\n" + message);
-            pw.print("\n\nSystem Info:\n" + SystemInfoDialog.getInfo());
-            pw.print("\nError occurred at :" + new Date().toGMTString());
-            pw.print("\n  Cause : ");
+            
+            // This text is for the developers.  It doesn't need to be localized.
+            pw.print("<p>" + message);
+            pw.print("<hr>System Info:<p>" + SystemInfoDialog.getInfo());
+            pw.print("<p><hr>Error occurred at : " + new Date().toGMTString());
+            pw.print("<p>  Cause : ");
             e.getCause().printStackTrace(pw);
-            pw.print("-------\nFull exception : ");
+            pw.print("-------<p>Full exception : ");
         }
         e.printStackTrace(pw);
-        String exception = sw.toString();
-
-        textArea.setText(exception);
+        // These shouldn't really be <br> instead of <p> elements, but 
+        // the lines all get run together when pasted into a browser window.
+        textArea.setText(pw.toString().replaceAll("\n","<p>"));
         textArea.setCaretPosition(0);
+        
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(new JScrollPane(textArea));
         centerPanel.setPreferredSize(new Dimension(500, 200));
@@ -149,7 +154,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         closeButton = new JButton(Translator.localize("button.close"));
         closeButton.addActionListener(this);
         JPanel bottomPanel = new JPanel();
-
+        
         bottomPanel.add(copyButton);
         bottomPanel.add(closeButton);
         getContentPane().add(bottomPanel, BorderLayout.SOUTH);
@@ -166,6 +171,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         pack();
     }
 
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -173,38 +179,32 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         disposeDialog();
     }
 
-    /**
+    /*
      * Copy the textpane's contents to the clipboard.
-     *
-     * @param e the action
      */
     private void copyActionPerformed(ActionEvent e) {
         assert e.getSource() == copyButton;
-        String infoText = textArea.getText();
-        StringSelection contents = new StringSelection(infoText);
-        Clipboard clipboard = getToolkit().getSystemClipboard();
-        clipboard.setContents(contents, defaultClipboardOwner);
-    } // end copy_actionPerformed()
-
+        textArea.setSelectionStart(0);
+        textArea.setSelectionEnd(textArea.getText().length());
+        textArea.copy();
+        textArea.setSelectionEnd(0);
+    }
+    
     private void disposeDialog() {
         setVisible(false);
         dispose();
     }
 
-    private static ClipboardOwner defaultClipboardOwner =
-        new ClipboardObserver();
-
-    static class ClipboardObserver implements ClipboardOwner {
-        /**
-         * @see java.awt.datatransfer.ClipboardOwner#lostOwnership(
-         *         java.awt.datatransfer.Clipboard,
-         *         java.awt.datatransfer.Transferable)
-         */
-        public void lostOwnership(Clipboard clipboard, Transferable contents) {
+    /*
+     * Handle link activation for our hyperlink.
+     */
+    private void linkEvent(HyperlinkEvent e) {
+        if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
+            StartBrowser.openUrl(e.getURL());           
         }
     }
 
-    /**
+     /**
      * The UID.
      */
     private static final long serialVersionUID = -2773182347529547418L;
