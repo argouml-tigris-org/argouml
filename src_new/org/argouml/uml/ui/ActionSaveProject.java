@@ -87,8 +87,10 @@ public class ActionSaveProject extends AbstractAction {
     }
 
     /**
+     * Set the enabled state of the save action.
      * When we become enabled inform the user by highlighting the title bar
      * with an asterisk.
+     * @param enabled new state for save command
      */
     public void setEnabled(boolean enabled) {
         if (enabled == this.enabled) {

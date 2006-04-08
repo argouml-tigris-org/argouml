@@ -92,12 +92,6 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
     private String unknownElementName;
     
     /**
-     * An error message to report to the user if a failure to load XMI is
-     * due to some known reason that we can describe to the user.
-     */
-    private String errorMessage;
-    
-    /**
      * Flag indicating that we think unknown element was due to a UML 1.3 file
      */
     private boolean uml13;
@@ -154,7 +148,6 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
     public Collection parse(InputSource pIs, boolean profile)
             throws UmlException {
 
-        errorMessage = null;
         Collection newElements = null;
         RefPackage extent = modelPackage;
 
@@ -526,14 +519,6 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             }
         }
         
-        if (name.equals("UML:Diagram")) {
-            errorMessage =
-                    "The model contains diagram information which is not part "
-                    + "of the standard UML1.4 specification.\nIf you wish to "
-                    + "load the model with the diagrams removed then change "
-                    + "the preferences on the settings dialog.";
-        }
-        
         unknownElement = true;
         if (name.startsWith("Foundation.Core.")) {
             uml13 = true;
@@ -571,12 +556,5 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
      */
     public int getIgnoredElementCount() {
         return ignoredElementCount;
-    }
-    
-    /**
-     * @see org.argouml.model.XmiReader#getErrorMessage()
-     */
-    public String getErrorMessage() {
-        return errorMessage;
     }
 }

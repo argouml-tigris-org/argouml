@@ -108,11 +108,4 @@ public interface XmiReader {
      * @return the count
      */
     public int getIgnoredElementCount();
-    
-    /**
-     * Return a user friendly desription of any error during the last XMI read.
-     * 
-     * @return the error message
-     */
-    public String getErrorMessage();
 }
