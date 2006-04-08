@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -1315,6 +1315,14 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
+    /**
+     * The base of a AssociationRole or ClassifierRole should be contained in
+     * the given Namespace. If no base is set (yet), then allow any namespace.
+     *  
+     * @param collab the given collaboration
+     * @param ns the given candidate namespace
+     * @return true if the given namespace may contain the collaboration
+     */
     private boolean isValidNamespace(Collaboration collab, Namespace ns) {
         Iterator it = collab.getOwnedElement().iterator();
         while (it.hasNext()) {
@@ -1328,8 +1336,9 @@ public class CoreHelperMDRImpl implements CoreHelper {
                     }
                 }
             } else if (m instanceof AssociationRole) {
-                if (!ns.getOwnedElement().contains(
-                        ((AssociationRole) m).getBase())) {
+                AssociationRole ar = (AssociationRole) m;
+                UmlAssociation a = ar.getBase();
+                if (a != null && !ns.getOwnedElement().contains(a)) {
                     return false;
                 }
             }
@@ -1389,6 +1398,22 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 .getAChildGeneralization().getGeneralization(gen).iterator();
         while (it.hasNext()) {
             Generalization gen2 = (Generalization) it.next();
+            /* TODO: Fix the following problem, as described in issue 3772:
+             * Both implementations for valid namespace check whether 
+             * the parents are owned by the namespace. This is invalid. 
+             * The constraint 
+             * [4] The parent must be included in the Namespace 
+             * of the GeneralizableElement.self.generalization->forAll(g |
+             * self.namespace.allContents->includes(g.parent) )
+             * only asks that they are included, 
+             * that is there can also be an elementimport 
+             * at work somewhere. (same as in java - you can also use 
+             * an import and then generalize, without the classes being 
+             * required to be located in the same package). 
+             * Symptom of this problem:
+             * Load the project attached to issue 3772. Select the "class1".
+             * The UMLModelElementNamespaceComboBoxModel gives 
+             * a warning.*/
             if (!ns.getOwnedElement().contains(gen2.getParent())) {
                 return false;
             }
