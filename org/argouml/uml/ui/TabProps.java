@@ -204,7 +204,6 @@ public class TabProps
         setOrientation(ConfigLoader.getTabPropsOrientation());
         panelClassBaseName = panelClassBase;
         setLayout(new BorderLayout());
-        //setFont(new Font("Dialog", Font.PLAIN, 10));
 
         ArrayList list = Argo.getPlugins(PluggablePropertyPanel.class);
         ListIterator iterator = list.listIterator();
@@ -332,7 +331,7 @@ public class TabProps
         /* 1st attempt: get a panel that we created before: */
         TabModelTarget p = (TabModelTarget) panels.get(trgt.getClass());
         if (p != null) {
-            LOG.info("Getting prop panel for: " + trgt.getClass().getName()
+            LOG.debug("Getting prop panel for: " + trgt.getClass().getName()
                     + ", " + "found (in cache?) " + p);
             return p;
         }
@@ -342,7 +341,7 @@ public class TabProps
 	 */
         p = createPropPanel(trgt);
         if (p != null) {
-            LOG.info("Factory created " + p.getClass().getName()
+            LOG.debug("Factory created " + p.getClass().getName()
                     + " for " + trgt.getClass().getName());
             panels.put(trgt.getClass(), p);
             return p;
@@ -358,7 +357,7 @@ public class TabProps
             LOG.error("No panel class found for: " + trgt.getClass());
             return null;
         }
-        LOG.info("panelClass found for: " + panelClass);
+        LOG.debug("panelClass found for: " + panelClass);
         try {
             // if a class is abstract we do not need to try
             // to instantiate it.
@@ -583,7 +582,7 @@ public class TabProps
         if (Model.getFacade().isASignal(modelElement)) {
             return new PropPanelSignal();
         }
-        if (Model.getFacade().isAState(modelElement)) {
+        if (Model.getFacade().isASimpleState(modelElement)) {
             return new PropPanelSimpleState(); //TODO: Check!
         }
         if (Model.getFacade().isAStateMachine(modelElement)) {
