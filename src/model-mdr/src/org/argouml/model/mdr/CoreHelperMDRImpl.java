@@ -2879,6 +2879,18 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
+
+    /**
+     * @see org.argouml.model.CoreHelper#setSpecification(java.lang.Object, java.lang.String)
+     */
+    public void setSpecification(Object operation, String specification) {
+        if (operation instanceof Operation) {
+            ((Operation) operation).setSpecification( specification);
+            return;
+        }
+        throw new IllegalArgumentException("operation: " + operation);
+    }
+    
     /**
      * @see org.argouml.model.CoreHelper#setSpecification(java.lang.Object, java.lang.Object)
      */

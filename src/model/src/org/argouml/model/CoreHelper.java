@@ -1166,6 +1166,14 @@ public interface CoreHelper {
      * @param specification the operation
      */
     void setSpecification(Object method, Object specification);
+
+    /**
+     * Set the specification of an Operation.
+     * 
+     * @param operation the operation
+     * @param specification the operation
+     */
+    void setSpecification(Object operation, String specification);
     
     /**
      * Sets the specifications of some association end.
