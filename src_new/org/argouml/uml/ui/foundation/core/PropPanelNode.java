@@ -24,10 +24,6 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -49,8 +45,12 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelNode extends PropPanelClassifier {
 
     /**
-     * The constructor.
-     *
+     * The serial version.
+     */
+    private static final long serialVersionUID = 2681345252220104772L;
+
+    /**
+     * Construct a property panel for a UML Node element.
      */
     public PropPanelNode() {
         super("Node", lookupIcon("Node"),
@@ -58,21 +58,18 @@ public class PropPanelNode extends PropPanelClassifier {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
         add(getModifiersPanel());
 
-        addSeperator();
+        addSeparator();
 
         addField("Generalizations:", getGeneralizationScroll());
 
         addField("Specializations:", getSpecializationScroll());
 
-        addSeperator();
+        addSeparator();
 
         JList resList = new UMLLinkedList(
                 new UMLNodeDeployedComponentListModel());
@@ -88,11 +85,15 @@ public class PropPanelNode extends PropPanelClassifier {
 
 } /* end class PropPanelNode */
 
-class UMLNodeDeployedComponentListModel
-extends UMLModelElementListModel2 {
+class UMLNodeDeployedComponentListModel extends UMLModelElementListModel2 {
     
     /**
-     * Constructor.
+     * The serial version.
+     */
+    private static final long serialVersionUID = -7137518645846584922L;
+
+    /**
+     * Construct a list model for the deployed components of a Node.
      */
     public UMLNodeDeployedComponentListModel() {
         super("deployedComponent");

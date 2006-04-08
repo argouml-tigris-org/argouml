@@ -35,8 +35,12 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelFinalState extends AbstractPropPanelState {
 
     /**
-     * The constructor.
-     *
+     * The serial version.
+     */
+    private static final long serialVersionUID = 4111793068615402073L;
+
+    /**
+     * Construct a new property panel for a Final State.
      */
     public PropPanelFinalState() {
         super("Final State", lookupIcon("FinalState"),
@@ -44,15 +48,14 @@ public class PropPanelFinalState extends AbstractPropPanelState {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.container"),
                 getContainerScroll());
         addField(Translator.localize("label.entry"),
                 getEntryScroll());
-        // TODO: maybe we should add a doactivity
+        addField(Translator.localize("label.do-activity"),
+                getDoScroll());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.incoming"),
                 getIncomingScroll());

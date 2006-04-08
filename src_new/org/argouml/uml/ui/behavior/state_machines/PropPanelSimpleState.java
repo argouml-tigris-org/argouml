@@ -25,11 +25,8 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.ImageIcon;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
@@ -41,7 +38,12 @@ import org.tigris.swidgets.Orientation;
 public class PropPanelSimpleState extends AbstractPropPanelState {
 
     /**
-     * Constructor.
+     * The serial version.
+     */
+    private static final long serialVersionUID = 7072535148338954868L;
+
+    /**
+     * Construct a new default property panel for a Simple State.
      */
     public PropPanelSimpleState() {
         this("Simple State", lookupIcon("SimpleState"),
@@ -49,7 +51,8 @@ public class PropPanelSimpleState extends AbstractPropPanelState {
     }
 
     /**
-     * Constructor.
+     * Construct a new property panel for a Simple State with the given 
+     * attributes.
      *
      * @param name the name of the properties panel, shown at the top
      * @param icon the icon shown at the top
@@ -57,12 +60,10 @@ public class PropPanelSimpleState extends AbstractPropPanelState {
      */
     public PropPanelSimpleState(String name, ImageIcon icon,
             Orientation orientation) {
-        super(name, icon, ConfigLoader.getTabPropsOrientation());
+        super(name, icon, orientation);
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.container"),
                 getContainerScroll());
         addField(Translator.localize("label.entry"),
@@ -74,7 +75,7 @@ public class PropPanelSimpleState extends AbstractPropPanelState {
         addField(Translator.localize("label.deferrable"),
                 getDeferrableEventsScroll());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.incoming"),
                 getIncomingScroll());

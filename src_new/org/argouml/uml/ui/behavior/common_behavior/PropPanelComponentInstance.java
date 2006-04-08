@@ -44,6 +44,11 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelComponentInstance extends PropPanelInstance {
 
     /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = 7178149693694151459L;
+
+    /**
      * Contructor.
      */
     public PropPanelComponentInstance() {
@@ -51,13 +56,10 @@ public class PropPanelComponentInstance extends PropPanelInstance {
                 ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"), getNameTextField());
-
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.stimili-sent"),
                 getStimuliSenderScroll());
@@ -69,7 +71,7 @@ public class PropPanelComponentInstance extends PropPanelInstance {
         addField(Translator.localize("label.residents"),
                 new JScrollPane(resList));
 
-        addSeperator();
+        addSeparator();
         AbstractActionAddModelElement action =
             new ActionAddInstanceClassifier(
                     Model.getMetaTypes().getComponent());

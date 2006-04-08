@@ -35,11 +35,13 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelSynchState extends PropPanelStateVertex {
 
-    private static UMLSynchStateBoundDocument boundDocument =
-            new UMLSynchStateBoundDocument();
+    /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -6671890304679263593L;
 
     /**
-     * The constructor.
+     * Construct a property panel for a Synch State.
      */
     public PropPanelSynchState() {
         super("Synch State",
@@ -48,14 +50,12 @@ public class PropPanelSynchState extends PropPanelStateVertex {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.container"),
                 getContainerScroll());
         addField(Translator.localize("label.bound"),
-                new UMLTextField2(boundDocument));
+                new UMLTextField2(new UMLSynchStateBoundDocument()));
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.incoming"),
                 getIncomingScroll());

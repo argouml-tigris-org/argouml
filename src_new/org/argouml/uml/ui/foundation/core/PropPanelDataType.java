@@ -55,7 +55,7 @@ public class PropPanelDataType extends PropPanelClassifier {
         new UMLClassOperationListModel();
 
     /**
-     * Constructor.
+     * Construct a property panel for UML DataType elements.
      *
      * @param title
      * @param icon
@@ -67,14 +67,12 @@ public class PropPanelDataType extends PropPanelClassifier {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
         add(getModifiersPanel());
         add(getNamespaceVisibilityPanel());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.client-dependencies"),
                 getClientDependencyScroll());
@@ -85,7 +83,7 @@ public class PropPanelDataType extends PropPanelClassifier {
         addField(Translator.localize("label.specializations"),
                 getSpecializationScroll());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.operations"),
                 getOperationScroll());

@@ -38,16 +38,20 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelActionState extends AbstractPropPanelState {
 
     /**
-     * The constructor.
-     *
+     * The serial version.
+     */
+    private static final long serialVersionUID = 4936258091606712050L;
+
+    /**
+     * Construct a default property panel for an Action State.
      */
     public PropPanelActionState() {
-        this("Action State", lookupIcon("ActionState"), ConfigLoader
-                .getTabPropsOrientation());
+        this("Action State", lookupIcon("ActionState"), 
+                ConfigLoader.getTabPropsOrientation());
     }
 
     /**
-     * The constructor.
+     * Construct a property panel for an Action State with the given params.
      *
      * @param name the name of the properties panel
      * @param icon the icon to be shown next to the name
@@ -60,8 +64,6 @@ public class PropPanelActionState extends AbstractPropPanelState {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.container"),
                 getContainerScroll());
         addField(Translator.localize("label.entry"),
@@ -70,7 +72,7 @@ public class PropPanelActionState extends AbstractPropPanelState {
         addField(Translator.localize("label.deferrable"),
                 getDeferrableEventsScroll());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.incoming"),
                 getIncomingScroll());

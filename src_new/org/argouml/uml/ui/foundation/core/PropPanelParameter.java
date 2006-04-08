@@ -41,12 +41,17 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelParameter extends PropPanelModelElement {
 
+    /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -1207518946939283220L;
+
     private JScrollPane behFeatureScroll;
 
     private static UMLParameterBehavioralFeatListModel behFeatureModel;
 
     /**
-     * The constructor.
+     * Construct a property panel for UML Parameter elements.
      */
     public PropPanelParameter() {
         super(
@@ -56,14 +61,10 @@ public class PropPanelParameter extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
-
         addField(Translator.localize("label.owner"),
                 getBehavioralFeatureScroll());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.type"),
                 new UMLComboBox2(new UMLParameterTypeComboBoxModel(),

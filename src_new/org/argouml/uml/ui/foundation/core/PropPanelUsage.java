@@ -36,27 +36,28 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelUsage extends PropPanelDependency {
 
     /**
-     * The constructor.
-     *
+     * The serial version.
+     */
+    private static final long serialVersionUID = 5927912703376526760L;
+
+    /**
+     * Construct a property panel for Usage elements.
      */
     public PropPanelUsage() {
         super("Usage", ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.suppliers"),
                 getSupplierScroll());
         addField(Translator.localize("label.clients"),
                 getClientScroll());
 
-        // TODO: add Mapping
         addAction(new ActionNavigateNamespace());
         addAction(new ActionDeleteSingleModelElement());
     }

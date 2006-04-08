@@ -38,10 +38,15 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
 public class UMLModelElementVisibilityRadioButtonPanel
     extends UMLRadioButtonPanel {
 
+    /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -1705561978481456281L;
+    
     private static HashMap labelTextsAndActionCommands = new HashMap();
 
     // TODO: The buttons should be order of reducing visibility, but
-    // they get ordered by natural order of the keys (hash order?)
+    // they get ordered by natural order of the keys (hash order?) - tfm
     static {
         labelTextsAndActionCommands.put(Translator.localize(
                 "label.visibility-public"),

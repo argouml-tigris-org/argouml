@@ -60,9 +60,14 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelExtend extends PropPanelModelElement {
 
+    /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -3257769932777323293L;
 
     /**
-     * Constructor. Builds up the various fields required.
+     * Construct a new property panel for an Extend.<p>
+     * 
      * TODO: improve the conditionfield so it can be checked and the
      * OCL editor can be used.
      */
@@ -73,12 +78,10 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"),
 		 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
 		 getNamespaceScroll());
 
-        addSeperator();
+        addSeparator();
 
 
         // Link to the two ends.
@@ -97,7 +100,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         addField(Translator.localize("label.extension-points"),
 		new JScrollPane(extensionPointList));
 
-        addSeperator();
+        addSeparator();
 
         UMLExpressionModel2 conditionModel =
             new UMLConditionExpressionModel(this, "condition");
@@ -108,7 +111,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         JScrollPane conditionScroll =
             new JScrollPane(conditionArea);
 
-        addField("Condition:", conditionScroll);
+        addField(Translator.localize("label.condition"), conditionScroll);
 
         // Add the toolbar buttons:
         addAction(new ActionNavigateNamespace());
@@ -118,6 +121,7 @@ public class PropPanelExtend extends PropPanelModelElement {
     }
 
     /**
+     * @param list 
      * @return a scrollpane with a single row
      */
     protected JScrollPane getSingleRowScroll(JList list) {
@@ -141,7 +145,12 @@ public class PropPanelExtend extends PropPanelModelElement {
         extends AbstractActionNewModelElement {
 
         /**
-         * The constructor.
+         * The serial version.
+         */
+        private static final long serialVersionUID = 2643582245431201015L;
+
+        /**
+         * Construct an action to create a new ExtensionPoint.
          */
         public ActionNewExtensionPoint() {
             super("button.new-extension-point");

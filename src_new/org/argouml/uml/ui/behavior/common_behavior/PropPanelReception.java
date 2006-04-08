@@ -26,7 +26,6 @@ package org.argouml.uml.ui.behavior.common_behavior;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.LookAndFeelMgr;
@@ -39,18 +38,21 @@ import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
-import org.tigris.swidgets.GridLayout2;
 
 /**
  * PropertyPanel for a Reception.
  */
 public class PropPanelReception extends PropPanelModelElement {
 
+    /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -8572743081899344540L;
+    
     private JPanel modifiersPanel;
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for a Reception.
      */
     public PropPanelReception() {
         super("Reception", lookupIcon("Reception"), ConfigLoader
@@ -58,8 +60,6 @@ public class PropPanelReception extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
@@ -75,7 +75,7 @@ public class PropPanelReception extends PropPanelModelElement {
 
         add(modifiersPanel);
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.signal"),
                 new UMLReceptionSignalComboBox(this,

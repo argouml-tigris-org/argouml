@@ -43,6 +43,11 @@ import org.tigris.swidgets.Orientation;
 public class PropPanelAssociation extends PropPanelRelationship {
 
     /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = 4272135235664638209L;
+
+    /**
      * The scrollpane with the associationends.
      */
     private JScrollPane assocEndScroll;
@@ -64,25 +69,22 @@ public class PropPanelAssociation extends PropPanelRelationship {
     private JPanel modifiersPanel;
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for UML Association elements.
      */
     public PropPanelAssociation() {
         this("Association", ConfigLoader.getTabPropsOrientation());
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
         add(modifiersPanel);
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.connections"),
                 assocEndScroll);
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.association-roles"),
                 associationRoleScroll);
@@ -96,7 +98,7 @@ public class PropPanelAssociation extends PropPanelRelationship {
     }
 
     /**
-     * The constructor.
+     * Construct a property panel for an Association.
      *
      * @param title the title of the panel
      * @param orientation the orientation of the panel
@@ -126,15 +128,6 @@ public class PropPanelAssociation extends PropPanelRelationship {
         modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
         modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
 
-    }
-
-    /**
-     * Adds an associationend to the association.
-     */
-    protected void addAssociationEnd() {
-        // TODO: implement this method as soon as issue 1703 is answered.
-        throw new UnsupportedOperationException(
-                "addAssociationEnd is not yet implemented");
     }
 
 } /* end class PropPanelAssociation */

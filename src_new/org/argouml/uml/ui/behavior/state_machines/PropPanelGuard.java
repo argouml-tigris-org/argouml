@@ -43,9 +43,7 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
- * A property panel for Guards. Rewrote this class to comply to Bob Tarling's
- * layout mechanism and to include all valid properties as defined in the UML
- * 1.3 spec.
+ * A property panel for Guards. 
  * 
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -53,15 +51,18 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelGuard extends PropPanelModelElement {
     
     /**
-     * The constructor.
+     * The serial version.
+     */
+    private static final long serialVersionUID = 3698249606426850936L;
+
+    /**
+     * Construct a new property panel for a Guard.
      * 
      */
     public PropPanelGuard() {
         super("Guard", ConfigLoader.getTabPropsOrientation());
         
         addField(Translator.localize("label.name"), getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         
         JList transitionList = new UMLLinkedList(
                 new UMLGuardTransitionListModel());
@@ -69,7 +70,7 @@ public class PropPanelGuard extends PropPanelModelElement {
         addField(Translator.localize("label.transition"), new JScrollPane(
                 transitionList));
         
-        addSeperator();
+        addSeparator();
 
         JPanel exprPanel = createBorderPanel(Translator
                 .localize("label.expression"));

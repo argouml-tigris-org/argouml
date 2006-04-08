@@ -41,19 +41,20 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelLinkEnd extends PropPanelModelElement {
 
     /**
-     * The constructor.
-     *
+     * The serial version.
+     */
+    private static final long serialVersionUID = 666929091194719951L;
+
+    /**
+     * Contruct a property panel for a Link End.
      */
     public PropPanelLinkEnd() {
-        super("Linkend", lookupIcon("AssociationEnd"),
+        super("Link End", lookupIcon("AssociationEnd"),
                 ConfigLoader.getTabPropsOrientation());
         addField(Translator.localize("label.name"),
                 getNameTextField());
 
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
-
-        addSeperator();
+        addSeparator();
 
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionDeleteSingleModelElement());

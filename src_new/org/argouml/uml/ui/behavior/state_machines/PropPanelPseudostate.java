@@ -40,20 +40,22 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelPseudostate extends PropPanelStateVertex {
 
     /**
-     * The constructor.
-     *
+     * The serial version.
+     */
+    private static final long serialVersionUID = 5822284822242536007L;
+
+    /**
+     * Construct a new property panel for a PseudoState (branch, fork, etc).
      */
     public PropPanelPseudostate() {
         super("Pseudostate", null, ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.container"),
                 getContainerScroll());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.incoming"),
                 getIncomingScroll());

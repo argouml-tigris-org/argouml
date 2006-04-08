@@ -43,7 +43,12 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelConstraint extends PropPanelModelElement {
 
     /**
-     * Constructor for PropPanelConstraint.
+     * The serial version.
+     */
+    private static final long serialVersionUID = -7621484706045787046L;
+
+    /**
+     * Construct a property panel for Constraint elements.
      */
     public PropPanelConstraint() {
         super("Constraint", ConfigLoader.getTabPropsOrientation());
@@ -58,7 +63,7 @@ public class PropPanelConstraint extends PropPanelModelElement {
             new JScrollPane(new UMLLinkedList(
                     new UMLConstraintConstrainedElementListModel())));
 
-        addSeperator();
+        addSeparator();
 
         UMLTextArea2 text = new UMLTextArea2(new UMLConstraintBodyDocument());
         text.setEditable(false);
@@ -77,7 +82,7 @@ public class PropPanelConstraint extends PropPanelModelElement {
 class UMLConstraintBodyDocument extends UMLPlainTextDocument {
     
     /**
-     * Constructor for UMLModelElementNameDocument.
+     * Construct a document for a constraint body.
      */
     public UMLConstraintBodyDocument() {
         super("body"); 

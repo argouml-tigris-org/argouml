@@ -195,19 +195,13 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * @return the label added
      */
     public JLabel addField(String label, Component component) {
-        // This test will prevent us placing the stereotype
-        // combo still left over from NSUML
-        if (component != null) {
-            JLabel jlabel = new JLabel(label);
-            jlabel.setFont(smallFont);
-            component.setFont(smallFont);
-            jlabel.setLabelFor(component);
-            add(jlabel);
-            add(component);
-            return jlabel;
-        } else {
-            return null;
-        }
+        JLabel jlabel = new JLabel(label);
+        jlabel.setFont(smallFont);
+        component.setFont(smallFont);
+        jlabel.setLabelFor(component);
+        add(jlabel);
+        add(component);
+        return jlabel;
     }
 
     /**
@@ -270,12 +264,22 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     }
 
     /**
-     * Add a seperator.
+     * Add a separator.
      */
-    protected final void addSeperator() {
+    protected final void addSeparator() {
+        // Note: the mispelling is in a foreign component's method name
+        // so can't be corrected. - tfm
         add(LabelledLayout.getSeperator());
     }
-
+    
+    /**
+     * @deprecated before 0.21.2 by tfm - use addSeparator 
+     * (ie the correct spelling)
+     */
+    protected final void addSeperator() {
+        addSeparator();
+    }
+    
     /**
      * Set the target to be associated with a particular property panel.
      * <p>

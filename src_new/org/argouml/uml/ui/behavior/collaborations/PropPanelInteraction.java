@@ -43,16 +43,18 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelInteraction extends PropPanelModelElement {
 
     /**
-     * The constructor.
-     *
+     * The serial version.
+     */
+    private static final long serialVersionUID = 8965284617441796326L;
+
+    /**
+     * Construct a property panel for an Interaction.
      */
     public PropPanelInteraction() {
         super("Interaction", ConfigLoader.getTabPropsOrientation());
 
     	addField(Translator.localize("label.name"),
                 getNameTextField());
-    	addField(Translator.localize("label.stereotype"),
-		 getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
 		 getNamespaceScroll());
 
@@ -63,7 +65,7 @@ public class PropPanelInteraction extends PropPanelModelElement {
         addField(Translator.localize("label.context"),
                 contextScroll);
 
-        addSeperator();
+        addSeparator();
 
         JList messagesList =
 	    new UMLLinkedList(new UMLInteractionMessagesListModel());

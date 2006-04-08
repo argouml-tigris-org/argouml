@@ -50,16 +50,13 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelMessage extends PropPanelModelElement {
 
     /**
-     * The constructor.
-     *
+     * Construct a new property panel for a Message.
      */
     public PropPanelMessage() {
         super("Message", ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         JList interactionList =
             new UMLLinkedList(new UMLMessageInteractionListModel());
         interactionList.setVisibleRowCount(1);
@@ -78,7 +75,7 @@ public class PropPanelMessage extends PropPanelModelElement {
         addField(Translator.localize("label.receiver"),
                 receiverScroll);
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.activator"),
         	 new UMLMessageActivatorComboBox(this,
@@ -109,7 +106,7 @@ public class PropPanelMessage extends PropPanelModelElement {
         extends AbstractActionNewModelElement {
 
         /**
-         * The constructor.
+         * Construct an action to add a new UML Action to the Message.
          */
         public ActionToolNewAction() {
             super("button.new-action");

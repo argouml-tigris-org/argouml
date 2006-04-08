@@ -50,6 +50,11 @@ import org.tigris.swidgets.Orientation;
 public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = 9119453587506578751L;
+
+    /**
      * The combobox that shows the type of this association end.
      */
     private JComboBox typeCombobox;
@@ -102,10 +107,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     /**
      * The panel with the radiobuttons to set the visibility (public, protected,
-     * private) of this associationend. <p>
-     * TODO: There was a bug in NSUML where it equated the visibility of
-     * an AssociationEnd with the visibility of its associated element.
-     * Make sure that we are correctly following the UML spec. - tfm 20051109
+     * private) of this associationend.
      */
     private JPanel visibilityRadioButtonPanel;
 
@@ -184,8 +186,6 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     protected void positionStandardControls() {
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
     }
 
     /**
@@ -197,7 +197,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         addField(Translator.localize("label.multiplicity"),
                 getMultiplicityComboBox());
 
-        addSeperator();
+        addSeparator();
 
         JPanel panel = createBorderPanel(Translator.localize(
                 "label.modifiers"));
@@ -212,7 +212,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
                 qualifiersScroll);
 
 
-        addSeperator();
+        addSeparator();
 
         add(aggregationRadioButtonpanel);
         add(changeabilityRadioButtonpanel);

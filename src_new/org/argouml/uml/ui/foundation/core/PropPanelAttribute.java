@@ -44,6 +44,11 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelAttribute extends PropPanelStructuralFeature {
 
     /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -5596689167193050170L;
+
+    /**
      * The constructor.
      *
      */
@@ -52,14 +57,12 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.owner"),
                 getOwnerScroll());
         addField(Translator.localize("label.multiplicity"),
                 getMultiplicityComboBox());
 
-        addSeperator();
+        addSeparator();
         
         add(getVisibilityPanel());
         add(getChangeabilityRadioButtonPanel());
@@ -69,7 +72,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         modifiersPanel.add(getOwnerScopeCheckbox());
         add(modifiersPanel);
         
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.type"),
                 new UMLComboBoxNavigator(
@@ -86,9 +89,6 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         // but a simple text field. Bob Tarling 12 Feb 2004.
         addField(Translator.localize("label.initial-value"),
                 new UMLInitialValueComboBox(this));
-
-        
-
 
         addAction(new ActionNavigateContainerElement());
         addAction(TargetManager.getInstance().getAddAttributeAction());
