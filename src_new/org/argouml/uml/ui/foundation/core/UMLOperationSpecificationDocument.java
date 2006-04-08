@@ -28,11 +28,14 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 
 /**
- *
- * @author mkl
- *
+ * @author tfmorris
  */
 public class UMLOperationSpecificationDocument extends UMLPlainTextDocument {
+
+    /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -152721992761681537L;
 
     /**
      * Constructor.
@@ -46,7 +49,7 @@ public class UMLOperationSpecificationDocument extends UMLPlainTextDocument {
      */
     protected void setProperty(String text) {
         if (Model.getFacade().isAOperation(getTarget())) {
-            Model.getCommonBehaviorHelper().setSpecification(getTarget(), text);
+            Model.getCoreHelper().setSpecification(getTarget(), text);
         }
 
     }

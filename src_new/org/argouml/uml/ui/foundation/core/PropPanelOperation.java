@@ -31,6 +31,7 @@ import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -48,8 +49,17 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelOperation extends PropPanelFeature {
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -8231585002039922761L;
+    
+    /**
+     * The logger.
+     */
+    private static final Logger LOG = Logger.getLogger(PropPanelOperation.class);
+
+
     /**
      * The constructor.
      */
@@ -59,22 +69,13 @@ public class PropPanelOperation extends PropPanelFeature {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
-
         addField(Translator.localize("label.owner"),
                 getOwnerScroll());
-
         addField(Translator.localize("label.parameters"),
                 new JScrollPane(new UMLLinkedList(
                 new UMLClassifierParameterListModel())));
 
-        addField(Translator.localize("label.specification"), 
-                new JScrollPane(new UMLTextArea2(
-                        new UMLOperationSpecificationDocument())));
-
-        addSeperator();
+        addSeparator();
 
         add(getVisibilityPanel());
 
@@ -90,7 +91,11 @@ public class PropPanelOperation extends PropPanelFeature {
         add(new UMLOperationConcurrencyRadioButtonPanel(
                 Translator.localize("label.concurrency"), true));
 
-        addSeperator();
+        addSeparator();
+
+        addField(Translator.localize("label.specification"), 
+                new JScrollPane(new UMLTextArea2(
+                        new UMLOperationSpecificationDocument())));
 
         addField(Translator.localize("label.raisedsignals"),
                new JScrollPane(new UMLLinkedList(
@@ -111,10 +116,11 @@ public class PropPanelOperation extends PropPanelFeature {
         addAction(new ActionDeleteSingleModelElement());
     }
 
+
     /**
-     * @param index add a raised signal
+     * Add a new RaisedSignal to the current target.
      */
-    public void addRaisedSignal(Integer index) {
+    public void addRaisedSignal() {
         Object target = getTarget();
         if (Model.getFacade().isAOperation(target)) {
             Object oper = /* (MOperation) */target;
@@ -132,9 +138,9 @@ public class PropPanelOperation extends PropPanelFeature {
     }
 
     /**
-     * @param index add a raised signal
+     * Add a Method to the current target.
      */
-    public void addMethod(Integer index) {
+    public void addMethod() {
         Object target = getTarget();
         if (Model.getFacade().isAOperation(target)) {
             Object oper = /* (MOperation) */target;
@@ -147,11 +153,38 @@ public class PropPanelOperation extends PropPanelFeature {
         }
     }
 
+    /**
+     * @deprecated before 0.21.2 by tfmorris - use the argumentless version of
+     *             this method
+     * @param index
+     *            ignored
+     */
+    public void addRaisedSignal(Integer index) {
+        LOG.warn("Ignoring index parameter to addRaisedSignal: " + index);
+        addRaisedSignal();
+    }
+    
+    /**
+     * @deprecated before 0.21.2 by tfmorris - use the argumentless version of
+     *             this method
+     * @param index
+     *            ignored
+     */
+    public void addMethod(Integer index) {
+        LOG.warn("Ignoring index parameter to addMethod: " + index);
+        addMethod();
+    }
+
 
     private class ActionNewRaisedSignal extends AbstractActionNewModelElement {
 
         /**
-         * The constructor.
+         * The serial version.
+         */
+        private static final long serialVersionUID = -2380798799656866520L;
+
+        /**
+         * Construct an action to create a new RaisedSignal.
          */
         public ActionNewRaisedSignal() {
             super("button.new-raised-signal");
@@ -167,7 +200,7 @@ public class PropPanelOperation extends PropPanelFeature {
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAOperation(target)) {
-                addRaisedSignal(new Integer(1));
+                addRaisedSignal();
                 super.actionPerformed(e);
             }
         }
@@ -177,7 +210,12 @@ public class PropPanelOperation extends PropPanelFeature {
     private class ActionNewMethod extends AbstractActionNewModelElement {
 
         /**
-         * The constructor.
+         * The serial version.
+         */
+        private static final long serialVersionUID = 1605755146025527381L;
+
+        /**
+         * Construct an action to create a new Method.
          */
         public ActionNewMethod() {
             super("button.new-method");
@@ -208,7 +246,7 @@ public class PropPanelOperation extends PropPanelFeature {
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAOperation(target)) {
-                addMethod(new Integer(1));
+                addMethod();
                 super.actionPerformed(e);
             }
         }
