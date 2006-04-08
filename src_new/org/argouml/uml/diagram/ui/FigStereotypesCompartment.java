@@ -102,7 +102,10 @@ public class FigStereotypesCompartment extends FigCompartment {
             return;
         }
         
-        LOG.info("Populating stereotypes compartment for " + Model.getFacade().getName(modelElement));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Populating stereotypes compartment for "
+                    + Model.getFacade().getName(modelElement));
+        }
         
         int acounter = 1;
         Fig bigPort = this.getBigPort();
