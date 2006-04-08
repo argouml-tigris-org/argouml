@@ -195,6 +195,6 @@ public class FigEdgeAssociationClass
         super.setSourceFigNode(fn);
     }
     
-    
-
+    public void renderingChanged() {
+    }
 } /* end class FigEdgeAssociationClass */
