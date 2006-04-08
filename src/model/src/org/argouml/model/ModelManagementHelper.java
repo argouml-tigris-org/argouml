@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -187,4 +187,100 @@ public interface ModelManagementHelper {
      * @return true if the child is allready in the ownership relationship
      */
     boolean isCyclicOwnership(Object parent, Object child);
+    
+    /**
+     * This method calculates the "contents" additional operation 
+     * from the standard: <p>
+     * 
+     * For a Namespace: <pre>
+     * [1] The operation contents results in a Set containing 
+     * all ModelElements contained by the Namespace.
+     * contents : Set(ModelElement)
+     * contents = self.ownedElement -> union(self.namespace, contents)
+     * </pre> <p>
+     * 
+     * For a Package: <pre>
+     * [1] The operation contents results in a Set containing 
+     * the ModelElements owned by or imported by the Package.
+     * contents : Set(ModelElement)
+     * contents = self.ownedElement->union(self.importedElement)
+     * </pre>
+     *
+     * @param namespace the ns to get the contents from
+     * @return a collection of modelelements
+     */
+    Collection getContents(Object namespace);
+    
+    /**
+     * This method calculates the collection 
+     * of imported elements of a Package 
+     * following from the standard: <p>
+     * <pre>
+     * [2] The operation allImportedElements results 
+     * in a Set containing the ModelElements imported 
+     * by the Package or one of its parents.
+     * allImportedElements : Set(ModelElement)
+     * allImportedElements = self.importedElement->union(
+     * self.parent.oclAsType(Package).allImportedElements->select( re |
+     *   re.elementImport.visibility = #public or
+     *   re.elementImport.visibility = #protected))
+     *</pre>
+     *
+     * @param pack the package to get the imported elements from
+     * @return a collection of modelelements
+     */
+    Collection getAllImportedElements(Object pack);
+    
+    /**
+     * This method calculates the following from the standard: <p>
+     * 
+     * For a Namespace:
+     * <pre>
+     * [2] The operation allContents results in a Set containing 
+     * all ModelElements contained by the Namespace.
+     * allContents : Set(ModelElement);
+     * allContents = self.contents
+     * </pre><p>
+     * 
+     * For a Classifier:
+     * <pre>
+     * [10] The operation allContents returns a Set containing 
+     * all ModelElements contained in the Classifier together
+     * with the contents inherited from its parents.
+     * allContents : Set(ModelElement);
+     * allContents = self.contents->union(
+     *   self.parent.allContents->select(e |
+     *        e.elementOwnership.visibility = #public or
+     *        e.elementOwnership.visibility = #protected))
+     * </pre><p>
+     * 
+     * For a Package:
+     * <pre>
+     * [3]  The operation allContents results in a Set containing 
+     * the ModelElements owned by or imported 
+     * by the Package or one of its ancestors.
+     * allContents : Set(ModelElement);
+     * allContents = self.contents->union(
+     *   self.parent.allContents->select(e |
+     *        e.elementOwnership.visibility = #public or
+     *        e.elementOwnership.visibility = #protected))
+     * </pre>
+     * 
+     * For a Collaboration:
+     * <pre>
+     * [1 ] The operation allContents results in the set of 
+     * all ModelElements contained in the Collaboration
+     * together with those contained in the parents 
+     * except those that have been specialized.
+     * allContents : Set(ModelElement);
+     * allContents = self.contents->union (
+     *   self.parent.allContents->reject ( e |
+     *        self.contents.name->include (e.name) ))
+     * </pre>
+     *
+     * @param namespace the ns to get the contents from
+     * @return a collection of modelelements
+     */
+    Collection getAllContents(Object namespace);
+
 }

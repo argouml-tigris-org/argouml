@@ -1413,7 +1413,11 @@ public class CoreHelperMDRImpl implements CoreHelper {
              * Symptom of this problem:
              * Load the project attached to issue 3772. Select the "class1".
              * The UMLModelElementNamespaceComboBoxModel gives 
-             * a warning.*/
+             * a warning. Then add an import permission. 
+             * The warnig should not be given anymore. */
+            // This will do it:
+//            if(modelImpl.getModelManagementHelper().getAllContents(ns)
+//                    .contains(gen2.getParent())) {
             if (!ns.getOwnedElement().contains(gen2.getParent())) {
                 return false;
             }

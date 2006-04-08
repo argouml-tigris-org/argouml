@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -227,4 +227,12 @@ public interface ExtensionMechanismsHelper {
      */
     void setTaggedValue(Object handle, Collection taggedValues);
 
+    /**
+     * Returns true if the given object has a stereotype with the given name.
+     * 
+     * @param handle the given object
+     * @param name the given name
+     * @return true if there is such a stereotype
+     */
+    boolean hasStereoType(Object handle, String name);
 }

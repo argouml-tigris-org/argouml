@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -232,4 +232,14 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
     public void setTaggedValue(Object handle, Collection taggedValues) {
         impl.setTaggedValue(handle, taggedValues);
     }
+
+    /*
+     * @see org.argouml.model.ExtensionMechanismsHelper#hasStereoType(java.lang.Object, java.lang.String)
+     */
+    public boolean hasStereoType(Object handle, String name) {
+       return impl.hasStereoType(handle, name);
+    }
+
+
+
 }

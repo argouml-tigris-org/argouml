@@ -54,7 +54,6 @@ import org.omg.uml.foundation.core.Feature;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Operation;
-import org.omg.uml.foundation.core.Permission;
 import org.omg.uml.foundation.core.UmlAssociation;
 
 /**
@@ -611,59 +610,11 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      * @return a collection of classifiers
      */
     private Collection getAllImportedClassifiers(Object obj) {
-        Collection c = new ArrayList();
-        Collection deps = nsmodel.getFacade().getClientDependencies(obj);
-        Iterator i = deps.iterator();
-        while (i.hasNext()) {
-            Object dep = i.next();
-            if (dep instanceof Permission) {
-                if (hasStereoType(dep, "friend")) {
-                    Collection mes = nsmodel.getFacade().getSuppliers(dep);
-                    Iterator mei = mes.iterator();
-                    while (mei.hasNext()) {
-                        Object o = mei.next();
-                        if (nsmodel.getFacade().isANamespace(o)) {
-                            Collection v = 
-                                nsmodel.getFacade().getOwnedElements(o);
-                            c.addAll(filterClassifiers(v));
-                        }
-                    }
-                } else if (hasStereoType(dep, "import") 
-                        || hasStereoType(dep, "access")) {
-                    Collection mes = nsmodel.getFacade().getSuppliers(dep);
-                    Iterator mei = mes.iterator();
-                    while (mei.hasNext()) {
-                        Object o = mei.next();
-                        if (nsmodel.getFacade().isANamespace(o)) {
-                            Collection v = nsmodel.getCoreHelper()
-                                            .getAllVisibleElements(o);
-                            c.addAll(filterClassifiers(v));
-                        }
-                    }
-                }
-            }
-        }
-        return c;
+        Collection c = nsmodel.getModelManagementHelper()
+                        .getAllImportedElements(obj);
+        return filterClassifiers(c);
     }
     
-    /**
-     * Returns true if the given object has a stereotype with the given name.
-     * TODO: Move this to the correct helper and make public.
-     * 
-     * @param handle the given object
-     * @param name the given name
-     * @return true if there is such a stereotype
-     */
-    private boolean hasStereoType(Object handle, String name) {
-        Collection sts = nsmodel.getFacade().getStereotypes(handle);
-        Iterator i = sts.iterator();
-        while (i.hasNext()) {
-            Object st = i.next();
-            if (name.equals(nsmodel.getFacade().getName(st))) return true;
-        }
-        return false;
-    }
-
     private Collection filterClassifiers(Collection in) {
         Collection out = new ArrayList();
         Iterator i = in.iterator();

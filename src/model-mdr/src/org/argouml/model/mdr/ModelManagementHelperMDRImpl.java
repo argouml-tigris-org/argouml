@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,6 +42,7 @@ import org.argouml.model.ModelManagementHelper;
 import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Permission;
 import org.omg.uml.modelmanagement.Model;
 import org.omg.uml.modelmanagement.Subsystem;
 
@@ -467,4 +468,63 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         }
         throw new IllegalArgumentException("Not a base");
     }
+
+    /*
+     * @see org.argouml.model.ModelManagementHelper#getContents(java.lang.Object)
+     */
+    public Collection getContents(Object namespace) {
+        // TODO: Auto-generated method stub
+        return null;
+    }
+
+    /*
+     * @see org.argouml.model.ModelManagementHelper#getAllImportedElements(java.lang.Object)
+     */
+    public Collection getAllImportedElements(Object pack) {
+        Collection c = new ArrayList();
+        Collection deps = nsmodel.getFacade().getClientDependencies(pack);
+        Iterator i = deps.iterator();
+        while (i.hasNext()) {
+            Object dep = i.next();
+            if (dep instanceof Permission) {
+                if (nsmodel.getExtensionMechanismsHelper()
+                            .hasStereoType(dep, "friend")) {
+                    Collection mes = nsmodel.getFacade().getSuppliers(dep);
+                    Iterator mei = mes.iterator();
+                    while (mei.hasNext()) {
+                        Object o = mei.next();
+                        if (nsmodel.getFacade().isANamespace(o)) {
+                            Collection v = 
+                                nsmodel.getFacade().getOwnedElements(o);
+                            c.addAll(v);
+                        }
+                    }
+                } else if (nsmodel.getExtensionMechanismsHelper()
+                                .hasStereoType(dep, "import") 
+                        || nsmodel.getExtensionMechanismsHelper()
+                                .hasStereoType(dep, "access")) {
+                    Collection mes = nsmodel.getFacade().getSuppliers(dep);
+                    Iterator mei = mes.iterator();
+                    while (mei.hasNext()) {
+                        Object o = mei.next();
+                        if (nsmodel.getFacade().isANamespace(o)) {
+                            Collection v = nsmodel.getCoreHelper()
+                                            .getAllVisibleElements(o);
+                            c.addAll(v);
+                        }
+                    }
+                }
+            }
+        }
+        return c;
+    }
+
+    /*
+     * @see org.argouml.model.ModelManagementHelper#getAllContents(java.lang.Object)
+     */
+    public Collection getAllContents(Object pack) {
+        // TODO: Auto-generated method stub
+        return null;
+    }
+
 }
