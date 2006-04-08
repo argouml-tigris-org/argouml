@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,14 +28,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
+import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.foundation.core.ActionAddDataType;
 import org.argouml.uml.ui.foundation.core.ActionAddEnumeration;
 import org.argouml.uml.ui.foundation.core.PropPanelNamespace;
@@ -47,7 +48,6 @@ import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationL
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
 import org.argouml.util.ConfigLoader;
-import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Orientation;
 
 
@@ -59,6 +59,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
     private JPanel modifiersPanel;
     private JScrollPane generalizationScroll;
     private JScrollPane specializationScroll;
+    private JScrollPane importedElementsScroll;
 
     private static UMLGeneralizableElementGeneralizationListModel
         generalizationListModel =
@@ -66,6 +67,9 @@ public class PropPanelPackage extends PropPanelNamespace  {
     private static UMLGeneralizableElementSpecializationListModel
         specializationListModel =
         new UMLGeneralizableElementSpecializationListModel();
+    private static UMLPackageImportedElementListModel
+        importedElementListModel =
+        new UMLPackageImportedElementListModel();
 
     /**
      * The constructor.
@@ -102,28 +106,30 @@ public class PropPanelPackage extends PropPanelNamespace  {
 
         add(getNamespaceVisibilityPanel());
 
-        // TODO: facilitate importedElements.
-
         modifiersPanel = createBorderPanel(Translator.localize(
                     "label.modifiers"));
-
         modifiersPanel.add(
                             new UMLGeneralizableElementAbstractCheckBox());
         modifiersPanel.add(
                             new UMLGeneralizableElementLeafCheckBox());
         modifiersPanel.add(
                             new UMLGeneralizableElementRootCheckBox());
-
         add(modifiersPanel);
+
         addSeperator();
+
         addField(Translator.localize("label.generalizations"),
                 getGeneralizationScroll());
         addField(Translator.localize("label.specializations"),
                 getSpecializationScroll());
+
         addSeperator();
+
         addField(Translator.localize("label.owned-elements"),
                 getOwnedElementsScroll());
-
+        addField(Translator.localize("label.imported-elements"),
+                getImportedElementsScroll());
+        
         addAction(new ActionNavigateNamespace());
         addAction(new ActionAddPackage());
         addAction(new ActionAddDataType());
@@ -171,5 +177,47 @@ public class PropPanelPackage extends PropPanelNamespace  {
         return specializationScroll;
     }
 
+    /**
+     * @return the scrollpane with imported modelelements
+     */
+    public JScrollPane getImportedElementsScroll() {
+        if (importedElementsScroll == null) {
+            importedElementsScroll = new ScrollList(importedElementListModel);
+        }
+        return importedElementsScroll;
+    }
 
 } /* end class PropPanelPackage */
+
+/**
+ * The model for the list with imported elements for a package.
+ * 
+ * @author michiel
+ */
+class UMLPackageImportedElementListModel
+    extends UMLModelElementListModel2 {
+    
+    /**
+     * Constructor for UMLPackageImportedElementListModel.
+     */
+    public UMLPackageImportedElementListModel() {
+        super("importedElement");
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        if (getTarget() != null) {
+            setAllElements(Model.getFacade().getImportedElements(getTarget()));
+        }
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
+     */
+    protected boolean isValidElement(Object element) {
+        return Model.getFacade().getImportedElements(getTarget())
+            .contains(element);
+    }
+}

@@ -1973,6 +1973,22 @@ class FacadeMDRImpl implements Facade {
         return getContainer(handle);
     }
 
+    /*
+     * @see org.argouml.model.Facade#getImportedElements(java.lang.Object)
+     */
+    public Collection getImportedElements(Object pack) {
+        if (!(pack instanceof UmlPackage)) {
+            return illegalArgumentCollection(pack);
+        }
+        try {
+            return ((UmlPackage) pack).getElementImport();
+            //TODO: or is it getImportedElement() ???
+        } catch (InvalidObjectException e) {
+            LOG.error("Queried a removed model element", e);
+            return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
+        }
+    }
+
     /**
      * @see org.argouml.model.Facade#getIncludes(java.lang.Object)
      */

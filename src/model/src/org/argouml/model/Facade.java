@@ -1952,6 +1952,14 @@ public interface Facade {
     Object getDoActivity(Object handle);
 
     /**
+     * The list of imported elements of the given package.
+     *
+     * @param pack package to retrieve from.
+     * @return A Collection with the imported elements.
+     */
+    Collection getImportedElements(Object pack);
+
+    /**
      * Return the Links of a given Association.
      *
      * @param handle the Association
