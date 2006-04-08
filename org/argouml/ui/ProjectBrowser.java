@@ -72,8 +72,9 @@ import org.argouml.persistence.LastLoadInfo;
 import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFilePersister;
+import org.argouml.persistence.UmlVersionException;
 import org.argouml.persistence.VersionException;
-import org.argouml.persistence.XMIParser;
+import org.argouml.persistence.XmiFormatException;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -116,7 +117,7 @@ public final class ProjectBrowser
      * Default height.
      */
     public static final int DEFAULT_COMPONENTHEIGHT = 200;
-
+    
     /**
      * Logger.
      */
@@ -224,10 +225,10 @@ public final class ProjectBrowser
     private ProjectBrowser(String applicationName, SplashScreen splash) {
         super(applicationName);
         theInstance = this;
-
+        
         saveAction = new ActionSaveProject();
         ProjectManager.getManager().setSaveAction(saveAction);
-
+        
         if (splash != null) {
 	    splash.getStatusBar().showStatus(
 	        Translator.localize("statusmsg.bar.making-project-browser"));
@@ -544,6 +545,11 @@ public final class ProjectBrowser
         return title;
     }
 
+    /**
+     * Create a title for the main window's title.
+     * 
+     * @param titleArg
+     */
     public void buildTitle(final String titleArg) {
         if (titleArg == null || "".equals(titleArg)) {
             buildTitle(getAppName());
@@ -1123,12 +1129,10 @@ public final class ProjectBrowser
                     "optionpane.save-project-general-exception-title"),
                           JOptionPane.ERROR_MESSAGE);
 
-            reportError("save a project.",
-                    "Could not save the project "
-                    + file.getName()
-                    + " some error was found.\n"
-                    + "Please report the exception below to the ArgoUML"
-                    + "development team at http://argouml.tigris.org.",
+            reportError(
+                    Translator.localize(
+                            "dialog.error.save.error", 
+                            new Object[] {file.getName()}),
                     true, ex);
 
             LOG.error(sMessage, ex);
@@ -1207,7 +1211,7 @@ public final class ProjectBrowser
         Designer.disableCritiquing();
         Designer.clearCritiquing();
         clearDialogs();
-        Project p = null;
+        Project project = null;
 
         if (!(file.canRead())) {
             reportError("File not found " + file + ".", showUI);
@@ -1231,69 +1235,72 @@ public final class ProjectBrowser
 
                 DiagramFactory.getInstance().getDiagram().clear();
 
-                p = persister.doLoad(file);
+                project = persister.doLoad(file);
 
                 if (Model.getDiagramInterchangeModel() != null) {
                     Collection diagrams =
                         DiagramFactory.getInstance().getDiagram();
                     Iterator diag = diagrams.iterator();
                     while (diag.hasNext()) {
-                        p.addMember(diag.next());
+                        project.addMember(diag.next());
                     }
                     if (!diagrams.isEmpty()) {
-                        p.setActiveDiagram((ArgoDiagram) diagrams.iterator()
+                        project.setActiveDiagram((ArgoDiagram) diagrams.iterator()
                                 .next());
                     }
                 }
 
                 ProjectBrowser.getInstance().showStatus(
-                    MessageFormat.format(Translator.localize(
-                        "label.open-project-status-read"),
-                        new Object[] {
-                            file.getName(),
-                        }));
+                        Translator.localize(
+                                "label.open-project-status-read",
+                                new Object[] {file.getName(),}));
             } catch (VersionException ex) {
-                success = false;
-                reportError(ex.getMessage(), showUI);
-                p = oldProject;
-            } catch (OutOfMemoryError ex) {
-                p = oldProject;
-                LOG.error("Out of memory while loading project", ex);
+                project = oldProject;
                 success = false;
                 reportError(
-                    "Could not load the project "
-                    + file.getName()
-                    + " because the JVM ran out of memory.\n"
-                    + "Rerun ArgoUML with the heap size increased.",
-                    showUI);
-            } catch (Exception ex) {
-
-                String knownError = XMIParser.getSingleton().getErrorMessage();
-                if (knownError != null) {
-                    reportError(knownError, showUI);
-                } else {
-                    LOG.error("Exception while loading project", ex);
-                    reportError(
-                        "load a project.",
-                        "Could not load the project "
-                        + file.getName()
-                        + " some error was found.\n"
-                        + "Please try loading with the latest version of "
-                        + "ArgoUML which you can download from "
-			+ "http://argouml.tigris.org\n"
-                        + "If you have no further success then please report "
-                        + "the exception below.",
-                        showUI, ex);
-                }
+                        Translator.localize(
+                                "dialog.error.file.version",
+                                new Object[] {ex.getMessage()}),
+                        showUI);
+            } catch (OutOfMemoryError ex) {
+                project = oldProject;
                 success = false;
-                p = oldProject;
+                LOG.error("Out of memory while loading project", ex);
+                reportError(
+                        Translator.localize("dialog.error.memory.limit.error"),
+                        showUI);
+            } catch (UmlVersionException ex) {
+                project = oldProject;
+                success = false;
+                reportError(
+                        Translator.localize(
+                                "dialog.error.file.version.error",
+                                new Object[] {ex.getMessage()}),
+                        showUI, ex);
+            } catch (XmiFormatException ex) {
+                project = oldProject;
+                success = false;
+                reportError(
+                        Translator.localize(
+                                "dialog.error.xmi.format.error",
+                                new Object[] {ex.getMessage()}),
+                        showUI, ex);
+            } catch (Exception ex) {
+                success = false;
+                project = oldProject;                
+                LOG.error("Exception while loading project", ex);
+                reportError(
+                        Translator.localize(
+                                "dialog.error.open.error", 
+                                new Object[] {file.getName()}),
+                        showUI, ex);
             } finally {
                 // Make sure save action is always reinstated
                 this.saveAction = saveAction;
                 ProjectManager.getManager().setSaveAction(saveAction);
-
+                
                 if (!LastLoadInfo.getInstance().getLastLoadStatus()) {
-                    p = oldProject;
+                    project = oldProject;
                     success = false;
                     // TODO: This seems entirely redundant
                     // for now I've made the message more generic, but it
@@ -1313,24 +1320,24 @@ public final class ProjectBrowser
                 } else if (oldProject != null) {
                     // if p equals oldProject there was an exception and we do
                     // not have to gc (garbage collect) the old project
-                    if (p != null && !p.equals(oldProject)) {
+                    if (project != null && !project.equals(oldProject)) {
                         //prepare the old project for gc
                         LOG.info("There are " + oldProject.getMembers().size()
                                 + " members in the old project");
-                        LOG.info("There are " + p.getMembers().size()
+                        LOG.info("There are " + project.getMembers().size()
                                 + " members in the new project");
                         // Set new project before removing old so we always have
                         // a valid current project
-                        ProjectManager.getManager().setCurrentProject(p);
+                        ProjectManager.getManager().setCurrentProject(project);
                         ProjectManager.getManager().removeProject(oldProject);
                         saveAction.setEnabled(false);
-                    }
+                    } 
                 }
 
-                if (p == null) {
+                if (project == null) {
                     LOG.info("The current project is null");
                 } else {
-                    LOG.info("There are " + p.getMembers().size()
+                    LOG.info("There are " + project.getMembers().size()
                             + " members in the current project");
                 }
                 UndoManager.getInstance().empty();
@@ -1362,19 +1369,17 @@ public final class ProjectBrowser
     /**
      * Open a Message Dialog with an error message.
      *
-     * @param attemptingTo What we were doing when the error occured.
-     * @param message the message to display.  Only used in commandline mode.
+     * @param message the message to display.  
      * @param showUI true if an error message may be shown to the user,
      *               false if run in commandline mode
      * @param ex The exception that was thrown.
      */
-    private void reportError(String attemptingTo, String message,
-                    boolean showUI, Throwable ex) {
+    private void reportError(String message, boolean showUI, Throwable ex) {
         if (showUI) {
             JDialog dialog =
                 new ExceptionDialog(
                         ProjectBrowser.getInstance(),
-                        "An error occured attempting to " + attemptingTo,
+                        message,
                         ex,
                         ex instanceof OpenException);
             dialog.setVisible(true);
@@ -1383,8 +1388,11 @@ public final class ProjectBrowser
             PrintWriter pw = new PrintWriter(sw);
             ex.printStackTrace(pw);
             String exception = sw.toString();
-
-            reportError(message + "\n\n" + exception, showUI);
+            // TODO:  Does anyone use command line?
+            // If so, localization is needed - tfm
+            reportError("Please report the error below to the ArgoUML"
+                    + "development team at http://argouml.tigris.org.\n"
+                    + message + "\n\n" + exception, showUI);
         }
     }
 
@@ -1434,8 +1442,13 @@ public final class ProjectBrowser
         return removeFromDiagram;
     }
 
+
     /**
-     * @see #trySave(boolean)
+     * Attempt to save this project under a new name.  Prompt the user for
+     * the new name.
+     * 
+     * @param overwrite true to allow overwrite of an existing file
+     * @return true if operation succeeded
      */
     public boolean trySaveAs(boolean overwrite) {
         File f = getNewFile();

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,17 +25,20 @@
 package org.argouml.persistence;
 
 /**
- * Exception indicating unsupported file version.
+ * Exception indicating an unsupported version of UML. 
  * 
- * @author Bob Tarling
+ * @author Tom Morris
  */
-public class VersionException extends OpenException {
+public class UmlVersionException extends XmiFormatException {
 
     /**
-     * Construct the exception the version information found.
-     * @param message the message
+     * Construct an UmlVersionException with the version string
+     * and a nested cause.
+     * 
+     * @param cause
      */
-    public VersionException(String message) {
-        super(message);
+    public UmlVersionException(String message, Throwable cause) {
+        super(cause);
     }
+
 }

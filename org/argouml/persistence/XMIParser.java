@@ -79,8 +79,6 @@ public class XMIParser {
 
     private Collection elementsRead;
 
-    private String errorMessage;
-    
     /**
      * The constructor.
      *
@@ -179,9 +177,6 @@ public class XMIParser {
             }
             uUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
         } catch (Exception ex) {
-            if (reader != null) {
-                errorMessage = reader.getErrorMessage();
-            }
             throw new OpenException(ex);
         }
         LOG.info("=======================================");
@@ -282,10 +277,6 @@ public class XMIParser {
      */
     public Collection getElementsRead() {
         return elementsRead;
-    }
-    
-    public String getErrorMessage() {
-        return errorMessage;
     }
 
     /**
