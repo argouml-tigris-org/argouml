@@ -236,7 +236,30 @@ public class AboutBox extends JDialog {
         buf.append("+ Localization British English: Alex Bagehot\n");
         buf.append("+ Localization Norwegian (bokm\u00E5l): "
                 + "Hans Fredrik Nordhaug\n");
-        buf.append("+ Localization Chinese: Jeff Liu\n\n");
+        buf.append("+ Localization Chinese: Jeff Liu\n");
+        buf.append("+ Localization Portuguese: Sergio Agostinho\n");
+
+        buf.append("\n");
+
+        buf.append(Translator.messageFormat(
+                "aboutbox.contrib-developers-for-release",
+                new Object[] {
+                    "0.22",
+                }));
+        buf.append("\n");
+
+        buf.append("+ Bob Tarling\n");
+        buf.append("+ Hans Fredrik Nordhaug\n");
+        buf.append("+ Harald Braun\n");
+        buf.append("+ Linus Tolke\n");
+        buf.append("+ Luis Sergio Oliveira\n");
+        buf.append("+ Ludovic Maitre\n");
+        buf.append("+ Markus Klink\n");
+        buf.append("+ Michiel van der Wulp\n");
+        buf.append("+ Sergio Agostinho\n");
+        buf.append("+ Thomas Neustupny\n");
+        buf.append("+ Tom Morris (tfmorris@gmail.com)\n");
+        buf.append("\n");
 
         buf.append(Translator.messageFormat(
                 "aboutbox.contrib-developers-for-release",
@@ -249,22 +272,14 @@ public class AboutBox extends JDialog {
             	", Polytechnic of Bandung Indonesia"
             	+ ", Computer Engineering Departement";
         // Alphabetic order!
-        buf.append("+ Bob Tarling\n");
         buf.append("+ Decki" + cpbi + "\n");
         buf.append("+ Endi" + cpbi + "\n");
-        buf.append("+ Hans Fredrik Nordhaug\n");
         buf.append("+ Jan Magne Andersen\n");
         buf.append("+ Jeff Liu\n");
         buf.append("+ Kai Schroeder\n");
-        buf.append("+ Linus Tolke\n");
-        buf.append("+ Luis Sergio Oliveira\n");
-        buf.append("+ Ludovic Maitre\n");
         buf.append("+ Michael A. MacDonald\n");
-        buf.append("+ Markus Klink\n");
-        buf.append("+ Michiel van der Wulp\n");
-        buf.append("+ Thomas Neustupny\n");
-        buf.append("+ Tom Morris (tfmorris@gmail.com)\n");
-        buf.append("+ Yayan" + cpbi + "\n\n");
+        buf.append("+ Yayan" + cpbi + "\n");
+        buf.append("\n");
 
         buf.append(Translator.messageFormat(
                 "aboutbox.contrib-developers-for-release",
@@ -275,7 +290,6 @@ public class AboutBox extends JDialog {
         buf.append("\n");
 
         // Alphabetic order!
-        buf.append("+ Harald Braun\n");
         buf.append("+ Michael Stockman\n");
         buf.append("+ Jaap Branderhorst\n");
         buf.append("+ Stewart Munoz\n\n");
