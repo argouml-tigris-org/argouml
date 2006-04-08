@@ -535,7 +535,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             }
             return;
         }
-        throw new RuntimeException(
+        throw new IllegalArgumentException(
                 "Don't know how to register class event for object "
                         + modelClass);
     }
@@ -561,7 +561,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             }
             return;
         }
-        throw new RuntimeException(
+        throw new IllegalArgumentException(
                 "Don't know how to unregister class event for object "
                         + modelClass);
     }
