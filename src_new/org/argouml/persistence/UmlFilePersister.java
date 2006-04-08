@@ -72,7 +72,7 @@ public class UmlFilePersister extends AbstractFilePersister
      * This controls conversion of old persistence version files to be
      * converted to the current one, keeping ArgoUML backwards compatible.
      */
-    protected static final int PERSISTENCE_VERSION = 4;
+    protected static final int PERSISTENCE_VERSION = 5;
 
     /**
      * Logger.
