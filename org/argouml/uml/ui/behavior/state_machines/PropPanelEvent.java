@@ -70,12 +70,10 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceScroll());
 
-        addSeperator();
+        addSeparator();
         addField(Translator.localize("label.parameters"),
                 getParameterScroll());
         JList transitionList = new UMLLinkedList(
@@ -84,7 +82,7 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
         addField(Translator.localize("label.transition"),
                 new JScrollPane(transitionList));
 
-        addSeperator();
+        addSeparator();
 
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionNewStereotype());

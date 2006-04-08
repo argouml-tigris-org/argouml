@@ -53,14 +53,14 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelExtensionPoint extends PropPanelModelElement {
 
     /**
-     * Constructor. Builds up the various fields required.
+     * The serial version.
+     */
+    private static final long serialVersionUID = 1835785842490972735L;
+
+    /**
+     * Construct a new property panel for an ExtensionPoint.
      */
     public PropPanelExtensionPoint() {
-
-        // Invoke the ModelElement constructor, but passing in our name and
-        // representation (we use the same as dependency) and requesting 2
-        // columns
-
         super("ExtensionPoint", ConfigLoader.getTabPropsOrientation());
 
         // First column
@@ -70,8 +70,6 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
 
         // Our location (a String).  Allow the location label to
         // expand vertically so we all float to the top.
@@ -81,7 +79,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         addField(Translator.localize("label.location"),
                 locationField);
 
-        addSeperator();
+        addSeparator();
 
         JList usecaseList = new UMLLinkedList(
                 new UMLExtensionPointUseCaseListModel());
@@ -130,7 +128,12 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         extends AbstractActionNewModelElement {
 
         /**
-         * The constructor.
+         * The serial version.
+         */
+        private static final long serialVersionUID = -4149133466093969498L;
+
+        /**
+         * Construct an action to create a new extension point.
          */
         public ActionNewExtensionPoint() {
             super("button.new-extension-point");

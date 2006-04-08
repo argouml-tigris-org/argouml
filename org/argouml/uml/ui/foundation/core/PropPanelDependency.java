@@ -42,6 +42,11 @@ import org.tigris.swidgets.Orientation;
 public class PropPanelDependency extends PropPanelRelationship {
 
     /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = 3665986064546532722L;
+
+    /**
      * The scrollpane with the modelelement that is the supplier of this
      * dependency
      */
@@ -62,12 +67,10 @@ public class PropPanelDependency extends PropPanelRelationship {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.suppliers"),
                 supplierScroll);

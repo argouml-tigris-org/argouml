@@ -48,6 +48,11 @@ import org.tigris.swidgets.Orientation;
 public class PropPanelStateMachine extends PropPanelModelElement {
 
     /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -2157218581140487530L;
+
+    /**
      * Constructor for PropPanelStateMachine.
      */
     public PropPanelStateMachine() {
@@ -72,8 +77,6 @@ public class PropPanelStateMachine extends PropPanelModelElement {
     protected void initialize() {
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
@@ -93,7 +96,7 @@ public class PropPanelStateMachine extends PropPanelModelElement {
         addField(Translator.localize("label.top-state"),
                 new JScrollPane(topList));
 
-        addSeperator();
+        addSeparator();
 
         // the transitions the statemachine has
         JList transitionList = new UMLLinkedList(

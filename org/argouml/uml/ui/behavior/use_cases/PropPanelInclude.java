@@ -48,7 +48,13 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelInclude extends PropPanelModelElement {
 
     /**
-     * Constructor. Builds up the various fields required.
+     * The serial version.
+     */
+    private static final long serialVersionUID = -8235207258195445477L;
+
+
+    /**
+     * Construct a property panel for Include model elements.
      */
     public PropPanelInclude() {
         super("Include",
@@ -57,12 +63,10 @@ public class PropPanelInclude extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"),
 		 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
 		 getNamespaceScroll());
 
-        addSeperator();
+        addSeparator();
 
         JList baseBox =
 	    new UMLLinkedList(new UMLIncludeBaseListModel());
@@ -81,6 +85,7 @@ public class PropPanelInclude extends PropPanelModelElement {
     }
 
     /**
+     * @param list the list to wrap in a scrollpane.
      * @return a scrollpane with a single row
      */
     protected JScrollPane getSingleRowScroll(JList list) {

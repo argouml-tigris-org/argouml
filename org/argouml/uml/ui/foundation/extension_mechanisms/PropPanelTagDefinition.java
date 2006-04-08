@@ -59,6 +59,10 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelTagDefinition extends PropPanelModelElement {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3563940705352568635L;
     private JComponent ownerSelector;
     private JComponent tdNamespaceSelector;
     private UMLComboBox2 typeComboBox;
@@ -85,10 +89,8 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
      */
     private static UMLMultiplicityComboBoxModel multiplicityComboBoxModel;
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
     /**
-     * The constructor.
+     * Construct a property panel for TagDefinition elements.
      */
     public PropPanelTagDefinition() {
         super("TagDefinition",
@@ -105,7 +107,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
                 getMultiplicityComboBox());
         add(getNamespaceVisibilityPanel());
 
-        addSeperator();
+        addSeparator();
 
         UMLComboBoxNavigator typeComboBoxNav = new UMLComboBoxNavigator(this,
                 Translator.localize("label.class.navigate.tooltip"),
@@ -207,6 +209,11 @@ class UMLTagDefinitionNamespaceComboBoxModel
     extends UMLModelElementNamespaceComboBoxModel {
 
     /**
+     * 
+     */
+    private static final long serialVersionUID = -7055212587563120811L;
+
+    /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
@@ -243,6 +250,12 @@ class UMLTagDefinitionNamespaceComboBoxModel
 }
 
 class ActionSetTagDefinitionNamespace extends UMLAction {
+
+    /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = 366165281490799874L;
+
     /**
      * Constructor for ActionSetModelElementNamespace.
      */

@@ -38,28 +38,31 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelInterface extends PropPanelClassifier {
 
     /**
-     * The constructor.
+     * The serial version.
+     */
+    private static final long serialVersionUID = 849399652073446108L;
+
+    /**
+     * Construct a property panel for UML Interface elements.
      */
     public PropPanelInterface() {
 	super("Interface", ConfigLoader.getTabPropsOrientation());
 
 	addField(Translator.localize("label.name"), getNameTextField());
-	addField(Translator.localize("label.stereotype"),
-            getStereotypeSelector());
 	addField(Translator.localize("label.namespace"),
             getNamespaceSelector());
 
 	add(getModifiersPanel());
 	add(getNamespaceVisibilityPanel());
 
-	addSeperator();
+	addSeparator();
 
 	addField(Translator.localize("label.generalizations"),
             getGeneralizationScroll());
 	addField(Translator.localize("label.specializations"),
             getSpecializationScroll());
 
-	addSeperator();
+	addSeparator();
 
 	addField(Translator.localize("label.association-ends"),
             getAssociationEndScroll());

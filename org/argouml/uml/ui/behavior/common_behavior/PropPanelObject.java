@@ -42,7 +42,7 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelObject extends PropPanelInstance {
 
     /**
-     * Constructor.
+     * Construct a property panel for UML Object elements.
      */
     public PropPanelObject() {
 	super("Object", lookupIcon("Object"),
@@ -50,13 +50,10 @@ public class PropPanelObject extends PropPanelInstance {
 
 	addField(Translator.localize("label.name"), getNameTextField());
 
-	addField(Translator.localize("label.stereotype"),
-	    getStereotypeSelector());
-
 	addField(Translator.localize("label.namespace"),
 		     getNamespaceSelector());
 
-        addSeperator();
+        addSeparator();
 
 	addField(Translator.localize("label.stimili-sent"),
             getStimuliSenderScroll());
@@ -64,7 +61,7 @@ public class PropPanelObject extends PropPanelInstance {
 	addField(Translator.localize("label.stimili-received"),
             getStimuliReceiverScroll());
 
-	addSeperator();
+	addSeparator();
 
 	AbstractActionAddModelElement action =
 	    new ActionAddInstanceClassifier(

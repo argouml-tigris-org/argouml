@@ -138,13 +138,10 @@ public abstract class PropPanelModelElement extends PropPanel {
         this("ModelElement", null, ConfigLoader.getTabPropsOrientation());
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
-
         addField(Translator.localize("label.namespace"),
                 getNamespaceScroll());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.supplier-dependencies"),
                 getSupplierDependencyScroll());
@@ -155,7 +152,7 @@ public abstract class PropPanelModelElement extends PropPanel {
         addField(Translator.localize("label.target-flows"),
                 getTargetFlowScroll());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.constraints"),
                 getConstraintScroll());
@@ -171,7 +168,7 @@ public abstract class PropPanelModelElement extends PropPanel {
      */
     public void navigateUp() {
         TargetManager.getInstance().setTarget(
-                Model.getUmlHelper().getOwner(getTarget()));
+                Model.getFacade().getModelElementContainer(getTarget()));
     }
 
 
@@ -259,16 +256,6 @@ public abstract class PropPanelModelElement extends PropPanel {
                 this,
                 Translator.localize("label.namespace.navigate.tooltip"),
                 namespaceSelector);
-    }
-
-    /**
-     * Returns the stereotype selecter. This is a component which allows the
-     * user to select a single item as the stereotype.
-     *
-     * @return the stereotype selecter
-     */
-    protected JComponent getStereotypeSelector() {
-        return null;
     }
 
     /**

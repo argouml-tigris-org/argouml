@@ -38,6 +38,11 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelStubState extends PropPanelStateVertex {
 
     /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = 5934039619236682498L;
+
+    /**
      * Constructor for PropPanelStubState.
      */
     public PropPanelStubState() {
@@ -46,8 +51,6 @@ public class PropPanelStubState extends PropPanelStateVertex {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.container"),
                 getContainerScroll());
         JComboBox referencestateBox =
@@ -60,7 +63,7 @@ public class PropPanelStubState extends PropPanelStateVertex {
                         Translator.localize("tooltip.nav-stubstate"),
                         referencestateBox));
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.incoming"),
                 getIncomingScroll());

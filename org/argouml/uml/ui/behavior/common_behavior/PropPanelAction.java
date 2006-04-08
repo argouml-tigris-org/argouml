@@ -57,19 +57,19 @@ public abstract class PropPanelAction extends PropPanelModelElement {
     protected JScrollPane argumentsScroll;
 
     /**
-     * The constructor.
+     * Construct a default property panel for an Action.
      */
     public PropPanelAction() {
         this("Action", null);
     }
 
     /**
-     * The constructor.
-     *
+     * Construct an Action property panel with the given name and icon.
+     * 
      * @param name
-     *                the name of the properties panel
+     *            the name of the properties panel
      * @param icon
-     *                the icon to be shown next to the name
+     *            the icon to be shown next to the name
      */
     public PropPanelAction(String name, ImageIcon icon) {
         super(name, icon, ConfigLoader.getTabPropsOrientation());
@@ -112,7 +112,7 @@ public abstract class PropPanelAction extends PropPanelModelElement {
 
         add(recurrencePanel);
 
-        addSeperator();
+        addSeparator();
 
         JList argumentsList =
             new UMLMutableLinkedList(

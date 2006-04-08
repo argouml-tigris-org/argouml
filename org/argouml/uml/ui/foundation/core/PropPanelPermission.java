@@ -36,27 +36,28 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelPermission extends PropPanelDependency {
 
     /**
-     * The constructor.
-     *
+     * The serial version.
+     */
+    private static final long serialVersionUID = 5724713380091275451L;
+
+    /**
+     * Construct a property panel for UML Permission elements.
      */
     public PropPanelPermission() {
         super("Permission", ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.suppliers"),
                 getSupplierScroll());
         addField(Translator.localize("label.clients"),
                 getClientScroll());
 
-        // TODO: add Mapping
         addAction(new ActionNavigateNamespace());
         addAction(new ActionDeleteSingleModelElement());
     }

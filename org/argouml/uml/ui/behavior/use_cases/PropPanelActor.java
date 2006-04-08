@@ -35,17 +35,18 @@ import org.argouml.util.ConfigLoader;
 /**
  * Builds the property panel for a actor.<p>
  *
- * This is a type of Classifier, and like other Classifiers can have
- * attributes and operations (some processes use these to define
- * requirements). <em>Note</em>. ArgoUML has no way to display these.<p>
- *
  * @author jrobbins
  */
 
 public class PropPanelActor extends PropPanelClassifier {
 
     /**
-     * <p>Constructor. Builds up the various fields required.</p>
+     * The serial version.
+     */
+    private static final long serialVersionUID = 7368183497864490115L;
+
+    /**
+     * Construct a new property panel for an Actor.
      */
     public PropPanelActor() {
     	super("Actor", lookupIcon("Actor"),
@@ -54,22 +55,19 @@ public class PropPanelActor extends PropPanelClassifier {
 
     	addField(Translator.localize("label.name"),
                 getNameTextField());
-    	addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
-
     	addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
         add(getModifiersPanel());
 
-    	addSeperator();
+    	addSeparator();
 
     	addField(Translator.localize("label.generalizations"),
                 getGeneralizationScroll());
     	addField(Translator.localize("label.specializations"),
                 getSpecializationScroll());
 
-    	addSeperator();
+    	addSeparator();
 
     	addField(Translator.localize("label.association-ends"),
             getAssociationEndScroll());

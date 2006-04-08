@@ -46,6 +46,11 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelClassifierRole extends PropPanelClassifier {
 
     /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -5407549104529347513L;
+
+    /**
      * The combobox for the multiplicity of this type.
      */
     private UMLComboBox2 multiplicityComboBox;
@@ -56,16 +61,13 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     private static UMLMultiplicityComboBoxModel multiplicityComboBoxModel;
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for a ClassifierRole.
      */
     public PropPanelClassifierRole() {
 	super("ClassifierRole", ConfigLoader.getTabPropsOrientation());
 
 	addField(Translator.localize("label.name"),
 	    getNameTextField());
-	addField(Translator.localize("label.stereotype"),
-            getStereotypeSelector());
 	addField(Translator.localize("label.namespace"),
 	    getNamespaceScroll());
 
@@ -81,7 +83,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 		new JScrollPane(baseList));
 
 
-	addSeperator();
+	addSeparator();
 
 	addField(Translator.localize("label.generalizations"),
 		 getGeneralizationScroll());
@@ -90,7 +92,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 	addField(Translator.localize("label.associationrole-ends"),
 		 getAssociationEndScroll());
 
-	addSeperator();
+	addSeparator();
 
 	JList availableContentsList =
 	    new UMLLinkedList(

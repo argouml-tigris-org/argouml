@@ -67,13 +67,11 @@ public class PropPanelLink extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
         addField(Translator.localize("label.association"),
                 getAssociationSelector());
-        addSeperator();
+        addSeparator();
 
         JList connectionList =
             new UMLLinkedList(new UMLLinkConnectionListModel());

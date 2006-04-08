@@ -42,7 +42,6 @@ import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
-import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
@@ -53,7 +52,12 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelSignal extends PropPanelClassifier {
 
     /**
-     * The constructor.
+     * The serial version.
+     */
+    private static final long serialVersionUID = -4496838172438164508L;
+
+    /**
+     * Construct a new property panel for a Signal.
      */
     public PropPanelSignal() {
         super("Signal", lookupIcon("SignalSending"),
@@ -61,21 +65,19 @@ public class PropPanelSignal extends PropPanelClassifier {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
         add(getNamespaceVisibilityPanel());
 		add(getModifiersPanel());
 		
-        addSeperator();
+        addSeparator();
         
         addField(Translator.localize("label.generalizations"),
 				getGeneralizationScroll());
 		addField(Translator.localize("label.specializations"),
 				getSpecializationScroll());
 		
-		addSeperator();
+		addSeparator();
 		
 		AbstractActionAddModelElement actionAddContext =
             new ActionAddContextSignal();
@@ -117,7 +119,12 @@ public class PropPanelSignal extends PropPanelClassifier {
 class UMLSignalReceptionListModel extends UMLModelElementListModel2 {
 
     /**
-     * The constructor.
+     * The serial version.
+     */
+    private static final long serialVersionUID = 3273212639257377015L;
+
+    /**
+     * Construct a list model showing the receptions of a signal.
      */
     public UMLSignalReceptionListModel() {
         /*
@@ -156,7 +163,12 @@ class UMLSignalReceptionListModel extends UMLModelElementListModel2 {
 class ActionAddReceptionSignal extends AbstractActionAddModelElement {
 
     /**
-     * The constructor.
+     * The serial version.
+     */
+    private static final long serialVersionUID = -2854099588590429237L;
+
+    /**
+     * Construct an Action which adds a Reception to a Signal.
      */
     public ActionAddReceptionSignal() {
         super();
@@ -210,7 +222,12 @@ class ActionAddReceptionSignal extends AbstractActionAddModelElement {
 class ActionRemoveContextSignal extends AbstractActionRemoveElement {
 
     /**
-     * The constructor.
+     * The serial version.
+     */
+    private static final long serialVersionUID = -3345844954130000669L;
+
+    /**
+     * Construct an Action which removes a Context from a Signal.
      */
     public ActionRemoveContextSignal() {
         super(Translator.localize("menu.popup.remove"));
@@ -243,7 +260,12 @@ class ActionRemoveContextSignal extends AbstractActionRemoveElement {
 class ActionRemoveReceptionSignal extends AbstractActionRemoveElement {
 
     /**
-     * The constructor.
+     * The serial version.
+     */
+    private static final long serialVersionUID = -2630315087703962883L;
+
+    /**
+     * Construct an Action which removes a Reception from a Signal.
      */
     public ActionRemoveReceptionSignal() {
         super(Translator.localize("menu.popup.remove"));

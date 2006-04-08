@@ -44,6 +44,11 @@ import org.tigris.swidgets.Orientation;
  */
 public class PropPanelCompositeState extends AbstractPropPanelState {
 
+    /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = 4758716706184949796L;
+    
     private JList subverticesList = null;
     private Action addConcurrentRegion;
     private Action deleteConcurrentRegion;
@@ -61,7 +66,7 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
     }
 
     /**
-     * The constructor.
+     * Construct a new property panel for a CompositeState.
      *
      */
     public PropPanelCompositeState() {
@@ -71,8 +76,6 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.container"),
                 getContainerScroll());
         /*addField(Translator.localize("label.modifiers"),
@@ -84,7 +87,7 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
         addField(Translator.localize("label.do-activity"),
                 getDoScroll());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.incoming"),
                 getIncomingScroll());
@@ -93,7 +96,7 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
         addField(Translator.localize("label.internal-transitions"),
                 getInternalTransitionsScroll());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.subvertex"),
                 new JScrollPane(subverticesList));

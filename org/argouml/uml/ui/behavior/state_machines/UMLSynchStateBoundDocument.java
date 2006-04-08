@@ -38,6 +38,11 @@ import javax.swing.text.BadLocationException;
 public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
 
     /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -1391739151659430935L;
+
+    /**
      * Constructor for UMLSynchStateBoundDocument.
      */
     public UMLSynchStateBoundDocument() {
@@ -48,11 +53,12 @@ public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
-        if (text.equals(""))
+        if (text.equals("")) {
             Model.getStateMachinesHelper().setBound(getTarget(), 0);
-        else
+        } else {
             Model.getStateMachinesHelper()
                     .setBound(getTarget(), Integer.valueOf(text).intValue());
+        }
     }
 
     /**
@@ -60,10 +66,11 @@ public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
      */
     protected String getProperty() {
         int bound = Model.getFacade().getBound(getTarget());
-        if (bound <= 0)
+        if (bound <= 0) {
             return "*";
-        else
+        } else {
             return String.valueOf(bound);
+        }
     }
 
     /**
@@ -73,10 +80,11 @@ public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
     public void insertString(int offset, String str, AttributeSet a)
         throws BadLocationException {
         try {
-            //If it is not entered a digit, an exception must be thrown
-            int aux = Integer.parseInt(str);
+            // Make sure it's parseable as an number
+            Integer.parseInt(str);
             super.insertString(offset, str, a);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
+            // ignored - we just skipped inserting it in our document
         }
 
     }

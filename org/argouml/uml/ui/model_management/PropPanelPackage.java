@@ -56,6 +56,11 @@ import org.tigris.swidgets.Orientation;
  */
 public class PropPanelPackage extends PropPanelNamespace  {
 
+    /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -699491324617952412L;
+   
     private JPanel modifiersPanel;
     private JScrollPane generalizationScroll;
     private JScrollPane specializationScroll;
@@ -63,17 +68,16 @@ public class PropPanelPackage extends PropPanelNamespace  {
 
     private static UMLGeneralizableElementGeneralizationListModel
         generalizationListModel =
-        new UMLGeneralizableElementGeneralizationListModel();
+            new UMLGeneralizableElementGeneralizationListModel();
     private static UMLGeneralizableElementSpecializationListModel
         specializationListModel =
-        new UMLGeneralizableElementSpecializationListModel();
+            new UMLGeneralizableElementSpecializationListModel();
     private static UMLPackageImportedElementListModel
         importedElementListModel =
-        new UMLPackageImportedElementListModel();
+            new UMLPackageImportedElementListModel();
 
     /**
-     * The constructor.
-     *
+     * Construct a default property panel for UML Package elements.
      */
     public PropPanelPackage() {
         this("Package", lookupIcon("Package"),
@@ -81,7 +85,8 @@ public class PropPanelPackage extends PropPanelNamespace  {
     }
 
     /**
-     * Constructor for PropPanelPackage.
+     * Construct a property panel for UML Packages with the given parameters.
+     * 
      * @param title the title for this panel
      * @param orientation the orientation
      * @param icon the icon to show next to the title
@@ -99,8 +104,6 @@ public class PropPanelPackage extends PropPanelNamespace  {
     protected void placeElements() {
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
@@ -108,6 +111,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
 
         modifiersPanel = createBorderPanel(Translator.localize(
                     "label.modifiers"));
+
         modifiersPanel.add(
                             new UMLGeneralizableElementAbstractCheckBox());
         modifiersPanel.add(
@@ -115,21 +119,21 @@ public class PropPanelPackage extends PropPanelNamespace  {
         modifiersPanel.add(
                             new UMLGeneralizableElementRootCheckBox());
         add(modifiersPanel);
-
-        addSeperator();
-
+        
+        addSeparator();
+        
         addField(Translator.localize("label.generalizations"),
                 getGeneralizationScroll());
         addField(Translator.localize("label.specializations"),
                 getSpecializationScroll());
-
-        addSeperator();
-
+        
+        addSeparator();
+        
         addField(Translator.localize("label.owned-elements"),
                 getOwnedElementsScroll());
         addField(Translator.localize("label.imported-elements"),
                 getImportedElementsScroll());
-        
+
         addAction(new ActionNavigateNamespace());
         addAction(new ActionAddPackage());
         addAction(new ActionAddDataType());
@@ -197,6 +201,11 @@ public class PropPanelPackage extends PropPanelNamespace  {
 class UMLPackageImportedElementListModel
     extends UMLModelElementListModel2 {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2032401462422026643L;
+
     /**
      * Constructor for UMLPackageImportedElementListModel.
      */

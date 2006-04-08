@@ -48,16 +48,18 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelEnumerationLiteral extends PropPanelModelElement {
 
     /**
-     * The constructor.
-     *
+     * The serial version.
+     */
+    private static final long serialVersionUID = 1486642919681744144L;
+
+    /**
+     * Construct a property panel for UML EnumerationLiterals.
      */
     public PropPanelEnumerationLiteral() {
         super("EnumerationLiteral", ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
 
         JList lst = new OneRowLinkedList(new EnumerationListModel());
         addField(Translator.localize("label.enumeration"),
@@ -75,9 +77,12 @@ public class PropPanelEnumerationLiteral extends PropPanelModelElement {
  *
  * @author mvw@tigris.org
  */
-class EnumerationListModel
-    extends DefaultListModel
-    implements TargetListener {
+class EnumerationListModel extends DefaultListModel implements TargetListener {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5200714273864311332L;
 
     /**
      * Constructor for UMLCommentAnnotatedElementListModel.

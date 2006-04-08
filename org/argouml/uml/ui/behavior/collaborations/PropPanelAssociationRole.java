@@ -45,16 +45,18 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelAssociationRole extends PropPanelAssociation {
 
     /**
-     * The constructor.
-     *
+     * The serial version.
+     */
+    private static final long serialVersionUID = 7693759162647306494L;
+
+    /**
+     * Construct a property panel for an AssociationRole.
      */
     public PropPanelAssociationRole() {
         super("Association Role", ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-		 getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
 		 getNamespaceScroll());
 
@@ -67,7 +69,7 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
                 Translator.localize("label.association.navigate.tooltip"), 
                 baseComboBox));
 
-        addSeperator();
+        addSeparator();
 
         JList assocEndList = new UMLLinkedList(
                 new UMLAssociationRoleAssociationEndRoleListModel());

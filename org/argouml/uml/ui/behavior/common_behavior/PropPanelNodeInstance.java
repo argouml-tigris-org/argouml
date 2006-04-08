@@ -47,20 +47,22 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelNodeInstance extends PropPanelInstance {
 
     /**
-     * Constructor.
+     * The serial version.
+     */
+    private static final long serialVersionUID = -3391167975804021594L;
+
+    /**
+     * Construct a property panel for Node Instance elements.
      */
     public PropPanelNodeInstance() {
         super("Node Instance", lookupIcon("NodeInstance"),
                 ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"), getNameTextField());
-
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.stimili-sent"),
                 getStimuliSenderScroll());
@@ -72,7 +74,7 @@ public class PropPanelNodeInstance extends PropPanelInstance {
         addField(Translator.localize("label.residents"),
                 new JScrollPane(resList));
 
-        addSeperator();
+        addSeparator();
         AbstractActionAddModelElement a =
             new ActionAddInstanceClassifier(Model.getMetaTypes().getNode());
         JScrollPane classifierScroll =

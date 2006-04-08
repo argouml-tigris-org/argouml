@@ -60,10 +60,8 @@ public class PropPanelMethod extends PropPanelFeature {
     private UMLModelElementLanguageDocument languageDocument =
         new UMLModelElementLanguageDocument();
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
     /**
-     * The constructor.
+     * Construct a property panel for UML Method elements.
      */
     public PropPanelMethod() {
         super("Method", lookupIcon("Method"), ConfigLoader
@@ -92,7 +90,7 @@ public class PropPanelMethod extends PropPanelFeature {
         modifiersPanel.add(new UMLFeatureOwnerScopeCheckBox());
         add(modifiersPanel);
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.language"),
                 getLanguageTextField());

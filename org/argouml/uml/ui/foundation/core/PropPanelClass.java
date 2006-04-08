@@ -39,6 +39,11 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelClass extends PropPanelClassifier {
 
+    /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -8288739384387629966L;
+
     private JScrollPane attributeScroll;
 
     private JScrollPane operationScroll;
@@ -49,10 +54,8 @@ public class PropPanelClass extends PropPanelClassifier {
     private static UMLClassOperationListModel operationListModel =
         new UMLClassOperationListModel();
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
     /**
-     * The constructor.
+     * Construct a property panel for UML Class elements.
      */
     public PropPanelClass() {
         super("Class",
@@ -61,15 +64,13 @@ public class PropPanelClass extends PropPanelClassifier {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
         getModifiersPanel().add(new UMLClassActiveCheckBox());
         add(getModifiersPanel());
         add(getNamespaceVisibilityPanel());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.client-dependencies"),
                 getClientDependencyScroll());
@@ -80,7 +81,7 @@ public class PropPanelClass extends PropPanelClassifier {
         addField(Translator.localize("label.specializations"),
                 getSpecializationScroll());
 
-        addSeperator();
+        addSeparator();
 
         addField(Translator.localize("label.attributes"),
                 getAttributeScroll());

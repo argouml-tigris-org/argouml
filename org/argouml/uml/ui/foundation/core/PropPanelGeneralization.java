@@ -44,14 +44,18 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelGeneralization extends PropPanelModelElement {
 
+    /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = 2577361208291292256L;
+
     private JTextField discriminatorTextField;
 
     private static UMLDiscriminatorNameDocument discriminatorDocument =
         new UMLDiscriminatorNameDocument();
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for Generalization elements.
      */
     public PropPanelGeneralization() {
         super("Generalization",
@@ -60,17 +64,12 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeSelector());
-
         addField(Translator.localize("label.discriminator"),
                 getDiscriminatorTextField());
-
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
-        addSeperator();
+        addSeparator();
 
         UMLGeneralizationParentListModel parentListModel =
             new UMLGeneralizationParentListModel();
