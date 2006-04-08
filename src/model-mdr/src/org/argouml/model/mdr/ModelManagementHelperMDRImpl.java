@@ -59,8 +59,8 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.
-            getLogger(ModelManagementHelperMDRImpl.class);
+    private static final Logger LOG = Logger
+            .getLogger(ModelManagementHelperMDRImpl.class);
 
     /**
      * The model implementation.
