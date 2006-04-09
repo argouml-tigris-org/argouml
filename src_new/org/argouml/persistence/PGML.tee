@@ -61,7 +61,7 @@ strokecolor="<ocl>self.lineColor</ocl>"
 
   <ocl>self.layer.contentsNoEdges</ocl>
 
-  <ocl>self.layer.contentsEdgesOnly</ocl>
+  <ocl>org.argouml.persistence.PgmlUtility.getEdges(self)</ocl>
 
 </pgml>
 
