@@ -61,10 +61,6 @@ public class FigEdgeAssociationClass
     private static final Logger LOG =
         Logger.getLogger(FigEdgeAssociationClass.class);
     
-    /**
-     * The FigAssociationClass that is associated to.
-     */
-    private FigAssociationClass mainFig;
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -72,7 +68,6 @@ public class FigEdgeAssociationClass
      * The constructor.
      */
     public FigEdgeAssociationClass() {
-        LOG.info("FigEdgeAssociationClass empty constructor");
         setBetweenNearestPoints(true);
         ((FigPoly) getFig()).setRectilinear(false);
         setDashed(true);
@@ -97,11 +92,10 @@ public class FigEdgeAssociationClass
             throw new IllegalArgumentException("No association edge found while "
                     + "creating FigEdgeAssociationClass");
         }
-        mainFig = ownerFig;
         setDestFigNode((FigNode) classBoxFig);
         setDestPortFig(classBoxFig);
-        mainFig.makeEdgePort();
-        FigEdgePort edgePort = mainFig.getEdgePort();
+        ownerFig.makeEdgePort();
+        FigEdgePort edgePort = ownerFig.getEdgePort();
         setSourcePortFig(edgePort);
         setSourceFigNode((FigNode) edgePort);
         computeRoute();
@@ -131,41 +125,6 @@ public class FigEdgeAssociationClass
     protected void modelChanged(PropertyChangeEvent e) {
         // TODO: are we intentionally eating all events? - tfm 20060203
         // document!
-    }
-
-    /**
-     * @return the main fig
-     */
-    public FigAssociationClass getMainFig() {
-        return mainFig;
-    }
-
-    /**
-     * @param f the main fig
-     */
-    public void setMainFig(FigAssociationClass f) {
-        mainFig = f;
-    }
-
-//    /**
-//     * It not only damages itself but also its
-//     * associated FigAssociationClass
-//     */
-//    public void damage() {
-//        if (mainFig != null) {
-//            mainFig.figDamaged();
-//        }
-//        super.damage();
-//    }
-
-    /**
-     * It not only removes itself but also its
-     * associated FigAssociationClass
-     */
-    public void removeFromDiagram() {
-        super.removeFromDiagram();
-        if (mainFig != null)
-            mainFig.removeFromDiagram();
     }
 
     /**

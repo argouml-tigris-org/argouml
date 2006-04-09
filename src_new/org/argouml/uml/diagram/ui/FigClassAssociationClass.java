@@ -35,14 +35,10 @@ import org.tigris.gef.base.Globals;
  *
  * @author pepargouml
  */
-public class FigClassAssociationClass
-        extends FigClass {
+public class FigClassAssociationClass extends FigClass {
 
-    /**
-     * The FigAssociationClass that is associated to
-     */
-    private FigAssociationClass mainFig;
-
+    private static final long serialVersionUID = -4101337246957593739L;
+    
     /**
      * The constructor.
      */
@@ -56,55 +52,8 @@ public class FigClassAssociationClass
      *
      * @param ownerFig the owner fig
      */
-    public FigClassAssociationClass(FigAssociationClass ownerFig) {
-        super(null, ownerFig.getOwner());
-        mainFig = ownerFig;
-    }
-
-    /**
-     * @return the main fig
-     */
-    public FigAssociationClass getMainFig() {
-        return mainFig;
-    }
-
-    /**
-     * @param f the main fig
-     */
-    public void setMainFig(FigAssociationClass f) {
-        mainFig = f;
-    }
-
-//    /**
-//     * It not only damages itself but also its
-//     * associated FigAssociationClass
-//     */
-//    public void damage() {
-//        if (mainFig != null) {
-//            mainFig.figDamaged();
-//        }
-//        super.damage();
-//    }
-//
-    /**
-     * It not only removes itself but also its
-     * associated FigAssociationClass
-     */
-    public void removeFromDiagram() {
-        Editor ce = Globals.curEditor();
-        ce.getSelectionManager().deselect(this);
-        super.removeFromDiagram();
-        if (mainFig != null)
-            mainFig.removeFromDiagram();
-    }
-
-    /**
-     * It is used to remove itself without removing its
-     * associated FigAssociationClass.
-     */
-    public void removeThisFromDiagram() {
-        super.removeFromDiagram();
-        TargetManager.getInstance().removeHistoryElement(this);
+    public FigClassAssociationClass(Object owner) {
+        super(null, owner);
     }
 
 } /* end class FigClassAssociationClass */
