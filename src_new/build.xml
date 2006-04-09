@@ -674,6 +674,9 @@ Property files to be searched:
     	  maxmemory="500M">
         <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/error_console.lcf"/>
+        <assertions>
+          <enable/>
+        </assertions>
         <classpath>
 	  <pathelement location="${argo.build.classes}"/>
 	  <path refid="argo.runtime.classpath"/>
@@ -690,6 +693,9 @@ Property files to be searched:
     	  maxmemory="500M">
         <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/full_console.lcf"/>
+        <assertions>
+          <enable/>
+        </assertions>
         <classpath>
 	  <pathelement location="${argo.build.classes}"/>
 	  <path refid="argo.runtime.classpath"/>
@@ -706,6 +712,9 @@ Property files to be searched:
     	  maxmemory="500M">
         <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/info_console.lcf"/>
+        <assertions>
+          <enable/>
+        </assertions>
         <classpath>
 	  <pathelement location="${argo.build.classes}"/>
 	  <path refid="argo.runtime.classpath"/>
@@ -740,7 +749,7 @@ Property files to be searched:
            excludes="org/argouml/model/uml/**"
            srcdir="${argo.tests.src}"
     	   source="1.4"
-  	       target="1.4">
+           target="1.4">
       <classpath>
         <pathelement location="${argo.build.classes}"/>
         <pathelement location="${junit.jar.path}"/>
@@ -833,6 +842,9 @@ Property files to be searched:
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="java.awt.headless" value="true"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
+        <assertions>
+          <enable/>
+        </assertions>
         <classpath>
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
@@ -872,6 +884,9 @@ Property files to be searched:
         fork="yes" haltonfailure="false" maxmemory="128M" printsummary="true">
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
+        <assertions>
+          <enable/>
+        </assertions>
         <classpath>
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
@@ -901,6 +916,9 @@ Property files to be searched:
     <!-- Don't do anything. -->
     <java classname="org.argouml.application.Main" 
           fork="yes">
+        <assertions>
+          <enable/>
+        </assertions>
         <classpath>
 	  <pathelement location="${argo.build.classes}"/>
 	  <path refid="argo.runtime.classpath"/>
@@ -911,6 +929,9 @@ Property files to be searched:
     <!-- Exit. -->
     <java classname="org.argouml.application.Main" 
           fork="yes">
+        <assertions>
+          <enable/>
+        </assertions>
         <classpath>
 	  <pathelement location="${argo.build.classes}"/>
 	  <path refid="argo.runtime.classpath"/>
@@ -937,6 +958,9 @@ Property files to be searched:
           description="Start the TestRunner with all test cases from ../tests loaded.">
     <echo message="--- Executing ${Name} ---"/>
     <java classname="junit.swingui.TestRunner" fork="yes" taskname="argouml">
+        <assertions>
+          <enable/>
+        </assertions>
         <classpath>
 	  <pathelement location="${argo.build.dir}/argo_junit_tests.jar"/>
           <pathelement location="${argo.tests.classes}"/>
