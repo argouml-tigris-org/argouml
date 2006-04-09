@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <psf version="2.0">
 	<provider id="org.eclipse.team.cvs.core.cvsnature">
-		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/modules/classfile,argouml-module-classfile"/>
-		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/modules/cpp,argouml-module-cpp"/>
-		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml-csharp,argouml-module-csharp"/>
-		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/modules/dev,argouml-module-dev"/>
-		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/modules/idl,argouml-module-idl"/>
 		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/modules/php,argouml-module-php"/>
+		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml-idl,argouml-module-idl"/>
+		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/modules/dev,argouml-module-dev"/>
+		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml-csharp,argouml-module-csharp"/>
+		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/modules/cpp,argouml-module-cpp"/>
+		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/modules/classfile,argouml-module-classfile"/>
 	</provider>
 </psf>
