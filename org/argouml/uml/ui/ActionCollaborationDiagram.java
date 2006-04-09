@@ -48,26 +48,25 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
         super("action.collaboration-diagram");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
     public UMLDiagram createDiagram(Object namespace) {
-        if (!Model.getFacade().isANamespace(namespace)) {
-            LOG.error("No namespace as argument");
-            LOG.error(namespace);
-            throw new IllegalArgumentException(
-                "The argument " + namespace + "is not a namespace.");
-        }
+        /* Given Namespace is ignored. 
+         * TODO: do not extend ActionAddDiagram. */
         Object target = TargetManager.getInstance().getModelTarget();
         Object collaboration = null;
         if (Model.getFacade().isAOperation(target)) {
+            Object ns = Model.getFacade().getNamespace(
+                    Model.getFacade().getOwner(target));
             collaboration =
                 Model.getCollaborationsFactory()
-                        .buildCollaboration(namespace, target);
+                        .buildCollaboration(ns, target);
         } else if (Model.getFacade().isAClassifier(target)) {
+            Object ns = Model.getFacade().getNamespace(target);
             collaboration =
-                Model.getCollaborationsFactory()
-                        .buildCollaboration(namespace, target);
+                Model.getCollaborationsFactory().buildCollaboration(
+                        ns, target);
         }
         return (UMLDiagram) DiagramFactory.getInstance().createDiagram(
                 UMLCollaborationDiagram.class,
