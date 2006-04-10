@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,14 +25,20 @@
 package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLInitialValueComboBox;
+import org.argouml.uml.ui.UMLExpressionBodyField;
+import org.argouml.uml.ui.UMLExpressionLanguageField;
+import org.argouml.uml.ui.UMLExpressionModel2;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
@@ -70,8 +76,15 @@ public class PropPanelParameter extends PropPanelModelElement {
                 new UMLComboBox2(new UMLParameterTypeComboBoxModel(),
                         ActionSetParameterType.getInstance()));
 
-        addField(Translator.localize("label.parameter.default-value"),
-                 new UMLInitialValueComboBox(this));
+        UMLExpressionModel2 defaultModel = new UMLDefaultValueExpressionModel(
+                this, "defaultValue");
+        JPanel defaultPanel = createBorderPanel(Translator
+                .localize("label.parameter.default-value"));
+        defaultPanel.add(new JScrollPane(new UMLExpressionBodyField(
+                defaultModel, true)));
+        defaultPanel.add(new UMLExpressionLanguageField(defaultModel,
+                false));
+        add(defaultPanel);
 
         add(new UMLParameterDirectionKindRadioButtonPanel(
                 Translator.localize("label.parameter.kind"), true));
@@ -102,3 +115,49 @@ public class PropPanelParameter extends PropPanelModelElement {
     }
 
 } /* end class PropPanelParameter */
+
+class UMLDefaultValueExpressionModel extends UMLExpressionModel2 {
+
+    /**
+     * The constructor.
+     *
+     * @param container the container of UML user interface components
+     * @param propertyName the name of the property
+     */
+    public UMLDefaultValueExpressionModel(UMLUserInterfaceContainer container,
+            String propertyName) {
+        super(container, propertyName);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
+     */
+    public Object getExpression() {
+        Object target = TargetManager.getInstance().getTarget();
+        if (target == null) {
+            return null;
+        }
+        return Model.getFacade().getDefaultValue(target);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
+     */
+    public void setExpression(Object expression) {
+        Object target = TargetManager.getInstance().getTarget();
+
+        if (target == null) {
+            throw new IllegalStateException(
+                    "There is no target for " + getContainer());
+        }
+        Model.getCoreHelper().setDefaultValue(target, expression);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
+     */
+    public Object newExpression() {
+        return Model.getDataTypesFactory().createExpression("", "");
+    }
+
+}
