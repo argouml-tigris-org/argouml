@@ -39,7 +39,8 @@ import org.argouml.ui.LookAndFeelMgr;
  *
  */
 public class UMLExpressionBodyField extends JTextArea
-    implements DocumentListener, UMLUserInterfaceComponent, PropertyChangeListener {
+    implements DocumentListener, UMLUserInterfaceComponent, 
+    PropertyChangeListener {
 
     /**
      * Logger.
@@ -84,6 +85,7 @@ public class UMLExpressionBodyField extends JTextArea
     public void targetReasserted() {
     }
 
+    /* TODO: This does not work - no event arrives. */
     public void propertyChange(PropertyChangeEvent event) {
         LOG.debug("UMLExpressionBodyField: propertySet" + event);
         update();

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,13 +25,18 @@
 package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLInitialValueComboBox;
+import org.argouml.uml.ui.UMLExpressionBodyField;
+import org.argouml.uml.ui.UMLExpressionLanguageField;
+import org.argouml.uml.ui.UMLExpressionModel2;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
@@ -80,15 +85,15 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
                         Translator.localize("label.class.navigate.tooltip"),
                         getTypeComboBox()));
 
-        // addField(Translator.localize("label.initial-value"), new
-        // JScrollPane(new UMLLinkedList(new
-        // UMLAttributeInitialValueListModel())));
-        // TODO: The following line is my hack fix for the above line.
-        // this fixes issue 1378 but re-introduces a deprecated class
-        // IMO the initial value should not be a combo or a list
-        // but a simple text field. Bob Tarling 12 Feb 2004.
-        addField(Translator.localize("label.initial-value"),
-                new UMLInitialValueComboBox(this));
+        UMLExpressionModel2 initialModel = new UMLInitialValueExpressionModel(
+                this, "initialValue");
+        JPanel initialPanel = createBorderPanel(Translator
+                .localize("label.initial-value"));
+        initialPanel.add(new JScrollPane(new UMLExpressionBodyField(
+                initialModel, true)));
+        initialPanel.add(new UMLExpressionLanguageField(initialModel,
+                false));
+        add(initialPanel);
 
         addAction(new ActionNavigateContainerElement());
         addAction(TargetManager.getInstance().getAddAttributeAction());
@@ -100,3 +105,49 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 
 
 } /* end class PropPanelAttribute */
+
+class UMLInitialValueExpressionModel extends UMLExpressionModel2 {
+
+    /**
+     * The constructor.
+     *
+     * @param container the container of UML user interface components
+     * @param propertyName the name of the property
+     */
+    public UMLInitialValueExpressionModel(UMLUserInterfaceContainer container,
+            String propertyName) {
+        super(container, propertyName);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
+     */
+    public Object getExpression() {
+        Object target = TargetManager.getInstance().getTarget();
+        if (target == null) {
+            return null;
+        }
+        return Model.getFacade().getInitialValue(target);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
+     */
+    public void setExpression(Object expression) {
+        Object target = TargetManager.getInstance().getTarget();
+
+        if (target == null) {
+            throw new IllegalStateException(
+                    "There is no target for " + getContainer());
+        }
+        Model.getCoreHelper().setInitialValue(target, expression);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
+     */
+    public Object newExpression() {
+        return Model.getDataTypesFactory().createExpression("", "");
+    }
+
+}
