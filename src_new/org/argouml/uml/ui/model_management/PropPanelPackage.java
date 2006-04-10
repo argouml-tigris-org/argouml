@@ -31,7 +31,6 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ScrollList;
@@ -141,20 +140,6 @@ public class PropPanelPackage extends PropPanelNamespace  {
         addAction(new ActionNewStereotype());
         addAction(new ActionNewTagDefinition());
         addAction(new ActionDeleteSingleModelElement());
-    }
-
-    /**
-     * Add a package to the current package.
-     */
-    public void addPackage() {
-        Object target = getTarget();
-        if (Model.getFacade().isAPackage(target)) {
-            Object/*MPackage*/ newPackage =
-                Model.getModelManagementFactory().createPackage();
-            Object/*MPackage*/ currentPackage = target;
-            Model.getCoreHelper().addOwnedElement(currentPackage, newPackage);
-            TargetManager.getInstance().setTarget(newPackage);
-        }
     }
 
     /**
