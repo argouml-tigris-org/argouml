@@ -772,6 +772,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     } catch (InvalidObjectException e) {
                         LOG.warn("Object already deleted " + o);
                     }
+                    elementsToBeDeleted.remove(o.refMofId());
                 }
                 top = null;
                 elementsInDeletionOrder.clear();
