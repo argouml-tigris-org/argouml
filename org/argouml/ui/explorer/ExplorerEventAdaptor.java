@@ -80,7 +80,11 @@ public final class ExplorerEventAdaptor
         Configuration.addListener(Notation.KEY_USE_GUILLEMOTS, this);
         Configuration.addListener(Notation.KEY_SHOW_STEREOTYPES, this);
         ProjectManager.getManager().addPropertyChangeListener(this);
-        Model.getEventAdapter().addPropertyChangeListener(this);
+        // TODO: We really only care about events which affect things that
+        // are visible in the current perspective (view).  This could be
+        // tailored to cut down on event traffic. - tfm 20060410
+        Model.getPump().addClassModelEventListener(this,
+                Model.getMetaTypes().getModelElement(), (String[]) null);
     }
 
     /**
