@@ -310,6 +310,7 @@ public final class Model {
      * Getter for EventAdapter.
      *
      * @return the event adapter
+     * @deprecated for 0.21.2 by tfmorris - use getPump() and ModelEventPump methods
      */
     public static EventAdapter getEventAdapter() {
         return impl.getEventAdapter();

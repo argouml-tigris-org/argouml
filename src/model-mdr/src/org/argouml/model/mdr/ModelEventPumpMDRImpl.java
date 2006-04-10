@@ -107,12 +107,6 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     private Map listenedClasses = Collections.synchronizedMap(new HashMap());
     
     /**
-     * List of clients of the event adapter.
-     */
-    private List eventAdapterClients = Collections
-            .synchronizedList(new Vector());
-
-    /**
      * Map of subtypes for all types in our metamodel
      */
     private HashMap subtypeMap;
@@ -405,10 +399,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         synchronized (lock) {
             listeners.addAll(getMatches(elements, mofId, event
                     .getPropertyName()));
-
-            // Event adapter clients get EVERYTHING
-            listeners.addAll(eventAdapterClients);
-            
+ 
             // This will include all subtypes registered
             listeners.addAll(getMatches(listenedClasses, className, event
                     .getPropertyName()));
@@ -602,36 +593,25 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     /**
      * Event adapter interface implementation
      * 
-     * TODO: It appears that the only user of this interface is the
-     * ExplorerEventAdapter for the Explorer view. This can be removed if/when
-     * that is reworked.
+     * TODO: Deprecated. Remove after release of 0.22.
      */
 
+
     /**
-     * Remove a client to the event adapter. The client will be notified of
-     * change which occurs on the object tracked by the event adapter.
-     * 
      * @see org.argouml.model.EventAdapter#addPropertyChangeListener(java.beans.PropertyChangeListener)
      */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         LOG.debug("Add property listener '" + pcl + "'.");
-        synchronized (lock) {
-            if (!eventAdapterClients.contains(pcl))
-                eventAdapterClients.add(pcl);
-        }
+        addClassModelEventListener(pcl, ModelElement.class, (String[])null);
     }
 
+
     /**
-     * Remove a client from the event adapter's clients.
-     * 
      * @see org.argouml.model.EventAdapter#removePropertyChangeListener(java.beans.PropertyChangeListener)
      */
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
         LOG.debug("Remove property listener '" + pcl + "'.");
-        synchronized (lock) {
-            if (eventAdapterClients.contains(pcl))
-                eventAdapterClients.remove(pcl);
-        }
+        removeClassModelEventListener(pcl, ModelElement.class, (String[])null);
     }
 
     /**
