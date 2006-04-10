@@ -87,7 +87,9 @@ public class PropPanelCollaboration extends PropPanelNamespace {
 
         addSeparator();
 
-        // add the owned-elements field with ClassifierRoles and AssociationRoles
+        /* Add the owned-elements field 
+         * with ClassifierRoles and AssociationRoles:
+         */
         addField(Translator.localize("label.owned-elements"),
                 getOwnedElementsScroll());
         
