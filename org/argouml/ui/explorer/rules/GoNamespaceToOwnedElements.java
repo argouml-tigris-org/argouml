@@ -34,8 +34,9 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
 /**
- * Rule for Namespace->Owned Element.
- *
+ * Rule for Namespace->Owned Element, 
+ * excluding StateMachine, Comment and 
+ * Collaborations that have a Represented Classifier or Operation.
  */
 public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule {
 
@@ -61,7 +62,10 @@ public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule {
         while (it.hasNext()) {
 	    Object o = it.next();
 	    if (Model.getFacade().isACollaboration(o)) {
-		continue;
+                if ((Model.getFacade().getRepresentedClassifier(o) != null)
+                        || (Model.getFacade().getRepresentedOperation(o) != null)) {
+                    continue;
+                }
 	    }
 	    if (Model.getFacade().isAStateMachine(o)
 		 && Model.getFacade().getContext(o) != parent) {
