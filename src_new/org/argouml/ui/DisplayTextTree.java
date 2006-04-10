@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -100,10 +100,6 @@ public class DisplayTextTree extends JTree {
      * appropriate text for any object that will be displayed in
      * the todo list.
      *
-     * TODO: Since this is only used for the Todo list,
-     * it should not be located here, which is a common class
-     * for both trees, the explorer and the todo list.
-     *
      * @param value the given object
      * @param selected ignored
      * @param expanded ignored
@@ -126,7 +122,6 @@ public class DisplayTextTree extends JTree {
             return "ToDoList";
         }
 
-//		 do model elements first
         if (Model.getFacade().isAModelElement(value)) {
 
             String name = null;
@@ -203,6 +198,24 @@ public class DisplayTextTree extends JTree {
 
         if (value instanceof Diagram) {
             return ((Diagram) value).getName();
+        }
+
+        if (Model.getFacade().isAExpression(value)) {
+            String name = Model.getFacade().getUMLClassName(value);
+            String language = Model.getDataTypesHelper().getLanguage(value);
+            String body = Model.getDataTypesHelper().getBody(value);
+            if (language != null && language.length() > 0) {
+                name += " (" + language + ")";
+            }
+            if (body != null && body.length() > 0) {
+                name += ": " + body;
+            }
+            return name;
+        }
+
+        if (Model.getFacade().isAMultiplicity(value)) {
+            return "Multiplicity: " 
+                + Model.getDataTypesHelper().multiplicityToString(value);
         }
 
         if (value != null) {
