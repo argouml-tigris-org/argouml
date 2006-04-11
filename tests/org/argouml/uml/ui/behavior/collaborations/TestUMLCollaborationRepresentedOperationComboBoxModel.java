@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,24 +26,29 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetManager;
 
 /**
- * @since Oct 28, 2002
+ * @since Oct 29, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class TestUMLCollaborationRepresentedClassifierListModel
+public class TestUMLCollaborationRepresentedOperationComboBoxModel
     extends TestCase {
 
     private Object elem;
-    private UMLCollaborationRepresentedClassifierListModel model;
+    private Object oper;
+    private UMLCollaborationRepresentedOperationComboBoxModel model;
 
     /**
-     * Constructor for TestUMLCollaborationRepresentedClassifierListModel.
+     * Constructor for TestUMLCollaborationRepresentedOperationComboBoxModel.
      *
      * @param arg0 is the name of the test case.
      */
-    public TestUMLCollaborationRepresentedClassifierListModel(String arg0) {
+    public TestUMLCollaborationRepresentedOperationComboBoxModel(String arg0) {
         super(arg0);
     }
 
@@ -53,9 +58,19 @@ public class TestUMLCollaborationRepresentedClassifierListModel
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getCollaborationsFactory().createCollaboration();
-        model = new UMLCollaborationRepresentedClassifierListModel();
-        model.setTarget(elem);
+        model = new UMLCollaborationRepresentedOperationComboBoxModel();
+        TargetManager.getInstance().setTarget(elem);
         Model.getPump().flushModelEvents();
+        
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Object m = p.getRoot();
+        Object clazz = Model.getCoreFactory().buildClass(m);
+        oper = Model.getCoreFactory().createOperation();
+        Model.getCoreHelper().setOwner(oper, clazz);
+        Model.getCollaborationsHelper().setRepresentedOperation(elem, oper);
+        Model.getPump().flushModelEvents();
+        /* Simulate a target change. */
+        model.targetSet(new TargetEvent(this, null, null, new Object[] {elem}));
     }
 
     /**
@@ -68,26 +83,25 @@ public class TestUMLCollaborationRepresentedClassifierListModel
     }
 
     /**
-     * Test setRepresentedClassifier().
+     * Test setting the represented operation.
      */
     public void testSetRepresentedOperation() {
-        Object oper = Model.getCoreFactory().createClass();
-        Model.getCollaborationsHelper().setRepresentedClassifier(elem, oper);
-        Model.getPump().flushModelEvents();
-        assertEquals(1, model.getSize());
+        /* Now the model should contain 
+         * the one operation + the "" for clearing. */
+        assertEquals(2, model.getSize());
         assertEquals(oper, model.getElementAt(0));
     }
 
     /**
      * Test removing the represented operation.
      */
-    public void testRemoveRepresentedOperation() {
-	Object oper = Model.getCoreFactory().createClass();
-        Model.getCollaborationsHelper().setRepresentedClassifier(elem, oper);
-        Model.getCollaborationsHelper().setRepresentedClassifier(elem, null);
+    public void testExtraRepresentedOperation() {
+        Object oper = Model.getCoreFactory().createOperation();
+        Model.getCollaborationsHelper().setRepresentedOperation(elem, oper);
+        /* Simulate a target change. */
+        model.targetSet(new TargetEvent(this, null, null, new Object[] {elem}));
         Model.getPump().flushModelEvents();
-        assertEquals(0, model.getSize());
-        assertTrue(model.isEmpty());
+        assertEquals(3, model.getSize());
     }
 
 }
