@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,19 +25,42 @@
 package org.argouml.uml.ui;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import junit.framework.TestCase;
+
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
+ * Test creation of Collaboration diagrams. 
+ * TODO: Test creating on an operation.
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 9, 2003
  */
-public class TestActionCollaborationDiagram
-    extends AbstractTestActionAddDiagram {
+public class TestActionCollaborationDiagram extends TestCase {
+
+    /**
+     * The action to be tested.
+     */
+    private UndoableAction action;
+
+    /**
+     * The namespace a created diagram should have.
+     */
+    private Object ns;
+
+    /**
+     * A list with namespaces that should be valid for the diagram to be
+     * created.
+     */
+    private List validNamespaces;
 
     /**
      * Constructor for TestActionCollaborationDiagram.
@@ -50,7 +73,7 @@ public class TestActionCollaborationDiagram
     /**
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
-    protected ActionAddDiagram getAction() {
+    protected UndoableAction getAction() {
         return new ActionCollaborationDiagram();
     }
 
@@ -58,8 +81,8 @@ public class TestActionCollaborationDiagram
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
     protected Object getNamespace() {
-        // Return a Class to use for the enclosing namespace
-        Object c = Model.getCoreFactory().createClass();
+        Object pack = Model.getModelManagementFactory().createPackage();
+        Object c = Model.getCoreFactory().buildClass(pack);
         TargetManager.getInstance().setTarget(c);
         return c;
     }
@@ -74,6 +97,17 @@ public class TestActionCollaborationDiagram
     }
 
     /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() {
+        action = getAction();
+        ns = getNamespace();
+        validNamespaces = getValidNamespaceClasses();
+        
+        TargetManager.getInstance().setTarget(ns);
+    }
+
+    /**
      * Test if the namespace is correct for the diagram.<p>
      *
      * @param diagram The diagram to check the namespace for.
@@ -83,4 +117,84 @@ public class TestActionCollaborationDiagram
         	   "The Collaboration diagram has a non-valid namespace",
         	   Model.getFacade().isACollaboration(diagram.getNamespace()));
     }
+
+
+    public void testCreateDiagram() {
+        Model.getPump().flushModelEvents();
+        action.actionPerformed(null);
+        Object d = TargetManager.getInstance().getTarget();
+        assertTrue("No diagram generated", d instanceof UMLDiagram);
+        Model.getPump().flushModelEvents();
+        UMLDiagram diagram = (UMLDiagram) d;
+        assertNotNull(
+                      "The diagram has no namespace",
+                      diagram.getNamespace());
+        assertNotNull(
+                      "The diagram has no graphmodel",
+                      diagram.getGraphModel());
+        assertTrue("The graphmodel of the diagram is not a "
+                   + "UMLMutableGraphSupport",
+                   diagram.getGraphModel() instanceof UMLMutableGraphSupport);
+        assertNotNull("The diagram has no name", diagram.getName());
+    }
+    
+    /**
+     * Tests if two diagrams created have different names.
+     */
+    public void testDifferentNames() {
+        action.actionPerformed(null);
+        Object d = TargetManager.getInstance().getTarget();
+        assertTrue("No diagram generated", d instanceof UMLDiagram);
+        Model.getPump().flushModelEvents();
+        UMLDiagram diagram1 = (UMLDiagram) d;
+        // This next line is needed to register the diagram in the project,
+        // since creating a next diagram will need the new name to be compared
+        // with existing diagrams in the project, to validate
+        // there are no duplicates.
+        ProjectManager.getManager().getCurrentProject().addMember(diagram1);
+        
+        TargetManager.getInstance().setTarget(ns);
+        action.actionPerformed(null);
+        d = TargetManager.getInstance().getTarget();
+        assertTrue("No diagram generated", d instanceof UMLDiagram);
+        Model.getPump().flushModelEvents();
+        UMLDiagram diagram2 = (UMLDiagram) d;
+
+        Model.getPump().flushModelEvents();
+        assertTrue(
+                   "The created diagrams have the same name",
+                   !(diagram1.getName().equals(diagram2.getName())));
+    }
+    
+    /**
+     * Tests if the list with namespaces defined in getValidNamespaceClasses
+     * contains only valid namespaces.
+     * 
+     * TODO: This test does not test anything, really!
+     */
+    public void testValidNamespaces() {
+        Iterator it = validNamespaces.iterator();
+        while (it.hasNext()) {
+            Object type = it.next();
+
+            Object o = Model.getUmlFactory().buildNode(type);
+            Model.getCoreHelper().setNamespace(o, ns);
+            String objDesc = "" + o;
+            if (o != null) {
+                objDesc += " (" + o.getClass() + ")";
+            }
+            TargetManager.getInstance().setTarget(o);
+            Model.getPump().flushModelEvents();
+            action.actionPerformed(null);
+            Object d = TargetManager.getInstance().getTarget();
+            assertTrue(
+                    objDesc
+                    + " is not valid namespace for the diagram",
+                    d instanceof UMLDiagram);
+        }
+    }
+
+
+
+
 }
