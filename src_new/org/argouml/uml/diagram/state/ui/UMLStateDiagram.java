@@ -248,9 +248,9 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     public void propertyChange(PropertyChangeEvent evt) {
         super.propertyChange(evt);
-        if (evt.getSource() == theStateMachine) {
-            Object newNamespace = 
-                Model.getFacade().getNamespace(theStateMachine);
+        if (evt.getSource() == theStateMachine 
+                && "namespace".equals(evt.getPropertyName())) {
+            Object newNamespace = evt.getNewValue();
             if (getNamespace() != newNamespace) {
                 /* The namespace of the statemachine is changed! */
                 setNamespace(newNamespace);
