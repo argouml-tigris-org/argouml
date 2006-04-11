@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
@@ -86,7 +87,8 @@ public class FigAssociation extends FigEdgeModelElement {
     private FigText srcOrdering, destOrdering;
 
     private ArrowHead sourceArrowHead, destArrowHead;
-
+    
+    private final static Logger LOG = Logger.getLogger(FigAssociation.class);
 
 
     /**
