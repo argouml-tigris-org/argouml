@@ -39,7 +39,10 @@ public class PerspectiveComboBox
 
     /** Creates a new instance of PerspectiveCombobox */
     public PerspectiveComboBox() {
-
+        /* The default nr of rows is 8, 
+         * but since we have 9 perspectives by default now, 
+         * setting to 9 is nicer. */
+        this.setMaximumRowCount(9);
         PerspectiveManager.getInstance().addListener(this);
     }
 
