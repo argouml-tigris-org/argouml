@@ -1196,6 +1196,7 @@ public final class ProjectBrowser
      */
     public boolean loadProject(File file, boolean showUI) {
         LOG.info("Loading project.");
+        
         PersistenceManager pm = PersistenceManager.getInstance();
         Project oldProject = ProjectManager.getManager().getCurrentProject();
         boolean success = true;
@@ -1218,6 +1219,10 @@ public final class ProjectBrowser
             Designer.enableCritiquing();
             success = false;
         } else {
+            Model.getPump().flushModelEvents();
+            Model.getPump().stopPumpingEvents();
+            Model.getPump().flushModelEvents();
+            
             // Hide save action during load. Otherwise we get the
             // * appearing in title bar as models are updated
             Action saveAction = this.saveAction;
@@ -1295,9 +1300,6 @@ public final class ProjectBrowser
                                 new Object[] {file.getName()}),
                         showUI, ex);
             } finally {
-                // Make sure save action is always reinstated
-                this.saveAction = saveAction;
-                ProjectManager.getManager().setSaveAction(saveAction);
                 
                 if (!LastLoadInfo.getInstance().getLastLoadStatus()) {
                     project = oldProject;
@@ -1330,7 +1332,6 @@ public final class ProjectBrowser
                         // a valid current project
                         ProjectManager.getManager().setCurrentProject(project);
                         ProjectManager.getManager().removeProject(oldProject);
-                        saveAction.setEnabled(false);
                     } 
                 }
 
@@ -1342,6 +1343,15 @@ public final class ProjectBrowser
                 }
                 UndoManager.getInstance().empty();
                 Designer.enableCritiquing();
+                
+                Model.getPump().flushModelEvents();
+                Model.getPump().startPumpingEvents();
+                // Make sure save action is always reinstated
+                this.saveAction = saveAction;
+                ProjectManager.getManager().setSaveAction(saveAction);
+                if (success) {
+                    saveAction.setEnabled(false);
+                }
             }
         }
         return success;
