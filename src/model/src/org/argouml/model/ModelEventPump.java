@@ -47,7 +47,11 @@ import javax.swing.Action;
  * handle them in a harmless way, this approach should not be used.
  *
  * TODO: (Is this still true or does it refer to the NSUML
- * implementation? - tfm 20051109) <p>
+ * implementation? - tfm 20051109)
+ * (This is part of the contract that is established between the Model
+ * subsystem and its users. If that is not fulfilled by the current
+ * implementation, then the current implementation is incorrect.
+ * Linus 20060411).<p>
  *
  * TODO: What event names?
  * The event names generated are {@link String}s and their values and
