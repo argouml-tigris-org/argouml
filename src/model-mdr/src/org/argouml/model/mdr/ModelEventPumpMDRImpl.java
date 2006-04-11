@@ -112,6 +112,13 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     private HashMap subtypeMap;
 
     /**
+     * A call counter to make sure that multiple calls to start/stop
+     * pump are managed sensibly. e.g. 2 requests to stop the pump
+     * requires 2 requests to start it again.
+     */
+    private int pumpCount = 0;
+    
+    /**
      * Constructor.
      * 
      * @param implementation
@@ -565,7 +572,14 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
      * @see org.argouml.model.ModelEventPump#startPumpingEvents()
      */
     public void startPumpingEvents() {
-        LOG.debug("Start pumping events");
+        ++pumpCount;
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Attempting to start pumping events " + pumpCount);
+        }
+        if (pumpCount == 1) {
+            LOG.debug("Pump started");
+            repository.removeListener(this);
+        }
         repository.addListener(this);
     }
 
@@ -573,8 +587,14 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
      * @see org.argouml.model.ModelEventPump#stopPumpingEvents()
      */
     public void stopPumpingEvents() {
-        LOG.debug("Stop pumping events");
-        repository.removeListener(this);
+        --pumpCount;
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Attempting to stop pumping events " + pumpCount);
+        }
+        if (pumpCount == 0) {
+            LOG.debug("Pump stopped");
+            repository.removeListener(this);
+        }
     }
 
     /**
