@@ -29,6 +29,8 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelNamespace;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -57,19 +59,31 @@ public class PropPanelCollaboration extends PropPanelNamespace {
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
-        UMLLinkedList classifierList =
-	    new UMLLinkedList(
-                new UMLCollaborationRepresentedClassifierListModel());
-        classifierList.setVisibleRowCount(1);
+        // the represented classifier
+        UMLComboBox2 representedClassifierComboBox =
+            new UMLComboBox2(
+                     new UMLCollaborationRepresentedClassifierComboBoxModel(),
+                     new ActionSetRepresentedClassifierCollaboration());
         addField(Translator.localize("label.represented-classifier"),
-            new JScrollPane(classifierList));
+                new UMLComboBoxNavigator(
+                        this,
+                        Translator.localize(
+                                "label.represented-classifier."
+                                + "navigate.tooltip"),
+                        representedClassifierComboBox));
 
-        UMLLinkedList operationList =
-	    new UMLLinkedList(
-                new UMLCollaborationRepresentedOperationListModel());
-        operationList.setVisibleRowCount(1);
+        // the represented operation
+        UMLComboBox2 representedOperationComboBox =
+            new UMLComboBox2(
+                     new UMLCollaborationRepresentedOperationComboBoxModel(),
+                     new ActionSetRepresentedOperationCollaboration());
         addField(Translator.localize("label.represented-operation"),
-            new JScrollPane(operationList));
+                new UMLComboBoxNavigator(
+                        this,
+                        Translator.localize(
+                                "label.represented-operation."
+                                + "navigate.tooltip"),
+                        representedOperationComboBox));
 
         addSeparator();
 
