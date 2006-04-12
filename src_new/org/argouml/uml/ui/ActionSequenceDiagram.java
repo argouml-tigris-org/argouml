@@ -24,84 +24,30 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.event.ActionEvent;
-
-import org.argouml.kernel.ProjectManager;
-import org.argouml.model.Model;
-import org.argouml.ui.explorer.ExplorerEventAdaptor;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
- * Action to add a new sequence diagram.<p>
- *
- * Fully rebuild starting 1-8-2003<p>
- *
- * This action is subclassed from UMLChangeAction and not
- * ActionAddDiagram since the namespace stuff in ActionAddDiagram
- * should be refactored out.<p>
- *
- * @author jaap.branderhorst@xs4all.nl
+ * Action to add a new sequence diagram.
  */
-public final class ActionSequenceDiagram extends UMLAction {
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
+public final class ActionSequenceDiagram extends ActionNewDiagram {
 
     /**
      * Constructor.
      */
     public ActionSequenceDiagram() {
-        super("action.sequence-diagram", true, true);
+        super("action.sequence-diagram");
     }
 
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
+     * @see org.argouml.uml.ui.ActionNewDiagram#createDiagram()
      */
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        Object target = TargetManager.getInstance().getModelTarget();
-        Object owner = null;
-        if (Model.getFacade().isAClassifier(target)) {
-            owner = Model.getFacade().getNamespace(target);
-        } else if (Model.getFacade().isAOperation(target)) {
-            owner = Model.getFacade().getOwner(target);
-        }
-        if (owner == null) {
-            return; // The UML allows for this. We don't.
-        }
-        Object collaboration =
-            Model.getCollaborationsFactory().buildCollaboration(
-                owner,
-                target);
-        UMLDiagram diagram =
-            (UMLDiagram) DiagramFactory.getInstance().createDiagram(
+    public UMLDiagram createDiagram() {
+        return (UMLDiagram) DiagramFactory.getInstance().createDiagram(
                 UMLSequenceDiagram.class,
-                collaboration,
+                createCollaboration(),
                 null);
-
-        ProjectManager.getManager().getCurrentProject().addMember(diagram);
-        TargetManager.getInstance().setTarget(diagram);
-        ExplorerEventAdaptor.getInstance().modelElementChanged(owner);
     }
-
-    /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() {
-        Object target = TargetManager.getInstance().getModelTarget();
-        if (Model.getFacade().isAClassifier(target)
-                || Model.getFacade().isAOperation(target)) {
-            return true;
-        }
-
-        return false;
-    }
-
 
 } /* end class ActionSequenceDiagram */

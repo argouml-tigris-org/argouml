@@ -24,10 +24,6 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -48,39 +44,9 @@ public class ActionCollaborationDiagram extends ActionNewDiagram {
      * @see org.argouml.uml.ui.ActionNewDiagram#createDiagram()
      */
     public UMLDiagram createDiagram() {
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Object target = TargetManager.getInstance().getModelTarget();
-        Object collaboration = null;
-        Object namespace = p.getRoot(); // the root model
-        if (Model.getFacade().isAOperation(target)) {
-            Object ns = Model.getFacade().getNamespace(
-                    Model.getFacade().getOwner(target));
-            collaboration =
-                Model.getCollaborationsFactory().buildCollaboration(ns, target);
-        } else if (Model.getFacade().isAClassifier(target)) {
-            Object ns = Model.getFacade().getNamespace(target);
-            collaboration =
-                Model.getCollaborationsFactory().buildCollaboration(ns, target);
-        } else {
-            collaboration =
-                Model.getCollaborationsFactory().createCollaboration();
-            if (Model.getFacade().isANamespace(target)) {
-                namespace = target;
-            } else {
-                if (Model.getFacade().isAModelElement(target)) {
-                    Object ns = Model.getFacade().getNamespace(target);
-                    if (Model.getFacade().isANamespace(ns)) {
-                        namespace = ns;
-                    }
-                }
-            }
-            Model.getCoreHelper().setNamespace(collaboration, namespace);
-            Model.getCoreHelper().setName(collaboration, 
-                    "unattachedCollaboration");
-        }
         return (UMLDiagram) DiagramFactory.getInstance().createDiagram(
                 UMLCollaborationDiagram.class,
-                collaboration,
+                createCollaboration(),
                 null);
     }
 
