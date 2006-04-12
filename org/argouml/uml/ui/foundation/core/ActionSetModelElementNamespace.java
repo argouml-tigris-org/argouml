@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,32 +27,26 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
  */
-public class ActionSetModelElementNamespace extends UMLAction {
-    /**
-     * The instance.
-     */
-    private static final ActionSetModelElementNamespace SINGLETON =
-        new ActionSetModelElementNamespace();
+public class ActionSetModelElementNamespace extends UndoableAction {
 
     /**
      * Constructor for ActionSetModelElementNamespace.
      */
     protected ActionSetModelElementNamespace() {
-        super("Set", true, NO_ICON);
+        super();
     }
 
-
-
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see java.awt.event.ActionListener#actionPerformed(
+     * java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -72,18 +66,9 @@ public class ActionSetModelElementNamespace extends UMLAction {
             }
         }
         if (newNamespace != oldNamespace && m != null && newNamespace != null) {
-            Model.getCoreHelper().setNamespace(m, newNamespace);
             super.actionPerformed(e);
+            Model.getCoreHelper().setNamespace(m, newNamespace);
         }
-    }
-
-
-
-    /**
-     * @return Returns the sINGLETON.
-     */
-    public static ActionSetModelElementNamespace getInstance() {
-        return SINGLETON;
     }
 
 }
