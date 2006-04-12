@@ -359,6 +359,7 @@ public final class PerspectiveManager {
         packagePerspective.addRule(new GoClassifierToCollaboration());
         packagePerspective.addRule(new GoOperationToCollaboration());
         packagePerspective.addRule(new GoModelElementToComment());
+        packagePerspective.addRule(new GoCollaborationToDiagram());
         /*
          * Removed the next one due to issue 2165.
          * packagePerspective.addRule(new GoOperationToCollaborationDiagram());

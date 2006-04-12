@@ -32,6 +32,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -76,4 +77,43 @@ abstract class ActionNewDiagram extends UndoableAction {
      * @return the new diagram
      */
     protected abstract UMLDiagram createDiagram();
+    
+    /**
+     * Utility function to create a collaboration.
+     * 
+     * @return a new collaboration
+     */
+    protected static Object createCollaboration() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Object target = TargetManager.getInstance().getModelTarget();
+        Object collaboration = null;
+        Object namespace = p.getRoot(); // the root model
+        if (Model.getFacade().isAOperation(target)) {
+            Object ns = Model.getFacade().getNamespace(
+                    Model.getFacade().getOwner(target));
+            collaboration =
+                Model.getCollaborationsFactory().buildCollaboration(ns, target);
+        } else if (Model.getFacade().isAClassifier(target)) {
+            Object ns = Model.getFacade().getNamespace(target);
+            collaboration =
+                Model.getCollaborationsFactory().buildCollaboration(ns, target);
+        } else {
+            collaboration =
+                Model.getCollaborationsFactory().createCollaboration();
+            if (Model.getFacade().isANamespace(target)) {
+                namespace = target;
+            } else {
+                if (Model.getFacade().isAModelElement(target)) {
+                    Object ns = Model.getFacade().getNamespace(target);
+                    if (Model.getFacade().isANamespace(ns)) {
+                        namespace = ns;
+                    }
+                }
+            }
+            Model.getCoreHelper().setNamespace(collaboration, namespace);
+            Model.getCoreHelper().setName(collaboration, 
+                    "unattachedCollaboration");
+        }
+        return collaboration;
+    }
 }
