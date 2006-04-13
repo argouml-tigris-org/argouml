@@ -561,6 +561,8 @@ public final class ModuleLoader2 {
 	    LOG.debug("Unable to open " + file, e);
 	}
 
+        // TODO: use JarFile.entries() so manifest isn't mandatory
+
 	if (jarfile != null) {
 	    try {
 	        manifest = jarfile.getManifest();
