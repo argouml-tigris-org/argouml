@@ -59,25 +59,11 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigClassifierRole extends FigNodeModelElement {
 
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Constants
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
-
     /**
      * The minimum padding top and bottom.<p>
      */
     private static final int PADDING = 5;
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Instance variables
-    //
-    ///////////////////////////////////////////////////////////////////////////
-    
     private NotationProvider4 notationProvider;
 
     /**
@@ -85,16 +71,6 @@ public class FigClassifierRole extends FigNodeModelElement {
      * Identical in size to {@link FigNodeModelElement#bigPort}.<p>
      */
     private FigRect cover;
-
-    // add other Figs here as needed
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // constructors
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
 
     /**
      * Constructor for a new classifier role.<p>
@@ -153,7 +129,6 @@ public class FigClassifierRole extends FigNodeModelElement {
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
     }
-
 
     /**
      * Variant constructor that associates the classifier role with a
@@ -216,7 +191,6 @@ public class FigClassifierRole extends FigNodeModelElement {
         return figClone;
     }
 
-
     /**
      * Update the stereotype text.<p>
      *
@@ -255,14 +229,6 @@ public class FigClassifierRole extends FigNodeModelElement {
                 heightWithoutStereo + stereotypeHeight);
         calcBounds();
     }
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Fig accessors
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
 
     /**
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
@@ -353,7 +319,6 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @author 10 Apr 2002. Jeremy Bennett (mail@jeremybennett.com). Patch to
      *         allow for stereotype as well.
      */
-
     protected void setBoundsImpl(int x, int y, int w, int h) {
 
         // In the rather unlikely case that we have no name, we give up.
@@ -406,13 +371,6 @@ public class FigClassifierRole extends FigNodeModelElement {
         updateEdges();
     }
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // event handlers
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
     /**
      * Called after text has been edited directly on the screen.<p>
      *
@@ -437,9 +395,6 @@ public class FigClassifierRole extends FigNodeModelElement {
 
     /**
      * Adjust the fig in the light of some change to the model.<p>
-     *
-     * <em>Note</em>. The current implementation does not properly use
-     * Notation.generate to generate the full name for a classifier role.<p>
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
