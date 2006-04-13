@@ -70,6 +70,8 @@ public class InitNotationUml {
                 name, CallStateNotationUml.class);
         npf.addNotationProvider(NotationProviderFactory2.TYPE_CLASSIFIERROLE,
                 name, ClassifierRoleNotationUml.class);
+        npf.addNotationProvider(NotationProviderFactory2.TYPE_MESSAGE,
+                name, MessageNotationUml.class);
 
         NotationProviderFactory2.getInstance().setDefaultNotation(name);
     }

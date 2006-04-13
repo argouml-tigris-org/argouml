@@ -105,6 +105,12 @@ public final class NotationProviderFactory2 {
      * classifierrole.
      */
     public static final int TYPE_CLASSIFIERROLE = 13;
+    
+    /**
+     * TYPE_MESSAGE the text shown on a Message 
+     * in a Collaborations diagram.
+     */
+    public static final int TYPE_MESSAGE = 14;
 
     /**
      * defaultLanguage the Notation language used by default, i.e. UML

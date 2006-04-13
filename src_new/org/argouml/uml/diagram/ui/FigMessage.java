@@ -37,6 +37,8 @@ import java.util.Vector;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
+import org.argouml.notation.NotationProvider4;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.collaboration.ui.FigAssociationRole;
 import org.argouml.uml.generator.ParserDisplay;
@@ -46,19 +48,15 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
 
-/** Class to display graphics for a UML message in a diagram.
- *
+/** 
+ * Class to display graphics for a UML message in a 
+ * collaborations diagram.
  *
  * @author agauthie
  */
 public class FigMessage extends FigNodeModelElement {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
     private static Vector arrowDirections = new Vector(4);
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
 
     private FigPoly figPoly;
 
@@ -72,11 +70,13 @@ public class FigMessage extends FigNodeModelElement {
      */
     private int arrowDirection = 0;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
+    /**
+     * The notation provider for the textfield.
+     */
+    protected NotationProvider4 notationProvider;
 
     /**
-     * The main constructor
+     * The main constructor.
      */
     public FigMessage() {
         setShadowSize(0); // Issue 2714.
@@ -124,6 +124,18 @@ public class FigMessage extends FigNodeModelElement {
     }
 
     /**
+     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
+     */
+    protected void initNotationProviders(Object own) {
+        super.initNotationProviders(own);
+        if (Model.getFacade().isAMessage(own)) {
+            notationProvider =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                    NotationProviderFactory2.TYPE_MESSAGE, this, own);
+        }
+    }
+
+    /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() { return "new Message"; }
@@ -139,11 +151,6 @@ public class FigMessage extends FigNodeModelElement {
 	//figClone._polygon = (Polygon) _polygon.clone();
 	return figClone;
     }
-
-
-
-    ////////////////////////////////////////////////////////////////
-    // Fig accessors
 
     /**
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
@@ -258,7 +265,9 @@ public class FigMessage extends FigNodeModelElement {
 	return new Dimension(w, h);
     }
 
-    /** Override setBounds to keep shapes looking right
+    /** 
+     * Override setBounds to keep shapes looking right.
+     * 
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
@@ -289,22 +298,7 @@ public class FigMessage extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-	Object message = getOwner();
-	if (message != null && ft == getNameFig()) {
-	    String s = ft.getText();
-	    try {
-		ParserDisplay.SINGLETON.parseMessage(message, s);
-		ProjectBrowser.getInstance().getStatusBar().showStatus("");
-	    } catch (ParseException pe) {
-                String msg = "statusmsg.bar.error.parsing.message";
-                Object[] args = {pe.getLocalizedMessage(),
-                    new Integer(pe.getErrorOffset())};
-                ProjectBrowser.getInstance().getStatusBar().showStatus(
-                        Translator.messageFormat(msg, args));
-	    }
-	}
-	else
-	    super.textEdited(ft);
+        ft.setText(notationProvider.parse(ft.getText()));
     }
 
     /**
@@ -312,13 +306,13 @@ public class FigMessage extends FigNodeModelElement {
      */
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
-            showHelp("parsing.help.fig-message");
+            showHelp(notationProvider.getParsingHelp());
         }
     }
 
     /**
      * Determines the direction of the message arrow. Deetermination of the
-     * type of arrow happens in modelchanged
+     * type of arrow happens in modelchanged.
      */
     protected void updateArrow() {
   	Object mes = getOwner(); // MMessage
@@ -345,10 +339,10 @@ public class FigMessage extends FigNodeModelElement {
 
     /**
      * Add the FigMessage to the Path Items of its FigAssociationRole.
+     * 
      * @param lay the Layer
      */
     public void addPathItemToFigAssociationRole(Layer lay) {
-
 	Object associationRole =
 	    Model.getFacade().getCommunicationConnection(getOwner());
 	if (associationRole != null && lay != null) {
@@ -361,7 +355,6 @@ public class FigMessage extends FigNodeModelElement {
 	}
     }
 
-
     /**
      * @see org.tigris.gef.presentation.Fig#paint(Graphics)
      */
@@ -370,15 +363,13 @@ public class FigMessage extends FigNodeModelElement {
 	super.paint(g);
     }
 
-
-
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        Object mes =  getOwner();
-        if (mes == null) return;
-        getNameFig().setText(Notation.generate(this, mes));
+        if (notationProvider != null) {
+            getNameFig().setText(notationProvider.toString());
+        }
     }
 
     /**
