@@ -134,12 +134,10 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
         Object classifier = getGroup().getOwner();
         Project project = ProjectManager.getManager().getCurrentProject();
 
-        Collection propertyChangeListeners =
-            project.findFigsForMember(classifier);
         Object model = project.getModel();
         Object voidType = project.findType("void");
         Object oper = Model.getCoreFactory().buildOperation(classifier, model,
-                voidType, propertyChangeListeners);
+                voidType);
         populate();
         TargetManager.getInstance().setTarget(oper);
 

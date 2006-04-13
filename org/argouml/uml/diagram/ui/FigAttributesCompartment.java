@@ -126,18 +126,13 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
      */
     public void createFeature() {
         Object classifier = getGroup().getOwner();
-
         Project project = ProjectManager.getManager().getCurrentProject();
-
-        Collection propertyChangeListeners =
-            project.findFigsForMember(classifier);
         Object intType = project.findType("int");
         Object model = project.getModel();
         Object attr = Model.getCoreFactory().buildAttribute(
                 classifier,
                 model,
-                intType,
-                propertyChangeListeners);
+                intType);
         populate();
         TargetManager.getInstance().setTarget(attr);
     }

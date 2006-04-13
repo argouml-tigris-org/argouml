@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.model_management;
 
 import java.awt.event.ActionEvent;
-import java.util.Collection;
 
 import javax.swing.Action;
 import javax.swing.JList;
@@ -93,12 +92,11 @@ public class PropPanelSubsystem extends PropPanelPackage {
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAClassifier(target)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
-                Collection pCListeners = p.findFigsForMember(target);
                 Object model = p.getModel();
                 Object voidType = p.findType("void");
                 Object newOper =
                     Model.getCoreFactory()
-                        .buildOperation(target, model, voidType, pCListeners);
+                        .buildOperation(target, model, voidType);
                 TargetManager.getInstance().setTarget(newOper);
                 super.actionPerformed(e);
             }

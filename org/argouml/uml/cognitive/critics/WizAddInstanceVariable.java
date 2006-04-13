@@ -66,9 +66,6 @@ public class WizAddInstanceVariable extends UMLWizard {
                 newName = step1.getText();
             }
             Object me = getModelElement();
-            Collection propertyChangeListeners =
-                ProjectManager.getManager()
-                	.getCurrentProject().findFigsForMember(me);
             Object intType =
                 ProjectManager.getManager()
                 	.getCurrentProject().findType("int");
@@ -77,8 +74,7 @@ public class WizAddInstanceVariable extends UMLWizard {
                 	.getCurrentProject().getModel();
             attr =
                 Model.getCoreFactory()
-                	.buildAttribute(me, model, intType,
-                	        propertyChangeListeners);
+                	.buildAttribute(me, model, intType);
             Model.getCoreHelper().setName(attr, newName);
         }
     }

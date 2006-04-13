@@ -79,9 +79,6 @@ public class WizAddConstructor extends UMLWizard {
 	    }
 	    Object me = getModelElement();
 	    savedTargets = TargetManager.getInstance().getTargets();
-	    Collection propertyChangeListeners =
-	        ProjectManager.getManager()
-	        	.getCurrentProject().findFigsForMember(me);
 	    Object model =
 	        ProjectManager.getManager().getCurrentProject()
 	        	.getModel();
@@ -90,7 +87,7 @@ public class WizAddConstructor extends UMLWizard {
 	        	.findType("void");
 	    oper =
 	        Model.getCoreFactory().buildOperation(me, model,
-	                voidType, newName, propertyChangeListeners);
+	                voidType, newName);
 	    Model.getCoreHelper()
 	        .addStereotype(oper, getCreateStereotype(oper));
 	    TargetManager.getInstance().setTargets(savedTargets);

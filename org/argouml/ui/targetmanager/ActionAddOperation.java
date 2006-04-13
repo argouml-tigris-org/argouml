@@ -25,7 +25,6 @@
 package org.argouml.ui.targetmanager;
 
 import java.awt.event.ActionEvent;
-import java.util.Collection;
 
 import javax.swing.Action;
 
@@ -76,13 +75,11 @@ class ActionAddOperation extends UndoableAction {
             return;
         }
 
-        Collection propertyChangeListeners =
-            project.findFigsForMember(classifier);
         Object model = project.getModel();
         Object voidType = project.findType("void");
         Object oper =
             Model.getCoreFactory().buildOperation(
-                classifier, model, voidType, propertyChangeListeners);
+                classifier, model, voidType);
         TargetManager.getInstance().setTarget(oper);
 
     }
