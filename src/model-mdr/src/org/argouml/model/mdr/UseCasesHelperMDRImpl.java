@@ -405,8 +405,8 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
     public void setCondition(Object handle, Object booleanExpression) {
         if (handle instanceof Extend
                 && booleanExpression instanceof BooleanExpression) {
-            ((Extend) handle).
-                    setCondition((BooleanExpression) booleanExpression);
+            ((Extend) handle)
+                    .setCondition((BooleanExpression) booleanExpression);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
