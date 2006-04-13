@@ -34,12 +34,16 @@ with other users?</a></li>
 
 <H4>OS Specific</H4>
 <ul>
-<li><a href="#osx_link">In OS X: How can I access the context sensitive menus?</a>
-<li><a href="#osx_java">In OS X 10.2: How can I get ArgoUML to work?</a>
-<li><a href="#win_link">In Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
+<li><a href="#osx_link">OS X: How can I access the context sensitive menus?</a>
+<li><a href="#osx_java">OS X 10.2: How can I get ArgoUML to work?</a>
+<li><a href="#win_link">Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
 <li><a href="#unknownhostexception">In Linux: 
       I cannot start because of an java.net.UnknownHostException
     </a>
+<li><a href="#linux_gcj">Linux: Why does ArgoUML fail to start with an 
+exception in the GUI components?</a>
+<li><a href="#gcj">Linux: Does ArgoUML work with GCJ, GIJ, or GNU Classpath?</a>
+
 </ul>
 
 <H4>Java Web Start</H4>
@@ -304,11 +308,11 @@ See <a href="http://argouml.tigris.org/servlets/SummarizeList?listName=users">
 
 <H3>OS Specific</H3>
 <DL>
-<DT><a name="osx_link">In OS X: How can I access the context sensitive menus?</a>
+<DT><a name="osx_link">OS X: How can I access the context sensitive menus?</a>
 <DD>Press the Apple Key together with the mouse button
 
 
-<DT><a name="osx_java">In OS X 10.2: How can I get ArgoUML to work?</a>
+<DT><a name="osx_java">OS X 10.2: How can I get ArgoUML to work?</a>
 <DD>ArgoUML will not work out-of-the-box on MacOSX 10.2 for people who have the Apple Developer Tools installed, because those tools install Java 1.4.1.
 <p>
 There is a workaround, though: Apple leaves the 1.3.1 java engine installed, but in an obscure place. You can run ArgoUML from the Terminal window by typing
@@ -316,7 +320,7 @@ There is a workaround, though: Apple leaves the 1.3.1 java engine installed, but
 % /System/Library/Frameworks/JavaVM.framework/Versions/1.3.1/Commands/java -jar argouml.jar
 
 
-<DT><a name="win_link">In Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
+<DT><a name="win_link">Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
 <DD>The trick is to do things in two steps. First, open Windows Explorer and find a .zargo
 file, and then right-click on it. You should get the normal Windows menu, including an Open or Open With 
 option. At this point, give a description for the file like "ArgoUML Model", and tell Windows to use 
@@ -344,7 +348,7 @@ three different levels of the dialog).
 You can now double-click on your model and have ArgoUML instantly loaded.
 
 
-<DT><a name="unknownhostexception">In Linux: 
+<DT><a name="unknownhostexception">Linux: 
       I cannot start because of an java.net.UnknownHostException
     </a>
 <DD>
@@ -364,6 +368,25 @@ If you want to suggest a better explanation or a fix within ArgoUML for this,
 go through the java.net.InetAddress and find out 
 what really happens in this case.
 
+<DT><a name="linux_gcj">Linux: Why does ArgoUML fail to start with an 
+exception in the GUI components?</a>
+
+<DD>
+Many Linux distributions bundle GCJ 
+(The GNU Compiler for the Java&trade; Programming Language)
+which, as of April 2006, doesn't provide sufficient functionality to run 
+Java Swing applications such as ArgoUML.
+You can check on the current status of GCJ at 
+<a href="http://gcc.gnu.org/java/status.html">
+http://gcc.gnu.org/java/status.html</a>
+
+<p>
+Please install a supported Java run-time on your system.
+
+
+<DT><a name="gcj">Linux: Does ArgoUML work with GCJ, GIJ, or GNU Classpath?</a>
+<DD>
+Not as of April 2006.
 
 </DL>
 
