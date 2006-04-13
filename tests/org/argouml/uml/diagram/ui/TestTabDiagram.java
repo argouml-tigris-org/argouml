@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.Collection;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -142,12 +141,9 @@ public class TestTabDiagram extends TestCase {
 
                 // real test
                 long currentTime = (new Date()).getTime();
-                Collection propertyChangeListeners =
-                    project.findFigsForMember(clazz);
                 Object model = project.getModel();
                 Object voidType = project.findType("void");
-                Model.getCoreFactory().buildOperation(clazz, model,
-                        voidType, propertyChangeListeners);
+                Model.getCoreFactory().buildOperation(clazz, model,voidType);
                 System.out.println(
                     "Time needed for adding operation: "
                         + ((new Date()).getTime() - currentTime));

@@ -26,14 +26,15 @@ package org.argouml.uml.reveng.java;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.HashSet;
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
@@ -761,10 +762,8 @@ public class Modeller {
 		    .getCurrentProject().getModel();
 		Object voidType = ProjectManager.getManager()
 		    .getCurrentProject().findType("void");
-		Collection propertyChangeListeners = ProjectManager.getManager()
-		    .getCurrentProject().findFigsForMember(mOperation);
 		mParameter = Model.getCoreFactory().buildParameter(
-		        mOperation, mdl, voidType, propertyChangeListeners);
+		        mOperation, mdl, voidType);
                 Model.getCoreHelper().setName(mParameter, "return");
                 Model.getCoreHelper().setKind(
                         mParameter,
@@ -794,10 +793,8 @@ public class Modeller {
                     .getCurrentProject().getModel();
                 Object voidType = ProjectManager.getManager()
                     .getCurrentProject().findType("void");
-                Collection propertyChangeListeners = ProjectManager.getManager()
-                    .getCurrentProject().findFigsForMember(mOperation);
                 mParameter = Model.getCoreFactory().buildParameter(
-                        mOperation, mdl, voidType, propertyChangeListeners);
+                        mOperation, mdl, voidType);
 		Model.getCoreHelper().setName(mParameter,
 				    (String) parameter.elementAt(2));
 		Model.getCoreHelper().setKind(mParameter,
@@ -1101,15 +1098,13 @@ public class Modeller {
         } else {
             LOG.info("Creating a new operation " + name);
             Object cls = parseState.getClassifier();
-            Collection propertyChangeListeners = ProjectManager.getManager()
-                .getCurrentProject().findFigsForMember(cls);
             Object mdl = ProjectManager.getManager()
                 .getCurrentProject().getModel();
             Object voidType = ProjectManager.getManager()
                 .getCurrentProject().findType("void");
             mOperation =
         		Model.getCoreFactory().buildOperation(
-                        cls, mdl, voidType, name, propertyChangeListeners);
+                        cls, mdl, voidType, name);
 //            Iterator it2 =
 //		  ProjectManager.getManager().getCurrentProject()
 //                .findFigsForMember(parseState.getClassifier()).iterator();
@@ -1161,15 +1156,11 @@ public class Modeller {
        @return The attribute found or created.
     */
     private Object buildAttribute(Object classifier, String name) {
-
-        Collection propertyChangeListeners = ProjectManager.getManager()
-                .getCurrentProject().findFigsForMember(classifier);
-        Object intType = ProjectManager.getManager().getCurrentProject()
-                .findType("int");
-        Object myModel = ProjectManager.getManager().getCurrentProject()
-                .getModel();
+        Project project = ProjectManager.getManager().getCurrentProject(); 
+        Object intType = project.findType("int");
+        Object myModel = project.getModel();
         Object mAttribute = Model.getCoreFactory().buildAttribute(classifier,
-                myModel, intType, propertyChangeListeners);
+                myModel, intType);
         Model.getCoreHelper().setName(mAttribute, name);
         return mAttribute;
     }

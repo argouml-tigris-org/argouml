@@ -460,104 +460,74 @@ public class TestParserDisplay extends TestCase {
 
         Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
-        Collection propertyChangeListeners =
-            ProjectManager.getManager().getCurrentProject()
-                .findFigsForMember(cl);
 
         Model.getCoreHelper().setNamespace(cl, ns);
         Object voidType =
             ProjectManager.getManager().getCurrentProject().findType("void");
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkName(op, OPER01, "name");
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkName(op, OPER02, "name");
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkName(op, OPER03, "name2");
     }
 
     /**
      * Test the parsing of an operation's type.
-     *
-     * @throws ParseException if the parsing fails.
+     * 
+     * @throws ParseException
+     *             if the parsing fails.
      */
     public void testOperationType() throws ParseException {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
-
-        Object ns =
-            ProjectManager.getManager().getCurrentProject().getModel();
-        Collection propertyChangeListeners =
-            ProjectManager.getManager().getCurrentProject()
-                .findFigsForMember(cl);
+        Object ns = ProjectManager.getManager().getCurrentProject().getModel();
 
         Model.getCoreHelper().setNamespace(cl, ns);
         Object voidType =
             ProjectManager.getManager().getCurrentProject().findType("void");
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkType(op, OPER01, "void");
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkType(op, OPER02, "int");
         checkType(op, OPER01, "int");
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkType(op, OPER03, "String");
     }
 
     /**
      * Test the parsing of an operation's visibility.
-     *
-     * @throws ParseException if the parsing fails.
+     * 
+     * @throws ParseException
+     *             if the parsing fails.
      */
     public void testOperationVisibility() throws ParseException {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
-        Object ns =
-            ProjectManager.getManager().getCurrentProject().getModel();
-        Collection propertyChangeListeners =
-            ProjectManager.getManager().getCurrentProject()
-                .findFigsForMember(cl);
+        Object ns = ProjectManager.getManager().getCurrentProject().getModel();
 
         Model.getCoreHelper().setNamespace(cl, ns);
         Object voidType =
             ProjectManager.getManager().getCurrentProject().findType("void");
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkVisibility(op, OPER01, "public");
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkVisibility(op, OPER02, "private");
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkVisibility(op, OPER03, "protected");
         checkVisibility(op, OPER01, "protected");
         checkVisibility(op, OPER02, "private");
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkVisibility(op, OPER04, "protected");
     }
 
@@ -571,9 +541,6 @@ public class TestParserDisplay extends TestCase {
         Object cl = Model.getCoreFactory().buildClass();
         Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
-        Collection propertyChangeListeners =
-            ProjectManager.getManager().getCurrentProject()
-                .findFigsForMember(cl);
         Object voidType =
             ProjectManager.getManager().getCurrentProject().findType("void");
 
@@ -595,19 +562,13 @@ public class TestParserDisplay extends TestCase {
             "\"\"some\"\"",
         };
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkParameters(op, OPER01, res1);
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkParameters(op, OPER02, res2);
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkParameters(op, OPER03, res3);
         checkParameters(op, OPER01, res1);
         checkParameters(op, OPER02, res2);
@@ -621,11 +582,7 @@ public class TestParserDisplay extends TestCase {
     public void testOperationProperties() throws ParseException {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
-        Object ns =
-            ProjectManager.getManager().getCurrentProject().getModel();
-        Collection propertyChangeListeners =
-            ProjectManager.getManager().getCurrentProject()
-                .findFigsForMember(cl);
+        Object ns = ProjectManager.getManager().getCurrentProject().getModel();
         Object voidType =
             ProjectManager.getManager().getCurrentProject().findType("void");
 
@@ -642,26 +599,21 @@ public class TestParserDisplay extends TestCase {
             "sequential", null,
         };
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkProperties(op, OPER01, res1);
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkProperties(op, OPER02, res1);
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkProperties(op, OPER03, res1);
     }
 
     /**
      * Test the parsing of an operation's stereotype.
-     *
-     * @throws ParseException if the parsing fails.
+     * 
+     * @throws ParseException
+     *             if the parsing fails.
      */
     public void testOperationStereotype()
         throws ParseException {
@@ -672,31 +624,20 @@ public class TestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject().getModel();
 
         Model.getCoreHelper().setNamespace(cl, ns);
-        Collection propertyChangeListeners =
-            ProjectManager.getManager().getCurrentProject()
-                .findFigsForMember(cl);
         Object voidType =
             ProjectManager.getManager().getCurrentProject().findType("void");
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         softAddStereotype("opstereo1", op);
         softAddStereotype("opstereo2", op);
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkStereotype(op, OPER01, new String[] {});
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkStereotype(op, OPER02, new String[] {"opstereo1"});
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkStereotype(op, OPER03, new String [] {"opstereo2"});
         checkStereotype(op, OPER04, new String[] {});
         checkStereotype(op, OPER05, new String [] {"opstereo1", "opstereo2"});
@@ -712,15 +653,10 @@ public class TestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject().getModel();
 
         Model.getCoreHelper().setNamespace(cl, ns);
-        Collection propertyChangeListeners =
-            ProjectManager.getManager().getCurrentProject()
-                .findFigsForMember(cl);
         Object voidType =
             ProjectManager.getManager().getCurrentProject().findType("void");
 
-        op =
-            Model.getCoreFactory()
-                .buildOperation(cl, ns, voidType, propertyChangeListeners);
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
         checkThrows(op, NOPER01, true, false, false);
         checkThrows(op, NOPER02, true, false, false);
         checkThrows(op, NOPER03, true, false, false);

@@ -25,7 +25,6 @@
 package org.argouml.ui.targetmanager;
 
 import java.awt.event.ActionEvent;
-import java.util.Collection;
 
 import javax.swing.Action;
 
@@ -74,16 +73,13 @@ class ActionAddAttribute extends UndoableAction {
 
         Project project = ProjectManager.getManager().getCurrentProject();
 
-        Collection propertyChangeListeners =
-            project.findFigsForMember(classifier);
         Object intType = project.findType("int");
         Object model = project.getModel();
         Object attr =
             Model.getCoreFactory().buildAttribute(
                 classifier,
                 model,
-                intType,
-                propertyChangeListeners);
+                intType);
         TargetManager.getInstance().setTarget(attr);
     }
 

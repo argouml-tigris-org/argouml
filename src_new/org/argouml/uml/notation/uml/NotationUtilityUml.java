@@ -403,15 +403,11 @@ public final class NotationUtilityUml {
                 Object voidType =
                     ProjectManager.getManager()
                         .getCurrentProject().findType("void");
-                Collection propertyChangeListeners =
-                    ProjectManager.getManager()
-                        .getCurrentProject().findFigsForMember(op);
                 p =
                     Model.getCoreFactory().buildParameter(
                             op,
                             model,
-                            voidType,
-                            propertyChangeListeners);
+                            voidType);
                 // op.addParameter(p);
             }
 

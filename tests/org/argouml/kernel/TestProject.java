@@ -24,7 +24,6 @@
 
 package org.argouml.kernel;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import junit.framework.TestCase;
@@ -111,12 +110,10 @@ public class TestProject extends TestCase {
         Object cls3 = Model.getCoreFactory().buildClass(aClass);
         Object typ = Model.getCoreFactory().buildClass(p.getRoot());
         Object oper2a =
-            Model.getCoreFactory().buildOperation(
-                    cls2, p.getRoot(), cls3, new ArrayList());
+            Model.getCoreFactory().buildOperation(cls2, p.getRoot(), cls3);
         assertNotNull(oper2a);
         Object oper2b =
-            Model.getCoreFactory().buildOperation(
-                    cls2, p.getRoot(), typ, new ArrayList());
+            Model.getCoreFactory().buildOperation(cls2, p.getRoot(), typ);
         assertNotNull(oper2b);
         
         p.moveToTrash(aClass);
@@ -333,15 +330,13 @@ public class TestProject extends TestCase {
             Model.getModelManagementFactory().buildPackage("test1", null);
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
-        Collection propertyChangeListeners = p.findFigsForMember(aClass);
         Object model = p.getModel();
         Object voidType = p.findType("void");
         Object oper =
             Model.getCoreFactory().buildOperation(
                     aClass,
                     model,
-                    voidType,
-                    propertyChangeListeners);
+                    voidType);
 
         // try with Statediagram
         Object machine =

@@ -60,11 +60,10 @@ public class TestStateBodyNotationUml extends TestCase {
             Model.getModelManagementFactory().createModel();
         Project p = ProjectManager.getManager().getCurrentProject();
         aClass = Model.getCoreFactory().buildClass(model);
-        Collection propertyChangeListeners = p.findFigsForMember(aClass);
         Object mdl = p.getModel();
         Object voidType = p.findType("void");
         Model.getCoreFactory().buildOperation(aClass, mdl,
-                voidType, "myOper", propertyChangeListeners);
+                voidType, "myOper");
         aStateMachine = Model.getStateMachinesFactory()
             .buildStateMachine(aClass);
         Object top = Model.getFacade().getTop(aStateMachine);

@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
-import java.util.Collection;
 
 import javax.swing.Action;
 
@@ -68,11 +67,9 @@ public class ActionNewParameter extends AbstractActionNewModelElement {
                 ProjectManager.getManager().getCurrentProject();
             Object model = currentProject.getModel();
             Object intType = currentProject.findType("int");
-            Collection propertyChangeListeners =
-                currentProject.findFigsForMember(target);
             TargetManager.getInstance().setTarget(
                 Model.getCoreFactory().buildParameter(
-                    target, model, intType, propertyChangeListeners));
+                    target, model, intType));
         }
     }
 }

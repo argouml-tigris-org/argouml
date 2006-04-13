@@ -63,11 +63,10 @@ public class TestTransitionNotationUml extends TestCase {
         Object model =
             Model.getModelManagementFactory().createModel();
         aClass = Model.getCoreFactory().buildClass(model);
-        Collection propertyChangeListeners = p.findFigsForMember(aClass);
         Object mdl = p.getModel();
         Object voidType = p.findType("void");
         aOper = Model.getCoreFactory().buildOperation(aClass, mdl,
-                voidType, "myOper", propertyChangeListeners);
+                voidType, "myOper");
         aStateMachine = Model.getStateMachinesFactory()
             .buildStateMachine(aClass);
         Object top = Model.getFacade().getTop(aStateMachine);

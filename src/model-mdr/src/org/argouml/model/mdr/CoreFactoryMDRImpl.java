@@ -822,10 +822,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         Attribute attr = (Attribute) createAttribute();
         attr.setName("newAttr");
         attr.setMultiplicity(getMultiplicity11());
-        attr.getStereotype().clear();
-        attr.setOwner(null);
         attr.setType(clsType);
-        attr.setInitialValue(null);
         attr.setVisibility(VisibilityKindEnum.VK_PUBLIC);
         attr.setOwnerScope(ScopeKindEnum.SK_INSTANCE);
         attr.setChangeability(ChangeableKindEnum.CK_CHANGEABLE);
@@ -835,15 +832,14 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object,
-     *      java.lang.Object, java.lang.Object, java.util.Collection)
+     *      java.lang.Object, java.lang.Object)
      */
-    public Object buildAttribute(Object handle, Object model, Object intType,
-            Collection propertyChangeListeners) {
+    public Object buildAttribute(Object handle, Object model, Object type) {
         if (!(handle instanceof Classifier)
                 && !(handle instanceof AssociationEnd)) {
             throw new IllegalArgumentException();
         }
-        Attribute attr = (Attribute) buildAttribute(model, intType);
+        Attribute attr = (Attribute) buildAttribute(model, type);
         if (handle instanceof Classifier) {
             Classifier cls = (Classifier) handle;
             cls.getFeature().add(attr);
@@ -853,9 +849,16 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             AssociationEnd assend = (AssociationEnd) handle;
             assend.getQualifier().add(attr);
         }
-        // we set the listeners to the figs here too
-        // it would be better to do that in the figs themselves
-        // TODO: this is a kludge - is it even in use? - tfm - 20051106
+        return attr;
+    }
+    
+    /**
+     * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object,
+     *      java.lang.Object, java.lang.Object, java.util.Collection)
+     */
+    public Object buildAttribute(Object handle, Object model, Object type,
+            Collection propertyChangeListeners) {
+        Object attr = buildAttribute(handle, model, type);
         Iterator it = propertyChangeListeners.iterator();
         while (it.hasNext()) {
             PropertyChangeListener listener = 
@@ -871,7 +874,6 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     public Object buildClass() {
         UmlClass cl = (UmlClass) createClass();
         cl.setName("");
-        cl.getStereotype().clear();
         cl.setAbstract(false);
         cl.setActive(false);
         cl.setRoot(false);
@@ -919,10 +921,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      */
     public Object buildInterface() {
         Interface cl = (Interface) createInterface();
-        // cl.setNamespace(ProjectBrowser.getInstance().getProject()
-        // .getModel());
         cl.setName("");
-        cl.getStereotype().clear();
         cl.setAbstract(false);
         cl.setRoot(false);
         cl.setLeaf(false);
@@ -1115,14 +1114,34 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *      java.lang.Object, java.lang.Object, java.util.Collection)
      */
     public Object buildOperation(Object classifier, Object model,
-            Object voidType, Collection propertyChangeListeners) {
+            Object returnType, Collection propertyChangeListeners) {
+        Object operation = buildOperation(classifier, model, returnType);
+        // We know there's only a single parameter now and take advantage
+        // of that knowledge
+        Object returnParam = ((Operation) operation).getParameter().iterator()
+                .next();
+        Iterator it = propertyChangeListeners.iterator();
+        while (it.hasNext()) {
+            PropertyChangeListener listener = (PropertyChangeListener) it.
+                    next();
+            eventPump.addModelEventListener(listener, operation);
+            eventPump.addModelEventListener(listener, returnParam);
+        }
+        return operation;
+    }
+    
+    /**
+     * @see org.argouml.model.CoreFactory#buildOperation(java.lang.Object,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object buildOperation(Object classifier, Object model,
+            Object returnType) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException("Handle is not a classifier");
         }
         Classifier cls = (Classifier) classifier;
         Operation oper = (Operation) createOperation();
         oper.setName("newOperation");
-        oper.getStereotype().clear();
         oper.setOwner(cls);
         oper.setVisibility(VisibilityKindEnum.VK_PUBLIC);
         oper.setAbstract(false);
@@ -1130,28 +1149,24 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         oper.setRoot(false);
         oper.setQuery(false);
         oper.setOwnerScope(ScopeKindEnum.SK_INSTANCE);
-        // Jaap Branderhorst 6-4-2003 commented out next line since an
-        // operation cannot have two owners. the owner must be the
-        // owning classifier which must be set via the setOwner
-        // method, not via the namespace.
-        //
-        // oper.setNamespace(cls);
         oper.setConcurrency(CallConcurrencyKindEnum.CCK_SEQUENTIAL);
 
         Parameter returnParameter = (Parameter) buildParameter(oper, model,
-                voidType, propertyChangeListeners);
+                returnType);
         returnParameter.setKind(ParameterDirectionKindEnum.PDK_RETURN);
         returnParameter.setName("return");
-        // we set the listeners to the figs here too it would be
-        // better to do that in the figs themselves the
-        // elementlistener for the parameter is allready set in
-        // buildparameter(oper)
-        // TODO: this is a huge kludge - is it still used? - tfm - 20051106
-        Iterator it = propertyChangeListeners.iterator();
-        while (it.hasNext()) {
-            PropertyChangeListener listener = (PropertyChangeListener) it.
-                    next();
-            eventPump.addModelEventListener(listener, oper);
+        return oper;
+    }
+
+    /**
+     * @see org.argouml.model.CoreFactory#buildOperation(java.lang.Object,
+     *      java.lang.Object, java.lang.Object, java.lang.String)
+     */
+    public Object buildOperation(Object cls, Object model, Object returnType,
+            String name) {
+        Object oper = buildOperation(cls, model, returnType);
+        if (oper != null) {
+            ((Operation) oper).setName(name);
         }
         return oper;
     }
@@ -1161,9 +1176,9 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *      java.lang.Object, java.lang.Object, java.lang.String,
      *      java.util.Collection)
      */
-    public Object buildOperation(Object cls, Object model, Object voidType,
+    public Object buildOperation(Object cls, Object model, Object returnType,
             String name, Collection propertyChangeListeners) {
-        Object oper = buildOperation(cls, model, voidType,
+        Object oper = buildOperation(cls, model, returnType,
                 propertyChangeListeners);
         if (oper != null) {
             ((Operation) oper).setName(name);
@@ -1176,27 +1191,24 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * 
      * @return The newly created parameter.
      */
-    private Object buildParameter(Model model, Classifier voidType) {
+    private Object buildParameter(Model model, Classifier type) {
         Parameter param = corePackage.getParameter().
                 createParameter();
-        param.setType(voidType);
+        param.setType(type);
         param.setNamespace(model.getNamespace());
         return param;
     }
 
     /**
      * @see org.argouml.model.CoreFactory#buildParameter(java.lang.Object,
-     *      java.lang.Object, java.lang.Object, java.util.Collection)
+     *      java.lang.Object, java.lang.Object)
      */
-    public Object buildParameter(Object o, Object model, Object voidType,
-            Collection propertyChangeListeners) {
+    public Object buildParameter(Object o, Object model, Object type) {
         if (o instanceof Event) {
             Event event = (Event) o;
             Parameter res = (Parameter) buildParameter((Model) model,
-                    (Classifier) voidType);
+                    (Classifier) type);
             res.setKind(ParameterDirectionKindEnum.PDK_IN);
-            // removing this next line solves issue 2209
-            // res.setNamespace(event.getNamespace());
             event.getParameter().add(res);
             return res;
         } else if (o instanceof BehavioralFeature) {
@@ -1206,33 +1218,33 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                         "operation is null or does not have an owner");
             }
             Parameter res = (Parameter) buildParameter((Model) model,
-                    (Classifier) voidType);
-            String name = "arg";
-            int counter = 1;
+                    (Classifier) type);
 
             oper.getParameter().add(res);
-            Iterator it = oper.getParameter().iterator();
-            while (it.hasNext()) {
-                Parameter para = (Parameter) it.next();
-                if ((name + counter).equals(para.getName())) {
-                    counter++;
-                }
-            }
+            res.setName("arg" + oper.getParameter().size());
 
-            res.setName(name + counter);
-
-            // we set the listeners to the figs here too
-            // it would be better to do that in the figs themselves
-            it = propertyChangeListeners.iterator();
-            while (it.hasNext()) {
-                PropertyChangeListener listener = (PropertyChangeListener) it.
-                        next();
-                eventPump.addModelEventListener(listener, res);
-            }
             return res;
         } else {
             throw new IllegalArgumentException("Unsupported object type");
         }
+    }
+
+    
+    /**
+     * @see org.argouml.model.CoreFactory#buildParameter(java.lang.Object,
+     *      java.lang.Object, java.lang.Object, java.util.Collection)
+     */
+    public Object buildParameter(Object o, Object model, Object type,
+            Collection propertyChangeListeners) {
+        Object param = buildParameter(o, model, type);
+        Iterator it = propertyChangeListeners.iterator();
+        while (it.hasNext()) {
+            PropertyChangeListener listener = (PropertyChangeListener) it.
+            next();
+            eventPump.addModelEventListener(listener, param);
+        }
+        return param;
+
     }
 
     /**

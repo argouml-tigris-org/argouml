@@ -336,10 +336,10 @@ public interface CoreFactory extends Factory {
      * Builds a default attribute.
      *
      * @param model The model the attribute belongs to.
-     * @param theIntType The type of the attribute.
+     * @param type The type of the attribute.
      * @return The newly built attribute.
      */
-    Object buildAttribute(Object model, Object theIntType);
+    Object buildAttribute(Object model, Object type);
 
     /**
      * Builds an attribute owned by some classifier cls. I don't know
@@ -348,11 +348,24 @@ public interface CoreFactory extends Factory {
      *
      * @param handle the given classifier
      * @param model the enclosing model
-     * @param intType the type
-     * @param propertyChangeListeners the listeners
+     * @param type the type
      * @return the newly build attribute
      */
-    Object buildAttribute(Object handle, Object model, Object intType,
+    Object buildAttribute(Object handle, Object model, Object type);
+    
+    /**
+     * Builds an attribute owned by some classifier cls. I don't know
+     * if this is legal for an interface (purely UML speaking). In
+     * this method it is.<p>
+     *
+     * @param handle the given classifier
+     * @param model the enclosing model
+     * @param type the type
+     * @param propertyChangeListeners the listeners
+     * @return the newly build attribute
+     * @deprecated for 0.21.2 by tfmorris - use non-listener version
+     */
+    Object buildAttribute(Object handle, Object model, Object type,
             Collection propertyChangeListeners);
 
     /**
@@ -505,25 +518,50 @@ public interface CoreFactory extends Factory {
      *
      * @param classifier is the given classifier
      * @param model is the model to which the class belongs
-     * @param voidType the type of the return parameter
+     * @param returnType the type of the return parameter
      * @param propertyChangeListeners the listeners
      * @return the operation
+     * @deprecated for 0.21.2 by tfmorris - use non-listener version
      */
-    Object buildOperation(Object classifier, Object model, Object voidType,
+    Object buildOperation(Object classifier, Object model, Object returnType,
             Collection propertyChangeListeners);
+
+
+    /**
+     * Builds an operation for a classifier.
+     *
+     * @param classifier is the given classifier
+     * @param model is the model to which the class belongs
+     * @param returnType the type of the return parameter
+     * @return the operation
+     */
+    Object buildOperation(Object classifier, Object model, Object returnType);
 
     /**
      * Builds an operation with a given name for classifier.
      *
      * @param cls is the classifier that shall own the operation
      * @param model is the model that contains the class
-     * @param voidType the type of the return parameter
+     * @param returnType the type of the return parameter
      * @param name the given name for the operation
      * @param propertyChangeListeners the listeners
      * @return the operation
+     * @deprecated for 0.21.2 by tfmorris - use non-listener version
      */
-    Object buildOperation(Object cls, Object model, Object voidType,
+    Object buildOperation(Object cls, Object model, Object returnType,
             String name, Collection propertyChangeListeners);
+
+    /**
+     * Builds an operation with a given name for classifier.
+     *
+     * @param cls is the classifier that shall own the operation
+     * @param model is the model that contains the class
+     * @param returnType the type of the return parameter
+     * @param name the given name for the operation
+     * @return the operation
+     */
+    Object buildOperation(Object cls, Object model, Object returnType,
+            String name);
 
     /**
      * Adds a parameter initialized to default values to a given event
@@ -531,12 +569,24 @@ public interface CoreFactory extends Factory {
      *
      * @param o an event or behavioral feature
      * @param model the model to which the event or behavioral feature belongs
-     * @param voidType the type of the return parameter
+     * @param type the type of the  parameter
      * @param propertyChangeListeners the listeners
      * @return the parameter
+     * @deprecated for 0.21.2 by tfmorris - use non-listener version
      */
-    Object buildParameter(Object o, Object model, Object voidType,
+    Object buildParameter(Object o, Object model, Object type,
             Collection propertyChangeListeners);
+
+    /**
+     * Adds a parameter initialized to default values to a given event
+     * or behavioral feature.
+     *
+     * @param o an event or behavioral feature
+     * @param model the model to which the event or behavioral feature belongs
+     * @param type the type of the parameter
+     * @return the parameter
+     */
+    Object buildParameter(Object o, Object model, Object type);
 
     /**
      * Builds a realization between some supplier (for example an

@@ -25,7 +25,6 @@
 package org.argouml.persistence;
 
 import java.io.File;
-import java.util.Collection;
 
 import junit.framework.TestCase;
 
@@ -59,9 +58,6 @@ public class TestXmiFilePersister extends TestCase {
         try {
             Project p = ProjectManager.getManager().makeEmptyProject();
             Object clazz = Model.getCoreFactory().buildClass(p.getModel());
-            Collection propertyChangeListeners =
-                ProjectManager.getManager()
-                	.getCurrentProject().findFigsForMember(clazz);
             Object model =
                 ProjectManager.getManager()
                 	.getCurrentProject().getModel();
@@ -69,8 +65,7 @@ public class TestXmiFilePersister extends TestCase {
                 ProjectManager.getManager()
                 	.getCurrentProject().findType("void");
             Object oper =
-                Model.getCoreFactory().buildOperation(clazz, model,
-                        voidType, propertyChangeListeners);
+                Model.getCoreFactory().buildOperation(clazz, model,voidType);
             Model.getCoreHelper().setType(
                     Model.getFacade().getParameter(oper, 0),
                     p.findType("String"));
