@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,17 +55,17 @@ public class FigMessage extends FigNodeModelElement {
 
     ////////////////////////////////////////////////////////////////
     // constants
-    private static Vector arrowDirections = new Vector();
+    private static Vector arrowDirections = new Vector(4);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
     private FigPoly figPoly;
 
-    private static final int SOUTH = 1;
-    private static final int EAST = 2;
-    private static final int WEST = 3;
-    private static final int NORTH = 4;
+    private static final int SOUTH = 0;
+    private static final int EAST = 1;
+    private static final int WEST = 2;
+    private static final int NORTH = 3;
 
     /**
      * The current arrow direction set to constants above.
@@ -94,10 +94,11 @@ public class FigMessage extends FigNodeModelElement {
 	figPoly.setPolygon(polygon);
 	figPoly.setBounds(100, 10, 5, 18);
 
-	arrowDirections.addElement("North");
-	arrowDirections.addElement("South");
-	arrowDirections.addElement("East");
-	arrowDirections.addElement("West");
+        arrowDirections.setSize(4);
+        arrowDirections.setElementAt("North", NORTH);
+        arrowDirections.setElementAt("South", SOUTH);
+        arrowDirections.setElementAt("East", EAST);
+        arrowDirections.setElementAt("West", WEST);
 
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
