@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.ImageIcon;
@@ -33,6 +32,7 @@ import org.tigris.swidgets.Orientation;
 /**
  * Added this class to give as much information to the user as possible
  * if the lookup mechanisme for proppanels fails.
+ *
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -41,9 +41,9 @@ public class PropPanelRelationship extends PropPanelModelElement {
     /**
      * The constructor.
      *
-     * @param name
-     * @param icon
-     * @param orientation
+     * @param name The name of the panel to be shown at the top.
+     * @param orientation The orientation of the panel.
+     * @param icon The icon to be shown next to the name.
      */
     public PropPanelRelationship(String name, ImageIcon icon,
             Orientation orientation) {
@@ -67,4 +67,8 @@ public class PropPanelRelationship extends PropPanelModelElement {
         super(name, orientation);
     }
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1610200799419501588L;
 }
