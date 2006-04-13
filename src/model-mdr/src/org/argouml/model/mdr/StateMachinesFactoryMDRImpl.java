@@ -390,7 +390,6 @@ public class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     public Object buildSubmachineState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
             SubmachineState state = (SubmachineState) createSubmachineState();
-            state.setStateMachine(null);
             state.setContainer((CompositeState) compositeState);
             return state;
         }
