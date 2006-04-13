@@ -65,8 +65,7 @@ public class UMLConditionExpressionModel extends UMLExpressionModel2 {
         if (target == null) {
             throw new IllegalStateException("There is no target for " + getContainer());
         }
-        Model.getUseCasesHelper()
-        	.setCondition(target, expression);
+        Model.getUseCasesHelper().setCondition(target, expression);
     }
 
     /**
