@@ -37,6 +37,7 @@ import javax.jmi.reflect.InvalidObjectException;
 
 import org.argouml.model.CollaborationsHelper;
 import org.argouml.model.CoreHelper;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.ModelManagementHelper;
 import org.omg.uml.behavioralelements.collaborations.AssociationEndRole;
@@ -456,7 +457,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 return returnList;
             }
         } catch (InvalidObjectException e) {
-            return Collections.EMPTY_LIST;
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("Cannot get available contents on "
                 + arole);
@@ -475,7 +476,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 throw new IllegalArgumentException("Illegal type " + role);
             }
         } catch (InvalidObjectException e) {
-            return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
+            throw new InvalidElementException(e);
         }
     }
 

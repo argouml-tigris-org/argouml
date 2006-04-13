@@ -32,6 +32,7 @@ import java.util.Vector;
 
 import javax.jmi.reflect.InvalidObjectException;
 
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesHelper;
 import org.omg.uml.behavioralelements.commonbehavior.Action;
@@ -85,7 +86,7 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 return ((Transition) trans).getSource();
             }
         } catch (InvalidObjectException e) {
-            return null;
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("bad argument to "
                 + "getSource() - " + trans);

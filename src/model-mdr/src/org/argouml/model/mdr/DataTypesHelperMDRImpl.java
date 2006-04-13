@@ -29,6 +29,7 @@ import java.util.Iterator;
 import javax.jmi.reflect.InvalidObjectException;
 
 import org.argouml.model.DataTypesHelper;
+import org.argouml.model.InvalidElementException;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.TaggedValue;
 import org.omg.uml.foundation.datatypes.Expression;
@@ -115,7 +116,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
             }
             return PseudostateKindEnum.PK_INITIAL.equals(kind);
         } catch (InvalidObjectException e) {
-            return false;
+            throw new InvalidElementException(e);
         }
     }
 
