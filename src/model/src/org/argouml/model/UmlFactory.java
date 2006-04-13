@@ -121,13 +121,4 @@ public interface UmlFactory {
      */
     boolean isRemoved(Object o);
 
-    /**
-     * Adds all interested (and centralized) listeners to the given
-     * modelelement handle.
-     *
-     * @deprecated by Linus Tolke as of 0.19.3. This is not used and poor
-     *       design so strive to remove it.
-     * @param handle the modelelement the listeners are interested in
-     */
-    void addListenersToModelElement(Object handle);
 }
