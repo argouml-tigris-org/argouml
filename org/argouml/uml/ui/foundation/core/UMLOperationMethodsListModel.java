@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,8 +66,13 @@ public class UMLOperationMethodsListModel
         Collection methods = null;
         Object target = getTarget();
         if (Model.getFacade().isAOperation(target)) {
-			methods = Model.getFacade().getMethods(target);
+            methods = Model.getFacade().getMethods(target);
         }
         return methods.contains(element);
     }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -6905298765859760688L;
 }
