@@ -74,9 +74,12 @@ public class CriticOclEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
             }
         }
         if (GET_OWNER_EXPR.equals(expr) && Model.getFacade().isAFeature(self)) {
-            res = Model.getFacade().getName(self);
-            if (res == null || "".equals(res)) {
-                res = "(anon)";
+            Object owner = Model.getFacade().getOwner(self);
+            if (owner != null) {
+                res = Model.getFacade().getName(owner);
+                if (res == null || "".equals(res)) {
+                    res = "(anon)";
+                }
             }
         }
         if (GET_NAME_EXPR_1.equals(expr) && self instanceof Diagram) {
