@@ -167,10 +167,6 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * threads, this could occur when trying to update a diagram while handling
  * another MDR event.  All methods really need to be protected by try/catch blocks,
  * not just the ones which have been demonstrated to cause problems. - tfm
- * IMO it should be part of the contract that the passed object is valid. If not
- * we should throw an IllegalArgumentException. Returning null simply changes
- * the danger to us getting a NullPointerException. I've introduced error
- * logging for now until we can track down the areas of misuse - Bob
  */
 class FacadeMDRImpl implements Facade {
 
