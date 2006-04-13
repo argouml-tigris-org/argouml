@@ -26,16 +26,18 @@ package org.argouml.model.mdr;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.jmi.reflect.InvalidObjectException;
-import javax.jmi.reflect.RefBaseObject;
 import javax.jmi.reflect.RefObject;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.IllegalModelElementConnectionException;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.UmlFactory;
 import org.omg.uml.behavioralelements.activitygraphs.ActionState;
@@ -171,7 +173,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     /**
      * The instance that we are deleting.
      */
-    private Map elementsToBeDeleted = new HashMap();
+    private Set elementsToBeDeleted = new HashSet();
     
     /**
      * Ordered list of elements to be deleted
@@ -426,7 +428,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == metaTypes.getModel()) {
             return getModelManagement().createModel();
         } else if (elementType == metaTypes.getInstance()) {
-            throw new RuntimeException("Attempt to instantiate abstract type");
+            throw new IllegalArgumentException("Attempt to instantiate abstract type");
         } else if (elementType == metaTypes.getSubsystem()) {
             return getModelManagement().createSubsystem();
         } else if (elementType == metaTypes.getCallState()) {
@@ -452,7 +454,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == metaTypes.getSynchState()) {
             return getStateMachines().createSynchState();
         } else if (elementType == metaTypes.getState()) {
-            throw new RuntimeException("Attempt to instantiate abstract type");
+            throw new IllegalArgumentException("Attempt to instantiate abstract type");
         } else if (elementType == nsmodel.getMetaTypes().getSimpleState()) {
             return getStateMachines().createSimpleState();
         } else if (elementType == metaTypes.getClassifierRole()) {
@@ -470,7 +472,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == metaTypes.getComment()) {
             return getCore().createComment();
         } else if (elementType == metaTypes.getNamespace()) {
-            throw new RuntimeException("Attempt to instantiate abstract type");
+            throw new IllegalArgumentException("Attempt to instantiate abstract type");
         } else if (elementType == metaTypes.getOperation()) {
             return getCore().createOperation();
         } else if (elementType == metaTypes.getEnumeration()) {
@@ -643,16 +645,15 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     + "in delete");
         }
 
-        Object key = ((RefBaseObject) elem).refMofId();
         // TODO: Hold lock for entire recursive traversal?
         synchronized (lock) {
-            if (elementsToBeDeleted.containsKey(key)) {
+            if (elementsToBeDeleted.contains(elem)) {
                 return;
             }
             if (top == null) {
                 top = elem;
             }
-            elementsToBeDeleted.put(key, elem);
+            elementsToBeDeleted.add(elem);
         }
 
         if (LOG.isInfoEnabled()) {
@@ -661,7 +662,13 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             LOG.debug("Deleting " + elem);
         }
 
+        // Begin a write transaction - we'll do a bunch of reads first
+        // to collect a set of elements to delete - then delete them all
+        nsmodel.getRepository().beginTrans(true);
         try {
+            // TODO: Encountering a deleted object during any part of this traversal while
+            // abort the rest of the traversal.  We probably should do the whole traversal
+            // in a single MDR transaction.
             if (elem instanceof Element) {
                 getCore().deleteElement(elem);
                 if (elem instanceof ModelElement) {
@@ -757,11 +764,33 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 deleteNamespace((Namespace) elem);
             }
         } catch (InvalidObjectException e) {
-            LOG.error("Attempted deletion of deleted object " + elem);
+            // If we get this with the repository locked, it means our root
+            // model element was already deleted.  Nothing to do...
+            LOG.error("Encountered deleted object during delete of " + elem);
+        } catch (InvalidElementException e) {
+            // Our wrapped version of the same error
+            LOG.error("Encountered deleted object during delete of " + elem);
+        } finally {
+            // Commit our transacation
+            nsmodel.getRepository().endTrans();
         }
 
+
+        
         synchronized (lock) {
-            elementsInDeletionOrder.add(elem);
+            // Elements which will be deleted when their container is deleted
+            // don't get added to the list of elements to be deleted
+            // (but we still want to traverse them looking for other elements
+            //  to be deleted)
+            try {
+                Object container = ((RefObject) elem).refImmediateComposite();
+                if (container == null
+                        || !elementsToBeDeleted.contains(container)) {
+                    elementsInDeletionOrder.add(elem);
+                }
+            } catch (InvalidObjectException e) {
+                LOG.warn("Object already deleted " + elem);
+            }
 
             if (elem == top) {
                 Iterator itDelete = elementsInDeletionOrder.iterator();
@@ -772,11 +801,16 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     } catch (InvalidObjectException e) {
                         LOG.warn("Object already deleted " + o);
                     }
-                    elementsToBeDeleted.remove(o.refMofId());
+                    elementsToBeDeleted.remove(o);
                 }
                 top = null;
                 elementsInDeletionOrder.clear();
-                assert elementsToBeDeleted.isEmpty();
+                if (!elementsToBeDeleted.isEmpty()) {
+                    LOG.debug("**Skipped deleting (a 2nd time?) " +
+                                +  elementsToBeDeleted.size()
+                                + " elements");
+                    elementsToBeDeleted.clear();
+                }
             }
         }
     }
@@ -797,16 +831,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             return true;
         }
     }
-
-    /**
-     * Deprecated in model interface and unimplemented in our event
-     * listener, so do nothing.
-     * @see org.argouml.model.UmlFactory#addListenersToModelElement(java.lang.Object)
-     */
-    public void addListenersToModelElement(Object handle) {
-        LOG.info("Ignoring deprecated call to addListenersToModelElement");
-    }
-    
+  
     /**
      * Delete a Feature.
      *
