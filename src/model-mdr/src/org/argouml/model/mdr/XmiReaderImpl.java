@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,41 +68,44 @@ import org.xml.sax.XMLReader;
 /**
  * A wrapper around the genuine XmiReader that provides public access with no
  * knowledge of actual UML implementation.
- * 
+ *
  * @author Bob Tarling
  */
 public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
 
-    private Logger LOG = Logger.getLogger(XmiReaderImpl.class);
-    
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger.getLogger(XmiReaderImpl.class);
+
     private MDRModelImplementation parent;
 
     private XmiReferenceResolverImpl resolver;
 
     private RefPackage modelPackage;
- 
+
     /**
-     * Flag indicating unknown element was found in XMI file
+     * Flag indicating unknown element was found in XMI file.
      */
     private boolean unknownElement;
-    
+
     /**
-     * Name of first unknown element found (if not a UML 1.3 name)
+     * Name of first unknown element found (if not a UML 1.3 name).
      */
     private String unknownElementName;
-    
+
     /**
-     * Flag indicating that we think unknown element was due to a UML 1.3 file
+     * Flag indicating that we think unknown element was due to a UML 1.3 file.
      */
     private boolean uml13;
-    
+
     /**
      * Elements to ignore errors on if they aren't found in the metamodel.
      */
     private String[] ignoredElements = new String[] {};
-    
+
     /**
-     * Flag indicating that we stripped at least one diagram during the import
+     * Flag indicating that we stripped at least one diagram during the import.
      */
     private int ignoredElementCount;
 
@@ -111,18 +114,18 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
     /**
      * Constructor for XMIReader.
      * @param parentModelImplementation The ModelImplementation
-     * @param modelPackage extent to read user models into
+     * @param mp extent to read user models into
      */
     public XmiReaderImpl(MDRModelImplementation parentModelImplementation,
-            RefPackage modelPackage) {
+            RefPackage mp) {
 
-        this.parent = parentModelImplementation;
-        this.modelPackage = modelPackage;
+        parent = parentModelImplementation;
+        modelPackage = mp;
     }
 
     /**
      * Parses a given inputsource as an XMI file conforming to our metamodel.
-     * 
+     *
      * @param pIs
      *            The input source for parsing.
      * @return a collection of top level ModelElements
@@ -135,7 +138,7 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
 
     /**
      * Parses a given inputsource as an XMI file conforming to our metamodel.
-     * 
+     *
      * @param pIs
      *            The input source for parsing.
      * @param profile
@@ -146,7 +149,7 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
      *             if there is a problem
      */
     public Collection parse(InputSource pIs, boolean profile)
-            throws UmlException {
+        throws UmlException {
 
         Collection newElements = null;
         RefPackage extent = modelPackage;
@@ -157,16 +160,17 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             InputConfig config = new InputConfig();
             config.setUnknownElementsListener(this);
             config.setUnknownElementsIgnored(true);
-            
+
             resolver = new XmiReferenceResolverImpl(new RefPackage[] {extent},
                     config, parent.getObjectToId());
 
             config.setReferenceResolver(resolver);
 
-            XMIReader xmiReader = XMIReaderFactory.getDefault()
+            XMIReader xmiReader =
+                XMIReaderFactory.getDefault()
                     .createXMIReader(config);
 
-            // Copy stream to a file to be sure it can be repositioned. 
+            // Copy stream to a file to be sure it can be repositioned.
             // TODO: find a way to remove this, since this *always* alterate the
             // performances for reading an XMI file, even if it's not UML 1.4.
             File tmpFile = copySource(pIs);
@@ -187,16 +191,16 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             // Disable event delivery during model load
             parent.getModelEventPump().stopPumpingEvents();
 
-            
+
             Collection startTopElements = getTopLevelElements();
             int numElements = startTopElements.size();
-            LOG.debug("Number of top level elements before import: " 
+            LOG.debug("Number of top level elements before import: "
                     + numElements);
 
             try {
-                newElements = 
+                newElements =
                     xmiReader.read(tmpFile.toURI().toString(), extent);
-                
+
                 // If a UML 1.3 file, attempt to upgrade it to UML 1.4
                 if (uml13) {
                     // First delete model data from our first attempt
@@ -205,28 +209,30 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                     for (Iterator it = toDelete.iterator(); it.hasNext();) {
                         ((RefObject) it.next()).refDelete();
                     }
-                    
+
                     // Clear the associated ID maps & reset starting collection
                     resolver.clearIdMaps();
                     startTopElements = getTopLevelElements();
-                    
+
                     LOG.info("XMI file doesn't appear to be UML 1.4 - "
                             + "attempting UML 1.3->UML 1.4 conversion");
-                    final String[] transformFiles = 
+                    final String[] transformFiles =
                         new String[] {
-                            "NormalizeNSUML.xsl", 
-                            "uml13touml14.xsl" 
+                            "NormalizeNSUML.xsl",
+                            "uml13touml14.xsl",
                         };
-                    
+
                     unknownElement = false;
-                    // InputSource xformedInput = 
+                    // InputSource xformedInput =
                     //        chainedTransform(transformFiles, pIs);
-                    InputSource xformedInput = serialTransform(transformFiles,
+                    InputSource xformedInput =
+                        serialTransform(transformFiles,
                             new InputSource(new FileInputStream(tmpFile)));
-                    newElements = xmiReader.read(xformedInput.getByteStream(),
+                    newElements =
+                        xmiReader.read(xformedInput.getByteStream(),
                             xformedInput.getSystemId(), extent);
                 }
-                
+
                 numElements = getTopLevelElements().size() - numElements;
 
                 // This indicates a malformed XMI file.  Log the error.
@@ -237,12 +243,12 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                             + ") and number of new top level elements found ("
                             + numElements + ")");
                 }
-                
+
                 // ArgoUML only deals correctly with a single top level model.
                 // If we got more elements, force them to be contained by top.
                 // TODO:  This is a workaround for more general support.
                 if (numElements > 1) {
-                    LOG.warn("Forcing all model elements to be contained by" 
+                    LOG.warn("Forcing all model elements to be contained by"
                             + " top level Model");
                     Collection newTopElements = getTopLevelElements();
                     newTopElements.removeAll(startTopElements);
@@ -251,16 +257,16 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                     newElements = getTopLevelElements();
                     newElements.removeAll(startTopElements);
                 }
-                
+
             } finally {
-                parent.getModelEventPump().startPumpingEvents();  
+                parent.getModelEventPump().startPumpingEvents();
             }
-            
+
             if (unknownElement) {
                 throw new UmlException("Unknown element in XMI file : "
                         + unknownElementName);
             }
-            
+
             if (ignoredElementCount > 0) {
                 LOG.warn("Ignored one or more elements from list "
                         + ignoredElements);
@@ -285,7 +291,8 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                             + " element.");
                     return null;
                 } else {
-                    LOG.debug("Saving profile with MofID : " + model.refMofId());
+                    LOG.debug("Saving profile with MofID : "
+                            + model.refMofId());
                     parent.setProfileModel(model);
                 }
             }
@@ -309,7 +316,7 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             }
         }
         if (model == null) {
-            LOG.error("Collection of objects  doesn't contain" 
+            LOG.error("Collection of objects  doesn't contain"
                     + " any elements of type Model");
             return;
         }
@@ -325,24 +332,25 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             }
         }
     }
-    
-    /*
+
+    /**
      * Returns a collection of all objects which are Elements or one of
      * its subclasses and which are not contained in another object.
      */
     private Collection getTopLevelElements() {
         Collection elements = new ArrayList();
         UmlPackage pkg = parent.getUmlPackage();
-        for (Iterator it = pkg.getCore().getElement().refAllOfType()
-                .iterator(); it.hasNext();) {
+        for (Iterator it =
+                pkg.getCore().getElement().refAllOfType().iterator();
+                it.hasNext();) {
             RefObject obj = (RefObject) it.next();
-            if (obj.refImmediateComposite() == null ) {
+            if (obj.refImmediateComposite() == null) {
                 elements.add(obj);
             }
         }
         return elements;
     }
-    
+
     /**
      * @see org.argouml.model.XmiReader#parseToModel(org.xml.sax.InputSource)
      */
@@ -368,12 +376,13 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
      * @return the map
      */
     public Map getXMIUUIDToObjectMap() {
-        if (resolver != null)
+        if (resolver != null) {
             return resolver.getIdToObjectMap();
+        }
         return null;
     }
 
-    private static final String STYLE_PATH = 
+    private static final String STYLE_PATH =
         "/org/argouml/model/mdr/conversions/";
 
     /*
@@ -385,8 +394,8 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
      */
     private InputSource chainedTransform(String[] styles, InputSource input)
         throws UmlException {
-        SAXTransformerFactory stf = (SAXTransformerFactory) TransformerFactory.
-                newInstance();
+        SAXTransformerFactory stf =
+            (SAXTransformerFactory) TransformerFactory.newInstance();
 
         try {
             // Set up reader to be first filter in chain
@@ -403,8 +412,8 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                     throw new UmlException("Error opening XSLT style sheet : "
                             + xsltFileName);
                 }
-                StreamSource xsltStreamSource = new StreamSource(xsltUrl.
-                        openStream());
+                StreamSource xsltStreamSource =
+                    new StreamSource(xsltUrl.openStream());
                 xsltStreamSource.setSystemId(xsltUrl.toExternalForm());
                 XMLFilter filter = stf.newXMLFilter(xsltStreamSource);
 
@@ -418,7 +427,8 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             // TODO: we should be able to chain this directly to XMI reader
             File tmpFile = File.createTempFile("zargo_model_", ".xmi");
             tmpFile.deleteOnExit();
-            StreamResult result = new StreamResult(
+            StreamResult result =
+                new StreamResult(
                     new FileOutputStream(tmpFile));
 
             Transformer transformer = stf.newTransformer();
@@ -443,8 +453,8 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
     private InputSource serialTransform(String[] styles, InputSource input)
         throws UmlException {
         SAXSource myInput = new SAXSource(input);
-        SAXTransformerFactory stf = (SAXTransformerFactory) TransformerFactory.
-                newInstance();
+        SAXTransformerFactory stf =
+            (SAXTransformerFactory) TransformerFactory.newInstance();
         try {
 
             for (int i = 0; i < styles.length; i++) {
@@ -455,14 +465,15 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                     throw new UmlException("Error opening XSLT style sheet : "
                             + xsltFileName);
                 }
-                StreamSource xsltStreamSource = new StreamSource(xsltUrl.
-                        openStream());
+                StreamSource xsltStreamSource =
+                    new StreamSource(xsltUrl.openStream());
                 xsltStreamSource.setSystemId(xsltUrl.toExternalForm());
 
                 // Create & set up temporary output file
                 File tmpOutFile = File.createTempFile("zargo_model_", ".xmi");
                 tmpOutFile.deleteOnExit();
-                StreamResult result = new StreamResult(new FileOutputStream(
+                StreamResult result =
+                    new StreamResult(new FileOutputStream(
                         tmpOutFile));
 
                 // Create transformer and do transformation
@@ -473,7 +484,8 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                         + " converted using : " + xsltFileName);
 
                 // Set up for next iteration
-                myInput = new SAXSource(new InputSource(new FileInputStream(
+                myInput =
+                    new SAXSource(new InputSource(new FileInputStream(
                         tmpOutFile)));
             }
             return myInput.getInputSource();
@@ -513,12 +525,12 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         if (ignoredElements != null) {
             for (int i = 0; i < ignoredElements.length; i++) {
                 if (name.equals(ignoredElements[i])) {
-                    ignoredElementCount++;   
+                    ignoredElementCount++;
                     return;
                 }
             }
         }
-        
+
         unknownElement = true;
         if (name.startsWith("Foundation.Core.")) {
             uml13 = true;
@@ -542,14 +554,14 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         }
         return true;
     }
-    
+
     /**
      * @see org.argouml.model.XmiReader#getIgnoredElements()
      */
     public String[] getIgnoredElements() {
         return ignoredElements;
     }
-    
+
 
     /**
      * @see org.argouml.model.XmiReader#getIgnoredElementCount()
