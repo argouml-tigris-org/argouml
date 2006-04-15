@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,20 +24,66 @@
 
 package org.argouml.uml.ui.model_management;
 
+import org.argouml.i18n.Translator;
+import org.argouml.uml.ui.ActionDeleteSingleModelElement;
+import org.argouml.uml.ui.ActionNavigateNamespace;
+import org.argouml.uml.ui.foundation.core.ActionAddDataType;
+import org.argouml.uml.ui.foundation.core.ActionAddEnumeration;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
 import org.argouml.util.ConfigLoader;
 
 /**
- * A Propertypanel for a model.
+ * A Property panel for a model.
  */
 public class PropPanelModel extends PropPanelPackage  {
 
     /**
      * The constructor.
-     *
-     */
+      */
     public PropPanelModel() {
         super("Model", lookupIcon("Model"),
                 ConfigLoader.getTabPropsOrientation());
+    }
+
+    /**
+     * Via this method, the GUI elements are added to the proppanel. 
+     */
+    protected void placeElements() {
+        addField(Translator.localize("label.name"),
+                getNameTextField());
+        
+        /* The next 2 fields are commented out, 
+         * as long as ArgoUML does not support 
+         * more then one un-owned Model.  */
+//        addField(Translator.localize("label.namespace"),
+//                getNamespaceSelector());
+
+//        add(getNamespaceVisibilityPanel());
+
+        add(getModifiersPanel());
+        
+        addSeparator();
+        
+        addField(Translator.localize("label.generalizations"),
+                getGeneralizationScroll());
+        addField(Translator.localize("label.specializations"),
+                getSpecializationScroll());
+        
+        addSeparator();
+        
+        addField(Translator.localize("label.owned-elements"),
+                getOwnedElementsScroll());
+        addField(Translator.localize("label.imported-elements"),
+                getImportedElementsScroll());
+
+        addAction(new ActionNavigateNamespace());
+        addAction(new ActionAddPackage());
+        addAction(new ActionAddDataType());
+        addAction(new ActionAddEnumeration());
+        addAction(new ActionNewStereotype());
+        addAction(new ActionNewTagDefinition());
+        addAction(new ActionDeleteSingleModelElement());
     }
 
 } /* end class PropPanelModel */
