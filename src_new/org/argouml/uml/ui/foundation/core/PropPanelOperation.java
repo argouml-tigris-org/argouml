@@ -57,7 +57,8 @@ public class PropPanelOperation extends PropPanelFeature {
     /**
      * The logger.
      */
-    private static final Logger LOG = Logger.getLogger(PropPanelOperation.class);
+    private static final Logger LOG = 
+        Logger.getLogger(PropPanelOperation.class);
 
 
     /**
@@ -73,7 +74,7 @@ public class PropPanelOperation extends PropPanelFeature {
                 getOwnerScroll());
         addField(Translator.localize("label.parameters"),
                 new JScrollPane(new UMLLinkedList(
-                new UMLClassifierParameterListModel())));
+                        new UMLClassifierParameterListModel())));
 
         addSeparator();
 
@@ -101,9 +102,11 @@ public class PropPanelOperation extends PropPanelFeature {
                new JScrollPane(new UMLLinkedList(
                        new UMLOperationMethodsListModel())));
 
+        UMLTextArea2 osta = new UMLTextArea2(
+                new UMLOperationSpecificationDocument());
+        osta.setRows(3); // make the field multiline by default
         addField(Translator.localize("label.specification"), 
-                new JScrollPane(new UMLTextArea2(
-                        new UMLOperationSpecificationDocument())));
+                new JScrollPane(osta));
 
         addAction(new ActionNavigateOwner());
         addAction(TargetManager.getInstance().getAddOperationAction());
@@ -229,15 +232,15 @@ public class PropPanelOperation extends PropPanelFeature {
          * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
          */
         public boolean shouldBeEnabled() {
-        	Object target = TargetManager.getInstance().getModelTarget();
-        	boolean result = true;
-        	if (Model.getFacade().isAOperation(target)) {
-        		Object owner = Model.getFacade().getOwner(target);
-        		if (owner == null || Model.getFacade().isAInterface(owner)) {
-        			result = false;
-        		}
-        	}
-        	return super.shouldBeEnabled() && result;
+            Object target = TargetManager.getInstance().getModelTarget();
+            boolean result = true;
+            if (Model.getFacade().isAOperation(target)) {
+                Object owner = Model.getFacade().getOwner(target);
+                if (owner == null || Model.getFacade().isAInterface(owner)) {
+                    result = false;
+                }
+            }
+            return super.shouldBeEnabled() && result;
         }
 
         /**
