@@ -24,9 +24,13 @@
 
 package org.argouml.uml.ui;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
@@ -56,7 +60,15 @@ public class ActionStateDiagram extends ActionNewDiagram {
               target)) {
             /* The target is a valid context. */
             machine = Model.getStateMachinesFactory().buildStateMachine(target);
+        } else if (Model.getFacade().isAStateMachine(target)
+                && hasNoDiagramYet(target)) {
+            /* This target is a statemachine, 
+             * for which no diagram exists yet, 
+             * so, let's use it. */
+            machine = target;
         } else {
+            /* Let's just build a Statemachine, 
+             * and put it in a suitable namespace. */
             machine = Model.getStateMachinesFactory().createStateMachine();
             if (Model.getFacade().isANamespace(target)) {
                 namespace = target;
@@ -70,6 +82,21 @@ public class ActionStateDiagram extends ActionNewDiagram {
                 UMLStateDiagram.class,
                 Model.getFacade().getNamespace(machine),
                 machine);
+    }
+    
+    private boolean hasNoDiagramYet(Object machine) {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Collection c = p.getDiagrams();
+        Iterator i = c.iterator();
+        while (i.hasNext()) {
+            ArgoDiagram d = (ArgoDiagram) i.next();
+            if (d instanceof UMLStateDiagram) {
+                if (((UMLStateDiagram) d).getStateMachine() == machine) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
