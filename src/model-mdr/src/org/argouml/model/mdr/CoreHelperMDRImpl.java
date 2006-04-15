@@ -1275,6 +1275,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                         || modelElement instanceof Constraint
                         || modelElement instanceof Dependency
                         || modelElement instanceof Collaboration
+                        || modelElement instanceof StateMachine
                         || modelElement instanceof DataType
                         || modelElement instanceof Interface)) {
                     return false;
@@ -1467,7 +1468,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
     public Collection getAllPossibleNamespaces(Object modelElement,
             Object model) {
         ModelElement m = (ModelElement) modelElement;
-        List ret = new ArrayList();
+        Collection ret = new HashSet();
         if (m == null) {
             return ret;
         }
