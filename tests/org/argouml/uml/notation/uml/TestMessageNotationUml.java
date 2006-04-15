@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.generator;
+package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
 import java.util.Iterator;
@@ -33,15 +33,17 @@ import org.argouml.model.Model;
 
 /**
  * Test class to test the parsing of a message.<p>
+ * 
+ * Formerly called TestParseMessage. <p>
  *
  * For some reason these tests require the ProjectBrowser loaded when running.
  * For that reason they cannot be run in Headless mode.
  */
-public class TestParseMessage extends TestCase {
+public class TestMessageNotationUml extends TestCase {
     /**
      * @see junit.framework.TestCase#TestCase(String)
      */
-    public TestParseMessage(String str) {
+    public TestMessageNotationUml(String str) {
         super(str);
     }
 
@@ -51,8 +53,9 @@ public class TestParseMessage extends TestCase {
      * @throws ParseException if the parsing fails.
      */
     public void compileTestParseMessage() throws ParseException {
-        ParserDisplay.SINGLETON.parseMessage(
-                Model.getCollaborationsFactory().createMessage(), "hej");
+        Object m = Model.getCollaborationsFactory().createMessage();
+        MessageNotationUml mnu = new MessageNotationUml(m);
+        mnu.parseMessage(m, "hej");
     }
 
     /**
@@ -436,12 +439,14 @@ public class TestParseMessage extends TestCase {
     }
 
     private void parseMessage(Object m, String s) throws ParseException {
-        ParserDisplay.SINGLETON.parseMessage(m, s);
+        MessageNotationUml mnu = new MessageNotationUml(m);
+        mnu.parseMessage(m, s);
     }
 
     private void checkParseException(Object m, String s) {
         try {
-            ParserDisplay.SINGLETON.parseMessage(m, s);
+            MessageNotationUml mnu = new MessageNotationUml(m);
+            mnu.parseMessage(m, s);
             assertTrue("Didn't throw for \"" + s + "\" in " + m, false);
         } catch (ParseException pe) {
             // The expected exception is thrown.

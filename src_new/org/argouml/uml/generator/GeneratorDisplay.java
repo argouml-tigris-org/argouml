@@ -448,23 +448,6 @@ public class GeneratorDisplay extends Generator2 {
             + generateUninterpreted(Model.getFacade().getValueOfTag(tv));
     }
 
-    /**
-     * Generates the textual number of MMessage m. The number is a string
-     * of numbers separated by points which describes the message's order
-     * and level in a collaboration.<p>
-     *
-     * If you plan to modify this number, make sure that
-     * ParserDisplay.parseMessage is adapted to the change.
-     *
-     * @param m A Message to generate the number for.
-     * @return A String with the message number of m.
-     */
-    public String generateMessageNumber(Object/*MMessage*/ m) {
-        MsgPtr ptr = new MsgPtr();
-        int pos = recCountPredecessors(m, ptr) + 1;
-        return generateMessageNumber(m, ptr.message, pos);
-    }
-
     private String generateKind(Object /*Parameter etc.*/ kind) {
         StringBuffer s = new StringBuffer();
         if (kind == null /* "in" is the default */
@@ -480,118 +463,6 @@ public class GeneratorDisplay extends Generator2 {
         return s.toString();
     }
 
-    private String generateMessageNumber(
-        Object/*MMessage*/ m,
-        Object/*MMessage*/ pre,
-        int position) {
-        Collection c;
-        Iterator it;
-        String mname = "";
-        Object act;
-        int subpos = 0, submax = 1;
-
-        if (m == null) {
-            return null;
-        }
-
-        act = Model.getFacade().getActivator(m);
-        if (act != null) {
-            mname = generateMessageNumber(act);
-        }
-
-        if (pre != null) {
-            c = Model.getFacade().getMessages3(pre);
-            submax = c.size();
-            it = c.iterator();
-            while (it.hasNext() && it.next() != m) {
-                subpos++;
-            }
-        }
-
-        if (mname.length() > 0) {
-            if (submax > 1) {
-                return mname + "." + position + (char) ('a' + subpos);
-            }
-            return mname + "." + position;
-        }
-
-        if (submax > 1) {
-            return Integer.toString(position) + (char) ('a' + subpos);
-        }
-        return Integer.toString(position);
-    }
-
-    class MsgPtr {
-        public Object/*MMessage*/ message;
-    }
-
-    int recCountPredecessors(Object message, MsgPtr ptr) {
-        Collection c;
-        Iterator it;
-        int pre = 0;
-        int local = 0;
-        Object/*MMessage*/ maxmsg = null;
-        Object/*MMessage*/ act;
-
-        if (message == null) {
-            ptr.message = null;
-            return 0;
-        }
-
-        act = Model.getFacade().getActivator(message);
-        c = Model.getFacade().getPredecessors(message);
-        it = c.iterator();
-        while (it.hasNext()) {
-            Object msg = it.next();
-            if (Model.getFacade().getActivator(msg) != act) {
-                continue;
-            }
-            int p = recCountPredecessors(msg, null) + 1;
-            if (p > pre) {
-                pre = p;
-                maxmsg = msg;
-            }
-            local++;
-        }
-
-        if (ptr != null) {
-            ptr.message = maxmsg;
-        }
-
-        return Math.max(pre, local);
-    }
-
-    int countSuccessors(Object/*MMessage*/ m) {
-        int count = 0;
-        Object act = Model.getFacade().getActivator(m);
-        Collection coll = Model.getFacade().getMessages3(m);
-        if (coll != null) {
-            Iterator it = coll.iterator();
-            while (it.hasNext()) {
-                Object msg = /*(MMessage)*/ it.next();
-                if (Model.getFacade().getActivator(msg) != act) {
-                    continue;
-                }
-                count++;
-            }
-        }
-        return count;
-    }
-
-    /**
-     * Generates a textual description of a MIterationExpression.
-     *
-     * @param expr the given expression
-     * @return the string
-     */
-    public String generateRecurrence(Object expr) {
-        if (expr == null) {
-            return "";
-        }
-
-        return Model.getFacade().getBody(expr).toString();
-    }
-
     /**
      * Generates a textual description for a MMessage m.
      *
@@ -599,73 +470,9 @@ public class GeneratorDisplay extends Generator2 {
      * @return A String suitable to show in a collaboration diagram.
      */
     public String generateMessage(Object m) {
-        Iterator it;
-        Collection pre;
-        Object act;
-        Object/*MMessage*/ rt;
-        MsgPtr ptr;
-
-        String action = "";
-        String number;
-        String predecessors = "";
-        int lpn;
-
-        if (m == null) {
-            return "";
-        }
-
-        ptr = new MsgPtr();
-        lpn = recCountPredecessors(m, ptr) + 1;
-        rt = Model.getFacade().getActivator(m);
-
-        pre = Model.getFacade().getPredecessors(m);
-        it = (pre != null) ? pre.iterator() : null;
-        if (it != null && it.hasNext()) {
-            MsgPtr ptr2 = new MsgPtr();
-            int precnt = 0;
-
-            while (it.hasNext()) {
-                Object msg = /*(MMessage)*/ it.next();
-                int mpn = recCountPredecessors(msg, ptr2) + 1;
-
-                if (mpn == lpn - 1
-                    && rt == Model.getFacade().getActivator(msg)
-                    && Model.getFacade().getPredecessors(msg).size() < 2
-                    && (ptr2.message == null
-                        || countSuccessors(ptr2.message) < 2)) {
-                    continue;
-                }
-
-                if (predecessors.length() > 0) {
-                    predecessors += ", ";
-                }
-                predecessors += generateMessageNumber(msg, ptr2.message, mpn);
-                precnt++;
-            }
-
-            if (precnt > 0) {
-                predecessors += " / ";
-            }
-        }
-
-        number = generateMessageNumber(m, ptr.message, lpn);
-
-        act = Model.getFacade().getAction(m);
-        if (act != null) {
-            if (Model.getFacade().getRecurrence(act) != null) {
-                number =
-		    generateRecurrence(Model.getFacade().getRecurrence(act))
-		    + " "
-		    + number;
-            }
-
-            action = generateAction(act);
-            /* Dirty fix for issue 1758 (Needs to be amended
-             * when we start supporting parameters): */
-            if (!action.endsWith(")")) action = action + "()";
-        }
-
-        return predecessors + number + " : " + action;
+        /* Replaced by MessageNotationUml class. */
+        throw new IllegalArgumentException(
+                "This function is not supposed to be called ever.");
     }
 
     /**
@@ -796,9 +603,6 @@ public class GeneratorDisplay extends Generator2 {
         }
         return text;
     }
-
-    ////////////////////////////////////////////////////////////////
-    // internal methods?
 
     /**
      * @param generalizations the given collection of generalizations
@@ -1164,29 +968,6 @@ public class GeneratorDisplay extends Generator2 {
         }
         return ret;
     }
-
-    // public NotationName getNotation() {
-    // return Notation.NOTATION_ARGO;
-    // }
-
-    /**
-     * This function is never used, so I commented it out.
-     *
-     * @return
-     */
-    /*public boolean canParse() {
-        return true;
-    }*/
-
-    /**
-     * This function is never used, so I commented it out.
-     *
-     * @param o
-     * @return
-     */
-    /*public boolean canParse(Object o) {
-        return true;
-    }*/
 
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleName()
