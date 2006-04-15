@@ -139,7 +139,7 @@ class ActionNavigateUpFromDiagram extends AbstractActionNavigate {
 }
 
 /**
- * The list model for the namespace of a diagram.
+ * The list model for the "homeModel" of a diagram.
  *
  * @author mvw@tigris.org
  */
@@ -186,7 +186,7 @@ class UMLDiagramHomeModelListModel
 
         Object ns = null;
         if (target != null) {
-            ns = target.getNamespace();
+            ns = target.getOwner();
         }
         if (ns != null) {
             addElement(ns);
