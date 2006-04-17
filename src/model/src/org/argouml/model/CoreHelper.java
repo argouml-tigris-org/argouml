@@ -179,7 +179,8 @@ public interface CoreHelper {
      * returned. If there is more than one return paramter, first of
      * them is returned, but a message is logged.<p>
      *
-     * @deprecated use getReturnParameters
+     * @deprecated by tfmorris before 0.21.1 - use getReturnParameters
+     * @see #getReturnParameters(Object)
      * @param operation1 the operation you want to find the return
      * parameter for.
      * @return If this operation has only one paramter with Kind: RETURN,
