@@ -1,6 +1,245 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>5.15.&nbsp;JRE with utils</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the subsystems"><link rel="prev" href="ch05s14.html" title="5.14.&nbsp;Logging"><link rel="next" href="ch05s16.html" title="5.16.&nbsp;To do items"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.15.&nbsp;JRE with utils</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s14.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the subsystems</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s16.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="jre"></a>5.15.&nbsp;JRE with utils</h2></div></div></div><p> Purpose - to provide the infrastructure to run everything. </p><p> The JRE is an infrastructure subsystem. See <a href="ch04s04.html" title="4.4.&nbsp;Model subsystems">Section&nbsp;4.4, &#8220;Model subsystems&#8221;</a>. It is not distributed with
-      ArgoUML but considered to be a precondition in the same respect as the user's
-      host. </p><p> This is a Java3 JRE so swing and awt can be used together with reflection.
-      </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s14.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s16.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.14.&nbsp;Logging&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.16.&nbsp;To do items</td></tr></table></div></body></html>
+   <title>5.15.&nbsp;Logging</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the subsystems"><link rel="prev" href="ch05s14.html" title="5.14.&nbsp;Internationalization"><link rel="next" href="ch05s16.html" title="5.16.&nbsp;JRE with utils"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.15.&nbsp;Logging</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s14.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the subsystems</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s16.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="logging"></a>5.15.&nbsp;Logging</h2></div></div></div><a class="indexterm" name="d0e7188"></a><p><a name="comp-logging-purpose"></a>
+Purpose - to provide an api for debug log and trace messages.
+</p><p>
+The purpose of debug log and trace messages is:
+To provide a mechanism that allows the developer to
+enable output of minor events focused on a specific problem area
+and
+to follow what is going on inside ArgoUML.
+</p><p>
+The Logging is located in <tt class="classname">org.argouml.???</tt>
+</p><p>
+The Logging is a Layer 0 subsystem.
+</p><p>
+Logging is currently implemented using log4j.
+</p><p>
+        <span class="application">ArgoUML</span> uses the standard 
+        <a href="http://jakarta.apache.org/log4j/" target="_top">log4j</a>
+        logging facility. The following sections deal with the current
+        implementation in <span class="application">ArgoUML</span>. By
+        default, logging is turned off and only the version
+        information of all used libraries are shown on
+        the console.
+    </p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e7215"></a>5.15.1.&nbsp;What to Log in ArgoUML</h3></div></div></div><p>
+            Logging entries in log4j
+            belong to exactly <span class="emphasis"><em>one</em></span> level.
+            </p><div class="itemizedlist"><ul type="disc"><li><p>
+                The FATAL level designates very severe error events that 
+                will presumably lead the application to abort.
+Everything known about the reasons for the abortion of the application
+shall be logged.
+</p></li><li><p>
+                The ERROR level designates error events that might still 
+                allow the application to continue running.
+Everything known about the reasons for this error condition shall be
+logged.
+</p></li><li><p>
+                The WARN level designates potentially harmful situations.
+This is if CG can't find all the information required 
+and has to make something up.
+</p></li><li><p>
+                The INFO level designates informational messages that 
+                highlight the progress of the application at coarse-grained 
+                level.
+This typically involves creating modules, subsystems, and singletons,
+loading and saving of files, imported files, opening and closing files.
+</p></li><li><p>
+                The DEBUG Level designates fine-grained informational 
+                events that are most useful to debug an application.
+This could be everything happening within the application.
+</p></li></ul></div><p>
+
+            This list is ordered according to the priority of these
+            logging entries i.e. if logging on level WARN is enabled
+            for a particular class/package,
+            all logging entries that belong to the above levels ERROR
+            and FATAL are logged as well.
+        </p><p>
+For performance reasons, it is advised to do a check before 
+frequently passed DEBUG
+and INFO log4j messages (see <a href="ch05s15.html#example.log4j.speed" title="Example&nbsp;5.3.&nbsp;Improving on speed/performance">Example&nbsp;5.3, &#8220;Improving on speed/performance&#8221;</a>).
+The purpose of this test is to avoid the creation of the argument.
+        </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e7244"></a>5.15.2.&nbsp;How to Create Log Entries...</h3></div></div></div><a class="indexterm" name="d0e7247"></a><a class="indexterm" name="d0e7250"></a><p>
+                You should <span class="emphasis"><em>not</em></span> use
+                <tt class="function">System.out.println</tt> in 
+                <span class="application">ArgoUML</span> 
+                Java Code.
+The only exception of this rule is for output in non-GUI mode
+like to print the usage message in <tt class="filename">Main.java</tt>.
+            </p><p>
+            To make log entries from within your own classes, you just
+            need to follow the three steps below:
+            </p><div class="orderedlist"><ol type="1"><li><p>Import the org.apache.log4j.Logger class</p></li><li><p>Get a Logger</p></li><li><p>Start Logging...</p></li></ol></div><p>
+        </p><div class="example"><a name="d0e7280"></a><p class="title"><b>Example&nbsp;5.2.&nbsp;For log4j version 1.2.x</b></p><pre class="programlisting">
+import org.apache.log4j.Logger;
+...
+public class <i class="replaceable"><tt>theClass</tt></i> {
+...
+    private static final Logger LOG = 
+        Logger.getLogger(<i class="replaceable"><tt>theClass</tt></i>.class);
+
+...
+
+    public void anExample() {
+        LOG.debug("This is a debug message.");
+        LOG.info("This is a info message.");
+        LOG.warn("This is a warning.");
+        LOG.error("This is an error.");
+        LOG.fatal("This is fatal. The program stops now working...");
+    }
+            </pre><p></p></div><p>
+Notice that we in the ArgoUML project have decided to have all loggers
+private static final with a static initializer.
+The reason for making them private is that this reduces the coupling between
+classes i.e. there is no risk that one class uses some other class' Logger
+to do logging.
+The reason for making them static is that our classes are more or less
+all either lightweight, like a representation of an object in the
+model, or a singleton.
+For the lightweight classes, having a reference to a logger object per
+object is a burden and for the singleton objects it doesn't care if
+the logger is static or not.
+The reason for making this final is that it shall never be modified by
+the class.
+The reason for having a static initializer is that then all classes can
+do this in the same way and we don't ever risk to forgot to create the
+Logger.
+</p><p>
+        For performance reasons, a check before the actual logging statement 
+        saves the overhead of all the concatenations, data conversions and
+        temporary objects that would be created otherwise. Even if logging 
+        is turned off for DEBUG and/or INFO level.
+        </p><div class="example"><a name="example.log4j.speed"></a><p class="title"><b>Example&nbsp;5.3.&nbsp;Improving on speed/performance</b></p><pre class="programlisting">
+    if (LOG.isDebugEnabled()) {
+        LOG.debug("Entry number: " + i + " is " + entry[i]);
+    }
+    if (LOG.isInfoEnabled()) {
+        LOG.info("Entry number: " + i + " is " + entry[i]);
+    }
+            </pre><p></p></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>
+Since this has a big impact also on the readability, 
+only use it where it is really needed 
+(like places passed several times per second or hundreds of times
+for every key the user presses).
+</p></td></tr></table></div><p>
+            For more information go to the log4j homepage at
+            <a href="http://jakarta.apache.org/log4j/" target="_top">http://jakarta.apache.org/log4j</a>.
+        </p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e7308"></a>5.15.2.1.&nbsp;Reasoning around the performance issues</h4></div></div></div><p>
+Most of the log statements passed in ArgoUML are passed with logging
+turned off.
+This means that the only thing log4j should do is to determine that
+logging is off and return.
+Log4j has a really quick algorithm to determine if logging is on for
+a certain level so that is not a problem.
+</p><p>
+The problem is instead explained by noticing
+the following log statement:
+	    </p><pre class="programlisting">
+        int i;
+...
+        LOG.debug("Entry number: " + i + " is " + entry[i]);
+	    </pre><p>
+It is quite innocent looking isn't it?
+Well that is because the java compiler is very helpful 
+when it comes to handling strings 
+and will convert it to the equivalent of:
+	    </p><pre class="programlisting">
+	StringBuffer sb = new StringBuffer();
+	sb.append("Entry number: ");
+	sb.append(i);
+	sb.append(" is ");
+	sb.append(entry[i].toString());
+        LOG.debug(sb.toString());
+	    </pre><p>
+If the entry[i] is some object with a lot of calculations 
+when toString() is called and the logging statement is passed
+often some action needs to be taken.
+If the toString() methods are simple you are still 
+stuck with the overhead of creating a <tt class="classname">StringBuffer</tt>
+(and a <tt class="classname">String</tt> from the sb.toString()-statement.
+</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e7327"></a>5.15.3.&nbsp;How to Enable Logging...</h3></div></div></div><p>
+            log4j uses the command line parameter
+            <i class="parameter"><tt>-Dlog4j.configuration = URL</tt></i>
+            to configure itself where URL points to the location of
+            your log4j configuration file.
+        </p><div class="example"><a name="d0e7335"></a><p class="title"><b>Example&nbsp;5.4.&nbsp;Various URLs</b></p><pre class="programlisting">
+org/argouml/resource/<span class="emphasis"><em>filename.lcf</em></span>              <a name="ex.url.package"></a><img src="images/callouts/1.png" alt="1" border="0">
+
+http://localhost/shared/argouml/<span class="emphasis"><em>filename.lcf</em></span>   <a name="ex.url.link"></a><img src="images/callouts/2.png" alt="2" border="0">
+
+file://home/username/<span class="emphasis"><em>filename.lcf</em></span>              <a name="ex.url.file"></a><img src="images/callouts/3.png" alt="3" border="0">
+            </pre><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left"><a href="#ex.url.package"><img src="images/callouts/1.png" alt="1" border="0"></a> </td><td valign="top" align="left"><p>
+                        Reference to a configuration file <span class="emphasis"><em>filename.lcf</em></span> 
+                        within argouml.jar.</p></td></tr><tr><td width="5%" valign="top" align="left"><a href="#ex.url.link"><img src="images/callouts/2.png" alt="2" border="0"></a> </td><td valign="top" align="left"><p>
+                        Reference to a configuration file <span class="emphasis"><em>filename.lcf</em></span> 
+                        on a remote server/localhost.</p></td></tr><tr><td width="5%" valign="top" align="left"><a href="#ex.url.file"><img src="images/callouts/3.png" alt="3" border="0"></a> </td><td valign="top" align="left"><p>
+                        Reference to a configuration file <span class="emphasis"><em>filename.lcf</em></span>
+                        on your localmachine.</p></td></tr></table></div><p></p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e7374"></a>5.15.3.1.&nbsp;...when running ArgoUML from the command line</h4></div></div></div><p>
+                There are currently two possibilities of running
+                <span class="application">ArgoUML</span> from the command
+                line:
+                </p><div class="orderedlist"><ol type="1"><li><p>
+                        Run <span class="application">ArgoUML</span> using
+                        <tt class="filename">argouml.jar</tt></p></li><li><p>
+                        Run <span class="application">ArgoUML</span> using
+                        the ant script</p></li></ol></div><p>
+
+                In the first case, the configuration file is specified
+                directly on the command line, whereas in the latter
+                case this parameter is specified in the
+                <tt class="filename">build.xml</tt> (which in that case
+                needs to be modified).
+                <span class="application">ArgoUML</span> is then started as
+                usual with <span><b class="command">./build run</b></span>.
+             </p><div class="example"><a name="d0e7407"></a><p class="title"><b>Example&nbsp;5.5.&nbsp;Command Line for argouml.jar</b></p><pre class="programlisting">
+[localhost:~] billy% java -Dlog4j.configuration=URL -jar argouml.jar                        
+                </pre><p></p></div><div class="example"><a name="d0e7412"></a><p class="title"><b>Example&nbsp;5.6.&nbsp;Modification of build.xml</b></p><pre class="programlisting">
+&lt;!-- =================================================================== --&gt;
+&lt;!-- Run ArgoUML from compiled sources                                   --&gt;
+&lt;!-- =================================================================== --&gt;
+&lt;target name="run" depends="compile"&gt;
+    &lt;echo message="--- Executing ${Name} ---"/&gt;
+    &lt;!-- Uncomment the sysproperty and change the value if you want --&gt;
+    &lt;java classname="org.argouml.application.Main"
+          fork="yes"
+          classpath="${build.dest};${classpath}"&gt;
+          <span class="emphasis"><em>&lt; sysproperty key="log4j.configuration"
+                       value="org/argouml/resource/<span class="emphasis"><em>filename.lcf</em></span>"&gt;&lt;/sysproperty&gt;</em></span>
+    &lt;/java&gt;
+&lt;/target&gt;
+                </pre><p></p></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e7423"></a>5.15.3.2.&nbsp;...when running ArgoUML from WebStart</h4></div></div></div><p>
+                To view the console output, the WebStart user has to
+                set <i class="parameter"><tt>Enable Java Console</tt></i> in the
+                Java WebStart preferences.  In the same dialog, there
+                is also an option to save the Console Output to a
+                file.
+            </p><p>
+                As you cannot provide any userspecific parameters to a
+                WebStart Application from within WebStart,
+it is currently not possible to choose log4j configuration
+when running ArgoUML from Java Web Start.
+            </p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e7433"></a>5.15.3.3.&nbsp;...when running ArgoUML from NetBeans</h4></div></div></div><p>
+                At the time of writing this paragraph, it is not possible to 
+                set the logging configuration file on a per project basis in
+                NetBeans.
+                Instead, the Global Options of 
+                [Debbuging and Execution/Execution Types/External 
+                Execution/External Process] need to be changed.
+            </p><div class="example"><a name="d0e7438"></a><p class="title"><b>Example&nbsp;5.7.&nbsp;External Execution Property (Arguments)</b></p><pre class="programlisting">
+-cp {filesystems}{:}{classpath}{:}{library} <span class="emphasis"><em>-Dlog4j.configuration=URL</em></span>
+    {classname} {arguments}
+                </pre><p></p></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e7446"></a>5.15.4.&nbsp;How to Customize Logging...</h3></div></div></div><p>
+            There are some sample configuration files provided in 
+            <i class="parameter"><tt>org.argouml.resource</tt></i>. Modify these according
+            to your needs.
+            Or alternatively, you can try <a href="http://www.japhy.de/configLog4j" target="_top">
+            configLog4j</a> to assist yourself in creating a log4j configuration file.
+        </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e7457"></a>5.15.5.&nbsp;References</h3></div></div></div><div class="itemizedlist"><ul type="disc"><li><p>
+                The log4j project homepage at 
+                    <a href="http://jakarta.apache.org/log4j/" target="_top">http://jakarta.apache.org/log4j</a>
+            </p></li><li><p>
+                The configlog4j homepage at
+                    <a href="http://www.japhy.de/configLog4j/" target="_top">http://www.japhy.de/configLog4j</a>
+            </p></li></ul></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s14.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s16.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.14.&nbsp;Internationalization&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.16.&nbsp;JRE with utils</td></tr></table></div></body></html>

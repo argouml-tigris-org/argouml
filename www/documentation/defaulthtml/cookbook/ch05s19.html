@@ -1,19 +1,68 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>5.19.&nbsp;OCL</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the subsystems"><link rel="prev" href="ch05s18.html" title="5.18.&nbsp;Module loader"><link rel="next" href="ch06.html" title="Chapter&nbsp;6.&nbsp;Extending ArgoUML"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.19.&nbsp;OCL</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s18.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the subsystems</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch06.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="ocl"></a>5.19.&nbsp;OCL</h2></div></div></div><a class="indexterm" name="d0e7760"></a><a class="indexterm" name="d0e7763"></a><p> Purpose - To allow for editing of strings in the OCL language. </p><p> The OCL is located in <tt class="classname">org.argouml.ocl</tt>.
-      </p><p> The OCL is a Layer 3 subsystem. See <a href="ch04s06.html" title="4.6.&nbsp;Loadable subsystems">Section&nbsp;4.6, &#8220;Loadable subsystems&#8221;</a>. </p><p> The OCL editor GUI interface is
-      <tt class="classname">org.argouml.uml.ui.TabConstraints</tt> (shown in
-      the bottom right hand panel - details panel). </p><p> <tt class="classname">org.argouml.ocl.ArgoFacade</tt> adapts the
-      <tt class="classname">tudresden.ocl.gui.OCLEditor</tt> for ArgoUML.
-      There are some other helper classes in
-      <tt class="classname">org.argouml.ocl</tt>, with names beginning with OCL
-      but they are used for other purposes. Historically GEF uses OCL as a kind of
-      template language to convert the UML diagrams to pgml(and back again), it
-      doesn't have anything to do with OCL constraints in your UML model. </p><p> <tt class="classname">ArgoFacade</tt> is reused by
-      <tt class="classname">GeneratorJava</tt> and
-      <tt class="classname">TabConstraints</tt>. </p><p> <a class="indexterm" name="d0e7806"></a> Currently this
-      subsystem is more or less only Dresden OCL Toolkit and adaptation. </p><p> Because of a problem with the interpretation of the UML specification
-      and the OCL specification, the implementation of constraints in ArgoUML is
-      only possible for Classes, Interfaces and Features (Attributes and
-      Operations). See <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=1805" target="_top">
-      Issue 1805 </a>. </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s18.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.18.&nbsp;Module loader&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;6.&nbsp;Extending ArgoUML</td></tr></table></div></body></html>
+   <title>5.19.&nbsp;Module loader</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the subsystems"><link rel="prev" href="ch05s18.html" title="5.18.&nbsp;Explorer"><link rel="next" href="ch05s20.html" title="5.20.&nbsp;OCL"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.19.&nbsp;Module loader</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s18.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the subsystems</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s20.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="moduleloader"></a>5.19.&nbsp;Module loader</h2></div></div></div><a class="indexterm" name="d0e7735"></a><a class="indexterm" name="d0e7738"></a><p> Purpose - to provide the mechanisms to load (and unload) the auxiliary
+      modules. </p><p> The Module loader is located in
+      <tt class="classname">org.argouml.moduleloader</tt>. </p><p> An old module loader is located in
+      <tt class="classname">org.argouml.application.modules.ModuleLoader</tt>
+      with interfaces (Pluggable) in
+      <tt class="classname">org.argouml.application.api</tt>. Eventually
+      this will be removed. </p><p> It is the modules' responsibility to connect and register to the
+      subsystem or subsystems it is going to work with using that subsystem's API,
+      Facade, or Plug-in interface. </p><p> For details on how to build a module see <a href="ch06s02.html" title="6.2.&nbsp;Modules and PlugIns">Section&nbsp;6.2, &#8220;Modules and PlugIns&#8221;</a>. </p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e7762"></a>5.19.1.&nbsp;What the ModuleLoader does</h3></div></div></div><p> The ModuleLoader is looking for module jars. It actually scans
+        through all jars available in the ext directory. See Edit Settings
+        Environment tab. If you turn on logging on the debug level while running
+        ArgoUML you should be able to see what jar files it finds and what it does
+        with them. </p><p> A module jar contains the classes, resources and a manifest file. The
+        manifest file points out the class to be loaded. Also notice that the
+        Specification-Title and Vendor must be specified correctly for this to
+        work. </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="design-module-loader"></a>5.19.2.&nbsp;Design of the new Module Loader</h3></div></div></div><p> The plan is to implement this new Module Loader, then have them both
+        working side by side for several releases (two stable releases), and if we
+        all are happy with it, then remove the old module loader. </p><p> Design:
+        </p><div class="itemizedlist"><ul type="disc"><li><p> We use a Loadable Proxy Pattern(?) for the modules. </p></li><li><p> Each module can be enabled and disabled individually.
+              Dependencies between modules is allowed although not yet handled
+              gracefully. </p></li><li><p> Each module is required to have one (1) class that implements
+              <tt class="classname">ModuleInterface</tt>. That class (and all
+              other classes that constitute the module) needs to be made
+              available for some class loader, either by including it in the
+              classpath or by letting the module loader hunt for it. </p></li><li><p> The modules are allowed to use all the APIs available from all
+              the subsystems within ArgoUML and from other modules. </p><p> This is a big improvement over the old module loader in that:
+              </p><div class="itemizedlist"><ul type="circle"><li><p> We use the same APIs for the modules that we use within
+                    ArgoUML meaning that we implement at document it only once.
+                    This replaces the Pluggable class at every point where
+                    ArgoUML can be augmented. </p></li><li><p> We can have the module have different classes to
+                    register at different parts of ArgoUML. </p></li><li><p> We can have dynamic registrations that the module add
+                    and remove over time depending on some criteria that the
+                    module decides. </p></li><li><p> We don't need to search through all modules at every
+                    possible point where ArgoUML can be augmented. </p></li></ul></div><p> Just as in the old solution, whenever a module
+              needs to do something to ArgoUML, there needs to be implemented an
+              API, possibly with registration/deregistration and callbacks.
+              </p></li><li><p> All modules that can be found are examined at startup. They can
+              be enabled and disabled individually from a special available
+              modules window but have a default state that applies if the user
+              hasn't taken action. Currently the default state is "enabled".
+              </p></li><li><p> Dependency between modules! </p><p> If a module cannot be enabled because some other module needs
+              to be enabled first or because some part of ArgoUML needs to be
+              initialized first this is a problem. This is because the initial
+              implementation is such that we have no register of dependencies.
+              </p><p> The solution suggested is that the module loader persists in
+              it's attempts to enable a module so that the order among the modules
+              is not important. For this to work the modules needs to signal when
+              they fail. This is done by returning false or throwing a Exception
+              from the module enabling method. </p><p> The module loader also provides an API that the well-behaving
+              modules can use to test if the modules they depend on are enabled.
+              The less well-behaving module can just throw an exception when
+              they fail to enable themselves properly. </p><p> If a module cannot be disabled, because some other module
+              depends on it then this is signaled by returning false from the
+              disabling method. </p></li><li><p> Where modules are loaded from? </p><p> The modules are loaded from the same places as in the old module
+              loader. They can be internally i.e. available in the core jar file
+              of ArgoUML, from the <tt class="filename">
+              ext</tt> directory, or if running from JavaWebStart, they
+              can be downloaded from the site. </p><p> To reduce the complexity of the downloads, let's use it in the
+              simplest possible way: organize each module in a package and a jar
+              file, have the jnlp-file list that jar file as a part and a package
+              entry listing the classes, have a file listing optional classes
+              and a GUI that allows the user to download them. Once a class is
+              selected in the GUI it is loaded and, the JavaWebStart class loader
+              will guarantee that it is available. </p></li><li><p> The scope of the modules. </p><p> Modules are always enabled and disabled on a per-application
+              (per jvm) basis and not on a per-project or per-frame basis.
+              </p></li></ul></div><p> </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s18.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s20.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.18.&nbsp;Explorer&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.20.&nbsp;OCL</td></tr></table></div></body></html>

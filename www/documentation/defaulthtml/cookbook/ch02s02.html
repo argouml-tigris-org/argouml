@@ -9,7 +9,7 @@ How this is done is described in
 Notice that the CVS contents is not only a set of source files but
 instead it is the complete development environment for
 all work within the ArgoUML project.
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e682"></a>2.2.1.&nbsp;Which tools do I need to build ArgoUML?</h3></div></div></div><a class="indexterm" name="d0e685"></a><a class="indexterm" name="d0e690"></a><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e698"></a>2.2.1.&nbsp;Which tools do I need to build ArgoUML?</h3></div></div></div><a class="indexterm" name="d0e701"></a><a class="indexterm" name="d0e706"></a><p>
 These are the tools not included in the CVS repository that
 you need to work with ArgoUML.
 </p><div class="itemizedlist"><ul type="disc"><li><p>
@@ -30,15 +30,15 @@ JDK, at least version 1.4.2 (includes the Java compiler)
 For building the documentation from DocBook format, 
 you futhermore needs these tools:
 </p><div class="itemizedlist"><ul type="disc"><li><p>
-	  <a class="indexterm" name="d0e715"></a>
-          <a class="indexterm" name="d0e719"></a>
+	  <a class="indexterm" name="d0e731"></a>
+          <a class="indexterm" name="d0e735"></a>
 DocBook XSL style sheets.
 </p><p>
 There exists rules in the
 <tt class="filename">argouml/documentation/build.xml</tt>
 for downloading this correctly.
 </p></li><li><p><a name="download-jimi"></a>
-          <a class="indexterm" name="d0e731"></a>
+          <a class="indexterm" name="d0e747"></a>
 Jimi
 </p><p>
 Used by FOP for including PNG pictures.
@@ -55,24 +55,24 @@ It contains a file:
 Copy this file into the
 <tt class="filename">argouml\tools\lib</tt> directory.
 </p></li></ol></div><p>
-</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e759"></a>2.2.2.&nbsp;
+</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e775"></a>2.2.2.&nbsp;
 Which tools are part of the ArgoUML development environment?
-</h3></div></div></div><a class="indexterm" name="d0e762"></a><p>
+</h3></div></div></div><a class="indexterm" name="d0e778"></a><p>
 These tools are provided by the development environment that you
 get when you check out from CVS.
 </p><div class="itemizedlist"><ul type="disc"><li><p>
-	    <a class="indexterm" name="d0e773"></a>
+	    <a class="indexterm" name="d0e789"></a>
 Ant, the tool to manage compiling and packaging.
 </p></li><li><p>
 mdrant, the integration allowing to run mdr from ant.
 </p></li><li><p>
-	    <a class="indexterm" name="d0e783"></a>
+	    <a class="indexterm" name="d0e799"></a>
 ANTLR, for regenerating the built-in parser.
 </p></li><li><p>
-	    <a class="indexterm" name="d0e790"></a>
+	    <a class="indexterm" name="d0e806"></a>
 JUnit, for running the JUnit test cases.
 </p></li><li><p>
-	    <a class="indexterm" name="d0e797"></a>
+	    <a class="indexterm" name="d0e813"></a>
 JDepend, for examining the code.
 </p></li></ul></div><p>
 For building the documentation from DocBook format, 
@@ -81,27 +81,27 @@ you get when you check out from CVS.
 </p><div class="itemizedlist"><ul type="disc"><li><p>
 Saxon for building documentation from DocBook format.
 </p></li><li><p>
-	    <a class="indexterm" name="d0e810"></a>
+	    <a class="indexterm" name="d0e826"></a>
 fop for generating PDF versions of the DocBook format.
 </p><p>
 To build a PDF file with the pictures included you need Jimi
 that is downloaded separately.
 See 
 <a href="ch02s02.html#download-jimi">Jimi</a>.
-</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e818"></a>2.2.3.&nbsp;What libraries are needed and used by ArgoUML?</h3></div></div></div><p>
+</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e834"></a>2.2.3.&nbsp;What libraries are needed and used by ArgoUML?</h3></div></div></div><p>
 These libraries are provided in the development environment that
 you get when you check out CVS.
 They are checked by the Java compiler when compiling, 
 needed for running ArgoUML and therefore distributed with ArgoUML.
 </p><div class="itemizedlist"><ul type="disc"><li><p>
-	    <a class="indexterm" name="d0e827"></a>
+	    <a class="indexterm" name="d0e843"></a>
 NSUML, the Novosoft UML library.
 </p><p>
 The ArgoUML project doesn't develop the Java classes for 
 storing, saving and loading an UML Model.
 That work is done by NSUML and is used by ArgoUML.
 </p></li><li><p>
-	    <a class="indexterm" name="d0e837"></a>
+	    <a class="indexterm" name="d0e853"></a>
 
 GEF graph editing framework, available from 
 <a href="http://gef.tigris.org" target="_top">gef.tigris.org</a>.
@@ -119,7 +119,7 @@ The OCL package to parse and run the Object Constraint Language things.
 Details about the package are available from SourceForge
 <a href="http://dresden-ocl.sourceforge.net/" target="_top">OCL Compiler</a>.
 </p></li><li><p>
-	    <a class="indexterm" name="d0e863"></a>
+	    <a class="indexterm" name="d0e879"></a>
 log4j, a library with infrastructure for logs.
 </p></li><li><p>
 antlrall, the run-time part of the ANTLR tool.

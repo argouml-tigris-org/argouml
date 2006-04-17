@@ -47,7 +47,8 @@ Type the new project name: argouml-mdr, and press Next.
 Ignore the build path settings. We will come back to them later.
 Press Finish, which starts the checking out process.
 You are probably directed to the Java Perspective with a question if
-you want or not. At this point it doesn't matter. Just press Yes or No!
+you want or not.
+At this point, you better press No, to be able to perform the next step.
 </p><p>
 Select the argouml project, right-click on it, and do Check Out As.
 Check out as a project configured using the New Project Wizard.
@@ -55,6 +56,7 @@ Press the button Finish.
 Select Java Project, and press Next.
 Type the new project name: argouml, and press Next.
 Ignore the build path settings. We will come back to them later.
+
 Press Finish, which starts the checking out process.
 You are probably directed to the Java Perspective with a question if
 you want or not. At this point it doesn't matter. Just press Yes or No!
@@ -77,7 +79,7 @@ Build using ant.
 </p><p>
 Browse to <tt class="filename">argouml/src_new/build.xml</tt>,
 select the <tt class="filename">build.xml</tt>-file,
-right-click on it, and do Run Ant...
+right-click on it, and do Run As - Ant Build...
 This pops up the External Tools... pop up
 with the Targets tab already selected.
 Select compile (default target in the Targets tab),
@@ -86,7 +88,7 @@ and finally press Run.
 </p><p>
 Browse to <tt class="filename">argouml-mdr/build.xml</tt>,
 select the <tt class="filename">build.xml</tt>-file,
-right-click on it, and do Run Ant...
+right-click on it, and do Run As - Ant Build...
 This pops up the External Tools... pop up
 with the Targets tab already selected.
 Select <span><b class="command">generate</b></span>,
@@ -244,7 +246,7 @@ i.e. when running test cases from within Eclipse).
     </p></li><li><p>
 Verify that you can start ArgoUML from the debugger within Eclipse. 
 You can do this by clicking on the Debug icon in the toolbar.
-</p></li></ol></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e10298"></a>9.7.2.&nbsp;Eclipse to help with the ArgoUML coding style</h3></div></div></div><p>
+</p></li></ol></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e10381"></a>9.7.2.&nbsp;Eclipse to help with the ArgoUML coding style</h3></div></div></div><p>
 This instruction is to set up Eclipse to work according to
 the ArgoUML Coding standards.
 If this is not done correctly you will most likely find that you will have to
@@ -259,10 +261,12 @@ Eclipse Workspace separate from your other projects.
 </p><div class="itemizedlist"><ul type="disc"><li><p>
 Code conventions.
 </p><p>See in the menu Window =&gt; Preferences. 
-      Then select Java =&gt; Code Style =&gt; Code Formatter.
+      Then select Java =&gt; Code Style =&gt; Formatter.
 Set the Code Formatter to "Java conventions [built-in]".
 </p></li><li><p>
 TAB character width is 8.
+</p><p>
+	  This will only work correctly by default from Eclipse V3.2 onwards.
 </p><p>
 Solution for Eclipse 3.0:
 See in the menu Window =&gt; Preferences.
@@ -303,7 +307,7 @@ set the Code Templates for Overriding methods to
       Set it to
 </p><pre class="programlisting">
 // $$Id$$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -331,7 +335,7 @@ ${package_declaration}
 ${typecomment}
 ${type_declaration}
 </pre><p>
-</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e10334"></a>9.7.3.&nbsp;Eclipse to automatically find problems in the code</h3></div></div></div><p>
+</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e10419"></a>9.7.3.&nbsp;Eclipse to automatically find problems in the code</h3></div></div></div><p>
 This instruction is to set up Eclipse to automatically find 
 what, in the ArgoUML project, could be considered problems in the code.
 </p><p>
@@ -430,62 +434,54 @@ Checked.
 <tt class="filename">/argouml/tools/checkstyle/checkclipse.filefilters</tt>
 </p></li></ul></div><p>
 Leave the two other fields empty.
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e10437"></a>9.7.5.&nbsp;Run the JUnit tests</h3></div></div></div><p>
-There is perhaps some fancy way of doing this but while we figure that out
-this "revert to ant"-way can be used to run the tests:
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e10522"></a>9.7.5.&nbsp;Run the JUnit tests</h3></div></div></div><p>
+The problem is that to run ArgoUML, you need to have jars from both
+the argouml project and
+the argouml-mdr project
+available in the class path.
+If you don't, then all tests that actually do something with the
+model subsystem will fail with a 
+<tt class="classname">java.lang.ExceptionInInitializerError</tt>
+(if it is the first test) or
+<tt class="classname">java.lang.NoClassDefFoundError</tt>.
+</p><p>
+The way the two projects are set up it is the argouml-mdr
+project that depends on the argouml project.
+This means that when running things from the argouml-mdr project
+everything from the argouml project is available but not the other way around.
+Since the tests are located in the argouml project,
+the argouml-mdr things will be missing when running the tests as default.
+</p><p>
+Here is the simplest way to run a test, fixing this:
 </p><div class="orderedlist"><ol type="1"><li><p>
-          In the menu select Window =&gt; Preferences. 
-          Select Ant =&gt; Runtime at the left hand side.
-          Select the tab Classpath.
-          Select Ant Home Entries.
+Start the test in the normal way i.e.
+Right click on the test case and select 
+Run As =&gt; JUnit Test,
+Debug As =&gt; JUnit Test or
+some keyboard short cut.
 </p></li><li><p>
-Press the <span><b class="command">Add Jars...</b></span> button and add
-<tt class="filename">optional.jar</tt> from 
-<tt class="filename">argouml/tools/ant-1.4.1</tt>.
-</p></li><li><p>
-Press the <span><b class="command">Add Jars...</b></span> button and add
-all jars from
-<tt class="filename">argouml/tools/ant-<i class="replaceable"><tt>1.4.1</tt></i>/lib</tt>.
-</p></li><li><p>
-Press the <span><b class="command">Add Jars...</b></span> button and add
-<tt class="filename">jdepend.jar</tt> from 
-<tt class="filename">argouml/tools/jdepend-<i class="replaceable"><tt>2.2</tt></i>/lib</tt>.
-</p></li><li><p>
-Press the <span><b class="command">Add Jars...</b></span> button and add
-<tt class="filename">junit.jar</tt> from 
-<tt class="filename">argouml/tools/junit-<i class="replaceable"><tt>3.8.1</tt></i></tt>.
-</p></li><li><p>
-Press OK to store the new Ant classpath entries.
+Watch as the test fails with
+<tt class="classname">java.lang.ExceptionInInitializerError</tt>
 </p><p>
-These first items need only be done once as a set up.
+If the test happens to succeed, 
+either you have chosen one of the rare tests that actually don't use the model,
+or you have not set up the two projects according to the instructions...
 </p></li><li><p>
-Run ant with the 
-<span><b class="command">alltests</b></span> target.
-</p><p>
-This is done by 
-selecting in the menu: Run =&gt; External Tools =&gt; External Tools...
-This will open the "Create, manage, and run configurations" dialog.
-</p><p>
-      Select the Ant Build at the left and press the New button.
-      Rename to ArgoUML AllTests.
-Then, in the Targets tab, select the <span><b class="command">alltests</b></span> target,
-deselect all other targets, press the Apply button,
-and finally press Run.
-</p><p>
-This run configuration
-is remembered by Eclipse so after this the 
-drop-down next to the
-Run tool can be used.
-In the same way, you can make other run configurations 
-for the other ant targets in the build.xml file.
+From the Toolbar or from the Run menu select Debug... or Run...
+A window will open with the Configuration to run the test.
+</p></li><li><p>
+Change the project to the argouml-mdr project (in the Test tab).
+</p></li><li><p>
+Press Debug (or Run).
+</p></li><li><p>
+The test now works.
 </p></li></ol></div><p>
-Once you have found a failing test case and would like to investigate
-that further, you can run it as a JUnit test case from within Eclipse,
-making full use of the Eclipse debugger.
-This is done by browsing to the test case
-(in the package explorer you browse to
-argouml =&gt; tests =&gt;
-<i class="replaceable"><tt>whatever package</tt></i> =&gt;
-<i class="replaceable"><tt>whatever class</tt></i>),
-right-click on it and select Run =&gt; Debug JUnit Test.
+Eclipse will remember the Configuration for that test so you can run it from
+the Debug or Run Toolbars,
+the Run =&gt; Run History or Run =&gt; Debug History menu items,
+Right clicking on the same test and selecting Run... or Debug....
+But if you do Right click on the same test followed by
+Run As... or 
+Debug As...
+a new Configuration will be created that has the default project once again.
 </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch09s06.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch09.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch10.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">9.6.&nbsp;Settings for Emacs&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;10.&nbsp;Standards For Documentation Writing</td></tr></table></div></body></html>

@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>2.5.&nbsp;The JUnit test cases</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter&nbsp;2.&nbsp;Building from source"><link rel="prev" href="ch02s04.html" title="2.4.&nbsp;Build Process"><link rel="next" href="ch02s06.html" title="2.6.&nbsp;Manual Test Cases"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.5.&nbsp;The JUnit test cases</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;2.&nbsp;Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch02s06.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="junittests"></a>2.5.&nbsp;The JUnit test cases</h2></div></div></div><a class="indexterm" name="d0e1650"></a><a class="indexterm" name="d0e1653"></a><a class="indexterm" name="d0e1656"></a><p>
+   <title>2.5.&nbsp;The JUnit test cases</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter&nbsp;2.&nbsp;Building from source"><link rel="prev" href="ch02s04.html" title="2.4.&nbsp;Build Process"><link rel="next" href="ch02s06.html" title="2.6.&nbsp;Manual Test Cases"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.5.&nbsp;The JUnit test cases</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;2.&nbsp;Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch02s06.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="junittests"></a>2.5.&nbsp;The JUnit test cases</h2></div></div></div><a class="indexterm" name="d0e1678"></a><a class="indexterm" name="d0e1681"></a><a class="indexterm" name="d0e1684"></a><p>
 ArgoUML has a set of automatic test cases using JUnit-framework
 for testing the insides of the code.
 The purpose of these are to help in pin-pointing problems with
@@ -11,7 +11,7 @@ run from ant targets in the
 <tt class="filename">src_new/build.xml</tt>.
 They are never distributed with ArgoUML but merely a tool for
 developers.
-</p><a class="indexterm" name="d0e1666"></a><a class="indexterm" name="d0e1671"></a><a class="indexterm" name="d0e1674"></a><a class="indexterm" name="d0e1679"></a><p>
+</p><a class="indexterm" name="d0e1694"></a><a class="indexterm" name="d0e1699"></a><a class="indexterm" name="d0e1702"></a><a class="indexterm" name="d0e1707"></a><p>
 By running the command
 <span><b class="command">build tests guitests</b></span>
 in <tt class="filename">src_new</tt>
@@ -24,10 +24,10 @@ The result is also generated into a set of files that can be found at
 </p><p>
 The test cases' Java source code is located under
 <tt class="filename">argouml/tests/org/argouml</tt>.
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e1702"></a>2.5.1.&nbsp;How to write a test case</h3></div></div></div><a class="indexterm" name="d0e1705"></a><a class="indexterm" name="d0e1708"></a><a class="indexterm" name="d0e1711"></a><a class="indexterm" name="d0e1716"></a><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e1730"></a>2.5.1.&nbsp;How to write a test case</h3></div></div></div><a class="indexterm" name="d0e1733"></a><a class="indexterm" name="d0e1736"></a><a class="indexterm" name="d0e1739"></a><a class="indexterm" name="d0e1744"></a><p>
 Now this will make all you Java enthusiasts go nuts!
 We have both class names and method names with a special syntax.
-</p><a class="indexterm" name="d0e1721"></a><a class="indexterm" name="d0e1726"></a><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1729"></a>2.5.1.1.&nbsp;About the Test case Class</h4></div></div></div><p>
+</p><a class="indexterm" name="d0e1749"></a><a class="indexterm" name="d0e1754"></a><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1757"></a>2.5.1.1.&nbsp;About the Test case Class</h4></div></div></div><p>
 The name of the test case class starts with "Test" (i.e. Capital T, then
 small e, s and t) or 
 "GUITest" (i.e. Capital G, U, I, T then small e, s, t).
@@ -91,7 +91,7 @@ import junit.framework.*;
 </p></blockquote></div><p>
 and it inherits <tt class="classname">TestCase</tt>
 (i.e. <tt class="classname">junit.framework.TestCase</tt>).
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1850"></a>2.5.1.2.&nbsp;About the Test case Method</h4></div></div></div><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1878"></a>2.5.1.2.&nbsp;About the Test case Method</h4></div></div></div><p>
 Methods that are tests must have names that start with "test"
 (i.e. all small t, e, s, t). This is a requirement of the JUnit
 framework.
@@ -135,7 +135,7 @@ They serve as a guarantee that the public interface of a class will
 never lose any of the functionality provided by its signature in an
 uncontrolled way in just the same way as the test-methods serve as a
 guarantee that no features will ever be lost.
-</p><div class="example"><a name="d0e1874"></a><p class="title"><b>Example&nbsp;2.1.&nbsp;An example without Javadoc comments</b></p><a class="indexterm" name="d0e1877"></a><p>
+</p><div class="example"><a name="d0e1902"></a><p class="title"><b>Example&nbsp;2.1.&nbsp;An example without Javadoc comments</b></p><a class="indexterm" name="d0e1905"></a><p>
 </p><pre class="programlisting">
 package org.argouml.uml.ui;
 import junit.framework.*;

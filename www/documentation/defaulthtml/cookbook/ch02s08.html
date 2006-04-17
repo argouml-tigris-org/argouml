@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>2.8.&nbsp;Making a release</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter&nbsp;2.&nbsp;Building from source"><link rel="prev" href="ch02s07.html" title="2.7.&nbsp;Generating documentation"><link rel="next" href="ch03.html" title="Chapter&nbsp;3.&nbsp;ArgoUML requirements"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.8.&nbsp;Making a release</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;2.&nbsp;Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="release_process"></a>2.8.&nbsp;Making a release</h2></div></div></div><a class="indexterm" name="d0e2365"></a><p>
+   <title>2.8.&nbsp;Making a release</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter&nbsp;2.&nbsp;Building from source"><link rel="prev" href="ch02s07.html" title="2.7.&nbsp;Generating documentation"><link rel="next" href="ch03.html" title="Chapter&nbsp;3.&nbsp;ArgoUML requirements"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.8.&nbsp;Making a release</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;2.&nbsp;Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="release_process"></a>2.8.&nbsp;Making a release</h2></div></div></div><a class="indexterm" name="d0e2393"></a><p>
 The purpose of this chapter is
 to simplify for the person that is actually doing the release work and
 to make sure that everything is done in the exact same way 
@@ -322,7 +322,12 @@ Search for them and Reopen the ones that haven't.
 Also, if the milestone denotes or is going to be resolved in
 the upcoming release, Reopen them with a comment that they are now
 active.
-</p></li></ol></div></li><li><p>Make announcements!</p><p>
+</p></li></ol></div></li><li><p>Notify persons responsible for installers</p><p>
+This is done by sending a mail on the
+<a href="mailto:dev@argoumlinstallers.tigris.org" target="_top">
+  installers mailing list
+</a>.
+</p></li><li><p>Make announcements!</p><p>
 Add the index file to the directory
 <tt class="filename">argouml/www/download</tt>
 so that it will show up at the URL
@@ -355,7 +360,7 @@ Include the link to the new item.
 Freshmeat: currently Thierry Lach does the Freshmeat announcements
 which require a login so just inform him.
 </p></li></ol></div><p>
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="release_process_test_failed"></a>2.8.1.&nbsp;The release did not work</h3></div></div></div><a class="indexterm" name="d0e2867"></a><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="release_process_test_failed"></a>2.8.1.&nbsp;The release did not work</h3></div></div></div><a class="indexterm" name="d0e2903"></a><p>
 This shouldn't happen! This really shouldn't happen!
 </p><p>
 The reason that this has happened is that one of the developers 
@@ -386,7 +391,7 @@ the culprit has and how ugly his mother is, is probably in place but
 please keep it constructive!
 Remember, you might be mistaken when you guess who the responsible is.
 </p></li></ul></div><p>
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e2932"></a>2.8.1.2.&nbsp;
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e2968"></a>2.8.1.2.&nbsp;
 Delay the release waiting for someone to fix the problem.
 </h4></div></div></div><p>
 Create the branch as described in 

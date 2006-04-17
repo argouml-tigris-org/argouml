@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>2.3.&nbsp;Download from the CVS repository</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter&nbsp;2.&nbsp;Building from source"><link rel="prev" href="ch02s02.html" title="2.2.&nbsp;Preparations"><link rel="next" href="ch02s04.html" title="2.4.&nbsp;Build Process"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.3.&nbsp;Download from the CVS repository</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;2.&nbsp;Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch02s04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="cvs_checkout"></a>2.3.&nbsp;Download from the CVS repository</h2></div></div></div><a class="indexterm" name="d0e878"></a><a class="indexterm" name="d0e883"></a><p>
+   <title>2.3.&nbsp;Download from the CVS repository</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter&nbsp;2.&nbsp;Building from source"><link rel="prev" href="ch02s02.html" title="2.2.&nbsp;Preparations"><link rel="next" href="ch02s04.html" title="2.4.&nbsp;Build Process"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.3.&nbsp;Download from the CVS repository</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;2.&nbsp;Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch02s04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="cvs_checkout"></a>2.3.&nbsp;Download from the CVS repository</h2></div></div></div><a class="indexterm" name="d0e894"></a><a class="indexterm" name="d0e899"></a><p>
 The CVS repository at Tigris is accessible using the pserver protocol.
 The CVS root is <tt class="filename">/cvs</tt> at cvs.tigris.org.
 You use your Tigris login and Tigris password.
@@ -26,7 +26,7 @@ You use your Tigris login and Tigris password.
       </p><p>
         If you use one of the CVS clients with a graphical user interface,
         (like WinCVS, GruntSpud, ...),
-        or an IDE with a built-in CVS client (like Eclipse, ...)
+        or an IDE with a built-in CVS client (like Eclipse or NetBeans)
         then configuration will be done by filling in fields. These fields mean
         the following:
       </p><div class="itemizedlist"><ul type="disc"><li><p>
@@ -71,11 +71,16 @@ the corresponding directory
 <i class="parameter"><tt>argouml/www</tt></i>, or
 <i class="parameter"><tt>argouml-mdr/www</tt></i>.
 </p><p>
-If you give the argument
-<i class="parameter"><tt>argouml</tt></i> the whole top project is checked out.
-That is no problem except for the extra use of bandwidth and disk space
-but if you have plenty of both, get it all, and eventually you will
-see how everything is used for a purpose in the project.
+If you value your time more than bandwidth and diskspace,
+just check out the top-level 
+<i class="parameter"><tt>argouml</tt></i> project and the mandatory
+<i class="parameter"><tt>argouml-mdr</tt></i> sub-project.  This
+triples the size of the download, mainly due to the images
+in the
+<tt class="filename">argouml/documentation</tt>
+and
+<tt class="filename">argouml/www</tt>,
+but minimizes the number of separate CVS commands.
 
 </p><p>
 If you don't want to acquire a Tigris login to do this you can use the

@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>5.3.&nbsp;Diagrams</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the subsystems"><link rel="prev" href="ch05s02.html" title="5.2.&nbsp;Critics and other cognitive tools"><link rel="next" href="ch05s04.html" title="5.4.&nbsp;Property panels"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.3.&nbsp;Diagrams</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the subsystems</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="diagrams"></a>5.3.&nbsp;Diagrams</h2></div></div></div><a class="indexterm" name="d0e4360"></a><a class="indexterm" name="d0e4363"></a><p>
+   <title>5.3.&nbsp;Diagrams</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the subsystems"><link rel="prev" href="ch05s02.html" title="5.2.&nbsp;Critics and other cognitive tools"><link rel="next" href="ch05s04.html" title="5.4.&nbsp;Property panels"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.3.&nbsp;Diagrams</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the subsystems</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="diagrams"></a>5.3.&nbsp;Diagrams</h2></div></div></div><a class="indexterm" name="d0e4401"></a><a class="indexterm" name="d0e4404"></a><p>
 Purpose - To present the diagrams to the user and allow the user to manipulate
 the diagrams through the view.
 </p><p>
@@ -22,7 +22,7 @@ subsystems, one for each diagram type. This is to allow for indiviual diagram
 reuse by other applications and to allow us to fast track developers onto a
 specific subproject containing that subsystem (Michael MacDonald and sequence
 diagrams in mind).
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4385"></a>5.3.1.&nbsp;Multi editor pane</h3></div></div></div><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4426"></a>5.3.1.&nbsp;Multi editor pane</h3></div></div></div><p>
 The multi editor pane is the pane with the diagram editor in it.
 Normally it is placed in the upper right corner of the application.
 One of the feature requests is to make the pane dockable so maybe 
@@ -54,7 +54,7 @@ calls <tt class="classname">MultiEditorPane</tt>.select(Object o).
 This selects the new target on a tab. This probably belongs in 
 the <tt class="methodname">setTarget</tt> method of the individual tabs and diagrams but 
 that's how it's implemented at the moment.
-</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4438"></a>5.3.1.1.&nbsp;How do I ...?</h4></div></div></div><p>
+</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4479"></a>5.3.1.1.&nbsp;How do I ...?</h4></div></div></div><p>
 </p><div class="itemizedlist"><ul type="disc"><li><p>...add a new tab to the <tt class="classname">MultiEditorPane</tt>?</p><p>
 Create a new class that's a child of <tt class="classname">JPanel</tt> 
 and put the following 
@@ -87,11 +87,11 @@ commented and have full Javadoc descriptions, to help when examining
 the code. 
 You will need to read the description here in conjunction
 with looking at the code.
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4483"></a>5.3.3.&nbsp;How to add a new Fig</h3></div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4524"></a>5.3.3.&nbsp;How to add a new Fig</h3></div></div></div><p>
 The new item must be added to the tool-bar. Both the graph model and
 diagram renderer for the diagram will need modifying for any new fig
 object.
-</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4488"></a>5.3.3.1.&nbsp;Adding to the tool-bar</h4></div></div></div><p>
+</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4529"></a>5.3.3.1.&nbsp;Adding to the tool-bar</h4></div></div></div><p>
 Find the diagram object in
 <tt class="filename">uml/diagram/<i class="replaceable"><tt>XXXX</tt></i>/ui/UML<i class="replaceable"><tt>YYYY</tt></i>Diagram.java</tt>, 
 where
@@ -142,7 +142,7 @@ as an argument, and sets up a graph model
 (<tt class="classname">UseCaseDiagramGraphModel</tt>), layer perspective and
 renderer (<tt class="classname">UseCaseDigramRenderer</tt>) for nodes and
 edges.
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4564"></a>5.3.3.2.&nbsp;Changing the graph model</h4></div></div></div><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4605"></a>5.3.3.2.&nbsp;Changing the graph model</h4></div></div></div><p>
 The graph model is the bridge between the UML meta-model
 representation of the design and the graph model of GEF. They are
 found in the parent directory of the corresponding diagram class, and
@@ -157,7 +157,7 @@ The graph model is defined as
 a child of the GEF class
 <tt class="classname">MutableGraphSupport</tt>, and should implement
 <tt class="classname">MutableGraphModel</tt> (GEF).
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4591"></a>5.3.3.3.&nbsp;Changing the renderer</h4></div></div></div><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4632"></a>5.3.3.3.&nbsp;Changing the renderer</h4></div></div></div><p>
 The renderer is responsible for creating graphic figs as required on
 the diagram. It is found in the same directory of the corresponding
 diagram class, and has the general name
@@ -174,7 +174,7 @@ represent a given NSUML edge object.
 In our example, we must extend <tt class="methodname">getFigEdgeFor()</tt> so
 it can handle NSUML MExtend objects (producing a
 <tt class="classname">FigExtend</tt>).
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4623"></a>5.3.3.4.&nbsp;Creating a new Fig (explanation 1)</h4></div></div></div><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4664"></a>5.3.3.4.&nbsp;Creating a new Fig (explanation 1)</h4></div></div></div><p>
 New objects that are to appear on a diagram will require new Fig
 classes to represent them. In our example we have created
 FigExtend. They are placed in the same directory as the diagram that
