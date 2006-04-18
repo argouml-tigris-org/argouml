@@ -205,7 +205,14 @@ public interface ModelManagementHelper {
      * contents : Set(ModelElement)
      * contents = self.ownedElement->union(self.importedElement)
      * </pre>
-     *
+     * 
+     * For a Instance: <pre>
+     * [5] The operation contents results in a Set containing all 
+     * ModelElements contained by the Instance.
+     *   contents: Set(ModelElement);
+     *   contents = self.ownedInstance->union(self.ownedLink)
+     * </pre>
+     * 
      * @param namespace the ns to get the contents from
      * @return a collection of modelelements
      */
