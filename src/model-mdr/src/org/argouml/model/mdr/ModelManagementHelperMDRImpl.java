@@ -43,8 +43,10 @@ import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Permission;
+import org.omg.uml.modelmanagement.ElementImport;
 import org.omg.uml.modelmanagement.Model;
 import org.omg.uml.modelmanagement.Subsystem;
+import org.omg.uml.modelmanagement.UmlPackage;
 
 /**
  * Helper class for UML ModelManagement Package.
@@ -467,6 +469,61 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             return ownershipPath;
         }
         throw new IllegalArgumentException("Not a base");
+    }
+
+    /*
+     * @see org.argouml.model.ModelManagementHelper#removeImportedElement(java.lang.Object, java.lang.Object)
+     */
+    public void removeImportedElement(Object pack, Object me) {
+        if (pack instanceof Package && me instanceof ModelElement) {
+            Collection c = ((UmlPackage) pack).getElementImport();
+            ElementImport match = null;
+            Iterator it = c.iterator();
+            while (it.hasNext()) {
+                ElementImport ei = (ElementImport) it.next();
+                if (ei.getImportedElement() == me) {
+                    match = ei;
+                    break;
+                }
+            }
+            if (match != null) c.remove(match);
+            return;
+        }
+        throw new IllegalArgumentException(
+                "There must be a Package and a ModelElement"); 
+    }
+
+    /*
+     * @see org.argouml.model.ModelManagementHelper#setImportedElements(java.lang.Object, java.util.Collection)
+     */
+    public void setImportedElements(Object pack, Collection imports) {
+        if (pack instanceof Package) {
+            Collection eis = ((UmlPackage) pack).getElementImport();
+            Collection toRemove = new ArrayList();
+            Collection toAdd = new ArrayList(imports);
+            Iterator i = eis.iterator();
+            while (i.hasNext()) {
+                ElementImport ei = (ElementImport) i.next();
+                if (imports.contains(ei.getImportedElement())) {
+                    toAdd.remove(ei);
+                } else {
+                    toRemove.add(ei);
+                }
+            }
+            eis.removeAll(toRemove); // Should these also be deleted?
+
+            Collection toAddEIs = new ArrayList();
+            i = toAdd.iterator();
+            while (i.hasNext()) {
+                ModelElement me = (ModelElement) i.next();
+                toAddEIs.add(nsmodel.getModelManagementFactory()
+                        .buildElementImport(pack, me));
+            }
+            eis.addAll(toAddEIs);
+            return;
+        }
+        throw new IllegalArgumentException(
+                "There must be a Package and a ModelElement");
     }
 
     /*

@@ -187,7 +187,25 @@ public interface ModelManagementHelper {
      * @return true if the child is allready in the ownership relationship
      */
     boolean isCyclicOwnership(Object parent, Object child);
-    
+
+    /**
+     * This method removes the import 
+     * of a modelelement from a package.
+     *
+     * @param handle is the package
+     * @param me is the modelelement that was imported
+     */
+    void removeImportedElement(Object handle, Object me);
+
+    /**
+     * Set the complete collection of imported elements 
+     * for a package.
+     * 
+     * @param pack the package to import in
+     * @param imports the collection of modelelements to import
+     */
+    void setImportedElements(Object pack, Collection imports);
+
     /**
      * This method calculates the "contents" additional operation 
      * from the standard: <p>

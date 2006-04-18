@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,6 +55,16 @@ public interface ModelManagementFactory extends Factory {
      * @return an initialized UML ElementImport instance.
      */
     Object createElementImport();
+
+    /**
+     * Build a ElementImport for the given package and modelelement.
+     * The visibility, alias and isSpecification are not filled in.
+     * 
+     * @param pack the given package
+     * @param me the given modelelement
+     * @return the newly created ElementImport
+     */
+    Object buildElementImport(Object pack, Object me);
 
     /**
      * Create an empty but initialized instance of a UML Package.
