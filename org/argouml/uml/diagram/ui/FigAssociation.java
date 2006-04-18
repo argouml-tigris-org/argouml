@@ -187,39 +187,9 @@ public class FigAssociation extends FigEdgeModelElement {
      * @param lay the layer
      */
     public FigAssociation(Object edge, Layer lay) {
-	this();
-	setLayer(lay);
-	setOwner(edge);
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    public void setOwner(Object newOwner) {
-        if (newOwner != getOwner()) {
-            if (Model.getFacade().isAAssociation(newOwner)) {
-                updateListeners(newOwner);
-                Collection newConns = Model.getFacade()
-                        .getConnections(newOwner);
-                Object assEnd1 = (newConns.toArray())[0];
-                Object assEnd2 = (newConns.toArray())[1];
-                FigNode destNode =
-                    (FigNode) getLayer()
-                        .presentationFor(Model.getFacade().getType(assEnd1));
-                FigNode srcNode =
-                    (FigNode) getLayer()
-                        .presentationFor(Model.getFacade().getType(assEnd2));
-                if (destNode != null) {
-                    setDestFigNode(destNode);
-                    setDestPortFig(destNode);
-                }
-                if (srcNode != null) {
-                    setSourceFigNode(srcNode);
-                    setSourcePortFig(srcNode);
-                }
-            }
-        }
-        super.setOwner(newOwner);
+        this();
+        setLayer(lay);
+        setOwner(edge);
     }
 
     /**

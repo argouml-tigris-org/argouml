@@ -113,14 +113,14 @@ public class FigGeneralization extends FigEdgeModelElement {
 
     }
 
-    /**
-     * The constructor that hooks the Fig into the UML element
-     * @param edge the UML element
-     */
-    public FigGeneralization(Object edge) {
-  	this();
-  	setOwner(edge);
-    }
+//    /**
+//     * The constructor that hooks the Fig into the UML element
+//     * @param edge the UML element
+//     */
+//    private FigGeneralization(Object edge) {
+//  	this();
+//  	setOwner(edge);
+//    }
 
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
@@ -177,37 +177,25 @@ public class FigGeneralization extends FigEdgeModelElement {
      * @see org.tigris.gef.presentation.Fig#setOwner(Object)
      */
     public void setOwner(Object own) {
-	super.setOwner(own);
-	if (Model.getFacade().isAGeneralization(own)) {
-	    Object gen = own;	// MGeneralization
-	    Object subType =
-		Model.getFacade().getChild(gen); // MGeneralizableElement
-	    Object superType =
-		Model.getFacade().getParent(gen); // MGeneralizableElement
-	    // due to errors in earlier releases of argouml it can
-	    // happen that there is a generalization without a child
-	    // or parent.
-	    if (subType == null || superType == null) {
-	        // TODO: We should warn the user we have removed something - tfm
-	        removeFromDiagram();
-		return;
-	    }
-	    // TODO: This can fail when called from the single argument
-	    // form of the constructor because getLayer() returns null. - tfm
-	    // see for example project attached to issue 4121
-	    FigNode subTypeFN = (FigNode) getLayer().presentationFor(subType);
-	    FigNode superTypeFN =
-		(FigNode) getLayer().presentationFor(superType);
-	    setSourcePortFig(subTypeFN);
-	    setSourceFigNode(subTypeFN);
-	    setDestPortFig(superTypeFN);
-	    setDestFigNode(superTypeFN);
-
-	} else {
-	    if (own != null) {
-		throw new IllegalStateException("FigGeneralization "
-						+ "has an illegal owner");
-	    }
+        super.setOwner(own);
+        if (Model.getFacade().isAGeneralization(own)) {
+            Object gen = own;	// MGeneralization
+            Object subType =
+        	Model.getFacade().getChild(gen); // MGeneralizableElement
+            Object superType =
+        	Model.getFacade().getParent(gen); // MGeneralizableElement
+            // due to errors in earlier releases of argouml it can
+            // happen that there is a generalization without a child
+            // or parent.
+            if (subType == null || superType == null) {
+                // TODO: We should warn the user we have removed something - tfm
+                removeFromDiagram();
+        	return;
+            }
+        } else if (own != null) {
+            throw new IllegalStateException(
+                    "FigGeneralization has an illegal owner of "
+                    + own.getClass().getName());
         }
     }
 

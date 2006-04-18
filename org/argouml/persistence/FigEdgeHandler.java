@@ -140,8 +140,8 @@ public class FigEdgeHandler
             return (FigNode) parser.findFig(figId);
         }
         // If the id does not look like a top-level Fig then we can assume that
-        // this is an id of a FigCommentPort inside some FigEdge.
-        // So extract the FigCommentPort from the FigEdge and return that as
+        // this is an id of a FigEdgePort inside some FigEdge.
+        // So extract the FigEdgePort from the FigEdge and return that as
         // the FigNode.
         figId = figId.substring(0, figId.indexOf('.'));
         FigEdgeModelElement edge = (FigEdgeModelElement) parser.findFig(figId);
