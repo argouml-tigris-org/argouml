@@ -28,13 +28,18 @@ import org.argouml.model.Model;
 
 class ActionModifierRoot extends AbstractActionCheckBoxMenuItem {
     /**
+     * Serial version generated for rev. 1.5
+     */
+    private static final long serialVersionUID = -5465416932632977463L;
+
+    /**
      * The constructor.
      *
      * @param o the target
      */
     public ActionModifierRoot(Object o) {
         super("checkbox.root-uc", NO_ICON);
-        putValue("SELECTED", new Boolean(valueOfTarget(o)));
+        putValue("SELECTED", Boolean.valueOf(valueOfTarget(o)));
     }
 
     /**

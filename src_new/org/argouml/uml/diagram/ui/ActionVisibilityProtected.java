@@ -28,13 +28,18 @@ import org.argouml.model.Model;
 
 class ActionVisibilityProtected extends AbstractActionRadioMenuItem {
     /**
+     * Serial version generated for rev 1.5
+     */
+    private static final long serialVersionUID = -8808296945094744255L;
+
+    /**
      * The constructor.
      *
      * @param o the target
      */
     public ActionVisibilityProtected(Object o) {
         super("checkbox.visibility.protected-uc", NO_ICON);
-        putValue("SELECTED", new Boolean(
+        putValue("SELECTED", Boolean.valueOf(
             Model.getVisibilityKind().getProtected()
                 .equals(valueOfTarget(o))));
     }

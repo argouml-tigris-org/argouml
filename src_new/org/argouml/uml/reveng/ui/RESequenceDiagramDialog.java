@@ -220,7 +220,7 @@ public class RESequenceDiagramDialog
 
         if (e.getSource() == getOkButton()) {
             for (int i = 0; i < callTable.getRowCount(); i++) {
-                if (Boolean.TRUE.equals((Boolean) callTable.getValueAt(i, 1))) {
+                if (Boolean.TRUE.equals(callTable.getValueAt(i, 1))) {
                     buildAction((String) callTable.getValueAt(i, 0));
                 }
             }
