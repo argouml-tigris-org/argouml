@@ -49,7 +49,7 @@ public class CheckboxTableModel extends AbstractTableModel {
         elements = new Object[labels.length][3];
         for (int i = 0; i < elements.length; i++) {
             elements[i][0] = labels[i];
-            elements[i][1] = new Boolean(true);
+            elements[i][1] = Boolean.TRUE;
             if (data != null && i < data.length) {
                 elements[i][2] = data[i];
             } else {

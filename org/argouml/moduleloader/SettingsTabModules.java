@@ -105,7 +105,7 @@ public class SettingsTabModules extends SettingsTabHelper {
 	    for (int i = 0; i < elements.length; i++) {
 		elements[i][0] = arr[i];
 		elements[i][1] =
-		    new Boolean(ModuleLoader2.isSelected((String) arr[i]));
+		    Boolean.valueOf(ModuleLoader2.isSelected((String) arr[i]));
 	    }
 	}
 

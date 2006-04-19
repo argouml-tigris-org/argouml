@@ -44,6 +44,11 @@ import org.tigris.gef.util.ResourceLoader;
 public class ActionAddAssociationRole extends CmdSetMode {
 
     /**
+     * Serial versoin generated for rev 1.14
+     */
+    private static final long serialVersionUID = -2842826831538374107L;
+
+    /**
      * Construct a new ActionAddAssociationRole.
      *
      * @param aggregationKind the required aggregation for the association.
@@ -59,7 +64,7 @@ public class ActionAddAssociationRole extends CmdSetMode {
               Model.getMetaTypes().getAssociationRole(),
               name);
         _modeArgs.put("aggregation", aggregationKind);
-        _modeArgs.put("unidirectional", new Boolean(unidirectional));
+        _modeArgs.put("unidirectional", Boolean.valueOf(unidirectional));
     }
 
     /**
@@ -80,7 +85,7 @@ public class ActionAddAssociationRole extends CmdSetMode {
                 Model.getMetaTypes().getAssociationRole(),
                 name);
         _modeArgs.put("aggregation", aggregationKind);
-        _modeArgs.put("unidirectional", new Boolean(unidirectional));
+        _modeArgs.put("unidirectional", Boolean.valueOf(unidirectional));
         Icon icon = ResourceLoader.lookupIconResource(iconName, iconName);
         if (icon != null) {
             putValue(Action.SMALL_ICON, icon);

@@ -77,8 +77,7 @@ public abstract class ValueHandler implements NotationProvider4 {
      * @see org.argouml.notation.NotationProvider4#putValue(java.lang.String, boolean)
      */
     public void putValue(String key, boolean newValue) {
-        Boolean b = new Boolean(newValue);
-        putValue(key, b);
+        putValue(key, Boolean.valueOf(newValue));
     }
 
     /**

@@ -27,6 +27,12 @@ package org.argouml.uml.diagram.ui;
 import org.argouml.model.Model;
 
 class ActionModifierAbstract extends AbstractActionCheckBoxMenuItem {
+    
+    /**
+     * Serial version generated for rev. 1.5
+     */
+    private static final long serialVersionUID = 2005311943576318145L;
+
     /**
      * The constructor.
      *
@@ -34,7 +40,7 @@ class ActionModifierAbstract extends AbstractActionCheckBoxMenuItem {
      */
     public ActionModifierAbstract(Object o) {
         super("checkbox.abstract-uc", NO_ICON);
-        putValue("SELECTED", new Boolean(valueOfTarget(o)));
+        putValue("SELECTED", Boolean.valueOf(valueOfTarget(o)));
     }
 
     /**

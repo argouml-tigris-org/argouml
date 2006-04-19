@@ -43,6 +43,11 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 public class ActionSetAddAssociationMode extends CmdSetMode {
 
     /**
+     * Serial version generated for rev. 1.2
+     */
+    private static final long serialVersionUID = -3869448253653259670L;
+
+    /**
      * Construct a new ActionAddAssociation.<p>
      *
      * @param aggregationKind the required aggregation for the association.
@@ -52,11 +57,10 @@ public class ActionSetAddAssociationMode extends CmdSetMode {
      */
     public ActionSetAddAssociationMode(Object aggregationKind, boolean unidirectional,
 				String name) {
-        //super(ModeCreateAssociation.class, "edgeClass",
         super(ModeCreatePolyEdge.class, "edgeClass",
 	      Model.getMetaTypes().getAssociation(), name);
         _modeArgs.put("aggregation", aggregationKind);
-        _modeArgs.put("unidirectional", new Boolean(unidirectional));
+        _modeArgs.put("unidirectional", Boolean.valueOf(unidirectional));
     }
 }
 
