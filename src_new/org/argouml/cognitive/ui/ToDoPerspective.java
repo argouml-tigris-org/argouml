@@ -24,11 +24,9 @@
 
 package org.argouml.cognitive.ui;
 
-import java.io.Serializable;
 import java.util.Vector;
+
 import org.apache.log4j.Logger;
-
-
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.ui.TreeModelComposite;
 
@@ -37,8 +35,7 @@ import org.argouml.ui.TreeModelComposite;
  *
  * A todo tree model / perspective is a collection of GoRules.
  */
-public abstract class ToDoPerspective extends TreeModelComposite
-    implements Serializable {
+public abstract class ToDoPerspective extends TreeModelComposite {
 
     /**
      * Logger.
