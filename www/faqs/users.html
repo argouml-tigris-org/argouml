@@ -37,7 +37,7 @@ with other users?</a></li>
 <li><a href="#osx_link">OS X: How can I access the context sensitive menus?</a>
 <li><a href="#osx_java">OS X 10.2: How can I get ArgoUML to work?</a>
 <li><a href="#win_link">Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
-<li><a href="#unknownhostexception">In Linux: 
+<li><a href="#unknownhostexception">Unix/Linux: 
       I cannot start because of an java.net.UnknownHostException
     </a>
 <li><a href="#linux_gcj">Linux: Why does ArgoUML fail to start with an 
@@ -348,17 +348,20 @@ three different levels of the dialog).
 You can now double-click on your model and have ArgoUML instantly loaded.
 
 
-<DT><a name="unknownhostexception">Linux: 
+<DT><a name="unknownhostexception">Unix/Linux: 
       I cannot start because of an java.net.UnknownHostException
     </a>
 <DD>
-ArgoUML uses 
+ArgoUML uses the Java method 
 InetAddress.getLocalHost()
-to get a unique identifier on all elements that are to be created 
+to get the IP address of the local machine to use in constructing a
+unique identifier on all elements that are to be created 
 in that instance of ArgoUML.
 This works for networked machines and for stand alone-machines.
 However there are cases when the TCP/IP configuration is wrong
-where this does not work.
+where this does not work.  Make sure that 'hostname' returns
+a valid name on your machine and that there is an IP address 
+for this name in your /etc/hosts file or DNS.
 <p>
 
 The solution is, fix your network configuration.
