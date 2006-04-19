@@ -24,9 +24,13 @@
 
 package org.argouml.uml.ui.model_management;
 
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
+import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.ActionAddDataType;
 import org.argouml.uml.ui.foundation.core.ActionAddEnumeration;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -74,8 +78,15 @@ public class PropPanelModel extends PropPanelPackage  {
         
         addField(Translator.localize("label.owned-elements"),
                 getOwnedElementsScroll());
+
+        JList importList =
+            new UMLMutableLinkedList(new UMLClassifierPackageImportsListModel(),
+                new ActionAddPackageImport(),
+                null,
+                new ActionRemovePackageImport(),
+                true);
         addField(Translator.localize("label.imported-elements"),
-                getImportedElementsScroll());
+                new JScrollPane(importList));
 
         addAction(new ActionNavigateNamespace());
         addAction(new ActionAddPackage());

@@ -1960,6 +1960,14 @@ public interface Facade {
     Collection getImportedElements(Object pack);
 
     /**
+     * Returns the imported element from a ElementImport.
+     * 
+     * @param elementImport the given ElementImport
+     * @return the ModelElement that was imported
+     */
+    Object getImportedElement(Object elementImport);
+
+    /**
      * Return the Links of a given Association.
      *
      * @param handle the Association

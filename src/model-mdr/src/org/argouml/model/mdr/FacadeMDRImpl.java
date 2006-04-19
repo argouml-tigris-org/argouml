@@ -1975,21 +1975,23 @@ class FacadeMDRImpl implements Facade {
             for (Iterator it = imports.iterator(); it.hasNext();) {
                 ElementImport ei = (ElementImport) it.next();
                 ModelElement element = ei.getImportedElement();
-                String alias = ei.getAlias();
-                VisibilityKind visibility = ei.getVisibility();
-                // TODO: Add code to do import processing
-                if (!(visibility.equals(element.getVisibility()))) {
-                    // redefine visibilty -- unless MDR does it automatically
-                }
-                if (alias != null && !("".equals(alias))) {
-                    // redefine name using alias -- or does MDR do this for us?
-                }
                 results.add(element);
             }
             return results;
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
+    }
+    
+    /*
+     * @see org.argouml.model.Facade#getImportedElement(java.lang.Object)
+     */
+    public Object getImportedElement(Object elementImport) {
+        if (!(elementImport instanceof ElementImport)) {
+            return illegalArgumentCollection("This is not an ElementImport: " 
+                    + elementImport);
+        }
+        return ((ElementImport) elementImport).getImportedElement();
     }
 
     /**

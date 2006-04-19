@@ -217,6 +217,17 @@ public class DisplayTextTree extends JTree {
             return "Multiplicity: " 
                 + Model.getDataTypesHelper().multiplicityToString(value);
         }
+        
+        if (Model.getFacade().isAElementImport(value)) {
+            StringBuffer s = new StringBuffer("Imported ");
+            Object me = Model.getFacade().getImportedElement(value);
+            s.append(Model.getFacade().getUMLClassName(me));
+            s.append(": ");
+            // TODO: Handle the Alias from the ElementImport.
+            s.append(convertValueToText(me, selected, expanded, 
+                    leaf, row, hasFocus));
+            return s.toString();
+        }
 
         if (value != null) {
             return value.toString();

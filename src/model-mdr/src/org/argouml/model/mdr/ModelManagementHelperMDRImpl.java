@@ -37,7 +37,6 @@ import javax.jmi.model.MofClass;
 import javax.jmi.reflect.RefClass;
 import javax.jmi.reflect.RefPackage;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.ModelManagementHelper;
 import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.ModelElement;
@@ -59,11 +58,6 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * @author Thierry Lach
  */
 class ModelManagementHelperMDRImpl implements ModelManagementHelper {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger
-            .getLogger(ModelManagementHelperMDRImpl.class);
 
     /**
      * The model implementation.
@@ -313,6 +307,34 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     }
 
     /*
+     * @see org.argouml.model.ModelManagementHelper#getAllPossibleImports(java.lang.Object)
+     */
+    public Collection getAllPossibleImports(Object pack) {
+        // TODO: Fully implement this!
+        
+        Object container = pack;
+        Object cc = nsmodel.getFacade().getModelElementContainer(pack);
+        while (cc != null) {
+            container = cc;
+            cc = nsmodel.getFacade().getModelElementContainer(cc);
+        }
+
+        Collection mes = getAllModelElementsOfKind(container, 
+                nsmodel.getMetaTypes().getModelElement());
+        
+        Collection vmes = new ArrayList();
+        Iterator i = mes.iterator();
+        while (i.hasNext()) {
+            Object me = i.next();
+            if (nsmodel.getCoreHelper().isValidNamespace(me, pack)) {
+                vmes.add(me);
+            }
+        }
+        
+        return vmes;
+    }
+
+    /*
      * @see org.argouml.model.ModelManagementHelper#getElement(java.util.Vector, java.lang.Object)
      */
     public Object getElement(Vector path, Object theRootNamespace) {
@@ -475,7 +497,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
      * @see org.argouml.model.ModelManagementHelper#removeImportedElement(java.lang.Object, java.lang.Object)
      */
     public void removeImportedElement(Object pack, Object me) {
-        if (pack instanceof Package && me instanceof ModelElement) {
+        if (pack instanceof UmlPackage && me instanceof ModelElement) {
             Collection c = ((UmlPackage) pack).getElementImport();
             ElementImport match = null;
             Iterator it = c.iterator();
@@ -497,7 +519,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
      * @see org.argouml.model.ModelManagementHelper#setImportedElements(java.lang.Object, java.util.Collection)
      */
     public void setImportedElements(Object pack, Collection imports) {
-        if (pack instanceof Package) {
+        if (pack instanceof UmlPackage) {
             Collection eis = ((UmlPackage) pack).getElementImport();
             Collection toRemove = new ArrayList();
             Collection toAdd = new ArrayList(imports);

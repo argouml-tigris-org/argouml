@@ -97,6 +97,16 @@ public interface ModelManagementHelper {
      * @return a collection of all behavioralfeatures in the given namespace
      */
     Collection getAllBehavioralFeatures(Object ns);
+    
+    /**
+     * Returns a collection of ModelElements 
+     * that may possibly be imported in the given package.
+     * 
+     * @param pack the given package
+     * @return a collection with modelelements 
+     * that may possibly be imported in the given package
+     */
+    Collection getAllPossibleImports(Object pack);
 
     /**
      * Get the modelelement a given path below a given root-namespace.
