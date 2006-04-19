@@ -189,10 +189,6 @@ public class TabDiagram
         newTarget.setAsTarget();
 
         setToolBar(newTarget.getJToolBar());
-        // This call fixes a seemingly-harmless NPE when we switch to a
-        // sequence diagram; I have no idea why
-        // --Michael MacDonald
-        javax.swing.RepaintManager.currentManager(this).paintDirtyRegions();
         graph.removeGraphSelectionListener(this);
         graph.setDiagram(newTarget);
         graph.addGraphSelectionListener(this);
