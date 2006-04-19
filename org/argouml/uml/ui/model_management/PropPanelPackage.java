@@ -24,23 +24,15 @@
 
 package org.argouml.uml.ui.model_management;
 
-import java.awt.event.ActionEvent;
-import java.util.Vector;
-
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
-import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.ActionAddDataType;
 import org.argouml.uml.ui.foundation.core.ActionAddEnumeration;
@@ -69,7 +61,6 @@ public class PropPanelPackage extends PropPanelNamespace  {
     private JPanel modifiersPanel;
     private JScrollPane generalizationScroll;
     private JScrollPane specializationScroll;
-    private JScrollPane importedElementsScroll;
 
     private static UMLGeneralizableElementGeneralizationListModel
         generalizationListModel =
@@ -77,9 +68,6 @@ public class PropPanelPackage extends PropPanelNamespace  {
     private static UMLGeneralizableElementSpecializationListModel
         specializationListModel =
             new UMLGeneralizableElementSpecializationListModel();
-    private static UMLPackageImportedElementListModel
-        importedElementListModel =
-            new UMLPackageImportedElementListModel();
 
     /**
      * Construct a default property panel for UML Package elements.
@@ -127,20 +115,15 @@ public class PropPanelPackage extends PropPanelNamespace  {
         
         addField(Translator.localize("label.owned-elements"),
                 getOwnedElementsScroll());
-        addField(Translator.localize("label.imported-elements"),
-                getImportedElementsScroll());
 
-        /* TODO: Replace the previous 2 lines by this: 
-         * (Issue 1942) */
-        
-//        JList importList =
-//            new UMLMutableLinkedList(new UMLClassifierPackageImportsListModel(),
-//                new ActionAddPackageImport(),
-//                null,
-//                new ActionRemovePackageImport(),
-//                true);
-//        addField(Translator.localize("label.imported-elements"),
-//                new JScrollPane(importList));
+        JList importList =
+            new UMLMutableLinkedList(new UMLClassifierPackageImportsListModel(),
+                new ActionAddPackageImport(),
+                null,
+                new ActionRemovePackageImport(),
+                true);
+        addField(Translator.localize("label.imported-elements"),
+                new JScrollPane(importList));
 
         addAction(new ActionNavigateNamespace());
         addAction(new ActionAddPackage());
@@ -194,167 +177,4 @@ public class PropPanelPackage extends PropPanelNamespace  {
         return specializationScroll;
     }
 
-    /**
-     * @return the scrollpane with imported modelelements
-     */
-    public JScrollPane getImportedElementsScroll() {
-        if (importedElementsScroll == null) {
-            importedElementsScroll = new ScrollList(importedElementListModel);
-        }
-        return importedElementsScroll;
-    }
-
 } /* end class PropPanelPackage */
-
-/**
- * The model for the list with imported elements for a package.
- * 
- * @author michiel
- */
-class UMLPackageImportedElementListModel
-    extends UMLModelElementListModel2 {
-    
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 2032401462422026643L;
-
-    /**
-     * Constructor for UMLPackageImportedElementListModel.
-     */
-    public UMLPackageImportedElementListModel() {
-        super("importedElement");
-    }
-    
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
-     */
-    protected void buildModelList() {
-        if (getTarget() != null) {
-            setAllElements(Model.getFacade().getImportedElements(getTarget()));
-        }
-    }
-    
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
-     */
-    protected boolean isValidElement(Object element) {
-        return Model.getFacade().getImportedElements(getTarget())
-            .contains(element);
-    }
-}
-
-/**
- * Shows the ModelElements imported in a Package.
- * 
- * @author Michiel
- */
-class UMLClassifierPackageImportsListModel extends UMLModelElementListModel2 {
-
-    /**
-     * Constructor for UMLClassifierRoleBaseListModel.
-     */
-    public UMLClassifierPackageImportsListModel() {
-        super("importedElement");
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
-     */
-    protected void buildModelList() {
-        setAllElements(Model.getFacade().getImportedElements(getTarget()));
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
-     */
-    protected boolean isValidElement(Object elem) {
-        return Model.getFacade().isAModelElement(elem)
-            && Model.getFacade().getImportedElements(
-                    getTarget()).contains(elem);
-    }
-
-}
-
-/**
- * Add an import to a package.
- * 
- * @author Michiel
- */
-class ActionAddPackageImport extends AbstractActionAddModelElement {
-
-    /**
-     * Constructor for ActionAddPackageImport.
-     */
-    ActionAddPackageImport() {
-        super();
-    }
-
-    /**
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-     */
-    protected Vector getChoices() {
-        Vector vec = new Vector();
-        /* TODO: implement next function in the model subsystem for 
-         * issue 1942: */
-//        vec.addAll(Model.getModelManagementHelper()
-//                .getAllPossibleImports(getTarget()));
-        return vec;
-    }
-
-    /**
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-     */
-    protected Vector getSelected() {
-        Vector vec = new Vector();
-        vec.addAll(Model.getFacade().getImportedElements(getTarget()));
-        return vec;
-    }
-
-    /**
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-     */
-    protected String getDialogTitle() {
-        return Translator.localize("dialog.title.add-imported-elements");
-    }
-
-    /**
-     * @see
-     * org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
-     */
-    protected void doIt(Vector selected) {
-        Object pack = getTarget();
-        Model.getModelManagementHelper().setImportedElements(pack, selected);
-    }
-
-}
-
-
-
-
-/**
- * Remove an import from a package.
- * 
- * @author Michiel
- */
-class ActionRemovePackageImport
-    extends AbstractActionRemoveElement {
-    
-    /**
-     * Constructor for ActionRemovePackageImport.
-     */
-    ActionRemovePackageImport() {
-        super(Translator.localize("menu.popup.remove"));
-    }
-    
-    /**
-     * @see
-     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        Model.getModelManagementHelper()
-            .removeImportedElement(getTarget(), getObjectToRemove());
-    }
-    
-}
