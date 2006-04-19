@@ -70,8 +70,9 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         Object model =
             ProjectManager.getManager().getCurrentProject().getRoot();
-        Object t = getTarget();
-        Collection c = Model.getCoreHelper().getAllPossibleNamespaces(t, model);
+        Object target = getTarget();
+        Collection c = 
+            Model.getCoreHelper().getAllPossibleNamespaces(target, model);
 
         /* These next lines for the case that the current namespace
          * is not a valid one... Which ofcourse should not happen,
@@ -80,8 +81,8 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         /* TODO: Enhance the isValidNamespace function so
          * that this never happens.
          */
-        if (t != null) {
-            Object namespace = Model.getFacade().getNamespace(t);
+        if (target != null) {
+            Object namespace = Model.getFacade().getNamespace(target);
             if (!c.contains(namespace)) {
                 c.add(namespace);
                 LOG.warn("The current namespace is not a valid one!");
