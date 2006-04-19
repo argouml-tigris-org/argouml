@@ -1219,10 +1219,6 @@ public final class ProjectBrowser
             Designer.enableCritiquing();
             success = false;
         } else {
-            Model.getPump().flushModelEvents();
-            Model.getPump().stopPumpingEvents();
-            Model.getPump().flushModelEvents();
-            
             // Hide save action during load. Otherwise we get the
             // * appearing in title bar as models are updated
             Action saveAction = this.saveAction;
@@ -1344,8 +1340,6 @@ public final class ProjectBrowser
                 UndoManager.getInstance().empty();
                 Designer.enableCritiquing();
                 
-                Model.getPump().flushModelEvents();
-                Model.getPump().startPumpingEvents();
                 // Make sure save action is always reinstated
                 this.saveAction = saveAction;
                 ProjectManager.getManager().setSaveAction(saveAction);
