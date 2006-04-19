@@ -48,17 +48,21 @@ import org.omg.uml.behavioralelements.collaborations.AssociationEndRole;
 import org.omg.uml.behavioralelements.collaborations.AssociationRole;
 import org.omg.uml.behavioralelements.collaborations.ClassifierRole;
 import org.omg.uml.behavioralelements.collaborations.Collaboration;
+import org.omg.uml.behavioralelements.collaborations.CollaborationInstanceSet;
 import org.omg.uml.behavioralelements.collaborations.Interaction;
 import org.omg.uml.behavioralelements.collaborations.Message;
 import org.omg.uml.behavioralelements.commonbehavior.Action;
 import org.omg.uml.behavioralelements.commonbehavior.AttributeLink;
 import org.omg.uml.behavioralelements.commonbehavior.ComponentInstance;
+import org.omg.uml.behavioralelements.commonbehavior.DataValue;
 import org.omg.uml.behavioralelements.commonbehavior.Instance;
 import org.omg.uml.behavioralelements.commonbehavior.Link;
 import org.omg.uml.behavioralelements.commonbehavior.LinkEnd;
 import org.omg.uml.behavioralelements.commonbehavior.NodeInstance;
 import org.omg.uml.behavioralelements.commonbehavior.Reception;
 import org.omg.uml.behavioralelements.commonbehavior.Signal;
+import org.omg.uml.behavioralelements.commonbehavior.Stimulus;
+import org.omg.uml.behavioralelements.commonbehavior.SubsystemInstance;
 import org.omg.uml.behavioralelements.statemachines.CompositeState;
 import org.omg.uml.behavioralelements.statemachines.Event;
 import org.omg.uml.behavioralelements.statemachines.Guard;
@@ -71,6 +75,7 @@ import org.omg.uml.behavioralelements.usecases.Actor;
 import org.omg.uml.behavioralelements.usecases.Extend;
 import org.omg.uml.behavioralelements.usecases.Include;
 import org.omg.uml.behavioralelements.usecases.UseCase;
+import org.omg.uml.behavioralelements.usecases.UseCaseInstance;
 import org.omg.uml.foundation.core.Abstraction;
 import org.omg.uml.foundation.core.AssociationEnd;
 import org.omg.uml.foundation.core.Attribute;
@@ -118,6 +123,7 @@ import org.omg.uml.foundation.datatypes.ScopeKind;
 import org.omg.uml.foundation.datatypes.VisibilityKind;
 import org.omg.uml.foundation.datatypes.VisibilityKindEnum;
 import org.omg.uml.modelmanagement.ElementImport;
+import org.omg.uml.modelmanagement.Subsystem;
 import org.omg.uml.modelmanagement.UmlPackage;
 
 
@@ -434,7 +440,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         case 0:
             return null;
         default:
-            LOG.debug("More than one ReturnParameter found, returning first!");
+            LOG.warn("More than one ReturnParameter found, returning first!");
             return (Parameter) returnParams.iterator().next();
         }
     }
@@ -1212,7 +1218,6 @@ public class CoreHelperMDRImpl implements CoreHelper {
      * @see org.argouml.model.CoreHelper#isValidNamespace( java.lang.Object,
      *      java.lang.Object)
      */
-    // TODO: This hasn't been updated for UML 1.4
     public boolean isValidNamespace(Object mObj, Object nsObj) {
 
         if (!(mObj instanceof ModelElement) || !(nsObj instanceof Namespace)) {
@@ -1240,24 +1245,68 @@ public class CoreHelperMDRImpl implements CoreHelper {
                             == getFirstSharedNamespace(modelElement, ns)) {
                 return false;
             }
-            if (ns instanceof Interface || ns instanceof Actor) {
+            if (ns instanceof Interface 
+                    || ns instanceof Actor
+                    || ns instanceof DataType
+                    || ns instanceof DataValue
+                    || ns instanceof NodeInstance
+                    || ns instanceof Signal
+                    // || ns instanceof UseCase // see comment below
+                    || ns instanceof UseCaseInstance
+                    || ns instanceof ClassifierInState) {
                 return false;
             } else if (ns instanceof UseCase 
                     && modelElement instanceof Classifier) {
+                /*
+                 * NOTE: Although WFR #3 in section 2.11.3.5 UseCase of the
+                 * UML 1.4 spec says "A UseCase cannot contain any 
+                 * Classifiers," the OCL is actually self.contents->isEmpty
+                 * which would seem to imply it can't contain any elements
+                 * - tfm - 20060416
+                 */
                 return false;
             } else if (ns instanceof Component) {
                 return (modelElement instanceof Component
                         && modelElement != ns);
-            } else if (ns instanceof Collaboration) {
-                if (!(modelElement instanceof ClassifierRole
-                        || modelElement instanceof AssociationRole
-                        || modelElement instanceof Generalization
-                        || modelElement instanceof Constraint)) {
+            } else if (ns instanceof ComponentInstance) {
+                return (modelElement instanceof ComponentInstance
+                        && modelElement != ns);
+            } else if (ns instanceof 
+                    org.omg.uml.behavioralelements.commonbehavior.Object) {
+                // Made following changes from OCL in UML 1.4 section 2.9.3.16:
+                //   CollaborationInstance -> CollaborationInstanceSet
+                //   Stimuli -> Stimulus
+                if (!(modelElement instanceof 
+                        org.omg.uml.behavioralelements.commonbehavior.Object
+                        || modelElement instanceof DataValue
+                        || modelElement instanceof Link
+                        || modelElement instanceof UseCaseInstance
+                        || modelElement instanceof CollaborationInstanceSet
+                        || modelElement instanceof Stimulus)) {
                     return false;
                 }
-            } else if (ns instanceof UmlPackage) {
+            } else if (ns instanceof SubsystemInstance) {
+                // Made following change from OCL in UML 1.4 section 2.9.3.22:
+                //   CollaborationInstance -> CollaborationInstanceSet
+                if (!(modelElement instanceof 
+                        org.omg.uml.behavioralelements.commonbehavior.Object
+                        || modelElement instanceof DataValue
+                        || modelElement instanceof Link
+                        || modelElement instanceof UseCaseInstance
+                        || modelElement instanceof CollaborationInstanceSet
+                        || modelElement instanceof SubsystemInstance
+                        || modelElement instanceof Stimulus)) {
+                    return false;
+                }
+            } else if (ns instanceof Subsystem) {
                 if (!(modelElement instanceof UmlPackage
-                        || modelElement instanceof Classifier
+                        || modelElement instanceof UmlClass
+                        || modelElement instanceof DataType
+                        || modelElement instanceof Interface
+                        || modelElement instanceof UseCase
+                        || modelElement instanceof Actor
+                        || modelElement instanceof Subsystem
+                        || modelElement instanceof Signal
                         || modelElement instanceof UmlAssociation
                         || modelElement instanceof Generalization
                         || modelElement instanceof Dependency
@@ -1267,6 +1316,46 @@ public class CoreHelperMDRImpl implements CoreHelper {
                         || modelElement instanceof Stereotype)) {
                     return false;
                 }
+            } else if (ns instanceof Collaboration) {
+                /*
+                 * Although not represented in the OCL (or our Java), the
+                 * English text of WFR #4 of Section 2.10.3.4 in the UML 1.4
+                 * spec is more restrictive - "[4] A Collaboration may only
+                 * contain ClassifierRoles and AssociationRoles, the
+                 * Generalizations and the Constraints between them, and 
+                 * Actions used in the Collaboration’s Interactions."
+                 */
+                if (!(modelElement instanceof ClassifierRole
+                        || modelElement instanceof AssociationRole
+                        || modelElement instanceof Generalization
+                        || modelElement instanceof Action
+                        || modelElement instanceof Constraint)) {
+                    return false;
+                }
+            } else if (ns instanceof UmlPackage) {
+                boolean profilePackage = false; // not yet implemented
+                // A Profile is a special package having the <<profile>>
+                // stereotype which can only contain the following types
+                if (profilePackage) {
+                    if (!(modelElement instanceof Stereotype
+                            || modelElement instanceof Constraint
+                            || modelElement instanceof TagDefinition
+                            || modelElement instanceof DataType)) {
+                        return false;
+                    }
+                } else {
+                    if (!(modelElement instanceof UmlPackage
+                            || modelElement instanceof Classifier
+                            || modelElement instanceof UmlAssociation
+                            || modelElement instanceof Generalization
+                            || modelElement instanceof Dependency
+                            || modelElement instanceof Constraint
+                            || modelElement instanceof Collaboration
+                            || modelElement instanceof StateMachine
+                            || modelElement instanceof Stereotype)) {
+                        return false;
+                    }
+                }
             } else if (ns instanceof UmlClass) {
                 if (!(modelElement instanceof UmlClass
                         || modelElement instanceof UmlAssociation
@@ -1275,6 +1364,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
                         || modelElement instanceof Constraint
                         || modelElement instanceof Dependency
                         || modelElement instanceof Collaboration
+                        // TODO: StateMachine was added recently, 
+                        // but I don't find it in the spec
                         || modelElement instanceof StateMachine
                         || modelElement instanceof DataType
                         || modelElement instanceof Interface)) {
@@ -1360,14 +1451,20 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
     private boolean isValidNamespace(StructuralFeature struc, Namespace ns) {
+        // Technically this is legal, but a StructuralFeature should probably
+        // only ever have an owner instead of a namespace. - tfm
         if (struc.getType() == null || struc.getOwner() == null) {
             return true;
         }
-        // TODO: This is a tautology.  Won't it always be true? - tfm
-        // why aren't we checking the Namespace parameter?
-        // Note: this matches the NSUML implementation
-        return struc.getOwner().getNamespace().getOwnedElement().contains(
-                struc.getType());
+        /*
+         * The following from the original NSUML implemenetation was attempting
+         * to implement WFR #1 from section 2.5.3.32 of the UML 1.4 spec, but if
+         * there is an owner set, no namespace is valid. The checks for this
+         * WFR, if desired, need to go in setOwner() and setType() - tfm
+         */
+//        return struc.getOwner().getNamespace().getOwnedElement().contains(
+//                struc.getType());
+        return false;
     }
 
     private boolean isValidNamespace(UmlAssociation assoc, Namespace ns) {
@@ -1415,9 +1512,9 @@ public class CoreHelperMDRImpl implements CoreHelper {
              * Load the project attached to issue 3772. Select the "class1".
              * The UMLModelElementNamespaceComboBoxModel gives 
              * a warning. Then add an import permission. 
-             * The warnig should not be given anymore. */
+             * The warning should not be given anymore. */
             // This will do it:
-//            if(modelImpl.getModelManagementHelper().getAllContents(ns)
+//            if(!modelImpl.getModelManagementHelper().getAllContents(ns)
 //                    .contains(gen2.getParent())) {
             if (!ns.getOwnedElement().contains(gen2.getParent())) {
                 return false;
