@@ -3,7 +3,7 @@
 
 # Do the same thing for each project involved in the release.
 
-PROJECTS="CHECKOUT_PROJECTS="argouml \
+PROJECTS="argouml \
     argouml-classfile \
     argouml-cpp \
     argouml-csharp \
@@ -15,7 +15,7 @@ PROJECTS="CHECKOUT_PROJECTS="argouml \
 
 case $1 in
 --checkout)
-    cvs co -r $2 $CHECKOUT_PROJECTS
+    cvs co -r $2 $PROJECTS
     ;;
 *)
     for dir in $PROJECTS
