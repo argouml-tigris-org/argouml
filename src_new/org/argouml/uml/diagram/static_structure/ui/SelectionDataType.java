@@ -1,4 +1,4 @@
-// $Id... $
+// $Id$
 // Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -183,7 +183,7 @@ class SelectionDataType extends SelectionNodeClarifiers {
             Editor ce = Globals.curEditor();
             ModeCreateEdgeAndNode m =
                 new ModeCreateEdgeAndNode(ce,
-                        edgeType, nodeType, useComposite);
+                        edgeType, useComposite, this);
             m.setup((FigNode) getContent(), getContent().getOwner(),
                     bx, by, reverse);
             ce.pushMode(m);

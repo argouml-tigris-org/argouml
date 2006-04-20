@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -174,7 +174,7 @@ public class SelectionComment extends SelectionNodeClarifiers {
         if (edgeType != null && nodeType != null) {
             Editor ce = Globals.curEditor();
             ModeCreateEdgeAndNode m =
-                new ModeCreateEdgeAndNode(ce, edgeType, nodeType, false);
+                new ModeCreateEdgeAndNode(ce, edgeType, false, this);
             m.setup((FigNode) getContent(), getContent().getOwner(),
                     bx, by, reverse);
             ce.pushMode(m);
@@ -217,8 +217,13 @@ public class SelectionComment extends SelectionNodeClarifiers {
      * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
-        return null;
-//        return Model.getCoreFactory().createComment();
+        /* Alternatively, we could just return null here, 
+         * so that you can not create a comment just 
+         * linked to a comment this way - which is a bit uncommon,
+         * but not illegal, so for consistency, we better allow it. 
+         */
+//        return null;
+        return Model.getCoreFactory().createComment();
     }
 } /* end class SelectionComment */
 
