@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -251,9 +251,8 @@ public class SelectionActionState extends SelectionNodeClarifiers {
 	}
 	if (edgeType != null && nodeType != null) {
 	    ModeCreateEdgeAndNode m =
-	        new ModeCreateEdgeAndNode(ce, edgeType, nodeType, false);
-                //This will fix issue 2400, once we have the new GEF:
-//              new ModeCreateEdgeAndNode(ce, edgeType, false, this);
+                //This fixes issue 2400:
+              new ModeCreateEdgeAndNode(ce, edgeType, false, this);
 	    m.setup((FigNode) getContent(), getContent().getOwner(),
 	            bx, by, reverse);
 	    ce.pushMode(m);

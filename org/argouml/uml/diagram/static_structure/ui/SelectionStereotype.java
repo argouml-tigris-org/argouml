@@ -64,6 +64,12 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
     private static final Logger LOG =
         Logger.getLogger(SelectionStereotype.class);
 
+    /**
+     * Remember the pressed button, 
+     * for the case where the mouse is released not above a fig.
+     */
+    private int code;
+
     private static Icon inherit =
         ResourceLoaderWrapper.lookupIconResource("Generalization");
     private static Icon depend =
@@ -178,11 +184,12 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
             LOG.warn("invalid handle number");
             break;
         }
+        code = hand.index;
         if (edgeType != null && nodeType != null) {
             Editor ce = Globals.curEditor();
             ModeCreateEdgeAndNode m =
                 new ModeCreateEdgeAndNode(ce,
-                        edgeType, nodeType, useComposite);
+                        edgeType, useComposite, this);
             m.setup((FigNode) getContent(), getContent().getOwner(),
                     bx, by, reverse);
             ce.pushMode(m);
@@ -202,6 +209,9 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
      * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
+        if (buttonCode < 10) {
+            buttonCode = code;
+        }
         Object ns = Model.getFacade().getNamespace(getContent().getOwner());
         switch (buttonCode) {
         case 10:

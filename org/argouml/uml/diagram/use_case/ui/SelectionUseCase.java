@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,6 +53,13 @@ public class SelectionUseCase extends SelectionNodeClarifiers {
      */
     private static final Logger LOG =
         Logger.getLogger(SelectionUseCase.class);
+
+    /**
+     * Remember the pressed button, 
+     * for the case where the mouse is released not above a fig.
+     */
+    private int code;
+
     ////////////////////////////////////////////////////////////////
     // constants
     private static Icon inherit =
@@ -193,18 +200,17 @@ public class SelectionUseCase extends SelectionNodeClarifiers {
 	    LOG.warn("invalid handle number");
 	    break;
         }
+        code = hand.index;
         if (edgeType != null && nodeType != null) {
             Editor ce = Globals.curEditor();
             ModeCreateEdgeAndNode m =
-                new ModeCreateEdgeAndNode(ce, edgeType, nodeType, false);
+                new ModeCreateEdgeAndNode(ce, edgeType, false, this);
             m.setup((FigNode) getContent(), getContent().getOwner(),
                     bx, by, reverse);
             ce.pushMode(m);
         }
 
     }
-
-
 
 
     /**
@@ -256,6 +262,9 @@ public class SelectionUseCase extends SelectionNodeClarifiers {
      */
     protected Object getNewNode(int buttonCode) {
         Object newNode = null;
+        if (buttonCode < 10) {
+            buttonCode = code;
+        }
         if (buttonCode == 10 || buttonCode == 11) {
             newNode = Model.getUseCasesFactory().createUseCase();
         } else {
