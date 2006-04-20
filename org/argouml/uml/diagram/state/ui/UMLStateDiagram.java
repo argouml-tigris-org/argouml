@@ -251,7 +251,8 @@ public class UMLStateDiagram extends UMLDiagram {
         if (evt.getSource() == theStateMachine 
                 && "namespace".equals(evt.getPropertyName())) {
             Object newNamespace = evt.getNewValue();
-            if (getNamespace() != newNamespace) {
+            if (newNamespace != null // this in case we are being deleted 
+                    && getNamespace() != newNamespace) {
                 /* The namespace of the statemachine is changed! */
                 setNamespace(newNamespace);
                 ((UMLMutableGraphSupport)getGraphModel())
