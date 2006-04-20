@@ -49,7 +49,7 @@ mkdir DIST
   tar cvf ../../DIST/ArgoUML-$releasename-modules.tar ext/*.jar
 )
 (
-  SRCDIRS="argouml/src_new argouml/src/*/src argouml/src/i18n/*/src argouml/modules/cpp/src argouml/modules/classfile/src argouml/modules/idl/src argouml/modules/php/src argouml-*/src"
+  SRCDIRS="argouml/src_new argouml/src/*/src argouml-*/src"
   $JAVA_HOME/bin/jar cvf DIST/ArgoUML-$releasename-src.zip $SRCDIRS
   tar cvf DIST/ArgoUML-$releasename-src.tar --exclude="CVS" $SRCDIRS
 )
