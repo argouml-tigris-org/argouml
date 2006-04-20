@@ -353,8 +353,7 @@ the Netbeans Meta Data Repository.
 </para>
 	  <para>
 This is included in the files
-jmi.jar, jmiutils.jar, mdrapi.jar, mof.jar, nbmdr.jar, openide-util.jar
-from the argouml-mdr subproject.
+jmi.jar, jmiutils.jar, mdrapi.jar, mof.jar, nbmdr.jar, openide-util.jar.
 </para>
 	</listitem>
 	</itemizedlist>
@@ -2295,7 +2294,7 @@ and run the command
 You also need to set the tag in the sub-projects so the following command
 is more like it:
 <programlisting>
-for proj in argouml argouml-csharp argouml-de argouml-en-gb argouml-es argouml-fr argouml-ru argouml-nb argouml-i18n-zh
+for proj in argouml argouml-csharp argouml-cpp argouml-php argouml-classfile argouml-idl argouml-de argouml-en-gb argouml-es argouml-fr argouml-ru argouml-nb argouml-i18n-zh
 do
     ( cd &dollar;proj &amp;&amp; cvs tag VERSION_<replaceable>X_Y_Z</replaceable>_F )
 done
