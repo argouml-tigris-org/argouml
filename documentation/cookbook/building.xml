@@ -2092,7 +2092,9 @@ and telling everyone on the developers mailing list.
 Create the directory where the release will recide.
 </para>
           <para>
-<command>mkdir VERSION_<replaceable>X_Y_Z</replaceable>_F</command>
+<programlisting>
+mkdir VERSION_<replaceable>X_Y_Z</replaceable>_F
+</programlisting>
 </para>
         </listitem>
 
@@ -2100,10 +2102,17 @@ Create the directory where the release will recide.
 	  <para>
 Check out the source in a new directory.
 <programlisting>
+export CVSROOT=:pserver:<replaceable>guest</replaceable>@cvs.tigris.org:/cvs
 cd VERSION_<replaceable>X_Y_Z</replaceable>_F
-argouml/tools/bin/do-for-projects.sh --checkout VERSION_<replaceable>X_Y_Z</replaceable>_F
+../argouml/tools/bin/do-for-projects.sh --checkout VERSION_<replaceable>X_Y_Z</replaceable>_F
+</programlisting>
+where <replaceable>guest</replaceable> is a name that you have previously
+logged in with using the command
+<programlisting>
+cvs login
 </programlisting>
 </para>
+
 	</listitem>
 
 	<listitem>
@@ -2121,6 +2130,9 @@ This is done in the
 <filename class="directory">argouml/src_new</filename>
 directory of the newly created copy
 by using the <command>package</command> ant target!
+</para>
+	  <para>
+You must have set JAVA_HOME for this to work.
 </para>
 	</listitem>
 
