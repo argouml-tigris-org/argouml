@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,12 +27,9 @@ package org.argouml.uml.ui;
 import org.argouml.ui.targetmanager.TargetManager;
 
 /**
- * Action for removing (moving to trash) objects from the model. Objects can be:
- * - Modelelements
- * - Diagrams (argodiagram and it's children)
- * The root model and the last diagram in the project can not be removed. The
- * reason for this is to prevent problems updating the detailspane and the
- * navpane. Besides that, it is not possible to make a new root model.
+ * Action for removing (moving to trash) objects from the model. 
+ * Objects can be Modelelements, Diagrams (argodiagram and it's children),
+ * Figs without owner,... <p>
  *
  * @author original author not known.
  * @author jaap.branderhorst@xs4all.nl extensions

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,9 +28,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  * This action is to delete a single model element.
- * TODO: The recent refactoring to produce this class has made a possible
- * bug apparent to me. Presumably this deletes the first item in the target
- * manager and that may not be the item shown in the prop panel. Must test.
  *
  * @author original author not known.
  * @author jaap.branderhorst@xs4all.nl extensions
