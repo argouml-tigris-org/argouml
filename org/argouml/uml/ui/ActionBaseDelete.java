@@ -50,12 +50,14 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigTextEditor;
 
 /**
- * Action for removing (moving to trash) objects from the model. Objects can be:
- * - Modelelements
- * - Diagrams (argodiagram and it's children)
+ * Action for removing (moving to trash) objects from the model. 
+ * Objects can be Modelelements, Diagrams (argodiagram and it's children),
+ * Figs without owner,... <p>
+ * 
  * The root model and the last diagram in the project can not be removed. The
  * reason for this is to prevent problems updating the detailspane and the
- * navpane. Besides that, it is not possible to make a new root model.
+ * explorer. Besides that, it is not possible to make a new root model.
+ * All this is taken care of in the class Project.
  *
  * @author original author not known.
  * @author jaap.branderhorst@xs4all.nl extensions
@@ -116,10 +118,11 @@ public abstract class ActionBaseDelete extends UMLAction {
     }
 
     /**
-     * Moves the selected target to the trash bin. Moves the selected target
-     * after the remove to the parent of the selected target (that is: the next
-     * level up in the navpane). In case of a diagram the selected target will
+     * Moves the selected target to the trash bin. 
+     * This activity takes care of moving the target.
+     * In case of a diagram the selected target will
      * be the next diagram in the list with diagrams.
+     * 
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
@@ -127,11 +130,11 @@ public abstract class ActionBaseDelete extends UMLAction {
             //Don't accept the delete if the FigTextEditor has focus
             return;
         }
+        super.actionPerformed(ae);
 
         Project p = ProjectManager.getManager().getCurrentProject();
         Object[] targets = getTargets();
         Object target = null;
-        Object newTarget = null;
         for (int i = targets.length - 1; i >= 0; i--) {
             target = targets[i];
             if (sureRemove(target)) {
@@ -139,7 +142,6 @@ public abstract class ActionBaseDelete extends UMLAction {
                 if (target instanceof Fig) {
                     target = ((Fig) target).getOwner();
                 }
-                newTarget = getNewTarget(target);
                 if (Model.getFacade().isAConcurrentRegion(target)) {
                     new ActionDeleteConcurrentRegion()
                         .actionPerformed(ae);
@@ -148,45 +150,6 @@ public abstract class ActionBaseDelete extends UMLAction {
                 }
             }
         }
-
-        if (newTarget != null) {
-            TargetManager.getInstance().setTarget(newTarget);
-        }
-        super.actionPerformed(ae);
-    }
-
-    /**
-     * Gets the object that should be target after the given target is
-     * deleted from the model.
-     *
-     * @param target the target to delete
-     * @return The object.
-     */
-    private Object getNewTarget(Object target) {
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Object newTarget = null;
-        if (target instanceof Fig) {
-            target = ((Fig) target).getOwner();
-        }
-        if (Model.getFacade().isAModelElement(target)) {
-            newTarget = Model.getFacade().getModelElementContainer(target);
-        } else if (target instanceof Diagram) {
-            Diagram firstDiagram = (Diagram) p.getDiagrams().get(0);
-            if (target != firstDiagram) {
-                newTarget = firstDiagram;
-            } else {
-                if (p.getDiagrams().size() > 1) {
-                    newTarget = p.getDiagrams().get(1);
-                } else {
-                    newTarget = p.getRoot();
-                }
-            }
-        } else if (target instanceof CommentEdge) {
-            newTarget = ((CommentEdge) target).getSource();
-        } else {
-            newTarget = p.getRoot();
-        }
-        return newTarget;
     }
 
     /**
@@ -244,13 +207,13 @@ public abstract class ActionBaseDelete extends UMLAction {
 
     /**
      * An utility method that asks the user if he is sure to remove a selected
-     * modelement.<p>
+     * modelement.
      *
      * @see ActionBaseDelete#sureRemove(Object)
      * @param me the modelelement that may be removed
      * @return boolean
      */
-    public static boolean sureRemoveModelElement(Object/*MModelElement*/ me) {
+    protected static boolean sureRemoveModelElement(Object me) {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
 
