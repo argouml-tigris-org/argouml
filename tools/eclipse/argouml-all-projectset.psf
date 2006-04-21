@@ -8,12 +8,12 @@
 		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/tests,argouml-core-tests"/>
 		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/tools,argouml-core-tools"/>
 		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/documentation,argouml-documentation"/>
-		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/modules/classfile,argouml-module-classfile"/>
-		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/modules/cpp,argouml-module-cpp"/>
+		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml-classfile,argouml-module-classfile"/>
+		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml-cpp,argouml-module-cpp"/>
 		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml-csharp,argouml-module-csharp"/>
 		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/modules/dev,argouml-module-dev"/>
 		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml-idl,argouml-module-idl"/>
-		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/modules/php,argouml-module-php"/>
+		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml-php,argouml-module-php"/>
 		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/www,argouml-www"/>
 	</provider>
 </psf>
