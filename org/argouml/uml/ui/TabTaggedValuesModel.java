@@ -56,15 +56,14 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
     // //////////////
     // instance varables
     /**
-     * The ModelElement.
+     * The ModelElement that is the target (see TargetManager).
      */
-    // TODO: Is this javadoc correct?
     private Object target;
 
     /**
-     * The ModelElement.
+     * The tab, i.e. the JPanel that contains the UI 
+     * that represents the tagged values.
      */
-    // TODO: Is this javadoc correct?
     private TabTaggedValues tab;
 
     // //////////////
@@ -256,9 +255,9 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        // TODO: How to implement this ("mee" was a MElementEvent)?
-        // if ("taggedValue".equals(mee.getName()))
-        fireTableChanged(new TableModelEvent(this));
+        if ("taggedValue".equals(evt.getPropertyName())) {
+            fireTableChanged(new TableModelEvent(this));
+        }
     }
 
     /**
