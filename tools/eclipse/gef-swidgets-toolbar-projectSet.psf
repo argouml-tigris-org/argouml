@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+	<provider id="org.eclipse.team.cvs.core.cvsnature">
+		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,gef,gef"/>
+		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,swidgets,swidgets"/>
+		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,toolbar,toolbar"/>
+	</provider>
+</psf>
