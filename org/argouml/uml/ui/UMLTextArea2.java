@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui;
 
 import java.beans.PropertyChangeEvent;
@@ -42,12 +41,16 @@ import org.argouml.ui.targetmanager.TargettableModelView;
 public class UMLTextArea2 extends JTextArea
     implements PropertyChangeListener, TargettableModelView {
 
+    /**
+     * Serial version generated for rev 1.9
+     */
+    private static final long serialVersionUID = -9172093001792636086L;
 
     /**
      * Constructor for UMLTextArea2.
      * @param doc the plain text document
      */
-    public UMLTextArea2(UMLPlainTextDocument doc) {
+    public UMLTextArea2(UMLDocument doc) {
         super(doc);
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
         addCaretListener(ActionCopy.getInstance());
@@ -60,14 +63,14 @@ public class UMLTextArea2 extends JTextArea
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        ((UMLPlainTextDocument) getDocument()).propertyChange(evt);
+        ((UMLDocument) getDocument()).propertyChange(evt);
     }
 
     /**
      * @see org.argouml.ui.targetmanager.TargettableModelView#getTargettableModel()
      */
     public TargetListener getTargettableModel() {
-        return ((TargetListener) getDocument());
+        return ((UMLDocument) getDocument());
     }
 
 }

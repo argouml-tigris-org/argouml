@@ -49,6 +49,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
      * Constructor for UMLTagDefinitionComboBoxModel.
      */
     public UMLTagDefinitionComboBoxModel() {
+        // TODO: no such event named tagdefinition
         super("tagdefinition", false);
     }
 
@@ -126,7 +127,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
             Object owner = Model.getFacade().getOwner(tagDef);
             if (owner != null && !stereotypes.contains(owner)) {
                 notValids.add(tagDef);
-            }
+        }
         }
         availableTagDefs.removeAll(notValids);
         return availableTagDefs;
