@@ -195,7 +195,6 @@ public interface ExtensionMechanismsHelper {
     /**
      * Sets a value of some taggedValue.
      *
-     * @deprecated use addTaggedValue
      * @param handle is the tagged value
      * @param value is the value
      */
