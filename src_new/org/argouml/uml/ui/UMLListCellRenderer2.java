@@ -25,6 +25,8 @@
 package org.argouml.uml.ui;
 
 import java.awt.Component;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
@@ -151,13 +153,21 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
         }
         if (Model.getFacade().isAModelElement(value)) {
             Object/* MModelElement */elem = value;
-            name = Model.getFacade().getName(elem);
-            if (name == null || name.equals("")) {
-                name = "(unnamed " + makeTypeName(elem) + ")";
-            }
+                name = Model.getFacade().getName(elem);
+                if (name == null || name.equals("")) {
+                    name = "(unnamed " + makeTypeName(elem) + ")";
+                }
             if (Model.getFacade().isAStereotype(value)) {
-                Object b = Model.getFacade().getBaseClass(value);
-                name = name + " [" + makeText(b) + "]";
+                Collection bases = Model.getFacade().getBaseClasses(value);
+                StringBuffer sb = new StringBuffer();
+                sb.append(" [");
+                for( Iterator it = bases.iterator(); it.hasNext(); ) {
+                    sb.append(makeText(it.next()));
+                    if (it.hasNext()) {
+                        sb.append(", ");
+                    }
+                }
+                name = name + sb.toString() + "]";
             }
         } else if (Model.getFacade().isAMultiplicity(value)) {
             name = Model.getFacade().getName(value);
