@@ -24,6 +24,8 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -32,6 +34,8 @@ import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.TableCellEditor;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
@@ -75,9 +79,10 @@ public abstract class ActionBaseDelete extends UMLAction {
 
 
     /**
-     * Only disabled when nothing is selected. Necessary to use since this
-     * option works via the menu too. A user cannot delete the last diagram.
-     * A user cannot delete the root model.
+     * Disabled when nothing is selected or the selected element
+     * is the top level model, the last diagram, or the top state
+     * of a StateMachine.
+     * Necessary to use since this option works via the menu too. 
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
@@ -118,17 +123,26 @@ public abstract class ActionBaseDelete extends UMLAction {
     }
 
     /**
-     * Moves the selected target to the trash bin. 
-     * This activity takes care of moving the target.
-     * In case of a diagram the selected target will
-     * be the next diagram in the list with diagrams.
-     * 
+     * Deletes the selected target.
+
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        if (FigTextEditor.getInstance().isFocusOwner()) {
-            //Don't accept the delete if the FigTextEditor has focus
-            return;
+        KeyboardFocusManager focusManager =
+            KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        Component focusOwner = focusManager.getFocusOwner();
+        if (focusOwner instanceof FigTextEditor) {
+            // TODO: Probably really want to cancel editing
+            //((FigTextEditor) focusOwner).cancelEditing();
+            ((FigTextEditor) focusOwner).endEditing();
+        } else if (focusOwner instanceof JTable) {
+            JTable table = (JTable) focusOwner;
+            if (table.isEditing()) {
+                TableCellEditor ce = table.getCellEditor();
+                if (ce != null) {
+                    ce.cancelCellEditing();
+                }
+            }
         }
         super.actionPerformed(ae);
 
@@ -150,7 +164,7 @@ public abstract class ActionBaseDelete extends UMLAction {
                 }
             }
         }
-    }
+        }
 
     /**
      * A utility method that asks the user if he is sure to remove the selected
@@ -207,7 +221,7 @@ public abstract class ActionBaseDelete extends UMLAction {
 
     /**
      * An utility method that asks the user if he is sure to remove a selected
-     * modelement.
+     * model element.
      *
      * @see ActionBaseDelete#sureRemove(Object)
      * @param me the modelelement that may be removed

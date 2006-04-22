@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,6 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultCellEditor;
@@ -41,7 +40,6 @@ import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
@@ -62,10 +60,12 @@ import org.tigris.toolbar.ToolBar;
 public class TabTaggedValues extends AbstractArgoJPanel
     implements TabModelTarget, ListSelectionListener {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    /**
+     * Serial version generated for rev 1.58
+     */
+    private static final long serialVersionUID = -8566948113385239423L;
+
     private Object target;
-    private TabTaggedValuesModel tableModel = null;
     private boolean shouldBeEnabled = false;
     private JTable table = new JTable(10, 2);
     private JLabel titleLabel;
@@ -77,7 +77,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
 
 
     /**
-     * The constructor.
+     * Construct a TaggedValues pane for the property panel
      */
     public TabTaggedValues() {
         super("tab.tagged-values");
@@ -93,15 +93,12 @@ public class TabTaggedValues extends AbstractArgoJPanel
         b = new JButton();
         buttonPanel.add(b);
         b.setToolTipText(Translator.localize("button.delete"));
-        b.setAction(new ActionRemoveTaggedValue(this));
+        b.setAction(new ActionRemoveTaggedValue(table));
   
-        tableModel = new TabTaggedValuesModel(this);
-        table.setModel(tableModel);
+        table.setModel(new TabTaggedValuesModel());
         table.setRowSelectionAllowed(false);
         tagDefinitionsComboBoxModel = new UMLTagDefinitionComboBoxModel();
         tagDefinitionsComboBox = new UMLComboBox2(tagDefinitionsComboBoxModel);
-        //tagDefinitionsComboBox.setDoubleBuffered(true);
-        //tagDefinitionsComboBox.setEditable(true);
         Class tagDefinitionClass = (Class) Model.getMetaTypes()
                 .getTagDefinition();
         tagDefinitionsComboBox.setRenderer(new UMLListCellRenderer2(false));
@@ -140,12 +137,8 @@ public class TabTaggedValues extends AbstractArgoJPanel
         valCol.setMinWidth(250);
         valCol.setWidth(550);
         valCol.setPreferredWidth(550);
-        //_table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        table.sizeColumnsToFit(-1);
+        table.doLayout();
     }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /**
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
@@ -172,7 +165,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
 
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
-        tableModel.setTarget(target);
+        ((TabTaggedValuesModel) table.getModel()).setTarget(target);
         table.sizeColumnsToFit(0);
 
         if (target != null) {
@@ -224,7 +217,6 @@ public class TabTaggedValues extends AbstractArgoJPanel
      */
     public void targetRemoved(TargetEvent e) {
         setTarget(e.getNewTarget());
-
     }
 
     /**
@@ -239,7 +231,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
      * @return Returns the tableModel.
      */
     protected TabTaggedValuesModel getTableModel() {
-        return tableModel;
+        return (TabTaggedValuesModel) table.getModel();
     }
     /**
      * @return Returns the table.
@@ -253,11 +245,12 @@ public class TabTaggedValues extends AbstractArgoJPanel
      */
     public void valueChanged(ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
-            DefaultListSelectionModel sel = (DefaultListSelectionModel) e
-                    .getSource();
+            DefaultListSelectionModel sel = 
+                (DefaultListSelectionModel) e.getSource();
             ArrayList tvs = new ArrayList(Model.getFacade()
                     .getTaggedValuesCollection(target));
-            if (sel.getLeadSelectionIndex() < tvs.size()) {
+            if (//sel.getLeadSelectionIndex() >= 0 &&
+                     sel.getLeadSelectionIndex() < tvs.size()) {
                 Object tagDef = Model.getFacade().getTagDefinition(
                         tvs.get(sel.getLeadSelectionIndex()));
                 tagDefinitionsComboBoxModel.setSelectedItem(tagDef);
@@ -269,29 +262,31 @@ public class TabTaggedValues extends AbstractArgoJPanel
 
 class ActionRemoveTaggedValue extends AbstractAction {
 
-    private TabTaggedValues tab;
+    /**
+     * Serial version generated for rev 1.58
+     */
+    private static final long serialVersionUID = 8276763533039642549L;
+    
+    /**
+     * The table we are bound to.
+     */
+    private JTable table;
 
     /**
-     * The constructor.
+     * Construct an Action to remove a TaggedValue from the table.
+     * 
+     * @param tableTv A JTable backed by a TabTaggedValuesModel
      */
-    public ActionRemoveTaggedValue(TabTaggedValues tabtv) {
+    public ActionRemoveTaggedValue(JTable tableTv) {
         super("", ResourceLoaderWrapper.lookupIconResource("Delete"));
-        tab = tabtv;
+        table = tableTv;
     }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        TabTaggedValuesModel model = tab.getTableModel();
-        JTable table = tab.getTable();
-        int row = table.getSelectedRow();
-        List c = new ArrayList(
-                Model.getFacade().getTaggedValuesCollection(tab.getTarget()));
-        if ((row != -1) && (c.size() > row)) {
-            c.remove(row);
-            Model.getCoreHelper().setTaggedValues(tab.getTarget(), c);
-            model.fireTableChanged(new TableModelEvent(model));
-        }
+        TabTaggedValuesModel model = (TabTaggedValuesModel) table.getModel();
+        model.removeRow(table.getSelectedRow());
     }
 }

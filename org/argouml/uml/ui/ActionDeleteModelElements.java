@@ -27,7 +27,7 @@ package org.argouml.uml.ui;
 import org.argouml.ui.targetmanager.TargetManager;
 
 /**
- * Action for removing (moving to trash) objects from the model. 
+ * Action for removing objects from the model. 
  * Objects can be Modelelements, Diagrams (argodiagram and it's children),
  * Figs without owner,... <p>
  *
@@ -35,6 +35,11 @@ import org.argouml.ui.targetmanager.TargetManager;
  * @author jaap.branderhorst@xs4all.nl extensions
  */
 public class ActionDeleteModelElements extends ActionBaseDelete {
+
+    /**
+     * Generated serial version for rev 1.4
+     */
+    private static final long serialVersionUID = -5728400220151823726L;
 
     /**
      * @return the complete array of targets
