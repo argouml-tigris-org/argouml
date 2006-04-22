@@ -37,6 +37,7 @@ import javax.jmi.reflect.RefBaseObject;
 import javax.jmi.reflect.RefClass;
 import javax.jmi.reflect.RefPackage;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.ExtensionMechanismsHelper;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
@@ -56,6 +57,11 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * @author Thierry Lach
  */
 class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
+
+    /**
+     * The logger.
+     */
+    private static final Logger LOG = Logger.getLogger(ExtensionMechanismsHelperMDRImpl.class);
 
     /**
      * The model implementation.
@@ -496,8 +502,12 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     public void setValueOfTag(Object handle, String value) {
         if (handle instanceof TaggedValue) {
             TaggedValue tv = (TaggedValue) handle;
-            // TODO: It *seems* that the other CASE tools manage only one
-            // dataValue.
+            // TODO: We currently only support a single dataValue
+            Collection dataValues = tv.getDataValue();
+            if (dataValues.size() > 1) {
+                LOG.error("Encountered TaggedValue with multiple dataValues " + handle);
+                LOG.error("DataValues being cleared = " + dataValues.toArray());
+            }
             tv.getDataValue().clear();
             tv.getDataValue().add(value);
         }
@@ -521,8 +531,9 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      */
     public void removeTaggedValue(Object handle, Object taggedValue) {
         if (handle instanceof ModelElement
-                && taggedValue instanceof TaggedValue) {
-            ((ModelElement) handle).getTaggedValue().remove(taggedValue);
+                && taggedValue instanceof TaggedValue
+                && ((ModelElement) handle).getTaggedValue().contains(taggedValue)) {
+            nsmodel.getUmlFactory().delete(taggedValue);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
