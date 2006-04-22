@@ -37,6 +37,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationHelper;
@@ -136,110 +137,122 @@ public class DisplayTextTree extends JTree {
 
             String name = null;
 
-            // Jeremy Bennett patch
-            if (Model.getFacade().isATransition(value)) {
-                name = Model.getFacade().getName(value);
-                NotationProvider4 notationProvider =
-                    NotationProviderFactory2.getInstance().getNotationProvider(
-                                NotationProviderFactory2.TYPE_TRANSITION,
-                                NotationHelper.getDefaultNotationContext(),
-                                value);
-                String signature = notationProvider.toString();
-                if (name != null && name.length() > 0) {
-                    name += ": " + signature;
+            try {
+                // Jeremy Bennett patch
+                if (Model.getFacade().isATransition(value)) {
+                    name = Model.getFacade().getName(value);
+                    NotationProvider4 notationProvider =
+                        NotationProviderFactory2.getInstance().getNotationProvider(
+                                    NotationProviderFactory2.TYPE_TRANSITION,
+                                    NotationHelper.getDefaultNotationContext(),
+                                    value);
+                    String signature = notationProvider.toString();
+                    if (name != null && name.length() > 0) {
+                        name += ": " + signature;
+                    } else {
+                        name = signature;
+                    }
+                } else if (Model.getFacade().isAExtensionPoint(value)) {
+                    name =
+                        GeneratorDisplay.getInstance()
+                            .generateExtensionPoint(value);
+                } else if (Model.getFacade().isAComment(value)) {
+                    /*
+                     * From UML 1.4 onwards, the text of the comment
+                     * is stored in the "body".
+                     */
+                    name = (String) Model.getFacade().getBody(value);
+                } else if (Model.getFacade().isAElementImport(value)) {
+                    // TODO: Localize
+                    StringBuffer s = new StringBuffer("Imported ");
+                    Object me = Model.getFacade().getImportedElement(value);
+                    s.append(Model.getFacade().getUMLClassName(me));
+                    s.append(": ");
+                    // TODO: Handle the Alias from the ElementImport.
+                    s.append(convertValueToText(me, selected, expanded, leaf, row,
+                            hasFocus));
+                    name = s.toString();
+                } else if (Model.getFacade().isATaggedValue(value)) {
+                    String tagName = Model.getFacade().getTagOfTag(value);
+                    if (tagName == null || tagName.equals("")) {
+                        // TODO: Localize
+                        tagName = "(unnamed)";
+                    }
+                    name = ("1-" + tagName);
                 } else {
-                    name = signature;
+                    name = Model.getFacade().getName(value);
                 }
-            } else if (Model.getFacade().isAExtensionPoint(value)) {
-                name =
-                    GeneratorDisplay.getInstance()
-                        .generateExtensionPoint(value);
-            } else if (Model.getFacade().isAComment(value)) {
+
+                if (name == null || name.equals("")) {
+                    // TODO: Localize
+                    name =
+                        "(unnamed " + Model.getFacade().getUMLClassName(value)
+                            + ")";
+                }
                 /*
-                 * From UML 1.4 onwards, the text of the comment
-                 * is stored in the "body".
+                 * If the name is too long or multi-line (e.g. for comments)
+                 * then we reduce to the first line or 80 chars.
                  */
-                name = (String) Model.getFacade().getBody(value);
-            } else {
-                name = Model.getFacade().getName(value);
-            }
-
-            if (name == null || name.equals("")) {
                 // TODO: Localize
-                name =
-                    "(unnamed " + Model.getFacade().getUMLClassName(value)
-                        + ")";
-            }
-            /*
-             * If the name is too long or multi-line (e.g. for comments)
-             * then we reduce to the first line or 80 chars.
-             */
-            // TODO: Localize
-            if (name != null
-                    && name.indexOf("\n") < 80
-                    && name.indexOf("\n") > -1) {
-                name = name.substring(0, name.indexOf("\n")) + "...";
-            } else if (name != null && name.length() > 80) {
-                name = name.substring(0, 80) + "...";
-            }
-
-            // Look for stereotype
-            if (showStereotype) {
-                Iterator i = Model.getFacade().getStereotypes(value).iterator();
-                Object stereo;
-                while (i.hasNext()) {
-                    stereo = i.next();
-                    name +=
-                        " " + GeneratorDisplay.getInstance().generate(stereo);
-                }
-                if (name != null && name.length() > 80) {
+                if (name != null
+                        && name.indexOf("\n") < 80
+                        && name.indexOf("\n") > -1) {
+                    name = name.substring(0, name.indexOf("\n")) + "...";
+                } else if (name != null && name.length() > 80) {
                     name = name.substring(0, 80) + "...";
                 }
+
+                // Look for stereotype
+                if (showStereotype) {
+                    Iterator i = Model.getFacade().getStereotypes(value).iterator();
+                    Object stereo;
+                    while (i.hasNext()) {
+                        stereo = i.next();
+                        name +=
+                            " " + GeneratorDisplay.getInstance().generate(stereo);
+                    }
+                    if (name != null && name.length() > 80) {
+                        name = name.substring(0, 80) + "...";
+                    }
+                }
+            } catch (InvalidElementException e) {
+                // TODO: Localize
+                name = "*deleted element*";
             }
 
             return name;
         }
 
-        if (Model.getFacade().isATaggedValue(value)) {
-            String tagName = Model.getFacade().getTagOfTag(value);
-            if (tagName == null || tagName.equals("")) {
+        if (Model.getFacade().isAExpression(value)) {
+            try {
+                String name = Model.getFacade().getUMLClassName(value);
+                String language = Model.getDataTypesHelper().getLanguage(value);
+                String body = Model.getDataTypesHelper().getBody(value);
+                if (language != null && language.length() > 0) {
+                    name += " (" + language + ")";
+                }
+                if (body != null && body.length() > 0) {
+                    name += ": " + body;
+                }
+                return name;
+            } catch (InvalidElementException e) {
                 // TODO: Localize
-                tagName = "(unnamed)";
+                return "*deleted expression*";
             }
-            return ("1-" + tagName);
+        }
+
+        if (Model.getFacade().isAMultiplicity(value)) {
+            try {
+                // TODO: Localize
+                return "Multiplicity: " 
+                + Model.getDataTypesHelper().multiplicityToString(value);
+            } catch (InvalidElementException e) {
+                return "*deleted multiplicity*";
+            }
         }
 
         if (value instanceof Diagram) {
             return ((Diagram) value).getName();
-        }
-
-        if (Model.getFacade().isAExpression(value)) {
-            String name = Model.getFacade().getUMLClassName(value);
-            String language = Model.getDataTypesHelper().getLanguage(value);
-            String body = Model.getDataTypesHelper().getBody(value);
-            if (language != null && language.length() > 0) {
-                name += " (" + language + ")";
-            }
-            if (body != null && body.length() > 0) {
-                name += ": " + body;
-            }
-            return name;
-        }
-
-        if (Model.getFacade().isAMultiplicity(value)) {
-            return "Multiplicity: " 
-                + Model.getDataTypesHelper().multiplicityToString(value);
-        }
-
-        if (Model.getFacade().isAElementImport(value)) {
-            StringBuffer s = new StringBuffer("Imported ");
-            Object me = Model.getFacade().getImportedElement(value);
-            s.append(Model.getFacade().getUMLClassName(me));
-            s.append(": ");
-            // TODO: Handle the Alias from the ElementImport.
-            s.append(convertValueToText(me, selected, expanded, 
-                    leaf, row, hasFocus));
-            return s.toString();
         }
 
         if (value != null) {
