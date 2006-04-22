@@ -58,10 +58,10 @@ public class DisplayTextTree extends JTree {
 
     /**
      * A Map helping the tree maintain a consistent expanded paths state.
-     *
+     * 
      * <pre>
-     * keys are the current TreeModel of this Tree
-     * values are Vector of currently expanded paths.
+     *  keys are the current TreeModel of this Tree
+     *  values are Vector of currently expanded paths.
      * </pre>
      */
     private Hashtable expandedPathsInModel;
@@ -96,21 +96,30 @@ public class DisplayTextTree extends JTree {
     // ------------ methods that override JTree methods ---------
 
     /**
-     * Override the default JTree implementation to display the
-     * appropriate text for any object that will be displayed in
-     * the todo list.
-     *
-     * @param value the given object
-     * @param selected ignored
-     * @param expanded ignored
-     * @param leaf ignored
-     * @param row ignored
-     * @param hasFocus ignored
-     *
+     * Override the default JTree implementation to display the appropriate text
+     * for any object that will be displayed in the todo list.
+     * 
+     * TODO: Since this is only used for the Todo list, it should not be located
+     * here, which is a common class for both trees, the explorer and the todo
+     * list.
+     * 
+     * @param value
+     *            the given object
+     * @param selected
+     *            ignored
+     * @param expanded
+     *            ignored
+     * @param leaf
+     *            ignored
+     * @param row
+     *            ignored
+     * @param hasFocus
+     *            ignored
+     * 
      * @return the value converted to text.
-     *
-     * @see javax.swing.JTree#convertValueToText(java.lang.Object,
-     * boolean, boolean, boolean, int, boolean)
+     * 
+     * @see javax.swing.JTree#convertValueToText(java.lang.Object, boolean,
+     *      boolean, boolean, int, boolean)
      */
     public String convertValueToText(Object value, boolean selected,
             boolean expanded, boolean leaf, int row, boolean hasFocus) {
@@ -119,6 +128,7 @@ public class DisplayTextTree extends JTree {
             return ((ToDoItem) value).getHeadline();
         }
         if (value instanceof ToDoList) {
+            // TODO: Localize
             return "ToDoList";
         }
 
@@ -131,9 +141,9 @@ public class DisplayTextTree extends JTree {
                 name = Model.getFacade().getName(value);
                 NotationProvider4 notationProvider =
                     NotationProviderFactory2.getInstance().getNotationProvider(
-                            NotationProviderFactory2.TYPE_TRANSITION,
-                            NotationHelper.getDefaultNotationContext(),
-                            value);
+                                NotationProviderFactory2.TYPE_TRANSITION,
+                                NotationHelper.getDefaultNotationContext(),
+                                value);
                 String signature = notationProvider.toString();
                 if (name != null && name.length() > 0) {
                     name += ": " + signature;
@@ -155,14 +165,16 @@ public class DisplayTextTree extends JTree {
             }
 
             if (name == null || name.equals("")) {
+                // TODO: Localize
                 name =
                     "(unnamed " + Model.getFacade().getUMLClassName(value)
-                    + ")";
+                        + ")";
             }
             /*
              * If the name is too long or multi-line (e.g. for comments)
              * then we reduce to the first line or 80 chars.
              */
+            // TODO: Localize
             if (name != null
                     && name.indexOf("\n") < 80
                     && name.indexOf("\n") > -1) {
@@ -191,6 +203,7 @@ public class DisplayTextTree extends JTree {
         if (Model.getFacade().isATaggedValue(value)) {
             String tagName = Model.getFacade().getTagOfTag(value);
             if (tagName == null || tagName.equals("")) {
+                // TODO: Localize
                 tagName = "(unnamed)";
             }
             return ("1-" + tagName);
@@ -217,7 +230,7 @@ public class DisplayTextTree extends JTree {
             return "Multiplicity: " 
                 + Model.getDataTypesHelper().multiplicityToString(value);
         }
-        
+
         if (Model.getFacade().isAElementImport(value)) {
             StringBuffer s = new StringBuffer("Imported ");
             Object me = Model.getFacade().getImportedElement(value);
@@ -236,8 +249,8 @@ public class DisplayTextTree extends JTree {
     }
 
     /**
-     * Tree MModel Expansion notification.<p>
-     *
+     * Tree Model Expansion notification.<p>
+     * 
      * @param path
      *            a Tree node insertion event
      */
@@ -289,7 +302,7 @@ public class DisplayTextTree extends JTree {
 
     /**
      * Called in reexpand().
-     *
+     * 
      * @return a Vector containing all expanded paths
      */
     protected Vector getExpandedPaths() {
@@ -305,9 +318,9 @@ public class DisplayTextTree extends JTree {
     }
 
     /**
-     * We re-expand the ones
-     * that were open before to maintain the same viewable tree.
-     *
+     * We re-expand the ones that were open before to maintain the same viewable
+     * tree.
+     * 
      * called by doForceUpdate(), setModel()
      */
     private void reexpand() {
