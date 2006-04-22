@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,6 +37,8 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
@@ -241,10 +243,12 @@ class UMLTagDefinitionNamespaceComboBoxModel
          * Rebuild the list from scratch to be sure it's correct.
          */
         Object t = getTarget();
-        if (t != null && evt.getSource() == t) {
+        if (t != null && evt.getSource() == t 
+                && (evt instanceof AttributeChangeEvent 
+                        || evt instanceof AssociationChangeEvent)) {
             // allow the evt.getNewValue() to be null (see parent class)
             buildModelList();
-            setSelectedItem(getSelectedModelElement());
+            setSelectedItem(getSelectedModelElement()); // what is this doing? - tfm
         }
     }
 }
