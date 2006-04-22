@@ -81,7 +81,7 @@ public class UMLModelElementTaggedValueProxy implements UMLDocument {
      */
     public UMLModelElementTaggedValueProxy(String taggedValue) {
         tagName = taggedValue;
-        document = new UMLModelElementTaggedValueDocument();
+        document = new UMLModelElementTaggedValueDocument("");
     }
 
     /**
