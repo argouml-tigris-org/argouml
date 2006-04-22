@@ -39,7 +39,8 @@ public class UMLTagDefinitionListModel
      * Constructor for UMLGeneralizableElementGeneralizationListModel.
      */
     public UMLTagDefinitionListModel() {
-        super("tagdefinition");
+        super("dataValue");
+        // TODO: Add referenceValue for tagged values which have a non-primitive type
     }
 
     /**
