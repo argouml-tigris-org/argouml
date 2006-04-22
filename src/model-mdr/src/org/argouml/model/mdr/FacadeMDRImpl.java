@@ -3811,7 +3811,12 @@ class FacadeMDRImpl implements Facade {
                         .multiplicityToString(handle);
             }
         } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
+            String uuid = getUUID(handle);
+            if (uuid != null) {
+                throw new InvalidElementException("UUID: " + uuid, e);
+            } else {
+                throw new InvalidElementException(e);
+            }
         }
         throw new IllegalArgumentException(
                 "Must have an MDR element supplied. Received a "
