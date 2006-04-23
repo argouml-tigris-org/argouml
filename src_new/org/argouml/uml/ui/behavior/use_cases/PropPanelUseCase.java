@@ -24,16 +24,12 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
-import java.awt.event.ActionEvent;
 
-import javax.swing.Action;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -87,6 +83,15 @@ public class PropPanelUseCase extends PropPanelClassifier {
 
 	addSeparator();
 
+        addField(Translator.localize("label.attributes"),
+                getAttributeScroll());
+
+        addField(Translator.localize("label.association-ends"),
+                getAssociationEndScroll());
+
+        addField(Translator.localize("label.operations"),
+                getOperationScroll());
+
 	JList extensionPoints =
 	    new UMLMutableLinkedList(
 	            new UMLUseCaseExtensionPointListModel(), null,
@@ -94,54 +99,15 @@ public class PropPanelUseCase extends PropPanelClassifier {
         addField(Translator.localize("label.extension-points"),
             new JScrollPane(extensionPoints));
 
-        addField(Translator.localize("label.association-ends"),
-            getAssociationEndScroll());
 
         addAction(new ActionNavigateNamespace());
         addAction(new ActionNewUseCase());
         addAction(new ActionNewExtensionPoint());
+        addAction(TargetManager.getInstance().getAddAttributeAction());
+        addAction(TargetManager.getInstance().getAddOperationAction());
         addAction(getActionNewReception());
         addAction(new ActionNewStereotype());
         addAction(new ActionDeleteSingleModelElement());
-    }
-
-
-    /**
-     * Invoked by the "New Extension Point" toolbar button to create a new
-     * extension point for this use case in the same namespace as the current
-     * use case.<p>
-     *
-     * This code uses getFactory and adds the extension point explicitly to
-     * the, making its associated use case the current use case.<p>
-     */
-    private static class ActionNewExtensionPoint
-        extends AbstractActionNewModelElement {
-
-        /**
-         * The constructor.
-         */
-        public ActionNewExtensionPoint() {
-            super("button.new-extension-point");
-            putValue(Action.NAME,
-                    Translator.localize("button.new-extension-point"));
-        }
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            Object target = TargetManager.getInstance().getModelTarget();
-            if (Model.getFacade().isAUseCase(target)) {
-                TargetManager.getInstance().setTarget(
-                    Model.getUseCasesFactory().buildExtensionPoint(target));
-                super.actionPerformed(e);
-            }
-        }
-
-        /**
-         * The UID.
-         */
-        private static final long serialVersionUID = 1556105736769814764L;
     }
 
     /**

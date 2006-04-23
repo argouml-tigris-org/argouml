@@ -832,8 +832,12 @@ public final class TargetManager {
         if (targets.size() == 1) {
             Object target = determineModelTarget(targets.get(0));
             if ((Model.getFacade().isAClass(target)
+                    || Model.getFacade().isAUseCase(target)
                     || (Model.getFacade().isAFeature(target)
-                    && Model.getFacade().isAClass(
+                        && Model.getFacade().isAClass(
+                            Model.getFacade().getOwner(target)))
+                    || (Model.getFacade().isAFeature(target)
+                        && Model.getFacade().isAUseCase(
                             Model.getFacade().getOwner(target)))
                     || Model.getFacade().isAAssociationEnd(target))) {
                 addAttributeEnabled = true;
