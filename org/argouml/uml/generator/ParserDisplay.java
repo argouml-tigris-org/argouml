@@ -591,7 +591,7 @@ public final class ParserDisplay {
      *         blank string. <em>Note</em>. The string ":" can be used to set
      *         both name and location to null.
      */
-    public Object parseExtensionPoint(String text) {
+    private Object parseExtensionPoint(String text) {
 
         // If we are given the null string, return immediately
 
@@ -973,7 +973,7 @@ public final class ParserDisplay {
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
      */
-    public void parseAttribute(
+    protected void parseAttribute(
             String text,
             Object attribute) throws ParseException {
         String multiplicity = null;
