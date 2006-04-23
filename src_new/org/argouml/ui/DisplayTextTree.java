@@ -69,6 +69,9 @@ public class DisplayTextTree extends JTree {
 
     private boolean reexpanding;
 
+    /**
+     * This determines if stereotypes are to be shown in the explorer.
+     */
     protected boolean showStereotype;
 
     /**
@@ -79,13 +82,18 @@ public class DisplayTextTree extends JTree {
 
         super();
 
-        setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        /* MVW: We should use default font sizes as much as possible.
+         * BTW, this impacts only the width, and reduces readibility:*/
+//        setFont(LookAndFeelMgr.getInstance().getSmallFont());
+
         setCellRenderer(new UMLTreeCellRenderer());
-        putClientProperty("JTree.lineStyle", "Angled");
         setRootVisible(false);
         setShowsRootHandles(true);
-        setToolTipText("Tree"); // Enables tooltips for tree. Won't be shown.
 
+        // This enables tooltips for tree; this one won't be shown:
+        setToolTipText("Tree");
+
+        /* The default (16) puts the icons too close together: */
         this.setRowHeight(18);
 
         expandedPathsInModel = new Hashtable();
@@ -98,11 +106,9 @@ public class DisplayTextTree extends JTree {
 
     /**
      * Override the default JTree implementation to display the appropriate text
-     * for any object that will be displayed in the todo list.
+     * for any object that will be displayed in the todo list. <p>
      * 
-     * TODO: Since this is only used for the Todo list, it should not be located
-     * here, which is a common class for both trees, the explorer and the todo
-     * list.
+     * This is used for the Todo list as well as the Explorer list.
      * 
      * @param value
      *            the given object
