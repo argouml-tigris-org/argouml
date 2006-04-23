@@ -58,7 +58,6 @@ import org.tigris.gef.presentation.Fig;
  * This class is the JTree for the explorer. It provides:<p>
  * <pre>
  *  - selection/target management
- *  - generate a name for all nodes
  *  - mouse listener for the pop up </pre>
  *
  * @author  alexb
