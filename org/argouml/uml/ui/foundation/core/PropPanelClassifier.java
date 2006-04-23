@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,19 +24,11 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.beans.PropertyChangeListener;
-import java.util.Collection;
-import java.util.Iterator;
-
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewReception;
 import org.tigris.swidgets.Orientation;
@@ -68,6 +60,8 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
     private JScrollPane associationEndScroll;
     private JScrollPane parameterScroll;
     private JScrollPane structuralFeatureScroll;
+    private JScrollPane attributeScroll;
+    private JScrollPane operationScroll;
 
     // all GUI models that can be singletons and
     // that are being used in subclasses
@@ -110,6 +104,10 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
     private static UMLClassifierStructuralFeatureListModel
         structuralFeatureListModel =
             new UMLClassifierStructuralFeatureListModel();
+    private static UMLClassAttributeListModel attributeListModel =
+        new UMLClassAttributeListModel();
+    private static UMLClassOperationListModel operationListModel =
+        new UMLClassOperationListModel();
 
     /**
      * The constructor.
@@ -136,39 +134,6 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
     }
 
     /**
-     * Add an operation to the classifier.
-     */
-    public void addOperation() {
-        Object target = getTarget();
-        if (Model.getFacade().isAClassifier(target)) {
-            Object model = ProjectManager.getManager()
-                .getCurrentProject().getModel();
-            Object voidType = ProjectManager.getManager()
-                .getCurrentProject().findType("void");
-            Object newOper =
-                Model.getCoreFactory().buildOperation(
-                    target, model, voidType);
-            TargetManager.getInstance().setTarget(newOper);
-        }
-    }
-
-    /**
-     * Add an attribute to the classifier.
-     */
-    public void addAttribute() {
-        Object target = getTarget();
-        if (Model.getFacade().isAClassifier(target)) {
-            Project project = ProjectManager.getManager().getCurrentProject();
-            Object cls = /*(MClassifier)*/ target;
-            Object intType = project.findType("int");
-            Object model = project.getModel();
-            Object attr = 
-                Model.getCoreFactory().buildAttribute(cls, model, intType);
-            TargetManager.getInstance().setTarget(attr);
-        }
-    }
-
-    /**
      * Initialize the panel with the common fields and stuff.
      */
     private void initialize() {
@@ -181,19 +146,6 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
         modifiersPanel.add(
             new UMLGeneralizableElementRootCheckBox());
 
-    }
-
-    /**
-     * Add a datatype.
-     */
-    public void addDataType() {
-        Object target = getTarget();
-        if (Model.getFacade().isANamespace(target)) {
-            Object ns = /*(MNamespace)*/ target;
-            Object ownedElem = Model.getCoreFactory().createDataType();
-            Model.getCoreHelper().addOwnedElement(ns, ownedElem);
-            TargetManager.getInstance().setTarget(ownedElem);
-        }
     }
 
     /**
@@ -352,6 +304,30 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
                 new ScrollList(structuralFeatureListModel);
         }
         return structuralFeatureScroll;
+    }
+
+    /**
+     * Returns the attributeScroll.
+     *
+     * @return JScrollPane
+     */
+    public JScrollPane getAttributeScroll() {
+        if (attributeScroll == null) {
+            attributeScroll = new ScrollList(attributeListModel);
+        }
+        return attributeScroll;
+    }
+
+    /**
+     * Returns the operationScroll.
+     *
+     * @return JScrollPane
+     */
+    public JScrollPane getOperationScroll() {
+        if (operationScroll == null) {
+            operationScroll = new ScrollList(operationListModel);
+        }
+        return operationScroll;
     }
 
     /**
