@@ -64,11 +64,17 @@ public class PropPanelStereotype extends PropPanelModelElement {
         tagDefinitionListModel =
             new UMLTagDefinitionListModel();
 
+    private static UMLExtendedElementsListModel
+        extendedElementsListModel =
+            new UMLExtendedElementsListModel();
+
     private JScrollPane generalizationScroll;
 
     private JScrollPane specializationScroll;
 
     private JScrollPane tagDefinitionScroll;
+
+    private JScrollPane extendedElementsScroll;
 
     /**
      * Construct a stereotype properties panel.
@@ -101,10 +107,18 @@ public class PropPanelStereotype extends PropPanelModelElement {
 
         addField(Translator.localize("label.generalizations"),
                 getGeneralizationScroll());
+
         addField(Translator.localize("label.specializations"),
                 getSpecializationScroll());
+
         addField(Translator.localize("label.tagdefinitions"),
                 getTagDefinitionScroll());
+
+        addSeparator();
+
+        addField(Translator.localize("label.extended-elements"),
+                getExtendedElementsScroll());
+
         addAction(new ActionNavigateNamespace());
         addAction(new ActionNewStereotype());
         addAction(new ActionNewTagDefinition());
@@ -116,7 +130,6 @@ public class PropPanelStereotype extends PropPanelModelElement {
      *
      * @return JScrollPane
      */
-
     protected JScrollPane getGeneralizationScroll() {
         if (generalizationScroll == null) {
             JList list = new UMLLinkedList(generalizationListModel);
@@ -151,4 +164,11 @@ public class PropPanelStereotype extends PropPanelModelElement {
         return tagDefinitionScroll;
     }
 
+    protected JScrollPane getExtendedElementsScroll() {
+        if (extendedElementsScroll == null) {
+            JList list = new UMLLinkedList(extendedElementsListModel);
+            extendedElementsScroll = new JScrollPane(list);
+        }
+        return extendedElementsScroll;
+    }
 } /* end class PropPanelStereotype */
