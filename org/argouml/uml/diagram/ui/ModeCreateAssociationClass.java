@@ -72,8 +72,7 @@ public class ModeCreateAssociationClass extends ModeCreatePolyEdge {
 
         LOG.info("Creating Class box for association class");
         FigClassAssociationClass figNode =
-            new FigClassAssociationClass(thisFig);
-        figNode.setOwner(thisFig.getOwner());
+            new FigClassAssociationClass(thisFig.getOwner());
         y = y - DISTANCE;
         if (y < 0) {
             y = tee.getY() + figNode.getHeight() + DISTANCE;
