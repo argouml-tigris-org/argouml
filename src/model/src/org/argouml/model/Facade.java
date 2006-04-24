@@ -1477,6 +1477,15 @@ public interface Facade {
     Object getExpression(Object handle);
 
     /**
+     * Return all extended elements in the current repository for
+     * the given stereotype.
+     * 
+     * @param handle stereotype for which to return extended elements
+     * @return collection of model elements extended by given stereotype
+     */
+    public Collection getExtendedElements(Object handle);
+    
+    /**
      * Returns all extends of a use case or extension point.
      *
      * @param handle is the use case or the extension point

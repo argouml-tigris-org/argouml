@@ -1816,6 +1816,22 @@ class FacadeMDRImpl implements Facade {
     }
 
     /**
+     * @see org.argouml.model.Facade#getExtendedElements(java.lang.Object)
+     */
+    public Collection getExtendedElements(Object handle) {
+        if (!(handle instanceof Stereotype)) {
+            return illegalArgumentCollection(handle);
+        }
+        try {
+            return implementation.getUmlPackage().getCore()
+                    .getAStereotypeExtendedElement()
+                        .getExtendedElement((Stereotype) handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+    }
+
+    /**
      * @see org.argouml.model.Facade#getExtends(java.lang.Object)
      */
     public Collection getExtends(Object handle) {
