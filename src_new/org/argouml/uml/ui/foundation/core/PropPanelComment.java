@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,13 +24,16 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.awt.event.ActionEvent;
+
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -61,9 +64,12 @@ public class PropPanelComment extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
+
+        UMLMutableLinkedList umll = new UMLMutableLinkedList(
+                new UMLCommentAnnotatedElementListModel(), null, null);
+        umll.setDeleteAction(new ActionDeleteAnnotatedElement());
         addField(Translator.localize("label.annotated-elements"),
-            new JScrollPane(new UMLLinkedList(
-                    new UMLCommentAnnotatedElementListModel())));
+            new JScrollPane(umll));
 
         addSeparator();
 
@@ -115,6 +121,25 @@ class UMLCommentBodyDocument extends UMLPlainTextDocument {
      */
     protected String getProperty() {
         return (String) Model.getFacade().getBody(getTarget());
+    }
+    
+}
+
+class ActionDeleteAnnotatedElement extends AbstractActionRemoveElement {
+    /**
+     * Constructor.
+     */
+    public ActionDeleteAnnotatedElement() {
+        super(Translator.localize("menu.popup.remove"));
+    }
+
+    /*
+     * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent arg0) {
+        super.actionPerformed(arg0);
+        Model.getCoreHelper().removeAnnotatedElement(
+                getTarget(), getObjectToRemove());
     }
     
 }
