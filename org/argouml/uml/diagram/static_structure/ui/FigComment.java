@@ -38,6 +38,8 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
@@ -47,6 +49,7 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Geometry;
@@ -366,7 +369,7 @@ public class FigComment
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
-        // The _text element has no border, so the line color doesn't matter.
+        // The text element has no border, so the line color doesn't matter.
         outlineFig.setLineColor(col);
         urCorner.setLineColor(col);
     }
@@ -592,22 +595,31 @@ public class FigComment
             calcBounds();
             setBounds(getBounds());
             damage();
+        } else if (mee instanceof RemoveAssociationEvent
+                && mee.getPropertyName().equals("annotatedElement")) {
+            /* Remove the commentedge.
+             * If there are more then one comment-edges between 
+             * the 2 objects, then delete them all. */
+            Collection toRemove = new ArrayList();
+            Collection c = getFigEdges(); // all connected edges
+            Iterator i = c.iterator();
+            while (i.hasNext()) {
+                FigEdgeNote fen = (FigEdgeNote) i.next();
+                Object otherEnd = fen.getDestination(); // the UML object
+                if (otherEnd == getOwner()) { // wrong end of the edge
+                    otherEnd = fen.getSource();
+                }
+                if (otherEnd == mee.getOldValue())  {
+                    toRemove.add(fen);
+                }
+            }
+            i = toRemove.iterator();
+            while (i.hasNext()) {
+                FigEdgeNote fen = (FigEdgeNote) i.next();
+                fen.removeFromDiagram();
+            }
         }
     }
-
-//    /**
-//     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
-//     */
-//    protected void updateNameText() {
-//        if (getOwner() != null) {
-//            String t = Model.getFacade().getName(getOwner());
-//            if (t != null) {
-//                bodyTextFig.setText(t);
-//                calcBounds();
-//                setBounds(getBounds());
-//            }
-//        }
-//    }
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
