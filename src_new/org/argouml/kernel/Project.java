@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
@@ -652,15 +653,15 @@ public class Project implements java.io.Serializable, TargetListener {
         Collection figs = new ArrayList();
         Iterator it = diagrams.iterator();
         while (it.hasNext()) {
-            Diagram diagram = (Diagram) it.next();
-            Fig aFig = diagram.presentationFor(obj);
-            if (aFig != null) {
-                if (aFig.getOwner() == obj) {
-                    if (includeEnclosedOnes) {
-                        figs.addAll(collectAllEnclosedFigsRecursively(aFig));
-                    }
-                    figs.add(aFig);
+            ArgoDiagram diagram = (ArgoDiagram) it.next();
+            List diagramFigs = diagram.presentationsFor(obj);
+            Iterator figIt = diagramFigs.iterator();
+            while (figIt.hasNext()) {
+                Fig aFig = (Fig)figIt.next();
+                if (includeEnclosedOnes) {
+                    figs.addAll(collectAllEnclosedFigsRecursively(aFig));
                 }
+                figs.add(aFig);
             }
         }
         return figs;
