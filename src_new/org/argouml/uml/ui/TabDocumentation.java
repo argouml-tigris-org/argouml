@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,6 +23,8 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+
+import java.awt.BorderLayout;
 
 import javax.swing.JScrollPane;
 
@@ -54,7 +56,7 @@ import org.tigris.swidgets.Vertical;
  * automatically added to the documenation Jtext window. When Adding notes to
  * classes the notes are not included in the documentation text window.<p>
  *
- * Since: field is not validated for real date. Change to DateField?<p>
+ * The "Since" field is not validated for real date. Change to DateField?<p>
  *
  * Note that all fields in the TabDocumentation are added automatically
  * to the tagged value tab view.<p>
@@ -106,7 +108,6 @@ public class TabDocumentation extends PropPanel {
 
         UMLTextArea2 doc = new UMLTextArea2(
                 new UMLModelElementTaggedValueDocument("documentation"));
-
         doc.setRows(2);
         doc.setLineWrap(true);
         doc.setWrapStyleWord(true);
@@ -137,6 +138,11 @@ public class TabDocumentation extends PropPanel {
         JScrollPane spCommentBody = new JScrollPane();
         spCommentBody.getViewport().add(commentBody);
         addField(Translator.localize("label.comment.body"), spCommentBody);
+
+        /* Since there are no buttons on this panel, we have to set
+         * the size of the buttonpanel, otherwise the 
+         * title would not be aligned right. */
+        setButtonPanelSize(18);
     }
 
     /**

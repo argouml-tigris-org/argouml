@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
@@ -109,7 +110,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         buttonPanel = new ToolBar();
         buttonPanel.setFloatable(false);
 
-        LabelledLayout layout = new LabelledLayout(orientation == Vertical.getInstance());
+        LabelledLayout layout = 
+            new LabelledLayout(orientation == Vertical.getInstance());
         layout.setHgap(5);
         setLayout(layout);
 
@@ -144,16 +146,6 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public void setOrientation(Orientation orientation) {
         super.setOrientation(orientation);
-    }
-
-    /**
-     * @param button
-     *            the button to be added to the button panel
-     * @deprecated use addAction instead. Remove 0.20.0
-     */
-    protected void addButton(Component button) {
-        button.setFocusable(false); // Buttons shall not go in the tabbing loop
-        buttonPanel.add(button);
     }
 
     /**
@@ -561,6 +553,20 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     	border.setTitleFont(smallFont);
     	panel.setBorder(border);
     	return panel;
+    }
+    
+    /**
+     * If there are no buttons to show in the toolbar, 
+     * then set the height to e.g. 18, so that the title
+     * is aligned right by the LabelledLayout.
+     * 
+     * @param height
+     */
+    protected void setButtonPanelSize(int height) {
+        /* Set the minimum and preferred equal, 
+         * so that the size is fixed for the labelledlayout. */
+        buttonPanel.setMinimumSize(new Dimension(0, height));
+        buttonPanel.setPreferredSize(new Dimension(0, height));
     }
 
     /**
