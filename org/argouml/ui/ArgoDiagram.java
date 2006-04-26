@@ -41,6 +41,7 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
 
 /**
@@ -272,6 +273,15 @@ public class ArgoDiagram extends Diagram {
                         "Removed: " + figDescription(f)
                         + " model element no longer in the repository\n";
                 }
+                // The fix
+                f.removeFromDiagram();
+            }
+
+            // 3. Make sure the only FigGroups on a diagram are also FigNodes
+            if (f instanceof FigGroup && !(f instanceof FigNode)) {
+                // The report
+                report +=
+                    "Removed: " + figDescription(f) + " a FigGroup should not be on the diagram\n";
                 // The fix
                 f.removeFromDiagram();
             }
