@@ -24,8 +24,6 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.BorderLayout;
-
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Configuration;
