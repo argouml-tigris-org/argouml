@@ -30,18 +30,13 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
-import java.text.ParseException;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.collaboration.ui.FigAssociationRole;
-import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
