@@ -184,9 +184,6 @@ Property files to be searched:
     <property name="argo.timestamp.version" 
               value="${argo.build.version}-${DSTAMP}-${TSTAMP}"/>
  
-    <echo message="------ ${Name} ${argo.timestamp.version} [${year}] ----"/>
-    <echo message="Using ${ant.version}"/>
-
     <property name="version.package" value="org/argouml/application"/>
 
     <available classname="org.tigris.gef.base.Globals"
@@ -667,7 +664,6 @@ Property files to be searched:
   <!-- =================================================================== -->
   <target name="run" depends="compile"
           description="Run the newly compiled ArgoUML.">
-    <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
           fork="yes"
           taskname="argouml"
@@ -686,7 +682,6 @@ Property files to be searched:
 
   <target name="debug" depends="compile"
           description="Run ArgoUML with debug level logging.">
-    <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
           fork="yes"
           taskname="argouml"
@@ -705,7 +700,6 @@ Property files to be searched:
 
   <target name="info" depends="compile"
           description="Run ArgoUML with info level logging.">
-    <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
           fork="yes"
           taskname="argouml"
@@ -732,8 +726,6 @@ Property files to be searched:
   <!-- =================================================================== -->
 
   <target name="compile-tests" depends="prepare">
-
-    <echo message="Compiling the tests"/>
 
     <!-- create directories -->
     <mkdir dir="${argo.tests.classes}"/>
@@ -956,7 +948,6 @@ Property files to be searched:
   <target name="run-with-test-panel" 
           depends="compile,junit-setup"
           description="Start the TestRunner with all test cases from ../tests loaded.">
-    <echo message="--- Executing ${Name} ---"/>
     <java classname="junit.swingui.TestRunner" fork="yes" taskname="argouml">
         <assertions>
           <enable/>
