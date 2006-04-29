@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -64,11 +64,11 @@ public class TestStateBodyNotationUml extends TestCase {
         Object voidType = p.findType("void");
         Model.getCoreFactory().buildOperation(aClass, mdl,
                 voidType, "myOper");
-        aStateMachine = Model.getStateMachinesFactory()
-            .buildStateMachine(aClass);
+        aStateMachine =
+            Model.getStateMachinesFactory().buildStateMachine(aClass);
         Object top = Model.getFacade().getTop(aStateMachine);
-        aState = Model.getStateMachinesFactory()
-            .buildCompositeState(top);
+        aState =
+            Model.getStateMachinesFactory().buildCompositeState(top);
     }
 
     /**
@@ -128,13 +128,15 @@ public class TestStateBodyNotationUml extends TestCase {
     public final void testParseStateBodyRemove() {
         Object st;
 
-        st = checkGenerated(aState,
+        st =
+            checkGenerated(aState,
                 "entry/test1\nexit/b\ndo/it\ninternal/activity",
                 true, true, true, 1, false);
         checkChanged(st, "", // deleting it all
                 false, false, false, 0, false);
 
-        st = checkGenerated(aState,
+        st =
+            checkGenerated(aState,
                 "int1/act1\nexit/test2\nint2/act2\ndo/b\nentry/it",
                 true, true, true, 2, false);
         checkChanged(st, // changing the sequence only
@@ -148,7 +150,8 @@ public class TestStateBodyNotationUml extends TestCase {
     public final void testParseStateBodyRemoveInternals() {
         Object st;
 
-        st = checkGenerated(aState,
+        st =
+            checkGenerated(aState,
                 "int1/act1\nint2/act2\nint3/act3\nint4/act4\nint5/act5",
                 false, false, false, 5, false);
         checkChanged(st,
@@ -179,8 +182,8 @@ public class TestStateBodyNotationUml extends TestCase {
     private Object checkGenerated(Object st, String text, boolean entryAction,
             boolean exitAction, boolean doAction,
             int internals, boolean exception) {
-        Object sst = Model.getStateMachinesFactory()
-            .buildSimpleState(st);
+        Object sst =
+            Model.getStateMachinesFactory().buildSimpleState(st);
         checkChanged(sst, text, entryAction, exitAction, doAction,
                 internals, exception);
         return sst;

@@ -38,7 +38,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
- * Test creation of Collaboration diagrams. 
+ * Test creation of Collaboration diagrams.
  * TODO: Test creating on an operation.
  *
  * @author jaap.branderhorst@xs4all.nl
@@ -103,7 +103,7 @@ public class TestActionCollaborationDiagram extends TestCase {
         action = getAction();
         ns = getNamespace();
         validNamespaces = getValidNamespaceClasses();
-        
+
         TargetManager.getInstance().setTarget(ns);
     }
 
@@ -119,6 +119,9 @@ public class TestActionCollaborationDiagram extends TestCase {
     }
 
 
+    /**
+     * Test creating a diagram.
+     */
     public void testCreateDiagram() {
         Model.getPump().flushModelEvents();
         action.actionPerformed(null);
@@ -137,7 +140,7 @@ public class TestActionCollaborationDiagram extends TestCase {
                    diagram.getGraphModel() instanceof UMLMutableGraphSupport);
         assertNotNull("The diagram has no name", diagram.getName());
     }
-    
+
     /**
      * Tests if two diagrams created have different names.
      */
@@ -152,7 +155,7 @@ public class TestActionCollaborationDiagram extends TestCase {
         // with existing diagrams in the project, to validate
         // there are no duplicates.
         ProjectManager.getManager().getCurrentProject().addMember(diagram1);
-        
+
         TargetManager.getInstance().setTarget(ns);
         action.actionPerformed(null);
         d = TargetManager.getInstance().getTarget();
@@ -165,11 +168,11 @@ public class TestActionCollaborationDiagram extends TestCase {
                    "The created diagrams have the same name",
                    !(diagram1.getName().equals(diagram2.getName())));
     }
-    
+
     /**
      * Tests if the list with namespaces defined in getValidNamespaceClasses
      * contains only valid namespaces.
-     * 
+     *
      * TODO: This test does not test anything, really!
      */
     public void testValidNamespaces() {

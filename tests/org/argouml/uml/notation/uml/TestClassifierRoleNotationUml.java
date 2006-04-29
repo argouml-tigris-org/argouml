@@ -33,8 +33,9 @@ import junit.framework.TestCase;
 import org.argouml.model.Model;
 
 /**
- * Test ClassifierRoleNotationUml (formerly ParserDisplay): parsing classifier-role.
- *  
+ * Test ClassifierRoleNotationUml (formerly ParserDisplay):
+ * parsing classifier-role.
+ *
  * @author Michiel
  */
 public class TestClassifierRoleNotationUml extends TestCase {
@@ -69,7 +70,7 @@ public class TestClassifierRoleNotationUml extends TestCase {
         cr = Model.getCollaborationsFactory().createClassifierRole();
         checkNameClassifierRole(cr, clro03, "roname");
     }
-    
+
     /**
      * Test the Base of the ClassifierRole.
      */
@@ -126,7 +127,7 @@ public class TestClassifierRoleNotationUml extends TestCase {
         try {
             ClassifierRoleNotationUml crn = new ClassifierRoleNotationUml(ro);
             crn.parseClassifierRole(ro, text);
-            assertTrue("didn't throw for " + text, false);
+            fail("didn't throw for " + text);
         } catch (ParseException pe) {
             assertTrue(text + " threw ParseException " + pe, prsEx);
         } catch (Exception e) {

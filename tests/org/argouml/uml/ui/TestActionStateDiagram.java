@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,7 +38,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
- * TODO: This needs more work. 
+ * TODO: This needs more work.
  * Test e.g. creation when an operation is selected.
  *
  * @author jaap.branderhorst@xs4all.nl
@@ -100,9 +100,9 @@ public class TestActionStateDiagram extends TestCase {
         rl.add(Model.getMetaTypes().getDataType());
         rl.add(Model.getMetaTypes().getNode());
         rl.add(Model.getMetaTypes().getComponent());
-        
+
         // TODO: this should fail, but it doesn't:
-        rl.add(Model.getMetaTypes().getTransition()); 
+        rl.add(Model.getMetaTypes().getTransition());
         return rl;
     }
 
@@ -113,10 +113,13 @@ public class TestActionStateDiagram extends TestCase {
         action = getAction();
         ns = getNamespace();
         validNamespaces = getValidNamespaceClasses();
-        
+
         TargetManager.getInstance().setTarget(ns);
     }
-    
+
+    /**
+     * Test to create a diagram.
+     */
     public void testCreateDiagram() {
         Model.getPump().flushModelEvents();
         action.actionPerformed(null);
@@ -135,7 +138,7 @@ public class TestActionStateDiagram extends TestCase {
                    diagram.getGraphModel() instanceof UMLMutableGraphSupport);
         assertNotNull("The diagram has no name", diagram.getName());
     }
-    
+
     /**
      * Tests if two diagrams created have different names.
      */
@@ -150,7 +153,7 @@ public class TestActionStateDiagram extends TestCase {
         // with existing diagrams in the project, to validate
         // there are no duplicates.
         ProjectManager.getManager().getCurrentProject().addMember(diagram1);
-        
+
         TargetManager.getInstance().setTarget(ns);
         action.actionPerformed(null);
         d = TargetManager.getInstance().getTarget();
@@ -163,11 +166,11 @@ public class TestActionStateDiagram extends TestCase {
                    "The created diagrams have the same name",
                    !(diagram1.getName().equals(diagram2.getName())));
     }
-    
+
     /**
      * Tests if the list with namespaces defined in getValidNamespaceClasses
      * contains only valid namespaces.
-     * 
+     *
      * TODO: This test does not test anything, really!
      */
     public void testValidNamespaces() {

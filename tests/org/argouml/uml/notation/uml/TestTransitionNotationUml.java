@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,6 @@
 package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
-import java.util.Collection;
 
 import junit.framework.TestCase;
 
@@ -65,13 +64,14 @@ public class TestTransitionNotationUml extends TestCase {
         aClass = Model.getCoreFactory().buildClass(model);
         Object mdl = p.getModel();
         Object voidType = p.findType("void");
-        aOper = Model.getCoreFactory().buildOperation(aClass, mdl,
-                voidType, "myOper");
-        aStateMachine = Model.getStateMachinesFactory()
-            .buildStateMachine(aClass);
+        aOper =
+            Model.getCoreFactory().buildOperation(aClass, mdl,
+                    voidType, "myOper");
+        aStateMachine =
+            Model.getStateMachinesFactory().buildStateMachine(aClass);
         Object top = Model.getFacade().getTop(aStateMachine);
-        aState = Model.getStateMachinesFactory()
-            .buildCompositeState(top);
+        aState =
+            Model.getStateMachinesFactory().buildCompositeState(top);
     }
 
 
@@ -128,14 +128,14 @@ public class TestTransitionNotationUml extends TestCase {
      */
     private Object checkGenerated(Object st, String text, boolean trigger,
             boolean guard, boolean effect, boolean exception) {
-        Object it = Model.getStateMachinesFactory()
-            .buildInternalTransition(st);
+        Object it =
+            Model.getStateMachinesFactory().buildInternalTransition(st);
         TransitionNotationUml notation = new TransitionNotationUml(it);
         try {
             notation.parseTransition(it, text);
             assertTrue("Expected exception did not happen.", !exception);
         } catch (ParseException e) {
-            assertTrue("Unexpected exception: " + e.getMessage(), 
+            assertTrue("Unexpected exception: " + e.getMessage(),
                     exception);
         }
         if (trigger) {
@@ -174,8 +174,8 @@ public class TestTransitionNotationUml extends TestCase {
 
         //try creating a TimeEvent
         text = "after(a while)";
-        trans = checkGenerated(aState, text, true, false, false,
-                false);
+        trans =
+            checkGenerated(aState, text, true, false, false, false);
         trig = Model.getFacade().getTrigger(trans);
         assertTrue("Unexpected triggertype found instead of TimeEvent for "
                 + text, Model.getFacade().isATimeEvent(trig));

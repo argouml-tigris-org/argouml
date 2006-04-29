@@ -86,8 +86,10 @@ public class TestUMLCollaborationRepresentedOperationComboBoxModel
      * Test setting the represented operation.
      */
     public void testSetRepresentedOperation() {
-        /* Now the model should contain 
-         * the one operation + the "" for clearing. */
+        /*
+         * Now the model should contain
+         * the one operation + the "" for clearing.
+         */
         assertEquals(2, model.getSize());
         assertEquals(oper, model.getElementAt(0));
     }
@@ -96,8 +98,8 @@ public class TestUMLCollaborationRepresentedOperationComboBoxModel
      * Test removing the represented operation.
      */
     public void testExtraRepresentedOperation() {
-        Object oper = Model.getCoreFactory().createOperation();
-        Model.getCollaborationsHelper().setRepresentedOperation(elem, oper);
+        Object op = Model.getCoreFactory().createOperation();
+        Model.getCollaborationsHelper().setRepresentedOperation(elem, op);
         /* Simulate a target change. */
         model.targetSet(new TargetEvent(this, null, null, new Object[] {elem}));
         Model.getPump().flushModelEvents();

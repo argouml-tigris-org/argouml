@@ -33,7 +33,7 @@ import org.argouml.model.Model;
 
 /**
  * Test class to test the parsing of a message.<p>
- * 
+ *
  * Formerly called TestParseMessage. <p>
  *
  * For some reason these tests require the ProjectBrowser loaded when running.

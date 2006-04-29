@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -50,7 +50,7 @@ public class TestXmiFilePersister extends TestCase {
     }
 
     /**
-     * This is a regression test for issue 1504. 
+     * This is a regression test for issue 1504.
      * Test basic serialization to XMI file.
      */
     public void testSave() {
@@ -65,7 +65,7 @@ public class TestXmiFilePersister extends TestCase {
                 ProjectManager.getManager()
                 	.getCurrentProject().findType("void");
             Object oper =
-                Model.getCoreFactory().buildOperation(clazz, model,voidType);
+                Model.getCoreFactory().buildOperation(clazz, model, voidType);
             Model.getCoreHelper().setType(
                     Model.getFacade().getParameter(oper, 0),
                     p.findType("String"));
@@ -80,7 +80,7 @@ public class TestXmiFilePersister extends TestCase {
     }
 
     /**
-     * This is a regression test for issue 1504. 
+     * This is a regression test for issue 1504.
      * Test loading from minimal XMI file.
      */
     public void testLoadProject() {
