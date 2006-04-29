@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -28,27 +28,29 @@ import org.argouml.model.Model;
 
 /**
  * This abstract class forms the basis of all Notation providers
- * for the text shown in the attribute compartment of a Class.
- * Subclass this for all languages.
- *
- * @author mvw@tigris.org
+ * for the text shown in the extension point compartment of a 
+ * UseCase. Subclass this for all languages.
+ * 
+ * @author michiel
  */
-public abstract class AttributeNotation extends ValueHandler {
+public abstract class ExtensionPointNotation extends ValueHandler {
 
-    protected Object myAttribute;
-    protected Object myClass;
+    /**
+     * The Extension Point.
+     */
+    protected Object myEP;
 
     /**
      * The constructor.
      *
-     * @param attribute the represented attribute
+     * @param ep the represented extensionpoint
      */
-    public AttributeNotation(Object attribute) {
-        if (!Model.getFacade().isAAttribute(attribute)) {
-            throw new IllegalArgumentException("This is not an Attribute.");
+    public ExtensionPointNotation(Object ep) {
+        if (!Model.getFacade().isAExtensionPoint(ep)) {
+            throw new IllegalArgumentException(
+                    "This is not an ExtensionPoint.");
         }
-        myAttribute = attribute;
-        myClass = Model.getFacade().getOwner(attribute);
+        myEP = ep;
     }
 
 }

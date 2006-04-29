@@ -29,9 +29,13 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -58,15 +62,12 @@ public class FigEnumeration extends FigDataType
     private static final long serialVersionUID = 3333154292883077250L;
 
     /**
-     * Logger.
+     * The Fig that represents the literals compartment.
      */
-    //private static final Logger LOG = Logger.getLogger(FigEnumeration.class);
-
     private FigEnumLiteralsCompartment literalsCompartment;
 
     /**
      * Main constructor for a {@link FigEnumeration}.
-     *
      */
     public FigEnumeration() {
         super();
@@ -77,7 +78,7 @@ public class FigEnumeration extends FigDataType
         enableSizeChecking(true);
         setSuppressCalcBounds(false);
 
-        addFig(getLiteralsCompartment());
+        addFig(getLiteralsCompartment()); // This creates the compartment.
         setBounds(getBounds());
     }
 
@@ -92,8 +93,8 @@ public class FigEnumeration extends FigDataType
     public FigEnumeration(GraphModel gm, Object node) {
         this();
         enableSizeChecking(true);
-        setOwner(node);
         setEnumLiteralsVisible(true);
+        setOwner(node);
         literalsCompartment.populate();
         setBounds(getBounds());
     }
@@ -136,21 +137,15 @@ public class FigEnumeration extends FigDataType
         return popUpActions;
     }
 
-
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
-        if (getOwner() == null) {
-            return;
-        }
         super.modelChanged(mee);
-        // Enumeration Literals
-        if (Model.getFacade().isAEnumerationLiteral(mee.getSource())
-                || (mee.getSource() == getOwner() 
-                        && mee.getPropertyName().equals("literal"))) {
-            updateEnumLiterals();
-            damage();
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            renderingChanged();
+            updateListeners(getOwner());
         }
     }
 
@@ -158,10 +153,44 @@ public class FigEnumeration extends FigDataType
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {
+        if (getOwner() != null) {
+            updateEnumLiterals();
+        }
         super.renderingChanged();
-        updateEnumLiterals();
     }
     
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
+    protected void updateListeners(Object newOwner) {
+        Object oldOwner = getOwner();
+        if (oldOwner != null) {
+            removeAllElementListeners();
+        }
+        if (newOwner != null) {
+            // add the listeners to the newOwner
+            addElementListener(newOwner);
+            // and its stereotypes
+            Collection c = new ArrayList(
+                    Model.getFacade().getStereotypes(newOwner));
+            // and its features
+            Iterator it = Model.getFacade().getFeatures(newOwner).iterator();
+            while (it.hasNext()) {
+                Object feat = it.next();
+                c.add(feat);
+                // and the stereotypes of its features
+                c.addAll(new ArrayList(Model.getFacade().getStereotypes(feat)));
+            }
+            // and its enumerationLiterals
+            c.addAll(Model.getFacade().getEnumerationLiterals(newOwner));
+            // And now add listeners to them all:
+            Iterator it2 = c.iterator();
+            while (it2.hasNext()) {
+                addElementListener(it2.next());
+            }
+        }
+    }
+
     /**
      * Update (i.e. redraw) the compartment with the literals.
      */
@@ -173,7 +202,6 @@ public class FigEnumeration extends FigDataType
 
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(getBounds());
-        damage();
     }
     
     /**
@@ -204,11 +232,11 @@ public class FigEnumeration extends FigDataType
         // Start with the minimum for our parent
         Dimension aSize = super.getMinimumSize();
 
-//        if (literalsCompartment.isVisible()) {
-//            Dimension literalsMin = literalsCompartment.getMinimumSize();
-//            aSize.width = Math.max(aSize.width, literalsMin.width);
-//            aSize.height += literalsMin.height;
-//        }
+        if (literalsCompartment.isVisible()) {
+            Dimension literalsMin = literalsCompartment.getMinimumSize();
+            aSize.width = Math.max(aSize.width, literalsMin.width);
+            aSize.height += literalsMin.height;
+        }
         
         return aSize;
     }
@@ -318,10 +346,6 @@ public class FigEnumeration extends FigDataType
      */
     public void setEnumLiteralsVisible(boolean isVisible) {
         Rectangle rect = getBounds();
-        int h =
-                isCheckSize() ? ((ROWHEIGHT
-                * Math.max(1, literalsCompartment.getFigs().size() - 1) + 2)
-                * rect.height / getMinimumSize().height) : 0;
         if (literalsCompartment.isVisible()) {
             if (!isVisible) {
                 damage();
@@ -330,7 +354,9 @@ public class FigEnumeration extends FigDataType
                     ((Fig) (it.next())).setVisible(false);
                 }
                 literalsCompartment.setVisible(false);
-                setBounds(rect.x, rect.y, rect.width, rect.height - h);
+                Dimension aSize = this.getMinimumSize();
+                setBounds(rect.x, rect.y,
+                          (int) aSize.getWidth(), (int) aSize.getHeight());
             }
         } else {
             if (isVisible) {
@@ -339,7 +365,9 @@ public class FigEnumeration extends FigDataType
                     ((Fig) (it.next())).setVisible(true);
                 }
                 literalsCompartment.setVisible(true);
-                setBounds(rect.x, rect.y, rect.width, rect.height + h);
+                Dimension aSize = this.getMinimumSize();
+                setBounds(rect.x, rect.y,
+                          (int) aSize.getWidth(), (int) aSize.getHeight());
                 damage();
             }
         }

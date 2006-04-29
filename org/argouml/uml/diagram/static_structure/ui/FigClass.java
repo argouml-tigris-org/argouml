@@ -30,7 +30,6 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -38,12 +37,10 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.argouml.i18n.Translator;
-import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
@@ -52,7 +49,6 @@ import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
-import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -255,15 +251,6 @@ public class FigClass extends FigClassifierBox
      */
     public void setAttributesVisible(boolean isVisible) {
         Rectangle rect = getBounds();
-//        int h;
-//    	if (isCheckSize()) {
-//    	    h = ((ROWHEIGHT
-//                * Math.max(1, getAttributesFig().getFigs().size() - 1) + 2)
-//                * rect.height
-//                / getMinimumSize().height);
-//        } else {
-//            h = 0;
-//        }
         if (getAttributesFig().isVisible()) {
             if (!isVisible) {  // hide compartment
                 damage();
@@ -298,13 +285,6 @@ public class FigClass extends FigClassifierBox
      */
     public void setOperationsVisible(boolean isVisible) {
         Rectangle rect = getBounds();
-//        int h =
-//    	    isCheckSize()
-//    	    ? ((ROWHEIGHT
-//                * Math.max(1, getOperationsFig().getFigs().size() - 1) + 2)
-//    	        * rect.height
-//    	        / getMinimumSize().height)
-//    	    : 0;
         if (isOperationsVisible()) { // if displayed
             if (!isVisible) {
                 damage();
@@ -432,44 +412,18 @@ public class FigClass extends FigClassifierBox
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
-            try {
-                Object attribute = highlightedFigText.getOwner();
-                ParserDisplay.SINGLETON.parseAttributeFig(
-                        classifier,
-                        attribute,
-                        highlightedFigText.getText().trim());
-                ProjectBrowser.getInstance().getStatusBar().showStatus("");
-            } catch (ParseException pe) {
-                String msg = "statusmsg.bar.error.parsing.attribute";
-                Object[] args = {
-                    pe.getLocalizedMessage(),
-                    new Integer(pe.getErrorOffset()),
-                };
-                ProjectBrowser.getInstance().getStatusBar().showStatus(
-                        Translator.messageFormat(msg, args));
-            }
+            
+            ft.setText(highlightedFigText.getNotationProvider()
+                    .parse(ft.getText()));
             return;
         }
         i = new Vector(getOperationsFig().getFigs()).indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
-            try {
-                Object operation = highlightedFigText.getOwner();
-                ParserDisplay.SINGLETON.parseOperationFig(
-                    classifier,
-                    operation,
-                    highlightedFigText.getText().trim());
-                ProjectBrowser.getInstance().getStatusBar().showStatus("");
-            } catch (ParseException pe) {
-                String msg = "statusmsg.bar.error.parsing.operation";
-                Object[] args = {
-                    pe.getLocalizedMessage(),
-                    new Integer(pe.getErrorOffset()),
-                };
-                ProjectBrowser.getInstance().getStatusBar().showStatus(
-                        Translator.messageFormat(msg, args));
-            }
+            
+            ft.setText(highlightedFigText.getNotationProvider()
+                    .parse(ft.getText()));
             return;
         }
     }
@@ -480,10 +434,12 @@ public class FigClass extends FigClassifierBox
     protected void textEditStarted(FigText ft) {
         super.textEditStarted(ft);
         if (getAttributesFig().getFigs().contains(ft)) {
-            showHelp("parsing.help.attribute");
+            showHelp(((CompartmentFigText) ft)
+                    .getNotationProvider().getParsingHelp());
         }
         if (getOperationsFig().getFigs().contains(ft)) {
-            showHelp("parsing.help.operation");
+            showHelp(((CompartmentFigText) ft)
+                    .getNotationProvider().getParsingHelp());
         }
     }
 
@@ -565,7 +521,7 @@ public class FigClass extends FigClassifierBox
         if (getOwner() != null) {
             updateAttributes();
             updateOperations();
-//            updateAbstract();
+            updateAbstract();
         }
         super.renderingChanged();
     }
@@ -578,75 +534,13 @@ public class FigClass extends FigClassifierBox
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
-        if (getOwner() == null) {
-            return;
-        }
-        if (mee == null) {
-            throw new RuntimeException(
-                    "FigClass model changed called with null parameter");
-        }
-        Object source = mee.getSource();
-
-
-        // attributes
-        if (Model.getFacade().isAAttribute(source)
-                || (source == getOwner()
-                && mee.getPropertyName().equals("feature"))) {
-            updateAttributes();
-            damage();
-        }
-        // operations
-        if (Model.getFacade().isAOperation(source)
-                || Model.getFacade().isAParameter(source)
-                || (source == getOwner()
-                        && mee.getPropertyName().equals("feature"))) {
-            updateOperations();
-            damage();
-        }
-        if (mee.getPropertyName().equals("parameter")
-                && Model.getFacade().isAOperation(source)) {
-            if (mee instanceof AddAssociationEvent) {
-                AddAssociationEvent aae = (AddAssociationEvent) mee;
-                /* Ensure we will get an event for the name change of
-                 * the newly created attribute:
-                 */
-                addElementListener(aae.getChangedValue(),
-                        new String[] {"name", "kind", "type", "defaultValue"});
-                damage();
-                return;
-            } else if (mee instanceof RemoveAssociationEvent) {
-                RemoveAssociationEvent rae = (RemoveAssociationEvent) mee;
-                removeElementListener(rae.getChangedValue());
-                damage();
-                return;
-            }
-        }
-        // TODO: stereotypes & isAbstract should be moved up to super
-        if (mee.getPropertyName().equals("isAbstract") 
-                && source == getOwner()) {
-            updateAbstract();
-            damage();
-        }
-        if (mee.getPropertyName().equals("stereotype")) {
-            updateListeners(getOwner());
-            updateStereotypeText();
-            updateAttributes();
-            updateOperations();
-            damage();
-        }
-        if (Model.getFacade().isAStereotype(source)) {
-            if (Model.getFacade().getStereotypes(getOwner())
-                    .contains(source)) {
-                updateStereotypeText();
-                damage();
-            } else if (mee.getPropertyName().equals("name")) {
-                updateAttributes();
-                updateOperations();
-                damage();
-            }
-        }
-        // name updating
+        // Let our superclass sort itself out first
         super.modelChanged(mee);
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            renderingChanged();
+            updateListeners(getOwner());
+        }
     }
 
     /**
@@ -807,11 +701,9 @@ public class FigClass extends FigClassifierBox
         if (!isAttributesVisible()) {
             return;
         }
-        FigAttributesCompartment attributesCompartment = getAttributesFig();
-        attributesCompartment.populate();
+        attributesFigCompartment.populate();
 
         Rectangle rect = getBounds();
-
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);
@@ -876,19 +768,24 @@ public class FigClass extends FigClassifierBox
         if (newOwner != null) {
             // add the listeners to the newOwner
             addElementListener(newOwner);
+            // and its stereotypes
+            Collection c = new ArrayList(
+                    Model.getFacade().getStereotypes(newOwner));
+            // and its features
             Iterator it = Model.getFacade().getFeatures(newOwner).iterator();
             while (it.hasNext()) {
                 Object feat = it.next();
-                Collection c =
-                    new ArrayList(Model.getFacade().getStereotypes(feat));
                 c.add(feat);
+                // and the stereotypes of its features
+                c.addAll(new ArrayList(Model.getFacade().getStereotypes(feat)));
+                // and the parameter of its operations
                 if (Model.getFacade().isAOperation(feat)) {
                     c.addAll(Model.getFacade().getParameters(feat));
                 }
-                Iterator it2 = c.iterator();
-                while (it2.hasNext()) {
-                    addElementListener(it2.next());
-                }
+            }
+            Iterator it2 = c.iterator();
+            while (it2.hasNext()) {
+                addElementListener(it2.next());
             }
         }
     }

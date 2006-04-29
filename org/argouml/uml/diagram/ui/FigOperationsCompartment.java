@@ -32,11 +32,8 @@ import java.util.List;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
-import org.argouml.notation.NotationContext;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.static_structure.ui.FigFeature;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * @author Bob Tarling
@@ -60,68 +57,45 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
     }
 
     /**
+     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#getUmlCollection()
+     */
+    protected Collection getUmlCollection() {
+        Object classifier = getGroup().getOwner();
+        return Model.getFacade().getOperations(classifier);
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#getNotationType()
+     */
+    protected int getNotationType() {
+        return NotationProviderFactory2.TYPE_OPERATION;
+    }
+
+    /**
+     * Add handling abstract operations; they
+     * are shown in italics.
+     * 
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#populate()
      */
     public void populate() {
+        super.populate();
+
         if (!isVisible()) {
             return;
         }
-        Object cls = /*(MClassifier)*/ getGroup().getOwner();
-        Fig operPort = this.getBigPort();
 
-        int xpos = operPort.getX();
-        int ypos = operPort.getY();
-        int ocounter = 2; // Skip background port and seperator
-
-        Collection behs = Model.getFacade().getOperations(cls);
-        if (behs != null) {
-            Iterator iter = behs.iterator();
-            List figs = getFigs();
-            CompartmentFigText oper = null;
-            while (iter.hasNext()) {
-                Object behaviouralFeature = iter.next();
-                if (figs.size() <= ocounter) {
-                    oper =
-                        new FigFeature(
-                                xpos + 1,
-                                ypos + 1
-                                + (ocounter - 1)
-                                 	* FigNodeModelElement.ROWHEIGHT,
-                                0,
-                                FigNodeModelElement.ROWHEIGHT - 2,
-                                operPort);
-                    // bounds not relevant here
-                    addFig(oper);
+        List figs = getFigs();
+        Iterator i = figs.iterator();
+        while (i.hasNext()) {
+            Object candidate = i.next();
+            if (candidate instanceof CompartmentFigText) {
+                CompartmentFigText f = (CompartmentFigText) candidate;
+                Object owner = f.getOwner();
+                
+                if (Model.getFacade().isAbstract(owner)) {
+                    f.setFont(FigNodeModelElement.getItalicLabelFont());
                 } else {
-                    oper = (CompartmentFigText) figs.get(ocounter);
-                }
-                oper.setText(Notation.generate((NotationContext) getGroup(),
-                        behaviouralFeature));
-                oper.setOwner(behaviouralFeature);
-                oper.setUnderline(
-                        Model.getScopeKind().
-                        getClassifier().equals(
-                                Model.getFacade().
-                                getOwnerScope(behaviouralFeature)));
-                // italics, if abstract
-                //oper.setItalic(((MOperation)bf).isAbstract()); //
-                //does not properly work (GEF bug?)
-                if (Model.getFacade().isAbstract(behaviouralFeature)) {
-                    oper.setFont(FigNodeModelElement.getItalicLabelFont());
-                } else {
-                    oper.setFont(FigNodeModelElement.getLabelFont());
-                }
-                oper.damage();
-                oper.setBotMargin(0);
-                ocounter++;
-            }
-            if (oper != null) {
-                oper.setBotMargin(9);
-            }
-            if (figs.size() > ocounter) {
-                //cleanup of unused operation FigText's
-                for (int i = figs.size() - 1; i >= ocounter; i--) {
-                    removeFig((Fig) figs.get(i));
+                    f.setFont(FigNodeModelElement.getLabelFont());
                 }
             }
         }

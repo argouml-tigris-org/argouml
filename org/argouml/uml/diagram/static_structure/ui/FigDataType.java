@@ -30,17 +30,14 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.text.ParseException;
 import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.Action;
 
 import org.apache.log4j.Logger;
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
@@ -48,7 +45,6 @@ import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -195,10 +191,6 @@ public class FigDataType extends FigClassifierBox {
      */
     public void setOperationsVisible(boolean isVisible) {
         Rectangle rect = getBounds();
-        int h =
-                isCheckSize() ? ((ROWHEIGHT
-                * Math.max(1, operationsFig.getFigs().size() - 1) + 2)
-                * rect.height / getMinimumSize().height) : 0;
         if (operationsFig.isVisible()) {
             if (!isVisible) {
                 damage();
@@ -207,7 +199,9 @@ public class FigDataType extends FigClassifierBox {
                     ((Fig) (it.next())).setVisible(false);
                 }
                 operationsFig.setVisible(false);
-                setBounds(rect.x, rect.y, rect.width, rect.height - h);
+                Dimension aSize = this.getMinimumSize();
+                setBounds(rect.x, rect.y,
+                          (int) aSize.getWidth(), (int) aSize.getHeight());
             }
         } else {
             if (isVisible) {
@@ -216,7 +210,9 @@ public class FigDataType extends FigClassifierBox {
                     ((Fig) (it.next())).setVisible(true);
                 }
                 operationsFig.setVisible(true);
-                setBounds(rect.x, rect.y, rect.width, rect.height + h);
+                Dimension aSize = this.getMinimumSize();
+                setBounds(rect.x, rect.y,
+                          (int) aSize.getWidth(), (int) aSize.getHeight());
                 damage();
             }
         }
@@ -352,23 +348,8 @@ public class FigDataType extends FigClassifierBox {
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
-            try {
-                ParserDisplay.SINGLETON
-                        .parseOperationFig(cls,
-                                /*(MOperation)*/
-                                highlightedFigText.getOwner(),
-                                highlightedFigText.getText().trim());
-                ProjectBrowser.getInstance().getStatusBar().showStatus("");
-            } catch (ParseException pe) {
-                String msg = "statusmsg.bar.error.parsing.operation";
-                Object[] args = {
-                    pe.getLocalizedMessage(),
-                    new Integer(pe.getErrorOffset()),
-                };
-                ProjectBrowser.getInstance().getStatusBar().showStatus(
-                        Translator.messageFormat(msg, args));
-            }
-            return;
+            ft.setText(highlightedFigText.getNotationProvider()
+                    .parse(ft.getText()));
         }
     }
 
@@ -378,7 +359,8 @@ public class FigDataType extends FigClassifierBox {
     protected void textEditStarted(FigText ft) {
         super.textEditStarted(ft);
         if (getOperationsFig().getFigs().contains(ft)) {
-            showHelp("parsing.help.operation");
+            showHelp(((CompartmentFigText) ft)
+                    .getNotationProvider().getParsingHelp());
         }
     }
 
@@ -421,8 +403,8 @@ public class FigDataType extends FigClassifierBox {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {
-        super.renderingChanged();
         updateOperations();
+        super.renderingChanged();
     }
 
     /**

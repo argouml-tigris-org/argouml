@@ -30,7 +30,6 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -38,10 +37,8 @@ import java.util.Vector;
 import javax.swing.Action;
 
 import org.apache.log4j.Logger;
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
@@ -49,7 +46,6 @@ import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -360,7 +356,8 @@ public class FigInterface extends FigClassifierBox {
     // internal methods
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(
+     * org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
@@ -372,33 +369,20 @@ public class FigInterface extends FigClassifierBox {
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
-            try {
-                ParserDisplay.SINGLETON
-                        .parseOperationFig(cls,
-                                /*(MOperation)*/
-                                highlightedFigText.getOwner(),
-                                highlightedFigText.getText().trim());
-                ProjectBrowser.getInstance().getStatusBar().showStatus("");
-            } catch (ParseException pe) {
-                String msg = "statusmsg.bar.error.parsing.operation";
-                Object[] args = {
-                    pe.getLocalizedMessage(),
-                    new Integer(pe.getErrorOffset()),
-                };
-                ProjectBrowser.getInstance().getStatusBar().showStatus(
-                        Translator.messageFormat(msg, args));
-            }
-            return;
+            ft.setText(highlightedFigText.getNotationProvider()
+                    .parse(ft.getText()));
         }
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(
+     * org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
         super.textEditStarted(ft);
         if (getOperationsFig().getFigs().contains(ft)) {
-            showHelp("parsing.help.operation");
+            showHelp(((CompartmentFigText) ft)
+                    .getNotationProvider().getParsingHelp());
         }
     }
 
@@ -467,7 +451,8 @@ public class FigInterface extends FigClassifierBox {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(
+     * java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         if (getOwner() == null) {

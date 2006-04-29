@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Color;
 import java.awt.Rectangle;
 
+import org.argouml.notation.NotationProvider4;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
@@ -86,9 +87,11 @@ public class FigFeature extends CompartmentFigText {
     * @param w w
     * @param h h
     * @param aFig the fig
+    * @param np the notation provider for the text
     */
-    public FigFeature(int x, int y, int w, int h, Fig aFig) {
-        super(x, y, w, h, aFig);
+    public FigFeature(int x, int y, int w, int h, Fig aFig, 
+            NotationProvider4 np) {
+        super(x, y, w, h, aFig, np);
         setFilled(false);
         setLineWidth(0);
         setFont(FigNodeModelElement.getLabelFont());

@@ -30,23 +30,47 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
+import org.argouml.notation.NotationHelper;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileException;
 import org.argouml.util.MyTokenizer;
 
 /**
- * This class is a utility for the UML notation. <p>
- *
- * TODO: No need to make this class public.
+ * This class is a utility for the UML notation. 
  *
  * @author mvw@tigris.org
  */
 public final class NotationUtilityUml {
+    /**
+     * The standard error etc. logger
+     */
+    private static final Logger LOG = Logger.getLogger(NotationUtilityUml.class);
+
+    /**
+     * The array of special properties for attributes.
+     */
+    static PropertySpecialString[] attributeSpecialStrings;
+
+    /**
+     * The vector of CustomSeparators to use when tokenizing attributes.
+     */
+    static Vector attributeCustomSep;
+
+    /**
+     * The array of special properties for operations.
+     */
+    static PropertySpecialString[] operationSpecialStrings;
+
+    /**
+     * The vector of CustomSeparators to use when tokenizing attributes.
+     */
+    static Vector operationCustomSep;
 
     /**
      * The vector of CustomSeparators to use when tokenizing parameters.
@@ -54,17 +78,177 @@ public final class NotationUtilityUml {
     private static Vector parameterCustomSep;
 
     /**
+     * The character with a meaning as a visibility at the start
+     * of an attribute.
+     */
+    static final String VISIBILITYCHARS = "+#-~";
+
+    /**
      * The constructor.
      */
-    private NotationUtilityUml() {}
-    
+    NotationUtilityUml() { }
+
+    /* TODO: Can we put the static block within the init()? */
     static {
+        attributeSpecialStrings = new PropertySpecialString[2];
+
+        attributeCustomSep = new Vector();
+        attributeCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+        attributeCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+        attributeCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+
+        operationSpecialStrings = new PropertySpecialString[8];
+
+        operationCustomSep = new Vector();
+        operationCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+        operationCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+        operationCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+
         parameterCustomSep = new Vector();
         parameterCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
         parameterCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
         parameterCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
     }
 
+    void init() {
+        attributeSpecialStrings[0] =
+            new PropertySpecialString("frozen",
+                new PropertyOperation() {
+                public void found(Object element, String value) {
+                    if (Model.getFacade().isAStructuralFeature(element)) {
+                        if ("false".equalsIgnoreCase(value)) {
+                            Model.getCoreHelper().setChangeability(element,
+                                    Model.getChangeableKind().getChangeable());
+                        } else {
+                            Model.getCoreHelper().setChangeability(element,
+                                    Model.getChangeableKind().getFrozen());
+                        }
+                    }
+                }
+            });
+        attributeSpecialStrings[1] =
+            new PropertySpecialString("addonly",
+                new PropertyOperation() {
+                public void found(Object element, String value) {
+                    if (Model.getFacade().isAStructuralFeature(element)) {
+                        if ("false".equalsIgnoreCase(value)) {
+                            Model.getCoreHelper().setChangeability(element,
+                                    Model.getChangeableKind().getChangeable());
+                        } else {
+                            Model.getCoreHelper().setChangeability(element,
+                                    Model.getChangeableKind().getAddOnly());
+                        }
+                    }
+                }
+            });
+
+        operationSpecialStrings = new PropertySpecialString[8];
+        operationSpecialStrings[0] =
+            new PropertySpecialString("sequential",
+                new PropertyOperation() {
+                public void found(Object element, String value) {
+                    if (Model.getFacade().isAOperation(element)) {
+                        Model.getCoreHelper().setConcurrency(element,
+                                Model.getConcurrencyKind().getSequential());
+                    }
+                }
+            });
+        operationSpecialStrings[1] =
+            new PropertySpecialString("guarded",
+                new PropertyOperation() {
+                public void found(Object element, String value) {
+                    Object kind = Model.getConcurrencyKind().getGuarded();
+                    if (value != null && value.equalsIgnoreCase("false")) {
+                        kind = Model.getConcurrencyKind().getSequential();
+                    }
+                    if (Model.getFacade().isAOperation(element)) {
+                        Model.getCoreHelper().setConcurrency(element, kind);
+                    }
+                }
+            });
+        operationSpecialStrings[2] =
+            new PropertySpecialString("concurrent",
+                new PropertyOperation() {
+                public void found(Object element, String value) {
+                    Object kind =
+                        Model.getConcurrencyKind().getConcurrent();
+                    if (value != null && value.equalsIgnoreCase("false")) {
+                        kind = Model.getConcurrencyKind().getSequential();
+                    }
+                    if (Model.getFacade().isAOperation(element)) {
+                        Model.getCoreHelper().setConcurrency(element, kind);
+                    }
+                }
+            });
+        operationSpecialStrings[3] =
+            new PropertySpecialString("concurrency",
+                new PropertyOperation() {
+                public void found(Object element, String value) {
+                    Object kind =
+                        Model.getConcurrencyKind().getSequential();
+                    if ("guarded".equalsIgnoreCase(value)) {
+                        kind = Model.getConcurrencyKind().getGuarded();
+                    } else if ("concurrent".equalsIgnoreCase(value)) {
+                        kind = Model.getConcurrencyKind().getConcurrent();
+                    }
+                    if (Model.getFacade().isAOperation(element)) {
+                        Model.getCoreHelper().setConcurrency(element, kind);
+                    }
+                }
+            });
+        operationSpecialStrings[4] =
+            new PropertySpecialString("abstract",
+                new PropertyOperation() {
+                public void found(Object element, String value) {
+                    boolean isAbstract = true;
+                    if (value != null && value.equalsIgnoreCase("false")) {
+                        isAbstract = false;
+                    }
+                    if (Model.getFacade().isAOperation(element)) {
+                        Model.getCoreHelper().setAbstract(element, isAbstract);
+                    }
+                }
+            });
+        operationSpecialStrings[5] =
+            new PropertySpecialString("leaf",
+                new PropertyOperation() {
+                public void found(Object element, String value) {
+                    boolean isLeaf = true;
+                    if (value != null && value.equalsIgnoreCase("false")) {
+                        isLeaf = false;
+                    }
+                    if (Model.getFacade().isAOperation(element)) {
+                        Model.getCoreHelper().setLeaf(element, isLeaf);
+                    }
+                }
+            });
+        operationSpecialStrings[6] =
+            new PropertySpecialString("query",
+                new PropertyOperation() {
+                public void found(Object element, String value) {
+                    boolean isQuery = true;
+                    if (value != null && value.equalsIgnoreCase("false")) {
+                        isQuery = false;
+                    }
+                    if (Model.getFacade().isABehavioralFeature(element)) {
+                        Model.getCoreHelper().setQuery(element, isQuery);
+                    }
+                }
+            });
+        operationSpecialStrings[7] =
+            new PropertySpecialString("root",
+                new PropertyOperation() {
+                public void found(Object element, String value) {
+                    boolean isRoot = true;
+                    if (value != null && value.equalsIgnoreCase("false")) {
+                        isRoot = false;
+                    }
+                    if (Model.getFacade().isAOperation(element)) {
+                        Model.getCoreHelper().setRoot(element, isRoot);
+                    }
+                }
+            });
+    }
 
     /**
      * This function shall replace the previous set of stereotypes
@@ -137,7 +321,7 @@ public final class NotationUtilityUml {
      *            The name of the stereotype to search for.
      * @return A stereotype named name, or possibly null.
      */
-    public static Object getStereotype(Object obj, String name) {
+    private static Object getStereotype(Object obj, String name) {
         Object root = Model.getFacade().getModel(obj);
         Object stereo;
 
@@ -299,7 +483,7 @@ public final class NotationUtilityUml {
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
      */
-    public static void parseParamList(Object op, String param, int paramOffset)
+    static void parseParamList(Object op, String param, int paramOffset)
         throws ParseException {
         MyTokenizer st =
             new MyTokenizer(param, " ,\t,:,=,\\,", parameterCustomSep);
@@ -462,15 +646,13 @@ public final class NotationUtilityUml {
     /**
      * Finds the classifier associated with the type named in name.
      * 
-     * TODO: Make private.
-     *
      * @param name
      *            The name of the type to get.
      * @param defaultSpace
      *            The default name-space to place the type in.
      * @return The classifier associated with the name.
      */
-    public static Object getType(String name, Object defaultSpace) {
+    static Object getType(String name, Object defaultSpace) {
         Object type = null;
         Project p = ProjectManager.getManager().getCurrentProject();
         // Should we be getting this from the GUI? BT 11 aug 2002
@@ -489,5 +671,320 @@ public final class NotationUtilityUml {
         return type;
     }
 
+    /**
+     * Applies a Vector of name value pairs of properties to a model element.
+     * The name is treated as the tag of a tagged value unless it is one of the
+     * PropertySpecialStrings, in which case the action of the
+     * PropertySpecialString is invoked.
+     *
+     * @param elem
+     *            An model element to apply the properties to.
+     * @param prop
+     *            A Vector with name, value pairs of properties.
+     * @param spec
+     *            An array of PropertySpecialStrings to use.
+     */
+    static void setProperties(Object elem, Vector prop,
+            PropertySpecialString[] spec) {
+        String name;
+        String value;
+        int i, j;
 
+    nextProp:
+        for (i = 0; i + 1 < prop.size(); i += 2) {
+            name = (String) prop.get(i);
+            value = (String) prop.get(i + 1);
+
+            if (name == null) {
+                continue;
+            }
+
+            name = name.trim();
+            if (value != null) {
+                value = value.trim();
+            }
+
+            for (j = i + 2; j < prop.size(); j += 2) {
+                String s = (String) prop.get(j);
+                if (s != null && name.equalsIgnoreCase(s.trim())) {
+                    continue nextProp;
+                }
+            }
+
+            if (spec != null) {
+                for (j = 0; j < spec.length; j++) {
+                    if (spec[j].invoke(elem, name, value)) {
+                        continue nextProp;
+                    }
+                }
+            }
+
+            Model.getCoreHelper().setTaggedValue(elem, name, value);
+        }
+    }
+
+
+    /**
+     * Interface specifying the operation to take when a PropertySpecialString is
+     * matched.
+     *
+     * @author Michael Stockman
+     * @since 0.11.2
+     * @see PropertySpecialString
+     */
+    interface PropertyOperation {
+        /**
+         * Invoked by PropertySpecialString when it has matched a property name.
+         *
+         * @param element
+         *            The element on which the property was set.
+         * @param value
+         *            The value of the property, may be null if no value was given.
+         */
+        void found(Object element, String value);
+    }
+
+    /**
+     * Declares a string that should take special action when it is found
+     * as a property in
+     * {@link ParserDisplay#setProperties ParserDisplay.setProperties}.<p>
+     *
+     * <em>Example:</em>
+     *
+     * <pre>
+     * attributeSpecialStrings[0] = new PropertySpecialString(&quot;frozen&quot;,
+     *         new PropertyOperation() {
+     *             public void found(Object element, String value) {
+     *                 if (Model.getFacade().isAStructuralFeature(element))
+     *                     Model.getFacade().setChangeable(element,
+     *                          (value != null &amp;&amp; value
+     *                             .equalsIgnoreCase(&quot;false&quot;)));
+     *             }
+     *         });
+     * </pre>
+     *
+     * Taken from the (former) ParserDisplay constructor. 
+     * It creates a PropertySpecialString that is invoken when the String 
+     * "frozen" is found as a property name. Then
+     * the found mehod in the anonymous inner class 
+     * defined on the 2nd line is invoked and performs 
+     * a custom action on the element on which the property was
+     * specified by the user. In this case it does a setChangeability 
+     * on an attribute instead of setting a tagged value, 
+     * which would not have the desired effect.
+     *
+     * @author Michael Stockman
+     * @since 0.11.2
+     * @see PropertyOperation
+     * @see ParserDisplay#setProperties
+     */
+    class PropertySpecialString {
+        private String name;
+
+        private PropertyOperation op;
+
+        /**
+         * Constructs a new PropertySpecialString that will invoke the
+         * action in op when {@link #invoke(Object, String, String)} is
+         * called with name equal to str and then return true from invoke.
+         *
+         * @param str
+         *            The name of this PropertySpecialString.
+         * @param propop
+         *            An object containing the method to invoke on a match.
+         */
+        public PropertySpecialString(String str, PropertyOperation propop) {
+            name = str;
+            op = propop;
+        }
+
+        /**
+         * Called by {@link ParserDisplay#setProperties(Object, Vector,
+         * PropertySpecialString[])} while searching for an action to
+         * invoke for a property. If it returns true, then setProperties
+         * may assume that all required actions have been taken and stop
+         * searching.
+         *
+         * @param pname
+         *            The name of a property.
+         * @param value
+         *            The value of a property.
+         * @return <code>true</code> if an action is performed, otherwise
+         *         <code>false</code>.
+         */
+        public boolean invoke(Object element, String pname, String value) {
+            if (!name.equalsIgnoreCase(pname)) {
+                return false;
+            }
+            op.found(element, value);
+            return true;
+        }
+    }
+
+    /**
+     * Checks for ';' in Strings or chars in ';' separated tokens in order to
+     * return an index to the next attribute or operation substring, -1
+     * otherwise (a ';' inside a String or char delimiters is ignored).
+     *
+     * @param s
+     * @param start
+     * @return
+     */
+    static int indexOfNextCheckedSemicolon(String s, int start) {
+        if (s == null || start < 0 || start >= s.length()) {
+            return -1;
+        }
+        int end;
+        boolean inside = false;
+        boolean backslashed = false;
+        char c;
+        for (end = start; end < s.length(); end++) {
+            c = s.charAt(end);
+            if (!inside && c == ';') {
+                return end;
+            } else if (!backslashed && (c == '\'' || c == '\"')) {
+                inside = !inside;
+            }
+            backslashed = (!backslashed && c == '\\');
+        }
+        return end;
+    }
+
+    /**
+     * Finds a visibility for the visibility specified by name. If no known
+     * visibility can be deduced, private visibility is used.
+     *
+     * @param name
+     *            The Java name of the visibility.
+     * @return A visibility corresponding to name.
+     */
+    static Object getVisibility(String name) {
+        if ("+".equals(name) || "public".equals(name)) {
+            return Model.getVisibilityKind().getPublic();
+        } else if ("#".equals(name) || "protected".equals(name)) {
+            return Model.getVisibilityKind().getProtected();
+        } else if ("~".equals(name) || "package".equals(name)) {
+            return Model.getVisibilityKind().getPackage();
+        } else {
+            /* if ("-".equals(name) || "private".equals(name)) */
+            return Model.getVisibilityKind().getPrivate();
+        }
+    }
+    
+    /**
+     * @param st a stereotype UML object or a collection of stereotypes
+     * @return a string representing the given stereotype
+     */
+    static String generateStereotype(Object st) {
+        if (st == null)
+            return "";
+        if (Model.getFacade().isAModelElement(st)) {
+            if (Model.getFacade().getName(st) == null)
+                return ""; // Patch by Jeremy Bennett
+            if (Model.getFacade().getName(st).length() == 0)
+                return "";
+            return NotationHelper.getLeftGuillemot()
+                + Model.getFacade().getName(st)
+                + NotationHelper.getRightGuillemot();
+        }
+        if (st instanceof Collection) {
+            Object o;
+            StringBuffer sb = new StringBuffer(10);
+            boolean first = true;
+            Iterator iter = ((Collection) st).iterator();
+            while (iter.hasNext()) {
+                if (!first)
+                    sb.append(',');
+                o = iter.next();
+                if (o != null) {
+                    sb.append(Model.getFacade().getName(o));
+                    first = false;
+                }
+            }
+            if (!first) {
+                return NotationHelper.getLeftGuillemot()
+                    + sb.toString()
+                    + NotationHelper.getRightGuillemot();
+            }
+        }
+        return "";
+    }
+    
+    /**
+     * Generates the representation of a parameter on the display
+     * (diagram). The string to be returned will have the following
+     * syntax:<p>
+     *
+     * kind name : type-expression = default-value
+     *
+     * @see org.argouml.notation.NotationProvider2#generateParameter(java.lang.Object)
+     */
+    static String generateParameter(Object parameter) {
+        StringBuffer s = new StringBuffer();
+        s.append(generateKind(Model.getFacade().getKind(parameter)));
+        if (s.length() > 0) s.append(" ");
+        s.append(Model.getFacade().getName(parameter));
+        String classRef =
+            generateClassifierRef(Model.getFacade().getType(parameter));
+        if (classRef.length() > 0) {
+            s.append(" : ");
+            s.append(classRef);
+        }
+        String defaultValue =
+            generateExpression(Model.getFacade().getDefaultValue(parameter));
+        if (defaultValue.length() > 0) {
+            s.append(" = ");
+            s.append(defaultValue);
+        }
+        return s.toString();
+    }
+
+    private static String generateExpression(Object expr) {
+        if (Model.getFacade().isAExpression(expr))
+            return generateUninterpreted(
+                    (String) Model.getFacade().getBody(expr));
+        else if (Model.getFacade().isAConstraint(expr))
+            return generateExpression(Model.getFacade().getBody(expr));
+        return "";
+    }
+
+    private static String generateUninterpreted(String un) {
+        if (un == null)
+            return "";
+        return un;
+    }
+
+    private static String generateClassifierRef(Object cls) {
+        if (cls == null)
+            return "";
+        return Model.getFacade().getName(cls);
+    }
+    
+    private static String generateKind(Object /*Parameter etc.*/ kind) {
+        StringBuffer s = new StringBuffer();
+        if (kind == null /* "in" is the default */
+                || kind == Model.getDirectionKind().getInParameter()) {
+            s.append(/*"in"*/ ""); /* See issue 3421. */
+        } else if (kind == Model.getDirectionKind().getInOutParameter()) {
+            s.append("inout");
+        } else if (kind == Model.getDirectionKind().getReturnParameter()) {
+            ;// return nothing
+        } else if (kind == Model.getDirectionKind().getOutParameter()) {
+            s.append("out");
+        }
+        return s.toString();
+    }
+
+    /**
+     * @param tv a tagged value
+     * @return a string that represents the tagged value
+     */
+    static String generateTaggedValue(Object tv) {
+        if (tv == null) {
+            return "";
+        }
+        return Model.getFacade().getTagOfTag(tv)
+            + "="
+            + generateUninterpreted(Model.getFacade().getValueOfTag(tv));
+    }
 }
