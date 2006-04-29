@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,7 @@ import java.beans.PropertyChangeListener;
 /**
  * Adapts events triggered by the underlying model into PropertyChangeEvents
  * for the application.<p>
- * 
+ *
  * @author Bob Tarling
  * @deprecated for 0.21.2 by tfmorris - use ModelEventPump interface
  */
@@ -37,15 +37,21 @@ public interface EventAdapter {
 
     /**
      * @param pcl the property change listener to be added
-     * @deprecated for 0.21.2 by tfmorris - use ModelEventPump.addClassModelEventListener
-     * @see ModelEventPump#addClassModelEventListener(PropertyChangeListener, Object, String[])
+     * @deprecated for 0.21.2 by tfmorris.
+     *         Use {@link ModelEventPump#addClassModelEventListener(
+     *         PropertyChangeListener, Object, String[])}.
+     * @see ModelEventPump#addClassModelEventListener(
+     *         PropertyChangeListener, Object, String[])
      */
     void addPropertyChangeListener(PropertyChangeListener pcl);
 
     /**
      * @param pcl the property change listener to be removed
-     * @deprecated for 0.21.2 by tfmorris - use ModelEventPump.removeClassModelEventListener
-     * @see ModelEventPump#removeClassModelEventListener(PropertyChangeListener, Object, String[])
+     * @deprecated for 0.21.2 by tfmorris.
+     *         Use {@link ModelEventPump#removeClassModelEventListener(
+     *         PropertyChangeListener, Object, String[])}.
+     * @see ModelEventPump#removeClassModelEventListener(
+     *         PropertyChangeListener, Object, String[])
      */
     void removePropertyChangeListener(PropertyChangeListener pcl);
 }

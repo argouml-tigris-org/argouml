@@ -181,7 +181,7 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
         impl.removeBaseClass(handle, baseClass);
     }
 
-    
+
     /**
      * @see org.argouml.model.ExtensionMechanismsHelper#setIcon(
      *         java.lang.Object,
@@ -233,7 +233,7 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
         impl.setTaggedValue(handle, taggedValues);
     }
 
-    /*
+    /**
      * @see org.argouml.model.ExtensionMechanismsHelper#hasStereoType(java.lang.Object, java.lang.String)
      */
     public boolean hasStereoType(Object handle, String name) {

@@ -57,13 +57,11 @@ public interface ExtensionMechanismsFactory extends Factory {
      * @return                         the resulting stereotype object
      * @throws IllegalArgumentException if either argument is null.
      */
-    /*
-     * TODO: MVW: This needs rethinking/rework! I have the following questions:
-     * Why does it not search for a stereotype in the namespace using 
-     * properties and only create a new stereotype if it will actually be used?
-     * Ie, why is there not a getStereotype(String name, String baseClass)? 
-     * (edited by d00mst)
-     */
+    // TODO: MVW: This needs rethinking/rework! I have the following questions:
+    // Why does it not search for a stereotype in the namespace using
+    // properties and only create a new stereotype if it will actually be used?
+    // Ie, why is there not a getStereotype(String name, String baseClass)?
+    // (edited by d00mst)
     Object buildStereotype(Object theModelElementObject,
             Object theName,
             Object theNamespaceObject);
@@ -125,7 +123,7 @@ public interface ExtensionMechanismsFactory extends Factory {
 
     /**
      * Create an empty Stereotype element.
-     * 
+     *
      * @return a Stereotype
      */
     Object createStereotype();

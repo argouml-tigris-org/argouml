@@ -142,7 +142,8 @@ public interface ModelImplementation {
      * Getter for EventAdapter.
      *
      * @return the event adapter
-     * @deprecated for 0.21.2 by tfmorris - use getPump and ModelEventPump methods
+     * @deprecated for 0.21.2 by tfmorris.
+     *         Use {@link #getPump()} and {@link ModelEventPump} methods.
      */
     EventAdapter getEventAdapter();
 
