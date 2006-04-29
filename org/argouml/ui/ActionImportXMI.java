@@ -127,9 +127,7 @@ public class ActionImportXMI extends AbstractAction {
 
                 if (ProjectBrowser.getInstance().loadProject(theFile, true)) {
                     // notification of menu bar
-                    GenericArgoMenuBar menuBar =
-                        (GenericArgoMenuBar) pb.getJMenuBar();
-                    menuBar.addFileSaved(theFile.getCanonicalPath());
+                    pb.addFileSaved(theFile);
                 }
             }
         } catch (IOException ignore) {

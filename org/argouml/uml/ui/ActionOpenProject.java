@@ -42,6 +42,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
+import org.argouml.ui.GUI;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 
@@ -160,9 +161,7 @@ public class ActionOpenProject extends AbstractAction
                     if (ProjectBrowser.getInstance()
                             .loadProject(theFile, true)) {
                         // notification of menu bar
-                        GenericArgoMenuBar menuBar =
-                            (GenericArgoMenuBar) pb.getJMenuBar();
-                        menuBar.addFileSaved(theFile.getCanonicalPath());
+                        GUI.getInstance().addFileSaved(theFile);
                     }
                 }
             }
