@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,11 +40,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
-import org.argouml.application.api.SettingsTabPanel;
-import org.argouml.application.helpers.SettingsTabHelper;
 import org.argouml.i18n.Translator;
 import org.tigris.swidgets.LabelledLayout;
 
@@ -55,9 +52,9 @@ import org.tigris.swidgets.LabelledLayout;
  *  @author Jeremy Jones
  *  @since  0.9.7
  */
-public class SettingsTabAppearance
-    extends SettingsTabHelper
-    implements SettingsTabPanel {
+class SettingsTabAppearance
+    extends JPanel
+    implements GUISettingsTabInterface {
 
     private JComboBox	lookAndFeel;
     private JComboBox	metalTheme;
@@ -65,22 +62,20 @@ public class SettingsTabAppearance
     private JLabel      metalLabel;
     private JCheckBox   smoothEdges;
 
-    private Locale locale = null;
+    private Locale locale;
 
     /**
      * The constructor.
      *
      */
-    public SettingsTabAppearance() {
-        super();
-
+    SettingsTabAppearance() {
         setLayout(new BorderLayout());
 
         int labelGap = 10;
         int componentGap = 10;
         JPanel top = new JPanel(new LabelledLayout(labelGap, componentGap));
 
-        JLabel label = createLabel("label.look-and-feel");
+        JLabel label = new JLabel(Translator.localize("label.look-and-feel"));
         lookAndFeel =
 	    new JComboBox(LookAndFeelMgr.getInstance()
 			  .getAvailableLookAndFeelNames());
@@ -93,26 +88,31 @@ public class SettingsTabAppearance
         top.add(label);
         top.add(lookAndFeel);
 
-        metalLabel = createLabel("label.metal-theme");
+        metalLabel = new JLabel(Translator.localize("label.metal-theme"));
 
-        metalTheme = new JComboBox(LookAndFeelMgr.getInstance()
+        metalTheme =
+            new JComboBox(LookAndFeelMgr.getInstance()
                 .getAvailableThemeNames());
         metalLabel.setLabelFor(metalTheme);
         top.add(metalLabel);
         top.add(metalTheme);
+        JCheckBox j = new JCheckBox(Translator.localize("label.smooth-edges"));
 
-        smoothEdges = createCheckBox("label.smooth-edges");
+        smoothEdges = j;
         JLabel emptyLabel = new JLabel();
         emptyLabel.setLabelFor(smoothEdges);
 
         top.add(emptyLabel);
         top.add(smoothEdges);
 
-        JLabel languageLabel = createLabel("label.language");
+        JLabel languageLabel =
+            new JLabel(Translator.localize("label.language"));
         Collection c = MyLocale.getLocales();
         language = new JComboBox(c.toArray());
         Object o = MyLocale.getDefault(c);
-        if (o != null) language.setSelectedItem(o);
+        if (o != null) {
+            language.setSelectedItem(o);
+        }
         language.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JComboBox combo = (JComboBox) e.getSource();
@@ -126,7 +126,8 @@ public class SettingsTabAppearance
         top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(top, BorderLayout.CENTER);
 
-        JLabel restart = createLabel("label.restart-application");
+        JLabel restart =
+            new JLabel(Translator.localize("label.restart-application"));
         restart.setHorizontalAlignment(SwingConstants.CENTER);
         restart.setVerticalAlignment(SwingConstants.CENTER);
         restart.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));
@@ -138,7 +139,7 @@ public class SettingsTabAppearance
     /**
      * Enables or disables the metal theme controls depending on whether
      * or not themes are supported by the selected look and feel.
-    **/
+     */
     private void setMetalThemeState() {
         String lafName = (String) lookAndFeel.getSelectedItem();
         boolean enabled =
@@ -150,7 +151,7 @@ public class SettingsTabAppearance
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabRefresh()
+     * @see GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
         String laf = LookAndFeelMgr.getInstance().getCurrentLookAndFeelName();
@@ -164,7 +165,7 @@ public class SettingsTabAppearance
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabSave()
+     * @see GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
         LookAndFeelMgr.getInstance().setCurrentLAFAndThemeByName(
@@ -185,39 +186,24 @@ public class SettingsTabAppearance
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabCancel()
+     * @see GUISettingsTabInterface#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() { }
 
     /**
-     * @see org.argouml.application.api.ArgoModule#getModuleName()
-     */
-    public String getModuleName() { return "SettingsTabAppearance"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
-     */
-    public String getModuleDescription() { return "Appearance Settings"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
-     */
-    public String getModuleAuthor() { return "ArgoUML Core"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
-     */
-    public String getModuleVersion() { return ArgoVersion.getVersion(); }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleKey()
-     */
-    public String getModuleKey() { return "module.settings.appearance"; }
-
-    /**
-     * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
+     * @see GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() { return "tab.appearance"; }
+
+    /**
+     * @see GUISettingsTabInterface#getTabPanel()
+     */
+    public JPanel getTabPanel() { return this; }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -6779214318672690570L;
 }
 
 class MyLocale {

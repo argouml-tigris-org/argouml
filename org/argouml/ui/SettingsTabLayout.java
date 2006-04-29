@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,11 +33,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
-import org.argouml.application.helpers.SettingsTabHelper;
 import org.argouml.cognitive.ui.TabToDo;
+import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.TabConstraints;
 import org.argouml.uml.ui.TabDocumentation;
 import org.argouml.uml.ui.TabProps;
@@ -48,11 +47,15 @@ import org.tigris.swidgets.Property;
 import org.tigris.swidgets.PropertyTable;
 
 /**
- *  Settings dialog tab panel for layout options.
+ * Settings dialog tab panel for layout options.<p>
  *
- *  @author Linus Tolke
+ * TODO: This class contains a lot of references to org.argouml.uml.ui.
+ * It would probably be better to move it there.
+ *
+ * @author Linus Tolke
  */
-public class SettingsTabLayout extends SettingsTabHelper {
+class SettingsTabLayout extends JPanel
+    implements GUISettingsTabInterface {
 
     private Property	prpTodo;
     private Property	prpProperties;
@@ -66,7 +69,7 @@ public class SettingsTabLayout extends SettingsTabHelper {
      * The constructor.
      *
      */
-    public SettingsTabLayout() {
+    SettingsTabLayout() {
         super();
         setLayout(new BorderLayout());
 
@@ -78,18 +81,24 @@ public class SettingsTabLayout extends SettingsTabHelper {
         JPanel top = new JPanel(new BorderLayout());
 
         prpTodo = createProperty("label.todo-pane", positions, TabToDo.class);
-        prpProperties = createProperty("label.properties-pane",
-				     positions, TabProps.class);
-        prpDocumentation = createProperty("label.documentation-pane",
-					positions, TabDocumentation.class);
-        prpStyle = createProperty("label.style-pane",
-				positions, TabStyle.class);
-        prpSource = createProperty("label.source-pane",
-				 positions, TabSrc.class);
-        prpConstraints = createProperty("label.constraints-pane",
-				      positions, TabConstraints.class);
-        prpTaggedValues = createProperty("label.tagged-values-pane",
-				       positions, TabTaggedValues.class);
+        prpProperties =
+            createProperty("label.properties-pane",
+                    positions, TabProps.class);
+        prpDocumentation =
+            createProperty("label.documentation-pane",
+                    positions, TabDocumentation.class);
+        prpStyle =
+            createProperty("label.style-pane",
+                    positions, TabStyle.class);
+        prpSource =
+            createProperty("label.source-pane",
+                    positions, TabSrc.class);
+        prpConstraints =
+            createProperty("label.constraints-pane",
+                    positions, TabConstraints.class);
+        prpTaggedValues =
+            createProperty("label.tagged-values-pane",
+                    positions, TabTaggedValues.class);
 
         Property[] propertyList = new Property[] {
             prpTodo, prpProperties, prpDocumentation, prpStyle,
@@ -106,7 +115,8 @@ public class SettingsTabLayout extends SettingsTabHelper {
         top.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
         add(top, BorderLayout.CENTER);
 
-        JLabel restart = createLabel("label.restart-application");
+        JLabel restart =
+            new JLabel(Translator.localize("label.restart-application"));
         restart.setHorizontalAlignment(SwingConstants.CENTER);
         restart.setVerticalAlignment(SwingConstants.CENTER);
         restart.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));
@@ -121,7 +131,7 @@ public class SettingsTabLayout extends SettingsTabHelper {
 				    Class tab) {
         ConfigurationKey key = makeKey(tab);
         String currentValue = Configuration.getString(key, "South");
-        return new Property(localize(text), String.class,
+        return new Property(Translator.localize(text), String.class,
 			    currentValue, positions);
     }
 
@@ -144,7 +154,7 @@ public class SettingsTabLayout extends SettingsTabHelper {
     }
 
     /**
-     * When the setting values should be reloaded
+     * When the setting values should be reloaded.
      */
     public void handleSettingsTabRefresh() {
         loadPosition(prpTodo, TabToDo.class);
@@ -157,7 +167,7 @@ public class SettingsTabLayout extends SettingsTabHelper {
     }
 
     /**
-     * When the ok or apply button is pressed
+     * When the ok or apply button is pressed.
      */
     public void handleSettingsTabSave() {
         savePosition(prpTodo, TabToDo.class);
@@ -170,37 +180,22 @@ public class SettingsTabLayout extends SettingsTabHelper {
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabCancel()
+     * @see GUISettingsTabInterface#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() { }
 
     /**
-     * @see org.argouml.application.api.ArgoModule#getModuleName()
-     */
-    public String getModuleName() { return "SettingsTabLayout"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
-     */
-    public String getModuleDescription() { return "Positioning of components"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
-     */
-    public String getModuleAuthor() { return "ArgoUML Core"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
-     */
-    public String getModuleVersion() { return ArgoVersion.getVersion(); }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleKey()
-     */
-    public String getModuleKey() { return "module.settings.layout"; }
-
-    /**
-     * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
+     * @see GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() { return "tab.layout"; }
+
+    /**
+     * @see GUISettingsTabInterface#getTabPanel()
+     */
+    public JPanel getTabPanel() { return this; }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 739259705815092510L;
 }

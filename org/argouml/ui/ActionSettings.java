@@ -41,11 +41,6 @@ import org.argouml.i18n.Translator;
 public class ActionSettings extends AbstractAction {
 
     /**
-     * The serial version.
-     */
-    private static final long serialVersionUID = -3646595772633674514L;
-    
-    /**
      * The settings dialog.
      */
     private ArgoDialog dialog;
@@ -69,5 +64,10 @@ public class ActionSettings extends AbstractAction {
         dialog.show();
     }
 
+
+    /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -3646595772633674514L;
 }
 
