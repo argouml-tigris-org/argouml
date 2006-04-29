@@ -580,7 +580,7 @@ Property files to be searched:
              destdir="${argo.api.dir}"
              maxmemory="128M"
              overview="org/argouml/overview-api.html"
-             packagenames="org.argouml.model,org.argouml.cognitive,org.argouml.uml.reveng,org.argouml.application,org.argouml.i18n,org.argouml.ui.explorer,org.argouml.ocl,org.argouml.moduleloader"
+             packagenames="org.argouml.model,org.argouml.cognitive,org.argouml.uml.reveng,org.argouml.application,org.argouml.i18n,org.argouml.ui,org.argouml.ui.explorer,org.argouml.ocl,org.argouml.moduleloader"
              source="1.4"
              private="false"
              splitindex="${javadoc.splitindex}"
@@ -589,10 +589,6 @@ Property files to be searched:
       <sourcepath>
         <pathelement location="${argo.src.dir}"/>
         <pathelement location="${argo.src.dir}/../src/model/src"/>
-        <pathelement location="${argo.src.dir}/../modules/cpp/src"/>
-        <pathelement location="${argo.src.dir}/../modules/csharp/src"/>
-        <pathelement location="${argo.src.dir}/../modules/classfile/src"/>
-        <pathelement location="${argo.src.dir}/../modules/php/src"/>
       </sourcepath>
 
       <classpath>
