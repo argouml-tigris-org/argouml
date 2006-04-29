@@ -120,25 +120,26 @@ public class ExceptionDialog extends JDialog implements ActionListener {
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
-        
+
         if (highlightCause && e.getCause() != null) {
             // Instructions with clickable link for user
             pw.print(Translator.localize("dialog.exception.link.report"));
-            
-            // This text is for the developers.  It doesn't need to be localized.
+
+            // This text is for the developers.
+            // It doesn't need to be localized.
             pw.print("<p>" + message);
             pw.print("<hr>System Info:<p>" + SystemInfoDialog.getInfo());
-            pw.print("<p><hr>Error occurred at : " + new Date().toGMTString());
+            pw.print("<p><hr>Error occurred at : " + new Date());
             pw.print("<p>  Cause : ");
             e.getCause().printStackTrace(pw);
             pw.print("-------<p>Full exception : ");
         }
         e.printStackTrace(pw);
-        // These shouldn't really be <br> instead of <p> elements, but 
+        // These shouldn't really be <br> instead of <p> elements, but
         // the lines all get run together when pasted into a browser window.
-        textArea.setText(sw.toString().replaceAll("\n","<p>"));
+        textArea.setText(sw.toString().replaceAll("\n", "<p>"));
         textArea.setCaretPosition(0);
-        
+
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(new JScrollPane(textArea));
         centerPanel.setPreferredSize(new Dimension(500, 200));
@@ -155,7 +156,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         closeButton = new JButton(Translator.localize("button.close"));
         closeButton.addActionListener(this);
         JPanel bottomPanel = new JPanel();
-        
+
         bottomPanel.add(copyButton);
         bottomPanel.add(closeButton);
         getContentPane().add(bottomPanel, BorderLayout.SOUTH);
@@ -180,7 +181,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         disposeDialog();
     }
 
-    /*
+    /**
      * Copy the textpane's contents to the clipboard.
      */
     private void copyActionPerformed(ActionEvent e) {
@@ -190,18 +191,21 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         textArea.copy();
         textArea.setSelectionEnd(0);
     }
-    
+
+    /**
+     * Dispose this dialog.
+     */
     private void disposeDialog() {
         setVisible(false);
         dispose();
     }
 
-    /*
+    /**
      * Handle link activation for our hyperlink.
      */
     private void linkEvent(HyperlinkEvent e) {
         if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
-            StartBrowser.openUrl(e.getURL());           
+            StartBrowser.openUrl(e.getURL());
         }
     }
 

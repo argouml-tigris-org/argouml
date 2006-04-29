@@ -281,7 +281,8 @@ public class ArgoDiagram extends Diagram {
             if (f instanceof FigGroup && !(f instanceof FigNode)) {
                 // The report
                 report +=
-                    "Removed: " + figDescription(f) + " a FigGroup should not be on the diagram\n";
+                    "Removed: " + figDescription(f)
+                    + " a FigGroup should not be on the diagram\n";
                 // The fix
                 f.removeFromDiagram();
             }
@@ -302,18 +303,18 @@ public class ArgoDiagram extends Diagram {
         }
         return description;
     }
-    
+
     /**
      * Find the all Figs that visualise the given model element in
      * this layer, or null if there is none.
      * TODO: once GEF includes this same method in Diagram then the can go
      */
     public List presentationsFor(Object obj) {
-        ArrayList presentations = new ArrayList();
+        List presentations = new ArrayList();
         int figCount = getLayer().getContents().size();
-        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig fig = (Fig)getLayer().getContents().get(figIndex);
-            if(fig.getOwner() == obj) {
+        for (int figIndex = 0; figIndex < figCount; ++figIndex) {
+            Fig fig = (Fig) getLayer().getContents().get(figIndex);
+            if (fig.getOwner() == obj) {
                 presentations.add(fig);
             }
         }
