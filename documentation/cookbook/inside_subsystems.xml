@@ -281,7 +281,8 @@
     <para> This subsystem has no knowledge of UML, Critics, Diagrams, or Model.
       </para>
     <para> The GUI Framework is located in
-      <classname>org.argouml.???</classname>. </para>
+      <classname>org.argouml.ui</classname>.
+    </para>
     <para> This is implemented directly on top of Swing and Java2. </para>
     <para> The GUI framework provides the following options
       <itemizedlist>
@@ -311,7 +312,25 @@
             <emphasis>The list of targets shall not contain any Fig that has an
             owner</emphasis>. Instead, the owner is enlisted. </para>
         </listitem>
-      </itemizedlist> </para>
+        <listitem>
+          <para>The Settings Tab</para>
+        </listitem>
+
+      </itemizedlist>
+    </para>
+
+    <para>
+      The GUI subsystem does not contain any knowledge of what is going
+      to be put into the different panes but it has knowledge of
+      parts of the semantics of those components.
+    </para>
+
+    <para>
+      The components that wants to be placed into any of these
+      register with the GUI subsystem using the appropriate method in
+      <classname>org.argouml.ui.GUI</classname>.
+    </para>
+
   </sect1>
   
   <sect1 id="application">
