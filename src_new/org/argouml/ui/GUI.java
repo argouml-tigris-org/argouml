@@ -24,6 +24,8 @@
 
 package org.argouml.ui;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -84,5 +86,15 @@ public final class GUI {
      */
     public List getSettingsTabs() {
         return Collections.unmodifiableList(settingsTabs);
+    }
+
+    /**
+     * Register a file in the menubar.
+     *
+     * @param file The File.
+     * @throws IOException if we cannot get the filename.
+     */
+    public void addFileSaved(File file) throws IOException {
+        ProjectBrowser.getInstance().addFileSaved(file);
     }
 }

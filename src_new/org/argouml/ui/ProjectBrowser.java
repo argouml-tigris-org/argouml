@@ -36,6 +36,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
@@ -117,7 +118,7 @@ public final class ProjectBrowser
      * Default height.
      */
     public static final int DEFAULT_COMPONENTHEIGHT = 200;
-    
+
     /**
      * Logger.
      */
@@ -225,10 +226,10 @@ public final class ProjectBrowser
     private ProjectBrowser(String applicationName, SplashScreen splash) {
         super(applicationName);
         theInstance = this;
-        
+
         saveAction = new ActionSaveProject();
         ProjectManager.getManager().setSaveAction(saveAction);
-        
+
         if (splash != null) {
 	    splash.getStatusBar().showStatus(
 	        Translator.localize("statusmsg.bar.making-project-browser"));
@@ -547,7 +548,7 @@ public final class ProjectBrowser
 
     /**
      * Create a title for the main window's title.
-     * 
+     *
      * @param titleArg
      */
     public void buildTitle(final String titleArg) {
@@ -745,7 +746,7 @@ public final class ProjectBrowser
      * @param targets Collection of targets to show
      */
     public void jumpToDiagramShowing(Collection targets) {
-    
+
         if (targets == null || targets.size() == 0) {
             return;
         }
@@ -1048,7 +1049,7 @@ public final class ProjectBrowser
      * @param overwrite if true, then we overwrite without asking
      * @return true if successful
      */
-    public boolean trySave (boolean overwrite) {
+    public boolean trySave(boolean overwrite) {
         URL url = ProjectManager.getManager().getCurrentProject().getURL();
         return url != null && trySave(overwrite, new File(url.getFile()));
     }
@@ -1099,8 +1100,7 @@ public final class ProjectBrowser
              * notification of menu bar
              */
             saveAction.setEnabled(false);
-            GenericArgoMenuBar menu = (GenericArgoMenuBar) getJMenuBar();
-            menu.addFileSaved(file.getCanonicalPath());
+            addFileSaved(file);
 
             Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
                         file.getCanonicalPath());
@@ -1131,7 +1131,7 @@ public final class ProjectBrowser
 
             reportError(
                     Translator.localize(
-                            "dialog.error.save.error", 
+                            "dialog.error.save.error",
                             new Object[] {file.getName()}),
                     true, ex);
 
@@ -1139,6 +1139,17 @@ public final class ProjectBrowser
         }
 
         return false;
+    }
+
+    /**
+     * Register a new file saved.
+     *
+     * @param file The file.
+     * @throws IOException if we cannot get the file name from the file.
+     */
+    void addFileSaved(File file) throws IOException {
+        GenericArgoMenuBar menu = (GenericArgoMenuBar) getJMenuBar();
+        menu.addFileSaved(file.getCanonicalPath());
     }
 
     /**
@@ -1196,7 +1207,7 @@ public final class ProjectBrowser
      */
     public boolean loadProject(File file, boolean showUI) {
         LOG.info("Loading project.");
-        
+
         PersistenceManager pm = PersistenceManager.getInstance();
         Project oldProject = ProjectManager.getManager().getCurrentProject();
         boolean success = true;
@@ -1246,15 +1257,15 @@ public final class ProjectBrowser
                         project.addMember(diag.next());
                     }
                     if (!diagrams.isEmpty()) {
-                        project.setActiveDiagram((ArgoDiagram) diagrams.iterator()
-                                .next());
+                        project.setActiveDiagram(
+                                (ArgoDiagram) diagrams.iterator().next());
                     }
                 }
 
                 ProjectBrowser.getInstance().showStatus(
                         Translator.localize(
                                 "label.open-project-status-read",
-                                new Object[] {file.getName(),}));
+                                new Object[] {file.getName(), }));
             } catch (VersionException ex) {
                 project = oldProject;
                 success = false;
@@ -1288,15 +1299,15 @@ public final class ProjectBrowser
                         showUI, ex);
             } catch (Exception ex) {
                 success = false;
-                project = oldProject;                
+                project = oldProject;
                 LOG.error("Exception while loading project", ex);
                 reportError(
                         Translator.localize(
-                                "dialog.error.open.error", 
+                                "dialog.error.open.error",
                                 new Object[] {file.getName()}),
                         showUI, ex);
             } finally {
-                
+
                 if (!LastLoadInfo.getInstance().getLastLoadStatus()) {
                     project = oldProject;
                     success = false;
@@ -1328,7 +1339,7 @@ public final class ProjectBrowser
                         // a valid current project
                         ProjectManager.getManager().setCurrentProject(project);
                         ProjectManager.getManager().removeProject(oldProject);
-                    } 
+                    }
                 }
 
                 if (project == null) {
@@ -1339,7 +1350,7 @@ public final class ProjectBrowser
                 }
                 UndoManager.getInstance().empty();
                 Designer.enableCritiquing();
-                
+
                 // Make sure save action is always reinstated
                 this.saveAction = saveAction;
                 ProjectManager.getManager().setSaveAction(saveAction);
@@ -1373,7 +1384,7 @@ public final class ProjectBrowser
     /**
      * Open a Message Dialog with an error message.
      *
-     * @param message the message to display.  
+     * @param message the message to display.
      * @param showUI true if an error message may be shown to the user,
      *               false if run in commandline mode
      * @param ex The exception that was thrown.
@@ -1450,7 +1461,7 @@ public final class ProjectBrowser
     /**
      * Attempt to save this project under a new name.  Prompt the user for
      * the new name.
-     * 
+     *
      * @param overwrite true to allow overwrite of an existing file
      * @return true if operation succeeded
      */
