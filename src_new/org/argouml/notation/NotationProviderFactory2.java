@@ -33,6 +33,11 @@ import org.argouml.uml.notation.java.InitNotationJava;
 import org.argouml.uml.notation.uml.InitNotationUml;
 
 /**
+ *  The NotationProviderFactory2 is a singleton, 
+ *  since it is the accesspoint for all Figs 
+ *  to access the textual representation of modelobjects, 
+ *  and since plugin modules can add extra languages.
+ *  
  * @author mvw@tigris.org
  */
 public final class NotationProviderFactory2 {
@@ -111,6 +116,12 @@ public final class NotationProviderFactory2 {
      * in a Collaborations diagram.
      */
     public static final int TYPE_MESSAGE = 14;
+
+    /**
+     * TYPE_EXTENSION_POINT the text shown on a usecase
+     * representing the extensionpoint.
+     */
+    public static final int TYPE_EXTENSION_POINT = 15;
 
     /**
      * defaultLanguage the Notation language used by default, i.e. UML

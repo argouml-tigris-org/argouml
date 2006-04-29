@@ -37,7 +37,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.notation.MessageNotation;
 import org.argouml.util.MyTokenizer;
 
@@ -80,7 +79,8 @@ public class MessageNotationUml extends MessageNotation {
     /**
      * The standard error etc. logger
      */
-    private static final Logger LOG = Logger.getLogger(MessageNotationUml.class);
+    private static final Logger LOG = 
+        Logger.getLogger(MessageNotationUml.class);
 
     /**
      * The vector of CustomSeparators to use when tokenizing parameters.
@@ -100,7 +100,7 @@ public class MessageNotationUml extends MessageNotation {
         parameterCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
     }
 
-    /*
+    /**
      * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
      */
     public String parse(String text) {
@@ -116,14 +116,14 @@ public class MessageNotationUml extends MessageNotation {
         return toString();
     }
     
-    /*
+    /**
      * @see org.argouml.notation.NotationProvider4#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-message";
     }
 
-    /*
+    /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
@@ -991,8 +991,10 @@ public class MessageNotationUml extends MessageNotation {
                 throw new ParseException("Cannot reverse the direction of a "
                         + "message that is an activator", 0);
             } else {
-                // Disconnect the message from the call graph
-                // Make copies of returned live collections since we're modifying
+                /* Disconnect the message from the call graph
+                 * Make copies of returned live collections 
+                 * since we're modifying
+                 */
                 Collection c = new ArrayList(
                         Model.getFacade().getPredecessors(mes));
                 Collection c2 = new ArrayList(
@@ -1556,7 +1558,7 @@ public class MessageNotationUml extends MessageNotation {
                         .buildOperation(cls, model, voidType);
 
             try {
-                ParserDisplay.SINGLETON.parseOperation(expr, op);
+                (new OperationNotationUml(op)).parseOperation(expr, op);
             } catch (ParseException pe) {
                 LOG.error("Unexpected ParseException in getOperation: " + pe,
                         pe);

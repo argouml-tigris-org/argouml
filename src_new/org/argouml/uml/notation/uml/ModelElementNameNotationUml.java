@@ -36,7 +36,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationHelper;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.generator.GeneratorDisplay;
 import org.argouml.uml.notation.ModelElementNameNotation;
 import org.argouml.util.MyTokenizer;
 
@@ -85,6 +84,9 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
     public String getParsingHelp() {
         if (Model.getFacade().isAStateVertex(myModelElement)) {
             return "parsing.help.fig-statename";
+        }
+        if (Model.getFacade().isAUseCase(myModelElement)) {
+            return "parsing.help.fig-usecase";
         }
         return "parsing.help.fig-nodemodelelement";
     }

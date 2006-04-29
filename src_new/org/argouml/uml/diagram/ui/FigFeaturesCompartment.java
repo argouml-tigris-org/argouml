@@ -25,9 +25,16 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
+import org.argouml.notation.NotationContext;
+import org.argouml.notation.NotationProvider4;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.static_structure.ui.FigFeature;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
@@ -53,7 +60,11 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
     private FigSeperator compartmentSeperator;
 
     /**
-     * The constructor.
+     * The constructor. <p>
+     * 
+     * Two figs are added to this FigGroup:
+     * The bigPort (i.e. a box that encloses all compartments),
+     * and a seperator.
      *
      * @param x x
      * @param y y
@@ -61,9 +72,9 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      * @param h height
      */
     public FigFeaturesCompartment(int x, int y, int w, int h) {
-        super(x, y, w, h);
+        super(x, y, w, h); // This adds bigPort, i.e. number 1
         compartmentSeperator = new FigSeperator(10, 10, 11);
-        addFig(compartmentSeperator);
+        addFig(compartmentSeperator); // number 2
     }
 
     /**
@@ -115,11 +126,118 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
     }
 
     /**
-     * Fills the Fig by adding all figs within.<p>
-     *
-     * TODO: Check that this is correct?
+     * @return the collection of UML objects 
+     *              on which this compartment of features is based
      */
-    public abstract void populate();
+    protected abstract Collection getUmlCollection();
+
+    /**
+     * @return the type of the notationprovider 
+     *              used to handle the text in the compartment 
+     */
+    protected abstract int getNotationType();
+    
+    /**
+     * Fills the Fig by adding all figs within.
+     */
+    public void populate() {
+        if (!isVisible()) {
+            return;
+        }
+        Fig bigPort = this.getBigPort();
+        int xpos = bigPort.getX();
+        int ypos = bigPort.getY();
+
+        Vector figs = new Vector(getFigs());
+        if (figs.size() > 1) {
+            // Ignore the first 2 figs:
+            figs.removeElementAt(1); // the seperator
+            figs.removeElementAt(0); // the bigPort
+        }
+        // We remove all of them:
+        Iterator i = figs.iterator();
+        while (i.hasNext()) {
+            Fig f = (Fig) i.next();
+            removeFig(f);    
+        }
+
+        // We are going to add the ones still valid & new ones
+        // in the right sequence:
+        Collection strs = getUmlCollection();
+        CompartmentFigText comp = null;
+        int acounter = -1;
+        Iterator iter = strs.iterator();
+        while (iter.hasNext()) {
+            Object feature = iter.next();
+            comp = null; // find the (next) compartment
+            acounter++;                
+            
+            /* Find the compartment fig for this feature: */
+            Iterator it = figs.iterator();
+            while (it.hasNext()) {
+                CompartmentFigText candidate;
+                Object fig = it.next();
+                if (fig instanceof CompartmentFigText) {
+                    candidate = (CompartmentFigText) fig;
+                    if (candidate.getOwner() == feature) {
+                        comp = candidate;
+                        break;
+                    }
+                }
+            }
+            
+            // If we don't have a fig for this feature, we'll need to add
+            // one. We set the bounds, but they will be reset later.
+            if (comp == null) {
+                NotationProvider4 np = 
+                    NotationProviderFactory2.getInstance().getNotationProvider(
+                            getNotationType(),
+                            (NotationContext) getGroup(), feature);
+                comp =
+                    new FigFeature(
+                            xpos + 1,
+                            ypos + 1 + acounter
+                            * FigNodeModelElement.ROWHEIGHT,
+                            0,
+                            FigNodeModelElement.ROWHEIGHT - 2,
+                            bigPort,
+                            np);
+                // bounds not relevant here
+                comp.setOwner(feature);
+
+            } else {
+                /* This one is still useable, so let's retain it, */
+                /* but its position may have been changed: */
+                Rectangle b = comp.getBounds();
+                b.y = ypos + 1 + acounter * FigNodeModelElement.ROWHEIGHT;
+                comp.setBounds(b);
+                // bounds not relevant here, but I am perfectionist...
+            }
+            addFig(comp); // add it again (but now in the right sequence)
+            
+            // Now put the text in
+            // We must handle the case where the text is null
+            String ftText = comp.getNotationProvider().toString();
+            if (ftText == null) {
+                ftText = "";
+            }
+            comp.setText(ftText);
+            
+            if (Model.getFacade().isAFeature(feature) ) {
+                // underline, if static
+                comp.setUnderline(
+                        Model.getScopeKind().
+                        getClassifier().equals(Model.getFacade().
+                                getOwnerScope(feature)));
+            }
+            comp.setBotMargin(0);
+        }
+
+        if (comp != null) {
+            comp.setBotMargin(6); // the last one needs extra space below it
+        }
+    }
+
 
     /**
      * Returns the new size of the FigGroup (either attributes or

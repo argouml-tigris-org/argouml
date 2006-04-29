@@ -30,9 +30,11 @@ import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProviderFactory2;
 
 /**
+ * This class initialises the Notation subsystem.
+ * 
  * This class is the only one that has the knowledge of the complete list of
- * NotationProvider4 implementations for UML.
- *
+ * NotationProvider4 implementations for UML. <p>
+ * 
  * @author mvw@tigris.org
  */
 public class InitNotationUml {
@@ -48,32 +50,57 @@ public class InitNotationUml {
                     "1.4",
                     Argo.lookupIconResource("UmlNotation"));
 
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_TRANSITION,
-                name, TransitionNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_STATEBODY,
-                name, StateBodyNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_NAME,
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_NAME,
                 name, ModelElementNameNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_ACTIONSTATE,
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_TRANSITION,
+                name, TransitionNotationUml.class);
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_STATEBODY,
+                name, StateBodyNotationUml.class);
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_ACTIONSTATE,
                 name, ActionStateNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_OBJECT,
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_OBJECT,
                 name, ObjectNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_COMPONENTINSTANCE,
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_COMPONENTINSTANCE,
                 name, ComponentInstanceNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_NODEINSTANCE,
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_NODEINSTANCE,
                 name, NodeInstanceNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_TYPE,
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_TYPE,
                 name, ObjectFlowStateTypeNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_STATE,
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_STATE,
                 name, ObjectFlowStateStateNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_CALLSTATE,
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_CALLSTATE,
                 name, CallStateNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_CLASSIFIERROLE,
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_CLASSIFIERROLE,
                 name, ClassifierRoleNotationUml.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_MESSAGE,
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_MESSAGE,
                 name, MessageNotationUml.class);
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_ATTRIBUTE,
+                name, AttributeNotationUml.class);
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_OPERATION,
+                name, OperationNotationUml.class);
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_EXTENSION_POINT,
+                name, ExtensionPointNotationUml.class);
+
 
         NotationProviderFactory2.getInstance().setDefaultNotation(name);
+
+        /* Initialise the NotationUtilityUml: */
+        (new NotationUtilityUml()).init();
     }
 
 }

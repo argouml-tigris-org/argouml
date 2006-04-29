@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.generator;
+package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -36,9 +36,10 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 
 /**
- * Test the ParserDisplay.
+ * @author michiel
  */
-public class TestParserDisplay extends TestCase {
+public class TestAttributeAndOperationNotationUml extends TestCase {
+
 
     private static final String ATTR01 = "name";
     private static final String ATTR02 = "+name";
@@ -101,8 +102,15 @@ public class TestParserDisplay extends TestCase {
      *
      * @param str the name of the test
      */
-    public TestParserDisplay(String str) {
+    public TestAttributeAndOperationNotationUml(String str) {
         super(str);
+    }
+
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() {
+        InitNotationUml.init();
     }
 
     /**
@@ -114,38 +122,37 @@ public class TestParserDisplay extends TestCase {
         throws ParseException {
         Object attr;
 
-        Object ns =
-            ProjectManager.getManager().getCurrentProject().getModel();
-        Object intType =
-            ProjectManager.getManager().getCurrentProject().findType("int");
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Object model = p.getModel();
+        Object intType = p.findType("int");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        Model.getCoreHelper().setNamespace(attr, ns);
+        attr = Model.getCoreFactory().buildAttribute(model, intType);
+        Model.getCoreHelper().setNamespace(attr, model);
 
         checkName(attr, ATTR01, "name");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        Model.getCoreHelper().setNamespace(attr, ns);
+        attr = Model.getCoreFactory().buildAttribute(model, intType);
+        Model.getCoreHelper().setNamespace(attr, model);
 
         checkName(attr, ATTR02, "name");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        Model.getCoreHelper().setNamespace(attr, ns);
+        attr = Model.getCoreFactory().buildAttribute(model, intType);
+        Model.getCoreHelper().setNamespace(attr, model);
 
         checkName(attr, ATTR03, "name");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        Model.getCoreHelper().setNamespace(attr, ns);
+        attr = Model.getCoreFactory().buildAttribute(model, intType);
+        Model.getCoreHelper().setNamespace(attr, model);
 
         checkName(attr, ATTR04, "name");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        Model.getCoreHelper().setNamespace(attr, ns);
+        attr = Model.getCoreFactory().buildAttribute(model, intType);
+        Model.getCoreHelper().setNamespace(attr, model);
 
         checkName(attr, ATTR05, "name");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        Model.getCoreHelper().setNamespace(attr, ns);
+        attr = Model.getCoreFactory().buildAttribute(model, intType);
+        Model.getCoreHelper().setNamespace(attr, model);
 
         checkName(attr, ATTR06, "name");
     }
@@ -449,6 +456,7 @@ public class TestParserDisplay extends TestCase {
                                                     "attrstereo2", });
     }
 
+
     /**
      * Test the parsing of an operation's name.
      *
@@ -673,13 +681,15 @@ public class TestParserDisplay extends TestCase {
         throws ParseException {
 
         if (Model.getFacade().isAAttribute(element)) {
-            ParserDisplay.SINGLETON.parseAttribute(text, element);
+            AttributeNotationUml anu = new AttributeNotationUml(element); 
+            anu.parseAttribute(text, element);
             assertTrue(text
                        + " gave wrong name: "
                        + Model.getFacade().getName(element),
                        name.equals(Model.getFacade().getName(element)));
         } else if (Model.getFacade().isAOperation(element)) {
-            ParserDisplay.SINGLETON.parseOperation(text, element);
+            OperationNotationUml onu = new OperationNotationUml(element);
+            onu.parseOperation(text, element);
             assertTrue(text
                        + " gave wrong name: "
                        + Model.getFacade().getName(element)
@@ -693,7 +703,8 @@ public class TestParserDisplay extends TestCase {
     private void checkType(Object feature, String text, String type)
         throws ParseException {
         if (Model.getFacade().isAAttribute(feature)) {
-            ParserDisplay.SINGLETON.parseAttribute(text, feature);
+            AttributeNotationUml anu = new AttributeNotationUml(feature); 
+            anu.parseAttribute(text, feature);
             assertTrue(text + " gave wrong type: (null)",
                        Model.getFacade().getType(feature) != null);
             assertTrue(text + " gave wrong type: "
@@ -702,7 +713,8 @@ public class TestParserDisplay extends TestCase {
                        type.equals(Model.getFacade().getName(
                                Model.getFacade().getType(feature))));
         } else if (Model.getFacade().isAOperation(feature)) {
-            ParserDisplay.SINGLETON.parseOperation(text, feature);
+            OperationNotationUml onu = new OperationNotationUml(feature);
+            onu.parseOperation(text, feature);
             Collection ret =
                 Model.getCoreHelper().getReturnParameters(feature);
             Iterator it = ret.iterator();
@@ -732,7 +744,8 @@ public class TestParserDisplay extends TestCase {
         throws ParseException {
         int i;
 
-        ParserDisplay.SINGLETON.parseOperation(text, op);
+        OperationNotationUml onu = new OperationNotationUml(op);
+        onu.parseOperation(text, op);
         Collection prm = Model.getFacade().getParameters(op);
         Iterator it = prm.iterator();
         assertTrue(
@@ -774,7 +787,8 @@ public class TestParserDisplay extends TestCase {
     private void checkVisibility(Object feature, String text, String vis)
         throws ParseException {
         if (Model.getFacade().isAAttribute(feature)) {
-            ParserDisplay.SINGLETON.parseAttribute(text, feature);
+            AttributeNotationUml anu = new AttributeNotationUml(feature); 
+            anu.parseAttribute(text, feature);
             assertTrue(text + " gave wrong visibility: (null)",
                        Model.getFacade().getVisibility(feature) != null);
             assertTrue(text + " gave wrong visibility: "
@@ -783,7 +797,8 @@ public class TestParserDisplay extends TestCase {
                        vis.equals(Model.getFacade().getName(
                                Model.getFacade().getVisibility(feature))));
         } else if (Model.getFacade().isAOperation(feature)) {
-            ParserDisplay.SINGLETON.parseOperation(text, feature);
+            OperationNotationUml onu = new OperationNotationUml(feature);
+            onu.parseOperation(text, feature);
             assertTrue(text + " gave wrong visibility: (null)",
                        Model.getFacade().getVisibility(feature) != null);
             assertTrue(text + " gave wrong visibility: "
@@ -804,7 +819,8 @@ public class TestParserDisplay extends TestCase {
 
         if (Model.getFacade().isAAttribute(feature)) {
             int i;
-            ParserDisplay.SINGLETON.parseAttribute(text, feature);
+            AttributeNotationUml anu = new AttributeNotationUml(feature); 
+            anu.parseAttribute(text, feature);
             for (i = 0; i + 1 < props.length; i += 2) {
                 if (props[i + 1] == null) {
                     assertTrue(
@@ -825,7 +841,8 @@ public class TestParserDisplay extends TestCase {
         } else if (Model.getFacade().isAOperation(feature)) {
             int i;
 
-            ParserDisplay.SINGLETON.parseOperation(text, feature);
+            OperationNotationUml onu = new OperationNotationUml(feature);
+            onu.parseOperation(text, feature);
             for (i = 0; i + 1 < props.length; i += 2) {
                 if (props[i + 1] == null) {
                     assertTrue(
@@ -850,7 +867,8 @@ public class TestParserDisplay extends TestCase {
                    Object mult)
         throws ParseException {
 
-        ParserDisplay.SINGLETON.parseAttribute(text, attr);
+        AttributeNotationUml anu = new AttributeNotationUml(attr); 
+        anu.parseAttribute(text, attr);
         if (mult == null) {
             assertTrue(
                     text
@@ -882,14 +900,16 @@ public class TestParserDisplay extends TestCase {
                  boolean ex3) {
         if (Model.getFacade().isAAttribute(element)) {
             try {
-                ParserDisplay.SINGLETON.parseAttribute(text, element);
+                AttributeNotationUml anu = new AttributeNotationUml(element); 
+                anu.parseAttribute(text, element);
                 fail("didn't throw for " + text);
             } catch (ParseException pe) {
                 assertTrue(text + " threw ParseException " + pe, prsEx);
             }
         } else if (Model.getFacade().isAOperation(element)) {
             try {
-                ParserDisplay.SINGLETON.parseOperation(text, element);
+                OperationNotationUml onu = new OperationNotationUml(element);
+                onu.parseOperation(text, element);
                 fail("didn't throw for " + text);
             } catch (ParseException pe) {
                 assertTrue(text + " threw ParseException " + pe, prsEx);
@@ -900,7 +920,8 @@ public class TestParserDisplay extends TestCase {
     private void checkValue(Object attr, String text, String val)
         throws ParseException {
 
-        ParserDisplay.SINGLETON.parseAttribute(text, attr);
+        AttributeNotationUml anu = new AttributeNotationUml(attr); 
+        anu.parseAttribute(text, attr);
         if (val == null) {
             assertTrue(
                     text
@@ -939,9 +960,11 @@ public class TestParserDisplay extends TestCase {
         throws ParseException {
 
         if (Model.getFacade().isAAttribute(feature)) {
-            ParserDisplay.SINGLETON.parseAttribute(text, feature);
+            AttributeNotationUml anu = new AttributeNotationUml(feature); 
+            anu.parseAttribute(text, feature);
         } else if (Model.getFacade().isAOperation(feature)) {
-            ParserDisplay.SINGLETON.parseOperation(text, feature);
+            OperationNotationUml onu = new OperationNotationUml(feature);
+            onu.parseOperation(text, feature);
         } else {
             fail("Unknown feature type " + feature);
         }
@@ -967,4 +990,6 @@ public class TestParserDisplay extends TestCase {
      * Dummy test.
      */
     public void testDummy() { }
+
+
 }

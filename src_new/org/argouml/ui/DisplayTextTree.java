@@ -159,9 +159,12 @@ public class DisplayTextTree extends JTree {
                         name = signature;
                     }
                 } else if (Model.getFacade().isAExtensionPoint(value)) {
-                    name =
-                        GeneratorDisplay.getInstance()
-                            .generateExtensionPoint(value);
+                    NotationProvider4 notationProvider =
+                        NotationProviderFactory2.getInstance().getNotationProvider(
+                                    NotationProviderFactory2.TYPE_EXTENSION_POINT,
+                                    NotationHelper.getDefaultNotationContext(),
+                                    value);
+                    name = notationProvider.toString();
                 } else if (Model.getFacade().isAComment(value)) {
                     /*
                      * From UML 1.4 onwards, the text of the comment

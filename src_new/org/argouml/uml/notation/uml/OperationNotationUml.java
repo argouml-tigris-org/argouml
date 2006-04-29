@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,9 +24,27 @@
 
 package org.argouml.uml.notation.uml;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Vector;
+
+import org.argouml.application.api.Configuration;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.notation.Notation;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.notation.OperationNotation;
+import org.argouml.util.MyTokenizer;
 
 /**
+ * The UML notation for an Operation.
+ * 
  * @author mvw@tigris.org
  */
 public class OperationNotationUml extends OperationNotation {
@@ -44,9 +62,366 @@ public class OperationNotationUml extends OperationNotation {
      * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
      */
     public String parse(String text) {
-        // TODO: Auto-generated method stub
-        return null;
+        try {
+            parseOperationFig(Model.getFacade().getOwner(myOperation), 
+                    myOperation, text);
+        } catch (ParseException pe) {
+            String msg = "statusmsg.bar.error.parsing.operation";
+            Object[] args = {
+                pe.getLocalizedMessage(),
+                new Integer(pe.getErrorOffset()),
+            };
+            ProjectBrowser.getInstance().getStatusBar().showStatus(
+                    Translator.messageFormat(msg, args));
+        }
+        return toString();
     }
+
+    /**
+     * Parse a string representing one ore more ';' separated operations. The
+     * case that a String or char contains a ';' (e.g. in an initializer) is
+     * handled, but not other occurences of ';'.
+     *
+     * @param classifier  Classifier The classifier the operation(s) belong to
+     * @param operation   Operation The operation on which the editing happened
+     * @param text The string to parse
+     * @throws ParseException for invalid input
+     */
+    public void parseOperationFig(
+            Object classifier,
+            Object operation,
+            String text) throws ParseException {
+
+        if (classifier == null || operation == null) {
+            return;
+        }
+        ParseException pex = null;
+        int start = 0;
+        int end = NotationUtilityUml.indexOfNextCheckedSemicolon(text, start);
+        Project currentProject =
+            ProjectManager.getManager().getCurrentProject();
+        if (end == -1) {
+            //no text? remove op!
+            currentProject.moveToTrash(operation);
+            TargetManager.getInstance().setTarget(classifier);
+            return;
+        }
+        String s = text.substring(start, end).trim();
+        if (s.length() == 0) {
+            //no non-whitechars in text? remove op!
+            currentProject.moveToTrash(operation);
+            TargetManager.getInstance().setTarget(classifier);
+            return;
+        }
+        parseOperation(s, operation);
+        int i = new ArrayList(
+                Model.getFacade().getFeatures(classifier)).indexOf(operation);
+        // check for more operations (';' separated):
+        start = end + 1;
+        end = NotationUtilityUml.indexOfNextCheckedSemicolon(text, start);
+        while (end > start && end <= text.length()) {
+            s = text.substring(start, end).trim();
+            if (s.length() > 0) {
+                // yes, there are more:
+                Object model = currentProject.getModel();
+                Object voidType = currentProject.findType("void");
+                Object newOp =
+                    Model.getCoreFactory()
+                        .buildOperation(classifier, model, voidType);
+                if (newOp != null) {
+                    try {
+                        parseOperation(s, newOp);
+                        //newOp.setOwnerScope(op.getOwnerScope()); //
+                        //not needed in case of operation
+                        if (i != -1) {
+                            Model.getCoreHelper().addFeature(
+                                    classifier, ++i, newOp);
+                        } else {
+                            Model.getCoreHelper().addFeature(
+                                    classifier, newOp);
+                        }
+                    } catch (ParseException ex) {
+                        if (pex == null) {
+                            pex = ex;
+                        }
+                    }
+                }
+            }
+            start = end + 1;
+            end = NotationUtilityUml.indexOfNextCheckedSemicolon(text, start);
+        }
+        if (pex != null) {
+            throw pex;
+        }
+    }
+
+
+    /**
+     * Parse a line of text and aligns the MOperation to the specification
+     * given. The line should be on the following form:<ul>
+     * <li> visibility name (parameter list) : return-type-expression
+     * {property-string}
+     * </ul>
+     *
+     * All elements are optional and, if left unspecified, will preserve their
+     * old values.<p>
+     *
+     * <em>Stereotypes</em> can be given between any element in the line on the
+     * form: &lt;&lt;stereotype1,stereotype2,stereotype3&gt;&gt;<p>
+     *
+     * The following properties are recognized to have special meaning:
+     * abstract, concurrency, concurrent, guarded, leaf, query, root and
+     * sequential.<p>
+     *
+     * This syntax is compatible with the UML 1.3 spec.<p>
+     *
+     * (formerly visibility name (parameter list) : return-type-expression
+     * {property-string} ) (formerly 2nd: [visibility] [keywords] returntype
+     * name(params)[;] )
+     *
+     * @param s   The String to parse.
+     * @param op  The MOperation to adjust to the spcification in s.
+     * @throws ParseException
+     *             when it detects an error in the attribute string. See also
+     *             ParseError.getErrorOffset().
+     */
+    public void parseOperation(String s, Object op) throws ParseException {
+        MyTokenizer st;
+        boolean hasColon = false;
+        String name = null;
+        String parameterlist = null;
+        String stereotype = null;
+        String token;
+        String type = null;
+        String visibility = null;
+        Vector properties = null;
+        int paramOffset = 0;
+
+        s = s.trim();
+
+        if (s.length() > 0 
+                && NotationUtilityUml.VISIBILITYCHARS.indexOf(s.charAt(0)) >= 0) {
+            visibility = s.substring(0, 1);
+            s = s.substring(1);
+        }
+
+        try {
+            st = new MyTokenizer(s, " ,\t,<<,>>,:,=,{,},\\,",
+                    NotationUtilityUml.operationCustomSep);
+            while (st.hasMoreTokens()) {
+                token = st.nextToken();
+                if (" ".equals(token) || "\t".equals(token)
+                        || ",".equals(token)) {
+                    ;// Do nothing
+                } else if ("<<".equals(token)) {
+                    if (stereotype != null) {
+                        throw new ParseException("Operations cannot have two "
+                                + "sets of stereotypes", st.getTokenIndex());
+                    }
+                    stereotype = "";
+                    while (true) {
+                        token = st.nextToken();
+                        if (">>".equals(token)) {
+                            break;
+                        }
+                        stereotype += token;
+                    }
+                } else if ("{".equals(token)) {
+                    String propname = "";
+                    String propvalue = null;
+
+                    if (properties == null) {
+                        properties = new Vector();
+                    }
+                    while (true) {
+                        token = st.nextToken();
+                        if (",".equals(token) || "}".equals(token)) {
+                            if (propname.length() > 0) {
+                                properties.add(propname);
+                                properties.add(propvalue);
+                            }
+                            propname = "";
+                            propvalue = null;
+
+                            if ("}".equals(token)) {
+                                break;
+                            }
+                        } else if ("=".equals(token)) {
+                            if (propvalue != null) {
+                                throw new ParseException("Property " + propname
+                                        + " cannot have two values", st
+                                        .getTokenIndex());
+                            }
+                            propvalue = "";
+                        } else if (propvalue == null) {
+                            propname += token;
+                        } else {
+                            propvalue += token;
+                        }
+                    }
+                    if (propname.length() > 0) {
+                        properties.add(propname);
+                        properties.add(propvalue);
+                    }
+                } else if (":".equals(token)) {
+                    hasColon = true;
+                } else if ("=".equals(token)) {
+                    throw new ParseException("Operations cannot have "
+                            + "default values", st.getTokenIndex());
+                } else if (token.charAt(0) == '(' && !hasColon) {
+                    if (parameterlist != null) {
+                        throw new ParseException("Operations cannot have two "
+                                + "parameter lists", st.getTokenIndex());
+                    }
+
+                    parameterlist = token;
+                } else {
+                    if (hasColon) {
+                        if (type != null) {
+                            throw new ParseException("Operations cannot have "
+                                    + "two types", st.getTokenIndex());
+                        }
+
+                        if (token.length() > 0
+                                && (token.charAt(0) == '\"'
+                                    || token.charAt(0) == '\'')) {
+                            throw new ParseException("Type cannot be quoted",
+                                    st.getTokenIndex());
+                        }
+
+                        if (token.length() > 0 && token.charAt(0) == '(') {
+                            throw new ParseException("Type cannot be an "
+                                    + "expression", st.getTokenIndex());
+                        }
+
+                        type = token;
+                    } else {
+                        if (name != null && visibility != null) {
+                            throw new ParseException("Extra text in Operation",
+                                    st.getTokenIndex());
+                        }
+
+                        if (token.length() > 0
+                                && (token.charAt(0) == '\"'
+                                    || token.charAt(0) == '\'')) {
+                            throw new ParseException(
+                                    "Name or visibility cannot" + " be quoted",
+                                    st.getTokenIndex());
+                        }
+
+                        if (token.length() > 0 && token.charAt(0) == '(') {
+                            throw new ParseException(
+                                    "Name or visibility cannot"
+                                            + " be an expression", st
+                                            .getTokenIndex());
+                        }
+
+                        if (name == null
+                                && visibility == null
+                                && token.length() > 1
+                                && NotationUtilityUml.VISIBILITYCHARS.indexOf(
+                                        token.charAt(0))
+                                                    >= 0) {
+                            visibility = token.substring(0, 1);
+                            token = token.substring(1);
+                        }
+
+                        if (name != null) {
+                            visibility = name;
+                            name = token;
+                        } else {
+                            name = token;
+                        }
+                    }
+                }
+            }
+        } catch (NoSuchElementException nsee) {
+            throw new ParseException("Unexpected end of operation", s.length());
+        } catch (ParseException pre) {
+            throw pre;
+        }
+
+        if (parameterlist != null) {
+            // parameterlist is guaranteed to contain at least "("
+            if (parameterlist.charAt(parameterlist.length() - 1) != ')') {
+                throw new ParseException("The parameter list was incomplete",
+                        paramOffset + parameterlist.length() - 1);
+            }
+
+            paramOffset++;
+            parameterlist = parameterlist.substring(1,
+                    parameterlist.length() - 1);
+            NotationUtilityUml.parseParamList(op, parameterlist, paramOffset);
+        }
+
+        if (visibility != null) {
+            Model.getCoreHelper().setVisibility(op,
+                    NotationUtilityUml.getVisibility(visibility.trim()));
+        }
+
+        if (name != null) {
+            Model.getCoreHelper().setName(op, name.trim());
+        } else if (Model.getFacade().getName(op) == null
+                || "".equals(Model.getFacade().getName(op))) {
+            Model.getCoreHelper().setName(op, "anonymous");
+        }
+
+        if (type != null) {
+            Object ow = Model.getFacade().getOwner(op);
+            Object ns = null;
+            if (ow != null && Model.getFacade().getNamespace(ow) != null) {
+                ns = Model.getFacade().getNamespace(ow);
+            } else {
+                ns = Model.getFacade().getModel(op);
+            }
+            Object mtype = NotationUtilityUml.getType(type.trim(), ns);
+            setReturnParameter(op, mtype);
+        }
+
+        if (properties != null) {
+            NotationUtilityUml.setProperties(op, properties, 
+                    NotationUtilityUml.operationSpecialStrings);
+        }
+
+        NotationUtilityUml.dealWithStereotypes(op, stereotype, true);
+    }
+
+
+    /**
+     * Sets the return parameter of op to be of type type. If there is none, one
+     * is created. If there are many, all but one are removed.
+     */
+    private void setReturnParameter(Object op, Object type) {
+        Object param = null;
+        Iterator it = Model.getFacade().getParameters(op).iterator();
+        while (it.hasNext()) {
+            Object p = it.next();
+            if (Model.getFacade().isReturn(p)) {
+                param = p;
+                break;
+            }
+        }
+        while (it.hasNext()) {
+            Object p = it.next();
+            if (Model.getFacade().isReturn(p)) {
+                ProjectManager.getManager().getCurrentProject().moveToTrash(p);
+            }
+        }
+        if (param == null) {
+            Object model =
+                ProjectManager.getManager()
+                        .getCurrentProject().getModel();
+            Object voidType =
+                ProjectManager.getManager()
+                        .getCurrentProject().findType("void");
+            param =
+                Model.getCoreFactory()
+                        .buildParameter(
+                                op, model, voidType);
+        }
+        Model.getCoreHelper().setType(param, type);
+    }
+
 
     /**
      * @see org.argouml.notation.NotationProvider4#getParsingHelp()
@@ -56,11 +431,130 @@ public class OperationNotationUml extends OperationNotation {
     }
 
     /**
+     *Generates an operation according to the UML 1.3 notation:
+     *
+     *         stereotype visibility name (parameter-list) :
+     *                         return-type-expression {property-string}
+     *
+     * For the return-type-expression: only the types of the return parameters
+     * are shown.  Depending on settings in Notation, visibility and
+     * properties are shown/not shown.
+     *
+     * @author jaap.branderhorst@xs4all.nl
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        // TODO: Auto-generated method stub
-        return super.toString();
+        String stereoStr = NotationUtilityUml.generateStereotype(
+                Model.getFacade().getStereotypes(myOperation));
+        String visStr = NotationUtilityUml.generateVisibility(myOperation);
+        String nameStr = Model.getFacade().getName(myOperation);
+
+        // the parameters
+        StringBuffer parameterListBuffer = new StringBuffer();
+        Collection coll = Model.getFacade().getParameters(myOperation);
+        Iterator it = coll.iterator();
+        int counter = 0;
+        while (it.hasNext()) {
+            Object parameter = it.next();
+            if (!Model.getFacade().hasReturnParameterDirectionKind(parameter)) {
+                counter++;
+                parameterListBuffer.append(
+                        NotationUtilityUml.generateParameter(parameter));
+                parameterListBuffer.append(",");
+            }
+        }
+        if (counter > 0) {
+            parameterListBuffer.delete(
+                parameterListBuffer.length() - 1,
+                parameterListBuffer.length());
+        }
+
+        StringBuffer parameterStr = new StringBuffer();
+        parameterStr.append("(").append(parameterListBuffer).append(")");
+
+        // the returnparameters
+        coll = Model.getCoreHelper().getReturnParameters(myOperation);
+        StringBuffer returnParasSb = new StringBuffer();
+        if (coll != null && coll.size() > 0) {
+            returnParasSb.append(": ");
+            Iterator it2 = coll.iterator();
+            while (it2.hasNext()) {
+                Object type = Model.getFacade().getType(it2.next());
+                if (type != null) {
+                    returnParasSb.append(Model.getFacade().getName(type));
+                }
+                returnParasSb.append(",");
+            }
+            returnParasSb.delete(
+                returnParasSb.length() - 1,
+                returnParasSb.length());
+        }
+
+        // the properties
+        StringBuffer propertySb = new StringBuffer().append("{");
+        // the query state
+        if (Model.getFacade().isQuery(myOperation)) {
+            propertySb.append("query,");
+        }
+        if (Model.getFacade().isRoot(myOperation)) {
+            propertySb.append("root,");
+        }
+        if (Model.getFacade().isLeaf(myOperation)) {
+            propertySb.append("leaf,");
+        }
+        if (Model.getFacade().getConcurrency(myOperation) != null) {
+            propertySb.append(Model.getFacade().getName(
+                    Model.getFacade().getConcurrency(myOperation)));
+            propertySb.append(',');
+        }
+        Iterator it3 = Model.getFacade().getTaggedValues(myOperation);
+        StringBuffer taggedValuesSb = new StringBuffer();
+        if (it3 != null && it3.hasNext()) {
+            while (it3.hasNext()) {
+                taggedValuesSb.append(
+                        NotationUtilityUml.generateTaggedValue(it3.next()));
+                taggedValuesSb.append(",");
+            }
+            taggedValuesSb.delete(
+                taggedValuesSb.length() - 1,
+                taggedValuesSb.length());
+        }
+        if (propertySb.length() > 1) {
+            propertySb.delete(propertySb.length() - 1, propertySb.length());
+            // remove last ,
+            propertySb.append("}");
+        } else {
+            propertySb = new StringBuffer();
+        }
+
+        // lets concatenate it to the resulting string (genStr)
+        StringBuffer genStr = new StringBuffer(30);
+        if ((stereoStr != null) && (stereoStr.length() > 0)) {
+            genStr.append(stereoStr).append(" ");
+        }
+        if ((visStr != null)
+            && (visStr.length() > 0)
+            && Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY)) {
+            genStr.append(visStr);
+        }
+        if ((nameStr != null) && (nameStr.length() > 0)) {
+            genStr.append(nameStr);
+        }
+        /* The "show types" defaults to TRUE, to stay compatible with older
+         * ArgoUML versions that did not have this setting: */
+        if (Configuration.getBoolean(Notation.KEY_SHOW_TYPES, true)) {
+            genStr.append(parameterStr).append(" ");
+            if ((returnParasSb != null) && (returnParasSb.length() > 0)) {
+                genStr.append(returnParasSb).append(" ");
+            }
+        } else {
+            genStr.append("()");
+        }
+        if ((propertySb.length() > 0)
+            && Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES)) {
+            genStr.append(propertySb);
+        }
+        return genStr.toString().trim();
     }
 
 }

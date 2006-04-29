@@ -40,10 +40,13 @@ import org.tigris.gef.presentation.FigText;
  * stereotypes of the model element represented by the parent Fig.
  * Currently display of multiple stereotypes are stacked one on top of the
  * each enclosed by guillemots.<p>
+ * 
  * The minimum width of this fig is the largest minimum width of its child
  * figs.<p>
+ * 
  * The minimum height of this fig is the total minimum height of its child
  * figs.<p>
+ * 
  * TODO: Allow for UML2 style display where all stereotypes are displayed in
  * the same guillemot pair and are delimited by commas. The style should be
  * changable by calling getOrientation(Orientation). The swidget Orientation
@@ -77,8 +80,6 @@ public class FigStereotypesCompartment extends FigCompartment {
         setFilled(false);
     }
 
-
-
     /**
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
@@ -87,9 +88,9 @@ public class FigStereotypesCompartment extends FigCompartment {
         populate();
     }
 
-
-
     /**
+     * TODO: This needs more work!
+     *
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#populate()
      */
     public void populate() {
@@ -125,7 +126,8 @@ public class FigStereotypesCompartment extends FigCompartment {
                                 * FigNodeModelElement.ROWHEIGHT,
                             0,
                             FigNodeModelElement.ROWHEIGHT - 2,
-                            bigPort);
+                            bigPort,
+                            null);
                 // bounds not relevant here
                 stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
                 addFig(stereotypeTextFig);
@@ -154,7 +156,8 @@ public class FigStereotypesCompartment extends FigCompartment {
                                 	* FigNodeModelElement.ROWHEIGHT,
                                 0,
                                 FigNodeModelElement.ROWHEIGHT - 2,
-                                bigPort);
+                                bigPort,
+                                null);
                     // bounds not relevant here
                     stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
                     addFig(stereotypeTextFig);
@@ -166,10 +169,6 @@ public class FigStereotypesCompartment extends FigCompartment {
                         + Model.getFacade().getName(stereotype)
                         + NotationHelper.getRightGuillemot());
                 stereotypeTextFig.setOwner(stereotype);
-                //TODO: update the model again here?
-                /* This causes another event, and modelChanged() called,
-                 * and updateAttributes() called again...
-                 */
 
                 acounter++;
             }

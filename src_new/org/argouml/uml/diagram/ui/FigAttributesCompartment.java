@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,17 +25,12 @@
 package org.argouml.uml.diagram.ui;
 
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
-import org.argouml.notation.NotationContext;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.static_structure.ui.FigFeature;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * @author Bob Tarling
@@ -59,66 +54,18 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#populate()
+     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#getUmlCollection()
      */
-    public void populate() {
-        if (!isVisible()) {
-            return;
-        }
-        Object cls = /*(MClassifier)*/ getGroup().getOwner();
-        Fig attrPort = this.getBigPort();
-        int xpos = attrPort.getX();
-        int ypos = attrPort.getY();
-        int acounter = 2; // Skip background port and seperator
+    protected Collection getUmlCollection() {
+        Object cls = /*(Classifier)*/ getGroup().getOwner();
+        return Model.getFacade().getStructuralFeatures(cls);
+    }
 
-        Collection strs = Model.getFacade().getStructuralFeatures(cls);
-        if (strs != null) {
-            Iterator iter = strs.iterator();
-            List figs = getFigs();
-            CompartmentFigText attr = null;
-            while (iter.hasNext()) {
-                Object structuralFeature = iter.next();
-                if (figs.size() <= acounter) {
-                    attr =
-                        new FigFeature(
-                                xpos + 1,
-                                ypos + 1
-                                + (acounter - 1)
-                                	* FigNodeModelElement.ROWHEIGHT,
-                                0,
-                                FigNodeModelElement.ROWHEIGHT - 2,
-                                attrPort);
-                    // bounds not relevant here
-                    addFig(attr);
-                } else {
-                    attr = (CompartmentFigText) figs.get(acounter);
-                }
-                attr.setText(Notation.generate((NotationContext) getGroup(),
-                        structuralFeature));
-                // TODO: update the model again here?
-                attr.setOwner(structuralFeature); 
-                /* This causes another event, and modelChanged() called,
-                 * and updateAttributes() called again...
-                 */
-
-                // underline, if static
-                attr.setUnderline(
-                        Model.getScopeKind().
-                        getClassifier().equals(Model.getFacade().
-                                getOwnerScope(structuralFeature)));
-                attr.setBotMargin(0);
-                acounter++;
-            }
-            if (attr != null) {
-                attr.setBotMargin(6);
-            }
-            if (figs.size() > acounter) {
-                //cleanup of unused attribute FigText's
-                for (int i = figs.size() - 1; i >= acounter; i--) {
-                    removeFig((Fig) figs.get(i));
-                }
-            }
-        }
+    /**
+     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#getNotationType()
+     */
+    protected int getNotationType() {
+        return NotationProviderFactory2.TYPE_ATTRIBUTE;
     }
 
     /**
