@@ -1399,7 +1399,9 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Rerenders the fig if needed. This functionality was originally
+     * Rerenders the fig. <p>
+     * 
+     * This functionality was originally
      * the functionality of modelChanged but modelChanged takes the
      * event now into account.
      */
