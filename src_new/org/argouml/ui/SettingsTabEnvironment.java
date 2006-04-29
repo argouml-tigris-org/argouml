@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,17 +37,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
-import org.argouml.application.api.SettingsTabPanel;
-import org.argouml.application.helpers.SettingsTabHelper;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.SaveGraphicsManager;
 import org.argouml.util.SuffixFilter;
 import org.tigris.swidgets.LabelledLayout;
-
-
 
 /**
  * Settings panel for handling ArgoUML environment related settings.
@@ -55,8 +50,8 @@ import org.tigris.swidgets.LabelledLayout;
  * @author Thierry Lach
  * @since  0.9.4
  */
-public class SettingsTabEnvironment extends SettingsTabHelper
-    implements SettingsTabPanel {
+class SettingsTabEnvironment extends JPanel
+    implements GUISettingsTabInterface {
 
     private JTextField fieldArgoRoot;
     private JTextField fieldArgoHome;
@@ -72,20 +67,23 @@ public class SettingsTabEnvironment extends SettingsTabHelper
     /**
      * The constructor.
      */
-    public SettingsTabEnvironment() {
+    SettingsTabEnvironment() {
         super();
         setLayout(new BorderLayout());
         int labelGap = 10;
         int componentGap = 5;
         JPanel top = new JPanel(new LabelledLayout(labelGap, componentGap));
 
-        JLabel label = createLabel("label.default.graphics-format");
+        JLabel label =
+            new JLabel(Translator.localize("label.default.graphics-format"));
         fieldGraphicsFormat = new JComboBox();
         label.setLabelFor(fieldGraphicsFormat);
         top.add(label);
         top.add(fieldGraphicsFormat);
 
-        label = createLabel("label.default.graphics-resolution");
+        label =
+            new JLabel(
+                    Translator.localize("label.default.graphics-resolution"));
         theResolutions = new ArrayList();
         theResolutions.add(new GResolution(1, "combobox.item.resolution-1"));
         theResolutions.add(new GResolution(2, "combobox.item.resolution-2"));
@@ -97,7 +95,8 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 
         // This string is NOT to be translated! See issue 2381.
 	label = new JLabel("${argo.root}");
-	fieldArgoRoot = createTextField();
+        JTextField j = new JTextField();
+	fieldArgoRoot = j;
 	fieldArgoRoot.setEnabled(false);
         label.setLabelFor(fieldArgoRoot);
         top.add(label);
@@ -105,7 +104,8 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 
 	// This string is NOT to be translated! See issue 2381.
 	label = new JLabel("${argo.home}");
-        fieldArgoHome = createTextField();
+	JTextField j1 = new JTextField();
+        fieldArgoHome = j1;
 	fieldArgoHome.setEnabled(false);
         label.setLabelFor(fieldArgoHome);
         top.add(label);
@@ -113,7 +113,8 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 
  	// This string is NOT to be translated! See issue 2381.
 	label = new JLabel("${argo.ext.dir}");
-        fieldArgoExtDir = createTextField();
+	JTextField j2 = new JTextField();
+        fieldArgoExtDir = j2;
 	fieldArgoExtDir.setEnabled(false);
         label.setLabelFor(fieldArgoExtDir);
         top.add(label);
@@ -121,7 +122,8 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 
   	// This string is NOT to be translated! See issue 2381.
 	label = new JLabel("${java.home}");
-        fieldJavaHome = createTextField();
+	JTextField j3 = new JTextField();
+        fieldJavaHome = j3;
 	fieldJavaHome.setEnabled(false);
         label.setLabelFor(fieldJavaHome);
         top.add(label);
@@ -129,7 +131,8 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 
   	// This string is NOT to be translated! See issue 2381.
 	label = new JLabel("${user.home}");
-        fieldUserHome = createTextField();
+	JTextField j4 = new JTextField();
+        fieldUserHome = j4;
 	fieldUserHome.setEnabled(false);
         label.setLabelFor(fieldUserHome);
         top.add(label);
@@ -137,14 +140,16 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 
 	// This string is NOT to be translated! See issue 2381.
 	label = new JLabel("${user.dir}");
-        fieldUserDir = createTextField();
+	JTextField j5 = new JTextField();
+        fieldUserDir = j5;
 	fieldUserDir.setEnabled(false);
         label.setLabelFor(fieldUserDir);
         top.add(label);
         top.add(fieldUserDir);
 
-  	label = createLabel("label.startup-directory");
-        fieldStartupDir = createTextField();
+  	label = new JLabel(Translator.localize("label.startup-directory"));
+  	JTextField j6 = new JTextField();
+        fieldStartupDir = j6;
 	fieldStartupDir.setEnabled(false);
         label.setLabelFor(fieldStartupDir);
         top.add(label);
@@ -155,7 +160,7 @@ public class SettingsTabEnvironment extends SettingsTabHelper
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabRefresh()
+     * @see GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
         fieldArgoRoot.setText(Argo.getArgoRoot());
@@ -188,7 +193,7 @@ public class SettingsTabEnvironment extends SettingsTabHelper
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabSave()
+     * @see GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
         Configuration.setString(Argo.KEY_STARTUP_DIR, fieldUserDir.getText());
@@ -202,52 +207,21 @@ public class SettingsTabEnvironment extends SettingsTabHelper
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabCancel()
+     * @see GUISettingsTabInterface#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() {
 	handleSettingsTabRefresh();
     }
 
     /**
-     * @see org.argouml.application.api.ArgoModule#getModuleName()
-     */
-    public String getModuleName() { return "SettingsTabEnvironment"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
-     */
-    public String getModuleDescription() {
-	return "Settings Tab for Environment";
-    }
-
-    /**
-     * Use of Module is curious. Does this mean the
-     * author of a particular zargo?
-     * This means the author of this extension to ArgoUML.
-     * this information is not stored in the .argo xml
-     * in zargo
-     *
-     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
-     */
-    public String getModuleAuthor() { return "ArgoUML Core"; }
-
-    /**
-     * This should call on a global config file somewhere
-     * .9.4 is the last version of argo.
-     *
-     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
-     */
-    public String getModuleVersion() { return ArgoVersion.getVersion(); }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleKey()
-     */
-    public String getModuleKey() { return "module.settings.environment"; }
-
-    /**
-     * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
+     * @see GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() { return "tab.environment"; }
+
+    /**
+     * @see GUISettingsTabInterface#getTabPanel()
+     */
+    public JPanel getTabPanel() { return this; }
 
     /**
      * The UID.
@@ -260,6 +234,12 @@ class GResolution {
     private int resolution;
     private String label;
 
+    /**
+     * Constructor.
+     *
+     * @param r
+     * @param name
+     */
     GResolution(int r, String name) {
         resolution = r;
         label = Translator.localize(name);
@@ -269,6 +249,9 @@ class GResolution {
         return resolution;
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
         return label;
     }

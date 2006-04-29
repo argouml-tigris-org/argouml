@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,38 +30,37 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
-import org.argouml.application.api.SettingsTabPanel;
-import org.argouml.application.helpers.SettingsTabHelper;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.ProfileException;
 
-/** Action object for handling Argo settings
+/**
+ * Action object for handling Argo settings.
  *
- *  @author Thierry Lach
- *  @since  0.9.4
+ * @author Thierry Lach
+ * @since  0.9.4
  */
-public class SettingsTabPreferences extends SettingsTabHelper
-    implements SettingsTabPanel {
+class SettingsTabPreferences extends JPanel
+    implements GUISettingsTabInterface {
 
-    private JCheckBox chkSplash = null;
-    private JCheckBox chkPreload = null;
-    private JCheckBox chkReloadRecent = null;
-    private JCheckBox chkStripDiagrams = null;
+    private JCheckBox chkSplash;
+    private JCheckBox chkPreload;
+    private JCheckBox chkReloadRecent;
+    private JCheckBox chkStripDiagrams;
     private JTextField defaultProfile;
-    
+
     /**
      * The constructor.
      *
      */
-    public SettingsTabPreferences() {
-        super();
+    SettingsTabPreferences() {
         setLayout(new BorderLayout());
 	JPanel top = new JPanel();
     	top.setLayout(new GridBagLayout());
@@ -75,24 +74,30 @@ public class SettingsTabPreferences extends SettingsTabHelper
 	checkConstraints.insets = new Insets(4, 10, 0, 10);
 
 	checkConstraints.gridy = 2;
-        chkSplash = createCheckBox("label.splash");
+	JCheckBox j = new JCheckBox(Translator.localize("label.splash"));
+        chkSplash = j;
 	top.add(chkSplash, checkConstraints);
 
 	checkConstraints.gridy++;
-        chkPreload = createCheckBox("label.preload");
+        JCheckBox j1 = new JCheckBox(Translator.localize("label.preload"));
+        chkPreload = j1;
  	top.add(chkPreload, checkConstraints);
 
 	checkConstraints.gridy++;
-        chkReloadRecent = createCheckBox("label.reload-recent");
+        JCheckBox j2 =
+            new JCheckBox(Translator.localize("label.reload-recent"));
+        chkReloadRecent = j2;
  	top.add(chkReloadRecent, checkConstraints);
 
         checkConstraints.gridy++;
-        chkStripDiagrams = createCheckBox("label.strip-diagrams");
+        JCheckBox j3 =
+            new JCheckBox(Translator.localize("label.strip-diagrams"));
+        chkStripDiagrams = j3;
         top.add(chkStripDiagrams, checkConstraints);
 
         // TODO: Profile field is currently read-only, need a selector
         checkConstraints.gridy++;
-        top.add(createLabel("label.default-profile"), 
+        top.add(new JLabel(Translator.localize("label.default-profile")),
                 checkConstraints);
         defaultProfile = new JTextField();
         checkConstraints.gridy++;
@@ -104,7 +109,7 @@ public class SettingsTabPreferences extends SettingsTabHelper
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabRefresh()
+     * @see GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
         chkSplash.setSelected(Configuration.getBoolean(Argo.KEY_SPLASH, true));
@@ -121,7 +126,7 @@ public class SettingsTabPreferences extends SettingsTabHelper
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabSave()
+     * @see GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
         Configuration.setBoolean(Argo.KEY_SPLASH, chkSplash.isSelected());
@@ -135,49 +140,31 @@ public class SettingsTabPreferences extends SettingsTabHelper
                     .setProfileModelFilename(defaultProfile.getText());
         } catch (ProfileException e) {
             // shouldn't happen if profile was validated when selected
-            JOptionPane.showMessageDialog(this, "Setting UML profile failed", 
+            JOptionPane.showMessageDialog(this, "Setting UML profile failed",
                     "Profile save error", JOptionPane.ERROR_MESSAGE);
         }
-   
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabCancel()
+     * @see GUISettingsTabInterface#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() {
         handleSettingsTabRefresh();
     }
 
     /**
-     * @see org.argouml.application.api.ArgoModule#getModuleName()
+     * @see GUISettingsTabInterface#getTabPanel()
      */
-    public String getModuleName() { return "SettingsTabPreferences"; }
+    public JPanel getTabPanel() { return this; }
 
     /**
-     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
-     */
-    public String getModuleDescription() {
-	return "Settings Tab for Preferences";
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
-     */
-    public String getModuleAuthor() { return "ArgoUML Core"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
-     */
-    public String getModuleVersion() { return ArgoVersion.getVersion(); }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleKey()
-     */
-    public String getModuleKey() { return "module.settings.preferences"; }
-
-    /**
-     * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
+     * @see GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() { return "tab.preferences"; }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -340220974967836979L;
 }
 

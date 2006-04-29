@@ -216,6 +216,11 @@ public class SettingsTabNotation extends SettingsTabHelper {
     public String getTabKey() { return "tab.notation"; }
 
     /**
+     * @see org.argouml.application.api.SettingsTabPanel#getTabPanel()
+     */
+    public JPanel getTabPanel() { return this; }
+
+    /**
      * The UID.
      */
     private static final long serialVersionUID = 3206897060245290104L;

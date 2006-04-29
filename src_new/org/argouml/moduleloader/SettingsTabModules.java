@@ -40,8 +40,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import org.argouml.application.helpers.SettingsTabHelper;
 import org.argouml.application.modules.ModuleLoader;
+import org.argouml.ui.GUISettingsTabInterface;
 
 /**
  * Tab for the settings dialog that makes it possible to
@@ -51,7 +51,9 @@ import org.argouml.application.modules.ModuleLoader;
  *
  * @author Linus Tolke
  */
-public class SettingsTabModules extends SettingsTabHelper {
+class SettingsTabModules extends JPanel
+    implements GUISettingsTabInterface {
+
     /**
      * The table of modules.
      */
@@ -77,17 +79,10 @@ public class SettingsTabModules extends SettingsTabHelper {
     /**
      * The constructor.
      */
-    public SettingsTabModules() {
-        super();
-
-        setLayout(new BorderLayout());
-
-        table = new JTable(new ModuleTableModel());
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-	table.setShowVerticalLines(true);
-        add(new JScrollPane(table), BorderLayout.CENTER);
-
-	createNotYetLoaded();
+    SettingsTabModules() {
+        // The creation of the actual GUI elements is deferred until
+        // they are actually needed. Otherwize we have problems
+        // with the initialization.
     }
 
     /**
@@ -240,7 +235,7 @@ public class SettingsTabModules extends SettingsTabHelper {
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabRefresh()
+     * @see GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
         table.setModel(new ModuleTableModel());
@@ -248,7 +243,7 @@ public class SettingsTabModules extends SettingsTabHelper {
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabSave()
+     * @see GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
         if (elements != null) {
@@ -263,48 +258,35 @@ public class SettingsTabModules extends SettingsTabHelper {
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabCancel()
+     * @see GUISettingsTabInterface#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() {
         // Do nothing!
         // The next time we refresh, we will fetch the values again.
     }
 
-
-
-    // TODO: This is rather ironic. We use the old moduleloader mechanism
-    //       to get a settings tab that will allow us to turn on an off
-    //       the new moduleloader.
-
     /**
-     * @see org.argouml.application.api.ArgoModule#getModuleName()
-     */
-    public String getModuleName() { return "SettingsTabModules"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
-     */
-    public String getModuleDescription() { return "Selecting Modules"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
-     */
-    public String getModuleAuthor() { return "ArgoUML Core"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
-     */
-    public String getModuleVersion() { return "1.0"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleKey()
-     */
-    public String getModuleKey() { return "module.settings.modules"; }
-
-    /**
-     * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
+     * @see GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() { return "tab.modules"; }
+
+    /**
+     * @see GUISettingsTabInterface#getTabPanel()
+     */
+    public JPanel getTabPanel() {
+        if (table == null) {
+            setLayout(new BorderLayout());
+
+            table = new JTable(new ModuleTableModel());
+            table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+            table.setShowVerticalLines(true);
+            add(new JScrollPane(table), BorderLayout.CENTER);
+
+            createNotYetLoaded();
+        }
+
+        return this;
+    }
 
     /**
      * The UID.

@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -44,17 +45,12 @@ import org.argouml.i18n.Translator;
 
 /**
  * Action for starting the Argo settings window.
- * 
+ *
  * @author Thomas N
  * @author Thierry Lach
  * @since 0.9.4
  */
-public class SettingsDialog extends ArgoDialog implements WindowListener {
-
-    /**
-     * The serial version.
-     */
-    private static final long serialVersionUID = -8233301947357843703L;
+class SettingsDialog extends ArgoDialog implements WindowListener {
 
     /**
      * Logger.
@@ -64,23 +60,23 @@ public class SettingsDialog extends ArgoDialog implements WindowListener {
     private JButton applyButton;
 
     private JTabbedPane tabs;
-    
-    boolean doingShow = false;
-    
-    boolean windowOpen = false;
+
+    private boolean doingShow;
+
+    private boolean windowOpen;
 
     /**
-     * Constructor to build new settings dialog
+     * Constructor to build new settings dialog.
      */
     SettingsDialog() {
-        super(ProjectBrowser.getInstance(), 
+        super(ProjectBrowser.getInstance(),
                 Translator.localize("dialog.settings"),
-                ArgoDialog.OK_CANCEL_OPTION, 
+                ArgoDialog.OK_CANCEL_OPTION,
                 true);
 
 
         tabs = new JTabbedPane();
-        
+
         applyButton = new JButton(Translator.localize("button.apply"));
         String mnemonic = Translator.localize("button.apply.mnemonic");
         if (mnemonic != null && mnemonic.length() > 0) {
@@ -92,13 +88,25 @@ public class SettingsDialog extends ArgoDialog implements WindowListener {
             }
         });
         addButton(applyButton);
-        
+
+        // Add settings from the settings registry.
+        Iterator iter = GUI.getInstance().getSettingsTabs().iterator();
+        while (iter.hasNext()) {
+            GUISettingsTabInterface stp =
+                (GUISettingsTabInterface) iter.next();
+
+            tabs.addTab(
+                    Translator.localize(stp.getTabKey()),
+                    stp.getTabPanel());
+        }
+
+        // Here is where the tabs from the old plugins mechanism are added.
         List list = Argo.getPlugins(PluggableSettingsTab.class);
         ListIterator iterator = list.listIterator();
         try {
             while (iterator.hasNext()) {
                 Object o = iterator.next();
-                SettingsTabPanel stp = 
+                SettingsTabPanel stp =
                     ((PluggableSettingsTab) o).getSettingsTabPanel();
                 tabs.addTab(Translator.localize(stp.getTabKey()), stp
                         .getTabPanel());
@@ -106,17 +114,16 @@ public class SettingsDialog extends ArgoDialog implements WindowListener {
         } catch (Exception exception) {
             LOG.error("got an Exception in ActionSettings", exception);
         }
-        
+
         // Increase width to accommodate all tabs on one row.
         final int minimumWidth = 480;
         tabs.setPreferredSize(new Dimension(Math.max(tabs
                 .getPreferredSize().width, minimumWidth), tabs
                 .getPreferredSize().height));
-        
+
         tabs.setTabPlacement(SwingConstants.LEFT);
         setContent(tabs);
         addWindowListener(this);
-        
     }
 
     /**
@@ -135,7 +142,7 @@ public class SettingsDialog extends ArgoDialog implements WindowListener {
         doingShow = false;
         // windowOpen state will be changed when window is activated
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(
      *      java.awt.event.ActionEvent)
@@ -155,8 +162,8 @@ public class SettingsDialog extends ArgoDialog implements WindowListener {
     private void handleSave() {
         for (int i = 0; i < tabs.getComponentCount(); i++) {
             Object o = tabs.getComponent(i);
-            if (o instanceof SettingsTabPanel) {
-                ((SettingsTabPanel) o).handleSettingsTabSave();
+            if (o instanceof GUISettingsTabInterface) {
+                ((GUISettingsTabInterface) o).handleSettingsTabSave();
             }
         }
         windowOpen = false;
@@ -168,8 +175,8 @@ public class SettingsDialog extends ArgoDialog implements WindowListener {
     private void handleCancel() {
         for (int i = 0; i < tabs.getComponentCount(); i++) {
             Object o = tabs.getComponent(i);
-            if (o instanceof SettingsTabPanel) {
-                ((SettingsTabPanel) o).handleSettingsTabCancel();
+            if (o instanceof GUISettingsTabInterface) {
+                ((GUISettingsTabInterface) o).handleSettingsTabCancel();
             }
         }
         windowOpen = false;
@@ -181,18 +188,18 @@ public class SettingsDialog extends ArgoDialog implements WindowListener {
     private void handleRefresh() {
         for (int i = 0; i < tabs.getComponentCount(); i++) {
             Object o = tabs.getComponent(i);
-            if (o instanceof SettingsTabPanel) {
-                ((SettingsTabPanel) o).handleSettingsTabRefresh();
+            if (o instanceof GUISettingsTabInterface) {
+                ((GUISettingsTabInterface) o).handleSettingsTabRefresh();
             }
         }
     }
-    
+
     private void handleOpen() {
         // We only request focus the first time we become visible
         if (!windowOpen) {
             getOkButton().requestFocusInWindow();
             windowOpen = true;
-        }        
+        }
     }
 
     /**
@@ -241,6 +248,8 @@ public class SettingsDialog extends ArgoDialog implements WindowListener {
         handleCancel();
     }
 
+    /**
+     * The serial version.
+     */
+    private static final long serialVersionUID = -8233301947357843703L;
 }
-
-

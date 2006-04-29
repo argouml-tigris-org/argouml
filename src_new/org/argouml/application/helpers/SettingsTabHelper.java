@@ -42,6 +42,8 @@ import org.argouml.i18n.Translator;
  *
  * @author Thierry Lach
  * @since  0.9.4
+ * @deprecated as of 0.21.3 by Linus Tolke. Replace by explicit calls to Swing
+ *         and copy the {@link #getTabPanel()} into your class.
  */
 public abstract class SettingsTabHelper extends JPanel
     implements SettingsTabPanel, PluggableSettingsTab {
@@ -70,7 +72,7 @@ public abstract class SettingsTabHelper extends JPanel
      * @return a new label with a localized text for the given key
      */
     protected JLabel createLabel(String key) {
-    	return new JLabel(localize(key));
+    	return new JLabel(Translator.localize(key));
     }
 
     /**
@@ -80,7 +82,7 @@ public abstract class SettingsTabHelper extends JPanel
      * @return a new checkbox with localized text
      */
     protected JCheckBox createCheckBox(String key) {
-    	JCheckBox j = new JCheckBox(localize(key));
+    	JCheckBox j = new JCheckBox(Translator.localize(key));
 	return j;
     }
 
@@ -94,7 +96,7 @@ public abstract class SettingsTabHelper extends JPanel
      */
     protected JRadioButton createRadioButton(ButtonGroup bg, String key,
 					     boolean selected) {
-	JRadioButton j = new JRadioButton(localize(key), selected);
+	JRadioButton j = new JRadioButton(Translator.localize(key), selected);
 	bg.add(j);
 	return j;
     }

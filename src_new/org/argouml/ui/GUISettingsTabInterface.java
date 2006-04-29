@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,9 +22,9 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.application.api;
+package org.argouml.ui;
 
-import org.argouml.ui.GUISettingsTabInterface;
+import javax.swing.JPanel;
 
 /**
  * An interface which must be implemented as the UI for
@@ -38,8 +38,38 @@ import org.argouml.ui.GUISettingsTabInterface;
  *
  * @author Thierry Lach
  * @since 0.9.4
- * @deprecated as of 0.21.3 by Linus Tolke.
- *         Replace by {@link GUISettingsTabInterface}. 
+ * @author Linus Tolke (moved this into the GUI subsystem)
+ * @since 0.21.3 (it is part of the GUI subsystem)
  */
-public interface SettingsTabPanel extends GUISettingsTabInterface {
-} /* End interface SettingsTabPanel */
+public interface GUISettingsTabInterface {
+
+    /**
+     * Save any fields changed.
+     */
+    void handleSettingsTabSave();
+
+    /**
+     * Cancel any changes.
+     */
+    void handleSettingsTabCancel();
+
+    /**
+     * Load or reload field settings.
+     */
+    void handleSettingsTabRefresh();
+
+    /**
+     * Gets the unlocalized settings tab name.
+     *
+     * @return the unlocalized settings tab name
+     */
+    String getTabKey();
+
+    /**
+     * Gets the JPanel which implements the tab.
+     *
+     * @return the JPanel which implements the tab
+     */
+    JPanel getTabPanel();
+
+} /* End interface GUISettingsTabInterface */
