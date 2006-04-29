@@ -160,12 +160,13 @@ import org.omg.uml.modelmanagement.UmlPackage;
 
 /**
  * Model Facade implementation.
- * 
+ *
  * TODO: Almost any of these methods can return an InvalidObjectException if
  * they are used with an object which has been deleted. Depending on the order
  * of deletion of a set of objects and the relative priority of different
  * threads, this could occur when trying to update a diagram while handling
- * another MDR event.  All methods really need to be protected by try/catch blocks,
+ * another MDR event.
+ * All methods really need to be protected by try/catch blocks,
  * not just the ones which have been demonstrated to cause problems. - tfm
  */
 class FacadeMDRImpl implements Facade {
@@ -188,7 +189,7 @@ class FacadeMDRImpl implements Facade {
      *            The model implementation
      */
     public FacadeMDRImpl(MDRModelImplementation impl) {
-        this.implementation = impl;
+        implementation = impl;
     }
 
     /**
@@ -1244,7 +1245,8 @@ class FacadeMDRImpl implements Facade {
     public boolean isPackage(Object handle) {
         if (handle instanceof ModelElement) {
             ModelElement element = (ModelElement) handle;
-            return VisibilityKindEnum.VK_PACKAGE.equals(element.getVisibility());
+            return VisibilityKindEnum.VK_PACKAGE.equals(
+                    element.getVisibility());
         }
         return illegalArgumentBoolean(handle);
     }
@@ -1998,13 +2000,13 @@ class FacadeMDRImpl implements Facade {
             throw new InvalidElementException(e);
         }
     }
-    
-    /*
+
+    /**
      * @see org.argouml.model.Facade#getImportedElement(java.lang.Object)
      */
     public Object getImportedElement(Object elementImport) {
         if (!(elementImport instanceof ElementImport)) {
-            return illegalArgumentCollection("This is not an ElementImport: " 
+            return illegalArgumentCollection("This is not an ElementImport: "
                     + elementImport);
         }
         return ((ElementImport) elementImport).getImportedElement();
@@ -2434,6 +2436,8 @@ class FacadeMDRImpl implements Facade {
      * Implementation queries the metamodel to find all attributes/references
      * for the metatype of the given object and uses that set of names
      * to query the object using the JMI reflective interface.
+     *
+     * @return A List with {@link RefBaseObject}s.
      */
     private List getModelElementAssociated(Object handle,
             boolean contentsOnly) {
@@ -2467,6 +2471,8 @@ class FacadeMDRImpl implements Facade {
     /**
      * Helper function to add the value(s) of an Attribute or Reference to the
      * given collection.
+     *
+     * @param returns A Collection that {@link RefBaseObject}s are added to.
      */
     private void getReferenceOrAttribute(RefFeatured parent, Object element,
             Collection returns, boolean contentsOnly) {
@@ -3192,8 +3198,8 @@ class FacadeMDRImpl implements Facade {
             if (isAComponent(handle)) {
                 Collection residents = new ArrayList();
                 for (Iterator it =
-                    ((Component) handle).getResidentElement().iterator();
-                it.hasNext();) {
+                        ((Component) handle).getResidentElement().iterator();
+                    it.hasNext();) {
                     residents.add(
                             ((ElementResidence) it.next()).getResident());
                 }
@@ -3978,7 +3984,8 @@ class FacadeMDRImpl implements Facade {
             return Integer.valueOf(((OrderingKind) handle).toString());
         }
         if (handle instanceof ParameterDirectionKind) {
-            return Integer.valueOf(((ParameterDirectionKind) handle).toString());
+            return Integer.valueOf(
+                    ((ParameterDirectionKind) handle).toString());
         }
         if (handle instanceof VisibilityKind) {
             return Integer.valueOf(((VisibilityKind) handle).toString());
@@ -4049,8 +4056,8 @@ class FacadeMDRImpl implements Facade {
         if (base instanceof RefBaseObject) {
             String mofId = ((RefBaseObject) base).refMofId();
             // Look for an existing reference matching our MofID
-            XmiReference ref = ((XmiReference) implementation.getObjectToId()
-                    .get(mofId));
+            XmiReference ref =
+                ((XmiReference) implementation.getObjectToId().get(mofId));
             if (ref == null) {
                 return mofId;
             } else {

@@ -36,8 +36,8 @@ import org.omg.uml.modelmanagement.Subsystem;
 import org.omg.uml.modelmanagement.UmlPackage;
 
 /**
- * The ModelManagementFactory.
- * <p>
+ * The ModelManagementFactory.<p>
+ *
  * @since ARGO0.19.5
  * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
@@ -50,8 +50,8 @@ public final class ModelManagementFactoryMDRImpl extends
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.
-            getLogger(ModelManagementFactoryMDRImpl.class);
+    private static final Logger LOG =
+        Logger.getLogger(ModelManagementFactoryMDRImpl.class);
 
     /**
      * The model.
@@ -67,10 +67,10 @@ public final class ModelManagementFactoryMDRImpl extends
      * The model implementation.
      */
     private ModelImplementation nsmodel;
-  
+
     /**
      * Constructor.
-     * 
+     *
      * @param mi
      *            The MDRModelImplementation.
      */
@@ -111,13 +111,13 @@ public final class ModelManagementFactoryMDRImpl extends
      * @see org.argouml.model.ModelManagementFactory#createElementImport()
      */
     public Object createElementImport() {
-        ElementImport myElementImport = modelManagementPackage.
-                getElementImport().createElementImport();
+        ElementImport myElementImport =
+            modelManagementPackage.getElementImport().createElementImport();
         super.initialize(myElementImport);
         return myElementImport;
     }
-    
-    /*
+
+    /**
      * @see org.argouml.model.ModelManagementFactory#buildElementImport(
      * java.lang.Object, java.lang.Object)
      */
@@ -137,8 +137,8 @@ public final class ModelManagementFactoryMDRImpl extends
      * @see org.argouml.model.ModelManagementFactory#createPackage()
      */
     public Object createPackage() {
-        UmlPackage myUmlPackage = modelManagementPackage.getUmlPackage().
-                createUmlPackage();
+        UmlPackage myUmlPackage =
+            modelManagementPackage.getUmlPackage().createUmlPackage();
         super.initialize(myUmlPackage);
         return myUmlPackage;
     }
@@ -159,8 +159,8 @@ public final class ModelManagementFactoryMDRImpl extends
      * @see org.argouml.model.ModelManagementFactory#createSubsystem()
      */
     public Object createSubsystem() {
-        Subsystem mySubsystem = modelManagementPackage.getSubsystem().
-                createSubsystem();
+        Subsystem mySubsystem =
+            modelManagementPackage.getSubsystem().createSubsystem();
         super.initialize(mySubsystem);
         return mySubsystem;
     }
@@ -185,7 +185,7 @@ public final class ModelManagementFactoryMDRImpl extends
 
     /**
      * Used by the copy functions. Do not call this function directly.
-     * 
+     *
      * @param source
      *            The source package.
      * @param target

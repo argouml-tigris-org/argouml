@@ -139,8 +139,8 @@ import org.omg.uml.modelmanagement.Subsystem;
 import org.omg.uml.modelmanagement.UmlPackage;
 
 /**
- * Root factory for UML model element instance creation.
- * <p>
+ * Root factory for UML model element instance creation.<p>
+ *
  * @since ARGO0.19.5
  * @author Ludovic Ma&icirc;tre
  * based on NSUML implementation by:
@@ -152,15 +152,15 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     /**
      * The logger.
      */
-    private Logger LOG = Logger.getLogger(UmlFactoryMDRImpl.class);
-        
+    private static final Logger LOG = Logger.getLogger(UmlFactoryMDRImpl.class);
+
     /**
      * The model implementation.
      */
     private MDRModelImplementation nsmodel;
 
     /**
-     * The meta types factory
+     * The meta types factory.
      */
     private MetaTypes metaTypes;
 
@@ -169,14 +169,14 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * builds this from the data in the VALID_CONNECTIONS array
      */
     private Map validConnectionMap = new HashMap();
- 
+
     /**
      * The instance that we are deleting.
      */
     private Set elementsToBeDeleted = new HashSet();
-    
+
     /**
-     * Ordered list of elements to be deleted
+     * Ordered list of elements to be deleted.
      */
     private List elementsInDeletionOrder = new ArrayList();
 
@@ -185,12 +185,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * the delete method.
      */
     private Object top;
-    
+
     /**
-     * The mutex for this class
+     * The mutex for this class.
      */
     private Object lock = new Byte[0];
-    
+
     /**
      * An array of valid connections, the combination of connecting class and
      * node classes must exist as a row in this list to be considered valid.
@@ -206,8 +206,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * NOTE: This encodes not only what is legal in UML, but also what ArgoUML
      * knows how to create, so not all legal connections are included. Probably
      * should be split into two pieces: 1) legal UML (here) and 2) supported (in
-     * ArgoUML application someplace) - tfm
-     * <p>
+     * ArgoUML application someplace) - tfm<p>
+     *
      * Most of these are subtypes of Relationship which includes Association,
      * Dependency, Flow, Generalization, Extend, and Include. Dependency
      * includes Binding, Abstraction, Usage, and Permission. AssociationRole and
@@ -276,7 +276,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * Don't allow external instantiation.
-     * 
+     *
      * @param implementation
      *            To get other helpers and factories.
      */
@@ -343,23 +343,25 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         Object connection = null;
 
         if (elementType == metaTypes.getAssociation()) {
-            connection = getCore().buildAssociation((Classifier) fromElement,
+            connection =
+                getCore().buildAssociation((Classifier) fromElement,
                     (AggregationKind) fromStyle, (Classifier) toElement,
                     (AggregationKind) toStyle, (Boolean) unidirectional);
         } else if (elementType == metaTypes.getAssociationEnd()) {
             if (fromElement instanceof UmlAssociation) {
-                connection = getCore().buildAssociationEnd(toElement,
-                        fromElement);
+                connection =
+                    getCore().buildAssociationEnd(toElement, fromElement);
             } else if (fromElement instanceof Classifier) {
-                connection = getCore().buildAssociationEnd(fromElement,
-                        toElement);
+                connection =
+                    getCore().buildAssociationEnd(fromElement, toElement);
             }
         } else if (elementType
                 == metaTypes.getAssociationClass()) {
-            connection = getCore().
-                    buildAssociationClass(fromElement, toElement);
+            connection =
+                getCore().buildAssociationClass(fromElement, toElement);
         } else if (elementType == metaTypes.getAssociationRole()) {
-            connection = getCollaborations().buildAssociationRole(fromElement,
+            connection =
+                getCollaborations().buildAssociationRole(fromElement,
                     fromStyle, toElement, toStyle, (Boolean) unidirectional);
         } else if (elementType == metaTypes.getGeneralization()) {
             connection = getCore().buildGeneralization(fromElement, toElement);
@@ -372,8 +374,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == metaTypes.getDependency()) {
             connection = getCore().buildDependency(fromElement, toElement);
         } else if (elementType == metaTypes.getAbstraction()) {
-            connection = getCore().buildRealization(fromElement, toElement,
-                        namespace);
+            connection =
+                getCore().buildRealization(fromElement, toElement, namespace);
         } else if (elementType == metaTypes.getLink()) {
             connection = getCommonBehavior().buildLink(fromElement, toElement);
         } else if (elementType == metaTypes.getExtend()) {
@@ -383,8 +385,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == metaTypes.getInclude()) {
             connection = getUseCases().buildInclude(fromElement, toElement);
         } else if (elementType == metaTypes.getTransition()) {
-            connection = getStateMachines().buildTransition(fromElement,
-                    toElement);
+            connection =
+                getStateMachines().buildTransition(fromElement, toElement);
         }
 
         if (connection == null) {
@@ -402,8 +404,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * elements. If a diagram contains elements of another type then it is the
      * responsibility of the diagram manage those items and not call this
      * method. It also only works for UML model elements that are represented in
-     * diagrams by a node.
-     * <p>
+     * diagrams by a node.<p>
      *
      * The parameter "elementType" stands for the type of model element to
      * build.
@@ -428,7 +429,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == metaTypes.getModel()) {
             return getModelManagement().createModel();
         } else if (elementType == metaTypes.getInstance()) {
-            throw new IllegalArgumentException("Attempt to instantiate abstract type");
+            throw new IllegalArgumentException(
+                    "Attempt to instantiate abstract type");
         } else if (elementType == metaTypes.getSubsystem()) {
             return getModelManagement().createSubsystem();
         } else if (elementType == metaTypes.getCallState()) {
@@ -454,7 +456,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == metaTypes.getSynchState()) {
             return getStateMachines().createSynchState();
         } else if (elementType == metaTypes.getState()) {
-            throw new IllegalArgumentException("Attempt to instantiate abstract type");
+            throw new IllegalArgumentException(
+                    "Attempt to instantiate abstract type");
         } else if (elementType == nsmodel.getMetaTypes().getSimpleState()) {
             return getStateMachines().createSimpleState();
         } else if (elementType == metaTypes.getClassifierRole()) {
@@ -472,7 +475,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == metaTypes.getComment()) {
             return getCore().createComment();
         } else if (elementType == metaTypes.getNamespace()) {
-            throw new IllegalArgumentException("Attempt to instantiate abstract type");
+            throw new IllegalArgumentException(
+                    "Attempt to instantiate abstract type");
         } else if (elementType == metaTypes.getOperation()) {
             return getCore().createOperation();
         } else if (elementType == metaTypes.getEnumeration()) {
@@ -598,35 +602,31 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
     /*
-     * Delete a model element.  Implements 'cascading delete' to make sure 
-     * model is still valid after element has been deleted.
-     * <p>
+     * Delete a model element.  Implements 'cascading delete' to make sure
+     * model is still valid after element has been deleted.<p>
      *
      * The actual deletion is delegated to delete methods in the rest of the
      * factories. For example: a method deleteClass exists on CoreHelper. Delete
      * methods as deleteClass should only do those extra actions that are
      * necessary for the deletion of the modelelement itself. I.e. deleteClass
-     * should only take care of things specific to UmlClass.
-     * <p>
+     * should only take care of things specific to UmlClass.<p>
      *
      * The delete methods in the UML Factories should not be called directly
      * throughout the code! Calls should always refer to this method and never
      * call the deleteXXX method on XXXFactory directly. The reason that it is
      * possible to call the deleteXXX methods directly is a pure implementation
-     * detail.
-     * <p>
+     * detail.<p>
      *
      * The implementation of this method uses a quite complicated if/then/else
      * tree. This is done to provide optimal performance and full compliance to
-     * the UML 1.4 metamodel. The last remark refers to the fact that the 
-     * UML 1.4 model uses multiple inheritance in several places. 
+     * the UML 1.4 metamodel. The last remark refers to the fact that the
+     * UML 1.4 model uses multiple inheritance in several places.
      * This has to be taken into account.<p>
-     * 
-     * TODO: The requirements of the metamodel could probably be better 
+     *
+     * TODO: The requirements of the metamodel could probably be better
      * determined by reflection on the metamodel.  Then each association
      * that a deleted element participates in could be reviewed to make sure
-     * that it meets the requirements and, if not, be deleted. - tfm
-     * <p>
+     * that it meets the requirements and, if not, be deleted. - tfm<p>
      *
      * Extensions and its children are not taken into account here. They do not
      * require extra cleanup actions. Not in the form of a call to the remove
@@ -657,8 +657,9 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
 
         if (LOG.isInfoEnabled()) {
-            if (top == elem)
+            if (top == elem) {
                 LOG.debug("Set top for cascade delete to " + elem);
+            }
             LOG.debug("Deleting " + elem);
         }
 
@@ -666,8 +667,10 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // to collect a set of elements to delete - then delete them all
         nsmodel.getRepository().beginTrans(true);
         try {
-            // TODO: Encountering a deleted object during any part of this traversal while
-            // abort the rest of the traversal.  We probably should do the whole traversal
+            // TODO: Encountering a deleted object during
+            // any part of this traversal while
+            // abort the rest of the traversal.
+            // We probably should do the whole traversal
             // in a single MDR transaction.
             if (elem instanceof Element) {
                 getCore().deleteElement(elem);
@@ -746,10 +749,10 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     // }
                 } else if (elem instanceof PresentationElement) {
                     getCore().deletePresentationElement(elem);
-                } 
+                }
             } else if (elem instanceof TemplateParameter) {
                 getCore().deleteTemplateParameter(elem);
-            } 
+            }
             // TODO: Add TemplateArgument
 
             if (elem instanceof Partition) {
@@ -776,7 +779,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
 
 
-        
+
         synchronized (lock) {
             // Elements which will be deleted when their container is deleted
             // don't get added to the list of elements to be deleted
@@ -806,9 +809,9 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 top = null;
                 elementsInDeletionOrder.clear();
                 if (!elementsToBeDeleted.isEmpty()) {
-                    LOG.debug("**Skipped deleting (a 2nd time?) " +
-                                +  elementsToBeDeleted.size()
-                                + " elements");
+                    LOG.debug("**Skipped deleting (a 2nd time?) "
+                            + elementsToBeDeleted.size()
+                            + " elements");
                     elementsToBeDeleted.clear();
                 }
             }
@@ -825,13 +828,13 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         try {
             // We don't care about the value - just want to see if it throws
-            ((RefObject)o).refImmediateComposite();
+            ((RefObject) o).refImmediateComposite();
             return false;
         } catch (InvalidObjectException e) {
             return true;
         }
     }
-  
+
     /**
      * Delete a Feature.
      *
@@ -987,7 +990,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             getCommonBehavior().deleteComponentInstance(elem);
         } else if (elem instanceof NodeInstance) {
             getCommonBehavior().deleteNodeInstance(elem);
-        } else if (elem instanceof 
+        } else if (elem
+                instanceof
                 org.omg.uml.behavioralelements.commonbehavior.Object) {
             getCommonBehavior().deleteObject(elem);
             if (elem instanceof LinkObject) {
@@ -1002,7 +1006,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
     /**
-     * Delete a StateVertex
+     * Delete a StateVertex.
      *
      * @param elem the StateVertex to be deleted
      */

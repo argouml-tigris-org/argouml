@@ -88,8 +88,11 @@ import org.omg.uml.UmlPackage;
  * The handle to find all helper and factories.
  */
 public class MDRModelImplementation implements ModelImplementation {
-    
-    private static final Logger LOG = 
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
         Logger.getLogger(MDRModelImplementation.class);
 
     private Facade theFacade;
@@ -141,34 +144,33 @@ public class MDRModelImplementation implements ModelImplementation {
     private CoreFactory theCoreFactory;
 
     private KindsMDRImpl theKindsObject;
-    
+
     private MDRepository repository;
 
-    /*
+    /**
      * Package containing user UML model.
-     * Package visibility because it's shared across the implementation.
      */
-    UmlPackage umlPackage;
+    private UmlPackage umlPackage;
 
-    /*
-     * MOF Package containing UML metamodel (M2)
+    /**
+     * MOF Package containing UML metamodel (M2).
      */
     private MofPackage mofPackage;
-    
-    /*
+
+    /**
      * Top level MOF extent.
      */
     private ModelPackage mofExtent;
-    
-    /*
+
+    /**
      * Top level model element containing profile. This state is shared between
      * the XMI reader and writer. Elements which are read as part of a profile
      * (as indicated by the calling application) will be treated specially and
      * will not be written back out with the rest of the model data.
      */
     private RefObject profileModel;
-    
-    /*
+
+    /**
      * Map of model elements to xmi.ids used to keep xmi.ids stable
      * across read/write cycles.
      */
@@ -183,14 +185,23 @@ public class MDRModelImplementation implements ModelImplementation {
         return umlPackage;
     }
 
+    /**
+     * @return MOF Package containing UML metamodel (M2).
+     */
     MofPackage getMofPackage() {
         return mofPackage;
     }
-    
+
+    /**
+     * @return Top level MOF extent.
+     */
     ModelPackage getModelPackage() {
         return mofExtent;
     }
-    
+
+    /**
+     * @return The MDRepository.
+     */
     MDRepository getRepository() {
         return repository;
     }
@@ -199,12 +210,14 @@ public class MDRModelImplementation implements ModelImplementation {
 
     static final String MODEL_EXTENT_NAME = "model extent";
 
-    // UML 1.4 metamodel definition in XMI format
+    /**
+     * UML 1.4 metamodel definition in XMI format.
+     */
     static final String METAMODEL_URL = "mof/01-02-15_Diff.xml";
 
     /**
      * Constructor.
-     * 
+     *
      * @throws CreationFailedException If the creation of the Extend fail
      * @throws MalformedXMIException If the XMI is bad formed
      * @throws IOException If there is a problem opening a file
@@ -212,7 +225,8 @@ public class MDRModelImplementation implements ModelImplementation {
     public MDRModelImplementation() throws CreationFailedException,
             IOException, MalformedXMIException {
 
-        String storageImplementation = System.getProperty(
+        String storageImplementation =
+            System.getProperty(
                 "org.netbeans.mdr.storagemodel.StorageFactoryClassName",
                 "org.netbeans.mdr.persistence.memoryimpl.StorageFactoryImpl");
         System.setProperty(
@@ -221,7 +235,7 @@ public class MDRModelImplementation implements ModelImplementation {
 
         /*
          * Set the storage id for our repository so that MofIds will be unique
-         * (they are composed as <storageId>:<serialNumber>). NOTE: The storage
+         * (they are composed as "storageId":"serialNumber"). NOTE: The storage
          * manager only looks for a few property names such as the
          * StorageFactoryClassName. Everything else needs to be prefixed with
          * "MDRStorageProperty." which gets deleted from the property name
@@ -231,7 +245,7 @@ public class MDRModelImplementation implements ModelImplementation {
         System.setProperty(
                 "MDRStorageProperty.org.netbeans.mdr.persistence.memoryimpl.id",
                 UUIDManager.getInstance().getNewUUID());
-        
+
         // Connect to the repository
         repository = MDRManager.getDefault().getDefaultRepository();
 
@@ -241,15 +255,16 @@ public class MDRModelImplementation implements ModelImplementation {
         if (mofExtent == null) {
             mofExtent = (ModelPackage) repository.createExtent(MOF_EXTENT_NAME);
             XMIReader reader = XMIReaderFactory.getDefault().createXMIReader();
-            String metafacade = System.getProperty("argouml.model.mdr.facade",
-                    METAMODEL_URL);
+            String metafacade =
+                System.getProperty("argouml.model.mdr.facade", METAMODEL_URL);
             URL resource = getClass().getResource(metafacade);
             reader.read(resource.toString(), mofExtent);
         }
 
         mofPackage = null;
-        for (Iterator iter = mofExtent.getMofPackage().refAllOfClass().
-                iterator(); iter.hasNext();) {
+        for (Iterator iter =
+                mofExtent.getMofPackage().refAllOfClass().iterator();
+            iter.hasNext();) {
             MofPackage pkg = (MofPackage) iter.next();
             if ("UML".equals(pkg.getName())) {
                 mofPackage = pkg;
@@ -260,8 +275,9 @@ public class MDRModelImplementation implements ModelImplementation {
         // Create an extent for the uml data
         umlPackage = (UmlPackage) repository.getExtent(MODEL_EXTENT_NAME);
         if (umlPackage == null) {
-            umlPackage = (UmlPackage) repository.createExtent(MODEL_EXTENT_NAME,
-                    mofPackage);
+            umlPackage =
+                (UmlPackage) repository.createExtent(
+                        MODEL_EXTENT_NAME, mofPackage);
         }
 
         if (umlPackage == null) {
@@ -281,11 +297,11 @@ public class MDRModelImplementation implements ModelImplementation {
 
         theKindsObject = new KindsMDRImpl(this);
         theModelManagementFactory = new ModelManagementFactoryMDRImpl(this);
-        theExtensionMechanismsHelper = new ExtensionMechanismsHelperMDRImpl(
-                this);
-        theExtensionMechanismsFactory = new ExtensionMechanismsFactoryMDRImpl(
-                this);
-        
+        theExtensionMechanismsHelper =
+            new ExtensionMechanismsHelperMDRImpl(this);
+        theExtensionMechanismsFactory =
+            new ExtensionMechanismsFactoryMDRImpl(this);
+
         // Finally all the remaining factories & helpers
         theFacade = new FacadeMDRImpl(this);
         theCopyHelper = new CopyHelper(this);
@@ -309,7 +325,7 @@ public class MDRModelImplementation implements ModelImplementation {
 
     /**
      * Shutdown repository in a graceful fashion
-     * (currently unused)
+     * (currently unused).
      */
     public void shutdown() {
         theModelEventPump.flushModelEvents();
@@ -381,9 +397,7 @@ public class MDRModelImplementation implements ModelImplementation {
     }
 
     /**
-     * Get the CopyHelper
-     * 
-     * @return The copy helper.
+     * @see org.argouml.model.ModelImplementation#getCopyHelper()
      */
     public org.argouml.model.CopyHelper getCopyHelper() {
         return theCopyHelper;
@@ -561,7 +575,7 @@ public class MDRModelImplementation implements ModelImplementation {
     /**
      * @see org.argouml.model.ModelImplementation#getXmiWriter(Object, Writer)
      */
-    public XmiWriter getXmiWriter(Object model, Writer writer) 
+    public XmiWriter getXmiWriter(Object model, Writer writer)
         throws UmlException {
         return new XmiWriterMDRImpl(this, model, writer);
     }
@@ -604,8 +618,8 @@ public class MDRModelImplementation implements ModelImplementation {
     }
 
     /**
-     * Return the Object to ID Map
-     * 
+     * Return the Object to ID Map.
+     *
      * @return the map
      */
     protected Map getObjectToId() {

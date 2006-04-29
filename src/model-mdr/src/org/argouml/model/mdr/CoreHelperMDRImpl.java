@@ -394,8 +394,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
         Collection result = new ArrayList();
         result.addAll(modelImpl.getFacade().getStructuralFeatures(classifier));
 
-        Collection generalizations = Model.getFacade().getGeneralizations(
-                classifier);
+        Collection generalizations =
+            Model.getFacade().getGeneralizations(classifier);
         Iterator genIter = generalizations.iterator();
         while (genIter.hasNext()) {
             Object parent = Model.getFacade().getParent(genIter.next());
@@ -415,8 +415,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
         Collection result = new ArrayList();
         result.addAll(modelImpl.getFacade().getOperations(classifier));
 
-        Collection generalizations = Model.getFacade().getGeneralizations(
-                classifier);
+        Collection generalizations =
+            Model.getFacade().getGeneralizations(classifier);
         Iterator genIter = generalizations.iterator();
         while (genIter.hasNext()) {
             Object parent = Model.getFacade().getParent(genIter.next());
@@ -663,7 +663,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public Object getGeneralization(Object achild, Object aparent) {
-        if (!(achild instanceof GeneralizableElement) 
+        if (!(achild instanceof GeneralizableElement)
                 || !(aparent instanceof GeneralizableElement)) {
             throw new IllegalArgumentException();
         }
@@ -1037,7 +1037,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
         try {
             if (relationship instanceof Link) {
-                Iterator it = modelImpl.getFacade()
+                Iterator it =
+                    modelImpl.getFacade()
                         .getConnections(relationship).iterator();
                 if (it.hasNext()) {
                     return modelImpl.getFacade().getInstance(it.next());
@@ -1245,7 +1246,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                             == getFirstSharedNamespace(modelElement, ns)) {
                 return false;
             }
-            if (ns instanceof Interface 
+            if (ns instanceof Interface
                     || ns instanceof Actor
                     || ns instanceof DataType
                     || ns instanceof DataValue
@@ -1255,11 +1256,11 @@ public class CoreHelperMDRImpl implements CoreHelper {
                     || ns instanceof UseCaseInstance
                     || ns instanceof ClassifierInState) {
                 return false;
-            } else if (ns instanceof UseCase 
+            } else if (ns instanceof UseCase
                     && modelElement instanceof Classifier) {
                 /*
                  * NOTE: Although WFR #3 in section 2.11.3.5 UseCase of the
-                 * UML 1.4 spec says "A UseCase cannot contain any 
+                 * UML 1.4 spec says "A UseCase cannot contain any
                  * Classifiers," the OCL is actually self.contents->isEmpty
                  * which would seem to imply it can't contain any elements
                  * - tfm - 20060416
@@ -1271,12 +1272,14 @@ public class CoreHelperMDRImpl implements CoreHelper {
             } else if (ns instanceof ComponentInstance) {
                 return (modelElement instanceof ComponentInstance
                         && modelElement != ns);
-            } else if (ns instanceof 
+            } else if (ns
+                    instanceof
                     org.omg.uml.behavioralelements.commonbehavior.Object) {
                 // Made following changes from OCL in UML 1.4 section 2.9.3.16:
                 //   CollaborationInstance -> CollaborationInstanceSet
                 //   Stimuli -> Stimulus
-                if (!(modelElement instanceof 
+                if (!(modelElement
+                        instanceof
                         org.omg.uml.behavioralelements.commonbehavior.Object
                         || modelElement instanceof DataValue
                         || modelElement instanceof Link
@@ -1288,7 +1291,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
             } else if (ns instanceof SubsystemInstance) {
                 // Made following change from OCL in UML 1.4 section 2.9.3.22:
                 //   CollaborationInstance -> CollaborationInstanceSet
-                if (!(modelElement instanceof 
+                if (!(modelElement
+                        instanceof
                         org.omg.uml.behavioralelements.commonbehavior.Object
                         || modelElement instanceof DataValue
                         || modelElement instanceof Link
@@ -1322,7 +1326,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                  * English text of WFR #4 of Section 2.10.3.4 in the UML 1.4
                  * spec is more restrictive - "[4] A Collaboration may only
                  * contain ClassifierRoles and AssociationRoles, the
-                 * Generalizations and the Constraints between them, and 
+                 * Generalizations and the Constraints between them, and
                  * Actions used in the Collaboration’s Interactions."
                  */
                 if (!(modelElement instanceof ClassifierRole
@@ -1364,7 +1368,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                         || modelElement instanceof Constraint
                         || modelElement instanceof Dependency
                         || modelElement instanceof Collaboration
-                        // TODO: StateMachine was added recently, 
+                        // TODO: StateMachine was added recently,
                         // but I don't find it in the spec
                         || modelElement instanceof StateMachine
                         || modelElement instanceof DataType
@@ -1410,7 +1414,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
     /**
      * The base of a AssociationRole or ClassifierRole should be contained in
      * the given Namespace. If no base is set (yet), then allow any namespace.
-     *  
+     *
      * @param collab the given collaboration
      * @param ns the given candidate namespace
      * @return true if the given namespace may contain the collaboration
@@ -1497,22 +1501,23 @@ public class CoreHelperMDRImpl implements CoreHelper {
         while (it.hasNext()) {
             Generalization gen2 = (Generalization) it.next();
             /* TODO: Fix the following problem, as described in issue 3772:
-             * Both implementations for valid namespace check whether 
-             * the parents are owned by the namespace. This is invalid. 
-             * The constraint 
-             * [4] The parent must be included in the Namespace 
+             * Both implementations for valid namespace check whether
+             * the parents are owned by the namespace. This is invalid.
+             * The constraint
+             * [4] The parent must be included in the Namespace
              * of the GeneralizableElement.self.generalization->forAll(g |
              * self.namespace.allContents->includes(g.parent) )
-             * only asks that they are included, 
-             * that is there can also be an elementimport 
-             * at work somewhere. (same as in java - you can also use 
-             * an import and then generalize, without the classes being 
-             * required to be located in the same package). 
+             * only asks that they are included,
+             * that is there can also be an elementimport
+             * at work somewhere. (same as in java - you can also use
+             * an import and then generalize, without the classes being
+             * required to be located in the same package).
              * Symptom of this problem:
              * Load the project attached to issue 3772. Select the "class1".
-             * The UMLModelElementNamespaceComboBoxModel gives 
-             * a warning. Then add an import permission. 
-             * The warning should not be given anymore. */
+             * The UMLModelElementNamespaceComboBoxModel gives
+             * a warning. Then add an import permission.
+             * The warning should not be given anymore.
+             */
             // This will do it:
 //            if(!modelImpl.getModelManagementHelper().getAllContents(ns)
 //                    .contains(gen2.getParent())) {
@@ -1794,7 +1799,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
         if (handle instanceof Namespace && value instanceof ModelElement) {
             ModelElement elem = (ModelElement) value;
             if (!(elem.getNamespace().equals(handle))) {
-                throw new IllegalStateException("ModelElement isn't in Namespace");
+                throw new IllegalStateException(
+                        "ModelElement isn't in Namespace");
             }
             elem.setNamespace(null);
             return;
@@ -2990,12 +2996,12 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public void setSpecification(Object operation, String specification) {
         if (operation instanceof Operation) {
-            ((Operation) operation).setSpecification( specification);
+            ((Operation) operation).setSpecification(specification);
             return;
         }
         throw new IllegalArgumentException("operation: " + operation);
     }
-    
+
     /**
      * @see org.argouml.model.CoreHelper#setSpecification(java.lang.Object, java.lang.Object)
      */
@@ -3230,8 +3236,10 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public Collection getAllMetatypeNames() {
         List names = new ArrayList();
-        for (Iterator iter = modelImpl.getModelPackage().getMofClass()
-                .refAllOfClass().iterator(); iter.hasNext();) {
+        for (Iterator iter =
+                modelImpl.getModelPackage().getMofClass().refAllOfClass()
+                    .iterator();
+            iter.hasNext();) {
             String name =
                 ((javax.jmi.model.ModelElement) iter.next()).getName();
             if (names.contains(name)) {

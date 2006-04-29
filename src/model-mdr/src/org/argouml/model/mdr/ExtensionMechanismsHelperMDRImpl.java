@@ -61,7 +61,8 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     /**
      * The logger.
      */
-    private static final Logger LOG = Logger.getLogger(ExtensionMechanismsHelperMDRImpl.class);
+    private static final Logger LOG =
+        Logger.getLogger(ExtensionMechanismsHelperMDRImpl.class);
 
     /**
      * The model implementation.
@@ -256,6 +257,9 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
 
     /**
      * Return object representing metatype of given object.
+     *
+     * @return The object representing the metatype.
+     * @param clazz The object.
      */
     private MofClass getMofClassObject(Class clazz) {
         String className = clazz.getName();
@@ -282,6 +286,9 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
 
     /**
      * Convert a collection of elements to a collection of names.
+     *
+     * @param elements The elements.
+     * @return A Collection with {@link String}s.
      */
     private Collection getNames(Collection elements) {
         Collection names = new ArrayList();
@@ -505,7 +512,8 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
             // TODO: We currently only support a single dataValue
             Collection dataValues = tv.getDataValue();
             if (dataValues.size() > 1) {
-                LOG.error("Encountered TaggedValue with multiple dataValues " + handle);
+                LOG.error("Encountered TaggedValue with multiple dataValues "
+                        + handle);
                 LOG.error("DataValues being cleared = " + dataValues.toArray());
             }
             tv.getDataValue().clear();
@@ -532,7 +540,8 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     public void removeTaggedValue(Object handle, Object taggedValue) {
         if (handle instanceof ModelElement
                 && taggedValue instanceof TaggedValue
-                && ((ModelElement) handle).getTaggedValue().contains(taggedValue)) {
+                && ((ModelElement) handle).getTaggedValue()
+                    .contains(taggedValue)) {
             nsmodel.getUmlFactory().delete(taggedValue);
             return;
         }

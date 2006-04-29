@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,8 +47,8 @@ import org.omg.uml.foundation.datatypes.BooleanExpression;
 import org.omg.uml.modelmanagement.Subsystem;
 
 /**
- * UseCase Helper for MDR ModelImplementation.
- * <p>
+ * UseCase Helper for MDR ModelImplementation.<p>
+ *
  * @since ARGO0.19.5
  * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
@@ -63,7 +63,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
 
     /**
      * Don't allow instantiation.
-     * 
+     *
      * @param implementation
      *            To get other helpers and factories.
      */
@@ -163,7 +163,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
      * @see org.argouml.model.UseCasesHelper#getExtends(java.lang.Object, java.lang.Object)
      */
     public Object getExtends(Object abase, Object anextension) {
-        if (!(abase instanceof UseCase) 
+        if (!(abase instanceof UseCase)
                 || !(anextension instanceof UseCase)) {
             throw new IllegalArgumentException();
         }
@@ -183,8 +183,8 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
      * @see org.argouml.model.UseCasesHelper#getIncludedUseCases(java.lang.Object)
      */
     public Collection getIncludedUseCases(Object ausecase) {
-        if(!(ausecase instanceof UseCase)) {
-            throw new IllegalArgumentException();            
+        if (!(ausecase instanceof UseCase)) {
+            throw new IllegalArgumentException();
         }
         UseCase usecase = (UseCase) ausecase;
         Iterator it = usecase.getInclude().iterator();
@@ -201,7 +201,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
      * @see org.argouml.model.UseCasesHelper#getIncludes(java.lang.Object, java.lang.Object)
      */
     public Object getIncludes(Object abase, Object aninclusion) {
-        if (!(abase instanceof UseCase) 
+        if (!(abase instanceof UseCase)
                 || !(aninclusion instanceof UseCase)) {
             throw new IllegalArgumentException();
         }
@@ -244,7 +244,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
             throw new IllegalArgumentException(
                     "The base cannot be null");
         }
-        
+
         if (!(base instanceof UseCase)) {
             throw new IllegalArgumentException(
                     "The base cannot be a " + base.getClass().getName());
@@ -264,7 +264,8 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
                 ExtensionPoint point = (ExtensionPoint) it.next();
                 removeExtend(point, theExtend);
             }
-            ExtensionPoint point = (ExtensionPoint) nsmodel.
+            ExtensionPoint point =
+                (ExtensionPoint) nsmodel.
                     getUseCasesFactory().buildExtensionPoint(base);
             theExtend.setBase((UseCase) base);
             addExtensionPoint(theExtend, point);
@@ -421,7 +422,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
             throw new IllegalArgumentException("A use case must be supplied");
         }
 
-        if (handle instanceof Extend 
+        if (handle instanceof Extend
                 && (useCase instanceof UseCase)) {
             try {
                 ((Extend) handle).setExtension((UseCase) useCase);
@@ -447,13 +448,15 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
                 Vector extPts = new Vector();
                 extPts.addAll(eps);
                 Iterator toRemove = extPts.iterator();
-                while (toRemove.hasNext())
+                while (toRemove.hasNext()) {
                     removeExtensionPoint(handle, toRemove.next());
+                }
             }
             if (!extensionPoints.isEmpty()) {
                 Iterator toAdd = extensionPoints.iterator();
-                while (toAdd.hasNext())
+                while (toAdd.hasNext()) {
                     addExtensionPoint(handle, toAdd.next());
+                }
             }
             return;
         }
@@ -471,13 +474,15 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
                 Vector in = new Vector();
                 in.addAll(inc);
                 Iterator toRemove = in.iterator();
-                while (toRemove.hasNext())
+                while (toRemove.hasNext()) {
                     removeInclude(handle, toRemove.next());
+                }
             }
             if (!includes.isEmpty()) {
                 Iterator toAdd = includes.iterator();
-                while (toAdd.hasNext())
+                while (toAdd.hasNext()) {
                     addInclude(handle, toAdd.next());
+                }
             }
             return;
         }
