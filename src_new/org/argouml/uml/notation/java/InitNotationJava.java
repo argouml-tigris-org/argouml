@@ -49,9 +49,6 @@ public class InitNotationJava {
                     Argo.lookupIconResource("JavaNotation"));
 
         npf.addNotationProvider(
-                NotationProviderFactory2.TYPE_TRANSITION,
-                name, TransitionNotationJava.class);
-        npf.addNotationProvider(
                 NotationProviderFactory2.TYPE_NAME,
                 name, ModelElementNameNotationJava.class);
         npf.addNotationProvider(
