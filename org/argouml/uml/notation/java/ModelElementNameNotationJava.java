@@ -26,7 +26,6 @@ package org.argouml.uml.notation.java;
 
 import java.util.Stack;
 
-import org.argouml.language.java.generator.GeneratorJava;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.ModelElementNameNotation;
