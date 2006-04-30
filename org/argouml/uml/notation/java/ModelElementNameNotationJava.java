@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -103,15 +103,7 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
     protected String generateVisibility() {
         String s = "";
         if (isValue("visibilityVisible")) {
-            Object v = Model.getFacade().getVisibility(myModelElement);
-            if (v == null) {
-                /* Initially, the visibility is not set in the model.
-                 * Still, we want to show the default, i.e. public.*/
-                v = Model.getVisibilityKind().getPublic();
-            }
-            s = GeneratorJava.getInstance().generateVisibility(v);
-            if (s.length() > 0) s = s + " ";
-            /* This for when nothing is generated: omit the space. */
+            s = NotationUtilityJava.generateVisibility(myModelElement);
         }
         return s;
     }

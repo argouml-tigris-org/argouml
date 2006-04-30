@@ -875,7 +875,7 @@ public final class NotationUtilityUml {
      * @param st a stereotype UML object or a collection of stereotypes
      * @return a string representing the given stereotype
      */
-    static String generateStereotype(Object st) {
+    public static String generateStereotype(Object st) {
         if (st == null)
             return "";
         if (Model.getFacade().isAModelElement(st)) {

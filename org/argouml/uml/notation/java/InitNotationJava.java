@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,7 +38,7 @@ import org.argouml.notation.NotationProviderFactory2;
 public class InitNotationJava {
 
     /**
-     * static initializer, register all appropriate critics.
+     * static initializer, register all appropriate notations.
      */
     public static void init() {
         NotationProviderFactory2 npf = NotationProviderFactory2.getInstance();
@@ -48,10 +48,18 @@ public class InitNotationJava {
                     null,
                     Argo.lookupIconResource("JavaNotation"));
 
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_TRANSITION,
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_TRANSITION,
                 name, TransitionNotationJava.class);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_NAME,
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_NAME,
                 name, ModelElementNameNotationJava.class);
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_ATTRIBUTE,
+                name, AttributeNotationJava.class);
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_OPERATION,
+                name, OperationNotationJava.class);
     }
 
 }
