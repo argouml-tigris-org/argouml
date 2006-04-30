@@ -163,23 +163,23 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
 
         // We are going to add the ones still valid & new ones
         // in the right sequence:
-        Collection strs = getUmlCollection();
+        Collection umlObjects = getUmlCollection();
         CompartmentFigText comp = null;
         int acounter = -1;
-        Iterator iter = strs.iterator();
+        Iterator iter = umlObjects.iterator();
         while (iter.hasNext()) {
-            Object feature = iter.next();
+            Object umlObject = iter.next();
             comp = null; // find the (next) compartment
             acounter++;                
             
-            /* Find the compartment fig for this feature: */
+            /* Find the compartment fig for this umlObject: */
             Iterator it = figs.iterator();
             while (it.hasNext()) {
                 CompartmentFigText candidate;
                 Object fig = it.next();
                 if (fig instanceof CompartmentFigText) {
                     candidate = (CompartmentFigText) fig;
-                    if (candidate.getOwner() == feature) {
+                    if (candidate.getOwner() == umlObject) {
                         comp = candidate;
                         break;
                     }
@@ -192,7 +192,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
                 NotationProvider4 np = 
                     NotationProviderFactory2.getInstance().getNotationProvider(
                             getNotationType(),
-                            (NotationContext) getGroup(), feature);
+                            (NotationContext) getGroup(), umlObject);
                 comp =
                     new FigFeature(
                             xpos + 1,
@@ -203,7 +203,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
                             bigPort,
                             np);
                 // bounds not relevant here
-                comp.setOwner(feature);
+                comp.setOwner(umlObject);
 
             } else {
                 /* This one is still useable, so let's retain it, */
@@ -222,14 +222,8 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
                 ftText = "";
             }
             comp.setText(ftText);
-            
-            if (Model.getFacade().isAFeature(feature) ) {
-                // underline, if static
-                comp.setUnderline(
-                        Model.getScopeKind().
-                        getClassifier().equals(Model.getFacade().
-                                getOwnerScope(feature)));
-            }
+
+            addExtraVisualisations(umlObject, comp);
             comp.setBotMargin(0);
         }
 
@@ -238,7 +232,18 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
         }
     }
 
-
+    /**
+     * Add extra decorations to the compartment fig 
+     * to visualise an UML object property.
+     * 
+     * @param umlObject the UML object shown in the given compartment fig
+     * @param comp the given compartment fig to be decorated
+     */
+    protected void addExtraVisualisations(Object umlObject, CompartmentFigText comp) {
+        /* By default there are none.
+         * Overrule if needed. */
+    }
+    
     /**
      * Returns the new size of the FigGroup (either attributes or
      * operations) after calculation new bounds for all sub-figs,

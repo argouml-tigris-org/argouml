@@ -72,6 +72,18 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
     }
 
     /**
+     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#addExtraVisualisations(java.lang.Object, org.argouml.uml.diagram.ui.CompartmentFigText)
+     */
+    protected void addExtraVisualisations(Object umlObject, 
+            CompartmentFigText comp) {
+        // underline, if static
+        comp.setUnderline(
+                Model.getScopeKind().
+                getClassifier().equals(Model.getFacade().
+                        getOwnerScope(umlObject)));
+    }
+
+    /**
      * Add handling abstract operations; they
      * are shown in italics.
      * 
