@@ -31,6 +31,9 @@ import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.targetmanager.TargetManager;
 
 /**
+ * The Fig for the compartment of an Enumeration 
+ * that shows a list of enumerationliterals.
+ * 
  * @author Tom Morris
  */
 public class FigEnumLiteralsCompartment extends FigFeaturesCompartment {
@@ -63,8 +66,8 @@ public class FigEnumLiteralsCompartment extends FigFeaturesCompartment {
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#getNotationType()
      */
     protected int getNotationType() {
-        /* TODO: Make a dedicated notation that supports "name1;name2"
-         * and maybe other notation... */
+        /* TODO: Make a dedicated notation that supports 
+         * parsing "name1;name2" and maybe other notation... */
         return NotationProviderFactory2.TYPE_NAME;
     }
 
@@ -77,9 +80,9 @@ public class FigEnumLiteralsCompartment extends FigFeaturesCompartment {
      */
     public void createFeature() {
         Object enumeration = getGroup().getOwner();
-        Object attr = Model.getCoreFactory().buildEnumerationLiteral(
+        Object literal = Model.getCoreFactory().buildEnumerationLiteral(
                 "",  enumeration);
         populate();
-        TargetManager.getInstance().setTarget(attr);
+        TargetManager.getInstance().setTarget(literal);
     }
 }
