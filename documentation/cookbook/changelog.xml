@@ -67,6 +67,18 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2006-04-30</entry>
+          <entry>
+Change to the explanation on how to use Eclipse.
+(See <xref linkend="eclipse3"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+
+      <tbody valign="top">
+        <row>
           <entry>2005-10-29</entry>
           <entry>
 Change to the instructions on how to build ArgoUML to describe

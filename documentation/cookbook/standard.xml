@@ -50,7 +50,7 @@ copyright notice.
 Like this:
 <programlisting>
 // &dollar;Id&dollar;
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -724,26 +724,19 @@ These style guides correspond to the default Java settings in Emacs:
     <title>How to work with Eclipse 3</title>
     <warning>
       <para>
-These instructions on how to work with Eclipse 3 don't work anymore.
-We have now a recommended Eclipse setup with files included in the
-repository that you should use instead.
-</para>
-      <para>
-Tom Morris has promised to update this part of the Cookbook.
+This was recently updated to the 
+recommended Eclipse setup with files commited to the repository.
 </para>
     </warning>
     <para>
-If you are running Eclipse 3
-you can find information on how to set
-the development environment fitting ArgoUML.
-There are several sets of instructions here depending that you can apply
-separately depending on how much of the ArgoUML knowledge you would
-want to include in your Eclipse.
+If you are running Eclipse 3.1 we have a prepared and recommended setup
+commited into our repository.
 </para>
     <para>
 If any of these instructions don't work or could be improved in some way,
 please help in making them better by contacting the editor of the Cookbook.
 </para>
+
     <sect2 id="eclipse-checkout">
       <title>Checking out through Eclipse</title>
       <para>
@@ -751,329 +744,119 @@ This instruction is if you want to use Eclipse to download the source
 and it takes you up to where you can start ArgoUML from the source.
 </para>
 
-      <orderedlist>
-	<listitem>
-	  <para>
-Set up the CVS Repository.
+      <para>
+We have Team Project Set files prepared to make the set up automatic.
 </para>
-	  <para>
+
+      <para>
+When Eclipse asks you of your CVS Repository information,
+you give the information like this.
+</para>
+      <para>
 Change to the CVS Repository perspective and select 
 Add CVS Repository.
 Then enter the following information.
 </para>
 
-	  <itemizedlist>
-	    <listitem>
-	      <para>Host:
+      <itemizedlist>
+	<listitem>
+	  <para>Host:
 cvs.tigris.org
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>Repository path:
+	</listitem>
+	<listitem>
+	  <para>Repository path:
 /cvs
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>User:
+	</listitem>
+	<listitem>
+	  <para>User:
 <replaceable>Your Tigris user name.</replaceable>
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>Password:
+	</listitem>
+	<listitem>
+	  <para>Password:
 <replaceable>Your Tigris password.</replaceable>
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>Connection type:
+	</listitem>
+	<listitem>
+	  <para>Connection type:
 pserver
 (default)
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>Use Default Port. (default)</para>
-	    </listitem>
-	  </itemizedlist>
 	</listitem>
+	<listitem>
+	  <para>Use Default Port. (default)</para>
+	</listitem>
+      </itemizedlist>
 
+      <para>
+Do the following.
+</para>
+
+      <orderedlist>
 	<listitem>
 	  <para>
-Check out.
+Download the initial Team Project Set file and save it somewhere.
 </para>
 	  <para>
-In the CVS Repository Exploring perspective,
-unfold the newly created repository 
-(called something like
-:pserver:<replaceable>your user name</replaceable>@cvs.tigris.org:/cvs)
-and within it, HEAD.
+This only needs to be done the first time and if you don't already 
+happen to have an updated checked out copy of argouml laying around.
 </para>
 	  <para>
-Select the argouml-mdr project, right-click on it, and to Check Out As.
-Check out as a project configured using the New Project Wizard.
-Press the button Finish.
-Select Java Project, and press Next.
-Type the new project name: argouml-mdr, and press Next.
-Ignore the build path settings. We will come back to them later.
-Press Finish, which starts the checking out process.
-You are probably directed to the Java Perspective with a question if
-you want or not.
-At this point, you better press No, to be able to perform the next step.
-</para>
-
-	  <para>
-Select the argouml project, right-click on it, and do Check Out As.
-Check out as a project configured using the New Project Wizard.
-Press the button Finish.
-Select Java Project, and press Next.
-Type the new project name: argouml, and press Next.
-Ignore the build path settings. We will come back to them later.
-<!-- (Note MVW: I had to remove the item from the Source tab, 
-otherwise the compile later on fails.) -->
-Press Finish, which starts the checking out process.
-You are probably directed to the Java Perspective with a question if
-you want or not. At this point it doesn't matter. Just press Yes or No!
-</para>
-	  <para>
-The download takes a while, since the download is around 60Meg.
-</para>
-	  <para>
-Remark: 
-If you are on a modem or other low bandwidth connection,
-this is not recommended since you will download
-all of the web site,
-the source for the documentation, and
-all modules,
-things that you could do without unless you would want to work on them.
-If you find a way to do this with less bandwidth use,
-please help improving this description.
-Theoretically we can come down to around 16Meg which would take around
-two hours on a 56K modem.
+The file can be found through the repository browsing function at Tigris
+at
+<ulink url="http://argouml.tigris.org/source/browse/*checkout*/argouml/tools/eclipse/argouml-core-projectset.psf"/>.
 </para>
 	</listitem>
 
 	<listitem>
 	  <para>
-Build using ant.
-</para>
-	  <para>
-Browse to <filename>argouml/src_new/build.xml</filename>,
-select the <filename>build.xml</filename>-file,
-right-click on it, and do Run As - Ant Build...
-This pops up the External Tools... pop up
-with the Targets tab already selected.
-Select compile (default target in the Targets tab),
-deselect all other targets
-and finally press Run.
-</para>
-	    <para>
-Browse to <filename>argouml-mdr/build.xml</filename>,
-select the <filename>build.xml</filename>-file,
-right-click on it, and do Run As - Ant Build...
-This pops up the External Tools... pop up
-with the Targets tab already selected.
-Select <command>generate</command>,
-deselect all other targets
-and finally press Run.
-</para>
-	    <para>
-There are some files that are built using rules in the
-<filename>build.xml</filename> files.
-This is
-the antlr-generated files,
-the file containing a version, and
-the java interfaces generated from the mof description.
+Do File => Import and select Team Project Set and press Next.
 </para>
 	</listitem>
 
 	<listitem>
 	  <para>
-Refresh the projects.
+Browse to the file argouml-core-projectset.psf file and press Finish.
 </para>
+
 	  <para>
-This must be done after having built using ant to find the newly created
-Java files.
+Now everything is automatic even though it takes a while. What happens is:
 </para>
-	  <para>
-Select the top resource of the argouml project
-in the Navigator (on the left),
-right click and select <command>Refresh</command>.
+          <orderedlist>
+            <listitem>
+              <para>
+Files are downloaded from the Tigris CVS server and put into Eclipse
+projects.
 </para>
+              <para>
+It is around 30Meg that is downloaded so beware if you are on a slow
+connection.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+The projects are build.
+First things that are special for ArgoUML, generated Java code,
+are created by Eclipse calling ant,
+then Eclipse kicks in and compiles the java code.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Eclipse finds the Configurations that are also checked out.
+</para>
+            </listitem>
+          </orderedlist>
 	</listitem>
 
-	<listitem>
-	  <para>
-Set build path for the argouml project.
-</para>
-
-	  <para>
-      In the Java perspective, select the project argouml, 
-      i.e. the icon at the top of the Package Explorer.
-      Then, in the menu, select Project => Properties).
-    </para>
-	  <para>
-Enter Java Build Path
-</para>
-
-	  <para>
-Under Source:
-Remove everything.
-Add <filename class="directory">argouml/src_new</filename> and
-<filename class="directory">argouml/src/model/src</filename>
-(simply add a check mark in front of these folders).
-Also add
-<filename class="directory">argouml/tests</filename>,
-<filename class="directory">argouml/modules/classfile/src</filename>,
-and the src directories of all other modules.
-The purpose of this is to have Eclipse recompile these and
-find compilation errors
-as soon as your changes to any API has affected them.
-</para>
-	  <para>
-Under Libraries:
-Press the Add JARs... button and add
-all files in <filename class="directory">argouml/lib</filename>.
-Press the Add JARs... button and add
-the file <filename>argouml/tools/junit-3.7/junit.jar</filename>.
-Every time any of these jars is updated in the project you will have to 
-update this in your environment by entering this dialog,
-removing the old ones, and
-adding the new ones.
-</para>
-	  <para>
-Under Order and Export:
-Check that argouml/src/model/src is checked.
-Check junit and log4j.
-(If you also plan to work with the ArgoPrint subproject,
-check gef and commons-logging.)
-</para>
-	  <para>
-      Set the Default output folder to 
-<filename class="directory">argouml/bin</filename>.
-This will not confuse it with any of the ant-built things.
-    </para>
-	  <para>
-Press OK.
-You will be asked to accept that all resources previously built can
-be removed. Press Yes.
-Eclipse will rebuild.
-    </para>
-	  <para>
-Verify that there are no errors in the argouml project,
-just warnings left among the problems.
-If there are errors in some of the modules you will be able to 
-continue your work in spite of that but it is better if you stop here and
-investigate the problem.
-</para>
-	  <para>
-Some of the modules (cpp, idl, classfile, ???), contain ANTLR-generated code.
-The rules to build these are in the ant files for each module.
-Run the ant targets "generate" or "generateparser" in each of these
-modules and then reload the source trees.
-</para>
-	</listitem>
-
-	<listitem>
-	  <para>
-Set build path for the argouml-mdr project.
-</para>
-	  <para>
-      In the Java perspective, select the project argouml-mdr, 
-      i.e. the icon at the top of the Package Explorer.
-      Then, in the menu, select Project => Properties).
-    </para>
-	  <para>
-Enter Java Build Path
-</para>
-
-	  <para>
-Under Source:
-Remove everything.
-Add <filename class="directory">argouml-mdr/src</filename> and
-<filename class="directory">argouml-mdr/tests</filename>
-(simply add a check mark in front of these folders).
-</para>
-	  <para>
-Under Libraries:
-Press the Add JARs... button and add
-all files in <filename class="directory">argouml-mdr/lib</filename>.
-Press the Add JARs... button and add
-the file <filename>argouml-mdr/build/java-interfaces.jar</filename>.
-</para>
-	  <para>
-Under Project:
-Press the Add... button and add
-the argouml project.
-</para>
-	  <para>
-Under Order and Export:
-Check 
-<filename>java-interfaces.jar</filename>,
-<filename>jmi.jar</filename>,
-<filename>jmiutils.jar</filename>,
-<filename>mdrapi.jar</filename>,
-<filename>mof.jar</filename>,
-<filename>nbmdr.jar</filename>, and
-<filename>openide-util.jar</filename>,
-(i.e. everything except the argouml project).
-</para>
-	  <para>
-      Set the Default output folder to 
-<filename class="directory">argouml-mdr/bin</filename>.
-This will not confuse it with any of the ant-built things.
-    </para>
-	  <para>
-Press OK.
-You will be asked to accept that all resources previously built can
-be removed. Press Yes.
-Eclipse will rebuild.
-    </para>
-	  <para>
-Verify that there are no errors
-just warnings left among the problems.
-</para>
-	</listitem>
-
-
-	<listitem>
-	  <para>
-Create a Run Configuration
-</para>
-	  <para>
-      In the Java perspective, select the project argouml, 
-      i.e. the icon at the top of the Package Explorer.
-      Then, in the menu, select Run => Run...). 
-      This will open the dialog for creating, managing 
-      and running Run Configurations.
-    </para>
-	  <para>
-      Select Java Application on the left and press the New button. 
-      Name the configuration "Run ArgoUML".
-In the Main tab press the Search... button in the Main class box.
-      In the new dialog that appears (Choose Main Type), simply press OK.
-    </para>
-	  <para>
-      This sets the Main class to: 
-      <filename>org.argouml.application.Main</filename>.
-    </para>
-	  <para>
-In the Classpath tab
-select User Entries,
-press Add Projects, and add the argouml-mdr project
-with "Add exported entries of selected projects." checked and
-"Add required projects of selected projects." not checked.
-(The same needs to be done for all other configurations created
-i.e. when running test cases from within Eclipse).
-</para>
-	  <para>
-      Press the Run button.
-      This will start ArgoUML. 
-      From now on, you can start ArgoUML 
-      by a single press on the Run icon in the toolbar.
-    </para>
-	</listitem>
 	<listitem>
 	  <para>
 Verify that you can start ArgoUML from the debugger within Eclipse. 
-You can do this by clicking on the Debug icon in the toolbar.
+You can do this by clicking on the little downarrow close to the
+Debug icon in the toolbar
+and finding ArgoUML in the list.
 </para>
 	</listitem>
 
@@ -1089,10 +872,13 @@ If this is not done correctly you will most likely find that you will have to
 do a lot of manual edits every time Eclipse has
 touched the code.
 You have your tool working against you instead of for you.
-On the other hand, these settings affect your Eclipse Workspace rather than
-the ArgoUML project settings so if you have other projects in
-the same Eclipse Workspace there might be conflicts.
-For this reason, it might be a good idea to do the ArgoUML work in an
+</para>
+      <para>
+The instructions here are for these settings to affect your Eclipse Workspace.
+If you have other projects in
+the same Eclipse Workspace you would probably want this for
+only the ArgoUML projects and that is possible allthough not explained here.
+We suggest you to consider having ArgoUML work in an
 Eclipse Workspace separate from your other projects.
 </para>
 
@@ -1101,41 +887,39 @@ Eclipse Workspace separate from your other projects.
 	  <para>
 Code conventions.
 </para>
-	  <para>See in the menu Window => Preferences. 
-      Then select Java => Code Style => Formatter.
-Set the Code Formatter to "Java conventions [built-in]".
+          <orderedlist>
+            <listitem>
+              <para>
+Select in the menu Window => Preferences. 
 </para>
-	</listitem>
+            </listitem>
+            <listitem>
+              <para>
+Then select Java => Code Style => Formatter.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Select Import and give the file
+eclipse/eclipse-argo-formatter.xml
+located in the argouml-core-tools project that you just checked out.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Press OK.
+</para>
+            </listitem>
+          </orderedlist>
 
-	<listitem>
-	  <para>
-TAB character width is 8.
+          <para>
+This will give you Code Conventions exactly like the Sun Coding Style
+that we use in the ArgoUML project.
 </para>
-	  <para>
-	  This will only work correctly by default from Eclipse V3.2 onwards.
-</para>
-	  <para>
-Solution for Eclipse 3.0:
-See in the menu Window => Preferences.
-Then select
-Java => Editor. Then select the tab Appearance.
-Set the Displayed tab width to 8.
-</para>
-	  <para>
-Solution for Eclipse 3.1:
-In Eclipse 3.1 the Tab size is part of the profile that the 
-Code Formatter uses.
-Alas, the "Java conventions [built-in]"-profile contains a bug at this point
+          <para>
+Once Eclipse 3.2 is out and the Eclipse-built-in bug
 (<ulink url="https://bugs.eclipse.org/bugs/show_bug.cgi?id=104765"/>)
-so the best solution is to create and use a new profile with the fix.
-In Window => Preferences => Java => Code Style => Code Formatter,
-set the Code Formatter to "Java conventions [built-in]" (as above),
-press "Show",
-select the "Indentation"-tab,
-change "Tab size" to 8,
-press "Apply", and
-give the name 
-<replaceable>Fixed Java conventions</replaceable>.
+is fixed you could use "Java conventions [build-in]" instead.
 </para>
 	</listitem>
 
@@ -1144,54 +928,36 @@ give the name
 New file templates.
 </para>
 
-	  <para>
-See in the menu Window => Preferences.
-Then select
-Java => Code Style => Code Templates.
-At the right hand side, open the tree for Comments, and
-set the Code Templates for Overriding methods to
-<programlisting>
-/**
- * &dollar;{see_to_overridden}
- */
-</programlisting>
+          <orderedlist>
+            <listitem>
+              <para>
+Select in the menu Window => Preferences. 
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Then select Java => Code Style => Code Templates.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Select Import and give the file
+eclipse/eclipse-argo-codetemplates.xml
+located in the argouml-core-tools project that you just checked out.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Press OK.
+</para>
+            </listitem>
+          </orderedlist>
+
+          <para>
+This will set up templates to be used when using the Eclipse functions
+for creating files, functions, types and javadoc...
 </para>
 
-	  <para>
-      In the same tree for Code Templates, 
-      open the Code node and select New Java Files.
-      Set it to
-<programlisting>
-// &dollar;&dollar;Id&dollar;&dollar;
-// Copyright (c) 2006 The Regents of the University of California. All
-// Rights Reserved. Permission to use, copy, modify, and distribute this
-// software and its documentation without fee, and without a written
-// agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
-// documentation are copyrighted by The Regents of the University of
-// California. The software program and documentation are supplied "AS
-// IS", without any accompanying services from The Regents. The Regents
-// does not warrant that the operation of the program will be
-// uninterrupted or error-free. The end-user understands that the program
-// was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
-// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-&dollar;{package_declaration}
-
-&dollar;{typecomment}
-&dollar;{type_declaration}
-</programlisting>
-</para>
 	</listitem>
       </itemizedlist>
     </sect2>
@@ -1209,6 +975,12 @@ I (Linus Tolke) recommend that you set them all on the Warning level.
 This makes them visible for you.
 You can then decide to fix them or not depending on how you feel about
 the code you are working with.
+</para>
+      <para>
+Some of these are set up by projects and Eclipse seems to have sensible
+defaults on these so you don't have to do anything with this.
+Consider this only if you want more information or to understand 
+why you get warnings.
 </para>
       <itemizedlist>
 	<listitem>
@@ -1342,9 +1114,9 @@ Unused code => Unnecessary declaration of thrown checked exception: Warning.
     <sect2 id="checkclipse">
       <title>Settings for checkclipse</title>
       <para>
-      Checkclipse is a plug in for Eclipse which needs to be installed separately.
-      It enables style checking according the rules set for the ArgoUML project.
-    </para>
+Checkclipse is a plug in for Eclipse which needs to be installed separately.
+It enables style checking according the rules set for the ArgoUML project.
+</para>
       <para>Get the latest Checkclipse kit from SourceForge at
               <ulink url="http://sourceforge.net/projects/checkclipse"/> 
       and install it by unzipping into your Eclipse plugins directory and
@@ -1368,17 +1140,20 @@ Checked.
 	</listitem>
 	<listitem>
 	  <para>Checkstyle Configuration File: 
-<filename>/argouml/tools/checkstyle/checkstyle_argouml.xml</filename>
+<filename>tools/checkstyle/checkstyle_argouml.xml</filename>
+in the argouml-core-tools project.
 </para>
 	</listitem>
 	<listitem>
 	  <para>Checkstyle Properties File: 
-<filename>/argouml/tools/checkstyle/checkstyle.properties</filename>
+<filename>tools/checkstyle/checkstyle.properties</filename>
+in the argouml-core-tools project.
 </para>
 	</listitem>
 	<listitem>
 	  <para>File Filter Definition: 
-<filename>/argouml/tools/checkstyle/checkclipse.filefilters</filename>
+<filename>tools/checkstyle/checkclipse.filefilters</filename>
+in the argouml-core-tools project.
 </para>
 	</listitem>
       </itemizedlist>
@@ -1387,92 +1162,6 @@ Leave the two other fields empty.
 </para>
     </sect2>
 
-    <sect2>
-      <title>Run the JUnit tests</title>
-      <para>
-The problem is that to run ArgoUML, you need to have jars from both
-the argouml project and
-the argouml-mdr project
-available in the class path.
-If you don't, then all tests that actually do something with the
-model subsystem will fail with a 
-<classname>java.lang.ExceptionInInitializerError</classname>
-(if it is the first test) or
-<classname>java.lang.NoClassDefFoundError</classname>.
-</para>
-
-	  <para>
-The way the two projects are set up it is the argouml-mdr
-project that depends on the argouml project.
-This means that when running things from the argouml-mdr project
-everything from the argouml project is available but not the other way around.
-Since the tests are located in the argouml project,
-the argouml-mdr things will be missing when running the tests as default.
-</para>
-
-      <para>
-Here is the simplest way to run a test, fixing this:
-</para>
-      <orderedlist>
-	<listitem>
-	  <para>
-Start the test in the normal way i.e.
-Right click on the test case and select 
-Run As => JUnit Test,
-Debug As => JUnit Test or
-some keyboard short cut.
-</para>
-	</listitem>
-
-	<listitem>
-	  <para>
-Watch as the test fails with
-<classname>java.lang.ExceptionInInitializerError</classname>
-</para>
-          <para>
-If the test happens to succeed, 
-either you have chosen one of the rare tests that actually don't use the model,
-or you have not set up the two projects according to the instructions...
-</para>
-	</listitem>
-
-	<listitem>
-	  <para>
-From the Toolbar or from the Run menu select Debug... or Run...
-A window will open with the Configuration to run the test.
-</para>
-	</listitem>
-
-	<listitem>
-	  <para>
-Change the project to the argouml-mdr project (in the Test tab).
-</para>
-	</listitem>
-
-	<listitem>
-	  <para>
-Press Debug (or Run).
-</para>
-	</listitem>
-
-	<listitem>
-	  <para>
-The test now works.
-</para>
-        </listitem>
-
-      </orderedlist>
-      <para>
-Eclipse will remember the Configuration for that test so you can run it from
-the Debug or Run Toolbars,
-the Run => Run History or Run => Debug History menu items,
-Right clicking on the same test and selecting Run... or Debug....
-But if you do Right click on the same test followed by
-Run As... or 
-Debug As...
-a new Configuration will be created that has the default project once again.
-</para>
-    </sect2>
   </sect1>
 
 </chapter>
