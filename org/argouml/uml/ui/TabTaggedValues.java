@@ -29,7 +29,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
@@ -52,6 +52,7 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
 import org.argouml.uml.ui.foundation.extension_mechanisms.UMLTagDefinitionComboBoxModel;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.undo.UndoableAction;
 import org.tigris.toolbar.ToolBar;
 
 /**
@@ -86,14 +87,16 @@ public class TabTaggedValues extends AbstractArgoJPanel
 
         JButton b = new JButton();
         buttonPanel.add(b);
-        b.setToolTipText(
-                Translator.localize("button.button.new-tagdefinition"));
         b.setAction(new ActionNewTagDefinition());
+        b.setText("");
+        b.setFocusable(false);
 
         b = new JButton();
         buttonPanel.add(b);
         b.setToolTipText(Translator.localize("button.delete"));
         b.setAction(new ActionRemoveTaggedValue(table));
+        b.setText("");
+        b.setFocusable(false);
   
         table.setModel(new TabTaggedValuesModel());
         table.setRowSelectionAllowed(false);
@@ -260,7 +263,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
 
 } /* end class TabTaggedValues */
 
-class ActionRemoveTaggedValue extends AbstractAction {
+class ActionRemoveTaggedValue extends UndoableAction {
 
     /**
      * Serial version generated for rev 1.58
@@ -278,7 +281,11 @@ class ActionRemoveTaggedValue extends AbstractAction {
      * @param tableTv A JTable backed by a TabTaggedValuesModel
      */
     public ActionRemoveTaggedValue(JTable tableTv) {
-        super("", ResourceLoaderWrapper.lookupIconResource("Delete"));
+        super(Translator.localize("button.delete"),
+                ResourceLoaderWrapper.lookupIcon("Delete"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("button.delete"));
         table = tableTv;
     }
 
@@ -286,6 +293,7 @@ class ActionRemoveTaggedValue extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
         TabTaggedValuesModel model = (TabTaggedValuesModel) table.getModel();
         model.removeRow(table.getSelectedRow());
     }
