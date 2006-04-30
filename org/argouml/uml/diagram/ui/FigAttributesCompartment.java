@@ -69,6 +69,18 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
     }
 
     /**
+     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#addExtraVisualisations(java.lang.Object, org.argouml.uml.diagram.ui.CompartmentFigText)
+     */
+    protected void addExtraVisualisations(Object umlObject, 
+            CompartmentFigText comp) {
+        // underline, if static
+        comp.setUnderline(
+                Model.getScopeKind().
+                getClassifier().equals(Model.getFacade().
+                        getOwnerScope(umlObject)));
+    }
+
+    /**
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#createFeature()
      */
     public void createFeature() {
