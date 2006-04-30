@@ -30,6 +30,8 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -37,6 +39,8 @@ import java.util.Vector;
 import javax.swing.Action;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -455,27 +459,54 @@ public class FigInterface extends FigClassifierBox {
      * java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
-        if (getOwner() == null) {
-            return;
-        }
+        // Let our superclass sort itself out first
         super.modelChanged(mee);
-        boolean damage = false;
-        // operations
-        if (mee == null
-                || Model.getFacade().isAOperation(mee.getSource())
-                || Model.getFacade().isAParameter(mee.getSource())
-                || (mee.getSource() == getOwner()
-                && mee.getPropertyName().equals("feature"))) {
-            updateOperations();
-            damage = true;
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            renderingChanged();
+            updateListeners(getOwner());
         }
-        if (mee != null && Model.getFacade().getStereotypes(getOwner())
-                .contains(mee.getSource())) {
-            updateStereotypeText();
-            damage = true;
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
+    protected void updateListeners(Object newOwner) {
+        Object oldOwner = getOwner();
+        if (oldOwner != null) {
+            removeAllElementListeners();
         }
-        if (damage) {
-            damage();
+        if (newOwner != null) {
+            // add the listeners to the newOwner
+            addElementListener(newOwner);
+            // and its stereotypes
+            Collection c = new ArrayList(
+                    Model.getFacade().getStereotypes(newOwner));
+            // and its features
+            Iterator it = Model.getFacade().getFeatures(newOwner).iterator();
+            while (it.hasNext()) {
+                Object feat = it.next();
+                c.add(feat);
+                // and the stereotypes of its features
+                c.addAll(new ArrayList(Model.getFacade().getStereotypes(feat)));
+                // and the parameter of its operations
+                if (Model.getFacade().isAOperation(feat)) {
+                    c.addAll(Model.getFacade().getParameters(feat));
+                }
+            }
+            Iterator it2 = c.iterator();
+            while (it2.hasNext()) {
+                addElementListener(it2.next());
+            }
+            if (isPathVisible()) {
+                c = Model.getModelManagementHelper()
+                    .getAllSurroundingNamespaces(newOwner);
+                Iterator itpv = c.iterator();
+                while (itpv.hasNext()) {
+                    addElementListener(itpv.next(), 
+                            new String[] {"name", "namespace", "ownedElement"});
+                }
+            }
         }
     }
 
@@ -483,8 +514,8 @@ public class FigInterface extends FigClassifierBox {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {
-        super.renderingChanged();
         updateOperations();
+        super.renderingChanged();
     }
 
     /**
