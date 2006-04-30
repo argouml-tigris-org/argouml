@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,10 +28,11 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.AbstractActionNewModelElement;
+import org.tigris.gef.undo.UndoableAction;
 
 
 /**
@@ -40,20 +41,25 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  *
  * @author rastaman@tigris.org
  */
-public class ActionNewTagDefinition extends AbstractActionNewModelElement {
+public class ActionNewTagDefinition extends UndoableAction {
 
     /**
      * The constructor.
      */
     public ActionNewTagDefinition() {
-        super("button.new-tagdefinition");
-        putValue(Action.NAME, Translator.localize("button.new-tagdefinition"));
+        super(Translator.localize("button.new-tagdefinition"),
+                ResourceLoaderWrapper.lookupIcon("button.new-tagdefinition"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("button.new-tagdefinition"));
     }
 
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see java.awt.event.ActionListener#actionPerformed(
+     * java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
         Object t = TargetManager.getInstance().getModelTarget();
         Object owner = null;
         Object namespace = null;
