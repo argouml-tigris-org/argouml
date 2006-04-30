@@ -40,7 +40,7 @@ import org.argouml.notation.NotationProviderFactory2;
 public class InitNotationUml {
 
     /**
-     * static initializer, register all appropriate critics.
+     * static initializer, register all appropriate notations.
      */
     public static void init() {
         NotationProviderFactory2 npf = NotationProviderFactory2.getInstance();
