@@ -756,7 +756,6 @@ public class FigClass extends FigClassifierBox
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
-
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
@@ -786,6 +785,15 @@ public class FigClass extends FigClassifierBox
             Iterator it2 = c.iterator();
             while (it2.hasNext()) {
                 addElementListener(it2.next());
+            }
+            if (isPathVisible()) {
+                c = Model.getModelManagementHelper()
+                    .getAllSurroundingNamespaces(newOwner);
+                Iterator itpv = c.iterator();
+                while (itpv.hasNext()) {
+                    addElementListener(itpv.next(), 
+                            new String[] {"name", "namespace", "ownedElement"});
+                }
             }
         }
     }
