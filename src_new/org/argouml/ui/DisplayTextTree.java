@@ -24,9 +24,9 @@
 
 package org.argouml.ui;
 
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JTree;
@@ -43,7 +43,7 @@ import org.argouml.notation.Notation;
 import org.argouml.notation.NotationHelper;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.uml.generator.GeneratorDisplay;
+import org.argouml.uml.notation.uml.NotationUtilityUml;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
 import org.tigris.gef.base.Diagram;
 
@@ -213,13 +213,9 @@ public class DisplayTextTree extends JTree {
 
                 // Look for stereotype
                 if (showStereotype) {
-                    Iterator i = Model.getFacade().getStereotypes(value).iterator();
-                    Object stereo;
-                    while (i.hasNext()) {
-                        stereo = i.next();
-                        name +=
-                            " " + GeneratorDisplay.getInstance().generate(stereo);
-                    }
+                    Collection stereos = Model.getFacade().getStereotypes(value);
+                        name += " " 
+                            + NotationUtilityUml.generateStereotype(stereos);
                     if (name != null && name.length() > 80) {
                         name = name.substring(0, 80) + "...";
                     }

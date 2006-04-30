@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,12 +33,11 @@ import java.util.Vector;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepConfirm;
 import org.argouml.model.Model;
-import org.argouml.uml.generator.GeneratorDisplay;
 
 /**
  * A non-modal wizard to help the user change select an association
@@ -89,8 +88,7 @@ public class WizBreakCircularComp extends UMLWizard {
 	    int size = offs.size();
 	    for (int i = 0; i < size; i++) {
 		Object me = /*(MModelElement)*/ offs.elementAt(i);
-		String s = GeneratorDisplay.getInstance()
-		    .generate(Model.getFacade().getName(me));
+		String s = Model.getFacade().getName(me);
 		res.addElement(s);
 	    }
 	}
@@ -105,9 +103,7 @@ public class WizBreakCircularComp extends UMLWizard {
 	if (selectedCls != null) {
 	    Collection aes = Model.getFacade().getAssociationEnds(selectedCls);
 	    Object fromType = selectedCls;
-	    String fromName =
-	        GeneratorDisplay.getInstance()
-	            .generate(Model.getFacade().getName(fromType));
+	    String fromName = Model.getFacade().getName(fromType);
 	    for (Iterator iter = aes.iterator(); iter.hasNext();) {
 		Object fromEnd = /*(MAssociationEnd)*/ iter.next();
 		Object asc = Model.getFacade().getAssociation(fromEnd);
@@ -118,10 +114,8 @@ public class WizBreakCircularComp extends UMLWizard {
 		            Model.getFacade().getConnections(asc)).get(1);
 		}
 		Object toType = Model.getFacade().getType(toEnd);
-		String ascName = GeneratorDisplay.getInstance()
-		    .generate(Model.getFacade().getName(asc));
-		String toName = GeneratorDisplay.getInstance()
-		    .generate(Model.getFacade().getName(toType));
+		String ascName = Model.getFacade().getName(asc);
+		String toName = Model.getFacade().getName(toType);
 		String s = ascName + " from " + fromName + " to " + toName;
 		res.addElement(s);
 	    }

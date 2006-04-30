@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,6 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.model.Model;
-import org.argouml.uml.generator.GeneratorDisplay;
 
 /**
  * Provides centralized methods dealing with notation.
@@ -61,7 +60,7 @@ public final class Notation implements PropertyChangeListener {
      * part of ArgoUML core distribution.
      */
     private static NotationName notationArgo =
-        GeneratorDisplay.getInstance().getNotation();
+        NotationNameImpl.findNotation("UML 1.4");
     /*
      * Remark:
      * There is also a java-like notation, which is also
@@ -846,130 +845,6 @@ public final class Notation implements PropertyChangeListener {
         ArgoEventPump.fireEvent(
             new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, pce));
     }
-
-    ////////////////////////////////////////////////////////////////
-    // TODO:  The following accessors are commented out
-    //                   and should be uncommented by those initially
-    //                   incorporating this code into production,
-    //                   only using those methods that are necessary.
-    //                   See issue 1183.
-    ////////////////////////////////////////////////////////////////
-
-    // public static void parseExtensionPointCompartment(NotationContext ctx,
-    // MUseCase uc, String s) {
-    // SINGLETON.getParser(Notation.getNotation(ctx))
-    // .parseExtensionPointCompartment(uc, s);
-    // }
-
-    // public static void parseOperationCompartment(NotationContext ctx,
-    // MClassifier cls, String s) {
-    // SINGLETON.getParser(Notation.getNotation(ctx))
-    // .parseOperationCompartment(cls, s);
-    // }
-
-    // public static void parseAttributeCompartment(NotationContext ctx,
-    // MClassifier cls, String s) {
-    // SINGLETON.getParser(Notation.getNotation(ctx))
-    // .parseAttributeCompartment(cls, s);
-    // }
-
-    // public static MExtensionPoint parseExtensionPoint(NotationContext ctx,
-    // String s) {
-    // return SINGLETON.getParser(Notation.getNotation(ctx))
-    // .parseExtensionPoint(s);
-    // }
-
-    // public static MOperation parseOperation(NotationContext ctx, String s) {
-    // return SINGLETON.getParser(Notation.getNotation(ctx)).parseOperation(s);
-    // }
-
-    // public static MAttribute parseAttribute(NotationContext ctx, String s) {
-    // return SINGLETON.getParser(Notation.getNotation(ctx)).parseAttribute(s);
-    // }
-
-    // public static String parseOutVisibility(NotationContext ctx,
-    // MFeature f, String s) { }
-
-    // public static String parseOutKeywords(NotationContext ctx,
-    // MFeature f, String s) { }
-
-    // public static String parseOutReturnType(NotationContext ctx,
-    // MOperation op, String s) { }
-
-    // public static String parseOutParams(NotationContext ctx,
-    // MOperation op, String s) { }
-
-    // public static String parseOutName(NotationContext ctx,
-    // MModelElement me, String s) { }
-
-    // public static String parseOutType(NotationContext ctx,
-    // MAttribute attr, String s) { }
-
-    // public static String parseOutInitValue(NotationContext ctx,
-    // MAttribute attr, String s) { }
-
-    // public static String parseOutColon(NotationContext ctx, String s) { }
-
-    // public static MParameter parseParameter(NotationContext ctx,
-    // String s) { }
-
-    // public static Package parsePackage(NotationContext ctx, String s) { }
-
-    // public static MClassImpl parseClassifier(NotationContext ctx,
-    // String s) { }
-
-    // public static MStereotype parseStereotype(NotationContext ctx,
-    // String s) { }
-
-    // public static MTaggedValue parseTaggedValue(NotationContext ctx,
-    // String s) { }
-
-    // public static MAssociation parseAssociation(NotationContext ctx,
-    // String s) { }
-
-    // public static MAssociationEnd parseAssociationEnd(NotationContext ctx,
-    // String s) { }
-
-    // public static MMultiplicity parseMultiplicity(NotationContext ctx,
-    // String s) { }
-
-    // public static MState parseState(NotationContext ctx, String s) { }
-
-    // public static void parseStateBody(NotationContext ctx, MState
-    // st, String s) { }
-
-    // public static void parseStateEntyAction(NotationContext ctx,
-    // MState st, String s) { }
-
-    // public static void parseStateExitAction(NotationContext ctx,
-    // MState st, String s) { }
-
-    // public static MTransition parseTransition(NotationContext ctx,
-    // MTransition trans, String s) { }
-
-    // public static void parseClassifierRole(NotationContext ctx,
-    // MClassifierRole cls, String s) { }
-
-    // public static void parseMessage(NotationContext ctx, MMessage
-    // mes, String s) { }
-
-    // public static void parseStimulus(NotationContext ctx, MStimulus
-    // sti, String s) { }
-
-    // public static MAction parseAction(NotationContext ctx, String s) { }
-
-    // public static MGuard parseGuard(NotationContext ctx, String s) { }
-
-    // public static MEvent parseEvent(NotationContext ctx, String s) { }
-
-    // public static void parseObject(NotationContext ctx, MObject
-    // obj, String s) { }
-
-    // public static void parseNodeInstance(NotationContext ctx,
-    // MNodeInstance noi, String s) { }
-
-    // public static void parseComponentInstance(NotationContext ctx,
-    // MComponentInstance coi, String s) { }
 
     ////////////////////////////////////////////////////////////////
     // Static workers for dealing with notation names.
