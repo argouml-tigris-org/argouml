@@ -55,7 +55,7 @@ responsibilities or functions of the subsystems.
 
       <tbody valign="top">
         <row>
-          <entry>2005-11-01</entry>
+          <entry>2005-05-01</entry>
           <entry>
 Change to XXX.
 (See <xref linkend="xxx"/>).
@@ -64,6 +64,18 @@ Change to XXX.
         </row>
       </tbody>
       -->
+
+      <tbody valign="top">
+        <row>
+          <entry>2005-05-01</entry>
+          <entry>
+Removed old description on how to make releases.
+Added instructions on how to run the installers.
+(See <xref linkend="running_installers"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
 
       <tbody valign="top">
         <row>
@@ -384,6 +396,14 @@ Changed some spelling errors in cookbook.in while at it.
           <entry>
 Changes to description of module loader making the new module loader a fact.
 (See <xref linkend="moduleloader"/> and <xref linkend="modules_and_plugins"/>).
+
+<note>
+              <title>Design decision - Linus Tolke 2004-10-11</title>
+              <para>
+New imperative Module loader.
+</para>
+            </note>
+
 </entry>
           <entry>Linus Tolke</entry>
         </row>

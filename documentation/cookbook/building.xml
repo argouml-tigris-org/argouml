@@ -2152,10 +2152,25 @@ argouml/tools/bin/do-for-projects.sh `pwd`/argouml/tools/ant-1.6.2/bin/ant insta
 	  <para>
 Run the tests. Both automatic and manual.
 </para>
-	</listitem>
+	  </listitem>
 
-        <listitem>
-	  <para>
+	  <listitem>
+	    <para>
+Build the pdf version of the documentation.
+</para>
+          <para>
+This is done using the command
+<programlisting>
+cd argouml/documentation &amp;&amp; ./build.sh docbook-xsl-get
+cp ../argouml/tools/lib/JimiProClasses.zip argouml/tools/lib
+cd argouml/documentation &amp;&amp; ./build.sh pdf
+</programlisting>
+provided that you have JimiProClasses.zip located in that spot.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
 Set the release tag.
 </para>
 	  <para>
@@ -2253,6 +2268,8 @@ This is done by sending a mail on the
 <ulink url="mailto:dev@argoumlinstallers.tigris.org">
   installers mailing list
 </ulink>.
+What the persons responsible for the installers do is described in
+<xref linkend="running_installers"/>.
 </para>
    	</listitem>
       </orderedlist>
@@ -2353,10 +2370,310 @@ problems.
 When you get notified that it is completed, 
 update your checked out copy and continue the release work.
 </para>
-	</sect3>
-      </sect2>
+      </sect3>
+    </sect2>
 
-</sect1>
+    <sect2 id="running_installers">
+      <title>Running installers</title>
+      <para>
+The purpose of running the installers is 
+to package argouml for different purposes and platforms.
+The scripts to do this are all maintained within the argoumlinstallers
+project.
+</para>
+
+      <para>
+Prerequisites:
+</para>
+
+      <itemizedlist>
+	<listitem>
+	  <para>
+The release is built and located in
+<filename class="directory">argouml/build</filename> and
+<filename class="directory">argouml/build/ext</filename>.
+</para>
+	  <para>
+This can be done either because you are the person that prepared the release or
+by someone else checking out the release tag and building.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+The pdf versions of the documentation is built and located in
+<filename class="directory">argouml/build/documentation/pdf</filename>.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+The argoumlinstallers project is checked out at
+<filename>argoumlinstallers</filename>
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Parts of the argouml-downloads project is checked out.
+</para>
+
+	  <para>
+This is where everything will end up.
+In this explanation it is referenced using a path
+<filename>svn/argouml-downloads/<replaceable>wherever</replaceable></filename>
+but some of the tools require this to be located at a specific place
+relative to where you are working with your release namely in:
+<filename>../svn/argouml/downloads/<replaceable>whereever</replaceable></filename>.
+</para>
+	</listitem>
+      </itemizedlist>
+      <sidebar>
+	<para>
+The reason for this is how Linus' machine has been set up.
+</para>
+	<itemizedlist>
+	  <listitem>
+	    <para>
+<filename><replaceable>WORKING PLACE</replaceable>/cvs.tigris.org/</filename>
+for CVS checkouts from tigris.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+<filename><replaceable>WORKING PLACE</replaceable>/cvs.tigris.org/argouml</filename>
+where the argouml project is checked out and most of the work is done.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+<filename><replaceable>WORKING PLACE</replaceable>/cvs.tigris.org/VERSION_<replaceable>0_21_2</replaceable>_F/</filename>
+where a release is checked out.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+<filename><replaceable>WORKING PLACE</replaceable>/cvs.tigris.org/VERSION_<replaceable>0_21_2</replaceable>_F/argouml</filename>
+the released project.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+<filename><replaceable>WORKING PLACE</replaceable>/cvs.tigris.org/VERSION_<replaceable>0_21_2</replaceable>_F/argouml/build</filename>
+where all built files end up.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+<filename><replaceable>WORKING PLACE</replaceable>/cvs.tigris.org/VERSION_<replaceable>0_21_2</replaceable>_F/argoumlinstallers</filename>
+the tagged version of the installers scripts.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+<filename><replaceable>WORKING PLACE</replaceable>/svn</filename>
+for SVN checkouts from tigris.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+<filename><replaceable>WORKING PLACE</replaceable>/svn/argouml-downloads</filename>
+where the argouml-downloads project is checked out.
+</para>
+	  </listitem>
+	</itemizedlist>
+
+	<para>
+This explanation assumes that we are located in 
+<filename><replaceable>WORKING PLACE</replaceable>/cvs.tigris.org/VERSION_<replaceable>0_21_2</replaceable>_F/</filename>.
+</para>
+      </sidebar>
+
+      <para>
+This ends when the packages are commit into the argouml-downloads project
+and the links are updated.
+</para>
+      <para>
+The purpose of this description is to describe how to run the installers,
+specifying the exact installers in order to guarantee that the releases
+all contain the same information.
+</para>
+      <para>
+This is what you do:
+</para>
+
+      <orderedlist>
+	<listitem>
+	  <para>
+Sign the jar files.
+</para>
+	  <para>
+The following command will do it for you:
+<programlisting>
+cd argouml/build &amp;&amp;
+find . -name \*.jar -print |
+while read jarname
+do
+    echo "$BUILD signing $jarname"
+    $JAVA_HOME/bin/jarsigner -storepass secret $jarname argouml
+done
+</programlisting>
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Copy or move the pdf files giving them version names.
+</para>
+	  <para>
+The following command will do it for you:
+<programlisting>
+for pdffile in argouml/build/documentation/pdf/*/*.pdf
+do
+    mv $pdffile argouml/build/`basename $pdffile .pdf`-<replaceable>RELEASENAME</replaceable>.pdf
+done
+</programlisting>
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Create the zip files and the tgz files.
+Historically there are three of each:
+The 
+<filename>ArgoUML-<replaceable>RELEASENAME</replaceable>.zip</filename>,
+<filename>ArgoUML-<replaceable>RELEASENAME</replaceable>-libs.zip</filename>,
+and
+<filename>ArgoUML-<replaceable>RELEASENAME</replaceable>-src.zip</filename>.
+</para>
+
+	  <para>
+There is currently not a script in argoumlinstaller to build these.
+They have been build by the pack-release.sh script.
+There is more work to be done here.
+</para>
+	  <para>
+The files should end up in a newly created directory called
+<filename class="directory">svn/argouml-downloads/argouml-<replaceable>RELEASENAME</replaceable>/</filename>.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Build the appbund file for Mac.
+</para>
+	      <para>
+This is how this is done:
+<programlisting>
+cd argoumlinstaller/appbund &amp;&amp; ./doit.sh
+</programlisting>
+and give the version number.
+</para>
+
+	  <para>
+The file is created in 
+<filename class="directory">argoumlinstaller/build</filename>.
+Copy it to 
+<filename class="directory">svn/argouml-downloads/argouml-<replaceable>RELEASENAME</replaceable>/</filename>.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Copy files for Java Web Start.
+</para>
+
+	  <warning>
+	    <para>
+Notice that the createJWS.sh script is setup to be run from
+<filename>../argoumlinstaller/javawebstart</filename>
+and not
+<filename>argoumlinstaller/javawebstart</filename>
+which makes sence only if you remember that any updates to the LAYOUT
+file should be included also for subsequent releases
+and if you use the same directorylayout.
+ </para>
+	    <para>
+There is more work to be done here to make these scripts aligned.
+</para>
+	  </warning>
+	  <para>
+This is what you need to do for this:
+</para>
+	  <orderedlist>
+	    <listitem>
+	      <para>
+If there has been a change in any of the included libraries,
+update the
+<filename>../argoumlinstaller/javawebstart/LAYOUT</filename>-file
+with the new version numbers.
+</para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+Run the script that creates directories, copies files, and
+creates the jnlp file.
+</para>
+
+	      <warning>
+		<para>
+This requires that you have the directory layout descdribed above.
+</para>
+	      </warning>
+
+	      <para>
+This is how this is done:
+<programlisting>
+cd ../argoumlinstaller/javawebstart &amp;&amp; ./createJWS.sh
+</programlisting>
+and give the version number.
+The version number will be the version number used in all
+the argouml-created jar files and also in the JNLP file.
+</para>
+	    </listitem>
+	  </orderedlist>
+	</listitem>
+
+	<listitem>
+	  <para>
+For Java Web Start,
+update the "Latest development" or
+"Latest stable" files
+essentially with the contents of the newly create jnlp-file.
+</para>
+
+	  <para>
+These files are located in the 
+<filename class="directory">svn/argouml-downloads/www/jws</filename>-directory.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Create the index file for the release.
+</para>
+	  <para>
+The file should end up in the newly created directory and 
+have the name
+<filename>svn/argouml-downloads/argouml-<replaceable>RELEASENAME</replaceable>/index.html</filename>.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Update the index file for the downloads project to point out the new release.
+</para>
+
+	  <para>
+It should point out the release at 
+<filename>/argouml-<replaceable>RELEASENAME</replaceable>/</filename>,
+the java web start file at
+<filename>/jws/argouml-<replaceable>RELEASENAME</replaceable>.jnlp</filename>.
+</para>
+	</listitem>
+      </orderedlist>
+
+    </sect2>
+
+  </sect1>
 
 </chapter>
 
