@@ -1070,13 +1070,27 @@ For details see http://www.clarkware.com/software/JDepend.html.
     </antcall>
 
     <antcall target="checkstyle-cond">
-      <param name="source.dir" value="${argo.root.dir}/../argouml-emf/src"/>
+      <param name="source.dir"
+             value="${argo.root.dir}/../argouml-andromda/src"/>
     </antcall>
     <antcall target="checkstyle-cond">
-      <param name="source.dir" value="${argo.root.dir}/../argouml-nb/src"/>
+      <param name="source.dir"
+             value="${argo.root.dir}/../argouml-classfile/src"/>
     </antcall>
     <antcall target="checkstyle-cond">
-      <param name="source.dir" value="${argo.root.dir}/../argouml-i18n-zh/src"/>
+      <param name="source.dir" value="${argo.root.dir}/../argouml-cpp/src"/>
+    </antcall>
+    <antcall target="checkstyle-cond">
+      <param name="source.dir" value="${argo.root.dir}/../argouml-csharp/src"/>
+    </antcall>
+    <antcall target="checkstyle-cond">
+      <param name="source.dir" value="${argo.root.dir}/../argouml-idl/src"/>
+    </antcall>
+    <antcall target="checkstyle-cond">
+      <param name="source.dir" value="${argo.root.dir}/../argouml-php/src"/>
+    </antcall>
+    <antcall target="checkstyle-cond">
+      <param name="source.dir" value="${argo.root.dir}/../argouml-python/src"/>
     </antcall>
   </target>
 
