@@ -68,6 +68,8 @@ import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationContext;
 import org.argouml.notation.NotationName;
+import org.argouml.notation.NotationProvider4;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
@@ -133,6 +135,8 @@ public abstract class FigEdgeModelElement
 
     ////////////////////////////////////////////////////////////////
     // instance variables
+
+    protected NotationProvider4 notationProviderName;
 
     /**
      * The Fig that displays the name of this model element.
@@ -546,7 +550,8 @@ public abstract class FigEdgeModelElement
      */
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
-            showHelp("parsing.help.fig-edgemodelelement");
+            showHelp(notationProviderName.getParsingHelp());
+            ft.setText(notationProviderName.toString());
         }
     }
 
@@ -577,7 +582,7 @@ public abstract class FigEdgeModelElement
         if (ft == nameFig) {
             if (getOwner() == null)
                 return;
-            Model.getCoreHelper().setName(getOwner(), ft.getText());
+            ft.setText(notationProviderName.parse(ft.getText()));
         }
     }
 
@@ -679,14 +684,10 @@ public abstract class FigEdgeModelElement
     /**
      * This is called after any part of the UML ModelElement has
      * changed. This method automatically updates the name FigText.
-     * Subclasses should override and update other parts.<p>
-     * 
-     * NOTE: If you override this method you probably also want to 
-     * override the modelChanged() method
+     * Subclasses should override and update other parts.
      *
      * @param e the event
      */
-    // TODO: Merge so there's only a single place to deal with
     protected void modelChanged(PropertyChangeEvent e) {
         if (e instanceof DeleteInstanceEvent) {
             // No need to update if model element went away
@@ -718,11 +719,12 @@ public abstract class FigEdgeModelElement
         if (getOwner() == null) {
             return;
         }
-        String nameStr =
-            Notation.generate(this, Model.getFacade().getName(getOwner()));
-        nameFig.setText(nameStr);
-        calcBounds();
-        setBounds(getBounds());
+        if (notationProviderName != null) {
+            String nameStr = notationProviderName.toString();
+            nameFig.setText(nameStr);
+            calcBounds();
+            setBounds(getBounds());
+        }
     }
 
     /**
@@ -769,7 +771,12 @@ public abstract class FigEdgeModelElement
      * @param own the current owner
      */
     protected void initNotationProviders(Object own) {
-        /* Do nothing by default. */
+        if (Model.getFacade().isAModelElement(own)) {
+            notationProviderName =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        NotationProviderFactory2.TYPE_NAME, this, own);
+            notationProviderName.putValue("edge", Boolean.TRUE);
+        }
     }
     
     /**
@@ -852,7 +859,7 @@ public abstract class FigEdgeModelElement
             if (changeEvent.getNewValue().equals("true")) {
                 setContextNotation(Notation.getConfigueredNotation());
             }
-        } else {
+        } else if (changeEvent.getPropertyName().equals("argo.notation.default")) {
             setContextNotation(
                 Notation.findNotation((String) changeEvent.getNewValue()));
         }
