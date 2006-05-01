@@ -88,6 +88,9 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
         if (Model.getFacade().isAUseCase(myModelElement)) {
             return "parsing.help.fig-usecase";
         }
+        if (((Boolean) getValue("edge")).booleanValue()) {
+            return "parsing.help.fig-edgemodelelement";
+        }
         return "parsing.help.fig-nodemodelelement";
     }
 

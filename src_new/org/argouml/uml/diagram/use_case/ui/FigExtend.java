@@ -29,7 +29,7 @@ import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
 
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
+import org.argouml.notation.NotationHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadGreater;
@@ -89,7 +89,6 @@ public class FigExtend extends FigEdgeModelElement {
         //int y = getNameFig().getBounds().height;
         int y = 0;
         int h = 20;
-        
         y = y + 30;
         label = new FigText(10, y, 90, h);
         y = y + h;
@@ -99,7 +98,8 @@ public class FigExtend extends FigEdgeModelElement {
         label.setFilled(false);
         label.setLineWidth(0);
         label.setEditable(false);
-        label.setText("<<extend>>");        
+        label.setText(NotationHelper.getLeftGuillemot() + "extend" 
+                + NotationHelper.getRightGuillemot());        
         label.calcBounds();
 
         // Set up FigText to hold the condition.
@@ -116,7 +116,7 @@ public class FigExtend extends FigEdgeModelElement {
 
         fg = new FigGroup();
 
-        // UML spec for Extend doesn't call for name or stereotype
+        // UML spec for Extend doesn't call for name nor stereotype
         //fg.addFig(getNameFig());
         fg.addFig(label);
         //fg.addFig(getStereotypeFig());
@@ -187,12 +187,13 @@ public class FigExtend extends FigEdgeModelElement {
         return false;
     }
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Event handlers
-    //
-    ///////////////////////////////////////////////////////////////////////////
+    /**
+     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
+     */
+    public void paint(Graphics g) {
+        endArrow.setLineColor(getLineColor());
+        super.paint(g);
+    }
 
     /**
      * Handle changes to the model.  The only thing we need to deal with
@@ -208,36 +209,50 @@ public class FigExtend extends FigEdgeModelElement {
         super.modelChanged(e);
         
         if ("condition".equals(e.getPropertyName())) {
-            /*
-             * Now sort out the condition text. Use the null string if there is
-             * no condition set. We call the main generate method, which will
-             * realise this is a MExpression (subclass) and invoke the correct
-             * method.
-             */
-            Object c = Model.getFacade().getCondition(extend);
-            
-            if (c == null) {
-                condition.setText("");
-            }
-            else {
-                condition.setText(Notation.generate(this, c));
-            }
-            // Let the group recalculate its bounds and then tell GEF we've
-            // finished.
-            fg.calcBounds();
-            endTrans();
+            renderingChanged();
         }
-
     }
-
 
     /**
-     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
-    public void paint(Graphics g) {
-        endArrow.setLineColor(getLineColor());
-        super.paint(g);
+    public void renderingChanged() {
+        if (getOwner() != null) {
+            updateConditionText();
+            updateLabel();
+        }
+        super.renderingChanged();
     }
 
+    /**
+     * Now sort out the condition text. Use the null string if there is
+     * no condition set. The condition is a BooleanExpression,
+     * so we show the "body" of it, and ignore the "language".
+     */
+    protected void updateConditionText() {
+        if (getOwner() == null) return;
+
+        Object c = Model.getFacade().getCondition(getOwner());
+        if (c == null) {
+            condition.setText("");
+        } else {
+            Object expr = Model.getFacade().getBody(c);
+            if (expr == null) {
+                condition.setText("");
+            } else {
+                condition.setText((String) expr);
+            }
+        }
+        // Let the group recalculate its bounds and then tell GEF we've
+        // finished.
+        fg.calcBounds();
+        endTrans();
+    }
+    
+    protected void updateLabel() {
+        /* The notation may change the use of guillemets: */
+        label.setText(NotationHelper.getLeftGuillemot() + "extend" 
+                + NotationHelper.getRightGuillemot());
+    }
 
 } /* end class FigExtend */

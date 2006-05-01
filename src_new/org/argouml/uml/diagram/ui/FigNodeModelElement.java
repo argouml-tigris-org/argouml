@@ -1260,8 +1260,8 @@ public abstract class FigNodeModelElement
             }
             if (notationProviderName != null) {
                 nameFig.setText(notationProviderName.toString());
+                updateBounds();
             }
-            updateBounds();
         }
     }
 
@@ -1366,7 +1366,7 @@ public abstract class FigNodeModelElement
             if (changeEvent.getNewValue().equals("true")) {
                 setContextNotation(Notation.getConfigueredNotation());
             }
-        } else {
+        } else if (changeEvent.getPropertyName().equals("argo.notation.default")) {
             setContextNotation(
                 Notation.findNotation((String) changeEvent.getNewValue()));
         }
