@@ -38,7 +38,9 @@ import org.argouml.application.api.ConfigurationKey;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.language.java.generator.GeneratorJava;
 import org.argouml.model.Model;
+import org.argouml.uml.generator.GeneratorDisplay;
 
 /**
  * Provides centralized methods dealing with notation.
@@ -60,7 +62,9 @@ public final class Notation implements PropertyChangeListener {
      * part of ArgoUML core distribution.
      */
     private static NotationName notationArgo =
-        NotationNameImpl.findNotation("UML 1.4");
+        /* TODO: Now 1207 is mostly done, can we replace this by: ??? */
+//        NotationNameImpl.findNotation("UML 1.4");
+        GeneratorDisplay.getInstance().getNotation();
     /*
      * Remark:
      * There is also a java-like notation, which is also
