@@ -729,7 +729,7 @@ public final class Notation implements PropertyChangeListener {
      * @param o    The UML element to generate for.
      * @return     The generated string.
      */
-    public static String generate(NotationName nn, Object o) {
+    private static String generate(NotationName nn, Object o) {
         if (o == null) {
             return "";
 	}
