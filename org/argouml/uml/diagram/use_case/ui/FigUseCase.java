@@ -1351,6 +1351,9 @@ public class FigUseCase extends FigNodeModelElement
      */
     protected void updateStereotypeText() {
         super.updateStereotypeText();
+        if (getOwner() == null) {
+            return;
+        }
         if (!Model.getFacade().getStereotypes(getOwner()).isEmpty()) {
             getStereotypeFig().setBounds((bigPort.getX()
 					  + bigPort.getWidth() / 2
