@@ -10,60 +10,70 @@
 <H1>ArgoUML in Google's Summer Of Code 2006</H1>
 
 <p>
-The ArgoUML project is, for the first time during 2006, 
-attempting to take part in
-<a href="http://code.google.com/soc/">Google's Summer of Code</a>.
+The ArgoUML project is participating in the
+<a href="http://code.google.com/soc/">Google Summer of Code</a>
+and is looking for students to contribute.
 </p>
 
 <p>
-We are primarily looking for students interested in 
+We are looking for enthusiastic students with a solid knowledge of Java,
+who are interested in modeling, particularly the UML modeling language.
+Most, although not all, tasks will be easier for those who already
+have an working knowledge of the OMG's UML.
+
+<!-- 
+those interested in 
 Software Engineering or Systems Engineering,
 tools for Software Engineering, and
 communication within a Software Engineering project using UML.
+-->
 
-Java and UML are the natural prerequisites.
 </p>
 
 <p>
-This page include a list of projects that are especially interesting for 2006.
-Don't let this limit you.
-If you have other projects in mind, let us know and we will evaluate your
-ideas with the rest of the projects.
-If you want you can also look at our old
-<a href="jobjar.html">Job Jar</a> for inspiration.
+This page include a list of suggested projects that the development team is
+interested in mentoring, but we are happy to consider projects which are
+not on this list if they are worthwhile.
+If you'd like to suggest a different project, please contact the team so
+that we can work with you to develop the strongest possible proposal for
+evaluation.  There's also a more general list of development tasks which
+have been suggested over time available in our 
+<a href="jobjar.html">Job Jar</a> which may offer additional sources of
+inspiration.
 </p>
 
 <div class="h2">
-<h2>ArgoUML performance</h2>
+<h2>ArgoUML Performance</h2>
 
 <p>
-ArgoUML is sometimes slow and uses a lot of memory.
-In the big picture this is cumbersome for the users
-that need to sit and wait hours for batch operations
-and in the small picture it is irritating and creates a lot of user misstakes
-when popup menus and drag and drop operations take seconds to update.
-It is suspected that some simple measures can be take to improve this.
+ArgoUML hasn't had any formal performance analysis or 
+tuning since it switched to using the NetBeans MDR library.
+There are also some known issues with scalability to
+support large models.
 </p>
 
 <p>
-This project will include:
+Suggested tasks include:
+</p>
 <ul>
-<li>Running ArgoUML in some performance measuring tool.
-<li>Examining the result, finding areas where improvements could be done.
-<li>Make the improvements.
-<li>Restart.
+<li>Identify and resolve CPU hotspots:
+<ul>
+  <li>Select a Java profiling tool with the assistance of your mentor.
+  <li>Profile the ArgoUML application to establish a baseline and 
+develop a plan of attack.
+  <li>Refine the granularity and scope of the profiling.
+  <li>Fix identified hotspots.
+  <li>Iterate.
 </ul>
-</p>
-
-<p>
-Unless knowledge of and access to some performance measuring tool for java,
-this will need to be acquired.
-</p>
+<li>Profile for memory usage and resolve any significant memory leaks.
+<li>Investigate specific performance issues (space &amp; time) with handling
+of large models.
+</ul>
 
 </div>
 
 <div class="h2">
-<h2>ArgoPrint improvements</h2>
+<h2>ArgoPrint Improvements</h2>
 
 <p>
 <a href="http://argoprint.tigris.org/">ArgoPrint</a> is a tool to 
@@ -72,12 +82,13 @@ as a report.
 </p>
 
 <p>
-Two things needs to be done to it.
+Two things needs to be done to it:
+</p>
 <ul>
 <li>Improve it to make it usable.
 <li>Improve the template editing capabilities.
 </ul>
-</p>
+
 
 <p>
 Linus Tolke will be the mentor for this.
@@ -87,24 +98,51 @@ Linus Tolke will be the mentor for this.
 
 
 <div class="h2">
-<h2>GEF improvements</h2>
+<h2>Graphics Subsystem Improvements</h2>
 <p>
-GEF is the Graph Editing Framework used by ArgoUML for rendering UML diagrams.
+GEF is the Tigris Graph Editing Framework used by ArgoUML for rendering UML diagrams
+(not to be confused with the Eclipse framework of the same name).
 </p>
 
 <p>
-Four things needs to be done to it.
+Four things needs to be done to it:
+</p>
 <ul>
 <li>Complete undo facility
 <li>Implement graph layout algorithms
 <li>Add Eclipse compatibility
 <li>Implement demonstration projects
 </ul>
-</p>
+
 
 <p>
 Bob Tarling will be the mentor for this.
 </p>
+
+</div>
+
+<div class="h2">
+<h2>Eclipse Integration</h2>
+<p>
+There are a number of possibilities related to integration between
+Eclipse and ArgoUML that we are interested in.
+</p>
+
+<p>
+Some basic possibilities are listed below, but these can be mixed
+and matched depending on the skills and interest of the student(s):
+</p>
+<ul>
+<li>Implementation of a ArgoUML Model subsystem using the
+Eclipse UML2 2.0 plugin which is layered on the Eclipse Modeling
+Framework and implements support for the OMG's UML 2.1.
+<li>Implementation of Eclipse plugin wrappers for major ArgoUML
+components such as the property panels or diagram panes so they can
+be integrated with Eclipse.
+<li>High level basic integration of ArgoUML and Eclipse so that
+they can share coarse-grained communication and control (but 
+without any graphical integration). 
+</ul>
 
 </div>
 
