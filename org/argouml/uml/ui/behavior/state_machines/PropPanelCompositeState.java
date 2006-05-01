@@ -112,6 +112,11 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
         deleteConcurrentRegion = new ActionDeleteConcurrentRegion();
         addAction(deleteConcurrentRegion);
     }
+    
+    protected void updateExtraButtons() {
+        addConcurrentRegion.setEnabled(addConcurrentRegion.isEnabled());
+        deleteConcurrentRegion.setEnabled(deleteConcurrentRegion.isEnabled());
+    }
 
     /**
      * Initialize the panel with its specific fields, in casu
@@ -128,8 +133,7 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
      */
     public void setTarget(Object t) {
         super.setTarget(t);
-        addConcurrentRegion.setEnabled(addConcurrentRegion.isEnabled());
-        deleteConcurrentRegion.setEnabled(deleteConcurrentRegion.isEnabled());
+        updateExtraButtons();
         Object target = TargetManager.getInstance().getModelTarget();
         if (Model.getFacade().isAConcurrentRegion(target)) {
             getTitleLabel().setText("Concurrent Region");
