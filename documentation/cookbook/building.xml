@@ -2415,13 +2415,13 @@ where the files to be uploaded will go
 Notice that this is starts one step up, on the same level as
 <filename class="directory">somedirectory</filename>.
 It will be accessed using a path like
-<filename class="directory">../svn/argouml-downloads/trunk/www</filename>.
+<filename class="directory">../svn/argouml-downloads/www</filename>.
 </para>
 		  <para>
 This is achieved using the following commands:
 <programlisting>
 cd ..
-svn co -N http://argouml-downloads.tigris.org/svn/argouml-downloads/trunk/www argouml-downloads/trunk/www
+svn co -N http://argouml-downloads.tigris.org/svn/argouml-downloads/trunk/www argouml-downloads/www
 </programlisting>
 </para>
 		</listitem>
@@ -2592,7 +2592,7 @@ Copy the files in place in the svn directory.
 A tree with all files is located in 
 <filename>argouml-<replaceable>version</replaceable></filename>.
 It is copied to
-<filename>svn/argouml-downloads/trunk/www/</filename>.
+<filename>svn/argouml-downloads/www/</filename>.
 </para>
 	    </listitem>
 
@@ -2606,7 +2606,7 @@ Commit the release in the SVN download project.
 	  <para>
 The commands you would do for this are
 <programlisting>
-cd ../svn/argouml-downloads/trunk/www
+cd ../svn/argouml-downloads/www
 svn add argouml-<replaceable>VERSION</replaceable>
 svn commit -m'Upload the release <replaceable>VERSION</replaceable>'
 </programlisting>

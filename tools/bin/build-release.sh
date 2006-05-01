@@ -18,9 +18,9 @@ then
     exit 1;
 fi
 
-if test ! -d ../svn/argouml-downloads/trunk/www
+if test ! -d ../svn/argouml-downloads/www
 then
-    echo The output directory ../svn/argouml-downloads/trunk/www does not exist.
+    echo The output directory ../svn/argouml-downloads/www does not exist.
     exit 1;
 fi
 

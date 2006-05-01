@@ -13,9 +13,9 @@ then
     exit 1;
 fi
 
-if test ! -d ../svn/argouml-downloads/trunk/www
+if test ! -d ../svn/argouml-downloads/www
 then
-    echo The output directory ../svn/argouml-downloads/trunk/www does not exist.
+    echo The output directory ../svn/argouml-downloads/www does not exist.
     exit 1;
 fi
 
@@ -69,10 +69,10 @@ done
 sed "s,@URLROOT@,http://argouml-downloads.tigris.org/nonav/argouml-$releasename,g;s,@VERSION@,$releasename,g" < argouml/src_new/templates/release_html.template > DIST/index.html
 
 echo $BUILD copying to the svn directory
-mv DIST ../../svn/argouml-downloads/trunk/www/argouml-$releasename
+mv DIST ../../svn/argouml-downloads/www/argouml-$releasename
 
 echo Add and commit the newly created directory
-echo ../svn/argouml-downloads/trunk/www/$directoryname
+echo ../svn/argouml-downloads/www/$directoryname
 
 echo Update the index.html in the argouml-downloads project.
 
