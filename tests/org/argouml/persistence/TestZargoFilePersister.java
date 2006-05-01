@@ -70,8 +70,11 @@ public class TestZargoFilePersister extends TestCase {
      */
     private Project doLoad(String filename) throws OpenException {
         URL url = TestZargoFilePersister.class.getResource(filename);
+        assertTrue("Unintended failure: resource to be tested is not found: "
+                + filename + ", converted to URL: " + url, url != null);
         ZargoFilePersister persister = new ZargoFilePersister();
-        Project p = persister.doLoad(new File(url.getFile()));
+        String name = url.getFile();
+        Project p = persister.doLoad(new File(name));
         assertTrue("Load Status for " + filename + ".",
                LastLoadInfo.getInstance().getLastLoadStatus());
         return p;
