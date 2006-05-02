@@ -82,6 +82,7 @@ import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
+import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdgePoly;
 import org.tigris.gef.presentation.FigNode;
@@ -445,6 +446,16 @@ public abstract class FigEdgeModelElement
             }
         }
         return null;
+    }
+
+    /**
+     * Returns a {@link SelectionRerouteEdge} object that manages selection
+     * and rerouting of the edge.
+     *
+     * @return the SelectionRerouteEdge.
+     */
+    public Selection makeSelection() {
+        return new SelectionRerouteEdge(this);
     }
 
     /**
