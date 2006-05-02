@@ -74,6 +74,7 @@ public class FigStubState extends FigStateVertex {
         
         facade = Model.getFacade();
         stateMHelper = Model.getStateMachinesHelper();
+
         setBigPort(new FigRect(x, y, width, height));
         getBigPort().setLineWidth(0);
         getBigPort().setFilled(false);
@@ -318,8 +319,8 @@ public class FigStubState extends FigStateVertex {
      * Call superclass then add reference text
      */
     public void renderingChanged() {
-        super.renderingChanged();
         updateReferenceText();
+        super.renderingChanged();
     }
     
     /**
