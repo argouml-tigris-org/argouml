@@ -48,8 +48,8 @@ import org.tigris.gef.presentation.FigEdge;
  * the re-routing logic to the graphmodels; extends
  * functionality in SelectionEdgeClarifiers.
  *
- * <p>If a gragphmodel does not override canChangeConnectedNode()
- * then rerouting is not possible and argo should behave as if
+ * <p>If a graphmodel does not override canChangeConnectedNode()
+ * then rerouting is not possible and ArgoUML should behave as if
  * rerouting had never been implemented.
  *
  * @author  alexb
@@ -58,19 +58,19 @@ import org.tigris.gef.presentation.FigEdge;
 public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
 
     /**
-     * used to determine if the association is now to self,
+     * Used to determine if the association is now to self,
      * in which case The association needs automatic layout.
      */
     private FigNodeModelElement sourceFig;
 
     /**
-     * used to determine if the association is now to self,
+     * Used to determine if the association is now to self,
      * in which case The association needs automatic layout.
      */
     private FigNodeModelElement destFig;
 
     /**
-     * <p>the re-routing capability it armed if the mouse was previously
+     * The re-routing capability it armed if the mouse was previously
      * dragged.
      * <p>prevents just selecting the message then clicking somewhere
      * else on the diagram,
@@ -78,13 +78,14 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
     private boolean armed;
 
     /**
-     * <p>the index of the point on the line of the message.
+     * The index of the point on the line of the message.
      * <p>0 = sender end
      * <p>1..* = receiver end
      */
     private int pointIndex;
 
-    /** Creates a new instance of SelectionRerouteEdge
+    /** 
+     * Creates a new instance of SelectionRerouteEdge
      *
      * @param feme the given Fig
      */
@@ -98,7 +99,7 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
     }
 
     /**
-     * set up for re-routing.
+     * Set up for re-routing.
      *
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
@@ -128,8 +129,9 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
     }
 
     /**
-     * <p>need to 'arm' the rerouting capability with mouseDragged().
-     * <p>don't arm if the edtior's current mode is a figedge create mode,
+     * Need to 'arm' the rerouting capability with mouseDragged().
+     * <p>
+     * Don't arm if the edtior's current mode is a figedge create mode,
      * because once a new edge has been created it is not deselected,
      * therefore on the next create an unwanted reroute is performed.
      *
@@ -148,9 +150,9 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
     }
 
     /**
-     * <p>perform re-routing if src/dest nodes have changed.
+     * Perform re-routing if src/dest nodes have changed.
      *
-     * <p> this method needs to be 'armed' by a previous mouseDragged()
+     * <p>This method needs to be 'armed' by a previous mouseDragged()
      * to avoid the situation where the user just clicks on the message
      * then clicks on some unrelated Fig, without moving the association...
      *

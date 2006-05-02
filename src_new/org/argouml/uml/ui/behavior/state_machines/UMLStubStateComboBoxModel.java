@@ -33,7 +33,6 @@ import java.util.Iterator;
 /**
  * @author pepargouml@yahoo.es
  */
-
 public class UMLStubStateComboBoxModel extends UMLComboBoxModel2 {
 
     /**

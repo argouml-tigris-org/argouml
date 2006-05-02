@@ -53,7 +53,6 @@ import org.tigris.gef.presentation.ArrowHeadComposite;
 import org.tigris.gef.presentation.ArrowHeadDiamond;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.ArrowHeadNone;
-import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
 
 
@@ -88,7 +87,7 @@ public class FigAssociation extends FigEdgeModelElement {
 
     private ArrowHead sourceArrowHead, destArrowHead;
     
-    private final static Logger LOG = Logger.getLogger(FigAssociation.class);
+    private static final Logger LOG = Logger.getLogger(FigAssociation.class);
 
 
     /**

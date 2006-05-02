@@ -51,8 +51,10 @@ public class PropPanelStubState extends PropPanelStateVertex {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
+
         addField(Translator.localize("label.container"),
                 getContainerScroll());
+
         JComboBox referencestateBox =
                 new UMLComboBox2(
                         new UMLStubStateComboBoxModel(),
@@ -67,6 +69,7 @@ public class PropPanelStubState extends PropPanelStateVertex {
 
         addField(Translator.localize("label.incoming"),
                 getIncomingScroll());
+
         addField(Translator.localize("label.outgoing"),
                 getOutgoingScroll());
     }
