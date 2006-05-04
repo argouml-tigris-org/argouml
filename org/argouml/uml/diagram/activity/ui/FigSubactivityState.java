@@ -28,11 +28,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
 import java.util.Iterator;
 
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
@@ -91,6 +91,7 @@ public class FigSubactivityState extends FigStateVertex {
         getNameFig().setBounds(10 + PADDING, 10, 90 - PADDING * 2, 25);
         getNameFig().setFilled(false);
         getNameFig().setReturnAction(FigText.INSERT);
+        getNameFig().setEditable(false);
 
         // add Figs to the FigNode in back-to-front order
         addFig(bigPort);
@@ -256,46 +257,47 @@ public class FigSubactivityState extends FigStateVertex {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
+        // Let our superclass sort itself out first
         super.modelChanged(mee);
-        if (mee.getSource() == getOwner()
-                && mee.getPropertyName().equals("entry")) {
-            if (mee.getNewValue() != null) {
-                addElementListener(mee.getNewValue(), "script");
-            } else
-                if (mee.getOldValue() != null) {
-                    removeElementListener(mee.getOldValue());
-                }
-            updateNameText();
-            damage();
-        } else
-            if (Model.getFacade().getEntry(getOwner()) == mee.getSource()) {
-                updateNameText();
-                damage();
-            }
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            renderingChanged();
+            updateListeners(getOwner());
+        }
+    }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
+    protected void updateListeners(Object newOwner) {
+        Object oldOwner = getOwner();
+        if (oldOwner != null) {
+            removeAllElementListeners();
+        }
+        if (newOwner != null) {
+            // add the listeners to the newOwner
+            addElementListener(newOwner);
+            // and listen to name changes of the submachine
+            Object machine = Model.getFacade().getSubmachine(newOwner);
+            if (machine != null) {
+                addElementListener(machine);
+            }
+        }
     }
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
+        String s = "";
         if (getOwner() != null) {
-            String s = Notation.generate(this, getOwner());
-            if (s != null) {
-                getNameFig().setText(s);
+            Object machine = Model.getFacade().getSubmachine(getOwner());
+            if (machine != null) {
+                s = Model.getFacade().getName(machine);
             }
         }
+        if (s == null) s= "";
+        getNameFig().setText(s);
     }
 
-    /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
-     */
-    protected void textEdited(FigText ft) throws PropertyVetoException {
-        /*if (ft == getNameFig() && this.getOwner() != null) {
-            //TODO: Write this function in ParserDisplay. Uncomment then.
-            ParserDisplay.SINGLETON.parseSubactionState(ft.getText(),
-                    this.getOwner());
-        } else*/
-        super.textEdited(ft);
-    }
 } /* end class FigSubactivityState */
