@@ -74,6 +74,8 @@ public class PGMLStackParser
             "org.argouml.uml.diagram.static_structure.ui.FigComment");
         addTranslation("org.argouml.uml.diagram.state.ui.FigState",
             "org.argouml.uml.diagram.state.ui.FigSimpleState");
+        addTranslation("org.argouml.uml.diagram.ui.FigCommentPort",
+            "org.argouml.uml.diagram.ui.FigEdgePort");
     }
 
     /**
