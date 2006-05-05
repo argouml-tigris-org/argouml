@@ -133,6 +133,7 @@ public class FigAssociation extends FigEdgeModelElement {
         srcOrdering.setLineWidth(0);
         srcOrdering.setReturnAction(FigText.END_EDITING);
         srcOrdering.setJustification(FigText.JUSTIFY_CENTER);
+        srcOrdering.setEditable(false); // parsing not (yet) implemented
 
         srcGroup.addFig(srcRole);
         srcGroup.addFig(srcOrdering);
@@ -165,6 +166,7 @@ public class FigAssociation extends FigEdgeModelElement {
         destOrdering.setLineWidth(0);
         destOrdering.setReturnAction(FigText.END_EDITING);
         destOrdering.setJustification(FigText.JUSTIFY_CENTER);
+        destOrdering.setEditable(false); // parsing not (yet) implemented
 
         destGroup.addFig(destRole);
         destGroup.addFig(destOrdering);
