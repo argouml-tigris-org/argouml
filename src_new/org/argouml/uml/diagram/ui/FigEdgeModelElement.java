@@ -385,6 +385,21 @@ public abstract class FigEdgeModelElement
     }
 
     /**
+     * @param f the fig to indicate the bounds of
+     * @param g the graphics
+     */
+    protected void indicateBounds(FigText f, Graphics g) {
+        String text = f.getText();
+        if (text == null || text.length() == 0) {
+            Rectangle rect = f.getBounds();
+            Color c = g.getColor();
+            g.setColor(Globals.getPrefs().handleColorFor(f));
+            g.drawRect(rect.x, rect.y, rect.width, rect.height);
+            g.setColor(c); // TODO: Is this needed?
+        }
+    }
+    
+    /**
      * The user clicked on the clarifier.
      *
      * @param x the x of the point clicked
@@ -1220,5 +1235,16 @@ public abstract class FigEdgeModelElement
         listeners.clear();
     }
 
+    /**
+     * Returns all texts shown in a TextFig that are editable.
+     * This is used to meke these texts stand out when the edge is selected.
+     * 
+     * @return a collection of TextFigs
+     */
+//    Collection getEditableTextFigs() {
+//        Collection c = new ArrayList();
+//        c.add(nameFig);
+//        return c;
+//    }
 
 } /* end class FigEdgeModelElement */
