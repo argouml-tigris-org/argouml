@@ -28,14 +28,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.notation.Notation;
+import org.argouml.model.Model;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigMessage;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
-
 
 
 /**
@@ -51,9 +51,6 @@ public class FigAssociationRole extends FigAssociation {
     private static final long serialVersionUID = -6543020797101620194L;
     
     private FigMessageGroup messages = new FigMessageGroup();
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Main Constructor
@@ -74,20 +71,44 @@ public class FigAssociationRole extends FigAssociation {
     	setOwner(edge);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // event handlers
+    /**
+     * Create the NotationProviders.
+     * 
+     * @param own the current owner
+     */
+    protected void initNotationProviders(Object own) {
+        if (Model.getFacade().isAAssociationRole(own)) {
+            if (Model.getFacade().isAAssociation(own)) {
+                Object[] ends = 
+                    Model.getFacade().getConnections(own).toArray(); 
+                Object ae0 = ends[0];
+                Object ae1 = ends[1];
+                notationProviderSrcRole =
+                    NotationProviderFactory2.getInstance().getNotationProvider(
+                            NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
+                            this, ae0);
+                notationProviderDestRole =
+                    NotationProviderFactory2.getInstance().getNotationProvider(
+                            NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
+                            this, ae1);
+            }
+            notationProviderName =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        NotationProviderFactory2.TYPE_ASSOCIATION_ROLE, 
+                        this, own);
+        }
+    }
 
     /**
-     * Override standard name handling to take care of the
-     * "/ name : base association name" form.
-     *
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateNameText()
+     * @see org.argouml.uml.diagram.ui.FigAssociation#updateListeners(
+     * java.lang.Object)
      */
-    protected void updateNameText() {
-        Object role = getOwner();
-        if (role != null) {
-            String asNameStr = Notation.generate(this, role);
-            getNameFig().setText(asNameStr);
+    public void updateListeners(Object newOwner) {
+        super.updateListeners(newOwner);
+        if (newOwner != null) {
+            /* Also listen to the base: */
+            Object assoc = Model.getFacade().getBase(newOwner);
+            addElementListener(assoc);
         }
     }
 

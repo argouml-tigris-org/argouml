@@ -96,6 +96,9 @@ public class InitNotationUml {
                 NotationProviderFactory2.TYPE_EXTENSION_POINT,
                 name, ExtensionPointNotationUml.class);
         npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME,
+                name, AssociationEndNameNotationUml.class);
+        npf.addNotationProvider(
                 NotationProviderFactory2.TYPE_ASSOCIATION_ROLE,
                 name, AssociationRoleNotationUml.class);
 
