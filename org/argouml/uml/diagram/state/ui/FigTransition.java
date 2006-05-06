@@ -307,6 +307,14 @@ public class FigTransition extends FigEdgeModelElement {
     }
 
     /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#paintClarifiers(java.awt.Graphics)
+     */
+    public void paintClarifiers(Graphics g) {
+        indicateBounds(getNameFig(), g);
+        super.paintClarifiers(g);
+    }
+
+    /**
      * The UID.
      */
     private static final long serialVersionUID = 2938247797781036110L;
