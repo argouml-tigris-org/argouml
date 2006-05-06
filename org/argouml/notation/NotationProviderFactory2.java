@@ -124,6 +124,11 @@ public final class NotationProviderFactory2 {
     public static final int TYPE_EXTENSION_POINT = 15;
 
     /**
+     * The text shown at the association end that represents the role.
+     */
+    public static final int TYPE_ASSOCIATION_ROLE = 16;
+
+    /**
      * defaultLanguage the Notation language used by default, i.e. UML
      */
     private NotationName defaultLanguage;

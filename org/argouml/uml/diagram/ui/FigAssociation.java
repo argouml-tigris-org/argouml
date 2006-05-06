@@ -42,7 +42,8 @@ import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation.Notation;
-import org.argouml.notation.NotationHelper;
+import org.argouml.notation.NotationProvider4;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -86,6 +87,9 @@ public class FigAssociation extends FigEdgeModelElement {
     private FigText srcOrdering, destOrdering;
 
     private ArrowHead sourceArrowHead, destArrowHead;
+    
+    protected NotationProvider4 notationProviderSrcRole;
+    protected NotationProvider4 notationProviderDestRole;
     
     private static final Logger LOG = Logger.getLogger(FigAssociation.class);
 
@@ -194,42 +198,53 @@ public class FigAssociation extends FigEdgeModelElement {
     }
 
     /**
+     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
+     */
+    protected void initNotationProviders(Object own) {
+        super.initNotationProviders(own);
+        if (Model.getFacade().isAAssociation(own)) {
+            Object[] ends = 
+                Model.getFacade().getConnections(own).toArray(); 
+            Object ae0 = ends[0];
+            Object ae1 = ends[1];
+            notationProviderSrcRole =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        NotationProviderFactory2.TYPE_ASSOCIATION_ROLE, 
+                        this, ae0);
+            notationProviderDestRole =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        NotationProviderFactory2.TYPE_ASSOCIATION_ROLE, 
+                        this, ae1);
+        }
+    }
+    
+    /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
      */
     public void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
-        if (newOwner == oldOwner) {
-            return;
-        }
         if (oldOwner != null) {
             removeAllElementListeners();
         }
-        if (Model.getFacade().isAAssociation(newOwner)) {
+        /* Now, let's register for events from all modelelements
+         * that change the association representation: 
+         */
+        if (newOwner != null) {
+            /* Many different event types are needed, 
+             * so let's register for them all: */
             addElementListener(newOwner);
-            Collection newConns = associatedElements(newOwner);
-            for (Iterator i = newConns.iterator(); i.hasNext();) {
+            /* Now let's collect related elements: */
+            ArrayList connections = new ArrayList();
+            connections.addAll(Model.getFacade().getStereotypes(newOwner));
+            Collection ends = Model.getFacade().getConnections(newOwner);
+            connections.addAll(ends);
+            for (Iterator i1 = ends.iterator(); i1.hasNext();) {
+                connections.addAll(Model.getFacade().getStereotypes(i1.next()));
+            }
+            for (Iterator i = connections.iterator(); i.hasNext();) {
                 addElementListener(i.next());
             }
         }
-    }
-
-    /**
-     * Get all model elements associated with this assocation
-     * include stereotypes, association ends, and stereotypes
-     * on association ends.
-     *
-     * @param element association to get all associated elements for
-     * @return collection of associated elements
-     */
-    private Collection associatedElements(Object element) {
-        ArrayList connections = new ArrayList();
-        connections.addAll(Model.getFacade().getStereotypes(element));
-        Collection ends = Model.getFacade().getConnections(element);
-        connections.addAll(ends);
-        for (Iterator i = ends.iterator(); i.hasNext();) {
-            connections.addAll(Model.getFacade().getStereotypes(i.next()));
-        }
-        return connections;
     }
 
     // //////////////////////////////////////////////////////////////
@@ -254,11 +269,9 @@ public class FigAssociation extends FigEdgeModelElement {
 	    Translator.localize("statusmsg.bar.error.parsing.multiplicity");
 
 	if (ft == srcRole) {
-	    Object srcAE = (conn.toArray())[0];
-	    Model.getCoreHelper().setName(srcAE, srcRole.getText());
+            ft.setText(notationProviderSrcRole.parse(ft.getText()));
 	} else if (ft == destRole) {
-	    Object destAE = (conn.toArray())[1];
-	    Model.getCoreHelper().setName(destAE, destRole.getText());
+            ft.setText(notationProviderDestRole.parse(ft.getText()));
 	} else if (ft == srcMult) {
 	    Object srcAE = (conn.toArray())[0];
 	    try {
@@ -295,9 +308,9 @@ public class FigAssociation extends FigEdgeModelElement {
         if (ft == getNameFig()) {
             showHelp("parsing.help.fig-association-name");
         } else if (ft == srcRole) {
-            showHelp("parsing.help.fig-association-source-role");
+            showHelp(notationProviderSrcRole.getParsingHelp());
         } else if (ft == destRole) {
-            showHelp("parsing.help.fig-association-destination-role");
+            showHelp(notationProviderDestRole.getParsingHelp());
         } else if (ft == srcMult) {
             showHelp("parsing.help.fig-association-source-multiplicity");
         } else if (ft == destMult) {
@@ -305,7 +318,7 @@ public class FigAssociation extends FigEdgeModelElement {
         }
     }
 
-    private void updateEnd(FigText multiToUpdate, FigText roleToUpdate,
+    private void updateEnd(FigText multiToUpdate,
 			   FigText orderingToUpdate,
 			   Object end) {
 
@@ -314,38 +327,10 @@ public class FigAssociation extends FigEdgeModelElement {
 	}
 
 	Object multi = Model.getFacade().getMultiplicity(end);
-	String name = Model.getFacade().getName(end);
 	Object order = Model.getFacade().getOrdering(end);
-        String visi = "";
-        Object et = Model.getFacade().getType(end);
-        if (Model.getFacade().isNavigable(end)
-	    && (Model.getFacade().isAClass(et)
-                || Model.getFacade().isAInterface(et))) {
-	    visi =
-	        Notation.generate(this, Model.getFacade().getVisibility(end));
-        }
-
-        Collection stereos = Model.getFacade().getStereotypes(end);
-        String stereoString = "";
-        Iterator i = stereos.iterator();
-        while (i.hasNext()) {
-            Object stereo = i.next();
-            if (stereoString.length() < 1) {
-                stereoString += NotationHelper.getLeftGuillemot();
-            } else {
-                stereoString += ",";
-            }
-            stereoString += Model.getFacade().getName(stereo);
-        }
-        if (stereoString.length() > 0) {
-            stereoString += NotationHelper.getRightGuillemot() + " ";
-        }
 
 	multiToUpdate.setText(Notation.generate(this, multi));
 	orderingToUpdate.setText(getOrderingName(order));
-	String n = Notation.generate(this, name);
-	if (n.length() < 1) visi = ""; //temporary solution for issue 1011
-        roleToUpdate.setText(stereoString + visi + n);
     }
 
     /**
@@ -367,22 +352,33 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     protected void modelChanged(PropertyChangeEvent e) {
 	super.modelChanged(e);
-	Object association = getOwner(); //MAssociation
-	if (association == null || getLayer() == null) {
+	if (getOwner() == null || getLayer() == null) {
 	    return;
 	}
+        renderingChanged();
+        updateListeners(getOwner());
+    }
 
-        if (e == null || e.getPropertyName().equals("isAbstract")) {
-            updateAbstract();
-            damage();
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
+     */
+    public void renderingChanged() {
+        Object association = getOwner();
+        if (association == null) {
+            return;
         }
-
-	updateEnds(association);
+        Collection ends = Model.getFacade().getConnections(association);
+        if (ends.size() < 2) {
+            return;
+        }
+        updateAbstract();
+        updateEnds(association);
         chooseArrowHeads(association);
-	srcGroup.calcBounds();
-	destGroup.calcBounds();
-	middleGroup.calcBounds();
-	this.computeRoute();
+        srcGroup.calcBounds();
+        destGroup.calcBounds();
+        middleGroup.calcBounds();
+        super.renderingChanged(); // last, since it calls damage()
+        computeRoute(); //very last, since otherwise exception :-(
     }
 
     /**
@@ -396,8 +392,14 @@ public class FigAssociation extends FigEdgeModelElement {
         if (ends.length >= 2) {
             Object ae0 = ends[0];
             Object ae1 = ends[1];
-            updateEnd(srcMult, srcRole, srcOrdering, ae0);
-            updateEnd(destMult, destRole, destOrdering, ae1);
+            updateEnd(srcMult, srcOrdering, ae0);
+            if (notationProviderSrcRole != null) {
+                srcRole.setText(notationProviderSrcRole.toString());
+            }
+            updateEnd(destMult, destOrdering, ae1);
+            if (notationProviderDestRole != null) {
+                destRole.setText(notationProviderDestRole.toString());
+            }
         }
     }
 
@@ -580,18 +582,6 @@ public class FigAssociation extends FigEdgeModelElement {
 	}
 
 	return popUpActions;
-    }
-
-    /**
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
-     */
-    public void renderingChanged() {
-        Object association = getOwner(); //MAssociation
-        if (association == null) {
-            return;
-        }
-        updateEnds(association);
-        super.renderingChanged();
     }
 
     /**
