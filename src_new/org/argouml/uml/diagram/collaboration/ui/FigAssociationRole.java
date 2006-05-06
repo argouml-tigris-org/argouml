@@ -108,7 +108,9 @@ public class FigAssociationRole extends FigAssociation {
         if (newOwner != null) {
             /* Also listen to the base: */
             Object assoc = Model.getFacade().getBase(newOwner);
-            addElementListener(assoc);
+            if (assoc != null) {
+                addElementListener(assoc);
+            }
         }
     }
 
