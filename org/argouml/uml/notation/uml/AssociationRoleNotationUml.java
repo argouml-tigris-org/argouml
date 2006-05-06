@@ -25,19 +25,14 @@
 package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.AssociationRoleNotation;
-import org.argouml.util.MyTokenizer;
 
 /**
- * The UML notation for an association role.
+ * The UML notation for an AssociationRole.
  * 
  * @author michiel
  */
@@ -45,11 +40,11 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
 
     /**
      * The constructor.
-     *
-     * @param assocEnd teh UML associationEnd
+     * 
+     * @param role the given association-role
      */
-    public AssociationRoleNotationUml(Object assocEnd) {
-        super(assocEnd);
+    public AssociationRoleNotationUml(Object role) {
+        super(role);
     }
 
     /**
@@ -64,9 +59,9 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
      */
     public String parse(String text) {
         try {
-            parseRole(myAssociationEnd, text);
+            parseRole(myAssociationRole, text);
         } catch (ParseException pe) {
-            String msg = "statusmsg.bar.error.parsing.association-role";
+            String msg = "statusmsg.bar.error.parsing.association-end-name";
             Object[] args = {
                 pe.getLocalizedMessage(),
                 new Integer(pe.getErrorOffset()),
@@ -75,6 +70,7 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
                 Translator.messageFormat(msg, args));
         }
         return toString();
+
     }
 
     /**
@@ -86,102 +82,35 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
      */
     protected void parseRole(Object role, String text)
         throws ParseException {
-        MyTokenizer st;
-
-        String name = null;
-        String stereotype = null;
-        String token;
-
-        try {
-            st = new MyTokenizer(text, "<<,\u00AB,\u00BB,>>");
-            while (st.hasMoreTokens()) {
-                token = st.nextToken();
-
-                if ("<<".equals(token) || "\u00AB".equals(token)) {
-                    if (stereotype != null) {
-                        throw new ParseException("Element cannot have "
-                                + "two groups of stereotypes",
-                                st.getTokenIndex());
-                    }
-
-                    stereotype = "";
-                    while (true) {
-                        token = st.nextToken();
-                        if (">>".equals(token) || "\u00BB".equals(token)) {
-                            break;
-                        }
-                        stereotype += token;
-                    }
-                } else {
-                    if (name != null) {
-                        throw new ParseException("Element cannot have "
-                                + "two word names or qualifiers", st
-                                .getTokenIndex());
-                    }
-                    name = token;
-                }
-            }
-        } catch (NoSuchElementException nsee) {
-            throw new ParseException("Unexpected end of element",
-                    text.length());
-        } catch (ParseException pre) {
-            throw pre;
-        }
-
-        if (name != null) {
-            name = name.trim();
-        }
-
-        if (name != null && name.startsWith("+")) {
-            name = name.substring(1).trim();
-            Model.getCoreHelper().setVisibility(role,
-                            Model.getVisibilityKind().getPublic());
-        }
-        if (name != null && name.startsWith("-")) {
-            name = name.substring(1).trim();
-            Model.getCoreHelper().setVisibility(role,
-                            Model.getVisibilityKind().getPrivate());
-        }
-        if (name != null && name.startsWith("#")) {
-            name = name.substring(1).trim();
-            Model.getCoreHelper().setVisibility(role,
-                            Model.getVisibilityKind().getProtected());
-        }
-        if (name != null && name.startsWith("~")) {
-            name = name.substring(1).trim();
-            Model.getCoreHelper().setVisibility(role,
-                            Model.getVisibilityKind().getPackage());
-        }
-        if (name != null) {
-            Model.getCoreHelper().setName(role, name);
-        }
-
-        NotationUtilityUml.dealWithStereotypes(role, stereotype, true);
+        
     }
 
     /**
+     * Generate the name of an association role of the form:
+     *  ["/" name] [":" name_of_the_base_association]
+     * <p>
+     * Remark: 
+     * So, if both names are empty, then nothing is shown! 
+     * See issue 2712.
+     *  
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        String name = Model.getFacade().getName(myAssociationEnd);
-        if (name == null) {
-            name = "";
+        //get the associationRole name
+        String name = Model.getFacade().getName(myAssociationRole);
+        if (name == null) name = "";
+        if (name.length() > 0) name = "/" + name;
+        //get the base association name
+        Object assoc = Model.getFacade().getBase(myAssociationRole);
+        if (assoc != null) {
+            String baseName = Model.getFacade().getName(assoc);
+            if (baseName != null && baseName.length() > 0) {
+                name = name + ":" + baseName;
+            }
         }
-
-        Object visi = Model.getFacade().getVisibility(myAssociationEnd);
-        String visibility = "";
-        if (visi != null) {
-            visibility = NotationUtilityUml.generateVisibility(visi);
-        }
-        if (name.length() < 1) {
-            visibility = "";
-            //this is the temporary solution for issue 1011
-        }
-
-        String stereoString = 
-            NotationUtilityUml.generateStereotype(myAssociationEnd);
-
-        return stereoString + visibility + name;
+        return name;
     }
     
+    
+
 }

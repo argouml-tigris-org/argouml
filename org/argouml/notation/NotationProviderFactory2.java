@@ -126,7 +126,12 @@ public final class NotationProviderFactory2 {
     /**
      * The text shown at the association end that represents the role.
      */
-    public static final int TYPE_ASSOCIATION_ROLE = 16;
+    public static final int TYPE_ASSOCIATION_END_NAME = 16;
+
+    /**
+     * The text shown for the association role name.
+     */
+    public static final int TYPE_ASSOCIATION_ROLE = 17;
 
     /**
      * defaultLanguage the Notation language used by default, i.e. UML

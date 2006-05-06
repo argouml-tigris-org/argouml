@@ -28,25 +28,23 @@ import org.argouml.model.Model;
 
 /**
  * This abstract class forms the basis of all Notation providers
- * for the name of an association-role.
+ * for the text shown next to the end of an association.
  * Subclass this for all languages.
  * 
  * @author michiel
  */
-public abstract class AssociationRoleNotation extends ValueHandler {
+public abstract class AssociationEndNameNotation extends ValueHandler {
 
-    protected Object myAssociationRole;
+    protected Object myAssociationEnd;
     
     /**
-     * The constructor.
-     *
-     * @param role the given associationRole
+     * The constructor. 
      */
-    public AssociationRoleNotation(Object role) {
-        if (!Model.getFacade().isAAssociationRole(role)) {
-            throw new IllegalArgumentException("This is not an AssociationRole.");
+    public AssociationEndNameNotation(Object assocEnd) {
+        if (!Model.getFacade().isAAssociationEnd(assocEnd)) {
+            throw new IllegalArgumentException("This is not an AssociationEnd.");
         }
-        myAssociationRole = role;
+        myAssociationEnd = assocEnd;
     }
 
 }
