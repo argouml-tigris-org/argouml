@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -37,6 +38,8 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationHelper;
+import org.argouml.notation.NotationProvider4;
+import org.argouml.notation.NotationProviderFactory2;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;
 import org.tigris.gef.presentation.Fig;
@@ -61,6 +64,8 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     private FigTextGroup srcGroup = new FigTextGroup();
     private FigText srcMult, srcRole;
     private FigText srcOrdering;
+    
+    protected NotationProvider4 notationProviderSrcRole;
 
     /**
      * The constructor.
@@ -123,6 +128,42 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         }
     }
 
+    /**
+     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
+     */
+    protected void initNotationProviders(Object own) {
+        if (Model.getFacade().isAAssociationEnd(own)) {
+            notationProviderSrcRole =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
+                        this, own);
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
+     */
+    public void updateListeners(Object newOwner) {
+        Object oldOwner = getOwner();
+        if (oldOwner != null) {
+            removeAllElementListeners();
+        }
+        /* Now, let's register for events from all modelelements
+         * that change the association-end representation: 
+         */
+        if (newOwner != null) {
+            /* Many different event types are needed, 
+             * so let's register for them all: */
+            addElementListener(newOwner);
+            /* Now let's collect related elements: */
+            ArrayList connections = new ArrayList();
+            connections.addAll(Model.getFacade().getStereotypes(newOwner));
+            for (Iterator i = connections.iterator(); i.hasNext();) {
+                addElementListener(i.next());
+            }
+        }
+    }
+
     /** Returns the name of the OrderingKind.
      * @return "{ordered}", "{sorted}" or "" if null or "unordered"
      */
@@ -153,7 +194,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         super.textEdited(ft);
 
         if (ft == srcRole) {
-            Model.getCoreHelper().setName(getOwner(), srcRole.getText());
+            ft.setText(notationProviderSrcRole.parse(ft.getText()));
         } else if (ft == srcMult) {
             Object multi =
                 Model.getDataTypesFactory()
@@ -162,7 +203,18 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         }
     }
 
-    private void updateEnd(FigText multiToUpdate, FigText roleToUpdate,
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEditStarted(FigText ft) {
+        if (ft == srcRole) {
+            showHelp(notationProviderSrcRole.getParsingHelp());
+        } else if (ft == srcMult) {
+            showHelp("parsing.help.fig-association-source-multiplicity");
+        }
+    }
+
+    private void updateEnd(FigText multiToUpdate, 
                            FigText orderingToUpdate) {
 
         Object owner = getOwner();
@@ -171,37 +223,10 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         }
 
         Object multi = Model.getFacade().getMultiplicity(owner);
-        String name = Model.getFacade().getName(owner);
-        Object order = Model.getFacade().getOrdering(owner);
-        String visi = "";
-        if (Model.getFacade().isNavigable(owner)
-                && (Model.getFacade().isAClass(Model.getFacade().getType(owner))
-                || Model.getFacade().isAInterface(Model.getFacade()
-                        .getType(owner)))) {
-            visi =
-                Notation.generate(this, Model.getFacade().getVisibility(owner));
-        }
-        Collection stereos = Model.getFacade().getStereotypes(owner);
-        String stereoString = "";
-        Iterator i = stereos.iterator();
-        while (i.hasNext()) {
-            Object stereo = i.next();
-            if (stereoString.length() < 1) {
-                stereoString += NotationHelper.getLeftGuillemot();
-            } else {
-                stereoString += ",";
-            }
-            stereoString += Model.getFacade().getName(stereo);
-        }
-        if (stereoString.length() > 0) {
-            stereoString += NotationHelper.getRightGuillemot() + " ";
-        }
-
         multiToUpdate.setText(Notation.generate(this, multi));
+
+        Object order = Model.getFacade().getOrdering(owner);
         orderingToUpdate.setText(getOrderingName(order));
-        String n = Notation.generate(this, name);
-        if (n.length() < 1) visi = ""; //temporary solution for issue 1011
-        roleToUpdate.setText(stereoString + visi + n);
     }
 
     /**
@@ -211,10 +236,23 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         super.modelChanged(e);
         if (e instanceof AttributeChangeEvent
                 || e instanceof AssociationChangeEvent) {
-            updateEnd(srcMult, srcRole, srcOrdering);
-            srcMult.calcBounds();
-            computeRoute();
+            renderingChanged();
+            updateListeners(getOwner());
         }
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
+     */
+    public void renderingChanged() {
+        updateEnd(srcMult, srcOrdering);
+        if (notationProviderSrcRole != null) {
+            srcRole.setText(notationProviderSrcRole.toString());
+        }
+        srcMult.calcBounds();
+        srcGroup.calcBounds();
+        super.renderingChanged();
+        computeRoute();
     }
 
     /**
