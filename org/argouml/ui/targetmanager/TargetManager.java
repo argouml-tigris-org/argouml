@@ -1017,6 +1017,22 @@ public final class TargetManager {
      * UML modelelements that were removed.
      */
     public void checkForRemovedModelElements() {
+        Collection toBeRemoved = new ArrayList();
+        Iterator i = targets.iterator();
+        while (i.hasNext()) {
+            WeakReference ref = (WeakReference) i.next();
+            Object historyObject = ref.get();
+            if (Model.getFacade().isAModelElement(historyObject)) {
+                if (Model.getUmlFactory().isRemoved(historyObject)) {
+                    toBeRemoved.add(historyObject);
+                }
+            }
+        }
+        i = toBeRemoved.iterator();
+        while (i.hasNext()) {
+            Object o = i.next();
+            removeTarget(o);
+        }
         historyManager.checkForRemovedModelElements();
     }
 

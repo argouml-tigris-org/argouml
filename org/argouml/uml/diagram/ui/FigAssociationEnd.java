@@ -266,9 +266,11 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         SwingUtilities.invokeLater(new Runnable() {
             public void run () {
                 Fig associationFig = layer.presentationFor(association);
-                if (Model.getFacade().getClassifier(owner) != null
-                        && associationFig instanceof FigNodeAssociation) {
-                    ((FigNodeAssociation) associationFig).removeFromDiagram();
+                if (!Model.getUmlFactory().isRemoved(owner)) {
+                    if (Model.getFacade().getClassifier(owner) != null
+                            && associationFig instanceof FigNodeAssociation) {
+                        ((FigNodeAssociation) associationFig).removeFromDiagram();
+                    }
                 }
             }
         });
