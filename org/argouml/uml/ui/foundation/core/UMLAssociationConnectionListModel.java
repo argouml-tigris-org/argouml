@@ -50,6 +50,8 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 public class UMLAssociationConnectionListModel
     extends UMLModelElementOrderedListModel2 {
 
+    Collection others;
+
     /**
      * Constructor for UMLModelElementClientDependencyListModel.
      */
@@ -62,8 +64,9 @@ public class UMLAssociationConnectionListModel
      */
     protected void addOtherModelEventListeners(Object newTarget) {
         super.addOtherModelEventListeners(newTarget);
-        Collection ends = Model.getFacade().getConnections(newTarget);
-        Iterator i = ends.iterator();
+        /* Make a copy of the modelelements: */
+        others = new ArrayList(Model.getFacade().getConnections(newTarget));
+        Iterator i = others.iterator();
         while (i.hasNext()) {
             Object end = i.next();
             Model.getPump().addModelEventListener(this, end, "name");
@@ -75,12 +78,12 @@ public class UMLAssociationConnectionListModel
      */
     protected void removeOtherModelEventListeners(Object oldTarget) {
         super.removeOtherModelEventListeners(oldTarget);
-        Collection ends = Model.getFacade().getConnections(oldTarget);
-        Iterator i = ends.iterator();
+        Iterator i = others.iterator();
         while (i.hasNext()) {
             Object end = i.next();
             Model.getPump().removeModelEventListener(this, end, "name");
         }
+        others.clear();
     }
 
     /**
