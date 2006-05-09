@@ -30,9 +30,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.persistence.PgmlUtility;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -51,6 +53,9 @@ import org.tigris.gef.presentation.FigNode;
 public class ArgoDiagram extends Diagram {
 
     private ItemUID id;
+    
+    private static final Logger LOG =
+        Logger.getLogger(ArgoDiagram.class);
 
     static {
         /**
@@ -237,71 +242,175 @@ public class ArgoDiagram extends Diagram {
      * and/or GEF that cause corruptions in the model.
      * Before a save takes place we repair the model in order to
      * be as certain as possible that the saved file will reload.
+     * TODO: Split into small inner classes for each fix.
      */
     public String repair() {
         String report = "";
 
-        List figs = new ArrayList(getLayer().getContents());
+        List figs = new ArrayList(PgmlUtility.getContents(this));
         for (Iterator i = figs.iterator(); i.hasNext();) {
+            String figDescription = null;
+            
             Fig f = (Fig) i.next();
+            LOG.info("Checking " + figDescription(f) + f.getOwner());
 
             // 1. Make sure all Figs in the Diagrams layer refer back to
             // that layer.
             if (!getLayer().equals(f.getLayer())) {
+                if (figDescription == null) {
+                    report += (figDescription = figDescription(f));
+                }
+                
                 // The report
                 if (f.getLayer() == null) {
-                    report +=
-                        "Fixed: " + figDescription(f) + " layer was null\n";
+                    report += "        Fixed: layer was null\n";
                 } else {
-                    report +=
-                        "Fixed: " + figDescription(f)
-                        + " refered to wrong layer\n";
+                    report += "        Fixed: refered to wrong layer\n";
                 }
                 // The fix
                 f.setLayer(getLayer());
             }
 
-            // 2. Make sure all FigNodes and FigEdges have an valid owner
-            if (f instanceof FigNode || f instanceof FigEdge) {
-                // The report
-                Object owner = f.getOwner();
-                if (owner == null) {
-                    report +=
-                        "Removed: " + figDescription(f) + " owner was null\n";
-                } else if (Model.getUmlFactory().isRemoved(owner)) {
-                    report +=
-                        "Removed: " + figDescription(f)
-                        + " model element no longer in the repository\n";
+            // 2. Make sure that all Figs are visible
+            if (!f.isVisible()) {
+                if (figDescription == null) {
+                    report += (figDescription = figDescription(f));
                 }
+                // The report
+                report += "        Fixed: a Fig must be visible\n";
                 // The fix
-                f.removeFromDiagram();
+                f.setVisible(true);
             }
 
-            // 3. Make sure the only FigGroups on a diagram are also FigNodes
-            if (f instanceof FigGroup && !(f instanceof FigNode)) {
+            if (f instanceof FigEdge) {
+                // 3. Make sure all FigEdges are attached to a valid FigNode
+                // The report
+                FigEdge fe = (FigEdge)f;
+                FigNode destFig = fe.getDestFigNode();
+                FigNode sourceFig = fe.getSourceFigNode();
+                
+                if (destFig == null) {
+                    if (figDescription == null) {
+                        report += (figDescription = figDescription(f));
+                    }
+                    report +=
+                        "        Removed: as it has no dest Fig\n";
+                    f.removeFromDiagram();
+                } else if (sourceFig == null) {
+                    if (figDescription == null) {
+                        report += (figDescription = figDescription(f));
+                    }
+                    report +=
+                        "        Removed: as it has no source Fig\n";
+                    f.removeFromDiagram();
+                } else if(sourceFig.getOwner() == null) {
+                    if (figDescription == null) {
+                        report += (figDescription = figDescription(f));
+                    }
+                    report +=
+                        "        Removed: as its source Fig has no owner\n";
+                    f.removeFromDiagram();
+                } else if(destFig.getOwner() == null) {
+                    if (figDescription == null) {
+                        report += (figDescription = figDescription(f));
+                    }
+                    report += "        Removed: as its destination Fig has no owner\n";
+                    f.removeFromDiagram();
+                } else if(Model.getUmlFactory().isRemoved(sourceFig.getOwner())) {
+                    if (figDescription == null) {
+                        report += (figDescription = figDescription(f));
+                    }
+                    report +=
+                        "        Removed: as its source Figs owner is no " +
+                        "longer in the repository\n";
+                    f.removeFromDiagram();
+                } else if(Model.getUmlFactory().isRemoved(destFig.getOwner())) {
+                    if (figDescription == null) {
+                        report += (figDescription = figDescription(f));
+                    }
+                    report +=
+                        "        Removed: as its destination Figs owner is no longer " +
+                        "in the repository\n";
+                    f.removeFromDiagram();
+                }
+            } else if ((f instanceof FigNode || f instanceof FigEdge) && f.getOwner() == null) {
+                if (figDescription == null) {
+                    report += (figDescription = figDescription(f));
+                }
+                // 3. Make sure all FigNodes and FigEdges have an owner
                 // The report
                 report +=
-                    "Removed: " + figDescription(f)
-                    + " a FigGroup should not be on the diagram\n";
+                    "        Removed: owner was null\n";
+                // The fix
+                f.removeFromDiagram();
+            } else if ((f instanceof FigNode || f instanceof FigEdge) && 
+                    Model.getFacade().isAModelElement(f.getOwner()) && 
+                    Model.getUmlFactory().isRemoved(f.getOwner())) {
+                if (figDescription == null) {
+                    report += (figDescription = figDescription(f));
+                }
+                // 3. Make sure all FigNodes and FigEdges have a valid owner
+                // The report
+                report +=
+                    "        Removed: model element no longer in the repository\n";
+                // The fix
+                f.removeFromDiagram();
+            } else if (f instanceof FigGroup && !(f instanceof FigNode)) {
+                if (figDescription == null) {
+                    report += (figDescription = figDescription(f));
+                }
+                // 4. Make sure the only FigGroups on a diagram are also FigNodes
+                // The report
+                report +=
+                    "        Removed: a FigGroup should not be on the diagram\n";
                 // The fix
                 f.removeFromDiagram();
             }
-
+            
         }
 
         return report;
     }
 
+    /**
+     * Generate a description of a Fig that would be most meaningful to a developer
+     * and the user.
+     * This is used by the repair routines to describe the Fig that was repaired
+     * <ul>
+     * <li>FigComment - the text within body compartment of the Fig</li>
+     * <li>FigNodeModelElement -
+     *        the text within the name compartment of the FigNode</li>
+     * <li>FigEdgeModelElement -
+     *        the text within name compartment of the FigEdge and the
+     *        descriptions of the adjoining FigNodes</li>
+     * </ul>
+     * @param f the Fig to describe
+     * @return
+     */
     private String figDescription(Fig f) {
-        String description = f.getClass().getName();
+        String description = "\n" + f.getClass().getName();
         if (f instanceof FigComment) {
-            description += ((FigComment) f).getBody();
+            description += " \"" + ((FigComment) f).getBody() + "\"";
         } else if (f instanceof FigNodeModelElement) {
-            description += ((FigNodeModelElement) f).getName();
+            description += " \"" + ((FigNodeModelElement) f).getName() + "\"";
         } else if (f instanceof FigEdgeModelElement) {
-            description += ((FigEdgeModelElement) f).getName();
+            FigEdgeModelElement fe = (FigEdgeModelElement)f;
+            description += " \"" + fe.getName() + "\"";
+            String source;
+            if (fe.getSourceFigNode() == null) {
+                source = "(null)";
+            } else {
+                source = ((FigNodeModelElement)fe.getSourceFigNode()).getName();
+            }
+            String dest;
+            if (fe.getDestFigNode() == null) {
+                dest = "(null)";
+            } else {
+                dest = ((FigNodeModelElement)fe.getDestFigNode()).getName();
+            }
+            description += " [" + source + "=>" + dest + "]";
         }
-        return description;
+        return description + "\n";
     }
 
     /**

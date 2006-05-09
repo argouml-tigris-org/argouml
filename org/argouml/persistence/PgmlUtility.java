@@ -33,6 +33,7 @@ import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.FigEdgeAssociationClass;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.presentation.FigEdge;
 
 /**
  * Utility class for use by pgml.tee.
@@ -57,6 +58,34 @@ public final class PgmlUtility {
         Layer lay = diagram.getLayer();
         Collection edges = lay.getContentsEdgesOnly();
         List returnEdges = new ArrayList(edges.size());
+        getEdges(diagram, edges, returnEdges);
+        return returnEdges;
+    }
+
+    /**
+     * Return the diagram contents in the order to save to PGML
+     * Nodes first, then edges connecting nodes and lastly
+     * edges that connect edges to other edges.
+     *
+     * @param diagram The {@link Diagram}.
+     * @return a {@link List} with the contents.
+     */
+    public static List getContents(Diagram diagram) {
+        Layer lay = diagram.getLayer();
+        List contents = lay.getContents();
+        int size = contents.size();
+        List list = new ArrayList(size);
+        for(int i = 0; i < size; i++) {
+            Object o = contents.get(i);
+            if (!(o instanceof FigEdge)) {
+                list.add(o);
+            }
+        }
+        getEdges(diagram, lay.getContentsEdgesOnly(), list);
+        return list;
+    }
+    
+    private static void getEdges(Diagram diagram, Collection edges, List returnEdges) {
         Iterator it = edges.iterator();
         while (it.hasNext()) {
             Object o = it.next();
@@ -78,6 +107,6 @@ public final class PgmlUtility {
                 returnEdges.add(o);
             }
         }
-        return returnEdges;
     }
+
 }
