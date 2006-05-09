@@ -130,6 +130,7 @@ public class FigStereotypesCompartment extends FigCompartment {
                             null);
                 // bounds not relevant here
                 stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
+                stereotypeTextFig.setEditable(false);
                 addFig(stereotypeTextFig);
             } else {
                 stereotypeTextFig =
@@ -160,6 +161,7 @@ public class FigStereotypesCompartment extends FigCompartment {
                                 null);
                     // bounds not relevant here
                     stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
+                    stereotypeTextFig.setEditable(false);
                     addFig(stereotypeTextFig);
                 } else {
                     stereotypeTextFig =
