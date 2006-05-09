@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,7 +48,8 @@ public class NameOrder
     }
 
     /**
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     * @see java.util.Comparator#compare(java.lang.Object,
+     *  java.lang.Object)
      */
     public int compare(Object obj1, Object obj2) {
 	if (obj1 instanceof DefaultMutableTreeNode) {
@@ -97,7 +98,14 @@ public class NameOrder
         if (obj instanceof Diagram) {
             name = ((Diagram) obj).getName();
         } else {
-            name = Model.getFacade().getName(obj);
+            if (Model.getFacade().isAModelElement(obj)) { 
+                if (Model.getUmlFactory().isRemoved(obj)) {
+                    name = "(removed)";
+                } else {
+                    name = Model.getFacade().getName(obj);
+                }
+            }
+            name = "??";
         }
         if (name == null) {
             return "";
