@@ -35,6 +35,7 @@ fillcolor="<ocl>self.fillColor</ocl>"
 stroke="<ocl>self.lineWidth</ocl>"
 
 strokecolor="<ocl>self.lineColor</ocl>"
+visibility="<ocl ignoreNull>org.argouml.persistence.PgmlUtility.getVisibility(self)</ocl>"
 
 ]]>
 
@@ -349,15 +350,12 @@ height="<ocl>self.height.intValue</ocl>"
      description="<ocl>self.classNameAndBounds</ocl>"
 
      href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self)</ocl>"
-
      FILL_AND_STROKE
 
 >
 
   <private>
-
     enclosingFig="<ocl ignoreNull>self.enclosingFig.id</ocl>"
-
   </private>
 
   

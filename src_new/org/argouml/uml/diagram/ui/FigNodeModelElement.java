@@ -1296,9 +1296,10 @@ public abstract class FigNodeModelElement
      * visibility.
      */
     public String classNameAndBounds() {
-        return super.classNameAndBounds()
-                + "pathVisible=" + isPathVisible()
-                + ";";
+        return getClass().getName() +
+            "[" + getX() + ", " + getY() + ", " +
+            getWidth() + ", " + getHeight() + "]" +
+            "pathVisible=" + isPathVisible() + ";";
     }
 
     /**
