@@ -130,6 +130,7 @@ import org.argouml.uml.ui.foundation.core.PropPanelNode;
 import org.argouml.uml.ui.foundation.core.PropPanelOperation;
 import org.argouml.uml.ui.foundation.core.PropPanelParameter;
 import org.argouml.uml.ui.foundation.core.PropPanelPermission;
+import org.argouml.uml.ui.foundation.core.PropPanelTaggedValue;
 import org.argouml.uml.ui.foundation.core.PropPanelUsage;
 import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelStereotype;
 import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelTagDefinition;
@@ -606,6 +607,9 @@ public class TabProps
         }
         if (Model.getFacade().isASynchState(modelElement)) {
             return new PropPanelSynchState();
+        }
+        if (Model.getFacade().isATaggedValue(modelElement)) {
+            return new PropPanelTaggedValue();
         }
         if (Model.getFacade().isATagDefinition(modelElement)) {
             return new PropPanelTagDefinition();
