@@ -33,6 +33,7 @@ import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.FigEdgeAssociationClass;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 
 /**
@@ -47,7 +48,23 @@ public final class PgmlUtility {
      */
     private PgmlUtility() {
     }
-
+    
+    /**
+     * Translate the visibility flag of a Fig to the PGML "visibility" attribute
+     * value.
+     * The PGML values are 0=hidden and 1=shown.
+     * If not specified then 1 is the default so we return null for this to
+     * prevent redundent data being written to PGML.
+     * TODO: Remove on GEF release after 0.11.9 as it will be provided there.
+     * 
+     * @param f The Fig
+     * @return "0"=hidden, null=shown
+     */
+    public static String getVisibility(Fig f) {
+        if (f.isVisible()) return null;
+        return "0";
+    }
+    
     /**
      * Return just the comment edges for a specific layer.
      *
