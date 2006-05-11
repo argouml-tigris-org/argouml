@@ -1,4 +1,4 @@
-// $Id$
+// $Id :  $
 // Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -25,11 +25,14 @@
 package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.AssociationRoleNotation;
+import org.argouml.util.MyTokenizer;
 
 /**
  * The UML notation for an AssociationRole.
@@ -74,6 +77,10 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
     }
 
     /**
+     * Parse the string that represents an AssociationRole: <pre>
+     *     ["/" name] [":" name_of_the_base_association]
+     * </pre>
+     * 
      * @param role   The AssociationRole <em>text</em> describes.
      * @param text A String on the above format.
      * @throws ParseException
@@ -82,7 +89,92 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
      */
     protected void parseRole(Object role, String text)
         throws ParseException {
+        String token;
+        boolean hasColon = false;
+        boolean hasSlash = false;
+        String rolestr = null;
+        String basestr = null;
         
+        MyTokenizer st = new MyTokenizer(text, " ,\t,/,:");
+
+        while (st.hasMoreTokens()) {
+            token = st.nextToken();
+            if (" ".equals(token) || "\t".equals(token)) {
+                /* Do nothing. */
+            } else if ("/".equals(token)) {
+                hasSlash = true;
+                hasColon = false;
+
+            } else if (":".equals(token)) {
+                hasColon = true;
+                hasSlash = false;
+                
+            } else if (hasColon) {
+                if (basestr != null) {
+                    throw new ParseException(
+                            "Extra text in Association Role", st
+                                    .getTokenIndex());
+                }
+                basestr = token;
+            } else if (hasSlash) {
+                if (rolestr != null) {
+                    throw new ParseException(
+                            "Extra text in Association Role", st
+                                    .getTokenIndex());
+                }
+                rolestr = token;
+            } else {
+                throw new ParseException(
+                        "Extra text in Association Role", st
+                                .getTokenIndex());
+            }
+        }
+        
+        if (basestr == null) {
+            /* If no base was typed, then only set the name: */
+            if (rolestr != null) {
+                Model.getCoreHelper().setName(role, rolestr.trim());
+            }
+            return;
+        }
+        /* If the base was not changed, then only set the name: */
+        Object currentBase = Model.getFacade().getBase(role);
+        if (currentBase != null) {
+            String currentBaseStr = Model.getFacade().getName(currentBase);
+            if (currentBaseStr == null) {
+                /* TODO: Is this needed? */
+                currentBaseStr = "";
+            }
+            if (currentBaseStr.equals(basestr)) {
+                if (rolestr != null) {
+                    Model.getCoreHelper().setName(role, rolestr.trim());
+                }
+                return;
+            }
+        }
+        Collection c = 
+            Model.getCollaborationsHelper().getAllPossibleBases(role);
+        Iterator i = c.iterator();
+        while (i.hasNext()) {
+            Object candidate = i.next();
+            if (basestr.equals(Model.getFacade().getName(candidate))) {
+                if (Model.getFacade().getBase(role) != candidate) {
+                    /* If the base is already set to this assoc, 
+                     * then do not set it again.
+                     * This check is needed, otherwise the setbase()
+                     *  below gives an exception.*/
+                    Model.getCollaborationsHelper().setBase(role, candidate);
+                }
+                /* Only set the name if the base was found: */
+                if (rolestr != null) {
+                    Model.getCoreHelper().setName(role, rolestr.trim());
+                }
+                return;
+            }
+        }
+
+        throw new ParseException(
+                "Base for Association Role not found", 0);        
     }
 
     /**
