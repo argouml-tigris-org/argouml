@@ -36,6 +36,7 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigText;
 
 
 /**
@@ -129,6 +130,15 @@ public class FigAssociationRole extends FigAssociation {
     public void removeFromDiagram() {
         super.removeFromDiagram();
         messages.removeFromDiagram();
+    }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEditStarted(FigText ft) {
+        if (ft == getNameFig()) {
+            showHelp(notationProviderName.getParsingHelp());
+        }
     }
 
 } /* end class FigAssociationRole */
