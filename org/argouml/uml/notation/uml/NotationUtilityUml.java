@@ -994,4 +994,17 @@ public final class NotationUtilityUml {
             + "="
             + generateUninterpreted(Model.getFacade().getValueOfTag(tv));
     }
+    
+    /**
+     * Generate the text of a multiplicity.
+     * 
+     * @param m the given multiplicity
+     * @return a string (guaranteed not null)
+     */
+    public static String generateMultiplicity(Object m) {
+        if (m == null || "1".equals(Model.getFacade().toString(m))) {
+            return "";
+        }
+        return Model.getFacade().toString(m);
+    }
 }
