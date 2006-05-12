@@ -35,7 +35,6 @@ import org.argouml.application.api.PluggableNotation;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationHelper;
 import org.argouml.notation.NotationName;
-import org.argouml.notation.NotationProvider2;
 
 /**
  * This class is the abstract super class that defines a code
@@ -52,7 +51,7 @@ import org.argouml.notation.NotationProvider2;
  * @since 0.15.6
  */
 public abstract class Generator2
-    implements NotationProvider2, PluggableNotation {
+    implements PluggableNotation {
 
     private static final Logger LOG = Logger.getLogger(Generator2.class);
 
@@ -199,104 +198,46 @@ public abstract class Generator2
         return o.toString();
     }
 
-    /**
-     * @see NotationProvider2#generateExtensionPoint(Object)
-     */
+    public abstract String generateActionState(Object actionState);
+    
     public abstract String generateExtensionPoint(Object op);
 
-    /**
-     * @see NotationProvider2#generateOperation(Object, boolean)
-     */
     public abstract String generateOperation(Object op, boolean documented);
 
-    /**
-     * @see NotationProvider2#generateAttribute(Object, boolean)
-     */
     public abstract String generateAttribute(Object attr, boolean documented);
 
-    /**
-     * @see NotationProvider2#generateParameter(Object)
-     */
     public abstract String generateParameter(Object param);
 
-    /**
-     * @see NotationProvider2#generatePackage(Object)
-     */
     public abstract String generatePackage(Object p);
 
-    /**
-     * @see NotationProvider2#generateClassifier(Object)
-     */
     public abstract String generateClassifier(Object cls);
 
-    /**
-     * @see NotationProvider2#generateTaggedValue(Object)
-     */
     public abstract String generateTaggedValue(Object s);
 
-    /**
-     * @see NotationProvider2#generateAssociation(Object)
-     */
     public abstract String generateAssociation(Object a);
 
-    /**
-     * @see NotationProvider2#generateAssociationEnd(Object)
-     */
     public abstract String generateAssociationEnd(Object ae);
 
-    /**
-     * @see NotationProvider2#generateMultiplicity(Object)
-     */
     public abstract String generateMultiplicity(Object m);
 
-    /**
-     * @see NotationProvider2#generateObjectFlowState(Object)
-     */
     public abstract String generateObjectFlowState(Object m);
 
-    /**
-     * @see NotationProvider2#generateState(Object)
-     */
     public abstract String generateState(Object m);
 
-    /**
-     * @see NotationProvider2#generateSubmachine(Object)
-     */
     public abstract String generateSubmachine(Object m);
 
-    /**
-     * @see NotationProvider2#generateTransition(Object)
-     */
     public abstract String generateTransition(Object m);
 
-    /**
-     * @see NotationProvider2#generateAction(Object)
-     */
     public abstract String generateAction(Object m);
 
-    /**
-     * @see NotationProvider2#generateGuard(Object)
-     */
     public abstract String generateGuard(Object m);
 
-    /**
-     * @see NotationProvider2#generateMessage(Object)
-     */
     public abstract String generateMessage(Object m);
 
-    /**
-     * @see NotationProvider2#generateEvent(Object)
-     */
     public abstract String generateEvent(Object m);
 
-    /**
-     * @see NotationProvider2#generateVisibility(Object)
-     */
     public abstract String generateVisibility(Object m);
 
-    /**
-     * @see NotationProvider2#generateExpression(Object)
-     */
     public String generateExpression(Object expr) {
         if (Model.getFacade().isAExpression(expr))
             return generateUninterpreted(
@@ -306,9 +247,6 @@ public abstract class Generator2
         return "";
     }
 
-    /**
-     * @see NotationProvider2#generateName(String)
-     */
     public String generateName(String n) {
         return n;
     }
@@ -327,18 +265,12 @@ public abstract class Generator2
         return un;
     }
 
-    /**
-     * @see NotationProvider2#generateClassifierRef(Object)
-     */
     public String generateClassifierRef(Object cls) {
         if (cls == null)
             return "";
         return Model.getFacade().getName(cls);
     }
 
-    /**
-     * @see NotationProvider2#generateStereotype(Object)
-     */
     public String generateStereotype(Object st) {
         if (st == null)
             return "";
