@@ -387,10 +387,21 @@ public class FigSubmachineState extends FigState {
     }
 
     private void updateInclude() {
-        include.setText(Notation.generate(this, getOwner()));
+        include.setText(generateSubmachine(getOwner()));
         calcBounds();
         setBounds(getBounds());
         damage();
+    }
+
+    private String generateSubmachine(Object m) {
+        Object c = Model.getFacade().getSubmachine(m);
+        String s = "include / ";
+        if ((c == null)
+                || (Model.getFacade().getName(c) == null)
+                || (Model.getFacade().getName(c).length() == 0)) {
+            return s;
+        }
+        return (s + Model.getFacade().getName(c));
     }
 
     /**
