@@ -55,7 +55,7 @@ responsibilities or functions of the subsystems.
 
       <tbody valign="top">
         <row>
-          <entry>2005-05-01</entry>
+          <entry>2006-05-14</entry>
           <entry>
 Change to XXX.
 (See <xref linkend="xxx"/>).
@@ -64,6 +64,17 @@ Change to XXX.
         </row>
       </tbody>
       -->
+
+      <tbody valign="top">
+        <row>
+          <entry>2006-05-13</entry>
+          <entry>
+Moved the User Manual section from chapter 7 to chapter 10.
+(See <xref linkend="user-manual-plans"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
 
       <tbody valign="top">
         <row>
