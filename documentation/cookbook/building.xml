@@ -29,7 +29,8 @@
   <title>Building from source</title>
   <para>
 Building ArgoUML from source requires a CVS client, a current JDK (1.4 or later),
-and 150MB of free disk space.  All other tools, including the Ant build tool upon which
+and 150MB of free disk space.
+All other tools, including the Ant build tool upon which
 the build is based, are included in the project source tree.
 
 If you have these tools and are familiar with them, the next section contains
@@ -40,7 +41,7 @@ follow that.
   <sect1 id="quickbuild">
     <title>Quick Start</title>
     <para>
-If you are using Eclipse 3.0 or later, see <xref linkend="eclipse3"></xref>
+If you are using Eclipse 3.1, see <xref linkend="eclipse3"></xref>
 for quick setup instructions.
 </para>
 
@@ -54,31 +55,29 @@ C:\Work&gt;cvs login   (use guest as password)
 C:\Work&gt;cvs checkout argouml/src argouml/src_new argouml/tools argouml/lib argouml-mdr
 C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
 C:\Work&gt;cd argouml\src_new
-C:\Work\argouml\src_new&gt;build package
-C:\Work\argouml\src_new&gt;cd ..\..\argouml-mdr
-C:\Work\argouml-mdr&gt;build install
-C:\Work\argouml-mdr&gt;cd ..\argouml\src_new
 C:\Work\argouml\src_new&gt;build run
 </programlisting>
 A newly compiled ArgoUML will open in a new window.
 </para>
-  <para>Notes:
-          <tip>
-           JDK 1.4 or later is required
-          </tip>
-          <tip>
-          On Windows, the directory path for the JDK installation directory
+    <para>Notes:
+      <tip>
+	<para>JDK 1.4 or later is required</para>
+      </tip>
+      <tip>
+	<para>
+On Windows, the directory path for the JDK installation directory
 must not contain any spaces.
 <!-- MVW: This is not required, 
 at least the statements above work with spaces in the path. -->
-          </tip>
+</para>
+      </tip>
 That was the compact version for Windows + JDK.
 (Note: JDK cannot be installed in a directory that contains space in its
 name. <!-- MVW: idem -->)  
 Modifying these steps slightly as appropriate for your shell should
 work on Unix/Linux systems as well. 
 </para>
-  <para>
+    <para>
 If you don't understand these instructions or they don't work, please read the rest of 
 the chapter for more detailed instructions on how to build ArgoUML.
 </para>
