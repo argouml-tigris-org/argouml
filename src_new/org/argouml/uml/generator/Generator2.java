@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,7 +47,28 @@ import org.argouml.notation.NotationName;
  * "http://www.ccs.neu.edu/research/demeter/">Demeter project</a>.<p>
  *
  * @deprecated This class is deprecated in favour of GeneratorManager and
- * the CodeGenerator interface.
+ * the CodeGenerator interface. <p>
+ * Explanation by Daniele Tamino:<p>
+ * Why Generator2 is deprecated: Because it was replaced 
+ * by CodeGenerator and GeneratorManager. 
+ * The Generator2 class kept a list of Generator2 objects, 
+ * populated during construction, but that list was 
+ * not changeable afterward, and this was incompatible 
+ * with the new module loader (see issue 3580 
+ * <http://argouml.tigris.org/issues/show_bug.cgi?id=3580>), 
+ * so here comes GeneratorManager. 
+ * Moreover, there was no reasonable way to display 
+ * the generated source correctly in the source pane 
+ * using Generator2 or FileGenerator, and for this 
+ * the CodeGenerator interface was created (issue 
+ * 3546<http://argouml.tigris.org/issues/show_bug.cgi?id=3546> ). <p> 
+ * 
+ * In ArgoUML V0.21.2 Generator2 was still used 
+ * for another purpose, i.e. it implemented 
+ * some common methods of the NotationProvider2 interface too, 
+ * which went away when the new notation architecture 
+ * got more and more completed (issue 1207
+ * <http://argouml.tigris.org/issues/show_bug.cgi?id=1207> ).
  * @since 0.15.6
  */
 public abstract class Generator2
