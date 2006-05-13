@@ -31,12 +31,12 @@ import java.util.ArrayList;
 import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
-import org.argouml.uml.generator.GeneratorDisplay;
 
 /**
  * Provides centralized methods dealing with notation.
@@ -58,9 +58,11 @@ public final class Notation implements PropertyChangeListener {
      * part of ArgoUML core distribution.
      */
     private static NotationName notationArgo =
-        /* TODO: Now 1207 is mostly done, can we replace this by: ??? */
-//        NotationNameImpl.findNotation("UML 1.4");
-        GeneratorDisplay.getInstance().getNotation();
+        makeNotation(
+            "UML",
+            "1.4",
+            Argo.lookupIconResource("UmlNotation"));
+
     /*
      * Remark:
      * There is also a java-like notation, which is also
@@ -272,10 +274,6 @@ public final class Notation implements PropertyChangeListener {
      */
     public static NotationName makeNotation(String k1, String k2, Icon icon) {
         NotationName nn = NotationNameImpl.makeNotation(k1, k2, icon);
-        // Making the first created notation the default.
-        if (notationArgo == null) {
-            notationArgo = nn;
-        }
         return nn;
     }
 
