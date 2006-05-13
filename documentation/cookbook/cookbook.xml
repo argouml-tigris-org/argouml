@@ -122,7 +122,6 @@
   &subsystems;
   &inside_subsystems;
   &extending;
-  &documentationorganization;
   &cvs;
   &standards;
   &documentationstandards;
@@ -131,6 +130,7 @@
   <index/>
 
   &further_reading;
+  &documentationorganization;
   
 </book>
 

@@ -25,11 +25,10 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 
-
-  <chapter id="documentation_what_goes_where">
-    <chapterinfo>
-      <abstract>
-	<para>
+<appendix id="documentation_what_goes_where">
+  <appendixinfo>
+    <abstract>
+      <para>
 This chapter describes what goes into which
 part of the documentation. These ideas are formulated by Linus Tolke.
 </para>
@@ -40,40 +39,38 @@ part of the documentation. These ideas are formulated by Linus Tolke.
 	  <surname>Tolke</surname>
 	</author>
       </authorgroup>
-    </chapterinfo>
-    <title>Organization of ArgoUML documentation</title>
-    <section>
-    <title>Overview</title>
-    <para>
+  </appendixinfo>
+  <title>Organization of ArgoUML documentation</title>
+  <para>
 There are seven significantly different bits of documentation in the
 ArgoUML project.
 By documentation I mean some information of the product that is
 developed alongside the product and that has a persistent value.
 </para>
-    <orderedlist>
-      <listitem>
-	<para>The code, variable names, class names</para>
-      </listitem>
-      <listitem>
-	<para>The javadoc</para>
-      </listitem>
-      <listitem>
-	<para>The cookbook</para>
-      </listitem>
-      <listitem>
-	<para>The web site in CVS</para>
-      </listitem>
-      <listitem>
-	<para>The manual and quick-guide</para>
-      </listitem>
-      <listitem>
-	<para>Help texts within the running ArgoUML</para>
-      </listitem>
-      <listitem>
-	<para>The FAQ</para>
-      </listitem>
-    </orderedlist>
-    <para>
+  <orderedlist>
+    <listitem>
+      <para>The code, variable names, class names</para>
+    </listitem>
+    <listitem>
+      <para>The javadoc</para>
+    </listitem>
+    <listitem>
+      <para>The cookbook</para>
+    </listitem>
+    <listitem>
+      <para>The web site in CVS</para>
+    </listitem>
+    <listitem>
+      <para>The manual and quick-guide</para>
+    </listitem>
+    <listitem>
+      <para>Help texts within the running ArgoUML</para>
+    </listitem>
+    <listitem>
+      <para>The FAQ</para>
+    </listitem>
+  </orderedlist>
+  <para>
 These different bits have all different purpose and audience and
 the purpose of this chapter is to try to define that.
 </para>
@@ -283,16 +280,13 @@ the issues discussed recently in the user community.
 	</tbody>
       </tgroup>
     </table>
-    <para>
+  <para>
 The Cookbook, the User Manual, and the Quick Guide, 
 are all written in docbook and generated into HTML and PDF 
 during deployment.
 See <xref linkend="app.docstand"/> for details on how to write these.
 </para>
-
-</section>
-
-</chapter>
+</appendix>
 
 <!-- Local stuff for Emacs - please do not delete
 

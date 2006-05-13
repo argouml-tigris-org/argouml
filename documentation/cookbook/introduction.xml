@@ -38,16 +38,31 @@
   
   <sect1 id="project">
     <title>About the project</title>
-    <para> ArgoUML is an open source project, so it depends on people that
-      volunteer to work on it. Especially in the area of development there is still
+    <para>
+ArgoUML is an open source project, so it depends on people that
+volunteer to work on it.
+Especially in the area of development there is still
 so much to do!
 </para>
     <para>
 This Cookbook is dedicated to everyone interested in taking
-      part in the ArgoUML project as such and should help to transfer the knowledge
+part in the ArgoUML project as such and should help to transfer the knowledge
 from the old experts to them.
 Please feel free to discuss the ArgoUML project and this Cookbook on
 <ulink url="mailto:dev@argouml.tigris.org">dev mailing list</ulink>!
+</para>
+    <para>
+The ArgoUML project is hosted at Tigris.
+For best use of the Tigris platform,
+the ArgoUML project is spread over several Tigris projects
+with the argouml project as the top project.
+Each Tigris project has its own
+list of developers,
+source repository,
+issuezilla,
+web site,
+set of mailing lists, ...
+but they are released together.
 </para>
   </sect1>
   
@@ -74,16 +89,37 @@ Please feel free to discuss the ArgoUML project and this Cookbook on
         </listitem>
         
         <listitem>
-          <para> Subscribe to the users' mailing list. </para>
-          <para> Discuss how you use ArgoUML in your project and how you promote
-            ArgoUML in your organization. You can also help other users with
-            their ArgoUML-related problems. </para>
+          <para>
+Subscribe to some of the users' mailing lists.
+</para>
+          <para>
+Discuss how you use ArgoUML in your project and how you promote
+ArgoUML in your organization.
+You can also help other users with their ArgoUML-related problems.
+</para>
+
+          <para>
+There is one users' mailing list for each language project
+(Spanish, Swedish, Chinese, ...)
+for the users that prefer to discuss ArgoUML using that language.
+These are not currently (May 2006) very active but the
+main list, the English-speaking list at users@argouml.tigris.org-list, is.
+</para>
+
+          <para>
+In some cases there are also users' mailing lists for the specific
+subproject, for discussing these specific features or uses of them
+(cpp, andromda, ...).
+Prefer those if your discussion is for that area.
+</para>
         </listitem>
         
         <listitem>
           <para>Apply for an Observer role.</para>
-          <para> This shows that you are committed to the project and also allows
-            you to comment on issues. </para>
+          <para>
+This shows that you are committed to the project and also allows
+you to comment on issues.
+</para>
         </listitem>
         <listitem>
           <para> Familiarize yourself with the project and how we work. </para>
@@ -101,28 +137,52 @@ Please feel free to discuss the ArgoUML project and this Cookbook on
                   unsubscribe!) </para>
               </listitem>
               <listitem>
-                <para>Subscribe to the CVS list.</para>
-                <para> You will get updates on all changes that are done to code,
+                <para>
+Subscribe to the cvs mailing list
+of the project that you are interested in.
+</para>
+                <para>
+You will get updates on all changes that are done to code,
                   documentation, and the web site. (It could be a lot of large
                   mails. If it turns out you don't like watching what is going on
                   in the project in this way you unsubscribe.) </para>
+                <note>
+                  <para>
+Some of the argouml projects does not use cvs for the repository
+but subversion
+and, probably during 2006,
+we will convert all the argouml project to subversion.
+For subversion projects, the mailing list is called commits.
+When the conversion is done, you will be moved from the cvs list to the
+commits list automatically but the syntax of the mailings will change.
+</para>
+                </note>
               </listitem>
               <listitem>
-                <para> Read the process part of the Developers Cookbook at <xref
-                    linkend="processes"/>. </para>
+                <para>
+Read the process part of the Developers Cookbook
+at <xref linkend="processes"/>.
+</para>
                 <para> This will give you the idea of how the ArgoUML project
                   attempts to release with good quality and especially how we
                   use Issuezilla. </para>
               </listitem>
               <listitem>
                 <para>Get the Observer role granted.</para>
-              </listitem>
-              <listitem>
-                <para> From this on you can comment on bugs yourself directly in
-                  Issuezilla. </para>
+
+                <para>
+You can apply for the Observer role in any or all of the argouml projects
+if you like.
+Choose the ones you are interested in.
+</para>
+
+                <para>
+From this on you can comment on bugs yourself directly in Issuezilla.
+</para>
+
                 <para> You can also verify issues according to the verification
                   process (see <xref linkend="verify_resolved_fixed"/>).
-                  </para>
+</para>
                 <para> This will help you understand the terminology used in the
                   project and also gives you an idea of the current quality of
                   ArgoUML and what needs to be done in the future. </para>
@@ -144,83 +204,125 @@ Please feel free to discuss the ArgoUML project and this Cookbook on
         </listitem>
         
         <listitem>
-          <para>Subscribe to the dev list.</para>
-          <para> The purpose of this is to see what the developers are discussing
-            in the project. </para>
-          <para> Monitor the discussions and as soon as you see something
-            discussed where you have an opinion, jump right in! </para>
+          <para>
+Subscribe to some of the dev mailing lists.
+</para>
+          <para>
+There is one dev mailing list for each project
+with the purpose of discussing the specifics for that project.
+Subscribe to as many of them as you'd like and take part.
+</para>
+
+          <para>
+The purpose of this is to see what the developers are discussing
+in the project.
+</para>
+
+          <para>
+Monitor the discussions and as soon as you see something
+discussed where you have an opinion, jump right in!
+</para>
         </listitem>
         
         <listitem>
           <para>Familiarize yourself with the code.</para>
-          <para> For this a good knowledge of Java is more or less a prerequisite.
+          <para>For this a good knowledge of Java is more or less a prerequisite.
             </para>
           <para> Suggestion on how to go about this:
             <orderedlist numeration="loweralpha">
               <listitem>
-                <para> Take active part in the discussions on the dev-list.
-                  </para>
+                <para>
+Take active part in the discussions on the dev-list.
+</para>
               </listitem>
               <listitem>
-                <para> Solve issues registered in Issuezilla. </para>
+                <para>
+Solve issues registered in Issuezilla or fix other things that you
+want to pursue.
+</para>
               </listitem>
               <listitem>
-                <para> Convince someone to commit your changes. </para>
-                <para> Establish a relationship with one developer that has
-                  volunteered to help you with the commits. That developer will
-                  check that your code reaches the quality level that we strive
-                  for in the project and obeys the design. </para>
+                <para>
+Convince someone to commit your changes.
+</para>
+                <para>
+Establish a relationship with one developer of the project you want
+to work with.
+That developer will check that your code reaches the quality level
+that we strive for in the project and obeys the design.
+</para>
               </listitem>
               <listitem>
                 <para> Repeat. </para>
-                <para> This can go on until the developer helping you knows that
-                  you have good knowledge of the project quality and design and
-                  the main problem for you two is that the sending, waiting,
-                  committing, updating et.c. is extra work. </para>
+                <para>
+This can go on until the developer helping you knows that
+you have good knowledge of the project quality and
+design and
+the main problem for you two is that
+sending,
+waiting,
+committing,
+updating et.c.
+is extra work.
+</para>
               </listitem>
-            </orderedlist> </para>
+            </orderedlist>
+</para>
         </listitem>
         <listitem>
-          <para>Apply for a Developer role.</para>
-          <para> This allows you to do commits on your own and you can now increase
-            the pace in which you are working while also increasing your
-            responsibilities in the project. </para>
-          <para> This role is granted by the Project leader after he is convinced
-            that you have learned the enough about the project w.r.t.: </para>
+          <para>
+Apply for a Developer role in the project where you want to contribute.
+</para>
+          <para>
+This allows you to do commits on your own and you can now increase
+the pace in which you are working while also increasing your
+responsibilities in the project.
+</para>
+          <para>
+This role is granted by the Project leader after he is convinced
+that you have learned the enough about the project w.r.t.:
+</para>
           <itemizedlist>
             <listitem>
-              <para> Understanding and accepting the goals. </para>
+              <para>
+Understanding and accepting the goals.
+</para>
             </listitem>
             <listitem>
-              <para> Understanding where we are in the development process.
-                </para>
+              <para>
+Understanding where we are in the development process.
+</para>
             </listitem>
             <listitem>
-              <para> Understanding the terminology used in the project.
-                </para>
+              <para>
+Understanding the terminology used in the project.
+</para>
             </listitem>
             <listitem>
-              <para> Understanding how we use CVS in the project. </para>
+              <para>
+Understanding how we use CVS in the project.
+</para>
             </listitem>
             <listitem>
-              <para> Understanding the set of tools (ant, JUnit) and how to use
-                them. </para>
+              <para>
+Understanding the set of tools (ant, JUnit) and how to use them.
+</para>
             </listitem>
           </itemizedlist>
         </listitem>
         <listitem>
           <para>Focus your work in a specific area.</para>
-          <para> Everybody has different interests and the best contribution is
-            made when someone is allowed to pursue his own interests. Hopefully
-            ArgoUML provides you with interesting challenges to your taste.
-            </para>
+          <para>
+Everybody has different interests and the best contribution is
+made when someone is allowed to pursue his own interests. Hopefully
+ArgoUML provides you with interesting challenges to your taste.
+</para>
         </listitem>
         <listitem>
           <para>Accept responsibility for a specific area.</para>
-          <para> With this you are part of the core team developing ArgoUML.
-            </para>
         </listitem>
-      </orderedlist> </para>
+      </orderedlist>
+</para>
   </sect1>
   
   <sect1>

@@ -69,8 +69,21 @@ Change to XXX.
         <row>
           <entry>2006-05-13</entry>
           <entry>
+Change to the introduction to the ArgoUML project to reflect that
+there are several Tigris projects involved.
+(See <xref linkend="introduction"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
+          <entry>2006-05-13</entry>
+          <entry>
 Moved the User Manual section from chapter 7 to chapter 10.
 (See <xref linkend="user-manual-plans"/>).
+Moved the rest of chapter 7 to appendix.
 </entry>
           <entry>Linus Tolke</entry>
         </row>
