@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.notation.NotationContext;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
@@ -141,6 +142,9 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      */
     public void populate() {
         if (!isVisible()) {
+            return;
+        }
+        if (Model.getUmlFactory().isRemoved(getGroup().getOwner())) {
             return;
         }
         Fig bigPort = this.getBigPort();
