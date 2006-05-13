@@ -152,11 +152,6 @@ public class ModuleLoader {
                 true);
         // TODO: Move to specific registration.
         loadClassFromLoader(getClass().getClassLoader(),
-                "module.language.uml.generator",
-                "org.argouml.uml.generator.GeneratorDisplay",
-                true);
-        // TODO: Move to specific registration.
-        loadClassFromLoader(getClass().getClassLoader(),
                 "module.language.java.generator",
                 "org.argouml.language.java.generator.GeneratorJava",
                 true);

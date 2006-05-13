@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,7 +46,7 @@ import org.argouml.application.events.ArgoNotationEvent;
  * @author Thierry Lach
  * @since 0.9.4
  */
-public class NotationNameImpl
+class NotationNameImpl
     implements NotationName, ArgoModuleEventListener {
 
     /**
@@ -166,7 +166,7 @@ public class NotationNameImpl
      * @param k2 2nd part of the given name
      * @return the notation name string
      */
-    public static String getNotationNameString(String k1, String k2) {
+    static String getNotationNameString(String k1, String k2) {
         if (k2 == null) {
             return k1;
         }
@@ -189,7 +189,7 @@ public class NotationNameImpl
      * @param icon the icon for the notation
      * @return the newly created or the old NotationName
      */
-    public static NotationName makeNotation(String k1, String k2, Icon icon) {
+    static NotationName makeNotation(String k1, String k2, Icon icon) {
 	NotationName nn = null;
 	nn = findNotation(getNotationNameString(k1, k2));
 	if (nn == null) {
@@ -205,7 +205,7 @@ public class NotationNameImpl
      *
      * @return an ArrayList with all notations
      */
-    public static ArrayList getAvailableNotations() {
+    static ArrayList getAvailableNotations() {
         return notations;
     }
 
@@ -216,7 +216,7 @@ public class NotationNameImpl
      * @param s the name string
      * @return the notationName or null
      */
-    public static NotationName findNotation(String s) {
+    static NotationName findNotation(String s) {
         ListIterator iterator = notations.listIterator();
         while (iterator.hasNext()) {
 	    try {
@@ -246,7 +246,7 @@ public class NotationNameImpl
      * @param k1 the notation name string
      * @return the notation name
      */
-    public static NotationName getNotation(String k1) {
+    static NotationName getNotation(String k1) {
         return findNotation(getNotationNameString(k1, null));
     }
 
@@ -258,7 +258,7 @@ public class NotationNameImpl
      * @param k2 the 2nd part of the notation name
      * @return the notation name
      */
-    public static NotationName getNotation(String k1, String k2) {
+    static NotationName getNotation(String k1, String k2) {
         return findNotation(getNotationNameString(k1, k2));
     }
 
