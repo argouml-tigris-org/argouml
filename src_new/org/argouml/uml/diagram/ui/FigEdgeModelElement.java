@@ -879,6 +879,8 @@ public abstract class FigEdgeModelElement
      * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationChanged(ArgoNotationEvent event) {
+        if (getOwner() == null) return;
+        NotationName oldNotation = currentNotationName;
         PropertyChangeEvent changeEvent =
             (PropertyChangeEvent) event.getSource();
         if (changeEvent.getPropertyName().equals("argo.notation.only.uml")) {
@@ -889,8 +891,10 @@ public abstract class FigEdgeModelElement
             setContextNotation(
                 Notation.findNotation((String) changeEvent.getNewValue()));
         }
-        renderingChanged();
-        damage();
+        if (!oldNotation.sameNotationAs(currentNotationName)) {
+            initNotationProviders(getOwner());
+            renderingChanged();
+        }
     }
 
     /**
