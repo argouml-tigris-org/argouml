@@ -25,11 +25,11 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
-import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
-import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -40,6 +40,8 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
+
+    Collection others = new ArrayList();
 
     /**
      * Constructor for UMLAssociationRoleBaseComboBoxModel.
@@ -90,31 +92,45 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
+     * TODO: Prove that this works. 
+     * The TestUMLAssociationRoleBaseComboBoxModel does not cut it. 
+     * 
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#addOtherModelEventListeners(java.lang.Object)
      */
-    public void propertyChange(PropertyChangeEvent evt) {
-        /* The list may only change when the target changes,
-         * except when edited on the diagram.
-         * Hence handle only this case:. */
-        if (evt instanceof AddAssociationEvent) {
-            if (evt.getPropertyName().equals(this.getPropertySetName())) {
-                if (evt.getSource() == getTarget()) {
-                    Object elem = evt.getNewValue();
-                    if (evt.getOldValue() == null && elem != null) {
-                        addElement(elem);
-                        setSelectedItem(elem);
-                    }
-                }
-            }
-        } else if (evt instanceof RemoveAssociationEvent) {
-            if (evt.getPropertyName().equals(this.getPropertySetName())) {
-                if (evt.getSource() == getTarget()) {
-                    if (evt.getOldValue() == getSelectedItem()) {
-                        setSelectedItem(evt.getNewValue());
-                    }
-                }
-            }
+    protected void addOtherModelEventListeners(Object newTarget) {
+        super.addOtherModelEventListeners(newTarget);
+        Collection connections = Model.getFacade().getConnections(newTarget);
+        Collection types = new ArrayList();
+        Iterator it = connections.iterator();
+        while (it.hasNext()) {
+            Object conn = it.next();
+            types.add(Model.getFacade().getType(conn));
         }
+        it = types.iterator();
+        while (it.hasNext()) {
+            Object classifierRole = it.next();
+            others.addAll(Model.getFacade().getBases(classifierRole));
+        }
+        it = others.iterator();
+        while (it.hasNext()) {
+            Object classifier = it.next();
+            Model.getPump().addModelEventListener(this, 
+                    classifier, "feature");
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#removeOtherModelEventListeners(java.lang.Object)
+     */
+    protected void removeOtherModelEventListeners(Object oldTarget) {
+        super.removeOtherModelEventListeners(oldTarget);
+        Iterator i = others.iterator();
+        while (i.hasNext()) {
+            Object classifier = i.next();
+            Model.getPump().removeModelEventListener(this, 
+                    classifier, "feature");
+        }
+        others.clear();
     }
 
 }
