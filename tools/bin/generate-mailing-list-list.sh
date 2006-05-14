@@ -15,10 +15,12 @@ projects="argouml \
     argouml-gen argouml-mdr argoumlinstaller \
     argouml-downloads argouml-stats \
     argouml-ada argouml-classfile argouml-cpp argouml-csharp argouml-delphi \
-    argouml-idl argouml-php argouml-python \
+    argouml-idl argouml-java argouml-php argouml-python \
     argouml-ca argouml-de argouml-en-gb argouml-es argouml-fr \
-    argouml-i18n-zh argouml-nb argouml-pt argouml-ru argouml-sv argouml-zh-cn \
+    argouml-i18n-zh argouml-nb argouml-pt argouml-pt-br \
+    argouml-ru argouml-sv argouml-zh-cn argouml-zh-tw \
     argoprint argouml-andromda argouml-emf argouml-sql"
+
 lists="dev cvs issues users commits announce"
 
 for f in $files
@@ -46,6 +48,29 @@ do
     echo "<hr>" >> $f
 done
 
+# The delay is increased once per list. For every lap we write several
+# lists in different files so each file will bigger delays...
+delay=10000
+delayincr=1000
+
+# Here is a function for one list.
+# The arguments are:
+# 1 - the servlet and arguments
+# 2 - the project
+# 3 - the listname
+function onelist() {
+    echo "<a href=\"http://$2.tigris.org/nonav/servlets/$1\" target=\"frame-$2-$3\">Refetch</a>"
+    echo "<a href=\"http://$2.tigris.org/servlets/$1\" target=\"_blank\">Open</a>"
+    echo "<br>"
+    echo "<IFRAME name=\"frame-$2-$3\" width=\"800\" height=\"600\"></IFRAME>"
+    echo "<script>"
+    echo "setTimeout(\"document.frames('frame-$2-$3').location.href='http://$2.tigris.org/nonav/servlets/$1'\", $delay)"
+    echo "</script>"
+    echo "<br>"
+    delay=`expr $delay + $delayincr`
+
+}
+
 
 for proj in $projects
 do
@@ -59,26 +84,17 @@ do
             echo "<a href=\"#top\">Top</a> " >> $f
         done
 
-	echo "<a href=\"http://$proj.tigris.org/nonav/servlets/MailingListEdit?list=$listname\" target=\"frame-$proj-$listname\">Refetch</a>" >> $EDIT
-	echo "<a href=\"http://$proj.tigris.org/servlets/MailingListEdit?list=$listname\" target=\"_blank\">Open</a>" >> $EDIT
-        echo "<br>" >> $EDIT
-        echo "<IFRAME name=\"frame-$proj-$listname\" SRC=\"http://$proj.tigris.org/nonav/servlets/MailingListEdit?list=$listname\" width=\"800\" height=\"600\"></IFRAME>" >> $EDIT
+	onelist MailingListEdit?list=$listname $proj $listname >> $EDIT
+	onelist SummarizeList?list=$listname $proj $listname >> $VIEW
 
-	echo "<a href=\"http://$proj.tigris.org/nonav/servlets/SummarizeList?list=$listname\" target=\"frame-$proj-$listname\">Refetch</a>" >> $VIEW
-	echo "<a href=\"http://$proj.tigris.org/nonav/servlets/SummarizeList?list=$listname\" target=\"_blank\">Open</a>" >> $VIEW
-        echo "<br>" >> $VIEW
-        echo "<IFRAME name=\"frame-$proj-$listname\" SRC=\"http://$proj.tigris.org/nonav/servlets/SummarizeList?list=$listname\" width=\"800\" height=\"600\"></IFRAME>" >> $VIEW
-
-	for subscribersalt in Subscribers Subscribers+Digest Moderators Allowed+Posters
+	for subscribersalt in Subscribers Digest+Subscribers Moderators Allowed+Posters
 	do
 	    echo '<DIV class="h3"><h3>' >> $SUBSCRIBERS
             echo "$subscribersalt for $listname in the project $proj" >> $SUBSCRIBERS
 	    echo '</h3>' >> $SUBSCRIBERS
 
-	    echo "<a href=\"http://$proj.tigris.org/nonav/servlets/MailingListMembers?list=$listname&group=$subscribersalt\" target=\"frame-$proj-$listname-$subscribersalt\">Refetch</a>" >> $SUBSCRIBERS
-	    echo "<a href=\"http://$proj.tigris.org/nonav/servlets/MailingListMembers?list=$listname&group=$subscribersalt\" target=\"_blank\">Open</a>" >> $SUBSCRIBERS
-	    echo "<br>" >> $SUBSCRIBERS
-            echo "<IFRAME name=\"frame-$proj-$listname-$subscribersalt\" SRC=\"http://$proj.tigris.org/nonav/servlets/MailingListMembers?list=$listname&group=$subscribersalt\" width=\"650\" height=\"450\"></IFRAME>" >> $SUBSCRIBERS
+	    onelist "MailingListMembers?list=$listname&group=$subscribersalt" $proj $listname-$subscribersalt >> $SUBSCRIBERS
+
 	    echo '</DIV>' >> $SUBSCRIBERS
         done
 
