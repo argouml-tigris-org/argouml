@@ -35,15 +35,19 @@
     <secondary>Coding</secondary>
   </indexterm>
   <sect1>
-    <title>Rules for writing Java code</title>
+    <title>When Writing Java Code</title>
 
     <para>
-The coding style for ArgoUML is the following
+The coding style for ArgoUML is based on the 
+<ulink url="http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html">
+Code Conventions for the Java Programming Language
+</ulink>.
+We have the following exceptions and comments:
 </para>
     <itemizedlist>
       <listitem>
         <para>
-Each file starts with some header info: 
+Each file starts with some header info:
 file, 
 version info, 
 copyright notice.
@@ -122,9 +126,13 @@ a public, protected or default visibility variable or method.
         <para>
 Indicate places of future modifications with 
 <programlisting>
-// TODO: reason
+// TODO: reason and explanation
 </programlisting>
-        </para>
+or if within a javadoc or c-style comment
+<programlisting>
+* TODO: reason and explanation
+</programlisting>
+</para>
         <para>
 This differs from the Sun Code Conventions that 
 uses either XXX or FIXME depending on if it works or not.
@@ -344,8 +352,241 @@ Java Language Specification, Section 8.1.1, 8.3.1, 8.4.3.
 </para>
   </sect1>
 
+  <sect1 id="groundrules">
+    <title>When Commiting to the Repository</title>
+    <indexterm>
+      <primary>CVS</primary>
+      <secondary>standards</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>SVN</primary>
+      <secondary>standards</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>Repository Commiting</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Commiting to the Repository</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Standards</primary>
+      <secondary>CVS</secondary>
+    </indexterm>
+    <para>
+The CVS repository is a shared resource in the project.
+This means that once you commit your stuff it has the potential
+of getting in the way of everybody else's work in the project.
+For this reason special considerations are needed.
+This chapter describes the how you should do to limit the risk
+of causing someone else problems.
+</para>
+
+    <para>
+When you have done all the work, and all the testing and
+are about to commit something please do:
+      <orderedlist>
+	<listitem>
+	  <para>
+Compile ArgoUML 
+(<command>build run</command> or <command>build package</command>).
+</para>
+	  <para>
+This goes for all changes, even changes in comments.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+If your changes include removing files make a clean compile.
+(<command>build clean</command> followed by
+<command>build run</command> or <command>build package</command>).
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+If your changes include removing public or protected operations and
+attributes make a clean compile
+(<command>build clean</command> followed by
+<command>build run</command> or <command>build package</command>).
+</para>
+	  <para>
+The build mechanism does not yet have reliable 
+dependency checker enabled so this is the best way to make sure.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+If your changes include adding abstract operations make a clean compile
+(<command>build clean</command> followed by
+<command>build run</command> or <command>build package</command>).
+</para>
+	  <para>
+The build mechanism does not yet have reliable 
+dependency checker enabled so this is the best way to make sure.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+If you have changed anything that has the potential of affecting
+something in a totally different part of the code like internal
+data structure, handling of exceptions, 
+run all JUnit test cases
+and start the tool and do some more testing.
+</para>
+	  <para>
+If in doubt, run all JUnit test cases.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Do a <command>cvs update</command> in src_new to make sure that 
+you do not forget to commit any file and to make sure that no one 
+else has committed anything in the mean time.
+</para>
+	  <para>
+Remember that if you do not commit all the files from src_new
+that <command>cvs update</command> found (marked A, R, and M)
+in the same commit then you would better remove those file
+from the checked out copy, update to get the original version
+from the repository and start over with the compilation.
+</para>
+	  <para>
+If someone else have updated a file 
+(<command>cvs update </command> shown U, or no longer pertinent)
+please compile again.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Commit all files that are included in a change at the same time.
+</para>
+	  <para>
+This reduces the chance of anyone getting an inconsistent set of files
+by updating in the middle of your commit.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Commit often.
+</para>
+	  <para>
+Remember that the repository is also a backup copy of your work.
+</para>
+	  <para>
+If your change is so big and involves so many files that you would
+like to commit it for backup reasons but it doesn't compile or
+doesn't work or for some other reason should not confuse the main 
+branch in CVS, create a branch to work in.
+Then when your work is complete, you merge the branch into 
+the main branch.
+</para>
+	</listitem>
+      </orderedlist>
+</para>
+    <para>
+<emphasis>Rationale:</emphasis>
+These ground rules is for the purpose of not stopping or hindering
+the work for anyone.
+Remember that there might be several developers working with
+different agendas and different efficiency (slower or faster)
+and the commits is the melting point of this.
+</para>
+    <para>
+<emphasis>Perspective:</emphasis>
+If this will take you an extra two minutes before every commit
+remember that if you commit something that will not work this
+will take everyone else (guess 10 persons) the extra time of
+looking at the compilation error or see the tool crash (1 minute),
+wonder why (1 minute),
+search for the error in his own changes (3 minutes),
+search for the error somewhere else (1 minute),
+glance at the mailing list to see if someone else has noticed this 
+and send a mail (1 minute),
+wait for some response (1 hour wait),
+update (1 minute),
+compile (1 minute).
+This amounts to 10 hours wait and 1.5 hours extra work for
+all developers in the project.
+</para>
+
+    <para>
+There are some general cvs tips in
+<xref linkend="cvs"></xref>.
+</para>
+  </sect1>
+
   <sect1>
-    <title>Rules for the building process</title>
+    <title>When Using Branches</title>
+    <para>
+We use the following standards in ArgoUML:
+    </para>
+    <itemizedlist>
+      <listitem>
+	<para>
+Released versions get the tag
+<emphasis>VERSION_<replaceable>X_X_X</replaceable></emphasis>.
+</para>
+      </listitem>
+      <listitem>
+	<para>
+Freezed versions (just before the release) get the tag
+<emphasis>VERSION_<replaceable>X_X_X</replaceable>_F</emphasis>.
+</para>
+      </listitem>
+      <listitem>
+	<para>
+Release branches get the tag
+<emphasis>BRANCH_<replaceable>X_X</replaceable></emphasis>.
+</para>
+      </listitem>
+      <listitem>
+	<para>
+Developers working on code, with an unspecified due date are requested
+to put the code into a branch if it is deemed useful that the code can
+be shared. Developer branches follow the scheme:
+<emphasis>work_<replaceable>explanation</replaceable>_<replaceable>owner</replaceable></emphasis>, where
+</para>
+	<itemizedlist>
+	  <listitem>
+	    <para>
+<replaceable>explanation</replaceable> is something like
+javahelp,
+propertypanel,
+cppcodegeneration,
+issue12345
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+<replaceable>owner</replaceable> is the uid for the
+developer that started the branch,
+e.g. tlach (Thierry Lach) or mkl (Markus Klink).
+</para>
+	  </listitem>
+	</itemizedlist>
+      </listitem>
+    </itemizedlist>
+
+    <para>
+Merging branches together is complex.
+Please use branches sparingly and announce your intentions on the mailing list.
+</para>
+
+    <para>
+There are some tips on how to work with branches in cvs in
+<xref linkend="branches"></xref>.
+</para>
+  </sect1>
+
+
+  <sect1>
+    <title>When Working with the Build Process</title>
     <para>
 For the <filename>build.xml</filename> files we use the following rules.
     </para>
@@ -393,7 +634,7 @@ run a development environment.
         <surname>Tolke</surname>
       </author>
     </sect1info>
-    <title>Checklist for using sub-products</title>
+    <title>When Considering Sub-products</title>
 
     <para>
 In the ArgoUML project we use several third-party libraries
@@ -682,6 +923,7 @@ Number of Spaces per indentation level).
       </listitem>
     </itemizedlist>
   </sect1>
+
   <sect1>
     <sect1info>
       <author>
@@ -721,7 +963,7 @@ These style guides correspond to the default Java settings in Emacs:
 	<surname>Tolke</surname>
       </author>
     </sect1info>
-    <title>How to work with Eclipse 3</title>
+    <title>Setting up Eclipse 3</title>
     <warning>
       <para>
 This was recently updated to the 

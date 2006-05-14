@@ -131,7 +131,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
   &subsystems;
   &inside_subsystems;
   &extending;
-  &cvs;
   &standards;
   &documentationstandards;
   &processes;
@@ -141,6 +140,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
   <index/>
 
   &further_reading;
+  &cvs;
   &documentationorganization;
   
 </book>

@@ -69,6 +69,21 @@ Change to XXX.
         <row>
           <entry>2006-05-14</entry>
           <entry>
+Splitted and moved the cvs chapter.
+One part goes into the Standards for coding chapter and
+one part goes into a newly created appendixex.
+(See <xref linkend="groundrules"/>,
+<xref linkend="cvs"/>, and
+<xref linkend="repository-contents"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
+          <entry>2006-05-14</entry>
+          <entry>
 Moved the Terminology into the Cookbook.
 (See <xref linkend="terminology"/>).
 </entry>

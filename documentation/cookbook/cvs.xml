@@ -25,247 +25,55 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 
-  <chapter id="cvs">
+<appendix id="cvs">
   <title>CVS in the ArgoUML project</title>
-    <indexterm>
-      <primary>CVS</primary>
-      <secondary>standards</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>CVS</primary>
-      <secondary>how to work with</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Standards</primary>
-      <secondary>CVS</secondary>
-    </indexterm>
-
-    <para>
-The CVS repository is a shared resource in the project.
-This means that once you commit your stuff it has the potential
-of getting in the way of everybody else's work in the project.
-For this reason special considerations are needed.
-This chapter describes the how you should do to limit the risk
-of causing someone else problems.
+  <para>
+Here are some tips for those, not so comfortable with cvs,
+that need to start doing complex things.
 </para>
 
-  <sect1 id="groundrules">
-    <title>How to work against the CVS repository</title>
-      <para>
-When you have done all the work, and all the testing and
-are about to commit something please do:
-<orderedlist>
-	  <listitem>
-	    <para>
-Compile ArgoUML 
-(<command>build run</command> or <command>build package</command>).
-</para>
-	    <para>
-This goes for all changes, even changes in comments.
-</para>
-	  </listitem>
+  <sect1 id="howdoi_cvs">
+    <title>How do I ...?</title>
 
-	  <listitem>
-	    <para>
-If your changes include removing files make a clean compile.
-(<command>build clean</command> followed by
-<command>build run</command> or <command>build package</command>).
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-If your changes include removing public or protected operations and
-attributes make a clean compile
-(<command>build clean</command> followed by
-<command>build run</command> or <command>build package</command>).
-</para>
-	    <para>
-The build mechanism does not yet have reliable 
-dependency checker enabled so this is the best way to make sure.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-If your changes include adding abstract operations make a clean compile
-(<command>build clean</command> followed by
-<command>build run</command> or <command>build package</command>).
-</para>
-	    <para>
-The build mechanism does not yet have reliable 
-dependency checker enabled so this is the best way to make sure.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-If you have changed anything that has the potential of affecting
-something in a totally different part of the code like internal
-data structure, handling of exceptions, 
-run all JUnit test cases
-and start the tool and do some more testing.
-</para>
-	    <para>
-If in doubt, run all JUnit test cases.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-Do a <command>cvs update</command> in src_new to make sure that 
-you do not forget to commit any file and to make sure that no one 
-else has committed anything in the mean time.
-</para>
-	    <para>
-Remember that if you do not commit all the files from src_new
-that <command>cvs update</command> found (marked A, R, and M)
-in the same commit then you would better remove those file
-from the checked out copy, update to get the original version
-from the repository and start over with the compilation.
-</para>
-	    <para>
-If someone else have updated a file 
-(<command>cvs update </command> shown U, or no longer pertinent)
-please compile again.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-Commit all files that are included in a change at the same time.
-</para>
-	    <para>
-This reduces the chance of anyone getting an inconsistent set of files
-by updating in the middle of your commit.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-Commit often.
-</para>
-	    <para>
-Remember that the repository is also a backup copy of your work.
-</para>
-	    <para>
-If your change is so big and involves so many files that you would
-like to commit it for backup reasons but it doesn't compile or
-doesn't work or for some other reason should not confuse the main 
-branch in CVS, create a branch to work in.
-Then when your work is complete, you merge the branch into 
-the main branch.
-</para>
-	  </listitem>
-	</orderedlist>
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-These ground rules is for the purpose of not stopping or hindering
-the work for anyone.
-Remember that there might be several developers working with
-different agendas and different efficiency (slower or faster)
-and the commits is the melting point of this.
-</para>
-      <para>
-<emphasis>Perspective:</emphasis>
-If this will take you an extra two minutes before every commit
-remember that if you commit something that will not work this
-will take everyone else (guess 10 persons) the extra time of
-looking at the compilation error or see the tool crash (1 minute),
-wonder why (1 minute),
-search for the error in his own changes (3 minutes),
-search for the error somewhere else (1 minute),
-glance at the mailing list to see if someone else has noticed this 
-and send a mail (1 minute),
-wait for some response (1 hour wait),
-update (1 minute),
-compile (1 minute).
-This amounts to 10 hours wait and 1.5 hours extra work for
-all developers in the project.
-</para>
-
-    </sect1>
-
-<sect1 id="branches">
-<title>Creating and using branches</title>
-      <indexterm>
-	<primary>CVS</primary>
-	<secondary>branches</secondary>
-      </indexterm>
-<para>We use the following standards in ArgoUML:
-<itemizedlist>
-          <listitem><para>Released versions get the tag <emphasis>VERSION_X_X_X</emphasis></para></listitem>
-          <listitem>
-	    <para>
-Developers working on code, with an unspecified due date are requested
-to put the code into a branch if it is deemed useful that the code can
-be shared. Developer branches follow the scheme:
-<emphasis>work_<replaceable>explanation</replaceable>_<replaceable>owner</replaceable></emphasis>, where
-            <itemizedlist>
-		<listitem><para>work is a literal</para></listitem>
-		<listitem>
-		  <para>
-<replaceable>explanation</replaceable> is something like javahelp,
-propertypanel, cppcodegeneration
-</para>
-		</listitem>
-		<listitem>
-		  <para>
-<replaceable>owner</replaceable> is a self explaining code for the
-owner of the branch, 
-e.g. tlach (Thierry Lach) or mkl (Markus Klink).
-</para>
-		</listitem>
-              </itemizedlist>
-</para>
-          </listitem>
-</itemizedlist>
-</para>
-      <para>Merging branches together is causing some work. So please use them sparingly and announce your intentions before on the mailing list.
-</para>
-      <sect1 id="howdoi_cvs">
-	<title>How do I ...?</title>
-	<para>
-	  <itemizedlist>
-	    <listitem>
-	      <para>
+    <itemizedlist>
+      <listitem>
+        <para>
 ...commit stuff?
 </para>
-	      <para>
+        <para>
 You have made, the change, tested it and are satisfied with it.
 </para>
-	      <para>
+        <para>
 Do a <command>cvs update -d</command> and see that only the files 
 you have changed are marked as modified.
 If files are updated or patched by this command, 
 please recompile and test again.
 </para>
-	      <para>
+        <para>
 Do a <command>cvs diff</command> on each of the files and verify that
 only the lines you have changed are modified.
 </para>
-	      <para>
+        <para>
 Do a single <command>cvs commit</command> for all the files included
 in the change.
 This reduces the risk that someone else updates in the middle of your 
 work and also reduces the amount of notifications of commits sent out.
 Include changes to documentation and JUnit tests if applicable.
 </para>
-	      <para>
+        <para>
 Don't forget to update the corresponding issue (if any) in Issuezilla 
 i.e. set it to RESOLVED/FIXED.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+      </listitem>
+      <listitem>
+        <para>
 ...get my update or patch into CVS if I don't have CVS write rights?
 </para>
-	      <para>
+        <para>
 Contact any of the active developers on the list and send them your
 updates. They're very nice about it the first few times.
 </para>
-	      <para>
+        <para>
 Supposing that you have checked out CVS as guest, then after you have
 mailed a diff or file to an active developer, and he has entered it in CVS
 your checked out copy contains the change but is not in sync and
@@ -275,247 +83,245 @@ before doing the <command>cvs update</command>.
 The <command>cvs update</command> will restore all the files from the 
 CVS repository and you can start with the next update.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>...get a list of the currently active working branches?</para>
-	      <para>
+      </listitem>
+      <listitem>
+        <para>...get a list of the currently active working branches?</para>
+        <para>
 You can't from CVS. You need to follow the announcements of created
 and discontinued branches on the mailing list to know what branches are
 interesting.
-	      </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+</para>
+      </listitem>
+      <listitem>
+        <para>
 ...create a branch for my work on <replaceable>xxxyyy</replaceable> 
-and start work on that branch?</para>
-	      <para>
+and start work on that branch?
+</para>
+        <para>
 This assumes that you have a checked out copy of ArgoUML
-	      </para>
-	      <orderedlist>
-		<listitem>
-		  <para>
+</para>
+        <orderedlist>
+          <listitem>
+            <para>
 Change directory to the directory where ArgoUML is checked out.
 </para>
-		</listitem>
-		<listitem>
-		  <para>
+          </listitem>
+          <listitem>
+            <para>
 Enter the argouml directory:
 <command>cd argouml</command> or <command>chdir argouml</command>
-		  </para>
-		</listitem>
-		<listitem>
-		  <para>
+</para>
+          </listitem>
+          <listitem>
+            <para>
 Create your branch: 
 <command>cvs tag -b <replaceable>work_xxxyyy_myname</replaceable></command>
-		  </para>
-		  <para>
+</para>
+            <para>
 <replaceable>myname</replaceable> is is a self explaining code for you
 (your Tigris login).
-		  </para>
-		</listitem>
-		<listitem>
-		  <para>
+</para>
+          </listitem>
+          <listitem>
+            <para>
 Change your checked out copy to be on the branch:
 <command>cvs update -r <replaceable>work_xxxyyy_myname</replaceable></command>
-		  </para>
-		</listitem>
-		<listitem>
-		  <para>Do your work!</para>
-		</listitem>
-		<listitem>
-		  <para>
+</para>
+          </listitem>
+          <listitem>
+            <para>Do your work!</para>
+          </listitem>
+          <listitem>
+            <para>
 Check in your changes in the branch:
 <command>cvs commit -m'<replaceable>Blablabla</replaceable>' <optional>file</optional></command>
-		  </para>
-		</listitem>
-		<listitem>
-		  <para>Continue working and checking in!</para>
-		</listitem>
-	      </orderedlist>
-	    </listitem>
-	    <listitem>
-	      <para>...move my work from my working branch into the release?</para>
-	      <para>
+</para>
+          </listitem>
+          <listitem>
+            <para>Continue working and checking in!</para>
+          </listitem>
+        </orderedlist>
+      </listitem>
+      <listitem>
+        <para>...move my work from my working branch into the release?</para>
+        <para>
 This is done when your work with the feature xxxyyy is finished and you have
 decided/received clearance to enter it in the main branch.
-	      </para>
-	      <orderedlist>
-		<listitem>
-		  <para>
+</para>
+        <orderedlist>
+          <listitem>
+            <para>
 Change directory to the directory where ArgoUML is checked out.
-		  </para>
-		  <para>
+</para>
+            <para>
 If you are just working on one feature at a time this is the place where you
 have a checked out copy on the branch in question. If not, this could be any
 checked out copy of the source that does not contain any uncommitted changes.
-		  </para>
-		</listitem>
-		<listitem>
-		  <para>
+</para>
+          </listitem>
+          <listitem>
+            <para>
 Enter the argouml directory:
 <command>cd argouml</command> or <command>chdir argouml</command>
-		  </para>
-		</listitem>
-		<listitem>
-		  <para>
+</para>
+          </listitem>
+          <listitem>
+            <para>
 Move the checked out copy that you are working on to the main branch:
 <command>cvs update -A</command>
-		  </para>
-		</listitem>
-		<listitem>
-		  <para>
+</para>
+          </listitem>
+          <listitem>
+            <para>
 Merge the changes from the branch into your checked out copy:
 <command>cvs update -j <replaceable>work_xxxyyy_myname</replaceable></command>
-		  </para>
-		</listitem>
-		<listitem>
-		  <para>
+</para>
+          </listitem>
+          <listitem>
+            <para>
 Compile and run all your tests again.
-		  </para>
-		  <para>
+</para>
+            <para>
 This is to verify that the merge was all right, no one else had done any changes
 that in the meantime that has in any way modified the work made in the branch.
-		  </para>
-		</listitem>
-		<listitem>
-		  <para>
+</para>
+          </listitem>
+          <listitem>
+            <para>
 Commit your changes in the main branch:
 <command>cvs commit -m'<replaceable>xxxyyy entered in the main branch</replaceable></command>
-		  </para>
-		</listitem>
-		<listitem>
-		  <para>
+</para>
+          </listitem>
+          <listitem>
+            <para>
 Discontinue your branch!
-		  </para>
-		  <para>
+</para>
+            <para>
 From this point on it is important that you do not reuse your branch for 
 any work. Only check it out for the purpose of examining how things were
 in the branch. Make sure that all other developers that have been looking
 at your branch also knows that it is discontinued.
-		  </para>
-		</listitem>
-	      </orderedlist>
-	    </listitem>
-	    <listitem>
-	      <para>...look at someone else's work in a branch?</para>
-	      <para>
+</para>
+          </listitem>
+        </orderedlist>
+      </listitem>
+      <listitem>
+        <para>...look at someone else's work in a branch?</para>
+        <para>
 You need the name of the branch, i.e. the 
 <replaceable>work_xxxyyy_hisname</replaceable>.
-	      </para>
-	      <para>
+</para>
+        <para>
 There are two alternatives:
-		<itemizedlist>
-		  <listitem>
-		    <para>
+</para>
+        <itemizedlist>
+          <listitem>
+            <para>
 Check out ArgoUML or part of it on that branch:
 <command>cvs co -r <replaceable>work_xxxyyy_hisname</replaceable> argouml</command>
-		    </para>
-		  </listitem>
-		  <listitem>
-		    <para>
+</para>
+          </listitem>
+          <listitem>
+            <para>
 Update your copy of ArgoUML to be on that branch:
 <command>cvs update -r <replaceable>work_xxxyyy_hisname</replaceable></command>
-		    </para>
-		    <para>
+</para>
+            <para>
 Make sure that your copy does not have any uncommitted code or else your
 uncommitted code will be present in your checked out copy on the branch.
 This could, 
 on the other hand, 
 be useful if you want to test if your uncommitted
 code works also with the additions on that branch.
-		    </para>
-		  </listitem>
-		</itemizedlist>
-	      </para>
-	    </listitem>
-	  </itemizedlist>
-	</para>
-      </sect1>
+</para>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+    </itemizedlist>
+  </sect1>
 
-</sect1>
-
-    <sect1>
-      <title>Other CVS comments</title>
-      <para>
+  <sect1>
+    <title>Other CVS comments</title>
+    <para>
 This is included in the cookbook because it seems that there are
 persons within the project that don't have the in-depth knowledge
 of CVS nor the interest or need to acquire it.
 For that reason some simple questions are answered here 
 for use of CVS in the project.
 </para>
-      <itemizedlist>
-	<listitem>
-	  <para>
+    <itemizedlist>
+      <listitem>
+        <para>
 Why do I get double lines?
 Why do I get ^M at the end of each line?
 Why do I get the whole checked out file on a single line?
 </para>
-	  <para>
+        <para>
 CVS is line oriented.
 It stores in the repository the concept of a new line
 after each line.
 It is the CVS clients (the program you have installed on you machine) 
 responsibility to convert the conceptual new line to the correct new
 line character on your system.
-<note>
-	      <para>
+</para>
+        <note>
+          <para>
 This is only so for normal files (not marked with -kb in CVS).
 </para>
-	    </note>
-</para>
-	  <para>
+        </note>
+        <para>
 If files are moved from one system to another or for that matter
 checked out on one system and used and edited on another (NFS, SMB, ...)
 this is not done correctly.
 There could also be CVS clients out there, not doing this correctly. 
 </para>
-	  <para>
+        <para>
 Systems known to the author (Linus Tolke) 
 are Unix uses LF, DOS/Windows uses CR-LF,
 Mac uses CR.
 </para>
-	  <para>
+        <para>
 Most of the time this really doesn't matter because the editors and
 java compiler on all systems are very forgiving.
 </para>
-	  <para>
+        <para>
 There are however some cases when this is cumbersome.
 </para>
-	  <orderedlist>
-	    <listitem>
-	      <para>When an editor (or developer) decides to "fix-it".</para>
-	      <para>
+        <orderedlist>
+          <listitem>
+            <para>When an editor (or developer) decides to "fix-it".</para>
+            <para>
 This means that the editor (or the developer) goes through the file and
 removes ^M on every line or something else that touches every line 
 in the file.
 </para>
-	      <para>
+            <para>
 This is a problem because the subsequent commit will also touch every
 line in the file making that file unmergeable.
 This means that every developer that had it modified in a branch or in
 a checked out copy will have no help from CVS when doing his merging.
 </para>
-	      <para>
+            <para>
 Remember that you never know what other developers are working with.
 </para>
-	      <para>
+            <para>
 This is fixed by not doing any such fixes and doing a 
 <command>cvs diff</command> before
 each check in so that your editor has not done this for you.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>When CVS clients and file systems are not in sync</para>
-	      <para>
+          </listitem>
+          <listitem>
+            <para>When CVS clients and file systems are not in sync</para>
+            <para>
 This could result in one of several things. 
 Either each line gets an extra empty line when committed,
 or the whole file turns out to be on the same line.
 </para>
-	      <para>
+            <para>
 This is the case on several files in the repository at the moment
 (August 2002, Linus) and can be cumbersome for the developers.
 </para>
-	      <para>
+            <para>
 These cases should be fixed because the files are no longer
 readable.
 For the first case, removing every other line (the empty ones)
@@ -525,18 +331,18 @@ For the second case, with a single long line, this will be very
 problematic so even though it might cause problems for other
 developers it is better to do this as soon as possible.
 </para>
-	      <para>
+            <para>
 When this is fixed, let the fix be the only thing done in that commit.
 </para>
-	      <para>
+            <para>
 To avoid this in the future, always do a 
 <command>cvs diff</command> before doing your
 change to make sure that only the lines that you have actually
 modified will be changed by CVS and not the whole file.
 </para>
-	    </listitem>
-	  </orderedlist>
-	  <para>
+          </listitem>
+        </orderedlist>
+        <para>
 Files that are binary that shall be stored in CVS shall be marked
 as binary.
 They are marked with the admin flag -kb.
@@ -544,94 +350,105 @@ This means that the line ending conversion mechanism will not be applied
 on those files and they will be exactly the same on all systems.
 This is good for jars, GIFs, and other such files.
 </para>
-	</listitem>
-      </itemizedlist>
-    </sect1>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+</appendix>
 
-  <sect1>
-    <title>CVS repository contents</title>
-    <indexterm>
-      <primary>CVS repository contents</primary>
-    </indexterm>
-    <indexterm>
-      <primary>Repository contents</primary>
-    </indexterm>
-    <indexterm>
-      <primary>Contents of the CVS repository at Tigris</primary>
-    </indexterm>
+<appendix id="repository-contents">
+  <title>CVS repository contents</title>
+  <indexterm>
+    <primary>CVS repository contents</primary>
+  </indexterm>
+  <indexterm>
+    <primary>Repository contents</primary>
+  </indexterm>
+  <indexterm>
+    <primary>Contents of the CVS repository at Tigris</primary>
+  </indexterm>
 
-    <para>
-This chapter describes what parts of the CVS repository is used for
+  <para>
+This appendix describes what parts of the CVS repository is used for
 what purpose.
 This is a rather terse collection.
 Further details on specific parts can sometimes be found elsewhere in
 this document.
 </para>
+
+  <note>
     <para>
+This explanation only describes the single Tigris project layout.
+Lately (since beginning of 2006) we have been working with splitting
+the project over several Tigris projects.
+This is not yet described here.
+</para>
+  </note>
+
+  <para>
 This chapter is organized as the CVS repository itself and
 everything is in alphabetical order.
 </para>
-    <para>
+  <para>
 This is what the main argouml project looks like:
 </para>
-    <itemizedlist>
-      <listitem>
-	<para><filename class="directory">build</filename></para>
-	<para>Directory where the built things end up.</para>
-	<para>
+  <itemizedlist>
+    <listitem>
+      <para><filename class="directory">build</filename></para>
+      <para>Directory where the built things end up.</para>
+      <para>
 There is actually no real need to keep this in CVS.
 It is there just as a place holder.
 </para>
-      </listitem>
-      <listitem>
-	<para><filename class="directory">conf</filename></para>
-	<para>Not used. Empty.</para>
-      </listitem>
-      <listitem>
-	<para><filename class="directory">documentation</filename></para>
-	<para>Directory where the source of the documentation is.</para>
-	<itemizedlist>
-	  <listitem>
-	    <para><filename class="directory">cookbook</filename></para>
-	    <para>XML-source code for this cookbook.</para>
-	  </listitem>
-	  <listitem>
-	    <para><filename class="directory">docbook-setup</filename></para>
-	    <para>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">conf</filename></para>
+      <para>Not used. Empty.</para>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">documentation</filename></para>
+      <para>Directory where the source of the documentation is.</para>
+      <itemizedlist>
+        <listitem>
+          <para><filename class="directory">cookbook</filename></para>
+          <para>XML-source code for this cookbook.</para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">docbook-setup</filename></para>
+          <para>
 XML Tools and configuration files used for the formatting of
 the documentation from the XML-source to HTML and PDF.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para><filename class="directory">images</filename></para>
-	    <para>Pictures for all documents are collected here.</para>
-	  </listitem>
-	  <listitem>
-	    <para><filename class="directory">javahelp</filename></para>
-	    <para>Not used. Empty.</para>
-	  </listitem>
-	  <listitem>
-	    <para><filename class="directory">manual</filename></para>
-	    <para>XML-source code for the User Manual.</para>
-	  </listitem>
-	  <listitem>
-	    <para><filename class="directory">quick-guide</filename></para>
-	    <para>XML-source code for the Quick Guide.</para>
-	  </listitem>
-	</itemizedlist>
-      </listitem>
-      <listitem>
-	<para><filename class="directory">extra</filename></para>
-	<para>Not used. Empty.</para>
-      </listitem>
-      <listitem>
-	<para><filename class="directory">lib</filename></para>
-	<para>A set of jar files.</para>
-	<para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">images</filename></para>
+          <para>Pictures for all documents are collected here.</para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">javahelp</filename></para>
+          <para>Not used. Empty.</para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">manual</filename></para>
+          <para>XML-source code for the User Manual.</para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">quick-guide</filename></para>
+          <para>XML-source code for the Quick Guide.</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">extra</filename></para>
+      <para>Not used. Empty.</para>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">lib</filename></para>
+      <para>A set of jar files.</para>
+      <para>
 This directory contains the jar files of products shipped with ArgoUML
 (such as log4j, MDR).
 </para>
-	<para>
+      <para>
 These are distributed with ArgoUML and have licenses that allow this.
 For clarity the README files and licenses and other distribution
 details of each used jar will also be stored in this directory.
@@ -639,7 +456,7 @@ details of each used jar will also be stored in this directory.
 Don't forget to arrange for the modules version and license information
 to appear when starting ArgoUML and in the About box.
 </para>
-	<para>
+      <para>
 Take care also to make the versions of these libraries explicit,
 so as to allow people building from sources to figure out
 exact dependencies. Easiest way is to rename the files to
@@ -647,126 +464,126 @@ include version informations, the same way as shared
 libraries in Unix world: foo-x.y.z.jar, bar-x.y.z.jar,
 etc...
 </para>
-        <para>
+      <para>
 When separating ArgoUML into modules, the jar files connected to a
 specific module is instead stored together with the module.
 </para>
-      </listitem>
-      <listitem>
-	<para><filename class="directory">modules</filename></para>
-	<para>Contains source level modules of ArgoUML.</para>
-	<para>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">modules</filename></para>
+      <para>Contains source level modules of ArgoUML.</para>
+      <para>
 Source level modules are modules that can be compiled and deployed
 independently (after) the rest of ArgoUML.
 Each module is located in its own subdirectory.
 This is the list as it looks now (March 2003).
 </para>
-	<itemizedlist>
-	  <listitem>
-	    <para><filename class="directory">jscheme</filename></para>
-	    <para>
+      <itemizedlist>
+        <listitem>
+          <para><filename class="directory">jscheme</filename></para>
+          <para>
 Module that allows to extend ArgoUML using scheme.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para><filename class="directory">junit</filename></para>
-	    <para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">junit</filename></para>
+          <para>
 Old directory with JUnit tests.
 These should be migrated to and all new JUnit tests should be created in
 the directory <filename class="directory">tests</filename>.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para><filename class="directory">menutest</filename></para>
-	    <para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">menutest</filename></para>
+          <para>
 Test module that tests the plug-in interface for the menus.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para><filename class="directory">php</filename></para>
-	    <para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">php</filename></para>
+          <para>
 Language generating, Notation and reverse engineering for PHP.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para><filename class="directory">cpp</filename></para>
-	    <para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">cpp</filename></para>
+          <para>
 Code generation for C++.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para><filename class="directory">csharp</filename></para>
-	    <para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">csharp</filename></para>
+          <para>
 Code generation for C#.
 </para>
-            <para>
+          <para>
 This is now moved to a subproject so this will eventually be removed.
 </para>
-	  </listitem>
-	</itemizedlist>
-      </listitem>
-      <listitem>
-	<para><filename class="directory">src</filename></para>
-	<para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">src</filename></para>
+      <para>
 Source code.
 </para>
-	<para>
+      <para>
 This contains one directory for each subsystem within
 ArgoUML.
 </para>
-        <para>
+      <para>
 Each subsystem will have a subdirectory with the same structure:
 </para>
 
-        <itemizedlist>
-          <listitem>
-            <para><filename class="directory">lib</filename> - optional</para>
-            <para>
+      <itemizedlist>
+        <listitem>
+          <para><filename class="directory">lib</filename> - optional</para>
+          <para>
 jar files with products shipped with ArgoUML.
 </para>
-          </listitem>
-          <listitem>
-            <para><filename>build.xml</filename></para>
-            <para>
+        </listitem>
+        <listitem>
+          <para><filename>build.xml</filename></para>
+          <para>
 The file controlling the build of that subsystem.
 </para>
-          </listitem>
-          <listitem>
-            <para><filename class="directory">src</filename></para>
-            <para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">src</filename></para>
+          <para>
 The source code.
 </para>
-          </listitem>
-          <listitem>
-            <para><filename class="directory">tests</filename> - optional</para>
-            <para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">tests</filename> - optional</para>
+          <para>
 The JUnit test cases for that subsystem.
 </para>
-          </listitem>
-        </itemizedlist>
-      </listitem>
-      <listitem>
-	<para><filename class="directory">src_new</filename></para>
-	<para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">src_new</filename></para>
+      <para>
 All source code for ArgoUML including pictures of icons.
 </para>
-      </listitem>
+    </listitem>
 
-      <listitem>
-	<para><filename class="directory">tests</filename></para>
-	<para>
+    <listitem>
+      <para><filename class="directory">tests</filename></para>
+      <para>
 Source code for JUnit tests of everything that is in the src_new
 directory.
 See <xref linkend="junittests"/>.
 </para>
-      </listitem>
+    </listitem>
 
-      <listitem>
-	<para><filename class="directory">tools</filename></para>
-	<para>
+    <listitem>
+      <para><filename class="directory">tools</filename></para>
+      <para>
 All tools used during the build process.
 </para>
-	<para>
+      <para>
 Tools also have the readme files, licenses and other distribution files
 stored in this directory in much the same way as the libraries in
 <filename class="directory">lib</filename>.
@@ -776,72 +593,70 @@ development of ArgoUML so it is enough to have a license that does not
 allow distribution.
 (Quick summary: BSD License, Apache license, LGPL, GPL, Freeware are OK.)
 </para>
-      </listitem>
-      <listitem>
-	<para><filename class="directory">www</filename></para>
-	<para>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">www</filename></para>
+      <para>
 This is all the static contents of the web site.
 See <xref linkend="how_the_web_site_works"/>.
 </para>
-      </listitem>
-    </itemizedlist>
+    </listitem>
+  </itemizedlist>
 
-    <para>
+  <para>
 The ArgoUML subprojects are projects on Tigris that belong to the
 ArgoUML project.
 To simplify the administration, they are all set up in a similar way
 and also similar to the src and modules directories.
 </para>
-    <para>
+  <para>
 This is what their cvs repository looks like:
 </para>
 
-    <itemizedlist>
-      <listitem>
-        <para><filename>build.xml</filename></para>
-        <para>
+  <itemizedlist>
+    <listitem>
+      <para><filename>build.xml</filename></para>
+      <para>
 The file controlling the build of that subsystem.
 </para>
-        <para>
+      <para>
 When built, the result end up in a newly created build directory.
 </para>
-      </listitem>
-      <listitem>
-        <para><filename class="directory">lib</filename> - optional</para>
-        <para>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">lib</filename> - optional</para>
+      <para>
 jar files with products shipped with the module in that subproject.
 </para>
-      </listitem>
-      <listitem>
-        <para><filename class="directory">src</filename></para>
-        <para>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">src</filename></para>
+      <para>
 The source code.
 </para>
-      </listitem>
-      <listitem>
-        <para><filename class="directory">tests</filename> - optional</para>
-        <para>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">tests</filename> - optional</para>
+      <para>
 The JUnit test cases for that subproject.
 </para>
-      </listitem>
-      <listitem>
-        <para><filename class="directory">tools</filename> - optional</para>
-        <para>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">tools</filename> - optional</para>
+      <para>
 Any special tools needed to build that subproject.
 The tools from the argouml tools directory can also be used
 so this is just the new ones.
 </para>
-      </listitem>
-      <listitem>
-        <para><filename class="directory">www</filename></para>
-        <para>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">www</filename></para>
+      <para>
 The web pages for that subproject.
 </para>
-      </listitem>
-    </itemizedlist>
-  </sect1>
-
-</chapter>
+    </listitem>
+  </itemizedlist>
+</appendix>
 
 
 <!-- Local stuff for Emacs - please do not delete
