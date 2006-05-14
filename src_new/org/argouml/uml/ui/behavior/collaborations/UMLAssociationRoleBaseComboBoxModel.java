@@ -29,6 +29,7 @@ import java.util.Collection;
 
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -102,6 +103,14 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
                     if (evt.getOldValue() == null && elem != null) {
                         addElement(elem);
                         setSelectedItem(elem);
+                    }
+                }
+            }
+        } else if (evt instanceof RemoveAssociationEvent) {
+            if (evt.getPropertyName().equals(this.getPropertySetName())) {
+                if (evt.getSource() == getTarget()) {
+                    if (evt.getOldValue() == getSelectedItem()) {
+                        setSelectedItem(evt.getNewValue());
                     }
                 }
             }

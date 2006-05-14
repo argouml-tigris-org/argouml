@@ -415,7 +415,8 @@ public class UMLActivityDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#needsToBeRemoved()
      */
     public boolean needsToBeRemoved() {
-        if (Model.getUmlFactory().isRemoved(getStateMachine())) {
+        if ((getStateMachine() != null)
+                && (Model.getUmlFactory().isRemoved(getStateMachine()))) {
             return true;
         }
         if (Model.getUmlFactory().isRemoved(getNamespace())) {
