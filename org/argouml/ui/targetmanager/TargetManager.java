@@ -1020,11 +1020,10 @@ public final class TargetManager {
         Collection toBeRemoved = new ArrayList();
         Iterator i = targets.iterator();
         while (i.hasNext()) {
-            WeakReference ref = (WeakReference) i.next();
-            Object historyObject = ref.get();
-            if (Model.getFacade().isAModelElement(historyObject)) {
-                if (Model.getUmlFactory().isRemoved(historyObject)) {
-                    toBeRemoved.add(historyObject);
+            Object candidate = i.next();
+            if (Model.getFacade().isAModelElement(candidate)) {
+                if (Model.getUmlFactory().isRemoved(candidate)) {
+                    toBeRemoved.add(candidate);
                 }
             }
         }
