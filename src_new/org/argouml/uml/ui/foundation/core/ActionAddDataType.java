@@ -67,6 +67,10 @@ public class ActionAddDataType extends AbstractActionNewModelElement {
             ns = Model.getFacade().getNamespace(target);
         if (Model.getFacade().isAClassifier(target))
             ns = Model.getFacade().getNamespace(target);
+        if (Model.getFacade().isAAssociationEnd(target)) {
+            target = Model.getFacade().getAssociation(target);
+            ns = Model.getFacade().getNamespace(target);
+        }
 
         Object newDt = Model.getCoreFactory().buildDataType("", ns);
         TargetManager.getInstance().setTarget(newDt);
