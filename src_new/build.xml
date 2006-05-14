@@ -236,6 +236,7 @@ Property files to be searched:
     <path id="ant.optional.classpath">
       <pathelement location="${ant.home}/libopt/ant-junit.jar"/>
       <pathelement location="${junit.jar.path}"/>
+      <pathelement location="${easymock.jar.path}"/>
       <pathelement location="${jdepend.jar.path}"/>
       <pathelement location="${bsf.jar.path}"/>
       <pathelement location="${javasrc.jar.path}"/>
@@ -741,6 +742,7 @@ Property files to be searched:
       <classpath>
         <pathelement location="${argo.build.classes}"/>
         <pathelement location="${junit.jar.path}"/>
+        <pathelement location="${easymock.jar.path}"/>
 	<path refid="argo.compile.classpath"/>
       </classpath>
      </javac>
@@ -755,6 +757,7 @@ Property files to be searched:
       <classpath>
         <pathelement location="${argo.build.classes}"/>
         <pathelement location="${junit.jar.path}"/>
+        <pathelement location="${easymock.jar.path}"/>
 	<path refid="argo.compile.classpath"/>
       </classpath>
     </javac>
@@ -837,6 +840,7 @@ Property files to be searched:
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
             <path refid="argo.runtime.classpath"/>
+            <pathelement location="${easymock.jar.path}"/>
         </classpath>
         <formatter type="xml"/>
       <batchtest todir="${argo.tests.reports}/junit/output">
@@ -879,6 +883,7 @@ Property files to be searched:
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
             <path refid="argo.runtime.classpath"/>
+            <pathelement location="${easymock.jar.path}"/>
         </classpath>
         <formatter type="xml"/>
       <batchtest todir="${argo.tests.reports}/junit/output">
@@ -953,6 +958,7 @@ Property files to be searched:
           <pathelement location="${argo.tests.classes}"/>
 	  <pathelement location="${argo.build.classes}"/>
           <pathelement location="${junit.jar.path}"/>
+          <pathelement location="${easymock.jar.path}"/>
 	  <path refid="argo.runtime.classpath"/>
         </classpath>
     </java>
