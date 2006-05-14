@@ -70,7 +70,11 @@ public class ActionAddEnumeration extends AbstractActionNewModelElement {
             ns = Model.getFacade().getNamespace(target);
         if (Model.getFacade().isAClassifier(target))
             ns = Model.getFacade().getNamespace(target);
-
+        if (Model.getFacade().isAAssociationEnd(target)) {
+            target = Model.getFacade().getAssociation(target);
+            ns = Model.getFacade().getNamespace(target);
+        }
+        
         Object newEnum = Model.getCoreFactory().buildEnumeration("", ns);
         TargetManager.getInstance().setTarget(newEnum);
         super.actionPerformed(e);
