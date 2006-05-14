@@ -50,6 +50,7 @@
 <!ENTITY subsystemlogging SYSTEM "subsystemlogging.xml">
   
 <!ENTITY cookbookmodules SYSTEM "cookbook_modules.xml">
+<!ENTITY glossary SYSTEM "glossary.xml">
 
 
 
@@ -127,6 +128,8 @@
   &documentationstandards;
   &processes;
   
+  &glossary;
+
   <index/>
 
   &further_reading;

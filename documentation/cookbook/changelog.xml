@@ -67,6 +67,17 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2006-05-14</entry>
+          <entry>
+Moved the Terminology into the Cookbook.
+(See <xref linkend="terminology"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2006-05-13</entry>
           <entry>
 Change to the introduction to the ArgoUML project to reflect that

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+<!--
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-->
+
+<glossary>
+  <title>Glossary</title>
+
+  <glossdiv id="terminology">
+    <title>Terminology in the ArgoUML project</title>
+
+    <para>
+This is the Terminology for the ArgoUML project and also for the ArgoUML
+product.
+The purpose is to establish a common use of some words to make it easier
+to understand what we are talking about.
+</para>
+
+    <para>
+The terminology here is used for:
+</para>
+    <itemizedlist>
+      <listitem>
+	<para>All code (class names, variable names, method names)</para>
+      </listitem>
+      <listitem>
+	<para>All comments throughout the code</para>
+      </listitem>
+      <listitem>
+	<para>
+All strings in the user interface (in the default language en_US)
+</para>
+      </listitem>
+      <listitem>
+	<para>All documents (in the default language en_US)</para>
+      </listitem>
+      <listitem>
+	<para>
+All postings to the mailing lists and all other discussions within 
+the ArgoUML project.
+</para>
+      </listitem>
+    </itemizedlist>
+
+    <glossentry>
+      <glossterm>Add</glossterm>
+      <glossdef>
+	<para>
+Add existing object to something.
+ </para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
+      <glossterm>Code Generation / Reverse Engineering</glossterm>
+      <glossdef>
+	<para>
+Code Generation and Reverse Engineering are the processes of converting 
+between the ArgoUML UML model and program code
+in a certain programming language.
+ArgoUML supports different languages 
+such as Java, C++ and PHP for Code Generation and Reverse Engineering, 
+but both are not supported for all languages equally.
+</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
+      <glossterm>Delete</glossterm>
+      <glossdef>
+	<para>
+Usually used as "Delete from Model". 
+The object will be destructed, and will 
+not be present any more on any diagram, nor in the model. 
+Additionally, all objects that can not exist without the deleted object 
+are deleted from the model, too. 
+E.g. deleting a class also deletes all its associations.
+</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
+      <glossterm>Export</glossterm>
+      <glossdef>
+	<para>
+Export everything or some part from an existing structure to some format.
+This implies some kind of conversion involved.
+</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
+      <glossterm>Import</glossterm>
+      <glossdef>
+	<para>
+Import some other format into an existing structure.
+This implies that there is some kind of conversion involved and that
+the already existing things are not removed.
+They are either changed or left unchanged by the import.
+An Export, New, Import cycle can lead to information loss because
+of the two conversions involved.
+</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
+      <glossterm>Library</glossterm>
+      <glossdef>
+	<para>
+A part of a <emphasis>subproduct</emphasis> that is installed and handled as 
+a unit in the ArgoUML building and installation set-up.
+</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
+      <glossterm>Module</glossterm>
+      <glossdef>
+	<para>
+A piece of software that is to be loaded into ArgoUML by the Module Loader.
+</para>
+	<para>
+Modules traditionally use the Plug-in interfaces and are for that
+reason also known as Plug-ins.
+</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
+      <glossterm>New</glossterm>
+      <glossdef>
+	<para>
+Create a new project or object.
+How does this relate to the Java GUI standards?
+(Don't use Create or Add)
+</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
+      <glossterm>Notation</glossterm>
+      <glossdef>
+	<para>
+Notation is the textual representation of model fragments 
+on a diagram. ArgoUML supports Notation 
+in different languages such as UML and Java.
+Notation may be not only pure text: e.g. UML attributes/operations 
+have graphical text properties (underlining, italics) 
+with a semantic relevance. To be shown on a diagram, the text has to be 
+created by a generator, 
+and when the user edits
+the text on the diagram, a parser processes the text, 
+and adapts the model accordingly.
+</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
+      <glossterm>Open</glossterm>
+      <glossdef>
+	<para>
+Open an existing project or saved file.
+How does this relate to the Java GUI standards?
+(Don't use Load, Read, or Import for this).
+</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
+      <glossterm>Remove</glossterm>
+      <glossdef>
+	<para>
+Usually used as "Remove from Diagram". The object that will be removed is
+not deleted from the model, i.e. it still exists, but is simply not present
+anymore on the current diagram. It might still be present on other diagrams,
+or not, but it is surely present in the explorer.
+Additionally, all objects that can not be drawn without the removed object,
+are removed from the diagram, too. E.g. removing a class also removes all
+its associations.
+Once removed, an object can be "added" to a diagram (again).
+</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
+      <glossterm>Save</glossterm>
+      <glossdef>
+	<para>
+Save the existing project to a file.
+The Save operation save everything (it is a no-loss operation).
+A Save, Open cycle does not loose any information.
+(Don't use Export, or Write for this).
+</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
+      <glossterm>Subproduct</glossterm>
+      <glossdef>
+	<para>
+A piece of software that is developed by someone outside of the
+ArgoUML project and that the ArgoUML project is not responsible for.
+</para>
+	<para>
+The ArgoUML product, like almost any other software project, 
+use subproducts so that we don't have to do everything ourselves.
+Examples: JDK, NSUML, GEF, log4j, ...
+</para>
+      </glossdef>
+    </glossentry>
+  </glossdiv>
+</glossary>
+
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "book" nil)
+End:
+
+-->
