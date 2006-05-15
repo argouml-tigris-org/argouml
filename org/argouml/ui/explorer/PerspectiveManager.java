@@ -58,6 +58,7 @@ import org.argouml.ui.explorer.rules.GoGeneralizableElementToSpecialized;
 import org.argouml.ui.explorer.rules.GoInteractionToMessages;
 import org.argouml.ui.explorer.rules.GoLinkToStimuli;
 import org.argouml.ui.explorer.rules.GoMessageToAction;
+import org.argouml.ui.explorer.rules.GoModelElementToBehavior;
 import org.argouml.ui.explorer.rules.GoModelElementToComment;
 import org.argouml.ui.explorer.rules.GoModelElementToContainedDiagrams;
 import org.argouml.ui.explorer.rules.GoModelElementToContainedLostElements;
@@ -380,7 +381,7 @@ public final class PerspectiveManager {
         packagePerspective.addRule(new GoStateToOutgoingTrans());
         packagePerspective.addRule(new GoSubmachineStateToStateMachine());
         packagePerspective.addRule(new GoStereotypeToTagDefinition());
-        packagePerspective.addRule(new GoClassifierToStateMachine());
+        packagePerspective.addRule(new GoModelElementToBehavior());
         packagePerspective.addRule(new GoModelElementToContainedLostElements());
 
         ExplorerPerspective diagramPerspective =
@@ -490,6 +491,7 @@ public final class PerspectiveManager {
             new GoGeneralizableElementToSpecialized(),
             new GoInteractionToMessages(), new GoLinkToStimuli(),
             new GoMessageToAction(), new GoModelElementToComment(),
+            new GoModelElementToBehavior(),
             new GoModelElementToContents(),
             new GoModelElementToContainedDiagrams(),
             new GoModelElementToContainedLostElements(),
