@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,40 +32,39 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
 /**
- * PerspectiveRule to navigate from behavioral
- * feature to statemachine.  Causes statemachine to be shown as child
- * of behavioral feature.
- *
- * @author jaap.branderhorst@xs4all.nl
+ * PerspectiveRule to navigate from a modelelement (the context)
+ * to its behavior (statemachine or activitygraph).  
+ * 
+ * @author mvw
  */
-public class GoClassifierToStateMachine extends AbstractPerspectiveRule {
+public class GoModelElementToBehavior extends AbstractPerspectiveRule {
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.classifier.statemachine");
+        return Translator.localize ("misc.model-element.behavior");
     }
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (Model.getFacade().isAClassifier(parent)) {
-	    return Model.getFacade().getBehaviors(parent);
-	}
-	return null;
+        if (Model.getFacade().isAModelElement(parent)) {
+            return Model.getFacade().getBehaviors(parent);
+        }
+        return null;
     }
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (Model.getFacade().isAClassifier(parent)) {
-	    Set set = new HashSet();
-	    set.add(parent);
-	    return set;
-	}
-	return null;
+        if (Model.getFacade().isAModelElement(parent)) {
+            Set set = new HashSet();
+            set.add(parent);
+            return set;
+        }
+        return null;
     }
 }
