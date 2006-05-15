@@ -151,6 +151,11 @@ public abstract class ActionBaseDelete extends UMLAction {
         Object target = null;
         for (int i = targets.length - 1; i >= 0; i--) {
             target = targets[i];
+            if (Model.getFacade().isAModelElement(target) 
+                    && Model.getUmlFactory().isRemoved(target)) {
+                /* Must have been removed indirectly already...*/
+                return;
+            }
             if (sureRemove(target)) {
                 // remove from the model
                 if (target instanceof Fig) {
@@ -164,7 +169,7 @@ public abstract class ActionBaseDelete extends UMLAction {
                 }
             }
         }
-        }
+    }
 
     /**
      * A utility method that asks the user if he is sure to remove the selected
