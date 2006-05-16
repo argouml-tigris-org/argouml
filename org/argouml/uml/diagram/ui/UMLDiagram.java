@@ -545,6 +545,10 @@ public abstract class UMLDiagram
         while (elems.hasMoreElements()) {
             Fig fig = (Fig) elems.nextElement();
             Object owner = fig.getOwner();
+            if (Model.getFacade().isAModelElement(owner) 
+                    && Model.getUmlFactory().isRemoved(owner)) {
+                continue;
+            }
             /* This will make sure all the correct
              * event listeners are set:
              */
