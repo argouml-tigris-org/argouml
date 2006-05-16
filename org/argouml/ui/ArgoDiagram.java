@@ -263,9 +263,9 @@ public class ArgoDiagram extends Diagram {
                 
                 // The report
                 if (f.getLayer() == null) {
-                    report += "        Fixed: layer was null\n";
+                    report += "-- Fixed: layer was null\n";
                 } else {
-                    report += "        Fixed: refered to wrong layer\n";
+                    report += "-- Fixed: refered to wrong layer\n";
                 }
                 // The fix
                 f.setLayer(getLayer());
@@ -277,7 +277,7 @@ public class ArgoDiagram extends Diagram {
                     report += (figDescription = figDescription(f));
                 }
                 // The report
-                report += "        Fixed: a Fig must be visible\n";
+                report += "-- Fixed: a Fig must be visible\n";
                 // The fix
                 f.setVisible(true);
             }
@@ -294,34 +294,34 @@ public class ArgoDiagram extends Diagram {
                         report += (figDescription = figDescription(f));
                     }
                     report +=
-                        "        Removed: as it has no dest Fig\n";
+                        "-- Removed: as it has no dest Fig\n";
                     f.removeFromDiagram();
                 } else if (sourceFig == null) {
                     if (figDescription == null) {
                         report += (figDescription = figDescription(f));
                     }
                     report +=
-                        "        Removed: as it has no source Fig\n";
+                        "-- Removed: as it has no source Fig\n";
                     f.removeFromDiagram();
                 } else if(sourceFig.getOwner() == null) {
                     if (figDescription == null) {
                         report += (figDescription = figDescription(f));
                     }
                     report +=
-                        "        Removed: as its source Fig has no owner\n";
+                        "-- Removed: as its source Fig has no owner\n";
                     f.removeFromDiagram();
                 } else if(destFig.getOwner() == null) {
                     if (figDescription == null) {
                         report += (figDescription = figDescription(f));
                     }
-                    report += "        Removed: as its destination Fig has no owner\n";
+                    report += "-- Removed: as its destination Fig has no owner\n";
                     f.removeFromDiagram();
                 } else if(Model.getUmlFactory().isRemoved(sourceFig.getOwner())) {
                     if (figDescription == null) {
                         report += (figDescription = figDescription(f));
                     }
                     report +=
-                        "        Removed: as its source Figs owner is no " +
+                        "-- Removed: as its source Figs owner is no " +
                         "longer in the repository\n";
                     f.removeFromDiagram();
                 } else if(Model.getUmlFactory().isRemoved(destFig.getOwner())) {
@@ -329,7 +329,7 @@ public class ArgoDiagram extends Diagram {
                         report += (figDescription = figDescription(f));
                     }
                     report +=
-                        "        Removed: as its destination Figs owner is no longer " +
+                        "-- Removed: as its destination Figs owner is no longer " +
                         "in the repository\n";
                     f.removeFromDiagram();
                 }
@@ -337,10 +337,10 @@ public class ArgoDiagram extends Diagram {
                 if (figDescription == null) {
                     report += (figDescription = figDescription(f));
                 }
-                // 3. Make sure all FigNodes and FigEdges have an owner
+                // 4. Make sure all FigNodes and FigEdges have an owner
                 // The report
                 report +=
-                    "        Removed: owner was null\n";
+                    "-- Removed: owner was null\n";
                 // The fix
                 f.removeFromDiagram();
             } else if ((f instanceof FigNode || f instanceof FigEdge) && 
@@ -349,10 +349,10 @@ public class ArgoDiagram extends Diagram {
                 if (figDescription == null) {
                     report += (figDescription = figDescription(f));
                 }
-                // 3. Make sure all FigNodes and FigEdges have a valid owner
+                // 5. Make sure all FigNodes and FigEdges have a valid owner
                 // The report
                 report +=
-                    "        Removed: model element no longer in the repository\n";
+                    "-- Removed: model element no longer in the repository\n";
                 // The fix
                 f.removeFromDiagram();
             } else if (f instanceof FigGroup && !(f instanceof FigNode)) {
@@ -362,11 +362,10 @@ public class ArgoDiagram extends Diagram {
                 // 4. Make sure the only FigGroups on a diagram are also FigNodes
                 // The report
                 report +=
-                    "        Removed: a FigGroup should not be on the diagram\n";
+                    "-- Removed: a FigGroup should not be on the diagram\n";
                 // The fix
                 f.removeFromDiagram();
             }
-            
         }
 
         return report;
