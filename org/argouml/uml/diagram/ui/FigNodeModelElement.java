@@ -71,6 +71,7 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
@@ -905,9 +906,11 @@ public abstract class FigNodeModelElement
     public void propertyChange(PropertyChangeEvent pve) {
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
-        if (pName.equals("editing")
+        if (pve instanceof DeleteInstanceEvent && src == getOwner()) {
+            removeFromDiagram();
+            return;
+        } else if (pName.equals("editing")
                 && Boolean.FALSE.equals(pve.getNewValue())) {
-	    LOG.debug("finished editing");
             try {
                 //parse the text that was edited
                 textEdited((FigText) src);
@@ -942,7 +945,7 @@ public abstract class FigNodeModelElement
             modelChanged(pve);
         }
     }
-
+    
     /**
      * This method is called when the user doubleclicked on the text field,
      * and starts editing. Subclasses should overrule this field to e.g.
