@@ -173,6 +173,98 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         pack();
     }
 
+    /**
+     * Construct an exception dialog with the given parameters.
+     *
+     * @param f   the <code>Frame</code> from which the dialog is displayed
+     * @param message
+     *            the message
+     * @param e   the exception
+     * @param highlightCause
+     *            give priority to Throwable.cause in display. Use this if the
+     *            main exception is mostly boilerplate and the really useful
+     *            information is in the enclosed cause.
+     */
+    public ExceptionDialog(Frame f, String message, String error) {
+        super(f);
+        setResizable(true);
+        setModal(false);
+        setTitle(Translator.localize("dialog.exception.title"));
+
+        Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
+        getContentPane().setLayout(new BorderLayout(0, 0));
+
+        // the introducing label
+        northLabel =
+            new JLabel(Translator.localize("dialog.exception.message"));
+        northLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        getContentPane().add(northLabel, BorderLayout.NORTH);
+
+        // the text box containing the problem messages
+        textArea = new JEditorPane();
+        textArea.setContentType("text/html");
+        textArea.setEditable(false);
+        textArea.addHyperlinkListener(new HyperlinkListener() {
+            public void hyperlinkUpdate(HyperlinkEvent hle) {
+                linkEvent(hle);
+            }
+        });
+
+//        StringWriter sw = new StringWriter();
+//        PrintWriter pw = new PrintWriter(sw);
+//
+//        if (highlightCause && e.getCause() != null) {
+//            // Instructions with clickable link for user
+//            pw.print(Translator.localize("dialog.exception.link.report"));
+//
+//            // This text is for the developers.
+//            // It doesn't need to be localized.
+//            pw.print("<p>" + message);
+//            pw.print("<hr>System Info:<p>" + SystemInfoDialog.getInfo());
+//            pw.print("<p><hr>Error occurred at : " + new Date());
+//            pw.print("<p>  Cause : ");
+//            e.getCause().printStackTrace(pw);
+//            pw.print("-------<p>Full exception : ");
+//        }
+//        e.printStackTrace(pw);
+        // These shouldn't really be <br> instead of <p> elements, but
+        // the lines all get run together when pasted into a browser window.
+        error += "An inconsistency has been detected when saving the model. These have been repaired and are reported below. The save will continue with the model having been amended as described.";
+        textArea.setText(error.replaceAll("\n", "<br>"));
+        textArea.setCaretPosition(0);
+
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.add(new JScrollPane(textArea));
+        centerPanel.setPreferredSize(new Dimension(500, 200));
+        getContentPane().add(centerPanel);
+
+        copyButton =
+            new JButton(Translator.localize("button.copy-to-clipboard"));
+        copyButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                copyActionPerformed(evt);
+            }
+        });
+
+        closeButton = new JButton(Translator.localize("button.close"));
+        closeButton.addActionListener(this);
+        JPanel bottomPanel = new JPanel();
+
+        bottomPanel.add(copyButton);
+        bottomPanel.add(closeButton);
+        getContentPane().add(bottomPanel, BorderLayout.SOUTH);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent evt) {
+                disposeDialog();
+            }
+        });
+
+        Dimension contentPaneSize = getContentPane().getPreferredSize();
+        setLocation(scrSize.width / 2 - contentPaneSize.width / 2,
+                scrSize.height / 2 - contentPaneSize.height / 2);
+        pack();
+    }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

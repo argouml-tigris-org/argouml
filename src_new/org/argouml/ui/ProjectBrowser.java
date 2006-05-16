@@ -1111,8 +1111,7 @@ public final class ProjectBrowser
             String report = project.repair();
             if (report.length() > 0) {
                 reportError(
-                        Translator.localize("dialog.repair") + " " + report,
-                        true);
+                        Translator.localize("dialog.repair"), true, report);
             }
             project.preSave();
             persister.save(project, file);
@@ -1408,6 +1407,31 @@ public final class ProjectBrowser
                       JOptionPane.ERROR_MESSAGE);
         } else {
             System.err.print(message);
+        }
+    }
+
+    /**
+     * Open a Message Dialog with an error message.
+     *
+     * @param message the message to display.
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
+     * @param ex The exception that was thrown.
+     */
+    private void reportError(String message, boolean showUI, String error) {
+        if (showUI) {
+            JDialog dialog =
+                new ExceptionDialog(
+                        ProjectBrowser.getInstance(),
+                        message,
+                        error);
+            dialog.setVisible(true);
+        } else {
+            // TODO:  Does anyone use command line?
+            // If so, localization is needed - tfm
+            reportError("Please report the error below to the ArgoUML"
+                    + "development team at http://argouml.tigris.org.\n"
+                    + message + "\n\n" + error, showUI);
         }
     }
 
