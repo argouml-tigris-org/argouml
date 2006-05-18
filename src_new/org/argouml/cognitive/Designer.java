@@ -703,7 +703,7 @@ public final class Designer
     /**
      * @return this Designer's ToDoList, a list of pending problems and
      * issues that the designer might be interested in.
-     * 
+     *
      * @see ToDoList
      */
     public ToDoList getToDoList() {
@@ -928,12 +928,12 @@ public final class Designer
     }
 
 
-/**
- * ChildGenerator which always returns an empty enumeration.
- * @author MarkusK
- *
- */
-    class EmptyChildGenerator implements ChildGenerator {
+    /**
+     * ChildGenerator which always returns an empty enumeration.
+     * @author MarkusK
+     *
+     */
+    static class EmptyChildGenerator implements ChildGenerator {
         /**
          * Reply a Enumeration of the children of the given Object.
 	 *
@@ -941,7 +941,7 @@ public final class Designer
 	 * @return the Enumeration.
          */
         public Enumeration gen(Object o) {
-                return EnumerationEmpty.theInstance();
+            return EnumerationEmpty.theInstance();
         }
 
         /**
