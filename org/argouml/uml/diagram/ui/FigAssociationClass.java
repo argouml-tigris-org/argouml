@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,12 +28,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
+
 import org.argouml.kernel.DelayedVChangeListener;
-import org.argouml.ui.targetmanager.TargetManager;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 
@@ -66,6 +63,9 @@ public class FigAssociationClass
         KeyListener,
         PropertyChangeListener {
 
+    /**
+     * The UID.
+     */
     private static final long serialVersionUID = 3643715304027095083L;
 
     /**
@@ -131,17 +131,20 @@ public class FigAssociationClass
 //                        if (auxFig instanceof FigClassAssociationClass) {
 //                            figNode = (FigClassAssociationClass) auxFig;
 //                            figNode.setMainFig(thisFig);
-//                        } else if (auxFig instanceof FigAssociationClassTee) {
+//                        } else if (auxFig
+//                            instanceof FigAssociationClassTee) {
 //                            tee = (FigAssociationClassTee) auxFig;
 //                            addPathItem(tee,
 //                                    new PathConvPercent(thisFig, 50, 0));
-//                        } else if (auxFig instanceof FigEdgeAssociationClass) {
+//                        } else if (auxFig
+//                            instanceof FigEdgeAssociationClass) {
 //                            dashedEdge = (FigEdgeAssociationClass) auxFig;
 //                            dashedEdge.setMainFig(thisFig);
 //                            // addPathItem(tee,
 //                            //         new PathConvPercent(thisFig, 50, 0));
 //                        }
-//                        if (tee != null && figNode != null && dashedEdge != null) {
+//                        if (tee != null && figNode != null
+//                            && dashedEdge != null) {
 //                            break;
 //                        }
 //                    }
@@ -173,7 +176,8 @@ public class FigAssociationClass
 //                }
 //
 //                if (dashedEdge == null) {
-//                    dashedEdge = new FigEdgeAssociationClass(tee, figNode, thisFig);
+//                    dashedEdge =
+//                        new FigEdgeAssociationClass(tee, figNode, thisFig);
 //                    dashedEdge.setOwner(thisFig.getOwner());
 //                    lay.add(dashedEdge);
 //                }
