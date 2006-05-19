@@ -59,7 +59,7 @@ public class DisplayTextTree extends JTree {
 
     /**
      * A Map helping the tree maintain a consistent expanded paths state.
-     * 
+     *
      * <pre>
      *  keys are the current TreeModel of this Tree
      *  values are Vector of currently expanded paths.
@@ -83,7 +83,8 @@ public class DisplayTextTree extends JTree {
         super();
 
         /* MVW: We should use default font sizes as much as possible.
-         * BTW, this impacts only the width, and reduces readibility:*/
+         * BTW, this impacts only the width, and reduces readibility:
+         */
 //        setFont(LookAndFeelMgr.getInstance().getSmallFont());
 
         setCellRenderer(new UMLTreeCellRenderer());
@@ -94,7 +95,7 @@ public class DisplayTextTree extends JTree {
         setToolTipText("Tree");
 
         /* The default (16) puts the icons too close together: */
-        this.setRowHeight(18);
+        setRowHeight(18);
 
         expandedPathsInModel = new Hashtable();
         reexpanding = false;
@@ -107,9 +108,9 @@ public class DisplayTextTree extends JTree {
     /**
      * Override the default JTree implementation to display the appropriate text
      * for any object that will be displayed in the todo list. <p>
-     * 
+     *
      * This is used for the Todo list as well as the Explorer list.
-     * 
+     *
      * @param value
      *            the given object
      * @param selected
@@ -122,9 +123,9 @@ public class DisplayTextTree extends JTree {
      *            ignored
      * @param hasFocus
      *            ignored
-     * 
+     *
      * @return the value converted to text.
-     * 
+     *
      * @see javax.swing.JTree#convertValueToText(java.lang.Object, boolean,
      *      boolean, boolean, int, boolean)
      */
@@ -148,7 +149,8 @@ public class DisplayTextTree extends JTree {
                 if (Model.getFacade().isATransition(value)) {
                     name = Model.getFacade().getName(value);
                     NotationProvider4 notationProvider =
-                        NotationProviderFactory2.getInstance().getNotationProvider(
+                        NotationProviderFactory2.getInstance()
+                            .getNotationProvider(
                                     NotationProviderFactory2.TYPE_TRANSITION,
                                     NotationHelper.getDefaultNotationContext(),
                                     value);
@@ -160,10 +162,11 @@ public class DisplayTextTree extends JTree {
                     }
                 } else if (Model.getFacade().isAExtensionPoint(value)) {
                     NotationProvider4 notationProvider =
-                        NotationProviderFactory2.getInstance().getNotationProvider(
-                                    NotationProviderFactory2.TYPE_EXTENSION_POINT,
-                                    NotationHelper.getDefaultNotationContext(),
-                                    value);
+                        NotationProviderFactory2.getInstance()
+                            .getNotationProvider(
+                                NotationProviderFactory2.TYPE_EXTENSION_POINT,
+                                NotationHelper.getDefaultNotationContext(),
+                                value);
                     name = notationProvider.toString();
                 } else if (Model.getFacade().isAComment(value)) {
                     /*
@@ -178,7 +181,8 @@ public class DisplayTextTree extends JTree {
                     s.append(Model.getFacade().getUMLClassName(me));
                     s.append(": ");
                     // TODO: Handle the Alias from the ElementImport.
-                    s.append(convertValueToText(me, selected, expanded, leaf, row,
+                    s.append(convertValueToText(me, selected, expanded,
+                            leaf, row,
                             hasFocus));
                     name = s.toString();
                 } else if (Model.getFacade().isATaggedValue(value)) {
@@ -213,9 +217,10 @@ public class DisplayTextTree extends JTree {
 
                 // Look for stereotype
                 if (showStereotype) {
-                    Collection stereos = Model.getFacade().getStereotypes(value);
-                        name += " " 
-                            + NotationUtilityUml.generateStereotype(stereos);
+                    Collection stereos =
+                        Model.getFacade().getStereotypes(value);
+                    name += " "
+                        + NotationUtilityUml.generateStereotype(stereos);
                     if (name != null && name.length() > 80) {
                         name = name.substring(0, 80) + "...";
                     }
@@ -249,7 +254,7 @@ public class DisplayTextTree extends JTree {
         if (Model.getFacade().isAMultiplicity(value)) {
             try {
                 // TODO: Localize
-                return "Multiplicity: " 
+                return "Multiplicity: "
                 + Model.getDataTypesHelper().multiplicityToString(value);
             } catch (InvalidElementException e) {
                 return "*deleted multiplicity*";
@@ -268,7 +273,7 @@ public class DisplayTextTree extends JTree {
 
     /**
      * Tree Model Expansion notification.<p>
-     * 
+     *
      * @param path
      *            a Tree node insertion event
      */
@@ -320,7 +325,7 @@ public class DisplayTextTree extends JTree {
 
     /**
      * Called in reexpand().
-     * 
+     *
      * @return a Vector containing all expanded paths
      */
     protected Vector getExpandedPaths() {
@@ -338,7 +343,7 @@ public class DisplayTextTree extends JTree {
     /**
      * We re-expand the ones that were open before to maintain the same viewable
      * tree.
-     * 
+     *
      * called by doForceUpdate(), setModel()
      */
     private void reexpand() {
