@@ -44,7 +44,6 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
@@ -89,7 +88,6 @@ import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.IStatusBar;
@@ -1085,10 +1083,11 @@ public final class ProjectBrowser
                 throw new IllegalStateException("Filename " + project.getName()
                             + " is not of a known file type");
             }
-            
+
             // Simulate some errors to repair.
             // TODO: Replace with junits - Bob
-//            Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();
+//            Layer lay =
+//                Globals.curEditor().getLayerManager().getActiveLayer();
 //            List figs = lay.getContentsNoEdges();
 //            // A Fig with a null owner
 //            if (figs.size() > 0) {
