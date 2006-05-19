@@ -158,7 +158,8 @@ public class SequenceDiagramGraphModel
             return false;
         }
         return !getNodes().contains(node)
-              && Model.getFacade().getNamespace(node) == getCollaboration();
+                && Model.getFacade().isAModelElement(node)
+                && Model.getFacade().getNamespace(node) == getCollaboration();
     }
 
     /**
