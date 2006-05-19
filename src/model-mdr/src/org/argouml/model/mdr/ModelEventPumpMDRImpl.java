@@ -93,19 +93,19 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     private Object lock = new Byte[0];
 
     private MDRepository repository;
-    
+
     private int pendingEvents;
-    
+
     /**
      * Map of Element/attribute tuples and the listeners they have registered.
      */
     private Map elements = Collections.synchronizedMap(new HashMap());
-    
+
     /**
      * Map of Class/attribute tupes and the listeners they have registered.
      */
     private Map listenedClasses = Collections.synchronizedMap(new HashMap());
-    
+
     /**
      * Map of subtypes for all types in our metamodel.
      */
@@ -113,24 +113,24 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 
     /**
      * Constructor.
-     * 
-     * @param implementation
+     *
+     * @param implementation The implementation.
      */
     public ModelEventPumpMDRImpl(MDRModelImplementation implementation) {
         this(implementation, MDRManager.getDefault().getDefaultRepository());
     }
-        
+
     /**
      * Constructor.
-     * 
-     * @param implementation
-     * @param repo
+     *
+     * @param implementation The implementation.
+     * @param repo The repository.
      */
     public ModelEventPumpMDRImpl(MDRModelImplementation implementation,
             MDRepository repo) {
         super();
         modelImplementation = implementation;
-        repository = repo;        
+        repository = repo;
         subtypeMap = buildTypeMap(modelImplementation.getModelPackage());
     }
 
@@ -204,7 +204,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     public void removeClassModelEventListener(PropertyChangeListener listener,
             Object modelClass, String[] propertyNames) {
         unregisterClassEvent(listener, modelClass, propertyNames);
-    }    
+    }
 
     /**
      * Detect a change event in MDR and convert this to a change event from the
@@ -222,8 +222,8 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
      * </pre>
      * Any other events are ignored and not propogated beyond the model
      * subsystem.
-     * 
-     * @param mdrEvent Change event from MDR 
+     *
+     * @param mdrEvent Change event from MDR
      * @see org.netbeans.api.mdr.events.MDRChangeListener#change
      */
     public void change(MDRChangeEvent mdrEvent) {
@@ -236,14 +236,14 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         if (mdrEvent instanceof TransactionEvent) {
             return;
         }
-        
+
         enableSaveAction();
-        
+
         Vector events = new Vector();
-        
+
         if (mdrEvent instanceof AttributeEvent) {
             AttributeEvent ae = (AttributeEvent) mdrEvent;
-            events.add(new AttributeChangeEvent(ae.getSource(), 
+            events.add(new AttributeChangeEvent(ae.getSource(),
                     ae.getAttributeName(), ae.getOldElement(),
                     ae.getNewElement(), mdrEvent));
         } else if (mdrEvent instanceof InstanceEvent
@@ -255,11 +255,11 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             AssociationEvent ae = (AssociationEvent) mdrEvent;
             if (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_ADD)) {
                 events.add(new AddAssociationEvent(
-                        ae.getNewElement(), 
-                        mapPropertyName(ae.getEndName()), 
+                        ae.getNewElement(),
+                        mapPropertyName(ae.getEndName()),
                         ae.getOldElement(), // will always be null
                         ae.getFixedElement(),
-                        ae.getFixedElement(), 
+                        ae.getFixedElement(),
                         mdrEvent));
                 // Create a change event for the corresponding property
                 events.add(new AttributeChangeEvent(
@@ -270,11 +270,11 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                         mdrEvent));
                 // Create an event for the other end of the association
                 events.add(new AddAssociationEvent(
-                        ae.getFixedElement(), 
+                        ae.getFixedElement(),
                         otherAssocEnd(ae),
                         ae.getOldElement(), // will always be null
                         ae.getNewElement(),
-                        ae.getNewElement(), 
+                        ae.getNewElement(),
                         mdrEvent));
                 // and a change event for that end
                 events.add(new AttributeChangeEvent(
@@ -285,31 +285,31 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                         mdrEvent));
             } else if (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_REMOVE)) {
                 events.add(new RemoveAssociationEvent(
-                        ae.getOldElement(), 
-                        mapPropertyName(ae.getEndName()), 
-                        ae.getFixedElement(), 
+                        ae.getOldElement(),
+                        mapPropertyName(ae.getEndName()),
+                        ae.getFixedElement(),
                         ae.getNewElement(), // will always be null
                         ae.getFixedElement(),
                         mdrEvent));
                 // Create a change event for the associated property
                 events.add(new AttributeChangeEvent(
-                        ae.getOldElement(), 
-                        mapPropertyName(ae.getEndName()), 
+                        ae.getOldElement(),
+                        mapPropertyName(ae.getEndName()),
                         ae.getFixedElement(),
                         ae.getNewElement(), // will always be null
                         mdrEvent));
                 // Create an event for the other end of the association
                 events.add(new RemoveAssociationEvent(
-                        ae.getFixedElement(), 
-                        otherAssocEnd(ae), 
-                        ae.getOldElement(), 
+                        ae.getFixedElement(),
+                        otherAssocEnd(ae),
+                        ae.getOldElement(),
                         ae.getNewElement(), // will always be null
                         ae.getOldElement(),
                         mdrEvent));
                 // Create a change event for the associated property
                 events.add(new AttributeChangeEvent(
-                        ae.getFixedElement(), 
-                        otherAssocEnd(ae), 
+                        ae.getFixedElement(),
+                        otherAssocEnd(ae),
                         ae.getOldElement(),
                         ae.getNewElement(), // will always be null
                         mdrEvent));
@@ -322,12 +322,12 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             if (LOG.isDebugEnabled()) {
                 String name = mdrEvent.getClass().getName();
                 // Cut down on debugging noise
-                if (!name.endsWith("CreateInstanceEvent")) { 
+                if (!name.endsWith("CreateInstanceEvent")) {
                     LOG.debug("Ignoring MDR event " + mdrEvent);
                 }
             }
         }
-        
+
         for (int i = 0; i < events.size(); i++) {
             UmlChangeEvent event = (UmlChangeEvent) events.get(i);
 
@@ -341,7 +341,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     }
 
     /**
-     * @param e Event from MDR indicating a planned change. 
+     * @param e Event from MDR indicating a planned change.
      * @see org.netbeans.api.mdr.events.MDRPreChangeListener#plannedChange
      */
     public synchronized void plannedChange(MDRChangeEvent e) {
@@ -357,7 +357,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     public void changeCancelled(MDRChangeEvent e) {
         decrementEvents();
     }
-    
+
     /**
      * Decrement count of outstanding events and wake
      * any waiters when it becomes zero.
@@ -368,7 +368,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             notifyAll();
         }
     }
-    
+
     /**
      * Fire an event to any registered listeners.
      */
@@ -382,24 +382,24 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         synchronized (lock) {
             listeners.addAll(getMatches(elements, mofId, event
                     .getPropertyName()));
- 
+
             // This will include all subtypes registered
             listeners.addAll(getMatches(listenedClasses, className, event
                     .getPropertyName()));
         }
-        
+
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Firing " 
+            LOG.debug("Firing "
                     + modelImplementation.getMetaTypes().getName(event)
-                    + " source " 
+                    + " source "
                     + modelImplementation.getMetaTypes().getName(
                             event.getSource())
                     + " [" + ((MDRObject) event.getSource()).refMofId()
-                    + "]."  + event.getPropertyName() 
+                    + "]."  + event.getPropertyName()
                     + "," + formatElement(event.getOldValue())
                     + "->" + formatElement(event.getNewValue()));
         }
-        
+
         if (!listeners.isEmpty()) {
             Iterator it = listeners.iterator();
             PropertyChangeListener pcl = null;
@@ -417,18 +417,18 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             if (false/*LOG.isDebugEnabled()*/) {
                 LOG.debug("No listener for "
                         + modelImplementation.getMetaTypes().getName(event)
-                        + " source " 
+                        + " source "
                         + modelImplementation.getMetaTypes().getName(
                                 event.getSource())
                         + " ["
                         + ((MDRObject) event.getSource()).refMofId() + "]."
                         + event.getPropertyName() + "," + event.getOldValue()
                         + "->" + event.getNewValue());
+            }
         }
     }
-    }
 
-    
+
     /**
      * Register a listener for a Model Event.  The ModelElement's
      * MofID is used as the string to match against.
@@ -447,7 +447,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                 propertyNames);
         if (LOG.isDebugEnabled()) {
             LOG.debug("Register ["
-                    + " element:" + formatElement(modelElement) 
+                    + " element:" + formatElement(modelElement)
                     + ", properties:" + formatArray(propertyNames)
                     + ", listener:" + listener
                     + "]");
@@ -456,7 +456,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             register(elements, listener, mofId, propertyNames);
         }
     }
-    
+
     /**
      * Unregister a listener for a Model Event.
      */
@@ -466,7 +466,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             LOG.error("Attempt to unregister null listener(" + listener
                     + ") or modelElement (" + modelElement
                     + ")! [Property names: " + propertyNames + "]");
-            return; 
+            return;
         }
         if (!(modelElement instanceof MDRObject)) {
             LOG.error("Ignoring non-MDRObject received by "
@@ -476,7 +476,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         String mofId = ((MDRObject) modelElement).refMofId();
         if (LOG.isDebugEnabled()) {
             LOG.debug("Unregister ["
-                    + " element:" + formatElement(modelElement) 
+                    + " element:" + formatElement(modelElement)
                     + ", properties:" + formatArray(propertyNames)
                     + ", listener:" + listener
                     + "]");
@@ -485,13 +485,13 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             unregister(elements, listener, mofId, propertyNames);
         }
     }
-    
+
     /**
-     * Register a listener for metamodel Class (and all its 
+     * Register a listener for metamodel Class (and all its
      * subclasses), optionally qualified by a list of
-     * property names. 
-     * 
-     * TODO: verify that property/event names are legal for 
+     * property names.
+     *
+     * TODO: verify that property/event names are legal for
      * this class in the metamodel
      */
     private void registerClassEvent(PropertyChangeListener listener,
@@ -500,10 +500,10 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         if (modelClass instanceof Class) {
             String className = getClassName(modelClass);
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Register class [" 
-                            + modelImplementation.getMetaTypes().getName(modelClass)
-                            + "properties:" + formatArray(propertyNames)
-                            + ", listener:" + listener + "]");
+                LOG.debug("Register class ["
+                        + modelImplementation.getMetaTypes().getName(modelClass)
+                        + "properties:" + formatArray(propertyNames)
+                        + ", listener:" + listener + "]");
             }
             Collection subtypes = (Collection) subtypeMap.get(className);
             verifyAttributeNames(className, propertyNames);
@@ -521,7 +521,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                         + modelClass);
     }
 
-    
+
     /**
      * Unregister a listener for a class and its subclasses.
      */
@@ -581,10 +581,10 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             LOG.error("Interrupted while waiting in flushModelEvents");
         }
     }
-    
+
     /**
      * Event adapter interface implementation
-     * 
+     *
      * TODO: Deprecated. Remove after release of 0.22.
      */
 
@@ -596,7 +596,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         if (LOG.isDebugEnabled()) {
             LOG.debug("Add property listener '" + pcl + "'.");
         }
-        addClassModelEventListener(pcl, ModelElement.class, (String[])null);
+        addClassModelEventListener(pcl, ModelElement.class, (String[]) null);
     }
 
 
@@ -617,10 +617,10 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
      * object registered without subkeys will match any subkey. Multiple calls
      * with the same item and key pair will only result in a single registration
      * being made.
-     * 
+     *
      * @param registry
      *            registry to use
-     * @parem item 
+     * @param item
      *            object to be registered
      * @param key
      *            primary key for registration
@@ -633,7 +633,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             String[] subkeys) {
 
         // Lookup primary key, creating new entry if needed
-        HashMap entry = (HashMap) registry.get(key);
+        Map entry = (Map) registry.get(key);
         if (entry == null) {
             entry = new HashMap();
             registry.put(key, entry);
@@ -642,11 +642,14 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         // If there are no subkeys, register using our special value
         // to indicate that this is a primary key only registration
         if (subkeys == null || subkeys.length < 1) {
-            subkeys = new String[] {""};
+            subkeys =
+                new String[] {
+                    "",
+                };
         }
-        
+
         for (int i = 0; i < subkeys.length; i++) {
-            ArrayList list = (ArrayList) entry.get(subkeys[i]);
+            List list = (ArrayList) entry.get(subkeys[i]);
             if (list == null) {
                 list = new ArrayList();
                 entry.put(subkeys[i], list);
@@ -662,22 +665,22 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 
     /**
      * Unregister an item or all items which match key set.
-     * 
-     * @param registry registry to use 
-     * @param item object to be unregistered.  If null, unregister all 
+     *
+     * @param registry registry to use
+     * @param item object to be unregistered.  If null, unregister all
      * matching objects.
      * @param key primary key for registration
-     * @param subkeys array of subkeys.  If null, unregister under primary 
+     * @param subkeys array of subkeys.  If null, unregister under primary
      * key only.
      */
     static void unregister(Map registry, Object item, String key,
             String[] subkeys) {
 
-        HashMap entry = (HashMap) registry.get(key);
+        Map entry = (HashMap) registry.get(key);
         if (entry == null) {
             return;
         }
-        
+
         if (subkeys != null && subkeys.length > 0) {
             for (int i = 0; i < subkeys.length; i++) {
                 lookupRemoveItem(entry, subkeys[i], item);
@@ -690,9 +693,9 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             }
         }
     }
-    
-    private static void lookupRemoveItem(HashMap map, String key, Object item) {
-        ArrayList list = (ArrayList) map.get(key);
+
+    private static void lookupRemoveItem(Map map, String key, Object item) {
+        List list = (ArrayList) map.get(key);
         if (list == null) {
             return;
         }
@@ -711,7 +714,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             map.remove(key);
         }
     }
-    
+
     /**
      * Return a list of items which have been registered for given key(s).
      * Returns items registered both for the key/subkey pair as well as
@@ -731,7 +734,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             }
             if (entry.containsKey("")) {
                 results.addAll((ArrayList) entry.get(""));
-        }
+            }
         }
         return results;
     }
@@ -751,9 +754,9 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                     + ae.getSource() + " -> " + ae.getEndName());
             return null;
         }
-        return aend.otherEnd().getName();                
+        return aend.otherEnd().getName();
     }
-    
+
 
     /**
      * Map from UML 1.4 names to UML 1.3 names
@@ -775,10 +778,10 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         }
         return name;
     }
-    
+
     /**
      * Formatters for debug output.
-     */ 
+     */
     private String formatArray(String[] array) {
         if (array == null) {
             return null;
@@ -789,7 +792,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         }
         return result.substring(0, result.length() - 2) + "]";
     }
-    
+
     private String formatElement(Object element) {
         try {
             if (element instanceof MDRObject) {
@@ -804,14 +807,14 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         }
         return null;
     }
-    
-    
+
+
     /**
      * Traverse metamodel and build list of subtypes for every metatype.
      */
     private HashMap buildTypeMap(ModelPackage extent) {
         HashMap names = new HashMap();
-        for (Iterator iter = extent.getMofClass().refAllOfClass().iterator(); 
+        for (Iterator iter = extent.getMofClass().refAllOfClass().iterator();
                 iter.hasNext();) {
             ModelElement element = (ModelElement) iter.next();
             String name = element.getName();
@@ -825,7 +828,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         }
         return names;
     }
-    
+
     /**
      * Recursive method to get all subtypes.
      */
@@ -852,12 +855,12 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         RefObject ro = null;
         verifyAttributeNames(ro, attributes);
     }
-    
+
     /**
      * Check whether given attribute names exist for this
      * metatype in the metamodel.  Throw exception if not found.
      */
-    private void verifyAttributeNames(RefObject metaobject, 
+    private void verifyAttributeNames(RefObject metaobject,
             String[] attributes) {
         // Only do verification if debug level logging is on
         // TODO: Should we leave this on always? - tfm
@@ -901,7 +904,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                      * TODO: For any names not found in the class definition,
                      * see if we can find an association with an end of the
                      * right name where the opposite end has the correct type .
-                     * 
+                     *
                      * Perhaps instead of working from the class we should get
                      * all associations, check the types of their association
                      * ends for one which matches our class, then get the name
@@ -909,7 +912,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                     LOG.error("Property '" + attributes[i]
                              + "' for class '"
                              + metaclass.getName()
-                             + "' doesn't exist in metamodel" 
+                             + "' doesn't exist in metamodel"
                              + " (possible false warning)");
 //                  throw new IllegalArgumentException("Property '"
 //                            + attributes[i] + "' doesn't exist in metamodel");
