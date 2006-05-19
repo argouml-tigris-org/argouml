@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,6 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationHelper;
 import org.argouml.uml.ui.UMLAction;
@@ -36,42 +35,50 @@ import org.argouml.uml.ui.UMLAction;
  * @author Bob Tarling
  */
 class ActionAddStereotype extends UMLAction {
-    
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(ActionAddStereotype.class);
-    
     private Object modelElement;
     private Object stereotype;
-    
-    public ActionAddStereotype(Object modelElement, Object stereotype) {
+
+    /**
+     * Constructor.
+     *
+     * @param me The model element.
+     * @param st The stereotype.
+     */
+    public ActionAddStereotype(Object me, Object st) {
         super(NotationHelper.getLeftGuillemot()
-                + Model.getFacade().getName(stereotype)
+                + Model.getFacade().getName(st)
                 + NotationHelper.getRightGuillemot(), NO_ICON);
-        this.modelElement = modelElement;
-        this.stereotype = stereotype;
+        modelElement = me;
+        stereotype = st;
     }
-    
+
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
-        if (Model.getFacade().getStereotypes(modelElement).contains(stereotype)) {
+        if (Model.getFacade().getStereotypes(modelElement)
+                .contains(stereotype)) {
             Model.getCoreHelper().removeStereotype(modelElement, stereotype);
         } else {
-            Object stereo = Model.getModelManagementHelper().
-                getCorrespondingElement(stereotype, 
+            Object stereo =
+                Model.getModelManagementHelper()
+                    .getCorrespondingElement(stereotype,
                         Model.getFacade().getModel(modelElement), true);
             Model.getCoreHelper().addStereotype(modelElement, stereo);
         }
     }
-    
+
+    /**
+     * @see javax.swing.Action#getValue(java.lang.String)
+     */
     public Object getValue(String key) {
         if ("SELECTED".equals(key)) {
             if (Model.getFacade().getStereotypes(modelElement).contains(
-                    stereotype))
+                    stereotype)) {
                 return Boolean.TRUE;
-            else
+            } else {
                 return Boolean.FALSE;
+            }
         }
         return super.getValue(key);
     }

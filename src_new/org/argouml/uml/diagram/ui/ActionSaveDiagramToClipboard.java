@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -52,7 +52,7 @@ import org.tigris.gef.base.Layer;
  * This class copies a diagram to the system clipboard, this functionality will
  * only work with Java1.4, but it will compile with 1.3. It can be put into GEF
  * as it is rather generic.
- * 
+ *
  * @see <a href="http://java.sun.com/docs/books/tutorial/uiswing/misc/dnd.html">
  *      Swing Drag and Drop </a>
  * @author alexb
@@ -71,7 +71,7 @@ public class ActionSaveDiagramToClipboard extends AbstractAction implements
 
     /**
      * get diagram image and put in system clipboard.
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent actionEvent) {
@@ -87,14 +87,20 @@ public class ActionSaveDiagramToClipboard extends AbstractAction implements
         clipboard.setContents(new ImageSelection(diagramGifImage), this);
     }
 
-    /** get image from gef */
+    /**
+     * Get image from gef.
+     *
+     * @return An Image.
+     */
     private Image getImage() {
 
-        int scale = Configuration.getInteger(
+        int scale =
+            Configuration.getInteger(
                 SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 1);
 
         Editor ce = Globals.curEditor();
-        Rectangle drawingArea = ce.getLayerManager().getActiveLayer()
+        Rectangle drawingArea =
+            ce.getLayerManager().getActiveLayer()
                 .calcDrawingArea();
 
         // avoid GEF calcDrawingArea bug when nothing in a diagram.
@@ -105,7 +111,8 @@ public class ActionSaveDiagramToClipboard extends AbstractAction implements
 
         boolean isGridHidden = ce.getGridHidden();
         ce.setGridHidden(true); // hide grid, otherwise can't see anything
-        Image diagramGifImage = ce.createImage(drawingArea.width * scale,
+        Image diagramGifImage =
+            ce.createImage(drawingArea.width * scale,
                 drawingArea.height * scale);
         Graphics g = diagramGifImage.getGraphics();
         if (g instanceof Graphics2D) {
@@ -123,8 +130,8 @@ public class ActionSaveDiagramToClipboard extends AbstractAction implements
     }
 
     /**
-     * do nothing
-     * 
+     * Do nothing.
+     *
      * @see java.awt.datatransfer.ClipboardOwner#lostOwnership(
      *      java.awt.datatransfer.Clipboard, java.awt.datatransfer.Transferable)
      */
@@ -137,11 +144,13 @@ public class ActionSaveDiagramToClipboard extends AbstractAction implements
     public boolean isEnabled() {
         Editor ce = Globals.curEditor();
         if (ce == null || ce.getLayerManager() == null
-                || ce.getLayerManager().getActiveLayer() == null)
+                || ce.getLayerManager().getActiveLayer() == null) {
             return false;
+        }
         Layer layer = ce.getLayerManager().getActiveLayer();
-        if (layer == null)
+        if (layer == null) {
             return false;
+        }
         Rectangle drawingArea = layer.calcDrawingArea();
 
         // avoid GEF calcDrawingArea bug when nothing in a diagram.
@@ -151,6 +160,12 @@ public class ActionSaveDiagramToClipboard extends AbstractAction implements
         }
         return super.isEnabled();
     }
+
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 4916652432210626558L;
 }
 
 /**
@@ -158,21 +173,35 @@ public class ActionSaveDiagramToClipboard extends AbstractAction implements
  */
 class ImageSelection implements Transferable {
 
-    private DataFlavor[] supportedFlavors = { DataFlavor.imageFlavor };
+    private DataFlavor[] supportedFlavors = {
+        DataFlavor.imageFlavor,
+    };
 
     // the diagram image data
     private Image diagramImage;
 
+    /**
+     * Constructor.
+     *
+     * @param newDiagramImage The image.
+     */
     public ImageSelection(Image newDiagramImage) {
 
         diagramImage = newDiagramImage;
     }
 
+    /**
+     * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
+     */
     public synchronized DataFlavor[] getTransferDataFlavors() {
 
         return (supportedFlavors);
     }
 
+    /**
+     * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(
+     *         java.awt.datatransfer.DataFlavor)
+     */
     public boolean isDataFlavorSupported(DataFlavor parFlavor) {
 
         // hack in order to be able to compile in java1.3
@@ -183,8 +212,12 @@ class ImageSelection implements Transferable {
 
     }
 
+    /**
+     * @see java.awt.datatransfer.Transferable#getTransferData(
+     *         java.awt.datatransfer.DataFlavor)
+     */
     public synchronized Object getTransferData(DataFlavor parFlavor)
-            throws UnsupportedFlavorException {
+        throws UnsupportedFlavorException {
 
         if (isDataFlavorSupported(parFlavor)) {
             return (diagramImage);
