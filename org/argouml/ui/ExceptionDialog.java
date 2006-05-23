@@ -184,6 +184,9 @@ public class ExceptionDialog extends JDialog implements ActionListener {
      *            give priority to Throwable.cause in display. Use this if the
      *            main exception is mostly boilerplate and the really useful
      *            information is in the enclosed cause.
+     *            
+     * TODO: This is a 90% clone of the constructor above.
+     * Eliminate duplicate code! - tfm
      */
     public ExceptionDialog(Frame f, String message, String error) {
         super(f);
