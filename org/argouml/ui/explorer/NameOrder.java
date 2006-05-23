@@ -28,6 +28,7 @@ import java.util.Comparator;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.i18n.Translator;
 import org.tigris.gef.base.Diagram;
@@ -99,10 +100,10 @@ public class NameOrder
             name = ((Diagram) obj).getName();
         } else {
             if (Model.getFacade().isAModelElement(obj)) { 
-                if (Model.getUmlFactory().isRemoved(obj)) {
-                    name = "(removed)";
-                } else {
+                try {
                     name = Model.getFacade().getName(obj);
+                } catch (InvalidElementException e) {
+                    name = "(*deleted*)";
                 }
             }
             name = "??";

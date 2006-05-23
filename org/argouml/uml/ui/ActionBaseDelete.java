@@ -37,10 +37,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -67,6 +69,8 @@ import org.tigris.gef.presentation.FigTextEditor;
  * @author jaap.branderhorst@xs4all.nl extensions
  */
 public abstract class ActionBaseDelete extends UMLAction {
+    
+    private static final Logger LOG = Logger.getLogger(ActionBaseDelete.class);
 
     /**
      * Constructor.
@@ -151,22 +155,21 @@ public abstract class ActionBaseDelete extends UMLAction {
         Object target = null;
         for (int i = targets.length - 1; i >= 0; i--) {
             target = targets[i];
-            if (Model.getFacade().isAModelElement(target) 
-                    && Model.getUmlFactory().isRemoved(target)) {
-                /* Must have been removed indirectly already...*/
-                return;
-            }
-            if (sureRemove(target)) {
-                // remove from the model
-                if (target instanceof Fig) {
-                    target = ((Fig) target).getOwner();
-                }
-                if (Model.getFacade().isAConcurrentRegion(target)) {
-                    new ActionDeleteConcurrentRegion()
+            try {
+                if (sureRemove(target)) {
+                    // remove from the model
+                    if (target instanceof Fig) {
+                        target = ((Fig) target).getOwner();
+                    }
+                    if (Model.getFacade().isAConcurrentRegion(target)) {
+                        new ActionDeleteConcurrentRegion()
                         .actionPerformed(ae);
-                } else {
-                    p.moveToTrash(target);
+                    } else {
+                        p.moveToTrash(target);
+                    }
                 }
+            } catch (InvalidElementException e) {
+                LOG.debug("Model element deleted twice - ignoring 2nd delete");
             }
         }
     }

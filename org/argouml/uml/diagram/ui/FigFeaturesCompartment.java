@@ -31,7 +31,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.Model;
+import org.argouml.model.InvalidElementException;
 import org.argouml.notation.NotationContext;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
@@ -144,9 +144,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
         if (!isVisible()) {
             return;
         }
-        if (Model.getUmlFactory().isRemoved(getGroup().getOwner())) {
-            return;
-        }
+
         Fig bigPort = this.getBigPort();
         int xpos = bigPort.getX();
         int ypos = bigPort.getY();
@@ -166,69 +164,75 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
 
         // We are going to add the ones still valid & new ones
         // in the right sequence:
-        Collection umlObjects = getUmlCollection();
         CompartmentFigText comp = null;
-        int acounter = -1;
-        Iterator iter = umlObjects.iterator();
-        while (iter.hasNext()) {
-            Object umlObject = iter.next();
-            comp = null; // find the (next) compartment
-            acounter++;                
-            
-            /* Find the compartment fig for this umlObject: */
-            Iterator it = figs.iterator();
-            while (it.hasNext()) {
-                CompartmentFigText candidate;
-                Object fig = it.next();
-                if (fig instanceof CompartmentFigText) {
-                    candidate = (CompartmentFigText) fig;
-                    if (candidate.getOwner() == umlObject) {
-                        comp = candidate;
-                        break;
+        try {
+            Collection umlObjects = getUmlCollection();
+            int acounter = -1;
+            Iterator iter = umlObjects.iterator();
+            while (iter.hasNext()) {
+                Object umlObject = iter.next();
+                comp = null; // find the (next) compartment
+                acounter++;                
+                
+                /* Find the compartment fig for this umlObject: */
+                Iterator it = figs.iterator();
+                while (it.hasNext()) {
+                    CompartmentFigText candidate;
+                    Object fig = it.next();
+                    if (fig instanceof CompartmentFigText) {
+                        candidate = (CompartmentFigText) fig;
+                        if (candidate.getOwner() == umlObject) {
+                            comp = candidate;
+                            break;
+                        }
                     }
                 }
+                
+                // If we don't have a fig for this feature, we'll need to add
+                // one. We set the bounds, but they will be reset later.
+                if (comp == null) {
+                    NotationProvider4 np = 
+                        NotationProviderFactory2.getInstance()
+                            .getNotationProvider(
+                                    getNotationType(),
+                                    (NotationContext) getGroup(), umlObject);
+                    comp =
+                        new FigFeature(
+                                xpos + 1,
+                                ypos + 1 + acounter
+                                * FigNodeModelElement.ROWHEIGHT,
+                                0,
+                                FigNodeModelElement.ROWHEIGHT - 2,
+                                bigPort,
+                                np);
+                    // bounds not relevant here
+                    comp.setOwner(umlObject);
+                    
+                } else {
+                    /* This one is still useable, so let's retain it, */
+                    /* but its position may have been changed: */
+                    Rectangle b = comp.getBounds();
+                    b.y = ypos + 1 + acounter * FigNodeModelElement.ROWHEIGHT;
+                    comp.setBounds(b);
+                    // bounds not relevant here, but I am perfectionist...
+                }
+                addFig(comp); // add it again (but now in the right sequence)
+                
+                // Now put the text in
+                // We must handle the case where the text is null
+                String ftText = comp.getNotationProvider().toString();
+                if (ftText == null) {
+                    ftText = "";
+                }
+                comp.setText(ftText);
+                
+                addExtraVisualisations(umlObject, comp);
+                comp.setBotMargin(0);
             }
-            
-            // If we don't have a fig for this feature, we'll need to add
-            // one. We set the bounds, but they will be reset later.
-            if (comp == null) {
-                NotationProvider4 np = 
-                    NotationProviderFactory2.getInstance().getNotationProvider(
-                            getNotationType(),
-                            (NotationContext) getGroup(), umlObject);
-                comp =
-                    new FigFeature(
-                            xpos + 1,
-                            ypos + 1 + acounter
-                            * FigNodeModelElement.ROWHEIGHT,
-                            0,
-                            FigNodeModelElement.ROWHEIGHT - 2,
-                            bigPort,
-                            np);
-                // bounds not relevant here
-                comp.setOwner(umlObject);
-
-            } else {
-                /* This one is still useable, so let's retain it, */
-                /* but its position may have been changed: */
-                Rectangle b = comp.getBounds();
-                b.y = ypos + 1 + acounter * FigNodeModelElement.ROWHEIGHT;
-                comp.setBounds(b);
-                // bounds not relevant here, but I am perfectionist...
-            }
-            addFig(comp); // add it again (but now in the right sequence)
-            
-            // Now put the text in
-            // We must handle the case where the text is null
-            String ftText = comp.getNotationProvider().toString();
-            if (ftText == null) {
-                ftText = "";
-            }
-            comp.setText(ftText);
-
-            addExtraVisualisations(umlObject, comp);
-            comp.setBotMargin(0);
-        }
+        } catch (InvalidElementException e) {
+            LOG.debug("Attempted to populate a FigFeatureCompartment" 
+                    + " using a deleted model element - aborting", e);
+        } 
 
         if (comp != null) {
             comp.setBotMargin(6); // the last one needs extra space below it

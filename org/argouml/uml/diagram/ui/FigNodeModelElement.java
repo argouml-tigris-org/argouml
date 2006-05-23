@@ -73,6 +73,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationContext;
@@ -326,9 +327,16 @@ public abstract class FigNodeModelElement
         //ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
-    public FigNodeModelElement(Object node, int x, int y) {
+    /**
+     * Construct a figure at a specific position for a given model element.
+     * 
+     * @param element ModelElement associated with figure
+     * @param x
+     * @param y
+     */
+    public FigNodeModelElement(Object element, int x, int y) {
         this();
-        setOwner(node);
+        setOwner(element);
         nameFig.setText(placeString());
         readyToEdit = false;
         setLocation(x, y);
@@ -932,20 +940,21 @@ public abstract class FigNodeModelElement
         } else {
             super.propertyChange(pve);
         }
-        if (Model.getFacade().isAModelElement(getOwner()) 
-                && Model.getUmlFactory().isRemoved(getOwner())) {
-            return;
-        }
         if (Model.getFacade().isAModelElement(src)) {
             /* If the source of the event is an UML object,
              * e.g. the owner of this Fig (but not always only the owner
              * is shown, e.g. for a class, also its attributes are shown),
              * then the UML model has been changed.
              */
-            modelChanged(pve);
+            // We catch the exception here so it is handled for all subclasses
+            try {
+                modelChanged(pve);
+            } catch (InvalidElementException e) {
+                LOG.debug("modelChanged method accessed deleted element ", e);
+            }
         }
     }
-    
+
     /**
      * This method is called when the user doubleclicked on the text field,
      * and starts editing. Subclasses should overrule this field to e.g.
@@ -1104,16 +1113,18 @@ public abstract class FigNodeModelElement
             throw new IllegalArgumentException("event may never be null "
                            + "with modelchanged");
         }
-        if (getOwner() == null
-                || Model.getUmlFactory().isRemoved(getOwner())) {
+        Object owner = getOwner();
+        // If the element has been deleted, the caller will
+        // receive an InvalidElementException that it must handle.
+        if (owner == null) {
             return;
         }
         if ("name".equals(mee.getPropertyName())
-                && mee.getSource() == getOwner()) {
+                && mee.getSource() == owner) {
             updateNameText();
             damage();
         }
-        if ((mee.getSource() == getOwner()
+        if ((mee.getSource() == owner
                 && mee.getPropertyName().equals("stereotype"))) {
             if (mee.getOldValue() != null) {
                 removeElementListener(mee.getOldValue());
@@ -1479,10 +1490,8 @@ public abstract class FigNodeModelElement
      */
     public void removeFromDiagram() {
         ArgoEventPump.removeListener(this);
-        Object own = getOwner();
         removeAllElementListeners();
         shadowSize = 0;
-
         super.removeFromDiagram();
     }
 
