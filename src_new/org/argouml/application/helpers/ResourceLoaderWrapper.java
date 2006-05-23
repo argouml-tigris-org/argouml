@@ -35,6 +35,7 @@ import javax.swing.UIManager;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.DataTypesHelper;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.tigris.gef.util.ResourceLoader;
 
@@ -203,68 +204,68 @@ public final class ResourceLoaderWrapper {
         if (value instanceof String) {
             return null;
         }
-        
-        if (Model.getFacade().isAModelElement(value) 
-                && Model.getUmlFactory().isRemoved(value)) {
-            return null;
-        }
 
         Icon icon = (Icon) iconCache.get(value.getClass());
-
-        if (Model.getFacade().isAPseudostate(value)) {
-
-            Object kind = Model.getFacade().getKind(value);
-            DataTypesHelper helper = Model.getDataTypesHelper();
-            if (helper.equalsINITIALKind(kind)) {
-                icon = initialStateIcon;
-            }
-            if (helper.equalsDeepHistoryKind(kind)) {
-                icon = deepIcon;
-            }
-            if (helper.equalsShallowHistoryKind(kind)) {
-                icon = shallowIcon;
-            }
-            if (helper.equalsFORKKind(kind)) {
-                icon = forkIcon;
-            }
-            if (helper.equalsJOINKind(kind)) {
-                icon = joinIcon;
-            }
-            if (helper.equalsCHOICEKind(kind)) {
-                icon = branchIcon;
-            }
-            if (helper.equalsJUNCTIONKind(kind)) {
-                icon = junctionIcon;
-            }
-            // if (MPseudostateKind.FINAL.equals(kind))
-            // icon = _FinalStateIcon;
-        }
-
-        if (Model.getFacade().isAAbstraction(value)) {
-            icon = realizeIcon;
-        }
-        // needs more work: sending and receiving icons
-        if (Model.getFacade().isASignal(value)) {
-            icon = signalIcon;
-        }
-
-        if (Model.getFacade().isAComment(value)) {
-            icon = commentIcon;
-        }
-
-        if (icon == null) {
-
-            String cName = Model.getMetaTypes().getName(value);
-
-            icon = lookupIconResource(cName);
-            if (icon == null) {
-                LOG.warn("Can't find icon for " + cName);
-            } else {
-                synchronized (iconCache) {
-                    iconCache.put(value.getClass(), icon);
+        
+        try {
+            if (Model.getFacade().isAPseudostate(value)) {
+                
+                Object kind = Model.getFacade().getKind(value);
+                DataTypesHelper helper = Model.getDataTypesHelper();
+                if (helper.equalsINITIALKind(kind)) {
+                    icon = initialStateIcon;
                 }
+                if (helper.equalsDeepHistoryKind(kind)) {
+                    icon = deepIcon;
+                }
+                if (helper.equalsShallowHistoryKind(kind)) {
+                    icon = shallowIcon;
+                }
+                if (helper.equalsFORKKind(kind)) {
+                    icon = forkIcon;
+                }
+                if (helper.equalsJOINKind(kind)) {
+                    icon = joinIcon;
+                }
+                if (helper.equalsCHOICEKind(kind)) {
+                    icon = branchIcon;
+                }
+                if (helper.equalsJUNCTIONKind(kind)) {
+                    icon = junctionIcon;
+                }
+                // if (MPseudostateKind.FINAL.equals(kind))
+                // icon = _FinalStateIcon;
             }
-
+            
+            if (Model.getFacade().isAAbstraction(value)) {
+                icon = realizeIcon;
+            }
+            // needs more work: sending and receiving icons
+            if (Model.getFacade().isASignal(value)) {
+                icon = signalIcon;
+            }
+            
+            if (Model.getFacade().isAComment(value)) {
+                icon = commentIcon;
+            }
+            
+            if (icon == null) {
+                
+                String cName = Model.getMetaTypes().getName(value);
+                
+                icon = lookupIconResource(cName);
+                if (icon == null) {
+                    LOG.warn("Can't find icon for " + cName);
+                } else {
+                    synchronized (iconCache) {
+                        iconCache.put(value.getClass(), icon);
+                    }
+                }
+                
+            }
+        } catch (InvalidElementException e) {
+            LOG.debug("Attempted to get icon for deleted element");
+            return null;
         }
         return icon;
     }

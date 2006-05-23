@@ -2664,8 +2664,12 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getDoActivity(java.lang.Object)
      */
     public Object getDoActivity(Object handle) {
-        if (handle instanceof State) {
-            return ((State) handle).getDoActivity();
+        try {
+            if (handle instanceof State) {
+                return ((State) handle).getDoActivity();
+            }  
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentObject(handle);
     }

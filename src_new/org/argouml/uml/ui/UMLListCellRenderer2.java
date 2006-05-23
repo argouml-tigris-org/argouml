@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,6 +34,7 @@ import javax.swing.JList;
 import javax.swing.UIManager;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 
 /**
@@ -132,6 +133,8 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      *
      * @param value the given modelelement
      * @return String the text to be shown
+     * 
+     * TODO: I18N needed
      */
     public String makeText(Object value) {
         if (value instanceof String) {
@@ -152,16 +155,11 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
             return name;
         }
         if (Model.getFacade().isAModelElement(value)) {
-            if (Model.getUmlFactory().isRemoved(value)) {
-                /* This is needed since you can not query 
-                 * the name of a removed modelelement. */
-                name = ("(removed)");
-            } else {
+            try {
                 name = Model.getFacade().getName(value);
                 if (name == null || name.equals("")) {
                     name = "(unnamed " + makeTypeName(value) + ")";
                 }
-            }
             if (Model.getFacade().isAStereotype(value)) {
                 Collection bases = Model.getFacade().getBaseClasses(value);
                 StringBuffer sb = new StringBuffer();
@@ -173,6 +171,9 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
                     }
                 }
                 name = name + sb.toString() + "]";
+            }
+            } catch (InvalidElementException e){
+                name = "(*deleted*)";
             }
         } else if (Model.getFacade().isAMultiplicity(value)) {
             name = Model.getFacade().getName(value);

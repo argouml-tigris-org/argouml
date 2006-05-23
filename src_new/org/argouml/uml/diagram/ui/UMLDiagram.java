@@ -38,6 +38,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.CmdCreateNode;
@@ -545,20 +546,21 @@ public abstract class UMLDiagram
         while (elems.hasMoreElements()) {
             Fig fig = (Fig) elems.nextElement();
             Object owner = fig.getOwner();
-            if (Model.getFacade().isAModelElement(owner) 
-                    && Model.getUmlFactory().isRemoved(owner)) {
-                continue;
-            }
             /* This will make sure all the correct
              * event listeners are set:
              */
-            if (fig instanceof FigNodeModelElement) {
-                ((FigNodeModelElement) fig).updateListeners(owner);
-                ((FigNodeModelElement) fig).renderingChanged();
-            }
-            if (fig instanceof FigEdgeModelElement) {
-                ((FigEdgeModelElement) fig).updateListeners(owner);
-                ((FigEdgeModelElement) fig).renderingChanged();
+            try {
+                if (fig instanceof FigNodeModelElement) {
+                    ((FigNodeModelElement) fig).updateListeners(owner);
+                    ((FigNodeModelElement) fig).renderingChanged();
+                }
+                if (fig instanceof FigEdgeModelElement) {
+                    ((FigEdgeModelElement) fig).updateListeners(owner);
+                    ((FigEdgeModelElement) fig).renderingChanged();
+                }
+            } catch (InvalidElementException e) {
+                LOG.debug("Attempted to set a deleted element as target : "
+                        + owner);
             }
         }
     }
@@ -684,7 +686,6 @@ public abstract class UMLDiagram
      * Factory method to build an Action for creating an edge in the
      * diagram.
      *
-     * @param modelElement identifies the model element type to make
      * @param descr the description to give this action.
      * @return The action to create a new node.
      */

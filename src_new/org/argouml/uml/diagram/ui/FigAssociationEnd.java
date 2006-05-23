@@ -34,6 +34,7 @@ import javax.swing.SwingUtilities;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
@@ -127,7 +128,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     }
 
     /**
-     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
         if (Model.getFacade().isAAssociationEnd(own)) {
@@ -264,11 +265,13 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         SwingUtilities.invokeLater(new Runnable() {
             public void run () {
                 Fig associationFig = layer.presentationFor(association);
-                if (!Model.getUmlFactory().isRemoved(owner)) {
+                try {
                     if (Model.getFacade().getClassifier(owner) != null
                             && associationFig instanceof FigNodeAssociation) {
                         ((FigNodeAssociation) associationFig).removeFromDiagram();
                     }
+                } catch (InvalidElementException e) {
+                    // if already deleted, just ignore
                 }
             }
         });
