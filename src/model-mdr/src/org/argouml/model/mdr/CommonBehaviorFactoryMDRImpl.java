@@ -427,8 +427,14 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (!(elem instanceof Action)) {
             throw new IllegalArgumentException("elem: " + elem);
         }
-        // TODO: delete Stimulii which have this as their dispatchAction
-        // TODO: delete Messages which have this as their action
+        // Delete Stimulii which have this as their dispatchAction
+        nsmodel.getUmlHelper().deleteCollection(
+                cbPackage.getADispatchActionStimulus().getStimulus(
+                        (Action) elem));
+        // Delete Messages which have this as their action
+        nsmodel.getUmlHelper().deleteCollection(
+                nsmodel.getUmlPackage().getCollaborations().getAActionMessage()
+                        .getMessage((Action) elem));
     }
 
     /**
@@ -560,7 +566,11 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         // TODO: ?Delete Stimulii where this is the sender or receiver?
         // (or leave them since they contain other info the user might
         // want to reuse even though they are temporarily invalid?)
-        
+//        nsmodel.getUmlHelper().deleteCollection(
+//                cbPackage.getAStimulusSender().getStimulus((Instance) elem));
+//        nsmodel.getUmlHelper().deleteCollection(
+//                cbPackage.getAReceiverStimulus().getStimulus((Instance) elem));
+
     }
 
     /**
@@ -660,8 +670,13 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (!(elem instanceof Signal)) {
             throw new IllegalArgumentException("elem: " + elem);
         }
-        // TODO: delete all SendActions which have this as signal
-        // TODO: delete all SignalEvents which have this as the signal
+        // Delete all SendActions which have this as signal
+        nsmodel.getUmlHelper().deleteCollection(
+                cbPackage.getASignalSendAction().getSendAction((Signal) elem));
+        // Delete all SignalEvents which have this as the signal
+        nsmodel.getUmlHelper().deleteCollection(
+                nsmodel.getUmlPackage().getStateMachines()
+                        .getASignalOccurrence().getOccurrence((Signal) elem));
     }
 
     /**
