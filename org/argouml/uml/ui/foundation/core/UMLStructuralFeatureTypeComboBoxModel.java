@@ -100,10 +100,10 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         Set elements = new TreeSet(new Comparator() {
             public int compare(Object o1, Object o2) {
                 try {
-                    String name1 = Model.getFacade().getName(o1);
-                    String name2 = Model.getFacade().getName(o2);
-                    name1 = (name1 != null ? name1 : "");
-                    name2 = (name2 != null ? name2 : "");
+                    Object n1 = Model.getFacade().getName(o1);
+                    Object n2 = Model.getFacade().getName(o2);
+                    String name1 = (n1 != null ? (String) n1 : "");
+                    String name2 = (n2 != null ? (String) n2 : "");
 
                     return name1.compareTo(name2);
                 } catch (Exception e) {
