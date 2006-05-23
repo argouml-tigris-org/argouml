@@ -25,8 +25,9 @@
 package org.argouml.application;
 
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.EventQueue;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -101,7 +102,10 @@ public class Main {
      */
     public static void main(String[] args) {
 	LOG.info("ArgoUML Started.");
-
+        
+        SimpleTimer st = new SimpleTimer();
+        st.mark("begin");
+        
         checkJVMVersion();
         checkHostsFile();
 
@@ -128,7 +132,6 @@ public class Main {
         // then, print out some version info for debuggers...
         org.argouml.util.Tools.logVersionInfo();
 
-        SimpleTimer st = new SimpleTimer();
         st.mark("arguments");
 
         /* set properties for application behaviour */
@@ -174,9 +177,6 @@ public class Main {
                     System.exit(0);
                 } else if (args[i].equalsIgnoreCase("-nosplash")) {
                     doSplash = false;
-                } else if (args[i].equalsIgnoreCase("-noedem")) {
-		    // TODO: document use. Ref. 2/2
-                    /* useEDEM = false*/;
                 } else if (args[i].equalsIgnoreCase("-nopreload")) {
                     preload = false;
                 } else if (args[i].equalsIgnoreCase("-norecentfile")) {
@@ -203,10 +203,18 @@ public class Main {
                 }
             }
         }
+        
+        // Get the splash screen up as early as possible
+        SplashScreen splash = null;
+        if (doSplash && !batch) {
+            splash = initializeSplash();
+        }
 
         // Initialize the Model subsystem
+        st.mark("initialize model subsystem");
+        updateProgress(splash, 5, "statusmsg.bar.model-subsystem");
         if (!Model.isInitiated()) {
-            System.err.println("Model not initated correctly. See log.");
+            System.err.println("Model subsystem init failed. See log.");
             System.exit(1);
             return;
         }
@@ -214,7 +222,7 @@ public class Main {
 	// The reason the gui is initialized before the commands are run
 	// is that some of the commands will use the projectbrowser.
 	st.mark("initialize gui");
-        SplashScreen splash = initializeGUI(doSplash && !batch, theTheme);
+        initializeGUI(splash, theTheme);
 
         // Initialize the UMLActions
         Actions.getInstance();
@@ -318,11 +326,7 @@ public class Main {
 
         st.mark("open window");
 
-        if (splash != null) {
-            splash.getStatusBar().showStatus(
-                Translator.localize("statusmsg.bar.open-project-browser"));
-            splash.getStatusBar().showProgress(95);
-        }
+        updateProgress(splash, 95, "statusmsg.bar.open-project-browser");
 
         pb.setVisible(true);
 
@@ -364,6 +368,17 @@ public class Main {
         //ToolTipManager.sharedInstance().setInitialDelay(500);
         ToolTipManager.sharedInstance().setDismissDelay(50000000);
     }
+    
+    /**
+     * Helper to update progress if we have a splash screen displayed.
+     */
+    private static void updateProgress(SplashScreen splash, int percent,
+            String message) {
+        if (splash != null) {
+            splash.getStatusBar().showStatus(Translator.localize(message));
+            splash.getStatusBar().showProgress(percent);
+        }
+    }
 
     /**
      * Calculates the {@link URL} for the given project name.
@@ -400,7 +415,6 @@ public class Main {
         System.err.println("  -help           display this information");
         LookAndFeelMgr.getInstance().printThemeArgs();
         System.err.println("  -nosplash       don't display logo at startup");
-        System.err.println("  -noedem         don't report usage statistics");
         System.err.println("  -nopreload      don't preload common classes");
         System.err.println("  -norecentfile   don't reload last saved file");
         System.err.println("  -command <arg>  command to perform on startup");
@@ -598,23 +612,41 @@ public class Main {
     }
 
     /**
+     * Create and display a splash screen.
+     * @return the splash screen
+     */
+    private static SplashScreen initializeSplash() {
+        SplashScreen splash = new SplashScreen();
+        splash.show();
+        // On uniprocessors wait until we're sure the splash screen
+        // has been painted so that we aren't competing for resources
+        if (!EventQueue.isDispatchThread()
+                && Runtime.getRuntime().availableProcessors() == 1) {
+            synchronized (splash) {
+                while (!splash.paintCalled) {
+                    try {
+                        splash.wait();
+                    } catch (InterruptedException e) {
+                    }
+                }
+            }
+        }
+        return splash;
+    }
+    
+    /**
      * Do a part of the initialization that is very much GUI-stuff.
      *
-     * @param doSplash true if we are updating the splash
+     * @param splash the splash screeen
      * @param theTheme is the theme to set.
      */
-    private static SplashScreen initializeGUI(
-                    boolean doSplash, String theTheme) {
+    private static void initializeGUI(
+            SplashScreen splash, String theTheme) {
 	// initialize the correct look and feel
 	LookAndFeelMgr.getInstance().initializeLookAndFeel();
 	if (theTheme != null) {
 	    LookAndFeelMgr.getInstance().setCurrentTheme(theTheme);
 	}
-
-        SplashScreen splash = null;
-        if (doSplash) {
-            splash = new SplashScreen();
-        }
 
         // make the projectbrowser
 	ProjectBrowser pb = ProjectBrowser.makeInstance(splash);
@@ -624,19 +656,18 @@ public class Main {
         pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         // Set the screen layout to what the user left it before, or
         // to reasonable defaults.
-        Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Rectangle scrSize = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                .getMaximumWindowBounds();
 
         int configFrameWidth =
-            Configuration.getInteger(Argo.KEY_SCREEN_WIDTH,
-        			     (int) (0.95 * scrSize.width));
+            Configuration.getInteger(Argo.KEY_SCREEN_WIDTH, scrSize.width);
         int w = Math.min(configFrameWidth, scrSize.width);
         if (w == 0) {
             w = 600;
         }
         
         int configFrameHeight =
-            Configuration.getInteger(Argo.KEY_SCREEN_HEIGHT,
-                         (int) (0.95 * scrSize.height));
+            Configuration.getInteger(Argo.KEY_SCREEN_HEIGHT, scrSize.height);
         int h = Math.min(configFrameHeight, scrSize.height);
         if (h == 0) {
             h = 400;
@@ -646,7 +677,6 @@ public class Main {
         int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);
         pb.setLocation(x, y);
         pb.setSize(w, h);
-        return splash;
     }
 
 

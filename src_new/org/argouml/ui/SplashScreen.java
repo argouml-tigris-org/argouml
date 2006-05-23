@@ -27,10 +27,14 @@ package org.argouml.ui;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 import javax.swing.border.EtchedBorder;
+
 import org.tigris.gef.ui.IStatusBar;
 
 /**
@@ -42,6 +46,11 @@ import org.tigris.gef.ui.IStatusBar;
 public class SplashScreen extends JWindow implements IStatusBar {
 
     private StatusBar statusBar = new StatusBar();
+    
+    /**
+     * Flag indicating that the splash screen has been painted.
+     */
+    public boolean paintCalled = false;
 
     /**
      * The constructor.
@@ -66,9 +75,10 @@ public class SplashScreen extends JWindow implements IStatusBar {
 	if (panel.getImage() != null) {
 	    int imgWidth = panel.getImage().getIconWidth();
 	    int imgHeight = panel.getImage().getIconHeight();
-	    Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-	    setLocation(scrSize.width / 2 - imgWidth / 2,
-			scrSize.height / 2 - imgHeight / 2);
+            Point scrCenter = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                    .getCenterPoint();
+	    setLocation(scrCenter.x - imgWidth / 2,
+			scrCenter.y - imgHeight / 2);
 	}
 
 	JPanel splash = new JPanel(new BorderLayout());
@@ -94,5 +104,21 @@ public class SplashScreen extends JWindow implements IStatusBar {
      * @see org.tigris.gef.ui.IStatusBar#showStatus(java.lang.String)
      */
     public void showStatus(String s) { statusBar.showStatus(s); }
+    
+    /**
+     * Override paint so we can set a flag the first time we're called
+     * and notify any waiting threads that the splash screen has been
+     * painted.
+     * @see java.awt.Component#paint(java.awt.Graphics)
+     */
+    public void paint(Graphics g) {
+        super.paint(g);
+        if (!paintCalled) {
+            synchronized (this) {
+                paintCalled = true;
+                notifyAll();
+            }
+        }
+    }
 
 } /* end class SplashScreen */
