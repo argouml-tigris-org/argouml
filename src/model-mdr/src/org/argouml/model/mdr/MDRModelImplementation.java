@@ -225,6 +225,8 @@ public class MDRModelImplementation implements ModelImplementation {
     public MDRModelImplementation() throws CreationFailedException,
             IOException, MalformedXMIException {
 
+        LOG.debug("Starting MDR system initialization");
+        
         String storageImplementation =
             System.getProperty(
                 "org.netbeans.mdr.storagemodel.StorageFactoryClassName",
@@ -248,17 +250,22 @@ public class MDRModelImplementation implements ModelImplementation {
 
         // Connect to the repository
         repository = MDRManager.getDefault().getDefaultRepository();
+        LOG.debug("MDR Init - got default repository");
 
         mofExtent = (ModelPackage) repository.getExtent(MOF_EXTENT_NAME);
-
+        LOG.debug("MDR Init - tried to get MOF extent");
+        
         // Create an extent and read in our metamodel (M2 model)
         if (mofExtent == null) {
             mofExtent = (ModelPackage) repository.createExtent(MOF_EXTENT_NAME);
+            LOG.debug("MDR Init - created MOF extent"); 
             XMIReader reader = XMIReaderFactory.getDefault().createXMIReader();
+            LOG.debug("MDR Init - created XMI reader"); 
             String metafacade =
                 System.getProperty("argouml.model.mdr.facade", METAMODEL_URL);
             URL resource = getClass().getResource(metafacade);
             reader.read(resource.toString(), mofExtent);
+            LOG.debug("MDR Init - read UML metamodel"); 
         }
 
         mofPackage = null;
@@ -274,12 +281,14 @@ public class MDRModelImplementation implements ModelImplementation {
 
         // Create an extent for the uml data
         umlPackage = (UmlPackage) repository.getExtent(MODEL_EXTENT_NAME);
+        LOG.debug("MDR Init - tried to get UML extent"); 
         if (umlPackage == null) {
             umlPackage =
                 (UmlPackage) repository.createExtent(
                         MODEL_EXTENT_NAME, mofPackage);
+            LOG.debug("MDR Init - created UML extent"); 
         }
-
+        
         if (umlPackage == null) {
             LOG.fatal("Could not find MofPackage UML");
             System.exit(1);
@@ -289,6 +298,7 @@ public class MDRModelImplementation implements ModelImplementation {
         // Create and start event pump first so it's available for all others
         theModelEventPump = new ModelEventPumpMDRImpl(this, repository);
         theModelEventPump.startPumpingEvents();
+        LOG.debug("MDR Init - event pump started"); 
 
         // DataTypes is next so it's available for Kinds, ModelManagement,
         // & Extensions
@@ -301,25 +311,28 @@ public class MDRModelImplementation implements ModelImplementation {
             new ExtensionMechanismsHelperMDRImpl(this);
         theExtensionMechanismsFactory =
             new ExtensionMechanismsFactoryMDRImpl(this);
-
-        // Finally all the remaining factories & helpers
-        theFacade = new FacadeMDRImpl(this);
+        LOG.debug("MDR Init - initialized package Extension mechanism"); 
+        
+        // Initialize remaining factories and helpers
+        // (but defer heavyweight ones until needed)
         theCopyHelper = new CopyHelper(this);
         theActivityGraphsHelper = new ActivityGraphsHelperMDRImpl();
         theCoreHelper = new CoreHelperMDRImpl(this);
+        LOG.debug("MDR Init - initialized package Core helper"); 
         theModelManagementHelper = new ModelManagementHelperMDRImpl(this);
         theStateMachinesHelper = new StateMachinesHelperMDRImpl(this);
-        theUmlFactory = new UmlFactoryMDRImpl(this);
-        theUmlHelper = new UmlHelperMDRImpl(this);
+        LOG.debug("MDR Init - initialized package StateMachines"); 
         theUseCasesFactory = new UseCasesFactoryMDRImpl(this);
         theUseCasesHelper = new UseCasesHelperMDRImpl(this);
+        LOG.debug("MDR Init - initialized package Use Cases"); 
         theActivityGraphsFactory = new ActivityGraphsFactoryMDRImpl(this);
-        theCollaborationsFactory = new CollaborationsFactoryMDRImpl(this);
-        theCollaborationsHelper = new CollaborationsHelperMDRImpl(this);
+        LOG.debug("MDR Init - initialized package Collaborations"); 
         theCommonBehaviorFactory = new CommonBehaviorFactoryMDRImpl(this);
         theCommonBehaviorHelper = new CommonBehaviorHelperMDRImpl(this);
+        LOG.debug("MDR Init - initialized package CommonBehavior"); 
         theStateMachinesFactory = new StateMachinesFactoryMDRImpl(this);
         theCoreFactory = new CoreFactoryMDRImpl(this);
+        LOG.debug("MDR Init - all packages initialized"); 
 
     }
 
@@ -344,6 +357,9 @@ public class MDRModelImplementation implements ModelImplementation {
      * @see org.argouml.model.ModelImplementation#getFacade()
      */
     public Facade getFacade() {
+        if (theFacade == null) {
+            theFacade = new FacadeMDRImpl(this);
+        }
         return theFacade;
     }
 
@@ -372,6 +388,10 @@ public class MDRModelImplementation implements ModelImplementation {
      * @see org.argouml.model.ModelImplementation#getCollaborationsFactory()
      */
     public CollaborationsFactory getCollaborationsFactory() {
+        if (theCollaborationsFactory == null) {
+            theCollaborationsFactory = 
+                new CollaborationsFactoryMDRImpl(this);
+        }
         return theCollaborationsFactory;
     }
 
@@ -379,6 +399,10 @@ public class MDRModelImplementation implements ModelImplementation {
      * @see org.argouml.model.ModelImplementation#getCollaborationsHelper()
      */
     public CollaborationsHelper getCollaborationsHelper() {
+        if (theCollaborationsHelper == null) {
+            theCollaborationsHelper = 
+                new CollaborationsHelperMDRImpl(this);
+        }
         return theCollaborationsHelper;
     }
 
@@ -477,6 +501,9 @@ public class MDRModelImplementation implements ModelImplementation {
      * @see org.argouml.model.ModelImplementation#getUmlFactory()
      */
     public UmlFactory getUmlFactory() {
+        if (theUmlFactory == null) {
+            theUmlFactory = new UmlFactoryMDRImpl(this);
+        }
         return theUmlFactory;
     }
 
@@ -484,6 +511,9 @@ public class MDRModelImplementation implements ModelImplementation {
      * @see org.argouml.model.ModelImplementation#getUmlHelper()
      */
     public UmlHelper getUmlHelper() {
+        if (theUmlHelper == null) {
+            theUmlHelper = new UmlHelperMDRImpl(this);
+        }
         return theUmlHelper;
     }
 
