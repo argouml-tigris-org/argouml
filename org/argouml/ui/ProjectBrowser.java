@@ -1416,6 +1416,10 @@ public final class ProjectBrowser
      * @param showUI true if an error message may be shown to the user,
      *               false if run in commandline mode
      * @param ex The exception that was thrown.
+     * 
+     * TODO: This appears to have been cloned from the method below
+     * without updating the Javadoc. Not sure what the difference
+     * is meant to be... - tfm
      */
     private void reportError(String message, boolean showUI, String error) {
         if (showUI) {
