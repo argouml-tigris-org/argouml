@@ -82,139 +82,144 @@ class InitMenusLater implements Runnable {
      * @see java.lang.Runnable#run()
      */
     public void run() {
+        initMenus(this.align, this.distribute, this.reorder, this.nudge);
+    }
+
+
+    /**
+     * Initialize submenus.
+     * 
+     * @param align
+     * @param distribute
+     * @param reorder
+     * @param nudge
+     */
+    public static void initMenus(JMenu align, JMenu distribute, JMenu reorder, JMenu nudge) {
+	initAlignMenu(align);
+        initDistributeMenu(distribute);
+        initReorderMenu(reorder);
+        initNudgeMenu(nudge);
+    }
+
+    /**
+     * Initialize submenus of the Align menu.
+     * 
+     * @param align the Align menu
+     */
+    private static void initAlignMenu(JMenu align) {
         int menuShortcut = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
         KeyStroke ctrlR = KeyStroke.getKeyStroke(KeyEvent.VK_R, menuShortcut);
         KeyStroke ctrlL = KeyStroke.getKeyStroke(KeyEvent.VK_L, menuShortcut);
 
-//        KeyStroke f1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
-//        KeyStroke f2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
-//        KeyStroke f3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
-//        KeyStroke f4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0);
-//        KeyStroke f5 = KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0);
-//        KeyStroke f6 = KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0);
-//        KeyStroke f7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
-//        KeyStroke f8 = KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0);
-//        KeyStroke f9 = KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0);
-//        KeyStroke f10 = KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0);
-//
-//        KeyStroke alt1 =
-//	    KeyStroke.getKeyStroke(KeyEvent.VK_1, KeyEvent.ALT_MASK);
-//        KeyStroke alt2 =
-//	    KeyStroke.getKeyStroke(KeyEvent.VK_2, KeyEvent.ALT_MASK);
-//        KeyStroke alt3 =
-//	    KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.ALT_MASK);
-//        KeyStroke alt4 =
-//	    KeyStroke.getKeyStroke(KeyEvent.VK_4, KeyEvent.ALT_MASK);
-//        KeyStroke alt5 =
-//	    KeyStroke.getKeyStroke(KeyEvent.VK_5, KeyEvent.ALT_MASK);
-//        KeyStroke alt6 =
-//	    KeyStroke.getKeyStroke(KeyEvent.VK_6, KeyEvent.ALT_MASK);
-//        KeyStroke alt7 =
-//	    KeyStroke.getKeyStroke(KeyEvent.VK_7, KeyEvent.ALT_MASK);
-//        KeyStroke alt8 =
-//	    KeyStroke.getKeyStroke(KeyEvent.VK_8, KeyEvent.ALT_MASK);
-//        KeyStroke alt9 =
-//	    KeyStroke.getKeyStroke(KeyEvent.VK_9, KeyEvent.ALT_MASK);
-//        KeyStroke alt0 =
-//	    KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.ALT_MASK);
-//
-//        KeyStroke altshift1 =
-//              KeyStroke.getKeyStroke(KeyEvent.VK_1,
-//				   KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
-//        KeyStroke altshift2 =
-//                KeyStroke.getKeyStroke(KeyEvent.VK_2,
-//				   KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
-//        KeyStroke altshift3 =
-//                KeyStroke.getKeyStroke(KeyEvent.VK_3,
-//				   KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
-
-	// ---------------------------------------------- Arrange Menu
         JMenuItem alignTops =
             align.add(new AlignAction(AlignAction.ALIGN_TOPS));
-	GenericArgoMenuBar.setMnemonic(alignTops, "align tops");
+        GenericArgoMenuBar.setMnemonic(alignTops, "align tops");
 
         JMenuItem alignBottoms =
-	    align.add(new AlignAction(AlignAction.ALIGN_BOTTOMS));
-	GenericArgoMenuBar.setMnemonic(alignBottoms, "align bottoms");
+            align.add(new AlignAction(AlignAction.ALIGN_BOTTOMS));
+        GenericArgoMenuBar.setMnemonic(alignBottoms, "align bottoms");
 
-	JMenuItem alignRights =
+        JMenuItem alignRights =
             align.add(new AlignAction(AlignAction.ALIGN_RIGHTS));
-	GenericArgoMenuBar.setMnemonic(alignRights, "align rights");
-	GenericArgoMenuBar.setAccelerator(alignRights, ctrlR);
+        GenericArgoMenuBar.setMnemonic(alignRights, "align rights");
+        GenericArgoMenuBar.setAccelerator(alignRights, ctrlR);
 
-	JMenuItem alignLefts =
+        JMenuItem alignLefts =
             align.add(new AlignAction(AlignAction.ALIGN_LEFTS));
-	GenericArgoMenuBar.setMnemonic(alignLefts, "align lefts");
-	GenericArgoMenuBar.setAccelerator(alignLefts, ctrlL);
+        GenericArgoMenuBar.setMnemonic(alignLefts, "align lefts");
+        GenericArgoMenuBar.setAccelerator(alignLefts, ctrlL);
 
-	JMenuItem alignHCenters =
-	    align.add(new AlignAction(AlignAction.ALIGN_H_CENTERS));
-	GenericArgoMenuBar.setMnemonic(alignHCenters,
-                                       "align horizontal centers");
+        JMenuItem alignHCenters =
+            align.add(new AlignAction(AlignAction.ALIGN_H_CENTERS));
+        GenericArgoMenuBar.setMnemonic(alignHCenters,
+                                           "align horizontal centers");
 
-	JMenuItem alignVCenters =
-	    align.add(new AlignAction(AlignAction.ALIGN_V_CENTERS));
-	GenericArgoMenuBar.setMnemonic(alignVCenters,
-				       "align vertical centers");
+        JMenuItem alignVCenters =
+            align.add(new AlignAction(AlignAction.ALIGN_V_CENTERS));
+        GenericArgoMenuBar.setMnemonic(alignVCenters,
+        			       "align vertical centers");
 
-	JMenuItem alignToGrid =
-	    align.add(new AlignAction(AlignAction.ALIGN_TO_GRID));
-	GenericArgoMenuBar.setMnemonic(alignToGrid, "align to grid");
+        JMenuItem alignToGrid =
+            align.add(new AlignAction(AlignAction.ALIGN_TO_GRID));
+        GenericArgoMenuBar.setMnemonic(alignToGrid, "align to grid");
+    }
 
+
+    /**
+     * Initialize submenus of the Distribute menu.
+     * 
+     * @param distribute the Distribute menu
+     */
+    private static void initDistributeMenu(JMenu distribute) {
         JMenuItem distributeHSpacing =
-	    distribute.add(new DistributeAction(DistributeAction.H_SPACING));
-	GenericArgoMenuBar.setMnemonic(distributeHSpacing,
-				       "distribute horizontal spacing");
-
+            distribute.add(new DistributeAction(DistributeAction.H_SPACING));
+        GenericArgoMenuBar.setMnemonic(distributeHSpacing,
+                                       "distribute horizontal spacing");
+        
         JMenuItem distributeHCenters =
-	    distribute.add(new DistributeAction(DistributeAction.H_CENTERS));
-	GenericArgoMenuBar.setMnemonic(distributeHCenters,
-				       "distribute horizontal centers");
+            distribute.add(new DistributeAction(DistributeAction.H_CENTERS));
+        GenericArgoMenuBar.setMnemonic(distributeHCenters,
+                                       "distribute horizontal centers");
 
         JMenuItem distributeVSpacing =
-	    distribute.add(new DistributeAction(DistributeAction.V_SPACING));
-	GenericArgoMenuBar.setMnemonic(distributeVSpacing,
-				       "distribute vertical spacing");
+            distribute.add(new DistributeAction(DistributeAction.V_SPACING));
+        GenericArgoMenuBar.setMnemonic(distributeVSpacing,
+                                       "distribute vertical spacing");
 
         JMenuItem distributeVCenters =
-	    distribute.add(new DistributeAction(DistributeAction.V_CENTERS));
-	GenericArgoMenuBar.setMnemonic(distributeVCenters,
-				       "distribute vertical centers");
+            distribute.add(new DistributeAction(DistributeAction.V_CENTERS));
+        GenericArgoMenuBar.setMnemonic(distributeVCenters,
+                                       "distribute vertical centers");
+    }
 
-        if (reorder != null) {
-            JMenuItem reorderBringForward =
-                reorder.add(new CmdReorder(CmdReorder.BRING_FORWARD));
-            GenericArgoMenuBar.setMnemonic(reorderBringForward,
-                    "reorder bring forward");
 
-            JMenuItem reorderSendBackward =
-                    reorder.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
-            GenericArgoMenuBar.setMnemonic(reorderSendBackward,
-                    "reorder send backward");
+    /**
+     * Initialize the submenus for the Reorder menu.
+     * 
+     * @param reorder the main Reorder menu
+     */
+    private static void initReorderMenu(JMenu reorder) {
+        JMenuItem reorderBringForward =
+            reorder.add(new CmdReorder(CmdReorder.BRING_FORWARD));
+        GenericArgoMenuBar.setMnemonic(reorderBringForward,
+                "reorder bring forward");
+        
+        JMenuItem reorderSendBackward =
+            reorder.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
+        GenericArgoMenuBar.setMnemonic(reorderSendBackward,
+                "reorder send backward");
+        
+        JMenuItem reorderBringToFront =
+            reorder.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
+        GenericArgoMenuBar.setMnemonic(reorderBringToFront,
+                "reorder bring to front");
+        
+        JMenuItem reorderSendToBack =
+            reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
+        GenericArgoMenuBar.setMnemonic(reorderSendToBack,
+                "reorder send to back");
 
-            JMenuItem reorderBringToFront =
-                    reorder.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
-            GenericArgoMenuBar.setMnemonic(reorderBringToFront,
-                    "reorder bring to front");
+    }
 
-            JMenuItem reorderSendToBack =
-                    reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
-            GenericArgoMenuBar.setMnemonic(reorderSendToBack,
-                    "reorder send to back");
 
-        }
-
+    /**
+     * Initialize submenus of the Nudge menu.
+     * 
+     * @param nudge the Nudge menu
+     */
+    private static void initNudgeMenu(JMenu nudge) {
         JMenuItem nudgeLeft = nudge.add(new NudgeAction(NudgeAction.LEFT));
-	GenericArgoMenuBar.setMnemonic(nudgeLeft, "nudge left");
+        GenericArgoMenuBar.setMnemonic(nudgeLeft, "nudge left");
 
         JMenuItem nudgeRight = nudge.add(new NudgeAction(NudgeAction.RIGHT));
-	GenericArgoMenuBar.setMnemonic(nudgeRight, "nudge right");
+        GenericArgoMenuBar.setMnemonic(nudgeRight, "nudge right");
 
         JMenuItem nudgeUp = nudge.add(new NudgeAction(NudgeAction.UP));
-	GenericArgoMenuBar.setMnemonic(nudgeUp, "nudge up");
+        GenericArgoMenuBar.setMnemonic(nudgeUp, "nudge up");
 
         JMenuItem nudgeDown = nudge.add(new NudgeAction(NudgeAction.DOWN));
-	GenericArgoMenuBar.setMnemonic(nudgeDown, "nudge down");
+        GenericArgoMenuBar.setMnemonic(nudgeDown, "nudge down");
     }
+
 } /* end class InitMenusLater */

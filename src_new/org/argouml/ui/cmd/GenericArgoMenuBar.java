@@ -679,12 +679,8 @@ public class GenericArgoMenuBar extends JMenuBar implements
             (JMenu) arrange.add(new JMenu(
                 menuLocalize("Distribute")));
         setMnemonic(distribute, "Distribute");
-        JMenu reorder = null;
-        // TODO: Uncomment these 2 lines after after 0.20.
-        // This is a hack that removes the ordering menu according to issue 3645
-
-        // reorder = (JMenu) arrange.add(new JMenu(menuLocalize("Reorder")));
-        // setMnemonic(reorder, "Reorder");
+        JMenu reorder = (JMenu) arrange.add(new JMenu(menuLocalize("Reorder")));
+        setMnemonic(reorder, "Reorder");
         JMenu nudge = (JMenu) arrange.add(new JMenu(menuLocalize("Nudge")));
         setMnemonic(nudge, "Nudge");
 
@@ -700,11 +696,10 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
         appendPluggableMenus(arrange, PluggableMenu.KEY_ARRANGE);
 
-        Runnable initLater =
-            new InitMenusLater(align, distribute, reorder, nudge);
-
-        org.argouml.application.Main.addPostLoadAction(initLater);
+        // This used to be deferred, but it's only 30-40 msec of work.
+        InitMenusLater.initMenus(align, distribute, reorder, nudge);
     }
+    
 
     /**
      * Build the menu "Generation".
