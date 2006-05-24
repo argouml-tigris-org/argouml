@@ -1350,6 +1350,30 @@ Unused code => Unnecessary declaration of thrown checked exception: Warning.
 	    </listitem>
 	  </itemizedlist>
 	</listitem>
+
+	<listitem>
+	  <para>
+Serialization
+</para>
+	  <para>
+In the menu select Window => Preferences.
+Then select
+Java => Compiler => Errors/Warnings
+Suggested settings for these tabs
+(Only things diverting from the Eclipse defaults are listed):
+</para>
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+Potential programming problems => Serializable class without serialVersionUID:
+Ignore
+</para>
+	      <para>
+We don't use serialization in the ArgoUML project anyway.
+</para>
+	    </listitem>
+	  </itemizedlist>
+	</listitem>
       </itemizedlist>
     </sect2>
 
