@@ -188,14 +188,15 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
                     }
                 }
                 
+                NotationProvider4 np = 
+                    NotationProviderFactory2.getInstance()
+                        .getNotationProvider(
+                                getNotationType(),
+                                (NotationContext) getGroup(), umlObject);
+
                 // If we don't have a fig for this feature, we'll need to add
                 // one. We set the bounds, but they will be reset later.
                 if (comp == null) {
-                    NotationProvider4 np = 
-                        NotationProviderFactory2.getInstance()
-                            .getNotationProvider(
-                                    getNotationType(),
-                                    (NotationContext) getGroup(), umlObject);
                     comp =
                         new FigFeature(
                                 xpos + 1,
@@ -213,8 +214,11 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
                     /* but its position may have been changed: */
                     Rectangle b = comp.getBounds();
                     b.y = ypos + 1 + acounter * FigNodeModelElement.ROWHEIGHT;
-                    comp.setBounds(b);
                     // bounds not relevant here, but I am perfectionist...
+                    comp.setBounds(b);
+                    /* We need to set a new notationprovider, since 
+                     * the NotationContext may have been changed:  */
+                    comp.setNotationProvider(np);
                 }
                 addFig(comp); // add it again (but now in the right sequence)
                 
@@ -246,7 +250,8 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      * @param umlObject the UML object shown in the given compartment fig
      * @param comp the given compartment fig to be decorated
      */
-    protected void addExtraVisualisations(Object umlObject, CompartmentFigText comp) {
+    protected void addExtraVisualisations(Object umlObject, 
+            CompartmentFigText comp) {
         /* By default there are none.
          * Overrule if needed. */
     }
