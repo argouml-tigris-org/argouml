@@ -205,6 +205,7 @@ public class Main {
         }
         
         // Get the splash screen up as early as possible
+        st.mark("create splash");
         SplashScreen splash = null;
         if (doSplash && !batch) {
             splash = initializeSplash();
@@ -225,6 +226,7 @@ public class Main {
         initializeGUI(splash, theTheme);
 
         // Initialize the UMLActions
+        st.mark("actions");
         Actions.getInstance();
 
         if (reloadRecent && projectName == null) {
@@ -252,8 +254,10 @@ public class Main {
             urlToOpen = projectUrl(projectName, urlToOpen);
         }
 
+        st.mark("initialize ProjectBrowser");
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 
+        st.mark("perform commands");
 	if (batch) {
 	    performCommands(commands);
 	    commands = null;
