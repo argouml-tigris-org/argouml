@@ -529,7 +529,6 @@ Property files to be searched:
              overview="org/argouml/overview-argo.html"
              packagenames="org.argouml.*"
              source="1.4"
-             private="true"
              splitindex="${javadoc.splitindex}"
              use="${javadoc.use}"
              windowtitle="ArgoUML Javadoc for internal use">
