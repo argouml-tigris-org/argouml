@@ -170,4 +170,11 @@ public class CompartmentFigText extends FigSingleLineText {
     public NotationProvider4 getNotationProvider() {
         return notationProvider;
     }
+
+    /**
+     * @param np The notationProvider to set.
+     */
+    void setNotationProvider(NotationProvider4 np) {
+        this.notationProvider = np;
+    }
 } /* End of class CompartmentFigText */
