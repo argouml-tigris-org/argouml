@@ -140,7 +140,7 @@ JDK, at least version 1.4.2 (includes the Java compiler)
 
     <para>
 For building the documentation from DocBook format, 
-you futhermore needs these tools:
+you furthermore needs these tools:
 </para>
     <itemizedlist>
       <listitem>
@@ -1908,7 +1908,7 @@ The file
 <filename><replaceable>manual</replaceable>/<replaceable>argomanual-generated.xml</replaceable></filename>
 is processed by the special 
 <filename>docbook-setup/create-imglist.xsl</filename>
-xsl script that generates a list of included images.
+XSL script that generates a list of included images.
 </para>
 	</listitem>
 
@@ -2088,7 +2088,7 @@ and telling everyone on the developers mailing list.
 
 	<listitem>
 	  <para>
-Create the directory where the release will recide.
+Create the directory where the release will reside.
 </para>
           <para>
 <programlisting>
@@ -2264,7 +2264,7 @@ active.
 	  <para>Notify persons responsible for installers</para>
 	  <para>
 This is done by sending a mail on the
-<ulink url="mailto:dev@argoumlinstallers.tigris.org">
+<ulink url="mailto:dev@argoumlinstaller.tigris.org">
   installers mailing list
 </ulink>.
 What the persons responsible for the installers do is described in
@@ -2377,7 +2377,7 @@ update your checked out copy and continue the release work.
       <para>
 The purpose of running the installers is 
 to package argouml for different purposes and platforms.
-The scripts to do this are all maintained within the argoumlinstallers
+The scripts to do this are all maintained within the argoumlinstaller
 project.
 </para>
 
@@ -2405,8 +2405,8 @@ The pdf versions of the documentation is built and located in
 	</listitem>
 	<listitem>
 	  <para>
-The argoumlinstallers project is checked out at
-<filename>argoumlinstallers</filename>
+The argoumlinstaller project is checked out at
+<filename>argoumlinstaller</filename>
 </para>
 	</listitem>
 	<listitem>
@@ -2432,13 +2432,19 @@ The reason for this is how Linus' machine has been set up.
 	  <listitem>
 	    <para>
 <filename><replaceable>WORKING PLACE</replaceable>/cvs.tigris.org/</filename>
-for CVS checkouts from tigris.
+for CVS checkouts from Tigris.
 </para>
 	  </listitem>
 	  <listitem>
 	    <para>
 <filename><replaceable>WORKING PLACE</replaceable>/cvs.tigris.org/argouml</filename>
 where the argouml project is checked out and most of the work is done.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+<filename><replaceable>WORKING PLACE</replaceable>/cvs.tigris.org/argoumlinstaller</filename>
+where the argoumlinstaller project is checked out.
 </para>
 	  </listitem>
 	  <listitem>
@@ -2461,7 +2467,7 @@ where all built files end up.
 	  </listitem>
 	  <listitem>
 	    <para>
-<filename><replaceable>WORKING PLACE</replaceable>/cvs.tigris.org/VERSION_<replaceable>0_21_2</replaceable>_F/argoumlinstallers</filename>
+<filename><replaceable>WORKING PLACE</replaceable>/cvs.tigris.org/VERSION_<replaceable>0_21_2</replaceable>_F/argoumlinstaller</filename>
 the tagged version of the installers scripts.
 </para>
 	  </listitem>
@@ -2486,7 +2492,7 @@ This explanation assumes that we are located in
       </sidebar>
 
       <para>
-This ends when the packages are commit into the argouml-downloads project
+This ends when the packages are committed into the argouml-downloads project
 and the links are updated.
 </para>
       <para>
@@ -2519,21 +2525,6 @@ done
 
 	<listitem>
 	  <para>
-Copy or move the pdf files giving them version names.
-</para>
-	  <para>
-The following command will do it for you:
-<programlisting>
-for pdffile in argouml/build/documentation/pdf/*/*.pdf
-do
-    mv $pdffile argouml/build/`basename $pdffile .pdf`-<replaceable>RELEASENAME</replaceable>.pdf
-done
-</programlisting>
-</para>
-	</listitem>
-
-	<listitem>
-	  <para>
 Create the zip files and the tgz files.
 Historically there are three of each:
 The 
@@ -2544,13 +2535,36 @@ and
 </para>
 
 	  <para>
-There is currently not a script in argoumlinstaller to build these.
-They have been build by the pack-release.sh script.
-There is more work to be done here.
+The following command will do it for you:
+<programlisting>
+chmod +x argoumlinstaller/tarzip/doit.sh &amp;&amp;
+cd .. &amp;&amp;
+VERSION_<replaceable>0_21_2</replaceable>_F/argoumlinstaller/tarzip/doit.sh
+</programlisting>
+You must give the version number.
+</para>
+
+	  <para>
+The files end up in a newly created directory called
+<filename class="directory">svn/argouml-downloads/argouml-<replaceable>RELEASE NAME</replaceable>/</filename>.
+An <filename>index.html</filename>-file is created at the same time
+from the template in
+<filename><replaceable>WORKING PLACE</replaceable>/cvs.tigris.org/VERSION_<replaceable>0_21_2</replaceable>_F/argouml/src_new/templates/release_html.template</filename>.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+Copy or move the pdf files giving them version names.
 </para>
 	  <para>
-The files should end up in a newly created directory called
-<filename class="directory">svn/argouml-downloads/argouml-<replaceable>RELEASENAME</replaceable>/</filename>.
+The following command will do it for you:
+<programlisting>
+for pdffile in argouml/build/documentation/pdf/*/*.pdf
+do
+    mv $pdffile argouml/build/`basename $pdffile .pdf`-<replaceable>RELEASE NAME</replaceable>.pdf
+done
+</programlisting>
 </para>
 	</listitem>
 
@@ -2570,7 +2584,7 @@ and give the version number.
 The file is created in 
 <filename class="directory">argoumlinstaller/build</filename>.
 Copy it to 
-<filename class="directory">svn/argouml-downloads/argouml-<replaceable>RELEASENAME</replaceable>/</filename>.
+<filename class="directory">svn/argouml-downloads/argouml-<replaceable>RELEASE NAME</replaceable>/</filename>.
 </para>
 	</listitem>
 
@@ -2585,14 +2599,15 @@ Notice that the createJWS.sh script is setup to be run from
 <filename>../argoumlinstaller/javawebstart</filename>
 and not
 <filename>argoumlinstaller/javawebstart</filename>
-which makes sence only if you remember that any updates to the LAYOUT
+which makes sense only if you remember that any updates to the LAYOUT
 file should be included also for subsequent releases
-and if you use the same directorylayout.
+and if you use the same directory layout.
  </para>
 	    <para>
 There is more work to be done here to make these scripts aligned.
 </para>
 	  </warning>
+
 	  <para>
 This is what you need to do for this:
 </para>
@@ -2609,12 +2624,12 @@ with the new version numbers.
 	    <listitem>
 	      <para>
 Run the script that creates directories, copies files, and
-creates the jnlp file.
+creates the JNLP file.
 </para>
 
 	      <warning>
 		<para>
-This requires that you have the directory layout descdribed above.
+This requires that you have the directory layout described above.
 </para>
 	      </warning>
 
@@ -2636,7 +2651,7 @@ the argouml-created jar files and also in the JNLP file.
 For Java Web Start,
 update the "Latest development" or
 "Latest stable" files
-essentially with the contents of the newly create jnlp-file.
+essentially with the contents of the newly create JNLP file.
 </para>
 
 	  <para>
@@ -2647,12 +2662,12 @@ These files are located in the
 
 	<listitem>
 	  <para>
-Create the index file for the release.
+Examine the index file for the release.
 </para>
 	  <para>
-The file should end up in the newly created directory and 
+The file should have been created in the newly created directory and 
 have the name
-<filename>svn/argouml-downloads/argouml-<replaceable>RELEASENAME</replaceable>/index.html</filename>.
+<filename>svn/argouml-downloads/argouml-<replaceable>RELEASE NAME</replaceable>/index.html</filename>.
 </para>
 	</listitem>
 
@@ -2663,9 +2678,20 @@ Update the index file for the downloads project to point out the new release.
 
 	  <para>
 It should point out the release at 
-<filename>/argouml-<replaceable>RELEASENAME</replaceable>/</filename>,
+<filename>/argouml-<replaceable>RELEASE NAME</replaceable>/</filename>,
 the java web start file at
-<filename>/jws/argouml-<replaceable>RELEASENAME</replaceable>.jnlp</filename>.
+<filename>/jws/argouml-<replaceable>RELEASE NAME</replaceable>.jnlp</filename>.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>Commit the release in the argouml-downloads project</para>
+	  <para>
+The following command will do it for you:
+<programlisting>
+cd ../svn/argouml-downloads/www &amp;&amp;
+svn commit -m'The release <replaceable>RELEASE NAME</replaceable>.'
+</programlisting>
 </para>
 	</listitem>
       </orderedlist>
