@@ -38,6 +38,7 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.argouml.i18n.Translator;
 import org.argouml.notation.Notation;
+import org.argouml.ui.GUI;
 import org.argouml.ui.GUISettingsTabInterface;
 import org.argouml.ui.ShadowComboBox;
 
@@ -122,6 +123,8 @@ public class SettingsTabNotation
         top.add(defaultShadowWidthPanel, constraints);
 
         add(top, BorderLayout.NORTH);
+
+        GUI.getInstance().addSettingsTab(this);
     }
 
     /**
