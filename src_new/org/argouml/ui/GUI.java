@@ -30,8 +30,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.argouml.notation.ui.SettingsTabNotation;
-
 /**
  * This is the "main" class for the GUI subsystem.<p>
  *
@@ -52,7 +50,6 @@ public final class GUI {
         addSettingsTab(new SettingsTabPreferences());
         addSettingsTab(new SettingsTabEnvironment());
         addSettingsTab(new SettingsTabUser());
-        addSettingsTab(new SettingsTabNotation());
         addSettingsTab(new SettingsTabAppearance());
     }
 

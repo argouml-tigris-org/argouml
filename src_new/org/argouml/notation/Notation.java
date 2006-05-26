@@ -37,6 +37,7 @@ import org.argouml.application.api.ConfigurationKey;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.notation.ui.SettingsTabNotation;
 
 /**
  * Provides centralized methods dealing with notation.
@@ -153,6 +154,7 @@ public final class Notation implements PropertyChangeListener {
         Configuration.addListener(KEY_SHOW_PROPERTIES, this);
         Configuration.addListener(KEY_SHOW_VISIBILITY, this);
         Configuration.addListener(KEY_SHOW_INITIAL_VALUE, this);
+        new SettingsTabNotation();
     }
 
     /**
