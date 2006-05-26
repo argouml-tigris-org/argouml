@@ -155,7 +155,13 @@ This is designed to work in two different environments:
       unless="generate.notRequired">
     <!-- create directories -->
     <mkdir dir="${build.dir}"/>
-    <delete dir="${build.javas}"/>
+    <delete>
+      <fileset dir="${build.javas}">
+    	<exclude name="**/.cvsignore"/>
+      	<exclude name="**/readme-build-java.txt"/>
+      	<exclude name="**/CVS/*"/>
+      </fileset>
+    </delete>
     <mkdir dir="${build.javas}"/>
 
     <!-- NOTE: The MDR task needs an absolute path for storageFile or it will
