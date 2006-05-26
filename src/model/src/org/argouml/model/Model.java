@@ -98,6 +98,11 @@ public final class Model {
     private static UseCasesHelper useCasesHelper;
 
     /**
+     * The register for the observer.
+     */
+    private static MementoCreationObserver mementoCreationObserver;
+
+    /**
      * Constructor to prohibit creation.
      */
     private Model() {
@@ -510,7 +515,7 @@ public final class Model {
      */
     public static void setMementoCreationObserver(
             MementoCreationObserver observer) {
-        impl.setMementoCreationObserver(observer);
+        mementoCreationObserver = observer;
     }
 
     /**
@@ -518,7 +523,7 @@ public final class Model {
      * @return the MementoCreationObserver
      */
     public static MementoCreationObserver getMementoCreationObserver() {
-        return impl.getMementoCreationObserver();
+        return mementoCreationObserver;
     }
 
     /**

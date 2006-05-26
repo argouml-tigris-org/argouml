@@ -143,7 +143,8 @@ public interface ModelImplementation {
      *
      * @return the event adapter
      * @deprecated for 0.21.2 by tfmorris.
-     *         Use {@link #getPump()} and {@link ModelEventPump} methods.
+     *         Use {@link #getModelEventPump()} methods and
+     *         {@link ModelEventPump}.
      */
     EventAdapter getEventAdapter();
 
@@ -294,12 +295,16 @@ public interface ModelImplementation {
      * by the model subsystem.
      *
      * @param observer the interested party
+     * @deprecated by Linus Tolke in 0.21.3. This is taken care of in the
+     *         {@link Model} and the implementation need not bother.
      */
     void setMementoCreationObserver(MementoCreationObserver observer);
 
     /**
      * Gets the external class responsible for handling mementos.
      * @return the MementoCreationObserver
+     * @deprecated by Linus Tolke in 0.21.3. This is taken care of in the
+     *         {@link Model} and the implementation need not bother.
      */
     MementoCreationObserver getMementoCreationObserver();
 
