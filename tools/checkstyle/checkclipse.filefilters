@@ -30,3 +30,5 @@
 /*/org/argouml/uml/reveng/java/JavaLexer.java
 /*/org/argouml/uml/reveng/java/JavaRecognizer.java
 /*/org/argouml/uml/reveng/java/JavaTokenTypes.java
+
+/argouml-core-model-mdr/build/java/*
