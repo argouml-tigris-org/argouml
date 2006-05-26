@@ -34,11 +34,11 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
-import org.argouml.application.helpers.SettingsTabHelper;
+import org.argouml.i18n.Translator;
 import org.argouml.notation.Notation;
+import org.argouml.ui.GUISettingsTabInterface;
 import org.argouml.ui.ShadowComboBox;
 
 /**
@@ -47,7 +47,9 @@ import org.argouml.ui.ShadowComboBox;
  * @author Thierry Lach
  * @since  0.9.4
  */
-public class SettingsTabNotation extends SettingsTabHelper {
+public class SettingsTabNotation     
+    extends JPanel
+    implements GUISettingsTabInterface {
 
     private JCheckBox allowNotations;
     private JCheckBox useGuillemots;
@@ -123,7 +125,7 @@ public class SettingsTabNotation extends SettingsTabHelper {
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabRefresh()
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
         useGuillemots.setSelected(Notation.getUseGuillemots());
@@ -156,7 +158,7 @@ public class SettingsTabNotation extends SettingsTabHelper {
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabSave()
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
         Notation.setUseGuillemots(useGuillemots.isSelected());
@@ -179,49 +181,40 @@ public class SettingsTabNotation extends SettingsTabHelper {
     }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabCancel()
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() {
         handleSettingsTabRefresh();
     }
 
     /**
-     * @see org.argouml.application.api.ArgoModule#getModuleName()
-     */
-    public String getModuleName() { return "SettingsTabNotation"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
-     */
-    public String getModuleDescription() { return "Settings Tab for Notation"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
-     */
-    public String getModuleAuthor() { return "ArgoUML Core"; }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
-     */
-    public String getModuleVersion() { return ArgoVersion.getVersion(); }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleKey()
-     */
-    public String getModuleKey() { return "module.settings.notation"; }
-
-    /**
-     * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
+     * @see org.argouml.ui.GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() { return "tab.notation"; }
 
     /**
-     * @see org.argouml.application.api.SettingsTabPanel#getTabPanel()
+     * @see org.argouml.ui.GUISettingsTabInterface#getTabPanel()
      */
     public JPanel getTabPanel() { return this; }
 
     /**
-     * The UID.
+     * Create a localized JCheckBox.
+     *
+     * @param key the key for the string to be localized
+     * @return a new checkbox with localized text
      */
-    private static final long serialVersionUID = 3206897060245290104L;
+    protected JCheckBox createCheckBox(String key) {
+        JCheckBox j = new JCheckBox(Translator.localize(key));
+        return j;
+    }
+
+    /**
+     * Create a localized JLabel.
+     *
+     * @param key the key of the text for the label
+     * @return a new label with a localized text for the given key
+     */
+    protected JLabel createLabel(String key) {
+        return new JLabel(Translator.localize(key));
+    }
 }
