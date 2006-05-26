@@ -229,30 +229,41 @@ class MockModelImplementation implements ModelImplementation {
         controlFacade = MockControl.createControl(Facade.class);
         controls.add(controlFacade);
 
-        controlAGH = MockControl.createControl(ActivityGraphsHelper.class);
-        controls.add(controlAGH);
-
         controlDIM = MockControl.createControl(DiagramInterchangeModel.class);
         controls.add(controlDIM);
-
-        controlAGF = MockControl.createControl(ActivityGraphsFactory.class);
-        controls.add(controlAGF);
 
         controlMEP = MockControl.createControl(ModelEventPump.class);
         controls.add(controlMEP);
 
-        controlCF = MockControl.createControl(CollaborationsFactory.class);
-        controls.add(controlCF);
+        createBehaviorControls();
 
-        controlCH = MockControl.createControl(CollaborationsHelper.class);
-        controls.add(controlCH);
+        createFoundationControls();
 
-        controlCBF = MockControl.createControl(CommonBehaviorFactory.class);
-        controls.add(controlCBF);
+        controlMMF = MockControl.createControl(ModelManagementFactory.class);
+        controls.add(controlMMF);
 
-        controlCBH = MockControl.createControl(CommonBehaviorHelper.class);
-        controls.add(controlCBH);
+        controlMMH = MockControl.createControl(ModelManagementHelper.class);
+        controls.add(controlMMH);
 
+        controlUmlFactory = MockControl.createControl(UmlFactory.class);
+        controls.add(controlUmlFactory);
+
+        controlUmlHelper = MockControl.createControl(UmlHelper.class);
+        controls.add(controlUmlHelper);
+
+        controlCopyHelper = MockControl.createControl(CopyHelper.class);
+        controls.add(controlCopyHelper);
+
+        controlMT = MockControl.createControl(MetaTypes.class);
+        controls.add(controlMT);
+
+        createKindControls();
+    }
+
+    /**
+     * Create the controls for the foundation factories and helpers.
+     */
+    private void createFoundationControls() {
         controlCoreFactory = MockControl.createControl(CoreFactory.class);
         controls.add(controlCoreFactory);
 
@@ -271,12 +282,29 @@ class MockModelImplementation implements ModelImplementation {
 
         controlEMH = MockControl.createControl(ExtensionMechanismsHelper.class);
         controls.add(controlEMH);
+    }
 
-        controlMMF = MockControl.createControl(ModelManagementFactory.class);
-        controls.add(controlMMF);
+    /**
+     * Create the controls for all behavior elements' factories and helpers.
+     */
+    private void createBehaviorControls() {
+        controlAGH = MockControl.createControl(ActivityGraphsHelper.class);
+        controls.add(controlAGH);
 
-        controlMMH = MockControl.createControl(ModelManagementHelper.class);
-        controls.add(controlMMH);
+        controlAGF = MockControl.createControl(ActivityGraphsFactory.class);
+        controls.add(controlAGF);
+
+        controlCF = MockControl.createControl(CollaborationsFactory.class);
+        controls.add(controlCF);
+
+        controlCH = MockControl.createControl(CollaborationsHelper.class);
+        controls.add(controlCH);
+
+        controlCBF = MockControl.createControl(CommonBehaviorFactory.class);
+        controls.add(controlCBF);
+
+        controlCBH = MockControl.createControl(CommonBehaviorHelper.class);
+        controls.add(controlCBH);
 
         controlSMF = MockControl.createControl(StateMachinesFactory.class);
         controls.add(controlSMF);
@@ -284,21 +312,17 @@ class MockModelImplementation implements ModelImplementation {
         controlSMH = MockControl.createControl(StateMachinesHelper.class);
         controls.add(controlSMH);
 
-        controlUmlFactory = MockControl.createControl(UmlFactory.class);
-        controls.add(controlUmlFactory);
-
-        controlUmlHelper = MockControl.createControl(UmlHelper.class);
-        controls.add(controlUmlHelper);
-
         controlUCF = MockControl.createControl(UseCasesFactory.class);
         controls.add(controlUCF);
 
         controlUCH = MockControl.createControl(UseCasesHelper.class);
         controls.add(controlUCH);
+    }
 
-        controlMT = MockControl.createControl(MetaTypes.class);
-        controls.add(controlMT);
-
+    /**
+     * Create the controls for the Kinds.
+     */
+    private void createKindControls() {
         controlCK = MockControl.createControl(ChangeableKind.class);
         controls.add(controlCK);
 
@@ -322,9 +346,6 @@ class MockModelImplementation implements ModelImplementation {
 
         controlVK = MockControl.createControl(VisibilityKind.class);
         controls.add(controlVK);
-
-        controlCopyHelper = MockControl.createControl(CopyHelper.class);
-        controls.add(controlCopyHelper);
     }
 
     /**
@@ -649,6 +670,9 @@ class MockModelImplementation implements ModelImplementation {
     /**
      * @see org.argouml.model.ModelImplementation#setMementoCreationObserver(
      *      org.argouml.model.MementoCreationObserver)
+     * @deprecated by Linus Tolke in 0.21.3. This is taken care of
+     *         in the {@link org.argouml.model.Model} and the
+     *         implementation need not bother.
      */
     public void setMementoCreationObserver(MementoCreationObserver observer) {
         mementoCreationObserver = observer;
@@ -656,6 +680,9 @@ class MockModelImplementation implements ModelImplementation {
 
     /**
      * @see org.argouml.model.ModelImplementation#getMementoCreationObserver()
+     * @deprecated by Linus Tolke in 0.21.3. This is taken care of
+     *         in the {@link org.argouml.model.Model} and the
+     *         implementation need not bother.
      */
     public MementoCreationObserver getMementoCreationObserver() {
         return mementoCreationObserver;

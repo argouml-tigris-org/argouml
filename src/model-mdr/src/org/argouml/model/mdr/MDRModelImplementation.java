@@ -226,7 +226,7 @@ public class MDRModelImplementation implements ModelImplementation {
             IOException, MalformedXMIException {
 
         LOG.debug("Starting MDR system initialization");
-        
+
         String storageImplementation =
             System.getProperty(
                 "org.netbeans.mdr.storagemodel.StorageFactoryClassName",
@@ -254,18 +254,18 @@ public class MDRModelImplementation implements ModelImplementation {
 
         mofExtent = (ModelPackage) repository.getExtent(MOF_EXTENT_NAME);
         LOG.debug("MDR Init - tried to get MOF extent");
-        
+
         // Create an extent and read in our metamodel (M2 model)
         if (mofExtent == null) {
             mofExtent = (ModelPackage) repository.createExtent(MOF_EXTENT_NAME);
-            LOG.debug("MDR Init - created MOF extent"); 
+            LOG.debug("MDR Init - created MOF extent");
             XMIReader reader = XMIReaderFactory.getDefault().createXMIReader();
-            LOG.debug("MDR Init - created XMI reader"); 
+            LOG.debug("MDR Init - created XMI reader");
             String metafacade =
                 System.getProperty("argouml.model.mdr.facade", METAMODEL_URL);
             URL resource = getClass().getResource(metafacade);
             reader.read(resource.toString(), mofExtent);
-            LOG.debug("MDR Init - read UML metamodel"); 
+            LOG.debug("MDR Init - read UML metamodel");
         }
 
         mofPackage = null;
@@ -281,14 +281,14 @@ public class MDRModelImplementation implements ModelImplementation {
 
         // Create an extent for the uml data
         umlPackage = (UmlPackage) repository.getExtent(MODEL_EXTENT_NAME);
-        LOG.debug("MDR Init - tried to get UML extent"); 
+        LOG.debug("MDR Init - tried to get UML extent");
         if (umlPackage == null) {
             umlPackage =
                 (UmlPackage) repository.createExtent(
                         MODEL_EXTENT_NAME, mofPackage);
-            LOG.debug("MDR Init - created UML extent"); 
+            LOG.debug("MDR Init - created UML extent");
         }
-        
+
         if (umlPackage == null) {
             LOG.fatal("Could not find MofPackage UML");
             System.exit(1);
@@ -298,7 +298,7 @@ public class MDRModelImplementation implements ModelImplementation {
         // Create and start event pump first so it's available for all others
         theModelEventPump = new ModelEventPumpMDRImpl(this, repository);
         theModelEventPump.startPumpingEvents();
-        LOG.debug("MDR Init - event pump started"); 
+        LOG.debug("MDR Init - event pump started");
 
         // DataTypes is next so it's available for Kinds, ModelManagement,
         // & Extensions
@@ -311,28 +311,28 @@ public class MDRModelImplementation implements ModelImplementation {
             new ExtensionMechanismsHelperMDRImpl(this);
         theExtensionMechanismsFactory =
             new ExtensionMechanismsFactoryMDRImpl(this);
-        LOG.debug("MDR Init - initialized package Extension mechanism"); 
-        
+        LOG.debug("MDR Init - initialized package Extension mechanism");
+
         // Initialize remaining factories and helpers
         // (but defer heavyweight ones until needed)
         theCopyHelper = new CopyHelper(this);
         theActivityGraphsHelper = new ActivityGraphsHelperMDRImpl();
         theCoreHelper = new CoreHelperMDRImpl(this);
-        LOG.debug("MDR Init - initialized package Core helper"); 
+        LOG.debug("MDR Init - initialized package Core helper");
         theModelManagementHelper = new ModelManagementHelperMDRImpl(this);
         theStateMachinesHelper = new StateMachinesHelperMDRImpl(this);
-        LOG.debug("MDR Init - initialized package StateMachines"); 
+        LOG.debug("MDR Init - initialized package StateMachines");
         theUseCasesFactory = new UseCasesFactoryMDRImpl(this);
         theUseCasesHelper = new UseCasesHelperMDRImpl(this);
-        LOG.debug("MDR Init - initialized package Use Cases"); 
+        LOG.debug("MDR Init - initialized package Use Cases");
         theActivityGraphsFactory = new ActivityGraphsFactoryMDRImpl(this);
-        LOG.debug("MDR Init - initialized package Collaborations"); 
+        LOG.debug("MDR Init - initialized package Collaborations");
         theCommonBehaviorFactory = new CommonBehaviorFactoryMDRImpl(this);
         theCommonBehaviorHelper = new CommonBehaviorHelperMDRImpl(this);
-        LOG.debug("MDR Init - initialized package CommonBehavior"); 
+        LOG.debug("MDR Init - initialized package CommonBehavior");
         theStateMachinesFactory = new StateMachinesFactoryMDRImpl(this);
         theCoreFactory = new CoreFactoryMDRImpl(this);
-        LOG.debug("MDR Init - all packages initialized"); 
+        LOG.debug("MDR Init - all packages initialized");
 
     }
 
@@ -389,7 +389,7 @@ public class MDRModelImplementation implements ModelImplementation {
      */
     public CollaborationsFactory getCollaborationsFactory() {
         if (theCollaborationsFactory == null) {
-            theCollaborationsFactory = 
+            theCollaborationsFactory =
                 new CollaborationsFactoryMDRImpl(this);
         }
         return theCollaborationsFactory;
@@ -400,7 +400,7 @@ public class MDRModelImplementation implements ModelImplementation {
      */
     public CollaborationsHelper getCollaborationsHelper() {
         if (theCollaborationsHelper == null) {
-            theCollaborationsHelper = 
+            theCollaborationsHelper =
                 new CollaborationsHelperMDRImpl(this);
         }
         return theCollaborationsHelper;
@@ -620,6 +620,9 @@ public class MDRModelImplementation implements ModelImplementation {
     /**
      * @see org.argouml.model.ModelImplementation#setMementoCreationObserver(
      *      org.argouml.model.MementoCreationObserver)
+     * @deprecated by Linus Tolke in 0.21.3. This is taken care of
+     *         in the {@link org.argouml.model.Model} and the
+     *         implementation need not bother.
      */
     public void setMementoCreationObserver(MementoCreationObserver observer) {
         mementoCreationObserver = observer;
@@ -627,6 +630,9 @@ public class MDRModelImplementation implements ModelImplementation {
 
     /**
      * @see org.argouml.model.ModelImplementation#getMementoCreationObserver()
+     * @deprecated by Linus Tolke in 0.21.3. This is taken care of
+     *         in the {@link org.argouml.model.Model} and the
+     *         implementation need not bother.
      */
     public MementoCreationObserver getMementoCreationObserver() {
         return mementoCreationObserver;
