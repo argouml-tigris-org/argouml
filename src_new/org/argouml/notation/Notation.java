@@ -258,7 +258,7 @@ public final class Notation implements PropertyChangeListener {
     // Static workers for dealing with notation names.
 
     /**
-     * Get list of available notations.
+     * Get list of available notations, of type NotationName.
      *
      * @return list of available notations
      */
