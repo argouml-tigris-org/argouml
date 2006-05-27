@@ -14,18 +14,6 @@ binary distribution, including all libaries
 </TD></TR>
 
 <TR><TD>
-<a href="@URLROOT@/ArgoUML-@VERSION@-modules.tar.gz">ArgoUML-@VERSION@-modules.tar.gz</a>
-</TD><TD>
-auxiliary modules
-</TD></TR>
-
-<TR><TD>
-<a href="@URLROOT@/ArgoUML-@VERSION@-modules.zip">ArgoUML-@VERSION@-modules.zip</a>
-</TD><TD>
-auxiliary modules
-</TD></TR>
-
-<TR><TD>
 <a href="@URLROOT@/ArgoUML-@VERSION@.app.tgz">ArgoUML-@VERSION@.app.tgz</a>
 </TD><TD>
 binary distribution, including all libaries
