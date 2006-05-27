@@ -679,7 +679,7 @@ public class Project implements java.io.Serializable, TargetListener {
             List diagramFigs = diagram.presentationsFor(obj);
             Iterator figIt = diagramFigs.iterator();
             while (figIt.hasNext()) {
-                Fig aFig = (Fig)figIt.next();
+                Fig aFig = (Fig) figIt.next();
                 if (includeEnclosedOnes) {
                     figs.addAll(collectAllEnclosedFigsRecursively(aFig));
                 }
@@ -1399,7 +1399,7 @@ public class Project implements java.io.Serializable, TargetListener {
         String report = "";
         Iterator it = members.iterator();
         while (it.hasNext()) {
-            ProjectMember member = (ProjectMember)it.next();
+            ProjectMember member = (ProjectMember) it.next();
             report += member.repair();
         }
         return report;
