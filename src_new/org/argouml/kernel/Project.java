@@ -43,6 +43,8 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoDiagram;
@@ -101,6 +103,7 @@ public class Project implements java.io.Serializable, TargetListener {
     private URL url;
 
     private String authorname;
+    private String authoremail;
     private String description;
     private String version;
 
@@ -165,7 +168,8 @@ public class Project implements java.io.Serializable, TargetListener {
         Model.getModelManagementFactory().setRootModel(null);
 
 
-        authorname = "";
+        authorname = Configuration.getString(Argo.KEY_USER_FULLNAME);
+        authoremail = Configuration.getString(Argo.KEY_USER_EMAIL);
         description = "";
         // this should be moved to a ui action.
         version = ArgoVersion.getVersion();
@@ -456,6 +460,24 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void setAuthorname(String s) {
         authorname = s;
+    }
+
+    /**
+     * Get the author name.
+     *
+     * @return The author name.
+     */
+    public String getAuthoremail() {
+        return authoremail;
+    }
+
+    /**
+     * Set the author name.
+     *
+     * @param s The new author name.
+     */
+    public void setAuthoremail(String s) {
+        authoremail = s;
     }
 
     /**
@@ -1333,6 +1355,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
         url = null;
         authorname = null;
+        authoremail = null;
         description = null;
         version = null;
         searchpath = null;
