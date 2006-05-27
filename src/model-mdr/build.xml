@@ -353,7 +353,13 @@ This is designed to work in two different environments:
   <!-- =================================================================== -->
   <target name="clean" depends="init"
           description="Clean out all built files.">
-    <delete dir="${build.dir}" quiet="true"/>
+    <delete includeemptydirs="true">
+      <fileset dir="${build.dir}">
+    	<exclude name="**/.cvsignore"/>
+      	<exclude name="**/readme-build-java.txt"/>
+      	<exclude name="**/CVS/*"/>
+      </fileset>
+    </delete>
   </target>
         
 </project>
