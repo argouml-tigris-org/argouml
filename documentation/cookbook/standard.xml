@@ -268,7 +268,7 @@ If this work is too slow it makes it impossible to upgrade to new
 versions of different sub-tools. 
 This problem is seen by "the person responsible for sourcing of the sub-tool"
 when actually trying to upgrade the sub-tool.
-(See <xref linkend="issues_subproducts"></xref>.)
+(See <xref linkend="issues_dependencies"></xref>.)
 </para>
       </listitem>
 
@@ -634,19 +634,20 @@ run a development environment.
         <surname>Tolke</surname>
       </author>
     </sect1info>
-    <title>When Considering Sub-products</title>
+    <title>When Considering Dependencies</title>
 
     <para>
 In the ArgoUML project we use several third-party libraries
 to solve parts of the problem for us.
-These libraries (referred to as "sub-products" below)
+These libraries (referred to as dependencies below)
 are an important part of the ArgoUML tool and
 must be handled in a good way if ArgoUML is going to be successful.
 </para>
 
     <para>
-Here is the list of things to check in the sub-product
-and to discuss with yourself and maybe with the ArgoUML development team
+Here is the list of things to check in the dependency
+and to discuss with yourself and maybe with the rest of the
+ArgoUML development team
 before considering to use it in the ArgoUML project.
 </para>
     <itemizedlist>
@@ -660,7 +661,7 @@ develop against,
 release with,
 distribute, and
 use
-the sub-product indefinitely
+the dependency indefinitely
 without monetary or other compensation.
 </para>
         <para>
@@ -676,7 +677,7 @@ We don't want to require our users to enter agreements to use ArgoUML.
 Java version
 </para>
         <para>
-The sub-product must have a policy that matches the ArgoUML project policy
+The dependency must have a policy that matches the ArgoUML project policy
 on Java version requirements.
 </para>
         <para>
@@ -687,7 +688,7 @@ Java is still under development and there are nice features available in
 future releases.
 In ArgoUML we have a plan for how to handle this. It is to always support
 two major releases of Java (currently JDK 1.4 and 1.5).
-We cannot have a sub-product that restricts us in this aspect.
+We cannot have a dependency that restricts us in this aspect.
 </para>
       </listitem>
       <listitem>
@@ -695,15 +696,15 @@ We cannot have a sub-product that restricts us in this aspect.
 Distribution
 </para>
         <para>
-We require the sub-products to make it possible for us to take the distribution,
-enter it in our CVS repository and write rules to automate
-the use of the sub-product while developing, releasing and running ArgoUML.
+We require the dependency to make it possible for us to take the distribution,
+enter it in our repository and write rules to automate
+the use of the dependency while developing, releasing and running ArgoUML.
 This automated use must be able to run without relying on access to some
 server and without user intervention.
 </para>
         <para>
-The API documentation of the sub-product (assumed to be Javadoc)
-we can use from some web site belonging to that sub-product.
+The API documentation of the dependency (assumed to be Javadoc)
+we can use from some web site belonging to that dependency.
 </para>
         <para>
 Rationale: 
@@ -719,14 +720,14 @@ the releases.
 Road map
 </para>
         <para>
-The project developing the sub-product must have a plan that fits
+The project developing the dependency must have a plan that fits
 the ArgoUML plan for the future.
 </para>
         <para>
 Rationale: 
-If a sub-product will soon go somewhere else
+If a dependency will soon go somewhere else
 i.e. stop doing what we require or stop supporting what we require,
-then we will soon have troubles with that sub-product.
+then we will soon have troubles with that dependency.
 </para>
       </listitem>
       <listitem>
@@ -734,7 +735,7 @@ then we will soon have troubles with that sub-product.
 Working project
 </para>
         <para>
-The project that develops the sub-product should be a working project.
+The project that develops the dependency should be a working project.
 Check that there is some person responsible for it,
 preferably with a team or organization backing him.
 Check that there is a plan for upcoming releases.
@@ -742,25 +743,25 @@ Check that there is a way to report bugs and enhancement requests.
 </para>
         <para>
 Rationale:
-We don't want to rely on a sub-product where there is no chance of ever
+We don't want to rely on a dependency where there is no chance of ever
 getting a bug that we encounter fixed.
 We are also part of an ever-evolving world.
 Soon we want the tool to do more for us.
-We should then be able to wish that and eventually get an updated sub-product.
+We should then be able to wish that and eventually get that included.
 </para>
       </listitem>
     </itemizedlist>
   <para>
 Notice that we should not and don't need to do this in a passive way.
-We should explain to the sub-product team what we want and why.
-Especially for sub-products that we have already in ArgoUML but also
-for project that we consider taking in.
+We should explain to the dependency team what we want and why.
+Especially for dependency that we have already in ArgoUML but also
+for dependencies that we consider taking in.
 This is to increase the likelihood that they will have us in mind when
 planning and evolving.
 </para>
     <para>
 Here are the steps to go through and the recommended order
-once the decision is taken to use the sub-product in ArgoUML:
+once the decision is taken to use the dependency in ArgoUML:
 </para>
     <itemizedlist>
       <listitem>
@@ -769,7 +770,8 @@ Documentation
 </para>
         <para>
 Describe in the Cookbook in the appropriate subsystem section
-what part of the problem that the sub-product solves and
+in <xref linkend="inside_subsystems"/>
+what part of the problem that the dependency solves and
 how it is used in ArgoUML.
 </para>
       </listitem>
@@ -786,7 +788,7 @@ One or two places in <filename>build.xml</filename>
 (targets javadocs and javadocs-api).
 </para>
         <para>
-Test by referencing some class from the sub-product,
+Test by referencing some class from the dependency,
 building the Javadoc, and
 check that the link is working.
 </para>
@@ -796,16 +798,16 @@ check that the link is working.
 Repository
 </para>
         <para>
-Assuming that the sub-product is distributed in a set of jar files,
+Assuming that the dependency is distributed in a set of jar files,
 add the jar files to the <filename class="directory">lib</filename> directory
 in a versioned way together with the license file.
 Use filenames like:
-<filename><replaceable>subproduct</replaceable>-<replaceable>version</replaceable>.jar</filename>, and
-<filename><replaceable>subproduct</replaceable>.LICENSE.txt</filename>.
+<filename><replaceable>dependency</replaceable>-<replaceable>version</replaceable>.jar</filename>, and
+<filename><replaceable>dependency</replaceable>.LICENSE.txt</filename>.
 </para>
         <para>
 A future plan is to have each subsystem in their own directory.
-If the sub-product in question belongs to a subsystem that is moved to a
+If the dependency in question belongs to a subsystem that is moved to a
 separate directory you should put it in
 the <filename class="directory">lib</filename> directory for that subsystem.
 For the time being, there is only one
@@ -817,7 +819,7 @@ For the time being, there is only one
 Building
 </para>
         <para>
-Assuming that the sub-product is distributed in a set of jar files,
+Assuming that the dependency is distributed in a set of jar files,
 add the jar files to the list of files that are to be included
 when building ArgoUML.
 One place in <filename>default.properties</filename>,
@@ -825,45 +827,27 @@ Four places in <filename>build.xml</filename>
 (targets init (tree places),
 prerequisites,
 package (two places),
-new target check.<replaceable>subproduct</replaceable>), and
+new target check.<replaceable>dependency</replaceable>), and
 One possibly place in <filename>AboutBox.java</filename> (Constructor).
 Notice especially that <filename>build.xml</filename> shall not contain
 any version information.
 Notice also that the text in <filename>AboutBox.java</filename>
 shall not contain anything that needs to be localized but just
-the sub-product name, reference and possibly version.
+the dependency name, reference and possibly version.
 </para>
         <para>
-Check by having some class from the sub-product loaded immediately
+Check by having some class from the dependency loaded immediately
 when starting ArgoUML and start using
 <command>build run</command>.
 </para>
       </listitem>
-      <listitem>
-        <para>
-Running from modules
-</para>
-        <para>
-With the current modules set up
-(in <filename class="directory">argouml/modules</filename>) the
-idea is that we are supposed to be able to start ArgoUML from any
-of the modules directory.
-This means that whenever changing the list of modules you will have
-to update the classpaths in all these modules.
-Go through the list of files <filename>argouml/modules/*/build.xml</filename>
-and update.
-</para>
-        <para>
-Check by having some class from the sub-product loaded immediately
-when starting ArgoUML and start in each of these directories.
-</para>
-      </listitem>
+
       <listitem>
         <para>
 Distribution
 </para>
         <para>
-Assuming that the sub-product is distributed in a set of jar files,
+Assuming that the dependency is distributed in a set of jar files,
 add the jar files to the list of files that are to be included
 when releasing ArgoUML.
 One place in <filename>build.xml</filename> (target dist-javawebstart),
@@ -872,7 +856,7 @@ In each of the Java Web Start files (resources),
 In the <filename>Info.plist</filename> (ClassPath).
 </para>
         <para>
-Check by having some class from the sub-product loaded immediately
+Check by having some class from the dependency loaded immediately
 when starting ArgoUML and start with
 <command>java -jar argouml.jar</command>,
 using each of the Java Web Start files, and
@@ -882,9 +866,9 @@ from the Appbund (on a Mac).
     </itemizedlist>
 
     <para>
-See <xref linkend="issues_subproducts"></xref> for a discussion on 
-how to handle bugs found in sub-products and
-updates of the version of a sub-product.
+See <xref linkend="issues_dependencies"></xref> for a discussion on 
+how to handle bugs found in dependency and
+updates of the version of a dependency.
 </para>
   </sect1>
 

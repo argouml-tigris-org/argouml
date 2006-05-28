@@ -878,10 +878,10 @@ with.
       </orderedlist>
     </sect1>
 
-    <sect1 id="issues_subproducts">
-      <title>How to relate issues to problems in subproducts</title>
+    <sect1 id="issues_dependencies">
+      <title>How to relate issues to problems in dependencies</title>
       <indexterm>
-        <primary>subproducts</primary>
+        <primary>dependencies</primary>
       </indexterm>
       <para>
 ArgoUML uses products internally and is very 
@@ -890,7 +890,7 @@ This are products like GEF, NS-UML, ocl, log4j, xerces, jre, ...
 </para>
       <para>
 Occasionally a problem found in ArgoUML is found to be a problem in one
-of these subproducts and cannot or is extremely complicated to fix
+of the dependencies and cannot be or is extremely complicated to fix
 within ArgoUML.
 </para>
       <para>
@@ -910,7 +910,7 @@ Do the following:
         <listitem>
           <para>
 During your examination of an issue you find that the problem
-is in one of the ArgoUML subproducts (GEF, NS-UML, ocl, jre, ...).
+is in one of the ArgoUML dependencies (GEF, NS-UML, ocl, jre, ...).
 </para>
         </listitem>
         <listitem>
@@ -920,17 +920,17 @@ Make sure that the issue is assigned to you.
         </listitem>
         <listitem>
           <para>
-Write a comment in the issue stating which one of the subproducts
-that has the problem (and what the problem is within that subproduct).
+Write a comment in the issue stating which one of the dependency
+that has the problem (and what the problem is within that dependency).
 </para>
         </listitem>
         <listitem>
           <para>
-Post a bug report in that subproducts bug reporting tool
+Post a bug report in that dependency bug reporting tool
 (or find that a bug report already registered).
 </para>
           <para>
-I am assuming that there is such a tool for the subproduct in question.
+I am assuming that there is such a tool for the dependency in question.
 If there isn't,
 then make the bug report to the person responsible for this product
 so that we are sure that the problem is communicated.
@@ -939,11 +939,11 @@ so that we are sure that the problem is communicated.
         <listitem>
           <para>
 Accept the issue (set it to STARTED) and
-enter the reference from the subproducts bug reporting tool and
+enter the reference from the dependency bug reporting tool and
 if possible the URL to the bug reporting tool or to the bug report in question.
 </para>
           <para>
-I am assuming that there is a bug reporting tool for the subproducts.
+I am assuming that there is a bug reporting tool for the dependency.
 If there isn't for the product in question,
 then include all communications (both ways) in the issue.
 </para>
@@ -951,17 +951,17 @@ then include all communications (both ways) in the issue.
       </orderedlist>
       <para>
 You are now responsible to follow up on 
-the upcoming releases of the subproduct.
+the upcoming releases of the dependency.
 If you don't think that you are the best person for this
 (you should be since it was you that found that this problem
-is in the subproduct),
+is in the dependency),
 assign the issue to "the right person".
 To follow up you should do the following.
 </para>
       <orderedlist>
         <listitem>
           <para>
-Look at each new release of that subproduct to see if the bug report
+Look at each new release of that dependency to see if the bug report
 is in fact stated as fixed in that release.
 </para>
         </listitem>
@@ -971,26 +971,26 @@ If the bug report is fixed, then you weight together
 the importance of the problem, 
 other bug reports that are also problems in ArgoUML 
 that are solved in that release,
-the amount of work needed to fit the new version of the subproduct
+the amount of work needed to fit the new version of the dependency
 instead of the old one,
-the planned releases of the subproduct with promises to
+the planned releases of the dependency with promises to
 solve other bug reports,
 and
 the current release plan of ArgoUML.
 From this you decide wether it is time to do the update of 
-the subproduct within ArgoUML or to wait.
+the dependency within ArgoUML or to wait.
 </para>
         </listitem>
         <listitem>
           <para>
 If you decide that it is time to update,
-you assign all issues against that subproduct to you (if not already), 
+you assign all issues against that dependency to you (if not already), 
 then you do the work.
-The work is to add the new version of the subproduct to ArgoUML,
+The work is to add the new version of the dependency to ArgoUML,
 do all the needed work within ArgoUML to fit the new version,
 test and commit everything,
 put the issues indeed fixed in RESOLVED/FIXED,
-and close the bugs registered in the subproducts bug reporting tool.
+and close the bugs registered in the dependency bug reporting tool.
 </para>
         </listitem>
       </orderedlist>

@@ -67,6 +67,16 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2006-05-28</entry>
+          <entry>
+Renamed subprojects to dependencies.
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2006-05-14</entry>
           <entry>
 Splitted and moved the cvs chapter.

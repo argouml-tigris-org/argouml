@@ -65,7 +65,7 @@
             subsystems can reside somewhere else. Notice that each other
             product used by ArgoUML is, in the design, located within one of the
             existing subsystems. This means that a change of version or indeed a
-            change of choice of such a sub-product is an internal matter for the
+            change of choice of such a dependency is an internal matter for the
             subsystem and should ideally not affect any other subsystem.
             </para>
           <para> All public and protected methods of all public and protected

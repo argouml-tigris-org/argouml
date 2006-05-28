@@ -102,6 +102,29 @@ E.g. deleting a class also deletes all its associations.
     </glossentry>
 
     <glossentry>
+      <glossterm>Dependency</glossterm>
+      <glossdef>
+
+	<para>
+A piece of software that is developed by someone outside of the
+ArgoUML project and that the ArgoUML project is not responsible for.
+</para>
+	<para>
+The ArgoUML product, like almost any other software project, 
+use dependencies so that we don't have to do everything ourselves.
+Examples: JDK, NSUML, GEF, log4j, ...
+</para>
+
+	<para>
+Dependencies were previously called subproducts.
+</para>
+	<indexterm>
+	  <primary>subproducts</primary>
+	</indexterm>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
       <glossterm>Export</glossterm>
       <glossdef>
 	<para>
@@ -129,7 +152,7 @@ of the two conversions involved.
       <glossterm>Library</glossterm>
       <glossdef>
 	<para>
-A part of a <emphasis>subproduct</emphasis> that is installed and handled as 
+A part of a <emphasis>dependency</emphasis> that is installed and handled as 
 a unit in the ArgoUML building and installation set-up.
 </para>
       </glossdef>
@@ -216,20 +239,6 @@ A Save, Open cycle does not loose any information.
       </glossdef>
     </glossentry>
 
-    <glossentry>
-      <glossterm>Subproduct</glossterm>
-      <glossdef>
-	<para>
-A piece of software that is developed by someone outside of the
-ArgoUML project and that the ArgoUML project is not responsible for.
-</para>
-	<para>
-The ArgoUML product, like almost any other software project, 
-use subproducts so that we don't have to do everything ourselves.
-Examples: JDK, NSUML, GEF, log4j, ...
-</para>
-      </glossdef>
-    </glossentry>
   </glossdiv>
 </glossary>
 
