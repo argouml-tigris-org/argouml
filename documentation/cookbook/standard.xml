@@ -128,7 +128,7 @@ Indicate places of future modifications with
 <programlisting>
 // TODO: reason and explanation
 </programlisting>
-or if within a javadoc or c-style comment
+or if within a Javadoc or c-style comment
 <programlisting>
 * TODO: reason and explanation
 </programlisting>
@@ -353,7 +353,7 @@ Java Language Specification, Section 8.1.1, 8.3.1, 8.4.3.
   </sect1>
 
   <sect1 id="groundrules">
-    <title>When Commiting to the Repository</title>
+    <title>When Committing to the Repository</title>
     <indexterm>
       <primary>CVS</primary>
       <secondary>standards</secondary>
@@ -363,10 +363,10 @@ Java Language Specification, Section 8.1.1, 8.3.1, 8.4.3.
       <secondary>standards</secondary>
     </indexterm>
     <indexterm>
-      <primary>Repository Commiting</primary>
+      <primary>Repository Committing</primary>
     </indexterm>
     <indexterm>
-      <primary>Commiting to the Repository</primary>
+      <primary>Committing to the Repository</primary>
     </indexterm>
     <indexterm>
       <primary>Standards</primary>
@@ -516,7 +516,7 @@ all developers in the project.
 </para>
 
     <para>
-There are some general cvs tips in
+There are some general CVS tips in
 <xref linkend="cvs"></xref>.
 </para>
   </sect1>
@@ -579,7 +579,7 @@ Please use branches sparingly and announce your intentions on the mailing list.
 </para>
 
     <para>
-There are some tips on how to work with branches in cvs in
+There are some tips on how to work with branches in CVS in
 <xref linkend="branches"></xref>.
 </para>
   </sect1>
@@ -782,7 +782,7 @@ Javadoc
         <para>
 Enter the package list file in a special directory under
 <filename class="directory">argouml/lib/javadocs</filename>.
-Update the list of links used when building the Javadocs.
+Update the list of links used when building the Javadoc.
 One place in <filename>default.properties</filename>,
 One or two places in <filename>build.xml</filename>
 (targets javadocs and javadocs-api).
@@ -806,12 +806,11 @@ Use filenames like:
 <filename><replaceable>dependency</replaceable>.LICENSE.txt</filename>.
 </para>
         <para>
-A future plan is to have each subsystem in their own directory.
+The plan is to have each subsystem in their own directory.
 If the dependency in question belongs to a subsystem that is moved to a
 separate directory you should put it in
 the <filename class="directory">lib</filename> directory for that subsystem.
-For the time being, there is only one
-<filename class="directory">lib</filename> directory.
+See how the model-mdr dependencies are handled.
 </para>
       </listitem>
       <listitem>
@@ -850,10 +849,9 @@ Distribution
 Assuming that the dependency is distributed in a set of jar files,
 add the jar files to the list of files that are to be included
 when releasing ArgoUML.
-One place in <filename>build.xml</filename> (target dist-javawebstart),
 One place in <filename>manifest.template</filename> (Class-Path),
-In each of the Java Web Start files (resources),
-In the <filename>Info.plist</filename> (ClassPath).
+In the Java Web Start files (resources),
+In the <filename>Info.plist</filename> (Class-Path).
 </para>
         <para>
 Check by having some class from the dependency loaded immediately
@@ -951,12 +949,14 @@ These style guides correspond to the default Java settings in Emacs:
     <warning>
       <para>
 This was recently updated to the 
-recommended Eclipse setup with files commited to the repository.
+recommended Eclipse setup with files committed to the repository.
 </para>
     </warning>
     <para>
 If you are running Eclipse 3.1 we have a prepared and recommended setup
-commited into our repository.
+committed into our repository.
+The prepared setup includes settings for Checkstyle within Eclipse that
+will be enabled if you have the Checkclipse Eclipse plugin installed.
 </para>
     <para>
 If any of these instructions don't work or could be improved in some way,
@@ -1026,7 +1026,7 @@ Do the following.
 Download the initial Team Project Set file and save it somewhere.
 </para>
 	  <para>
-This only needs to be done the first time and if you don't already 
+This is only needed the first time and if you don't already 
 happen to have an updated checked out copy of argouml laying around.
 </para>
 	  <para>
@@ -1044,7 +1044,9 @@ Do File => Import and select Team Project Set and press Next.
 
 	<listitem>
 	  <para>
-Browse to the file argouml-core-projectset.psf file and press Finish.
+Browse to the file
+<filename>argouml-core-projectset.psf</filename>
+and press Finish.
 </para>
 
 	  <para>
@@ -1066,7 +1068,7 @@ connection.
 The projects are build.
 First things that are special for ArgoUML, generated Java code,
 are created by Eclipse calling ant,
-then Eclipse kicks in and compiles the java code.
+then Eclipse kicks in and compiles the Java code.
 </para>
             </listitem>
             <listitem>
@@ -1080,8 +1082,8 @@ Eclipse finds the Configurations that are also checked out.
 	<listitem>
 	  <para>
 Verify that you can start ArgoUML from the debugger within Eclipse. 
-You can do this by clicking on the little downarrow close to the
-Debug icon in the toolbar
+You can do this by clicking on the little down-arrow close to the
+Debug icon in the tool bar
 and finding ArgoUML in the list.
 </para>
 	</listitem>
@@ -1103,7 +1105,7 @@ You have your tool working against you instead of for you.
 The instructions here are for these settings to affect your Eclipse Workspace.
 If you have other projects in
 the same Eclipse Workspace you would probably want this for
-only the ArgoUML projects and that is possible allthough not explained here.
+only the ArgoUML projects and that is possible although not explained here.
 We suggest you to consider having ArgoUML work in an
 Eclipse Workspace separate from your other projects.
 </para>
@@ -1127,7 +1129,7 @@ Then select Java => Code Style => Formatter.
             <listitem>
               <para>
 Select Import and give the file
-eclipse/eclipse-argo-formatter.xml
+<filename>eclipse/eclipse-argo-formatter.xml</filename>
 located in the argouml-core-tools project that you just checked out.
 </para>
             </listitem>
@@ -1168,7 +1170,7 @@ Then select Java => Code Style => Code Templates.
             <listitem>
               <para>
 Select Import and give the file
-eclipse/eclipse-argo-codetemplates.xml
+<filename>eclipse/eclipse-argo-codetemplates.xml</filename>
 located in the argouml-core-tools project that you just checked out.
 </para>
             </listitem>
@@ -1253,7 +1255,7 @@ Check overriding and implementing methods.
 </para>
 	      <para>
 These problems are also found by Checkstyle so if you are
-running checkclipse (See <xref linkend="checkclipse"/>)
+running Checkclipse (See <xref linkend="checkclipse"/>)
 put this in Ignore instead.
 </para>
 	    </listitem>
@@ -1362,14 +1364,14 @@ We don't use serialization in the ArgoUML project anyway.
     </sect2>
 
     <sect2 id="checkclipse">
-      <title>Settings for checkclipse</title>
+      <title>Settings for Checkclipse</title>
       <para>
 Checkclipse is a plug in for Eclipse which needs to be installed separately.
 It enables style checking according the rules set for the ArgoUML project.
 </para>
       <para>Get the latest Checkclipse kit from SourceForge at
               <ulink url="http://sourceforge.net/projects/checkclipse"/> 
-      and install it by unzipping into your Eclipse plugins directory and
+      and install it by unzipping into your Eclipse plug-ins directory and
       restarting Eclipse.  (Checkstyle is bundled with Checkclipse so it's
       not necessary to install it separately, but the web site is 
               <ulink url="http://checkstyle.sourceforge.net/"/> 
