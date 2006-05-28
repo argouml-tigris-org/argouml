@@ -92,7 +92,7 @@ and discontinued branches on the mailing list to know what branches are
 interesting.
 </para>
       </listitem>
-      <listitem>
+      <listitem id="branches">
         <para>
 ...create a branch for my work on <replaceable>xxxyyy</replaceable> 
 and start work on that branch?
@@ -112,7 +112,7 @@ Enter the argouml directory:
 <command>cd argouml</command> or <command>chdir argouml</command>
 </para>
           </listitem>
-          <listitem id="branches">
+          <listitem>
             <para>
 Create your branch: 
 <command>cvs tag -b <replaceable>work_xxxyyy_myname</replaceable></command>
