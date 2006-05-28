@@ -1380,21 +1380,19 @@ public abstract class FigNodeModelElement
      */
     public void notationChanged(ArgoNotationEvent event) {
         if (getOwner() == null) return;
-        NotationName oldNotation = currentNotationName;
         PropertyChangeEvent changeEvent =
 	    (PropertyChangeEvent) event.getSource();
         if (changeEvent.getPropertyName().equals("argo.notation.only.uml")) {
             if (changeEvent.getNewValue().equals("true")) {
                 setContextNotation(Notation.getConfigueredNotation());
             }
-        } else if (changeEvent.getPropertyName().equals("argo.notation.default")) {
+        } else if (changeEvent.getPropertyName()
+                .equals("argo.notation.default")) {
             setContextNotation(
                 Notation.findNotation((String) changeEvent.getNewValue()));
         }
-        if (!oldNotation.sameNotationAs(currentNotationName)) {
-            initNotationProviders(getOwner());
-            renderingChanged();
-        }
+        initNotationProviders(getOwner());
+        renderingChanged();
     }
 
     /**
