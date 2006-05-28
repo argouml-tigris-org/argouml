@@ -112,7 +112,7 @@ Enter the argouml directory:
 <command>cd argouml</command> or <command>chdir argouml</command>
 </para>
           </listitem>
-          <listitem>
+          <listitem id="branches">
             <para>
 Create your branch: 
 <command>cvs tag -b <replaceable>work_xxxyyy_myname</replaceable></command>
