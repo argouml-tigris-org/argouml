@@ -25,7 +25,6 @@
 package org.argouml.cognitive.ui;
 
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.Enumeration;
@@ -69,11 +68,9 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener {
 
     /**
      * The constructor.
-     *
-     * @param parent the parent frame
      */
-    public GoalsDialog(Frame parent) {
-	super(parent, Translator.localize("dialog.title.design-goals"), false);
+    public GoalsDialog() {
+	super(Translator.localize("dialog.title.design-goals"), false);
 
 	initMainPanel();
 

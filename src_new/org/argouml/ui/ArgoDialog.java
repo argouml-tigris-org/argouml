@@ -44,9 +44,35 @@ public class ArgoDialog extends Dialog {
     private static final String MNEMONIC_KEY_SUFFIX = ".mnemonic";
 
     /**
+     * Creates a new ArgoDialog with the default optionType.
+     *
+     * @param title The title String for the dialog.
+     * @param modal <code>true</code> if the dialog is modal.
+     * @see Dialog#Dialog(Frame, String, boolean)
+     */
+    public ArgoDialog(String title, boolean modal) {
+        super(ProjectBrowser.getInstance(), title, modal);
+    }
+
+    /**
+     * Creates a new ArgoDialog with the specified optionType.
+     *
+     * @param title The title String for the dialog.
+     * @param optionType Defines which buttons will be available in the dialog.
+     * @param modal <code>true</code> if the dialog is modal.
+     * @see Dialog#Dialog(Frame, String, int, boolean)
+     */
+    public ArgoDialog(String title, int optionType, boolean modal) {
+        super(ProjectBrowser.getInstance(), title, optionType, modal);
+    }
+
+    /**
      * @see Dialog#Dialog(Frame, String, boolean)
      *
      * Creates a new ArgoDialog with the default optionType.
+     *
+     * @deprecated in 0.21.3 by Linus Tolke.
+     *         Use {@link #ArgoDialog(String, boolean)}.
      */
     public ArgoDialog(Frame owner, String title, boolean modal) {
         super(owner, title, modal);
@@ -56,9 +82,12 @@ public class ArgoDialog extends Dialog {
      * @see Dialog#Dialog(Frame, String, int, boolean)
      *
      * Creates a new ArgoDialog with the specified optionType.
+     *
+     * @deprecated in 0.21.3 by Linus Tolke.
+     *         Use {@link #ArgoDialog(String, int, boolean)}.
      */
     public ArgoDialog(Frame owner,
-		      String title, int optionType, boolean modal) {
+                      String title, int optionType, boolean modal) {
         super(owner, title, optionType, modal);
     }
 

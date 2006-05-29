@@ -25,7 +25,6 @@
 package org.argouml.cognitive.ui;
 
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.Enumeration;
@@ -67,11 +66,9 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
 
     /**
      * The constructor.
-     *
-     * @param parent the parent frame for this dialog
      */
-    public DesignIssuesDialog(Frame parent) {
-        super(parent, Translator.localize("dialog.title.design-issues"), false);
+    public DesignIssuesDialog() {
+        super(Translator.localize("dialog.title.design-issues"), false);
 
         final int width = 320;
         final int height = 400;

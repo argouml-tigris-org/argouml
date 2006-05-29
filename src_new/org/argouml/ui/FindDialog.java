@@ -126,9 +126,8 @@ public class FindDialog extends ArgoDialog
      *
      */
     public FindDialog() {
-        super(ProjectBrowser.getInstance(),
-                Translator.localize("dialog.find.title"),
-                ArgoDialog.OK_CANCEL_OPTION, false);
+        super(Translator.localize("dialog.find.title"),
+              ArgoDialog.OK_CANCEL_OPTION, false);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 

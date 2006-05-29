@@ -60,7 +60,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.ui.ArgoDialog;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.CodeGenerator;
 import org.argouml.uml.generator.GeneratorManager;
 import org.argouml.uml.generator.Language;
@@ -117,7 +116,6 @@ public class ClassGenerationDialog
      */
     public ClassGenerationDialog(Vector nodes, boolean inModel) {
         super(
-            ProjectBrowser.getInstance(),
             Translator.localize("dialog.title.generate-classes"),
             Dialog.OK_CANCEL_OPTION,
             true);

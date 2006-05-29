@@ -24,7 +24,6 @@
 
 package org.argouml.cognitive.ui;
 
-import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -46,7 +45,6 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.UnresolvableException;
 import org.argouml.ui.ArgoDialog;
-import org.argouml.ui.ProjectBrowser;
 import org.tigris.swidgets.Dialog;
 
 /**
@@ -73,12 +71,9 @@ public class DismissToDoItemDialog extends ArgoDialog {
 
     /**
      * The constructor.
-     *
-     * @param owner the parent frame
      */
-    public DismissToDoItemDialog(Frame owner) {
+    public DismissToDoItemDialog() {
         super(
-            owner,
             Translator.localize("dialog.title.dismiss-todo-item"),
             Dialog.OK_CANCEL_OPTION,
             true);
@@ -221,14 +216,13 @@ public class DismissToDoItemDialog extends ArgoDialog {
 
     private void badGoal(ActionEvent e) {
         //cat.debug("bad goal");
-        GoalsDialog d = new GoalsDialog(ProjectBrowser.getInstance());
+        GoalsDialog d = new GoalsDialog();
         d.setVisible(true);
     }
 
     private void badDec(ActionEvent e) {
         //cat.debug("bad decision");
-        DesignIssuesDialog d =
-            new DesignIssuesDialog(ProjectBrowser.getInstance());
+        DesignIssuesDialog d = new DesignIssuesDialog();
         d.setVisible(true);
     }
 

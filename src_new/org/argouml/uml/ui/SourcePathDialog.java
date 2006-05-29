@@ -38,7 +38,6 @@ import javax.swing.table.TableColumn;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.ArgoDialog;
-import org.argouml.ui.ProjectBrowser;
 
 /**
  * This dialog appears when selecting
@@ -67,7 +66,6 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
      */
     public SourcePathDialog() {
         super(
-            ProjectBrowser.getInstance(),
             Translator.localize("action.generate-code-for-project"),
             ArgoDialog.OK_CANCEL_OPTION,
             true);

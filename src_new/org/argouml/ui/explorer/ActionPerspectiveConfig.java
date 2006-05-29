@@ -30,7 +30,6 @@ import javax.swing.AbstractAction;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.ui.ProjectBrowser;
 
 /**
  * Action to invoke the Configure Perspectives dialog.
@@ -51,8 +50,7 @@ public class ActionPerspectiveConfig extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        PerspectiveConfigurator ncd =
-            new PerspectiveConfigurator(ProjectBrowser.getInstance());
+        PerspectiveConfigurator ncd = new PerspectiveConfigurator();
         ncd.setVisible(true);
     }
 

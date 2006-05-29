@@ -66,7 +66,6 @@ import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.ui.ArgoDialog;
-import org.argouml.ui.ProjectBrowser;
 
 /**
  * Dialog box to list all critics and allow editing of some of their
@@ -159,8 +158,7 @@ public class CriticBrowserDialog extends ArgoDialog
      *
      */
     public CriticBrowserDialog() {
-	super(ProjectBrowser.getInstance(),
-            Translator.localize("dialog.browse.label.critics"), true);
+	super(Translator.localize("dialog.browse.label.critics"), true);
 
 	JPanel mainContent = new JPanel();
 	mainContent.setLayout(new BorderLayout(10, 10));
@@ -470,8 +468,9 @@ class TableModelCritics extends AbstractTableModel
     // instance varables
     private List target;
 
-    ////////////////
-    // constructor
+    /**
+     * Constructor.
+     */
     public TableModelCritics() { }
 
     ////////////////

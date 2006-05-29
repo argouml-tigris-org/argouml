@@ -27,7 +27,6 @@ package org.argouml.ui.cmd;
 import java.awt.event.ActionEvent;
 
 import org.argouml.cognitive.ui.DesignIssuesDialog;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.UMLAction;
 
 
@@ -42,8 +41,7 @@ class ActionOpenDecisions extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	DesignIssuesDialog d =
-	    new DesignIssuesDialog(ProjectBrowser.getInstance());
+	DesignIssuesDialog d = new DesignIssuesDialog();
 	d.setVisible(true);
     }
 } /* end class ActionOpenDecisions */
