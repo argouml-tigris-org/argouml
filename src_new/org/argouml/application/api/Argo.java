@@ -311,6 +311,8 @@ public final class Argo {
      * @param pluginType class of the plugin to search for
      * @param context plugin-specific query parameters
      * @return a vector of plugins or null
+     * @deprecated by Linus Tolke for 0.21.3. This is replaced by the
+     *         new module loader.
      */
     public static ArrayList getPlugins(Class pluginType,
                                        Object[] context) {
@@ -324,6 +326,8 @@ public final class Argo {
      *
      * @param pluginType class of the plugin to search for
      * @return a vector of plugins or null
+     * @deprecated by Linus Tolke for 0.21.3. This is replaced by the
+     *         new module loader.
      */
     public static ArrayList getPlugins(Class pluginType) {
 	return ModuleLoader.getInstance().getPlugins(pluginType, null);
@@ -331,6 +335,8 @@ public final class Argo {
 
     /**
      * Initializes the module loader.  Multiple calls are ignored.
+     * @deprecated by Linus Tolke for 0.21.3. There is no reason to
+     *         let this call go through the Argo class.
      */
     public static void initializeModules() {
 	ModuleLoader.getInstance().initialize();
@@ -340,6 +346,8 @@ public final class Argo {
      * Convenience helper to access the argo home directory.
      *
      * @return the argo home directory
+     * @deprecated by Linus Tolke for 0.21.3. I don't think there is
+     *         a reason to let this call go through the Argo class.
      */
     public static String getArgoHome() {
 	return ModuleLoader.getInstance().getArgoHome();
@@ -349,6 +357,8 @@ public final class Argo {
      * Convenience helper to access the argo root directory.
      *
      * @return the argo root directory
+     * @deprecated by Linus Tolke for 0.21.3. I don't think there is
+     *         a reason to let this call go through the Argo class.
      */
     public static String getArgoRoot() {
 	return ModuleLoader.getInstance().getArgoRoot();
