@@ -1269,7 +1269,7 @@ public class Modeller {
         // included in the profile that is being used. - tfm 20060224
         throw new IllegalArgumentException("Could not find "
 					   + "a suitable stereotype for "
-					   + me + " " + name + " "
+					   + me + " stereotype: <<" + name + ">> base: "
 					   + baseClass);
     }
 
