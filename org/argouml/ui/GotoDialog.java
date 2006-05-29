@@ -24,8 +24,6 @@
 
 package org.argouml.ui;
 
-
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -59,9 +57,8 @@ public class GotoDialog extends ArgoDialog {
      * The constructor.
      */
     public GotoDialog() {
-        super(ProjectBrowser.getInstance(), // the parent frame
-                Translator.localize("dialog.gotodiagram.title"),
-                ArgoDialog.OK_CANCEL_OPTION, false);
+        super(Translator.localize("dialog.gotodiagram.title"),
+              ArgoDialog.OK_CANCEL_OPTION, false);
 
         Project p = ProjectManager.getManager().getCurrentProject();
 

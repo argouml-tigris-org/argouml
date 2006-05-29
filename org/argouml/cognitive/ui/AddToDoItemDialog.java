@@ -42,7 +42,6 @@ import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
 import org.argouml.ui.ArgoDialog;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.swidgets.Dialog;
@@ -80,8 +79,7 @@ public class AddToDoItemDialog extends ArgoDialog {
      *                 to display the offenders
      */
     public AddToDoItemDialog(ListCellRenderer renderer) {
-        super(ProjectBrowser.getInstance(),
-	      Translator.localize("dialog.title.add-todo-item"),
+        super(Translator.localize("dialog.title.add-todo-item"),
 	      Dialog.OK_CANCEL_OPTION, true);
 
         headLineTextField = new JTextField(TEXT_COLUMNS);

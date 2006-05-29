@@ -75,23 +75,6 @@ public class SystemInfoDialog extends ArgoDialog {
     /**
      * The constructor.
      *
-     */
-    public SystemInfoDialog() {
-	this((Frame) null, false);
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param owner the parent frame
-     */
-    public SystemInfoDialog(Frame owner) {
-	this(owner, false);
-    }
-
-    /**
-     * The constructor.
-     *
      * @param owner the parent frame
      * @param modal true if the dialog is modal
      */

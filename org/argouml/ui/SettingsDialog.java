@@ -69,10 +69,9 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
      * Constructor to build new settings dialog.
      */
     SettingsDialog() {
-        super(ProjectBrowser.getInstance(),
-                Translator.localize("dialog.settings"),
-                ArgoDialog.OK_CANCEL_OPTION,
-                true);
+        super(Translator.localize("dialog.settings"),
+              ArgoDialog.OK_CANCEL_OPTION,
+              true);
 
 
         tabs = new JTabbedPane();

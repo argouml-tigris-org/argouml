@@ -80,8 +80,7 @@ public class EmailExpertDialog extends ArgoDialog {
      * The constructor.
      */
     public EmailExpertDialog() {
-        super(ProjectBrowser.getInstance(),
-            Translator.localize("dialog.title.send-email-to-expert"),
+        super(Translator.localize("dialog.title.send-email-to-expert"),
 	      ArgoDialog.OK_CANCEL_OPTION,
 	      true);
 

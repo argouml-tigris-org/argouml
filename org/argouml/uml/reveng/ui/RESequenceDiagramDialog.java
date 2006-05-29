@@ -61,7 +61,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.CheckboxTableModel;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramFactory;
@@ -141,7 +140,6 @@ public class RESequenceDiagramDialog
      */
     public RESequenceDiagramDialog(Object oper, FigMessage figMessage) {
         super(
-                ProjectBrowser.getInstance(),
                 "NOT FUNCTIONAL!!! "
                 + Translator.localize(
                         "dialog.title.reverse-engineer-sequence-diagram")
@@ -636,12 +634,12 @@ public class RESequenceDiagramDialog
                 }
             }
 
-            if (type != null) {
+            // if (type != null) {
                 // call of a method of a local object
                 // or call of a static method of a classifier
-            } else {
+            // } else {
                 // unknown type
-            }
+            // }
         }
         return action;
     }

@@ -27,7 +27,6 @@ package org.argouml.ui.cmd;
 import java.awt.event.ActionEvent;
 
 import org.argouml.cognitive.ui.DismissToDoItemDialog;
-import org.argouml.ui.ProjectBrowser;
 
 /**
  * The action to resolve a todo item.
@@ -46,8 +45,7 @@ public class ActionResolve extends ToDoItemAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	DismissToDoItemDialog dialog = new DismissToDoItemDialog(
-            ProjectBrowser.getInstance());
+	DismissToDoItemDialog dialog = new DismissToDoItemDialog();
 	dialog.setTarget(getRememberedTarget());
 	dialog.setVisible(true);
     }
