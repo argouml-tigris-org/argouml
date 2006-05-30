@@ -21,6 +21,13 @@ Remove href attribute from any FigEdgeNote groups (issue 4021)
 	</xsl:template>
 	
 	
+<!--
+Remove top level groups that have no positional data (issue 4228)
+-->
+	<xsl:template match='pgml/group[contains(@description, "[]")]'>
+	</xsl:template>
+	
+	
 
 <!-- 
 Anything not touched by the fixes above must be copied over unchanged
