@@ -213,26 +213,14 @@ public class ExceptionDialog extends JDialog implements ActionListener {
             }
         });
 
-//        StringWriter sw = new StringWriter();
-//        PrintWriter pw = new PrintWriter(sw);
-//
-//        if (highlightCause && e.getCause() != null) {
-//            // Instructions with clickable link for user
-//            pw.print(Translator.localize("dialog.exception.link.report"));
-//
-//            // This text is for the developers.
-//            // It doesn't need to be localized.
-//            pw.print("<p>" + message);
-//            pw.print("<hr>System Info:<p>" + SystemInfoDialog.getInfo());
-//            pw.print("<p><hr>Error occurred at : " + new Date());
-//            pw.print("<p>  Cause : ");
-//            e.getCause().printStackTrace(pw);
-//            pw.print("-------<p>Full exception : ");
-//        }
-//        e.printStackTrace(pw);
+        // TODO: i18n
+        error = "An inconsistency has been detected when saving the model." +
+        "These have been repaired and are reported below. " +
+        "The save will continue with the model having been " +
+        "amended as described.\n" + error;
+        
         // These shouldn't really be <br> instead of <p> elements, but
         // the lines all get run together when pasted into a browser window.
-        error += "An inconsistency has been detected when saving the model. These have been repaired and are reported below. The save will continue with the model having been amended as described.";
         textArea.setText(error.replaceAll("\n", "<br>"));
         textArea.setCaretPosition(0);
 
