@@ -1072,7 +1072,6 @@ public class Project implements java.io.Serializable, TargetListener {
         while (i.hasNext()) {
             Fig obj = (Fig) i.next();
             // This should prevent the removeFromDiagram to update the model:
-            obj.setVisible(false);
             obj.removeFromDiagram();
         }
     }

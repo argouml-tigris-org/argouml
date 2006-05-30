@@ -134,6 +134,14 @@ public abstract class FigNodeModelElement
     private static final Font ITALIC_LABEL_FONT;
 
     protected NotationProvider4 notationProviderName;
+    
+    /**
+     * True of a subclass of FigNodeModelElement is allowed to be
+     * invisible. This is currently only set true by FigEdgePort
+     * TODO: FigEdgePort should be removed from the FigNodeModelElement
+     * hierarchy and so the need for this removed.
+     */
+    protected boolean invisibleAllowed = false;
 
     /**
      * min. 17, used to calculate y pos of FigText items in a compartment
@@ -1604,6 +1612,12 @@ public abstract class FigNodeModelElement
      */
     protected void setSuppressCalcBounds(boolean scb) {
         this.suppressCalcBounds = scb;
+    }
+    
+    public void setVisible(boolean visible) {
+        if (!visible && !invisibleAllowed) {
+            throw new IllegalArgumentException("Visibility of a FigNode should never be false");
+        }
     }
 
     /**
