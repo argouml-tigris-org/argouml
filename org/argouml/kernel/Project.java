@@ -988,6 +988,11 @@ public class Project implements java.io.Serializable, TargetListener {
         }
         if (Model.getFacade().isAModelElement(obj)) {
             // an object that can be represented
+            
+            // TODO: Bob says - do we require these two lines.
+            // Surely Figs should be listening for delete events
+            // and so will be removed as a result of the
+            // following line.
             Collection allFigs = findAllPresentationsFor(obj, true);
             removeFigs(allFigs);
 
@@ -1003,9 +1008,14 @@ public class Project implements java.io.Serializable, TargetListener {
 
             if (obj instanceof ProjectMember
                     && members.contains(obj)) {
+                // TODO: Bob says - can this condition ever be reached?
+                // Surely obj cannot be both a model element and a ProjectMember
                 members.remove(obj);
             }
 
+            // TODO: Presumably this is only relevant if obj is actually a Model.
+            // An added test of Model.getFacade.isAModel(obj) would clarify what
+            // is going on here.
             if (models.contains(obj)) {
                 models.remove(obj);
             }
@@ -1014,6 +1024,8 @@ public class Project implements java.io.Serializable, TargetListener {
 
             /* Scan if some diagrams need to be deleted, too. */
             // Copy diagrams, otherwise ConcurrentModificationException.
+            // TODO: Bob says - I thought we no longer deleted attached
+            // diagrams if a model element was deleted.
             Collection c = new ArrayList(diagrams);
             Iterator i = c.iterator();
             while (i.hasNext()) {
@@ -1024,24 +1036,20 @@ public class Project implements java.io.Serializable, TargetListener {
                     }
                 }
             }
-        } else {
-            if (obj instanceof ArgoDiagram) {
-                removeProjectMemberDiagram((ArgoDiagram) obj);
-                needSave = true;
-                // only need to manually delete diagrams because they
-                // don't have a decent event system set up.
-                ExplorerEventAdaptor.getInstance().modelElementRemoved(obj);
-            }
-            if (obj instanceof Fig) {
-                ((Fig) obj).deleteFromModel();
-                needSave = true;
-                // for explorer deletion:
-                obj = ((Fig) obj).getOwner();
-            }
-            if (obj instanceof CommentEdge) {
-                removeFigs(findAllPresentationsFor(obj, false));
-                ((CommentEdge) obj).delete();
-            }
+        } else if (obj instanceof ArgoDiagram) {
+            removeProjectMemberDiagram((ArgoDiagram) obj);
+            needSave = true;
+            // only need to manually delete diagrams because they
+            // don't have a decent event system set up.
+            ExplorerEventAdaptor.getInstance().modelElementRemoved(obj);
+        } else if (obj instanceof Fig) {
+            ((Fig) obj).deleteFromModel();
+            needSave = true;
+            // for explorer deletion:
+            obj = ((Fig) obj).getOwner();
+        } else if (obj instanceof CommentEdge) {
+            removeFigs(findAllPresentationsFor(obj, false));
+            ((CommentEdge) obj).delete();
         }
         if (needSave) {
             ProjectManager.getManager().setSaveEnabled(true);
