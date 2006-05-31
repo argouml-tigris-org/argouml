@@ -1476,18 +1476,22 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getBase(java.lang.Object)
      */
     public Object getBase(Object handle) {
-        if (handle instanceof AssociationEndRole) {
-            return ((AssociationEndRole) handle).getBase();
-        } else if (handle instanceof AssociationRole) {
-            return ((AssociationRole) handle).getBase();
-        } else if (handle instanceof Extend) {
-            return ((Extend) handle).getBase();
-        } else if (handle instanceof Include) {
-            return ((Include) handle).getBase();
-        } else if (handle instanceof ClassifierRole) {
-            // TODO: this returns a Collection, not a single Object
-            // Is this what the callers expect?
-            return ((ClassifierRole) handle).getBase();
+        try {
+            if (handle instanceof AssociationEndRole) {
+                return ((AssociationEndRole) handle).getBase();
+            } else if (handle instanceof AssociationRole) {
+                return ((AssociationRole) handle).getBase();
+            } else if (handle instanceof Extend) {
+                return ((Extend) handle).getBase();
+            } else if (handle instanceof Include) {
+                return ((Include) handle).getBase();
+            } else if (handle instanceof ClassifierRole) {
+                // TODO: this returns a Collection, not a single Object
+                // Is this what the callers expect?
+                return ((ClassifierRole) handle).getBase();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentObject(handle);
     }
