@@ -1013,7 +1013,8 @@ public class Project implements java.io.Serializable, TargetListener {
                 members.remove(obj);
             }
 
-            // TODO: Presumably this is only relevant if obj is actually a Model.
+            // TODO: Presumably this is only relevant if 
+            // obj is actually a Model.
             // An added test of Model.getFacade.isAModel(obj) would clarify what
             // is going on here.
             if (models.contains(obj)) {
@@ -1079,7 +1080,6 @@ public class Project implements java.io.Serializable, TargetListener {
         Iterator i = c.iterator();
         while (i.hasNext()) {
             Fig obj = (Fig) i.next();
-            // This should prevent the removeFromDiagram to update the model:
             obj.removeFromDiagram();
         }
     }
