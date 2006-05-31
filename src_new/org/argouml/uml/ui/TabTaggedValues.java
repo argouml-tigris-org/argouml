@@ -252,10 +252,10 @@ public class TabTaggedValues extends AbstractArgoJPanel
                 (DefaultListSelectionModel) e.getSource();
             ArrayList tvs = new ArrayList(Model.getFacade()
                     .getTaggedValuesCollection(target));
-            if (sel.getLeadSelectionIndex() >= 0 &&
-                     sel.getLeadSelectionIndex() < tvs.size()) {
+            int index = sel.getLeadSelectionIndex();
+            if (index >= 0 && index < tvs.size()) {
                 Object tagDef = Model.getFacade().getTagDefinition(
-                        tvs.get(sel.getLeadSelectionIndex()));
+                        tvs.get(index));
                 tagDefinitionsComboBoxModel.setSelectedItem(tagDef);
             }
         }
