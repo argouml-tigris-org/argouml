@@ -117,9 +117,13 @@ public class UMLActivityDiagram extends UMLDiagram {
                 setup(context, o);
             }
         } else {
-            throw new IllegalStateException("Cannot find context namespace "
-                        + "while initializing "
-                        + "activity diagram");
+            Object namespace = Model.getFacade().getNamespace(o);
+            if (namespace != null) {
+                setup(namespace, o);
+            } else {
+                throw new IllegalStateException("Cannot find context "
+                        + "nor namespace while initializing activity diagram");
+            }
         }
     }
 
