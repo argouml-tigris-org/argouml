@@ -35,6 +35,7 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Layer;
@@ -61,12 +62,19 @@ public class FigEdgeNote
 	       PropertyChangeListener {
 
     /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 7210384676965727564L;
+
+    /**
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(FigEdgeNote.class);
 
-    private Object owner;
-
+    private CommentEdge owner;
+    
+    private Object comment;
+    private Object annotatedElement;
 
     /**
      * Construct a new note connection. Use the same layout as for
@@ -170,11 +178,17 @@ public class FigEdgeNote
     }
 
     /**
+     * Listen for a RemoveAssociationEvent between the comment
+     * and the annotated element. When recieved delete the CommentEdge
+     * and this FigEdgeNote.
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent e) {
-        // TODO: are we intentionally eating all events? - tfm 20060203
-        // document reason if so
+        if (e instanceof RemoveAssociationEvent &&
+                e.getOldValue() == annotatedElement) {
+            owner.delete();
+            removeFromDiagram();
+        }
     }
     
     /**
@@ -194,13 +208,18 @@ public class FigEdgeNote
             // the whole model yet in XMI
             newOwner = new CommentEdge();
         }
-        owner = newOwner;
+        owner = (CommentEdge)newOwner;
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getOwner()
      */
     public Object getOwner() {
+        if (owner == null) {
+            // hack to avoid loading problems since we cannot store
+            // the whole model yet in XMI
+            owner = new CommentEdge();
+        }
         return owner;
     }
 
@@ -245,7 +264,7 @@ public class FigEdgeNote
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent pve) {
-        super.propertyChange(pve);
+        modelChanged(pve);
     }
 
     
@@ -284,10 +303,44 @@ public class FigEdgeNote
         }
         return null;
     }
+    
+    public void setDestFigNode(FigNode fn) {
+        if (fn != null && Model.getFacade().isAComment(fn.getOwner())) {
+            Object oldComment = comment;
+            if (oldComment != null) {
+                removeElementListener(oldComment);
+            }
+            comment = fn.getOwner();
+            if (comment != null) {
+                addElementListener(comment);
+            }
+            
+            ((CommentEdge)getOwner()).setComment(comment);
+        } else if (fn != null &&
+                !Model.getFacade().isAComment(fn.getOwner())) {
+            annotatedElement = fn.getOwner();
+            ((CommentEdge)getOwner()).setAnnotatedElement(annotatedElement);
+        }
 
+        super.setDestFigNode(fn);
+    }
 
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 7210384676965727564L;
+    public void setSourceFigNode(FigNode fn) {
+        if (fn != null && Model.getFacade().isAComment(fn.getOwner())) {
+            Object oldComment = comment;
+            if (oldComment != null) {
+                removeElementListener(oldComment);
+            }
+            comment = fn.getOwner();
+            if (comment != null) {
+                addElementListener(comment);
+            }
+            ((CommentEdge)getOwner()).setComment(comment);
+        } else if (fn != null &&
+                !Model.getFacade().isAComment(fn.getOwner())) {
+            annotatedElement = fn.getOwner();
+            ((CommentEdge)getOwner()).setAnnotatedElement(annotatedElement);
+        }
+        super.setSourceFigNode(fn);
+    }
 } /* end class FigEdgeNote */

@@ -441,6 +441,7 @@ public class Project implements java.io.Serializable, TargetListener {
                 TargetManager.getInstance().setTarget(defaultDiagram);
             }
         }
+        ProjectManager.getManager().setSaveEnabled(true);
     }
 
 
@@ -1021,12 +1022,11 @@ public class Project implements java.io.Serializable, TargetListener {
                 models.remove(obj);
             }
 
-            needSave = true;
-
             /* Scan if some diagrams need to be deleted, too. */
             // Copy diagrams, otherwise ConcurrentModificationException.
-            // TODO: Bob says - I thought we no longer deleted attached
-            // diagrams if a model element was deleted.
+            // TODO: Bob says - I believe Diagrams should be listening for
+            // delete events from their owners. When recieved that diagram
+            // should request removal from the Project.
             Collection c = new ArrayList(diagrams);
             Iterator i = c.iterator();
             while (i.hasNext()) {
@@ -1039,21 +1039,16 @@ public class Project implements java.io.Serializable, TargetListener {
             }
         } else if (obj instanceof ArgoDiagram) {
             removeProjectMemberDiagram((ArgoDiagram) obj);
-            needSave = true;
             // only need to manually delete diagrams because they
             // don't have a decent event system set up.
             ExplorerEventAdaptor.getInstance().modelElementRemoved(obj);
         } else if (obj instanceof Fig) {
+            LOG.error("Request to delete a Fig " + obj.getClass().getName());
             ((Fig) obj).deleteFromModel();
-            needSave = true;
-            // for explorer deletion:
-            obj = ((Fig) obj).getOwner();
         } else if (obj instanceof CommentEdge) {
-            removeFigs(findAllPresentationsFor(obj, false));
-            ((CommentEdge) obj).delete();
-        }
-        if (needSave) {
-            ProjectManager.getManager().setSaveEnabled(true);
+            CommentEdge ce = (CommentEdge)obj;
+            LOG.info("Removing the link from " + ce.getAnnotatedElement() + " to " + ce.getComment());
+            Model.getCoreHelper().removeAnnotatedElement(ce.getComment(), ce.getAnnotatedElement());
         }
     }
 
