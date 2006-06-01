@@ -37,7 +37,6 @@ import org.argouml.application.api.ConfigurationKey;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
-import org.argouml.notation.ui.SettingsTabNotation;
 
 /**
  * Provides centralized methods dealing with notation.
