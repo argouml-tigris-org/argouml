@@ -40,7 +40,6 @@ import org.argouml.application.api.ConfigurationKey;
 import org.argouml.i18n.Translator;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
-import org.argouml.ui.GUI;
 import org.argouml.ui.GUISettingsTabInterface;
 import org.argouml.ui.ShadowComboBox;
 
@@ -137,7 +136,6 @@ public class SettingsTabNotation
 
         add(top, BorderLayout.NORTH);
 
-        GUI.getInstance().addSettingsTab(this);
     }
 
     /**
