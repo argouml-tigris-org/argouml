@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.argouml.notation.ui.SettingsTabNotation;
+
 /**
  * This is the "main" class for the GUI subsystem.<p>
  *
@@ -51,6 +53,7 @@ public final class GUI {
         addSettingsTab(new SettingsTabEnvironment());
         addSettingsTab(new SettingsTabUser());
         addSettingsTab(new SettingsTabAppearance());
+        addSettingsTab(new SettingsTabNotation());
     }
 
     /**
@@ -93,6 +96,8 @@ public final class GUI {
      *
      * @param file The File.
      * @throws IOException if we cannot get the filename.
+     * @deprecated before 0.21.3 by tfmorris.  Use 
+     * ProjectBrowser.addFileSaved() directly.
      */
     public void addFileSaved(File file) throws IOException {
         ProjectBrowser.getInstance().addFileSaved(file);
