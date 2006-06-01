@@ -1148,4 +1148,31 @@ because they are generated.
     </exec>
   </target>
 
+  <!-- =================================================================== -->
+  <!-- Runs Classycle to find cyclic dependencies in ArgoUML.             -->
+  <!-- =================================================================== -->
+    <target name="classycle" depends="init" 
+        description="Analyze sources for cyclic dependencies using Classcycle">
+      <echo>
+  Running classcyle on ${source.dir}.
+  </echo>
+      <property name="classycle.output" value="${argo.build.dir}/classycle"/>
+      <property name="classycle.dir" value="${argo.tools.dir}/Classycle"/>
+      <mkdir dir="${classycle.output}"/>
+      <java jar="${classycle.dir}/classycle.jar" failonerror="false" 
+          fork="true" maxmemory="32M">
+        <arg value="-mergeInnerClasses"/>
+        <arg value="-includingClasses=org.argouml.*"/>
+        <arg value="-excludingClasses=java.*,javax.*"/>
+        <arg value="-xmlFile=${classycle.output}/argouml-classcycles.xml"/>
+        <arg value="-title=ArgoUML-${argo.build.version}"/>
+        <arg value="${argo.build.classes}"/>
+      </java>
+      <copy todir="${classycle.output}">
+        <fileset dir="${classycle.dir}">
+          <include name="*.xsl"/>
+          <include name="images/**"/>
+        </fileset>
+      </copy>
+    </target>
 </project><!-- End of file -->
