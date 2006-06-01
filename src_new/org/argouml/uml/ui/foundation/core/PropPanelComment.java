@@ -42,9 +42,6 @@ import org.argouml.util.ConfigLoader;
 /**
  * Proppanel for comments (notes). <p>
  *
- * In UML 1.3, the text of the comment is kept
- * in the name of the Comment.<p>
- *
  * In UML 1.4 and beyond, the Comment has a "body"
  * attribute to contain the comment string, although 
  * some UML tools continue to use the name attribute.
