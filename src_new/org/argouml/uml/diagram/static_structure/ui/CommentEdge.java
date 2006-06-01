@@ -71,6 +71,13 @@ public class CommentEdge {
                     "The destination of the CommentEdge " +
                     "must be a model element");
         }
+        if (Model.getFacade().isAComment(source)) {
+            comment = source;
+            annotatedElement = dest;
+        } else {
+            comment = dest;
+            annotatedElement = source;
+        }
         this.source = source;
         this.dest = dest;
         uuid = UUIDManager.getInstance().getNewUUID();

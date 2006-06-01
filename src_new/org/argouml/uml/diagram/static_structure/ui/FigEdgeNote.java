@@ -206,7 +206,7 @@ public class FigEdgeNote
         if (newOwner == null) {
             // hack to avoid loading problems since we cannot store
             // the whole model yet in XMI
-            newOwner = new CommentEdge();
+            newOwner = new CommentEdge(comment, annotatedElement);
         }
         owner = (CommentEdge)newOwner;
     }
