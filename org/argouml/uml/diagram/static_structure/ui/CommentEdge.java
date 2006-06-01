@@ -45,6 +45,8 @@ public class CommentEdge {
     private Object source;
     private Object dest;
     private Object uuid;
+    private Object comment;
+    private Object annotatedElement;
 
     private static final Logger LOG =
         Logger.getLogger(UseCaseDiagramRenderer.class);
@@ -150,5 +152,33 @@ public class CommentEdge {
     public String toString() {
         // This is the tooltip of a comment link
         return Translator.localize("misc.tooltip.commentlink");
+    }
+
+    public Object getAnnotatedElement() {
+        return annotatedElement;
+    }
+
+    public void setAnnotatedElement(Object annotatedElement) {
+        if (annotatedElement == null) {
+            throw new IllegalArgumentException("An annotated element must be supplied");
+        }
+        if (Model.getFacade().isAComment(annotatedElement)) {
+            throw new IllegalArgumentException("An annotated element cannot be a comment");
+        }
+        this.annotatedElement = annotatedElement;
+    }
+
+    public Object getComment() {
+        return comment;
+    }
+
+    public void setComment(Object comment) {
+        if (comment == null) {
+            throw new IllegalArgumentException("A comment must be supplied");
+        }
+        if (!Model.getFacade().isAComment(comment)) {
+            throw new IllegalArgumentException("A comment cannot be a " + comment.getClass().getName());
+        }
+        this.comment = comment;
     }
 }
