@@ -59,11 +59,7 @@ visibility="<ocl ignoreNull>org.argouml.persistence.PgmlUtility.getVisibility(se
 
 >
   <private>ItemUID="<ocl ignoreNull>self.ItemUID</ocl>"</private>
-
-  <ocl>self.layer.contentsNoEdges</ocl>
-
-  <ocl>org.argouml.persistence.PgmlUtility.getEdges(self)</ocl>
-
+  <ocl>self.layer.contents</ocl>
 </pgml>
 
 ]]>
