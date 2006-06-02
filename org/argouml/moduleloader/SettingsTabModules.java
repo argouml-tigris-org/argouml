@@ -292,4 +292,12 @@ class SettingsTabModules extends JPanel
      * The UID.
      */
     private static final long serialVersionUID = 8945027241102020504L;
+
+    /**
+     * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
+     */
+    public void handleResetToDefault() {
+        // Do nothing - these buttons are not shown.
+    }
+
 }

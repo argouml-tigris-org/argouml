@@ -29,6 +29,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationHelper;
 import org.argouml.uml.diagram.static_structure.ui.FigFeature;
@@ -112,6 +115,9 @@ public class FigStereotypesCompartment extends FigCompartment {
         Fig bigPort = this.getBigPort();
         int xpos = bigPort.getX();
         int ypos = bigPort.getY();
+        Project project = 
+            ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = project.getProjectSettings();
 
         List figs = getFigs();
         CompartmentFigText stereotypeTextFig;
@@ -137,9 +143,9 @@ public class FigStereotypesCompartment extends FigCompartment {
                     (CompartmentFigText) figs.get(acounter);
             }
             stereotypeTextFig.setText(
-                    NotationHelper.getLeftGuillemot()
+                    ps.getLeftGuillemot()
                     + keyword
-                    + NotationHelper.getRightGuillemot());
+                    + ps.getRightGuillemot());
             acounter++;
         }
 
@@ -167,9 +173,9 @@ public class FigStereotypesCompartment extends FigCompartment {
                     stereotypeTextFig =
                         (CompartmentFigText) figs.get(acounter);
                 }
-                stereotypeTextFig.setText(NotationHelper.getLeftGuillemot()
+                stereotypeTextFig.setText(ps.getLeftGuillemot()
                         + Model.getFacade().getName(stereotype)
-                        + NotationHelper.getRightGuillemot());
+                        + ps.getRightGuillemot());
                 stereotypeTextFig.setOwner(stereotype);
 
                 acounter++;

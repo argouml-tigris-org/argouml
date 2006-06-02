@@ -102,10 +102,14 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     private URL url;
 
+    /* The preferences with project-scope: */
     private String authorname;
     private String authoremail;
     private String description;
+    /* The ArgoUML version with which this project was last saved: */
     private String version;
+
+    private ProjectSettings projectSettings;
 
     private Vector searchpath;
 
@@ -165,8 +169,9 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public Project() {
         profile = new ProfileJava();
+        projectSettings = new ProjectSettings();
+        
         Model.getModelManagementFactory().setRootModel(null);
-
 
         authorname = Configuration.getString(Argo.KEY_USER_FULLNAME);
         authoremail = Configuration.getString(Argo.KEY_USER_EMAIL);
@@ -1406,4 +1411,12 @@ public class Project implements java.io.Serializable, TargetListener {
         }
         return report;
     }
+
+    /**
+     * @return the settings of this project
+     */
+    public ProjectSettings getProjectSettings() {
+        return projectSettings;
+    }
+
 } /* end class Project */

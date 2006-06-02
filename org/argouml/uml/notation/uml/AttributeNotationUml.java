@@ -34,6 +34,7 @@ import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.ui.ProjectBrowser;
@@ -419,8 +420,11 @@ public class AttributeNotationUml extends AttributeNotation {
         }
 
         if (value != null) {
+            Project project = 
+                ProjectManager.getManager().getCurrentProject();
+            ProjectSettings ps = project.getProjectSettings();
             Object initExpr = Model.getDataTypesFactory().createExpression(
-                Notation.getConfigueredNotation().toString(), value.trim());
+                    ps.getNotationLanguage(), value.trim());
             Model.getCoreHelper().setInitialValue(attribute, initExpr);
         }
 
@@ -463,6 +467,9 @@ public class AttributeNotationUml extends AttributeNotation {
      * @see java.lang.Object#toString()
      */
     public String toString() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = p.getProjectSettings();
+        
         String visibility = NotationUtilityUml.generateVisibility(myAttribute);
         // generateStereotype accepts a collection, despite its name
         String stereo = NotationUtilityUml.generateStereotype(
@@ -502,7 +509,7 @@ public class AttributeNotationUml extends AttributeNotation {
         }
         if ((visibility != null)
             && (visibility.length() > 0)
-            && Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY)) {
+            && ps.getShowVisibilityValue()) {
             sb.append(visibility);
         }
         if ((name != null) && (name.length() > 0)) {
@@ -510,22 +517,22 @@ public class AttributeNotationUml extends AttributeNotation {
         }
         if ((multiplicity != null)
             && (multiplicity.length() > 0)
-            && Configuration.getBoolean(Notation.KEY_SHOW_MULTIPLICITY)) {
+            && ps.getShowMultiplicityValue()) {
             sb.append("[").append(multiplicity).append("]").append(" ");
         }
         if ((type != null) && (type.length() > 0)
             /* The "show types" defaults to TRUE, to stay compatible with older
              * ArgoUML versions that did not have this setting: */
-            && Configuration.getBoolean(Notation.KEY_SHOW_TYPES, true)) {
+            && ps.getShowTypesValue()) {
             sb.append(": ").append(type).append(" ");
         }
         if ((initialValue != null)
             && (initialValue.length() > 0)
-            && Configuration.getBoolean(Notation.KEY_SHOW_INITIAL_VALUE)) {
+            && ps.getShowInitialValueValue()) {
             sb.append(" = ").append(initialValue).append(" ");
         }
         if ((properties.length() > 0)
-            && Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES)) {
+            && ps.getShowPropertiesValue()) {
             sb.append(properties);
         }
         return sb.toString().trim();

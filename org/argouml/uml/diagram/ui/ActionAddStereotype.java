@@ -26,6 +26,9 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationHelper;
 import org.argouml.uml.ui.UMLAction;
@@ -45,11 +48,17 @@ class ActionAddStereotype extends UMLAction {
      * @param st The stereotype.
      */
     public ActionAddStereotype(Object me, Object st) {
-        super(NotationHelper.getLeftGuillemot()
-                + Model.getFacade().getName(st)
-                + NotationHelper.getRightGuillemot(), NO_ICON);
+        super(buildString(st), NO_ICON);
         modelElement = me;
         stereotype = st;
+    }
+    
+    private static String buildString(Object st) {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = p.getProjectSettings();
+        return ps.getLeftGuillemot() 
+            + Model.getFacade().getName(st)
+            + ps.getRightGuillemot();
     }
 
     /**

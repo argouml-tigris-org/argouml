@@ -56,7 +56,6 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.ArgoEventListener;
-import org.argouml.application.api.Configuration;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
@@ -71,11 +70,11 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
 import org.argouml.notation.NotationContext;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider4;
@@ -261,8 +260,7 @@ public abstract class FigNodeModelElement
     private boolean readyToEdit = true;
     private boolean suppressCalcBounds;
 
-    private int shadowSize =
-        Configuration.getInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
+    private int shadowSize;
 
     private ItemUID itemUid;
 
@@ -315,7 +313,13 @@ public abstract class FigNodeModelElement
 
         readyToEdit = false;
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
-        currentNotationName = Notation.getConfigueredNotation();
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = p.getProjectSettings();
+        currentNotationName = ps.getNotationName();
+
+        shadowSize = ps.getDefaultShadowWidthValue();
+        /* TODO: how to handle changes in shadowsize 
+         * from the project properties? */
     }
 
     /**
@@ -1349,7 +1353,8 @@ public abstract class FigNodeModelElement
      * Additionally, this function may be used by the modelChanged()
      * function.<p>
      * 
-     * In this case, it is also imperative that all listeners get removed / added.
+     * In this case, it is also imperative that 
+     * all listeners get removed / added.
      * 
      * @param newOwner null, or the owner of this. 
      *          The former means that listeners have to be removed, 
@@ -1388,19 +1393,16 @@ public abstract class FigNodeModelElement
      */
     public void notationChanged(ArgoNotationEvent event) {
         if (getOwner() == null) return;
-        PropertyChangeEvent changeEvent =
-	    (PropertyChangeEvent) event.getSource();
-        if (changeEvent.getPropertyName().equals("argo.notation.only.uml")) {
-            if (changeEvent.getNewValue().equals("true")) {
-                setContextNotation(Notation.getConfigueredNotation());
-            }
-        } else if (changeEvent.getPropertyName()
-                .equals("argo.notation.default")) {
-            setContextNotation(
-                Notation.findNotation((String) changeEvent.getNewValue()));
-        }
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = p.getProjectSettings();
+        setContextNotation(ps.getNotationName());
+
         initNotationProviders(getOwner());
-        renderingChanged();
+        try {
+            renderingChanged();
+        } catch (Exception e) {
+            LOG.error("Exception", e);
+        }
     }
 
     /**

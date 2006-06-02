@@ -185,6 +185,13 @@ class SettingsTabLayout extends JPanel
     public void handleSettingsTabCancel() { }
 
     /**
+     * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
+     */
+    public void handleResetToDefault() {
+        // Do nothing - these buttons are not shown.
+    }
+
+    /**
      * @see GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() { return "tab.layout"; }

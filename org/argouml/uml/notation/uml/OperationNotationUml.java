@@ -35,6 +35,7 @@ import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.ui.ProjectBrowser;
@@ -444,6 +445,9 @@ public class OperationNotationUml extends OperationNotation {
      * @see java.lang.Object#toString()
      */
     public String toString() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = p.getProjectSettings();
+        
         String stereoStr = NotationUtilityUml.generateStereotype(
                 Model.getFacade().getStereotypes(myOperation));
         String visStr = NotationUtilityUml.generateVisibility(myOperation);
@@ -534,7 +538,7 @@ public class OperationNotationUml extends OperationNotation {
         }
         if ((visStr != null)
             && (visStr.length() > 0)
-            && Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY)) {
+            && ps.getShowVisibilityValue()) {
             genStr.append(visStr);
         }
         if ((nameStr != null) && (nameStr.length() > 0)) {
@@ -542,7 +546,7 @@ public class OperationNotationUml extends OperationNotation {
         }
         /* The "show types" defaults to TRUE, to stay compatible with older
          * ArgoUML versions that did not have this setting: */
-        if (Configuration.getBoolean(Notation.KEY_SHOW_TYPES, true)) {
+        if (ps.getShowTypesValue()) {
             genStr.append(parameterStr).append(" ");
             if ((returnParasSb != null) && (returnParasSb.length() > 0)) {
                 genStr.append(returnParasSb).append(" ");
@@ -551,7 +555,7 @@ public class OperationNotationUml extends OperationNotation {
             genStr.append("()");
         }
         if ((propertySb.length() > 0)
-            && Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES)) {
+            && ps.getShowPropertiesValue()) {
             genStr.append(propertySb);
         }
         return genStr.toString().trim();

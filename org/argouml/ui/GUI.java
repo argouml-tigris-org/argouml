@@ -44,6 +44,21 @@ import org.argouml.notation.ui.SettingsTabNotation;
  * @since 0.21.3
  */
 public final class GUI {
+
+    /**
+     * The scope of the settings: this setting is stored 
+     * in the userdirectory and valid for the application.
+     */
+    public static final int SCOPE_APPLICATION = 0;
+
+    /**
+     * The scope of the setting: this setting is stored with the project, 
+     * i.,e. in e.g. a zargo file. This setting will also apply 
+     * when the zargo file is opened by another user, 
+     * on another computer. 
+     */
+    public static final int SCOPE_PROJECT = 1;
+
     /**
      * Constructor.
      */
@@ -53,7 +68,12 @@ public final class GUI {
         addSettingsTab(new SettingsTabEnvironment());
         addSettingsTab(new SettingsTabUser());
         addSettingsTab(new SettingsTabAppearance());
-        addSettingsTab(new SettingsTabNotation());
+        addSettingsTab(new SettingsTabNotation(
+                GUI.SCOPE_APPLICATION));
+
+        addProjectSettingsTab(new ProjectSettingsTabProperties());
+        addProjectSettingsTab(new SettingsTabNotation(
+                GUI.SCOPE_PROJECT));
     }
 
     /**
@@ -91,6 +111,29 @@ public final class GUI {
         return Collections.unmodifiableList(settingsTabs);
     }
 
+    /**
+     * A List of {@link GUISettingsTabInterface}.
+     */
+    private List projectSettingsTabs = new ArrayList();
+
+    /**
+     * Register a new ProjectSettingsTab.
+     *
+     * @param panel The GUISettingsTabInterface to add.
+     */
+    public void addProjectSettingsTab(GUISettingsTabInterface panel) {
+        projectSettingsTabs.add(panel);
+    }
+
+    /**
+     * Get the components for the project settings tab.
+     *
+     * @return A List of {@link GUISettingsTabInterface}.
+     */
+    public List getProjectSettingsTabs() {
+        return Collections.unmodifiableList(projectSettingsTabs);
+    }
+    
     /**
      * Register a file in the menubar.
      *

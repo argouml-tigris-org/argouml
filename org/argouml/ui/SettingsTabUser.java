@@ -38,7 +38,7 @@ import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 
 /**
- * Action object for handling Argo settings.
+ * Tab Panel for setting the default user attributes: name and email.
  *
  * @author Thierry Lach
  * @since  0.9.4
@@ -127,6 +127,13 @@ class SettingsTabUser extends JPanel
      */
     public void handleSettingsTabCancel() {
 	handleSettingsTabRefresh();
+    }
+
+    /**
+     * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
+     */
+    public void handleResetToDefault() {
+        // Do nothing - these buttons are not shown.
     }
 
     /**

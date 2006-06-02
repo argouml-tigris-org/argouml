@@ -31,12 +31,10 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Configuration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
-import org.argouml.notation.NotationHelper;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileException;
 import org.argouml.util.MyTokenizer;
@@ -50,7 +48,8 @@ public final class NotationUtilityUml {
     /**
      * The standard error etc. logger
      */
-    private static final Logger LOG = Logger.getLogger(NotationUtilityUml.class);
+    private static final Logger LOG = 
+        Logger.getLogger(NotationUtilityUml.class);
 
     /**
      * The array of special properties for attributes.
@@ -416,7 +415,9 @@ public final class NotationUtilityUml {
         if (o == null) {
             return "";
         }
-        if (!Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY, true)) {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = p.getProjectSettings();
+        if (!ps.getShowVisibilityValue()) {
             return "";
         }
         if (Model.getFacade().isAModelElement(o)) {
@@ -490,7 +491,8 @@ public final class NotationUtilityUml {
         MyTokenizer st =
             new MyTokenizer(param, " ,\t,:,=,\\,", parameterCustomSep);
         // Copy returned parameters because it will be a live collection for MDR
-        Collection origParam = new ArrayList(Model.getFacade().getParameters(op));
+        Collection origParam = 
+            new ArrayList(Model.getFacade().getParameters(op));
         Object ns = Model.getFacade().getModel(op);
         if (Model.getFacade().isAOperation(op)) {
             Object ow = Model.getFacade().getOwner(op);
@@ -610,10 +612,15 @@ public final class NotationUtilityUml {
             }
 
             if (value != null) {
+                Project project = 
+                    ProjectManager.getManager().getCurrentProject();
+                ProjectSettings ps = project.getProjectSettings();
+                
                 Object initExpr =
                     Model.getDataTypesFactory()
                         .createExpression(
-                                Notation.getConfigueredNotation().toString(),
+                                // TODO: Find a better default language
+                                ps.getNotationLanguage(),
                                 value.trim());
                 Model.getCoreHelper().setDefaultValue(p, initExpr);
             }
@@ -727,8 +734,8 @@ public final class NotationUtilityUml {
 
 
     /**
-     * Interface specifying the operation to take when a PropertySpecialString is
-     * matched.
+     * Interface specifying the operation to take when a 
+     * PropertySpecialString is matched.
      *
      * @author Michael Stockman
      * @since 0.11.2
@@ -741,7 +748,8 @@ public final class NotationUtilityUml {
          * @param element
          *            The element on which the property was set.
          * @param value
-         *            The value of the property, may be null if no value was given.
+         *            The value of the property, 
+         *            may be null if no value was given.
          */
         void found(Object element, String value);
     }
@@ -882,14 +890,18 @@ public final class NotationUtilityUml {
     public static String generateStereotype(Object st) {
         if (st == null)
             return "";
+        Project project = 
+            ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = project.getProjectSettings();
+
         if (Model.getFacade().isAStereotype(st)) {
             if (Model.getFacade().getName(st) == null)
                 return ""; // Patch by Jeremy Bennett
             if (Model.getFacade().getName(st).length() == 0)
                 return "";
-            return NotationHelper.getLeftGuillemot()
+            return ps.getLeftGuillemot()
                 + Model.getFacade().getName(st)
-                + NotationHelper.getRightGuillemot();
+                + ps.getRightGuillemot();
         }
         if (Model.getFacade().isAModelElement(st)) {
             st = Model.getFacade().getStereotypes(st);
@@ -909,9 +921,9 @@ public final class NotationUtilityUml {
                 }
             }
             if (!first) {
-                return NotationHelper.getLeftGuillemot()
+                return ps.getLeftGuillemot()
                     + sb.toString()
-                    + NotationHelper.getRightGuillemot();
+                    + ps.getRightGuillemot();
             }
         }
         return "";

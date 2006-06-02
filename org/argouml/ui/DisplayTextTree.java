@@ -34,12 +34,13 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Configuration;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
 import org.argouml.notation.NotationHelper;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
@@ -99,8 +100,10 @@ public class DisplayTextTree extends JTree {
 
         expandedPathsInModel = new Hashtable();
         reexpanding = false;
-        showStereotype =
-    	    Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
+
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = p.getProjectSettings();
+        showStereotype = ps.getShowStereotypesValue();
     }
 
     // ------------ methods that override JTree methods ---------

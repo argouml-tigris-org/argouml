@@ -45,7 +45,9 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.argouml.application.api.Configuration;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.notation.Notation;
 import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.ProjectBrowser;
@@ -230,9 +232,9 @@ public class ExplorerTree
          * @see javax.swing.event.TreeWillExpandListener#treeWillExpand(javax.swing.event.TreeExpansionEvent)
          */
         public void treeWillExpand(TreeExpansionEvent tee) {
-
-            showStereotype =
-		Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
+            Project p = ProjectManager.getManager().getCurrentProject();
+            ProjectSettings ps = p.getProjectSettings();
+            showStereotype = ps.getShowStereotypesValue();
 
             if (getModel() instanceof ExplorerTreeModel) {
 

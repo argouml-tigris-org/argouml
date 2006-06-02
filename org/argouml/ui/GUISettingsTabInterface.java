@@ -57,7 +57,17 @@ public interface GUISettingsTabInterface {
      * Load or reload field settings.
      */
     void handleSettingsTabRefresh();
-
+    
+    /**
+     * Reset the settings shown to the same settings with a broader scope.
+     * I.e. copy settings from wider scope to narrow scope. <p>
+     * 
+     * Remark:
+     * This shall only adapt the displayed value! 
+     * You need a save to make the actual change.
+     */
+    void handleResetToDefault();
+    
     /**
      * Gets the unlocalized settings tab name.
      *

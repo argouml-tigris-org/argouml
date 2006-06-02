@@ -25,15 +25,15 @@
 package org.argouml.uml.generator;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.PluggableNotation;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationHelper;
 import org.argouml.notation.NotationName;
 
 /**
@@ -83,7 +83,7 @@ public abstract class Generator2
      */
     public static final String INDENT = "  ";
 
-    private static Map generators = new HashMap();
+//    private static Map generators = new HashMap();
 
     /**
      * Access method that finds the correct generator based on a name.
@@ -295,14 +295,17 @@ public abstract class Generator2
     public String generateStereotype(Object st) {
         if (st == null)
             return "";
+        Project project = 
+            ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = project.getProjectSettings();
         if (Model.getFacade().isAModelElement(st)) {
             if (Model.getFacade().getName(st) == null)
                 return ""; // Patch by Jeremy Bennett
             if (Model.getFacade().getName(st).length() == 0)
                 return "";
-            return NotationHelper.getLeftGuillemot()
-            + generateName(Model.getFacade().getName(st))
-            + NotationHelper.getRightGuillemot();
+            return ps.getLeftGuillemot()
+                + generateName(Model.getFacade().getName(st))
+                + ps.getRightGuillemot();
         }
         if (st instanceof Collection) {
             Object o;
@@ -319,9 +322,9 @@ public abstract class Generator2
                 }
             }
             if (!first) {
-                return NotationHelper.getLeftGuillemot()
+                return ps.getLeftGuillemot()
 		    + sb.toString()
-		    + NotationHelper.getRightGuillemot();
+		    + ps.getRightGuillemot();
 	    }
         }
         return "";

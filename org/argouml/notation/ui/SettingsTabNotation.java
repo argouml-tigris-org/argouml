@@ -38,13 +38,24 @@ import javax.swing.JPanel;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
+import org.argouml.ui.GUI;
 import org.argouml.ui.GUISettingsTabInterface;
 import org.argouml.ui.ShadowComboBox;
 
 /**
- * Settings tab panel for handling Notation settings.
+ * Settings tab panel for handling Notation settings. <p>
+ * 
+ * It supports different scopes: application and project.
+ * The former is stored in the properties file in the user-directory, 
+ * the latter in the project file (.zargo,...). <p>
+ * 
+ * This class is written in a way that supports 
+ * adding more scopes easily.
  *
  * @author Thierry Lach
  * @since  0.9.4
@@ -60,15 +71,22 @@ public class SettingsTabNotation
     private JCheckBox showMultiplicity;
     private JCheckBox showInitialValue;
     private JCheckBox showProperties;
-    private JCheckBox showStereotypes;
     private JCheckBox showTypes;
+    private JCheckBox showStereotypes;
     private ShadowComboBox defaultShadowWidth;
+    
+    private int scope;
 
     /**
      * The constructor.
+     * We currently support 2 scopes, but this class is written 
+     * in a way to easily extend that.
+     *
+     * @param settingsScope the scope of the settings
      */
-    public SettingsTabNotation() {
+    public SettingsTabNotation(int settingsScope) {
         super();
+        scope = settingsScope;
         setLayout(new BorderLayout());
         JPanel top = new JPanel();
 
@@ -135,31 +153,54 @@ public class SettingsTabNotation
         top.add(defaultShadowWidthPanel, constraints);
 
         add(top, BorderLayout.NORTH);
-
     }
 
     /**
      * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
-        useGuillemots.setSelected(Notation.getUseGuillemots());
-        notationLanguage.setSelectedItem(Notation.getConfigueredNotation());
-        allowNotations.setSelected(getBoolean(Notation.KEY_UML_NOTATION_ONLY));
-        showVisibility.setSelected(getBoolean(Notation.KEY_SHOW_VISIBILITY));
-        showInitialValue.setSelected(
-            getBoolean(Notation.KEY_SHOW_INITIAL_VALUE));
-        showProperties.setSelected(getBoolean(Notation.KEY_SHOW_PROPERTIES));
-        /*
-         * The next one defaults to TRUE, to stay compatible with older
-         * ArgoUML versions that did not have this setting:
-         */
-        showTypes.setSelected(Configuration.getBoolean(
-                Notation.KEY_SHOW_TYPES, true));
-        showMultiplicity.setSelected(
-            getBoolean(Notation.KEY_SHOW_MULTIPLICITY));
-        showStereotypes.setSelected(getBoolean(Notation.KEY_SHOW_STEREOTYPES));
-        defaultShadowWidth.setSelectedIndex(
-                Configuration.getInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
+        if (scope == GUI.SCOPE_APPLICATION) {
+            useGuillemots.setSelected(getBoolean(
+                    Notation.KEY_USE_GUILLEMOTS));
+            allowNotations.setSelected(getBoolean(
+                    Notation.KEY_UML_NOTATION_ONLY));
+            notationLanguage.setSelectedItem(Notation.getConfigueredNotation());
+            showVisibility.setSelected(getBoolean(
+                    Notation.KEY_SHOW_VISIBILITY));
+            showInitialValue.setSelected(getBoolean(
+                    Notation.KEY_SHOW_INITIAL_VALUE));
+            showProperties.setSelected(getBoolean(
+                    Notation.KEY_SHOW_PROPERTIES));
+            /*
+             * The next one defaults to TRUE, to stay compatible with older
+             * ArgoUML versions that did not have this setting:
+             */
+            showTypes.setSelected(Configuration.getBoolean(
+                    Notation.KEY_SHOW_TYPES, true));
+            showMultiplicity.setSelected(getBoolean(
+                    Notation.KEY_SHOW_MULTIPLICITY));
+            showStereotypes.setSelected(getBoolean(
+                    Notation.KEY_SHOW_STEREOTYPES));
+            defaultShadowWidth.setSelectedIndex(Configuration.getInteger(
+                    Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
+        }
+        if (scope == GUI.SCOPE_PROJECT) {
+            Project p = ProjectManager.getManager().getCurrentProject();
+            ProjectSettings ps = p.getProjectSettings();
+            
+            allowNotations.setSelected(ps.getAllowNotationsValue());
+            notationLanguage.setSelectedItem(Notation.findNotation(
+                    ps.getNotationLanguage()));
+            useGuillemots.setSelected(ps.getUseGuillemotsValue());
+            showVisibility.setSelected(ps.getShowVisibilityValue());
+            showMultiplicity.setSelected(ps.getShowMultiplicityValue());
+            showInitialValue.setSelected(ps.getShowInitialValueValue());
+            showProperties.setSelected(ps.getShowPropertiesValue());
+            showTypes.setSelected(ps.getShowTypesValue());
+            showStereotypes.setSelected(ps.getShowStereotypesValue());
+            defaultShadowWidth.setSelectedIndex(
+                    ps.getDefaultShadowWidthValue());
+        }
     }
 
     /**
@@ -168,7 +209,7 @@ public class SettingsTabNotation
      * @param key a notation key.
      * @return a boolean
      */
-    private static boolean getBoolean(ConfigurationKey key) {
+    protected static boolean getBoolean(ConfigurationKey key) {
         return Configuration.getBoolean(key, false);
     }
 
@@ -176,25 +217,43 @@ public class SettingsTabNotation
      * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
-        Notation.setUseGuillemots(useGuillemots.isSelected());
-        Configuration.setBoolean(Notation.KEY_UML_NOTATION_ONLY,
-                 allowNotations.isSelected());
-        Notation.setDefaultNotation(
-                (NotationName) notationLanguage.getSelectedItem());
-        Configuration.setBoolean(Notation.KEY_SHOW_VISIBILITY,
-                 showVisibility.isSelected());
-        Configuration.setBoolean(Notation.KEY_SHOW_MULTIPLICITY,
-                 showMultiplicity.isSelected());
-        Configuration.setBoolean(Notation.KEY_SHOW_PROPERTIES,
-                 showProperties.isSelected());
-        Configuration.setBoolean(Notation.KEY_SHOW_TYPES,
-                showTypes.isSelected());
-        Configuration.setBoolean(Notation.KEY_SHOW_INITIAL_VALUE,
-                 showInitialValue.isSelected());
-        Configuration.setBoolean(Notation.KEY_SHOW_STEREOTYPES,
-                 showStereotypes.isSelected());
-        Configuration.setInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH,
-                defaultShadowWidth.getSelectedIndex());
+        if (scope == GUI.SCOPE_APPLICATION) {
+            Configuration.setBoolean(Notation.KEY_UML_NOTATION_ONLY,
+                    allowNotations.isSelected());
+            Notation.setDefaultNotation(
+                    (NotationName) notationLanguage.getSelectedItem());
+            Configuration.setBoolean(Notation.KEY_USE_GUILLEMOTS,
+                    useGuillemots.isSelected());
+            Configuration.setBoolean(Notation.KEY_SHOW_VISIBILITY,
+                    showVisibility.isSelected());
+            Configuration.setBoolean(Notation.KEY_SHOW_MULTIPLICITY,
+                    showMultiplicity.isSelected());
+            Configuration.setBoolean(Notation.KEY_SHOW_INITIAL_VALUE,
+                    showInitialValue.isSelected());
+            Configuration.setBoolean(Notation.KEY_SHOW_PROPERTIES,
+                    showProperties.isSelected());
+            Configuration.setBoolean(Notation.KEY_SHOW_TYPES,
+                    showTypes.isSelected());
+            Configuration.setBoolean(Notation.KEY_SHOW_STEREOTYPES,
+                    showStereotypes.isSelected());
+            Configuration.setInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH,
+                    defaultShadowWidth.getSelectedIndex());
+        }
+        if (scope == GUI.SCOPE_PROJECT) {
+            Project p = ProjectManager.getManager().getCurrentProject();
+            ProjectSettings ps = p.getProjectSettings();
+            ps.setAllowNotations(allowNotations.isSelected());
+            NotationName nn = (NotationName) notationLanguage.getSelectedItem();
+            if (nn != null) ps.setNotationLanguage(nn.getConfigurationValue());
+            ps.setUseGuillemots(useGuillemots.isSelected());
+            ps.setShowVisibility(showVisibility.isSelected());
+            ps.setShowMultiplicity(showMultiplicity.isSelected());
+            ps.setShowInitialValue(showInitialValue.isSelected());
+            ps.setShowProperties(showProperties.isSelected());
+            ps.setShowTypes(showTypes.isSelected());
+            ps.setShowStereotypes(showStereotypes.isSelected());
+            ps.setDefaultShadowWidth(defaultShadowWidth.getSelectedIndex());
+        }
     }
 
     /**
@@ -202,6 +261,33 @@ public class SettingsTabNotation
      */
     public void handleSettingsTabCancel() {
         handleSettingsTabRefresh();
+    }
+
+    /**
+     * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
+     */
+    public void handleResetToDefault() {
+        if (scope == GUI.SCOPE_PROJECT) {
+            allowNotations.setSelected(getBoolean(
+                    Notation.KEY_UML_NOTATION_ONLY));
+            notationLanguage.setSelectedItem(Notation.getConfigueredNotation());
+            useGuillemots.setSelected(getBoolean(
+                    Notation.KEY_USE_GUILLEMOTS));
+            showVisibility.setSelected(getBoolean(
+                    Notation.KEY_SHOW_VISIBILITY));
+            showMultiplicity.setSelected(getBoolean(
+                    Notation.KEY_SHOW_MULTIPLICITY));
+            showInitialValue.setSelected(getBoolean(
+                    Notation.KEY_SHOW_INITIAL_VALUE));
+            showProperties.setSelected(Configuration.getBoolean(
+                    Notation.KEY_SHOW_PROPERTIES));
+            showTypes.setSelected(Configuration.getBoolean(
+                    Notation.KEY_SHOW_TYPES, true));
+            showStereotypes.setSelected(Configuration.getBoolean(
+                    Notation.KEY_SHOW_STEREOTYPES));
+            defaultShadowWidth.setSelectedIndex(Configuration.getInteger(
+                    Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
+        }
     }
 
     /**
@@ -233,5 +319,13 @@ public class SettingsTabNotation
      */
     protected JLabel createLabel(String key) {
         return new JLabel(Translator.localize(key));
+    }
+
+    /**
+     * @see javax.swing.JComponent#setVisible(boolean)
+     */
+    public void setVisible(boolean arg0) {
+        super.setVisible(arg0);
+        if (arg0) handleSettingsTabRefresh();
     }
 }
