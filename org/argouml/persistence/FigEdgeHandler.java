@@ -84,87 +84,37 @@ public class FigEdgeHandler
             FigNode dfn = null;
             String body = (String) o;
             StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
+            String sourcePortFig = null;
+            String destPortFig = null;
+            String sourceFigNode = null;
+            String destFigNode = null;
             while (st2.hasMoreElements()) {
                 String attribute = st2.nextToken();
                 String value = st2.nextToken();
+                
                 if (attribute.equals("sourcePortFig")) {
-                    spf = parser.findFig(value);
+                    sourcePortFig = value;
                 }
 
                 if (attribute.equals("destPortFig")) {
-                    dpf = parser.findFig(value);
+                    destPortFig = value;
                 }
 
                 if (attribute.equals("sourceFigNode")) {
-                    sfn = getFigNode(parser, value);
+                    sourceFigNode = value;
                 }
 
                 if (attribute.equals("destFigNode")) {
-                    dfn = getFigNode(parser, value);
+                    destFigNode = value;
                 }
             }
-
-            if (spf == null && sfn != null) {
-                spf = getPortFig(sfn);
-            }
-
-            if (dpf == null && dfn != null) {
-                dpf = getPortFig(dfn);
-            }
-
-            if (spf == null || dpf == null || sfn == null || dfn == null) {
-                throw new SAXException("Can't find nodes for FigEdge: "
-                        + (String) o
-                        + ":" + edge.getId() + ":"
-                        + edge.toString());
-            } else {
-                edge.setSourcePortFig(spf);
-                edge.setDestPortFig(dpf);
-                edge.setSourceFigNode(sfn);
-                edge.setDestFigNode(dfn);
-            }
-        }
-    }
-
-    /**
-     * Get the FigNode that the fig id represents.
-     *
-     * @param parser The parser to use.
-     * @param figId (In the form Figx.y.z)
-     * @return the FigNode with the given id
-     */
-    private FigNode getFigNode(PGMLStackParser parser, String figId) {
-        if (figId.indexOf('.') < 0) {
-            // If there is no dot then this must be a top level Fig and can be
-            // assumed to be a FigNode.
-            return (FigNode) parser.findFig(figId);
-        }
-        // If the id does not look like a top-level Fig then we can assume that
-        // this is an id of a FigEdgePort inside some FigEdge.
-        // So extract the FigEdgePort from the FigEdge and return that as
-        // the FigNode.
-        figId = figId.substring(0, figId.indexOf('.'));
-        FigEdgeModelElement edge = (FigEdgeModelElement) parser.findFig(figId);
-        if (edge == null) {
-            throw new IllegalStateException("Can't find a FigNode with id " + figId);
-        }
-        edge.makeEdgePort();
-        return edge.getEdgePort();
-    }
-
-
-    /**
-     * Get the Fig from the FigNode that is the port.
-     *
-     * @param figNode the FigNode
-     * @return the Fig that is the port on the given FigNode
-     */
-    private Fig getPortFig(FigNode figNode) {
-        if (figNode instanceof FigEdgePort) {
-            // TODO: Can we just do this every time, no need for else - Bob
-            return figNode;
-        } else {
-            return (Fig) figNode.getPortFigs().get(0);
+            
+            ((org.argouml.persistence.PGMLStackParser)parser).addFigEdge(
+                    edge, 
+                    sourcePortFig, 
+                    destPortFig, 
+                    sourceFigNode, 
+                    destFigNode);
         }
     }
 }
