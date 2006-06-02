@@ -24,8 +24,11 @@
 
 package org.argouml.persistence;
 
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -33,15 +36,20 @@ import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigEdgePort;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.ui.PathContainer;
 import org.argouml.uml.diagram.ui.StereotypeContainer;
 import org.argouml.uml.diagram.ui.VisibilityContainer;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.persistence.pgml.Container;
 import org.tigris.gef.persistence.pgml.FigEdgeHandler;
 import org.tigris.gef.persistence.pgml.FigGroupHandler;
 import org.tigris.gef.persistence.pgml.HandlerStack;
+import org.tigris.gef.persistence.pgml.InitialHandler;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
 import org.xml.sax.Attributes;
@@ -60,6 +68,8 @@ public class PGMLStackParser
     private static final Logger LOG =
         Logger.getLogger(PGMLStackParser.class);
 
+    private List figEdges = new ArrayList(50);
+    
     /**
      * Constructor.
      * @param modelElementsByUuid a map of model elements indexed
@@ -248,5 +258,131 @@ public class PGMLStackParser
                     .setExtensionPointVisible(value.equalsIgnoreCase("true"));
             }
         }
+    }
+    
+    public Diagram readDiagram(InputStream is, boolean closeStream)
+            throws SAXException {
+        Diagram d = super.readDiagram(is, closeStream);
+        
+        // Loop through all edges read and attach them to nodes
+        Iterator it = figEdges.iterator();
+        while (it.hasNext()) {
+            Fig spf = null;
+            Fig dpf = null;
+            FigNode sfn = null;
+            FigNode dfn = null;
+            
+            EdgeData edgeData = (EdgeData) it.next();
+            FigEdge edge = edgeData.getEdge();
+            
+            spf = findFig(edgeData.getSourcePortFig());
+            dpf = findFig(edgeData.getDestPortFig());
+            sfn = getFigNode(edgeData.getSourceFigNode());
+            dfn = getFigNode(edgeData.getDestFigNode());
+            
+            if (spf == null && sfn != null) {
+                spf = getPortFig(sfn);
+            }
+
+            if (dpf == null && dfn != null) {
+                dpf = getPortFig(dfn);
+            }
+
+            if (spf == null || dpf == null || sfn == null || dfn == null) {
+                throw new SAXException("Can't find nodes for FigEdge: "
+                        + edge.getId() + ":"
+                        + edge.toString());
+            } else {
+                edge.setSourcePortFig(spf);
+                edge.setDestPortFig(dpf);
+                edge.setSourceFigNode(sfn);
+                edge.setDestFigNode(dfn);
+            }
+        }
+        
+        return d;
+    }
+    
+    // TODO: Move to GEF
+    public void addFigEdge(FigEdge figEdge, String sourcePortFig, String destPortFig, String sourceFigNode, String destFigNode) {
+        figEdges.add(new EdgeData(figEdge, sourcePortFig, destPortFig, sourceFigNode, destFigNode));
+    }
+    
+    // TODO: Move to GEF
+    /**
+     * Get the FigNode that the fig id represents.
+     *
+     * @param parser The parser to use.
+     * @param figId (In the form Figx.y.z)
+     * @return the FigNode with the given id
+     */
+    private FigNode getFigNode(String figId) {
+        if (figId.indexOf('.') < 0) {
+            // If there is no dot then this must be a top level Fig and can be
+            // assumed to be a FigNode.
+            return (FigNode) findFig(figId);
+        }
+        // If the id does not look like a top-level Fig then we can assume that
+        // this is an id of a FigEdgePort inside some FigEdge.
+        // So extract the FigEdgePort from the FigEdge and return that as
+        // the FigNode.
+        figId = figId.substring(0, figId.indexOf('.'));
+        FigEdgeModelElement edge = (FigEdgeModelElement) findFig(figId);
+        if (edge == null) {
+            throw new IllegalStateException("Can't find a FigNode with id " + figId);
+        }
+        edge.makeEdgePort();
+        return edge.getEdgePort();
+    }
+    
+
+    // TODO: Move to GEF
+    /**
+     * Get the Fig from the FigNode that is the port.
+     *
+     * @param figNode the FigNode
+     * @return the Fig that is the port on the given FigNode
+     */
+    private Fig getPortFig(FigNode figNode) {
+        if (figNode instanceof FigEdgePort) {
+            // TODO: Can we just do this every time, no need for else - Bob
+            return figNode;
+        } else {
+            return (Fig) figNode.getPortFigs().get(0);
+        }
+    }
+    
+    // TODO: Move to GEF
+    private class EdgeData {
+        FigEdge edge;
+        String sourcePortFig;
+        String destPortFig;
+        String sourceFigNode;
+        String destFigNode;
+        
+        public EdgeData(FigEdge figEdge, String sourcePortFig, String destPortFig, String sourceFigNode, String destFigNode) {
+            this.edge = figEdge;
+            this.sourcePortFig = sourcePortFig;
+            this.destPortFig = destPortFig;
+            this.sourceFigNode = sourceFigNode;
+            this.destFigNode = destFigNode;
+        }
+        
+        public String getDestFigNode() {
+            return destFigNode;
+        }
+        public String getDestPortFig() {
+            return destPortFig;
+        }
+        public FigEdge getEdge() {
+            return edge;
+        }
+        public String getSourceFigNode() {
+            return sourceFigNode;
+        }
+        public String getSourcePortFig() {
+            return sourcePortFig;
+        }
+        
     }
 }
