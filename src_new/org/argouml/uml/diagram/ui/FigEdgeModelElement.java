@@ -59,7 +59,9 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
@@ -179,8 +181,11 @@ public abstract class FigEdgeModelElement
         stereotypeFig = new FigStereotypesCompartment(10, 10, 90, 15);
 
         setBetweenNearestPoints(true);
+
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
-        currentNotationName = Notation.getConfigueredNotation();
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = p.getProjectSettings();
+        currentNotationName = ps.getNotationName();
     }
 
     /**
@@ -880,17 +885,10 @@ public abstract class FigEdgeModelElement
      */
     public void notationChanged(ArgoNotationEvent event) {
         if (getOwner() == null) return;
-        PropertyChangeEvent changeEvent =
-            (PropertyChangeEvent) event.getSource();
-        if (changeEvent.getPropertyName().equals("argo.notation.only.uml")) {
-            if (changeEvent.getNewValue().equals("true")) {
-                setContextNotation(Notation.getConfigueredNotation());
-            }
-        } else if (changeEvent.getPropertyName()
-                .equals("argo.notation.default")) {
-            setContextNotation(
-                Notation.findNotation((String) changeEvent.getNewValue()));
-        }
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = p.getProjectSettings();
+        setContextNotation(ps.getNotationName());
+
         initNotationProviders(getOwner());
         renderingChanged();
     }

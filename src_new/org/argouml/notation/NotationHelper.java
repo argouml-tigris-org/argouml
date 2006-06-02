@@ -55,6 +55,7 @@ public final class NotationHelper {
 
     /**
      * @return the left pointing guillemot, i.e. << or the one-character symbol
+     * @deprecated by MVW in V0.21.3. Use ProjectSettings instead.
      */
     public static String getLeftGuillemot() {
 	return (Configuration.getBoolean(Notation.KEY_USE_GUILLEMOTS, false))
@@ -65,6 +66,7 @@ public final class NotationHelper {
 
     /**
      * @return the right pointing guillemot, i.e. >> or the one-character symbol
+     * @deprecated by MVW in V0.21.3. Use ProjectSettings instead.
      */
     public static String getRightGuillemot() {
 	return (Configuration.getBoolean(Notation.KEY_USE_GUILLEMOTS, false))

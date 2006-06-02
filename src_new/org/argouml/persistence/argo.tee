@@ -7,14 +7,12 @@
   <!ATTLIST template class CDATA #REQUIRED
                      guard CDATA #IMPLIED>
 ]>
-<!-- This is argo.tee, for Argo/UML to save project -->
-<!-- files.  "tee" = Template with Embedded Expressions. -->
+<!-- This is argo.tee, for ArgoUML to save project files. -->
+<!-- "tee" = Template with Embedded Expressions. -->
 
 <!-- Original Author: jrobbins@ics.uci.edu -->
 <!-- $Id$ -->
 
-
-<!-- TO DO LIST: -->
 
 <TemplateSet>
 
@@ -33,6 +31,18 @@
       <ocl>self.description</ocl>
     </description>
   </documentation>
+  <settings>
+	<allownotations><ocl>self.projectSettings.allowNotations</ocl></allownotations>
+    <notationlanguage><ocl>self.projectSettings.notationLanguage</ocl></notationlanguage>
+    <useguillemots><ocl>self.projectSettings.useGuillemots</ocl></useguillemots>
+    <showvisibility><ocl>self.projectSettings.showVisibility</ocl></showvisibility>
+    <showmultiplicity><ocl>self.projectSettings.showMultiplicity</ocl></showmultiplicity>
+    <showinitialvalue><ocl>self.projectSettings.showInitialValue</ocl></showinitialvalue>
+    <showproperties><ocl>self.projectSettings.showProperties</ocl></showproperties>
+    <showtypes><ocl>self.projectSettings.showTypes</ocl></showtypes>
+    <showstereotypes><ocl>self.projectSettings.showStereotypes</ocl></showstereotypes>
+    <defaultshadowwidth><ocl>self.projectSettings.defaultShadowWidth</ocl></defaultshadowwidth>
+  </settings>
   
   <searchpath href="<ocl>self.searchPath</ocl>" />
 

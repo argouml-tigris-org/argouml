@@ -30,7 +30,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectSettings;
 import org.xml.sax.SAXException;
+
+
 
 /**
  * @stereotype singleton
@@ -46,6 +49,7 @@ public class ArgoParser extends SAXParserBase {
     // instance variables
 
     private Project project;
+    private ProjectSettings ps;
 
     private ArgoTokenTable tokens = new ArgoTokenTable();
 
@@ -81,7 +85,8 @@ public class ArgoParser extends SAXParserBase {
         try {
             LOG.info("=======================================");
             LOG.info("== READING PROJECT " + theProject);
-            this.project = theProject;
+            project = theProject;
+            ps = project.getProjectSettings();
             parse(is);
         } catch (SAXException e) {
             LastLoadInfo.getInstance().setLastLoadStatus(false);
@@ -106,6 +111,7 @@ public class ArgoParser extends SAXParserBase {
      */
     public void setProject(Project newProj) {
         project = newProj;
+        ps = project.getProjectSettings();
     }
 
     /**
@@ -122,6 +128,9 @@ public class ArgoParser extends SAXParserBase {
             break;
         case ArgoTokenTable.TOKEN_DOCUMENTATION:
             handleDocumentation(e);
+            break;
+        case ArgoTokenTable.TOKEN_SETTINGS:
+            handleSettings(e);
             break;
         default:
             if (DBG) {
@@ -158,6 +167,36 @@ public class ArgoParser extends SAXParserBase {
         case ArgoTokenTable.TOKEN_HISTORYFILE:
             handleHistoryfile(e);
             break;
+        case ArgoTokenTable.TOKEN_ALLOWNOTATIONS:
+            handleAllowNotations(e);
+            break;
+        case ArgoTokenTable.TOKEN_NOTATIONLANGUAGE:
+            handleNotationLanguage(e);
+            break;
+        case ArgoTokenTable.TOKEN_USEGUILLEMOTS:
+            handleUseGuillemots(e);
+            break;
+        case ArgoTokenTable.TOKEN_SHOWVISIBILITY:
+            handleShowVisibility(e);
+            break;
+        case ArgoTokenTable.TOKEN_SHOWMULTIPLICITY:
+            handleShowMultiplicity(e);
+            break;
+        case ArgoTokenTable.TOKEN_SHOWINITIALVALUE:
+            handleShowInitialValue(e);
+            break;
+        case ArgoTokenTable.TOKEN_SHOWPROPERTIES:
+            handleShowProperties(e);
+            break;
+        case ArgoTokenTable.TOKEN_SHOWTYPES:
+            handleShowTypes(e);
+            break;
+        case ArgoTokenTable.TOKEN_SHOWSTEREOTYPES:
+            handleShowStereotypes(e);
+            break;
+        case ArgoTokenTable.TOKEN_DEFAULTSHADOWWIDTH:
+            handleDefaultShadowWidth(e);
+            break;
         default:
             if (DBG) {
                 LOG.warn("WARNING: unknown end tag:" + e.getName());
@@ -183,6 +222,13 @@ public class ArgoParser extends SAXParserBase {
      * @param e the element
      */
     protected void handleDocumentation(XMLElement e) {
+        /* do nothing */
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleSettings(XMLElement e) {
         /* do nothing */
     }
 
@@ -245,6 +291,86 @@ public class ArgoParser extends SAXParserBase {
         project.setHistoryFile(historyfile);
     }
 
+    /**
+     * @param e the element
+     */
+    protected void handleAllowNotations(XMLElement e) {
+        String an = e.getText().trim();
+        ps.setAllowNotations(an);
+    }
+    
+    /**
+     * @param e the element
+     */
+    protected void handleNotationLanguage(XMLElement e) {
+        String language = e.getText().trim();
+        ps.setNotationLanguage(language);
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleUseGuillemots(XMLElement e) {
+        String ug = e.getText().trim();
+        ps.setUseGuillemots(ug);
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleShowVisibility(XMLElement e) {
+        String showVisibility = e.getText().trim();
+        ps.setShowVisibility(showVisibility);
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleShowMultiplicity(XMLElement e) {
+        String showMultiplicity = e.getText().trim();
+        ps.setShowMultiplicity(showMultiplicity);
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleShowInitialValue(XMLElement e) {
+        String showInitialValue = e.getText().trim();
+        ps.setShowInitialValue(showInitialValue);
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleShowProperties(XMLElement e) {
+        String showproperties = e.getText().trim();
+        ps.setShowProperties(showproperties);
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleShowTypes(XMLElement e) {
+        String showTypes = e.getText().trim();
+        ps.setShowTypes(showTypes);
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleShowStereotypes(XMLElement e) {
+        String showStereotypes = e.getText().trim();
+        ps.setShowStereotypes(showStereotypes);
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleDefaultShadowWidth(XMLElement e) {
+        String dsw = e.getText().trim();
+        ps.setDefaultShadowWidth(dsw);
+    }
+    
     /**
      * Get the numer of diagram members read.
      * @return the numer of diagram members read.

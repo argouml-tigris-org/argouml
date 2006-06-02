@@ -32,9 +32,10 @@ import java.util.Stack;
 import java.util.Vector;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.ModelElementNameNotation;
 import org.argouml.util.MyTokenizer;
@@ -127,9 +128,12 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
                 first = false;
             }
         }
-        return first ? "" : NotationHelper.getLeftGuillemot()
+        Project project = 
+            ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = project.getProjectSettings();
+        return first ? "" : ps.getLeftGuillemot()
             + sb.toString()
-            + NotationHelper.getRightGuillemot();
+            + ps.getRightGuillemot();
     }
 
     /**

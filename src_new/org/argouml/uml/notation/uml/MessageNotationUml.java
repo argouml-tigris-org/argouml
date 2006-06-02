@@ -33,7 +33,9 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.ui.ProjectBrowser;
@@ -794,9 +796,12 @@ public class MessageNotationUml extends MessageNotation {
                     guard = "*" + guard;
                 }
             }
+            Project project = 
+                ProjectManager.getManager().getCurrentProject();
+            ProjectSettings ps = project.getProjectSettings();
             Object expr =
                 Model.getDataTypesFactory().createIterationExpression(
-                        Notation.getConfigueredNotation().toString(), guard);
+                        ps.getNotationLanguage(), guard);
             Model.getCommonBehaviorHelper().setRecurrence(
                     Model.getFacade().getAction(mes), expr);
         }
@@ -851,7 +856,11 @@ public class MessageNotationUml extends MessageNotation {
                 varname = "";
             }
         }
-
+        
+        Project project = 
+            ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = project.getProjectSettings();
+        
         if (fname != null) {
             String expr = fname.trim();
             if (varname.length() > 0) {
@@ -866,7 +875,7 @@ public class MessageNotationUml extends MessageNotation {
                 Object e =
                     Model.getDataTypesFactory()
                         .createActionExpression(
-                                Notation.getConfigueredNotation().toString(),
+                                ps.getNotationLanguage(),
                                 expr.trim());
                 Model.getCommonBehaviorHelper().setScript(
                         Model.getFacade().getAction(mes), e);
@@ -896,7 +905,7 @@ public class MessageNotationUml extends MessageNotation {
                             : "");
                     Object e =
                         Model.getDataTypesFactory().createExpression(
-                            Notation.getConfigueredNotation().toString(),
+                                ps.getNotationLanguage(),
                             value.trim());
                     Model.getCommonBehaviorHelper().setValue(arg, e);
                 }

@@ -42,7 +42,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.ProfileException;
 
 /**
- * Action object for handling Argo settings.
+ * Settings tab panel for handling ArgoUML application related settings.
  *
  * @author Thierry Lach
  * @since  0.9.4
@@ -150,6 +150,13 @@ class SettingsTabPreferences extends JPanel
      */
     public void handleSettingsTabCancel() {
         handleSettingsTabRefresh();
+    }
+
+    /**
+     * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
+     */
+    public void handleResetToDefault() {
+        // Do nothing - these buttons are not shown.
     }
 
     /**

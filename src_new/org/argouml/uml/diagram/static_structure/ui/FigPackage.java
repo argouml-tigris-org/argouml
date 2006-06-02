@@ -176,8 +176,8 @@ public class FigPackage extends FigNodeModelElement
         
         updateEdges();
 
-        visibilityVisible =
-                Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY);
+        Project p = ProjectManager.getManager().getCurrentProject();
+        visibilityVisible = p.getProjectSettings().getShowVisibilityValue();
         setOwner(node);
     }
 

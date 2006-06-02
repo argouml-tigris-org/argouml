@@ -28,8 +28,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadGreater;
@@ -83,7 +85,6 @@ public class FigExtend extends FigEdgeModelElement {
      * to be able to call this when creating the diagram.<p>
      */
     public FigExtend() {
-
         // The <<extend>> label.
         // It's not a true stereotype, so don't use the stereotype support
         //int y = getNameFig().getBounds().height;
@@ -98,8 +99,11 @@ public class FigExtend extends FigEdgeModelElement {
         label.setFilled(false);
         label.setLineWidth(0);
         label.setEditable(false);
-        label.setText(NotationHelper.getLeftGuillemot() + "extend" 
-                + NotationHelper.getRightGuillemot());        
+        Project project = 
+            ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = project.getProjectSettings();
+        label.setText(ps.getLeftGuillemot() + "extend" 
+                + ps.getRightGuillemot());        
         label.calcBounds();
 
         // Set up FigText to hold the condition.
@@ -251,8 +255,11 @@ public class FigExtend extends FigEdgeModelElement {
     
     protected void updateLabel() {
         /* The notation may change the use of guillemets: */
-        label.setText(NotationHelper.getLeftGuillemot() + "extend" 
-                + NotationHelper.getRightGuillemot());
+        Project project = 
+            ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = project.getProjectSettings();
+        label.setText(ps.getLeftGuillemot() + "extend" 
+                + ps.getRightGuillemot());
     }
 
 } /* end class FigExtend */

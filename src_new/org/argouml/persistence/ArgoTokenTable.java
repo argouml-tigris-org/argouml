@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,8 +25,9 @@
 package org.argouml.persistence;
 
 
-/** this needs work,AFAIK none of these strings are
- * saved in the final output in a zargo.
+/** 
+ * These strings are saved in the final output in a zargo.
+ * 
  * @author Jim Holt
  */
 
@@ -34,7 +35,6 @@ public class ArgoTokenTable extends XMLTokenTableBase {
 
     /**
      * The constructor.
-     *
      */
     public ArgoTokenTable() {
 	super(32);
@@ -43,8 +43,6 @@ public class ArgoTokenTable extends XMLTokenTableBase {
     ////////////////////////////////////////////////////////////////
     // constants
     private static final String STRING_ARGO                   = "argo";
-    /** doesn't work
-     */
     private static final String STRING_AUTHORNAME            = "authorname";
     private static final String STRING_VERSION               = "version";
     private static final String STRING_DESCRIPTION           = "description";
@@ -52,6 +50,18 @@ public class ArgoTokenTable extends XMLTokenTableBase {
     private static final String STRING_MEMBER                = "member";
     private static final String STRING_HISTORYFILE           = "historyfile";
     private static final String STRING_DOCUMENTATION         = "documentation";
+
+    private static final String STRING_SETTINGS = "settings";
+    private static final String STRING_ALLOWNOTATIONS = "allownotations";
+    private static final String STRING_NOTATIONLANGUAGE = "notationlanguage";
+    private static final String STRING_USEGUILLEMOTS = "useguillemots";
+    private static final String STRING_SHOWVISIBILITY = "showvisibility";
+    private static final String STRING_SHOWMULTIPLICITY = "showmultiplicity";
+    private static final String STRING_SHOWINITIALVALUE = "showinitialvalue";
+    private static final String STRING_SHOWPROPERTIES = "showproperties";
+    private static final String STRING_SHOWTYPES = "showtypes";
+    private static final String STRING_SHOWSTEREOTYPES = "showstereotypes";
+    private static final String STRING_DEFAULTSHADOWWIDTH = "defaultshadowwidth";
 
     /** The token for argo. */
     public static final int    TOKEN_ARGO                    = 1;
@@ -67,12 +77,35 @@ public class ArgoTokenTable extends XMLTokenTableBase {
     public static final int    TOKEN_MEMBER                  = 6;
     /** The token for history file. */
     public static final int    TOKEN_HISTORYFILE             = 7;
-    /** This can be saved successfully however there is no
-     * way to output this information.
-     * The token for argo. */
+    /** The token for documentation. */
     public static final int    TOKEN_DOCUMENTATION           = 8;
+
+    /** The token for settings. */
+    public static final int    TOKEN_SETTINGS           = 9;
+    /** The token for allowing other notations than UML. */
+    public static final int    TOKEN_ALLOWNOTATIONS           = 10;
+    /** The token for the notation language setting. */
+    public static final int    TOKEN_NOTATIONLANGUAGE           = 11;
+    /** A token for Notation Settings. */
+    public static final int    TOKEN_USEGUILLEMOTS           = 12;
+    /** A token for Notation Settings. */
+    public static final int    TOKEN_SHOWVISIBILITY           = 13;
+    /** A token for Notation Settings. */
+    public static final int    TOKEN_SHOWMULTIPLICITY           = 14;
+    /** A token for Notation Settings. */
+    public static final int    TOKEN_SHOWINITIALVALUE           = 15;
+    /** The token for the notation setting to show properties. */
+    public static final int    TOKEN_SHOWPROPERTIES           = 16;
+    /** A token for Notation Settings. */
+    public static final int    TOKEN_SHOWTYPES           = 17;
+    /** A token for Notation Settings. */
+    public static final int    TOKEN_SHOWSTEREOTYPES           = 18;
+    /** A token for Notation Settings. */
+    public static final int    TOKEN_DEFAULTSHADOWWIDTH           = 19;
+
+
     /** The token for undefined. */
-    public static final int    TOKEN_UNDEFINED               = 9;
+    public static final int    TOKEN_UNDEFINED               = 99;
 
     ////////////////////////////////////////////////////////////////
     // protected methods
@@ -88,6 +121,18 @@ public class ArgoTokenTable extends XMLTokenTableBase {
 	addToken(STRING_SEARCHPATH, new Integer(TOKEN_SEARCHPATH));
 	addToken(STRING_MEMBER, new Integer(TOKEN_MEMBER));
 	addToken(STRING_HISTORYFILE, new Integer(TOKEN_HISTORYFILE));
+        addToken(STRING_DOCUMENTATION, new Integer(TOKEN_DOCUMENTATION));
+        addToken(STRING_SETTINGS, new Integer(TOKEN_SETTINGS));
+        addToken(STRING_ALLOWNOTATIONS, new Integer(TOKEN_ALLOWNOTATIONS));
+        addToken(STRING_NOTATIONLANGUAGE, new Integer(TOKEN_NOTATIONLANGUAGE));
+        addToken(STRING_USEGUILLEMOTS, new Integer(TOKEN_USEGUILLEMOTS));
+        addToken(STRING_SHOWVISIBILITY, new Integer(TOKEN_SHOWVISIBILITY));
+        addToken(STRING_SHOWMULTIPLICITY, new Integer(TOKEN_SHOWMULTIPLICITY));
+        addToken(STRING_SHOWINITIALVALUE, new Integer(TOKEN_SHOWINITIALVALUE));
+        addToken(STRING_SHOWPROPERTIES, new Integer(TOKEN_SHOWPROPERTIES));
+        addToken(STRING_SHOWTYPES, new Integer(TOKEN_SHOWTYPES));
+        addToken(STRING_SHOWSTEREOTYPES, new Integer(TOKEN_SHOWSTEREOTYPES));
+        addToken(STRING_DEFAULTSHADOWWIDTH, new Integer(TOKEN_DEFAULTSHADOWWIDTH));
     }
 
 } /* end class ArgoTokenTable */

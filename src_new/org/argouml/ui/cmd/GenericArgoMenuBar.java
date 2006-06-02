@@ -49,6 +49,7 @@ import org.argouml.notation.ui.ActionNotation;
 import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionExportXMI;
 import org.argouml.ui.ActionImportXMI;
+import org.argouml.ui.ActionProjectSettings;
 import org.argouml.ui.ActionSaveConfiguration;
 import org.argouml.ui.ActionSettings;
 import org.argouml.ui.ArgoJMenu;
@@ -457,6 +458,10 @@ public class GenericArgoMenuBar extends JMenuBar implements
         file.add(new ActionSaveAllGraphics());
         setMnemonic(saveGraphicsItem, "SaveGraphics");
         file.addSeparator();
+
+        JMenuItem propertiesItem = file.add(new ActionProjectSettings());
+        setMnemonic(propertiesItem, "Properties");
+        
         JMenuItem saveConfiguration = file.add(new ActionSaveConfiguration());
         setMnemonic(saveConfiguration, "Save Configuration");
         file.addSeparator();
