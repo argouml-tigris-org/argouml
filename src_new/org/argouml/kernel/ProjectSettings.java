@@ -27,6 +27,7 @@ package org.argouml.kernel;
 import java.beans.PropertyChangeEvent;
 
 import org.argouml.application.api.Configuration;
+import org.argouml.application.api.ConfigurationKey;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
@@ -93,7 +94,7 @@ public class ProjectSettings {
      * @return Returns true if we show properties.
      */
     public String getAllowNotations() {
-        return Boolean.valueOf(allowNotations).toString();
+        return Boolean.toString(allowNotations);
     }
 
     /**
@@ -107,7 +108,7 @@ public class ProjectSettings {
      * @param allowem <code>true</code> if notations are to be allowed.
      */
     public void setAllowNotations(String allowem) {
-        String oldValue = Boolean.valueOf(allowNotations).toString();
+        String oldValue = Boolean.toString(allowNotations);
         allowNotations = Boolean.valueOf(allowem).booleanValue();
         ArgoEventPump.fireEvent(
                 new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
@@ -117,12 +118,12 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param allowem <code>true</code> if properties are to be shown.
      */
     public void setAllowNotations(boolean allowem) {
-        String oldValue = Boolean.valueOf(allowNotations).toString();
+        String oldValue = Boolean.toString(allowNotations);
         allowNotations = allowem;
-        String newValue = Boolean.valueOf(allowNotations).toString();
+        String newValue = Boolean.toString(allowNotations);
         ArgoEventPump.fireEvent(
                 new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
                         new PropertyChangeEvent(this, 
@@ -146,7 +147,7 @@ public class ProjectSettings {
     }
 
     /**
-     * @param allowem <code>true</code> if notations are to be allowed.
+     * @param language <code>true</code> if notations are to be allowed.
      */
     public void setNotationLanguage(String language) {
         String oldValue = notationLanguage;
@@ -162,7 +163,7 @@ public class ProjectSettings {
      * @return Returns true if we show properties.
      */
     public String getUseGuillemots() {
-        return Boolean.valueOf(useGuillemots).toString();
+        return Boolean.toString(useGuillemots);
     }
 
     /**
@@ -173,10 +174,10 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param showem <code>true</code> if properties are to be shown.
      */
     public void setUseGuillemots(String showem) {
-        String oldValue = Boolean.valueOf(useGuillemots).toString();
+        String oldValue = Boolean.toString(useGuillemots);
         useGuillemots = Boolean.valueOf(showem).booleanValue();
         ArgoEventPump.fireEvent(
                 new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
@@ -186,13 +187,13 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param showem <code>true</code> if properties are to be shown.
      */
 
     public void setUseGuillemots(boolean showem) {
-        String oldValue = Boolean.valueOf(useGuillemots).toString();
+        String oldValue = Boolean.toString(useGuillemots);
         useGuillemots = showem;
-        String newValue = Boolean.valueOf(useGuillemots).toString();
+        String newValue = Boolean.toString(useGuillemots);
         ArgoEventPump.fireEvent(
                 new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
                         new PropertyChangeEvent(this, 
@@ -218,7 +219,7 @@ public class ProjectSettings {
      * @return Returns true if we show properties.
      */
     public String getShowVisibility() {
-        return Boolean.valueOf(showVisibility).toString();
+        return Boolean.toString(showVisibility);
     }
 
     /**
@@ -229,10 +230,10 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param showem <code>true</code> if properties are to be shown.
      */
     public void setShowVisibility(String showem) {
-        String oldValue = Boolean.valueOf(showVisibility).toString();
+        String oldValue = Boolean.toString(showVisibility);
         showVisibility = Boolean.valueOf(showem).booleanValue();
         ArgoEventPump.fireEvent(
                 new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
@@ -242,12 +243,12 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param showem <code>true</code> if properties are to be shown.
      */
     public void setShowVisibility(boolean showem) {
-        String oldValue = Boolean.valueOf(showVisibility).toString();
+        String oldValue = Boolean.toString(showVisibility);
         showVisibility = showem;
-        String newValue = Boolean.valueOf(showVisibility).toString();
+        String newValue = Boolean.toString(showVisibility);
         ArgoEventPump.fireEvent(
                 new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
                         new PropertyChangeEvent(this, 
@@ -259,7 +260,7 @@ public class ProjectSettings {
      * @return Returns true if we show properties.
      */
     public String getShowMultiplicity() {
-        return Boolean.valueOf(showMultiplicity).toString();
+        return Boolean.toString(showMultiplicity);
     }
 
     /**
@@ -270,10 +271,10 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param showem <code>true</code> if properties are to be shown.
      */
     public void setShowMultiplicity(String showem) {
-        String oldValue = Boolean.valueOf(showMultiplicity).toString();
+        String oldValue = Boolean.toString(showMultiplicity);
         showMultiplicity = Boolean.valueOf(showem).booleanValue();
         ArgoEventPump.fireEvent(
                 new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
@@ -283,12 +284,12 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param showem <code>true</code> if properties are to be shown.
      */
     public void setShowMultiplicity(boolean showem) {
-        String oldValue = Boolean.valueOf(showMultiplicity).toString();
+        String oldValue = Boolean.toString(showMultiplicity);
         showMultiplicity = showem;
-        String newValue = Boolean.valueOf(showMultiplicity).toString();
+        String newValue = Boolean.toString(showMultiplicity);
         ArgoEventPump.fireEvent(
                 new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
                         new PropertyChangeEvent(this, 
@@ -300,7 +301,7 @@ public class ProjectSettings {
      * @return Returns true if we show properties.
      */
     public String getShowInitialValue() {
-        return Boolean.valueOf(showInitialValue).toString();
+        return Boolean.toString(showInitialValue);
     }
 
     /**
@@ -311,10 +312,10 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param showem <code>true</code> if properties are to be shown.
      */
     public void setShowInitialValue(String showem) {
-        String oldValue = Boolean.valueOf(showInitialValue).toString();
+        String oldValue = Boolean.toString(showInitialValue);
         showInitialValue = Boolean.valueOf(showem).booleanValue();
         ArgoEventPump.fireEvent(
                 new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
@@ -324,12 +325,12 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param showem <code>true</code> if properties are to be shown.
      */
     public void setShowInitialValue(boolean showem) {
-        String oldValue = Boolean.valueOf(showInitialValue).toString();
+        String oldValue = Boolean.toString(showInitialValue);
         showInitialValue = showem;
-        String newValue = Boolean.valueOf(showInitialValue).toString();
+        String newValue = Boolean.toString(showInitialValue);
         ArgoEventPump.fireEvent(
                 new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
                         new PropertyChangeEvent(this, 
@@ -341,7 +342,7 @@ public class ProjectSettings {
      * @return Returns true if we show properties.
      */
     public String getShowProperties() {
-        return Boolean.valueOf(showProperties).toString();
+        return Boolean.toString(showProperties);
     }
 
     /**
@@ -352,10 +353,10 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param showem <code>true</code> if properties are to be shown.
      */
     public void setShowProperties(String showem) {
-        String oldValue = Boolean.valueOf(showProperties).toString();
+        String oldValue = Boolean.toString(showProperties);
         showProperties = Boolean.valueOf(showem).booleanValue();
         ArgoEventPump.fireEvent(
                 new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
@@ -365,12 +366,12 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param showem <code>true</code> if properties are to be shown.
      */
     public void setShowProperties(boolean showem) {
-        String oldValue = Boolean.valueOf(showProperties).toString();
+        String oldValue = Boolean.toString(showProperties);
         showProperties = showem;
-        String newValue = Boolean.valueOf(showProperties).toString();
+        String newValue = Boolean.toString(showProperties);
         ArgoEventPump.fireEvent(
                 new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
                         new PropertyChangeEvent(this, 
@@ -382,7 +383,7 @@ public class ProjectSettings {
      * @return Returns true if we show properties.
      */
     public String getShowTypes() {
-        return Boolean.valueOf(showTypes).toString();
+        return Boolean.toString(showTypes);
     }
 
     /**
@@ -393,10 +394,10 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param showem <code>true</code> if properties are to be shown.
      */
     public void setShowTypes(String showem) {
-        String oldValue = Boolean.valueOf(showTypes).toString();
+        String oldValue = Boolean.toString(showTypes);
         showTypes = Boolean.valueOf(showem).booleanValue();
         ArgoEventPump.fireEvent(
                 new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
@@ -406,12 +407,12 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param showem <code>true</code> if properties are to be shown.
      */
     public void setShowTypes(boolean showem) {
-        String oldValue = Boolean.valueOf(showTypes).toString();
+        String oldValue = Boolean.toString(showTypes);
         showTypes = showem;
-        String newValue = Boolean.valueOf(showTypes).toString();
+        String newValue = Boolean.toString(showTypes);
         ArgoEventPump.fireEvent(
                 new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
                         new PropertyChangeEvent(this, 
@@ -424,7 +425,7 @@ public class ProjectSettings {
      * @return Returns true if we show properties.
      */
     public String getShowStereotypes() {
-        return Boolean.valueOf(showStereotypes).toString();
+        return Boolean.toString(showStereotypes);
     }
 
     /**
@@ -435,30 +436,19 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param showem <code>true</code> if properties are to be shown.
      */
     public void setShowStereotypes(String showem) {
-        String oldValue = Boolean.valueOf(showStereotypes).toString();
-        showStereotypes = Boolean.valueOf(showem).booleanValue();
-        ArgoEventPump.fireEvent(
-                new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
-                        new PropertyChangeEvent(this, 
-                                Notation.KEY_SHOW_STEREOTYPES.getKey(), 
-                                oldValue, showem)));
+        setShowStereotypes(Boolean.valueOf(showem).booleanValue());
     }
 
     /**
-     * @param showproperties <code>true</code> if properties are to be shown.
+     * @param showem <code>true</code> if properties are to be shown.
      */
     public void setShowStereotypes(boolean showem) {
-        String oldValue = Boolean.valueOf(showStereotypes).toString();
+        boolean oldValue = showStereotypes;
         showStereotypes = showem;
-        String newValue = Boolean.valueOf(showStereotypes).toString();
-        ArgoEventPump.fireEvent(
-                new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
-                        new PropertyChangeEvent(this, 
-                                Notation.KEY_SHOW_STEREOTYPES.getKey(), 
-                                oldValue, newValue)));
+        fireEvent(Notation.KEY_SHOW_STEREOTYPES, oldValue, showStereotypes);
     }
 
     /**
@@ -479,26 +469,37 @@ public class ProjectSettings {
      * @param width The Shadow Width.
      */
     public void setDefaultShadowWidth(int width) {
-        String oldValue = Integer.valueOf(defaultShadowWidth).toString();
+        int oldValue = width;
         defaultShadowWidth = width;
-        String newValue = Integer.valueOf(defaultShadowWidth).toString();
-        ArgoEventPump.fireEvent(
-                new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
-                        new PropertyChangeEvent(this, 
-                                Notation.KEY_DEFAULT_SHADOW_WIDTH.getKey(), 
-                                oldValue, newValue)));
+        fireEvent(Notation.KEY_DEFAULT_SHADOW_WIDTH, oldValue,
+                defaultShadowWidth);
     }
-    
+
     /**
-     * @param defaultShadowWidth The defaultShadowWidth to set.
+     * @param width The defaultShadowWidth to set.
      */
     public void setDefaultShadowWidth(String width) {
-        String oldValue = Integer.valueOf(defaultShadowWidth).toString();
-        defaultShadowWidth = Integer.valueOf(width).intValue();
-        ArgoEventPump.fireEvent(
-                new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, 
-                        new PropertyChangeEvent(this, 
-                                Notation.KEY_DEFAULT_SHADOW_WIDTH.getKey(), 
-                                oldValue, width)));
+        setDefaultShadowWidth(Integer.parseInt(width));
+    }
+    
+
+    /**
+     * Convenience methods to fire notation configuration change events.
+     */
+
+    private void fireEvent(ConfigurationKey key, int oldValue, int newValue) {
+        fireEvent(key, Integer.toString(oldValue), Integer.toString(newValue));
+    }
+
+    private void fireEvent(ConfigurationKey key, boolean oldValue,
+            boolean newValue) {
+        fireEvent(key, Boolean.toString(oldValue), Boolean.toString(newValue));
+    }
+    
+    private void fireEvent(ConfigurationKey key, String oldValue,
+            String newValue) {
+        ArgoEventPump.fireEvent(new ArgoNotationEvent(
+                ArgoEventTypes.NOTATION_CHANGED, new PropertyChangeEvent(this,
+                        key.getKey(), oldValue, newValue)));
     }
 }
