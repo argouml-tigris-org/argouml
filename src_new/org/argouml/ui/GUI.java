@@ -64,6 +64,13 @@ public final class GUI {
      */
     private GUI() {
         // Add GUI-internal stuff.
+        // GUI-internal stuff is panes, tabs, menu items that are
+        // part of the GUI subsystem i.e. a class in the
+        // org.argouml.ui-package.
+        // Things that are not part of the GUI, like everything that
+        // has any knowledge about UML, Diagrams, Code Generation, 
+        // Reverse Engineering, creates and registers itself
+        // when that subsystem or module is loaded.
         addSettingsTab(new SettingsTabPreferences());
         addSettingsTab(new SettingsTabEnvironment());
         addSettingsTab(new SettingsTabUser());
