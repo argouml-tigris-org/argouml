@@ -38,7 +38,9 @@ import javax.jmi.reflect.RefClass;
 import javax.jmi.reflect.RefPackage;
 
 import org.argouml.model.ModelManagementHelper;
+import org.omg.uml.behavioralelements.collaborations.Collaboration;
 import org.omg.uml.foundation.core.BehavioralFeature;
+import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Permission;
@@ -602,8 +604,102 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
      * @see org.argouml.model.ModelManagementHelper#getAllContents(java.lang.Object)
      */
     public Collection getAllContents(Object pack) {
-        // TODO: Auto-generated method stub
-        return null;
+        Set results = new HashSet();
+        
+        /*
+         * For a Namespace:
+         * <pre>
+         * [2] The operation allContents results in a Set containing 
+         * all ModelElements contained by the Namespace.
+         *   allContents : Set(ModelElement);
+         *   allContents = self.contents
+         * where
+         *   contents = self.ownedElement -> union(self.namespace, contents)
+         * </pre><p>
+         */
+        if (pack instanceof Namespace) {
+            results.addAll(((Namespace) pack).getOwnedElement());
+        }
+        
+        /*
+         * For a Classifier:
+         * <pre>
+         * [10] The operation allContents returns a Set containing 
+         * all ModelElements contained in the Classifier together
+         * with the contents inherited from its parents.
+         *   allContents : Set(ModelElement);
+         *   allContents = self.contents->union(
+         *       self.parent.allContents->select(e |
+         *            e.elementOwnership.visibility = #public or
+         *            e.elementOwnership.visibility = #protected))
+         * where parent is defined for GeneralizableElement as:
+         * [1] The operation parent returns a Set containing all direct parents
+         *   parent : Set(GeneralizableElement);
+         *   parent = self.generalization.parent
+         * </pre><p>
+         */
+        if (pack instanceof Classifier) {
+            // TODO: Not implemented
+            throw new RuntimeException("Not implement - getAllContents for: "
+                    + pack);
+        }
+        
+        /*
+         * For a Package:
+         * <pre>
+         * [3]  The operation allContents results in a Set containing 
+         * the ModelElements owned by or imported 
+         * by the Package or one of its ancestors.
+         *   allContents : Set(ModelElement);
+         *   allContents = self.contents->union(
+         *     self.parent.allContents->select(e |
+         *          e.elementOwnership.visibility = #public or
+         *          e.elementOwnership.visibility = #protected))
+         *          
+         * where the required operations are defined as :
+         * 
+         * [1] The operation contents results in a Set containing the 
+         * ModelElements owned by or imported by the Package.
+         *   contents : Set(ModelElement)
+         *   contents = self.ownedElement->union(self.importedElement)
+         * [2] The operation allImportedElements results in a Set containing
+         * the ModelElements imported by the Package or one of its parents.
+         *   allImportedElements : Set(ModelElement)
+         *   allImportedElements = self.importedElement->union(
+         *     self.parent.oclAsType(Package).allImportedElements->select( re |
+         *                         re.elementImport.visibility = #public or
+         *                         re.elementImport.visibility = #protected))
+         * </pre>
+         */
+        if (pack instanceof Package) {
+            // TODO: Not implemented
+            throw new RuntimeException("Not implement - getAllContents for: "
+                    + pack);
+        }
+        
+        /*
+         * For a Collaboration:
+         * <pre>
+         * [1 ] The operation allContents results in the set of 
+         * all ModelElements contained in the Collaboration
+         * together with those contained in the parents 
+         * except those that have been specialized.
+         *   allContents : Set(ModelElement);
+         *   allContents = self.contents->union (
+         *                       self.parent.allContents->reject ( e |
+         *                       self.contents.name->include (e.name) ))
+         *                       
+         *  parent here is the GeneralizableElement definition
+         * </pre>
+         */
+        if (pack instanceof Collaboration) {
+            // TODO: Not implemented
+            throw new RuntimeException("Not implement - getAllContents for: "
+                    + pack);
+        }
+
+        return results;
+
     }
 
 }
