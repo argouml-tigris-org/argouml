@@ -30,7 +30,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationHelper;
 import org.argouml.uml.ui.UMLAction;
 
 /**
