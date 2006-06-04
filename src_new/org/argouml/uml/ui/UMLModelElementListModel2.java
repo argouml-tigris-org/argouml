@@ -137,9 +137,9 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
                     // from its list. If this is not happening we need to know
                     // more urgently.
                     /* need to catch javax.jmi.reflect.InvalidObjectException */
-                    LOG.debug("buildModelList threw exception for target " 
-                            + getTarget()
-                            + exception.getStackTrace());
+                    LOG.warn("buildModelList threw exception for target " 
+                            + getTarget(),
+                            exception);
                 } finally {
                     buildingModel = false;
                 }
