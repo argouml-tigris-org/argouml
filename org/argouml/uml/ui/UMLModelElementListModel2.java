@@ -127,9 +127,10 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
                 try {
                     buildModelList();
                 } catch (InvalidElementException exception) {
-                    LOG.error("buildModelList threw exception for target " 
-                            + getTarget(),
-                            exception);
+                    // Issue 4244 indicates this is ignored by design.
+                    LOG.debug("buildModelList threw exception for target " 
+                            + getTarget() + ": "
+                            + exception);
                 } finally {
                     buildingModel = false;
                 }
