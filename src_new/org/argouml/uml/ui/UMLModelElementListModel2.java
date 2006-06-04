@@ -119,15 +119,16 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
             if (isValidEvent(e)) {
                 removeAllElements();
                 buildingModel = true;
-                // This can throw an exception if the target has been deleted.
-                // We don't want to try locking the repository because this
-                // is called from the event delivery thread and could cause a
-                // deadlock.  Instead catch the exception and leave the model
-                // empty.
                 try {
                     buildModelList();
                 } catch (InvalidElementException exception) {
-                    // Issue 4244 indicates this is ignored by design.
+                    /*
+                     * This can throw an exception if the target has been
+                     * deleted. We don't want to try locking the repository
+                     * because this is called from the event delivery thread and
+                     * could cause a deadlock. Instead catch the exception and
+                     * leave the model empty.
+                     */
                     LOG.debug("buildModelList threw exception for target " 
                             + getTarget() + ": "
                             + exception);
