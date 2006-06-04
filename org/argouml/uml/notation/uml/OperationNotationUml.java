@@ -216,8 +216,9 @@ public class OperationNotationUml extends OperationNotation {
                     ;// Do nothing
                 } else if ("<<".equals(token)) {
                     if (stereotype != null) {
-                        throw new ParseException("Operations cannot have two "
-                                + "sets of stereotypes", st.getTokenIndex());
+                        String msg = "parsing.error.operation.stereotypes";
+                        throw new ParseException(Translator.localize(msg), 
+                                st.getTokenIndex());
                     }
                     stereotype = "";
                     while (true) {
@@ -249,9 +250,13 @@ public class OperationNotationUml extends OperationNotation {
                             }
                         } else if ("=".equals(token)) {
                             if (propvalue != null) {
-                                throw new ParseException("Property " + propname
-                                        + " cannot have two values", st
-                                        .getTokenIndex());
+                                String msg = 
+                                    "parsing.error.operation.prop-stereotypes";
+                                Object[] args = {propname};
+                                throw new ParseException(
+                                		Translator.localize(msg, 
+                                        args), 
+                                        st.getTokenIndex());
                             }
                             propvalue = "";
                         } else if (propvalue == null) {
@@ -267,54 +272,62 @@ public class OperationNotationUml extends OperationNotation {
                 } else if (":".equals(token)) {
                     hasColon = true;
                 } else if ("=".equals(token)) {
-                    throw new ParseException("Operations cannot have "
-                            + "default values", st.getTokenIndex());
+                    String msg = "parsing.error.operation.default-values";
+                    throw new ParseException(Translator.localize(msg), 
+                            st.getTokenIndex());
                 } else if (token.charAt(0) == '(' && !hasColon) {
                     if (parameterlist != null) {
-                        throw new ParseException("Operations cannot have two "
-                                + "parameter lists", st.getTokenIndex());
+                    	String msg = 
+                    		"parsing.error.operation.two-parameter-lists";
+                        throw new ParseException(Translator.localize(msg), 
+                                st.getTokenIndex());
                     }
 
                     parameterlist = token;
                 } else {
                     if (hasColon) {
                         if (type != null) {
-                            throw new ParseException("Operations cannot have "
-                                    + "two types", st.getTokenIndex());
+                            String msg = "parsing.error.operation.two-types";
+                            throw new ParseException(Translator.localize(msg), 
+                                    st.getTokenIndex());
                         }
 
                         if (token.length() > 0
                                 && (token.charAt(0) == '\"'
                                     || token.charAt(0) == '\'')) {
-                            throw new ParseException("Type cannot be quoted",
+                            String msg = "parsing.error.operation.type-quoted";
+                            throw new ParseException(Translator.localize(msg),
                                     st.getTokenIndex());
                         }
 
                         if (token.length() > 0 && token.charAt(0) == '(') {
-                            throw new ParseException("Type cannot be an "
-                                    + "expression", st.getTokenIndex());
+                            String msg = "parsing.error.operation.type-expr";
+                            throw new ParseException(Translator.localize(msg), 
+                                    st.getTokenIndex());
                         }
 
                         type = token;
                     } else {
                         if (name != null && visibility != null) {
-                            throw new ParseException("Extra text in Operation",
+                            String msg = "parsing.error.operation.extra-text";
+                            throw new ParseException(Translator.localize(msg),
                                     st.getTokenIndex());
                         }
 
                         if (token.length() > 0
                                 && (token.charAt(0) == '\"'
                                     || token.charAt(0) == '\'')) {
+                            String msg = "parsing.error.operation.name-quoted";
                             throw new ParseException(
-                                    "Name or visibility cannot" + " be quoted",
+                                    Translator.localize(msg),
                                     st.getTokenIndex());
                         }
 
                         if (token.length() > 0 && token.charAt(0) == '(') {
+                            String msg = "parsing.error.operation.name-expr";
                             throw new ParseException(
-                                    "Name or visibility cannot"
-                                            + " be an expression", st
-                                            .getTokenIndex());
+                                    Translator.localize(msg), 
+                                    st.getTokenIndex());
                         }
 
                         if (name == null
@@ -337,7 +350,9 @@ public class OperationNotationUml extends OperationNotation {
                 }
             }
         } catch (NoSuchElementException nsee) {
-            throw new ParseException("Unexpected end of operation", s.length());
+            String msg = "parsing.error.operation.unexpected-end-operation";
+            throw new ParseException(Translator.localize(msg), 
+                    s.length());
         } catch (ParseException pre) {
             throw pre;
         }
@@ -345,7 +360,9 @@ public class OperationNotationUml extends OperationNotation {
         if (parameterlist != null) {
             // parameterlist is guaranteed to contain at least "("
             if (parameterlist.charAt(parameterlist.length() - 1) != ')') {
-                throw new ParseException("The parameter list was incomplete",
+                String msg = 
+                	"parsing.error.operation.parameter-list-incomplete";
+                throw new ParseException(Translator.localize(msg),
                         paramOffset + parameterlist.length() - 1);
             }
 

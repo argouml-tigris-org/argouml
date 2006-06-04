@@ -238,10 +238,10 @@ public class AttributeNotationUml extends AttributeNotation {
                         value += token;
                     } else {
                         if (stereotype != null) {
-                            throw new ParseException(
-                                "Attribute cannot have "
-                                + "two sets of stereotypes", 
-                                st.getTokenIndex());
+                            String msg = 
+                                "parsing.error.attribute.two-sets-stereotypes";
+                            throw new ParseException(Translator.localize(msg),
+                                    st.getTokenIndex());
                         }
                         stereotype = "";
                         while (true) {
@@ -257,10 +257,10 @@ public class AttributeNotationUml extends AttributeNotation {
                         value += token;
                     } else {
                         if (multiplicity != null) {
-                            throw new ParseException(
-                                    "Attribute cannot have two"
-                                            + " multiplicities", st
-                                            .getTokenIndex());
+                            String msg = 
+                                "parsing.error.attribute.two-multiplicities";
+                            throw new ParseException(Translator.localize(msg),
+                                    st.getTokenIndex());
                         }
                         multiplicity = "";
                         multindex = st.getTokenIndex() + 1;
@@ -294,9 +294,12 @@ public class AttributeNotationUml extends AttributeNotation {
                             }
                         } else if ("=".equals(token)) {
                             if (propvalue != null) {
-                                throw new ParseException("Property " + propname
-                                        + " cannot have two values", st
-                                        .getTokenIndex());
+                                String msg = 
+                                    "parsing.error.attribute.prop-two-values";
+                                Object[] args = {propvalue};
+
+                                throw new ParseException(Translator.localize(
+                                        msg, args), st.getTokenIndex());
                             }
                             propvalue = "";
                         } else if (propvalue == null) {
@@ -314,8 +317,10 @@ public class AttributeNotationUml extends AttributeNotation {
                     hasEq = false;
                 } else if ("=".equals(token)) {
                     if (value != null) {
-                        throw new ParseException("Attribute cannot have two "
-                                + "default values", st.getTokenIndex());
+                        String msg = 
+                            "parsing.error.attribute.two-default-values";
+                        throw new ParseException(Translator.localize(msg), st
+                                .getTokenIndex());
                     }
                     value = "";
                     hasColon = false;
@@ -323,40 +328,42 @@ public class AttributeNotationUml extends AttributeNotation {
                 } else {
                     if (hasColon) {
                         if (type != null) {
-                            throw new ParseException(
-                                    "Attribute cannot have two" + " types", st
-                                            .getTokenIndex());
+                            String msg = "parsing.error.attribute.two-types";
+                            throw new ParseException(Translator.localize(msg),
+                                    st.getTokenIndex());
                         }
                         if (token.length() > 0
                                 && (token.charAt(0) == '\"'
                                     || token.charAt(0) == '\'')) {
-                            throw new ParseException("Type cannot be quoted",
+                            String msg = "parsing.error.attribute.quoted";
+                            throw new ParseException(Translator.localize(msg),
                                     st.getTokenIndex());
                         }
                         if (token.length() > 0 && token.charAt(0) == '(') {
-                            throw new ParseException("Type cannot be an "
-                                    + "expression", st.getTokenIndex());
+                            String msg = "parsing.error.attribute.is-expr";
+                            throw new ParseException(Translator.localize(msg),
+                                    st.getTokenIndex());
                         }
                         type = token;
                     } else if (hasEq) {
                         value += token;
                     } else {
                         if (name != null && visibility != null) {
-                            throw new ParseException("Extra text in Attribute",
+                            String msg = "parsing.error.attribute.extra-text";
+                            throw new ParseException(Translator.localize(msg),
                                     st.getTokenIndex());
                         }
                         if (token.length() > 0
                                 && (token.charAt(0) == '\"'
                                     || token.charAt(0) == '\'')) {
-                            throw new ParseException(
-                                    "Name or visibility cannot" + " be quoted",
+                            String msg = "parsing.error.attribute.name-quoted";
+                            throw new ParseException(Translator.localize(msg),
                                     st.getTokenIndex());
                         }
                         if (token.length() > 0 && token.charAt(0) == '(') {
-                            throw new ParseException(
-                                    "Name or visibility cannot"
-                                            + " be an expression", st
-                                            .getTokenIndex());
+                            String msg = "parsing.error.attribute.name-expr";
+                            throw new ParseException(Translator.localize(msg),
+                                    st.getTokenIndex());
                         }
 
                         if (name == null
@@ -378,8 +385,8 @@ public class AttributeNotationUml extends AttributeNotation {
                 }
             }
         } catch (NoSuchElementException nsee) {
-            throw new ParseException(
-                    "Unexpected end of attribute", text.length());
+            String msg = "parsing.error.attribute.unexpected-end-attribute";
+            throw new ParseException(Translator.localize(msg), text.length());
         } catch (ParseException pre) {
             throw pre;
         }
@@ -435,7 +442,10 @@ public class AttributeNotationUml extends AttributeNotation {
                         Model.getDataTypesFactory()
                                 .createMultiplicity(multiplicity.trim()));
             } catch (IllegalArgumentException iae) {
-                throw new ParseException("Bad multiplicity (" + iae + ")",
+                String msg = "parsing.error.attribute.bad-multiplicity";
+                Object[] args = {iae};
+
+                throw new ParseException(Translator.localize(msg, args),
                         multindex);
             }
         }

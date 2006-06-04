@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
@@ -534,28 +535,33 @@ public final class NotationUtilityUml {
                     hasEq = false;
                 } else if ("=".equals(tok)) {
                     if (value != null) {
-                        throw new ParseException("Parameters cannot have two "
-                                + "default values", paramOffset
-                                + st.getTokenIndex());
+                    	String msg = 
+                            "parsing.error.notation-utility.two-default-values";
+                        throw new ParseException(Translator.localize(msg), 
+                                paramOffset + st.getTokenIndex());
                     }
                     hasEq = true;
                     hasColon = false;
                     value = "";
                 } else if (hasColon) {
                     if (type != null) {
-                        throw new ParseException("Parameters cannot have two "
-                                + "types", paramOffset + st.getTokenIndex());
+                        String msg = "parsing.error.notation-utility.two-types";
+                        throw new ParseException(Translator.localize(msg), 
+                                paramOffset + st.getTokenIndex());
                     }
 
                     if (tok.charAt(0) == '\'' || tok.charAt(0) == '\"') {
-                        throw new ParseException("Parameter type cannot be "
-                                + "quoted", paramOffset + st.getTokenIndex());
+                        String msg = 
+                            "parsing.error.notation-utility.type-quoted";
+                        throw new ParseException(Translator.localize(msg), 
+                                paramOffset + st.getTokenIndex());
                     }
 
                     if (tok.charAt(0) == '(') {
-                        throw new ParseException("Parameter type cannot be an "
-                                + "expression", paramOffset
-                                + st.getTokenIndex());
+                        String msg = 
+                            "parsing.error.notation-utility.type-expr";
+                        throw new ParseException(Translator.localize(msg), 
+                                paramOffset + st.getTokenIndex());
                     }
 
                     type = tok;
@@ -563,21 +569,26 @@ public final class NotationUtilityUml {
                     value += tok;
                 } else {
                     if (name != null && kind != null) {
-                        throw new ParseException("Extra text in parameter",
+                        String msg = 
+                            "parsing.error.notation-utility.extra-text";
+                        throw new ParseException(Translator.localize(msg),
                                 paramOffset + st.getTokenIndex());
                     }
 
                     if (tok.charAt(0) == '\'' || tok.charAt(0) == '\"') {
+                        String msg = 
+                            "parsing.error.notation-utility.name-kind-quoted";
                         throw new ParseException(
-                                "Parameter name/kind cannot be" + " quoted",
+                                Translator.localize(msg),
                                 paramOffset + st.getTokenIndex());
                     }
 
                     if (tok.charAt(0) == '(') {
+                        String msg = 
+                            "parsing.error.notation-utility.name-kind-expr";
                         throw new ParseException(
-                                "Parameter name/kind cannot be"
-                                        + " an expression", paramOffset
-                                        + st.getTokenIndex());
+                                Translator.localize(msg), 
+                                paramOffset + st.getTokenIndex());
                     }
 
                     kind = name;

@@ -96,9 +96,10 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
 
                 if ("<<".equals(token) || "\u00AB".equals(token)) {
                     if (stereotype != null) {
-                        throw new ParseException("Element cannot have "
-                                + "two groups of stereotypes",
-                                st.getTokenIndex());
+                    	String msg = 
+                            "parsing.error.association-name.twin-stereotypes";
+                        throw new ParseException(Translator.localize(msg), 
+                        		st.getTokenIndex());
                     }
 
                     stereotype = "";
@@ -111,15 +112,17 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
                     }
                 } else {
                     if (name != null) {
-                        throw new ParseException("Element cannot have "
-                                + "two word names or qualifiers", st
-                                .getTokenIndex());
+                    	String msg = 
+                    		"parsing.error.association-name.twin-names";
+                        throw new ParseException(Translator.localize(msg),
+                                st.getTokenIndex());
                     }
                     name = token;
                 }
             }
         } catch (NoSuchElementException nsee) {
-            throw new ParseException("Unexpected end of element",
+    	    String ms = "parsing.error.association-name.unexpected-end-element";
+            throw new ParseException(Translator.localize(ms),
                     text.length());
         } catch (ParseException pre) {
             throw pre;

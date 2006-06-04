@@ -484,15 +484,16 @@ public class MessageNotationUml extends MessageNotation {
                     }
                 } else if ("[".equals(token)) {
                     if (mustBePre) {
-                        throw new ParseException("Predecessors cannot be "
-                                + "qualified", st.getTokenIndex());
+                    	String msg = "parsing.error.message.predec-unqualified";
+                        throw new ParseException(Translator.localize(msg), 
+                                st.getTokenIndex());
                     }
                     mustBeSeq = true;
 
                     if (guard != null) {
-                        throw new ParseException("Messages cannot have several"
-                                + " guard or iteration specifications", st
-                                .getTokenIndex());
+                    	String msg = "parsing.error.message.several-specs";
+                        throw new ParseException(Translator.localize(msg), 
+                                st.getTokenIndex());
                     }
 
                     guard = "";
@@ -505,8 +506,9 @@ public class MessageNotationUml extends MessageNotation {
                     }
                 } else if ("*".equals(token)) {
                     if (mustBePre) {
-                        throw new ParseException("Predecessors cannot be "
-                                + "iterated", st.getTokenIndex());
+                    	String msg = "parsing.error.message.predec-unqualified";
+                        throw new ParseException(Translator.localize(msg), 
+                                st.getTokenIndex());
                     }
                     mustBeSeq = true;
 
@@ -515,8 +517,9 @@ public class MessageNotationUml extends MessageNotation {
                     }
                 } else if (".".equals(token)) {
                     if (currentseq == null) {
-                        throw new ParseException("Unexpected dot ('.')", st
-                                .getTokenIndex());
+                    	String msg = "parsing.error.message.unexpected-dot";
+                        throw new ParseException(Translator.localize(msg), 
+                                st.getTokenIndex());
                     }
                     if (currentseq.get(currentseq.size() - 2) != null
                             || currentseq.get(currentseq.size() - 1) != null) {
@@ -534,8 +537,8 @@ public class MessageNotationUml extends MessageNotation {
                     }
 
                     if (mustBePre) {
-                        throw new ParseException("Predecessors must be "
-                                + "terminated with \'/\' and not with \':\'",
+                        String msg = "parsing.error.message.pred-colon";
+                        throw new ParseException(Translator.localize(msg),
                                 st.getTokenIndex());
                     }
 
@@ -562,8 +565,8 @@ public class MessageNotationUml extends MessageNotation {
                     }
 
                     if (mustBeSeq) {
-                        throw new ParseException("The sequence number must be "
-                                + "terminated with \':\' and not with \'/\'",
+                    	String msg = "parsing.error.message.sequence-slash";
+                        throw new ParseException(Translator.localize(msg),
                                 st.getTokenIndex());
                     }
 
@@ -589,8 +592,9 @@ public class MessageNotationUml extends MessageNotation {
                     hasPredecessors = true;
                 } else if ("//".equals(token)) {
                     if (mustBePre) {
-                        throw new ParseException("Predecessors cannot be "
-                                + "parallellized", st.getTokenIndex());
+                    	String msg = "parsing.error.message.pred-parallelized";
+                        throw new ParseException(Translator.localize(msg), 
+                                st.getTokenIndex());
                     }
                     mustBeSeq = true;
 
@@ -600,9 +604,9 @@ public class MessageNotationUml extends MessageNotation {
                 } else if (",".equals(token)) {
                     if (currentseq != null) {
                         if (mustBeSeq) {
-                            throw new ParseException("Messages cannot have "
-                                    + "many sequence numbers", st
-                                    .getTokenIndex());
+                            String msg = "parsing.error.message.many-numbers";
+                            throw new ParseException(Translator.localize(msg), 
+                                    st.getTokenIndex());
                         }
                         mustBePre = true;
 
@@ -631,9 +635,10 @@ public class MessageNotationUml extends MessageNotation {
                         } else if (varname != null && fname == null) {
                             varname += token;
                         } else {
+                            String msg = "parsing.error.message.found-comma";
                             throw new ParseException(
-                                    "Unexpected character (,)", st
-                                            .getTokenIndex());
+                                    Translator.localize(msg), 
+                                    st.getTokenIndex());
                         }
                     }
                 } else if ("=".equals(token) || ":=".equals(token)) {
@@ -648,13 +653,16 @@ public class MessageNotationUml extends MessageNotation {
                 } else if (currentseq == null) {
                     if (paramExpr == null && token.charAt(0) == '(') {
                         if (token.charAt(token.length() - 1) != ')') {
-                            throw new ParseException("Malformed parameters", st
-                                    .getTokenIndex());
+                            String msg = 
+                                "parsing.error.message.malformed-parameters";
+                            throw new ParseException(Translator.localize(msg), 
+                                    st.getTokenIndex());
                         }
                         if (fname == null || "".equals(fname)) {
-                            throw new ParseException("Must be a function name "
-                                    + "before the parameters", st
-                                    .getTokenIndex());
+                            String msg = 
+                                "parsing.error.message.function-not-found";
+                            throw new ParseException(Translator.localize(msg), 
+                                    st.getTokenIndex());
                         }
                         if (varname == null) {
                             varname = "";
@@ -665,8 +673,11 @@ public class MessageNotationUml extends MessageNotation {
                     } else if (fname == null || fname.length() == 0) {
                         fname = token;
                     } else {
-                        throw new ParseException("Unexpected token (" + token
-                                + ")", st.getTokenIndex());
+                    	String msg = "parsing.error.message.unexpected-token";
+                        Object[] parseExcArgs = {token};
+                        throw new ParseException(
+                        		Translator.localize(msg, parseExcArgs), 
+                                st.getTokenIndex());
                     }
                 } else {
                     boolean hasVal =
@@ -706,13 +717,17 @@ public class MessageNotationUml extends MessageNotation {
                     }
 
                     if (!assigned) {
-                        throw new ParseException("Unexpected token (" + token
-                                + ")", st.getTokenIndex());
+                    	String msg = "parsing.error.message.unexpected-token";
+                        Object[] parseExcArgs = {token};
+                        throw new ParseException(
+                        		Translator.localize(msg, parseExcArgs), 
+                                st.getTokenIndex());
                     }
                 }
             }
         } catch (NoSuchElementException nsee) {
-            throw new ParseException("Unexpected end of message", s.length());
+            String msg = "parsing.error.message.unexpected-end-message";
+            throw new ParseException(Translator.localize(msg), s.length());
         } catch (ParseException pre) {
             throw pre;
         }
@@ -984,21 +999,21 @@ public class MessageNotationUml extends MessageNotation {
             if (compareMsgNumbers(mname, gname)) {
                 ;// Do nothing
             } else if (isMsgNumberStartOf(gname, mname)) {
-                throw new ParseException("Cannot move a message into the "
-                        + "subtree rooted at self", 0);
+            	String msg = "parsing.error.message.subtree-rooted-self";
+                throw new ParseException(Translator.localize(msg), 0);
             } else if (Model.getFacade().getPredecessors(mes).size() > 1
                     && Model.getFacade().getMessages3(mes).size() > 1) {
-                throw new ParseException("Cannot move a message which is "
-                        + "both start and end of several threads", 0);
+            	String msg = "parsing.error.message.start-end-many-threads";
+                throw new ParseException(Translator.localize(msg), 0);
             } else if (root == null && pname.length() > 0) {
-                throw new ParseException("Cannot find the activator for the "
-                        + "message", 0);
+            	String msg = "parsing.error.message.activator-not-found";
+                throw new ParseException(Translator.localize(msg), 0);
             } else if (swapRoles
                     && Model.getFacade().getMessages4(mes).size() > 0
                     && (Model.getFacade().getSender(mes)
                             != Model.getFacade().getReceiver(mes))) {
-                throw new ParseException("Cannot reverse the direction of a "
-                        + "message that is an activator", 0);
+            	String msg = "parsing.error.message.reverse-direction-message";
+                throw new ParseException(Translator.localize(msg), 0);
             } else {
                 /* Disconnect the message from the call graph
                  * Make copies of returned live collections 
@@ -1120,15 +1135,16 @@ public class MessageNotationUml extends MessageNotation {
                         walkTree(it.next(), (Vector) predecessors.get(i));
                     if (msg != null && msg != mes) {
                         if (isBadPreMsg(mes, msg)) {
+                            String parseMsg = "parsing.error.message.one-pred";
                             throw new ParseException(
-                                    "One predecessor cannot be a predecessor "
-                                            + "to this message", 0);
+                                    Translator.localize(parseMsg), 0);
                         }
                         pre.add(msg);
                         continue predfor;
                     }
                 }
-                throw new ParseException("Could not find predecessor", 0);
+                String parseMsg = "parsing.error.message.pred-not-found";
+                throw new ParseException(Translator.localize(parseMsg), 0);
             }
             MsgPtr ptr = new MsgPtr();
             recCountPredecessors(mes, ptr);
