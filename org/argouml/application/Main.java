@@ -119,15 +119,15 @@ public class Main {
         // create an anonymous class as a kind of adaptor for the cognitive
         // System to provide proper translation/i18n.
         org.argouml.cognitive.Translator.setTranslator(
-                new AbstractCognitiveTranslator() {
-            public String i18nlocalize(String key) {
-                return Translator.localize(key);
-            }
+            new AbstractCognitiveTranslator() {
+                public String i18nlocalize(String key) {
+                    return Translator.localize(key);
+                }
 
-            public String i18nmessageFormat(String key, Object[] iArgs) {
-                return Translator.messageFormat(key, iArgs);
-            }
-        });
+                public String i18nmessageFormat(String key, Object[] iArgs) {
+                    return Translator.messageFormat(key, iArgs);
+                }
+            });
 
         // then, print out some version info for debuggers...
         org.argouml.util.Tools.logVersionInfo();
@@ -143,7 +143,6 @@ public class Main {
         System.setProperty("com.apple.mrj.application.apple.menu.about.name",
 			   "ArgoUML");
 
-
         boolean doSplash = Configuration.getBoolean(Argo.KEY_SPLASH, true);
 	// TODO: document use. Ref. 1/2
         boolean preload = Configuration.getBoolean(Argo.KEY_PRELOAD, true);
@@ -154,12 +153,9 @@ public class Main {
 
         String projectName = null;
 
-        //--------------------------------------------
         // Parse command line args:
         // The assumption is that all options precede
         // the name of a project file to load.
-        //--------------------------------------------
-
         String theTheme = null;
         for (int i = 0; i < args.length; i++) {
             if (args[i].startsWith("-")) {
@@ -203,6 +199,13 @@ public class Main {
                 }
             }
         }
+
+        // We have to do this to set the LAF for the splash screen
+        st.mark("initialize laf");
+        LookAndFeelMgr.getInstance().initializeLookAndFeel();
+        if (theTheme != null) {
+            LookAndFeelMgr.getInstance().setCurrentTheme(theTheme);
+        }
         
         // Get the splash screen up as early as possible
         st.mark("create splash");
@@ -223,7 +226,7 @@ public class Main {
 	// The reason the gui is initialized before the commands are run
 	// is that some of the commands will use the projectbrowser.
 	st.mark("initialize gui");
-        initializeGUI(splash, theTheme);
+        initializeGUI(splash);
 
         // Initialize the UMLActions
         st.mark("actions");
@@ -375,6 +378,10 @@ public class Main {
     
     /**
      * Helper to update progress if we have a splash screen displayed.
+     *
+     * @param splash <code>true</code> if the splash is to be shown
+     * @param percent the new percentage for progress bar
+     * @param message the messae to be shown in the splash
      */
     private static void updateProgress(SplashScreen splash, int percent,
             String message) {
@@ -621,7 +628,7 @@ public class Main {
      */
     private static SplashScreen initializeSplash() {
         SplashScreen splash = new SplashScreen();
-        splash.show();
+        splash.setVisible(true);
         // On uniprocessors wait until we're sure the splash screen
         // has been painted so that we aren't competing for resources
         if (!EventQueue.isDispatchThread()
@@ -642,16 +649,8 @@ public class Main {
      * Do a part of the initialization that is very much GUI-stuff.
      *
      * @param splash the splash screeen
-     * @param theTheme is the theme to set.
      */
-    private static void initializeGUI(
-            SplashScreen splash, String theTheme) {
-	// initialize the correct look and feel
-	LookAndFeelMgr.getInstance().initializeLookAndFeel();
-	if (theTheme != null) {
-	    LookAndFeelMgr.getInstance().setCurrentTheme(theTheme);
-	}
-
+    private static void initializeGUI(SplashScreen splash) {
         // make the projectbrowser
 	ProjectBrowser pb = ProjectBrowser.makeInstance(splash);
 
