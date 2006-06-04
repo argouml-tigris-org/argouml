@@ -251,6 +251,7 @@ public abstract class FigEdgeModelElement
             } catch (InvalidElementException e) {
                 // We moused over an object just as it was deleted
                 // transient condition - doesn't require I18N
+                LOG.warn("A deleted element still exists on the diagram");
                 return "*deleted element*";
             }
         } else {
@@ -542,6 +543,9 @@ public abstract class FigEdgeModelElement
         } else if (pName.equals("editing")
                 && Boolean.TRUE.equals(pve.getNewValue())) {
             textEditStarted((FigText) src);
+        } else if (pve instanceof DeleteInstanceEvent && src == getOwner()) {
+            removeFromDiagram();
+            return;
         } else {
             // Add/remove name change listeners for applied stereotypes
             if (src == getOwner()
