@@ -118,7 +118,7 @@ public class FigComponentInstance extends FigNodeModelElement {
         if (Model.getFacade().isAComponentInstance(own)) {
             notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_COMPONENTINSTANCE, this, own);
+                    NotationProviderFactory2.TYPE_COMPONENTINSTANCE, own);
         }
     }
 

@@ -29,6 +29,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.notation.java.InitNotationJava;
 import org.argouml.uml.notation.uml.InitNotationUml;
 
@@ -171,10 +173,61 @@ public final class NotationProviderFactory2 {
     }
 
     /**
+     * Get a NotationProvider for the current project.
+     * 
+     * @param type the provider type
+     * @return the provider
+     * @param object the constructor parameter
+     */
+    public NotationProvider4 getNotationProvider(int type,
+            Object object) {
+        Project proj = ProjectManager.getManager().getCurrentProject();
+        NotationName name = proj.getProjectSettings().getNotationName();
+        Class clazz = getNotationProviderClass(type, name);
+        if (clazz != null) {
+            Class[] p = {Object.class};
+            Constructor constructor = null;
+            try {
+                constructor = clazz.getConstructor(p);
+            } catch (SecurityException e) {
+                // TODO: Auto-generated catch block
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                // TODO: Auto-generated catch block
+                e.printStackTrace();
+            }
+            Object[] params = {
+                object,
+            };
+
+            try {
+                return (NotationProvider4) constructor.newInstance(params);
+            } catch (IllegalArgumentException e) {
+                // TODO: Auto-generated catch block
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                // TODO: Auto-generated catch block
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                // TODO: Auto-generated catch block
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                // TODO: Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
      * @param type the provider type
      * @param context the context (i.e. the notation name)
      * @return the provider
      * @param object the constructor parameter
+     * 
+     * @deprecated by MVW in V0.21.3. Replaced by 
+     * {@link #getNotationProvider(int, Object)}
+     * See issue 3140.
      */
     public NotationProvider4 getNotationProvider(int type,
             NotationContext context, Object object) {

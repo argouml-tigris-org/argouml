@@ -154,7 +154,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         if (Model.getFacade().isAClassifierRole(own)) {
             notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_CLASSIFIERROLE, this, own);
+                    NotationProviderFactory2.TYPE_CLASSIFIERROLE, own);
         }
     }
 

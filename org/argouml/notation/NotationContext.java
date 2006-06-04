@@ -30,6 +30,9 @@ package org.argouml.notation;
  *
  * @author Thierry Lach
  * @since 0.9.4
+ * @deprecated by MVW in V0.21.3. Replaced by 
+ * {@link org.argouml.kernel.ProjectSettings#getNotationName()}
+ * See issue 3140.
  */
 public interface NotationContext {
     /**

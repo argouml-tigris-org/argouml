@@ -73,7 +73,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
-import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationContext;
 import org.argouml.notation.NotationName;
@@ -128,7 +127,6 @@ public abstract class FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private NotationName currentNotationName;
     private static final Font LABEL_FONT;
     private static final Font ITALIC_LABEL_FONT;
 
@@ -313,9 +311,9 @@ public abstract class FigNodeModelElement
 
         readyToEdit = false;
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+        
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
-        currentNotationName = ps.getNotationName();
 
         shadowSize = ps.getDefaultShadowWidthValue();
         /* TODO: how to handle changes in shadowsize 
@@ -961,7 +959,8 @@ public abstract class FigNodeModelElement
             // We catch the exception here so it is handled for all subclasses
             try {
                 modelChanged(pve);
-            } catch (InvalidElementException e) {
+            } catch (Exception e) {
+                /* need to catch javax.jmi.reflect.InvalidObjectException */
                 LOG.debug("modelChanged method accessed deleted element ", e);
             }
         }
@@ -1255,7 +1254,7 @@ public abstract class FigNodeModelElement
         if (Model.getFacade().isAModelElement(own)) {
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_NAME, this, own);
+                        NotationProviderFactory2.TYPE_NAME, own);
             notationProviderName.putValue(
                     "pathVisible", Boolean.valueOf(isPathVisible()));
         }
@@ -1376,16 +1375,19 @@ public abstract class FigNodeModelElement
      * Returns the notation name for this fig. First start to
      * implement notations on a per fig basis.
      * @see org.argouml.notation.NotationContext#getContextNotation()
+     * @deprecated by MVW in V0.21.3. Replaced by 
+     * {@link ProjectSettings#getNotationName()}
      */
     public NotationName getContextNotation() {
-        return currentNotationName;
+        Project p = ProjectManager.getManager().getCurrentProject();
+        return p.getProjectSettings().getNotationName();
     }
 
     /**
      * @see org.argouml.notation.NotationContext#setContextNotation(org.argouml.notation.NotationName)
      */
     public void setContextNotation(NotationName nn) {
-        currentNotationName = nn;
+        // not supported - see issue 3140.
     }
 
     /**
@@ -1393,10 +1395,6 @@ public abstract class FigNodeModelElement
      */
     public void notationChanged(ArgoNotationEvent event) {
         if (getOwner() == null) return;
-        Project p = ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = p.getProjectSettings();
-        setContextNotation(ps.getNotationName());
-
         initNotationProviders(getOwner());
         try {
             renderingChanged();

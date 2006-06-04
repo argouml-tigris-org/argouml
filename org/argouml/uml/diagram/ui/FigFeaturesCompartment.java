@@ -190,9 +190,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
                 
                 NotationProvider4 np = 
                     NotationProviderFactory2.getInstance()
-                        .getNotationProvider(
-                                getNotationType(),
-                                (NotationContext) getGroup(), umlObject);
+                        .getNotationProvider(getNotationType(), umlObject);
 
                 // If we don't have a fig for this feature, we'll need to add
                 // one. We set the bounds, but they will be reset later.

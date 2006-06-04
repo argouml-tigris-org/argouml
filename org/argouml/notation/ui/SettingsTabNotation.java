@@ -64,7 +64,6 @@ public class SettingsTabNotation
     extends JPanel
     implements GUISettingsTabInterface {
 
-    private JCheckBox allowNotations;
     private JComboBox notationLanguage;
     private JCheckBox useGuillemots;
     private JCheckBox showVisibility;
@@ -103,8 +102,6 @@ public class SettingsTabNotation
         constraints.insets = new Insets(0, 30, 0, 4);
 
         constraints.gridy = GridBagConstraints.RELATIVE;
-        allowNotations = createCheckBox("label.uml-notation-only");
-        top.add(allowNotations, constraints);
 
         JPanel notationLanguagePanel =
             new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
@@ -162,8 +159,6 @@ public class SettingsTabNotation
         if (scope == GUI.SCOPE_APPLICATION) {
             useGuillemots.setSelected(getBoolean(
                     Notation.KEY_USE_GUILLEMOTS));
-            allowNotations.setSelected(getBoolean(
-                    Notation.KEY_UML_NOTATION_ONLY));
             notationLanguage.setSelectedItem(Notation.getConfigueredNotation());
             showVisibility.setSelected(getBoolean(
                     Notation.KEY_SHOW_VISIBILITY));
@@ -187,8 +182,7 @@ public class SettingsTabNotation
         if (scope == GUI.SCOPE_PROJECT) {
             Project p = ProjectManager.getManager().getCurrentProject();
             ProjectSettings ps = p.getProjectSettings();
-            
-            allowNotations.setSelected(ps.getAllowNotationsValue());
+
             notationLanguage.setSelectedItem(Notation.findNotation(
                     ps.getNotationLanguage()));
             useGuillemots.setSelected(ps.getUseGuillemotsValue());
@@ -218,8 +212,6 @@ public class SettingsTabNotation
      */
     public void handleSettingsTabSave() {
         if (scope == GUI.SCOPE_APPLICATION) {
-            Configuration.setBoolean(Notation.KEY_UML_NOTATION_ONLY,
-                    allowNotations.isSelected());
             Notation.setDefaultNotation(
                     (NotationName) notationLanguage.getSelectedItem());
             Configuration.setBoolean(Notation.KEY_USE_GUILLEMOTS,
@@ -242,7 +234,6 @@ public class SettingsTabNotation
         if (scope == GUI.SCOPE_PROJECT) {
             Project p = ProjectManager.getManager().getCurrentProject();
             ProjectSettings ps = p.getProjectSettings();
-            ps.setAllowNotations(allowNotations.isSelected());
             NotationName nn = (NotationName) notationLanguage.getSelectedItem();
             if (nn != null) ps.setNotationLanguage(nn.getConfigurationValue());
             ps.setUseGuillemots(useGuillemots.isSelected());
@@ -268,8 +259,6 @@ public class SettingsTabNotation
      */
     public void handleResetToDefault() {
         if (scope == GUI.SCOPE_PROJECT) {
-            allowNotations.setSelected(getBoolean(
-                    Notation.KEY_UML_NOTATION_ONLY));
             notationLanguage.setSelectedItem(Notation.getConfigueredNotation());
             useGuillemots.setSelected(getBoolean(
                     Notation.KEY_USE_GUILLEMOTS));

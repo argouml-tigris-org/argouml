@@ -32,7 +32,6 @@
     </description>
   </documentation>
   <settings>
-	<allownotations><ocl>self.projectSettings.allowNotations</ocl></allownotations>
     <notationlanguage><ocl>self.projectSettings.notationLanguage</ocl></notationlanguage>
     <useguillemots><ocl>self.projectSettings.useGuillemots</ocl></useguillemots>
     <showvisibility><ocl>self.projectSettings.showVisibility</ocl></showvisibility>

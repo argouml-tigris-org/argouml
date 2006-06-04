@@ -87,16 +87,16 @@ public class FigAssociationRole extends FigAssociation {
                 notationProviderSrcRole =
                     NotationProviderFactory2.getInstance().getNotationProvider(
                             NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
-                            this, ae0);
+                            ae0);
                 notationProviderDestRole =
                     NotationProviderFactory2.getInstance().getNotationProvider(
                             NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
-                            this, ae1);
+                            ae1);
             }
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_ASSOCIATION_ROLE, 
-                        this, own);
+                        own);
         }
     }
 

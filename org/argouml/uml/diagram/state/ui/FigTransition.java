@@ -122,7 +122,7 @@ public class FigTransition extends FigEdgeModelElement {
         if (Model.getFacade().isATransition(own)) {
             notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_TRANSITION, this, own);
+                        NotationProviderFactory2.TYPE_TRANSITION, own);
         }
     }
 

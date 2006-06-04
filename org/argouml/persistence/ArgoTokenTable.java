@@ -44,6 +44,7 @@ public class ArgoTokenTable extends XMLTokenTableBase {
     // constants
     private static final String STRING_ARGO                   = "argo";
     private static final String STRING_AUTHORNAME            = "authorname";
+    private static final String STRING_AUTHOREMAIL            = "authoremail";
     private static final String STRING_VERSION               = "version";
     private static final String STRING_DESCRIPTION           = "description";
     private static final String STRING_SEARCHPATH            = "searchpath";
@@ -52,7 +53,6 @@ public class ArgoTokenTable extends XMLTokenTableBase {
     private static final String STRING_DOCUMENTATION         = "documentation";
 
     private static final String STRING_SETTINGS = "settings";
-    private static final String STRING_ALLOWNOTATIONS = "allownotations";
     private static final String STRING_NOTATIONLANGUAGE = "notationlanguage";
     private static final String STRING_USEGUILLEMOTS = "useguillemots";
     private static final String STRING_SHOWVISIBILITY = "showvisibility";
@@ -61,29 +61,30 @@ public class ArgoTokenTable extends XMLTokenTableBase {
     private static final String STRING_SHOWPROPERTIES = "showproperties";
     private static final String STRING_SHOWTYPES = "showtypes";
     private static final String STRING_SHOWSTEREOTYPES = "showstereotypes";
-    private static final String STRING_DEFAULTSHADOWWIDTH = "defaultshadowwidth";
+    private static final String STRING_DEFAULTSHADOWWIDTH 
+        = "defaultshadowwidth";
 
     /** The token for argo. */
     public static final int    TOKEN_ARGO                    = 1;
-    /** The token for authroname. */
+    /** The token for author name. */
     public static final int    TOKEN_AUTHORNAME              = 2;
+    /** The token for author email. */
+    public static final int    TOKEN_AUTHOREMAIL              = 3;
     /** The token for version. */
-    public static final int    TOKEN_VERSION                 = 3;
+    public static final int    TOKEN_VERSION                 = 4;
     /** The token for description. */
-    public static final int    TOKEN_DESCRIPTION             = 4;
+    public static final int    TOKEN_DESCRIPTION             = 5;
     /** The token for search path. */
-    public static final int    TOKEN_SEARCHPATH              = 5;
+    public static final int    TOKEN_SEARCHPATH              = 6;
     /** The token for member. */
-    public static final int    TOKEN_MEMBER                  = 6;
+    public static final int    TOKEN_MEMBER                  = 7;
     /** The token for history file. */
-    public static final int    TOKEN_HISTORYFILE             = 7;
+    public static final int    TOKEN_HISTORYFILE             = 8;
     /** The token for documentation. */
-    public static final int    TOKEN_DOCUMENTATION           = 8;
+    public static final int    TOKEN_DOCUMENTATION           = 9;
 
     /** The token for settings. */
-    public static final int    TOKEN_SETTINGS           = 9;
-    /** The token for allowing other notations than UML. */
-    public static final int    TOKEN_ALLOWNOTATIONS           = 10;
+    public static final int    TOKEN_SETTINGS           = 10;
     /** The token for the notation language setting. */
     public static final int    TOKEN_NOTATIONLANGUAGE           = 11;
     /** A token for Notation Settings. */
@@ -115,7 +116,8 @@ public class ArgoTokenTable extends XMLTokenTableBase {
      */
     protected void setupTokens() {
 	addToken(STRING_ARGO, new Integer(TOKEN_ARGO));
-	addToken(STRING_AUTHORNAME, new Integer(TOKEN_AUTHORNAME));
+        addToken(STRING_AUTHORNAME, new Integer(TOKEN_AUTHORNAME));
+        addToken(STRING_AUTHOREMAIL, new Integer(TOKEN_AUTHOREMAIL));
 	addToken(STRING_VERSION, new Integer(TOKEN_VERSION));
 	addToken(STRING_DESCRIPTION, new Integer(TOKEN_DESCRIPTION));
 	addToken(STRING_SEARCHPATH, new Integer(TOKEN_SEARCHPATH));
@@ -123,7 +125,6 @@ public class ArgoTokenTable extends XMLTokenTableBase {
 	addToken(STRING_HISTORYFILE, new Integer(TOKEN_HISTORYFILE));
         addToken(STRING_DOCUMENTATION, new Integer(TOKEN_DOCUMENTATION));
         addToken(STRING_SETTINGS, new Integer(TOKEN_SETTINGS));
-        addToken(STRING_ALLOWNOTATIONS, new Integer(TOKEN_ALLOWNOTATIONS));
         addToken(STRING_NOTATIONLANGUAGE, new Integer(TOKEN_NOTATIONLANGUAGE));
         addToken(STRING_USEGUILLEMOTS, new Integer(TOKEN_USEGUILLEMOTS));
         addToken(STRING_SHOWVISIBILITY, new Integer(TOKEN_SHOWVISIBILITY));
@@ -132,7 +133,8 @@ public class ArgoTokenTable extends XMLTokenTableBase {
         addToken(STRING_SHOWPROPERTIES, new Integer(TOKEN_SHOWPROPERTIES));
         addToken(STRING_SHOWTYPES, new Integer(TOKEN_SHOWTYPES));
         addToken(STRING_SHOWSTEREOTYPES, new Integer(TOKEN_SHOWSTEREOTYPES));
-        addToken(STRING_DEFAULTSHADOWWIDTH, new Integer(TOKEN_DEFAULTSHADOWWIDTH));
+        addToken(STRING_DEFAULTSHADOWWIDTH, 
+                new Integer(TOKEN_DEFAULTSHADOWWIDTH));
     }
 
 } /* end class ArgoTokenTable */
