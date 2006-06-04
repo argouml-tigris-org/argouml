@@ -71,7 +71,7 @@ import org.tigris.toolbar.ToolBar;
  * column of "fields" which are laid out indepently from the other panels.
  * <p>
  * The Properties panels for UML Model Elements are structured in an inheritance
- * hierarchy that matches the UML 1.3 metamodel.
+ * hierarchy that matches the UML metamodel.
  */
 public abstract class PropPanel extends AbstractArgoJPanel implements
         TabModelTarget, UMLUserInterfaceContainer {
