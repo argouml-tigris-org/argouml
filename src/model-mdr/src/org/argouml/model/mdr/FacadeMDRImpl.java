@@ -3857,17 +3857,21 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getOwner(java.lang.Object)
      */
     public Object getOwner(Object handle) {
-        if ((handle instanceof Attribute)
-                && ((Attribute) handle).getAssociationEnd() != null) {
-            return ((Attribute) handle).getAssociationEnd();
+        try {
+            if ((handle instanceof Attribute)
+                    && ((Attribute) handle).getAssociationEnd() != null) {
+                return ((Attribute) handle).getAssociationEnd();
+            }
+            if (handle instanceof Feature) {
+                return ((Feature) handle).getOwner();
+            }
+            if (handle instanceof TagDefinition) {
+                return ((TagDefinition) handle).getOwner();
+            }
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        if (handle instanceof Feature) {
-            return ((Feature) handle).getOwner();
-        }
-        if (handle instanceof TagDefinition) {
-            return ((TagDefinition) handle).getOwner();
-        }
-        return illegalArgumentObject(handle);
     }
 
     /**
