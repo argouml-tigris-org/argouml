@@ -111,22 +111,24 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
                 
             } else if (hasColon) {
                 if (basestr != null) {
-                    throw new ParseException(
-                            "Extra text in Association Role", st
+                    String msg = 
+                    	"parsing.error.association-role.association-extra-text";
+                    throw new ParseException(Translator.localize(msg), st
                                     .getTokenIndex());
                 }
                 basestr = token;
             } else if (hasSlash) {
                 if (rolestr != null) {
-                    throw new ParseException(
-                            "Extra text in Association Role", st
+                    String msg = 
+                		"parsing.error.association-role.extra-text";
+                    throw new ParseException(Translator.localize(msg), st
                                     .getTokenIndex());
                 }
                 rolestr = token;
             } else {
-                throw new ParseException(
-                        "Extra text in Association Role", st
-                                .getTokenIndex());
+            	String msg = "parsing.error.association-role.extra-text";
+                throw new ParseException(Translator.localize(msg), 
+                		st.getTokenIndex());
             }
         }
         
@@ -172,9 +174,8 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
                 return;
             }
         }
-
-        throw new ParseException(
-                "Base for Association Role not found", 0);        
+        String msg = "parsing.error.association-role.base-not-found";
+        throw new ParseException(Translator.localize(msg), 0);        
     }
 
     /**

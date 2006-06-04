@@ -207,8 +207,9 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
 
                 if ("<<".equals(token) || "\u00AB".equals(token)) {
                     if (stereotype != null) {
-                        throw new ParseException("Element cannot have "
-                                + "two groups of stereotypes",
+                        String msg = 
+                            "parsing.error.model-element-name.twin-stereotypes";
+                        throw new ParseException(Translator.localize(msg),
                                 st.getTokenIndex());
                     }
 
@@ -226,8 +227,10 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
                     }
 
                     if (path != null && (name == null || "".equals(name))) {
-                        throw new ParseException("Element cannot have "
-                                + "anonymous qualifiers", st.getTokenIndex());
+                        String msg = 
+                            "parsing.error.model-element-name.anon-qualifiers";
+                        throw new ParseException(Translator.localize(msg), 
+                                st.getTokenIndex());
                     }
 
                     if (path == null) {
@@ -239,16 +242,19 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
                     name = null;
                 } else {
                     if (name != null) {
-                        throw new ParseException("Element cannot have "
-                                + "two word names or qualifiers", st
-                                .getTokenIndex());
+                        String msg = 
+                            "parsing.error.model-element-name.twin-names";
+                        throw new ParseException(Translator.localize(msg), 
+                                st.getTokenIndex());
                     }
 
                     name = token;
                 }
             }
         } catch (NoSuchElementException nsee) {
-            throw new ParseException("Unexpected end of element",
+            String msg = 
+                "parsing.error.model-element-name.unexpected-name-element";
+            throw new ParseException(Translator.localize(msg),
                     text.length());
         } catch (ParseException pre) {
             throw pre;
@@ -259,7 +265,8 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
         }
 
         if (path != null && (name == null || "".equals(name))) {
-            throw new ParseException("Qualified names must end with a name", 0);
+            String msg = "parsing.error.model-element-name.must-end-with-name";
+			throw new ParseException(Translator.localize(msg), 0);
         }
 
         if (name != null && name.startsWith("+")) {
@@ -296,13 +303,19 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
                         Model.getFacade().getModel(me));
 
             if (nspe == null || !(Model.getFacade().isANamespace(nspe))) {
-                throw new ParseException("Unable to resolve namespace", 0);
+            	String msg = 
+            		"parsing.error.model-element-name.namespace-unresolved";
+                throw new ParseException(Translator.localize(msg), 
+                        0);
             }
             Object model =
                 ProjectManager.getManager().getCurrentProject().getRoot();
             if (!Model.getCoreHelper().getAllPossibleNamespaces(me, model)
                         .contains(nspe)) {
-                throw new ParseException("Invalid namespace for element", 0);
+                String msg = 
+                	"parsing.error.model-element-name.namespace-invalid";
+                throw new ParseException(Translator.localize(msg), 
+                        0);
             }
 
             Model.getCoreHelper().addOwnedElement(nspe, me);

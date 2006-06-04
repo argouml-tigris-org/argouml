@@ -160,32 +160,36 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
                     base = null;
                 } else if (hasColon) {
                     if (base != null) {
+                    	String msg = "parsing.error.classifier.extra-test";
                         throw new ParseException(
-                                "Extra text in Classifier Role", st
-                                        .getTokenIndex());
+                                Translator.localize(msg), 
+                                st.getTokenIndex());
                     }
 
                     base = token;
                 } else if (hasSlash) {
                     if (role != null) {
+                    	String msg = "parsing.error.classifier.extra-test";
                         throw new ParseException(
-                                "Extra text in Classifier Role", st
-                                        .getTokenIndex());
+                                Translator.localize(msg), 
+                                st.getTokenIndex());
                     }
 
                     role = token;
                 } else {
                     if (name != null) {
+                    	String msg = "parsing.error.classifier.extra-test";
                         throw new ParseException(
-                                "Extra text in Classifier Role", st
-                                        .getTokenIndex());
+                                Translator.localize(msg), 
+                                st.getTokenIndex());
                     }
 
                     name = token;
                 }
             }
         } catch (NoSuchElementException nsee) {
-            throw new ParseException("Unexpected end of attribute", s.length());
+            String msg = "parsing.error.classifier.unexpected-end-attribute";
+            throw new ParseException(Translator.localize(msg), s.length());
         }
 
         if (base != null) {

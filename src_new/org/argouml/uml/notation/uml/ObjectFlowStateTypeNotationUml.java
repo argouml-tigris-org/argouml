@@ -80,8 +80,11 @@ public class ObjectFlowStateTypeNotationUml
         if (c != null) {
             Model.getCoreHelper().setType(objectFlowState, c);
         } else {
+        	String msg = "parsing.error.object-flow-type.classifier-not-found";
+            Object[] args = {s};
             throw new ParseException(
-                    "Classifier with name " + s + " not found", 0);
+                    Translator.localize(msg, args), 
+                    0);
         }
         return objectFlowState;
     }

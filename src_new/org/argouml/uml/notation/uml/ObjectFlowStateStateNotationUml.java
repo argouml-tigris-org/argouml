@@ -152,8 +152,11 @@ public class ObjectFlowStateStateNotationUml extends
                     } else {
                         // no state named s is found, so we have to
                         // reject the user's input
-                        throw new ParseException("State with name " + s
-                                + " not found", 0);
+                        String msg = 
+                            "parsing.error.object-flow-state.state-not-found";
+                        Object[] args = {s};
+                        throw new ParseException(Translator.localize(msg, args),
+                                0);
                     }
                 }
 
@@ -174,8 +177,11 @@ public class ObjectFlowStateStateNotationUml extends
                     } else {
                         // no state with the given name is found, so we have to
                         // reject the complete user's input
-                        throw new ParseException("State with name " + s
-                                + " not found", 0);
+                    	String msg = 
+                    	    "parsing.error.object-flow-state.state-not-found";
+                        Object[] args = {s};
+                        throw new ParseException(Translator.localize(msg, args),
+                                0);
                     }
                 }
 
@@ -189,7 +195,10 @@ public class ObjectFlowStateStateNotationUml extends
         } else {
             // if no classifier has been set, then entering a state is
             // not useful, so the user's input has to be rejected.
-            throw new ParseException("Classifier not found", 0);
+            String msg = 
+        	    "parsing.error.object-flow-state.classifier-not-found";
+            throw new ParseException(Translator.localize(msg), 
+                    0);
         }
         return objectFlowState;
     }
