@@ -84,10 +84,10 @@ public abstract class FileImportSupport implements PluggableImport {
 	    configPanel = new JPanel();
 	    configPanel.setLayout(new GridBagLayout());
 
-	    JLabel attributeLabel =
+	    JLabel attributeLabel1 =
                 new JLabel(
                         Translator.localize("action.import-java-attr-model"));
-	    configPanel.add(attributeLabel,
+	    configPanel.add(attributeLabel1,
 			    new GridBagConstraints(GridBagConstraints.RELATIVE,
 						   GridBagConstraints.RELATIVE,
 						   GridBagConstraints.REMAINDER,
@@ -127,6 +127,19 @@ public abstract class FileImportSupport implements PluggableImport {
 						   GridBagConstraints.NONE,
 						   new Insets(0, 5, 5, 5),
 						   0, 0));
+	    JLabel attributeLabel2 =
+	        new JLabel(
+                    Translator.localize("action.import-java-array-model"));
+	    configPanel.add(attributeLabel2,
+                        new GridBagConstraints(GridBagConstraints.RELATIVE,
+                                               GridBagConstraints.RELATIVE,
+                                               GridBagConstraints.REMAINDER,
+                                               1,
+                                               1.0, 0.0,
+                                               GridBagConstraints.NORTHWEST,
+                                               GridBagConstraints.NONE,
+                                               new Insets(5, 5, 0, 5),
+                                               0, 0));
 
 	    ButtonGroup group2 = new ButtonGroup();
 	    datatype =
