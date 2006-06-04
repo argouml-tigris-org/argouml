@@ -137,12 +137,6 @@ public final class PersistenceManager {
         if (defaultPersister.isFileExtensionApplicable(name)) {
             return defaultPersister;
         }
-        if (xmiPersister.isFileExtensionApplicable(name)) {
-            return xmiPersister;
-        }
-        if (zipPersister.isFileExtensionApplicable(name)) {
-            return zipPersister;
-        }
         Iterator iter = otherPersisters.iterator();
         while (iter.hasNext()) {
             AbstractFilePersister persister =
