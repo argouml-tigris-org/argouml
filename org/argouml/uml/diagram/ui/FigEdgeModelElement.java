@@ -65,6 +65,7 @@ import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation.NotationContext;
@@ -245,7 +246,13 @@ public abstract class FigEdgeModelElement
             && Globals.curEditor().getSelectionManager().containsFig(this)) {
             tip = item.getHeadline();
         } else if (getOwner() != null) {
-            tip = Model.getFacade().getTipString(getOwner());
+            try {
+                tip = Model.getFacade().getTipString(getOwner());
+            } catch (InvalidElementException e) {
+                // We moused over an object just as it was deleted
+                // transient condition - doesn't require I18N
+                return "*deleted element*";
+            }
         } else {
             tip = toString();
         }
