@@ -67,7 +67,6 @@ import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
-import org.argouml.notation.Notation;
 import org.argouml.notation.NotationContext;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider4;
@@ -156,12 +155,6 @@ public abstract class FigEdgeModelElement
 
     private ItemUID itemUid;
 
-    /**
-     * The current notation for this fig. The notation is for example
-     * UML 1.3 or Java
-     */
-    private NotationName currentNotationName;
-
     /*
      * List of model element listeners we've registered.
      */
@@ -183,9 +176,6 @@ public abstract class FigEdgeModelElement
         setBetweenNearestPoints(true);
 
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
-        Project p = ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = p.getProjectSettings();
-        currentNotationName = ps.getNotationName();
     }
 
     /**
@@ -805,7 +795,7 @@ public abstract class FigEdgeModelElement
         if (Model.getFacade().isAModelElement(own)) {
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_NAME, this, own);
+                        NotationProviderFactory2.TYPE_NAME, own);
             notationProviderName.putValue("edge", Boolean.TRUE);
         }
     }
@@ -868,16 +858,19 @@ public abstract class FigEdgeModelElement
      * This default implementation simply requests the default notation.
      *
      * @see org.argouml.notation.NotationContext#getContextNotation()
+     * @deprecated by MVW in V0.21.3. Replaced by 
+     * {@link ProjectSettings#getNotationName()}
      */
     public NotationName getContextNotation() {
-        return currentNotationName;
+        Project p = ProjectManager.getManager().getCurrentProject();
+        return p.getProjectSettings().getNotationName();
     }
 
     /**
      * @see org.argouml.notation.NotationContext#setContextNotation(org.argouml.notation.NotationName)
      */
     public void setContextNotation(NotationName nn) {
-        currentNotationName = nn;
+        // not supported - see issue 3140.
     }
 
     /**
@@ -885,10 +878,6 @@ public abstract class FigEdgeModelElement
      */
     public void notationChanged(ArgoNotationEvent event) {
         if (getOwner() == null) return;
-        Project p = ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = p.getProjectSettings();
-        setContextNotation(ps.getNotationName());
-
         initNotationProviders(getOwner());
         renderingChanged();
     }

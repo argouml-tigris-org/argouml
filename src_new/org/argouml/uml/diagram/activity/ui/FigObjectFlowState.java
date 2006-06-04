@@ -140,11 +140,11 @@ public class FigObjectFlowState extends FigNodeModelElement {
             notationProviderType =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_TYPE,
-                        this, own);
+                        own);
             notationProviderState =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_STATE,
-                        this, own);
+                        own);
         }
     }
 

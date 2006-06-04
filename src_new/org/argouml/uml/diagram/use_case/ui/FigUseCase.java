@@ -1241,9 +1241,10 @@ public class FigUseCase extends FigNodeModelElement
                 // one. We set the bounds, but they will be reset later.
                 if (epFig == null) {
                     NotationProvider4 np = 
-                        NotationProviderFactory2.getInstance().getNotationProvider(
-                            NotationProviderFactory2.TYPE_EXTENSION_POINT,
-                            this, ep);
+                        NotationProviderFactory2.getInstance()
+                            .getNotationProvider(
+                                NotationProviderFactory2.TYPE_EXTENSION_POINT, 
+                                ep);
 
                     epFig = new CompartmentFigText(
                             xpos,

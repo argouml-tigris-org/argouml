@@ -103,7 +103,7 @@ public class FigObject extends FigNodeModelElement {
         if (Model.getFacade().isAObject(own)) {
             notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_OBJECT, this, own);
+                    NotationProviderFactory2.TYPE_OBJECT, own);
         }
     }
 

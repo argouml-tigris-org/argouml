@@ -120,7 +120,7 @@ public class FigActionState extends FigStateVertex {
         if (Model.getFacade().isAActionState(own)) {
             notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_ACTIONSTATE, this, own);
+                    NotationProviderFactory2.TYPE_ACTIONSTATE, own);
         }
     }
 

@@ -41,7 +41,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationHelper;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.notation.uml.NotationUtilityUml;
@@ -155,7 +154,6 @@ public class DisplayTextTree extends JTree {
                         NotationProviderFactory2.getInstance()
                             .getNotationProvider(
                                     NotationProviderFactory2.TYPE_TRANSITION,
-                                    NotationHelper.getDefaultNotationContext(),
                                     value);
                     String signature = notationProvider.toString();
                     if (name != null && name.length() > 0) {
@@ -168,7 +166,6 @@ public class DisplayTextTree extends JTree {
                         NotationProviderFactory2.getInstance()
                             .getNotationProvider(
                                 NotationProviderFactory2.TYPE_EXTENSION_POINT,
-                                NotationHelper.getDefaultNotationContext(),
                                 value);
                     name = notationProvider.toString();
                 } else if (Model.getFacade().isAComment(value)) {
@@ -258,7 +255,7 @@ public class DisplayTextTree extends JTree {
             try {
                 // TODO: Localize
                 return "Multiplicity: "
-                + Model.getDataTypesHelper().multiplicityToString(value);
+                    + Model.getDataTypesHelper().multiplicityToString(value);
             } catch (InvalidElementException e) {
                 return "*deleted multiplicity*";
             }

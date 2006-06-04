@@ -126,7 +126,7 @@ public class FigMessage extends FigNodeModelElement {
         if (Model.getFacade().isAMessage(own)) {
             notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_MESSAGE, this, own);
+                    NotationProviderFactory2.TYPE_MESSAGE, own);
         }
     }
 

@@ -135,7 +135,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
             notationProviderSrcRole =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
-                        this, own);
+                        own);
         }
     }
 

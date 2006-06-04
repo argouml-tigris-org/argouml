@@ -14,7 +14,6 @@
 <!-- $Id$ -->
 
 
-<!-- TO DO LIST: -->
 
 <TemplateSet>
 
@@ -25,11 +24,24 @@
 <argo version="<ocl>self.persistenceVersion</ocl>">
   <documentation>
     <authorname><ocl>self.authorname</ocl></authorname>
+    <authoremail><ocl>self.authoremail</ocl></authoremail>
     <version><ocl>self.version</ocl></version>
     <description>
       <ocl>self.description</ocl>
     </description>
   </documentation>
+  <settings>
+    <notationlanguage><ocl>self.projectSettings.notationLanguage</ocl></notationlanguage>
+    <useguillemots><ocl>self.projectSettings.useGuillemots</ocl></useguillemots>
+    <showvisibility><ocl>self.projectSettings.showVisibility</ocl></showvisibility>
+    <showmultiplicity><ocl>self.projectSettings.showMultiplicity</ocl></showmultiplicity>
+    <showinitialvalue><ocl>self.projectSettings.showInitialValue</ocl></showinitialvalue>
+    <showproperties><ocl>self.projectSettings.showProperties</ocl></showproperties>
+    <showtypes><ocl>self.projectSettings.showTypes</ocl></showtypes>
+    <showstereotypes><ocl>self.projectSettings.showStereotypes</ocl></showstereotypes>
+    <defaultshadowwidth><ocl>self.projectSettings.defaultShadowWidth</ocl></defaultshadowwidth>
+  </settings>
+  
   <searchpath href="<ocl>self.searchPath</ocl>" />
 
   <ocl>self.members</ocl>

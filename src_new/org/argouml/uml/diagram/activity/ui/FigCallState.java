@@ -75,7 +75,7 @@ public class FigCallState extends FigActionState {
         if (Model.getFacade().isACallState(own)) {
             notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_CALLSTATE, this, own);
+                    NotationProviderFactory2.TYPE_CALLSTATE, own);
         }
     }
 
