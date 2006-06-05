@@ -418,34 +418,34 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param d the ArgoDiagram
      */
     protected void removeProjectMemberDiagram(ArgoDiagram d) {
+        if (activeDiagram == d) {
+            LOG.info("Deleting the current diagram");
+            ArgoDiagram defaultDiagram;
+            if (diagrams.size() == 1) {
+                // We're deleting the last diagram so lets create a new one
+                // TODO: Once we go MDI we won't need this.
+                Object treeRoot = Model.getModelManagementFactory().getRootModel();
+                defaultDiagram =
+                    DiagramFactory.getInstance()
+                        .createDiagram(UMLClassDiagram.class, treeRoot, null);
+                addMember(defaultDiagram);
+            } else {
+                // Make the topmost diagram (that is not the one being deleted)
+                // current.
+                LOG.info("Selecting the top diagram");
+                defaultDiagram = (ArgoDiagram) diagrams.get(0);
+                if (defaultDiagram == d) {
+                    LOG.info("Selecting the 2nd to top diagram");
+                    defaultDiagram = (ArgoDiagram) diagrams.get(1);
+                }
+            }
+            activeDiagram = defaultDiagram;
+            TargetManager.getInstance().setTarget(defaultDiagram);
+        }
 
         removeDiagram(d);
         members.remove(d);
         d.remove();
-
-        /*
-         * Issue 2909: if there is no diagram left, then let's add a default
-         * new one...
-         */
-        if (diagrams.size() < 1) {
-            Object treeRoot = Model.getModelManagementFactory().getRootModel();
-            ArgoDiagram defaultDiagram =
-                DiagramFactory.getInstance()
-                    .createDiagram(UMLClassDiagram.class, treeRoot, null);
-            addMember(defaultDiagram);
-            activeDiagram = defaultDiagram;
-            TargetManager.getInstance().setTarget(defaultDiagram);
-        } else {
-            /* If the current diagram has just been deleted,
-             * we better select another one to be displayed.
-             */
-            if (activeDiagram == d) {
-                ArgoDiagram defaultDiagram
-                    = (ArgoDiagram) diagrams.get(0);
-                activeDiagram = defaultDiagram;
-                TargetManager.getInstance().setTarget(defaultDiagram);
-            }
-        }
         ProjectManager.getManager().setSaveEnabled(true);
     }
 
