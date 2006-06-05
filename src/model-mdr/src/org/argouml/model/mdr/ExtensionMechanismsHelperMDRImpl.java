@@ -26,6 +26,7 @@ package org.argouml.model.mdr;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,12 +34,14 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.jmi.model.MofClass;
+import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefBaseObject;
 import javax.jmi.reflect.RefClass;
 import javax.jmi.reflect.RefPackage;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ExtensionMechanismsHelper;
+import org.argouml.model.InvalidElementException;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Stereotype;
@@ -97,20 +100,24 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException();
         }
-
-        List l = new ArrayList();
         if (ns == null) {
-            return l;
+            return Collections.EMPTY_LIST;
         }
+        
+        List l = new ArrayList();
         // TODO: this could be a huge collection - find a more efficient way
-        Iterator it = ((Namespace) ns).getOwnedElement().iterator();
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (o instanceof Stereotype) {
-                l.add(o);
-            } else if (o instanceof UmlPackage) {
-                l.addAll(getStereotypes(o));
+        try {
+            Iterator it = ((Namespace) ns).getOwnedElement().iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (o instanceof Stereotype) {
+                    l.add(o);
+                } else if (o instanceof UmlPackage) {
+                    l.addAll(getStereotypes(o));
+                }
             }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return l;
     }
@@ -128,21 +135,26 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
             throw new IllegalArgumentException("stereotype");
         }
 
-        String name = ((ModelElement) stereo).getName();
-        Collection baseClasses = ((Stereotype) stereo).getBaseClass();
-        if (name == null || baseClasses.size() != 1) {
-            return null;
-        }
-        String baseClass = (String) baseClasses.iterator().next();
-
-        Iterator it = getStereotypes(ns).iterator();
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (o instanceof Stereotype
-                    && name.equals(((Stereotype) o).getName())
-                    && ((Stereotype) o).getBaseClass().contains(baseClass)) {
-                return (Stereotype) o;
+        try {
+            String name = ((ModelElement) stereo).getName();
+            Collection baseClasses = ((Stereotype) stereo).getBaseClass();
+            if (name == null || baseClasses.size() != 1) {
+                return null;
             }
+            String baseClass = (String) baseClasses.iterator().next();
+            
+            Iterator it = getStereotypes(ns).iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (o instanceof Stereotype
+                        && name.equals(((Stereotype) o).getName())
+                        && ((Stereotype) o).getBaseClass()
+                            .contains(baseClass)) {
+                    return (Stereotype) o;
+                }
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return null;
     }
@@ -159,28 +171,32 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
             throw new IllegalArgumentException("stereotype");
         }
 
-        String name = ((Stereotype) stereo).getName();
-        Collection baseClasses = ((Stereotype) stereo).getBaseClass();
-        if (name == null || baseClasses.size() != 1) {
-            return null;
-        }
-        String baseClass = (String) baseClasses.iterator().next();
-
-        Iterator it2 = models.iterator();
-        while (it2.hasNext()) {
-            // TODO: this should call the single namespace form
-            // getStereotype(it2.next(); stereo);
-            Model model = (Model) it2.next();
-            Iterator it = getStereotypes(model).iterator();
-            while (it.hasNext()) {
-                Object o = it.next();
-                if (o instanceof Stereotype
-                        && name.equals(((Stereotype) o).getName())
-                        && ((Stereotype) o).getBaseClass().
+        try {
+            String name = ((Stereotype) stereo).getName();
+            Collection baseClasses = ((Stereotype) stereo).getBaseClass();
+            if (name == null || baseClasses.size() != 1) {
+                return null;
+            }
+            String baseClass = (String) baseClasses.iterator().next();
+            
+            Iterator it2 = models.iterator();
+            while (it2.hasNext()) {
+                // TODO: this should call the single namespace form
+                // getStereotype(it2.next(); stereo);
+                Model model = (Model) it2.next();
+                Iterator it = getStereotypes(model).iterator();
+                while (it.hasNext()) {
+                    Object o = it.next();
+                    if (o instanceof Stereotype
+                            && name.equals(((Stereotype) o).getName())
+                            && ((Stereotype) o).getBaseClass().
                             contains(baseClass)) {
-                    return (Stereotype) o;
+                        return (Stereotype) o;
+                    }
                 }
             }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return null;
     }
@@ -210,17 +226,20 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      */
     public Collection getAllPossibleStereotypes(Collection models,
             Object modelElement) {
-        ModelElement m = (ModelElement) modelElement;
-        List ret = new ArrayList();
-        if (m == null) {
-            return ret;
+        if (modelElement == null) {
+            return Collections.EMPTY_LIST;
         }
-        Iterator it = getStereotypes(models).iterator();
-        while (it.hasNext()) {
-            Stereotype stereo = (Stereotype) it.next();
-            if (isValidStereoType(m.getClass(), stereo)) {
-                ret.add(stereo);
+        List ret = new ArrayList();
+        try {
+            Iterator it = getStereotypes(models).iterator();
+            while (it.hasNext()) {
+                Stereotype stereo = (Stereotype) it.next();
+                if (isValidStereoType(modelElement.getClass(), stereo)) {
+                    ret.add(stereo);
+                }
             }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return ret;
     }
@@ -317,15 +336,19 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     public Collection getStereotypes(Collection models) {
         List ret = new ArrayList();
         Iterator it = models.iterator();
-        while (it.hasNext()) {
-            Object model = it.next();
-            if (!(model instanceof Model)) {
-                throw new IllegalArgumentException(
-                        "Expected to receive a collection of Models. "
-                                + "The collection contained a "
-                                + model.getClass().getName());
+        try {
+            while (it.hasNext()) {
+                Object model = it.next();
+                if (!(model instanceof Model)) {
+                    throw new IllegalArgumentException(
+                            "Expected to receive a collection of Models. "
+                            + "The collection contained a "
+                            + model.getClass().getName());
+                }
+                ret.addAll(getStereotypes(model));
             }
-            ret.addAll(getStereotypes(model));
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return ret;
     }
@@ -354,14 +377,19 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         }
 
         Stereotype st = (Stereotype) object;
-        if (name == null && st.getName() != null) {
-            return false;
+        try {
+            if (name == null && st.getName() != null) {
+                return false;
+            }
+            if (base == null && !(st.getBaseClass().isEmpty())) {
+                return false;
+            }
+            
+            return name.equals(st.getName()) 
+                && st.getBaseClass().contains(base);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        if (base == null && !(st.getBaseClass().isEmpty())) {
-            return false;
-        }
-
-        return name.equals(st.getName()) && st.getBaseClass().contains(base);
     }
 
     /**
@@ -371,14 +399,19 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         if (!(object instanceof Stereotype)) {
             return false;
         }
-        if (isStereotype(object, name, base)) {
-            return true;
-        }
-        Iterator it = nsmodel.getCoreHelper().getSupertypes(object).iterator();
-        while (it.hasNext()) {
-            if (isStereotypeInh(it.next(), name, base)) {
+        try {
+            if (isStereotype(object, name, base)) {
                 return true;
             }
+            Iterator it = 
+                nsmodel.getCoreHelper().getSupertypes(object).iterator();
+            while (it.hasNext()) {
+                if (isStereotypeInh(it.next(), name, base)) {
+                    return true;
+                }
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return false;
     }
@@ -585,13 +618,17 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      * @see org.argouml.model.ExtensionMechanismsHelper#hasStereoType(java.lang.Object, java.lang.String)
      */
     public boolean hasStereoType(Object handle, String name) {
-        Collection sts = nsmodel.getFacade().getStereotypes(handle);
-        Iterator i = sts.iterator();
-        while (i.hasNext()) {
-            Object st = i.next();
-            if (name.equals(nsmodel.getFacade().getName(st))) {
-                return true;
+        try {
+            Collection sts = nsmodel.getFacade().getStereotypes(handle);
+            Iterator i = sts.iterator();
+            while (i.hasNext()) {
+                Object st = i.next();
+                if (name.equals(nsmodel.getFacade().getName(st))) {
+                    return true;
+                }
             }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return false;
     }

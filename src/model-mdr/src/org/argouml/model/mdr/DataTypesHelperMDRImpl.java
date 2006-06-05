@@ -110,10 +110,10 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
      * @see org.argouml.model.DataTypesHelper#equalsINITIALKind(java.lang.Object)
      */
     public boolean equalsINITIALKind(Object kind) {
+        if (!(kind instanceof PseudostateKind)) {
+            throw new IllegalArgumentException();
+        }
         try {
-            if (!(kind instanceof PseudostateKind)) {
-                throw new IllegalArgumentException();
-            }
             return PseudostateKindEnum.PK_INITIAL.equals(kind);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -127,7 +127,11 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         if (!(kind instanceof PseudostateKind)) {
             throw new IllegalArgumentException();
         }
-        return PseudostateKindEnum.PK_DEEP_HISTORY.equals(kind);
+        try {
+            return PseudostateKindEnum.PK_DEEP_HISTORY.equals(kind);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
     }
 
     /**
@@ -137,7 +141,11 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         if (!(kind instanceof PseudostateKind)) {
             throw new IllegalArgumentException();
         }
-        return PseudostateKindEnum.PK_SHALLOW_HISTORY.equals(kind);
+        try {
+            return PseudostateKindEnum.PK_SHALLOW_HISTORY.equals(kind);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
     }
 
     /**
@@ -147,7 +155,11 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         if (!(kind instanceof PseudostateKind)) {
             throw new IllegalArgumentException();
         }
-        return PseudostateKindEnum.PK_FORK.equals(kind);
+        try {
+            return PseudostateKindEnum.PK_FORK.equals(kind);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
     }
 
     /**
@@ -157,7 +169,11 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         if (!(kind instanceof PseudostateKind)) {
             throw new IllegalArgumentException();
         }
-        return PseudostateKindEnum.PK_JOIN.equals(kind);
+        try {
+            return PseudostateKindEnum.PK_JOIN.equals(kind);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
     }
 
     /**
@@ -174,7 +190,11 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         if (!(kind instanceof PseudostateKind)) {
             throw new IllegalArgumentException();
         }
-        return PseudostateKindEnum.PK_CHOICE.equals(kind);
+        try {
+            return PseudostateKindEnum.PK_CHOICE.equals(kind);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
     }
 
     /**
@@ -184,7 +204,11 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         if (!(kind instanceof PseudostateKind)) {
             throw new IllegalArgumentException();
         }
-        return PseudostateKindEnum.PK_JUNCTION.equals(kind);
+        try {
+            return PseudostateKindEnum.PK_JUNCTION.equals(kind);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
     }
 
     /**
@@ -242,8 +266,12 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
      * @see org.argouml.model.DataTypesHelper#getBody(java.lang.Object)
      */
     public String getBody(Object handle) {
-        if (handle instanceof Expression) {
-            return ((Expression) handle).getBody();
+        try {
+            if (handle instanceof Expression) {
+                return ((Expression) handle).getBody();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + handle);
     }
@@ -265,8 +293,12 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
      * @see org.argouml.model.DataTypesHelper#getLanguage(java.lang.Object)
      */
     public String getLanguage(Object handle) {
-        if (handle instanceof Expression) {
-            return ((Expression) handle).getLanguage();
+        try {
+            if (handle instanceof Expression) {
+                return ((Expression) handle).getLanguage();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + handle);
     }

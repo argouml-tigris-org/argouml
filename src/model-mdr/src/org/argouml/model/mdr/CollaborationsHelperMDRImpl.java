@@ -91,19 +91,22 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             throw new IllegalArgumentException();
         }
 
-        List list = new ArrayList();
-        Iterator it = ((Namespace) ns).getOwnedElement().iterator();
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (o instanceof Namespace) {
-                list.addAll(getAllClassifierRoles(o));
+        try {
+            List list = new ArrayList();
+            Iterator it = ((Namespace) ns).getOwnedElement().iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (o instanceof Namespace) {
+                    list.addAll(getAllClassifierRoles(o));
+                }
+                if (o instanceof ClassifierRole) {
+                    list.add(o);
+                }
             }
-            if (o instanceof ClassifierRole) {
-                list.add(o);
-            }
-
+            return list;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return list;
     }
 
     /**
@@ -116,16 +119,21 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
         ClassifierRole role = (ClassifierRole) roleArg;
 
-        if (role == null || role.getBase().isEmpty()) {
-            return new ArrayList();
+        try {
+            if (role == null || role.getBase().isEmpty()) {
+                return new ArrayList();
+            }
+            Iterator it = role.getBase().iterator();
+            Set associations = new HashSet();
+            while (it.hasNext()) {
+                Classifier base = (Classifier) it.next();
+                associations.addAll(nsmodel.getCoreHelper().getAssociations(
+                        base));
+            }
+            return associations;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        Iterator it = role.getBase().iterator();
-        Set associations = new HashSet();
-        while (it.hasNext()) {
-            Classifier base = (Classifier) it.next();
-            associations.addAll(nsmodel.getCoreHelper().getAssociations(base));
-        }
-        return associations;
     }
 
     /**
@@ -141,24 +149,29 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
 
         List roles = new ArrayList();
-        Collection associationEnds = Model.getFacade().getAssociationEnds(role);
-        if (!associationEnds.isEmpty()) {
-            Iterator it = associationEnds.iterator();
-            while (it.hasNext()) {
-                AssociationEnd end = (AssociationEnd) it.next();
-                if (end instanceof AssociationEndRole) {
-                    UmlAssociation assoc = end.getAssociation();
-                    Iterator it2 = assoc.getConnection().iterator();
-                    while (it2.hasNext()) {
-                        AssociationEnd end2 = (AssociationEnd) it2.next();
-                        Classifier classifier = end2.getParticipant();
-                        if (classifier != role
-                                && classifier instanceof ClassifierRole) {
-                            roles.add(classifier);
+        try {
+            Collection associationEnds = 
+                Model.getFacade().getAssociationEnds(role);
+            if (!associationEnds.isEmpty()) {
+                Iterator it = associationEnds.iterator();
+                while (it.hasNext()) {
+                    AssociationEnd end = (AssociationEnd) it.next();
+                    if (end instanceof AssociationEndRole) {
+                        UmlAssociation assoc = end.getAssociation();
+                        Iterator it2 = assoc.getConnection().iterator();
+                        while (it2.hasNext()) {
+                            AssociationEnd end2 = (AssociationEnd) it2.next();
+                            Classifier classifier = end2.getParticipant();
+                            if (classifier != role
+                                    && classifier instanceof ClassifierRole) {
+                                roles.add(classifier);
+                            }
                         }
                     }
                 }
             }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return roles;
     }
@@ -174,20 +187,24 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         ClassifierRole from = (ClassifierRole) afrom;
         ClassifierRole to = (ClassifierRole) ato;
 
-        Iterator it = Model.getFacade().getAssociationEnds(from).iterator();
-        while (it.hasNext()) {
-            AssociationEnd end = (AssociationEnd) it.next();
-            if (end instanceof AssociationEndRole) {
-                UmlAssociation assoc = end.getAssociation();
-                Iterator it2 = assoc.getConnection().iterator();
-                while (it2.hasNext()) {
-                    AssociationEnd end2 = (AssociationEnd) it2.next();
-                    Classifier classifier = end2.getParticipant();
-                    if (classifier == to) {
-                        return (AssociationRole) assoc;
+        try {
+            Iterator it = Model.getFacade().getAssociationEnds(from).iterator();
+            while (it.hasNext()) {
+                AssociationEnd end = (AssociationEnd) it.next();
+                if (end instanceof AssociationEndRole) {
+                    UmlAssociation assoc = end.getAssociation();
+                    Iterator it2 = assoc.getConnection().iterator();
+                    while (it2.hasNext()) {
+                        AssociationEnd end2 = (AssociationEnd) it2.next();
+                        Classifier classifier = end2.getParticipant();
+                        if (classifier == to) {
+                            return (AssociationRole) assoc;
+                        }
                     }
                 }
             }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return null;
     }
@@ -207,20 +224,25 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         if (mes == null || mes.getInteraction() == null) {
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
-        Interaction inter = mes.getInteraction();
-        Collection predecessors = mes.getPredecessor();
-        Collection allMessages = inter.getMessage();
-        Iterator it = allMessages.iterator();
-        List list = new ArrayList();
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (!predecessors.contains(o) && mes != o
-                    && !hasAsActivator(o, mes)
-                    && !((Message) o).getPredecessor().contains(mes)) {
-                list.add(o);
+        
+        try {
+            Interaction inter = mes.getInteraction();
+            Collection predecessors = mes.getPredecessor();
+            Collection allMessages = inter.getMessage();
+            Iterator it = allMessages.iterator();
+            List list = new ArrayList();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (!predecessors.contains(o) && mes != o
+                        && !hasAsActivator(o, mes)
+                        && !((Message) o).getPredecessor().contains(mes)) {
+                    list.add(o);
+                }
             }
+            return list;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return list;
     }
 
     /**
@@ -235,15 +257,19 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             throw new IllegalArgumentException();
         }
 
-        Message messActivator = ((Message) message).getActivator();
-        if (messActivator == null) {
-            return false;
+        try {
+            Message messActivator = ((Message) message).getActivator();
+            if (messActivator == null) {
+                return false;
+            }
+            if (messActivator == activator
+                    || messActivator.getPredecessor().contains(activator)) {
+                return true;
+            }
+            return hasAsActivator(messActivator, activator);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        if (messActivator == activator
-                || messActivator.getPredecessor().contains(activator)) {
-            return true;
-        }
-        return hasAsActivator(messActivator, activator);
     }
 
     /**
@@ -319,18 +345,24 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                     "In getAllPossiblePredecessors: "
                             + "argument message is null");
         }
-        Interaction inter = message.getInteraction();
-        Iterator it = inter.getMessage().iterator();
-        List list = new ArrayList();
-        while (it.hasNext()) {
-            Message mes = (Message) it.next();
-            if (mes.getActivator() == message.getActivator() && message != mes
-                    && !mes.getPredecessor().contains(message)
-                    && !message.getPredecessor().contains(message)) {
-                list.add(mes);
+        
+        try {
+            Interaction inter = message.getInteraction();
+            Iterator it = inter.getMessage().iterator();
+            List list = new ArrayList();
+            while (it.hasNext()) {
+                Message mes = (Message) it.next();
+                if (mes.getActivator() == message.getActivator() 
+                        && message != mes
+                        && !mes.getPredecessor().contains(message)
+                        && !message.getPredecessor().contains(message)) {
+                    list.add(mes);
+                }
             }
+            return list;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return list;
     }
 
     /**
@@ -412,22 +444,27 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      * @see org.argouml.model.CollaborationsHelper#allAvailableFeatures(java.lang.Object)
      */
     public Collection allAvailableFeatures(Object arole) {
+        
         if (arole instanceof ClassifierRole) {
-            List returnList = new ArrayList();
-            ClassifierRole role = (ClassifierRole) arole;
-            Iterator it = Model.getFacade().getGeneralizations(arole)
-                    .iterator();
-            while (it.hasNext()) {
-                Object genElem = it.next();
-                if (genElem instanceof ClassifierRole) {
-                    returnList.addAll(allAvailableFeatures(genElem));
+            try {
+                List returnList = new ArrayList();
+                ClassifierRole role = (ClassifierRole) arole;
+                Iterator it = 
+                    Model.getFacade().getGeneralizations(arole).iterator();
+                while (it.hasNext()) {
+                    Object genElem = it.next();
+                    if (genElem instanceof ClassifierRole) {
+                        returnList.addAll(allAvailableFeatures(genElem));
+                    }
                 }
+                it = role.getBase().iterator();
+                while (it.hasNext()) {
+                    returnList.addAll(((Classifier) it.next()).getFeature());
+                }
+                return returnList;
+            } catch (InvalidObjectException e) {
+                throw new InvalidElementException(e);
             }
-            it = role.getBase().iterator();
-            while (it.hasNext()) {
-                returnList.addAll(((Classifier) it.next()).getFeature());
-            }
-            return returnList;
         }
         throw new IllegalArgumentException("Cannot get available features on "
                 + arole);

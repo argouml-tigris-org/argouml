@@ -28,7 +28,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.jmi.reflect.InvalidObjectException;
+
 import org.argouml.model.CommonBehaviorHelper;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.omg.uml.behavioralelements.collaborations.ClassifierRole;
 import org.omg.uml.behavioralelements.collaborations.Message;
@@ -86,8 +89,12 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
      * @see org.argouml.model.CommonBehaviorHelper#getSource(java.lang.Object)
      */
     public Object getSource(Object link) {
-        if (link instanceof Link) {
-            return modelImpl.getCoreHelper().getSource(link);
+        try {
+            if (link instanceof Link) {
+                return modelImpl.getCoreHelper().getSource(link);
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("Argument is not a link");
     }
@@ -96,8 +103,12 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
      * @see org.argouml.model.CommonBehaviorHelper#getDestination(java.lang.Object)
      */
     public Object getDestination(Object link) {
-        if (link instanceof Link) {
-            return modelImpl.getCoreHelper().getDestination(link);
+        try {
+            if (link instanceof Link) {
+                return modelImpl.getCoreHelper().getDestination(link);
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("Argument is not a link");
     }
@@ -581,8 +592,12 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
      * @see CommonBehaviorHelper#getInstantiation(Object)
      */
     public Object getInstantiation(Object createaction) {
-        if (createaction instanceof CreateAction) {
-            return ((CreateAction) createaction).getInstantiation();
+        try {
+            if (createaction instanceof CreateAction) {
+                return ((CreateAction) createaction).getInstantiation();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + createaction);
     }
@@ -610,26 +625,30 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
      * @see org.argouml.model.CommonBehaviorHelper#getActionOwner(java.lang.Object)
      */
     public Object getActionOwner(Object action) {
-        if (!(Model.getFacade().isAAction(action))) {
+        if (!(action instanceof Action)) {
             throw new IllegalArgumentException();
         }
 
-        if (Model.getFacade().getStimuli(action) != null) {
-            Iterator iter = Model.getFacade().getStimuli(action).iterator();
-            if (iter.hasNext()) {
-                return iter.next();
+        try {
+            if (Model.getFacade().getStimuli(action) != null) {
+                Iterator iter = Model.getFacade().getStimuli(action).iterator();
+                if (iter.hasNext()) {
+                    return iter.next();
+                }
             }
-        }
-        if (Model.getFacade().getMessages(action) != null) {
-            Iterator iter = Model.getFacade().getMessages(action).iterator();
-            if (iter.hasNext()) {
-                return iter.next();
+            if (Model.getFacade().getMessages(action) != null) {
+                Iterator iter = 
+                    Model.getFacade().getMessages(action).iterator();
+                if (iter.hasNext()) {
+                    return iter.next();
+                }
             }
+            if (Model.getFacade().getTransition(action) != null) {
+                return Model.getFacade().getTransition(action);
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        if (Model.getFacade().getTransition(action) != null) {
-            return Model.getFacade().getTransition(action);
-        }
-        
         return null;
     }
     
