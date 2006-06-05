@@ -419,7 +419,6 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     protected void removeProjectMemberDiagram(ArgoDiagram d) {
         if (activeDiagram == d) {
-            LOG.info("Deleting the current diagram");
             ArgoDiagram defaultDiagram;
             if (diagrams.size() == 1) {
                 // We're deleting the last diagram so lets create a new one
@@ -432,10 +431,8 @@ public class Project implements java.io.Serializable, TargetListener {
             } else {
                 // Make the topmost diagram (that is not the one being deleted)
                 // current.
-                LOG.info("Selecting the top diagram");
                 defaultDiagram = (ArgoDiagram) diagrams.get(0);
                 if (defaultDiagram == d) {
-                    LOG.info("Selecting the 2nd to top diagram");
                     defaultDiagram = (ArgoDiagram) diagrams.get(1);
                 }
             }
