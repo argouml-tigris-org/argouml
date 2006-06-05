@@ -448,6 +448,9 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setMnemonic(importFromSources, "Import");
         file.addSeparator();
 
+        Action a = new ActionProjectSettings();
+        fileToolbar.add(a);
+
         JMenuItem pageSetupItem = file.add(new ActionPageSetup());
         setMnemonic(pageSetupItem, "PageSetup");
         JMenuItem printItem = file.add(new ActionPrint());
