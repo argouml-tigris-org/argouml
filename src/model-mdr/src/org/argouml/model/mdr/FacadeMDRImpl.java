@@ -309,7 +309,11 @@ class FacadeMDRImpl implements Facade {
      */
     public boolean isAsynchronous(Object handle) {
         if (handle instanceof Action) {
-            return ((Action) handle).isAsynchronous();
+            try {
+                return ((Action) handle).isAsynchronous();
+            } catch (InvalidObjectException e) {
+                throw new InvalidElementException(e);
+            }
         }
         return illegalArgumentBoolean(handle);
     }
@@ -318,17 +322,21 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isAbstract(java.lang.Object)
      */
     public boolean isAbstract(Object handle) {
-        if (handle instanceof Operation) {
-            return ((Operation) handle).isAbstract();
-        }
-        if (handle instanceof GeneralizableElement) {
-            return ((GeneralizableElement) handle).isAbstract();
-        }
-        if (handle instanceof UmlAssociation) {
-            return ((UmlAssociation) handle).isAbstract();
-        }
-        if (handle instanceof Reception) {
-            return ((Reception) handle).isAbstract();
+        try {
+            if (handle instanceof Operation) {
+                return ((Operation) handle).isAbstract();
+            }
+            if (handle instanceof GeneralizableElement) {
+                return ((GeneralizableElement) handle).isAbstract();
+            }
+            if (handle instanceof UmlAssociation) {
+                return ((UmlAssociation) handle).isAbstract();
+            }
+            if (handle instanceof Reception) {
+                return ((Reception) handle).isAbstract();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentBoolean(handle);
     }
@@ -769,7 +777,11 @@ class FacadeMDRImpl implements Facade {
      */
     public Object getPseudostateKind(Object handle) {
         if (handle instanceof Pseudostate) {
-            return ((Pseudostate) handle).getKind();
+            try {
+                return ((Pseudostate) handle).getKind();
+            } catch (InvalidObjectException e) {
+                throw new InvalidElementException(e);
+            }
         }
         return illegalArgumentObject(handle);
     }
@@ -795,11 +807,15 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getReceiver(java.lang.Object)
      */
     public Object getReceiver(Object handle) {
-        if (handle instanceof Stimulus) {
-            return ((Stimulus) handle).getReceiver();
-        }
-        if (handle instanceof Message) {
-            return ((Message) handle).getReceiver();
+        try {
+            if (handle instanceof Stimulus) {
+                return ((Stimulus) handle).getReceiver();
+            }
+            if (handle instanceof Message) {
+                return ((Message) handle).getReceiver();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentObject(handle);
     }
@@ -808,8 +824,12 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getLink(java.lang.Object)
      */
     public Object getLink(Object handle) {
-        if (handle instanceof LinkEnd) {
-            return ((LinkEnd) handle).getLink();
+        try {
+            if (handle instanceof LinkEnd) {
+                return ((LinkEnd) handle).getLink();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentObject(handle);
     }
@@ -819,8 +839,12 @@ class FacadeMDRImpl implements Facade {
      *      java.lang.Object)
      */
     public boolean equalsPseudostateKind(Object ps1, Object ps2) {
-        if (isAPseudostateKind(ps1)) {
-            return ((PseudostateKind) ps1).equals(ps2);
+        try {
+            if (isAPseudostateKind(ps1)) {
+                return ((PseudostateKind) ps1).equals(ps2);
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentBoolean(ps1);
     }
@@ -997,8 +1021,12 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isActive(java.lang.Object)
      */
     public boolean isActive(Object handle) {
-        if (handle instanceof UmlClass) {
-            return ((UmlClass) handle).isActive();
+        try {
+            if (handle instanceof UmlClass) {
+                return ((UmlClass) handle).isActive();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentBoolean(handle);
     }
@@ -1007,15 +1035,19 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isChangeable(java.lang.Object)
      */
     public boolean isChangeable(Object handle) {
-        if (handle instanceof StructuralFeature) {
-            ChangeableKind changeability =
-                ((StructuralFeature) handle).getChangeability();
-            return ChangeableKindEnum.CK_CHANGEABLE.equals(changeability);
-        }
-        if (handle instanceof AssociationEnd) {
-            ChangeableKind changeability =
-                ((AssociationEnd) handle).getChangeability();
-            return ChangeableKindEnum.CK_CHANGEABLE.equals(changeability);
+        try {
+            if (handle instanceof StructuralFeature) {
+                ChangeableKind changeability =
+                    ((StructuralFeature) handle).getChangeability();
+                return ChangeableKindEnum.CK_CHANGEABLE.equals(changeability);
+            }
+            if (handle instanceof AssociationEnd) {
+                ChangeableKind changeability =
+                    ((AssociationEnd) handle).getChangeability();
+                return ChangeableKindEnum.CK_CHANGEABLE.equals(changeability);
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentBoolean(handle);
     }
@@ -1024,15 +1056,19 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isClassifierScope(java.lang.Object)
      */
     public boolean isClassifierScope(Object handle) {
-        if (handle instanceof Attribute) {
-            Attribute a = (Attribute) handle;
-            return ScopeKindEnum.SK_CLASSIFIER.equals(a.getOwnerScope());
+        try {
+            if (handle instanceof Attribute) {
+                Attribute a = (Attribute) handle;
+                return ScopeKindEnum.SK_CLASSIFIER.equals(a.getOwnerScope());
+            }
+            if (handle instanceof Feature) {
+                Feature f = (Feature) handle;
+                return ScopeKindEnum.SK_CLASSIFIER.equals(f.getOwnerScope());
+            }
+            // ...
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        if (handle instanceof Feature) {
-            Feature f = (Feature) handle;
-            return ScopeKindEnum.SK_CLASSIFIER.equals(f.getOwnerScope());
-        }
-        // ...
         return illegalArgumentBoolean(handle);
     }
 
@@ -1040,8 +1076,12 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isConcurrent(java.lang.Object)
      */
     public boolean isConcurrent(Object handle) {
-        if (handle instanceof CompositeState) {
-            return ((CompositeState) handle).isConcurrent();
+        try {
+            if (handle instanceof CompositeState) {
+                return ((CompositeState) handle).isConcurrent();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentBoolean(handle);
     }
@@ -1050,9 +1090,13 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isAConcurrentRegion(java.lang.Object)
      */
     public boolean isAConcurrentRegion(Object handle) {
-        if ((handle instanceof CompositeState)
-                && (getContainer(handle) != null)) {
-            return (isConcurrent(getContainer(handle)));
+        try {
+            if ((handle instanceof CompositeState)
+                    && (getContainer(handle) != null)) {
+                return (isConcurrent(getContainer(handle)));
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return false;
     }
@@ -1061,39 +1105,48 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isConstructor(java.lang.Object)
      */
     public boolean isConstructor(Object handle) {
-        Operation operation = null;
-        if (handle instanceof Method) {
-            operation = ((Method) handle).getSpecification();
-            if (operation == null) {
-                // This is not a well formed model in a strict sense. See the
-                // multiplicity in UML 1.3 Figure 2-5.
-                return false;
+        try {
+            Operation operation = null;
+            if (handle instanceof Method) {
+                operation = ((Method) handle).getSpecification();
+                if (operation == null) {
+                    // This is not a well formed model in a strict sense. 
+                    // See the multiplicity in UML 1.3 Figure 2-5.
+                    return false;
+                }
+            } else if (handle instanceof Operation) {
+                operation = (Operation) handle;
+            } else {
+                return illegalArgumentBoolean(handle);
             }
-        } else if (handle instanceof Operation) {
-            operation = (Operation) handle;
-        } else {
-            return illegalArgumentBoolean(handle);
-        }
-
-        Object stereo = null;
-        Iterator iter = getStereotypes(operation).iterator();
-        while (iter.hasNext()) {
-            stereo = iter.next();
-            if (implementation.getExtensionMechanismsHelper().isStereotypeInh(
-                    stereo, "create", "BehavioralFeature")) {
-                return true;
+            
+            Object stereo = null;
+            Iterator iter = getStereotypes(operation).iterator();
+            while (iter.hasNext()) {
+                stereo = iter.next();
+                if (implementation.getExtensionMechanismsHelper()
+                        .isStereotypeInh(stereo, "create", 
+                                "BehavioralFeature")) {
+                    return true;
+                }
             }
+            return false;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return false;
     }
 
     /**
      * @see org.argouml.model.Facade#isFrozen(java.lang.Object)
      */
     public boolean isFrozen(Object handle) {
-        if (handle instanceof ChangeableKind) {
-            ChangeableKind ck = (ChangeableKind) handle;
-            return ChangeableKindEnum.CK_FROZEN.equals(ck);
+        try {
+            if (handle instanceof ChangeableKind) {
+                ChangeableKind ck = (ChangeableKind) handle;
+                return ChangeableKindEnum.CK_FROZEN.equals(ck);
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentBoolean(handle);
     }
@@ -1102,9 +1155,13 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isComposite(java.lang.Object)
      */
     public boolean isComposite(Object handle) {
-        if (handle instanceof AssociationEnd) {
-            return AggregationKindEnum.AK_COMPOSITE
-                    .equals(((AssociationEnd) handle).getAggregation());
+        try {
+            if (handle instanceof AssociationEnd) {
+                return AggregationKindEnum.AK_COMPOSITE
+                .equals(((AssociationEnd) handle).getAggregation());
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentBoolean(handle);
     }
@@ -1113,9 +1170,13 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isAggregate(java.lang.Object)
      */
     public boolean isAggregate(Object handle) {
-        if (handle instanceof AssociationEnd) {
-            return AggregationKindEnum.AK_AGGREGATE
-                    .equals(((AssociationEnd) handle).getAggregation());
+        try {
+            if (handle instanceof AssociationEnd) {
+                return AggregationKindEnum.AK_AGGREGATE
+                .equals(((AssociationEnd) handle).getAggregation());
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentBoolean(handle);
     }
@@ -1124,16 +1185,20 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isInitialized(java.lang.Object)
      */
     public boolean isInitialized(Object handle) {
-        if (handle instanceof Attribute) {
-            Expression init = ((Attribute) handle).getInitialValue();
-
-            if (init != null && init.getBody() != null
-                    && init.getBody().trim().length() > 0) {
-                return true;
+        try {
+            if (handle instanceof Attribute) {
+                Expression init = ((Attribute) handle).getInitialValue();
+                
+                if (init != null && init.getBody() != null
+                        && init.getBody().trim().length() > 0) {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            // ...
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        // ...
         return illegalArgumentBoolean(handle);
     }
 
@@ -1141,11 +1206,15 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isInstanceScope(java.lang.Object)
      */
     public boolean isInstanceScope(Object handle) {
-        if (handle instanceof Feature) {
-            Feature a = (Feature) handle;
-            return ScopeKindEnum.SK_INSTANCE.equals(a.getOwnerScope());
+        try {
+            if (handle instanceof Feature) {
+                Feature a = (Feature) handle;
+                return ScopeKindEnum.SK_INSTANCE.equals(a.getOwnerScope());
+            }
+            // ...
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        // ...
         return illegalArgumentBoolean(handle);
     }
 
@@ -1153,13 +1222,17 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isInternal(java.lang.Object)
      */
     public boolean isInternal(Object handle) {
-        if (handle instanceof Transition) {
-            Object state = getState(handle);
-            Object end0 = getSource(handle);
-            Object end1 = getTarget(handle);
-            if (end0 != null) {
-                return ((state == end0) && (state == end1));
+        try {
+            if (handle instanceof Transition) {
+                Object state = getState(handle);
+                Object end0 = getSource(handle);
+                Object end1 = getTarget(handle);
+                if (end0 != null) {
+                    return ((state == end0) && (state == end1));
+                }
             }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentBoolean(handle);
     }
@@ -1168,14 +1241,18 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isLeaf(java.lang.Object)
      */
     public boolean isLeaf(Object handle) {
-        if (handle instanceof GeneralizableElement) {
-            return ((GeneralizableElement) handle).isLeaf();
-        }
-        if (handle instanceof Operation) {
-            return ((Operation) handle).isLeaf();
-        }
-        if (handle instanceof Reception) {
-            return ((Reception) handle).isLeaf();
+        try {
+            if (handle instanceof GeneralizableElement) {
+                return ((GeneralizableElement) handle).isLeaf();
+            }
+            if (handle instanceof Operation) {
+                return ((Operation) handle).isLeaf();
+            }
+            if (handle instanceof Reception) {
+                return ((Reception) handle).isLeaf();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentBoolean(handle);
     }
@@ -1184,14 +1261,18 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isRoot(java.lang.Object)
      */
     public boolean isRoot(Object handle) {
-        if (handle instanceof GeneralizableElement) {
-            return ((GeneralizableElement) handle).isRoot();
-        }
-        if (handle instanceof Operation) {
-            return ((Operation) handle).isRoot();
-        }
-        if (handle instanceof Reception) {
-            return ((Reception) handle).isRoot();
+        try {
+            if (handle instanceof GeneralizableElement) {
+                return ((GeneralizableElement) handle).isRoot();
+            }
+            if (handle instanceof Operation) {
+                return ((Operation) handle).isRoot();
+            }
+            if (handle instanceof Reception) {
+                return ((Reception) handle).isRoot();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentBoolean(handle);
     }
@@ -1200,8 +1281,12 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isSpecification(java.lang.Object)
      */
     public boolean isSpecification(Object handle) {
-        if (handle instanceof ModelElement) {
-            return ((ModelElement) handle).isSpecification();
+        try {
+            if (handle instanceof ModelElement) {
+                return ((ModelElement) handle).isSpecification();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentBoolean(handle);
     }
@@ -1210,11 +1295,15 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isNavigable(java.lang.Object)
      */
     public boolean isNavigable(Object handle) {
-        if (handle instanceof AssociationEnd) {
-            return ((AssociationEnd) handle).isNavigable();
+        try {
+            if (handle instanceof AssociationEnd) {
+                return ((AssociationEnd) handle).isNavigable();
+            }
+            
+            // ...
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-
-        // ...
         return illegalArgumentBoolean(handle);
     }
 
@@ -1222,20 +1311,24 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isPrimaryObject(java.lang.Object)
      */
     public boolean isPrimaryObject(Object handle) {
-        if (handle instanceof ModelElement) {
-            Collection c =
-                implementation.getUmlPackage().getCore()
+        try {
+            if (handle instanceof ModelElement) {
+                Collection c =
+                    implementation.getUmlPackage().getCore()
                     .getAReferenceValueReferenceTag().getReferenceTag(
                             (ModelElement) handle);
-            for (Iterator i = c.iterator(); i.hasNext();) {
-                TaggedValue tv = (TaggedValue) i.next();
-                if (GENERATED_TAG.equals(tv.getType().getTagType())) {
-                    return false;
+                for (Iterator i = c.iterator(); i.hasNext();) {
+                    TaggedValue tv = (TaggedValue) i.next();
+                    if (GENERATED_TAG.equals(tv.getType().getTagType())) {
+                        return false;
+                    }
                 }
+                return true;
             }
-            return true;
+            // ...
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        // ...
         return illegalArgumentBoolean(handle);
     }
 
@@ -1243,10 +1336,14 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isPackage(java.lang.Object)
      */
     public boolean isPackage(Object handle) {
-        if (handle instanceof ModelElement) {
-            ModelElement element = (ModelElement) handle;
-            return VisibilityKindEnum.VK_PACKAGE.equals(
-                    element.getVisibility());
+        try {
+            if (handle instanceof ModelElement) {
+                ModelElement element = (ModelElement) handle;
+                return VisibilityKindEnum.VK_PACKAGE.equals(
+                        element.getVisibility());
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentBoolean(handle);
     }
@@ -1255,43 +1352,62 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isPrivate(java.lang.Object)
      */
     public boolean isPrivate(Object handle) {
-        if (handle instanceof ModelElement) {
-            ModelElement elem = (ModelElement) handle;
-            return VisibilityKindEnum.VK_PRIVATE.equals(elem.getVisibility());
+        try {
+            if (handle instanceof ModelElement) {
+                ModelElement elem = (ModelElement) handle;
+                return VisibilityKindEnum.VK_PRIVATE
+                    .equals(elem.getVisibility());
+            }
+            return illegalArgumentBoolean(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentBoolean(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#isPublic(java.lang.Object)
      */
     public boolean isPublic(Object handle) {
-        if (handle instanceof ModelElement) {
-            ModelElement elem = (ModelElement) handle;
-            return VisibilityKindEnum.VK_PUBLIC.equals(elem.getVisibility());
+        try {
+            if (handle instanceof ModelElement) {
+                ModelElement elem = (ModelElement) handle;
+                return VisibilityKindEnum.VK_PUBLIC
+                    .equals(elem.getVisibility());
+            }
+            return illegalArgumentBoolean(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentBoolean(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#isQuery(java.lang.Object)
      */
     public boolean isQuery(Object handle) {
-        if (handle instanceof BehavioralFeature) {
-            return ((BehavioralFeature) handle).isQuery();
+        try {
+            if (handle instanceof BehavioralFeature) {
+                return ((BehavioralFeature) handle).isQuery();
+            }
+            return illegalArgumentBoolean(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentBoolean(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#isProtected(java.lang.Object)
      */
     public boolean isProtected(Object handle) {
-        if (handle instanceof ModelElement) {
-            ModelElement elem = (ModelElement) handle;
-            return VisibilityKindEnum.VK_PROTECTED.equals(elem.getVisibility());
+        try {
+            if (handle instanceof ModelElement) {
+                ModelElement elem = (ModelElement) handle;
+                return VisibilityKindEnum.VK_PROTECTED
+                    .equals(elem.getVisibility());
+            }
+            return illegalArgumentBoolean(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1305,11 +1421,15 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isReturn(java.lang.Object)
      */
     public boolean isReturn(Object handle) {
-        if (handle instanceof Parameter) {
-            return ParameterDirectionKindEnum.PDK_RETURN
-                    .equals(((Parameter) handle).getKind());
+        try {
+            if (handle instanceof Parameter) {
+                return ParameterDirectionKindEnum.PDK_RETURN
+                .equals(((Parameter) handle).getKind());
+            }
+            return illegalArgumentBoolean(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1324,19 +1444,24 @@ class FacadeMDRImpl implements Facade {
      *      java.lang.String)
      */
     public boolean isStereotype(Object handle, String stereotypeName) {
-        if (handle instanceof ModelElement) {
-            Collection stereotypes = ((ModelElement) handle).getStereotype();
-            Iterator it = stereotypes.iterator();
-            Stereotype stereotype;
-            while (it.hasNext()) {
-                stereotype = (Stereotype) it.next();
-                if (stereotypeName.equals(stereotype.getName())) {
-                    return true;
+        try {
+            if (handle instanceof ModelElement) {
+                Collection stereotypes =
+                    ((ModelElement) handle).getStereotype();
+                Iterator it = stereotypes.iterator();
+                Stereotype stereotype;
+                while (it.hasNext()) {
+                    stereotype = (Stereotype) it.next();
+                    if (stereotypeName.equals(stereotype.getName())) {
+                        return true;
+                    }
                 }
+                return false;
             }
-            return false;
+            return illegalArgumentBoolean(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1350,10 +1475,14 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isTop(java.lang.Object)
      */
     public boolean isTop(Object handle) {
-        if (isACompositeState(handle)) {
-            return ((CompositeState) handle).getStateMachine() != null;
+        try {
+            if (isACompositeState(handle)) {
+                return ((CompositeState) handle).getStateMachine() != null;
+            }
+            return illegalArgumentBoolean(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1374,13 +1503,17 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getAssociation(java.lang.Object)
      */
     public Object getAssociation(Object handle) {
-        if (handle instanceof AssociationEnd) {
-            return ((AssociationEnd) handle).getAssociation();
+        try {
+            if (handle instanceof AssociationEnd) {
+                return ((AssociationEnd) handle).getAssociation();
+            }
+            if (handle instanceof Link) {
+                return ((Link) handle).getAssociation();
+            }
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        if (handle instanceof Link) {
-            return ((Link) handle).getAssociation();
-        }
-        return illegalArgumentObject(handle);
     }
 
     /**
@@ -1388,43 +1521,57 @@ class FacadeMDRImpl implements Facade {
      *      java.lang.Object)
      */
     public Object getAssociationEnd(Object handle, Object assoc) {
-        if (handle instanceof Classifier && assoc instanceof UmlAssociation) {
-            Classifier classifier = (Classifier) handle;
-            Iterator it = getAssociationEnds(classifier).iterator();
-            while (it.hasNext()) {
-                AssociationEnd end = (AssociationEnd) it.next();
-                if (((UmlAssociation) assoc).getConnection().contains(end)) {
-                    return end;
+        try {
+            if (handle instanceof Classifier 
+                    && assoc instanceof UmlAssociation) {
+                Classifier classifier = (Classifier) handle;
+                Iterator it = getAssociationEnds(classifier).iterator();
+                while (it.hasNext()) {
+                    AssociationEnd end = (AssociationEnd) it.next();
+                    if (((UmlAssociation) assoc).getConnection()
+                            .contains(end)) {
+                        return end;
+                    }
                 }
+                return null;
             }
-            return null;
+            throw new IllegalArgumentException("handle: " + handle + ",assoc: "
+                    + assoc);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        throw new IllegalArgumentException("handle: " + handle + ",assoc: "
-                + assoc);
     }
 
     /**
      * @see org.argouml.model.Facade#getAssociationEnds(java.lang.Object)
      */
     public Collection getAssociationEnds(Object handle) {
-        if (handle instanceof Classifier) {
-            return implementation.getUmlPackage().getCore()
-                    .getAParticipantAssociation().getAssociation(
-                            (Classifier) handle);
+        try {
+            if (handle instanceof Classifier) {
+                return implementation.getUmlPackage().getCore()
+                .getAParticipantAssociation().getAssociation(
+                        (Classifier) handle);
+            }
+            return illegalArgumentCollection(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentCollection(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getAssociationRoles(java.lang.Object)
      */
     public Collection getAssociationRoles(Object handle) {
-        if (handle instanceof UmlAssociation) {
-            return implementation.getUmlPackage().getCollaborations()
-                    .getABaseAssociationRole().getAssociationRole(
-                            (UmlAssociation) handle);
+        try {
+            if (handle instanceof UmlAssociation) {
+                return implementation.getUmlPackage().getCollaborations()
+                .getABaseAssociationRole().getAssociationRole(
+                        (UmlAssociation) handle);
+            }
+            return illegalArgumentCollection(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1437,10 +1584,14 @@ class FacadeMDRImpl implements Facade {
      * @return iterator with attributes.
      */
     public Collection getAttributes(Object handle) {
-        if (handle instanceof Classifier) {
-            return getStructuralFeatures(handle);
+        try {
+            if (handle instanceof Classifier) {
+                return getStructuralFeatures(handle);
+            }
+            return illegalArgumentCollection(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1448,28 +1599,36 @@ class FacadeMDRImpl implements Facade {
      * TODO: delete this method and replace with getBaseClasses
      */
     public Object getBaseClass(Object handle) {
-        if (isAStereotype(handle)) {
-            Collection stereos = ((Stereotype) handle).getBaseClass();
-            if (!stereos.isEmpty()) {
-                if (stereos.size() > 1) {
-                    LOG.warn("There is more than one stereotype defined,"
-                            + " returning the first");
+        try {
+            if (isAStereotype(handle)) {
+                Collection stereos = ((Stereotype) handle).getBaseClass();
+                if (!stereos.isEmpty()) {
+                    if (stereos.size() > 1) {
+                        LOG.warn("There is more than one stereotype defined,"
+                                + " returning the first");
+                    }
+                    return stereos.iterator().next();
                 }
-                return stereos.iterator().next();
+                return null;
             }
-            return null;
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentObject(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getBaseClasses(java.lang.Object)
      */
     public Collection getBaseClasses(Object handle) {
-        if (isAStereotype(handle)) {
-            return ((Stereotype) handle).getBaseClass();
+        try {
+            if (isAStereotype(handle)) {
+                return ((Stereotype) handle).getBaseClass();
+            }
+            return illegalArgumentCollection(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1530,10 +1689,14 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getBehavioralFeature(java.lang.Object)
      */
     public Object getBehavioralFeature(Object handle) {
-        if (handle instanceof Parameter) {
-            return ((Parameter) handle).getBehavioralFeature();
+        try {
+            if (handle instanceof Parameter) {
+                return ((Parameter) handle).getBehavioralFeature();
+            }
+            return illegalArgumentCollection(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1567,40 +1730,56 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getBound(java.lang.Object)
      */
     public int getBound(Object handle) {
-        if (handle instanceof SynchState) {
-            return ((SynchState) handle).getBound();
+        try {
+            if (handle instanceof SynchState) {
+                return ((SynchState) handle).getBound();
+            }
+            return illegalArgumentInt(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentInt(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getChangeability(java.lang.Object)
      */
     public Object getChangeability(Object handle) {
-        if (handle instanceof StructuralFeature) {
-            return ((StructuralFeature) handle).getChangeability();
+        try {
+            if (handle instanceof StructuralFeature) {
+                return ((StructuralFeature) handle).getChangeability();
+            }
+            if (handle instanceof AssociationEnd) {
+                return ((AssociationEnd) handle).getChangeability();
+            }
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        if (handle instanceof AssociationEnd) {
-            return ((AssociationEnd) handle).getChangeability();
-        }
-        return illegalArgumentObject(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getChild(java.lang.Object)
      */
     public Object getChild(Object handle) {
-        if (handle instanceof Generalization) {
-            return ((Generalization) handle).getChild();
+        try {
+            if (handle instanceof Generalization) {
+                return ((Generalization) handle).getChild();
+            }
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentObject(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object handle) {
-        return implementation.getCoreHelper().getChildren(handle);
+        try {
+            return implementation.getCoreHelper().getChildren(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
     }
 
     /**
@@ -1642,37 +1821,49 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getClassifiers(java.lang.Object)
      */
     public Collection getClassifiers(Object handle) {
-        if (handle instanceof Instance) {
-            return ((Instance) handle).getClassifier();
+        try {
+            if (handle instanceof Instance) {
+                return ((Instance) handle).getClassifier();
+            }
+            return illegalArgumentCollection(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentCollection(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getClassifiersInState(java.lang.Object)
      */
     public Collection getClassifiersInState(Object handle) {
-        if (handle instanceof Classifier) {
-            return implementation.getUmlPackage().getActivityGraphs()
-                    .getATypeClassifierInState().getClassifierInState(
-                            (Classifier) handle);
+        try {
+            if (handle instanceof Classifier) {
+                return implementation.getUmlPackage().getActivityGraphs()
+                .getATypeClassifierInState().getClassifierInState(
+                        (Classifier) handle);
+            }
+            if (handle instanceof State) {
+                return implementation.getUmlPackage().getActivityGraphs()
+                .getAClassifierInStateInState().getClassifierInState(
+                        (State) handle);
+            }
+            return illegalArgumentCollection(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        if (handle instanceof State) {
-            return implementation.getUmlPackage().getActivityGraphs()
-                    .getAClassifierInStateInState().getClassifierInState(
-                            (State) handle);
-        }
-        return illegalArgumentCollection(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getClients(java.lang.Object)
      */
     public Collection getClients(Object handle) {
-        if (isADependency(handle)) {
-            return ((Dependency) handle).getClient();
+        try {
+            if (isADependency(handle)) {
+                return ((Dependency) handle).getClient();
+            }
+            return illegalArgumentCollection(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1696,20 +1887,28 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getCondition(java.lang.Object)
      */
     public Object getCondition(Object handle) {
-        if (handle instanceof Extend) {
-            return ((Extend) handle).getCondition();
+        try {
+            if (handle instanceof Extend) {
+                return ((Extend) handle).getCondition();
+            }
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentObject(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getConcurrency(java.lang.Object)
      */
     public Object getConcurrency(Object handle) {
-        if (handle instanceof Operation) {
-            return ((Operation) handle).getConcurrency();
+        try {
+            if (handle instanceof Operation) {
+                return ((Operation) handle).getConcurrency();
+            }
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentObject(handle);
     }
 
     /**
@@ -1733,59 +1932,79 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getEffect(java.lang.Object)
      */
     public Object getEffect(Object handle) {
-        if (handle instanceof Transition) {
-            return ((Transition) handle).getEffect();
+        try {
+            if (handle instanceof Transition) {
+                return ((Transition) handle).getEffect();
+            }
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentObject(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getElementResidences(java.lang.Object)
      */
     public Collection getElementResidences(Object handle) {
-        if (handle instanceof ModelElement) {
-            return implementation.getUmlPackage().getCore()
+        try {
+            if (handle instanceof ModelElement) {
+                return implementation.getUmlPackage().getCore()
                     .getAResidentElementResidence().getElementResidence(
-                            (ModelElement) handle);
+                        (ModelElement) handle);
+            }
+            // ...
+            return illegalArgumentCollection(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        // ...
-        return illegalArgumentCollection(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getElementImports2(java.lang.Object)
      */
     public Collection getElementImports2(Object handle) {
-        if (handle instanceof ModelElement) {
-            return implementation.getUmlPackage().getModelManagement()
+        try {
+            if (handle instanceof ModelElement) {
+                return implementation.getUmlPackage().getModelManagement()
                     .getAImportedElementElementImport().getElementImport(
-                            (ModelElement) handle);
+                        (ModelElement) handle);
+            }
+            return illegalArgumentCollection(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentCollection(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getEntry(java.lang.Object)
      */
     public Object getEntry(Object handle) {
-        if (handle instanceof State) {
-            try {
-                return ((State) handle).getEntry();
-            } catch (InvalidObjectException e) {
-                throw new InvalidElementException(e);
+        try {
+            if (handle instanceof State) {
+                try {
+                    return ((State) handle).getEntry();
+                } catch (InvalidObjectException e) {
+                    throw new InvalidElementException(e);
+                }
             }
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentObject(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getEnumeration(java.lang.Object)
      */
     public Object getEnumeration(Object handle) {
-        if (handle instanceof EnumerationLiteral) {
-            return ((EnumerationLiteral) handle).getEnumeration();
+        try {
+            if (handle instanceof EnumerationLiteral) {
+                return ((EnumerationLiteral) handle).getEnumeration();
+            }
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentObject(handle);
     }
 
     /**
@@ -1806,29 +2025,33 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getExpression(java.lang.Object)
      */
     public Object getExpression(Object handle) {
-        if (handle instanceof Guard) {
-            return ((Guard) handle).getExpression();
+        try {
+            if (handle instanceof Guard) {
+                return ((Guard) handle).getExpression();
+            }
+            if (handle instanceof ChangeEvent) {
+                return ((ChangeEvent) handle).getChangeExpression();
+            }
+            if (handle instanceof TimeEvent) {
+                return ((TimeEvent) handle).getWhen();
+            }
+            if (handle instanceof Argument) {
+                return ((Argument) handle).getValue();
+            }
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        if (handle instanceof ChangeEvent) {
-            return ((ChangeEvent) handle).getChangeExpression();
-        }
-        if (handle instanceof TimeEvent) {
-            return ((TimeEvent) handle).getWhen();
-        }
-        if (handle instanceof Argument) {
-            return ((Argument) handle).getValue();
-        }
-        return illegalArgumentObject(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getExtendedElements(java.lang.Object)
      */
     public Collection getExtendedElements(Object handle) {
-        if (!(handle instanceof Stereotype)) {
-            return illegalArgumentCollection(handle);
-        }
         try {
+            if (!(handle instanceof Stereotype)) {
+                return illegalArgumentCollection(handle);
+            }
             return implementation.getUmlPackage().getCore()
                     .getAStereotypeExtendedElement()
                         .getExtendedElement((Stereotype) handle);
@@ -1860,31 +2083,43 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getExtends2(java.lang.Object)
      */
     public Collection getExtends2(Object handle) {
-        if (handle instanceof UseCase) {
-            return implementation.getUmlPackage().getUseCases()
+        try {
+            if (handle instanceof UseCase) {
+                return implementation.getUmlPackage().getUseCases()
                     .getABaseExtender().getExtender((UseCase) handle);
+            }
+            return illegalArgumentCollection(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentCollection(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getExtension(java.lang.Object)
      */
     public Object getExtension(Object handle) {
-        if (handle instanceof Extend) {
-            return ((Extend) handle).getExtension();
+        try {
+            if (handle instanceof Extend) {
+                return ((Extend) handle).getExtension();
+            }
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentObject(handle);
     }
 
     /**
      * @see org.argouml.model.Facade#getExtensionPoint(java.lang.Object, int)
      */
     public Object getExtensionPoint(Object handle, int index) {
-        if (handle instanceof Extend) {
-            return ((Extend) handle).getExtensionPoint().get(index);
+        try {
+            if (handle instanceof Extend) {
+                return ((Extend) handle).getExtensionPoint().get(index);
+            }
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentObject(handle);
     }
 
     /**
@@ -1923,18 +2158,22 @@ class FacadeMDRImpl implements Facade {
      *      java.lang.Object)
      */
     public Object getGeneralization(Object handle, Object parent) {
-        if (handle instanceof GeneralizableElement
-                && parent instanceof GeneralizableElement) {
-            Iterator it = getGeneralizations(handle).iterator();
-            while (it.hasNext()) {
-                Generalization gen = (Generalization) it.next();
-                if (gen.getParent() == parent) {
-                    return gen;
+        try {
+            if (handle instanceof GeneralizableElement
+                    && parent instanceof GeneralizableElement) {
+                Iterator it = getGeneralizations(handle).iterator();
+                while (it.hasNext()) {
+                    Generalization gen = (Generalization) it.next();
+                    if (gen.getParent() == parent) {
+                        return gen;
+                    }
                 }
+                return null;
             }
-            return null;
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentObject(handle);
     }
 
     /**
@@ -1955,10 +2194,14 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getGuard(java.lang.Object)
      */
     public Object getGuard(Object handle) {
-        if (isATransition(handle)) {
-            return ((Transition) handle).getGuard();
+        try {
+            if (isATransition(handle)) {
+                return ((Transition) handle).getGuard();
+            }
+            return illegalArgumentObject(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return illegalArgumentObject(handle);
     }
 
     /**
