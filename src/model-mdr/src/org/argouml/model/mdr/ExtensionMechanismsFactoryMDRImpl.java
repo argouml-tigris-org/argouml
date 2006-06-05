@@ -98,11 +98,8 @@ public class ExtensionMechanismsFactoryMDRImpl extends
      * 
      * @param tagName The name of the TagDefinition to create/retrieve
      * @return an initialized UML TaggedValue instance.
-     * 
-     * TODO: This currently isn't part of the standard API.  Add it or reduce
-     * the visibility to match its usage/role.
      */
-    public Object getTagDefinition(String tagName) {
+    Object getTagDefinition(String tagName) {
         if (tagName == null) {
             throw new IllegalArgumentException("Argument may not be null");
         }
