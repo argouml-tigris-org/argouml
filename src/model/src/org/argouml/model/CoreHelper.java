@@ -93,9 +93,12 @@ public interface CoreHelper {
 
     /**
      * This method returns the name of a feature.
-     *
-     * @param o is the feature
+     * 
+     * @param o
+     *            is the feature
      * @return name
+     * @deprecated before 0.21.3 by tfmorris -
+     *             use {@link Facade#getName(Object)}
      */
     String getFeatureName(Object o);
 
@@ -968,7 +971,8 @@ public interface CoreHelper {
      * Set some parameters kind to 'in'.
      *
      * @param handle is the parameter
-     * @deprecated use setKind(Object, Object)
+     * @deprecated before 0.19.3 by bobtarling - use
+     *             {@link #setKind(Object, Object)}
      */
     void setKindToIn(Object handle);
 
@@ -976,15 +980,18 @@ public interface CoreHelper {
      * Set some parameters kind to 'in/out'.
      *
      * @param handle is the parameter
-     * @deprecated use setKind(Object, Object)
+     * @deprecated before 0.19.3 by bobtarling - use
+     *             {@link #setKind(Object, Object)}
      */
     void setKindToInOut(Object handle);
 
     /**
      * Set some parameters kind to 'out'.
-     *
-     * @param handle is the parameter
-     * @deprecated use setKind(Object, Object)
+     * 
+     * @param handle
+     *            is the parameter
+     * @deprecated before 0.19.3 by bobtarling - use
+     *             {@link #setKind(Object, Object)}
      */
     void setKindToOut(Object handle);
 
@@ -992,7 +999,8 @@ public interface CoreHelper {
      * Set some parameters kind to 'return'.
      *
      * @param handle is the parameter
-     * @deprecated use setKind(Object, Object)
+     * @deprecated before 0.19.3 by bobtarling - use
+     *             {@link #setKind(Object, Object)}
      */
     void setKindToReturn(Object handle);
 
