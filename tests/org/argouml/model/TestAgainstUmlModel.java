@@ -93,7 +93,7 @@ public class TestAgainstUmlModel extends TestCase {
      * @param message that is to me printed.
      */
     private static void printInconclusiveMessage(String message) {
-	System.out.println(TestAgainstUmlModel.class.getCanonicalName()
+	System.out.println(TestAgainstUmlModel.class.getName()
                 + ": WARNING: INCONCLUSIVE TEST!");
 	System.out.println(message);
 	System.out.println("You will have to fetch the model using the command"

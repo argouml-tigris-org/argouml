@@ -158,7 +158,7 @@ public class TestPropertyPanels extends TestCase {
                         TEST_PROPERTY_PANELS_ZARGO);
 
         if (url == null) {
-            System.out.println(TestPropertyPanels.class.getCanonicalName()
+            System.out.println(TestPropertyPanels.class.getName()
                     + ": WARNING: Inconclusive tests.");
             System.out.println("For this test to succeed it must be able to"
                     + " find the file " + TEST_PROPERTY_PANELS_ZARGO);
