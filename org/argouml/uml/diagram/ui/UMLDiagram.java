@@ -519,55 +519,6 @@ public abstract class UMLDiagram
     }
 
     /**
-     * Removes the UMLDiagram and all the figs on it as listener to
-     * UML Events. Is called by setTarget in TabDiagram to improve
-     * performance.
-     */
-    public void removeAsTarget() {
-//        Enumeration elems = elements();
-//        while (elems.hasMoreElements()) {
-//            Fig fig = (Fig) elems.nextElement();
-//            if (fig instanceof FigNodeModelElement) {
-//                ((FigNodeModelElement) fig).updateListeners(null);
-//            }
-//            if (fig instanceof FigEdgeModelElement) {
-//                ((FigEdgeModelElement) fig).updateListeners(null);
-//            }
-//        }
-    }
-
-    /**
-     * Adds the UMLDiagram and all the figs on it as listener to
-     * UML Events.  Together with removeAsModelListener this is
-     * a performance improvement.
-     */
-    public void setAsTarget() {
-//        Enumeration elems = elements();
-//        while (elems.hasMoreElements()) {
-//            Fig fig = (Fig) elems.nextElement();
-//            Object owner = fig.getOwner();
-//            if (!Model.getUmlFactory().isRemoved(owner)) {
-//                /* This will make sure all the correct
-//                 * event listeners are set:
-//                 */
-//                try {
-//                    if (fig instanceof FigNodeModelElement) {
-//                        ((FigNodeModelElement) fig).updateListeners(owner);
-//                        ((FigNodeModelElement) fig).renderingChanged();
-//                    }
-//                    if (fig instanceof FigEdgeModelElement) {
-//                        ((FigEdgeModelElement) fig).updateListeners(owner);
-//                        ((FigEdgeModelElement) fig).renderingChanged();
-//                    }
-//                } catch (InvalidElementException e) {
-//                    LOG.error("Attempted to set a deleted element as target : "
-//                            + owner, e);
-//                }
-//            }
-//        }
-    }
-
-    /**
      * Set the given action as the selected action (ie pressed down on the
      * diagram toolbar). All other actions become unselected.
      *

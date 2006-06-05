@@ -181,12 +181,7 @@ public class TabDiagram
 		      + "not an instance of UMLDiagram");
             return;
         }
-        if (target != null) {
-            target.removeAsTarget();
-        }
         UMLDiagram newTarget = (UMLDiagram) t;
-
-        newTarget.setAsTarget();
 
         setToolBar(newTarget.getJToolBar());
         graph.removeGraphSelectionListener(this);
