@@ -128,17 +128,17 @@ public class ZargoFilePersister extends UmlFilePersister {
             project.setPersistenceVersion(PERSISTENCE_VERSION);
 
             ZipOutputStream stream =
-		new ZipOutputStream(new FileOutputStream(file));
+                new ZipOutputStream(new FileOutputStream(file));
             writer =
-		new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
+                new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
 
             ZipEntry zipEntry =
-		new ZipEntry(project.getBaseName()
+                new ZipEntry(project.getBaseName()
 			     + FileConstants.UNCOMPRESSED_FILE_EXT);
             stream.putNextEntry(zipEntry);
 
             Hashtable templates =
-		TemplateReader.getInstance().read(ARGO_MINI_TEE);
+                TemplateReader.getInstance().read(ARGO_MINI_TEE);
             OCLExpander expander = new OCLExpander(templates);
             expander.expand(writer, project);
 
@@ -158,7 +158,7 @@ public class ZargoFilePersister extends UmlFilePersister {
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember =
-		    (ProjectMember) project.getMembers().get(i);
+                    (ProjectMember) project.getMembers().get(i);
                 if (!(projectMember.getType().equalsIgnoreCase("xmi"))) {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member: "
@@ -182,7 +182,7 @@ public class ZargoFilePersister extends UmlFilePersister {
 
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember =
-		    (ProjectMember) project.getMembers().get(i);
+                    (ProjectMember) project.getMembers().get(i);
                 if (projectMember.getType().equalsIgnoreCase("xmi")) {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member of type: "
@@ -212,7 +212,7 @@ public class ZargoFilePersister extends UmlFilePersister {
             LOG.error("Exception occured during save attempt", e);
             try {
                 writer.close();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 // Do nothing.
             }
 
