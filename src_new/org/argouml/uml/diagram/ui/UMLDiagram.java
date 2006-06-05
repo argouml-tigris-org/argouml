@@ -38,6 +38,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
@@ -500,21 +501,20 @@ public abstract class UMLDiagram
      *
      * There is also a risk that if this diagram was the one shown in
      * the diagram panel, then it will remain after it has been
-     * deleted. So we need to deselect this diagram.
+     * deleted. So we need to deselect this diagram. 
+     * There are other things to take care of, so all this is delegated to 
+     * {@see org.argouml.kernel.Project#moveToTrash(Object)}.
      *
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        if ((evt.getSource() == namespace) && ProjectManager.getManager()
-                .getCurrentProject().isInTrash(namespace)) {
+        if ((evt.getSource() == namespace)
+                && (evt instanceof DeleteInstanceEvent)
+                && "remove".equals(evt.getPropertyName())) {
 
             Model.getPump().removeModelEventListener(this, namespace);
-            ProjectManager.getManager().getCurrentProject().moveToTrash(this);
 
-            Object newTarget =
-                ProjectManager.getManager().getCurrentProject()
-                	.getDiagrams().get(0);
-            TargetManager.getInstance().setTarget(newTarget);
+            ProjectManager.getManager().getCurrentProject().moveToTrash(this);
         }
     }
 
