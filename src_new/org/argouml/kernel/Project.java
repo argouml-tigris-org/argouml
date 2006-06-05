@@ -1026,22 +1026,6 @@ public class Project implements java.io.Serializable, TargetListener {
             if (models.contains(obj)) {
                 models.remove(obj);
             }
-
-            /* Scan if some diagrams need to be deleted, too. */
-            // Copy diagrams, otherwise ConcurrentModificationException.
-            // TODO: Bob says - I believe Diagrams should be listening for
-            // delete events from their owners. When recieved that diagram
-            // should request removal from the Project.
-            Collection c = new ArrayList(diagrams);
-            Iterator i = c.iterator();
-            while (i.hasNext()) {
-                Object d = i.next();
-                if (d instanceof UMLDiagram) {
-                    if (((UMLDiagram) d).needsToBeRemoved()) {
-                        moveToTrash(d);
-                    }
-                }
-            }
         } else if (obj instanceof ArgoDiagram) {
             removeProjectMemberDiagram((ArgoDiagram) obj);
             // only need to manually delete diagrams because they
