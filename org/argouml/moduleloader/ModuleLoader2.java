@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedMap;
+import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -440,6 +441,23 @@ public final class ModuleLoader2 {
         } catch (ClassNotFoundException e) {
             // We'll automatically use the dev module if we find
             // it but don't care is we don'e
+        }
+
+        // Load modules specified by a System property.
+        // Modules specified by a system property is for
+        // running modules from within Eclipse and running
+        // from Java Web Start.
+        String listOfClasses = System.getProperty("argouml.modules");
+        if (listOfClasses != null) {
+            StringTokenizer si = new StringTokenizer(listOfClasses, ";");
+            while (si.hasMoreTokens()) {
+                String className = si.nextToken();
+                try {
+                    addClass(className);
+                } catch (ClassNotFoundException e) {
+                    LOG.error("Could not load module from class " + className);
+                }
+            }
         }
     }
 
