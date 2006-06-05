@@ -72,6 +72,12 @@ import org.tigris.swidgets.Horizontal;
  */
 public class TestPropertyPanels extends TestCase {
 
+    /**
+     * Name of the zargo file to read.
+     */
+    private static final String TEST_PROPERTY_PANELS_ZARGO =
+        "/testmodels/GUITestPropertyPanels.zargo";
+
     private static Project p = null;
     private Object modelElement;
 
@@ -147,8 +153,22 @@ public class TestPropertyPanels extends TestCase {
 			  + "for all known model elements");
 
         p = ProjectManager.getManager().makeEmptyProject();
-        URL url = TestPropertyPanels.class.getResource(
-                        "/testmodels/GUITestPropertyPanels.zargo");
+        URL url =
+            TestPropertyPanels.class.getResource(
+                        TEST_PROPERTY_PANELS_ZARGO);
+
+        if (url == null) {
+            System.out.println(TestPropertyPanels.class.getCanonicalName()
+                    + ": WARNING: Inconclusive tests.");
+            System.out.println("For this test to succeed it must be able to"
+                    + " find the file " + TEST_PROPERTY_PANELS_ZARGO);
+            System.out.println("Examine your set up and try again!");
+            System.out.println();
+            System.out.println("This problem was seen in June 2006"
+                    + " when running the tests from within Eclipse");
+            System.out.println("and it is registered as issue 4247.");
+            return suite;
+        }
 
         File testfile = new File(url.getFile());
 
