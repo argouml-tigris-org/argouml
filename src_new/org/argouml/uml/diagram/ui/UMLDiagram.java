@@ -45,7 +45,6 @@ import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.ui.explorer.Relocatable;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.UUIDHelper;
 import org.tigris.gef.base.ModeBroom;
 import org.tigris.gef.base.ModeCreateFigCircle;
@@ -418,7 +417,8 @@ public abstract class UMLDiagram
     }
 
     /**
-     * Manages the selection of the default tool in a popup tool in the toolbar. <p>
+     * Manages the selection of the default tool 
+     * in a popup tool in the toolbar. <p>
      * 
      * I.e. in the diagram toolbar, you can have tools that can be opened,
      * into a grid of tools. The last used tool is remembered, 
@@ -503,7 +503,7 @@ public abstract class UMLDiagram
      * the diagram panel, then it will remain after it has been
      * deleted. So we need to deselect this diagram. 
      * There are other things to take care of, so all this is delegated to 
-     * {@see org.argouml.kernel.Project#moveToTrash(Object)}.
+     * {@link org.argouml.kernel.Project#moveToTrash(Object)}.
      *
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
@@ -569,10 +569,10 @@ public abstract class UMLDiagram
      * Set the given action as the selected action (ie pressed down on the
      * diagram toolbar). All other actions become unselected.
      *
-     * @param selectedAction the action to become selected
+     * @param theAction the action to become selected
      */
-    public void setSelectedAction(Action selectedAction) {
-        this.selectedAction = selectedAction;
+    public void setSelectedAction(Action theAction) {
+        selectedAction = theAction;
         int toolCount = toolBar.getComponentCount();
         for (int i = 0; i < toolCount; ++i) {
             Component c = toolBar.getComponent(i);
@@ -582,9 +582,9 @@ public abstract class UMLDiagram
                 if (action instanceof RadioAction) {
                     action = ((RadioAction) action).getAction();
                 }
-                Action otherAction = selectedAction;
-                if (selectedAction instanceof RadioAction) {
-                    otherAction = ((RadioAction) selectedAction).getAction();
+                Action otherAction = theAction;
+                if (theAction instanceof RadioAction) {
+                    otherAction = ((RadioAction) theAction).getAction();
                 }
                 if (!action.equals(otherAction)) {
                     tb.setSelected(false);
@@ -648,7 +648,7 @@ public abstract class UMLDiagram
     protected Action makeCreateEdgeAction(Object modelElement, String descr) {
         return new RadioAction(
             new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
-            modelElement, descr));
+                    modelElement, descr));
     }
 
     /**
