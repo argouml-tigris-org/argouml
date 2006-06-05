@@ -307,13 +307,11 @@ and a web page with the result published in the argouml-stats project.
 	      <para>...start a new Language Team?</para>
 	      <para>
 Contact the project leader of the ArgoUML project to discuss this.
-He will create the team and the project and make you the first member
-of the team and project once he is convinced that
+He will create the project and make you the first member
+of the project once he is convinced that
 you have understood the responsibilities.
 </para>
               <para>
-The Language Teams are listed on
-the web page of language teams on the Tigris site.
 The project are argouml subprojects so they are listed at the bottom of
 the argouml web page.
 </para>
@@ -347,10 +345,13 @@ appear in your language.
 This is only applicable for members of the language team.
 </para>
 	      <para>
+Make sure you are a Developer in the appropriate project.
+</para>
+	      <para>
 Look at the files in
 <filename class="directory">org/argouml/i18n</filename>,
 under <filename class="directory">argouml/src_new</filename>
-(the argouml project).
+(in the argouml project).
 </para>
 	      <para>
 Translate all the values in each of these files.
@@ -379,7 +380,12 @@ The work will probably be more maintenance-like from here on.
 	    <listitem>
 	      <para>...join an existing Language Team</para>
 	      <para>
-Discuss with the Language Team in question by mailing the members.
+Join the dev mailing list in the correct project and
+apply for an Observer role in the project.
+</para>
+	      <para>
+Discuss with the Language Team in question by mailing
+on the dev list.
 They will hopefully have work prepared for you and greet you with open arms.
 </para>
 	    </listitem>
