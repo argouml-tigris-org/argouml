@@ -189,15 +189,19 @@ public class TestProject extends TestCase {
                     Model.getFacade().getNamespace(machine),
                     machine);
         p.addMember(d);
-        assertEquals("Diagram count incorrect", sizeDiagrams + 1, p.getDiagrams().size());
-        assertEquals("Member count incorrect", sizeMembers + 1, p.getMembers().size());
+        assertEquals("Diagram count incorrect", sizeDiagrams + 1, 
+                p.getDiagrams().size());
+        assertEquals("Member count incorrect", sizeMembers + 1, 
+                p.getMembers().size());
         p.moveToTrash(aClass);
         Model.getPump().flushModelEvents();
         
         assertTrue("Statemachine not in trash", p.isInTrash(machine));
         assertTrue("Class not in trash", p.isInTrash(aClass));
-        assertEquals("Diagram count incorrect after trash", sizeDiagrams, p.getDiagrams().size());
-        assertEquals("Member count incorrect after trash", sizeMembers, p.getMembers().size());
+        assertEquals("Diagram count incorrect after trash", sizeDiagrams, 
+                p.getDiagrams().size());
+        assertEquals("Member count incorrect after trash", sizeMembers, 
+                p.getMembers().size());
     }
 
     /**
