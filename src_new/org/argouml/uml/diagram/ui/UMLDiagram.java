@@ -264,7 +264,7 @@ public abstract class UMLDiagram
         /* Listening only to "remove" events does not work... 
          * TODO: Check if this works now with new event pump - tfm 
          */
-        Model.getPump().addModelEventListener(this, namespace);
+        Model.getPump().addModelEventListener(this, namespace, "remove");
     }
 
     /**
@@ -512,7 +512,7 @@ public abstract class UMLDiagram
                 && (evt instanceof DeleteInstanceEvent)
                 && "remove".equals(evt.getPropertyName())) {
 
-            Model.getPump().removeModelEventListener(this, namespace);
+            Model.getPump().removeModelEventListener(this, namespace, "remove");
 
             ProjectManager.getManager().getCurrentProject().moveToTrash(this);
         }
@@ -665,25 +665,6 @@ public abstract class UMLDiagram
      * @return a string that can be used as a label for this kind of diagram
      */
     public abstract String getLabelName();
-
-    /**
-     * This method shall indicate if the diagram needs to be removed
-     * because the modelelements on which it depends are removed.
-     * The default implementation is applicable to e.g. a ClassDiagram,
-     * which only depends on its namespace. <p>
-     *
-     * Matters get more complicated for e.g. a Statechart Diagram,
-     * which also depends on its context (the represented modelelement).
-     * Hence such a diagram needs to override this method.
-     *
-     * @return true if the diagram needs to be removed
-     */
-    public boolean needsToBeRemoved() {
-        return namespace == null
-                || Model.getUmlFactory().isRemoved(namespace)
-                || getOwner() == null
-                || Model.getUmlFactory().isRemoved(getOwner());
-    }
 
     /**
      * This method shall return any UML modelelements
