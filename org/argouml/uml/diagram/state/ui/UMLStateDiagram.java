@@ -32,6 +32,7 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
@@ -142,7 +143,7 @@ public class UMLStateDiagram extends UMLDiagram {
     private Object getNamespaceFromMachine(Object machine) {
         if (!Model.getFacade().isAStateMachine(machine)) {
             throw new IllegalStateException(
-            "No StateMachine given to create a Statechart diagram");
+                "No StateMachine given to create a Statechart diagram");
         }
         
         Object namespace = Model.getFacade().getNamespace(machine);
@@ -218,17 +219,12 @@ public class UMLStateDiagram extends UMLDiagram {
     public void setup(Object namespace, Object machine) {
         setNamespace(namespace);
 
-        // add the diagram as a listener to the statemachine so
-        // that when the statemachine is removed() the diagram is deleted also.
-        // Remark MVW: It also works without the next line.... So why?
-        // UmlModelEventPump.getPump().addModelEventListener(this, sm);
-
         theStateMachine = machine;
 
         StateDiagramGraphModel gm = new StateDiagramGraphModel();
         gm.setHomeModel(namespace);
-        if (machine != null) {
-            gm.setMachine(machine);
+        if (theStateMachine != null) {
+            gm.setMachine(theStateMachine);
         }
         StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
 
@@ -238,16 +234,23 @@ public class UMLStateDiagram extends UMLDiagram {
         lay.setGraphEdgeRenderer(rend);
         setLayer(lay);
 
-        /* Listen to machine namespace changes, 
-         * to adapt the namespace of the diagram. */
-        Model.getPump().addModelEventListener(this, theStateMachine, "namespace");
+        /* Listen to machine deletion, 
+         * to delete the diagram. */
+        Model.getPump().addModelEventListener(this, theStateMachine, 
+                new String[] {"remove", "namespace"});
     }
 
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        super.propertyChange(evt);
+        if ((evt.getSource() == theStateMachine)
+                && (evt instanceof DeleteInstanceEvent)
+                && "remove".equals(evt.getPropertyName())) {
+            Model.getPump().removeModelEventListener(this, 
+                    theStateMachine, new String[] {"remove", "namespace"});
+            ProjectManager.getManager().getCurrentProject().moveToTrash(this);
+        }
         if (evt.getSource() == theStateMachine 
                 && "namespace".equals(evt.getPropertyName())) {
             Object newNamespace = evt.getNewValue();
@@ -255,7 +258,7 @@ public class UMLStateDiagram extends UMLDiagram {
                     && getNamespace() != newNamespace) {
                 /* The namespace of the statemachine is changed! */
                 setNamespace(newNamespace);
-                ((UMLMutableGraphSupport)getGraphModel())
+                ((UMLMutableGraphSupport) getGraphModel())
                                 .setHomeModel(newNamespace);
             }
         }
@@ -514,24 +517,10 @@ public class UMLStateDiagram extends UMLDiagram {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.UMLDiagram#needsToBeRemoved()
-     */
-    public boolean needsToBeRemoved() {
-        if (Model.getUmlFactory().isRemoved(theStateMachine)) {
-            return true;
-        }
-        if (Model.getUmlFactory().isRemoved(getNamespace())) {
-            return true;
-        }
-        /* Removal of the context is NOT a reason to delete this diagram! */
-        return false;
-    }
-
-    /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getDependentElement()
      */
     public Object getDependentElement() {
-            return getStateMachine(); /* The StateMachine. */
+        return getStateMachine(); /* The StateMachine. */
     }
 
     /**

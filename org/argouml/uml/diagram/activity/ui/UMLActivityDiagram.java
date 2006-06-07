@@ -31,6 +31,7 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
@@ -51,6 +52,12 @@ import org.tigris.gef.graph.GraphModel;
  * TODO: Finish the work on swimlanes, subactivity states.
  */
 public class UMLActivityDiagram extends UMLDiagram {
+    
+    /**
+     * this diagram needs to be deleted when its statemachine is deleted.
+     */
+    private Object theActivityGraph;
+
     private Action actionState;
     private Action actionStartPseudoState;
     private Action actionFinalPseudoState;
@@ -141,49 +148,56 @@ public class UMLActivityDiagram extends UMLDiagram {
      * deleting layers on the diagram...  psager@tigris.org Jan. 24,
      * 2002
 
-     * @param m  Namespace from the model
+     * @param namespace  Namespace from the model
      * @param agraph ActivityGraph from the model
      */
-    public void setup(Object m, Object agraph) {
-
-        if (!Model.getFacade().isANamespace(m)
+    public void setup(Object namespace, Object agraph) {
+        if (!Model.getFacade().isANamespace(namespace)
             || !Model.getFacade().isAActivityGraph(agraph)) {
             throw new IllegalArgumentException();
         }
 
-        super.setNamespace(m);
+        setNamespace(namespace);
+
+        theActivityGraph = agraph;
+        
         ActivityDiagramGraphModel gm = new ActivityDiagramGraphModel();
-//        setGraphModel(gm); //MVW
-        gm.setHomeModel(m);
-        if (agraph != null) {
-            gm.setMachine(agraph);
-//            setStateMachine(agraph); // MVW
+        gm.setHomeModel(namespace);
+        if (theActivityGraph != null) {
+            gm.setMachine(theActivityGraph);
         }
-        LayerPerspective lay =
-            new LayerPerspectiveMutable(Model.getFacade().getName(m), gm);
         ActivityDiagramRenderer rend = new ActivityDiagramRenderer();
+
+        LayerPerspective lay = new LayerPerspectiveMutable(
+                Model.getFacade().getName(namespace), gm);
         lay.setGraphNodeRenderer(rend);
         lay.setGraphEdgeRenderer(rend);
-
         setLayer(lay);
 
-        /* Listen to activitygraph namespace changes, 
-         * to adapt the namespace of the diagram. */
-        Model.getPump().addModelEventListener(this, agraph, "namespace");
+        /* Listen to activitygraph deletion, 
+         * delete this diagram. */
+        Model.getPump().addModelEventListener(this, theActivityGraph, 
+                new String[] {"remove", "namespace"});
     }
 
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        super.propertyChange(evt);
+        if ((evt.getSource() == theActivityGraph)
+                && (evt instanceof DeleteInstanceEvent)
+                && "remove".equals(evt.getPropertyName())) {
+            Model.getPump().removeModelEventListener(this, 
+                    theActivityGraph, new String[] {"remove", "namespace"});
+            ProjectManager.getManager().getCurrentProject().moveToTrash(this);
+        }
         if (evt.getSource() == getStateMachine()) {
             Object newNamespace = 
                 Model.getFacade().getNamespace(getStateMachine());
             if (getNamespace() != newNamespace) {
                 /* The namespace of the activitygraph is changed! */
                 setNamespace(newNamespace);
-                ((UMLMutableGraphSupport)getGraphModel())
+                ((UMLMutableGraphSupport) getGraphModel())
                                 .setHomeModel(newNamespace);
             }
         }
@@ -413,24 +427,6 @@ public class UMLActivityDiagram extends UMLDiagram {
                         "button.new-transition"));
         }
         return actionTransition;
-    }
-
-    /**
-     * @see org.argouml.uml.diagram.ui.UMLDiagram#needsToBeRemoved()
-     */
-    public boolean needsToBeRemoved() {
-        if ((getStateMachine() == null)
-                || (Model.getUmlFactory().isRemoved(getStateMachine()))) {
-            return true;
-        }
-        if (Model.getUmlFactory().isRemoved(getNamespace())) {
-            return true;
-        }
-        Object context = Model.getFacade().getContext(getStateMachine());
-        if (context == null) {
-            return true;
-        }
-        return false;
     }
 
     /**
