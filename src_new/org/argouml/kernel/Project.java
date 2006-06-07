@@ -423,7 +423,8 @@ public class Project implements java.io.Serializable, TargetListener {
             if (diagrams.size() == 1) {
                 // We're deleting the last diagram so lets create a new one
                 // TODO: Once we go MDI we won't need this.
-                Object treeRoot = Model.getModelManagementFactory().getRootModel();
+                Object treeRoot = 
+                    Model.getModelManagementFactory().getRootModel();
                 defaultDiagram =
                     DiagramFactory.getInstance()
                         .createDiagram(UMLClassDiagram.class, treeRoot, null);
@@ -983,7 +984,6 @@ public class Project implements java.io.Serializable, TargetListener {
             return; //Can not delete the model
         }
 
-        boolean needSave = false;
         if (obj != null) {
             TargetManager.getInstance().removeTarget(obj);
             TargetManager.getInstance().removeHistoryElement(obj);
@@ -1032,9 +1032,11 @@ public class Project implements java.io.Serializable, TargetListener {
             LOG.error("Request to delete a Fig " + obj.getClass().getName());
             ((Fig) obj).deleteFromModel();
         } else if (obj instanceof CommentEdge) {
-            CommentEdge ce = (CommentEdge)obj;
-            LOG.info("Removing the link from " + ce.getAnnotatedElement() + " to " + ce.getComment());
-            Model.getCoreHelper().removeAnnotatedElement(ce.getComment(), ce.getAnnotatedElement());
+            CommentEdge ce = (CommentEdge) obj;
+            LOG.info("Removing the link from " + ce.getAnnotatedElement() 
+                    + " to " + ce.getComment());
+            Model.getCoreHelper().removeAnnotatedElement(
+                    ce.getComment(), ce.getAnnotatedElement());
         }
     }
 
