@@ -2512,13 +2512,15 @@ Sign the jar files.
 	  <para>
 The following command will do it for you:
 <programlisting>
+(
 cd argouml/build &amp;&amp;
 find . -name \*.jar -print |
 while read jarname
 do
-    echo "$BUILD signing $jarname"
+    echo "signing $jarname"
     $JAVA_HOME/bin/jarsigner -storepass secret $jarname argouml
 done
+)
 </programlisting>
 </para>
 	</listitem>
@@ -2538,8 +2540,10 @@ and
 The following command will do it for you:
 <programlisting>
 chmod +x argoumlinstaller/tarzip/doit.sh &amp;&amp;
+(
 cd .. &amp;&amp;
 VERSION_<replaceable>0_21_2</replaceable>_F/argoumlinstaller/tarzip/doit.sh
+)
 </programlisting>
 You must give the version number.
 </para>
@@ -2560,9 +2564,9 @@ Copy or move the pdf files giving them version names.
 	  <para>
 The following command will do it for you:
 <programlisting>
-for pdffile in argouml/build/documentation/pdf/*/*.pdf
+for pdffile in VERSION_<replaceable>0_21_2</replaceable>_F/argouml/build/documentation/pdf/*/*.pdf
 do
-    mv $pdffile argouml/build/`basename $pdffile .pdf`-<replaceable>RELEASE NAME</replaceable>.pdf
+    mv $pdffile ../../svn/argouml-downloads/argouml-<replaceable>RELEASE NAME</replaceable>/`basename $pdffile .pdf`-<replaceable>RELEASE NAME</replaceable>.pdf
 done
 </programlisting>
 </para>
@@ -2575,7 +2579,7 @@ Build the appbund file for Mac.
 	      <para>
 This is how this is done:
 <programlisting>
-cd argoumlinstaller/appbund &amp;&amp; ./doit.sh
+( cd argoumlinstaller/appbund &amp;&amp; ./doit.sh )
 </programlisting>
 and give the version number.
 </para>
@@ -2636,7 +2640,7 @@ This requires that you have the directory layout described above.
 	      <para>
 This is how this is done:
 <programlisting>
-cd ../argoumlinstaller/javawebstart &amp;&amp; ./createJWS.sh
+( cd ../argoumlinstaller/javawebstart &amp;&amp; ./createJWS.sh )
 </programlisting>
 and give the version number.
 The version number will be the version number used in all
@@ -2689,8 +2693,10 @@ the java web start file at
 	  <para>
 The following command will do it for you:
 <programlisting>
+(
 cd ../svn/argouml-downloads/www &amp;&amp;
 svn commit -m'The release <replaceable>RELEASE NAME</replaceable>.'
+)
 </programlisting>
 </para>
 	</listitem>
