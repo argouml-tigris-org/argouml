@@ -39,6 +39,7 @@ import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -199,6 +200,20 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * target of the proppanel is changed.
      */
     protected abstract void buildModelList();
+
+    /**
+     * @param obj an UML object
+     * @return its name or "" (if it was not named or deleted)
+     */
+    protected String getName(Object obj) {
+        try {
+            Object n = Model.getFacade().getName(obj);
+            String name = (n != null ? (String) n : "");
+            return name;
+        } catch (InvalidElementException e) {
+            return "";
+        }
+    }
 
     /**
      * Utility method to change all elements in the list with modelelements
