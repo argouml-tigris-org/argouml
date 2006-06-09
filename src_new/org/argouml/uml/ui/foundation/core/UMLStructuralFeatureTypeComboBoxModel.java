@@ -35,6 +35,7 @@ import java.util.TreeSet;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -99,16 +100,10 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         Set paths = new HashSet();
         Set elements = new TreeSet(new Comparator() {
             public int compare(Object o1, Object o2) {
-                try {
-                    Object n1 = Model.getFacade().getName(o1);
-                    Object n2 = Model.getFacade().getName(o2);
-                    String name1 = (n1 != null ? (String) n1 : "");
-                    String name2 = (n2 != null ? (String) n2 : "");
+                String name1 = getName(o1);
+                String name2 = getName(o2);
 
-                    return name1.compareTo(name2);
-                } catch (Exception e) {
-                    throw new ClassCastException(e.getMessage());
-                }
+                return name1.compareTo(name2);
             }
         });
 
