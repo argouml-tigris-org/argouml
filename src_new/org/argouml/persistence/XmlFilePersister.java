@@ -39,4 +39,13 @@ public class XmlFilePersister extends XmiFilePersister {
         return "xml";
     }
 
+    /**
+     * Returns false. Only Argo specific files have an icon.
+     * 
+     * @see org.argouml.persistence.AbstractFilePersister#hasAnIcon()
+     */
+    public boolean hasAnIcon() {
+        return false;
+    }
+
 }

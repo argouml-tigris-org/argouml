@@ -118,6 +118,9 @@ public class ActionOpenProject extends AbstractAction
 
             chooser.setAcceptAllFileFilterUsed(false);
 
+            // adding project files icon
+            chooser.setFileView(ProjectFileView.getInstance());
+            
             pm.setOpenFileChooserFilter(chooser);
 
             String fn = Configuration.getString(

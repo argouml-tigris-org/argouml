@@ -284,4 +284,12 @@ public abstract class AbstractFilePersister extends FileFilter
     public void removeProgressListener(ProgressListener listener) {
         listenerList.remove(ProgressListener.class, listener);
     }
+
+    /**
+     * Returns true if a FileChooser should visualize an icon for the
+     * persister.
+     * 
+     * @return true if the persister is associated to an icon 
+     */
+    public abstract boolean hasAnIcon();
 }

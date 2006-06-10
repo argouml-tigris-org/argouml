@@ -248,4 +248,13 @@ public class ZipFilePersister extends XmiFilePersister {
         }
         return zis;
     }
+
+    /**
+     * Returns false. Only Argo specific files have an icon.
+     * 
+     * @see org.argouml.persistence.AbstractFilePersister#hasAnIcon()
+     */
+    public boolean hasAnIcon() {
+        return false;
+    }
 }

@@ -84,6 +84,7 @@ import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
 import org.argouml.uml.ui.ActionSaveProject;
+import org.argouml.uml.ui.ProjectFileView;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
@@ -1559,6 +1560,9 @@ public final class ProjectBrowser
         String sChooserTitle =
             Translator.localize("filechooser.save-as-project");
         chooser.setDialogTitle(sChooserTitle + " " + p.getName());
+
+        // adding project files icon
+        chooser.setFileView(ProjectFileView.getInstance());
 
         chooser.setAcceptAllFileFilterUsed(false);
         PersistenceManager.getInstance().setSaveFileChooserFilters(chooser);
