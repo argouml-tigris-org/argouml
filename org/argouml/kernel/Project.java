@@ -988,14 +988,6 @@ public class Project implements java.io.Serializable, TargetListener {
             trashcan.add(obj);
         }
         if (Model.getFacade().isAModelElement(obj)) {
-            // an object that can be represented
-            
-            // TODO: Bob says - do we require these two lines.
-            // Surely Figs should be listening for delete events
-            // and so will be removed as a result of the
-            // following line.
-            Collection allFigs = findAllPresentationsFor(obj, true);
-            removeFigs(allFigs);
 
             Model.getUmlFactory().delete(obj);
 

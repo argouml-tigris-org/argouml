@@ -1152,10 +1152,12 @@ public class FigUseCase extends FigNodeModelElement
          * that change the name or body text: 
          */
         if (newOwner != null) {
-            /* register for name changes, added extensionpoints
-             * and abstract makes the text italic: */
+            /* Register for name changes, added extensionpoints
+             * and abstract makes the text italic.
+             * All Figs need to listen to "remove", too: */
             addElementListener(newOwner, 
-                    new String[] {"name", "isAbstract", "extensionPoint", "stereotype"});
+                    new String[] {"remove", "name", "isAbstract", 
+                        "extensionPoint", "stereotype"});
             // register for extension points:
             Iterator it =
                 Model.getFacade().getExtensionPoints(newOwner).iterator();
