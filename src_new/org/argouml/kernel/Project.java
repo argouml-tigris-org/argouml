@@ -1002,7 +1002,8 @@ public class Project implements java.io.Serializable, TargetListener {
             if (obj instanceof ProjectMember
                     && members.contains(obj)) {
                 // TODO: Bob says - can this condition ever be reached?
-                // Surely obj cannot be both a model element and a ProjectMember
+                // Surely obj cannot be both a model element (previous if) and
+                // a ProjectMember (this if)
                 members.remove(obj);
             }
 
@@ -1023,8 +1024,14 @@ public class Project implements java.io.Serializable, TargetListener {
         } else if (obj instanceof Fig) {
             TargetManager.getInstance().removeTarget(obj);
             TargetManager.getInstance().removeHistoryElement(obj);
-            LOG.error("Request to delete a Fig " + obj.getClass().getName());
             ((Fig) obj).deleteFromModel();
+            // TODO: Bob says - I've never seen this appear in the log.
+            // I believe this code is never reached. If we delete a FigEdge
+            // or FigNode we actually call this method with the owner not
+            // the Fig itself.
+            // For Figs with no owner (primitives like circle etc) then they
+            // are not deleted (crtl-Del) they are removed (Del)
+            LOG.error("Request to delete a Fig " + obj.getClass().getName());
         } else if (obj instanceof CommentEdge) {
             TargetManager.getInstance().removeTarget(obj);
             TargetManager.getInstance().removeHistoryElement(obj);
