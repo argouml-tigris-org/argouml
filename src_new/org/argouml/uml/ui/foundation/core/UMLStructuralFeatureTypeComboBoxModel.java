@@ -35,7 +35,6 @@ import java.util.TreeSet;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
