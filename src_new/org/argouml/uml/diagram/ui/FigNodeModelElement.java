@@ -927,7 +927,9 @@ public abstract class FigNodeModelElement
         if (pve instanceof DeleteInstanceEvent && src == getOwner()) {
             removeFromDiagram();
             return;
-        } else if (pName.equals("editing")
+        }
+        // We handle and consume editing events
+        if (pName.equals("editing")
                 && Boolean.FALSE.equals(pve.getNewValue())) {
             try {
                 //parse the text that was edited
