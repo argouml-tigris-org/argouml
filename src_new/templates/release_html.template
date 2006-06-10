@@ -4,19 +4,19 @@
 <TR><TD>
 <a href="@URLROOT@/ArgoUML-@VERSION@.tar.gz">ArgoUML-@VERSION@.tar.gz</a>
 </TD><TD>
-binary distribution, including all libaries
+binary distribution
 </TD></TR>
 
 <TR><TD>
 <a href="@URLROOT@/ArgoUML-@VERSION@.zip">ArgoUML-@VERSION@.zip</a>
 </TD><TD>
-binary distribution, including all libaries
+binary distribution
 </TD></TR>
 
 <TR><TD>
 <a href="@URLROOT@/ArgoUML-@VERSION@.app.tgz">ArgoUML-@VERSION@.app.tgz</a>
 </TD><TD>
-binary distribution, including all libaries
+Mac OS X binary distribution
 </TD></TR>
 
 <TR><TD>
@@ -42,7 +42,7 @@ Starts from Java Web Start
 
 <TR><TH COLSPAN=2>Installers</TH></TR>
 
-Added when available.
+<TR><TD COLSPAN=2>Added when available.<TD><TR>
 
 
 
