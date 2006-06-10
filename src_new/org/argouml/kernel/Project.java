@@ -985,8 +985,6 @@ public class Project implements java.io.Serializable, TargetListener {
         }
 
         if (obj != null) {
-            TargetManager.getInstance().removeTarget(obj);
-            TargetManager.getInstance().removeHistoryElement(obj);
             trashcan.add(obj);
         }
         if (Model.getFacade().isAModelElement(obj)) {
@@ -1000,14 +998,6 @@ public class Project implements java.io.Serializable, TargetListener {
             removeFigs(allFigs);
 
             Model.getUmlFactory().delete(obj);
-
-            /*
-             * Since the above step also removes
-             * some other dependent modelelements,
-             * we have to make sure that they are removed
-             * from the target history list, too.
-             */
-            TargetManager.getInstance().checkForRemovedModelElements();
 
             if (obj instanceof ProjectMember
                     && members.contains(obj)) {
@@ -1024,14 +1014,20 @@ public class Project implements java.io.Serializable, TargetListener {
                 models.remove(obj);
             }
         } else if (obj instanceof ArgoDiagram) {
+            TargetManager.getInstance().removeTarget(obj);
+            TargetManager.getInstance().removeHistoryElement(obj);
             removeProjectMemberDiagram((ArgoDiagram) obj);
             // only need to manually delete diagrams because they
             // don't have a decent event system set up.
             ExplorerEventAdaptor.getInstance().modelElementRemoved(obj);
         } else if (obj instanceof Fig) {
+            TargetManager.getInstance().removeTarget(obj);
+            TargetManager.getInstance().removeHistoryElement(obj);
             LOG.error("Request to delete a Fig " + obj.getClass().getName());
             ((Fig) obj).deleteFromModel();
         } else if (obj instanceof CommentEdge) {
+            TargetManager.getInstance().removeTarget(obj);
+            TargetManager.getInstance().removeHistoryElement(obj);
             CommentEdge ce = (CommentEdge) obj;
             LOG.info("Removing the link from " + ce.getAnnotatedElement() 
                     + " to " + ce.getComment());
