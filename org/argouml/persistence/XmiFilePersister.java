@@ -189,4 +189,13 @@ public class XmiFilePersister extends AbstractFilePersister {
         }
     }
 
+    /**
+     * Returns true. All Argo specific files have an icon.
+     * 
+     * @see org.argouml.persistence.AbstractFilePersister#hasAnIcon()
+     */
+    public boolean hasAnIcon() {
+        return true;
+    }
+
 }

@@ -575,4 +575,13 @@ public class UmlFilePersister extends AbstractFilePersister
         }
         return persister;
     }
+
+    /**
+     * Returns true. All Argo specific files have an icon.
+     * 
+     * @see org.argouml.persistence.AbstractFilePersister#hasAnIcon()
+     */
+    public boolean hasAnIcon() {
+        return true;
+    }
 }
