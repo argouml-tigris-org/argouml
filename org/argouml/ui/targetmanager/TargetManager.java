@@ -24,6 +24,8 @@
 
 package org.argouml.ui.targetmanager;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,6 +39,7 @@ import javax.swing.event.EventListenerList;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.Actions;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -120,6 +123,13 @@ public final class TargetManager {
         private int currentTarget = -1;
 
         /**
+         * The listener to UML model changes. 
+         * Deleted model elements are removed 
+         * from the history list. 
+         */
+        private Remover umlListener = new HistoryRemover(); 
+
+        /**
          * Default constructor that registrates the history manager as target
          * listener with the target manager.
          *
@@ -150,6 +160,7 @@ public final class TargetManager {
             }
             if (target != null && !navigateBackward) {
                 if (currentTarget + 1 == history.size()) {
+                    umlListener.addListener(target);
                     history.add(new WeakReference(target));
                     currentTarget++;
                     resize();
@@ -161,9 +172,11 @@ public final class TargetManager {
                     if (currentTarget == -1 || !ref.get().equals(target)) {
                         int size = history.size();
                         for (int i = currentTarget + 1; i < size; i++) {
-                            history.remove(currentTarget + 1);
+                            umlListener.removeListener(
+                                    history.remove(currentTarget + 1));
                         }
                         history.add(new WeakReference(target));
+                        umlListener.addListener(target);
                         currentTarget++;
                     }
                 }
@@ -182,7 +195,8 @@ public final class TargetManager {
                 int halfsize = size / 2;
                 if (currentTarget > halfsize && oversize < halfsize) {
                     for (int i = 0; i < oversize; i++) {
-                        history.remove(0);
+                        umlListener.removeListener(
+                                history.remove(0));
                     }
                     currentTarget -= oversize;
                 }
@@ -289,6 +303,7 @@ public final class TargetManager {
          *
          */
         private void clean() {
+            umlListener.removeAllListeners(history);
             history = new ArrayList();
             currentTarget = -1;
         }
@@ -334,25 +349,6 @@ public final class TargetManager {
             }
         }
 
-        private void checkForRemovedModelElements() {
-            Collection toBeRemoved = new ArrayList();
-            Iterator i = history.iterator();
-            while (i.hasNext()) {
-                WeakReference ref = (WeakReference) i.next();
-                Object historyObject = ref.get();
-                if (Model.getFacade().isAModelElement(historyObject)) {
-                    if (Model.getUmlFactory().isRemoved(historyObject)) {
-                        toBeRemoved.add(historyObject);
-                    }
-                }
-            }
-            i = toBeRemoved.iterator();
-            while (i.hasNext()) {
-                Object o = i.next();
-                removeHistoryTarget(o);
-            }
-        }
-
     }
     /**
      * The log4j logger to log messages to.
@@ -389,6 +385,13 @@ public final class TargetManager {
      * is emulated.
      */
     private HistoryManager historyManager = new HistoryManager();
+    
+    /**
+     * The listener to UML model changes. 
+     * Deleted model elements are removed 
+     * from the target list. 
+     */
+    private Remover umlListener = new TargetRemover(); 
 
     /**
      * Flag to indicate that there is a setTarget method running.
@@ -437,14 +440,18 @@ public final class TargetManager {
 	startTargetTransaction();
 
 	Object[] oldTargets = targets.toArray();
+        umlListener.removeAllListeners(targets);
 	targets.clear();
 
 	if (o != null) {
+            Object newTarget;
             if (o instanceof UMLDiagram) { // Needed for Argo startup :-(
-                targets.add(o);
+                newTarget = o;
             } else {
-	        targets.add(getOwner(o));
+	        newTarget = getOwner(o);
             }
+            targets.add(newTarget);
+            umlListener.addListener(newTarget);
         }
 	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
 
@@ -514,26 +521,18 @@ public final class TargetManager {
             targetsList.addAll(targetsCollection);
         }
 
+        /* Remove duplicates and take care of getOwner()
+         * and remove nulls: */
         List modifiedList = new ArrayList();
         Iterator it = targetsList.iterator();
         while (it.hasNext()) {
             Object o = it.next();
             o = getOwner(o);
-            if (!modifiedList.contains(o)) {
+            if ((o != null) && !modifiedList.contains(o)) {
                 modifiedList.add(o);
             }
         }
         targetsList = modifiedList;
-
-	// remove any nulls so we really ignore them
-	if (targetsList.contains(null)) {
-	    List withoutNullList = new ArrayList(targetsList);
-	    while (withoutNullList.contains(null)) {
-	        int nullIndex = withoutNullList.indexOf(null);
-	        withoutNullList.remove(nullIndex);
-	    }
-	    targetsList = withoutNullList;
-	}
 
 	Object[] oldTargets = null;
 
@@ -566,6 +565,7 @@ public final class TargetManager {
 
 	startTargetTransaction();
 
+        umlListener.removeAllListeners(targets);
 	targets.clear();
 
 	// implement set-like behaviour. The same element
@@ -577,6 +577,7 @@ public final class TargetManager {
                 continue;
             }
 	    targets.add(targ);
+            umlListener.addListener(targ);
 	}
 
 	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
@@ -596,17 +597,19 @@ public final class TargetManager {
 	if (isInTargetTransaction()) {
             return;
         }
+        Object newTarget = getOwner(target);
 
         if (target == null
                 || targets.contains(target)
-                || targets.contains(getOwner(target))) {
+                || targets.contains(newTarget)) {
             return;
         }
 
 	startTargetTransaction();
 
 	Object[] oldTargets = targets.toArray();
-	targets.add(0, getOwner(target));
+	targets.add(0, newTarget);
+        umlListener.addListener(newTarget);
 
 	internalOnSetTarget(TargetEvent.TARGET_ADDED, oldTargets);
 
@@ -632,9 +635,10 @@ public final class TargetManager {
 	startTargetTransaction();
 
 	Object[] oldTargets = targets.toArray();
-	targets.remove(target);
-
-        targets.removeAll(getOwnerAndAllFigs(target));
+        Collection c = getOwnerAndAllFigs(target);
+//	targets.remove(target);
+        targets.removeAll(c);
+        umlListener.removeAllListeners(c);
 
         if (targets.size() != oldTargets.length) {
             internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);
@@ -1013,27 +1017,62 @@ public final class TargetManager {
     }
 
     /**
-     * This routine checks the list of history items for
-     * UML modelelements that were removed.
+     * The listener to UML model changes. 
+     * Deleted model elements are removed 
+     * from the target list or from the history. 
+     * 
+     * @author michiel
      */
-    public void checkForRemovedModelElements() {
-        Collection toBeRemoved = new ArrayList();
-        Iterator i = targets.iterator();
-        while (i.hasNext()) {
-            Object candidate = i.next();
-            if (Model.getFacade().isAModelElement(candidate)) {
-                if (Model.getUmlFactory().isRemoved(candidate)) {
-                    toBeRemoved.add(candidate);
-                }
+    private abstract class Remover implements PropertyChangeListener 
+    {
+
+        private void addListener(Object o) {
+            if (Model.getFacade().isAModelElement(o)) {
+                Model.getPump().addModelEventListener(this, o, "remove");
+            } else if (o instanceof UMLDiagram) {
+                ((UMLDiagram) o).addPropertyChangeListener(this);
             }
         }
-        i = toBeRemoved.iterator();
-        while (i.hasNext()) {
-            Object o = i.next();
-            removeTarget(o);
+
+        private void removeListener(Object o) {
+            if (Model.getFacade().isAModelElement(o)) {
+                Model.getPump().removeModelEventListener(this, o, "remove");
+            } else if (o instanceof UMLDiagram) {
+                ((UMLDiagram) o).removePropertyChangeListener(this);
+            }
         }
-        historyManager.checkForRemovedModelElements();
+
+        private void removeAllListeners(Collection c) {
+            Iterator i = c.iterator();
+            while (i.hasNext()) {
+                removeListener(i.next());
+            }
+        }
+
+        /**
+         * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+         */
+        public void propertyChange(PropertyChangeEvent evt) {
+            if ((evt instanceof DeleteInstanceEvent)
+                    && "remove".equals(evt.getPropertyName())) {
+
+                remove(evt.getSource());
+            }
+        }
+        
+        protected abstract void remove(Object obj);
     }
 
+    private class TargetRemover extends Remover {
+        protected void remove(Object obj) {
+            removeTarget(obj);
+        }
+    }
+
+    private class HistoryRemover extends Remover {
+        protected void remove(Object obj) {
+            historyManager.removeHistoryTarget(obj);
+        }
+    }
 }
 
