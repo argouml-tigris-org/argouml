@@ -533,19 +533,21 @@ public abstract class FigEdgeModelElement
     public void propertyChange(PropertyChangeEvent pve) {
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
+        if (pve instanceof DeleteInstanceEvent && src == getOwner()) {
+            removeFromDiagram();
+            return;
+        }
         // We handle and consume editing events
         if (pName.equals("editing")
-            && Boolean.FALSE.equals(pve.getNewValue())) {
+                && Boolean.FALSE.equals(pve.getNewValue())) {
             LOG.debug("finished editing");
+            // parse the text that was edited
             textEdited((FigText) src);
             calcBounds();
             endTrans();
         } else if (pName.equals("editing")
                 && Boolean.TRUE.equals(pve.getNewValue())) {
             textEditStarted((FigText) src);
-        } else if (pve instanceof DeleteInstanceEvent && src == getOwner()) {
-            removeFromDiagram();
-            return;
         } else {
             // Add/remove name change listeners for applied stereotypes
             if (src == getOwner()
@@ -560,7 +562,8 @@ public abstract class FigEdgeModelElement
             super.propertyChange(pve);
         }
 
-        if (Model.getFacade().isAModelElement(src) && !Model.getUmlFactory().isRemoved(getOwner())) {
+        if (Model.getFacade().isAModelElement(src) 
+                && !Model.getUmlFactory().isRemoved(getOwner())) {
             /* If the source of the event is an UML object,
              * then the UML model has been changed.*/
             modelChanged(pve);
