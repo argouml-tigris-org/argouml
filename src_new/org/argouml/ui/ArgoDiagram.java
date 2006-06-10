@@ -33,7 +33,6 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.persistence.PgmlUtility;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -227,146 +226,170 @@ public class ArgoDiagram extends Diagram {
      * TODO: Split into small inner classes for each fix.
      */
     public String repair() {
-        String report = "";
+        StringBuffer report = new StringBuffer(500);
 
-        List figs = new ArrayList(PgmlUtility.getContents(this));
-        for (Iterator i = figs.iterator(); i.hasNext();) {
-            String figDescription = null;
-
-            Fig f = (Fig) i.next();
-            LOG.info("Checking " + figDescription(f) + f.getOwner());
-
-            // 1. Make sure all Figs in the Diagrams layer refer back to
-            // that layer.
-            if (!getLayer().equals(f.getLayer())) {
-                if (figDescription == null) {
-                    figDescription = figDescription(f);
-                    report += figDescription;
+        boolean faultFixed;
+        do {
+            faultFixed = false;
+            List figs = new ArrayList(getLayer().getContentsNoEdges());
+            for (Iterator i = figs.iterator(); i.hasNext();) {
+                Fig f = (Fig) i.next();
+                if (repairFig(f, report)) {
+                    faultFixed = true;
                 }
-
-                // The report
-                if (f.getLayer() == null) {
-                    report += "-- Fixed: layer was null\n";
-                } else {
-                    report += "-- Fixed: refered to wrong layer\n";
+            }
+            figs = new ArrayList(getLayer().getContentsEdgesOnly());
+            for (Iterator i = figs.iterator(); i.hasNext();) {
+                Fig f = (Fig) i.next();
+                if (repairFig(f, report)) {
+                    faultFixed = true;
                 }
-                // The fix
-                f.setLayer(getLayer());
+            }
+        } while (faultFixed); // Repeat until no faults are fixed
+
+        return report.toString();
+    }
+    
+    private boolean repairFig(Fig f, StringBuffer report) {
+        LOG.info("Checking " + figDescription(f) + f.getOwner());
+        boolean faultFixed = false;
+        String figDescription = null;
+        
+        // 1. Make sure all Figs in the Diagrams layer refer back to
+        // that layer.
+        if (!getLayer().equals(f.getLayer())) {
+            if (figDescription == null) {
+                figDescription = figDescription(f);
+                report.append(figDescription);
             }
 
-            // 2. Make sure that all Figs are visible
-            if (!f.isVisible()) {
-                if (figDescription == null) {
-                    figDescription = figDescription(f);
-                    report += figDescription;
-                }
-                // The report
-                report += "-- Fixed: a Fig must be visible\n";
-                // The fix
-                f.setVisible(true);
+            // The report
+            if (f.getLayer() == null) {
+                report.append("-- Fixed: layer was null\n");
+            } else {
+                report.append("-- Fixed: refered to wrong layer\n");
             }
-
-            if (f instanceof FigEdge) {
-                // 3. Make sure all FigEdges are attached to a valid FigNode
-                // The report
-                FigEdge fe = (FigEdge) f;
-                FigNode destFig = fe.getDestFigNode();
-                FigNode sourceFig = fe.getSourceFigNode();
-
-                if (destFig == null) {
-                    if (figDescription == null) {
-                        figDescription = figDescription(f);
-                        report += figDescription;
-                    }
-                    report +=
-                        "-- Removed: as it has no dest Fig\n";
-                    f.removeFromDiagram();
-                } else if (sourceFig == null) {
-                    if (figDescription == null) {
-                        figDescription = figDescription(f);
-                        report += figDescription;
-                    }
-                    report +=
-                        "-- Removed: as it has no source Fig\n";
-                    f.removeFromDiagram();
-                } else if (sourceFig.getOwner() == null) {
-                    if (figDescription == null) {
-                        figDescription = figDescription(f);
-                        report += figDescription;
-                    }
-                    report +=
-                        "-- Removed: as its source Fig has no owner\n";
-                    f.removeFromDiagram();
-                } else if (destFig.getOwner() == null) {
-                    if (figDescription == null) {
-                        figDescription = figDescription(f);
-                        report += figDescription;
-                    }
-                    report +=
-                        "-- Removed: as its destination Fig has no owner\n";
-                    f.removeFromDiagram();
-                } else if (Model.getUmlFactory().isRemoved(
-                        sourceFig.getOwner())) {
-                    if (figDescription == null) {
-                        figDescription = figDescription(f);
-                        report += figDescription;
-                    }
-                    report +=
-                        "-- Removed: as its source Figs owner is no "
-                        + "longer in the repository\n";
-                    f.removeFromDiagram();
-                } else if (Model.getUmlFactory().isRemoved(
-                        destFig.getOwner())) {
-                    if (figDescription == null) {
-                        figDescription = figDescription(f);
-                        report += figDescription;
-                    }
-                    report +=
-                        "-- Removed: as its destination Figs owner "
-                        + "is no longer in the repository\n";
-                    f.removeFromDiagram();
-                }
-            } else if ((f instanceof FigNode || f instanceof FigEdge)
-                    && f.getOwner() == null) {
-                if (figDescription == null) {
-                    figDescription = figDescription(f);
-                    report += figDescription;
-                }
-                // 4. Make sure all FigNodes and FigEdges have an owner
-                // The report
-                report +=
-                    "-- Removed: owner was null\n";
-                // The fix
-                f.removeFromDiagram();
-            } else if ((f instanceof FigNode || f instanceof FigEdge)
-                    &&  Model.getFacade().isAModelElement(f.getOwner())
-                    &&  Model.getUmlFactory().isRemoved(f.getOwner())) {
-                if (figDescription == null) {
-                    figDescription = figDescription(f);
-                    report += figDescription;
-                }
-                // 5. Make sure all FigNodes and FigEdges have a valid owner
-                // The report
-                report +=
-                    "-- Removed: model element no longer in the repository\n";
-                // The fix
-                f.removeFromDiagram();
-            } else if (f instanceof FigGroup && !(f instanceof FigNode)) {
-                if (figDescription == null) {
-                    figDescription = figDescription(f);
-                    report += figDescription;
-                }
-                // 4. Make sure the only FigGroups on a diagram are also
-                //    FigNodes
-                // The report
-                report +=
-                    "-- Removed: a FigGroup should not be on the diagram\n";
-                // The fix
-                f.removeFromDiagram();
-            }
+            faultFixed = true;
+            // The fix
+            f.setLayer(getLayer());
         }
 
-        return report;
+        // 2. Make sure that all Figs are visible
+        if (!f.isVisible()) {
+            if (figDescription == null) {
+                figDescription = figDescription(f);
+                report.append(figDescription);
+            }
+            // The report
+            report.append("-- Fixed: a Fig must be visible\n");
+            faultFixed = true;
+            // The fix
+            f.setVisible(true);
+        }
+
+        if (f instanceof FigEdge) {
+            // 3. Make sure all FigEdges are attached to a valid FigNode
+            // The report
+            FigEdge fe = (FigEdge) f;
+            FigNode destFig = fe.getDestFigNode();
+            FigNode sourceFig = fe.getSourceFigNode();
+
+            if (destFig == null) {
+                if (figDescription == null) {
+                    figDescription = figDescription(f);
+                    report.append(figDescription);
+                }
+                faultFixed = true;
+                report.append("-- Removed: as it has no dest Fig\n");
+                f.removeFromDiagram();
+            } else if (sourceFig == null) {
+                if (figDescription == null) {
+                    figDescription = figDescription(f);
+                    report.append(figDescription);
+                }
+                faultFixed = true;
+                report.append("-- Removed: as it has no source Fig\n");
+                f.removeFromDiagram();
+            } else if (sourceFig.getOwner() == null) {
+                if (figDescription == null) {
+                    figDescription = figDescription(f);
+                    report.append(figDescription);
+                }
+                faultFixed = true;
+                report.append("-- Removed: as its source Fig has no owner\n");
+                f.removeFromDiagram();
+            } else if (destFig.getOwner() == null) {
+                if (figDescription == null) {
+                    figDescription = figDescription(f);
+                    report.append(figDescription);
+                }
+                faultFixed = true;
+                report.append(
+                        "-- Removed: as its destination Fig has no owner\n");
+                f.removeFromDiagram();
+            } else if (Model.getUmlFactory().isRemoved(
+                    sourceFig.getOwner())) {
+                if (figDescription == null) {
+                    figDescription = figDescription(f);
+                    report.append(figDescription);
+                }
+                faultFixed = true;
+                report.append("-- Removed: as its source Figs owner is no "
+                    + "longer in the repository\n");
+                f.removeFromDiagram();
+            } else if (Model.getUmlFactory().isRemoved(
+                    destFig.getOwner())) {
+                if (figDescription == null) {
+                    figDescription = figDescription(f);
+                    report.append(figDescription);
+                }
+                faultFixed = true;
+                report.append("-- Removed: as its destination Figs owner "
+                    + "is no longer in the repository\n");
+                f.removeFromDiagram();
+            }
+        } else if ((f instanceof FigNode || f instanceof FigEdge)
+                && f.getOwner() == null) {
+            if (figDescription == null) {
+                figDescription = figDescription(f);
+                report.append(figDescription);
+            }
+            // 4. Make sure all FigNodes and FigEdges have an owner
+            // The report
+            faultFixed = true;
+            report.append("-- Removed: owner was null\n");
+            // The fix
+            f.removeFromDiagram();
+        } else if ((f instanceof FigNode || f instanceof FigEdge)
+                &&  Model.getFacade().isAModelElement(f.getOwner())
+                &&  Model.getUmlFactory().isRemoved(f.getOwner())) {
+            if (figDescription == null) {
+                figDescription = figDescription(f);
+                report.append(figDescription);
+            }
+            // 5. Make sure all FigNodes and FigEdges have a valid owner
+            // The report
+            faultFixed = true;
+            report.append(
+                    "-- Removed: model element no longer in the repository\n");
+            // The fix
+            f.removeFromDiagram();
+        } else if (f instanceof FigGroup && !(f instanceof FigNode)) {
+            if (figDescription == null) {
+                figDescription = figDescription(f);
+                report.append(figDescription);
+            }
+            // 4. Make sure the only FigGroups on a diagram are also
+            //    FigNodes
+            // The report
+            faultFixed = true;
+            report.append(
+                    "-- Removed: a FigGroup should not be on the diagram\n");
+            // The fix
+            f.removeFromDiagram();
+        }
+        
+        return faultFixed;
     }
 
     /**
