@@ -37,7 +37,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
@@ -665,35 +664,6 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * Get all figs from all diagrams (+ enclosed ones recursively)
-     * for some object obj. <p>
-     *
-     * See issue 3042 for an explanation of the 2nd parameter.
-     *
-     * @param obj the given object
-     * @param includeEnclosedOnes true to return also enclosed figs
-     * @return the figs
-     */
-    private Collection findAllPresentationsFor(Object obj,
-            boolean includeEnclosedOnes) {
-        Collection figs = new ArrayList();
-        Iterator it = diagrams.iterator();
-        while (it.hasNext()) {
-            ArgoDiagram diagram = (ArgoDiagram) it.next();
-            List diagramFigs = diagram.presentationsFor(obj);
-            Iterator figIt = diagramFigs.iterator();
-            while (figIt.hasNext()) {
-                Fig aFig = (Fig) figIt.next();
-                if (includeEnclosedOnes) {
-                    figs.addAll(collectAllEnclosedFigsRecursively(aFig));
-                }
-                figs.add(aFig);
-            }
-        }
-        return figs;
-    }
-
-    /**
      * Finds a classifier with a certain name.<p>
      *
      * Will only return first classifier with the matching name.
@@ -1032,33 +1002,6 @@ public class Project implements java.io.Serializable, TargetListener {
                     + " to " + ce.getComment());
             Model.getCoreHelper().removeAnnotatedElement(
                     ce.getComment(), ce.getAnnotatedElement());
-        }
-    }
-
-    private Collection collectAllEnclosedFigsRecursively(Fig f) {
-        Collection c = new ArrayList();
-        Collection encl = f.getEnclosedFigs();
-        if (encl != null) {
-            if (!encl.isEmpty()) {
-                Iterator i = encl.iterator();
-                while (i.hasNext()) {
-                    c.addAll(collectAllEnclosedFigsRecursively((Fig) i.next()));
-                }
-                c.addAll(encl);
-            }
-        }
-        return c;
-    }
-
-    /**
-     * Remove this given Figs from their diagrams.
-     * @param c a collection of Figs
-     */
-    private void removeFigs(Collection c) {
-        Iterator i = c.iterator();
-        while (i.hasNext()) {
-            Fig obj = (Fig) i.next();
-            obj.removeFromDiagram();
         }
     }
 
